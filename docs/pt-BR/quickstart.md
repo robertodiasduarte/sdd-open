@@ -2,126 +2,158 @@
 
 # Quickstart
 
-> *Tradução do [documento canônico em inglês](../quickstart.md). Em caso de divergência, o original vale.*
+Do zero a um gate bloqueante em dez minutos — no agente que você já usa.
 
-Do zero a um gate bloqueante em cerca de dez minutos.
+## O seu agente, em uma linha
 
-## 0. Você precisa mesmo do fluxo completo?
+| Agente | Instalar | Invocar uma fase | O que é gerado para ele |
+|---|---|---|---|
+| **Claude Code** | `bash sdd-open/bin/sdd-open.sh init --vendors claude` | `/sdd-define …` | `CLAUDE.md` (1 linha: `@AGENTS.md`) + cópias em `.claude/skills/` |
+| **Codex CLI** | `… init --vendors codex` | peça pela descrição ou `$sdd-define` | **nada** — lê `AGENTS.md` e `.agents/skills/` nativamente |
+| **Gemini CLI** | `… init --vendors gemini` | `/sdd-define …` (skill) | `GEMINI.md` + `context.fileName` em `.gemini/settings.json`; skills via `.agents/skills/`. ⚠️ CLI 0.22.x aponta para modelos aposentados por padrão: passe `-m gemini-3.7-flash` (ou o atual). Conta Workspace com login em cache exige `GOOGLE_CLOUD_PROJECT`; alternativa: `GEMINI_API_KEY` + `"security":{"auth":{"selectedType":"gemini-api-key"}}` no `settings.json` |
+| **Cursor** | `… init --vendors cursor` | `/sdd-define …` | cópias em `.cursor/skills/` |
+| **Kimi Code** | `… init --vendors kimi` | `/skill:sdd-define …` | **nada** — lê `AGENTS.md` e `.agents/skills/` nativamente |
+| **Grok Build** · **GLM via Claude Code** | `… init --vendors claude` | `/sdd-define …` | o mesmo do Claude Code (ambos leem `CLAUDE.md` e `.claude/`) |
 
-Seja honesto sobre a mudança que está na sua frente:
+Vários agentes no mesmo projeto: `--vendors claude,codex,gemini`.
 
-| A mudança é… | Faça isto |
+## Por agente
+
+### Claude Code
+`init --vendors claude`. Gera `CLAUDE.md` com a linha `@AGENTS.md` (import) e copia as skills para
+`.claude/skills/`. Invoque `/sdd-define …`. Hooks e subagentes do Claude Code funcionam normalmente
+com as skills.
+
+### Codex CLI
+`init --vendors codex`. Nada é gerado: o Codex lê `AGENTS.md` e `.agents/skills/` nativamente. Peça a
+fase pela descrição ("rode a fase Define sobre …") ou use `$sdd-define`. Provado headless em
+2026-09-05: `codex exec -s workspace-write "…"` produziu um DEFINE com gate parseável em 154 s.
+
+### Gemini CLI
+`init --vendors gemini`. Gera `GEMINI.md` e acrescenta `AGENTS.md` a `context.fileName` em
+`.gemini/settings.json`; as skills vêm de `.agents/skills/` (alias nativo). ⚠️ O CLI 0.22.x usa modelos
+aposentados por padrão: passe `-m gemini-3.7-flash` (ou o modelo atual). Conta Workspace com login em
+cache pede `GOOGLE_CLOUD_PROJECT`; alternativa: `GEMINI_API_KEY` +
+`"security":{"auth":{"selectedType":"gemini-api-key"}}` em `.gemini/settings.json`. Provado headless
+em 2026-09-05: 64 s, e o agente fechou com o micro-kanban do resumo de etapa.
+
+### Cursor
+`init --vendors cursor`. Copia as skills para `.cursor/skills/` (o Cursor não lê `.agents/`). AGENTS.md
+é lido nativamente. Invoque `/sdd-define …`.
+
+### Kimi Code
+`init --vendors kimi`. Nada é gerado: lê `AGENTS.md` e `.agents/skills/` (também `.kimi/skills`).
+Invoque `/skill:sdd-define …`.
+
+### Grok Build e GLM via Claude Code
+`init --vendors claude`. O Grok Build lê `CLAUDE.md`, `.claude/` e `AGENTS.md` sem configuração. O GLM
+roda dentro do Claude Code (`ANTHROPIC_BASE_URL` apontando para o provedor) e herda o mesmo adaptador.
+
+> **Em CI ou pipeline:** `init` e `sync` pedem confirmação e, sem terminal interativo, saem
+> `RESULTADO: CANCELADO` sem escrever nada. Passe `--yes`.
+
+## 0. Vale usar o fluxo inteiro?
+
+| A mudança é… | Faça |
 |---|---|
-| Descritível em uma frase, raio de impacto pequeno | Pule as fases. Converse com o modelo, rode seus testes. |
-| Correção de bug com causa conhecida | `/define` (uma spec de bug-fix precisa de pelo menos um `shall continue to`) e depois `/build`. |
-| Comportamento novo, vários arquivos, ou caro de errar | O fluxo completo abaixo. |
+| descritível em uma frase, raio pequeno | pule as fases; converse com o modelo, rode seus testes |
+| um bug com causa conhecida | `/sdd-define` (spec de bug precisa de um `shall continue to`) e `/sdd-build` |
+| comportamento novo, vários arquivos, caro errar | o fluxo completo abaixo |
 
-Um framework que se declara o único caminho está mentindo pra você. Use as fases onde errar
-é caro.
-
-## 1. Instalação
+## 1. Instalar
 
 ```bash
-git clone https://github.com/<owner>/specgate.git /tmp/specgate
-cp -r /tmp/specgate/.claude your-project/
-cp -r /tmp/specgate/scripts your-project/
-cp /tmp/specgate/sdd.config.example.yaml your-project/sdd.config.yaml
+git clone https://github.com/robertodiasduarte/sdd-open.git /tmp/sdd-open
+cd meu-projeto            # precisa ser um repositório git
+bash /tmp/sdd-open/bin/sdd-open.sh init --vendors codex --dry-run    # mostra o plano, não escreve
+bash /tmp/sdd-open/bin/sdd-open.sh init --vendors codex              # pede confirmação, aplica
 ```
 
-Nada é registrado, compilado ou instalado — são instruções em markdown e scripts bash.
-Um requisito: rode os scripts **de dentro de um repositório git** (o gate resolve paths a partir
-da raiz do repo; fora de um, ele sai com `64`).
+O `init` mostra um plano (`+` criar · `~` modificar bloco · `=` já correto) e só escreve depois
+do seu `y`. Nada seu é sobrescrito: se você já tem um `AGENTS.md`, só o bloco entre
+`<sdd-open-instructions>` e `</sdd-open-instructions>` é dele. Ao terminar, o `doctor` roda
+sozinho e diz, por agente, o que foi gerado e o que é nativo.
 
-## 2. Aponte os slots para o seu projeto
+Requisitos: `bash ≥ 3.2`, `git`. `python3` só para o adaptador Gemini e para os validadores.
+No Windows, use Git Bash ou WSL.
 
-Edite o `sdd.config.yaml`:
+## 2. Aponte o config para o seu projeto
+
+Edite `sdd/config.yaml`:
 
 ```yaml
 project:
-  name: your-project
   test_cmd: "npm test"
   typecheck_cmd: "tsc --noEmit"
+layers:
+  api: "src/api/**"
+  ui: "src/ui/**"
 deploy:
   cmd: "./deploy.sh production"
-release:
-  landmines_cmd: "bash scripts/release-landmines.sh"
 ```
 
-Os comandos referenciam esses slots em vez de fixar qualquer coisa no código, e é isso que torna
-o framework portátil entre stacks.
+Slot vazio significa "pule este passo e diga que pulou" — nunca "adivinhe um comando".
 
-## 3. Verifique a instalação
+## 3. Confira a instalação
 
 ```bash
-scripts/verify-gate.sh .claude/sdd/fixtures/DEFINE_FIXTURE_CONTROL.md;              echo "exit=$?"  # 0
-scripts/verify-gate.sh .claude/sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md;  echo "exit=$?"  # 5
+sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md;             echo "exit=$?"  # 0
+sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md;  echo "exit=$?"  # 5
 ```
 
-Obter `0` e `5` significa que o runner do gate e o contrato de exit funcionam. Se o segundo
-retornar `0`, a detecção de ambiguidade está quebrada — não prossiga, porque premissas silenciosas
-são exatamente o que ela existe pra pegar.
+`0` e `5` provam que o runner e o contrato de exit funcionam. Se o segundo devolver `0`, a
+detecção de ambiguidade está quebrada — não siga, porque suposição silenciosa é exatamente o
+que ela existe para pegar.
 
-## 4. Escreva sua primeira spec
+Cada saída termina em `RESULTADO: <PALAVRA>` e uma linha `→` dizendo o que fazer. Em CI e em
+pipelines com `&&`, use `--strict`: inconclusivo, assinatura pendente e clarificação deixam de
+valer como sucesso.
 
-```
-/define Add a discount code field to the checkout form
-```
+## 4. Sua primeira spec
 
-O comando vai te confrontar de três maneiras, todas deliberadas:
+Peça ao agente a fase Define sobre o exemplo que veio na instalação:
 
-**Ele escreve testes de aceite em EARS.** Não "o desconto deveria funcionar", e sim:
-
-> **When** um cliente envia um código de desconto válido, o sistema **shall** recalcular o total
-> do pedido e exibir o valor com desconto antes do pagamento.
->
-> **If** o código de desconto estiver expirado, **then** o sistema **shall** manter o total
-> original e mostrar o motivo inline.
-
-O segundo é o padrão de *comportamento indesejado*, e o `/define` vai recusar uma spec que tenha
-um modo de falha plausível sem um deles. Essa é a classe de bug que mais escapa do review.
-
-**Ele marca a ambiguidade em vez de chutar.** Se não conseguir dizer se os códigos são
-cumulativos, ele planta um marcador e pergunta pra você — no máximo cinco perguntas de múltipla
-escolha por rodada. Até você responder, o gate retorna exit `5` e o pipeline fica parado.
-
-**Ele exige um gate executável.** A spec não é salva sem um:
-
-```yaml
-verify_gate:
-  kind: test
-  cmd: "npm test -- src/checkout/discount.test.ts"
-  pass_when: "exit 0"
+```text
+/sdd-define sdd/fixtures/BRAINSTORM_EXEMPLO.md
 ```
 
-## 5. Design, build, release
+O agente vai empurrar de volta em três pontos, todos deliberados:
 
+- **Testes de aceitação em EARS.** Não "o desconto deve funcionar", mas
+  *"**When** o cliente aplica um código válido, the system **shall** recalcular o total em
+  <500 ms"*. O padrão *unwanted* obriga a nomear o modo de falha antes de construir.
+- **Ambiguidade vira marcador.** Onde a spec não sabe, o agente escreve
+  `[NEEDS CLARIFICATION: …]` no lugar exato — e o gate devolve `5` até você responder.
+- **O gate é um comando.** O DEFINE só sai com um bloco `## Verify Gate` que
+  `sdd/bin/verify-gate.sh --print` lê sem erro.
+
+Depois: `/sdd-design`, `/sdd-build` (o gate é o critério de parada) e `/sdd-release` (uma
+aprovação humana antes de publicar).
+
+## 5. Quando o pacote atualizar
+
+```bash
+cd /tmp/sdd-open && git pull
+cd meu-projeto && bash /tmp/sdd-open/bin/sdd-open.sh sync --check   # o que divergiu?
+bash /tmp/sdd-open/bin/sdd-open.sh sync                             # regenera os adaptadores
 ```
-/design .claude/sdd/features/DEFINE_DISCOUNT_CODES.md   # architecture, decisions, file manifest
-/build  .claude/sdd/features/DESIGN_DISCOUNT_CODES.md   # code, then the gate — blocking
-/release "discount codes at checkout"                    # graded verdict, one human approval
+
+`sync` **nunca** escreve em `sdd/` — suas specs, relatórios, fichas e playbook são seus.
+Arquivos em `.claude/skills/`, `.cursor/skills/`, `CLAUDE.md` e `GEMINI.md` são gerados: edite
+`.agents/skills/` e rode `sync`; edições neles são sobrescritas (o cabeçalho de cada um avisa).
+
+## Diagnóstico a qualquer hora
+
+```bash
+bash /tmp/sdd-open/bin/sdd-open.sh doctor
 ```
 
-O `/build` não vai declarar sucesso com o gate em `2` (vermelho) nem com `3` (inconclusivo) não
-resolvido. O `/release` termina em PASS (aprovado), CONCERNS (com ressalvas), FAIL (reprovado) ou
-WAIVED (dispensado) — e uma dispensa exige um motivo escrito por um humano, nunca pelo agente.
+Mostra bash/git/python3, o que está instalado e, por agente, se o adaptador foi gerado, se o
+agente lê `.agents/skills/` nativamente, e se o CLI dele está no PATH.
 
-## O contrato de exit, de uma vez
+## Vem do sdd-starter?
 
-| exit | Significado | O que o chamador faz |
-|---|---|---|
-| `0` | verde | prossiga |
-| `2` | vermelho | aborte |
-| `3` | inconclusivo (ferramenta ausente, ruído de infra) | resolva explicitamente; nunca conta como vermelho |
-| `4` | manual-ux: precisa de assinatura humana | mostre o checklist, aguarde o recibo |
-| `5` | há um marcador de ambiguidade ainda ativo | pare, volte pro `/define` — nunca itere o design |
-| `64` | o bloco do gate está ausente ou malformado | a spec é inválida |
-
-A distinção entre `2` e `5` é a que as pessoas deixam passar: um gate vermelho significa que o
-código está errado, enquanto `5` significa que a *pergunta* está errada. Loops que tratam os dois
-igual vão iterar alegremente um design construído sobre uma premissa não validada.
-
-## A seguir
-
-- [Guia de adaptação](adaptation-guide.md) — encaixar isto na sua stack, CI e time
-- [Contrato do Verify Gate](verify-gate-contract.md) — a referência completa
-- [Comparação](comparison.md) — como isto difere de outros frameworks
+O [sdd-starter](https://github.com/robertodiasduarte/sdd-starter) é a rampa (skills para
+agentes sem sistema de arquivos, como claude.ai e ChatGPT); o SDD Open é a rodovia. Os nomes
+das skills coincidem de propósito: use **um ou outro** por projeto. O `doctor` avisa se
+detectar os dois.

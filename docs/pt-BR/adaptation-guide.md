@@ -4,13 +4,13 @@
 
 > *Tradução do [documento canônico em inglês](../adaptation-guide.md). Em caso de divergência, o original vale.*
 
-O SpecGate foi extraído de um único codebase de produção. Este documento marca as costuras — o que
+O SDD Open foi extraído de um único codebase de produção. Este documento marca as costuras — o que
 é genérico, o que você precisa configurar, e o que foi deliberadamente deixado de fora por ser
 específico de onde ele veio.
 
 ## O que você precisa configurar
 
-Tudo que é específico do projeto vive no `sdd.config.yaml`. Os comandos referenciam slots; eles
+Tudo que é específico do projeto vive no `sdd/config.yaml`. Os comandos referenciam slots; eles
 nunca fixam um comando no código.
 
 ```yaml
@@ -24,7 +24,7 @@ deploy:
   drift_check_cmd: ""               # {{DRIFT_CHECK_CMD}} — see "drift" below
 
 release:
-  landmines_cmd: "bash scripts/release-landmines.sh"   # {{LANDMINES_CMD}}
+  landmines_cmd: "bash {{LANDMINES_CMD}}"   # {{LANDMINES_CMD}}
   changelog_hook: ""                # {{CHANGELOG_HOOK}}
 
 prompts:
@@ -33,7 +33,7 @@ prompts:
 
 ## O ponto de extensão que mais importa: landmines
 
-O [`scripts/release-landmines.sh`](../../scripts/release-landmines.sh) vem como um **mecanismo com
+O [`{{LANDMINES_CMD}}`](../../{{LANDMINES_CMD}}) vem como um **mecanismo com
 três regras genéricas** — um segredo literal em arquivo versionado, uma migration aplicada fora de
 banda sem commit correspondente, e uma árvore de trabalho suja na hora do release.
 
@@ -83,7 +83,7 @@ specs-as-diffs do OpenSpec é uma resposta melhor, e está no roadmap).
 
 O framework é agnóstico de modelo em princípio, com duas ressalvas práticas:
 
-- **`/build --mode briefs` assume que existe um modelo barato** para workers paralelos, e exclui
+- **`/sdd-build --mode briefs` assume que existe um modelo barato** para workers paralelos, e exclui
   dele, por regra dura, itens de superfície de segurança e de prompt-engineering. Se você não tem
   uma estratégia de tiering, ignore esse modo; o loop in-context default é o caminho recomendado.
 - **O review adversarial assume um segundo fornecedor.** O valor dele vem de um perfil de erro não
@@ -91,7 +91,7 @@ O framework é agnóstico de modelo em princípio, com duas ressalvas práticas:
   mesmo modelo que escreveu o código te dá concordância, não review.
 
 Nomes de modelo estão deliberadamente ausentes dos arquivos entregues: eles envelhecem mal. Coloque
-os seus no `sdd.config.yaml`.
+os seus no `sdd/config.yaml`.
 
 ## O que ficou de fora, e por quê
 
@@ -108,7 +108,7 @@ os seus no `sdd.config.yaml`.
 A integração mínima útil é rodar o gate da spec que um pull request implementa:
 
 ```yaml
-- run: scripts/verify-gate.sh .claude/sdd/features/DEFINE_${{ env.FEATURE }}.md
+- run: sdd/bin/verify-gate.sh sdd/features/DEFINE_${{ env.FEATURE }}.md
 ```
 
 Trate os exits `3` e `4` deliberadamente: `3` significa que falta algo no runner do CI (muitas

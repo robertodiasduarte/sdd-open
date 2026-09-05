@@ -132,24 +132,24 @@ else
 fi
 
 # ── G4: verify-gate exit contract ──────────────────────────────────────────────
-# The framework's own contract must survive translation. Fixture → expected exit:
+# The framework's own contract must survive publication. Fixture → expected exit:
 #   NEEDS_CLARIFICATION → 5 (an open ambiguity marker halts the pipeline)
-#   CLARIFY_RESOLVED / TOKEN_IN_FENCE / CONTROL → 0
+#   CONTROLE → 0 · SEM_BLOCO → 64 (a spec without a gate block is invalid, never green)
 echo "G4 verify-gate exit contract"
 declare -a FX=(
   "DEFINE_FIXTURE_NEEDS_CLARIFICATION.md:5"
-  "DEFINE_FIXTURE_CLARIFY_RESOLVED.md:0"
-  "DEFINE_FIXTURE_TOKEN_IN_FENCE.md:0"
-  "DEFINE_FIXTURE_CONTROL.md:0"
+  "DEFINE_FIXTURE_CONTROLE.md:0"
+  "DEFINE_FIXTURE_SEM_BLOCO.md:64"
 )
+G4_DIR="$(mktemp -d)"; ( cd "$G4_DIR" && git init -q ); cp -R "$TREE/sdd" "$G4_DIR/sdd"
 for entry in "${FX[@]}"; do
   fx="${entry%%:*}"; want="${entry##*:}"
-  path="$TREE/.claude/sdd/fixtures/$fx"
-  [[ -r "$path" ]] || { bad "fixture missing: $fx"; continue; }
-  (cd "$TREE" && bash scripts/verify-gate.sh "$path" >/dev/null 2>&1)
+  [[ -r "$G4_DIR/sdd/fixtures/$fx" ]] || { bad "fixture missing: $fx"; continue; }
+  (cd "$G4_DIR" && bash sdd/bin/verify-gate.sh "sdd/fixtures/$fx" >/dev/null 2>&1)
   got=$?
   [[ "$got" == "$want" ]] && ok "$fx → exit $got" || bad "$fx → exit $got (expected $want)"
 done
+rm -rf "$G4_DIR"
 
 # ── G5: documentation completeness ─────────────────────────────────────────────
 echo "G5 documentation"

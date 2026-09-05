@@ -5,7 +5,7 @@
 > *Tradução do [documento canônico em inglês](../verify-gate-contract.md). Em caso de divergência, o original vale.*
 
 Referência completa do mecanismo que dá nome ao framework. O fragmento em
-[`.claude/sdd/templates/fragments/VERIFY_GATE.md`](../../.claude/sdd/templates/fragments/VERIFY_GATE.md)
+[`sdd/templates/fragments/VERIFY_GATE.md`](../../sdd/templates/fragments/VERIFY_GATE.md)
 é a versão que os agentes leem; este documento explica o raciocínio por trás dela.
 
 ## O bloco
@@ -65,7 +65,7 @@ driver vai reescrever o design, sem parar, em cima de uma premissa que ninguém 
 | `2` | vermelho | **aborte**; conserte o código, ou itere a spec se o defeito estiver na spec |
 | `3` | inconclusivo | resolva explicitamente; nunca registre como verde, nunca conte como vermelho |
 | `4` | exige assinatura humana | mostre o `manual_fallback`, pare até o recibo ser registrado |
-| `5` | esclarecimento pendente | **pare**, volte pro `/define`; nunca itere o design |
+| `5` | esclarecimento pendente | **pare**, volte pro `/sdd-define`; nunca itere o design |
 | `64` | bloco inválido ou ausente | a spec não é válida |
 
 ## O marcador de ambiguidade
@@ -111,10 +111,9 @@ que o seu mock funciona.
 Quatro fixtures fixam o contrato:
 
 ```bash
-scripts/verify-gate.sh .claude/sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md  # 5
-scripts/verify-gate.sh .claude/sdd/fixtures/DEFINE_FIXTURE_CLARIFY_RESOLVED.md     # 0
-scripts/verify-gate.sh .claude/sdd/fixtures/DEFINE_FIXTURE_TOKEN_IN_FENCE.md       # 0
-scripts/verify-gate.sh .claude/sdd/fixtures/DEFINE_FIXTURE_CONTROL.md              # 0
+sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md  # 5
+sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md            # 64
+sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md              # 0
 ```
 
 Rode essas depois de qualquer mudança no `verify-gate.sh`. A terceira — um marcador que aparece

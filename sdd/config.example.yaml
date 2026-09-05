@@ -1,0 +1,48 @@
+# sdd/config.yaml — copiado de config.example.yaml pelo `init`. Preencha para o seu projeto.
+#
+# As skills consultam estes slots ({{TEST_CMD}}, {{DEPLOY_CMD}}, …) em vez de fixar comandos.
+# Slot VAZIO significa "pule este passo e diga que pulou" — nunca "adivinhe um comando".
+# Parser: chaves simples `chave: valor` e mapas de 1 nível; sem âncoras, sem listas complexas.
+
+project:
+  name: meu-projeto
+  # Comando de teste, usado por gates `kind: test`.
+  test_cmd: ""
+  # Checagem de tipos/compilação, usada por gates `kind: typecheck`.
+  typecheck_cmd: ""
+  # Checagem de sintaxe por tipo de arquivo (fase Release, passo 0a).
+  lint_cmd: ""
+  # Branch de onde nascem as features. Nunca se trabalha nela diretamente.
+  default_branch: main
+
+# Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho
+# do avaliador de contexto fresco e a base do contexto por domínio (slice 2).
+# Exemplos: sql: "db/migrations/**" · api: "src/api/**" · ui: "src/ui/**" · infra: "deploy/**"
+layers:
+  api: ""
+  ui: ""
+  sql: ""
+
+deploy:
+  # Roda na fase Release, depois da única aprovação humana.
+  cmd: ""
+  # Detecta o que chegou em produção sem commit correspondente (função publicada pelo console,
+  # migration aplicada pelo painel). Vazio = você só deploya via git e esse drift não existe.
+  drift_check_cmd: ""
+
+release:
+  # Bloqueadores próprios do projeto: começa com regras genéricas, cresce a cada incidente.
+  landmines_cmd: ""
+  # Opcional, pós-deploy (changelog, comunicado, ledger).
+  changelog_hook: ""
+
+review:
+  # Vendors disponíveis para o review adversarial (revisor → auditor de vendor DIFERENTE).
+  # Com um só vendor, o review degrada com aviso registrado — nunca é pulado em silêncio.
+  vendors: ""
+
+# Preenchido pelo sdd-open (`init`): agentes para os quais os adaptadores são gerados.
+vendors: ""
+# Editor e pasta de worktrees são usados pela skill de nova sessão (slice 2).
+editor: ""
+worktree_base: ""

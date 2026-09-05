@@ -1,6 +1,6 @@
 <!-- Idioma: [English](../comparison.md) · **Português** -->
 
-# Como o SpecGate se compara
+# Como o SDD Open se compara
 
 > *Tradução do [documento canônico em inglês](../comparison.md). Em caso de divergência, o original vale.*
 
@@ -10,24 +10,24 @@ capacidades mudam. Onde este documento estiver errado sobre outro projeto, está
 
 Esta não é uma página de "por que somos melhores". Os frameworks abaixo resolvem problemas reais e
 os resolvem bem, e três deles são muito mais adotados que este. O propósito aqui é declarar com
-precisão o que o SpecGate faz de diferente, pra você conseguir dizer se essa diferença importa pro
+precisão o que o SDD Open faz de diferente, pra você conseguir dizer se essa diferença importa pro
 seu trabalho.
 
 ---
 
 ## A diferença em uma linha
 
-**Todo framework spec-driven produz uma spec. O SpecGate faz a spec carregar um comando que decide
+**Todo framework spec-driven produz uma spec. O SDD Open faz a spec carregar um comando que decide
 se o trabalho está pronto.**
 
 No Spec-Kit, OpenSpec, BMAD, Kiro e Tessl, o aceite é avaliado por leitura: um humano ou um agente
-compara a implementação com critérios escritos e marca um checkbox. No SpecGate, o aceite é um
-bloco `verify_gate` que o `scripts/verify-gate.sh` executa, devolvendo um de seis códigos de exit
-que o `/build` e o `/release` são contratualmente obrigados a honrar.
+compara a implementação com critérios escritos e marca um checkbox. No SDD Open, o aceite é um
+bloco `verify_gate` que o `sdd/bin/verify-gate.sh` executa, devolvendo um de seis códigos de exit
+que o `/sdd-build` e o `/sdd-release` são contratualmente obrigados a honrar.
 
 Essa única mudança é o que torna o resto coerente, e vale ser honesto sobre o custo: escrever um
 critério executável é mais difícil que escrever uma frase. Se o seu aceite genuinamente não pode
-ser expresso como um comando — um julgamento visual, uma decisão de tom de voz — o SpecGate não
+ser expresso como um comando — um julgamento visual, uma decisão de tom de voz — o SDD Open não
 finge o contrário; ele tem um kind `manual-ux` que retorna exit `4` e exige uma assinatura humana
 em vez de simular automação.
 
@@ -35,7 +35,7 @@ em vez de simular automação.
 
 ## Comparação de capacidades
 
-| Capacidade | Spec-Kit | OpenSpec | BMAD | Kiro | Tessl | **SpecGate** |
+| Capacidade | Spec-Kit | OpenSpec | BMAD | Kiro | Tessl | **SDD Open** |
 |---|---|---|---|---|---|---|
 | Fluxo estruturado spec → plano → build | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Gate de aceite executável** | ❌ review | ❌ review | ❌ review | ❌ review | ❌ review | ✅ comando + contrato de exit |
@@ -44,22 +44,22 @@ em vez de simular automação.
 | Veredito de release graduado | ❌ | ❌ | ✅ (test architect) | ❌ | ❌ | ✅ + taxonomia de dispensa |
 | Reconciliação spec ↔ código após o build | ✅ `/analyze` | ✅ diffs | ⚠️ parcial | ⚠️ parcial | ✅ | ❌ *(planejado)* |
 | Specs como deltas contra um conjunto canônico | ❌ | ✅ | ❌ | ❌ | ⚠️ | ❌ *(em avaliação)* |
-| Independente de editor/IDE | ✅ | ✅ | ✅ | ❌ (IDE próprio) | ⚠️ | ✅ |
+| Independente de editor/IDE | ✅ arquivos gerados por agente | ✅ arquivos gerados por agente | ✅ | ❌ (IDE próprio) | ⚠️ | ✅ **uma fonte (`.agents/skills/`), adaptadores gerados por `sdd-open.sh sync`; bloco gerenciado no AGENTS.md** |
 | Adoção | ~129k★ | ~65k★ | ~52k★ | vendor | vendor | novo |
 
-**Leia as duas últimas linhas juntas.** O SpecGate é novo e não tem comunidade; o Spec-Kit tem uma
+**Leia as duas últimas linhas juntas.** O SDD Open é novo e não tem comunidade; o Spec-Kit tem uma
 grande. Se você quer um framework com contribuidores, plugins e issues respondidas, use o
 Spec-Kit. Se você quer o mecanismo do gate, pegue daqui — são aproximadamente 200 linhas de bash e
 você pode portar pra qualquer coisa que você já rode.
 
 ### Onde os outros estão à frente
 
-- **O specs-as-diffs do OpenSpec** resolve um problema que o SpecGate não resolveu: quando muitas
+- **O specs-as-diffs do OpenSpec** resolve um problema que o SDD Open não resolveu: quando muitas
   branches rodam em paralelo, cada uma carregando uma spec inteira, a verdade canônica desliza.
   Deltas contra um conjunto canônico de capacidades são uma resposta melhor que documentos de vida
   longa. Isso está no roadmap aqui.
 - **O `/analyze` do Spec-Kit** confere cobertura bidirecional — todo requisito tem uma tarefa, toda
-  tarefa remete a um requisito. O SpecGate ainda não tem equivalente, o que é uma lacuna real: o
+  tarefa remete a um requisito. O SDD Open ainda não tem equivalente, o que é uma lacuna real: o
   gate dele prova que o *aceite* passou, não que o manifest *cobriu* todos os requisitos.
 - **O test architect do BMAD** originou o veredito graduado adotado aqui. O BMAD também carrega um
   modelo multi-persona do qual a própria v6 recuou por questão de custo — um resultado negativo
@@ -72,7 +72,7 @@ você pode portar pra qualquer coisa que você já rode.
 ## Alinhamento com praticantes
 
 As três pessoas abaixo não desenharam este framework, e nenhuma delas o endossou. As posições
-publicadas por elas são citadas porque o SpecGate é, em grande parte, uma tentativa de tornar o
+publicadas por elas são citadas porque o SDD Open é, em grande parte, uma tentativa de tornar o
 conselho delas mecânico em vez de aspiracional.
 
 ### Boris Cherny — verificação é a alavanca máxima
@@ -82,10 +82,10 @@ a um agente uma forma de **verificar o próprio trabalho** é a intervenção de
 existe, valendo um múltiplo em qualidade de saída; e que um revisor adversarial numa sessão nova
 pega o que o contexto do autor não consegue pegar.
 
-*O que o SpecGate faz com isso:* o Verify Gate é essa verificação tornada obrigatória e lida por
+*O que o SDD Open faz com isso:* o Verify Gate é essa verificação tornada obrigatória e lida por
 máquina — não uma sugestão de "adicione testes", mas um bloco que a spec não pode omitir (um gate
 ausente ou malformado é exit `64`, uma spec inválida). O review adversarial é formalizado no
-[`ADVISOR_CONSULT.md`](../../.claude/sdd/templates/fragments/ADVISOR_CONSULT.md): um formato de
+[`ADVISOR_CONSULT.md`](../../sdd/templates/fragments/ADVISOR_CONSULT.md): um formato de
 resposta fixo, limitado a três riscos ranqueados, mais um ledger onde toda observação precisa ser
 APPLIED (aplicada) ou REBUTTED (refutada) por escrito.
 
@@ -96,10 +96,10 @@ no "controle deslizante de autonomia", exigir que premissas apareçam como pergu
 simplicidade e mudanças cirúrgicas, e definir critérios verificáveis antes de escrever código. O
 resumo dele de que o *harness* importa mais que o modelo é a premissa deste repositório inteiro.
 
-*O que o SpecGate faz com isso:* esses pontos são cinco diretrizes inegociáveis no prompt do agente
+*O que o SDD Open faz com isso:* esses pontos são cinco diretrizes inegociáveis no prompt do agente
 de build — uma premissa vira uma pergunta, nada que não foi pedido é construído, as mudanças ficam
 cirúrgicas, os critérios vêm antes do código, e evidência (uma saída de comando colada) substitui a
-frase "implementado com sucesso". O controle deslizante de autonomia é explícito: o `/build` roda
+frase "implementado com sucesso". O controle deslizante de autonomia é explícito: o `/sdd-build` roda
 in-context por default, `--mode ralph` por tarefa num contexto novo, `--mode briefs` em paralelo —
 e o modo é sempre uma decisão humana, nunca inferida.
 
@@ -109,11 +109,11 @@ Steinberger defende o oposto do que um autor de framework quer ouvir: para raio 
 **apenas converse com o modelo**. Cerimônia é overhead, e verificação por comportamento observável
 ganha de processo.
 
-*O que o SpecGate faz com isso:* toma isso como restrição, não como refutação. Um framework que se
+*O que o SDD Open faz com isso:* toma isso como restrição, não como refutação. Um framework que se
 declara o único caminho está errado, então a orientação honesta está no
 [docs/quickstart.md](quickstart.md): se a mudança é descritível em uma frase e o raio de impacto
 dela é pequeno, pule as fases. O gate ainda ajuda ali — como um comando de uma linha, não como um
-documento. O SpecGate é pra trabalho onde errar é caro; sobre todo o resto, Steinberger tem razão.
+documento. O SDD Open é pra trabalho onde errar é caro; sobre todo o resto, Steinberger tem razão.
 
 ---
 

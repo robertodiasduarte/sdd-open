@@ -1,0 +1,34 @@
+## SDD Open — como trabalhar neste projeto
+
+Este projeto usa Spec-Driven Development: antes de construir, escreve-se **o quê** e **como saber
+que ficou pronto**. O critério de aceite é um **comando com exit code**, não prosa.
+
+### As fases (skills em `.agents/skills/`)
+
+| Fase | Skill | Produz |
+|---|---|---|
+| 0 | `sdd-brainstorm` | `sdd/features/BRAINSTORM_{F}.md` (opcional) |
+| 1 | `sdd-define` | `sdd/features/DEFINE_{F}.md` — ATs em EARS + `## Verify Gate` executável |
+| UX | `sdd-ux-review` | `sdd/reviews/UX_REVIEW_{F}.md` (quando há interface) |
+| 2 | `sdd-design` | `sdd/features/DESIGN_{F}.md` — decisões + manifest de arquivos |
+| 3 | `sdd-build` | código + `sdd/reports/BUILD_REPORT_{F}.md` |
+| 4 | `sdd-release` | deploy com 1 aprovação humana + ledger em `sdd/releases/` |
+| — | `sdd-iterate` · `sdd-handoff` · `sdd-playbook` | mudança de rumo · ficha de retomada · landmines |
+
+### Regras que valem sempre
+
+1. **Verify Gate é bloqueante.** `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md` decide:
+   `0` verde · `2` vermelho · `3` inconclusivo · `4` assinatura humana · `5` clarificar · `64` spec inválida.
+   Não declare uma fase concluída com o gate fora de `0` (ou `4` com recibo humano).
+2. **Ambiguidade vira marcador, não suposição.** Escreva `[NEEDS CLARIFICATION: pergunta]` no lugar
+   exato da dúvida; o gate devolve `5` enquanto houver um.
+3. **Leia `## Sempre` de `sdd/playbook.md` no início da sessão** e, antes de codar, rode
+   `sdd/bin/playbook-lint.sh --grep <arquivo|comando|conceito> sdd/playbook.md`. Nunca reescreva o
+   playbook: proponha candidatos no BUILD_REPORT.
+4. **Evidência, não declaração.** No BUILD_REPORT um critério só vira `true` com arquivo abrível
+   (`sdd/reports/evidence/…`) ou recibo humano datado. "Deve funcionar" é `false`.
+5. **Artefatos ficam em `sdd/`.** Templates em `sdd/templates/`; config em `sdd/config.yaml`.
+6. Feche toda fase com o resumo de etapa (`sdd/templates/fragments/RESUMO_ETAPA.md`).
+
+Agentes preparados neste projeto: {{VENDORS}}. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+`CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.

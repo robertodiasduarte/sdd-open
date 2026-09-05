@@ -3,7 +3,7 @@
 # The Verify Gate contract
 
 Complete reference for the mechanism the framework is named after. The fragment at
-[`.claude/sdd/templates/fragments/VERIFY_GATE.md`](../.claude/sdd/templates/fragments/VERIFY_GATE.md)
+[`sdd/templates/fragments/VERIFY_GATE.md`](../sdd/templates/fragments/VERIFY_GATE.md)
 is the version agents read; this document explains the reasoning behind it.
 
 ## The block
@@ -63,7 +63,7 @@ Exit `5` is a separate state precisely so loops stop instead of iterating.
 | `2` | red | **abort**; fix code, or iterate the spec if the defect is in the spec |
 | `3` | inconclusive | resolve explicitly; never record as green, never count as red |
 | `4` | human signature required | show `manual_fallback`, stop until the receipt is recorded |
-| `5` | clarification pending | **stop**, return to `/define`; never iterate the design |
+| `5` | clarification pending | **stop**, return to `/sdd-define`; never iterate the design |
 | `64` | invalid or missing block | the spec is not valid |
 
 ## The ambiguity marker
@@ -109,10 +109,9 @@ that your mock works.
 Four fixtures pin the contract:
 
 ```bash
-scripts/verify-gate.sh .claude/sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md  # 5
-scripts/verify-gate.sh .claude/sdd/fixtures/DEFINE_FIXTURE_CLARIFY_RESOLVED.md     # 0
-scripts/verify-gate.sh .claude/sdd/fixtures/DEFINE_FIXTURE_TOKEN_IN_FENCE.md       # 0
-scripts/verify-gate.sh .claude/sdd/fixtures/DEFINE_FIXTURE_CONTROL.md              # 0
+sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md  # 5
+sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md            # 64
+sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md              # 0
 ```
 
 Run these after any change to `verify-gate.sh`. The third one — a marker that appears only inside

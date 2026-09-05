@@ -2,13 +2,13 @@
 
 # Adaptation guide
 
-SpecGate was extracted from one production codebase. This document marks the seams — what is
+SDD Open was extracted from one production codebase. This document marks the seams — what is
 generic, what you must configure, and what was deliberately left out because it was specific to
 where it came from.
 
 ## What you must configure
 
-Everything project-specific lives in `sdd.config.yaml`. The commands reference slots; they never
+Everything project-specific lives in `sdd/config.yaml`. The commands reference slots; they never
 hardcode a command.
 
 ```yaml
@@ -22,7 +22,7 @@ deploy:
   drift_check_cmd: ""               # {{DRIFT_CHECK_CMD}} — see "drift" below
 
 release:
-  landmines_cmd: "bash scripts/release-landmines.sh"   # {{LANDMINES_CMD}}
+  landmines_cmd: "bash {{LANDMINES_CMD}}"   # {{LANDMINES_CMD}}
   changelog_hook: ""                # {{CHANGELOG_HOOK}}
 
 prompts:
@@ -31,7 +31,7 @@ prompts:
 
 ## The extension point that matters most: landmines
 
-[`scripts/release-landmines.sh`](../scripts/release-landmines.sh) ships as a **mechanism with
+[`{{LANDMINES_CMD}}`](../{{LANDMINES_CMD}}) ships as a **mechanism with
 three generic rules** — a secret literal in a tracked file, an out-of-band migration without a
 matching commit, a dirty working tree at release time.
 
@@ -80,7 +80,7 @@ specs-as-diffs is a better answer, and it is on the roadmap).
 
 The framework is model-agnostic in principle, with two practical caveats:
 
-- **`/build --mode briefs` assumes a cheap model exists** for parallel workers, and hard-excludes
+- **`/sdd-build --mode briefs` assumes a cheap model exists** for parallel workers, and hard-excludes
   security surface and prompt-engineering items from it. If you do not have a tiering strategy,
   ignore this mode; the default in-context loop is the recommended path.
 - **The adversarial review assumes a second vendor.** Its value comes from an uncorrelated error
@@ -88,7 +88,7 @@ The framework is model-agnostic in principle, with two practical caveats:
   model that wrote the code gets you agreement, not review.
 
 Model names are deliberately absent from the shipped files: they age badly. Put yours in
-`sdd.config.yaml`.
+`sdd/config.yaml`.
 
 ## What was left out, and why
 
@@ -105,7 +105,7 @@ Model names are deliberately absent from the shipped files: they age badly. Put 
 The minimum useful integration is running the gate of the spec a pull request implements:
 
 ```yaml
-- run: scripts/verify-gate.sh .claude/sdd/features/DEFINE_${{ env.FEATURE }}.md
+- run: sdd/bin/verify-gate.sh sdd/features/DEFINE_${{ env.FEATURE }}.md
 ```
 
 Treat exit `3` and `4` deliberately: `3` means the CI runner lacks something (often correct to

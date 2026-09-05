@@ -1,6 +1,6 @@
 name: publish-gate
 
-# Re-runs the anti-leak gate on every push and pull request.
+# Re-runs the anti-leak gate and the framework's own contracts on every push and pull request.
 #
 # Mode is `ci`: the generic pattern layer only. The private layer lives outside this
 # repository by design — a gate that shipped its own blocklist would publish exactly what it
@@ -37,7 +37,7 @@ jobs:
           set -u +e
           fail=0
           check() {
-            bash scripts/verify-gate.sh ".claude/sdd/fixtures/$1" >/dev/null 2>&1
+            bash sdd/bin/verify-gate.sh "sdd/fixtures/$1" >/dev/null 2>&1
             got=$?
             if [ "$got" = "$2" ]; then
               echo "  ok  $1 -> exit $got"
@@ -46,10 +46,35 @@ jobs:
             fi
           }
           check DEFINE_FIXTURE_NEEDS_CLARIFICATION.md 5
-          check DEFINE_FIXTURE_CLARIFY_RESOLVED.md 0
-          check DEFINE_FIXTURE_TOKEN_IN_FENCE.md 0
-          check DEFINE_FIXTURE_CONTROL.md 0
+          check DEFINE_FIXTURE_CONTROLE.md 0
+          check DEFINE_FIXTURE_SEM_BLOCO.md 64
+          # --strict must turn 5 into a non-zero, non-5 exit
+          bash sdd/bin/verify-gate.sh --strict sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md >/dev/null 2>&1
+          got=$?
+          if [ "$got" != "0" ] && [ "$got" != "5" ]; then echo "  ok  --strict -> exit $got"; else echo "  FAIL --strict -> exit $got"; fail=1; fi
           exit $fail
 
-      - name: Shell syntax
-        run: for f in scripts/*.sh; do bash -n "$f" || exit 1; done
+      - name: Playbook lint self-test
+        run: bash sdd/bin/playbook-lint.sh --self-test
+
+      - name: Skill frontmatter (Agent Skills spec)
+        run: python3 sdd/bin/skill-lint.py .agents/skills/sdd-*/SKILL.md
+
+      - name: Generator smoke (init is idempotent, sdd/ untouched by sync)
+        run: |
+          set -u +e
+          T="$(mktemp -d)"; cd "$T" && git init -q && git config user.email ci@example.com && git config user.name ci
+          bash "$GITHUB_WORKSPACE/bin/sdd-open.sh" init --yes --vendors claude,codex,gemini,cursor,kimi || exit 1
+          git add -A && git commit -q -m baseline
+          bash "$GITHUB_WORKSPACE/bin/sdd-open.sh" sync --yes || exit 1
+          [ -z "$(git status --porcelain)" ] || { echo "sync was not idempotent"; git status --porcelain; exit 1; }
+          bash "$GITHUB_WORKSPACE/bin/sdd-open.sh" sync --check || exit 1
+
+      - name: Shell syntax, no zsh, no symlinks
+        run: |
+          set -u +e
+          fail=0
+          for f in $(find . -name '*.sh' -not -path './.git/*'); do bash -n "$f" || { echo "bash -n failed: $f"; fail=1; }; done
+          if grep -rl '^#!/bin/zsh' --include='*.sh' . ; then echo "zsh shebang found"; fail=1; fi
+          if [ -n "$(find . -type l -not -path './.git/*')" ]; then echo "symlink found"; fail=1; fi
+          exit $fail
