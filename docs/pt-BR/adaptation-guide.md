@@ -28,7 +28,7 @@ release:
   changelog_hook: ""                # {{CHANGELOG_HOOK}}
 
 prompts:
-  builder_skill: ""                 # your prompt-engineering skill, if you have one
+  builder_skill: "sdd-prompt-builder"   # já vem preenchido; troque pela sua se tiver outra
 ```
 
 ## O ponto de extensão que mais importa: landmines
@@ -101,7 +101,6 @@ os seus no `sdd/config.yaml`.
 | Skills de domínio (importação de dados, consulta de cadastro, fluxos de publicação) | Regra de negócio de um produto, não framework |
 | Convenções da camada de memória/conhecimento | Uma camada privada de fatos acumulados do projeto; o framework não depende dela |
 | Pipeline de deploy, ligação com CI, configuração de host | O seu vai diferir em cada detalhe |
-| Skills de prompt-engineering | Referenciadas como um slot configurável; os comandos chamam o que você plugar |
 
 ## Encaixando no CI
 

@@ -41,6 +41,7 @@ seu é sobrescrito. [Quickstart completo →](docs/pt-BR/quickstart.md)
 | **Contrato de evidência** | no relatório de build um critério só vira `true` com arquivo abrível ou recibo humano datado — "deve funcionar" é `false` | `sdd/bin/report-lint.py` · `fragments/EVIDENCIA.md` |
 | **Playbook de landmines (ACE-lite)** | armadilhas com ID estável, contadores *ajudou/mordeu*, superfícies greppáveis e atualização só por delta — uma sessão propõe, a fase Release aplica com OK humano | `sdd/playbook.md` · `sdd/bin/playbook-lint.sh` · skill `sdd-playbook` |
 | **Avaliação em contexto fresco** | quem julga não é quem constrói: um agente sem a conversa do build prova cada critério executando, nunca lendo o diff | skill `sdd-build` › `references/contexto-fresco.md` |
+| **Engenharia de prompt como entregável** | quando a spec inventaria um prompt de produção, a fase Build o escreve por uma skill com contrato de saída explícito, fórmulas escritas por extenso e regra para contexto ausente — em vez de deixar o modelo estimar. Ligada como slot substituível (`prompts.builder_skill`), já com um default | skill `sdd-prompt-builder` |
 | **Review adversarial de 2º vendor** | resposta em formato fixo (veredito, ≤3 riscos, correções, o que ignorar); toda nota é aplicada ou rebatida por escrito | `fragments/ADVISOR_CONSULT.md` |
 | **Handoff por ficha** | um arquivo por feature no repositório, com prompt de retomada autossuficiente — sem depender da memória de nenhum agente | skill `sdd-handoff` · `sdd/handoffs/` |
 

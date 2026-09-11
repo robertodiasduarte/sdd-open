@@ -69,10 +69,15 @@ Guidelines inegociáveis: suposição vira pergunta · simplicidade · mudança 
 critério antes do código · **evidência, não declaração**.
 
 1. **Drift de prompt** (sempre): o arquivo cheira a prompt de produção (path `**/prompts/**`,
-   `messages.create`, `chat.completions`) e não está no inventário do DESIGN? **Pare** e
-   pergunte: iterar o DESIGN, ou confirmar falso positivo e registrar em "Drift detectado".
+   parâmetro de system prompt do seu wrapper de LLM recebendo um **literal**, `messages.create`,
+   `chat.completions`) e não está no inventário do DESIGN? **Pare** e pergunte: iterar o DESIGN,
+   ou confirmar falso positivo e registrar em "Drift detectado". ⛔ Calibre o sinal pelo código
+   real do projeto: se as chamadas passam por um wrapper próprio, procurar só pelas assinaturas
+   do SDK deixa o gate **cego**. Exclua arquivos de teste, ou o gate vira lobo e é ignorado.
 2. **Prompt no inventário:** compile o contrato do DESIGN (tom, saída, fallback, referências) e
-   produza o prompt como entregável próprio; não reabra decisões de provedor/modelo.
+   passe à skill `sdd-prompt-builder` (ou a que estiver em `prompts.builder_skill` do
+   `sdd/config.yaml`); não reabra decisões de provedor/modelo. Sem skill disponível, **bloqueie
+   o item** e peça decisão — nunca improvise o texto que vai para produção.
 3. **Escrever** seguindo os Code Patterns. 4. **Verificar** (lint, tipos, teste do arquivo).
 5. **Marcar** concluído.
 

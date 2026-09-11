@@ -41,6 +41,7 @@ of yours is overwritten. [Full quickstart →](docs/quickstart.md)
 | **Evidence contract** | in the build report a criterion only becomes `true` with an openable file or a dated human receipt — "should work" is `false` | `sdd/bin/report-lint.py` · `fragments/EVIDENCIA.md` |
 | **Landmine playbook (ACE-lite)** | pitfalls with stable IDs, *helped/bit* counters, greppable surfaces and delta-only updates — a session proposes, the Release phase applies with human approval | `sdd/playbook.md` · `sdd/bin/playbook-lint.sh` · skill `sdd-playbook` |
 | **Fresh-context evaluation** | whoever judges did not build: an agent without the build conversation proves each criterion by executing, never by reading the diff | skill `sdd-build` › `references/contexto-fresco.md` |
+| **Prompt engineering as a deliverable** | when the spec inventories a production prompt, the Build phase writes it through a skill with an explicit output contract, written-out formulas and a rule for missing context — instead of letting the model estimate. Wired as a replaceable slot (`prompts.builder_skill`), shipped with a default | skill `sdd-prompt-builder` |
 | **Second-vendor adversarial review** | fixed-format answer (verdict, ≤3 risks, fixes, what to ignore); every note is applied or rebutted in writing | `fragments/ADVISOR_CONSULT.md` |
 | **Handoff by feature card** | one file per feature in the repository, with a self-contained resume prompt — no dependency on any agent's memory | skill `sdd-handoff` · `sdd/handoffs/` |
 

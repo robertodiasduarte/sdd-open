@@ -46,3 +46,10 @@ vendors: ""
 # Editor e pasta de worktrees são usados pela skill de nova sessão (slice 2).
 editor: ""
 worktree_base: ""
+
+# Skill de engenharia de prompt usada pela fase Build quando o DESIGN inventaria prompts de
+# producao. Vem preenchida com a skill que acompanha o pacote; troque pelo nome da sua se
+# tiver outra. Vazio = a fase Build bloqueia o item de prompt e pede decisao, em vez de
+# improvisar o texto que vai para producao.
+prompts:
+  builder_skill: "sdd-prompt-builder"

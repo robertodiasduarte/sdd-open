@@ -26,7 +26,7 @@ release:
   changelog_hook: ""                # {{CHANGELOG_HOOK}}
 
 prompts:
-  builder_skill: ""                 # your prompt-engineering skill, if you have one
+  builder_skill: "sdd-prompt-builder"   # ships filled; replace with your own skill if you have one
 ```
 
 ## The extension point that matters most: landmines
@@ -98,7 +98,6 @@ Model names are deliberately absent from the shipped files: they age badly. Put 
 | Domain skills (data import, record lookup, publishing flows) | Business logic of one product, not framework |
 | Memory/knowledge layer conventions | A private layer of accumulated project facts; the framework does not depend on it |
 | Deploy pipeline, CI wiring, host configuration | Yours will differ in every particular |
-| Prompt-engineering skills | Referenced as a configurable slot; the commands call whatever you plug in |
 
 ## Fitting it into CI
 
