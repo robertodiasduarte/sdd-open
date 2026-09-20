@@ -4,7 +4,7 @@ description: Fase 0 do SDD Open — explora uma ideia vaga por diálogo antes de
 compatibility: Requer bash >= 3.2 e git >= 2.20; funciona em qualquer agente que leia AGENTS.md e .agents/skills/.
 license: MIT
 metadata:
-  author: RDD
+  author: Roberto Dias Duarte
   version: "2.0.0"
   fase: "0"
 ---
@@ -115,3 +115,7 @@ bloqueante; senão omita o bloco) · O que vem depois, na ordem (com ⚠️ inli
 landmine morde).
 
 **Próximo passo:** `/sdd-define sdd/features/BRAINSTORM_{FEATURE}.md`
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open

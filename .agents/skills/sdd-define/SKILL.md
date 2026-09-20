@@ -4,7 +4,7 @@ description: Fase 1 do SDD Open — transforma um brainstorm, notas ou pedido di
 compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --print para validar o bloco do gate.
 license: MIT
 metadata:
-  author: RDD
+  author: Roberto Dias Duarte
   version: "2.0.0"
   fase: "1"
 ---
@@ -135,3 +135,7 @@ N≥1) · O que vem depois, com ⚠️ inline.
 **Próximo passo:** `/sdd-ux-review sdd/features/DEFINE_{FEATURE}.md` se há interface; senão
 `/sdd-design sdd/features/DEFINE_{FEATURE}.md` (registre no DEFINE por que o UX review foi
 pulado — kanban marca ➖ só com decisão registrada).
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open

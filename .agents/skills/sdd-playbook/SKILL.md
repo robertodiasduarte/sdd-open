@@ -5,7 +5,7 @@ description: >-
 compatibility: Requer bash >= 3.2 e git >= 2.20 (sdd/bin/playbook-lint.sh).
 license: MIT
 metadata:
-  author: RDD
+  author: Roberto Dias Duarte
   version: "2.0.0"
   fase: "transversal"
 ---
@@ -96,3 +96,7 @@ Sem `evidencia:` o candidato não é candidato (lição sem verificação piora 
 check no gate, script), e o bullet ganha `promovido_para:`; cai para `## Tombstones` só quando
 o mecanismo tiver caso de teste que **falha** sem ele. `sdd/bin/playbook-lint.sh --stats`
 conta por `mordeu`.
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open

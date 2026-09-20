@@ -4,7 +4,7 @@ description: "Gera, refina e otimiza prompts de produção para LLMs com contrat
 compatibility: Skill de documento — nao requer ferramenta externa. Consumida pela fase Build quando o DESIGN inventaria prompts de producao.
 license: MIT
 metadata:
-  author: RDD
+  author: Roberto Dias Duarte
   version: "2.0.0"
   fase: "3-apoio"
 ---
@@ -94,3 +94,7 @@ Pedido com cálculo:
 Resultado esperado:
 - Incluir `<formulas>` com `margem bruta = (receita - custo) ÷ receita`.
 - Definir fallback para receita ausente ou zero.
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open

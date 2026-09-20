@@ -43,6 +43,7 @@ of yours is overwritten. [Full quickstart →](docs/quickstart.md)
 | **Fresh-context evaluation** | whoever judges did not build: an agent without the build conversation proves each criterion by executing, never by reading the diff | skill `sdd-build` › `references/contexto-fresco.md` |
 | **Prompt engineering as a deliverable** | when the spec inventories a production prompt, the Build phase writes it through a skill with an explicit output contract, written-out formulas and a rule for missing context — instead of letting the model estimate. Wired as a replaceable slot (`prompts.builder_skill`), shipped with a default | skill `sdd-prompt-builder` |
 | **Second-vendor adversarial review** | fixed-format answer (verdict, ≤3 risks, fixes, what to ignore); every note is applied or rebutted in writing | `fragments/ADVISOR_CONSULT.md` |
+| **Read-only harness audit** | a harness accretes: commands nobody calls, agents nobody dispatches, docs that drifted from the code. One read-only pass inventories every command, agent, skill, hook and script, measures inbound references and recency, and emits a single `AUDITORIA_SDD_<date>.md` — it never deletes: the cleanup itself stays a human decision | skill `sdd-auditoria-harness` · `scripts/collect_evidence.py` |
 | **Handoff by feature card** | one file per feature in the repository, with a self-contained resume prompt — no dependency on any agent's memory | skill `sdd-handoff` · `sdd/handoffs/` |
 
 ## The workflow

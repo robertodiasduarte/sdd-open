@@ -4,7 +4,7 @@ description: Gate de UX/CX do SDD Open, entre o Define e o Design — mapeia a j
 compatibility: Requer bash >= 3.2 e git >= 2.20. Independe de stack visual; usa o design system do projeto quando houver.
 license: MIT
 metadata:
-  author: RDD
+  author: Roberto Dias Duarte
   version: "2.0.0"
   fase: "UX"
 ---
@@ -86,3 +86,7 @@ Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o �
 `/sdd-ux-review`.
 
 **Próximo passo:** `/sdd-design sdd/features/DEFINE_{FEATURE}.md`
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open

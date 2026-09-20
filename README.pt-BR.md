@@ -43,6 +43,7 @@ seu é sobrescrito. [Quickstart completo →](docs/pt-BR/quickstart.md)
 | **Avaliação em contexto fresco** | quem julga não é quem constrói: um agente sem a conversa do build prova cada critério executando, nunca lendo o diff | skill `sdd-build` › `references/contexto-fresco.md` |
 | **Engenharia de prompt como entregável** | quando a spec inventaria um prompt de produção, a fase Build o escreve por uma skill com contrato de saída explícito, fórmulas escritas por extenso e regra para contexto ausente — em vez de deixar o modelo estimar. Ligada como slot substituível (`prompts.builder_skill`), já com um default | skill `sdd-prompt-builder` |
 | **Review adversarial de 2º vendor** | resposta em formato fixo (veredito, ≤3 riscos, correções, o que ignorar); toda nota é aplicada ou rebatida por escrito | `fragments/ADVISOR_CONSULT.md` |
+| **Auditoria read-only do harness** | harness acumula: comando que ninguém chama, agente que ninguém despacha, doc que derivou do código. Uma passada read-only inventaria cada comando, agente, skill, hook e script, mede referências de entrada e recência, e emite um único `AUDITORIA_SDD_<data>.md` — nunca apaga: a faxina em si continua decisão humana | skill `sdd-auditoria-harness` · `scripts/collect_evidence.py` |
 | **Handoff por ficha** | um arquivo por feature no repositório, com prompt de retomada autossuficiente — sem depender da memória de nenhum agente | skill `sdd-handoff` · `sdd/handoffs/` |
 
 ## O fluxo

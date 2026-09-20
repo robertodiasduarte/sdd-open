@@ -4,7 +4,7 @@ description: Passa o bastão para uma sessão nova e mantém a FICHA DA FEATURE 
 compatibility: Requer bash >= 3.2 e git >= 2.20. Não depende de memória proprietária de nenhum agente — a ficha vive no repositório.
 license: MIT
 metadata:
-  author: RDD
+  author: Roberto Dias Duarte
   version: "2.0.0"
   fase: "transversal"
 ---
@@ -106,3 +106,7 @@ remoção (rodado fora dele). Ficha ✅ completa → oferecer arquivar os artefa
 - ❌ Comando ou caminho que a próxima sessão vai "descobrir".
 - ❌ Documentar só o sucesso e omitir o que ficou quebrado.
 - ❌ Sobrescrever "Falta" sem linha em ## Eventos.
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open

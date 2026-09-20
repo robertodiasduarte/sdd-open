@@ -4,7 +4,7 @@ description: Fase 3 do SDD Open — executa o manifest do DESIGN arquivo a arqui
 compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda sdd/bin/verify-gate.sh como critério de parada.
 license: MIT
 metadata:
-  author: RDD
+  author: Roberto Dias Duarte
   version: "2.0.0"
   fase: "3"
 ---
@@ -157,3 +157,7 @@ Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o �
 
 **Próximo passo:** `/sdd-release <o que liberar>` — a fase Release roda o Verify Gate de novo
 antes de qualquer publicação.
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open

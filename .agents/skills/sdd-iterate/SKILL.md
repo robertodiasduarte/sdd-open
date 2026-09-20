@@ -4,7 +4,7 @@ description: Atualiza um documento de fase do SDD Open (BRAINSTORM, DEFINE ou DE
 compatibility: Requer bash >= 3.2 e git >= 2.20.
 license: MIT
 metadata:
-  author: RDD
+  author: Roberto Dias Duarte
   version: "2.0.0"
   fase: "cross"
 ---
@@ -61,3 +61,7 @@ metadata:
 
 Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é a fase
 do documento alterado.
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open

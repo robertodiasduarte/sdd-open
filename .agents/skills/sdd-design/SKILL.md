@@ -4,7 +4,7 @@ description: Fase 2 do SDD Open — cria a arquitetura e a especificação técn
 compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh --grep por superfície do manifest.
 license: MIT
 metadata:
-  author: RDD
+  author: Roberto Dias Duarte
   version: "2.0.0"
   fase: "2"
 ---
@@ -127,3 +127,7 @@ Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o �
 `/sdd-design`.
 
 **Próximo passo:** `/sdd-build sdd/features/DESIGN_{FEATURE}.md`
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open
