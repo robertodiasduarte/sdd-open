@@ -138,47 +138,226 @@ skills_da_fonte() { # imprime nomes sdd-* presentes na fonte indicada
 }
 
 # ── cabeçalho GENERATED ────────────────────────────────────────────────────────
-# SKILL.md começa com frontmatter YAML: o cabeçalho vai como comentário YAML nas linhas 2-3.
-# Outros arquivos recebem 2 linhas de comentário HTML no topo. Ambos carregam o token
-# sdd-open:generated — a comparação desconta as linhas que o contêm.
-escrever_gerado() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo
-  local fonte="${1}" dest="${2}" skill="${3}" rel="${4}" l1
-  mkdir -p "$(dirname "${dest}")" || return 1
-  l1="$(head -n 1 "${fonte}")"
-  if [ "${l1}" = "---" ]; then
-    { printf -- '---\n'
-      printf '# %s — edite .agents/skills/%s/%s e rode sync\n' "${MARCA}" "${skill}" "${rel}"
-      printf '# %s — edições neste arquivo são sobrescritas\n' "${MARCA}"
-      tail -n +2 "${fonte}"
-    } > "${dest}" || return 1
-  else
-    { printf '<!-- %s — edite .agents/skills/%s/%s e rode sync -->\n' "${MARCA}" "${skill}" "${rel}"
-      printf '<!-- %s — edições neste arquivo são sobrescritas -->\n' "${MARCA}"
-      cat "${fonte}"
-    } > "${dest}" || return 1
-  fi
+# Cada cópia carrega 2 linhas com o token sdd-open:generated, na sintaxe de comentário da
+# linguagem do arquivo — um .py com cabeçalho HTML deixava de compilar. O formato vem de UMA
+# tabela (perfil_arquivo): o escritor renderiza a partir dela e o verificador do --check lê o
+# verificador dela. "Em dia" = igual byte a byte ao que o escritor renderiza agora.
+# .json e binários (imagem, fonte, pdf, zip, ou qualquer arquivo com byte NUL) não têm comentário:
+# a cópia sai sem cabeçalho, idêntica à fonte.
+
+extensao() { # $1=caminho → extensão minúscula do basename, ou vazio
+  local b; b="$(basename "${1}")"
+  case "${b}" in *.*) printf '%s\n' "${b##*.}" | tr '[:upper:]' '[:lower:]' ;; *) printf '\n' ;; esac
 }
 
-gerado_em_dia() { # $1=fonte $2=destino → 0 se idêntico descontado o cabeçalho
+tem_bom() { [ "$(head -c 3 "${1}" | od -An -tx1 | tr -d ' \n')" = "efbbbf" ]; }   # BOM UTF-8 no byte 0
+sem_bom() { if tem_bom "${1}"; then tail -c +4 "${1}"; else cat "${1}"; fi; }
+
+# Sob pipefail, o cmp -s só fecha o pipe cedo quando já achou diferença (= havia NUL).
+eh_binario() { ! LC_ALL=C tr -d '\000' < "${1}" | cmp -s - "${1}"; }
+
+eh_coding_py() { # $1=linha → 0 se é declaração de encoding do PEP 263 (# … coding: x / coding=x)
+  # Regex do próprio PEP 263: sem nome de encoding (`# coding:` sozinho) não é declaração.
+  local re='^[[:space:]]*#.*coding[:=][[:space:]]*[-_.a-zA-Z0-9]+'
+  [[ "${1}" =~ ${re} ]]
+}
+
+# ÚNICA tabela do formato das cópias. Extensão de código decide o estilo; md e desconhecidas
+# olham a linha 1 (frontmatter `---` ou shebang). As linhas lidas vêm sem BOM e sem \r (Windows).
+# <manter> = quantas linhas do topo a linguagem exige que fiquem no topo: shebang, frontmatter e,
+# no .py, a declaração de encoding (PEP 263: só vale na linha 1 ou 2). O cabeçalho entra depois delas.
+perfil_arquivo() { # $1=fonte → "<estilo> <manter> <verificador> <bom>"
+  # Bytes, não caracteres: num terminal UTF-8, uma fonte Latin-1 fazia o tr recusar a linha e o regex
+  # do bash não casar — a cópia mudava conforme o locale de quem roda. C só dentro desta função.
+  local LC_ALL=C; export LC_ALL
+  local l1 l2 t1 n resto ext estilo="" verif="-" manter=0 bom=0
+  tem_bom "${1}" && bom=1
+  l1="$(sem_bom "${1}" | head -n 1 | tr -d '\r')"
+  ext="$(extensao "${1}")"
+  case "${ext}" in
+    py)             estilo=hash;  verif=python ;;
+    rb)             estilo=hash;  verif=ruby ;;
+    sh|bash)        estilo=hash;  verif=bash ;;
+    yaml|yml|toml|ps1|psm1) estilo=hash ;;
+    js|mjs|cjs)     estilo=slash; verif=node ;;
+    ts)             estilo=slash ;;
+    css)            estilo=block ;;
+    sql)            estilo=dash ;;
+    json)           estilo=none;  verif=json ;;
+    xml|svg)        estilo=html;  verif=xml ;;
+    png|jpg|jpeg|gif|webp|ico|pdf|zip|gz|tgz|woff|woff2|ttf|otf) estilo=none ;;
+  esac
+  # Qualquer arquivo com byte NUL é binário para o cabeçalho, mesmo com extensão conhecida (XML em
+  # UTF-16, por exemplo): cópia byte a byte. O verificador da extensão continua valendo.
+  if [ "${estilo}" != "none" ] && eh_binario "${1}"; then estilo=none; fi
+  case "${l1}" in
+    '#!'*) manter=1; [ -n "${estilo}" ] || estilo=hash
+           # bash -n só julga bash/sh: um .sh com #!/bin/zsh não pode ser acusado de não compilar.
+           if [ "${verif}" = "bash" ]; then
+             case "${l1}" in *bash*|*/sh|*/sh\ *|*' sh'|*' sh '*) : ;; *) verif="-" ;; esac
+           fi ;;
+  esac
+  # PEP 263: a declaração de encoding vale na linha 1, ou na 2 quando a linha 1 é só comentário
+  # (shebang incluso) ou vazia. Onde valer, ela e o que vem antes dela ficam no topo. O magic comment
+  # do Ruby (`# encoding:`/`# coding:`) tem a mesma regra de posição e o mesmo regex casa os dois.
+  if [ "${ext}" = "py" ] || [ "${ext}" = "rb" ]; then
+    l2="$(sem_bom "${1}" | sed -n '2p' | tr -d '\r')"
+    t1="${l1#"${l1%%[![:space:]]*}"}"
+    if eh_coding_py "${l1}"; then manter=1
+    else case "${t1}" in ''|'#'*) eh_coding_py "${l2}" && manter=2 ;; esac; fi
+  fi
+  # CSS: o @charset só é reconhecido nos primeiros bytes do arquivo. Se a linha dele continua com
+  # conteúdo (um comentário aberto, por exemplo), não há ponto seguro: cópia byte a byte.
+  if [ "${ext}" = "css" ]; then
+    case "${l1}" in
+      '@charset'*';'*)
+        resto="${l1#*;}"; resto="${resto#"${resto%%[![:space:]]*}"}"
+        if [ -n "${resto}" ]; then estilo=none; else manter=1; fi ;;
+      '@charset'*) estilo=none ;;
+    esac
+  fi
+  if [ -z "${estilo}" ]; then
+    if [ "${l1}" = "---" ]; then estilo=hash; manter=1; else estilo=html; fi
+  fi
+  # XML (svg, plist, xsd…): a declaração <?xml ?> só vale no início — o comentário entra na linha
+  # seguinte ao "?>" que a fecha (que pode estar adiante). Se a linha do "?>" continua com conteúdo
+  # (<root><![CDATA[ …), não há ponto seguro para o comentário: cópia byte a byte, sem cabeçalho.
+  if [ "${estilo}" = "html" ]; then
+    case "${l1}" in
+      '<?xml'*)
+        n="$(sem_bom "${1}" | awk '/\?>/ {print NR; exit}')"
+        if [ -n "${n}" ]; then
+          resto="$(sem_bom "${1}" | sed -n "${n}p" | tr -d '\r')"; resto="${resto#*\?>}"
+          resto="${resto#"${resto%%[![:space:]]*}"}"
+          if [ -n "${resto}" ]; then estilo=none; else manter="${n}"; fi
+        fi ;;
+    esac
+  fi
+  printf '%s %s %s %s\n' "${estilo}" "${manter}" "${verif}" "${bom}"
+}
+
+linha_marca() { # $1=estilo $2=texto (o caminho vem do disco: o que fecharia o comentário é desarmado)
+  # Cabeçalho 100% ASCII, inclusive o caminho: byte fora de ASCII vira '?'. Um .py com
+  # `# coding: ascii` numa pasta com acento deixava de compilar pela cópia (V5-R1@codex).
+  local t; t="$(printf '%s' "${2}" | LC_ALL=C tr -c ' -~' '?')"
+  # Contrabarra também vira '?': com `# coding: unicode_escape`, um \n do caminho viraria quebra de linha
+  # e o resto do comentário, código (R2@codex, volta 7).
+  t="${t//\\/?}"
+  case "${1}" in
+    hash)  t="${t//coding:/coding :}"; t="${t//coding=/coding =}"   # caminho não vira declaração PEP 263
+           printf '# %s\n' "${t}" ;;
+    slash) printf '// %s\n' "${t}" ;;
+    block) while :; do case "${t}" in *'*/'*) t="${t//\*\//* /}" ;; *) break ;; esac; done
+           printf '/* %s */\n' "${t}" ;;
+    dash)  printf -- '-- %s\n' "${t}" ;;
+    html)  while :; do case "${t}" in *--*) t="${t//--/- -}" ;; *) break ;; esac; done   # XML proíbe -- em comentário
+           printf '<!-- %s -->\n' "${t}" ;;
+  esac
+}
+
+renderizar_gerado() { # $1=fonte $2=skill $3=arquivo-relativo → conteúdo exato da cópia no stdout
+  local LC_ALL=C; export LC_ALL   # idem perfil_arquivo: o caminho e as linhas mantidas são bytes
+  local estilo manter verif bom
+  read -r estilo manter verif bom <<PERFIL
+$(perfil_arquivo "${1}")
+PERFIL
+  if [ "${estilo}" = "none" ]; then cat "${1}"; return; fi
+  [ "${bom}" = "1" ] && printf '\357\273\277'
+  # printf '%s\n' garante o \n depois das linhas mantidas mesmo num arquivo sem \n final.
+  [ "${manter}" -gt 0 ] && printf '%s\n' "$(sem_bom "${1}" | head -n "${manter}")"
+  # O caminho vem do disco e entra num comentário de outra linguagem: só [A-Za-z0-9._/-] passa, o resto vira
+  # '?'. Um codec da fonte (utf-7, unicode_escape) ou um fechador de comentário no nome não vira código (V8-R1).
+  local caminho; caminho="$(printf '%s' ".agents/skills/${2}/${3}" | LC_ALL=C tr -c 'A-Za-z0-9._/-' '?')"
+  linha_marca "${estilo}" "${MARCA} - fonte: ${caminho}"
+  linha_marca "${estilo}" "${MARCA} - sync reescreve este arquivo; edite a fonte e rode sync"
+  sem_bom "${1}" | tail -n +"$((manter + 1))"
+}
+
+mesmo_bit_x() { local a=0 b=0; [ -x "${1}" ] && a=1; [ -x "${2}" ] && b=1; [ "${a}" = "${b}" ]; }
+
+escrever_gerado() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo
+  local fonte="${1}" dest="${2}"
+  mkdir -p "$(dirname "${dest}")" || return 1
+  renderizar_gerado "${fonte}" "${3}" "${4}" > "${dest}" || return 1
+  # Shebang preservado só serve para ./script se o bit de execução vier junto.
+  if [ -x "${fonte}" ]; then chmod +x "${dest}" || return 1; else chmod a-x "${dest}" || return 1; fi
+}
+
+# Sob pipefail, o cmp -s só fecha o pipe cedo (SIGPIPE no render) quando JÁ achou diferença, então o
+# resultado continua certo. Mas o printf do render escreveria "write error: Broken pipe" no terminal, 1 linha
+# por cópia divergente (avaliador ciclo 6: 40–80 linhas no 1º sync pós-upgrade). O stderr desse render é
+# descartado: ele só compara. A escrita de verdade (escrever_gerado) não passa por pipe e mostra os erros reais.
+gerado_em_dia() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo → 0 se idêntico ao render atual
   [ -f "${2}" ] || return 1
-  grep -vF "${MARCA}" "${2}" | cmp -s - "${1}"
+  renderizar_gerado "${1}" "${3}" "${4}" 2>/dev/null | cmp -s - "${2}" || return 1
+  mesmo_bit_x "${1}" "${2}"
+}
+
+# Verificador de sintaxe do --check, sem efeito colateral (compile() não grava __pycache__). O python
+# roda com -I (isolado): sem o diretório atual no sys.path, um json.py ou xml/ do projeto não é importado
+# nem executado pelo --check (R2@codex, volta 6). Pelo mesmo motivo node e ruby rodam sem NODE_OPTIONS/RUBYOPT:
+# um --require herdado (o Yarn PnP usa) faria o node --check executar módulo do projeto (R1@codex, volta 7).
+compila() { # $1=arquivo $2=verificador do perfil → 0 compila · 1 não compila · 2 sem verificador
+  case "${2}" in
+    python) command -v python3 >/dev/null 2>&1 || return 2
+            python3 -I -c 'import sys; compile(open(sys.argv[1],"rb").read(), sys.argv[1], "exec")' "${1}" >/dev/null 2>&1 || return 1 ;;
+    bash)   bash -n "${1}" >/dev/null 2>&1 || return 1 ;;
+    node)   command -v node >/dev/null 2>&1 || return 2
+            env -u NODE_OPTIONS node --check "${1}" >/dev/null 2>&1 || return 1 ;;
+    ruby)   command -v ruby >/dev/null 2>&1 || return 2
+            env -u RUBYOPT ruby -c "${1}" >/dev/null 2>&1 || return 1 ;;
+    json)   if command -v jq >/dev/null 2>&1; then jq empty "${1}" >/dev/null 2>&1 || return 1
+            elif command -v python3 >/dev/null 2>&1; then python3 -I -m json.tool "${1}" >/dev/null 2>&1 || return 1
+            else return 2; fi ;;
+    xml)    command -v python3 >/dev/null 2>&1 || return 2
+            python3 -I -c 'import sys, xml.etree.ElementTree as E; E.parse(sys.argv[1])' "${1}" >/dev/null 2>&1 || return 1 ;;
+    *)      return 2 ;;
+  esac
+  return 0
+}
+
+nome_verificador() { # $1=verificador do perfil → o comando que a pessoa roda à mão
+  case "${1}" in python) printf 'python3' ;; bash) printf 'bash -n' ;; node) printf 'node --check' ;; json) printf 'jq (ou python3 -m json.tool)' ;; xml) printf 'python3 (xml)' ;; ruby) printf 'ruby -c' ;; esac
 }
 
 # ── plano ──────────────────────────────────────────────────────────────────────
 plano_reset
 declare_alvos_skills() { # $1=diretório destino (.claude/skills | .cursor/skills) $2=modo plan|apply|check
-  local destdir="${1}" modo="${2}" skill f rel dest
+  local destdir="${1}" modo="${2}" skill f rel dest alvo _estilo _manter verif _bom rc
   for skill in $(skills_da_fonte "${FONTE_SKILLS}"); do
     while IFS= read -r f; do
       [ -n "${f}" ] || continue
       rel="${f#${FONTE_SKILLS}/${skill}/}"
       dest="${ROOT}/${destdir}/${skill}/${rel}"
+      alvo="${destdir}/${skill}/${rel}"
       case "${modo}" in
-        plan)  if gerado_em_dia "${f}" "${dest}"; then plano_estado "${destdir}/${skill}/${rel}" emdia
-               elif [ -e "${dest}" ]; then plano_estado "${destdir}/${skill}/${rel}" atualizar
-               else plano_estado "${destdir}/${skill}/${rel}" novo; fi ;;
-        apply) gerado_em_dia "${f}" "${dest}" || escrever_gerado "${f}" "${dest}" "${skill}" "${rel}" || return 1 ;;
-        check) gerado_em_dia "${f}" "${dest}" || { printf '%s\n' "${destdir}/${skill}/${rel}"; DIVERGENTES=$((DIVERGENTES + 1)); } ;;
+        plan)  if gerado_em_dia "${f}" "${dest}" "${skill}" "${rel}"; then plano_estado "${alvo}" emdia
+               elif [ -e "${dest}" ]; then plano_estado "${alvo}" atualizar
+               else plano_estado "${alvo}" novo; fi ;;
+        apply) gerado_em_dia "${f}" "${dest}" "${skill}" "${rel}" || escrever_gerado "${f}" "${dest}" "${skill}" "${rel}" || return 1 ;;
+        check)
+          if [ ! -e "${dest}" ]; then
+            printf '%s (ausente: rode sync)\n' "${alvo}"; DIVERGENTES=$((DIVERGENTES + 1))
+          elif ! gerado_em_dia "${f}" "${dest}" "${skill}" "${rel}"; then
+            printf '%s (desatualizado: rode sync)\n' "${alvo}"; DIVERGENTES=$((DIVERGENTES + 1))
+          else
+            # Em dia byte a byte. O verificador ainda pode achar a cópia quebrada: ou a fonte já
+            # nasce quebrada (o autor conserta) ou o render está errado (bug do sdd-open).
+            read -r _estilo _manter verif _bom <<PERFIL
+$(perfil_arquivo "${f}")
+PERFIL
+            compila "${dest}" "${verif}"; rc=$?
+            if [ "${rc}" = "1" ]; then
+              if compila "${f}" "${verif}"; then
+                printf '%s (a cópia gerada não compila com %s, mas a fonte compila: bug do sdd-open — abra uma issue)\n' "${alvo}" "$(nome_verificador "${verif}")"
+              else
+                printf '%s (a fonte .agents/skills/%s/%s não compila com %s: corrija a fonte; sync não resolve)\n' "${alvo}" "${skill}" "${rel}" "$(nome_verificador "${verif}")"
+              fi
+              DIVERGENTES=$((DIVERGENTES + 1))
+            elif [ "${rc}" = "2" ] && [ "${verif}" != "-" ]; then
+              detalhe "sem $(nome_verificador "${verif}" | cut -d' ' -f1): ${alvo} conferido só byte a byte"
+            fi
+          fi ;;
       esac
     done <<EOF
 $(find "${FONTE_SKILLS}/${skill}" -type f 2>/dev/null | sort)
@@ -248,7 +427,7 @@ gemini_settings_checar() {
   command -v python3 >/dev/null 2>&1 || die "o adaptador gemini precisa de python3 para editar .gemini/settings.json com segurança" \
     "instale python3 ou rode sem o vendor gemini — nada foi alterado" 64
   [ -f "${dest}" ] || return 0
-  saida=$(python3 -c 'import json,sys
+  saida=$(python3 -I -c 'import json,sys
 try:
     json.load(open(sys.argv[1], encoding="utf-8"))
 except json.JSONDecodeError as e:
@@ -382,7 +561,7 @@ doctor() {
   say "sdd-open doctor — projeto: ${ROOT}"
   printf '  bash %s.%s · git %s · python3 %s\n' "${BASH_VERSINFO[0]}" "${BASH_VERSINFO[1]}" \
     "$(git --version 2>/dev/null | sed 's/git version //')" \
-    "$(command -v python3 >/dev/null 2>&1 && python3 -c 'import sys;print(".".join(map(str,sys.version_info[:2])))' || echo 'ausente')"
+    "$(command -v python3 >/dev/null 2>&1 && python3 -I -c 'import sys;print(".".join(map(str,sys.version_info[:2])))' || echo 'ausente')"
   if [ -d "${ROOT}/sdd" ]; then
     n_falt=$(sdd_faltantes | grep -c . || true)
     if [ "${n_falt}" = "0" ]; then ok "sdd/ presente ($(ls "${ROOT}/sdd/features" 2>/dev/null | wc -l | tr -d ' ') feature(s) em sdd/features/)"

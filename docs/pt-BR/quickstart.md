@@ -140,7 +140,23 @@ bash /tmp/sdd-open/bin/sdd-open.sh sync                             # regenera o
 
 `sync` **nunca** escreve em `sdd/` — suas specs, relatórios, fichas e playbook são seus.
 Arquivos em `.claude/skills/`, `.cursor/skills/`, `CLAUDE.md` e `GEMINI.md` são gerados: edite
-`.agents/skills/` e rode `sync`; edições neles são sobrescritas (o cabeçalho de cada um avisa).
+`.agents/skills/` e rode `sync`; edições neles são sobrescritas.
+
+Cada cópia leva um cabeçalho `sdd-open:generated` de duas linhas, escrito na sintaxe de comentário
+do próprio arquivo, para que os scripts continuem rodando: `#` em `.py`/`.rb`/`.sh`/`.bash`/`.ps1`/`.yaml`/`.yml`/`.toml`,
+`//` em `.js`/`.mjs`/`.cjs`/`.ts`, `/* */` em `.css`, `--` em `.sql` e `<!-- -->` em Markdown e no resto.
+Shebang (`#!`) e o `---` do frontmatter do Markdown ficam na linha 1, com o cabeçalho logo abaixo,
+e o bit de execução é copiado. **`.json` e binários (imagem, fonte, PDF, zip, qualquer arquivo com byte NUL) não têm comentário:
+a cópia sai sem cabeçalho, idêntica à fonte.** Em XML/SVG, a declaração `<?xml …?>` do início fica
+na linha 1; em Python e Ruby, a declaração `# coding:` (PEP 263) também. O cabeçalho é ASCII puro:
+no caminho do arquivo que ele cita, o que não for letra, dígito, `.`, `_`, `/` ou `-` aparece como `?`.
+
+O `sync --check` só chama uma cópia de "em dia" quando ela é, byte a byte, o que o `sync` escreveria
+agora. Com `python3`, `bash`, `node`, `ruby` ou `jq` disponíveis, ele também confere se a cópia compila. Cada
+linha divergente diz o motivo: `desatualizado` (rode `sync`), `a fonte … não compila` (corrija a
+fonte; o `sync` não resolve) ou `a cópia gerada não compila … bug do sdd-open` (abra uma issue).
+Depois de uma atualização que muda o formato do cabeçalho, o primeiro `sync` reescreve todos os
+adaptadores uma vez.
 
 ## Diagnóstico a qualquer hora
 

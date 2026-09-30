@@ -80,7 +80,7 @@ merge_gemini_settings() { # $1=destino
   command -v python3 >/dev/null 2>&1 || die "o adaptador gemini precisa de python3 para editar .gemini/settings.json com segurança" \
     "instale python3 ou rode init sem o vendor gemini" 64
   mkdir -p "$(dirname "${dest}")"
-  saida=$(python3 - "${dest}" <<'PY' 2>&1
+  saida=$(python3 -I - "${dest}" <<'PY' 2>&1
 import json, os, sys
 dest = sys.argv[1]
 data = {}
@@ -127,7 +127,7 @@ PY
 # 0 se AGENTS.md já está em context.fileName (para o plano marcar "=").
 gemini_settings_em_dia() { # $1=destino
   [ -f "${1}" ] || return 1
-  python3 - "${1}" <<'PY' >/dev/null 2>&1
+  python3 -I - "${1}" <<'PY' >/dev/null 2>&1
 import json, sys
 d = json.load(open(sys.argv[1], encoding="utf-8"))
 fn = d.get("context", {}).get("fileName", [])

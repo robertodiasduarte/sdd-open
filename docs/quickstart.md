@@ -141,7 +141,22 @@ bash /tmp/sdd-open/bin/sdd-open.sh sync                            # regenerate 
 
 `sync` **never** writes inside `sdd/` — your specs, reports, handoffs and playbook are yours.
 Files under `.claude/skills/`, `.cursor/skills/`, `CLAUDE.md` and `GEMINI.md` are generated:
-edit `.agents/skills/` and run `sync`; edits to them are overwritten (each file's header says so).
+edit `.agents/skills/` and run `sync`; edits to them are overwritten.
+
+Each copy carries a two-line `sdd-open:generated` header written in the file's own comment
+syntax, so scripts keep running: `#` for `.py`/`.rb`/`.sh`/`.bash`/`.ps1`/`.yaml`/`.yml`/`.toml`, `//` for
+`.js`/`.mjs`/`.cjs`/`.ts`, `/* */` for `.css`, `--` for `.sql`, `<!-- -->` for Markdown and anything else.
+A shebang (`#!`) or a Markdown frontmatter `---` stays on line 1, with the header right below it,
+and the executable bit is copied. **`.json` and binary files (images, fonts, PDF, zip, anything with a NUL byte) have no comment
+syntax: their copy has no header and is byte-identical to the source.** In XML/SVG, a leading
+`<?xml …?>` declaration stays on line 1; in Python and Ruby, so does a `# coding:` declaration (PEP 263). The header is plain ASCII:
+in the file path it quotes, anything other than letters, digits, `.`, `_`, `/` and `-` shows up as `?`.
+
+`sync --check` calls a copy up to date only when it is byte-for-byte what `sync` would write now.
+When `python3`, `bash`, `node`, `ruby` or `jq` is available it also checks that the copy parses. Every
+divergent line says why: `desatualizado` (run `sync`), `a fonte … não compila` (fix the source;
+`sync` cannot), or `a cópia gerada não compila … bug do sdd-open` (open an issue).
+After an upgrade that changes the header format, the first `sync` rewrites every adapter once.
 
 ## Diagnose any time
 

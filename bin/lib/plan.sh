@@ -15,22 +15,8 @@ PLANO_EMDIA=0
 
 plano_reset() { PLANO_NOVOS=0; PLANO_ATUALIZAR=0; PLANO_EMDIA=0; }
 
-# Classifica um destino contra a fonte. $3 opcional = "gerado" para ignorar as 2 linhas do
-# cabeçalho GENERATED na comparação (adaptador nunca é byte-idêntico à fonte — Decision 1).
-plano_linha() { # $1=destino $2=fonte [$3=gerado]
-  local dest="${1}" fonte="${2}" modo="${3:-}"
-  if [ ! -e "${dest}" ]; then
-    PLANO_NOVOS=$((PLANO_NOVOS + 1)); printf '+ %s (novo)\n' "${dest}"
-  elif [ "${modo}" = "gerado" ] && grep -vF 'sdd-open:generated' "${dest}" | cmp -s - "${fonte}"; then
-    PLANO_EMDIA=$((PLANO_EMDIA + 1)); detalhe "= ${dest} (já correto)"
-  elif [ "${modo}" != "gerado" ] && cmp -s "${dest}" "${fonte}"; then
-    PLANO_EMDIA=$((PLANO_EMDIA + 1)); detalhe "= ${dest} (já correto)"
-  else
-    PLANO_ATUALIZAR=$((PLANO_ATUALIZAR + 1)); printf '~ %s (atualizar)\n' "${dest}"
-  fi
-}
-
-# Linha de plano para algo que não é cópia de arquivo (bloco do AGENTS.md, chave do JSON).
+# Linha de plano. Cópias de skill decidem o estado por gerado_em_dia (sdd-open.sh), que compara
+# com o que o escritor renderiza agora; blocos do AGENTS.md e chaves do JSON, pelo merge de cada um.
 plano_estado() { # $1=destino $2=novo|atualizar|emdia
   case "${2}" in
     novo)      PLANO_NOVOS=$((PLANO_NOVOS + 1));         printf '+ %s (novo)\n' "${1}" ;;
