@@ -1,0 +1,37 @@
+{
+  "name": "sdd-governanca",
+  "formas_de_prova": [
+    "script SQL chamado pelo Verify Gate do DEFINE, quando o aceite é executado",
+    "roteiro manual no AT, quando o aceite é lido e marcado"
+  ],
+  "nucleo": [
+    "references/CATALOGO_GOVERNANCA.md",
+    "references/PROCEDIMENTO.md",
+    "assets/GOVERNANCA_REVIEW_TEMPLATE.md",
+    "assets/GOVERNANCA_PADRAO_TEMPLATE.md",
+    "evals/cases.json",
+    "manifest.json"
+  ],
+  "caminhos_implementados": [
+    "Triagem por gatilhos com N.A. em 1 mensagem",
+    "Padrão do projeto com 5 campos, criado uma vez e reutilizado",
+    "Revisão item a item contra 20 itens do catálogo",
+    "Relatório com cobertura, lacunas em 5 partes, riscos aceitos e o que foi aplicado",
+    "Decisão por item: aplicar, recusar com motivo ou adiar",
+    "Prova negativa por roteiro e, para 8 itens, por script SQL que já vem invertido"
+  ],
+  "executados": [
+    "lacuna-ledger: executado por agente de contexto limpo sobre um DEFINE de exemplo (contas a pagar de escritório fictício)"
+  ],
+  "pending": [
+    "Executar os outros 7 cenários de evals/cases.json em mais de um agente",
+    "Confirmar as 4 bases legais da Tabela B na fonte oficial, com recibo de quem responde pelo catálogo"
+  ],
+  "o_que_ainda_nao_prova": [
+    "Comportamento idêntico em todos os agentes",
+    "Que os scripts de prova rodam sem ajuste no schema de cada projeto: os nomes de tabela são de referência",
+    "Adequação jurídica do catálogo ao caso concreto: a responsabilidade é do profissional"
+  ],
+  "author": "Roberto Dias Duarte",
+  "license": "MIT"
+}

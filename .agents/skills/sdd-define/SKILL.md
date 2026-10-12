@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.0.0"
+  version: "2.1.0"
   fase: "1"
 ---
 
@@ -132,7 +132,9 @@ Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o �
 `/sdd-define`. Os 4 blocos na ordem: micro-kanban · Onde estamos · O que precisa de você (só se
 N≥1) · O que vem depois, com ⚠️ inline.
 
-**Próximo passo:** `/sdd-ux-review sdd/features/DEFINE_{FEATURE}.md` se há interface; senão
+**Próximo passo:** `/sdd-governanca sdd/features/DEFINE_{FEATURE}.md` se o DEFINE trata dinheiro,
+saldo, lançamento, nota fiscal, tributo, folha ou dado pessoal; senão
+`/sdd-ux-review sdd/features/DEFINE_{FEATURE}.md` se há interface; senão
 `/sdd-design sdd/features/DEFINE_{FEATURE}.md` (registre no DEFINE por que o UX review foi
 pulado — kanban marca ➖ só com decisão registrada).
 

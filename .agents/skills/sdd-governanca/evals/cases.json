@@ -1,0 +1,92 @@
+{
+  "skill": "sdd-governanca",
+  "formato": "Cenários comportamentais escritos. Cada caso descreve a entrada e o que a skill tem de fazer; o manifest.json diz quais foram executados.",
+  "cases": [
+    {
+      "id": "sem-gatilho-na",
+      "type": "negative_control",
+      "input": "DEFINE de uma agenda de reuniões do escritório: marcar, remarcar e cancelar reunião, com lembrete por e-mail. Nenhuma menção a dinheiro, lançamento, nota fiscal, tributo, folha ou dado pessoal.",
+      "expected": [
+        "Responder N.A. em 1 mensagem, com o motivo",
+        "0 requisitos recomendados",
+        "Sem arquivo: nem GOVERNANCA_REVIEW nem GOVERNANCA_PADRAO são criados",
+        "Não fazer as 5 perguntas do padrão do projeto",
+        "Palavra da lista com outro sentido (o verbo impor, NF dentro de um código) não dispara a revisão; tema de dinheiro sem a palavra (valor_bruto, compra paga) dispara"
+      ]
+    },
+    {
+      "id": "lacuna-ledger",
+      "type": "positive",
+      "input": "DEFINE de contas a pagar com o AT 'When o usuário corrige o valor de um lançamento, the system shall atualizar o valor na tela'. GOVERNANCA_PADRAO.md existe com uso = equipe.",
+      "expected": [
+        "G01 sai como lacuna, citando o AT do DEFINE que permite a edição",
+        "A lacuna traz, na ordem: o que muda no app, por quê, requisito EARS If/then com recusa, como provar, severidade alta",
+        "O fundamento técnico aparece; a base legal usa a frase padrão enquanto B1 e B2 estiverem nao-confirmado",
+        "Cobertura em 1 linha no topo do relatório",
+        "Pergunta de decisão só para esta lacuna, com as 3 saídas",
+        "O AT que permite corrigir o valor é reescrito (antes e depois mostrados na pergunta) — o DEFINE nunca fica com um AT que permite o que o AT novo proíbe"
+      ]
+    },
+    {
+      "id": "ja-coberto-cita-linha",
+      "type": "positive",
+      "input": "DEFINE de um portal com várias empresas no mesmo banco, com o AT 'If um usuário da empresa A pedir uma linha da empresa B, then the system shall devolver vazio', provado por teste com 2 usuários. Padrão do projeto: multi_cnpj = sim.",
+      "expected": [
+        "G13 sai como já coberto, citando o AT do DEFINE",
+        "Nenhum requisito duplicado é recomendado para isolamento entre clientes"
+      ]
+    },
+    {
+      "id": "base-nao-confirmada-recusa",
+      "type": "negative_control",
+      "input": "Durante a revisão, o profissional pergunta: 'qual artigo de lei obriga o lançamento a não ser apagado?'. No catálogo, B1 e B2 estão nao-confirmado.",
+      "expected": [
+        "Não citar artigo, parágrafo, inciso nem norma de memória",
+        "Responder que a base ainda não está confirmada no catálogo e que deve ser conferida na fonte",
+        "Manter o fundamento técnico do item"
+      ]
+    },
+    {
+      "id": "recusa-vira-risco-aceito",
+      "type": "positive",
+      "input": "O profissional responde 'recusar' para a lacuna G07 (segregação de funções) e, perguntado, dá o motivo 'escritório de 1 pessoa nesta fase'.",
+      "expected": [
+        "G07 não entra no DEFINE",
+        "G07 aparece em Riscos aceitos com quem, quando e o motivo",
+        "Recusa sem motivo: a pergunta é repetida e nada é gravado",
+        "Clarity Score recalculado só com as lacunas aplicadas"
+      ]
+    },
+    {
+      "id": "padrao-reusado",
+      "type": "positive",
+      "input": "Segunda feature do mesmo projeto. GOVERNANCA_PADRAO.md já existe na raiz da pasta do SDD (o DEFINE desta feature está numa subpasta de features).",
+      "expected": [
+        "Não repetir as 5 perguntas",
+        "Confirmar o padrão em 1 linha e perguntar se algo mudou",
+        "Procura o padrão na raiz da pasta do SDD, não na pasta do DEFINE — nunca grava um 2º padrão"
+      ]
+    },
+    {
+      "id": "porte-pequeno-hash-na",
+      "type": "positive",
+      "input": "DEFINE de controle financeiro pessoal de um profissional autônomo. GOVERNANCA_PADRAO.md com uso = só eu e multi_cnpj = não.",
+      "expected": [
+        "G06 (prova de que o log não foi editado) e G07 (segregação de funções) saem como N.A. por porte, com o motivo",
+        "G13 (isolamento entre clientes) sai como N.A. por porte",
+        "Itens de porte todos continuam avaliados"
+      ]
+    },
+    {
+      "id": "porta-executavel-x-texto",
+      "type": "positive",
+      "input": "A mesma lacuna G01 do caso lacuna-ledger, aplicada uma vez num projeto em que o Verify Gate do DEFINE é executado por script e outra vez num projeto em que o profissional lê e marca o aceite.",
+      "expected": [
+        "Gate executado por script: entrega o prova_script adaptado, sem mexer na inversão, e acrescenta a chamada ao cmd do bloco verify_gate existente — nunca cria um 2º bloco",
+        "O script adaptado mantém a guarda de schema (nome de tabela ou coluna errado reprova, nunca passa como recusa) e o cmd roda contra banco de teste, nunca produção",
+        "Aceite lido e marcado: entrega o prova_manual como roteiro do AT",
+        "O requisito EARS é o mesmo nas duas formas"
+      ]
+    }
+  ]
+}

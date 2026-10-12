@@ -8,6 +8,13 @@
 .agents/skills/sdd-build/references/modos-e-retry.md
 .agents/skills/sdd-define/SKILL.md
 .agents/skills/sdd-design/SKILL.md
+.agents/skills/sdd-governanca/SKILL.md
+.agents/skills/sdd-governanca/assets/GOVERNANCA_PADRAO_TEMPLATE.md
+.agents/skills/sdd-governanca/assets/GOVERNANCA_REVIEW_TEMPLATE.md
+.agents/skills/sdd-governanca/evals/cases.json
+.agents/skills/sdd-governanca/manifest.json
+.agents/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md
+.agents/skills/sdd-governanca/references/PROCEDIMENTO.md
 .agents/skills/sdd-handoff/SKILL.md
 .agents/skills/sdd-iterate/SKILL.md
 .agents/skills/sdd-playbook/SKILL.md
@@ -49,6 +56,7 @@ sdd/bin/verify-gate.sh
 sdd/config.example.yaml
 sdd/fixtures/BRAINSTORM_EXEMPLO.md
 sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md
+sdd/fixtures/DEFINE_FIXTURE_GOVERNANCA.md
 sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md
 sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md
 sdd/fixtures/playbook/playbook-colapso.md

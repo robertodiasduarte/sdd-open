@@ -44,16 +44,17 @@ seu é sobrescrito. [Quickstart completo →](docs/pt-BR/quickstart.md)
 | **Engenharia de prompt como entregável** | quando a spec inventaria um prompt de produção, a fase Build o escreve por uma skill com contrato de saída explícito, fórmulas escritas por extenso e regra para contexto ausente — em vez de deixar o modelo estimar. Ligada como slot substituível (`prompts.builder_skill`), já com um default | skill `sdd-prompt-builder` |
 | **Review adversarial de 2º vendor** | resposta em formato fixo (veredito, ≤3 riscos, correções, o que ignorar); toda nota é aplicada ou rebatida por escrito | `fragments/ADVISOR_CONSULT.md` |
 | **Auditoria read-only do harness** | harness acumula: comando que ninguém chama, agente que ninguém despacha, doc que derivou do código. Uma passada read-only inventaria cada comando, agente, skill, hook e script, mede referências de entrada e recência, e emite um único `AUDITORIA_SDD_<data>.md` — nunca apaga: a faxina em si continua decisão humana | skill `sdd-auditoria-harness` · `scripts/collect_evidence.py` |
+| **Revisão de governança** | em sistema financeiro, contábil ou fiscal, compara o DEFINE com um catálogo curado (lançamento que não se apaga, fechamento de período, trilha de auditoria, segregação de funções, aritmética exata…) e recomenda requisitos em EARS com teste negativo que o Verify Gate executa; base legal só citada quando confirmada no catálogo; uma decisão por item, e a recusa fica registrada como risco aceito | skill `sdd-governanca` |
 | **Handoff por ficha** | um arquivo por feature no repositório, com prompt de retomada autossuficiente — sem depender da memória de nenhum agente | skill `sdd-handoff` · `sdd/handoffs/` |
 
 ## O fluxo
 
 ```text
-/sdd-brainstorm → /sdd-define → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
-   (opcional)         ↑              (se há UI)        ↑            │             │
-                      └──── /sdd-iterate corrige o rumo ┘            │             │
-                                                                     ▼             ▼
-                                        o Verify Gate roda aqui — e de novo aqui — bloqueando as duas vezes
+/sdd-brainstorm → /sdd-define → /sdd-governanca → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
+  (opcional)           ↑       (se há dinheiro)     (se há UI)          ↑             │             │
+                       └───────── /sdd-iterate corrige o rumo ──────────┘             │             │
+                                                                                      ▼             ▼
+                                                            o Verify Gate roda aqui — e de novo aqui — bloqueando as duas vezes
 ```
 
 `sdd-handoff` e `sdd-playbook` são transversais: fecham sessões e acumulam o que mordeu.
