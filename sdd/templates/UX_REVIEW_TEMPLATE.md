@@ -89,7 +89,7 @@ Verificação explícita dos 2 princípios inviolaveis. Qualquer violação = MU
 
 **Teste do estranho:** {Resultado mental — usuário virgem completa a tarefa em silêncio? Onde hesitaria?}
 
-**Teste do WhatsApp:** {Algum estado dispara pergunta "isso é bug?" ou "como faço X?" no atendimento? Se sim, listar e marcar como MUST.}
+**Teste do suporte:** {Algum estado dispara pergunta "isso é bug?" ou "como faço X?" no atendimento? Se sim, listar e marcar como MUST.}
 
 ---
 
@@ -245,7 +245,7 @@ Acceptance notes:
 - [ ] {60/30/10 visual hierarchy note}
 - [ ] {Gamification acceptance note or explicit skip rationale}
 - [ ] **Premium**: cada estado (loading/empty/error/success/disabled) tem acabamento "shipada", não "MVP a polir"
-- [ ] **Self-Evident**: zero tooltip-muleta, zero helper text óbvio, zero cor conflitando com semântica — teste do estranho e teste do WhatsApp aprovados
+- [ ] **Self-Evident**: zero tooltip-muleta, zero helper text óbvio, zero cor conflitando com semântica — teste do estranho e teste do suporte aprovados
 
 ---
 
@@ -256,9 +256,7 @@ Acceptance notes:
 
 If none, state: `None - ready for Design.`
 
-**Trigger especial:** se você NÃO consegue determinar o bucket de alguma surface proposta, listar aqui — essa pergunta DEVE bloquear o avanço para /design até ser resolvida (não passar a decisão pra /design):
-
-- "Surface X: hero (aspiracional) ou neutral (operacional)? Pendente decisão do humano responsável."
+Se o papel de alguma surface (destaque, operacional, sobreposição) não estiver claro, registre aqui a pergunta para o responsável.
 
 ---
 
