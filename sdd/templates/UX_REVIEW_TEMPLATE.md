@@ -11,6 +11,7 @@
 | **Author** | ux-review-command |
 | **DEFINE** | [DEFINE_{FEATURE}.md](../features/DEFINE_{FEATURE}.md) |
 | **Status** | Draft / Ready for Design / Needs Requirement Iteration |
+| **Lentes** | {N} recomendações · {M} alertas — não mudam o Status |
 
 ---
 
@@ -41,6 +42,7 @@
 | Core Action | {Primary task} | {Emotion or risk} | {Form, flow, controls} |
 | Feedback | {What user needs to know} | {Emotion or risk} | {Status, validation, confirmation} |
 | Recovery | {What happens when something fails} | {Emotion or risk} | {Error, retry, support, undo} |
+| Interrupção → Retomada | {Sair no meio preserva o que foi feito? Como a pessoa volta?} | {Emotion or risk} | {Autosave, "continuar", o que falta} |
 | Completion | {How success is understood} | {Emotion or risk} | {Success message, next step} |
 | Follow-up | {What happens after} | {Emotion or risk} | {Notification, history, support path} |
 
@@ -202,6 +204,23 @@ canônica, consulte-a e registre se a surface é nova ou reuso.
 
 ---
 
+## Lentes cognitivas (não bloqueiam)
+
+> Lente nunca gera MUST, nunca rebaixa uma regra e não entra no cálculo do resultado (`Ready for Design`). Todo status diferente de `N.A.` exige evidência. Status: `OK` · `RECOMENDAÇÃO` (SHOULD ou COULD) · `ALERTA` · `N.A.`; lentes `N.A.` podem ir juntas numa linha, com o motivo. A linha Interrupção → Retomada da jornada é análise, não estado obrigatório.
+
+| Lente | Status | Evidência |
+|-------|--------|-----------|
+| Alcance (Fitts) | OK / RECOMENDAÇÃO / ALERTA / N.A. | {Evidência} |
+| Escolhas por passo (Hick-Hyman) | {Status} | {Evidência} |
+| Retomada (Zeigarnik) | {Status} | {Evidência} |
+| Convenção (Jakob) | {Status} | {Evidência} |
+| Progresso real (Gradiente de meta) | {Status} | {Evidência} |
+| Destaque único (Von Restorff) | {Status} | {Evidência} |
+| Agrupamento (Miller) | {Status} | {Evidência} |
+| Sinal de validação real | {Status} | {Métrica a observar depois da entrega} |
+
+---
+
 ## Design Handoff
 
 Concrete requirements for `/design`:
@@ -210,6 +229,8 @@ Concrete requirements for `/design`:
 - {Requirement 2}
 - {Requirement 3}
 - {Gamification requirement or explicit reason not to include gamification}
+- (lente {Lx}) {Recomendação SHOULD ou COULD de lente}
+- Como medir depois: {sinal de validação real}
 
 Components likely needed:
 

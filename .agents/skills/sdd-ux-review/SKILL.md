@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Independe de stack visual; usa 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.0.0"
+  version: "2.1.0"
   fase: "UX"
 ---
 
@@ -44,8 +44,8 @@ bug?" ou "como faço X?" — essa pergunta **é** o bug; resolve-se na interface
 1. **Contexto.** Leia o DEFINE, `sdd/templates/UX_REVIEW_TEMPLATE.md`, `AGENTS.md` e, se
    existir, o design system do projeto. Extraia usuário, objetivo, dor, critérios, restrições e
    fora de escopo.
-2. **Jornada.** Antes → Entrada → Ação central → Feedback → Recuperação → Conclusão →
-   Follow-up. Para cada passo: intenção, emoção/risco, atrito, o que o sistema precisa
+2. **Jornada.** Antes → Entrada → Ação central → Feedback → Recuperação →
+   (Interrupção → Retomada) → Conclusão → Follow-up. Para cada passo: intenção, emoção/risco, atrito, o que o sistema precisa
    confirmar, o que acontece quando falha.
 3. **Qualidade UX/CX.** Clareza · Eficiência · Confiança · Acessibilidade · Responsividade ·
    Estados (loading, vazio, erro, sucesso, parcial, sem permissão, desabilitado) ·
@@ -55,12 +55,29 @@ bug?" ou "como faço X?" — essa pergunta **é** o bug; resolve-se na interface
    sobreposição) e acento que aponta a próxima ação. Cite os tokens do design system do
    projeto; sem design system, proponha os papéis e registre como candidato. Contraste
    **medido** nos pares reais (≥4.5:1 texto, ≥3:1 não-texto). Significado nunca só por cor.
-5. **Priorizar.** MUST (quebra o sucesso do usuário) · SHOULD · COULD · WONT (ideia boa,
-   excluída — diga por quê).
-6. **Handoff para o Design.** Requisitos de interação, componentes, estados obrigatórios,
+5. **Lentes cognitivas (não bloqueiam).** Lente nunca gera MUST, não entra no cálculo do
+   status (`Ready for Design`) e nunca rebaixa uma regra: se o achado já viola a regra da última
+   coluna, o MUST vem dela, citado à parte. Todo status diferente de `N.A.` exige evidência.
+   Status: `OK` · `RECOMENDAÇÃO` (SHOULD ou COULD; vai ao handoff como `(lente Lx)`) · `ALERTA`
+   (aplicar a lente ao pé da letra pioraria esta tela) · `N.A.` (com motivo; podem ir juntas numa linha).
+
+   | Lente | Pergunta | Alerta embutido | Regra que manda |
+   |---|---|---|---|
+   | L1 Alcance (Fitts) | Ação principal perto da decisão? Linha/card inteiro clicável? 44 px recomendado | — | acessibilidade do passo 3 (alvo < 24×24 px, WCAG 2.2 AA) |
+   | L2 Escolhas por passo (Hick-Hyman) | Quantas opções competem por decisão? Revelação progressiva cabe? | uso diário: densidade é recurso | 60/30/10 (acento aponta a próxima ação) |
+   | L3 Retomada (Zeigarnik) | Sair no meio preserva o preenchido? A volta mostra o que falta? | sem lembrete que culpe | princípio 2, "Se tem que explicar, está errado" (estado ambíguo) |
+   | L4 Convenção (Jakob) | Padrão fora da convenção de mercado tem justificativa? | não reaprender ação básica | — |
+   | L5 Progresso real (Gradiente de meta) | Progresso vem do estado real e mostra o que falta? | progresso inflado é dark pattern | princípio 2 + gamificação honesta (passo 3) |
+   | L6 Destaque único (Von Restorff) | Só o que importa se destaca? | `ALERTA` só com destaques concorrentes | 60/30/10 (passo 4) |
+   | L7 Agrupamento (Miller) | Campos e dados em grupos com nome? | 7±2 não é regra de contagem | — |
+   | S Sinal de validação real | Que número, depois da entrega, diz se funcionou? | recomendação, nunca critério de aceite | — |
+6. **Priorizar.** MUST (quebra o sucesso do usuário) · SHOULD · COULD · WONT (ideia boa,
+   excluída — diga por quê). Lente nunca é MUST.
+7. **Handoff para o Design.** Requisitos de interação, componentes, estados obrigatórios,
    guia de copy (CTA com verbo, erro humano e acionável, confirmação com próximo passo),
-   guia visual, gamificação (ou por que não), notas de aceite.
-7. **Gravar** `sdd/reviews/UX_REVIEW_{FEATURE}.md`.
+   guia visual, gamificação (ou por que não), recomendações `(lente Lx)`, "Como medir
+   depois" (sinal S), notas de aceite.
+8. **Gravar** `sdd/reviews/UX_REVIEW_{FEATURE}.md`.
 
 Se a feature **não tem** interface de nenhum tipo, escreva isso no DEFINE (Constraints) e o
 kanban marca ➖. Não rode a revisão por cerimônia — mas antes pergunte: existe terminal,
@@ -76,6 +93,7 @@ arquivo ou mensagem que alguém vai ler? Então existe UX.
 [ ] Premium e Autoexplicativo verificados; teste do estranho e do suporte aplicados
 [ ] Cores nunca conflitam com semântica
 [ ] Recomendações em MUST/SHOULD/COULD/WONT; violação de princípio = MUST
+[ ] Lentes cognitivas com evidência; nenhuma vira MUST nem muda o status
 [ ] Handoff concreto para o Design
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
