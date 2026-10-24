@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.0.0"
+  version: "2.1.0"
   fase: "4"
 ---
 
@@ -17,6 +17,14 @@ metadata:
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
 irreversível na prática.
+
+## Regra de todo comando que fala com o remoto
+
+`fetch`, `push`, `pull`, `ls-remote` e `remote show` rodam **sem pedir senha**: `GIT_TERMINAL_PROMPT=0 git …`
+no bash/zsh; no PowerShell, `$env:GIT_TERMINAL_PROMPT=0; git …`. Sem isso, um remoto que exige login faz o
+git pedir a senha no terminal do agente — com o OK já dado, ninguém vê e a publicação fica pela metade.
+Se um desses comandos ficar parado, olhe se o editor (VS Code, Cursor) abriu uma janela de login do
+GitHub — ela é um jeito legítimo de logar e não é desligada.
 
 ## Entrada
 
@@ -109,18 +117,43 @@ removido.
 
 ## FASE 2 — Após o "go"
 
-8. **Push.** Re-check de base: `git fetch` + `git merge-base --is-ancestor origin/{default_branch} HEAD`
-   (falhou → base moveu; re-landar). **Nunca `--force`.** `git push origin HEAD:{default_branch}`.
+8. **Push.** Re-check de base: `GIT_TERMINAL_PROMPT=0 git fetch` + `git merge-base --is-ancestor origin/{default_branch} HEAD`
+   (falhou → base moveu; re-landar). **Nunca `--force`.** `GIT_TERMINAL_PROMPT=0 git push origin HEAD:{default_branch}`.
+   Recusado por permissão (`403`, `Permission denied`, `could not read Username`) ou por branch protegida
+   (`protected branch`, `GH006`)? Pare e diga o que conferir, nesta ordem: `gh auth status` (logado, com a
+   conta certa?); o papel no repositório (publicar exige escrita); e se a branch padrão é protegida — aí o
+   caminho é push da branch + PR (`gh pr create`, ou o link que o próprio push imprime), não insistir.
 9. **Deploy:** `{{DEPLOY_CMD}}` (vazio → declarar "deploy pulado — slot vazio"). Tudo que sobe
    para produção tem commit correspondente — deploy sem source commitado é proibido.
-10. **Verificar:** pipeline verde; `{{DRIFT_CHECK_CMD}}` exit 0; smoke da rota principal.
+10. **Verificar — pelo commit publicado, não pelo último run.** `{{DRIFT_CHECK_CMD}}` exit 0; smoke da rota
+    principal; e, se a publicação roda num workflow:
+    - `gh run list --commit <SHA publicado> --branch {default_branch} --json databaseId,status,conclusion,workflowName,event`
+      — o run **do workflow que publica**, na branch padrão (`event` = `push`, ou `workflow_dispatch` quando foi
+      o redisparo manual do item abaixo). Com dois pushes seguidos,
+      "o último run" é de outro commit; um run do mesmo SHA em outra branch ou de PR pode ter pulado o deploy.
+    - `completed` + `success` ⇒ no ar (cite o run). `queued`/`in_progress` ⇒ esperar.
+    - Lista vazia ⇒ o GitHub ainda não registrou o run: esperar alguns segundos e consultar de novo; vazia
+      depois de ~2 min ⇒ dizer que não achou o run do commit — nunca concluir "nada a verificar". No caminho
+      do PR, o SHA que chega à branch padrão é o do merge: consulte por ele.
+    - `cancelled` ⇒ um push mais novo pode ter substituído o seu: `GIT_TERMINAL_PROMPT=0 git fetch origin
+      {default_branch}`, depois `gh run list --workflow <arquivo> --branch {default_branch} --limit 20 --json databaseId,headSha,status,conclusion,createdAt`;
+      só vale run `success` criado depois do seu **e** de um commit que contém o seu
+      (`git merge-base --is-ancestor <seu SHA> <SHA dele>` sai 0). Sai 1 = aquele run **não** contém o seu
+      commit (procure outro ou espere); qualquer outro código (commit não encontrado) = "não consegui
+      confirmar", nunca "não incluído".
+    - `failure` ⇒ para repetir, **nunca `gh run rerun` de um run antigo** (com fila, ele publica código
+      velho por cima do novo): redisparar na ponta — `gh workflow run <arquivo> --ref {default_branch}` só se
+      o workflow tiver `workflow_dispatch` no `on:`; sem ele (o GitHub responde 422), um push novo.
+    - Verde não prova teste: step de teste com `continue-on-error`, `|| true` ou `exit 0` fixo ⇒ "o deploy
+      terminou, mas o workflow não roda testes antes de publicar".
+    Sem `gh`: "publicado, sem verificação automática disponível" — nunca ✅ sem ter olhado.
 11. **Changelog:** `{{CHANGELOG_HOOK}}` ou entrada curta (≤600 caracteres) no topo do
     `CHANGELOG.md`. O detalhe vive no ledger e no BUILD_REPORT.
 12. **Limpeza** do worktree temporário.
 
 ## FASE 3 — Higiene do git
 
-13. `git fetch` · `git worktree prune`. 14. Branches já mergeadas: oferecer deletar.
+13. `GIT_TERMINAL_PROMPT=0 git fetch` · `git worktree prune`. 14. Branches já mergeadas: oferecer deletar.
 15. Worktree/branch da feature: se a feature fechou, oferecer o comando de remoção (rodado
     fora dele). **15b.** Se esta release **fechou o DoD**, mover os artefatos SDD da família
     para `sdd/archive/{F}/` com `git mv` — um a um, nunca glob que arraste features de nome
