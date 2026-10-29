@@ -203,7 +203,8 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 **Veredito do avaliador (C1):** {PASS | NEEDS_WORK | N.A. (1 camada)} · ciclos: {n} · achados: {n} · `AVALIACAO_{FEATURE}_{YYYYMMDD-HHMM}.md`
 
 > O `sdd/bin/report-lint.py` nega `PASS`/`NEEDS_WORK` sem o `AVALIACAO_*.md` existente em
-> `sdd/reviews/`. A contagem de achados é insumo da medição P2→P3 (§6.3 do PLANO).
+> `sdd/reviews/`. A contagem de achados mede a calibração do avaliador
+> (`.agents/skills/sdd-build/references/contexto-fresco.md`).
 
 ---
 

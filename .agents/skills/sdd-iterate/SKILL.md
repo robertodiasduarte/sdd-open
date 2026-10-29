@@ -41,11 +41,17 @@ metadata:
    (versão · data · "iterate" · o que mudou e por quê, 1 linha).
 4. **Verify Gate (só DEFINE):** se a mudança toca critério de aceite, atualizar o bloco
    `## Verify Gate` no mesmo passe e rodar as duas chamadas, nesta ordem:
-   - `sdd/bin/verify-gate.sh --print <DEFINE>` — o bloco continua parseável (exit 0; 64 = bloco
-     ausente ou malformado). O `--print` é isento de marcador: sozinho, nunca vê dúvida aberta.
+   - `sdd/bin/verify-gate.sh --print <DEFINE>` — mostra o bloco que o gate leu (exit 0) ou acusa
+     bloco ausente (64). Não valida `kind` nem `cmd` e é isento de marcador: sozinho, nunca vê
+     dúvida aberta.
    - `sdd/bin/verify-gate.sh <DEFINE>` — exit 5 = marcador ativo de ambiguidade: parar e voltar
-     ao Define. Sem marcador, o gate roda o `cmd` (leva o tempo dos testes); aqui só importa se
-     saiu 5 — 0, 2, 3 ou 4 dizem do código, que pode nem existir ainda.
+     ao Define. 64 = bloco inválido (`kind` ou `cmd`): corrigir o `## Verify Gate` neste passe.
+     Sem marcador, o gate **roda o `cmd`**: 0, 2 e 3 dizem do código, que pode nem existir
+     ainda, e 4 é gate manual-ux — nenhum deles é deste passo, e a seta `→` do vermelho não vale
+     aqui (o iterate não mexe em código).
+     ⚠️ Com `kind` `smoke` ou `eval`, ou `cmd` que grava, envia ou cobra, não rode esta chamada:
+     procure o marcador fora de bloco de código, na forma canônica de
+     `sdd/templates/fragments/CLARIFY.md` — achou, pare e volte ao Define.
 
    Mudança de escopo sem gate correspondente é DEFINE mentindo.
 5. **Cascata:** DEFINE alterado → o DESIGN ainda vale? DESIGN alterado → há código construído

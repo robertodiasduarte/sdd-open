@@ -88,7 +88,7 @@ Measurable outcomes (must include numbers):
 > ```
 >
 > Enquanto houver marcador ativo, `sdd/bin/verify-gate.sh` devolve **exit 5** e
-> `/build` e a fase Release param. Resolver via AskUserQuestion (≤5 por rodada),
+> `/build` e a fase Release param. Resolver pelo protocolo de `fragments/CLARIFY.md` (≤5 por rodada),
 > integrar a resposta NO CORPO da spec e logar abaixo.
 
 ### Session {YYYY-MM-DD}

@@ -1,6 +1,6 @@
 # Fragmento — EARS (gramática dos Acceptance Tests)
 
-> Reusável. Lido pelo `/define` (Step 4.5) e pelo `/bug-pipeline` (DEFINE de fix).
+> Reusável. Lido pela `sdd-define` (passo 4).
 > EARS = Easy Approach to Requirements Syntax (Alistair Mavin, Rolls-Royce 2009).
 > **Por quê:** cada padrão mapeia mecanicamente num tipo de teste do Verify Gate, e o
 > padrão *Unwanted* obriga a enumerar o comportamento indesejado ANTES do build — a

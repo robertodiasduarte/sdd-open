@@ -1,6 +1,6 @@
 # Fragmento — Clarify (protocolo do token de ambiguidade)
 
-> Reusável. Lido pelo `/define` (Step 5.4). **Regra de honestidade:** diante de ambiguidade,
+> Reusável. Lido pela `sdd-define` (passo 6). **Regra de honestidade:** diante de ambiguidade,
 > o agente **marca, nunca chuta** — suposição silenciosa é a classe de erro mais cara do
 > funil (só aparece no smoke ou em prod).
 

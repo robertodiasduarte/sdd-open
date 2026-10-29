@@ -57,7 +57,11 @@ cmd='npm test -- src/x.test.ts'
 ```
 
 **`Resultado` aceita `true` \| `false`** (também ✅/❌, mas prefira o booleano). O lint só
-inspeciona linhas com `true`/✅ — `false` passa livre (é o default honesto).
+inspeciona linhas com `true`/✅/`pass`/`verde` — `false` passa livre (é o default honesto).
+
+O lint acha a tabela pelo **cabeçalho**: uma coluna que começa com `Evid` e outra com `Resultado`,
+`Status` ou `Passou` (o do template). Cabeçalho em inglês (`Result | Evidence`) não é
+reconhecido: o lint não confere linha nenhuma e sai 0. Use o cabeçalho do template.
 
 ### O que conta como evidência para `true` (uma das três)
 
@@ -80,7 +84,7 @@ Migration listada nos arquivos do relatório exige a linha dela, com o mesmo cam
 banco é o aluno. `exit 0` na célula é negado: o comando ter saído bem não diz que a migration está
 no banco certo. Procedimento: `.agents/skills/sdd-build/references/aplicar-migration.md`.
 
-### O que o lint NEGA sempre
+### O que o lint NEGA (na tabela de cabeçalho reconhecido)
 
 - `true` sem nenhuma das três formas acima.
 - Evidência contendo `por raciocínio`, `by reasoning`, `by inspection`, `deve funcionar`,
@@ -97,6 +101,7 @@ no banco certo. Procedimento: `.agents/skills/sdd-build/references/aplicar-migra
 3. **`manual-ux` não é atalho.** Recibo humano vale para o que um humano percorreu; se o
    avaliador C1 clicou, cite o `AVALIACAO_*.md` — não o recibo.
 4. **O lint falha FECHADO em erro interno**: exceção sai ≠0 com traceback, e relatório que não
-   saiu 0 no `report-lint.py` não está conferido — nunca declare sucesso por cima dele.
+   saiu 0 no `report-lint.py` não está conferido — nunca declare sucesso por cima dele. E o 0
+   só vale com a tabela no cabeçalho do template (ver acima).
 5. **Bypass é decisão do humano responsável**, não do agente: pular o `report-lint.py`
    desliga a conferência — e isso vai declarado no BUILD_REPORT e no resumo da sessão.

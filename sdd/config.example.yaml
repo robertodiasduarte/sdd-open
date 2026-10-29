@@ -16,7 +16,7 @@ project:
   default_branch: main
 
 # Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho
-# do avaliador de contexto fresco.
+# do avaliador de contexto fresco. `sql` também diz o que conta como migration (report-lint.py).
 # Exemplos: sql: "db/migrations/**" · api: "src/api/**" · ui: "src/ui/**" · infra: "deploy/**"
 layers:
   api: ""

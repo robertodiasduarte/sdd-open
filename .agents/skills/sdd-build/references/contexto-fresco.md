@@ -39,7 +39,7 @@ o cmd do gate cobre este AT? o aceite é circular (prova a fiação, não o comp
 efeito é observável? Proponha ≤5 ajustes, cada um com: alvo · classe · problema · redação em
 EARS · como verificar (comando/sonda). Rode as sondas read-only que puder AGORA (git diff,
 grep, execução das fixtures) e cite o que mediu. Não edite código nem documento do projeto:
-o único arquivo que você pode criar, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.log`
+o único arquivo que você grava de propósito, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.log`
 (1ª linha `$ comando`, saída verbatim). Devolva o bloco <<<CONTRATO … >>>.
 ```
 
@@ -57,7 +57,7 @@ NAO_VERIFICADO, nunca PASS. Só leitura em produção (GET, consultas SELECT, ro
 nada que grave ou envie. Devolva <<<AVALIACAO … >>> com: veredito PASS | NEEDS_WORK |
 PASS_PENDENTE_RECIBO, tabela por AT (sonda · esperado · observado · resultado) e ACHADOS
 (cada um com reprodução exata). Não edite código nem documento do projeto: o único arquivo
-que você pode criar, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.log` (1ª linha
+que você grava de propósito, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.log` (1ª linha
 `$ comando`, saída verbatim).
 ```
 
