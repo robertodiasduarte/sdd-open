@@ -100,9 +100,12 @@ dom() { printf '%s' "$T/$1/sdd/kb/dom"; }
 
 # ── o RULE_MAP do exemplo, antes dos casos: derivado, ele derrubaria o caso aceito com o diagnóstico errado
 rm -f "$T/saida"
-"$PY" -B "$RM" rule-map --check "$ASSETS/example-kb-normativo" > "$T/saida" 2>&1 \
-  || falha "RULE_MAP do exemplo" "assets/example-kb-normativo/RULE_MAP.md não bate com rules/" \
-     "rode python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map .agents/skills/sdd-kb/assets/example-kb-normativo"
+if ! "$PY" -B "$RM" rule-map --check "$ASSETS/example-kb-normativo" > "$T/saida" 2>&1; then
+  grep -qF "RULE_MAP.md differs from rules/" "$T/saida" \
+    || falha "kb_normativo.py" "o script não respondeu ao rule-map --check (saída acima)" "reinstale a skill sdd-kb"
+  falha "RULE_MAP do exemplo" "assets/example-kb-normativo/RULE_MAP.md não bate com rules/" \
+    "rode python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map .agents/skills/sdd-kb/assets/example-kb-normativo"
+fi
 
 # ── aceitas ───────────────────────────────────────────────────────────────────
 projeto geral example-kb geral

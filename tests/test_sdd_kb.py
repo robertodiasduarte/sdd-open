@@ -104,6 +104,15 @@ class Gate(Sandbox):
         self.assertIn("kb_normativo.py rule-map", out.split("RESULTADO: VERMELHO", 1)[1])
         self.assertNotIn("caso bom REJEITADO", out)
 
+    def test_kb_normativo_quebrado_tem_diagnostico_proprio(self):
+        copia = self.copia_da_skill()
+        (copia / "scripts/kb_normativo.py").write_text("raise SystemExit(2)\n", encoding="utf-8")
+        rc, out, err = self.gate(copia / "scripts/gate.sh")
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("🛑 kb_normativo.py:", out)
+        self.assertNotIn("não bate com rules/", out)
+        self.assertIn("→ reinstale a skill sdd-kb", out)
+
     def test_recusa_a_copia_gerada_pelo_init(self):
         p = self.repo("projeto")
         self.escreve(p, "README.md", "# projeto\n")
@@ -183,6 +192,16 @@ class Strict(Sandbox):
                 rc, out = self.valida("--strict")
                 self.assertEqual(rc, 2, out)
                 self.assertIn("is outside the project root", out)
+
+    def test_link_dentro_do_projeto_para_fora_passa(self):
+        self.troca(REGRA, "implementacao: null", "implementacao: src/engine.py:vbc")
+        self.troca(REGRA, "teste: null", "teste: tests/test_link.py::t")
+        fora = self.tmp / "comum.py"
+        fora.write_text("# compartilhado\n", encoding="utf-8")
+        (self.raiz / "tests").mkdir()
+        (self.raiz / "tests/test_link.py").symlink_to(fora)
+        rc, out = self.valida("--strict")
+        self.assertEqual(rc, 0, out)
 
     def test_sem_strict_nao_confere_teste(self):
         self.troca(REGRA, "implementacao: null", "implementacao: src/engine.py:vbc")

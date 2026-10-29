@@ -40,6 +40,7 @@ def raiz_do_projeto(define: Path) -> Path:
 def valor_do_campo(texto: str):
     """O valor da célula KB Domains do ## Technical Context (sem crases nem espaço nas pontas), ou None."""
     dentro = False
+    texto = texto.lstrip("\ufeff")  # um BOM no início não pode esconder o título da 1ª seção
     for ln in CERCA.sub(lambda m: "\n" * m.group(0).count("\n"), texto).splitlines():
         if ln.startswith("## "):
             dentro = ln.strip() == "## Technical Context"
@@ -122,9 +123,9 @@ def lint(define: Path, texto: str):
     linhas = ["✅ %s: KB Domains válido (%s)" % (define, ", ".join(nomes))]
     for n in nomes:
         rm = kb / n / "RULE_MAP.md"
-        if not rm.is_file():
-            continue
         try:
+            if not rm.is_file():  # pasta do domínio ilegível também cai no aviso, nunca em traceback
+                continue
             linhas += ["  %s: %s → %s" % (n, regra, teste) for regra, teste in testes_do_rule_map(rm)]
         except (OSError, UnicodeDecodeError) as e:
             linhas.append("⚠️ %s/RULE_MAP.md: não consegui ler (%s)" % (n, e))

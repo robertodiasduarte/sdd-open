@@ -21,6 +21,7 @@ Exit codes: 0 pass, 2 fail, 64 usage error. WARN lines never change the exit cod
 """
 import datetime as _dt
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -295,8 +296,10 @@ def check_normativo(root, concepts, patterns, strict):
                 ok = fail(f"{name}: implementacao {impl!r} has no teste — --strict requires the test the Verify Gate runs (RULE_TEMPLATE.md)") and ok
             elif teste:
                 arquivo = teste.split(":", 1)[0].strip()
-                alvo = (projeto / arquivo).resolve()
-                if Path(arquivo).is_absolute() or projeto.resolve() not in alvo.parents:
+                # Contido pela forma do caminho (normpath), não pelo destino: um teste do projeto que é
+                # link simbólico para fora continua dentro da árvore.
+                alvo = Path(os.path.normpath(str(projeto / arquivo)))
+                if Path(arquivo).is_absolute() or Path(os.path.normpath(str(projeto))) not in alvo.parents:
                     ok = fail(f"{name}: teste {teste!r}: {arquivo} is outside the project root {projeto} — use a path relative to it") and ok
                 elif not alvo.is_file():
                     ok = fail(f"{name}: teste {teste!r}: {arquivo} not found from the project root {projeto}") and ok

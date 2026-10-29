@@ -164,6 +164,27 @@ class KbDominios(Sandbox):
         self.assertIn("RESULTADO: VERMELHO", err)
         self.assertNotIn("Traceback", out + err)
 
+    @unittest.skipIf(hasattr(os, "geteuid") and os.geteuid() == 0, "root lê pasta sem permissão")
+    def test_dominio_ilegivel_nao_da_traceback(self):
+        define = self.projeto("fiscal")
+        dom = self.tmp / "sdd/kb/fiscal"
+        dom.chmod(0)
+        try:
+            rc, out, err = self.lint(define)
+        finally:
+            dom.chmod(0o755)
+        self.assertNotIn("Traceback", out + err)
+        self.assertIn(rc, (0, 1), out + err)
+        self.assertIn("RESULTADO:", out + err)
+
+    def test_bom_no_inicio_nao_esconde_a_secao(self):
+        p = self.tmp / "sdd/features/DEFINE_X.md"
+        self.projeto("fiscal")
+        p.write_text("\ufeff## Technical Context\n\n| **KB Domains** | fiscal | x |\n", encoding="utf-8")
+        self.assertEqual(p.read_bytes()[:3], b"\xef\xbb\xbf")
+        rc, out, err = self.lint(p)
+        self.assertEqual(rc, 0, out + err)
+
     def test_arquivo_ilegivel_e_1_sem_traceback(self):
         p = self.tmp / "sdd/features/DEFINE_X.md"
         p.parent.mkdir(parents=True)
