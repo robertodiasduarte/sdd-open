@@ -53,6 +53,8 @@
 - 2026-10-29 — Revisão do DESIGN em contexto fresco (modo contrato): NEEDS_WORK, 2 HIGH, 4 MEDIUM, 2 LOW, aplicadas antes do build. H1: a cópia que o `init --vendors claude` gera ganha 2 linhas `sdd-open:generated` em todo arquivo não-JSON, e o exemplo normativo reprovava lá (SHA-256 e RULE_MAP) — os textos passam a apontar `.agents/skills/sdd-kb/…`, o gate recusa a cópia gerada (AT-017 novo) e `.gitattributes` com `-text` só em `fontes/`. H2: o passo 10 sem bloco cercado, para o `comandos-intactos` bater. DESIGN v1.1, DEFINE v1.3.
 - 2026-10-29 — Build da F5: a sabotagem do `kb_normativo.py` não deixou teste vermelho (o `rule-map --check` só tinha o lado verde) → `RuleMapCheck` em `7e5b25c`. Ciclo 1 da revisão do build sobre `7e5b25c`: NEEDS_WORK, 0 HIGH, 3 MEDIUM, 6 LOW, todos aplicados em `0e0dba5` (KB Domains só do `## Technical Context`; RULE_MAP do exemplo conferido antes dos casos; testes de caso bom rejeitado e de outro motivo; `teste` fora da raiz reprova). Ciclo 2 sobre `0e0dba5`: **PASS** (15/15 mutações reversas pegas), 3 LOW novos aplicados em `7e19462`.
 - 2026-10-29 — Roberto: "release do sdd-open autorizado" (sem escolher versão ⇒ patch automático, contra a alternativa `v2.3.0` por tag manual). CI do PR #7 verde (run 40969129265: `gate` e `Testes no piso (macOS)`). Push fast-forward `2fcdda1..7e19462` em `main`; PR #7 MERGED; run `release` 40970012304 com `testes` e `testes-macos` antes do `Publicar release`; publicou `v2.2.6`.
+- 2026-10-29 — Roberto perguntou se F6 e F7 cabem na mesma sessão. Recomendação: não. A regra do par (plano, seção 10) exige duas frentes pequenas que não toquem os mesmos arquivos: a F7 tem 13 itens (E1–E13), 5 scripts novos, `verify-gate.sh --trace` e 3 decisões (D4, D11, E6), ~3 dias no PORTE; a F6 adapta um guia de 494 linhas; as duas mexem na `sdd-build` e no `docs/roadmap.md`. Roberto: "prepare o prompt para F6. documente tudo. /sdd-new-session F6" — a F6 vai sozinha na sessão 4.
+- 2026-10-29 — Frente F6 aberta com a `sdd-new-session` (starter 1.3.0, em `~/.claude/skills/`): worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs`, branch `feat/f6-docs` nascida de `origin/main` = `7e19462`, nomes no padrão da família (não o `../sdd-open-frentes/<slug>` padrão da skill); os artefatos SDD da branch `docs/incorporar-starter` já copiados para lá, fora do commit. A skill gravou `sdd/ambiente.md` no checkout principal (`/Users/robertoduarte/rdd-public/sdd-open`), não rastreado: é nota local da skill do starter, não do open (Decisão 4 da frente: o open usa os slots do `sdd/config.yaml`).
 
 ---
 
@@ -107,7 +109,7 @@
 
 ### Próximos passos
 
-1. **Sessão 4 — F6 Docs** (prompt em `sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`), numa worktree nova a partir de `origin/main` = `7e19462`. Pronto quando: `BRAINSTORM_F6_*.md` gravado; define, design, build e Release (ou push sem Release, se a F6 só tocar `docs/` e `README.md`) com o hash conferido quando houver Release.
+1. **Sessão 4 — F6 Docs** (prompt em `sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`), na worktree já aberta `/Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs` (branch `feat/f6-docs`, de `origin/main` = `7e19462`, com os artefatos SDD copiados). Pronto quando: `BRAINSTORM_F6_*.md` gravado; define, design, build e Release (ou push sem Release, se a F6 só tocar `docs/` e `README.md`) com o hash conferido quando houver Release.
 2. **F7 → F14** e **F15** (plano, seções 8 e 10).
 
 ### Alertas — o que não quebrar

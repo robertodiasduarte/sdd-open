@@ -4,6 +4,20 @@ Esta sessão começa numa **worktree limpa**. Os artefatos SDD da família (feat
 
 ## Preparar a worktree (antes de ler qualquer coisa)
 
+A frente já foi aberta pela `sdd-new-session` no fim da sessão 3: worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs`, branch `feat/f6-docs` nascida de `origin/main` = `7e19462`, com os artefatos SDD da branch `docs/incorporar-starter` já copiados (fora do commit). Abra o agente **nessa pasta** e confira:
+
+```bash
+cd /Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs
+git branch --show-current                                                 # esperado: feat/f6-docs
+git status --short | head -4                                              # esperado: só "?? sdd/…"
+git log --oneline -1                                                      # esperado: 7e19462 ou mais novo
+ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md
+GIT_TERMINAL_PROMPT=0 git fetch -q origin && git log --oneline -1 origin/main   # se main andou, rebase antes de começar
+GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.6                      # base do check-versions
+```
+
+Se a pasta não existir (alguém a removeu), recrie do zero:
+
 ```bash
 cd /Users/robertoduarte/rdd-public/sdd-open
 GIT_TERMINAL_PROMPT=0 git fetch -q origin
@@ -11,12 +25,11 @@ git worktree add /Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs -b feat/f6-
 cd /Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs
 git checkout origin/docs/incorporar-starter -- sdd/features sdd/handoffs sdd/reports sdd/reviews
 git rm -r -q --cached sdd/features sdd/handoffs sdd/reports sdd/reviews   # ficam no disco, fora do commit
-git status --short | head -4                                              # esperado: só "?? sdd/…"
-git log --oneline -1                                                      # esperado: 7e19462 ou mais novo
-GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.6                      # base do check-versions
 ```
 
-Se `/Users/robertoduarte/rdd-public/sdd-open` não for o clone de `https://github.com/robertodiasduarte/sdd-open.git`, use a worktree da sessão 3 como base: `git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento worktree add …`. Não trabalhe nas worktrees antigas (`sdd-open-incorporar-starter`, `sdd-open-w0-m1`, `sdd-open-f4-conversa`, `sdd-open-f5-conhecimento`).
+Se `/Users/robertoduarte/rdd-public/sdd-open` não for o clone de `https://github.com/robertodiasduarte/sdd-open.git`, use a worktree da sessão 3 como base: `git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento worktree add …`. Não trabalhe nas worktrees antigas (`sdd-open-incorporar-starter`, `sdd-open-w0-m1`, `sdd-open-f4-conversa`, `sdd-open-f5-conhecimento`). O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
+
+**Por que só a F6:** o Roberto perguntou se F6 e F7 cabiam juntas; a regra do par (plano, seção 10) não se aplica, porque a F7 é grande (13 itens, 5 scripts, `verify-gate.sh --trace`, 3 decisões) e as duas tocam a `sdd-build` e o `docs/roadmap.md`. A F7 fica para a sessão 5.
 
 Depois, leia nesta ordem:
 - `sdd/features/PLANO_F4_F15_CONSOLIDADO.md`:
