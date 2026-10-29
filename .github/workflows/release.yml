@@ -64,20 +64,27 @@ jobs:
           PUBLISH_GATE_MODE: ci
         run: bash scripts/publish-gate.sh "$GITHUB_WORKSPACE"
 
-      # A published skill is code the agent obeys: a change that hides text (invisible or bidi
-      # Unicode) or fetches and runs remote code must not reach a Release. Fail-closed on any hit.
-      # U+200D (zero-width joiner) is left out: it glues emoji such as the one in verify-gate.sh.
-      # The tag block U+E0000–E007F is in: it carries text a reader cannot see but a model reads.
+      # A published skill is code the agent obeys: a change that hides text (invisible, bidi, tag or
+      # variation-selector Unicode) or fetches and runs remote code must not reach a Release.
+      # Fail-closed: any hit, an unreadable file, or a target with nothing to read fails the step.
+      # Left out on purpose: U+200D and U+FE0F, which build emoji (the skills use them). Known gaps
+      # of a line heuristic: `| tee x | sh`, a pipe split by `\` across lines, PowerShell `iex`.
       - name: Skill integrity (invisible Unicode, remote code piped to a shell)
         run: |
           python3 -B - .agents/skills <<'PY'
           import pathlib, re, sys
-          invisivel = re.compile("[\u200b\u200c\u200e\u200f\u202a-\u202e\u2060-\u2064\u2066-\u2069\ufeff\U000e0000-\U000e007f]")
-          remoto = re.compile(r"(curl|wget)[^\n|]*\|\s*(sudo\s+)?(ba|z)?sh\b"
-                              r"|base64\s+(-d|--decode)[^\n|]*\|\s*(sudo\s+)?(ba|z)?sh\b"
-                              r"|eval\s+\"?\$\((curl|wget)")
-          achados = 0
-          for p in sorted(pathlib.Path(sys.argv[1]).rglob("*")):
+          invisivel = re.compile("[\u00ad\u034f\u061c\u115f-\u1160\u180e\u200b\u200c\u200e\u200f\u2028-\u202e\u2060-\u2064\u2066-\u2069\u3164\ufe00-\ufe0e\ufeff\uffa0\ufff9-\ufffb\U000e0000-\U000e007f\U000e0100-\U000e01ef]")
+          interprete = r"(sudo(\s+-\S+)*\s+)?(\S*/)?(env\s+)?((ba|z|da|k)?sh|python[0-9.]*|perl|ruby|node)\b"
+          remoto = re.compile(r"(curl|wget)\b[^\n|]*\|\s*" + interprete
+                              + r"|base64\s+(-d|-D|--decode)\b[^\n|]*\|\s*" + interprete
+                              + r"|eval\s+[\"']?(\$\(|`)\s*(curl|wget)"
+                              + r"|(ba|z|da|k)?sh\s+(-c\s+[\"']?\$\(|<\()\s*(curl|wget)"
+                              + r"|(source|\.)\s+<\(\s*(curl|wget)")
+          raiz = pathlib.Path(sys.argv[1])
+          if not raiz.is_dir():
+              sys.exit(f"FAIL {raiz}: not a directory — nothing was scanned")
+          achados = lidos = 0
+          for p in sorted(raiz.rglob("*")):
               if not p.is_file():
                   continue
               try:
@@ -86,14 +93,17 @@ jobs:
                   print(f"FAIL {p}: not UTF-8 text")
                   achados += 1
                   continue
-              for n, linha in enumerate(texto.splitlines(), 1):
+              lidos += 1
+              for n, linha in enumerate(texto.split("\n"), 1):
                   if invisivel.search(linha):
-                      print(f"FAIL {p}:{n}: invisible/bidi Unicode {[hex(ord(c)) for c in invisivel.findall(linha)]}")
+                      print(f"FAIL {p}:{n}: invisible Unicode {[hex(ord(c)) for c in invisivel.findall(linha)]}")
                       achados += 1
                   if remoto.search(linha):
-                      print(f"FAIL {p}:{n}: remote code piped to a shell: {linha.strip()[:120]}")
+                      print(f"FAIL {p}:{n}: remote code run by a shell: {linha.strip()[:120]}")
                       achados += 1
-          print(f"skill integrity: {achados} finding(s) in {sys.argv[1]}")
+          if not lidos:
+              sys.exit(f"FAIL {raiz}: no text file read — nothing was scanned")
+          print(f"skill integrity: {achados} finding(s) in {lidos} file(s) under {raiz}")
           sys.exit(1 if achados else 0)
           PY
 
@@ -137,14 +147,27 @@ jobs:
       - name: Install gitleaks (darwin)
         run: |
           mkdir -p "$RUNNER_TEMP/bin"
-          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_darwin_arm64.tar.gz \
+          curl -fsSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_darwin_arm64.tar.gz \
             | tar -xz -C "$RUNNER_TEMP/bin" gitleaks
+          "$RUNNER_TEMP/bin/gitleaks" version
           echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
 
-      - name: Floor versions
+      # Asserted, not printed: if the image stops shipping Python 3.9 or bash 3.2, the floor is no
+      # longer proved and the job says so. Scripts that call `python3` from PATH (bin/sdd-open.sh,
+      # bin/lib/merge.sh) get the floor too, not the newer Homebrew one.
+      - name: Floor versions (asserted) and python3 of the floor first in PATH
         run: |
-          /usr/bin/python3 --version
-          /bin/bash -c 'echo "bash $BASH_VERSION"'
+          /usr/bin/python3 -c 'import sys; print(sys.version); sys.exit(sys.version_info[:2] != (3, 9))'
+          /bin/bash -c 'echo "bash $BASH_VERSION"; [ "${BASH_VERSINFO[0]}" = 3 ]'
+          mkdir -p "$RUNNER_TEMP/piso"
+          printf '#!/bin/sh\nexec /usr/bin/python3 "$@"\n' > "$RUNNER_TEMP/piso/python3"
+          chmod +x "$RUNNER_TEMP/piso/python3"
+          echo "$RUNNER_TEMP/piso" >> "$GITHUB_PATH"
+
+      - name: python3 in PATH is the floor
+        run: |
+          command -v python3
+          python3 -c 'import sys; print(sys.version); sys.exit(sys.version_info[:2] != (3, 9))'
 
       - name: Unit tests on the floor (/usr/bin/python3, SDD_TEST_BASH=/bin/bash)
         env:
