@@ -62,6 +62,11 @@ class ReportLint(Sandbox):
                 self.assertEqual(rc, 1, out)
                 self.assertIn("RESULTADO: VERMELHO", out)
 
+    def test_declaracao_nega_mesmo_com_log_valido_na_celula(self):
+        self.log("sdd/reports/evidence/EXEMPLO/AT-001.log")
+        rc, out = self.lint("| AT-001 | soma | true | deve funcionar, ver `evidence/EXEMPLO/AT-001.log` |\n")
+        self.assertEqual(rc, 1, out)
+
     def test_arquivo_inexistente(self):
         rc, out = self.lint("| AT-001 | soma | true | `evidence/EXEMPLO/AT-009.log` |\n")
         self.assertEqual(rc, 1, out)
