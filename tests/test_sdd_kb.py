@@ -150,6 +150,25 @@ class Strict(Sandbox):
                 self.assertEqual(rc, 64, out + err)
 
 
+class RuleMapCheck(Sandbox):
+    """rule-map --check: 0 com o RULE_MAP em dia, 2 quando ele derivou de rules/ (sabotagem da F5)."""
+
+    def test_check_dos_dois_lados(self):
+        kb = self.tmp / "dom"
+        shutil.copytree(EXEMPLO_NORM, kb)
+        rc, out, err = self.roda([PYTHON, "-B", RULEMAP, "rule-map", "--check", kb], self.tmp)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("PASS: RULE_MAP.md matches rules/", out)
+        regra = kb / REGRA
+        texto = regra.read_text(encoding="utf-8")
+        self.assertIn("teste: null", texto)
+        regra.write_text(texto.replace("teste: null", "teste: tests/test_x.py", 1), encoding="utf-8")
+        rc, out, err = self.roda([PYTHON, "-B", RULEMAP, "rule-map", "--check", kb], self.tmp)
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("FAIL: RULE_MAP.md differs from rules/", out)
+        self.assertIn("python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map", out)
+
+
 class TextoDaSkill(unittest.TestCase):
     """A skill portada fala do projeto do open: sdd/kb/ e os scripts em .agents/skills/sdd-kb/."""
 
