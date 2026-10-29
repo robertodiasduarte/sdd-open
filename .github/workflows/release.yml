@@ -1,0 +1,117 @@
+name: release
+
+# A change to the framework that reaches main publishes the next Release on its own: tag vX.Y.Z
+# (latest + 1 patch), the package sdd-open-vX.Y.Z.tar.gz and SHA256SUMS.txt. A vX.Y.Z tag pushed
+# by hand (a minor or major with a written message) becomes a Release too.
+#
+# ⛔ A tag created with the GITHUB_TOKEN does not trigger another workflow ("events triggered by
+# the GITHUB_TOKEN will not create a new workflow run"). The tag and the Release are therefore born
+# in the SAME job (`gh release create --target` creates the tag): a design of "push the tag and let
+# another workflow publish" would create the tag and never publish, with nothing in the log.
+#
+# Two jobs: `testes` holds a read-only token; `release` (needs: testes) is the only one with
+# contents: write. A red test ⇒ `release` is skipped and no tag is created. Nothing here uses
+# continue-on-error or `|| true`: a check that cannot fail is not a check.
+#
+# GitHub does not evaluate `paths` on tag pushes: a v* tag always runs.
+# The version logic lives in scripts/next-version.sh, covered by tests/test_next_version.py.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.agents/skills/**'
+      - 'bin/**'
+      - 'sdd/bin/**'
+      - 'sdd/templates/**'
+      - 'sdd/fixtures/**'
+      - 'sdd/playbook.md'
+      - 'sdd/config.example.yaml'
+      - 'AGENTS.md.tmpl'
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  testes:
+    name: Testes (só leitura)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0   # a shallow checkout has no tags, and the version and the base come from them
+
+      - name: Install gitleaks
+        run: |
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+            | tar -xz -C /usr/local/bin gitleaks
+          gitleaks version
+
+      - name: Run publish gate
+        env:
+          PUBLISH_GATE_MODE: ci
+        run: bash scripts/publish-gate.sh "$GITHUB_WORKSPACE"
+
+      - name: Unit tests
+        run: python3 -B -m unittest discover -s tests -p 'test_*.py'
+
+      # Fail-closed: a skill that changed without bumping metadata.version does not become a
+      # Release, because the copy people install would claim a version its content no longer has.
+      - name: Version gate (against the previous release)
+        run: |
+          set -euo pipefail
+          proxima="$(bash scripts/next-version.sh)"
+          printf '%s\n' "$proxima"
+          base="$(printf '%s\n' "$proxima" | sed -n 's/^BASE=//p')"
+          python3 scripts/check-versions.py --base "$base" --base-obrigatoria
+
+  release:
+    name: Publicar release
+    needs: testes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write   # only here: create the tag and the Release
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+
+      - name: Compute version
+        id: v
+        run: |
+          set -euo pipefail
+          bash scripts/next-version.sh | tee -a "$GITHUB_OUTPUT"
+
+      # Integrity and date stamp: the hash proves the package was not swapped, and the Release
+      # date (which the author does not write) proves this content existed here on that day.
+      # Whoever downloads checks it with: shasum -a 256 -c SHA256SUMS.txt
+      - name: Build package and checksums
+        env:
+          TAG: ${{ steps.v.outputs.TAG }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          git archive --format=tar.gz --prefix="sdd-open-$TAG/" -o "dist/sdd-open-$TAG.tar.gz" "$GITHUB_SHA"
+          cd dist && sha256sum "sdd-open-$TAG.tar.gz" > SHA256SUMS.txt && cat SHA256SUMS.txt
+
+      # A tag push and a main push can carry the same commit; the second run finds the Release
+      # already there and stops green instead of failing on a duplicate.
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.v.outputs.TAG }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "::notice::Release $TAG already exists — nothing to publish"
+            exit 0
+          fi
+          gh release create "$TAG" --target "$GITHUB_SHA" --title "sdd-open $TAG" --generate-notes \
+            "dist/sdd-open-$TAG.tar.gz" dist/SHA256SUMS.txt

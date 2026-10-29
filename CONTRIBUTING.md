@@ -14,7 +14,9 @@ The practical consequences:
 - **Pull requests cannot be merged directly.** A merge here would be overwritten by the next
   export. A PR that is accepted gets reimplemented upstream and arrives in the following release,
   with attribution in the commit and the release notes.
-- **Releases are periodic, not continuous.** There is no promise of cadence.
+- **Releases are periodic, not continuous.** There is no promise of cadence. Each export that
+  changes the framework publishes a GitHub Release on its own, with `sdd-open-vX.Y.Z.tar.gz` and
+  `SHA256SUMS.txt` (check the download with `shasum -a 256 -c SHA256SUMS.txt`).
 - **The private layer never appears here.** Concrete landmine rules, domain skills and internal
   conventions are excluded by an allowlist, not by a filter.
 
@@ -42,7 +44,12 @@ generated-adapter model, open an issue first. Those are the framework's spine.
 - Run the fixtures: `sdd/bin/verify-gate.sh` against the three in `sdd/fixtures/`, expecting
   `0 / 5 / 64`. Run `sdd/bin/playbook-lint.sh --self-test`. A PR that changes those expectations
   changes the contract, which is an issue-first discussion.
+- Run the unit tests: `python3 -B -m unittest discover -s tests -p 'test_*.py'` (no network,
+  Python ≥ 3.9; `SDD_TEST_BASH=/bin/bash` runs them on the bash 3.2 of macOS). Every contract a
+  script documents has a test there; a change that turns one red is a contract change.
 - Run `bash -n` on every script and `python3 sdd/bin/skill-lint.py` on every `SKILL.md` you touch.
+- A skill you touch bumps `metadata.version` in its frontmatter: `python3 scripts/check-versions.py
+  --base <last v* tag>` fails otherwise, and so does CI.
 - Keep examples in a neutral domain (e-commerce, SaaS, blog). No real personal data, no real
   hostnames, no credentials — not even fake-looking ones.
 - **bash 3.2**: no `declare -A`, no `mapfile`, no `${var,,}`; `${VAR}` with braces before any

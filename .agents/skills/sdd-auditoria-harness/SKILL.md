@@ -4,6 +4,7 @@ description: "Audita read-only o harness SDD de um repositório para FAXINA E DE
 license: MIT
 metadata:
   author: Roberto Dias Duarte
+  version: "1.0.0"
 ---
 
 # Auditoria Read-Only do Harness SDD

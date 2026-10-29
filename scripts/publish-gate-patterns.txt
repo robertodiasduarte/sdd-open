@@ -21,6 +21,13 @@
 [A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}
 # International phone numbers written out.
 \+[0-9]{2}[ -]?\(?[0-9]{2}\)?[ -]?[0-9]{4,5}[ -]?[0-9]{4}
+# Brazilian national ID numbers with their usual punctuation (CPF 000.000.000-00, CNPJ
+# 00.000.000/0000-00): the punctuation breaks the digit run, so the pattern above misses them.
+\b[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}\b
+\b[0-9]{2}\.[0-9]{3}\.[0-9]{3}/[0-9]{4}-[0-9]{2}\b
+# Brazilian phone numbers without the +55 prefix: area code, then a 9-digit mobile or 8-digit
+# landline with the hyphen, e.g. (11) 9xxxx-xxxx.
+\(?\b[0-9]{2}\)?[ -]?(9[0-9]{4}|[2-5][0-9]{3})-[0-9]{4}\b
 
 # --- Internal knowledge-layer references -----------------------------------
 # Wiki-style links to private memory files.
