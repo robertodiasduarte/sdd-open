@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.0.0"
+  version: "2.1.0"
   fase: "3"
 ---
 
@@ -87,6 +87,14 @@ critério que falhou (verbatim), o erro (verbatim) e a instrução "trate como t
 assuma que a tentativa anterior estava quase certa". 3ª falha → **parar** e reportar; nunca
 contornar o critério.
 
+### 4b. Migration (só se o manifest tem)
+
+Manifest com `*.sql`, pasta `migrations/`, caminho que casa `layers.sql` do config ou ação descrita
+como migration ⇒ leia `references/aplicar-migration.md` e siga-o **antes** do Verify Gate: descobrir
+ferramenta e projeto (nome **e** ref), parar na divergência, uma confirmação só com o SQL inteiro,
+aplicar, e **provar por leitura**. `exit 0` não prova (LM-004). Sem migration, o passo não existe e
+não se fala de banco.
+
 ### 5. Validação
 
 **5a. Verify Gate (bloqueante):** `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`
@@ -135,7 +143,9 @@ python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md   # exit 0 
 Seções obrigatórias: Seleção de modo · Contrato de aceite · Landmines lidas no build ·
 Candidatos ao playbook (bloco literal `<<<CANDIDATO_PLAYBOOK … >>>` com `evidencia:`, ou
 "nenhum candidato") · Verify Gate (exit + recibo se manual-ux) · Veredito do avaliador ·
-Advisor Ledger (se houve review) · Drift detectado (mesmo que "nenhum").
+Advisor Ledger (se houve review) · Drift detectado (mesmo que "nenhum") · Migrations aplicadas
+(se o manifest tem migration: projeto nome · ref, data e prova por leitura — o `report-lint` reprova
+migration listada sem a linha).
 
 ## Quality Gate
 

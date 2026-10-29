@@ -71,6 +71,15 @@ Evidência de OUTRA feature, `README.md` com `$ ` na 1ª linha, recibo em featur
 `test` — tudo negado (buracos fechados no review adversarial de 28/08). Critério com `|` no
 texto: escape como `\|` (o hook respeita e conta as colunas a partir do fim da linha).
 
+### Migration aplicada (seção `## Migrations aplicadas`)
+
+Migration listada nos arquivos do relatório exige a linha dela, com o mesmo caminho, projeto
+`nome · ref`, data `AAAA-MM-DD` e **prova por leitura**: `` `evidence/{FEATURE}/MIG-nnn.log` ``
+(mesmas regras do log acima, com a saída de `migration list` e do `select`) ou
+`recibo: {nome} {YYYY-MM-DD}` — aqui em qualquer `kind` de gate, porque no modo manual quem lê o
+banco é o aluno. `exit 0` na célula é negado: o comando ter saído bem não diz que a migration está
+no banco certo. Procedimento: `.agents/skills/sdd-build/references/aplicar-migration.md`.
+
 ### O que o hook NEGA sempre
 
 - `true` sem nenhuma das três formas acima.

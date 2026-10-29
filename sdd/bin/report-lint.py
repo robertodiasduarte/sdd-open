@@ -8,12 +8,18 @@ para algo que este script consegue ABRIR e conferir:
   - `recibo: <nome> YYYY-MM-DD` — só quando o Verify Gate do DEFINE é kind=manual-ux
 "✅ por raciocínio", "deve funcionar", "provavelmente" são NEGADOS: declaração não é prova.
 
+Migration listada nos arquivos do relatório (`*.sql`, pasta `migrations/` ou o glob de `layers.sql` do
+sdd/config.yaml) exige a linha dela em `## Migrations aplicadas`: mesmo caminho, projeto `nome · ref`,
+data AAAA-MM-DD e prova por leitura — log de evidence/{FEATURE}/ ou `recibo: nome AAAA-MM-DD`.
+"exit 0" não prova migration: só ler de volta do banco prova.
+
 Só stdlib. Uso:
     python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md     # exit 0 ok · 1 violações · 64 uso
 
 A fase Build roda isto antes de declarar sucesso; um hook de pre-commit pode rodá-lo também.
 Contrato completo: sdd/templates/fragments/EVIDENCIA.md
 """
+import fnmatch
 import glob
 import os
 import re
@@ -33,6 +39,12 @@ VERDICT_RE = re.compile(
     re.IGNORECASE,
 )
 SPLIT_RE = re.compile(r"(?<!\\)\|")
+FILES_SEC_RE = re.compile(r"^##\s+(?:files\b|arquivos\b|.*manifest)", re.IGNORECASE)
+MIG_SEC_RE = re.compile(r"^##\s+migrations aplicadas\b", re.IGNORECASE)
+TICK_RE = re.compile(r"`([^`]+)`")
+DELETE_CELLS = {"delete", "deleted", "removido", "removida", "excluído", "excluido", "excluída", "excluida"}
+EXIT0_RE = re.compile(r"\bexit\s*(?:code\s*)?0\b", re.IGNORECASE)
+DATA_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
 
 FEATURES_DIR = "sdd/features"
 REVIEWS_DIR = "sdd/reviews"
@@ -86,26 +98,145 @@ def evidence_ok(cell, root, report_dir, feature, gate_kind, warnings):
             else:
                 return True, ""
             continue
-        norm = p.replace("\\", "/")
-        if f"evidence/{feature}/" not in norm or not norm.endswith((".log", ".txt")):
-            problems.append(f"`{p}` fora de evidence/{feature}/*.log — só evidência da própria feature vale")
-            continue
-        found = next(
-            (c for c in (os.path.join(report_dir, p), os.path.join(root, p), os.path.join(root, REPORTS_DIR, p)) if os.path.isfile(c)),
-            None,
-        )
-        if not found:
-            problems.append(f"`{p}` não existe")
-            continue
-        if os.path.getsize(found) == 0:
-            problems.append(f"`{p}` está vazio")
-            continue
-        first = open(found, encoding="utf-8", errors="replace").readline()
-        if not first.startswith("$ "):
-            problems.append(f"`{p}` sem a 1ª linha `$ <comando>` (não é output capturado)")
+        problema = problema_do_log(p, root, report_dir, feature)
+        if problema:
+            problems.append(problema)
             continue
         return True, ""
     return False, "; ".join(problems)
+
+
+def problema_do_log(p, root, report_dir, feature):
+    """None = log capturado da própria feature; senão, o motivo."""
+    norm = p.replace("\\", "/")
+    if f"evidence/{feature}/" not in norm or not norm.endswith((".log", ".txt")):
+        return f"`{p}` fora de evidence/{feature}/*.log — só evidência da própria feature vale"
+    found = next(
+        (c for c in (os.path.join(report_dir, p), os.path.join(root, p), os.path.join(root, REPORTS_DIR, p)) if os.path.isfile(c)),
+        None,
+    )
+    if not found:
+        return f"`{p}` não existe"
+    if os.path.getsize(found) == 0:
+        return f"`{p}` está vazio"
+    first = open(found, encoding="utf-8", errors="replace").readline()
+    if not first.startswith("$ "):
+        return f"`{p}` sem a 1ª linha `$ <comando>` (não é output capturado)"
+    return None
+
+
+def ler_layers_sql(root):
+    """Valor de `layers: sql:` do sdd/config.yaml, ou "" (config ausente ou slot vazio)."""
+    try:
+        linhas = open(os.path.join(root, "sdd", "config.yaml"), encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return ""
+    dentro = False
+    for linha in linhas:
+        if re.match(r"^\S", linha):
+            dentro = linha.split("#", 1)[0].strip() == "layers:"
+            continue
+        m = re.match(r"^\s+sql:\s*(.*)$", linha) if dentro else None
+        if m:
+            v = m.group(1).strip()
+            if v[:1] in "\"'":
+                return v[1:].split(v[0], 1)[0].strip()
+            return v.split("#", 1)[0].strip()
+    return ""
+
+
+def e_migration(caminho, layers_sql):
+    if caminho.endswith("/"):
+        return False
+    if caminho.endswith(".sql") or re.search(r"(?:^|/)migrations/", caminho):
+        return True
+    return bool(layers_sql) and fnmatch.fnmatchcase(caminho, layers_sql)
+
+
+def secoes(content, titulo_re):
+    """Linhas de cada seção `## ` cujo título casa titulo_re (até o próximo `## `)."""
+    todas, atual = [], None
+    for raw in content.splitlines():
+        if raw.startswith("## "):
+            atual = [] if titulo_re.match(raw) else None
+            if atual is not None:
+                todas.append(atual)
+            continue
+        if atual is not None:
+            atual.append(raw.strip())
+    return todas
+
+
+def linhas_de_tabela(linhas):
+    return [split_row(l) for l in linhas if l.startswith("|") and not re.match(r"^\|[\s:|-]+\|?$", l)]
+
+
+def migrations_listadas(content, layers_sql):
+    vistas = []
+    for sec in secoes(content, FILES_SEC_RE):
+        for cells in linhas_de_tabela(sec):
+            if any(c.strip("`* ").lower() in DELETE_CELLS for c in cells):
+                continue
+            m = TICK_RE.search("|".join(cells))
+            if m and e_migration(m.group(1).strip(), layers_sql) and m.group(1).strip() not in vistas:
+                vistas.append(m.group(1).strip())
+    return vistas
+
+
+def linhas_migrations(content):
+    """{caminho: (projeto, data, prova)} da seção `## Migrations aplicadas`."""
+    regs = {}
+    for sec in secoes(content, MIG_SEC_RE):
+        rows = linhas_de_tabela(sec)
+        if not rows:
+            continue
+        cab = [c.lower() for c in rows[0]]
+        def col(prefixos, reserva):
+            return next((i for i, c in enumerate(cab) if c.startswith(prefixos)), reserva)
+        ia, ip = col(("arquivo", "file"), 0), col(("projeto", "project"), 1)
+        id_, iv = col(("aplicada", "applied", "data", "date"), 2), col(("prova", "proof"), 3)
+        for cells in rows[1:]:
+            cells = cells + [""] * (4 - len(cells))
+            m = TICK_RE.search(cells[ia]) if ia < len(cells) else None
+            if m:
+                pega = lambda i: cells[i] if i < len(cells) else ""
+                regs[m.group(1).strip()] = (pega(ip), pega(id_), pega(iv))
+    return regs
+
+
+def prova_migration(cell, root, report_dir, feature):
+    """None = prova por leitura aceita; senão, o motivo."""
+    if cell.strip() in ("", "—", "-"):
+        return "prova por leitura vazia"
+    if EXIT0_RE.search(cell):
+        return "exit 0 não prova migration — leia de volta do banco (migration list, select)"
+    if FAKE_RE.search(cell):
+        return "declaração não é prova"
+    if RECIBO_RE.search(cell):
+        return None
+    problemas = [problema_do_log(p, root, report_dir, feature) for p in PATH_RE.findall(cell)]
+    if any(x is None for x in problemas):
+        return None
+    return "; ".join(x for x in problemas if x) or f"sem log de evidence/{feature}/ nem `recibo: nome AAAA-MM-DD`"
+
+
+def check_migrations(content, root, report_dir, feature):
+    violations = []
+    regs = linhas_migrations(content)
+    for mig in migrations_listadas(content, ler_layers_sql(root)):
+        if mig not in regs:
+            violations.append(f"migration `{mig}` sem linha em `## Migrations aplicadas` (mesmo caminho) — aplicada onde? provada como?")
+            continue
+        projeto, data, prova = regs[mig]
+        partes = [x.strip(" `") for x in projeto.split("·")]
+        if len(partes) < 2 or not all(partes):
+            violations.append(f"migration `{mig}`: projeto sem `nome · ref` (`{projeto}`)")
+        if not DATA_RE.search(data):
+            violations.append(f"migration `{mig}`: sem data AAAA-MM-DD em \"Aplicada em\"")
+        motivo = prova_migration(prova, root, report_dir, feature)
+        if motivo:
+            violations.append(f"migration `{mig}`: {motivo}")
+    return violations
 
 
 def check(content, root, report_dir, feature):
@@ -147,6 +278,7 @@ def check(content, root, report_dir, feature):
         )
         if not exists:
             violations.append(f"Veredito do avaliador `{verdict}` sem `AVALIACAO_{feature}_*.md` existente em {REVIEWS_DIR}/")
+    violations += check_migrations(content, root, report_dir, feature)
     return violations, warnings
 
 
@@ -176,6 +308,9 @@ def main(argv):
         print(f"→ produza `evidence/{rm.group(1)}/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite "
               f"`AVALIACAO_{rm.group(1)}_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.",
               file=sys.stderr)
+        if any(v.startswith("migration `") for v in violations):
+            print("→ migration: aplique e leia de volta (.agents/skills/sdd-build/references/aplicar-migration.md) e registre "
+                  "a linha em `## Migrations aplicadas`.", file=sys.stderr)
         return 1
     print(f"✅ {path}: todo `true` tem evidência abrível")
     print("RESULTADO: VERDE")

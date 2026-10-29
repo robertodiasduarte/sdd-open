@@ -446,6 +446,18 @@ sdd_faltantes() {
   [ -f "${ROOT}/sdd/config.yaml" ] || printf 'config.yaml\n'
 }
 
+# metadata.version do frontmatter de uma SKILL.md (vazio se não houver).
+versao_skill() {
+  sed -n '2,/^---$/ s/^ *version: *"*\([0-9][0-9.]*\)"*.*$/\1/p' "$1" | head -1
+}
+
+# versao_menor A B: sai 0 se A < B (X.Y.Z, campo a campo); A vazia conta como 0.0.0.
+versao_menor() {
+  awk -v a="${1:-0.0.0}" -v b="$2" 'BEGIN { split(a, x, "."); split(b, y, ".")
+    for (i = 1; i <= 3; i++) { if (x[i] + 0 < y[i] + 0) exit 0; if (x[i] + 0 > y[i] + 0) exit 1 }
+    exit 1 }'
+}
+
 planejar() {
   destinos_checar
   # bloco do AGENTS.md
@@ -588,6 +600,23 @@ doctor() {
   if ls "${ROOT}"/.agents/skills/sdd-*/agents/openai.yaml >/dev/null 2>&1 || ls "${ROOT}"/.claude/skills/sdd-*/agents/openai.yaml >/dev/null 2>&1; then
     warn "skills do sdd-starter detectadas no mesmo projeto: os nomes sdd-* colidem — use um ou outro por projeto"
   fi
+  # Pacote mais novo que o projeto: init nunca sobrescreve .agents/skills/<skill> nem sdd/bin/*, então
+  # quem já instalou continua com a versão velha sem saber. Só aponta; quem apaga é a pessoa.
+  local s vp vq f atrasados=0 pkg_skills="${PKG}/.agents/skills"
+  for s in $(skills_da_fonte "${pkg_skills}"); do
+    [ -f "${FONTE_SKILLS}/${s}/SKILL.md" ] || continue
+    vq="$(versao_skill "${pkg_skills}/${s}/SKILL.md")"; vp="$(versao_skill "${FONTE_SKILLS}/${s}/SKILL.md")"
+    [ -n "${vq}" ] && versao_menor "${vp}" "${vq}" || continue
+    warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — para receber: apague .agents/skills/${s} e rode init (edições suas nela se perdem)"
+    atrasados=$((atrasados + 1))
+  done
+  for f in "${PKG}"/sdd/bin/*; do
+    [ -f "${f}" ] && [ -f "${ROOT}/sdd/bin/${f##*/}" ] || continue
+    cmp -s "${f}" "${ROOT}/sdd/bin/${f##*/}" && continue
+    warn "sdd/bin/${f##*/} difere do pacote — se você não editou, apague e rode init"
+    atrasados=$((atrasados + 1))
+  done
+  [ "${atrasados}" = "0" ] && ok "skills e sdd/bin/ em dia com o pacote"
   # Segredo já salvo no git (.env, .pfx, .p12, .pem com chave privada): o checar.sh do PACOTE, que casa
   # com esta versão da CLI, no modo --segredo — só leitura e sem rede, porque o doctor roda em todo init.
   local checar="${PKG}/.agents/skills/sdd-checar-ambiente/scripts/checar.sh" saida rc l

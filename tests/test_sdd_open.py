@@ -5,6 +5,7 @@ Exit: 0 ok · 1 divergente (sync --check) · 64 uso ou pré-condição (verbo, o
 """
 from __future__ import annotations
 
+import re
 import unittest
 
 from apoio import BASH, RAIZ, Sandbox
@@ -152,6 +153,39 @@ class Projeto(Sandbox):
         self.assertEqual(rc, 0, out + err)
         self.assertIn("pacote incompleto", out + err)
         self.assertResultado(out + err)
+
+    def versao_da_skill(self, skill_md, versao: str) -> None:
+        texto = skill_md.read_text(encoding="utf-8")
+        novo = re.sub(r'(?m)^(\s+version: )"[0-9.]+"', r'\g<1>"' + versao + '"', texto, count=1)
+        self.assertNotEqual(novo, texto)
+        skill_md.write_text(novo, encoding="utf-8")
+
+    def test_doctor_avisa_skill_mais_velha_que_a_do_pacote(self):
+        pacote = re.search(r'version: "([0-9.]+)"',
+                           (RAIZ / ".agents/skills/sdd-build/SKILL.md").read_text(encoding="utf-8")).group(1)
+        self.versao_da_skill(self.p / ".agents/skills/sdd-build/SKILL.md", "1.0.0")
+        rc, out = self.cli("doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("sdd-build 1.0.0 no projeto, " + pacote + " no pacote", out)
+        self.assertIn("apague .agents/skills/sdd-build e rode init", out)
+        self.assertNotIn("em dia com o pacote", out)
+        self.assertResultado(out)
+
+    def test_doctor_avisa_sdd_bin_diferente_do_pacote(self):
+        lint = self.p / "sdd/bin/report-lint.py"
+        lint.write_text(lint.read_text(encoding="utf-8") + "# editado\n", encoding="utf-8")
+        rc, out = self.cli("doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("sdd/bin/report-lint.py difere do pacote — se você não editou, apague e rode init", out)
+        self.assertResultado(out)
+
+    def test_doctor_em_dia_com_o_pacote(self):
+        # versão do projeto MAIOR que a do pacote é evolução da pessoa, não atraso
+        self.versao_da_skill(self.p / ".agents/skills/sdd-release/SKILL.md", "9.0.0")
+        rc, out = self.cli("doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("✅ skills e sdd/bin/ em dia com o pacote", out)
+        self.assertNotIn("no pacote — para receber", out)
 
     def test_copias_geradas_dos_scripts_portados_passam_bash_n(self):
         for rel in ("sdd-checar-ambiente/scripts/checar.sh", "sdd-higiene-dado/scripts/alarme.sh",

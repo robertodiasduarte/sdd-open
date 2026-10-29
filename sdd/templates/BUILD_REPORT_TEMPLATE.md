@@ -97,6 +97,21 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 
 ---
 
+## Migrations aplicadas (condicional — só se Files Created lista migration)
+
+> Obrigatória quando a tabela acima lista `*.sql`, um caminho com `migrations/` ou algo que casa
+> com `layers.sql` do `sdd/config.yaml`: o `sdd/bin/report-lint.py` reprova sem ela. Uma linha por
+> migration, com o **mesmo caminho** da tabela acima. Procedimento:
+> `.agents/skills/sdd-build/references/aplicar-migration.md`. `exit 0` não prova: a prova é ler de
+> volta do banco (`migration list` + `select`), capturada em `evidence/{FEATURE}/MIG-nnn.log`, ou
+> `recibo: nome AAAA-MM-DD` quando o aluno rodou o `select` no SQL Editor. Sem migration, apague a seção.
+
+| Arquivo | Projeto (nome · ref) | Aplicada em | Prova por leitura |
+|---|---|---|---|
+| `{supabase/migrations/AAAAMMDDHHMMSS_nome.sql}` | {Nome do projeto} · `{ref}` | {AAAA-MM-DD HH:MM (cli \| mcp \| manual) ou "já aplicada em AAAA-MM-DD"} | `evidence/{FEATURE}/MIG-001.log` (migration list: Remote ✓ · select: coluna ✓) |
+
+---
+
 ## Verification Results
 
 ### Lint Check (ruff)

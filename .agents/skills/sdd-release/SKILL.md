@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.0"
+  version: "2.2.0"
   fase: "4"
 ---
 
@@ -64,7 +64,8 @@ diff-base (`git merge-base origin/{default_branch} HEAD`).
    | DEFINE sem bloco (`64`) | não abortar: registrar **Aviso** "DEFINE anterior ao gate" |
    | sem DEFINE (fix pequeno) | pular e declarar "sem DEFINE — SDD formal dispensado" |
 5. **Relatório:** `python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{F}.md` — `true`
-   sem evidência abre **abortar**.
+   sem evidência, ou migration listada sem a linha provada em `## Migrations aplicadas`, abre
+   **abortar**.
 6. **Playbook:** `sdd/bin/playbook-lint.sh sdd/playbook.md` — exit 2 → abortar.
 
 Se 0a abortou, **nem inicie** as passadas de modelo.
@@ -109,11 +110,42 @@ removido.
    abortar se os hunks se sobrepõem de verdade.
 6. **Gates pré-push:** diff contra `origin/{default_branch}` tem só os arquivos esperados;
    nenhuma deleção de algo que está publicado; classificar se o diff deploya ou é no-op.
-7. **PARAR e mostrar (o 1 OK).** `git diff --stat`, classificação, o que cada mudança faz em
-   produção, estado do Verify Gate (0a.4), veredito 0d (PASS / CONCERNS com a lista / ou os
-   FAIL-candidatos — para cada um, **corrigir** ou **WAIVED** com `motivo=` do humano),
-   achados que não abortaram, `feature_id` do ledger. Perguntar: **"Posso finalizar (push +
-   deploy + verificar)?"**
+7. **PARAR e mostrar (o 1 OK) — um bloco só.** Antes, rode
+   `python3 .agents/skills/sdd-release/scripts/deploy-espera-testes.py .` (só lê
+   `.github/workflows/`). No **Agora**, duas frases: os campos já foram conferidos por você; a pessoa
+   só responde à última linha — **sim** publica exatamente o descrito, **não** encerra sem publicar.
+   Depois, **um bloco**, nesta ordem, preenchido (não acrescente perguntas):
+
+   ```markdown
+   **O que sobe:** <quantos arquivos e quais, pelo nome, em palavras — do diff contra a base,
+   novos marcados como novos; até 10 nomes, "e mais N"; nunca o --stat colado>
+   **O que muda em produção:** <uma frase em português — "muda o cálculo do relatório mensal", não
+   "altera handler.js">
+   **O push publica sozinho?** <sim, o workflow X publica ao receber o push na {default_branch} |
+   não: <por quê>>
+   **O deploy espera os testes?** <a frase da linha → do script, traduzida>
+   **Banco:** <migration `<arquivo>` em `<projeto nome · ref>` em <data>, provada por leitura — de
+   `## Migrations aplicadas` do BUILD_REPORT | sem migração nesta frente>
+   **Verificações:** Verify Gate <exit> · report-lint <ok> · lint <ok | pulado — slot vazio> ·
+   landmines <ok | N avisos> · drift <ok | pulado — slot vazio>
+   **Veredito:** <🟢 PASS | 🟡 CONCERNS com a lista | FAIL-candidatos, cada um: corrigir ou WAIVED
+   com `motivo=` seu> · achados que não abortaram
+   **Ledger:** `feature_id` <id> · `estado` <shipado | parcial>
+
+   **Posso finalizar (push + deploy + verificar)?**
+   ```
+
+   - **"O deploy espera os testes?"** é afirmação, não pergunta: vem do `RESULTADO:` do script.
+     `SIM` ⇒ "sim — …"; `NAO` ⇒ "não — … um teste vermelho não impede a publicação"; `NAO_SE_APLICA`
+     ⇒ "não se aplica: o push não publica"; `NAO_SEI` ⇒ leia os workflows citados e escreva **"não
+     consegui afirmar: <motivo>"** — nunca "sim". Sem o script (pacote antigo), leia os workflows:
+     teste com `continue-on-error`, `|| true` ou `exit 0` fixo **não** segura nada.
+   - **"Banco:"** é afirmação: vem de `## Migrations aplicadas`. Migration no diff sem a linha ⇒ o
+     report-lint já abortou na 0a.5.
+   - **Verificação ausente dita como ausente** é informação; em silêncio, é falsa segurança.
+   - **Uma pergunta só**, a última linha. Os rótulos com `?` são preenchidos por você. Ambiguidade
+     (qual arquivo pertence à frente) vai **dentro** do bloco, antes da última linha — nunca pare
+     duas vezes. Sem o OK, termine aqui: nada de push nem deploy.
 
 ## FASE 2 — Após o "go"
 
@@ -145,7 +177,8 @@ removido.
       velho por cima do novo): redisparar na ponta — `gh workflow run <arquivo> --ref {default_branch}` só se
       o workflow tiver `workflow_dispatch` no `on:`; sem ele (o GitHub responde 422), um push novo.
     - Verde não prova teste: step de teste com `continue-on-error`, `|| true` ou `exit 0` fixo ⇒ "o deploy
-      terminou, mas o workflow não roda testes antes de publicar".
+      terminou, mas o workflow não roda testes antes de publicar" (o `deploy-espera-testes.py` do
+      item 7 já disse isso no bloco do OK).
     Sem `gh`: "publicado, sem verificação automática disponível" — nunca ✅ sem ter olhado.
 11. **Changelog:** `{{CHANGELOG_HOOK}}` ou entrada curta (≤600 caracteres) no topo do
     `CHANGELOG.md`. O detalhe vive no ledger e no BUILD_REPORT.

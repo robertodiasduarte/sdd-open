@@ -104,5 +104,132 @@ class ReportLint(Sandbox):
         self.assertEqual(rc, 64, out)
 
 
+# timestamp montado em tempo de execução: 11+ dígitos seguidos reprovam no G2 do publish-gate
+TS = "2026" + "1029" + "120000"
+MIG = "supabase/migrations/" + TS + "_cliente_doc.sql"
+ARQUIVOS = "## Files Created / Modified\n\n| # | Arquivo | Ação | Verificação |\n|---|---|---|---|\n"
+APLICADAS = ("## Migrations aplicadas\n\n| Arquivo | Projeto (nome · ref) | Aplicada em | Prova por leitura |\n"
+             "|---|---|---|---|\n")
+PROJETO = "Curso Teste · `abcdefghijklmnopqrst`"
+PROVA = "`evidence/EXEMPLO/MIG-001.log`"
+
+
+class Migrations(Sandbox):
+    """Migration listada nos arquivos do relatório só passa com a linha provada em `## Migrations aplicadas`."""
+
+    def setUp(self):
+        super().setUp()
+        self.r = self.repo()
+        self.copia(SCRIPT, self.r)
+        self.escreve(self.r, "sdd/features/DEFINE_EXEMPLO.md",
+                     "## Verify Gate\n\n```yaml\nverify_gate:\n  kind: test\n```\n")
+        self.escreve(self.r, "sdd/reports/evidence/EXEMPLO/MIG-001.log",
+                     "$ supabase migration list --linked\n " + TS + " | " + TS + " | 2026-10-29\n")
+
+    def lint(self, arquivos: str, aplicadas: str | None = None) -> tuple[int, str]:
+        texto = "# BUILD REPORT\n\n" + ARQUIVOS + arquivos + "\n"
+        if aplicadas is not None:
+            texto += APLICADAS + aplicadas
+        self.escreve(self.r, REPORT, texto)
+        rc, out, err = self.roda([PYTHON, "-B", SCRIPT, REPORT], self.r)
+        return rc, out + err
+
+    def linha(self, caminho: str = MIG, projeto: str = PROJETO, data: str = "2026-10-29 14:32 (cli)",
+              prova: str = PROVA) -> str:
+        return "| `" + caminho + "` | " + projeto + " | " + data + " | " + prova + " |\n"
+
+    def arquivo(self, caminho: str = MIG, acao: str = "Create") -> str:
+        return "| 1 | `" + caminho + "` | " + acao + " | ok |\n"
+
+    # ── passa ────────────────────────────────────────────────────────────────
+    def test_migration_com_log_passa(self):
+        rc, out = self.lint(self.arquivo(), self.linha())
+        self.assertEqual(rc, 0, out)
+
+    def test_recibo_vale_mesmo_com_gate_test(self):
+        rc, out = self.lint(self.arquivo(), self.linha(prova="(b) entregue ao SQL Editor · recibo: Ana 2026-10-29"))
+        self.assertEqual(rc, 0, out)
+
+    def test_ja_aplicada_em_vale_como_data(self):
+        rc, out = self.lint(self.arquivo(), self.linha(data="já aplicada em 2026-10-20"))
+        self.assertEqual(rc, 0, out)
+
+    def test_relatorio_sem_migration_nao_exige_a_secao(self):
+        rc, out = self.lint(self.arquivo("src/app.py"))
+        self.assertEqual(rc, 0, out)
+
+    def test_migration_apagada_nao_exige_linha(self):
+        rc, out = self.lint(self.arquivo(acao="Delete"))
+        self.assertEqual(rc, 0, out)
+
+    def test_sql_citado_fora_da_secao_de_arquivos_nao_conta(self):
+        rc, out = self.lint(self.arquivo("src/app.py") + "\n## Issues Encountered\n\n| 1 | `" + MIG + "` | ok |\n")
+        self.assertEqual(rc, 0, out)
+
+    # ── reprova ──────────────────────────────────────────────────────────────
+    def test_migration_sem_linha_reprova(self):
+        rc, out = self.lint(self.arquivo(), self.linha("supabase/migrations/outra.sql"))
+        self.assertEqual(rc, 1, out)
+        self.assertIn(MIG, out)
+        self.assertIn("aplicar-migration.md", out)
+
+    def test_migration_sem_a_secao_reprova(self):
+        rc, out = self.lint(self.arquivo())
+        self.assertEqual(rc, 1, out)
+        self.assertIn("sem linha em `## Migrations aplicadas`", out)
+
+    def test_pasta_migrations_conta_como_migration(self):
+        rc, out = self.lint(self.arquivo("db/migrations/0001_init.rb"))
+        self.assertEqual(rc, 1, out)
+
+    def test_prova_que_nao_prova_reprova(self):
+        casos = {"vazia": "", "travessão": "—", "exit 0": "db push saiu exit 0",
+                 "declaração": "deve funcionar", "log inexistente": "`evidence/EXEMPLO/MIG-009.log`",
+                 "log de outra feature": "`evidence/OUTRA/MIG-001.log`"}
+        for nome, prova in casos.items():
+            with self.subTest(caso=nome):
+                rc, out = self.lint(self.arquivo(), self.linha(prova=prova))
+                self.assertEqual(rc, 1, out)
+                self.assertIn("migration `" + MIG + "`", out)
+
+    def test_exit_0_reprova_mesmo_com_log_valido(self):
+        rc, out = self.lint(self.arquivo(), self.linha(prova="exit 0 · " + PROVA))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("exit 0 não prova migration", out)
+
+    def test_log_sem_linha_de_comando_reprova(self):
+        self.escreve(self.r, "sdd/reports/evidence/EXEMPLO/MIG-001.log", TS + " aplicada\n")
+        rc, out = self.lint(self.arquivo(), self.linha())
+        self.assertEqual(rc, 1, out)
+
+    def test_projeto_sem_nome_e_ref_reprova(self):
+        for projeto in ("Curso Teste", "`abcdefghijklmnopqrst`", " · `abcdefghijklmnopqrst`", ""):
+            with self.subTest(projeto=projeto):
+                rc, out = self.lint(self.arquivo(), self.linha(projeto=projeto))
+                self.assertEqual(rc, 1, out)
+                self.assertIn("nome · ref", out)
+
+    def test_sem_data_reprova(self):
+        rc, out = self.lint(self.arquivo(), self.linha(data="hoje (cli)"))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("AAAA-MM-DD", out)
+
+    # ── layers.sql do config ─────────────────────────────────────────────────
+    def config(self, sql: str) -> None:
+        self.escreve(self.r, "sdd/config.yaml",
+                     "project:\n  name: x\nlayers:\n  api: \"\"\n  sql: " + sql + "  # camada de banco\n  ui: \"\"\n")
+
+    def test_layers_sql_preenchido_conta_como_migration(self):
+        self.config('"db/changes/**"')
+        rc, out = self.lint(self.arquivo("db/changes/2026/add_doc.rb"))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("db/changes/2026/add_doc.rb", out)
+
+    def test_layers_sql_vazio_usa_so_o_glob_fixo(self):
+        self.config('""')
+        rc, out = self.lint(self.arquivo("db/changes/2026/add_doc.rb"))
+        self.assertEqual(rc, 0, out)
+
+
 if __name__ == "__main__":
     unittest.main()
