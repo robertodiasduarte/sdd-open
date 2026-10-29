@@ -18,7 +18,7 @@ from apoio import RAIZ
 SKILLS = RAIZ / ".agents/skills"
 CHECAR = SKILLS / "sdd-checar-ambiente/scripts/checar.sh"
 SESSAO = SKILLS / "sdd-new-session/SKILL.md"
-PORTADAS = ("sdd-checar-ambiente", "sdd-higiene-dado", "sdd-iniciar-repo")
+PORTADAS = ("sdd-checar-ambiente", "sdd-higiene-dado", "sdd-iniciar-repo", "sdd-kb")
 MSG = re.compile(r'(?:add_(?:impede|remoto)\s+|MSG=)"((?:[^"\\]|\\.)*)"')
 
 
@@ -99,7 +99,7 @@ class ContratoDaNewSession(unittest.TestCase):
 
 
 class Portadas(unittest.TestCase):
-    """As 3 skills vindas do sdd-starter não citam o starter nem trazem o que o doctor usa para detectá-lo."""
+    """As 4 skills vindas do sdd-starter não citam o starter nem trazem o que o doctor usa para detectá-lo."""
 
     def test_sem_agents_openai_yaml(self):
         # O doctor avisa "skills do sdd-starter detectadas" quando acha agents/openai.yaml.

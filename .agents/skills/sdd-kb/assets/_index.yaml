@@ -1,0 +1,22 @@
+# Índice das bases de conhecimento deste projeto.
+# Exemplo preenchido — mostra como um domínio fica registrado depois que a skill roda.
+
+version: "1.0"
+
+limits:
+  quick_reference: 100
+  concept: 150
+  pattern: 200
+
+domains:
+  example-kb:
+    name: Fechamento Mensal do Escritório
+    description: Processo de fechamento contábil mensal — ordem das etapas, prazos e o que trava o fechamento.
+    path: example-kb/
+    updated: 2026-03-11
+  example-kb-normativo:
+    name: IBS e CBS na NF-e modelo 55 — ano-teste 2026
+    description: Exigência do grupo IBSCBS e alíquotas de referência de 2026 na NF-e, com vigência por regra, catálogo de fontes e conflitos registrados.
+    path: example-kb-normativo/
+    perfil: normativo
+    updated: 2026-10-04

@@ -1,0 +1,23 @@
+# Índice das bases de conhecimento deste projeto.
+# Criado na primeira vez que a skill sdd-kb roda; cada domínio novo acrescenta um bloco.
+# Um domínio que existe em pasta mas não está aqui é invisível — por isso o registro é obrigatório.
+
+version: "1.0"
+
+# Limites de tamanho, em linhas. Não são burocracia: acima disso o arquivo passa a ser
+# grande demais para a IA carregar junto com o resto do contexto, e ela começa a ignorar partes.
+limits:
+  quick_reference: 100
+  concept: 150
+  pattern: 200
+
+domains:
+  {slug-do-dominio}:
+    name: {Nome legível do domínio}
+    description: {uma frase sobre o recorte deste conhecimento}
+    path: {slug-do-dominio}/
+    # perfil: geral (padrão) ou normativo — normativo quando o domínio tem regra que vale por
+    # período (lei, alíquota, prazo, leiaute). Normativo exige data-base, vigência por regra,
+    # catálogo de fontes e conflitos registrados; o validador cobra tudo isso.
+    perfil: {geral | normativo}
+    updated: {AAAA-MM-DD}

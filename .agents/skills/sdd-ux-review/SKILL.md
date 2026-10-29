@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Independe de stack visual; usa 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.0"
+  version: "2.3.0"
   updated: "2026-10"
   fase: "UX"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-ux-review — gate de UX/CX
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-ux-review v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-ux-review v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Traduzir requisitos em experiência **antes** que arquitetura e código endureçam. "Interface"
 inclui tela, linha de comando, arquivo gerado, e-mail: qualquer coisa que uma pessoa lê e
@@ -84,6 +84,8 @@ bug?" ou "como faço X?" — essa pergunta **é** o bug; resolve-se na interface
 1. **Contexto.** Leia o DEFINE, `sdd/templates/UX_REVIEW_TEMPLATE.md`, `AGENTS.md` e, se
    existir, o design system do projeto. Extraia usuário, objetivo, dor, critérios, restrições e
    fora de escopo.
+   Se o DEFINE não diz quem usa e em que contexto, ou se o aluno pedir, conduza antes a entrevista
+   de `references/entrevista-publico.md` e grave o resultado em `## User and Context`.
 2. **Jornada.** Antes → Entrada → Ação central → Feedback → Recuperação →
    (Interrupção → Retomada) → Conclusão → Follow-up. Para cada passo: intenção, emoção/risco, atrito, o que o sistema precisa
    confirmar, o que acontece quando falha.

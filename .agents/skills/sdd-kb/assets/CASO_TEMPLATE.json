@@ -1,0 +1,9 @@
+{
+  "id": "igual ao nome do arquivo, sem .json",
+  "regra": "id de uma regra em rules/",
+  "data_fato": "AAAA-MM-DD — data do fato gerador ou da emissão; precisa estar dentro da vigência da regra",
+  "descricao": "a situação em uma linha",
+  "entrada": {},
+  "esperado": {},
+  "fonte": {"id": "id em fontes/CATALOGO.md (exemplo oficial, quando houver)", "localizador": "onde o resultado está escrito"}
+}

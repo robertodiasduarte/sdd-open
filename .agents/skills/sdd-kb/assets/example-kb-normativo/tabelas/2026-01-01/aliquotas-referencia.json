@@ -1,0 +1,6 @@
+{
+  "vigencia": {"de": "2026-01-01", "ate": "2026-12-31"},
+  "fonte": {"id": "NT2025002-151", "localizador": "p. 45, 47 e 49 — UB18-10, UB37-10, UB56-10"},
+  "descricao": "Alíquotas de referência do ano-teste, em percentual, como strings decimais",
+  "dados": {"pIBSUF": "0.10", "pIBSMun": "0.00", "pCBS": "0.90"}
+}

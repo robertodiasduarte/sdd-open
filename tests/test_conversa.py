@@ -1,23 +1,27 @@
 """Contrato escrito da camada "Como falar com o aluno" nas skills do pacote.
 
 As skills são texto lido pelo agente: estes testes conferem que a camada está escrita igual nas 14
-skills que a F4 cobriu, que o formato de pergunta e de parada tem dono único
+skills que a F4 cobriu e na sdd-kb (F5), que o formato de pergunta e de parada tem dono único
 (sdd/templates/fragments/PERGUNTA_DECISAO.md), que a linha de identificação não mente a versão e que a
-sdd-design e a sdd-handoff conferem o próprio documento com o lint. Não conferem a obediência do agente.
+sdd-design e a sdd-handoff conferem o próprio documento com o lint, e que a entrevista de público da
+sdd-ux-review só tem uma pergunta de decisão. Não conferem a obediência do agente.
 """
 from __future__ import annotations
 
+import importlib.util
 import re
+import shutil
 import unittest
 
-from apoio import RAIZ
+from apoio import PYTHON, RAIZ, Sandbox
 
 SKILLS = RAIZ / ".agents/skills"
 FRAGMENTO = RAIZ / "sdd/templates/fragments/PERGUNTA_DECISAO.md"
 F4 = ("sdd-auditoria-harness", "sdd-brainstorm", "sdd-build", "sdd-checar-ambiente", "sdd-define",
       "sdd-design", "sdd-governanca", "sdd-handoff", "sdd-iterate", "sdd-new-session", "sdd-playbook",
-      "sdd-prompt-builder", "sdd-release", "sdd-ux-review")
-# Frases do bloco comum de regras: iguais nas 14 (DESIGN_F4_CONVERSA, Code Pattern 1).
+      "sdd-prompt-builder", "sdd-release", "sdd-ux-review",
+      "sdd-kb")  # as 14 da F4 + a sdd-kb da F5 (DESIGN_F5_CONHECIMENTO, Decision 7)
+# Frases do bloco comum de regras: iguais nas 15 (DESIGN_F4_CONVERSA, Code Pattern 1).
 FRASES = (
     "sdd/templates/fragments/PERGUNTA_DECISAO.md",
     "**Status** — uma linha que começa pelo nome da fase",
@@ -46,8 +50,8 @@ def todas():
 
 
 class Identificacao(unittest.TestCase):
-    def test_sao_16_e_as_14_da_f4_existem(self):
-        self.assertEqual(len(todas()), 16)
+    def test_sao_17_e_as_15_da_camada_existem(self):
+        self.assertEqual(len(todas()), 17)
         for s in F4:
             with self.subTest(skill=s):
                 self.assertTrue((SKILLS / s / "SKILL.md").is_file())
@@ -79,7 +83,7 @@ class Identificacao(unittest.TestCase):
 
 
 class Camada(unittest.TestCase):
-    def test_bloco_comum_igual_nas_14(self):
+    def test_bloco_comum_igual_nas_15(self):
         for s in F4:
             sec = secao(ler(SKILLS / s / "SKILL.md"))
             for frase in FRASES:
@@ -122,6 +126,57 @@ class LintNoFimDaFase(unittest.TestCase):
         i3, i3b, i4 = (texto.index(t) for t in ("\n### 3. ", "\n### 3b. ", "\n### 4. "))
         self.assertLess(i3, i3b)
         self.assertLess(i3b, i4)
+
+
+ENTREVISTA = SKILLS / "sdd-ux-review/references/entrevista-publico.md"
+CONFIRMACAO = "Posso gravar este público em User and Context?"
+ABERTA = re.compile(r"\*\*[^*\n]+\?\*\* Responda com [^\n]*não sei")
+
+
+def perguntas_do_lint(texto):
+    spec = importlib.util.spec_from_file_location("skill_lint", RAIZ / "sdd/bin/skill-lint.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.perguntas(texto)
+
+
+class EntrevistaPublico(Sandbox):
+    """Entrada opcional da sdd-ux-review: perguntas de fato abertas, uma só pergunta de decisão (F5)."""
+
+    def test_passo_1_aponta_a_entrevista(self):
+        texto = ler(SKILLS / "sdd-ux-review/SKILL.md")
+        passo1 = texto.split("\n1. **Contexto.**", 1)[1].split("\n2. **Jornada.**", 1)[0]
+        self.assertIn("references/entrevista-publico.md", passo1)
+        self.assertIn("## User and Context", passo1)
+
+    def test_cobre_publico_estagio_referencia_e_url(self):
+        texto = ler(ENTREVISTA)
+        for trecho in ("público", "estágio", "Catálogo de referências", "URL", "análise direta não disponível",
+                       "Observado", "Desejado", "Recomendado", "sdd/templates/fragments/PERGUNTA_DECISAO.md"):
+            with self.subTest(trecho=trecho):
+                self.assertIn(trecho, texto)
+
+    def test_perguntas_de_fato_sao_abertas(self):
+        self.assertGreaterEqual(len(ABERTA.findall(ler(ENTREVISTA))), 3)
+
+    def test_so_a_confirmacao_tem_opcoes(self):
+        achadas = perguntas_do_lint(ler(ENTREVISTA))
+        self.assertEqual([p for _l, p, _o in achadas], ["**" + CONFIRMACAO + "**"], achadas)
+        rotulos = [r.lower() for r, _resto in achadas[0][2]]
+        self.assertEqual(rotulos[0], "sim", rotulos)
+        self.assertIn("(recomendado)", achadas[0][2][0][1])
+        self.assertIn("não sei", rotulos)
+        self.assertFalse([r for r in rotulos if r.startswith("outr")], rotulos)
+
+    def test_confirmacao_passa_no_skill_lint(self):
+        s = self.tmp / "skills/sdd-entrevista"
+        (s / "references").mkdir(parents=True)
+        (s / "SKILL.md").write_text(ler(SKILLS / "sdd-ux-review/SKILL.md").replace(
+            "name: sdd-ux-review", "name: sdd-entrevista", 1), encoding="utf-8")
+        shutil.copy(str(ENTREVISTA), str(s / "references/como-falar.md"))
+        rc, out, err = self.roda([PYTHON, "-B", RAIZ / "sdd/bin/skill-lint.py", "--conversa", s / "SKILL.md"],
+                                 self.tmp)
+        self.assertEqual(rc, 0, out + err)
 
 
 class Fragmento(unittest.TestCase):

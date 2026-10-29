@@ -1,0 +1,6 @@
+{
+  "vigencia": {"de": "AAAA-MM-DD (igual ao nome da pasta tabelas/AAAA-MM-DD/)", "ate": null},
+  "fonte": {"id": "id em fontes/CATALOGO.md", "localizador": "página, artigo ou anexo"},
+  "descricao": "o que esta tabela guarda, em uma linha",
+  "dados": {}
+}

@@ -1,0 +1,9 @@
+{
+  "id": "ub12-crt3-2026-09",
+  "regra": "UB12-10-CRT3",
+  "data_fato": "2026-09-15",
+  "descricao": "NF-e de emitente CRT 3, ambiente de produção, item sem o grupo IBSCBS",
+  "entrada": {"CRT": "3", "tpAmb": "1", "finNFe": "1", "dhEmi": "2026-09-15T10:00:00-03:00", "item_tem_IBSCBS": false},
+  "esperado": {"resultado": "rejeicao", "codigo": "1115"},
+  "fonte": {"id": "NT2025002-151", "localizador": "p. 42, UB12-10"}
+}

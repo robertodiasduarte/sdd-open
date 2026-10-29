@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.0"
+  version: "2.3.0"
   updated: "2026-10"
   fase: "1"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-define — Fase 1
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-define v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-define v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
 depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
@@ -32,7 +32,7 @@ Quem usa esta skill, em geral, nunca usou git nem terminal.
 | 3 | Testes de aceitação | 4 e 5 |
 | 4 | Perguntas | 6 e 7 |
 | 5 | Verify Gate | 8 |
-| 6 | Gravar | 9 |
+| 6 | Gravar | 9 e 10 |
 
 Toda resposta, nesta ordem (pule a parte sem conteúdo):
 
@@ -84,6 +84,11 @@ de `sdd/playbook.md`.
 
 Problema · Usuários (com a dor de cada um) · Objetivos (MUST/SHOULD/COULD) · Critérios de
 sucesso (com números) · Testes de aceitação · Restrições · Fora de escopo.
+
+**KB Domains** (Technical Context): só nomes de `ls sdd/kb/` (as pastas; o `_index.yaml` não conta) ou
+`nenhum`, conferidos de novo a cada Define. Sem `sdd/kb/`, escreva `nenhum` e diga ao aluno, em 1 frase,
+que a `sdd-kb` cria uma base. Ao mostrar um domínio pela 1ª vez, ponha ao lado o `name:` dele no
+`sdd/kb/_index.yaml`.
 
 ### 4. Testes de aceitação em EARS (obrigatório)
 
@@ -154,6 +159,14 @@ mudança; se já passa, ela não prova nada.
 `sdd/features/DEFINE_{FEATURE}.md` com o template preenchido, Status `Ready for Design` (ou
 `Ready for UX Review` se há interface).
 
+### 10. Conferir o KB Domains
+
+`python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{FEATURE}.md` sobre o arquivo gravado: o KB Domains
+só cita pastas de `sdd/kb/`, ou diz `nenhum`. Exit 0 segue; exit 1 ⇒ corrija o campo e rode de novo antes
+de entregar. Os testes que ele listar (`<domínio>: <REGRA> → <teste>`, das regras de uma base normativa)
+entram no `cmd` do Verify Gate; se algum não entrar, registre o motivo no DEFINE e rode
+`verify-gate.sh --print` de novo.
+
 ## Quality Gate
 
 ```text
@@ -164,6 +177,7 @@ mudança; se já passa, ela não prova nada.
 [ ] Fora de escopo explícito · Clarity ≥12/15 · LLM Prompts true/false com nota
 [ ] ## Verify Gate com kind+cmd+pass_when executáveis (ou manual-ux com manual_fallback)
 [ ] verify-gate.sh --print lista o bloco sem erro 64
+[ ] kb-dominios.py sai 0 (KB Domains de ls sdd/kb/ ou nenhum)
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
 

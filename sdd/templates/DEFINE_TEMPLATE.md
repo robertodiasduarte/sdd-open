@@ -155,7 +155,7 @@ Explicitly NOT included in this feature:
 | Aspect | Value | Notes |
 |--------|-------|-------|
 | **Deployment Location** | {src/ \| functions/ \| gen/ \| deploy/ \| custom path} | {Why this location} |
-| **KB Domains** | {bases de conhecimento do projeto a consultar (nomes de pasta em `sdd/kb/` ou equivalente), ou `nenhum` explícito} | {Which patterns to consult} |
+| **KB Domains** | {bases de conhecimento do projeto a consultar (nomes de pasta em `sdd/kb/`, de `ls sdd/kb/`), ou `nenhum` explícito} | {Which patterns to consult} |
 | **IaC Impact** | {New resources \| Modify existing \| None \| TBD} | {Terraform/Terragrunt changes needed} |
 | **LLM Prompts** | {true \| false} | {Set true se a feature cria/edita prompts runtime — system prompts, passes de pipeline, classificadores. Quando true, a fase Design inventaria cada prompt e a fase Build trata cada um como entregável com contrato próprio.} |
 

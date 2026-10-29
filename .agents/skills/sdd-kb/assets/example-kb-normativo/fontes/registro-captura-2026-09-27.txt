@@ -1,0 +1,13 @@
+Registro da captura das fontes desta base (exemplo didático da skill sdd-kb)
+Data da captura: 2026-09-27
+
+NT2025002-151  NT 2025.002-RTC v1.51 (PDF, 95 páginas)
+               origem: Portal Nacional da NF-e
+               sha256: a4aaaa181522b43cd90b502f8ccb9e4bdabea30fed838e2d0790be5ba77254a4
+               conferido: versão impressa na capa = 1.51; páginas 42, 45, 47 e 49 lidas
+LC214-2025     Lei Complementar 214/2025, texto compilado
+               origem: planalto.gov.br — consultado na data acima, sem cópia local
+REPORT-2026    reportagens sobre o ano-teste — consultadas, sem cópia local
+
+Este arquivo mora em fontes/ para mostrar o mecanismo: o validador recalcula o SHA-256
+dele e reprova a base se o conteúdo mudar sem o catálogo ser atualizado.
