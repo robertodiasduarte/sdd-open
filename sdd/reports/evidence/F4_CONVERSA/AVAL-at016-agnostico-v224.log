@@ -1,0 +1,23 @@
+$ T=$(mktemp -d) && git archive v2.2.4 | tar -x -C $T && cp tests/test_agnostico.py tests/apoio.py $T/tests/ && cd $T/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_agnostico
+...F
+======================================================================
+FAIL: test_pacote_sem_ferramenta_de_um_agente_so (test_agnostico.Agnostico)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$T/tests/test_agnostico.py", line 51, in test_pacote_sem_ferramenta_de_um_agente_so
+    self.assertEqual(achados(RAIZ), [])
+AssertionError: Lists differ: ['sdd/templates/BUILD_REPORT_TEMPLATE.md:7[67 chars]ion'] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+'sdd/templates/BUILD_REPORT_TEMPLATE.md:75: Task tool'
+
++ []
+- ['sdd/templates/BUILD_REPORT_TEMPLATE.md:75: Task tool',
+-  'sdd/templates/fragments/CLARIFY.md:45: AskUserQuestion']
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.035s
+
+FAILED (failures=1)
+exit=1

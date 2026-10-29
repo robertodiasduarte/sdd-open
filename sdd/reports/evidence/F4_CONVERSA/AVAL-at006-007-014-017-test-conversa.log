@@ -1,0 +1,20 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_conversa
+test_bloco_comum_igual_nas_14 (test_conversa.Camada) ... ok
+test_como_falar_existe_e_cita_o_fragmento (test_conversa.Camada) ... ok
+test_skill_portada_nao_cita_o_starter (test_conversa.Camada) ... ok
+test_status_comeca_pelo_nome_da_fase (test_conversa.Camada) ... ok
+test_parada_tem_os_campos (test_conversa.Fragmento) ... ok
+test_pergunta_tem_as_regras (test_conversa.Fragmento) ... ok
+test_linha_de_identificacao_tem_a_versao_do_frontmatter (test_conversa.Identificacao) ... ok
+test_metadata_tem_updated (test_conversa.Identificacao) ... ok
+test_nenhuma_abre_com_banner (test_conversa.Identificacao) ... ok
+test_sao_16_e_as_14_da_f4_existem (test_conversa.Identificacao) ... ok
+test_skill_com_ate_500_linhas (test_conversa.Identificacao) ... ok
+test_design_confere_com_design_lint (test_conversa.LintNoFimDaFase) ... ok
+test_handoff_confere_com_handoff_lint_entre_o_3_e_o_4 (test_conversa.LintNoFimDaFase) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.014s
+
+OK
+exit=0

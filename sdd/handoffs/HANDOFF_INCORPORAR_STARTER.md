@@ -8,9 +8,9 @@
 |---|---|
 | **Objetivo** | Fazer do sdd-open o único SDD do Roberto, sob 4 parâmetros fixados em 2026-10-29 (`sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, seção 0): **P1** corrigir erros antes de construir por cima; **P2** manter o padrão agnóstico (7 agentes; o que depende de subagente degrada para parada manual); **P3** incorporar o que o sdd-starter faz melhor (F1–F6: camada "Como falar com o aluno", skills de terreno, migration provada por leitura, validadores de fase, versão/testes/release, sdd-kb, docs); **P4** levar para o Open o que o SDD privado faz e o Open não (F7–F14: evidência fail-closed, hooks, fluxo encadeado, revisão adversarial, contexto e governança, UX/LLM, playbook e drive) e então **substituir o SDD privado pelo Open** (F15). Sem abrandar o mecanismo do open (gate com seis estados, evidência, avaliador fresco, playbook, release com veredito). |
 | **Status** | 🔨 em andamento |
-| **Feito** | 2026-10-29 — avaliação do starter (`sdd/features/AVALIACAO_STARTER_PARA_OPEN.md`) e abertura da worktree. 2026-10-29 — as 5 decisões do Roberto (ver `## Eventos`); **F1 Manutenção entregue**: 115 testes em `tests/`, `scripts/check-versions.py`, `scripts/next-version.sh`, `.github/workflows/release.yml`, 3 padrões de PII; merge em `main` (`f75fbdb`, PR #1) e **Release `v2.2.1`** publicada sozinha com `sdd-open-v2.2.1.tar.gz` + `SHA256SUMS.txt` (hash conferido). 2026-10-29 — **F2 Terreno entregue**: `sdd-checar-ambiente` 1.3.0 (`checar.sh --segredo`), `sdd-higiene-dado` 1.1.1, `sdd-iniciar-repo` 1.1.1 em `.agents/skills/`; `doctor` confere segredo salvo no git; `sdd-new-session` 1.1.0 (pré-voo por `checar.sh --frente`, tabela de tradução, descoberta gravada no config da frente); 242 testes; merge em `main` (`41c6169`, PR #2) e **Release `v2.2.2`** (hash conferido). 2026-10-29 — **F3 Build e Release entregue**: `sdd-build` 2.1.0 com `references/aplicar-migration.md`; `report-lint.py` reprova migration sem linha provada em `## Migrations aplicadas`; `sdd-release` 2.2.0 com o bloco único do OK e `scripts/deploy-espera-testes.py` (SIM/NAO/NAO_SEI/NAO_SE_APLICA); `doctor` avisa skill e `sdd/bin/` mais velhos que o pacote; `LM-004`; 304 testes; merge em `main` (`1a54da5`, PR #3) e **Release `v2.2.3`** (hash conferido). 2026-10-29 — **W0 entregue** (sessão 1, worktree `sdd-open-w0-m1`): `sdd-iterate` 2.0.1 vê clarificação aberta (`--print` + gate sem `--print`); templates sem contexto de domínio, `/drive`, guard inexistente e passos de outro SDD; `sdd-build` 2.1.1 (avaliador grava só `AVAL-*.log`); `tests/test_correcoes_w0.py`; 316 testes; merge em `main` (`303cc87`, PR #4) e **Release `v2.2.4`** (hash conferido). 2026-10-29 — **M1 entregue**: job `testes-macos` nos dois workflows (Python 3.9.6 e bash 3.2.57 afirmados, `release` espera por ele), `actions/checkout` v5.1.0 por SHA, passo "Skill integrity" em `.agents/skills/`; 326 testes; push em `main` (`dd27ef6`, PR #5), **sem Release** (só `.github/**` e `tests/`). |
-| **Falta** | Próxima: F4 Conversa (agora também com `design-lint.py`/`handoff-lint.py`, `metadata.updated` e linha de identificação nas 13 skills), F5 Conhecimento, F6 Docs, e depois o porte do SDD privado como **F7 Evidência · F8 Hooks · F9 Fluxo encadeado · F10/F11 Revisão adversarial · F12 Contexto e governança · F13 UX e LLM · F14 Playbook e orquestração** e **F15 Substituição do SDD privado** (`sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, seções 8 e 9; agrupamento por sessão na seção 10) — cada uma como fluxo SDD completo numa worktree própria; os artefatos SDD desta família vivem na branch `docs/incorporar-starter`, nunca mesclada; `MANIFEST.txt` a cada arquivo novo; cada push em `main` que toca o produto publica uma Release sozinho. |
-| **Pronto quando** | **P3 (starter):** (1) `bash scripts/publish-gate.sh .` sai 0 na worktree com os steps novos (testes unitários, check-versions, design-lint, handoff-lint, padrões de PII); (2) `python3 sdd/bin/skill-lint.py .agents/skills/sdd-*/SKILL.md` sai 0 e as 13 skills têm a seção `## Como falar com o aluno` mais `references/como-falar.md`; (3) existem `.agents/skills/sdd-checar-ambiente`, `sdd-higiene-dado`, `sdd-iniciar-repo` e `sdd-kb` com `tests/` passando; (4) `sdd-build` tem `references/aplicar-migration.md` e `sdd/bin/report-lint.py` reprova migration listada sem prova por leitura ✅; (5) existe pelo menos uma Release no GitHub de `robertodiasduarte/sdd-open` com `SHA256SUMS.txt` ✅; (6) o item "Specs como deltas" do `docs/comparison.md` continua declarado como planejado, não como feito. **P1 (erros):** (7) `grep -rnE 'claude-build-report-guard|/drive|Step 1\.5|slice 2' sdd/ .agents/` sem hit e `verify-gate.sh` sem `--print` sai 5 na fixture de clarificação (W0) ✅; toda nota HIGH/MEDIUM de revisão aplicada ou rebatida com motivo. **P2 (agnóstico):** (8) `tests/test_agnostico.py` verde (nenhum nome de ferramenta de um agente só em `SKILL.md`/`references/`); CI verde em `ubuntu-latest` e `macos-latest` ✅ (M1); F9 e F12 provadas no Codex CLI. **P4 (substituição):** (9) F7–F14 publicadas; (10) no repositório privado, `bash bin/sdd-open.sh doctor` sai ✅, uma feature real do RDD percorre o fluxo do Open de ponta a ponta e `git ls-files .claude/commands/workflow .claude/agents sdd-public` está vazio (F15). |
+| **Feito** | 2026-10-29 — avaliação do starter (`sdd/features/AVALIACAO_STARTER_PARA_OPEN.md`) e abertura da worktree. 2026-10-29 — as 5 decisões do Roberto (ver `## Eventos`); **F1 Manutenção entregue**: 115 testes em `tests/`, `scripts/check-versions.py`, `scripts/next-version.sh`, `.github/workflows/release.yml`, 3 padrões de PII; merge em `main` (`f75fbdb`, PR #1) e **Release `v2.2.1`** publicada sozinha com `sdd-open-v2.2.1.tar.gz` + `SHA256SUMS.txt` (hash conferido). 2026-10-29 — **F2 Terreno entregue**: `sdd-checar-ambiente` 1.3.0 (`checar.sh --segredo`), `sdd-higiene-dado` 1.1.1, `sdd-iniciar-repo` 1.1.1 em `.agents/skills/`; `doctor` confere segredo salvo no git; `sdd-new-session` 1.1.0 (pré-voo por `checar.sh --frente`, tabela de tradução, descoberta gravada no config da frente); 242 testes; merge em `main` (`41c6169`, PR #2) e **Release `v2.2.2`** (hash conferido). 2026-10-29 — **F3 Build e Release entregue**: `sdd-build` 2.1.0 com `references/aplicar-migration.md`; `report-lint.py` reprova migration sem linha provada em `## Migrations aplicadas`; `sdd-release` 2.2.0 com o bloco único do OK e `scripts/deploy-espera-testes.py` (SIM/NAO/NAO_SEI/NAO_SE_APLICA); `doctor` avisa skill e `sdd/bin/` mais velhos que o pacote; `LM-004`; 304 testes; merge em `main` (`1a54da5`, PR #3) e **Release `v2.2.3`** (hash conferido). 2026-10-29 — **W0 entregue** (sessão 1, worktree `sdd-open-w0-m1`): `sdd-iterate` 2.0.1 vê clarificação aberta (`--print` + gate sem `--print`); templates sem contexto de domínio, `/drive`, guard inexistente e passos de outro SDD; `sdd-build` 2.1.1 (avaliador grava só `AVAL-*.log`); `tests/test_correcoes_w0.py`; 316 testes; merge em `main` (`303cc87`, PR #4) e **Release `v2.2.4`** (hash conferido). 2026-10-29 — **M1 entregue**: job `testes-macos` nos dois workflows (Python 3.9.6 e bash 3.2.57 afirmados, `release` espera por ele), `actions/checkout` v5.1.0 por SHA, passo "Skill integrity" em `.agents/skills/`; 326 testes; push em `main` (`dd27ef6`, PR #5), **sem Release** (só `.github/**` e `tests/`). 2026-10-29 — **F4 Conversa entregue** (sessão 2, worktree `sdd-open-f4-conversa`): camada "Como falar com o aluno" nas 13 skills nativas + `sdd-checar-ambiente` (seção, `references/como-falar.md`, Status com o nome da fase no lugar do banner, linha de identificação, bump minor); `sdd/templates/fragments/PERGUNTA_DECISAO.md`; `skill-lint.py --conversa` + 7 fixtures; `sdd/bin/design-lint.py` e `handoff-lint.py` (passo 8 da `sdd-design`, 3b da `sdd-handoff`); `tests/test_agnostico.py`; 388 testes; 2 ciclos de revisão de contexto fresco; push em `main` (`2fcdda1`, PR #6) e **Release `v2.2.5`** (hash conferido). |
+| **Falta** | Próxima: **F5 Conhecimento** (`sdd-kb` com validador e `gate.sh`, entrevista do `ux-review-builder` como entrada da `sdd-ux-review`, decisão 4 do plano: `sdd/kb/` fixo × slot `project.kb_dir`), F6 Docs, e depois o porte do SDD privado como **F7 Evidência · F8 Hooks · F9 Fluxo encadeado · F10/F11 Revisão adversarial · F12 Contexto e governança · F13 UX e LLM · F14 Playbook e orquestração** e **F15 Substituição do SDD privado** (`sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, seções 8 e 9; agrupamento por sessão na seção 10) — cada uma como fluxo SDD completo numa worktree própria; os artefatos SDD desta família vivem na branch `docs/incorporar-starter`, nunca mesclada; `MANIFEST.txt` a cada arquivo novo; cada push em `main` que toca o produto publica uma Release sozinho. |
+| **Pronto quando** | **P3 (starter):** (1) `bash scripts/publish-gate.sh .` sai 0 na worktree com os steps novos (testes unitários, check-versions, design-lint, handoff-lint, padrões de PII); (2) `python3 sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md` sai 0 e as 13 skills nativas (mais a `sdd-checar-ambiente`) têm a seção `## Como falar com o aluno` mais `references/como-falar.md` ✅ (F4); (3) existem `.agents/skills/sdd-checar-ambiente`, `sdd-higiene-dado`, `sdd-iniciar-repo` e `sdd-kb` com `tests/` passando; (4) `sdd-build` tem `references/aplicar-migration.md` e `sdd/bin/report-lint.py` reprova migration listada sem prova por leitura ✅; (5) existe pelo menos uma Release no GitHub de `robertodiasduarte/sdd-open` com `SHA256SUMS.txt` ✅; (6) o item "Specs como deltas" do `docs/comparison.md` continua declarado como planejado, não como feito. **P1 (erros):** (7) `grep -rnE 'claude-build-report-guard|/drive|Step 1\.5|slice 2' sdd/ .agents/` sem hit e `verify-gate.sh` sem `--print` sai 5 na fixture de clarificação (W0) ✅; toda nota HIGH/MEDIUM de revisão aplicada ou rebatida com motivo. **P2 (agnóstico):** (8) `tests/test_agnostico.py` verde (nenhum nome de ferramenta de um agente só em skills, templates, `AGENTS.md.tmpl` e playbook) ✅ (F4); CI verde em `ubuntu-latest` e `macos-latest` ✅ (M1); F9 e F12 provadas no Codex CLI. **P4 (substituição):** (9) F7–F14 publicadas; (10) no repositório privado, `bash bin/sdd-open.sh doctor` sai ✅, uma feature real do RDD percorre o fluxo do Open de ponta a ponta e `git ls-files .claude/commands/workflow .claude/agents sdd-public` está vazio (F15). |
 
 ---
 
@@ -45,6 +45,135 @@
 - 2026-10-29 — M1, decisão do Roberto (pergunta com 3 opções): o item "baseline da `sdd-auditoria-harness` no CI, falha com HIGH/CRITICAL" do plano não existe como ferramenta — o `collect_evidence.py` não lê `.agents/skills/` (só `.claude/skills/*/SKILL.md`), não tem severidade e sempre sai 0. Escolhida a **varredura inline no CI** (Unicode invisível e código remoto entregue a shell), contra "tirar da M1" e "rodar o collect_evidence como smoke".
 - 2026-10-29 — Revisão de contexto fresco do `eac5484` (M1): FIX FIRST, 0 HIGH, 4 MEDIUM, 6 LOW — aplicadas em `dd27ef6` (varredura fail-closed com alvo vazio; piso **afirmado** e `python3` do PATH = piso; regex de código remoto e faixas Unicode ampliadas); 3 aceitas com motivo (escopo só `.agents/skills/`; texto que cita `curl … | sh` reprova; `release` preso ao runner macOS).
 - 2026-10-29 — Roberto: "finalizar (push + deploy + verificar)" sem o repositório → recusado; depois "finalizar (push + deploy + verificar) sdd-open". Push fast-forward `303cc87..dd27ef6` em `main`; PR #5 MERGED; só o `publish-gate` roda (run 40931927983) — `.github/**` e `tests/` ficam fora dos `paths` do `release.yml`, então a M1 **não gera tag**; a última Release continua `v2.2.4`.
+- 2026-10-29 — Brainstorm da F4 (`sdd/features/BRAINSTORM_F4_CONVERSA.md`), 7 decisões do Roberto, todas na opção recomendada: decisão 2 do plano = **"não sei" e "sem Outro"**, as duas; decisão 3 = a F4 **absorve A–F**; `skill-lint` ganha a flag **`--conversa`** (o padrão continua só frontmatter, porque o lint vai para o projeto do usuário); a **`sdd-checar-ambiente` entra** (14 skills, não 13); o `handoff-lint` confere o **template do open**, não o formato do starter (o item F do plano descrevia o do starter); `sdd-design` e `sdd-handoff` **rodam o lint** no próprio documento (2 exceções declaradas à regra "comandos não mudam"); `test_agnostico` reprova **nomes de ferramenta** e permite "subagente" como conceito, varrendo skills, templates, `AGENTS.md.tmpl` e playbook. Abordagem A (seção autocontida + `como-falar.md` + fragmento único, uma release).
+- 2026-10-29 — Design da F4: a `sdd-checar-ambiente` manda repassar a saída do script "sem frase antes"; a exceção (d) passou a valer para toda resposta dela (Status antes do relatório, sem retraduzir). O lint da `sdd-handoff` virou o passo `3b` para não renumerar o passo 4. DEFINE v1.1.
+- 2026-10-29 — Revisão de contexto fresco da F4, ciclo 1 sobre `4e77a1f`: NEEDS_WORK, 0 HIGH, 4 MEDIUM, 8 LOW (21/22 ATs PASS; o AT-022 depende do CI). Aplicadas em `fd94876` (L1 em parte: opção desconhecida no `skill-lint` continua 64). M3 mudou o contrato: ficha com Status ✅ dispensa o prompt de retomada, porque a `sdd-handoff` o declara opcional sem continuação (DEFINE v1.2, AT-012). Ciclo 2 sobre `fd94876`: **PASS**, 0 HIGH, 0 MEDIUM, 6 LOW — 5 aplicados e 1 em parte em `2fcdda1` (lista numerada, `__negrito__` e prosa entre pergunta e opções ficam fora do formato do DEFINE).
+- 2026-10-29 — Roberto: "push sdd-open autorizado" (sem escolher versão ⇒ patch automático, contra a alternativa `v2.3.0` por tag manual). Push fast-forward `dd27ef6..2fcdda1` em `main`; PR #6 MERGED; run `release` 40952893409 com `testes` e `testes-macos` antes do `Publicar release` (20:57:35 → 20:57:37); publicou `v2.2.5`.
+
+---
+
+## 2026-10-29 — F4 Conversa (entregue, Release v2.2.5)
+
+### O que foi feito
+
+- **Fluxo SDD completo** (sessão 2, worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f4-conversa`, branch `feat/f4-conversa`):
+  - artefatos: `sdd/features/BRAINSTORM_F4_CONVERSA.md`, `DEFINE_F4_CONVERSA.md` (v1.2, 22 ATs EARS, Clarity 14/15), `DESIGN_F4_CONVERSA.md` (v1.1, 10 decisões, 36 linhas no manifest) e `sdd/reports/BUILD_REPORT_F4_CONVERSA.md` (`report-lint` 0);
+  - commits `4e77a1f` (build), `fd94876` (ciclo 1) e `2fcdda1` (ciclo 2), sobre `dd27ef6`;
+  - PR https://github.com/robertodiasduarte/sdd-open/pull/6 (MERGED); 62 arquivos (35 novos e 27 alterados).
+- **As 14 skills** (bump minor): auditoria-harness 1.1.0, brainstorm 2.1.0, build 2.2.0, checar-ambiente 1.4.0, define 2.2.0, design 2.1.0, governanca 2.2.0, handoff 2.1.0, iterate 2.1.0, new-session 1.2.0, playbook 2.1.0, prompt-builder 2.1.0, release 2.3.0, ux-review 2.2.0. Cada uma tem:
+  - a seção `## Como falar com o aluno`, logo antes do 1º `## `. Ela traz 3 linhas de abertura, a tabela `| Etapa | Nome para o aluno | Passos desta skill |` e o **bloco comum de regras**, igual nas 14: as 5 partes, o Status começando pelo nome da fase (`Build: ✅ 1 Plano · ▶️ 2 Modo · …`) e o Próximo passo ≤100 caracteres;
+  - `references/como-falar.md`, com glossário, Status preenchido e ≥1 exemplo com decisão (recomendada primeiro, **não sei**, sem **Outro**);
+  - a linha de identificação ("uma vez só, antes do Status") e `metadata.updated: "2026-10"`;
+  - sai o `> Abra a resposta com o banner` das 9 que o tinham.
+
+  Casos próprios:
+  - `sdd-design` ganha o `### 8. Conferir`, com `design-lint`;
+  - `sdd-handoff` ganha o `### 3b. Conferir a ficha`, com `handoff-lint`;
+  - na `sdd-checar-ambiente`, o Status vem antes do relatório do script, e a identificação continua na linha ✅.
+- **`sdd/templates/fragments/PERGUNTA_DECISAO.md`**: dono único do formato.
+  - Pergunta: `(recomendado)` primeiro com o porquê, números, `(ref: …)`, **não sei**, nunca **Outro**, eco de 1 linha, `[Dn]` reservado.
+  - Parada ⏸️: **Por que parei:**, **Onde:**, **Passos:**, **O que não foi feito:**, **Brief:** e **Sessão nova:** (que a F9 liga ao `exit 40`).
+- **`sdd/bin/skill-lint.py --conversa`**: sem a flag, só frontmatter, com a mensagem da `v2.2.4`. Com a flag, confere:
+  - a seção (fora de bloco de código), a coluna `Etapa`, as 5 partes e o `como-falar.md` quando a seção manda lê-lo;
+  - em cada pergunta de decisão do `como-falar.md` (negrito com `?` + opções `-`/`*`, também depois de linha em branco, em citação ou quebradas em 2 linhas): exatamente 1 `(recomendado)`, e ela é a 1ª; **não sei**; nada que comece por Outro/Outra/Outros;
+  - `**Próximo passo**` ≤100 caracteres.
+
+  As 7 fixtures ficam em `sdd/fixtures/conversa/` (controle + 6 que reprovam). O CI (`publish-gate.yml`, passo "Skill frontmatter") roda com `--conversa`.
+- **`sdd/bin/design-lint.py`** (0/1/64): `## Key Decisions` com `### Decision N: <nome>` em sequência; File Manifest com `**Total Files:**` = linhas; dependências que existem, sem autodependência e sem ciclo; placeholder entre chaves fora de código (aspas angulares passam). Arquivo ilegível sai 1 com `RESULTADO:`.
+- **`sdd/bin/handoff-lint.py`** (0/1/64): confere o mínimo do `HANDOFF_TEMPLATE.md` do open:
+  - `# HANDOFF:`;
+  - Ficha com Objetivo, Status e Verify Gate;
+  - `## Prompt de retomada` com bloco, delimitada sem os blocos (só a ficha cujo Status **começa** por ✅ dispensa o prompt);
+  - `### … — AAAA-MM-DD` no histórico;
+  - placeholder; frases que dependem da conversa anterior (a lista está na docstring do lint).
+
+  Seção extra passa, e `## Eventos` é opcional.
+- **`tests/test_agnostico.py`**: reprova `AskUserQuestion`, `TodoWrite`, `PreToolUse`, `PostToolUse`, `subagent_type`, `Task tool`/`Agent tool` (sem caixa) e `/model`.
+  - Varre todo arquivo de texto de `.agents/skills/`, `sdd/templates/`, `AGENTS.md.tmpl` e `sdd/playbook.md`.
+  - Texto não-UTF-8 é achado; binário é pulado.
+  - `CLARIFY.md:45` e `BUILD_REPORT_TEMPLATE.md:75` foram reescritos.
+- **Outros testes:**
+  - novos: `tests/test_conversa.py` (identificação = versão nas 16, sem banner, bloco comum nas 14, fragmento, passos 8/3b), `test_design_lint.py` e `test_handoff_lint.py`;
+  - `test_skill_lint.py`: 8 → 32 testes;
+  - versões esperadas atualizadas em `test_correcoes_w0`, `test_contrato_build_release` e `test_matriz_new_session`;
+  - `test_release_workflow` passa a esperar `--conversa`.
+- **Evidência** em `sdd/reports/evidence/F4_CONVERSA/`:
+  - scripts: `gerar-evidencia.sh`, `sabotagem.sh` e `comandos-intactos.py`;
+  - logs: `GATE`, `suite-piso`, `testes-f4`, `baseline`, `baseline-notas`, `baseline-agnostico`, `comandos-intactos`, `contratos-intactos`, `design-lint-reais`, `skill-lint-conversa`, `check-versions`, `codepoints`, `ci-pr`, `release`, e os `AVAL-*`/`AVAL2-*` dos avaliadores;
+  - vereditos: `sdd/reviews/AVALIACAO_F4_CONVERSA_20261029-ciclo1.md` e `…-ciclo2.md`.
+- **Sabotagem** (6, em `2fcdda1`):
+  - `skill-lint` sem "não sei";
+  - `design-lint` sem ciclo;
+  - `handoff-lint` sem placeholder no prompt;
+  - `test_agnostico` sem `AskUserQuestion`;
+  - `como-falar.md` da build sem "não sei";
+  - banner de volta na define.
+
+  As 6 ficaram vermelhas com o nome do teste e verdes depois do `git checkout`.
+- **Release**:
+  - o CI do PR (run 40951200708) deu `gate` e `Testes no piso (macOS)` verdes, com 388 testes, integridade "0 finding(s) in 57 file(s)" e o passo com `--conversa`;
+  - o Roberto respondeu "push sdd-open autorizado". Houve push fast-forward `dd27ef6..2fcdda1`;
+  - a run `release` 40952893409 rodou `testes` e `testes-macos` antes de publicar → https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.2.5, tag em `2fcdda1`;
+  - SHA-256 de `sdd-open-v2.2.5.tar.gz`: `4686f3dafcb9decfeea66308055f3a9123e1413c6c5e6831855a6073a859e053`, com `shasum -a 256 -c` OK.
+
+### Casos e testes em aberto
+
+- **Piso:** `SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'` → 388 OK em `2fcdda1` (202 s). A base `dd27ef6` tinha 326.
+- **Gate e versões:** `bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F4_CONVERSA.md` → 0 em `4e77a1f`, `fd94876` e `2fcdda1`. `check-versions --base v2.2.4 --base-obrigatoria` VERDE.
+- **Baseline vermelha:**
+  - os 9 módulos da F4, antes do código, deram 78 FAIL e 34 ERROR em 114 testes;
+  - os testes das notas, contra os lints de `4e77a1f`, deram 10 FAIL;
+  - o `test_agnostico` sobre `git archive v2.2.4` reprova `BUILD_REPORT_TEMPLATE.md:75: Task tool` e `CLARIFY.md:45: AskUserQuestion`.
+- **Comandos e passos `v2.2.4` × HEAD nas 14:** só `+ passo ### 8. Conferir`/`+ cmd … design-lint.py …` (design) e `+ passo ### 3b. Conferir a ficha`/`+ cmd … handoff-lint.py …` (handoff).
+- **Conferência de fechamento** (inventário):
+  - o código roda: 388 testes no piso e no CI;
+  - os critérios combinados passam: gate 0, `report-lint` 0, `test_agnostico` vermelho na `v2.2.4`, 1 sabotagem por script e revisão sem HIGH aberto;
+  - as mudanças estão em `origin/main` e na tag `v2.2.5`, e os artefatos SDD na branch `docs/incorporar-starter`;
+  - o que ficou de fora está nas pendências abaixo.
+- **Não verificado:** a obediência de um agente real à camada (tom, ordem das 5 partes, leitura do `como-falar.md`). Os testes conferem só o texto escrito.
+
+### Pendências
+
+**🐛 Bug fix** — o que ficou quebrado, parcial ou com comportamento errado conhecido:
+
+- nenhuma.
+
+**✨ Feature improvement** — o que é incremento planejado, melhoria ou próxima etapa de escopo:
+
+- **Conferência num agente real** (Codex CLI e Claude Code):
+  - rodar `sdd-define`, `sdd-new-session` (num projeto sem git) e `sdd-release`;
+  - ver o Status na 1ª linha, a identificação antes dele, a pergunta com `(recomendado)` e "não sei", e a parada ⏸️.
+
+  É a pendência A-002 do DEFINE e não entra em gate.
+- **Risco aceito:** o bloco comum de regras está copiado em 14 `SKILL.md`. O `test_conversa` segura 7 frases-chave; outra frase pode divergir. Quando a F9 reabrir as 13 skills, troque o bloco de uma vez, por substituição de texto.
+- **Risco aceito:** o `skill-lint --conversa` não confere pergunta em lista numerada, com `__negrito__` ou com prosa entre a pergunta e as opções, porque ficam fora do formato do DEFINE (ciclo 2, LOW-2).
+- **Risco aceito:** opção desconhecida no `skill-lint` (`--verbose`) sai 64. Na `v2.2.4`, ela virava caminho de arquivo e saía 1 (DESIGN, Decisão 2).
+- **Pendência herdada:** o `report-lint.py` com cabeçalho não reconhecido continua fail-open (F7); `RESUMO_ETAPA.md:4,49` ainda cita `/adversarial-review` (F10).
+- **Para a F5:** a `sdd-kb` nova precisa nascer com a seção e o `references/como-falar.md` no formato da F4, porque o CI roda `skill-lint --conversa` em toda `sdd-*`. O `test_conversa.F4` (14 nomes) e o `test_skill_lint` (16 → 17) mudam de propósito.
+
+### Próximos passos
+
+1. **Sessão 3 — F5 Conhecimento** (prompt em `sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`), numa worktree nova a partir de `origin/main` = `2fcdda1`. Pronto quando: `BRAINSTORM_F5_*.md` gravado com a decisão 4 do plano respondida pelo Roberto; depois define, design, build e Release com `SHA256SUMS.txt` conferido.
+2. **F6 Docs**, depois **F7 → F14** e **F15** (plano, seções 8 e 10).
+
+### Alertas — o que não quebrar
+
+- **A camada é contrato testado:**
+  - toda skill `sdd-*` precisa passar no `skill-lint --conversa`: seção, tabela `Etapa`, 5 partes e o `como-falar.md` com pergunta de decisão válida;
+  - mudar uma das `FRASES` do bloco comum quebra o `test_conversa` nas 14;
+  - mudar a versão de uma skill exige mudar a linha de identificação (`<nome> vX.Y.Z · `).
+- **`PERGUNTA_DECISAO.md`** é o dono do formato. A W2/F9 preenche o `[Dn]` e liga o `exit 40` aos campos `Brief:`/`Sessão nova:`; não crie um 2º formato.
+- **Os 2 lints novos** viajam para o projeto do usuário (`sdd/bin/`). O `handoff-lint` confere o template do **open**; o HANDOFF desta família está no formato do starter e reprova nele, o que é esperado.
+- **Evidência:** o `report-lint` só aceita evidência em `evidence/<FEATURE>/`, com o nome exato do relatório (`F4_CONVERSA`, não `F4`).
+- **A F4 não mexeu** em `sdd-iniciar-repo` nem `sdd-higiene-dado`. Uma substituição em massa nas skills tem de excluir as duas, ou elas sobem de versão.
+- Demais alertas das etapas M1, W0 e F3 continuam valendo.
+
+### Onde está o trabalho
+
+- Remoto `https://github.com/robertodiasduarte/sdd-open.git`, `main` = `2fcdda1` = tag `v2.2.5`. Última Release: https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.2.5.
+- Worktree da sessão 2: `/Users/robertoduarte/rdd-worktrees/sdd-open-f4-conversa`. A branch `feat/f4-conversa` está em `2fcdda1`, já mesclada.
+- Os artefatos SDD (`sdd/features|handoffs|reports|reviews`) estão gravados na branch `docs/incorporar-starter`.
+- Limpeza, rodada de fora da pasta e só depois de gravar a branch `docs/`: `git -C /Users/robertoduarte/rdd-public/sdd-open worktree remove /Users/robertoduarte/rdd-worktrees/sdd-open-f4-conversa && git -C /Users/robertoduarte/rdd-public/sdd-open branch -d feat/f4-conversa`.
 
 ---
 

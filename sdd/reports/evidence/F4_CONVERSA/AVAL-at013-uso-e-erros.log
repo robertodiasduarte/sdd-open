@@ -1,0 +1,28 @@
+$ T=$(mktemp -d); cp sdd/fixtures/handoff/HANDOFF_VALIDO.md $T/H.md; cp sdd/fixtures/design/DESIGN_VALIDO.md $T/D.md; chmod 000 $T/H.md $T/D.md; for c in "sdd/bin/skill-lint.py --conversa" "sdd/bin/skill-lint.py" "sdd/bin/handoff-lint.py" "sdd/bin/design-lint.py" "sdd/bin/handoff-lint.py $T/nao-existe.md" "sdd/bin/design-lint.py $T/nao-existe.md" "sdd/bin/handoff-lint.py $T/H.md" "sdd/bin/design-lint.py $T/D.md"; do echo "== python3 $c"; /usr/bin/python3 -B $c 2>&1 | tail -2 | sed "s#$T#\$T#g"; echo "rc=${PIPESTATUS[0]}"; done; chmod 600 $T/H.md $T/D.md
+== python3 sdd/bin/skill-lint.py --conversa
+uso: skill-lint.py [--conversa] <SKILL.md> [...]
+rc=64
+== python3 sdd/bin/skill-lint.py
+uso: skill-lint.py [--conversa] <SKILL.md> [...]
+rc=64
+== python3 sdd/bin/handoff-lint.py
+uso: handoff-lint.py <HANDOFF.md>
+rc=64
+== python3 sdd/bin/design-lint.py
+uso: design-lint.py <DESIGN.md>
+rc=64
+== python3 sdd/bin/handoff-lint.py $T/nao-existe.md
+uso: handoff-lint.py <HANDOFF.md>
+rc=64
+== python3 sdd/bin/design-lint.py $T/nao-existe.md
+uso: design-lint.py <DESIGN.md>
+rc=64
+== python3 sdd/bin/handoff-lint.py $T/H.md
+    return self._accessor.open(self, flags, mode)
+PermissionError: [Errno 13] Permission denied: '$T/H.md'
+rc=1
+== python3 sdd/bin/design-lint.py $T/D.md
+    return self._accessor.open(self, flags, mode)
+PermissionError: [Errno 13] Permission denied: '$T/D.md'
+rc=1
+exit=0

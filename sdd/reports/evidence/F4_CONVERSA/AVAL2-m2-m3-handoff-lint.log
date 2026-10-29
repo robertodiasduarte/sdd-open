@@ -1,0 +1,51 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/m23.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/revisao-fd94876
+== M2: '## Saída esperada' dentro do bloco do prompt
+✅ $TMP/H.md: HANDOFF válido
+exit=0
+== M3: Status ✅ DoD fechado, sem a seção Prompt
+✅ $TMP/H.md: HANDOFF válido
+exit=0
+== M3 controle: Status 🚢, sem a seção Prompt
+🛑 $TMP/H.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova (só a ficha com Status ✅ dispensa o prompt)
+RESULTADO: VERMELHO
+→ corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo
+exit=1
+== M3 var: Status ✅ com seção Prompt vazia
+🛑 $TMP/H.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova (só a ficha com Status ✅ dispensa o prompt)
+RESULTADO: VERMELHO
+→ corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo
+exit=1
+== ADV: Status 🔨 em andamento contendo ✅ no texto, sem prompt
+✅ $TMP/H.md: HANDOFF válido
+exit=0
+== ADV: Status ✅ só numa linha Status fora da Ficha? (Status 🔨 na ficha, '| Status | ✅ |' em outra tabela)
+🛑 $TMP/H.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova (só a ficha com Status ✅ dispensa o prompt)
+RESULTADO: VERMELHO
+→ corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo
+exit=1
+== ADV: duas linhas Status na Ficha (1a 🔨, 2a ✅)
+🛑 $TMP/H.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova (só a ficha com Status ✅ dispensa o prompt)
+RESULTADO: VERMELHO
+→ corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo
+exit=1
+== ADV: '## Prompt de retomada' só dentro de bloco de código, ficha 🚢
+🛑 $TMP/H.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova (só a ficha com Status ✅ dispensa o prompt)
+RESULTADO: VERMELHO
+→ corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo
+exit=1
+== ADV: prompt em ~~~
+✅ $TMP/H.md: HANDOFF válido
+exit=0
+== ADV: fence não fechada no prompt
+🛑 $TMP/H.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova (só a ficha com Status ✅ dispensa o prompt)
+RESULTADO: VERMELHO
+→ corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo
+exit=1
+== ADV: prompt com bloco de 4 crases contendo ``` interno
+✅ $TMP/H.md: HANDOFF válido
+exit=0
+== ADV: ## dentro do prompt + 'como discutimos' após (dentro do bloco)
+🛑 $TMP/H.md: linha 55: frase que depende da conversa anterior: 'como discutimos'
+RESULTADO: VERMELHO
+→ corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo
+exit=1

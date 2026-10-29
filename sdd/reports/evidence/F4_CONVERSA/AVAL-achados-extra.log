@@ -1,0 +1,18 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/sonda-extra.sh
+== M3: sdd-handoff diz que o prompt é opcional; o lint o exige
+22:2. **Gerar o prompt da próxima sessão** (opcional quando não há continuação).
+129:nenhum placeholder, nenhum "como discutimos". Vermelho ⇒ corrija a ficha e rode de novo antes de
+-- ficha de feature encerrada (Status ✅ DoD fechado), sem continuação e por isso sem prompt:
+🛑 $T/H.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova
+RESULTADO: VERMELHO
+rc=1
+== L7: duas instruções de 'abrir' a 1ª resposta
+15:Na primeira resposta desta skill, comece com esta linha, uma vez só:
+36:Toda resposta, nesta ordem (pule a parte sem conteúdo):
+38:1. **Status** — uma linha que começa pelo nome da fase: `Build: ✅ 1 Plano · ▶️ 2 Modo · ⬜ 3 Tarefas 0/5 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+-- exemplos do como-falar que mostram a linha de identificação junto do Status: 0
+== L-cerca: seção dentro de bloco de código conta para o skill-lint
+🛑 $T/conversa-controle/SKILL.md: seção '## Como falar com o aluno' repetida (2 vezes)
+RESULTADO: VERMELHO
+rc=1
+exit=0

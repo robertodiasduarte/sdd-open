@@ -1,0 +1,89 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/sonda-design-lint.sh
+--- AT-008/010 sdd/features/DESIGN_F1_MANUTENCAO.md (esperado 0)
+✅ sdd/features/DESIGN_F1_MANUTENCAO.md: DESIGN válido
+exit=0
+--- AT-008/010 sdd/features/DESIGN_F2_TERRENO.md (esperado 0)
+✅ sdd/features/DESIGN_F2_TERRENO.md: DESIGN válido
+exit=0
+--- AT-008/010 sdd/features/DESIGN_F3_BUILD_RELEASE.md (esperado 0)
+✅ sdd/features/DESIGN_F3_BUILD_RELEASE.md: DESIGN válido
+exit=0
+--- AT-008/010 sdd/features/DESIGN_F4_CONVERSA.md (esperado 0)
+✅ sdd/features/DESIGN_F4_CONVERSA.md: DESIGN válido
+exit=0
+--- AT-008/010 sdd/fixtures/design/DESIGN_VALIDO.md (esperado 0)
+✅ sdd/fixtures/design/DESIGN_VALIDO.md: DESIGN válido
+exit=0
+--- AT-013 sem argumento (esperado 64)
+uso: design-lint.py <DESIGN.md>
+exit=64
+--- AT-013 arquivo ausente (esperado 64)
+uso: design-lint.py <DESIGN.md>
+exit=64
+--- AT-013 dois argumentos (esperado 64)
+uso: design-lint.py <DESIGN.md>
+exit=64
+--- AT-013 diretório (esperado 64)
+uso: design-lint.py <DESIGN.md>
+exit=64
+--- AT-009 sem Key Decisions
+🛑 $T/D.md: falta a seção ## Key Decisions
+RESULTADO: VERMELHO
+exit=1
+--- AT-009 Key Decisions sem nenhuma ### Decision
+🛑 $T/D.md: ## Key Decisions sem nenhuma '### Decision N: <nome>'
+RESULTADO: VERMELHO
+exit=1
+--- AT-009 fora de sequencia
+🛑 $T/D.md: decisões fora de sequência: [1, 3] (esperado 1..2)
+RESULTADO: VERMELHO
+exit=1
+--- AT-009 ### Decisão 2
+🛑 $T/D.md: título fora do padrão '### Decision N: <nome>': ### Decisão 2: Saída em uma linha
+RESULTADO: VERMELHO
+exit=1
+--- AT-009 ### ADR-2
+🛑 $T/D.md: título fora do padrão '### Decision N: <nome>': ### ADR-2: Saída em uma linha
+RESULTADO: VERMELHO
+exit=1
+--- AT-009 manifest vazio
+🛑 $T/D.md: ## File Manifest sem nenhuma linha de arquivo
+RESULTADO: VERMELHO
+exit=1
+--- AT-009 Total errado
+🛑 $T/D.md: **Total Files:** 4, mas o manifest tem 3 linhas
+RESULTADO: VERMELHO
+exit=1
+--- AT-009 dependencia inexistente
+🛑 $T/D.md: linha 3 do manifest depende da linha 9, que não existe
+RESULTADO: VERMELHO
+exit=1
+--- AT-009 ciclo
+🛑 $T/D.md: dependências do manifest formam ciclo (passa pela linha 1)
+RESULTADO: VERMELHO
+exit=1
+--- AT-009 placeholder com espaco
+🛑 $T/D.md: linha 34: placeholder do template sem preencher: {contexto da decisão}
+RESULTADO: VERMELHO
+exit=1
+--- AT-009 placeholder UPPER_SNAKE
+🛑 $T/D.md: linha 34: placeholder do template sem preencher: {FEATURE_NAME}
+RESULTADO: VERMELHO
+exit=1
+--- controle: placeholder dentro de crase (esperado 0)
+✅ $T/D.md: DESIGN válido
+exit=0
+===== adversariais =====
+--- ADV dois arquivos com o mesmo numero 1 e Total 3 (esperado 1: Total != 3 linhas)
+🛑 $T/D.md: **Total Files:** 3, mas o manifest tem 2 linhas
+🛑 $T/D.md: linha 3 do manifest depende da linha 2, que não existe
+RESULTADO: VERMELHO
+exit=1
+--- ADV prosa legitima com chaves '{F1, F2}' (falso positivo?)
+🛑 $T/D.md: linha 34: placeholder do template sem preencher: {F1, F2}
+RESULTADO: VERMELHO
+exit=1
+--- ADV aspas angulares «» em DESIGN (DEFINE nao lista para o design-lint)
+🛑 $T/D.md: linha 34: placeholder do template sem preencher: «nota»
+RESULTADO: VERMELHO
+exit=1

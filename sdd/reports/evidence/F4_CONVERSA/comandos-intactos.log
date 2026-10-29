@@ -1,0 +1,21 @@
+$ python3 -B sdd/reports/evidence/F4_CONVERSA/comandos-intactos.py
+OK    sdd-auditoria-harness: 50 → 50 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-brainstorm: 7 → 7 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-build: 16 → 16 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-checar-ambiente: 47 → 47 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-define: 12 → 12 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-design: 10 → 12 linhas extraídas (passos, itens numerados e comandos), 2 diferença(s)
+        + passo ### 8. Conferir
+        + cmd python3 sdd/bin/design-lint.py sdd/features/DESIGN_{FEATURE}.md
+OK    sdd-governanca: 4 → 4 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-handoff: 9 → 11 linhas extraídas (passos, itens numerados e comandos), 2 diferença(s)
+        + passo ### 3b. Conferir a ficha
+        + cmd python3 sdd/bin/handoff-lint.py sdd/handoffs/HANDOFF_{FEATURE}.md
+OK    sdd-iterate: 10 → 10 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-new-session: 66 → 66 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-playbook: 3 → 3 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-prompt-builder: 17 → 17 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-release: 55 → 55 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-ux-review: 8 → 8 linhas extraídas (passos, itens numerados e comandos), idêntico
+skills: 14 · com diferença não declarada: 0
+exit=0

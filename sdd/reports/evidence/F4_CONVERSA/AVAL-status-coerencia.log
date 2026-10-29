@@ -1,0 +1,21 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/sonda-status.py
+OK   sdd-auditoria-harness fase=Auditoria etapas=['Segurança', 'SDD principal', 'Inventário', 'Achados', 'Relatório']
+OK   sdd-brainstorm fase=Brainstorm etapas=['Entender', 'Perguntas', 'Amostras', 'Abordagens', 'Validar', 'Gravar']
+DIF  sdd-build fase=Build etapas=['Plano', 'Modo', 'Tarefas N/M', 'Verify Gate', 'Relatório']
+      Status da seção ['Plano', 'Modo', 'Tarefas', 'Verify Gate', 'Relatório'] != tabela ['Plano', 'Modo', 'Tarefas N/M', 'Verify Gate', 'Relatório']
+      como-falar.md:31 `Build: ✅ 1 Plano · ▶️ 2 Modo · ⬜ 3 Tarefas 0/5 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+      como-falar.md:37 `Build: ✅ 1 Plano · ▶️ 2 Modo · ⬜ 3 Tarefas 0/5 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+      como-falar.md:60 `Build: ✅ 1 Plano · ✅ 2 Modo · ▶️ 3 Tarefas 2/5 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+OK   sdd-checar-ambiente fase=Ambiente etapas=['Verificar', 'Explicar']
+OK   sdd-define fase=Define etapas=['Ler o brainstorm', 'Requisitos', 'Testes de aceitação', 'Perguntas', 'Verify Gate', 'Gravar']
+OK   sdd-design fase=Design etapas=['Ler', 'Decisões', 'Componentes e arquivos', 'Fluxo, testes e erros', 'Gravar', 'Conferir']
+OK   sdd-governanca fase=Governança etapas=['Triagem', 'Padrão do projeto', 'Item a item', 'Relatório', 'Suas decisões', 'Aplicar no DEFINE']
+OK   sdd-handoff fase=Handoff etapas=['Família', 'Estado', 'Ficha', 'Prompt de retomada', 'Limpeza']
+OK   sdd-iterate fase=Iterate etapas=['Ler', 'Classificar', 'Aplicar', 'Cascata', 'Fechar']
+OK   sdd-new-session fase=Nova sessão etapas=['Pré-voo', 'Conhecer o repositório', 'Criar a frente', 'Abrir no editor']
+OK   sdd-playbook fase=Playbook etapas=['Leitura', 'Candidato', 'Promoção']
+OK   sdd-prompt-builder fase=Prompt etapas=['Objetivo e contrato', 'Regras', 'Conferir', 'Entregar']
+OK   sdd-release fase=Release etapas=['Onde estou', 'Verificar', 'Sua decisão', 'Publicar']
+OK   sdd-ux-review fase=UX review etapas=['Contexto', 'Jornada', 'Qualidade', 'Prioridades', 'Gravar']
+divergências: 4
+exit=0
