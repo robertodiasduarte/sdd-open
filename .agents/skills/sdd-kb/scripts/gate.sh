@@ -27,7 +27,7 @@ falha() {  # $1 caso · $2 o que houve · $3 conserto — roda no shell principa
 
 MARCA='sdd-open'; MARCA="$MARCA:generated"   # montada em 2 partes: a fonte não pode conter a marca
 if grep -qF "$MARCA" "$0"; then
-  falha "cópia gerada pelo sync" "os exemplos daqui têm cabeçalho e não valem como prova" \
+  falha "cópia gerada pelo sync" "$0 tem o cabeçalho da cópia; os exemplos daqui não valem como prova" \
     "rode bash .agents/skills/sdd-kb/scripts/gate.sh"
 fi
 [ -f "$V" ] && [ -f "$RM" ] && [ -d "$ASSETS/example-kb" ] && [ -d "$ASSETS/example-kb-normativo" ] \
@@ -36,6 +36,7 @@ T="$(mktemp -d)" || falha "pasta temporária" "mktemp -d falhou" "confira o espa
 trap 'rm -rf "${T:?}"' EXIT
 
 projeto() {  # $1 caso · $2 exemplo de assets/ · $3 perfil — não imprime; o domínio fica em $T/$1/sdd/kb/dom
+  rm -f "$T/saida"   # a saída do caso anterior não pode aparecer na falha deste
   mkdir -p "$T/$1/sdd/kb" && cp -R "$ASSETS/$2" "$T/$1/sdd/kb/dom" \
     || falha "$1" "a cópia do exemplo falhou" "confira assets/$2"
   printf 'version: "1.0"\ndomains:\n  dom:\n    name: caso %s\n    description: caso do gate\n    path: dom/\n    perfil: %s\n    updated: 2026-10-29\n' \
@@ -97,6 +98,12 @@ rejeita() {  # $1 caso · $2 razão esperada · $3… argumentos do validador
 
 dom() { printf '%s' "$T/$1/sdd/kb/dom"; }
 
+# ── o RULE_MAP do exemplo, antes dos casos: derivado, ele derrubaria o caso aceito com o diagnóstico errado
+rm -f "$T/saida"
+"$PY" -B "$RM" rule-map --check "$ASSETS/example-kb-normativo" > "$T/saida" 2>&1 \
+  || falha "RULE_MAP do exemplo" "assets/example-kb-normativo/RULE_MAP.md não bate com rules/" \
+     "rode python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map .agents/skills/sdd-kb/assets/example-kb-normativo"
+
 # ── aceitas ───────────────────────────────────────────────────────────────────
 projeto geral example-kb geral
 aceita geral "" "$(dom geral)"
@@ -115,11 +122,6 @@ troca strict-teste-ok rules/UB12-10-CRT3.md "teste: null" "teste: tests/test_eng
 mkdir -p "$T/strict-teste-ok/tests" && echo "# teste do caso" > "$T/strict-teste-ok/tests/test_engine.py"
 regera strict-teste-ok
 aceita strict-teste-ok "rule(s)" "$(dom strict-teste-ok)" --strict
-
-rm -f "$T/saida"
-"$PY" -B "$RM" rule-map --check "$ASSETS/example-kb-normativo" > "$T/saida" 2>&1 \
-  || falha "RULE_MAP do exemplo" "assets/example-kb-normativo/RULE_MAP.md não bate com rules/" \
-     "rode python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map .agents/skills/sdd-kb/assets/example-kb-normativo"
 
 # ── rejeitadas: perfil geral ──────────────────────────────────────────────────
 projeto limite-conceito example-kb geral

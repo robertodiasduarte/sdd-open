@@ -295,7 +295,10 @@ def check_normativo(root, concepts, patterns, strict):
                 ok = fail(f"{name}: implementacao {impl!r} has no teste — --strict requires the test the Verify Gate runs (RULE_TEMPLATE.md)") and ok
             elif teste:
                 arquivo = teste.split(":", 1)[0].strip()
-                if not (projeto / arquivo).is_file():
+                alvo = (projeto / arquivo).resolve()
+                if Path(arquivo).is_absolute() or projeto.resolve() not in alvo.parents:
+                    ok = fail(f"{name}: teste {teste!r}: {arquivo} is outside the project root {projeto} — use a path relative to it") and ok
+                elif not alvo.is_file():
                     ok = fail(f"{name}: teste {teste!r}: {arquivo} not found from the project root {projeto}") and ok
     known = set(ids) | set(catalogo)
     com_conflito = []

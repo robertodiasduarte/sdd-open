@@ -69,6 +69,40 @@ class Gate(Sandbox):
         self.assertIn("🛑 placeholder: âncora ausente", out)
         self.assertIn("RESULTADO: VERMELHO", out)
         self.assertIn("→ o exemplo mudou; atualize a âncora no gate.sh", out)
+        self.assertNotIn("is not registered", out, "a saída de outro caso vazou para esta falha")
+
+    def sabota_validador(self, de, para):
+        copia = self.copia_da_skill()
+        v = copia / "scripts/validate_kb.py"
+        texto = v.read_text(encoding="utf-8")
+        self.assertIn(de, texto)
+        v.write_text(texto.replace(de, para, 1), encoding="utf-8")
+        return self.gate(copia / "scripts/gate.sh")
+
+    def test_caso_bom_rejeitado_e_vermelho(self):
+        rc, out, err = self.sabota_validador('"quick_reference": 100', '"quick_reference": 10')
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("🛑 geral: caso bom REJEITADO", out)
+        self.assertIn("RESULTADO: VERMELHO", out)
+        self.assertIn("→ o validador passou a reprovar conteúdo válido", out)
+
+    def test_rejeitado_por_outro_motivo_e_vermelho(self):
+        rc, out, err = self.sabota_validador("is not registered in", "is missing from")
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("🛑 nao-registrado: rejeitado por outro motivo (esperado: is not registered)", out)
+        self.assertIn("RESULTADO: VERMELHO", out)
+
+    def test_rule_map_derivado_do_exemplo_aponta_o_rule_map(self):
+        copia = self.copia_da_skill()
+        rm = copia / "assets/example-kb-normativo/RULE_MAP.md"
+        texto = rm.read_text(encoding="utf-8")
+        self.assertIn("| UB12-10-CRT3 |", texto)
+        rm.write_text(texto.replace("| UB12-10-CRT3 |", "| UB12-10-CRTX |", 1), encoding="utf-8")
+        rc, out, err = self.gate(copia / "scripts/gate.sh")
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("🛑 RULE_MAP do exemplo:", out)
+        self.assertIn("kb_normativo.py rule-map", out.split("RESULTADO: VERMELHO", 1)[1])
+        self.assertNotIn("caso bom REJEITADO", out)
 
     def test_recusa_a_copia_gerada_pelo_init(self):
         p = self.repo("projeto")
@@ -81,6 +115,7 @@ class Gate(Sandbox):
         rc, out, err = self.gate(gerado, p)
         self.assertEqual(rc, 2, out + err)
         self.assertIn("🛑 cópia gerada pelo sync", out)
+        self.assertIn(".claude/skills/sdd-kb/scripts/gate.sh", out.split("RESULTADO:", 1)[0])
         self.assertIn("→ rode bash .agents/skills/sdd-kb/scripts/gate.sh", out)
         rc, out, err = self.gate(p / ".agents/skills/sdd-kb/scripts/gate.sh", p)
         self.assertEqual(rc, 0, out + err)
@@ -135,6 +170,20 @@ class Strict(Sandbox):
         rc, out = self.valida("--strict")
         self.assertEqual(rc, 0, out)
 
+    def test_teste_fora_da_raiz_reprova(self):
+        self.troca(REGRA, "implementacao: null", "implementacao: src/engine.py:vbc")
+        fora = self.tmp / "fora.py"
+        fora.write_text("# fora da raiz\n", encoding="utf-8")
+        for valor in (str(fora), "../fora.py::t", "tests/../../fora.py"):
+            with self.subTest(teste=valor):
+                p = self.kb / REGRA
+                texto = p.read_text(encoding="utf-8")
+                atual = [l for l in texto.splitlines() if l.startswith("teste:")][0]
+                p.write_text(texto.replace(atual, "teste: " + valor, 1), encoding="utf-8")
+                rc, out = self.valida("--strict")
+                self.assertEqual(rc, 2, out)
+                self.assertIn("is outside the project root", out)
+
     def test_sem_strict_nao_confere_teste(self):
         self.troca(REGRA, "implementacao: null", "implementacao: src/engine.py:vbc")
         rc, out = self.valida()
@@ -173,8 +222,8 @@ class TextoDaSkill(unittest.TestCase):
     """A skill portada fala do projeto do open: sdd/kb/ e os scripts em .agents/skills/sdd-kb/."""
 
     PROIBIDO = re.compile(
-        r"pasta de bases|\.claude/kb|kb_dir|sdd-starter|\]\((?:assets|scripts)/"
-        r"|(?<!\.agents/skills/sdd-kb/)scripts/(?:validate_kb|kb_normativo)\.py")
+        r"pasta de bases|\.claude/kb|kb_dir|sdd-starter|\]\((?:\.{1,2}/)*(?:assets|scripts)/"
+        r"|(?<!\.agents/skills/sdd-kb/)scripts/(?:validate_kb|kb_normativo)\.py", re.I)
 
     def textos(self):
         for f in sorted(SKILL.rglob("*")):

@@ -157,7 +157,18 @@ class EntrevistaPublico(Sandbox):
                 self.assertIn(trecho, texto)
 
     def test_perguntas_de_fato_sao_abertas(self):
-        self.assertGreaterEqual(len(ABERTA.findall(ler(ENTREVISTA))), 3)
+        abertas = ABERTA.findall(ler(ENTREVISTA))
+        self.assertGreaterEqual(len(abertas), 3)
+        for inicio in ("**Quem vai usar", "**Em que estágio", "**Qual destas referências", "**Tem algum site"):
+            with self.subTest(pergunta=inicio):
+                self.assertTrue([a for a in abertas if a.startswith(inicio)], abertas)
+
+    def test_pergunta_so_o_que_muda_a_experiencia(self):
+        texto = ler(ENTREVISTA)
+        for trecho in ("frequência de uso", "familiaridade com tecnologia", "volume de informação",
+                       "risco de um erro", "aparelho"):
+            with self.subTest(trecho=trecho):
+                self.assertIn(trecho, texto)
 
     def test_so_a_confirmacao_tem_opcoes(self):
         achadas = perguntas_do_lint(ler(ENTREVISTA))

@@ -6,6 +6,7 @@ linha do DEFINE_TEMPLATE.md, que mandam rodar o lint.
 """
 from __future__ import annotations
 
+import os
 import unittest
 
 from apoio import PYTHON, RAIZ, Sandbox
@@ -98,6 +99,21 @@ class KbDominios(Sandbox):
     def test_linha_ausente(self):
         self.vermelho(self.projeto(None), "falta a linha **KB Domains**")
 
+    def test_linha_fora_do_technical_context_nao_conta(self):
+        define = self.projeto("fiscal")
+        texto = define.read_text(encoding="utf-8")
+        sem = texto.replace("| **KB Domains** | fiscal | padrões |\n", "")
+        define.write_text(sem.replace("# DEFINE: X\n", "# DEFINE: X\n\n## Goals\n\n| **KB Domains** | fiscal | x |\n", 1),
+                          encoding="utf-8")
+        self.vermelho(define, "falta a linha **KB Domains**")
+
+    def test_nenhum_em_outra_secao_nao_esconde_o_technical_context(self):
+        define = self.projeto("inexistente")
+        texto = define.read_text(encoding="utf-8")
+        define.write_text(texto.replace("# DEFINE: X\n", "# DEFINE: X\n\n## Goals\n\n| **KB Domains** | nenhum | x |\n", 1),
+                          encoding="utf-8")
+        self.vermelho(define, "'inexistente' não existe em sdd/kb/")
+
     def test_valor_vazio(self):
         self.vermelho(self.projeto(" "), "não é lista de domínios")
 
@@ -133,6 +149,20 @@ class KbDominios(Sandbox):
             with self.subTest(args=args):
                 rc, out, err = self.roda([PYTHON, "-B", LINT, *args], self.tmp)
                 self.assertEqual(rc, 64, out + err)
+
+    @unittest.skipIf(hasattr(os, "geteuid") and os.geteuid() == 0, "root lê pasta sem permissão")
+    def test_sdd_kb_ilegivel_e_1_sem_traceback(self):
+        define = self.projeto("fiscal")
+        kb = self.tmp / "sdd/kb"
+        kb.chmod(0)
+        try:
+            rc, out, err = self.lint(define)
+        finally:
+            kb.chmod(0o755)
+        self.assertEqual(rc, 1, out + err)
+        self.assertIn("não consegui ler sdd/kb/", err)
+        self.assertIn("RESULTADO: VERMELHO", err)
+        self.assertNotIn("Traceback", out + err)
 
     def test_arquivo_ilegivel_e_1_sem_traceback(self):
         p = self.tmp / "sdd/features/DEFINE_X.md"

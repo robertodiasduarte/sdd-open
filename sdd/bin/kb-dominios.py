@@ -5,7 +5,8 @@ Só stdlib, Python >= 3.9. Uso:
     python3 sdd/bin/kb-dominios.py <DEFINE.md>     # exit 0 = válido · 1 = violações · 64 = uso
 
 Regras:
-  - Lê a 1ª linha `| **KB Domains** | <valor> | … |` fora de bloco cercado. Sem ela, vermelho.
+  - Lê a 1ª linha `| **KB Domains** | <valor> | … |` da seção `## Technical Context`, fora de bloco
+    cercado. Linha em outra seção não conta; sem ela no Technical Context, vermelho.
   - O valor é `nenhum`, sozinho, ou uma lista de nomes separados por vírgula (crases, um prefixo
     `sdd/kb/` e a `/` final são tolerados). Vazio, chaves de placeholder, `N/A`, `—`, `-` e `TBD`
     não são lista: o DEFINE diz `nenhum` explicitamente.
@@ -37,9 +38,13 @@ def raiz_do_projeto(define: Path) -> Path:
 
 
 def valor_do_campo(texto: str):
-    """O valor da célula KB Domains (sem crases nem espaço nas pontas), ou None sem a linha."""
+    """O valor da célula KB Domains do ## Technical Context (sem crases nem espaço nas pontas), ou None."""
+    dentro = False
     for ln in CERCA.sub(lambda m: "\n" * m.group(0).count("\n"), texto).splitlines():
-        m = LINHA.match(ln)
+        if ln.startswith("## "):
+            dentro = ln.strip() == "## Technical Context"
+            continue
+        m = LINHA.match(ln) if dentro else None
         if m:
             return m.group(1).replace("`", "").strip()
     return None
@@ -105,7 +110,10 @@ def lint(define: Path, texto: str):
     kb = raiz_do_projeto(define) / "sdd" / "kb"
     if not kb.is_dir():
         return ["KB Domains: sdd/kb/ não existe"], "rode a sdd-kb para criar a base, ou escreva nenhum", []
-    existentes = sorted(p.name for p in kb.iterdir() if p.is_dir() and not p.name.startswith("."))
+    try:
+        existentes = sorted(p.name for p in kb.iterdir() if p.is_dir() and not p.name.startswith("."))
+    except OSError as e:
+        return ["não consegui ler sdd/kb/ (%s)" % e], "confira a permissão da pasta sdd/kb/ e rode de novo", []
     erros = ["KB Domains: '%s' não existe em sdd/kb/ (%s)" % (n, lista_curta(existentes))
              for n in nomes if n not in existentes]
     if erros:
