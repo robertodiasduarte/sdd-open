@@ -47,7 +47,9 @@ generated-adapter model, open an issue first. Those are the framework's spine.
 - Run the unit tests: `python3 -B -m unittest discover -s tests -p 'test_*.py'` (no network,
   Python ≥ 3.9; `SDD_TEST_BASH=/bin/bash` runs them on the bash 3.2 of macOS). Every contract a
   script documents has a test there; a change that turns one red is a contract change.
-- Run `bash -n` on every script and `python3 sdd/bin/skill-lint.py` on every `SKILL.md` you touch.
+- Run `bash -n` on every script and `python3 sdd/bin/skill-lint.py --conversa` on every `SKILL.md` you
+  touch: `--conversa` also checks the "Como falar com o aluno" section and the questions in
+  `references/como-falar.md` (format in `sdd/templates/fragments/PERGUNTA_DECISAO.md`).
 - A skill you touch bumps `metadata.version` in its frontmatter: `python3 scripts/check-versions.py
   --base <last v* tag>` fails otherwise, and so does CI.
 - Keep examples in a neutral domain (e-commerce, SaaS, blog). No real personal data, no real

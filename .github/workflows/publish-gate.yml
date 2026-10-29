@@ -106,7 +106,7 @@ jobs:
         run: bash sdd/bin/playbook-lint.sh --self-test
 
       - name: Skill frontmatter (Agent Skills spec)
-        run: python3 sdd/bin/skill-lint.py .agents/skills/sdd-*/SKILL.md
+        run: python3 sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md
 
       - name: Unit tests (contracts of every script)
         run: python3 -B -m unittest discover -s tests -p 'test_*.py'

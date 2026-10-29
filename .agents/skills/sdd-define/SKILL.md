@@ -5,17 +5,58 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.0"
+  version: "2.2.0"
+  updated: "2026-10"
   fase: "1"
 ---
 
 # sdd-define — Fase 1
 
-> Abra a resposta com o banner: `🧠 DEFINE (Fase 1)`.
+Na primeira resposta desta skill, comece com esta linha, uma vez só:
+`sdd-define v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
 depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
 executável** — um comando com exit code, não prosa.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Ler o brainstorm | 1 e 2 |
+| 2 | Requisitos | 3 |
+| 3 | Testes de aceitação | 4 e 5 |
+| 4 | Perguntas | 6 e 7 |
+| 5 | Verify Gate | 8 |
+| 6 | Gravar | 9 |
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
 
 ## Entrada
 

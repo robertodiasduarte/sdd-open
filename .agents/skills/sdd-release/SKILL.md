@@ -6,17 +6,59 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.0"
+  version: "2.3.0"
+  updated: "2026-10"
   fase: "4"
 ---
 
 # sdd-release — Fase 4
 
-> Abra a resposta com o banner: `🧠 RELEASE`.
+Na primeira resposta desta skill, comece com esta linha, uma vez só:
+`sdd-release v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
 irreversível na prática.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Onde estou | Entrada e slots |
+| 2 | Verificar | FASE 0 e FASE 1, itens 1 a 6 |
+| 3 | Sua decisão | FASE 1, item 7 (o bloco do OK) |
+| 4 | Publicar | FASES 2 a 4 |
+
+Na etapa 3, a "Sua decisão" é o próprio bloco do OK, com a pergunta única no fim: os rótulos e a
+ordem do bloco não mudam.
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Release: ✅ 1 Onde estou · ✅ 2 Verificar · ▶️ 3 Sua decisão · ⬜ 4 Publicar`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
 
 ## Regra de todo comando que fala com o remoto
 

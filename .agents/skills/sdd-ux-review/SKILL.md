@@ -5,17 +5,57 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Independe de stack visual; usa 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.0"
+  version: "2.2.0"
+  updated: "2026-10"
   fase: "UX"
 ---
 
 # sdd-ux-review — gate de UX/CX
 
-> Abra a resposta com o banner: `🧠 UX-REVIEW`.
+Na primeira resposta desta skill, comece com esta linha, uma vez só:
+`sdd-ux-review v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Traduzir requisitos em experiência **antes** que arquitetura e código endureçam. "Interface"
 inclui tela, linha de comando, arquivo gerado, e-mail: qualquer coisa que uma pessoa lê e
 precisa entender sem ajuda.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Contexto | 1 |
+| 2 | Jornada | 2 |
+| 3 | Qualidade | 3 a 5 |
+| 4 | Prioridades | 6 |
+| 5 | Gravar | 7 e 8 |
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `UX review: ✅ 1 Contexto · ▶️ 2 Jornada · ⬜ 3 Qualidade · ⬜ 4 Prioridades · ⬜ 5 Gravar`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
 
 ## Entrada
 

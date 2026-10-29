@@ -5,18 +5,61 @@ compatibility: "Requer bash >= 3.2 e git >= 2.20. Não executa nada no banco do 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.0"
+  version: "2.2.0"
+  updated: "2026-10"
   fase: "Gov"
 ---
 
 # sdd-governanca — revisão de governança
 
-> Abra a resposta com o banner: `⚖️ GOVERNANÇA`.
+Na primeira resposta desta skill, comece com esta linha, uma vez só:
+`sdd-governanca v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Num sistema financeiro, contábil ou fiscal, governança responde uma pergunta: **daqui a cinco anos,
 um fiscal, um auditor ou um perito reconstrói o que aconteceu, quem fez e por quê — com prova de que
 nada foi alterado depois?** Esta fase confere se o DEFINE exige isso **antes** que o Design e o código
 endureçam — mudar um requisito aqui custa uma linha; depois do Build, custa migração.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Triagem | Passo 1 de `references/PROCEDIMENTO.md` |
+| 2 | Padrão do projeto | Passo 2 |
+| 3 | Item a item | Passo 3 |
+| 4 | Relatório | Passo 4 |
+| 5 | Suas decisões | Passo 5 |
+| 6 | Aplicar no DEFINE | Passo 6 e a prova por script |
+
+Quem decide cada lacuna é o profissional responsável: na etapa 5, uma pergunta por lacuna.
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Governança: ✅ 1 Triagem · ✅ 2 Padrão do projeto · ✅ 3 Item a item · ✅ 4 Relatório · ▶️ 5 Suas decisões · ⬜ 6 Aplicar no DEFINE`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
 
 ## Entrada
 

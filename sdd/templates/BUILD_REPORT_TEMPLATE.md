@@ -72,7 +72,7 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 **Legend:** ✅ Complete | 🔄 In Progress | ⏳ Pending | ❌ Blocked
 
 **Agent Key:**
-- `@{agent-name}` = Delegated to specialist agent via Task tool
+- `@{agent-name}` = Delegated to a specialist agent
 - `(direct)` = Built directly by build-agent (no specialist matched)
 
 ---

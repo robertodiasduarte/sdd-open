@@ -47,7 +47,7 @@ RESULTADO: ERRO
 | `verify-gate.sh` | `0` verde · `2` vermelho · `3` inconclusivo · `4` assinatura humana · `5` clarificar · `64` spec inválida — `--strict` remapeia 3/4/5 → `1` |
 | `sdd-open.sh` | `0` ok/ajuda/cancelado/dry-run · `1` divergente ou sem permissão · `64` uso/pré-condição · `65` marcadores do AGENTS.md · `66` JSON inválido |
 | `playbook-lint.sh` | `0` ok · `1` zero hits / colapso · `2` formato inválido · `64` uso |
-| `skill-lint.py` · `report-lint.py` | `0` ok · `1` violações · `64` uso |
+| `skill-lint.py` · `report-lint.py` · `design-lint.py` · `handoff-lint.py` | `0` ok · `1` violações · `64` uso (no `skill-lint.py`, também opção desconhecida; `--conversa` liga a conferência da camada de conversa) |
 
 ## Cor
 

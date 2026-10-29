@@ -4,7 +4,7 @@ license: MIT
 description: "Diagnostica, sem alterar nada, se este computador e este repositório estão prontos para trabalhar com SDD: repositório git, agente de código, identidade do git, acesso ao remoto (credencial, rede, repositório ainda vazio), worktrees órfãs, dependências, editor e dado exposto (senha, certificado A1 ou chave privada já salvos no git; .env fora do .gitignore; npm sem ignore-scripts; repositório público). Responde em uma linha quando está tudo certo e, quando não está, lista o que impede primeiro, cada item com o comando exato que resolve. Use quando o usuário pedir para checar o ambiente, antes de abrir a primeira frente de trabalho num projeto, ou quando algo estranho acontecer (commit que falha, comando não encontrado, worktree que sumiu)."
 metadata:
   author: Roberto Dias Duarte
-  version: "1.3.0"
+  version: "1.4.0"
   updated: "2026-10"
 ---
 
@@ -12,6 +12,45 @@ metadata:
 
 Responder uma pergunta: **este ambiente está pronto para trabalhar com SDD aqui?** Em segundos, sem
 mudar nada, dizendo o que consertar.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Verificar | Como executar e O que verificar |
+| 2 | Explicar | Como reportar |
+
+Aqui o relatório do `checar.sh` já é a tradução para o aluno: a resposta é o Status e, logo abaixo,
+o relatório como veio, sem retraduzir. As outras partes valem na conversa que segue, quando o
+aluno pergunta por um item.
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
 
 ## Como executar
 
@@ -22,7 +61,7 @@ de dentro da pasta do projeto:
 bash <pasta desta skill>/scripts/checar.sh
 ```
 
-e **responda com a saída dele, exatamente como veio** — sem frase antes, sem frase depois, sem
+e **responda com a saída dele, exatamente como veio** — só o Status antes, sem frase depois, sem
 comentário sobre o que foi ou não verificado, sem tradução. O script já faz todas as verificações abaixo
 e já imprime o relatório no formato certo; o formato não depende de você. (A pasta desta skill é a que
 contém este `SKILL.md`: `.claude/skills/sdd-checar-ambiente/` ou `.agents/skills/sdd-checar-ambiente/`,
@@ -32,7 +71,7 @@ no projeto ou na pasta global do agente.)
 script: blocos `🔴 Dado exposto`, `🔴 Impede o trabalho` e `⚠️ Vale arrumar` só se tiverem itens, e por
 último a linha `✅ Pronto: repo …` (ou `✅ Repo …` quando houver problema). Checagem que passou ou não se
 aplica não é mencionada fora dessa linha. Termine a linha ✅ com a identificação desta skill:
-`sdd-checar-ambiente v1.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 (o script faz isso sozinho, lendo a versão deste arquivo).
 
 **Só o dado exposto** — `bash <pasta desta skill>/scripts/checar.sh --segredo` imprime apenas o bloco
@@ -176,34 +215,39 @@ ordem, **omitindo os vazios**:
 3. **⚠️ Vale arrumar** — `.env` fora do `.gitignore`, npm sem `ignore-scripts` (estes primeiro),
    worktree órfã, frente integrada ainda aberta, `.env` ausente.
 4. **✅ Resumo em uma linha**, terminando com a identificação desta skill — ex.:
-   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
-Se estiver tudo certo, a resposta inteira é **exatamente a linha ✅** — nenhuma frase antes nem
+Se estiver tudo certo, a resposta inteira é **o Status e a linha ✅** — nenhuma outra frase antes nem
 depois: nada de "Tudo limpo", de lista do que foi verificado ou de oferta de ajuda. Ambiente saudável
 não merece parágrafo; quem quer detalhe pergunta.
 
 ## Exemplos
 
-Saudável:
+Saudável (a resposta inteira são estas duas linhas):
 
 ```text
-✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+Ambiente: ✅ 1 Verificar · ✅ 2 Explicar
+✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 Com o certificado A1 salvo no git de um repositório público:
 
 ```text
+Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
+
 🔴 Dado exposto
 - O certificado digital certificados/empresa.pfx está salvo no git. Este repositório é público: o arquivo já está na internet.
   git rm --cached "certificados/empresa.pfx" && echo "certificados/empresa.pfx" >> .gitignore
   Depois, revogue o certificado com a autoridade certificadora e emita outro.
 
-✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 Com dois problemas:
 
 ```text
+Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
+
 🔴 Impede o trabalho
 - O git não tem e-mail configurado — o primeiro commit vai falhar.
   git config --global user.email "voce@example.com"
@@ -213,7 +257,7 @@ Com dois problemas:
   git worktree remove ../meu-app-frentes/relatorio-mensal
   git branch -d relatorio-mensal
 
-✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 ---

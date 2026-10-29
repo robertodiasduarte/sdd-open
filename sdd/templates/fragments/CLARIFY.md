@@ -42,8 +42,9 @@ Para cada categoria: **Clear / Partial / Missing**. Partial e Missing geram toke
 
 ## Protocolo de resolução
 
-1. **≤5 perguntas por rodada**, via `AskUserQuestion` — múltipla escolha (2–4 opções),
-   **opção recomendada primeiro** com "(Recomendado)". Mais de 5 pendências? Prioridade:
+1. **≤5 perguntas por rodada**, pela ferramenta de pergunta do seu agente ou em texto — múltipla
+   escolha (2–4 opções), **opção recomendada primeiro** com "(recomendado)" e a saída "não sei"
+   (formato em `sdd/templates/fragments/PERGUNTA_DECISAO.md`). Mais de 5 pendências? Prioridade:
    o que muda arquitetura > escopo > o resto; nova rodada depois.
 2. **Resposta integra NO CORPO da spec**: substituir o texto ambíguo (e o token) pela decisão —
    nunca deixar a resposta só em apêndice com o texto contraditório intacto.
