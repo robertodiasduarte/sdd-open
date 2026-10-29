@@ -104,7 +104,10 @@ class TemplateEPlaybook(Sandbox):
     def test_lm_004_no_sempre_e_playbook_valido(self):
         sempre = ler(PLAYBOOK).split("\n## Sempre\n", 1)[1].split("\n## ", 1)[0]
         self.assertRegex(sempre, r"- \[LM-004\] .*`exit 0`.*migration")
-        rc, out, err = self.roda([BASH, RAIZ / "sdd/bin/playbook-lint.sh", PLAYBOOK], RAIZ)
+        r = self.repo()  # o playbook-lint exige repo git; a cópia do Verify Gate (git archive) não tem
+        self.copia("sdd/bin/playbook-lint.sh", r)
+        self.copia("sdd/playbook.md", r)
+        rc, out, err = self.roda([BASH, "sdd/bin/playbook-lint.sh", "sdd/playbook.md"], r)
         self.assertEqual(rc, 0, out + err)
 
 
