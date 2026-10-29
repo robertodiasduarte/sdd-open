@@ -12,7 +12,7 @@ metadata:
 
 # sdd-build — Fase 3
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
 `sdd-build v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O

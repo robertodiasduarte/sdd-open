@@ -27,6 +27,8 @@ CASOS = {
     "dependencia_inexistente": ("| (general) | 1, 2 |", "| (general) | 1, 9 |", "9"),
     "ciclo": ("| Create | Lint | (general) | None |", "| Create | Lint | (general) | 3 |", "ciclo"),
     "placeholder_em_prosa": ("**Context:** o projeto", "**Context:** " + L + "contexto da decisão" + R, "placeholder"),
+    "placeholder_maiusculo": ("**Context:** o projeto", "**Context:** " + L + "FEATURE_NAME" + R + " o projeto", "placeholder"),
+    "depende_de_si_mesma": ("| (general) | 1, 2 |", "| (general) | 3 |", "si mesma"),
 }
 
 
@@ -55,6 +57,19 @@ class DesignLint(Sandbox):
                 self.assertEqual(rc, 1, out)
                 self.assertIn(trecho, out)
                 self.assertIn("RESULTADO: VERMELHO", out)
+
+    def test_sem_nenhuma_decisao_reprova(self):
+        base = FIXTURE.read_text(encoding="utf-8")
+        sem = "\n".join(l for l in base.splitlines() if not l.startswith("### Decision ")) + "\n"
+        rc, out = self.lint(sem)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("nenhuma '### Decision N: <nome>'", out)
+
+    def test_aspas_angulares_em_prosa_passam(self):
+        # « » é aspa comum em português; o template do DESIGN só usa chaves como placeholder.
+        base = FIXTURE.read_text(encoding="utf-8")
+        rc, out = self.lint(base.replace("**Context:** o projeto", "**Context:** o «contador» do projeto", 1))
+        self.assertEqual(rc, 0, out)
 
     def test_manifest_sem_linhas_reprova(self):
         base = FIXTURE.read_text(encoding="utf-8")

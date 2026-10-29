@@ -12,7 +12,7 @@ metadata:
 
 # sdd-define — Fase 1
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
 `sdd-define v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem

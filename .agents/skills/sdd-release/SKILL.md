@@ -13,7 +13,7 @@ metadata:
 
 # sdd-release — Fase 4
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
 `sdd-release v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes

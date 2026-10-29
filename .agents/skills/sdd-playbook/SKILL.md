@@ -13,7 +13,7 @@ metadata:
 
 # sdd-playbook — landmines com ID, contadores e delta updates
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
 `sdd-playbook v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Fonte: ACE (Agentic Context Engineering, arXiv 2510.04618). O que portamos: **delta updates

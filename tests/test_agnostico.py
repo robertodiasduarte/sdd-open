@@ -15,11 +15,10 @@ from apoio import RAIZ, Sandbox
 
 TERMOS = re.compile(
     r"\b(AskUserQuestion|TodoWrite|PreToolUse|PostToolUse|subagent_type)\b"
-    r"|\b(Task|Agent) tool\b"
+    r"|(?i:\b(Task|Agent) tool\b)"
     r"|(?<![\w./-])/model\b"
 )
 ESCOPO = (".agents/skills", "sdd/templates", "AGENTS.md.tmpl", "sdd/playbook.md")
-EXTENSOES = {".md", ".py", ".sh", ".yaml", ".yml", ".json", ".tmpl", ".txt"}
 # Adaptador declarado de vendor dentro do escopo: caminho isento. Hoje nenhum — o init gera os
 # adaptadores a partir de bin/lib/vendors.sh, fora do escopo. Quem acrescentar um template por vendor
 # em sdd/templates/ declara o prefixo aqui.
@@ -33,14 +32,18 @@ def arquivos(raiz: Path) -> list:
         if p.is_file():
             saida.append(p)
         elif p.is_dir():
-            saida += [f for f in sorted(p.rglob("*")) if f.is_file() and f.suffix in EXTENSOES]
+            saida += [f for f in sorted(p.rglob("*")) if f.is_file()]  # todo arquivo, com ou sem extensão
     return [f for f in saida if not str(f.relative_to(raiz)).startswith(ADAPTADORES)]
 
 
 def achados(raiz: Path) -> list:
     saida = []
     for f in arquivos(raiz):
-        for n, linha in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
+        try:
+            texto = f.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue  # binário (imagem, zip): não é texto que o agente lê
+        for n, linha in enumerate(texto.splitlines(), 1):
             for m in TERMOS.finditer(linha):
                 saida.append(str(f.relative_to(raiz)) + ":" + str(n) + ": " + m.group(0))
     return saida
@@ -68,6 +71,21 @@ class Agnostico(Sandbox):
             "sdd/templates/T.md:1: /model",
             "sdd/playbook.md:1: PreToolUse",
         ])
+
+    def test_os_8_termos_e_arquivo_sem_extensao_reprovam(self):
+        termos = ["AskUserQuestion", "TodoWrite", "PreToolUse", "PostToolUse", "subagent_type",
+                  "Task Tool", "agent tool", "/model"]
+        self.escreve(self.tmp, "sdd/templates/T.md", "\n".join("use " + t for t in termos) + "\n")
+        self.escreve(self.tmp, ".agents/skills/sdd-x/scripts/gancho", "PostToolUse\n")  # sem extensão
+        self.escreve(self.tmp, ".agents/skills/sdd-x/hooks/pre.toml", "PreToolUse\n")
+        self.assertEqual([a.rsplit(": ", 1)[1] for a in achados(self.tmp)],
+                         ["PreToolUse", "PostToolUse"] + termos)
+
+    def test_binario_no_escopo_nao_quebra_a_varredura(self):
+        p = self.tmp / ".agents/skills/sdd-x/assets/logo.png"
+        p.parent.mkdir(parents=True)
+        p.write_bytes(bytes([0x89, 0x50, 0xFF, 0xFE, 0x00]))
+        self.assertEqual(achados(self.tmp), [])
 
     def test_controle_com_conceito_passa(self):
         self.escreve(self.tmp, ".agents/skills/sdd-x/SKILL.md",

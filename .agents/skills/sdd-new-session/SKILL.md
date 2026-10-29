@@ -19,7 +19,7 @@ metadata:
 
 # sdd-new-session — abrir uma frente
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
 `sdd-new-session v1.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Um comando, uma tarefa, um diretório: `git worktree` + branch nova nascida do estado **remoto atual**

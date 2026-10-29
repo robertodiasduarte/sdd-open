@@ -7,7 +7,8 @@ Só stdlib, Python >= 3.9. Uso:
 A próxima sessão começa sem memória desta: o que ela não achar escrito, não existe. Regras:
   - 1º título `# HANDOFF:`;
   - `## Ficha` com as linhas Objetivo, Status e Verify Gate;
-  - `## Prompt de retomada` com um bloco de código (o prompt que se cola na sessão nova);
+  - `## Prompt de retomada` com um bloco de código (o prompt que se cola na sessão nova), salvo quando o
+    Status da Ficha é ✅ (DoD fechado): sem continuação, a sdd-handoff deixa o prompt opcional;
   - `## Histórico de slices` com ≥1 `### <slice> — AAAA-MM-DD`;
   - nenhum placeholder: fora de código, `«…»`, nome em MAIÚSCULAS entre chaves ou prosa entre chaves;
     dentro de bloco de código, só `«…»` e MAIÚSCULAS entre chaves sem `$` antes (comando real com
@@ -35,12 +36,19 @@ SLICE = re.compile(r"^### .+ [—-] \d{4}-\d{2}-\d{2}\s*$")
 CAMPOS = ("Objetivo", "Status", "Verify Gate")
 
 
-def secao(linhas: list, prefixo: str):
+def intervalo(linhas: list, prefixo: str):
+    """(início, fim) das linhas da seção `## <prefixo>…`, ou None. `linhas` já sem os blocos de código,
+    para um `## ` dentro do prompt colado não encerrar a seção."""
     for i, ln in enumerate(linhas):
         if re.match(r"^## " + re.escape(prefixo) + r"\b", ln):
             fim = next((j for j in range(i + 1, len(linhas)) if linhas[j].startswith("## ")), len(linhas))
-            return linhas[i + 1:fim]
+            return i + 1, fim
     return None
+
+
+def secao(linhas: list, prefixo: str):
+    faixa = intervalo(linhas, prefixo)
+    return None if faixa is None else linhas[faixa[0]:faixa[1]]
 
 
 def lint(texto: str) -> list:
@@ -54,16 +62,21 @@ def lint(texto: str) -> list:
         erros.append("o 1º título não é '# HANDOFF: <feature>'")
 
     ficha = secao(linhas, "Ficha")
+    fechada = False
     if ficha is None:
         erros.append("falta a seção ## Ficha")
     else:
         for campo in CAMPOS:
             if not any(re.match(r"^\|\s*\**" + re.escape(campo) + r"\**\s*\|", ln) for ln in ficha):
                 erros.append(f"## Ficha sem a linha {campo}")
+        status = next((ln for ln in ficha if re.match(r"^\|\s*\**Status\**\s*\|", ln)), "")
+        fechada = "✅" in status
 
-    prompt = secao(brutas, "Prompt de retomada")
-    if prompt is None or sum(1 for ln in prompt if ln.startswith(("```", "~~~"))) < 2:
-        erros.append("## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova")
+    faixa = intervalo(linhas, "Prompt de retomada")
+    cercas = 0 if faixa is None else sum(1 for ln in brutas[faixa[0]:faixa[1]] if ln.startswith(("```", "~~~")))
+    if cercas < 2 and not (faixa is None and fechada):
+        erros.append("## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova"
+                     " (só a ficha com Status ✅ dispensa o prompt)")
 
     historico = secao(linhas, "Histórico de slices")
     if historico is None or not any(SLICE.match(ln) for ln in historico):
@@ -94,8 +107,10 @@ def main(argv: list) -> int:
         return 64
     try:
         texto = Path(argv[1]).read_text(encoding="utf-8")
-    except UnicodeDecodeError as e:
+    except (OSError, UnicodeDecodeError) as e:
         print(f"🛑 {argv[1]}: não consegui ler: {e}", file=sys.stderr)
+        print("RESULTADO: VERMELHO", file=sys.stderr)
+        print("→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo", file=sys.stderr)
         return 1
     erros = lint(texto)
     for e in erros:

@@ -12,7 +12,7 @@ metadata:
 
 # sdd-handoff — ficha da feature + passar o bastão
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
 `sdd-handoff v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Duas responsabilidades, sempre nesta ordem:
@@ -125,8 +125,8 @@ agora, ou apaga a linha. O prompt tem de funcionar **sozinho**, mesmo se a ficha
 ### 3b. Conferir a ficha
 
 `python3 sdd/bin/handoff-lint.py sdd/handoffs/HANDOFF_{FEATURE}.md` sobre o arquivo gravado: ficha
-com Objetivo, Status e Verify Gate, prompt de retomada em bloco de código, slice datado no histórico,
-nenhum placeholder, nenhum "como discutimos". Vermelho ⇒ corrija a ficha e rode de novo antes de
+com Objetivo, Status e Verify Gate, prompt de retomada em bloco de código (só a ficha ✅ sem
+continuação o dispensa), slice datado no histórico, nenhum placeholder, nenhum "como discutimos". Vermelho ⇒ corrija a ficha e rode de novo antes de
 entregar.
 
 ### 4. Oferecer limpeza

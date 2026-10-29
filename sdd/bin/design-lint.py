@@ -11,8 +11,9 @@ Regras:
   - `## File Manifest` com ≥1 linha de dados (`| 1 | …`), `**Total Files:** N` igual ao número de
     linhas, e a última coluna (Dependencies) citando só linhas que existem, sem a própria linha e sem
     ciclo (`None`, `—` e vazio = sem dependência). Ciclo deixa o build sem ordem possível.
-  - Nenhum placeholder do template fora de código: `«…»`, nome em MAIÚSCULAS entre chaves, ou
-    prosa entre chaves. Bloco cercado por ``` e trecho entre crases não contam.
+  - Nenhum placeholder do template fora de código: nome em MAIÚSCULAS entre chaves, ou prosa entre
+    chaves (o template só usa chaves; « » é aspa comum em português). Bloco cercado por ``` e trecho
+    entre crases não contam.
 """
 from __future__ import annotations
 
@@ -22,7 +23,7 @@ from pathlib import Path
 
 CERCA = re.compile(r"^(```|~~~).*?^\1[^\n]*$", re.M | re.S)
 CRASE = re.compile(r"`[^`\n]*`")
-PLACEHOLDER = re.compile(r"«[^»]*»|\{[A-Z][A-Z0-9_]{2,}\}|\{[^{}\n]*\s[^{}\n]*\}")
+PLACEHOLDER = re.compile(r"\{[A-Z][A-Z0-9_]{2,}\}|\{[^{}\n]*\s[^{}\n]*\}")
 DECISAO = re.compile(r"^### Decision (\d+): \S")
 LINHA_MANIFEST = re.compile(r"^\|\s*(\d+)\s*\|")
 TOTAL = re.compile(r"\*\*Total Files:\*\*\s*(\d+)")
@@ -123,8 +124,10 @@ def main(argv: list) -> int:
         return 64
     try:
         texto = Path(argv[1]).read_text(encoding="utf-8")
-    except UnicodeDecodeError as e:
+    except (OSError, UnicodeDecodeError) as e:
         print(f"🛑 {argv[1]}: não consegui ler: {e}", file=sys.stderr)
+        print("RESULTADO: VERMELHO", file=sys.stderr)
+        print("→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo", file=sys.stderr)
         return 1
     erros = lint(texto)
     for e in erros:

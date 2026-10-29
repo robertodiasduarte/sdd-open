@@ -31,9 +31,10 @@ SECAO = "## Como falar com o aluno"
 PARTES = ("**Status**", "**O que foi feito**", "**Agora", "**Sua decisão**", "**Próximo passo**")
 CERCA = re.compile(r"^(```|~~~).*?^\1[^\n]*$", re.M | re.S)
 PERGUNTA = re.compile(r"\*\*[^*\n]*\?\*\*")
-OPCAO = re.compile(r"^\s*-\s+\*\*([^*\n]+)\*\*(.*)$")
+OPCAO = re.compile(r"^\s*[-*+]\s+\*\*([^*\n]+)\*\*(.*)$")
 CONTINUACAO = re.compile(r"^\s+\S")
-PROXIMO = re.compile(r"^\*\*Próximo passo\*\*[\s:—–-]*(.*)$")
+PROXIMO = re.compile(r"^\*\*Próximo passo:?\*\*[\s:—–-]*(.*)$")
+OUTRO = re.compile(r"^(outr[oa]|other)\b")
 
 
 def parse_frontmatter(text):
@@ -123,9 +124,14 @@ def lint(path):
     return erros, avisos
 
 
+def sem_cerca(texto):
+    """O texto sem os blocos cercados por ``` (as linhas viram vazias: a numeração não muda)."""
+    return CERCA.sub(lambda m: "\n" * m.group(0).count("\n"), texto)
+
+
 def perguntas(texto):
     """[(linha, pergunta, [(rótulo, resto)])] das perguntas de decisão, fora de bloco de código."""
-    linhas = [ln[2:] if ln.startswith("> ") else ln for ln in CERCA.sub("", texto).splitlines()]
+    linhas = [ln[2:] if ln.startswith("> ") else ln for ln in sem_cerca(texto).splitlines()]
     saida = []
     for i, ln in enumerate(linhas):
         m = PERGUNTA.findall(ln)
@@ -133,6 +139,13 @@ def perguntas(texto):
             continue
         opcoes, j = [], i + 1
         while j < len(linhas):
+            if not linhas[j].strip():
+                # linha em branco antes ou entre opções (markdownlint a insere): segue se vem opção
+                k = next((x for x in range(j, len(linhas)) if linhas[x].strip()), len(linhas))
+                if k < len(linhas) and OPCAO.match(linhas[k]):
+                    j = k
+                    continue
+                break
             o = OPCAO.match(linhas[j])
             if o:
                 opcoes.append((o.group(1).strip(), o.group(2)))
@@ -146,7 +159,7 @@ def perguntas(texto):
 
 def lint_conversa(path, text):
     erros = []
-    linhas = text.splitlines()
+    linhas = sem_cerca(text).splitlines()
     inicios = [i for i, ln in enumerate(linhas) if ln.strip() == SECAO]
     if not inicios:
         return [f"seção '{SECAO}' ausente (a camada de conversa; ver sdd/templates/fragments/PERGUNTA_DECISAO.md)"]
@@ -183,10 +196,11 @@ def lint_conversa(path, text):
         rotulos = [r.lower() for r, _ in opcoes]
         if "não sei" not in rotulos:
             erros.append(f"{onde} — sem a opção **não sei**")
-        if any(r in ("outro", "outra", "other") for r in rotulos):
+        if any(OUTRO.match(r) for r in rotulos):
             erros.append(f"{onde} — tem a opção **Outro**: resposta fora das opções é tratada como dúvida")
-    for n, ln in enumerate(CERCA.sub("", texto_ref).splitlines(), 1):
-        m = PROXIMO.match(ln.strip())
+    for n, ln in enumerate(sem_cerca(texto_ref).splitlines(), 1):
+        ln = ln.strip()
+        m = PROXIMO.match(ln[2:] if ln.startswith("> ") else ln)
         if m and len(m.group(1).strip()) > 100:
             erros.append(f"references/como-falar.md:{n} **Próximo passo** com {len(m.group(1).strip())} caracteres (limite 100)")
     return erros
@@ -217,8 +231,11 @@ def main(argv):
             print(f"✅ {p}: frontmatter válido" + (" · camada de conversa ok" if conversa else ""))
     if falhou:
         print("RESULTADO: VERMELHO", file=sys.stderr)
-        print("→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: "
-              "sdd/templates/fragments/PERGUNTA_DECISAO.md)", file=sys.stderr)
+        if conversa:
+            print("→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: "
+                  "sdd/templates/fragments/PERGUNTA_DECISAO.md)", file=sys.stderr)
+        else:
+            print("→ corrija o frontmatter apontado acima (spec: agentskills.io/specification)", file=sys.stderr)
         return 1
     return 0
 

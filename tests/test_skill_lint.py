@@ -21,7 +21,7 @@ FIXTURES = RAIZ / "sdd/fixtures/conversa"
 # fixture → trecho que a mensagem de erro tem de trazer
 REPROVAM = {
     "conversa-sem-secao": "Como falar com o aluno",
-    "conversa-sem-como-falar": "references/como-falar.md",
+    "conversa-sem-como-falar": "references/como-falar.md, e o arquivo não existe",
     "conversa-sem-recomendado": "(recomendado)",
     "conversa-dois-recomendados": "(recomendado)",
     "conversa-sem-nao-sei": "não sei",
@@ -165,6 +165,39 @@ class SkillLint(Sandbox):
         self.assertEqual(rc, 0, out)
         rc, out = self.mutado("references/como-falar.md", "- **não sei** —", "- **talvez** —")
         self.assertEqual(rc, 1, out)
+
+    def test_opcoes_depois_de_linha_em_branco_ou_com_asterisco_sao_conferidas(self):
+        # markdownlint põe linha em branco antes da lista; "*" também é marcador de lista.
+        for marca in ("-", "*"):
+            with self.subTest(marca=marca):
+                rc, out = self.mutado("references/como-falar.md", "## Exemplo",
+                                      "**Posso apagar a pasta?**\n\n" + marca + " **Outro** — você descreve.\n"
+                                      + marca + " **sim** — apago.\n\n## Exemplo")
+                self.assertEqual(rc, 1, out)
+                self.assertIn("Posso apagar a pasta?", out)
+
+    def test_outro_com_complemento_reprova(self):
+        rc, out = self.mutado("references/como-falar.md", "- **não** —", "- **Outro (descreva)** —")
+        self.assertEqual(rc, 1, out)
+        self.assertIn("Outro", out)
+
+    def test_proximo_passo_com_dois_pontos_ou_em_citacao_tambem_tem_limite(self):
+        for forma in ("**Próximo passo:** ", "> **Próximo passo** — "):
+            with self.subTest(forma=forma):
+                rc, out = self.mutado("references/como-falar.md", "## Exemplo",
+                                      forma + "b" * 150 + "\n\n## Exemplo")
+                self.assertEqual(rc, 1, out)
+                self.assertIn("100", out)
+
+    def test_secao_dentro_de_bloco_de_codigo_nao_conta(self):
+        rc, out = self.mutado("SKILL.md", "## Entrada",
+                              "```markdown\n## Como falar com o aluno\n```\n\n## Entrada")
+        self.assertEqual(rc, 0, out)
+
+    def test_sem_flag_mensagem_de_frontmatter_nao_muda(self):
+        rc, out = self.lint("sdd-exemplo", skill("sdd-exemplo", "a" * 1025))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("→ corrija o frontmatter apontado acima (spec: agentskills.io/specification)", out)
 
     def test_pergunta_aberta_sem_opcoes_nao_e_conferida(self):
         rc, out = self.mutado("references/como-falar.md", "## Exemplo",

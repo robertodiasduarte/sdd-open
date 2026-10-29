@@ -10,7 +10,7 @@ metadata:
 
 # Auditoria Read-Only do Harness SDD
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
 `sdd-auditoria-harness v1.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 ## Como falar com o aluno

@@ -12,7 +12,7 @@ metadata:
 
 # Prompt Builder
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
 `sdd-prompt-builder v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Produzir um único prompt operacional pronto para uso em runtime. Priorizar o menor prompt que preserve clareza, controle de saída, recuperabilidade e fidelidade ao contexto fornecido.
