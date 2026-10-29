@@ -448,7 +448,7 @@ sdd_faltantes() {
 
 # metadata.version do frontmatter de uma SKILL.md (vazio se não houver).
 versao_skill() {
-  sed -n '2,/^---$/ s/^ *version: *"*\([0-9][0-9.]*\)"*.*$/\1/p' "$1" | head -1
+  sed -n "2,/^---\$/ s/^ *version: *[\"']*\([0-9][0-9.]*\)[\"']*.*\$/\1/p" "$1" | head -1
 }
 
 # versao_menor A B: sai 0 se A < B (X.Y.Z, campo a campo); A vazia conta como 0.0.0.

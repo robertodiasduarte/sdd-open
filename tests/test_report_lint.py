@@ -214,6 +214,22 @@ class Migrations(Sandbox):
         self.assertEqual(rc, 1, out)
         self.assertIn("AAAA-MM-DD", out)
 
+    def test_titulos_reais_numerados_ou_com_prefixo_contam(self):
+        for titulo in ("## 2. Arquivos criados / modificados", "## Fase A — Files Created/Modified",
+                       "## Files Changed", "## Arquivos do manifest"):
+            with self.subTest(titulo=titulo):
+                texto = ("# BUILD REPORT\n\n" + titulo + "\n\n| # | Arquivo | Ação |\n|---|---|---|\n"
+                         "| 1 | `" + MIG + "` | Create |\n")
+                self.escreve(self.r, REPORT, texto)
+                rc, out, err = self.roda([PYTHON, "-B", SCRIPT, REPORT], self.r)
+                self.assertEqual(rc, 1, out + err)
+                self.assertIn(MIG, out + err)
+
+    def test_projeto_so_com_travessoes_reprova(self):
+        rc, out = self.lint(self.arquivo(), self.linha(projeto="— · —"))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("nome · ref", out)
+
     # ── layers.sql do config ─────────────────────────────────────────────────
     def config(self, sql: str) -> None:
         self.escreve(self.r, "sdd/config.yaml",

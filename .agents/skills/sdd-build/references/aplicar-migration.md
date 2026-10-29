@@ -198,7 +198,9 @@ de `layers.sql`) ganha uma linha por migration, com o **mesmo caminho** da tabel
 - Já estava aplicada ⇒ `Aplicada em` = "já aplicada em <data>".
 - Modo manual (o aluno rodou o `select` no SQL Editor e disse o resultado) ⇒ a prova é
   `recibo: <nome do aluno> AAAA-MM-DD`, com o que ele viu ("coluna cnpj apareceu").
-- `exit 0`, "aplicada com sucesso" ou "deve estar lá" na célula ⇒ o `report-lint` reprova: não é leitura.
+- `exit 0` ou declaração ("deve funcionar", "por raciocínio") na célula ⇒ o `report-lint` reprova, mesmo
+  com log ao lado. Ele também reprova célula sem log de `evidence/` nem recibo — mas não lê o log: o que
+  prova é o que você leu de volta do banco, não a frase que escreveu.
 
 Depois disto — e só depois — o Verify Gate (passo 5a da skill). Se ele sair 2 ou 3, a primeira hipótese é
 "migration não aplicada ou aplicada em outro projeto": repita a seção 5 antes de mexer em código.

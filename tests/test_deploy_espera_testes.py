@@ -227,6 +227,85 @@ class DeployEsperaTestes(Sandbox):
         self.assertEqual(rc, 1, out)
         self.assertIn("always()", out)
 
+    # ── revisão pós-build: nunca SIM falso ───────────────────────────────────
+    def test_instalar_a_ferramenta_de_teste_nao_e_testar(self):
+        for instala in ("pip install -r requirements.txt pytest", "npm install --save-dev jest",
+                        "python3 -m pip install pytest"):
+            with self.subTest(instala=instala):
+                self.workflow("deploy.yml", wf(passo("Install", instala) + PUBLICA))
+                rc, out = self.resultado()
+                self.assertEqual(rc, 1, out)
+
+    def test_alvo_de_make_que_comeca_com_test_nao_e_teste(self):
+        self.workflow("deploy.yml", wf(passo("Deps", "make test-deps") + PUBLICA))
+        rc, out = self.resultado()
+        self.assertNotIn("RESULTADO: SIM", out)
+
+    def test_teste_com_if_nao_garante_e_nao_sei(self):
+        self.workflow("deploy.yml", wf(passo("Unit tests", "pytest", "        if: github.event_name == 'pull_request'\n")
+                                       + PUBLICA))
+        rc, out = self.resultado()
+        self.assertEqual(rc, 2, out)
+        self.assertIn("só roda com if:", out)
+
+    def test_if_always_em_qualquer_passo_que_publica_nao_segura(self):
+        self.workflow("deploy.yml", wf(passo("Unit tests", "pytest") + passo("Release", "gh release upload v1 x") +
+                                       passo("Espelho", 'rsync -az dist/ "$ALVO:site/"', "        if: always()\n")))
+        rc, out = self.resultado()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("'Espelho' publica com if: always()", out)
+
+    def test_if_always_num_job_do_meio_do_needs_nao_segura(self):
+        meio = ("  testes:\n    steps:\n" + passo("Unit tests", "pytest") +
+                "  build:\n    needs: testes\n    if: ${{ always() }}\n    steps:\n" + passo("Build", "make build"))
+        self.workflow("deploy.yml", wf(PUBLICA, extra_jobs=meio).replace("  deploy:\n", "  deploy:\n    needs: build\n"))
+        rc, out = self.resultado()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("needs: build roda com if:", out)
+
+    def test_set_e_sem_exit_0_no_fim_e_nao_sei(self):
+        self.workflow("deploy.yml", wf(passo("Unit tests", 'set +e\npytest\necho "terminou com $?"') + PUBLICA))
+        rc, out = self.resultado()
+        self.assertEqual(rc, 2, out)
+        self.assertIn("set +e", out)
+
+    def test_pipe_sem_pipefail_nao_segura_e_shell_bash_segura(self):
+        self.workflow("deploy.yml", wf(passo("Unit tests", "pytest | tee teste.log") + PUBLICA))
+        rc, out = self.resultado()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("pipefail", out)
+        self.workflow("deploy.yml", wf(passo("Unit tests", "pytest | tee teste.log", "        shell: bash\n") + PUBLICA))
+        rc, out = self.resultado()
+        self.assertEqual(rc, 0, out)
+
+    def test_job_com_nome_de_deploy_nao_reconhecido_impede_o_sim(self):
+        self.copia(".github/workflows/release.yml", self.p)
+        self.workflow("deploy.yml", "name: Deploy prod\non: push\njobs:\n  deploy:\n    steps:\n"
+                                    + passo("Deploy via SSH", "ssh deploy.invalid 'cd app && git pull'"))
+        rc, out = self.resultado()
+        self.assertEqual(rc, 2, out)
+        self.assertIn("deploy.yml · job deploy: o nome fala em publicar", out)
+
+    def test_acao_que_faz_push_de_imagem_publica(self):
+        self.workflow("docker.yml", "on: push\njobs:\n  img:\n    steps:\n      - uses: docker/build-push-action@v5\n"
+                                    "        with:\n          push: true\n")
+        rc, out = self.resultado()
+        self.assertEqual(rc, 1, out)
+
+    def test_workflow_so_de_workflow_call_e_avaliado_por_quem_chama(self):
+        self.workflow("ci.yml", "on: push\njobs:\n  test:\n    steps:\n" + passo("Unit tests", "pytest") +
+                      "  deploy:\n    needs: test\n    uses: ./.github/workflows/deploy.yml\n")
+        self.workflow("deploy.yml", wf(PUBLICA, on="workflow_call:"))
+        rc, out = self.resultado()
+        self.assertEqual(rc, 2, out)
+        self.assertNotIn("deploy.yml · job deploy publica", out)
+
+    def test_arquivo_que_nao_abre_e_nao_sei_com_resultado(self):
+        (self.p / ".github/workflows/pasta.yml").mkdir(parents=True)
+        rc, out = self.resultado()
+        self.assertEqual(rc, 2, out)
+        self.assertIn("não consegui ler pasta.yml", out)
+
     # ── NAO_SEI ──────────────────────────────────────────────────────────────
     def test_workflow_run_e_nao_sei(self):
         self.workflow("deploy.yml", wf(PUBLICA, on="workflow_run:\n    workflows: [CI]\n    types: [completed]"))

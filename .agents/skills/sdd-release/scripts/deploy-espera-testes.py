@@ -7,9 +7,11 @@ Responde ao campo "O deploy espera os testes?" do bloco do OK da sdd-release. S�
   SIM            exit 0  todo job que publica roda antes um passo de teste que bloqueia (no mesmo job)
                          ou tem `needs:` num job com esse passo
   NAO            exit 1  algum job publica sem isso: sem teste, ou o teste não segura nada
-                         (`continue-on-error`, `|| true`, `set +e` com `exit 0` no fim, `if: always()`)
-  NAO_SEI        exit 2  workflow_run, workflow reutilizável, workflow que não consegui ler, ou
-                         publicação/teste que não reconheci — a skill diz "não consegui afirmar"
+                         (`continue-on-error`, `|| true`, pipe sem pipefail, `set +e` com `exit 0` no
+                         fim, `if: always()` no passo, no job ou num job do meio do `needs:`)
+  NAO_SEI        exit 2  workflow_run, workflow reutilizável, workflow que não consegui ler, teste com
+                         `if:` ou `set +e`, ou job com nome de publicar cujo passo não reconheci — a
+                         skill diz "não consegui afirmar"
   NAO_SE_APLICA  exit 3  nenhum workflow publica (ou não há .github/workflows/)
                  exit 64 uso
 
@@ -158,21 +160,50 @@ PUBLICA_RUN = re.compile(r"""(?x)(?:^|[\s;&|(])(?:
     netlify\s+deploy\b | firebase\s+deploy\b | wrangler\s+(?:deploy|publish)\b | fly(?:ctl)?\s+deploy\b |
     supabase\s+(?:functions\s+deploy|db\s+push)\b | kubectl\s+apply\b | helm\s+upgrade\b |
     aws\s+s3\s+sync\b | make\s+deploy\b | (?:npm|yarn|pnpm)\s+run\s+deploy\b | \./deploy)""")
-PUBLICA_USES = re.compile(r"deploy|publish|gh-release|gh-pages|release-action", re.IGNORECASE)
-TESTE_RUN = re.compile(r"""(?x)(?:^|[\s;&|(/])(?:
-    pytest | unittest | jest | vitest | mocha | phpunit | rspec | tox | ctest |
-    (?:npm|yarn|pnpm|bun)\s+(?:run\s+)?test | (?:go|cargo|deno|dotnet|mvn|gradle|mix)\s+test |
-    make\s+test | (?:\./)?gradlew\s+test)\b""")
+PUBLICA_USES = re.compile(r"deploy|publish|gh-release|gh-pages|release-action|push-action", re.IGNORECASE)
+# Instalar a ferramenta de teste não é testar: `pip install pytest` antes do deploy não segura nada.
+INSTALA_RE = re.compile(r"""(?x)^(?:sudo\s+)?(?:
+    (?:python\d*(?:\.\d+)?\s+-m\s+)?pip\d*\s+install | pipx\s+install | uv\s+(?:pip\s+install|add|sync) |
+    poetry\s+(?:add|install) | (?:npm|pnpm|bun)\s+(?:i|install|ci|add)\b | yarn\s+add\b | yarn(?:\s+install)?\s*$ |
+    apt(?:-get)?\s+install | brew\s+install | composer\s+(?:require|install) | gem\s+install |
+    go\s+install | cargo\s+install | dotnet\s+tool\s+install)""")
+# O que vem antes do comando de verdade: atribuição, $( de captura, sudo, npx, "python -B -m", "uv run"…
+PREFIXO_RE = re.compile(r"""(?x)^(?:
+    \w+=["']?\$\(\s* | \$\(\s* | \w+=\S*\s+ | env\s+ | sudo\s+ | time\s+ | xvfb-run(?:\s+-a)?\s+ |
+    npx\s+ | bunx\s+ | (?:uv|poetry|pipenv|pdm|hatch)\s+run\s+ | bundle\s+exec\s+ |
+    python\d*(?:\.\d+)?(?:\s+-[A-Za-z]+)*\s+-m\s+ )""")
+FERRAMENTAS = {"pytest", "unittest", "jest", "vitest", "mocha", "phpunit", "rspec", "tox", "nox", "ctest"}
+PAR_TESTE = re.compile(r"""(?x)^(?:(?:npm|yarn|pnpm|bun)\s+(?:run\s+)?test | (?:go|cargo|deno|dotnet|mvn|gradle|mix)\s+test |
+    make\s+test | (?:\./)?gradlew\s+test)(?:\s|\)|$)""")
 ENGOLE_RE = re.compile(r"\|\|\s*(?:true\b|:|exit\s+0\b|echo\b)")
+PIPE_RE = re.compile(r"(?<!\|)\|(?!\|)")
 SEMPRE_RE = re.compile(r"always\(\)|failure\(\)|!\s*cancelled\(\)")
-PARECE_PUBLICAR = re.compile(r"deploy|publish|release", re.IGNORECASE)
-SO_PR = {"pull_request", "pull_request_target"}
+IF_INOFENSIVO = re.compile(r"^\s*(?:\$\{\{\s*)?(?:always|success)\(\)\s*(?:\}\})?\s*$")
+PARECE_PUBLICAR = re.compile(r"(?:deploy|publish|release)(?![\s_-]?(?:gate|check|lint|notes|drafter))", re.IGNORECASE)
+NAO_PUBLICA_A_MAIN = {"pull_request", "pull_request_target", "workflow_call"}
 
 
 def linhas_de_comando(run):
     """Linhas de run: que executam algo (sem echo/printf/comentário, que só falam de deploy)."""
     return [l.strip() for l in str(run or "").splitlines()
             if l.strip() and not re.match(r"^(?:echo|printf|#)\b|^#", l.strip())]
+
+
+def comando_de_teste(linha):
+    """True se algum comando da linha (entre && ; || |) É a ferramenta de teste — citá-la não conta."""
+    if INSTALA_RE.match(linha):
+        return False
+    for seg in re.split(r"&&|\|\||;|\|", linha):
+        s = seg.strip()
+        m = PREFIXO_RE.match(s)
+        while m and m.end():
+            s = s[m.end():]
+            m = PREFIXO_RE.match(s)
+        if not s:
+            continue
+        if PAR_TESTE.match(s) or os.path.basename(s.split()[0]).strip("\"')") in FERRAMENTAS:
+            return True
+    return False
 
 
 def verdade(v):
@@ -199,23 +230,39 @@ def publica(st):
 
 
 def e_teste(st):
-    return isinstance(st, dict) and any(TESTE_RUN.search(l) for l in linhas_de_comando(st.get("run")))
+    return isinstance(st, dict) and any(comando_de_teste(l) for l in linhas_de_comando(st.get("run")))
 
 
-def por_que_nao_segura(st, job):
-    """None = o passo de teste vermelho para o job; senão, o motivo."""
+def shell_de(st, job, shell_wf):
+    d = job.get("defaults") if isinstance(job.get("defaults"), dict) else {}
+    r = d.get("run") if isinstance(d.get("run"), dict) else {}
+    return str(st.get("shell") or r.get("shell") or shell_wf or "")
+
+
+def seguranca(st, job, shell_wf):
+    """(None, "") = o teste vermelho para o job; ("NAO"|"NAO_SEI", motivo) = não dá para contar com ele."""
     if verdade(job.get("continue-on-error")):
-        return "o job tem continue-on-error"
+        return "NAO", "o job tem continue-on-error"
     if verdade(st.get("continue-on-error")):
-        return "continue-on-error: %s" % st.get("continue-on-error")
+        return "NAO", "continue-on-error: %s" % st.get("continue-on-error")
     run = str(st.get("run") or "")
-    for l in linhas_de_comando(run):
-        if TESTE_RUN.search(l) and ENGOLE_RE.search(l):
-            return "o comando de teste termina em `%s`" % ENGOLE_RE.search(l).group(0)
+    testes = [l for l in linhas_de_comando(run) if comando_de_teste(l)]
+    for l in testes:
+        if ENGOLE_RE.search(l):
+            return "NAO", "o comando de teste termina em `%s`" % ENGOLE_RE.search(l).group(0)
+    # shell padrão do Actions é `bash -e {0}`, sem pipefail: `pytest | tee` vale o código do tee
+    if any(PIPE_RE.search(l) for l in testes) and shell_de(st, job, shell_wf).strip() != "bash" \
+            and "pipefail" not in run:
+        return "NAO", "o teste passa por um pipe (|) sem pipefail: vale o código do último comando"
     linhas = [l.strip() for l in run.splitlines() if l.strip()]
-    if re.search(r"\bset\s+[-+a-z]*\+e", run) and linhas and linhas[-1] == "exit 0":
-        return "roda com set +e e termina em exit 0"
-    return None
+    if re.search(r"\bset\s+[-+a-z]*\+e", run):
+        if linhas and linhas[-1] == "exit 0":
+            return "NAO", "roda com set +e e termina em exit 0"
+        return "NAO_SEI", "roda com set +e: o código do teste pode não chegar ao fim do passo"
+    cond = str(st.get("if") or "")
+    if cond and not IF_INOFENSIVO.match(cond):
+        return "NAO_SEI", "só roda com if: %s" % cond
+    return None, ""
 
 
 def passos(job):
@@ -239,49 +286,61 @@ def gatilhos(wf):
     return {str(on)} if on else set()
 
 
-def avaliar_job(arq, jid, job, jobs, wf_run):
+def avaliar_job(arq, jid, job, jobs, wf_run, shell_wf):
     """('SIM'|'NAO'|'NAO_SEI', frase) para um job que publica."""
     rotulo = "%s · job %s" % (arq, jid)
     sts = passos(job)
-    i_pub = next(i for i, s in enumerate(sts) if publica(s))
-    pub = sts[i_pub]
+    pubs = [i for i, s in enumerate(sts) if publica(s)]
+    pub = sts[pubs[0]]
     if wf_run:
         return "NAO_SEI", "%s roda por workflow_run: o teste está em outro workflow que não leio daqui" % rotulo
-    antes = [s for s in sts[:i_pub] if e_teste(s)]
-    seguros = [s for s in antes if not por_que_nao_segura(s, job)]
-    if seguros and not SEMPRE_RE.search(str(pub.get("if") or "")):
-        return "SIM", "%s: o passo '%s' testa antes de '%s'" % (rotulo, nome_do_passo(seguros[0]), nome_do_passo(pub))
-    if SEMPRE_RE.search(str(job.get("if") or "")):
-        return "NAO", "%s publica com if: %s — roda mesmo com teste vermelho" % (rotulo, job.get("if"))
-    # needs (transitivo)
-    vistos, fila, problemas, nao_sei = set(), needs(job), [], []
-    while fila:
-        dep = fila.pop(0)
-        if dep in vistos:
-            continue
-        vistos.add(dep)
-        dj = jobs.get(dep)
-        if not isinstance(dj, dict):
-            nao_sei.append("needs: %s não existe neste workflow" % dep)
-            continue
-        if dj.get("uses"):
-            nao_sei.append("needs: %s chama o workflow reutilizável %s" % (dep, dj.get("uses")))
-        for s in passos(dj):
-            if e_teste(s):
-                motivo = por_que_nao_segura(s, dj)
-                if not motivo:
-                    return "SIM", "%s: needs: %s, que testa no passo '%s'" % (rotulo, dep, nome_do_passo(s))
-                problemas.append("o passo '%s' do job %s não segura: %s" % (nome_do_passo(s), dep, motivo))
-        fila.extend(needs(dj))
-    for s in antes:
-        problemas.append("o passo '%s' não segura: %s" % (nome_do_passo(s), por_que_nao_segura(s, job)))
-    if seguros:  # havia teste que segura, mas o passo que publica tem if: always()
-        problemas.append("o passo '%s' publica com if: %s" % (nome_do_passo(pub), pub.get("if")))
-    if problemas:
-        return "NAO", "%s publica (passo '%s'), mas %s" % (rotulo, nome_do_passo(pub), "; ".join(problemas))
+    # if: always() em QUALQUER passo que publica o faz rodar com teste vermelho
+    sempre = ["o passo '%s' publica com if: %s" % (nome_do_passo(sts[i]), sts[i].get("if"))
+              for i in pubs if SEMPRE_RE.search(str(sts[i].get("if") or ""))]
+    seguro, nao, nao_sei = None, [], []
+
+    def pesa(s, dono, de_quem):
+        nivel, motivo = seguranca(s, dono, shell_wf)
+        if nivel:
+            (nao if nivel == "NAO" else nao_sei).append("o passo '%s'%s não segura: %s" % (nome_do_passo(s), de_quem, motivo))
+        return nivel is None
+
+    for s in sts[:pubs[0]]:
+        if e_teste(s) and pesa(s, job, "") and not seguro:
+            seguro = "o passo '%s' testa antes de '%s'" % (nome_do_passo(s), nome_do_passo(pub))
+    if not seguro:
+        if SEMPRE_RE.search(str(job.get("if") or "")):
+            sempre.append("o job publica com if: %s" % job.get("if"))
+        vistos, fila = set(), needs(job)
+        while fila and not seguro:  # needs transitivo
+            dep = fila.pop(0)
+            if dep in vistos:
+                continue
+            vistos.add(dep)
+            dj = jobs.get(dep)
+            if not isinstance(dj, dict):
+                nao_sei.append("needs: %s não existe neste workflow" % dep)
+                continue
+            if dj.get("uses"):
+                nao_sei.append("needs: %s chama o workflow reutilizável %s" % (dep, dj.get("uses")))
+                continue
+            for s in passos(dj):
+                if e_teste(s) and pesa(s, dj, " do job " + dep):
+                    seguro = "needs: %s, que testa no passo '%s'" % (dep, nome_do_passo(s))
+                    break
+            if not seguro and SEMPRE_RE.search(str(dj.get("if") or "")):
+                sempre.append("needs: %s roda com if: %s — segue mesmo com teste vermelho antes dele" % (dep, dj.get("if")))
+            elif not seguro:
+                fila.extend(needs(dj))
+    if sempre:
+        return "NAO", "%s publica mesmo com teste vermelho: %s" % (rotulo, "; ".join(sempre))
+    if seguro:
+        return "SIM", "%s: %s" % (rotulo, seguro)
+    if nao:
+        return "NAO", "%s publica (passo '%s'), mas %s" % (rotulo, nome_do_passo(pub), "; ".join(nao))
     if nao_sei:
         return "NAO_SEI", "%s: %s" % (rotulo, "; ".join(nao_sei))
-    parecidos = [nome_do_passo(s) for s in sts[:i_pub] if re.search(r"test", nome_do_passo(s), re.IGNORECASE)]
+    parecidos = [nome_do_passo(s) for s in sts[:pubs[0]] if re.search(r"test", nome_do_passo(s), re.IGNORECASE)]
     if parecidos:
         return "NAO_SEI", "%s: o passo '%s' parece teste, mas não reconheci o comando" % (rotulo, parecidos[0])
     return "NAO", "%s publica (passo '%s') sem passo de teste antes e sem needs: num job com teste" % (
@@ -291,41 +350,46 @@ def avaliar_job(arq, jid, job, jobs, wf_run):
 def avaliar(raiz):
     pasta = os.path.join(raiz, ".github", "workflows")
     arqs = sorted(f for f in os.listdir(pasta) if f.endswith((".yml", ".yaml"))) if os.path.isdir(pasta) else []
-    achados, suspeitos = [], []
+    achados = []
     for arq in arqs:
         try:
-            wf = carregar(open(os.path.join(pasta, arq), encoding="utf-8", errors="replace").read())
-        except Ilegivel as e:
+            with open(os.path.join(pasta, arq), encoding="utf-8", errors="replace") as fh:
+                wf = carregar(fh.read())
+        except (Ilegivel, OSError) as e:
             achados.append(("NAO_SEI", "não consegui ler %s (%s)" % (arq, e)))
             continue
         if not isinstance(wf, dict):
             achados.append(("NAO_SEI", "não consegui ler %s" % arq))
             continue
         g = gatilhos(wf)
-        if g and not (g - SO_PR):
-            continue  # só roda em pull request: não publica a branch padrão
+        if g and not (g - NAO_PUBLICA_A_MAIN):
+            continue  # só PR ou só chamado por outro workflow (quem chama é que é avaliado)
         jobs = wf.get("jobs") if isinstance(wf.get("jobs"), dict) else {}
-        nomes = [arq, str(wf.get("name") or "")]
+        d = wf.get("defaults") if isinstance(wf.get("defaults"), dict) else {}
+        shell_wf = d.get("run", {}).get("shell") if isinstance(d.get("run"), dict) else None
+        reconhecidos, suspeitos = 0, []
         for jid, job in jobs.items():
             if not isinstance(job, dict):
                 continue
-            nomes += [jid, str(job.get("name") or "")] + [nome_do_passo(s) for s in passos(job)]
             if job.get("uses"):
                 achados.append(("NAO_SEI", "%s · job %s chama o workflow reutilizável %s: não leio o que ele faz"
-                                 % (arq, jid, job["uses"])))
+                                % (arq, jid, job["uses"])))
             elif any(publica(s) for s in passos(job)):
-                achados.append(avaliar_job(arq, jid, job, jobs, "workflow_run" in g))
-        if any(PARECE_PUBLICAR.search(n) for n in nomes):
-            suspeitos.append(arq)
+                reconhecidos += 1
+                achados.append(avaliar_job(arq, jid, job, jobs, "workflow_run" in g, shell_wf))
+            elif any(PARECE_PUBLICAR.search(n) for n in (jid, str(job.get("name") or ""))):
+                suspeitos.append(jid)
+        if not reconhecidos and not suspeitos and PARECE_PUBLICAR.search(arq + " " + str(wf.get("name") or "")):
+            suspeitos.append("(nenhum)" if not jobs else ", ".join(jobs))
+        for jid in suspeitos:  # nome de publicar sem passo reconhecido: não dá para dizer SIM por cima dele
+            achados.append(("NAO_SEI", "%s · job %s: o nome fala em publicar, mas não reconheci o passo que publica"
+                            % (arq, jid)))
     for res in ("NAO", "NAO_SEI"):
         sel = [f for r, f in achados if r == res]
         if sel:
             return res, sel, achados
     if achados:
         return "SIM", [f for _, f in achados], achados
-    if suspeitos:
-        frase = "o nome de %s fala em publicar, mas não reconheci nenhum passo que publica" % ", ".join(suspeitos)
-        return "NAO_SEI", [frase], [("NAO_SEI", frase)]
     return "NAO_SE_APLICA", [], []
 
 

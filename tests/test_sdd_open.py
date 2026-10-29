@@ -182,6 +182,10 @@ class Projeto(Sandbox):
     def test_doctor_em_dia_com_o_pacote(self):
         # versão do projeto MAIOR que a do pacote é evolução da pessoa, não atraso
         self.versao_da_skill(self.p / ".agents/skills/sdd-release/SKILL.md", "9.0.0")
+        # a mesma versão do pacote entre aspas simples é YAML válido, não atraso
+        md = self.p / ".agents/skills/sdd-design/SKILL.md"
+        md.write_text(re.sub(r'(?m)^(\s+version: )"([0-9.]+)"', r"\g<1>'\g<2>'", md.read_text(encoding="utf-8"), count=1),
+                      encoding="utf-8")
         rc, out = self.cli("doctor")
         self.assertEqual(rc, 0, out)
         self.assertIn("✅ skills e sdd/bin/ em dia com o pacote", out)

@@ -39,7 +39,8 @@ VERDICT_RE = re.compile(
     re.IGNORECASE,
 )
 SPLIT_RE = re.compile(r"(?<!\\)\|")
-FILES_SEC_RE = re.compile(r"^##\s+(?:files\b|arquivos\b|.*manifest)", re.IGNORECASE)
+# "## Files Created", "## 2. Arquivos criados", "## Fase A — Files Created/Modified", "## … Manifest …"
+FILES_SEC_RE = re.compile(r"^##\s+(?:[\d.]+\s+|.*?[—–]\s*)?(?:files\b|arquivos\b)|^##\s+.*manifest", re.IGNORECASE)
 MIG_SEC_RE = re.compile(r"^##\s+migrations aplicadas\b", re.IGNORECASE)
 TICK_RE = re.compile(r"`([^`]+)`")
 DELETE_CELLS = {"delete", "deleted", "removido", "removida", "excluído", "excluido", "excluída", "excluida"}
@@ -229,7 +230,7 @@ def check_migrations(content, root, report_dir, feature):
             continue
         projeto, data, prova = regs[mig]
         partes = [x.strip(" `") for x in projeto.split("·")]
-        if len(partes) < 2 or not all(partes):
+        if len(partes) < 2 or any(x in ("", "—", "-") for x in partes):
             violations.append(f"migration `{mig}`: projeto sem `nome · ref` (`{projeto}`)")
         if not DATA_RE.search(data):
             violations.append(f"migration `{mig}`: sem data AAAA-MM-DD em \"Aplicada em\"")
