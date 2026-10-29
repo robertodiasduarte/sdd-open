@@ -88,7 +88,7 @@ Measurable outcomes (must include numbers):
 > ```
 >
 > Enquanto houver marcador ativo, `sdd/bin/verify-gate.sh` devolve **exit 5** e
-> `/build`/a fase Release/`/drive` param. Resolver via AskUserQuestion (≤5 por rodada),
+> `/build` e a fase Release param. Resolver via AskUserQuestion (≤5 por rodada),
 > integrar a resposta NO CORPO da spec e logar abaixo.
 
 ### Session {YYYY-MM-DD}
@@ -158,7 +158,6 @@ Explicitly NOT included in this feature:
 | **KB Domains** | {bases de conhecimento do projeto a consultar (nomes de pasta em `sdd/kb/` ou equivalente), ou `nenhum` explícito} | {Which patterns to consult} |
 | **IaC Impact** | {New resources \| Modify existing \| None \| TBD} | {Terraform/Terragrunt changes needed} |
 | **LLM Prompts** | {true \| false} | {Set true se a feature cria/edita prompts runtime — system prompts, passes de pipeline, classificadores. Quando true, a fase Design inventaria cada prompt e a fase Build trata cada um como entregável com contrato próprio.} |
-| **CONTEXTO de domínio** | {contexto/<slug>.md · sha <7 hex> · válido em <YYYY-MM-DD> \| nenhum (motivo)} | {Gerado/reusado/pulado no Step 1.5 do /define (mapa do domínio gerado em contexto limpo — slice 2 do SDD Open); a fase Design lê e grepa o `sup:` dele} |
 
 **Why This Matters:**
 
@@ -166,7 +165,6 @@ Explicitly NOT included in this feature:
 - **KB Domains** → a fase Design puxa os padrões certos da base de conhecimento do projeto
 - **IaC Impact** → Triggers infrastructure planning, avoids "works locally" failures
 - **LLM Prompts** → Gate condicional para a etapa de engenharia de prompts; evita overhead em features sem LLM
-- **CONTEXTO de domínio** → o DESIGN nasce sabendo tabelas/RPCs/edges/regras vigentes do domínio (`arquivo:linha`), não inferindo do input; válido enquanto `git diff <sha>..origin/main -- <superfícies>` for vazio
 
 **LLM Prompts — gatilhos para marcar `true`:**
 

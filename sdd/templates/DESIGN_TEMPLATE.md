@@ -102,7 +102,7 @@
 
 ## Contrato de aceite
 
-> Preenchido pelo **Step 1.5 do `/build`** (C2 — só features cujo manifest toca ≥2 camadas).
+> Preenchido pelo **passo 1.5 da `sdd-build`** (C2 — só features cujo manifest toca ≥2 camadas).
 > O `avaliador-fresco` (modo `contrato`, contexto limpo) revisa `## Acceptance Tests` +
 > `## Verify Gate` do DEFINE contra este DESIGN e propõe ≤5 ajustes; o humano responsável decide.
 > Toda proposta recebe `ACEITA` (aplicada no DEFINE) ou `RECUSADA (motivo)` — nunca silêncio.

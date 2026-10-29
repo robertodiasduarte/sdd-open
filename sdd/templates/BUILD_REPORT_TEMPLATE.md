@@ -199,18 +199,18 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 > 1 camada → as duas linhas abaixo recebem `N.A. (1 camada)`.
 
 **Camadas do manifest:** {n} ({lista})
-**Contrato de aceite (Step 1.5):** {n propostas / n aceitas — seção `## Contrato de aceite` do DESIGN} | já negociado em {data} | N.A. (1 camada)
+**Contrato de aceite (passo 1.5 da `sdd-build`):** {n propostas / n aceitas — seção `## Contrato de aceite` do DESIGN} | já negociado em {data} | N.A. (1 camada)
 **Veredito do avaliador (C1):** {PASS | NEEDS_WORK | N.A. (1 camada)} · ciclos: {n} · achados: {n} · `AVALIACAO_{FEATURE}_{YYYYMMDD-HHMM}.md`
 
-> O hook `build-report-guard` nega `PASS`/`NEEDS_WORK` sem o `AVALIACAO_*.md` existente em
+> O `sdd/bin/report-lint.py` nega `PASS`/`NEEDS_WORK` sem o `AVALIACAO_*.md` existente em
 > `sdd/reviews/`. A contagem de achados é insumo da medição P2→P3 (§6.3 do PLANO).
 
 ---
 
 ## Acceptance Test Verification
 
-> **Default-FAIL (D1):** todo AT **nasce `false`**. `true` exige evidência que o hook
-> `.githooks/claude-build-report-guard.py` consegue abrir — contrato em
+> **Default-FAIL (D1):** todo AT **nasce `false`**. `true` exige evidência que o
+> `sdd/bin/report-lint.py` consegue abrir — contrato em
 > [`fragments/EVIDENCIA.md`](fragments/EVIDENCIA.md). Formas aceitas: `` `evidence/{FEATURE}/AT-nnn.log` ``
 > (1ª linha `$ cmd`, output verbatim) · `` `AVALIACAO_{FEATURE}_{ts}.md` `` (provado pelo
 > avaliador) · `recibo: {nome} {YYYY-MM-DD}` (gate `manual-ux`). "Por raciocínio" é negado.

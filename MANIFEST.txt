@@ -101,6 +101,7 @@ tests/test_alarme.py
 tests/test_checar.py
 tests/test_check_versions.py
 tests/test_contrato_build_release.py
+tests/test_correcoes_w0.py
 tests/test_deploy_espera_testes.py
 tests/test_inventario.py
 tests/test_matriz_new_session.py

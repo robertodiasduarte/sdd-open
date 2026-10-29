@@ -16,7 +16,7 @@ project:
   default_branch: main
 
 # Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho
-# do avaliador de contexto fresco e a base do contexto por domínio (slice 2).
+# do avaliador de contexto fresco.
 # Exemplos: sql: "db/migrations/**" · api: "src/api/**" · ui: "src/ui/**" · infra: "deploy/**"
 layers:
   api: ""
@@ -43,7 +43,7 @@ review:
 
 # Preenchido pelo sdd-open (`init`): agentes para os quais os adaptadores são gerados.
 vendors: ""
-# Editor e pasta de worktrees são usados pela skill de nova sessão (slice 2).
+# Editor e pasta de worktrees são usados pela skill de nova sessão (sdd-new-session).
 editor: ""
 worktree_base: ""
 

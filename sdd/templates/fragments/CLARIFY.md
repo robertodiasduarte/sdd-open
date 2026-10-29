@@ -14,7 +14,7 @@ Forma ativa canônica (a ÚNICA que o `verify-gate.sh` detecta, e só fora de co
 
 - Vai **no lugar exato da ambiguidade** (Problem, ATs, Constraints — qualquer seção).
 - Enquanto houver token ativo, `sdd/bin/verify-gate.sh` devolve **exit 5**
-  (`clarification-pending`): `/build`, a fase Release e `/drive` **param e voltam ao `/define`**.
+  (`clarification-pending`): `/build` e a fase Release **param e voltam ao `/define`**.
   Não é gate vermelho de build — **nunca** aciona iteração de DESIGN.
 - `--print` é isento (uso de autoria durante a redação do DEFINE).
 

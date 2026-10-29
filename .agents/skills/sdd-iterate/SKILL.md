@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20.
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.0.0"
+  version: "2.0.1"
   fase: "cross"
 ---
 
@@ -40,9 +40,14 @@ metadata:
 3. **Aplicar no doc alvo** — in-place, **nunca** criar `_v2`. Registrar em `## Revision History`
    (versão · data · "iterate" · o que mudou e por quê, 1 linha).
 4. **Verify Gate (só DEFINE):** se a mudança toca critério de aceite, atualizar o bloco
-   `## Verify Gate` no mesmo passe e rodar `sdd/bin/verify-gate.sh --print <DEFINE>` — tem que
-   continuar parseável e sem marcador ativo (exit ≠5). Mudança de escopo sem gate
-   correspondente é DEFINE mentindo.
+   `## Verify Gate` no mesmo passe e rodar as duas chamadas, nesta ordem:
+   - `sdd/bin/verify-gate.sh --print <DEFINE>` — o bloco continua parseável (exit 0; 64 = bloco
+     ausente ou malformado). O `--print` é isento de marcador: sozinho, nunca vê dúvida aberta.
+   - `sdd/bin/verify-gate.sh <DEFINE>` — exit 5 = marcador ativo de ambiguidade: parar e voltar
+     ao Define. Sem marcador, o gate roda o `cmd` (leva o tempo dos testes); aqui só importa se
+     saiu 5 — 0, 2, 3 ou 4 dizem do código, que pode nem existir ainda.
+
+   Mudança de escopo sem gate correspondente é DEFINE mentindo.
 5. **Cascata:** DEFINE alterado → o DESIGN ainda vale? DESIGN alterado → há código construído
    que fica órfão? Se sim, **perguntar**: (a) atualizo o doc a jusante agora · (b) só este,
    você cuida do resto · (c) mostro o diff antes. Nunca cascatear em silêncio.

@@ -71,7 +71,7 @@ Rodar: `sdd/bin/verify-gate.sh sdd/features/DEFINE_<FEATURE>.md`
 | `2` | 🔴 vermelho (falhou) | **ABORTA** |
 | `3` | inconclusivo (tool ausente OU ruído 403 WAF×runner) | caller decide; não conta vermelho |
 | `4` | `manual-ux`: exige assinatura humana | `/build` mostra checklist · a fase Release exige recibo |
-| `5` | clarification-pending: marcador ativo de ambiguidade no DEFINE (forma canônica fora de fence — ver `fragments/CLARIFY.md`) | **PARAR e voltar ao `/define`**. NÃO é vermelho de build: `/drive` e loops **nunca** iteram DESIGN por causa dele |
+| `5` | clarification-pending: marcador ativo de ambiguidade no DEFINE (forma canônica fora de fence — ver `fragments/CLARIFY.md`) | **PARAR e voltar ao `/define`**. NÃO é vermelho de build: nem o build nem loop algum itera o DESIGN por causa dele |
 | `64` | bloco ausente/malformado | DEFINE inválido (sem gate) |
 
 ## Regras de ouro
