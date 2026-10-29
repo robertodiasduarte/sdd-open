@@ -13,7 +13,13 @@ name: release
 # contents: write. A red test ⇒ `release` is skipped and no tag is created. Nothing here uses
 # continue-on-error or `|| true`: a check that cannot fail is not a check.
 #
-# GitHub does not evaluate `paths` on tag pushes: a v* tag always runs.
+# GitHub does not evaluate `paths` on tag pushes: a vX.Y.Z tag always runs, and publishes exactly
+# the tag that was pushed (next-version.sh receives it). Tags like v2.3.0-rc1 do not trigger.
+#
+# Queue: one group per ref. GitHub keeps only ONE pending run per group and cancels the older
+# pending one when a newer arrives; with a single group, a main push could cancel a pending tag
+# run and that tag would never get a Release. Skipping an intermediate main run is harmless: the
+# newer run publishes the newer content.
 # The version logic lives in scripts/next-version.sh, covered by tests/test_next_version.py.
 
 on:
@@ -28,13 +34,13 @@ on:
       - 'sdd/playbook.md'
       - 'sdd/config.example.yaml'
       - 'AGENTS.md.tmpl'
-    tags: ['v*']
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
 
 permissions:
   contents: read
 
 concurrency:
-  group: release
+  group: release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -58,6 +64,17 @@ jobs:
           PUBLISH_GATE_MODE: ci
         run: bash scripts/publish-gate.sh "$GITHUB_WORKSPACE"
 
+      # Same step as publish-gate.yml: that workflow runs alongside this one, not before it, so a
+      # red publish-gate would not stop a Release.
+      - name: Shell syntax, no zsh, no symlinks
+        run: |
+          set -u +e
+          fail=0
+          for f in $(find . -name '*.sh' -not -path './.git/*'); do bash -n "$f" || { echo "bash -n failed: $f"; fail=1; }; done
+          if grep -rl '^#!/bin/zsh' --include='*.sh' . ; then echo "zsh shebang found"; fail=1; fi
+          if [ -n "$(find . -type l -not -path './.git/*')" ]; then echo "symlink found"; fail=1; fi
+          exit $fail
+
       - name: Unit tests
         run: python3 -B -m unittest discover -s tests -p 'test_*.py'
 
@@ -66,7 +83,8 @@ jobs:
       - name: Version gate (against the previous release)
         run: |
           set -euo pipefail
-          proxima="$(bash scripts/next-version.sh)"
+          if [ "$GITHUB_REF_TYPE" = tag ]; then set -- "$GITHUB_REF_NAME"; fi
+          proxima="$(bash scripts/next-version.sh "$@")"
           printf '%s\n' "$proxima"
           base="$(printf '%s\n' "$proxima" | sed -n 's/^BASE=//p')"
           python3 scripts/check-versions.py --base "$base" --base-obrigatoria
@@ -87,7 +105,8 @@ jobs:
         id: v
         run: |
           set -euo pipefail
-          bash scripts/next-version.sh | tee -a "$GITHUB_OUTPUT"
+          if [ "$GITHUB_REF_TYPE" = tag ]; then set -- "$GITHUB_REF_NAME"; fi
+          bash scripts/next-version.sh "$@" | tee -a "$GITHUB_OUTPUT"
 
       # Integrity and date stamp: the hash proves the package was not swapped, and the Release
       # date (which the author does not write) proves this content existed here on that day.

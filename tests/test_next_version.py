@@ -71,6 +71,39 @@ class NextVersion(Sandbox):
         self.assertEqual(c["NEW"], "0")
         self.assertEqual(c["BASE"], "v1.0.1")
 
+    def test_tag_pedida_e_publicada_mesmo_com_outra_maior_no_commit(self):
+        self.tag("v2.2.0")
+        self.commit(self.r, "minor")
+        self.tag("v2.3.0")
+        self.tag("v2.4.0")
+        rc, out, err = self.roda([BASH, SCRIPT, "v2.3.0"], self.r)
+        self.assertEqual(rc, 0, out + err)
+        self.assertEqual(out.splitlines(), ["TAG=v2.3.0", "NEW=0", "BASE=v2.2.0"])
+
+    def test_tag_pedida_fora_do_head_e_1(self):
+        self.tag("v1.0.0")
+        self.commit(self.r, "x")
+        rc, out, err = self.roda([BASH, SCRIPT, "v1.0.0"], self.r)
+        self.assertEqual(rc, 1, out + err)
+        self.assertEqual(out, "")
+
+    def test_tag_pedida_fora_do_padrao_e_64(self):
+        self.tag("v1.0.0")
+        rc, out, err = self.roda([BASH, SCRIPT, "v1.1.0-rc1"], self.r)
+        self.assertEqual(rc, 64, out + err)
+
+    def test_head_que_nao_descende_da_ultima_tag_e_1(self):
+        self.tag("v1.0.0")
+        antigo = self.git(self.r, "rev-parse", "HEAD").strip()
+        self.commit(self.r, "novo")
+        self.tag("v1.1.0")
+        self.git(self.r, "checkout", "-q", antigo)
+        self.commit(self.r, "reexecucao de commit velho")
+        rc, out, err = self.roda([BASH, SCRIPT], self.r)
+        self.assertEqual(rc, 1, out + err)
+        self.assertEqual(out, "")
+        self.assertIn("não descende", err)
+
     def test_stdout_so_tem_as_tres_linhas(self):
         self.tag("v1.0.0")
         self.commit(self.r, "x")

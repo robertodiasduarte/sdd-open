@@ -56,11 +56,33 @@ class Release(unittest.TestCase):
             with self.subTest(path=p):
                 self.assertIn("      - '" + p + "'", RELEASE)
 
-    def test_tag_manual_tambem_publica(self):
-        self.assertRegex(RELEASE, r"(?m)^    tags: \['v\*'\]$")
+    def test_so_tag_vxyz_dispara(self):
+        self.assertIn("    tags: ['v[0-9]+.[0-9]+.[0-9]+']", RELEASE)
 
-    def test_fila_sem_cancelar(self):
+    def test_tag_empurrada_e_a_tag_publicada(self):
+        for nome in ("testes", "release"):
+            with self.subTest(job=nome):
+                bloco = job(RELEASE, nome)
+                self.assertIn('if [ "$GITHUB_REF_TYPE" = tag ]; then set -- "$GITHUB_REF_NAME"; fi', bloco)
+                self.assertIn('bash scripts/next-version.sh "$@"', bloco)
+
+    def test_fila_por_ref_sem_cancelar(self):
+        # um grupo só deixaria um push de main cancelar a run pendente de uma tag
+        self.assertIn("group: release-${{ github.ref }}", RELEASE)
         self.assertIn("cancel-in-progress: false", RELEASE)
+
+    def test_testes_da_release_conferem_sintaxe_zsh_e_symlink(self):
+        bloco = job(RELEASE, "testes")
+        self.assertIn('bash -n "$f"', bloco)
+        self.assertIn("zsh shebang found", bloco)
+        self.assertIn("symlink found", bloco)
+
+    def test_sem_interpolacao_em_run(self):
+        # ${{ }} dentro de run: vira injeção de script; valores entram por env:
+        for texto, nome in ((RELEASE, "release.yml"), (GATE, "publish-gate.yml")):
+            for bloco in re.findall(r"run: \|\n((?:          .*\n?)+)", texto):
+                with self.subTest(workflow=nome):
+                    self.assertNotIn("${{", bloco)
 
     def test_testes_rodam_gate_suite_e_versao_com_base_obrigatoria(self):
         bloco = job(RELEASE, "testes")
@@ -104,6 +126,10 @@ class PublishGate(unittest.TestCase):
                       'bash "$GITHUB_WORKSPACE/bin/sdd-open.sh" sync --check'):
             with self.subTest(linha=linha):
                 self.assertIn(linha, GATE)
+
+    def test_token_so_le(self):
+        topo = GATE.split("\njobs:\n", 1)[0]
+        self.assertRegex(topo, r"(?m)^permissions:\n  contents: read$")
 
     def test_roda_a_suite_e_o_gate_de_versao(self):
         self.assertIn("python3 -B -m unittest discover -s tests -p 'test_*.py'", GATE)
