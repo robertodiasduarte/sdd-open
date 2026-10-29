@@ -1,0 +1,4 @@
+$ for f in --print ""; do bash sdd/bin/verify-gate.sh $f sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md >/dev/null 2>&1; echo "verify-gate.sh ${f:-(sem --print)} fixture de clarificação → exit $?"; done
+verify-gate.sh --print fixture de clarificação → exit 0
+verify-gate.sh (sem --print) fixture de clarificação → exit 5
+exit=0

@@ -8,9 +8,9 @@
 |---|---|
 | **Objetivo** | Fazer do sdd-open o único SDD do Roberto, sob 4 parâmetros fixados em 2026-10-29 (`sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, seção 0): **P1** corrigir erros antes de construir por cima; **P2** manter o padrão agnóstico (7 agentes; o que depende de subagente degrada para parada manual); **P3** incorporar o que o sdd-starter faz melhor (F1–F6: camada "Como falar com o aluno", skills de terreno, migration provada por leitura, validadores de fase, versão/testes/release, sdd-kb, docs); **P4** levar para o Open o que o SDD privado faz e o Open não (F7–F14: evidência fail-closed, hooks, fluxo encadeado, revisão adversarial, contexto e governança, UX/LLM, playbook e drive) e então **substituir o SDD privado pelo Open** (F15). Sem abrandar o mecanismo do open (gate com seis estados, evidência, avaliador fresco, playbook, release com veredito). |
 | **Status** | 🔨 em andamento |
-| **Feito** | 2026-10-29 — avaliação do starter (`sdd/features/AVALIACAO_STARTER_PARA_OPEN.md`) e abertura da worktree. 2026-10-29 — as 5 decisões do Roberto (ver `## Eventos`); **F1 Manutenção entregue**: 115 testes em `tests/`, `scripts/check-versions.py`, `scripts/next-version.sh`, `.github/workflows/release.yml`, 3 padrões de PII; merge em `main` (`f75fbdb`, PR #1) e **Release `v2.2.1`** publicada sozinha com `sdd-open-v2.2.1.tar.gz` + `SHA256SUMS.txt` (hash conferido). 2026-10-29 — **F2 Terreno entregue**: `sdd-checar-ambiente` 1.3.0 (`checar.sh --segredo`), `sdd-higiene-dado` 1.1.1, `sdd-iniciar-repo` 1.1.1 em `.agents/skills/`; `doctor` confere segredo salvo no git; `sdd-new-session` 1.1.0 (pré-voo por `checar.sh --frente`, tabela de tradução, descoberta gravada no config da frente); 242 testes; merge em `main` (`41c6169`, PR #2) e **Release `v2.2.2`** (hash conferido). 2026-10-29 — **F3 Build e Release entregue**: `sdd-build` 2.1.0 com `references/aplicar-migration.md`; `report-lint.py` reprova migration sem linha provada em `## Migrations aplicadas`; `sdd-release` 2.2.0 com o bloco único do OK e `scripts/deploy-espera-testes.py` (SIM/NAO/NAO_SEI/NAO_SE_APLICA); `doctor` avisa skill e `sdd/bin/` mais velhos que o pacote; `LM-004`; 304 testes; merge em `main` (`1a54da5`, PR #3) e **Release `v2.2.3`** (hash conferido). |
-| **Falta** | Sessão 1: W0 do porte privado (correções, ½ dia) + M1 (CI em macOS, pin do checkout, baseline da auditoria); depois F4 Conversa (agora também com `design-lint.py`/`handoff-lint.py`, `metadata.updated` e linha de identificação nas 13 skills), F5 Conhecimento, F6 Docs, e depois o porte do SDD privado como **F7 Evidência · F8 Hooks · F9 Fluxo encadeado · F10/F11 Revisão adversarial · F12 Contexto e governança · F13 UX e LLM · F14 Playbook e orquestração** e **F15 Substituição do SDD privado** (`sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, seções 8 e 9; agrupamento por sessão na seção 10) — cada uma como fluxo SDD completo numa worktree própria; os artefatos SDD desta família vivem na branch `docs/incorporar-starter`, nunca mesclada; `MANIFEST.txt` a cada arquivo novo; cada push em `main` que toca o produto publica uma Release sozinho. |
-| **Pronto quando** | **P3 (starter):** (1) `bash scripts/publish-gate.sh .` sai 0 na worktree com os steps novos (testes unitários, check-versions, design-lint, handoff-lint, padrões de PII); (2) `python3 sdd/bin/skill-lint.py .agents/skills/sdd-*/SKILL.md` sai 0 e as 13 skills têm a seção `## Como falar com o aluno` mais `references/como-falar.md`; (3) existem `.agents/skills/sdd-checar-ambiente`, `sdd-higiene-dado`, `sdd-iniciar-repo` e `sdd-kb` com `tests/` passando; (4) `sdd-build` tem `references/aplicar-migration.md` e `sdd/bin/report-lint.py` reprova migration listada sem prova por leitura ✅; (5) existe pelo menos uma Release no GitHub de `robertodiasduarte/sdd-open` com `SHA256SUMS.txt` ✅; (6) o item "Specs como deltas" do `docs/comparison.md` continua declarado como planejado, não como feito. **P1 (erros):** (7) `grep -rnE 'claude-build-report-guard|/drive|Step 1\.5|slice 2' sdd/ .agents/` sem hit e `verify-gate.sh` sem `--print` sai 5 na fixture de clarificação (W0); toda nota HIGH/MEDIUM de revisão aplicada ou rebatida com motivo. **P2 (agnóstico):** (8) `tests/test_agnostico.py` verde (nenhum nome de ferramenta de um agente só em `SKILL.md`/`references/`); CI verde em `ubuntu-latest` e `macos-latest`; F9 e F12 provadas no Codex CLI. **P4 (substituição):** (9) F7–F14 publicadas; (10) no repositório privado, `bash bin/sdd-open.sh doctor` sai ✅, uma feature real do RDD percorre o fluxo do Open de ponta a ponta e `git ls-files .claude/commands/workflow .claude/agents sdd-public` está vazio (F15). |
+| **Feito** | 2026-10-29 — avaliação do starter (`sdd/features/AVALIACAO_STARTER_PARA_OPEN.md`) e abertura da worktree. 2026-10-29 — as 5 decisões do Roberto (ver `## Eventos`); **F1 Manutenção entregue**: 115 testes em `tests/`, `scripts/check-versions.py`, `scripts/next-version.sh`, `.github/workflows/release.yml`, 3 padrões de PII; merge em `main` (`f75fbdb`, PR #1) e **Release `v2.2.1`** publicada sozinha com `sdd-open-v2.2.1.tar.gz` + `SHA256SUMS.txt` (hash conferido). 2026-10-29 — **F2 Terreno entregue**: `sdd-checar-ambiente` 1.3.0 (`checar.sh --segredo`), `sdd-higiene-dado` 1.1.1, `sdd-iniciar-repo` 1.1.1 em `.agents/skills/`; `doctor` confere segredo salvo no git; `sdd-new-session` 1.1.0 (pré-voo por `checar.sh --frente`, tabela de tradução, descoberta gravada no config da frente); 242 testes; merge em `main` (`41c6169`, PR #2) e **Release `v2.2.2`** (hash conferido). 2026-10-29 — **F3 Build e Release entregue**: `sdd-build` 2.1.0 com `references/aplicar-migration.md`; `report-lint.py` reprova migration sem linha provada em `## Migrations aplicadas`; `sdd-release` 2.2.0 com o bloco único do OK e `scripts/deploy-espera-testes.py` (SIM/NAO/NAO_SEI/NAO_SE_APLICA); `doctor` avisa skill e `sdd/bin/` mais velhos que o pacote; `LM-004`; 304 testes; merge em `main` (`1a54da5`, PR #3) e **Release `v2.2.3`** (hash conferido). 2026-10-29 — **W0 entregue** (sessão 1, worktree `sdd-open-w0-m1`): `sdd-iterate` 2.0.1 vê clarificação aberta (`--print` + gate sem `--print`); templates sem contexto de domínio, `/drive`, guard inexistente e passos de outro SDD; `sdd-build` 2.1.1 (avaliador grava só `AVAL-*.log`); `tests/test_correcoes_w0.py`; 316 testes; merge em `main` (`303cc87`, PR #4) e **Release `v2.2.4`** (hash conferido). 2026-10-29 — **M1 entregue**: job `testes-macos` nos dois workflows (Python 3.9.6 e bash 3.2.57 afirmados, `release` espera por ele), `actions/checkout` v5.1.0 por SHA, passo "Skill integrity" em `.agents/skills/`; 326 testes; push em `main` (`dd27ef6`, PR #5), **sem Release** (só `.github/**` e `tests/`). |
+| **Falta** | Próxima: F4 Conversa (agora também com `design-lint.py`/`handoff-lint.py`, `metadata.updated` e linha de identificação nas 13 skills), F5 Conhecimento, F6 Docs, e depois o porte do SDD privado como **F7 Evidência · F8 Hooks · F9 Fluxo encadeado · F10/F11 Revisão adversarial · F12 Contexto e governança · F13 UX e LLM · F14 Playbook e orquestração** e **F15 Substituição do SDD privado** (`sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, seções 8 e 9; agrupamento por sessão na seção 10) — cada uma como fluxo SDD completo numa worktree própria; os artefatos SDD desta família vivem na branch `docs/incorporar-starter`, nunca mesclada; `MANIFEST.txt` a cada arquivo novo; cada push em `main` que toca o produto publica uma Release sozinho. |
+| **Pronto quando** | **P3 (starter):** (1) `bash scripts/publish-gate.sh .` sai 0 na worktree com os steps novos (testes unitários, check-versions, design-lint, handoff-lint, padrões de PII); (2) `python3 sdd/bin/skill-lint.py .agents/skills/sdd-*/SKILL.md` sai 0 e as 13 skills têm a seção `## Como falar com o aluno` mais `references/como-falar.md`; (3) existem `.agents/skills/sdd-checar-ambiente`, `sdd-higiene-dado`, `sdd-iniciar-repo` e `sdd-kb` com `tests/` passando; (4) `sdd-build` tem `references/aplicar-migration.md` e `sdd/bin/report-lint.py` reprova migration listada sem prova por leitura ✅; (5) existe pelo menos uma Release no GitHub de `robertodiasduarte/sdd-open` com `SHA256SUMS.txt` ✅; (6) o item "Specs como deltas" do `docs/comparison.md` continua declarado como planejado, não como feito. **P1 (erros):** (7) `grep -rnE 'claude-build-report-guard|/drive|Step 1\.5|slice 2' sdd/ .agents/` sem hit e `verify-gate.sh` sem `--print` sai 5 na fixture de clarificação (W0) ✅; toda nota HIGH/MEDIUM de revisão aplicada ou rebatida com motivo. **P2 (agnóstico):** (8) `tests/test_agnostico.py` verde (nenhum nome de ferramenta de um agente só em `SKILL.md`/`references/`); CI verde em `ubuntu-latest` e `macos-latest` ✅ (M1); F9 e F12 provadas no Codex CLI. **P4 (substituição):** (9) F7–F14 publicadas; (10) no repositório privado, `bash bin/sdd-open.sh doctor` sai ✅, uma feature real do RDD percorre o fluxo do Open de ponta a ponta e `git ls-files .claude/commands/workflow .claude/agents sdd-public` está vazio (F15). |
 
 ---
 
@@ -40,6 +40,149 @@
 - 2026-10-29 — Roberto: "podemos criar a F7 (e outras) para incorporar as funcionalidades do SDD privado". As ondas W1–W5 do porte viram **F7–F14** desta frente, mais a manutenção M1 (`sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, seção 8: entrega, decisões, dependências, atenção e "pronto quando" de cada uma; seção 9: mapa dos 77 itens do porte → frente). Escopo da frente INCORPORAR_STARTER passa a cobrir também o porte privado → open. Esforço estimado F7–F14: 29–36 dias de agente. Skills novas previstas: `sdd-loop-builder` (F13) e `sdd-drive` (F14) — `test_skill_lint.py` 16 → 17 (F5) → 18 → 19.
 - 2026-10-29 — Auditoria de cobertura do plano contra o porte (pedida pelo Roberto): os 77 itens e as 5 notas da revisão externa já tinham frente, mas faltavam os 9 princípios do §3, ~60 detalhes técnicos (exits 67/68, tetos 180 KB/8 MB/100 KB, gatilhos do 2º revisor, flags do curator e do drive, regras do cartógrafo), 7 dos 23 slots do §6.2 e as fontes do Anexo A com linhas/refs. Entraram nas seções 8.0–8.3 e no mapa da seção 9 de `sdd/features/PLANO_F4_F15_CONSOLIDADO.md`. O plano passa a bastar sozinho, sem depender do porte (que mora no repo privado e já tem 6 fatos velhos).
 - 2026-10-29 — Roberto fixou os **4 parâmetros de verificação** do programa (P1 corrigir erros · P2 manter o padrão agnóstico · P3 incorporar o que o starter faz melhor · P4 acabar com o SDD privado e substituí-lo pelo Open) e pediu a tabela de degradação por vendor e o teste de agnosticismo. Plano v1.3 (`PLANO_F4_F15_CONSOLIDADO.md`): seção 0 com os parâmetros e como cada um se prova; regra 10 e tabela de degradação em 8.0; item G da F4 (`tests/test_agnostico.py`); **F15 Substituição do SDD privado** como fim do programa (o caminho inverso §11 do porte deixa de existir); agrupamento por sessão na seção 10 (uma frente grande por sessão; pares só W0+M1 e F10+F11). A Ficha ganhou o objetivo novo e os critérios (7)–(10). **Versionamento dos artefatos SDD** (decisão do Roberto): branch `docs/incorporar-starter`, nunca mesclada em `main` (o CI só roda em `main` e PR; 9 arquivos têm caminhos `/Users/` que o G2 reprova e nada está no `MANIFEST.txt`), com tag anotada `docs-2026-10-29`. Prompt da sessão 1 (W0 + M1) em worktree limpa gravado em `sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`.
+- 2026-10-29 — Sessão 1 (worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-w0-m1`, branch `feat/w0-m1`), W0: o grep do gate da W0 achava 2 locais a mais que o plano (`BUILD_REPORT_TEMPLATE.md:202`, `DESIGN_TEMPLATE.md:105`), onde "Step 1.5" é o passo 1.5 **real** da `sdd-build` (contrato de aceite) — viraram "passo 1.5 da `sdd-build`". O texto pedido para a 4.5 ("sem Write/Edit") citava ferramenta de um agente só (P2): virou "não edite código nem documento do projeto". Revisão de contexto fresco do `b1df8c8`: FIX FIRST, 0 HIGH, 5 MEDIUM, 5 LOW — aplicadas em `303cc87`, 3 rebatidas (`/build` como forma curta da fase; `avaliador-fresco` é nome de papel; `/adversarial-review` no `RESUMO_ETAPA.md` fica pela Decisão 3 e vai para a F10).
+- 2026-10-29 — Roberto: "pode finalizar (push + deploy + verificar)" sem citar o repositório → push **recusado** pela regra; depois "ok \"sdd-open\"". Push fast-forward `1a54da5..303cc87` em `main`; PR #4 MERGED; run `release` 40926754472 publicou `v2.2.4`.
+- 2026-10-29 — M1, decisão do Roberto (pergunta com 3 opções): o item "baseline da `sdd-auditoria-harness` no CI, falha com HIGH/CRITICAL" do plano não existe como ferramenta — o `collect_evidence.py` não lê `.agents/skills/` (só `.claude/skills/*/SKILL.md`), não tem severidade e sempre sai 0. Escolhida a **varredura inline no CI** (Unicode invisível e código remoto entregue a shell), contra "tirar da M1" e "rodar o collect_evidence como smoke".
+- 2026-10-29 — Revisão de contexto fresco do `eac5484` (M1): FIX FIRST, 0 HIGH, 4 MEDIUM, 6 LOW — aplicadas em `dd27ef6` (varredura fail-closed com alvo vazio; piso **afirmado** e `python3` do PATH = piso; regex de código remoto e faixas Unicode ampliadas); 3 aceitas com motivo (escopo só `.agents/skills/`; texto que cita `curl … | sh` reprova; `release` preso ao runner macOS).
+- 2026-10-29 — Roberto: "finalizar (push + deploy + verificar)" sem o repositório → recusado; depois "finalizar (push + deploy + verificar) sdd-open". Push fast-forward `303cc87..dd27ef6` em `main`; PR #5 MERGED; só o `publish-gate` roda (run 40931927983) — `.github/**` e `tests/` ficam fora dos `paths` do `release.yml`, então a M1 **não gera tag**; a última Release continua `v2.2.4`.
+
+---
+
+## 2026-10-29 — M1 Manutenção do CI (entregue, sem Release)
+
+### O que foi feito
+
+- **Escopo** (plano, seção 8, "Manutenção M1"; parâmetro P2): só `.github/workflows/publish-gate.yml`, `.github/workflows/release.yml` e `tests/test_release_workflow.py`. Nenhuma skill mudou de versão. Commits `eac5484` (build) e `dd27ef6` (notas da revisão), sobre `303cc87` = `v2.2.4`; branch `feat/m1`, PR https://github.com/robertodiasduarte/sdd-open/pull/5 (MERGED).
+- **Piso no robô**: job `testes-macos` (`macos-latest`, `timeout-minutes: 20`) nos dois workflows. O passo "Floor versions (asserted)" sai ≠0 se `/usr/bin/python3` não for 3.9 ou `/bin/bash` não for 3.2. Ele também põe `$RUNNER_TEMP/piso/python3` (`exec /usr/bin/python3 "$@"`) na frente do `PATH`, então os scripts que chamam `python3` (`bin/sdd-open.sh`, `bin/lib/merge.sh`) também rodam no piso. O job instala o gitleaks 8.30.1 darwin_arm64 (`curl -fsSL`, `gitleaks version`), para nenhuma classe ser pulada, e roda `SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'`. No `release.yml`, o `release` passa a `needs: [testes, testes-macos]`.
+- **Checkout**: `actions/checkout@11d5960a…` (v4.4.0, Node 20) → `actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0`, nos 3 `uses:`. É tag leve no commit, `using: node24`, conferida com `git ls-remote` e `gh api`.
+- **Integridade das skills** (no lugar do "baseline da `sdd-auditoria-harness`", decisão do Roberto, ver `## Eventos`): passo "Skill integrity (invisible Unicode, remote code piped to a shell)" no job `gate` do `publish-gate.yml` e no job `testes` do `release.yml`. É um programa Python inline idêntico nos dois, com o argumento `.agents/skills`. Ele reprova:
+  - Unicode invisível, bidi, de tag (U+E0000–E007F) ou seletor de variação (U+FE00–FE0E, U+E0100–E01EF), além de U+00AD, U+034F, U+061C, os fillers Hangul, U+180E, U+2028–202E e U+FFF9–FFFB;
+  - `curl|wget … | sh/bash/zsh/dash/ksh/python/perl/ruby/node` (também com `sudo -E` e caminho absoluto), `base64 -d|-D|--decode … | sh`, `eval "$(curl…)"`, `bash <(curl…)`, `sh -c "$(curl…)"` e `source|. <(curl…)`;
+  - arquivo não-UTF-8, e diretório ausente ou sem nenhum arquivo lido.
+
+  O U+200D e o U+FE0F ficam de fora, porque montam emoji (55 usos de FE0F nas skills). As lacunas declaradas no comentário são `| tee x | sh`, pipe quebrado por `\` e PowerShell `iex`. Hoje dá 0 achados em 43 arquivos.
+- **`tests/test_release_workflow.py`** 17 → 27 testes:
+  - `PisoNoMacos`: job, piso afirmado, PATH, gitleaks, timeout e `needs`;
+  - `IntegridadeDasSkills`: o programa é **extraído do workflow** e executado contra 19 amostras montadas com `chr()`, mais o controle com emoji ZWJ/FE0F e `| shasum`, o alvo vazio ou inexistente, o binário e as skills do `MANIFEST.txt`;
+  - `test_checkout_e_o_v5_em_todo_job`.
+- **Relatório**: `sdd/reports/BUILD_REPORT_M1.md` (`report-lint` 0). A evidência está em `sdd/reports/evidence/M1/`: `baseline.log`, `sabotagem.sh`/`.log`, `gerar-evidencia.sh`, `GATE.log`, `suite-piso.log`, `check-versions.log`, `deploy-espera-testes.log`, `checkout-v5.log`, `escopo.log`, `testes-m1.log` e `ci-pr5.log`.
+- **Sabotagem** (8, em `dd27ef6`, revertidas com `git checkout`):
+  - `release` sem `testes-macos` no `needs`;
+  - job do piso em ubuntu;
+  - um checkout de volta ao v4.4.0;
+  - sem U+061C;
+  - alvo vazio passando;
+  - piso só impresso;
+  - `source <(curl)` passando;
+  - a varredura do gate sem `exit 1`.
+
+  As 8 ficaram vermelhas com o nome do teste.
+- **Publicação**: o Roberto respondeu "finalizar (push + deploy + verificar) sdd-open". Push fast-forward `303cc87..dd27ef6` em `main`. Só o `publish-gate` roda: run 40931927983 verde, com `gate` e `testes-macos` em success. Nenhuma run de `release.yml` em `dd27ef6`, então **não há tag nem Release** da M1 (`paths` do `release.yml`); a última Release continua `v2.2.4` (`evidence/M1/main-push.log`).
+
+### Casos e testes em aberto
+
+- CI do PR #5 (run 40929387392, `dd27ef6`): `gate` (ubuntu) 326 OK, com a varredura dando 0 achados em 43 arquivos; `testes-macos` 326 OK, 0 skip, `3.9.6 (default, May 22 2026, 11:13:45)` e `bash 3.2.57(1)-release` afirmados, `command -v python3` = `/Users/runner/work/_temp/piso/python3`. A suíte levou 219,8 s no macOS e 140 s no ubuntu.
+- Piso local (Python 3.9.6, bash 3.2.57): 326 OK em 187,9 s. publish-gate ci 0; `check-versions --base v2.2.4` VERDE; `deploy-espera-testes.py .` SIM.
+- Baseline: o `test_release_workflow` novo sobre `v2.2.4` dá 8 FAIL e 25 ERROR.
+- Não verificado: a primeira run de `release.yml` com o `needs: [testes, testes-macos]` só acontece no próximo push que tocar os `paths` do produto (a F4); confira nela que o `release` esperou os dois jobs.
+
+### Pendências
+
+**🐛 Bug fix** — o que ficou quebrado, parcial ou com comportamento errado conhecido:
+
+- nenhuma.
+
+**✨ Feature improvement** — o que é incremento planejado, melhoria ou próxima etapa de escopo:
+
+- Varredura de integridade também em `AGENTS.md.tmpl`, `sdd/templates/**` e `sdd/playbook.md` (nota 5 da revisão; o escopo declarado da M1 era `.agents/skills/`).
+- Risco aceito: um texto de skill que **alerta** contra `curl … | sh` escrito literalmente reprova. A regra é descrever sem o padrão literal.
+- Risco aceito: o `release` depende do runner macOS. Uma falha só do macOS deixa aquele push sem Release até um re-run ou um próximo push nos `paths`; como o repositório é público, os minutos não custam.
+- Risco aceito: se o `macos-latest` deixar de trazer Python 3.9, o job reprova e a Release trava. Isso é de propósito (o piso deixou de ser provado); a saída é decidir o piso novo ou fixar a imagem.
+- O gitleaks do job Ubuntu (anterior à M1) usa `curl -sSL`, sem `-f` e sem checksum.
+
+### Próximos passos
+
+1. **Sessão 2 — F4 Conversa** (prompt em `sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`), numa worktree nova a partir de `origin/main` = `dd27ef6`. Pronto quando: o BRAINSTORM da F4 estiver gravado com as decisões 2 e 3 da seção 5 do plano respondidas pelo Roberto.
+2. **F4 — define, design, build e release**, com o ciclo das F1–F3. Pronto quando: `verify-gate.sh --strict` 0, `report-lint.py` 0, CI verde em ubuntu **e** macOS, e a Release com `SHA256SUMS.txt` conferido.
+3. **F5 → F6**, depois **F7 → F14** e **F15** (plano, seções 8 e 10).
+
+### Alertas — o que não quebrar
+
+- **O CI agora tem 3 portas novas.** Texto novo de skill (a F4 escreve muito) não pode trazer caractere invisível nem `curl … | sh` literal; emoji com ZWJ e com FE0F passa. Toda release espera o macOS (~4 min a mais). O piso de 3.9 e 3.2 é **afirmado**: código que só roda em Python ≥3.10 quebra no CI.
+- **Testes com Unicode invisível** montam a amostra com `chr()`, nunca com o caractere literal. Na sessão 1, um `\u200b` digitado virou o caractere de verdade ao passar pelo agente: confira os bytes depois de escrever (`python3 -c` contando os code points).
+- **A M1 não gera tag.** O `check-versions` da F4 compara com `v2.2.4`.
+- Demais alertas da etapa W0 e da F3 continuam valendo.
+
+### Onde está o trabalho
+
+- Remoto `https://github.com/robertodiasduarte/sdd-open.git`, `main` = `dd27ef6`. Última Release: https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.2.4.
+- Worktree da sessão 1: `/Users/robertoduarte/rdd-worktrees/sdd-open-w0-m1` (branches `feat/w0-m1` em `303cc87`, `feat/m1` em `dd27ef6`). Os artefatos SDD (`sdd/features|handoffs|reports`) estão gravados na branch `docs/incorporar-starter`.
+
+---
+
+## 2026-10-29 — W0 As 5 correções do porte (entregue, Release v2.2.4)
+
+### O que foi feito
+
+- **Escopo** (plano, seção 3.1; parâmetro P1): fix sem BRAINSTORM/DEFINE/DESIGN (regra "Quando pular o SDD formal" da `sdd-release`). Commits `b1df8c8` (build) e `303cc87` (notas da revisão), sobre `1a54da5` = `v2.2.3`; branch `feat/w0-m1`, PR https://github.com/robertodiasduarte/sdd-open/pull/4 (MERGED).
+- **4.1** `.agents/skills/sdd-iterate/SKILL.md` 2.0.0 → 2.0.1. O passo 4 roda duas chamadas, nesta ordem:
+  - `sdd/bin/verify-gate.sh --print <DEFINE>`: 0 = bloco presente, 64 = ausente. Não valida `kind`/`cmd` e é isento de marcador.
+  - `sdd/bin/verify-gate.sh <DEFINE>`: 5 = voltar ao Define; 64 = corrigir o bloco; 0/2/3/4 não são deste passo, e a seta do vermelho não vale ali.
+
+  Com `kind` smoke/eval ou `cmd` que grava, envia ou cobra, o passo procura o marcador pela forma canônica do `CLARIFY.md` em vez de rodar o gate.
+- **4.2** sai a linha e o bullet "CONTEXTO de domínio" do `sdd/templates/DEFINE_TEMPLATE.md` (volta na F12). No `sdd/config.example.yaml`, os dois "(slice 2)" saem; o comentário de `layers` diz que `sql` também decide migration, e o de `editor`/`worktree_base` aponta a `sdd-new-session`.
+- **4.3** sai `/drive` de `sdd/templates/fragments/CLARIFY.md`, `sdd/templates/DEFINE_TEMPLATE.md` e `sdd/templates/fragments/VERIFY_GATE.md` (a skill volta na F14).
+- **4.4** `sdd/templates/fragments/EVIDENCIA.md` e `sdd/templates/BUILD_REPORT_TEMPLATE.md` apontam `sdd/bin/report-lint.py` (o guard `.githooks/claude-build-report-guard.py` volta na F7). O EVIDENCIA.md muda em quatro pontos:
+  - os 13 "o hook" viram "o lint";
+  - a regra 4 ("falha ABERTO … `systemMessage`") vira "falha FECHADO em erro interno";
+  - passa a dizer que o lint acha a tabela pelo cabeçalho (coluna `Evid…` + `Resultado`/`Status`/`Passou`): cabeçalho em inglês sai 0 sem conferir;
+  - `pass`/`verde` também contam como `true`.
+
+  Ainda nos templates: "Step 1.5" vira "passo 1.5 da `sdd-build`" (`BUILD_REPORT_TEMPLATE.md`, `DESIGN_TEMPLATE.md`), e "§6.3 do PLANO" vira o `contexto-fresco.md`.
+- **4.5** `.agents/skills/sdd-build/references/contexto-fresco.md` (com a `sdd-build` 2.1.0 → 2.1.1): os dois briefs dizem "Não edite código nem documento do projeto: o único arquivo que você grava de propósito, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.log`".
+- **Vizinhos corrigidos pela revisão**: `CLARIFY.md` ("Lido pela `sdd-define` (passo 6)"), `sdd/templates/fragments/EARS.md` (sem `/define` (Step 4.5) e sem `/bug-pipeline`) e `DEFINE_TEMPLATE.md:91` (sem `AskUserQuestion`).
+- **`tests/test_correcoes_w0.py`** (12 testes, novo no `MANIFEST.txt`): executa as chamadas **escritas** no passo 4 sobre `sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md` (5) e `DEFINE_FIXTURE_CONTROLE.md` (≠5). Também varre todo arquivo do `MANIFEST.txt` atrás de `build-report-guard|/drive|Step 1\.5|slice 2|CONTEXTO de domínio|/bug-pipeline|`/define` \(Step`, e confere os briefs e as versões. `tests/test_contrato_build_release.py` passa a esperar a `sdd-build` 2.1.1.
+- **Relatório**: `sdd/reports/BUILD_REPORT_W0.md` (`report-lint` 0, 7 ATs). A evidência está em `sdd/reports/evidence/W0/`: `baseline.log`, `sabotagem.sh`/`.log`, `gerar-evidencia.sh`, `W0-4.1-fixture.log`, `W0-testes.log`, `W0-grep.log`, `GATE.log`, `suite-piso.log`, `check-versions.log`, `contratos-intactos.log` e `release.log`.
+- **Sabotagem** (8, em `303cc87`): passo 4 só com `--print`; "(slice 2)" de volta; `/drive` no `CLARIFY.md`; guard no `EVIDENCIA.md`; "O hook `build-report-guard`" no template; `/drive` no `AGENTS.md.tmpl`; aviso de smoke/eval removido; "Não escreva em arquivo algum". As 8 ficaram vermelhas e voltaram ao verde.
+- **Release**: CI do PR #4 (run 40926042337) com 316 OK, publish-gate verde e check-versions VERDE. O Roberto respondeu "ok \"sdd-open\"". Push fast-forward `1a54da5..303cc87`, run `release` 40926754472 → https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.2.4, tag em `303cc87`, SHA-256 de `sdd-open-v2.2.4.tar.gz` `b8a0aab0d58b87050d80c68813c868f6a2d4f9784fe7130ad663efc63a555670`, `shasum -a 256 -c` OK.
+
+### Casos e testes em aberto
+
+- Piso: `SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'` → 316 OK em `303cc87` (192 s).
+- Baseline: o `test_correcoes_w0` sobre `v2.2.3` dá 9 FAIL de 12. Os 3 verdes caracterizam o `verify-gate.sh`, que não mudou.
+- Contratos intactos: `git diff v2.2.3 HEAD -- sdd/bin/ sdd/fixtures/ scripts/ .github/` vazio; `playbook-lint.sh --self-test` 0.
+- Conferência de fechamento (inventário):
+  - o código roda: 316 testes no piso e no `ubuntu-latest`;
+  - os critérios combinados passam: grep sem hit, fixture 0/5, publish-gate 0, check-versions 0, revisão sem HIGH aberta;
+  - as mudanças estão em `origin/main` e na tag `v2.2.4`, e os artefatos SDD na branch `docs/incorporar-starter`;
+  - o que ficou de fora está nas pendências abaixo.
+- Não verificado: a obediência do agente ao passo 4 novo da `sdd-iterate` (só o texto e as chamadas escritas são testados).
+
+### Pendências
+
+**🐛 Bug fix** — o que ficou quebrado, parcial ou com comportamento errado conhecido:
+
+- `sdd/bin/report-lint.py` sai 0 quando nenhuma tabela tem o cabeçalho reconhecido mas há linhas `AT-nnn` com `true` (nota 4 da revisão; reproduzido com `| ID | Criterion (EARS) | Result | Evidence |`). Hoje está só **documentado** no `EVIDENCIA.md`. A correção (fail-closed) muda o contrato de `sdd/bin/` e fica para a **F7**.
+
+**✨ Feature improvement** — o que é incremento planejado, melhoria ou próxima etapa de escopo:
+
+- `sdd/templates/fragments/CLARIFY.md:45` ainda diz `AskUserQuestion`; o `tests/test_agnostico.py` da F4 (item G) pega.
+- `sdd/templates/fragments/RESUMO_ETAPA.md:4,49` cita `/adversarial-review`, que o pacote não tem; fica para a F10 (a Decisão 3 manda deixar o kanban intacto).
+- Templates citam `/build`, `/define`, `/design` (forma curta da fase) e não `/sdd-build`; a F4 reescreve a camada de conversa.
+
+### Próximos passos
+
+1. Ver a etapa M1, acima: a F4 Conversa é a próxima.
+
+### Alertas — o que não quebrar
+
+- O passo 4 da `sdd-iterate` e os briefs de `contexto-fresco.md` são conferidos por `tests/test_correcoes_w0.py`. Se a F4 reescrever essas skills, mantenha as duas chamadas `sdd/bin/verify-gate.sh … <DEFINE>` entre crases, o aviso de smoke/eval e a frase "o único arquivo que você grava de propósito, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.log`", ou atualize o teste de propósito.
+- Nenhum arquivo do `MANIFEST.txt` pode citar `/drive`, `build-report-guard`, `CONTEXTO de domínio`, "Step 1.5", "slice 2", `/bug-pipeline` ou "`/define` (Step". Quando a F7, a F12 ou a F14 trouxer o mecanismo de volta, o teste muda junto.
+- `sdd-iterate` 2.0.1 e `sdd-build` 2.1.1: o `check-versions` da F4 compara com `v2.2.4`.
+
+### Onde está o trabalho
+
+- Ver a etapa M1, acima (mesma worktree e mesmo remoto).
 
 ---
 

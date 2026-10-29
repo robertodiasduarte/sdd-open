@@ -1,0 +1,5 @@
+$ python3 -B .agents/skills/sdd-release/scripts/deploy-espera-testes.py .
+✅ release.yml · job release: needs: testes, que testa no passo 'Unit tests'
+RESULTADO: SIM
+→ O deploy espera os testes? sim — release.yml · job release: needs: testes, que testa no passo 'Unit tests'
+exit=0

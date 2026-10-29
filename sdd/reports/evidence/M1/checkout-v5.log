@@ -1,0 +1,8 @@
+$ git ls-remote https://github.com/actions/checkout refs/tags/v5.1.0 "refs/tags/v5.1.0^{}" && grep -n "actions/checkout@" .github/workflows/*.yml
+fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	refs/tags/v5.1.0
+.github/workflows/publish-gate.yml:22:      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+.github/workflows/publish-gate.yml:148:      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+.github/workflows/release.yml:52:      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+.github/workflows/release.yml:143:      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+.github/workflows/release.yml:185:      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+exit=0

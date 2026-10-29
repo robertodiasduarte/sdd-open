@@ -1,0 +1,95 @@
+$ bash sdd/reports/evidence/W0/sabotagem.sh
+════ .agents/skills/sdd-iterate/SKILL.md — 4.1: o passo 4 volta a rodar só --print (isento de marcador)
+-- diff da sabotagem:
+-   - `sdd/bin/verify-gate.sh <DEFINE>` — exit 5 = marcador ativo de ambiguidade: parar e voltar
++   - `sdd/bin/verify-gate.sh --print <DEFINE>` — exit 5 = marcador ativo de ambiguidade: parar e voltar
+-- suíte test_correcoes_w0.py com a sabotagem: rc=1
+FAIL: test_as_chamadas_da_skill_acusam_o_marcador (test_correcoes_w0.IterateVeClarificacaoAberta)
+FAIL: test_passo_4_tem_as_duas_chamadas (test_correcoes_w0.IterateVeClarificacaoAberta)
+Ran 12 tests in 0.518s
+FAILED (failures=2)
+-- depois de git checkout -- .agents/skills/sdd-iterate/SKILL.md: rc=0
+Ran 12 tests in 0.480s
+OK
+════ sdd/config.example.yaml — 4.2: o rótulo velho volta ao config.example.yaml
+-- diff da sabotagem:
+-# Editor e pasta de worktrees são usados pela skill de nova sessão (sdd-new-session).
++# Editor e pasta de worktrees são usados pela skill de nova sessão (slice 2).
+-- suíte test_correcoes_w0.py com a sabotagem: rc=1
+FAIL: test_grep_da_w0_sem_achado (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+Ran 12 tests in 0.504s
+FAILED (failures=1)
+-- depois de git checkout -- sdd/config.example.yaml: rc=0
+Ran 12 tests in 0.485s
+OK
+════ sdd/templates/fragments/CLARIFY.md — 4.3: /drive volta a ser citado
+-- diff da sabotagem:
+-  (`clarification-pending`): `/build` e a fase Release **param e voltam ao `/define`**.
++  (`clarification-pending`): `/build`, a fase Release e `/drive` **param e voltam ao `/define`**.
+-- suíte test_correcoes_w0.py com a sabotagem: rc=1
+FAIL: test_grep_da_w0_sem_achado (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+Ran 12 tests in 0.484s
+FAILED (failures=1)
+-- depois de git checkout -- sdd/templates/fragments/CLARIFY.md: rc=0
+Ran 12 tests in 0.477s
+OK
+════ sdd/templates/fragments/EVIDENCIA.md — 4.4: o guard inexistente volta ao cabeçalho
+-- diff da sabotagem:
+-> `sdd/bin/report-lint.py`, que confere o BUILD_REPORT. É o **dono único**
++> `.githooks/claude-build-report-guard.py`, que confere o BUILD_REPORT. É o **dono único**
+-- suíte test_correcoes_w0.py com a sabotagem: rc=1
+FAIL: test_evidencia_e_template_apontam_o_report_lint_que_existe (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+FAIL: test_evidencia_nao_descreve_hook_de_um_agente_so (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+FAIL: test_grep_da_w0_sem_achado (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+Ran 12 tests in 0.469s
+FAILED (failures=3)
+-- depois de git checkout -- sdd/templates/fragments/EVIDENCIA.md: rc=0
+Ran 12 tests in 0.533s
+OK
+════ sdd/templates/BUILD_REPORT_TEMPLATE.md — 4.4 (revisão, nota 3): o hook inexistente volta ao bloco do avaliador
+-- diff da sabotagem:
+-> O `sdd/bin/report-lint.py` nega `PASS`/`NEEDS_WORK` sem o `AVALIACAO_*.md` existente em
++> O hook `build-report-guard` nega `PASS`/`NEEDS_WORK` sem o `AVALIACAO_*.md` existente em
+-- suíte test_correcoes_w0.py com a sabotagem: rc=1
+FAIL: test_grep_da_w0_sem_achado (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+Ran 12 tests in 0.505s
+FAILED (failures=1)
+-- depois de git checkout -- sdd/templates/BUILD_REPORT_TEMPLATE.md: rc=0
+Ran 12 tests in 0.499s
+OK
+════ AGENTS.md.tmpl — 4.3 (revisão, nota 3): /drive fora de sdd/ e .agents/, num arquivo do pacote
+-- diff da sabotagem:
+-## SDD Open — como trabalhar neste projeto
++## SDD Open — como trabalhar neste projeto · /drive
+-- suíte test_correcoes_w0.py com a sabotagem: rc=1
+FAIL: test_grep_da_w0_sem_achado (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+Ran 12 tests in 0.500s
+FAILED (failures=1)
+-- depois de git checkout -- AGENTS.md.tmpl: rc=0
+Ran 12 tests in 0.487s
+OK
+════ .agents/skills/sdd-iterate/SKILL.md — 4.1 (revisão, nota 2): o aviso de smoke/eval some do passo 4
+-- diff da sabotagem:
+-     ⚠️ Com `kind` `smoke` ou `eval`, ou `cmd` que grava, envia ou cobra, não rode esta chamada:
++     ⚠️ Com `kind` qualquer, ou `cmd` que grava, envia ou cobra, não rode esta chamada:
+-- suíte test_correcoes_w0.py com a sabotagem: rc=1
+FAIL: test_passo_4_explica_o_que_cada_exit_quer_dizer (test_correcoes_w0.IterateVeClarificacaoAberta)
+Ran 12 tests in 0.528s
+FAILED (failures=1)
+-- depois de git checkout -- .agents/skills/sdd-iterate/SKILL.md: rc=0
+Ran 12 tests in 0.545s
+OK
+════ .agents/skills/sdd-build/references/contexto-fresco.md — 4.5: o brief de contrato volta a proibir qualquer arquivo
+-- diff da sabotagem:
+-grep, execução das fixtures) e cite o que mediu. Não edite código nem documento do projeto:
++grep, execução das fixtures) e cite o que mediu. Não escreva em arquivo algum;
+-- suíte test_correcoes_w0.py com a sabotagem: rc=1
+FAIL: test_os_dois_briefs_permitem_so_o_log_aval (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia)
+Ran 12 tests in 0.598s
+FAILED (failures=1)
+-- depois de git checkout -- .agents/skills/sdd-build/references/contexto-fresco.md: rc=0
+Ran 12 tests in 0.502s
+OK
+════
+sabotagens sem prova: 0
+exit=0

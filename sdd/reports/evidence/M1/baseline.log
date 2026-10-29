@@ -1,0 +1,201 @@
+$ git archive v2.2.4 | tar -x -C $T && cp tests/test_release_workflow.py $T/tests/ && cd $T/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_release_workflow
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 236, in test_cada_sinal_reprova
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) (sinal='curl | python3 -')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 236, in test_cada_sinal_reprova
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) (sinal='curl | sudo -E /bin/bash')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 236, in test_cada_sinal_reprova
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) (sinal='base64 -D | sh')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 236, in test_cada_sinal_reprova
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) (sinal='ALM')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 236, in test_cada_sinal_reprova
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) (sinal='seletor de variação')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 236, in test_cada_sinal_reprova
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) (sinal='seletor suplementar')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 236, in test_cada_sinal_reprova
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) (sinal='soft hyphen')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 236, in test_cada_sinal_reprova
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) (sinal='separador de linha')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 236, in test_cada_sinal_reprova
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_emoji_com_zwj_e_texto_comum_passam (test_release_workflow.IntegridadeDasSkills)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 249, in test_emoji_com_zwj_e_texto_comum_passam
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_mesmo_programa_nos_dois_workflows (test_release_workflow.IntegridadeDasSkills)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 206, in test_mesmo_programa_nos_dois_workflows
+    self.assertEqual(varredura(RELEASE), varredura(GATE))
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_skills_do_pacote_passam (test_release_workflow.IntegridadeDasSkills)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 218, in test_skills_do_pacote_passam
+    rc, out = self.roda_varredura(varredura(RELEASE), alvo / ".agents/skills")
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 131, in varredura
+    bloco = texto.split("- name: " + VARREDURA, 1)[1]
+IndexError: list index out of range
+
+======================================================================
+FAIL: test_job_macos_nos_dois_workflows (test_release_workflow.PisoNoMacos) (workflow='release.yml')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 142, in test_job_macos_nos_dois_workflows
+    bloco = job(texto, "testes-macos")
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 32, in job
+    assert m, "job ausente: " + nome
+AssertionError: job ausente: testes-macos
+
+======================================================================
+FAIL: test_job_macos_nos_dois_workflows (test_release_workflow.PisoNoMacos) (workflow='publish-gate.yml')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 142, in test_job_macos_nos_dois_workflows
+    bloco = job(texto, "testes-macos")
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 32, in job
+    assert m, "job ausente: " + nome
+AssertionError: job ausente: testes-macos
+
+======================================================================
+FAIL: test_piso_afirmado_e_python3_do_path_e_o_do_piso (test_release_workflow.PisoNoMacos) (workflow='release.yml')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 157, in test_piso_afirmado_e_python3_do_path_e_o_do_piso
+    bloco = job(texto, "testes-macos")
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 32, in job
+    assert m, "job ausente: " + nome
+AssertionError: job ausente: testes-macos
+
+======================================================================
+FAIL: test_piso_afirmado_e_python3_do_path_e_o_do_piso (test_release_workflow.PisoNoMacos) (workflow='publish-gate.yml')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 157, in test_piso_afirmado_e_python3_do_path_e_o_do_piso
+    bloco = job(texto, "testes-macos")
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 32, in job
+    assert m, "job ausente: " + nome
+AssertionError: job ausente: testes-macos
+
+======================================================================
+FAIL: test_release_espera_o_piso (test_release_workflow.PisoNoMacos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 166, in test_release_espera_o_piso
+    self.assertRegex(job(RELEASE, "release"), r"(?m)^    needs: \[testes, testes-macos\]$")
+AssertionError: Regex didn't match: '(?m)^    needs: \\[testes, testes-macos\\]$' not found in '    name: Publicar release\n    needs: testes\n    runs-on: ubuntu-latest\n    timeout-minutes: 10\n    permissions:\n      contents: write   # only here: create the tag and the Release\n    steps:\n      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0\n        with:\n          fetch-depth: 0\n\n      - name: Compute version\n        id: v\n        run: |\n          set -euo pipefail\n          if [ "$GITHUB_REF_TYPE" = tag ]; then set -- "$GITHUB_REF_NAME"; fi\n          bash scripts/next-version.sh "$@" | tee -a "$GITHUB_OUTPUT"\n\n      # Integrity and date stamp: the hash proves the package was not swapped, and the Release\n      # date (which the author does not write) proves this content existed here on that day.\n      # Whoever downloads checks it with: shasum -a 256 -c SHA256SUMS.txt\n      - name: Build package and checksums\n        env:\n          TAG: ${{ steps.v.outputs.TAG }}\n        run: |\n          set -euo pipefail\n          mkdir -p dist\n          git archive --format=tar.gz --prefix="sdd-open-$TAG/" -o "dist/sdd-open-$TAG.tar.gz" "$GITHUB_SHA"\n          cd dist && sha256sum "sdd-open-$TAG.tar.gz" > SHA256SUMS.txt && cat SHA256SUMS.txt\n\n      # A tag push and a main push can carry the same commit; the second run finds the Release\n      # already there and stops green instead of failing on a duplicate.\n      - name: Publish release\n        env:\n          GH_TOKEN: ${{ github.token }}\n          TAG: ${{ steps.v.outputs.TAG }}\n        run: |\n          set -euo pipefail\n          if gh release view "$TAG" >/dev/null 2>&1; then\n            echo "::notice::Release $TAG already exists — nothing to publish"\n            exit 0\n          fi\n          gh release create "$TAG" --target "$GITHUB_SHA" --title "sdd-open $TAG" --generate-notes \\\n            "dist/sdd-open-$TAG.tar.gz" dist/SHA256SUMS.txt\n'
+
+======================================================================
+FAIL: test_checkout_e_o_v5_em_todo_job (test_release_workflow.Release) (workflow='release.yml')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 126, in test_checkout_e_o_v5_em_todo_job
+    self.assertEqual(set(usos), {CHECKOUT_V5.split("uses: ")[-1]})
+AssertionError: Items in the first set but not the second:
+'actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0'
+Items in the second set but not the first:
+'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0'
+
+======================================================================
+FAIL: test_checkout_e_o_v5_em_todo_job (test_release_workflow.Release) (workflow='publish-gate.yml')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 126, in test_checkout_e_o_v5_em_todo_job
+    self.assertEqual(set(usos), {CHECKOUT_V5.split("uses: ")[-1]})
+AssertionError: Items in the first set but not the second:
+'actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0'
+Items in the second set but not the first:
+'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0'
+
+======================================================================
+FAIL: test_release_depende_dos_testes_e_e_o_unico_com_escrita (test_release_workflow.Release)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v224/tests/test_release_workflow.py", line 46, in test_release_depende_dos_testes_e_e_o_unico_com_escrita
+    self.assertRegex(bloco, r"(?m)^    needs: \[testes, testes-macos\]$")
+AssertionError: Regex didn't match: '(?m)^    needs: \\[testes, testes-macos\\]$' not found in '    name: Publicar release\n    needs: testes\n    runs-on: ubuntu-latest\n    timeout-minutes: 10\n    permissions:\n      contents: write   # only here: create the tag and the Release\n    steps:\n      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0\n        with:\n          fetch-depth: 0\n\n      - name: Compute version\n        id: v\n        run: |\n          set -euo pipefail\n          if [ "$GITHUB_REF_TYPE" = tag ]; then set -- "$GITHUB_REF_NAME"; fi\n          bash scripts/next-version.sh "$@" | tee -a "$GITHUB_OUTPUT"\n\n      # Integrity and date stamp: the hash proves the package was not swapped, and the Release\n      # date (which the author does not write) proves this content existed here on that day.\n      # Whoever downloads checks it with: shasum -a 256 -c SHA256SUMS.txt\n      - name: Build package and checksums\n        env:\n          TAG: ${{ steps.v.outputs.TAG }}\n        run: |\n          set -euo pipefail\n          mkdir -p dist\n          git archive --format=tar.gz --prefix="sdd-open-$TAG/" -o "dist/sdd-open-$TAG.tar.gz" "$GITHUB_SHA"\n          cd dist && sha256sum "sdd-open-$TAG.tar.gz" > SHA256SUMS.txt && cat SHA256SUMS.txt\n\n      # A tag push and a main push can carry the same commit; the second run finds the Release\n      # already there and stops green instead of failing on a duplicate.\n      - name: Publish release\n        env:\n          GH_TOKEN: ${{ github.token }}\n          TAG: ${{ steps.v.outputs.TAG }}\n        run: |\n          set -euo pipefail\n          if gh release view "$TAG" >/dev/null 2>&1; then\n            echo "::notice::Release $TAG already exists — nothing to publish"\n            exit 0\n          fi\n          gh release create "$TAG" --target "$GITHUB_SHA" --title "sdd-open $TAG" --generate-notes \\\n            "dist/sdd-open-$TAG.tar.gz" dist/SHA256SUMS.txt\n'
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.042s
+
+FAILED (failures=8, errors=25)

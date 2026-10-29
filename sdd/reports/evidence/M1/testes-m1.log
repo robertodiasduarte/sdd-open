@@ -1,0 +1,34 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_release_workflow
+test_alvo_inexistente_ou_vazio_reprova (test_release_workflow.IntegridadeDasSkills) ... ok
+test_arquivo_que_nao_e_texto_reprova (test_release_workflow.IntegridadeDasSkills) ... ok
+test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) ... ok
+test_emoji_com_zwj_e_texto_comum_passam (test_release_workflow.IntegridadeDasSkills) ... ok
+test_mesmo_programa_nos_dois_workflows (test_release_workflow.IntegridadeDasSkills) ... ok
+test_skills_do_pacote_passam (test_release_workflow.IntegridadeDasSkills) ... ok
+test_job_macos_nos_dois_workflows (test_release_workflow.PisoNoMacos) ... ok
+test_piso_afirmado_e_python3_do_path_e_o_do_piso (test_release_workflow.PisoNoMacos) ... ok
+test_release_espera_o_piso (test_release_workflow.PisoNoMacos) ... ok
+test_checks_inline_das_fixtures_continuam (test_release_workflow.PublishGate) ... ok
+test_roda_a_suite_e_o_gate_de_versao (test_release_workflow.PublishGate) ... ok
+test_token_so_le (test_release_workflow.PublishGate) ... ok
+test_actions_fixadas_por_sha (test_release_workflow.Release) ... ok
+test_checkout_com_historico_e_tags (test_release_workflow.Release) ... ok
+test_checkout_e_o_v5_em_todo_job (test_release_workflow.Release) ... ok
+test_fila_por_ref_sem_cancelar (test_release_workflow.Release) ... ok
+test_gatilho_push_em_main_nos_paths_do_produto (test_release_workflow.Release) ... ok
+test_nada_que_mascara_falha (test_release_workflow.Release) ... ok
+test_publicacao_com_pacote_hash_e_release_idempotente (test_release_workflow.Release) ... ok
+test_release_depende_dos_testes_e_e_o_unico_com_escrita (test_release_workflow.Release) ... ok
+test_sem_interpolacao_em_run (test_release_workflow.Release) ... ok
+test_so_tag_vxyz_dispara (test_release_workflow.Release) ... ok
+test_tag_empurrada_e_a_tag_publicada (test_release_workflow.Release) ... ok
+test_testes_da_release_conferem_sintaxe_zsh_e_symlink (test_release_workflow.Release) ... ok
+test_testes_nao_tem_escrita (test_release_workflow.Release) ... ok
+test_testes_rodam_gate_suite_e_versao_com_base_obrigatoria (test_release_workflow.Release) ... ok
+test_token_global_so_le (test_release_workflow.Release) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 1.550s
+
+OK
+exit=0

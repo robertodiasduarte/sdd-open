@@ -1,0 +1,115 @@
+$ git archive v2.2.3 | tar -x -C $T && cp tests/test_correcoes_w0.py $T/tests/ && cd $T/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_correcoes_w0
+test_evidencia_espera_o_prefixo_aval (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia) ... ok
+test_os_dois_briefs_permitem_so_o_log_aval (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia) ... FAIL
+test_versao_do_build (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia) ... FAIL
+test_as_chamadas_da_skill_acusam_o_marcador (test_correcoes_w0.IterateVeClarificacaoAberta) ... FAIL
+test_as_chamadas_da_skill_nao_acusam_sem_marcador (test_correcoes_w0.IterateVeClarificacaoAberta) ... ok
+test_fixture_de_clarificacao_da_0_com_print_e_5_sem (test_correcoes_w0.IterateVeClarificacaoAberta) ... ok
+test_passo_4_explica_o_que_cada_exit_quer_dizer (test_correcoes_w0.IterateVeClarificacaoAberta) ... FAIL
+test_passo_4_tem_as_duas_chamadas (test_correcoes_w0.IterateVeClarificacaoAberta) ... FAIL
+test_versao (test_correcoes_w0.IterateVeClarificacaoAberta) ... FAIL
+test_evidencia_e_template_apontam_o_report_lint_que_existe (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem) ... FAIL
+test_evidencia_nao_descreve_hook_de_um_agente_so (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem) ... FAIL
+test_grep_da_w0_sem_achado (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem) ... FAIL
+
+======================================================================
+FAIL: test_os_dois_briefs_permitem_so_o_log_aval (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v223/tests/test_correcoes_w0.py", line 138, in test_os_dois_briefs_permitem_so_o_log_aval
+    self.assertNotIn("Não escreva em arquivo algum", texto)
+AssertionError: 'Não escreva em arquivo algum' unexpectedly found in '# Avaliação em contexto fresco — quem julga não é quem constrói\n\n## Por que existe\n\nUm build que lê o próprio diff e "vê o handler" conclui que o botão funciona. Ninguém clicou.\nFeatures foram publicadas com "Enviar não faz nada" exatamente assim. O avaliador nasce **sem\na conversa do build**, lê o DEFINE como contrato e **prova cada critério executando**: comando,\nchamada HTTP, clique. Nunca lendo o diff.\n\nDuas landmines que este papel neutraliza:\n- **Asserção de fiação ≠ comportamento** — o `grep` acha a chamada, mas a condição pode ser\n  sempre-verdadeira.\n- **Régua validada contra o par que a construiu é circular** — por isso o brief abaixo é\n  **tudo** o que o avaliador recebe.\n\n## Como despachar (qualquer agente)\n\nO valor está no contexto limpo, não na API de subagente. Use o que o seu vendor tiver, nesta\nordem de preferência:\n\n1. **Subagente em contexto limpo** (Claude Code, Codex, Kimi Code, Grok Build e outros que\n   suportam agentes): despache com o brief abaixo como prompt inteiro.\n2. **Sessão nova** do mesmo agente: grave o brief em `sdd/reports/briefs/BRIEF_avaliador_{F}.md`\n   e abra uma sessão nova que só lê esse arquivo.\n3. **Outro vendor** em sessão nova: idem, e ganha diversidade de erro.\n\n⛔ O brief **não** leva BUILD_REPORT, diff, resumo do que foi feito, nem hipóteses do build.\nSe vier, o avaliador registra `CONTAMINAÇÃO` e o veredito perde valor.\n\n## Brief — modo `contrato` (antes de codar, ≥2 camadas)\n\n```text\nmodo: contrato · FEATURE: {F} · DEFINE: sdd/features/DEFINE_{F}.md ·\nDESIGN: sdd/features/DESIGN_{F}.md · projeto: {caminho absoluto}\n\nVocê não viu a conversa do build. Leia o DEFINE (## Acceptance Tests e ## Verify Gate) e o\nDESIGN. Para cada AT, pergunte: é verificável por execução? o estado que quebra tem critério?\no cmd do gate cobre este AT? o aceite é circular (prova a fiação, não o comportamento)? o\nefeito é observável? Proponha ≤5 ajustes, cada um com: alvo · classe · problema · redação em\nEARS · como verificar (comando/sonda). Rode as sondas read-only que puder AGORA (git diff,\ngrep, execução das fixtures) e cite o que mediu. Não escreva em arquivo algum. Devolva o bloco\n<<<CONTRATO … >>>.\n```\n\n## Brief — modo `veredito` (depois do build)\n\n```text\nmodo: veredito · ciclo: {1|2} · FEATURE: {F} · DEFINE: sdd/features/DEFINE_{F}.md ·\nDESIGN: sdd/features/DESIGN_{F}.md · projeto: {caminho absoluto} · URL base: {se houver} ·\ncredenciais: {"autorizadas pelo humano nesta sessão" | "não autorizadas"}\n\nVocê não viu a conversa do build. Leia o DEFINE como contrato. Para cada AT, PROVE por\nexecução (comando, chamada, clique) — nunca lendo diff. Superfície visual: derive um roteiro\nclicável dos ATs e do manual_fallback e execute-o; sem browser/sessão, devolva o roteiro em\nNAO_VERIFICADO, nunca PASS. Só leitura em produção (GET, consultas SELECT, rotas idempotentes);\nnada que grave ou envie. Devolva <<<AVALIACAO … >>> com: veredito PASS | NEEDS_WORK |\nPASS_PENDENTE_RECIBO, tabela por AT (sonda · esperado · observado · resultado) e ACHADOS\n(cada um com reprodução exata). Não escreva em arquivo algum.\n```\n\n## O que o build faz com o veredito\n\n| Veredito | Ação |\n|---|---|\n| `PASS` | seguir; os ATs provados citam `sdd/reviews/AVALIACAO_{F}_{ts}.md` como evidência |\n| `NEEDS_WORK` | os ACHADOS são o brief de correção do ciclo seguinte (redispatch fresco); corrigir, rodar o gate, re-despachar com `ciclo: 2`. Máximo 2 ciclos → `Status: Blocked` com os achados abertos. Nunca contornar o critério |\n| `PASS_PENDENTE_RECIBO` | só em gate manual-ux: mostrar o roteiro ao humano e colher `recibo: nome YYYY-MM-DD`; sem recibo, tratar como NEEDS_WORK |\n\nPersista o bloco verbatim em `sdd/reviews/AVALIACAO_{F}_{YYYYMMDD-HHMM}.md` — é a evidência\nque o `report-lint.py` exige para o veredito no BUILD_REPORT. Registre a contagem de achados:\nzero achados em três features seguidas é sinal de calibração, não de perfeição.\n'
+
+======================================================================
+FAIL: test_versao_do_build (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v223/tests/test_correcoes_w0.py", line 134, in test_versao_do_build
+    self.assertEqual(versao(SKILLS / "sdd-build/SKILL.md"), "2.1.1")
+AssertionError: '2.1.0' != '2.1.1'
+- 2.1.0
+?     ^
++ 2.1.1
+?     ^
+
+
+======================================================================
+FAIL: test_as_chamadas_da_skill_acusam_o_marcador (test_correcoes_w0.IterateVeClarificacaoAberta)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v223/tests/test_correcoes_w0.py", line 79, in test_as_chamadas_da_skill_acusam_o_marcador
+    self.assertIn(5, saidas.values(), saidas)
+AssertionError: 5 not found in dict_values([0]) : {'sdd/bin/verify-gate.sh --print <DEFINE>': 0}
+
+======================================================================
+FAIL: test_passo_4_explica_o_que_cada_exit_quer_dizer (test_correcoes_w0.IterateVeClarificacaoAberta)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v223/tests/test_correcoes_w0.py", line 90, in test_passo_4_explica_o_que_cada_exit_quer_dizer
+    self.assertIn("exit 5", passo)
+AssertionError: 'exit 5' not found in ' se a mudança toca critério de aceite, atualizar o bloco\n   `## Verify Gate` no mesmo passe e rodar `sdd/bin/verify-gate.sh --print <DEFINE>` — tem que\n   continuar parseável e sem marcador ativo (exit ≠5). Mudança de escopo sem gate\n   correspondente é DEFINE mentindo.'
+
+======================================================================
+FAIL: test_passo_4_tem_as_duas_chamadas (test_correcoes_w0.IterateVeClarificacaoAberta)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v223/tests/test_correcoes_w0.py", line 67, in test_passo_4_tem_as_duas_chamadas
+    self.assertTrue(sem_print, chamadas)
+AssertionError: [] is not true : ['sdd/bin/verify-gate.sh --print <DEFINE>']
+
+======================================================================
+FAIL: test_versao (test_correcoes_w0.IterateVeClarificacaoAberta)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v223/tests/test_correcoes_w0.py", line 60, in test_versao
+    self.assertEqual(versao(ITERATE), "2.0.1")
+AssertionError: '2.0.0' != '2.0.1'
+- 2.0.0
+?     ^
++ 2.0.1
+?     ^
+
+
+======================================================================
+FAIL: test_evidencia_e_template_apontam_o_report_lint_que_existe (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v223/tests/test_correcoes_w0.py", line 117, in test_evidencia_e_template_apontam_o_report_lint_que_existe
+    self.assertIn("`sdd/bin/report-lint.py`", cabecalho)
+AssertionError: '`sdd/bin/report-lint.py`' not found in '# Fragmento — Prova de evidência (default-FAIL no BUILD_REPORT)\n\n> Reusável. Lido por `/build` (Step 6), pelo `avaliador-fresco` (C1) e pelo hook\n> `.githooks/claude-build-report-guard.py` (PreToolUse em `Write|Edit`). É o **dono único**\n> do formato de evidência: as superfícies apontam pra cá, nunca copiam o texto normativo.\n\n'
+
+======================================================================
+FAIL: test_evidencia_nao_descreve_hook_de_um_agente_so (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v223/tests/test_correcoes_w0.py", line 124, in test_evidencia_nao_descreve_hook_de_um_agente_so
+    self.assertNotIn(termo, texto)
+AssertionError: 'PreToolUse' unexpectedly found in '# Fragmento — Prova de evidência (default-FAIL no BUILD_REPORT)\n\n> Reusável. Lido por `/build` (Step 6), pelo `avaliador-fresco` (C1) e pelo hook\n> `.githooks/claude-build-report-guard.py` (PreToolUse em `Write|Edit`). É o **dono único**\n> do formato de evidência: as superfícies apontam pra cá, nunca copiam o texto normativo.\n\n## Por que existe\n\nO BUILD_REPORT anterior a este contrato aceitava `✅ Por raciocínio` como evidência de\naceite — 9 ATs de uma feature real fecharam assim (`BUILD_REPORT_ZOOM_PRAZO_LIBERACAO_GRAVACAO`).\nUma feature foi para produção com "Enviar não faz NADA" e o relatório inteiro verde. **Auto-avaliação\npor leitura de diff não é evidência.** Aqui o "done" vira estrutura:\n\n1. Todo critério de aceite **nasce `false`** no BUILD_REPORT.\n2. Virar `true` exige **evidência lida** — output real de comando/teste/clique, num arquivo\n   que o hook consegue abrir e conferir. Sem arquivo, o hook **nega a escrita** do report.\n3. Evidência é o que um terceiro consegue reproduzir; "o código faz X" é declaração, não prova.\n\nLandmines que este contrato materializa: *asserção de FIAÇÃO ≠ COMPORTAMENTO* (grep de código\nfica verde com `if (true)`) · *régua validada contra o par que a construiu é CIRCULAR*.\n\n## Onde a evidência mora\n\n```text\nsdd/reports/evidence/{FEATURE}/\n├── AT-001.log        # 1 arquivo por critério (AT-nnn do DEFINE)\n├── AT-002.log\n├── GATE.log          # output do sdd/bin/verify-gate.sh\n└── AVAL-roteiro-3.log  # passos do avaliador (C1) — prefixo AVAL-\n```\n\nVersionado junto com o report (é rastreabilidade, não lixo). **Teto: 200 linhas por\narquivo** (`| tail -n 200`) — evidência é o trecho que prova, não o log inteiro.\n\n## Formato do arquivo de evidência (o hook confere)\n\n- **1ª linha = o comando executado, prefixado por `$ `.**\n- Depois, o output **verbatim** (stdout+stderr).\n- Arquivo vazio, sem a 1ª linha `$ `, ou inexistente → o hook nega.\n\nComo produzir (o `$ cmd` na 1ª linha vem do próprio comando, não de mão):\n\n```bash\nmkdir -p sdd/reports/evidence/{FEATURE}\ncmd=\'npm test -- src/x.test.ts\'\n{ echo "\\$ $cmd"; eval "$cmd" 2>&1 | tail -n 200; } > sdd/reports/evidence/{FEATURE}/AT-001.log\n```\n\n## A tabela do BUILD_REPORT (formato que o hook parseia)\n\n```markdown\n| ID | Critério (EARS) | Resultado | Evidência |\n|----|-----------------|-----------|-----------|\n| AT-001 | When X, the system shall Y | false | — |\n| AT-002 | If Z, then the system shall W | true | `evidence/{FEATURE}/AT-002.log` |\n| AT-003 | manual-ux: fluxo no celular | true | recibo: nome 2026-08-28 · `AVALIACAO_{FEATURE}_20260828-1530.md` |\n```\n\n**`Resultado` aceita `true` \\| `false`** (também ✅/❌, mas prefira o booleano). O hook só\ninspeciona linhas com `true`/✅ — `false` passa livre (é o default honesto).\n\n### O que conta como evidência para `true` (uma das três)\n\n| Forma | Quando | O hook confere |\n|---|---|---|\n| `` `evidence/{FEATURE}/AT-nnn.log` `` | critério com `cmd` (test/smoke/eval/typecheck) | path contém `evidence/{FEATURE}/` **da mesma feature do report**, `.log`/`.txt`, existe, não-vazio, 1ª linha começa com `$ ` |\n| `` `AVALIACAO_{FEATURE}_{ts}.md` `` | critério provado pelo avaliador de contexto fresco (C1) — inclusive cliques | nome começa com `AVALIACAO_{FEATURE}_` e existe em `sdd/reviews/` |\n| `recibo: {nome} {YYYY-MM-DD}` | gate `manual-ux` percorrido por humano | padrão textual (nome + data ISO) **e** `DEFINE_{FEATURE}.md` com `kind: manual-ux` (DEFINE ausente → aceita com aviso) |\n\nEvidência de OUTRA feature, `README.md` com `$ ` na 1ª linha, recibo em feature com gate\n`test` — tudo negado (buracos fechados no review adversarial de 28/08). Critério com `|` no\ntexto: escape como `\\|` (o hook respeita e conta as colunas a partir do fim da linha).\n\n### Migration aplicada (seção `## Migrations aplicadas`)\n\nMigration listada nos arquivos do relatório exige a linha dela, com o mesmo caminho, projeto\n`nome · ref`, data `AAAA-MM-DD` e **prova por leitura**: `` `evidence/{FEATURE}/MIG-nnn.log` ``\n(mesmas regras do log acima, com a saída de `migration list` e do `select`) ou\n`recibo: {nome} {YYYY-MM-DD}` — aqui em qualquer `kind` de gate, porque no modo manual quem lê o\nbanco é o aluno. `exit 0` na célula é negado: o comando ter saído bem não diz que a migration está\nno banco certo. Procedimento: `.agents/skills/sdd-build/references/aplicar-migration.md`.\n\n### O que o hook NEGA sempre\n\n- `true` sem nenhuma das três formas acima.\n- Evidência contendo `por raciocínio`, `by reasoning`, `by inspection`, `deve funcionar`,\n  `provavelmente` — declaração fantasiada de prova.\n- `**Veredito do avaliador (C1):** PASS` ou `NEEDS_WORK` sem citar um\n  `AVALIACAO_*.md` existente. (`N.A.` com motivo — ex. "1 camada" — passa.)\n\n## Regras de ouro\n\n1. **Evidência ≠ conclusão.** O arquivo contém o output; a conclusão (`true`) fica na tabela.\n   Se o output não sustenta o `true`, o reviewer vê a contradição — é o objetivo.\n2. **Nada de evidência "compartilhada"** entre ATs sem justificativa: 1 AT = 1 arquivo, ou\n   cite o mesmo arquivo em cada linha (o hook aceita; o revisor questiona).\n3. **`manual-ux` não é atalho.** Recibo humano vale para o que um humano percorreu; se o\n   avaliador C1 clicou, cite o `AVALIACAO_*.md` — não o recibo.\n4. **O hook falha ABERTO em erro interno** (bug de parser não pode travar todo report), mas\n   registra `systemMessage` — se aparecer, o guard não conferiu nada; trate como não-conferido.\n5. **Bypass é decisão do humano responsável**, não do agente: pular o `report-lint.py`\n   da sessão desliga o hook — e isso vai declarado no BUILD_REPORT e no resumo da sessão.\n'
+
+======================================================================
+FAIL: test_grep_da_w0_sem_achado (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-w0-m1/cd77be3f-f8c7-493c-88b9-f375f66b9666/scratchpad/base-v223/tests/test_correcoes_w0.py", line 112, in test_grep_da_w0_sem_achado
+    self.assertEqual(achados, [], "\n".join(achados))
+AssertionError: Lists differ: ['sdd/config.example.yaml:19: # do avaliad[1618 chars]e |'] != []
+
+First list contains 10 additional elements.
+First extra element 0:
+'sdd/config.example.yaml:19: # do avaliador de contexto fresco e a base do contexto por domínio (slice 2).'
+
+Diff is 1802 characters long. Set self.maxDiff to None to see it. : sdd/config.example.yaml:19: # do avaliador de contexto fresco e a base do contexto por domínio (slice 2).
+sdd/config.example.yaml:46: # Editor e pasta de worktrees são usados pela skill de nova sessão (slice 2).
+sdd/templates/BUILD_REPORT_TEMPLATE.md:202: **Contrato de aceite (Step 1.5):** {n propostas / n aceitas — seção `## Contrato de aceite` do DESIGN} | já negociado em {data} | N.A. (1 camada)
+sdd/templates/BUILD_REPORT_TEMPLATE.md:213: > `.githooks/claude-build-report-guard.py` consegue abrir — contrato em
+sdd/templates/DEFINE_TEMPLATE.md:91: > `/build`/a fase Release/`/drive` param. Resolver via AskUserQuestion (≤5 por rodada),
+sdd/templates/DEFINE_TEMPLATE.md:161: | **CONTEXTO de domínio** | {contexto/<slug>.md · sha <7 hex> · válido em <YYYY-MM-DD> \| nenhum (motivo)} | {Gerado/reusado/pulado no Step 1.5 do /define (mapa do domínio gerado em contexto limpo — slice 2 do SDD Open); a fase Design lê e grepa o `sup:` dele} |
+sdd/templates/DESIGN_TEMPLATE.md:105: > Preenchido pelo **Step 1.5 do `/build`** (C2 — só features cujo manifest toca ≥2 camadas).
+sdd/templates/fragments/CLARIFY.md:17: (`clarification-pending`): `/build`, a fase Release e `/drive` **param e voltam ao `/define`**.
+sdd/templates/fragments/EVIDENCIA.md:4: > `.githooks/claude-build-report-guard.py` (PreToolUse em `Write|Edit`). É o **dono único**
+sdd/templates/fragments/VERIFY_GATE.md:74: | `5` | clarification-pending: marcador ativo de ambiguidade no DEFINE (forma canônica fora de fence — ver `fragments/CLARIFY.md`) | **PARAR e voltar ao `/define`**. NÃO é vermelho de build: `/drive` e loops **nunca** iteram DESIGN por causa dele |
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.362s
+
+FAILED (failures=9)
