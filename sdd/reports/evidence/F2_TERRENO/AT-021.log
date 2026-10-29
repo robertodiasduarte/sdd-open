@@ -1,0 +1,64 @@
+$ bash sdd/reports/evidence/F2_TERRENO/sabotagem.sh
+════ .agents/skills/sdd-checar-ambiente/scripts/checar.sh — certificado .p12 deixa de ser dado exposto
+-- diff da sabotagem:
+-      *.pfx|*.p12) exposto "${f}" "O certificado digital" "Depois, revogue o certificado com a autoridade certificadora e emita outro." ;;
++      *.pfx) exposto "${f}" "O certificado digital" "Depois, revogue o certificado com a autoridade certificadora e emita outro." ;;
+-- suíte test_checar.py com a sabotagem: rc=1
+FAIL: test_p12_e_env_variante (test_checar.TestDadoExposto)
+FAIL: test_acusa_cada_tipo_e_sai_1 (test_checar.TestSegredo)
+Ran 57 tests in 101.686s
+FAILED (failures=2)
+-- depois de git checkout -- .agents/skills/sdd-checar-ambiente/scripts/checar.sh: rc=0
+Ran 57 tests in 100.715s
+OK
+════ .agents/skills/sdd-higiene-dado/scripts/alarme.sh — instalar deixa de tirar o cabeçalho sdd-open:generated do hook
+-- diff da sabotagem:
+-    corpo="$(grep -v -F 'sdd-open:generated' "${ORIGEM}")"
++    corpo="$(cat "${ORIGEM}")"
+-- suíte test_alarme.py com a sabotagem: rc=1
+FAIL: test_hook_da_copia_gerada_sem_cabecalho_e_igual_ao_da_fonte (test_alarme.TestCopiaGerada)
+Ran 29 tests in 9.007s
+FAILED (failures=1)
+-- depois de git checkout -- .agents/skills/sdd-higiene-dado/scripts/alarme.sh: rc=0
+Ran 29 tests in 8.419s
+OK
+════ .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh — 2º dígito verificador do CPF deixa de ser conferido
+-- diff da sabotagem:
+-  r = (t * 10) % 11; if (r == 10) r = 0; return r == substr(s, 11, 1) + 0
++  r = (t * 10) % 11; if (r == 10) r = 0; return 1
+-- suíte test_alarme.py com a sabotagem: rc=1
+FAIL: test_digito_errado_nao_bloqueia (test_alarme.TestDeteccao)
+Ran 29 tests in 8.338s
+FAILED (failures=1)
+-- depois de git checkout -- .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh: rc=0
+Ran 29 tests in 7.990s
+OK
+════ .agents/skills/sdd-iniciar-repo/scripts/inventario.sh — arquivo de 55–60 MB deixa de ser sinalizado como grande
+-- diff da sabotagem:
+-LIMITE_MB=50     # o GitHub avisa acima de 50 MB e recusa acima de 100 MB
++LIMITE_MB=500     # o GitHub avisa acima de 50 MB e recusa acima de 100 MB
+-- suíte test_inventario.py com a sabotagem: rc=1
+FAIL: test_cinco_categorias (test_inventario.TestAchados)
+FAIL: test_proposta_cobre_o_que_achou (test_inventario.TestAchados)
+FAIL: test_proposta_escapa_caminho_grande (test_inventario.TestAchados)
+FAIL: test_proposta_escapa_espaco_no_fim (test_inventario.TestAchados)
+Ran 24 tests in 2.902s
+FAILED (failures=4)
+-- depois de git checkout -- .agents/skills/sdd-iniciar-repo/scripts/inventario.sh: rc=0
+Ran 24 tests in 2.662s
+OK
+════ bin/sdd-open.sh — doctor deixa de chamar o checar.sh --segredo
+-- diff da sabotagem:
+-    saida="$(cd "${ROOT}" && "${BASH}" "${checar}" --segredo 2>&1)"; rc=$?
++    saida=""; rc=0
+-- suíte test_sdd_open.py com a sabotagem: rc=1
+FAIL: test_doctor_acusa_env_salvo_no_git_e_sai_0 (test_sdd_open.Projeto)
+FAIL: test_doctor_nao_perde_o_resto_de_nome_com_quebra_de_linha (test_sdd_open.Projeto)
+Ran 17 tests in 35.666s
+FAILED (failures=2)
+-- depois de git checkout -- bin/sdd-open.sh: rc=0
+Ran 17 tests in 38.338s
+OK
+════
+sabotagens sem prova: 0
+exit=0

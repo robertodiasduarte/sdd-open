@@ -1,0 +1,2 @@
+$ git diff --stat 80d7887 -- sdd/fixtures sdd/bin bin scripts/publish-gate.sh
+exit=0 (saída vazia acima = nenhum script existente nem fixture alterados)

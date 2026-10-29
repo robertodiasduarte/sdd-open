@@ -1,0 +1,8 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_sdd_open.Projeto.test_doctor_com_pacote_sem_checar_avisa_e_sai_0
+test_doctor_com_pacote_sem_checar_avisa_e_sai_0 (test_sdd_open.Projeto) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 2.066s
+
+OK
+exit=0

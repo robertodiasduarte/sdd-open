@@ -1,0 +1,57 @@
+$ bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F3_BUILD_RELEASE.md
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.SRgKPcZW0h — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ................................................................................................................F................................................./private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.SRgKPcZW0h/tests/test_matriz_new_session.py:38: DeprecationWarning: 'maxsplit' is passed as positional argument
+   │   secao = re.split(r"\n#{2,3} ", secao, 1)[0]
+   │ .................................................................................................................................
+   │ ======================================================================
+   │ FAIL: test_lm_004_no_sempre_e_playbook_valido (test_contrato_build_release.TemplateEPlaybook.test_lm_004_no_sempre_e_playbook_valido)
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.SRgKPcZW0h/tests/test_contrato_build_release.py", line 108, in test_lm_004_no_sempre_e_playbook_valido
+   │     self.assertEqual(rc, 0, out + err)
+   │     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+   │ AssertionError: 64 != 0 : não é um repo git
+   │ 
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 291 tests in 195.812s
+   │ 
+   │ FAILED (failures=1)
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=3, family=2, type=1, proto=0, laddr=('127.0.0.1', 51045)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=4, family=2, type=1, proto=0, laddr=('127.0.0.1', 51046)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=6, family=2, type=1, proto=0, laddr=('127.0.0.1', 51047)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=11, family=2, type=1, proto=0, laddr=('127.0.0.1', 51109)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=12, family=2, type=1, proto=0, laddr=('127.0.0.1', 51110)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=13, family=2, type=1, proto=0, laddr=('127.0.0.1', 51111)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=0, laddr=('127.0.0.1', 51071)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=8, family=2, type=1, proto=0, laddr=('127.0.0.1', 51072)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=9, family=2, type=1, proto=0, laddr=('127.0.0.1', 51073)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=23, family=2, type=1, proto=0, laddr=('127.0.0.1', 51203)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=24, family=2, type=1, proto=0, laddr=('127.0.0.1', 51204)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=25, family=2, type=1, proto=0, laddr=('127.0.0.1', 51205)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 51199)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 51200)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=22, family=2, type=1, proto=0, laddr=('127.0.0.1', 51201)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=10, family=2, type=1, proto=0, laddr=('127.0.0.1', 51190)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=18, family=2, type=1, proto=0, laddr=('127.0.0.1', 51191)>
+   │ <sys>:0: ResourceWarning: unclosed <socket.socket fd=19, family=2, type=1, proto=0, laddr=('127.0.0.1', 51192)>
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+exit=

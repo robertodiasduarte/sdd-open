@@ -1,0 +1,8 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_contrato_build_release.TemplateEPlaybook
+test_lm_004_no_sempre_e_playbook_valido (test_contrato_build_release.TemplateEPlaybook) ... ok
+test_template_tem_a_secao_com_as_colunas (test_contrato_build_release.TemplateEPlaybook) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.112s
+
+OK

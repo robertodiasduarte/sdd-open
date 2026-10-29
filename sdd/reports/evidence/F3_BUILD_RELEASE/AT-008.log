@@ -1,0 +1,20 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_report_lint.ReportLint
+test_arquivo_inexistente (test_report_lint.ReportLint) ... ok
+test_avaliacao_em_contexto_fresco_passa (test_report_lint.ReportLint) ... ok
+test_criterio_false_nao_exige_evidencia (test_report_lint.ReportLint) ... ok
+test_declaracao_nao_e_prova (test_report_lint.ReportLint) ... ok
+test_declaracao_nega_mesmo_com_log_valido_na_celula (test_report_lint.ReportLint) ... ok
+test_log_capturado_da_feature_passa (test_report_lint.ReportLint) ... ok
+test_log_de_outra_feature (test_report_lint.ReportLint) ... ok
+test_log_sem_linha_de_comando (test_report_lint.ReportLint) ... ok
+test_log_vazio (test_report_lint.ReportLint) ... ok
+test_nome_fora_do_padrao_e_64 (test_report_lint.ReportLint) ... ok
+test_recibo_fora_de_manual_ux (test_report_lint.ReportLint) ... ok
+test_recibo_humano_em_gate_manual_ux_passa (test_report_lint.ReportLint) ... ok
+test_sem_argumento_e_64 (test_report_lint.ReportLint) ... ok
+test_veredito_do_avaliador_sem_arquivo (test_report_lint.ReportLint) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.625s
+
+OK

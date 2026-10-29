@@ -1,0 +1,10 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_deploy_espera_testes.DeployEsperaTestes.test_sem_pasta_de_workflows_nao_se_aplica test_deploy_espera_testes.DeployEsperaTestes.test_workflow_que_so_testa_nao_se_aplica test_deploy_espera_testes.DeployEsperaTestes.test_workflow_so_de_pull_request_nao_publica_a_main test_deploy_espera_testes.DeployEsperaTestes.test_argumento_que_nao_e_pasta_e_64
+test_sem_pasta_de_workflows_nao_se_aplica (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_workflow_que_so_testa_nao_se_aplica (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_workflow_so_de_pull_request_nao_publica_a_main (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_argumento_que_nao_e_pasta_e_64 (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.329s
+
+OK

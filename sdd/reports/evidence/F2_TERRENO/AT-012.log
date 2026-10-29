@@ -1,0 +1,10 @@
+$ /usr/bin/python3 -B -m unittest -v test_alarme.TestInstalacao.test_hook_alheio_nao_e_tocado test_alarme.TestInstalacao.test_core_hooks_path_recusa test_alarme.TestInstalacao.test_desinstalar_remove_so_o_nosso
+test_hook_alheio_nao_e_tocado (test_alarme.TestInstalacao) ... ok
+test_core_hooks_path_recusa (test_alarme.TestInstalacao) ... ok
+test_desinstalar_remove_so_o_nosso (test_alarme.TestInstalacao) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.408s
+
+OK
+exit=0

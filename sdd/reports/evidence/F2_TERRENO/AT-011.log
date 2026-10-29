@@ -1,0 +1,26 @@
+$ /usr/bin/python3 -B -m unittest -v test_alarme.TestDeteccao
+test_cnpj_com_e_sem_mascara_bloqueia (test_alarme.TestDeteccao) ... ok
+test_cpf_com_mascara_bloqueia (test_alarme.TestDeteccao) ... ok
+test_cpf_sem_mascara_bloqueia (test_alarme.TestDeteccao) ... ok
+test_csv_alterado_com_cpf_bloqueia (test_alarme.TestDeteccao) ... ok
+test_csv_latin1_com_cpf_bloqueia (test_alarme.TestDeteccao) ... ok
+test_digito_errado_nao_bloqueia (test_alarme.TestDeteccao) ... ok
+test_env_bloqueia_e_example_passa (test_alarme.TestDeteccao) ... ok
+test_linha_removida_nao_conta (test_alarme.TestDeteccao) ... ok
+test_mensagem_ensina_no_verify_e_desinstalar (test_alarme.TestDeteccao) ... ok
+test_no_verify_grava (test_alarme.TestDeteccao) ... ok
+test_numero_colado_em_letras_ou_longo_nao_bloqueia (test_alarme.TestDeteccao) ... ok
+test_pem_publico_passa_privado_bloqueia (test_alarme.TestDeteccao) ... ok
+test_pfx_e_p12_bloqueiam (test_alarme.TestDeteccao) ... ok
+test_planilha_ja_versionada_alterada_sem_cpf_passa (test_alarme.TestDeteccao) ... ok
+test_planilha_nova_de_qualquer_tamanho_bloqueia (test_alarme.TestDeteccao) ... ok
+test_primeiro_commit_limpo_passa (test_alarme.TestDeteccao) ... ok
+test_sequencia_repetida_nao_bloqueia (test_alarme.TestDeteccao) ... ok
+test_vale_para_frente_worktree (test_alarme.TestDeteccao) ... ok
+test_valor_nao_aparece_inteiro_na_mensagem (test_alarme.TestDeteccao) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 5.784s
+
+OK
+exit=0

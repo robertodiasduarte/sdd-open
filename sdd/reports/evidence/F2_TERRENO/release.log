@@ -1,0 +1,7 @@
+$ GIT_TERMINAL_PROMPT=0 gh release view v2.2.2 -R robertodiasduarte/sdd-open && gh release download v2.2.2 && shasum -a 256 -c SHA256SUMS.txt
+{"assets":["sdd-open-v2.2.2.tar.gz","SHA256SUMS.txt"],"name":"sdd-open v2.2.2","publishedAt":"2026-10-29T15:23:41Z","tagName":"v2.2.2","url":"https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.2.2"}
+fc7737a35c6252c428f6fd5614cc6d6a37560732e74345e3dea9ea3e3c8d164a  sdd-open-v2.2.2.tar.gz
+sdd-open-v2.2.2.tar.gz: OK
+exit=0
+run release: 40900694496 (success, headSha 41c616914581352f64a0858191c42ef8c1a5a2a8)
+CI do PR #2: run 40899262016 (gate pass, Ran 242 tests)

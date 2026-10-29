@@ -1,0 +1,8 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_deploy_espera_testes.DeployEsperaTestes.test_teste_no_mesmo_job_com_continue_on_error_so_fora_do_teste_e_sim test_deploy_espera_testes.DeployEsperaTestes.test_lint_sozinho_nao_conta_como_teste
+test_teste_no_mesmo_job_com_continue_on_error_so_fora_do_teste_e_sim (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_lint_sozinho_nao_conta_como_teste (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.174s
+
+OK

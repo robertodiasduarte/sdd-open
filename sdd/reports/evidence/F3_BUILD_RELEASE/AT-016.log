@@ -1,0 +1,9 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_sdd_open.Projeto.test_doctor_avisa_sdd_bin_diferente_do_pacote test_sdd_open.Projeto.test_doctor_em_dia_com_o_pacote test_sdd_open.Projeto.test_doctor_termina_em_resultado
+test_doctor_avisa_sdd_bin_diferente_do_pacote (test_sdd_open.Projeto) ... ok
+test_doctor_em_dia_com_o_pacote (test_sdd_open.Projeto) ... ok
+test_doctor_termina_em_resultado (test_sdd_open.Projeto) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 7.762s
+
+OK

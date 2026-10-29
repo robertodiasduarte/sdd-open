@@ -1,0 +1,5 @@
+$ python3 -B scripts/check-versions.py --base v2.2.2 --base-obrigatoria
+PASS: check-versions — 16 skills com versão coerente, comparadas a v2.2.2.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0

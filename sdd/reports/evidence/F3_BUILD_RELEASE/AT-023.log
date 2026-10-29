@@ -1,0 +1,44 @@
+$ bash sdd/reports/evidence/F3_BUILD_RELEASE/sabotagem.sh   # em $(git rev-parse --short HEAD)
+════ sdd/bin/report-lint.py — migration listada sem linha em ## Migrations aplicadas deixa de reprovar
+-- diff da sabotagem:
+-            violations.append(f"migration `{mig}` sem linha em `## Migrations aplicadas` (mesmo caminho) — aplicada onde? provada como?")
++            pass
+-- suíte test_report_lint.py com a sabotagem: rc=1
+FAIL: test_layers_sql_preenchido_conta_como_migration (test_report_lint.Migrations)
+FAIL: test_migration_sem_a_secao_reprova (test_report_lint.Migrations)
+FAIL: test_migration_sem_linha_reprova (test_report_lint.Migrations)
+FAIL: test_pasta_migrations_conta_como_migration (test_report_lint.Migrations)
+FAIL: test_titulos_reais_numerados_ou_com_prefixo_contam (test_report_lint.Migrations) (titulo='## 2. Arquivos criados / modificados')
+FAIL: test_titulos_reais_numerados_ou_com_prefixo_contam (test_report_lint.Migrations) (titulo='## Fase A — Files Created/Modified')
+FAIL: test_titulos_reais_numerados_ou_com_prefixo_contam (test_report_lint.Migrations) (titulo='## Files Changed')
+FAIL: test_titulos_reais_numerados_ou_com_prefixo_contam (test_report_lint.Migrations) (titulo='## Arquivos do manifest')
+Ran 32 tests in 4.662s
+FAILED (failures=8)
+-- depois de git checkout -- sdd/bin/report-lint.py: rc=0
+Ran 32 tests in 4.791s
+OK
+════ .agents/skills/sdd-release/scripts/deploy-espera-testes.py — continue-on-error no passo de teste deixa de contar como não segura
+-- diff da sabotagem:
+-    if verdade(st.get("continue-on-error")):
++    if False:
+-- suíte test_deploy_espera_testes.py com a sabotagem: rc=1
+FAIL: test_continue_on_error_no_passo_de_teste_nao_segura (test_deploy_espera_testes.DeployEsperaTestes)
+Ran 29 tests in 2.959s
+FAILED (failures=1)
+-- depois de git checkout -- .agents/skills/sdd-release/scripts/deploy-espera-testes.py: rc=0
+Ran 29 tests in 2.269s
+OK
+════ bin/sdd-open.sh — doctor deixa de comparar sdd/bin/ com o pacote
+-- diff da sabotagem:
+-    cmp -s "${f}" "${ROOT}/sdd/bin/${f##*/}" && continue
++    continue
+-- suíte test_sdd_open.py com a sabotagem: rc=1
+FAIL: test_doctor_avisa_sdd_bin_diferente_do_pacote (test_sdd_open.Projeto)
+Ran 20 tests in 59.891s
+FAILED (failures=1)
+-- depois de git checkout -- bin/sdd-open.sh: rc=0
+Ran 20 tests in 56.998s
+OK
+════
+sabotagens sem prova: 0
+exit=0

@@ -1,0 +1,14 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_deploy_espera_testes.DeployEsperaTestes.test_suite_informativa_com_set_e_e_exit_0_nao_segura test_deploy_espera_testes.DeployEsperaTestes.test_continue_on_error_no_passo_de_teste_nao_segura test_deploy_espera_testes.DeployEsperaTestes.test_continue_on_error_no_job_de_teste_nao_segura test_deploy_espera_testes.DeployEsperaTestes.test_ou_true_no_comando_de_teste_nao_segura test_deploy_espera_testes.DeployEsperaTestes.test_if_always_no_job_que_publica_nao_segura test_deploy_espera_testes.DeployEsperaTestes.test_if_always_em_qualquer_passo_que_publica_nao_segura test_deploy_espera_testes.DeployEsperaTestes.test_if_always_num_job_do_meio_do_needs_nao_segura test_deploy_espera_testes.DeployEsperaTestes.test_pipe_sem_pipefail_nao_segura_e_shell_bash_segura
+test_suite_informativa_com_set_e_e_exit_0_nao_segura (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_continue_on_error_no_passo_de_teste_nao_segura (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_continue_on_error_no_job_de_teste_nao_segura (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_ou_true_no_comando_de_teste_nao_segura (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_if_always_no_job_que_publica_nao_segura (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_if_always_em_qualquer_passo_que_publica_nao_segura (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_if_always_num_job_do_meio_do_needs_nao_segura (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_pipe_sem_pipefail_nao_segura_e_shell_bash_segura (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.670s
+
+OK

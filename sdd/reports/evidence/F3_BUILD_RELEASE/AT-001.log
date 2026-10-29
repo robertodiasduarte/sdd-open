@@ -1,0 +1,7 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_report_lint.Migrations.test_migration_com_log_passa
+test_migration_com_log_passa (test_report_lint.Migrations) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.114s
+
+OK

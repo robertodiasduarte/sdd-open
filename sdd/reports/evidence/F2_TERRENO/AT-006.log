@@ -1,0 +1,8 @@
+$ /usr/bin/python3 -B -m unittest -v test_checar.TestSegredo.test_nao_sai_para_a_rede
+test_nao_sai_para_a_rede (test_checar.TestSegredo) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.008s
+
+OK
+exit=0

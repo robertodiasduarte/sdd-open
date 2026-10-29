@@ -1,0 +1,15 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p test_skill_lint.py -v
+test_as_13_skills_reais_passam (test_skill_lint.SkillLint) ... ok
+test_description_com_1024_caracteres_passa (test_skill_lint.SkillLint) ... ok
+test_description_com_1025_caracteres_reprova (test_skill_lint.SkillLint) ... ok
+test_description_vazia_reprova (test_skill_lint.SkillLint) ... ok
+test_name_diferente_da_pasta_reprova (test_skill_lint.SkillLint) ... ok
+test_sem_argumento_e_64 (test_skill_lint.SkillLint) ... ok
+test_sem_frontmatter_reprova (test_skill_lint.SkillLint) ... ok
+test_skill_minima_valida (test_skill_lint.SkillLint) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.580s
+
+OK
+exit=0

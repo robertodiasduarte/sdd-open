@@ -1,0 +1,7 @@
+$ git diff --stat v2.2.2 HEAD -- sdd/bin/verify-gate.sh sdd/fixtures/ scripts/publish-gate.sh scripts/publish-gate-patterns.txt .github/ && echo "(diff vazio: verify-gate, fixtures, publish-gate e workflows iguais a v2.2.2)" && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_verify_gate test_skill_lint test_playbook_lint test_sdd_open 2>&1 | grep -v ResourceWarning | tail -n 4
+(diff vazio: verify-gate, fixtures, publish-gate e workflows iguais a v2.2.2)
+----------------------------------------------------------------------
+Ran 59 tests in 60.119s
+
+OK
+exit=0

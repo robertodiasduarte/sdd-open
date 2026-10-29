@@ -1,0 +1,23 @@
+$ python3 -B scripts/check-versions.py --base v2.2.1 --base-obrigatoria
+PASS: check-versions — 16 skills com versão coerente, comparadas a v2.2.1.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+$ python3 sdd/bin/skill-lint.py .agents/skills/sdd-*/SKILL.md
+✅ .agents/skills/sdd-auditoria-harness/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-brainstorm/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-build/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-checar-ambiente/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-governanca/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-handoff/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-higiene-dado/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-iniciar-repo/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-iterate/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-new-session/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido
+exit=0

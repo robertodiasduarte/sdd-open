@@ -1,0 +1,8 @@
+$ /usr/bin/python3 -B -m unittest -v test_alarme.TestCopiaGerada
+test_hook_da_copia_gerada_sem_cabecalho_e_igual_ao_da_fonte (test_alarme.TestCopiaGerada) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.835s
+
+OK
+exit=0

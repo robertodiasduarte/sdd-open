@@ -1,0 +1,64 @@
+$ /usr/bin/python3 -B -m unittest -v test_checar
+test_api_fora_do_ar_nao_diz_nada (test_checar.TestDadoExposto) ... ok
+test_env_example_e_sample_nao_alarmam (test_checar.TestDadoExposto) ... ok
+test_env_ignorado_nao_diz_nada (test_checar.TestDadoExposto) ... ok
+test_env_nao_ignorado_e_aviso (test_checar.TestDadoExposto) ... ok
+test_env_rastreado_e_dado_exposto_no_topo (test_checar.TestDadoExposto) ... ok
+test_npm_ignore_scripts (test_checar.TestDadoExposto) ... ok
+test_p12_e_env_variante (test_checar.TestDadoExposto) ... ok
+test_pem_publico_nao_alarma_privado_alarma (test_checar.TestDadoExposto) ... ok
+test_pfx_em_repo_publico_diz_que_esta_na_internet (test_checar.TestDadoExposto) ... ok
+test_repo_privado_nao_menciona_visibilidade (test_checar.TestDadoExposto) ... ok
+test_repo_publico_sem_segredo_continua_uma_linha (test_checar.TestDadoExposto) ... ok
+test_saudavel_e_uma_linha_com_identificacao (test_checar.TestDadoExposto) ... ok
+test_sem_env_nao_fala_de_gitignore (test_checar.TestDadoExposto) ... ok
+test_sem_package_json_nao_fala_de_npm (test_checar.TestDadoExposto) ... ok
+test_frente_bloqueia_credencial (test_checar.TestFrente) ... ok
+test_frente_bloqueia_host_ssh (test_checar.TestFrente) ... ok
+test_frente_bloqueia_login_do_editor (test_checar.TestFrente) ... ok
+test_frente_bloqueia_rede (test_checar.TestFrente) ... ok
+test_frente_bloqueia_sem_origin (test_checar.TestFrente) ... ok
+test_frente_bloqueia_sem_remoto (test_checar.TestFrente) ... ok
+test_frente_bloqueia_vazio (test_checar.TestFrente) ... ok
+test_frente_nao_olha_dado_exposto (test_checar.TestFrente) ... ok
+test_frente_saudavel_uma_linha (test_checar.TestFrente) ... ok
+test_arquivos_sem_git_oferece_iniciar_repo (test_checar.TestOndeEstou) ... ok
+test_documents_sem_icloud_nao_acusa (test_checar.TestOndeEstou) ... ok
+test_git_dentro_de_node_modules_nao_conta (test_checar.TestOndeEstou) ... ok
+test_git_em_duas_subpastas_lista_as_duas (test_checar.TestOndeEstou) ... ok
+test_git_em_quatro_subpastas_pergunta_qual (test_checar.TestOndeEstou) ... ok
+test_git_numa_subpasta_manda_abrir_nela (test_checar.TestOndeEstou) ... ok
+test_icloud_mesa_e_documentos_pelo_symlink (test_checar.TestOndeEstou) ... ok
+test_nao_grava_nada_fora_do_repositorio (test_checar.TestOndeEstou) ... ok
+test_nome_parecido_nao_acusa (test_checar.TestOndeEstou) ... ok
+test_pasta_pessoal_nao_varre (test_checar.TestOndeEstou) ... ok
+test_pasta_vazia_indica_brainstorm (test_checar.TestOndeEstou) ... ok
+test_sem_git_e_sem_a_skill_irma_manda_rodar_o_init (test_checar.TestOndeEstou) ... ok
+test_sincronizada_dentro_de_repositorio (test_checar.TestOndeEstou) ... ok
+test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou) ... ok
+test_so_arquivo_do_sistema_conta_como_vazia (test_checar.TestOndeEstou) ... ok
+test_comandos_impressos_sem_prompt (test_checar.TestRemoto) ... ok
+test_credencial_github_privado_explica_as_duas_causas (test_checar.TestRemoto) ... ok
+test_credencial_recusada_rapida (test_checar.TestRemoto) ... ok
+test_git_fora_do_path (test_checar.TestRemoto) ... ok
+test_host_ssh_desconhecido (test_checar.TestRemoto) ... ok
+test_login_do_editor_esperando (test_checar.TestRemoto) ... ok
+test_rede_parada_com_editor_nao_e_janela_de_login (test_checar.TestRemoto) ... ok
+test_rede_pendurada (test_checar.TestRemoto) ... ok
+test_rede_pendurada_inteira_api_e_remoto (test_checar.TestRemoto) ... ok
+test_remoto_vazio (test_checar.TestRemoto) ... ok
+test_sem_remoto_continua_aviso (test_checar.TestRemoto) ... ok
+test_ssh_pendurado_vigia (test_checar.TestRemoto) ... ok
+test_vazio_com_warning (test_checar.TestRemoto) ... ok
+test_acusa_cada_tipo_e_sai_1 (test_checar.TestSegredo) ... ok
+test_nao_sai_para_a_rede (test_checar.TestSegredo) ... ok
+test_repositorio_grande_continua_rapido (test_checar.TestSegredo) ... ok
+test_sem_segredo_sai_0_calado (test_checar.TestSegredo) ... ok
+test_frente_sem_remoto_cita_iniciar_repo (test_checar.TestSemRemotoIndicaIniciarRepo) ... ok
+test_nao_grava_nada (test_checar.TestSomenteLeitura) ... ok
+
+----------------------------------------------------------------------
+Ran 57 tests in 100.762s
+
+OK
+exit=0

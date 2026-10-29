@@ -1,0 +1,12 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p test_publish_gate_patterns.py -v
+test_cpf_plantado_bloqueia_no_g2 (test_publish_gate_patterns.GateInteiro) ... ok
+test_sem_plantio_o_g2_nao_acusa (test_publish_gate_patterns.GateInteiro) ... ok
+test_negativos_nao_casam (test_publish_gate_patterns.Padroes) ... ok
+test_positivos_casam (test_publish_gate_patterns.Padroes) ... ok
+test_todo_padrao_e_ere_valida (test_publish_gate_patterns.Padroes) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.653s
+
+OK
+exit=0

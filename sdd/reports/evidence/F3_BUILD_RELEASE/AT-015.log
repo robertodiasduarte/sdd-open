@@ -1,0 +1,7 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_sdd_open.Projeto.test_doctor_avisa_skill_mais_velha_que_a_do_pacote
+test_doctor_avisa_skill_mais_velha_que_a_do_pacote (test_sdd_open.Projeto) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 2.915s
+
+OK

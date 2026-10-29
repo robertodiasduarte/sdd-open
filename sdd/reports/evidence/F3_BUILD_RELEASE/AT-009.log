@@ -1,0 +1,8 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_deploy_espera_testes.DeployEsperaTestes.test_release_do_sdd_open_espera_por_needs test_deploy_espera_testes.DeployEsperaTestes.test_lista_de_passos_no_mesmo_recuo_da_chave_e_lida
+test_release_do_sdd_open_espera_por_needs (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_lista_de_passos_no_mesmo_recuo_da_chave_e_lida (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.113s
+
+OK

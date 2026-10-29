@@ -1,0 +1,12 @@
+$ /usr/bin/python3 -B -m unittest -v test_matriz_new_session.ContratoDaNewSession
+test_default_branch_divergente_para (test_matriz_new_session.ContratoDaNewSession) ... ok
+test_descoberta_grava_so_slot_vazio_na_frente_com_evidencia (test_matriz_new_session.ContratoDaNewSession) ... ok
+test_pre_voo_pelo_script_com_os_dois_exits_e_o_fallback (test_matriz_new_session.ContratoDaNewSession) ... ok
+test_test_e_lint_so_com_evidencia_literal_na_ordem (test_matriz_new_session.ContratoDaNewSession) ... ok
+test_versao (test_matriz_new_session.ContratoDaNewSession) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+OK
+exit=0
