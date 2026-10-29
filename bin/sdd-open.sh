@@ -588,6 +588,24 @@ doctor() {
   if ls "${ROOT}"/.agents/skills/sdd-*/agents/openai.yaml >/dev/null 2>&1 || ls "${ROOT}"/.claude/skills/sdd-*/agents/openai.yaml >/dev/null 2>&1; then
     warn "skills do sdd-starter detectadas no mesmo projeto: os nomes sdd-* colidem — use um ou outro por projeto"
   fi
+  # Segredo já salvo no git (.env, .pfx, .p12, .pem com chave privada): o checar.sh do PACOTE, que casa
+  # com esta versão da CLI, no modo --segredo — só leitura e sem rede, porque o doctor roda em todo init.
+  local checar="${PKG}/.agents/skills/sdd-checar-ambiente/scripts/checar.sh" saida rc l
+  if [ ! -f "${checar}" ]; then
+    warn "pacote incompleto: .agents/skills/sdd-checar-ambiente/scripts/checar.sh ausente — baixe o sdd-open de novo"
+  else
+    saida="$(cd "${ROOT}" && "${BASH}" "${checar}" --segredo 2>&1)"; rc=$?
+    case "${rc}" in
+      0) ok "nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)" ;;
+      1) printf '%s\n' "${saida}" | while IFS= read -r l; do
+           case "${l}" in
+             '- '*) warn "${l#- }" ;;
+             '  '*) printf '      %s\n' "${l#  }" >&2 ;;
+           esac
+         done ;;
+      *) warn "não consegui conferir segredo salvo no git (checar.sh saiu ${rc})" ;;
+    esac
+  fi
 }
 
 # ── execução ───────────────────────────────────────────────────────────────────

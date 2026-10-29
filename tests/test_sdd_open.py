@@ -120,6 +120,40 @@ class Projeto(Sandbox):
         self.assertResultado(out)
         self.assertIn("AGENTS.md com o bloco sdd-open", out)
 
+    def test_doctor_acusa_env_salvo_no_git_e_sai_0(self):
+        self.escreve(self.p, ".env", "SENHA=x\n")
+        self.commit(self.p, "env")
+        rc, out = self.cli("doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("⚠️  O arquivo de senhas .env está salvo no git", out)
+        self.assertIn('git rm --cached ".env"', out)
+        self.assertIn("não apaga do histórico", out)
+        self.assertResultado(out)
+
+    def test_doctor_sem_segredo_diz_que_esta_limpo(self):
+        rc, out = self.cli("doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("✅ nenhum segredo salvo no git", out)
+
+    def test_doctor_com_pacote_sem_checar_avisa_e_sai_0(self):
+        pacote = self.tmp / "pacote"
+        for rel in ("bin", ".agents", "sdd", "AGENTS.md.tmpl"):
+            self.copia(rel, pacote)
+        (pacote / ".agents/skills/sdd-checar-ambiente/scripts/checar.sh").unlink()
+        rc, out, err = self.roda([BASH, pacote / "bin/sdd-open.sh", "doctor"], self.p)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("pacote incompleto", out + err)
+        self.assertResultado(out + err)
+
+    def test_copias_geradas_dos_scripts_portados_passam_bash_n(self):
+        for rel in ("sdd-checar-ambiente/scripts/checar.sh", "sdd-higiene-dado/scripts/alarme.sh",
+                    "sdd-higiene-dado/scripts/pre-commit.sh", "sdd-iniciar-repo/scripts/inventario.sh"):
+            copia = self.p / ".claude/skills" / rel
+            with self.subTest(copia=rel):
+                self.assertIn("sdd-open:generated", copia.read_text(encoding="utf-8"))
+                rc, out, err = self.roda([BASH, "-n", copia], self.p)
+                self.assertEqual(rc, 0, out + err)
+
 
 if __name__ == "__main__":
     unittest.main()

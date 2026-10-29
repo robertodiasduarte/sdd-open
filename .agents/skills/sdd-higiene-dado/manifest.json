@@ -1,0 +1,32 @@
+{
+  "name": "sdd-higiene-dado",
+  "version": "1.1.1",
+  "escopo": "HD001 v1 (references/ESCOPO_CONFIRMADO.md)",
+  "perfil_pedido": "operacional",
+  "perfil_efetivo": "C",
+  "cobertura_consultiva": "nao aplicavel",
+  "cobertura_de_calculo": "nao aplicavel",
+  "caminhos_implementados": [
+    "Verificar estado do alarme (somente leitura)",
+    "Instalar o alarme pre-commit com OK explícito",
+    "Recusar commit com CPF/CNPJ válido, .env, .pfx/.p12, .pem com chave privada ou planilha nova",
+    "Desinstalar somente o alarme desta skill"
+  ],
+  "ferramentas_necessarias": ["bash", "git", "awk"],
+  "testes_escritos": ["tests/test_alarme.py", "evals/cases.json"],
+  "testes_executados": ["tests/test_alarme.py (macOS, bash 3.2, awk BWK, git 2.54)"],
+  "pending": [
+    "Rodar tests/test_alarme.py no Git Bash do Windows",
+    "Executar os cenários comportamentais de evals/cases.json no Claude Code e no Codex"
+  ],
+  "o_que_ainda_nao_prova": [
+    "Comportamento idêntico em todos os agentes",
+    "Funcionamento no Git Bash do Windows (não executado nesta entrega)",
+    "Detecção de CPF dentro de .xlsx/.xls/.ods ou de arquivo UTF-16",
+    "Detecção de CNPJ alfanumérico",
+    "Ausência de falso positivo: cerca de 1 em 100 números de 11 dígitos passa no dígito verificador do CPF"
+  ],
+  "author": "Roberto Dias Duarte",
+  "license": "MIT",
+  "methodology": "Metodologia de Roberto Dias Duarte"
+}
