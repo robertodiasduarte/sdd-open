@@ -19,7 +19,7 @@ jobs:
   gate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           fetch-depth: 0   # the version gate compares against the last v* tag, which a shallow checkout lacks
 
@@ -33,6 +33,39 @@ jobs:
         env:
           PUBLISH_GATE_MODE: ci
         run: bash scripts/publish-gate.sh "$GITHUB_WORKSPACE"
+
+      # A published skill is code the agent obeys: a change that hides text (invisible or bidi
+      # Unicode) or fetches and runs remote code must not reach a Release. Fail-closed on any hit.
+      # U+200D (zero-width joiner) is left out: it glues emoji such as the one in verify-gate.sh.
+      # The tag block U+E0000–E007F is in: it carries text a reader cannot see but a model reads.
+      - name: Skill integrity (invisible Unicode, remote code piped to a shell)
+        run: |
+          python3 -B - .agents/skills <<'PY'
+          import pathlib, re, sys
+          invisivel = re.compile("[\u200b\u200c\u200e\u200f\u202a-\u202e\u2060-\u2064\u2066-\u2069\ufeff\U000e0000-\U000e007f]")
+          remoto = re.compile(r"(curl|wget)[^\n|]*\|\s*(sudo\s+)?(ba|z)?sh\b"
+                              r"|base64\s+(-d|--decode)[^\n|]*\|\s*(sudo\s+)?(ba|z)?sh\b"
+                              r"|eval\s+\"?\$\((curl|wget)")
+          achados = 0
+          for p in sorted(pathlib.Path(sys.argv[1]).rglob("*")):
+              if not p.is_file():
+                  continue
+              try:
+                  texto = p.read_text(encoding="utf-8")
+              except UnicodeDecodeError:
+                  print(f"FAIL {p}: not UTF-8 text")
+                  achados += 1
+                  continue
+              for n, linha in enumerate(texto.splitlines(), 1):
+                  if invisivel.search(linha):
+                      print(f"FAIL {p}:{n}: invisible/bidi Unicode {[hex(ord(c)) for c in invisivel.findall(linha)]}")
+                      achados += 1
+                  if remoto.search(linha):
+                      print(f"FAIL {p}:{n}: remote code piped to a shell: {linha.strip()[:120]}")
+                      achados += 1
+          print(f"skill integrity: {achados} finding(s) in {sys.argv[1]}")
+          sys.exit(1 if achados else 0)
+          PY
 
       - name: Verify the exit contract (the framework's own regression suite)
         run: |
@@ -94,3 +127,31 @@ jobs:
           if grep -rl '^#!/bin/zsh' --include='*.sh' . ; then echo "zsh shebang found"; fail=1; fi
           if [ -n "$(find . -type l -not -path './.git/*')" ]; then echo "symlink found"; fail=1; fi
           exit $fail
+
+  # The floor the package promises (Python 3.9 + bash 3.2) is what macOS ships in /usr/bin and /bin;
+  # ubuntu-latest has neither, so without this job the floor was proved only on the author's machine.
+  testes-macos:
+    name: Testes no piso (macOS, só leitura)
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+
+      - name: Install gitleaks (darwin)
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_darwin_arm64.tar.gz \
+            | tar -xz -C "$RUNNER_TEMP/bin" gitleaks
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+      - name: Floor versions
+        run: |
+          /usr/bin/python3 --version
+          /bin/bash -c 'echo "bash $BASH_VERSION"'
+
+      - name: Unit tests on the floor (/usr/bin/python3, SDD_TEST_BASH=/bin/bash)
+        env:
+          SDD_TEST_BASH: /bin/bash
+        run: /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
