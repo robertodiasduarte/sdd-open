@@ -78,6 +78,15 @@ class DesignLint(Sandbox):
         self.assertEqual(rc, 1, out)
         self.assertIn("File Manifest", out)
 
+    def test_arquivo_ilegivel_sai_1_com_resultado(self):
+        p = self.tmp / "X.md"
+        p.write_bytes(bytes([0xFF, 0xFE, 0x80]))
+        rc, out, err = self.roda([PYTHON, "-B", SCRIPT, p], self.tmp)
+        self.assertEqual(rc, 1, out + err)
+        self.assertIn("não consegui ler", err)
+        self.assertIn("RESULTADO: VERMELHO", err)
+        self.assertNotIn("Traceback", err)
+
     def test_sem_argumento_e_64(self):
         rc, out, err = self.roda([PYTHON, "-B", SCRIPT], self.tmp)
         self.assertEqual(rc, 64, out + err)

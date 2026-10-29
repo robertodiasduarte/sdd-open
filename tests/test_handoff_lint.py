@@ -80,6 +80,10 @@ class HandoffLint(Sandbox):
         rc, out = self.lint(self.sem_prompt("✅ DoD fechado"))
         self.assertEqual(rc, 0, out)
 
+    def test_check_no_meio_do_status_nao_dispensa_o_prompt(self):
+        rc, out = self.lint(self.sem_prompt("🔨 em andamento (build ✅, falta release)"))
+        self.assertEqual(rc, 1, out)
+
     def test_ficha_aberta_sem_prompt_reprova(self):
         rc, out = self.lint(self.sem_prompt("🚢 publicado"))
         self.assertEqual(rc, 1, out)
@@ -94,6 +98,15 @@ class HandoffLint(Sandbox):
                 self.assertEqual(rc, 1, out)
                 self.assertIn(trecho, out)
                 self.assertIn("RESULTADO: VERMELHO", out)
+
+    def test_arquivo_ilegivel_sai_1_com_resultado(self):
+        p = self.tmp / "X.md"
+        p.write_bytes(bytes([0xFF, 0xFE, 0x80]))
+        rc, out, err = self.roda([PYTHON, "-B", SCRIPT, p], self.tmp)
+        self.assertEqual(rc, 1, out + err)
+        self.assertIn("não consegui ler", err)
+        self.assertIn("RESULTADO: VERMELHO", err)
+        self.assertNotIn("Traceback", err)
 
     def test_sem_argumento_e_64(self):
         rc, out, err = self.roda([PYTHON, "-B", SCRIPT], self.tmp)

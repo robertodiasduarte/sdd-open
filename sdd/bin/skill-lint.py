@@ -17,9 +17,11 @@ Com --conversa (o CI do pacote liga; skill própria do usuário não precisa da 
   - seção `## Como falar com o aluno`, uma vez só, com a tabela de etapas (coluna `Etapa`) e as 5 partes
     da resposta: **Status**, **O que foi feito**, **Agora…**, **Sua decisão**, **Próximo passo**
   - se a seção manda ler `references/como-falar.md`, o arquivo existe ao lado do SKILL.md
-  - em cada pergunta de decisão desse arquivo (negrito terminado em `?` seguido de opções `- **rótulo**`):
+  - em cada pergunta de decisão desse arquivo (negrito terminado em `?` seguido de opções `- **rótulo**`
+    ou `* **rótulo**`, também depois de linha em branco, quebradas em 2 linhas ou dentro de citação `> `):
     exatamente 1 opção `(recomendado)`, e ela é a primeira; a opção **não sei**; nenhuma opção **Outro**
-    (formato em sdd/templates/fragments/PERGUNTA_DECISAO.md). Pergunta aberta, sem opções, não é conferida
+    (rótulo que começa por Outro/Outra/Outros conta; formato em sdd/templates/fragments/PERGUNTA_DECISAO.md).
+    Pergunta aberta, sem opções, não é conferida. Bloco cercado por ``` não conta para nada
   - o arquivo tem ≥1 pergunta de decisão, e cada `**Próximo passo**` de exemplo cabe em 100 caracteres
 """
 import os
@@ -34,7 +36,7 @@ PERGUNTA = re.compile(r"\*\*[^*\n]*\?\*\*")
 OPCAO = re.compile(r"^\s*[-*+]\s+\*\*([^*\n]+)\*\*(.*)$")
 CONTINUACAO = re.compile(r"^\s+\S")
 PROXIMO = re.compile(r"^\*\*Próximo passo:?\*\*[\s:—–-]*(.*)$")
-OUTRO = re.compile(r"^(outr[oa]|other)\b")
+OUTRO = re.compile(r"^(outr[oa]s?|others?)\b")
 
 
 def parse_frontmatter(text):
@@ -131,7 +133,8 @@ def sem_cerca(texto):
 
 def perguntas(texto):
     """[(linha, pergunta, [(rótulo, resto)])] das perguntas de decisão, fora de bloco de código."""
-    linhas = [ln[2:] if ln.startswith("> ") else ln for ln in sem_cerca(texto).splitlines()]
+    linhas = [ln[2:] if ln.startswith("> ") else ("" if ln.rstrip() == ">" else ln)
+              for ln in sem_cerca(texto).splitlines()]
     saida = []
     for i, ln in enumerate(linhas):
         m = PERGUNTA.findall(ln)

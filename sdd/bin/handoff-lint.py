@@ -70,7 +70,8 @@ def lint(texto: str) -> list:
             if not any(re.match(r"^\|\s*\**" + re.escape(campo) + r"\**\s*\|", ln) for ln in ficha):
                 erros.append(f"## Ficha sem a linha {campo}")
         status = next((ln for ln in ficha if re.match(r"^\|\s*\**Status\**\s*\|", ln)), "")
-        fechada = "✅" in status
+        celula = status.strip().strip("|").split("|")[1].strip() if status.count("|") >= 3 else ""
+        fechada = celula.startswith("✅")  # o 1º símbolo da célula, como no template: "✅ DoD fechado"
 
     faixa = intervalo(linhas, "Prompt de retomada")
     cercas = 0 if faixa is None else sum(1 for ln in brutas[faixa[0]:faixa[1]] if ln.startswith(("```", "~~~")))

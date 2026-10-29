@@ -176,6 +176,17 @@ class SkillLint(Sandbox):
                 self.assertEqual(rc, 1, out)
                 self.assertIn("Posso apagar a pasta?", out)
 
+    def test_pergunta_em_citacao_com_linha_vazia_e_conferida(self):
+        rc, out = self.mutado("references/como-falar.md", "## Exemplo",
+                              "> **Posso apagar a pasta?**\n>\n> - **Outro** — você descreve.\n"
+                              "> - **sim** — apago.\n\n## Exemplo")
+        self.assertEqual(rc, 1, out)
+        self.assertIn("Posso apagar a pasta?", out)
+
+    def test_outros_no_plural_reprova(self):
+        rc, out = self.mutado("references/como-falar.md", "- **não** —", "- **Outros** —")
+        self.assertEqual(rc, 1, out)
+
     def test_outro_com_complemento_reprova(self):
         rc, out = self.mutado("references/como-falar.md", "- **não** —", "- **Outro (descreva)** —")
         self.assertEqual(rc, 1, out)

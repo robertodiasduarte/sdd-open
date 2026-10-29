@@ -39,10 +39,14 @@ def arquivos(raiz: Path) -> list:
 def achados(raiz: Path) -> list:
     saida = []
     for f in arquivos(raiz):
-        try:
-            texto = f.read_text(encoding="utf-8")
-        except UnicodeDecodeError:
+        dados = f.read_bytes()
+        if b"\0" in dados:
             continue  # binário (imagem, zip): não é texto que o agente lê
+        try:
+            texto = dados.decode("utf-8")
+        except UnicodeDecodeError:
+            saida.append(str(f.relative_to(raiz)) + ":0: não é UTF-8")  # falha fechado: não dá para varrer
+            continue
         for n, linha in enumerate(texto.splitlines(), 1):
             for m in TERMOS.finditer(linha):
                 saida.append(str(f.relative_to(raiz)) + ":" + str(n) + ": " + m.group(0))
@@ -86,6 +90,12 @@ class Agnostico(Sandbox):
         p.parent.mkdir(parents=True)
         p.write_bytes(bytes([0x89, 0x50, 0xFF, 0xFE, 0x00]))
         self.assertEqual(achados(self.tmp), [])
+
+    def test_texto_fora_de_utf8_reprova(self):
+        p = self.tmp / "sdd/templates/T.md"
+        p.parent.mkdir(parents=True)
+        p.write_bytes("Use AskUserQuestion (configuração)\n".encode("latin-1"))
+        self.assertEqual(achados(self.tmp), ["sdd/templates/T.md:0: não é UTF-8"])
 
     def test_controle_com_conceito_passa(self):
         self.escreve(self.tmp, ".agents/skills/sdd-x/SKILL.md",
