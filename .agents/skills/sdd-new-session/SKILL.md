@@ -26,7 +26,7 @@ da branch padrão. A outra ponta é a `sdd-release`.
 ## Slots do config (`sdd/config.yaml`)
 
 `project.default_branch` · `editor` · `worktree_base` · `project.test_cmd` · `project.lint_cmd`.
-**Slot vazio = descobrir** (Passo 1). Com evidência literal, o valor é gravado no `sdd/config.yaml da
+**Slot vazio = descobrir** (Passo 1). Com evidência (de onde o valor veio), ele é gravado no `sdd/config.yaml da
 frente` (Passo 2, item 6) e declarado na resposta; sem evidência, fica vazio e a resposta diz isso.
 Nunca adivinhe e nunca sobrescreva slot cheio: só slot vazio é gravado.
 
@@ -163,11 +163,14 @@ a evidência — ela vai para o Passo 2, item 6.
   - Cheio e igual à do remoto ⇒ siga.
   - Cheio e **diverge** da do remoto (o exemplo do config vem com `main`; o remoto pode ser `master`) ⇒
     **pare e pergunte** qual vale, com as duas opções e o efeito de cada uma. Nada foi criado; slot cheio
-    nunca é sobrescrito.
-- **Pasta das frentes** — `worktree_base`; vazio ⇒ `../<nome-do-repo>-frentes`. Fora do repositório:
-  dentro dele, a worktree apareceria como arquivo não rastreado em todas as outras frentes.
+    nunca é sobrescrito. A resposta vale para esta frente (é dela que a frente nasce); o slot só muda se o
+    usuário pedir, e aí no config da frente, com a evidência.
+- **Pasta das frentes** — `worktree_base`; vazio ⇒ `../<nome-do-repo>-frentes` (evidência: "padrão do
+  sdd-open"). Fora do repositório: dentro dele, a worktree apareceria como arquivo não rastreado em todas as
+  outras frentes.
 - **Editor** — `editor`; vazio ⇒ o primeiro que existir de `code`, `cursor`, `subl` (`command -v <nome>`
-  no bash/zsh, `Get-Command <nome>` no PowerShell).
+  no bash/zsh, `Get-Command <nome>` no PowerShell; evidência: "`command -v code` neste computador"). O config
+  é compartilhado: diga na resposta que é a preferência deste computador e que qualquer um corrige a linha.
 - **Testes e checagem de sintaxe** — `project.test_cmd` e `project.lint_cmd`, só com **evidência literal**,
   nesta ordem (a primeira fonte que tiver o comando vence):
   1. o comando que um workflow de `.github/workflows/` roda num step de teste (ou de lint), copiado do

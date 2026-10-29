@@ -29,7 +29,8 @@ SCRIPT = Path(__file__).resolve().parents[1] / ".agents" / "skills" / "sdd-checa
 ARROBA = "@"
 SSH_GITHUB = "git" + ARROBA + "github.com"
 SSH_INVALIDO = "git" + ARROBA + "exemplo.invalid"
-BASH = shutil.which("bash") or "bash"   # caminho absoluto: o teste do git fora do PATH troca o PATH
+# caminho absoluto: o teste do git fora do PATH troca o PATH. SDD_TEST_BASH=/bin/bash testa o piso bash 3.2.
+BASH = os.environ.get("SDD_TEST_BASH") or shutil.which("bash") or "bash"
 
 
 def chave_privada_falsa() -> str:
@@ -751,3 +752,17 @@ class TestSegredo(Base):
         self.assertEqual(rc, 1, out)
         self.assertLess(dt, 3, f"--segredo levou {dt:.1f} s: saiu para a rede")
         self.assertFalse(rastro.exists(), "--segredo chamou o curl")
+
+    def test_repositorio_grande_continua_rapido(self):
+        # O doctor roda o --segredo em todo init: com um fork por arquivo rastreado, 5 mil arquivos levavam 12 s.
+        pasta = self.raiz / "muitos"
+        pasta.mkdir()
+        for i in range(3000):
+            (pasta / f"f{i}.txt").write_text("", encoding="utf-8")
+        self.escreve("sub/.ENV.local", "X=1\n")
+        self.git("add", "-A")
+        self.git("commit", "-q", "--no-verify", "-m", "t")
+        rc, out, dt = self.roda("--segredo")
+        self.assertEqual(rc, 1, out)
+        self.assertIn('git rm --cached "sub/.ENV.local"', out)
+        self.assertLess(dt, 3, f"--segredo levou {dt:.1f} s com 3 mil arquivos rastreados")

@@ -130,6 +130,14 @@ class Projeto(Sandbox):
         self.assertIn("não apaga do histórico", out)
         self.assertResultado(out)
 
+    def test_doctor_nao_perde_o_resto_de_nome_com_quebra_de_linha(self):
+        self.escreve(self.p, "nova\nlinha.p12", "x\n")
+        self.commit(self.p, "p12")
+        rc, out = self.cli("doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("O certificado digital nova", out)
+        self.assertIn("linha.p12 está salvo no git", out)
+
     def test_doctor_sem_segredo_diz_que_esta_limpo(self):
         rc, out = self.cli("doctor")
         self.assertEqual(rc, 0, out)

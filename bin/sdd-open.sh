@@ -600,7 +600,8 @@ doctor() {
       1) printf '%s\n' "${saida}" | while IFS= read -r l; do
            case "${l}" in
              '- '*) warn "${l#- }" ;;
-             '  '*) printf '      %s\n' "${l#  }" >&2 ;;
+             ''|'🔴 '*) : ;;
+             *) printf '      %s\n' "${l#  }" >&2 ;;   # comando, medida, ou resto de um nome com quebra de linha
            esac
          done ;;
       *) warn "não consegui conferir segredo salvo no git (checar.sh saiu ${rc})" ;;

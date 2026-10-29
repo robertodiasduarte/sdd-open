@@ -22,6 +22,10 @@ RAIZ = Path(__file__).resolve().parents[1]
 SKILL = RAIZ / ".agents" / "skills" / "sdd-higiene-dado"
 ALARME = SKILL / "scripts" / "alarme.sh"
 HOOK_ORIGEM = SKILL / "scripts" / "pre-commit.sh"
+# A configuração git de quem roda fica de fora: um core.hooksPath global (git-secrets, padrão corporativo)
+# faria o alarme recusar a instalação e a suíte ficar vermelha sem defeito no código.
+ISOLADO = {**os.environ, "GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1"}
+BASH = os.environ.get("SDD_TEST_BASH") or shutil.which("bash") or "bash"   # SDD_TEST_BASH=/bin/bash: piso 3.2
 
 
 def dv_cpf(base: str) -> str:
@@ -88,7 +92,8 @@ class Repo:
         self.git("config", "commit.gpgsign", "false")
 
     def git(self, *args: str, check: bool = True) -> subprocess.CompletedProcess:
-        return subprocess.run(["git", *args], cwd=self.raiz, capture_output=True, encoding="utf-8", errors="replace", check=check)
+        return subprocess.run(["git", *args], cwd=self.raiz, capture_output=True, encoding="utf-8", errors="replace", check=check,
+                              env=ISOLADO)
 
     def escreve(self, nome: str, conteudo: str | bytes) -> None:
         p = self.raiz / nome
@@ -103,7 +108,8 @@ class Repo:
         return self.git("commit", "-q", "-m", "teste", *extra, check=False)
 
     def alarme(self, acao: str) -> subprocess.CompletedProcess:
-        return subprocess.run(["bash", str(ALARME), acao], cwd=self.raiz, capture_output=True, encoding="utf-8", errors="replace")
+        return subprocess.run([BASH, str(ALARME), acao], cwd=self.raiz, capture_output=True, encoding="utf-8", errors="replace",
+                              env=ISOLADO)
 
 
 class Base(unittest.TestCase):
@@ -240,8 +246,9 @@ class TestDeteccao(Base):
         frente = self.tmp / "frente"
         self.repo.git("worktree", "add", "-q", "-b", "frente", str(frente))
         (frente / ".env").write_text("X=1\n", encoding="utf-8")
-        subprocess.run(["git", "add", ".env"], cwd=frente, check=True)
-        r = subprocess.run(["git", "commit", "-q", "-m", "t"], cwd=frente, capture_output=True, encoding="utf-8", errors="replace")
+        subprocess.run(["git", "add", ".env"], cwd=frente, check=True, env=ISOLADO)
+        r = subprocess.run(["git", "commit", "-q", "-m", "t"], cwd=frente, capture_output=True, encoding="utf-8", errors="replace",
+                           env=ISOLADO)
         self.assertNotEqual(r.returncode, 0)
         self.assertIn("arquivo de senhas", r.stderr)
 
@@ -302,7 +309,8 @@ class TestInstalacao(Base):
     def test_fora_de_repositorio(self):
         fora = self.tmp / "fora"
         fora.mkdir()
-        r = subprocess.run(["bash", str(ALARME), "verificar"], cwd=fora, capture_output=True, encoding="utf-8", errors="replace")
+        r = subprocess.run([BASH, str(ALARME), "verificar"], cwd=fora, capture_output=True, encoding="utf-8", errors="replace",
+                           env=ISOLADO)
         self.assertEqual(r.returncode, 1)
         self.assertIn("não é um repositório git", r.stdout)
 
@@ -316,7 +324,7 @@ class TestCopiaGerada(Base):
         vazio.write_text("", encoding="utf-8")
         env = {**os.environ, "GIT_CONFIG_GLOBAL": str(vazio), "GIT_CONFIG_NOSYSTEM": "1",
                "GIT_CEILING_DIRECTORIES": str(self.tmp), "GIT_TERMINAL_PROMPT": "0"}
-        r = subprocess.run(["bash", str(RAIZ / "bin" / "sdd-open.sh"), "init", "--yes", "--vendors", "claude"],
+        r = subprocess.run([BASH, str(RAIZ / "bin" / "sdd-open.sh"), "init", "--yes", "--vendors", "claude"],
                            cwd=projeto, env=env, capture_output=True, encoding="utf-8", errors="replace",
                            stdin=subprocess.DEVNULL, timeout=120)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
@@ -326,16 +334,16 @@ class TestCopiaGerada(Base):
         copia = self.repo.raiz / ".claude" / "skills" / "sdd-higiene-dado" / "scripts"
         self.assertIn("sdd-open:generated", (copia / "pre-commit.sh").read_text(encoding="utf-8"),
                       "pré-condição: a cópia gerada deveria ter o cabeçalho do sync")
-        r = subprocess.run(["bash", str(copia / "alarme.sh"), "instalar"], cwd=self.repo.raiz,
-                           capture_output=True, encoding="utf-8", errors="replace")
+        r = subprocess.run([BASH, str(copia / "alarme.sh"), "instalar"], cwd=self.repo.raiz,
+                           capture_output=True, encoding="utf-8", errors="replace", env=ISOLADO)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         hook = (self.repo.raiz / ".git" / "hooks" / "pre-commit").read_text(encoding="utf-8")
         self.assertNotIn("sdd-open:generated", hook)
         fonte = Repo(self.tmp / "fonte")
         self.assertEqual(fonte.alarme("instalar").returncode, 0)
         self.assertEqual(hook, (fonte.raiz / ".git" / "hooks" / "pre-commit").read_text(encoding="utf-8"))
-        r = subprocess.run(["bash", str(copia / "alarme.sh"), "verificar"], cwd=self.repo.raiz,
-                           capture_output=True, encoding="utf-8", errors="replace")
+        r = subprocess.run([BASH, str(copia / "alarme.sh"), "verificar"], cwd=self.repo.raiz,
+                           capture_output=True, encoding="utf-8", errors="replace", env=ISOLADO)
         self.assertEqual(r.returncode, 0, r.stdout)
         self.assertIn("o alarme desta skill já está instalado", r.stdout)
 

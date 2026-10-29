@@ -18,7 +18,7 @@ import unittest
 from pathlib import Path
 
 SCRIPT = Path(__file__).resolve().parents[1] / ".agents" / "skills" / "sdd-iniciar-repo" / "scripts" / "inventario.sh"
-BASH = shutil.which("bash") or "bash"
+BASH = os.environ.get("SDD_TEST_BASH") or shutil.which("bash") or "bash"   # SDD_TEST_BASH=/bin/bash: piso 3.2
 
 
 class Base(unittest.TestCase):

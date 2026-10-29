@@ -88,6 +88,8 @@ dado_exposto() {
   else
     ONDE="Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo."
   fi
+  # O pathspec (sem diferenciar maiúsculas) filtra no próprio git: o case abaixo roda só nos candidatos.
+  # Com basename | tr em cada arquivo rastreado, 5 mil arquivos levavam 12 s — e o doctor roda isto em todo init.
   while IFS= read -r -d '' f; do
     b="$(basename "${f}" | tr '[:upper:]' '[:lower:]')"
     case "${b}" in
@@ -95,7 +97,8 @@ dado_exposto() {
       .env|.env.*) exposto "${f}" "O arquivo de senhas" "Depois, troque as senhas e chaves que estão nele." ;;
       *.pfx|*.p12) exposto "${f}" "O certificado digital" "Depois, revogue o certificado com a autoridade certificadora e emita outro." ;;
     esac
-  done < <(git -C "${RAIZ}" ls-files -z 2>/dev/null)
+  done < <(git -C "${RAIZ}" ls-files -z -- ':(glob,icase)**/.env' ':(glob,icase)**/.env.*' \
+             ':(glob,icase)**/*.pfx' ':(glob,icase)**/*.p12' 2>/dev/null)
   # .pem só é segredo quando traz a chave privada; certificado público é comum e não alarma.
   while IFS= read -r -d '' f; do
     exposto "${f}" "A chave privada" "Depois, gere uma chave nova e descarte esta."
