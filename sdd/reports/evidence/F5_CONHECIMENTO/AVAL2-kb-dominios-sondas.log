@@ -1,0 +1,143 @@
+$ bash kbd2.sh   (kb-dominios.py de 0e0dba5 sobre DEFINEs montados em $R/sdd/features com $R/sdd/kb/{fiscal,trab}; cada bloco: conteúdo, comando, saída, EXIT)
+== M1: reprodução original
+### fora-da-secao  (conteúdo: \##\ Goals\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*IaC\*\*\ \|\ None\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_fora-da-secao.md
+🛑 sdd/features/DEFINE_fora-da-secao.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### outra-secao-antes  (conteúdo: \##\ Goals\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ nenhum\ \|\ exemplo\ \|\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ inexistente\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_outra-secao-antes.md
+🛑 sdd/features/DEFINE_outra-secao-antes.md: KB Domains: 'inexistente' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+== regressões da leitura por seção
+### controle-nenhum  (conteúdo: \#\ DEFINE:\ X\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ nenhum\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_controle-nenhum.md
+✅ sdd/features/DEFINE_controle-nenhum.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+EXIT=0
+
+### controle-fiscal  (conteúdo: \#\ DEFINE:\ X\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_controle-fiscal.md
+✅ sdd/features/DEFINE_controle-fiscal.md: KB Domains válido (fiscal)
+RESULTADO: VERDE
+EXIT=0
+
+### depois-no-tc-outra-secao  (conteúdo: \#\ DEFINE:\ X\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*IaC\*\*\ \|\ None\ \|\ x\ \|\\n\\n##\ Out\ of\ Scope\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_depois-no-tc-outra-secao.md
+🛑 sdd/features/DEFINE_depois-no-tc-outra-secao.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### subsecao-h3-dentro  (conteúdo: \#\ DEFINE:\ X\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\\n###\ Detalhe\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_subsecao-h3-dentro.md
+✅ sdd/features/DEFINE_subsecao-h3-dentro.md: KB Domains válido (fiscal)
+RESULTADO: VERDE
+EXIT=0
+
+### h1-depois-do-tc  (conteúdo: \#\ DEFINE:\ X\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*IaC\*\*\ \|\ None\ \|\ x\ \|\\n\\n#\ Outro\ H1\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_h1-depois-do-tc.md
+✅ sdd/features/DEFINE_h1-depois-do-tc.md: KB Domains válido (fiscal)
+RESULTADO: VERDE
+EXIT=0
+
+### tc-espaco-final  (conteúdo: \#\ DEFINE:\ X\\n\\n##\ Technical\ Context\ \ \ \\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_tc-espaco-final.md
+✅ sdd/features/DEFINE_tc-espaco-final.md: KB Domains válido (fiscal)
+RESULTADO: VERDE
+EXIT=0
+
+### tc-minusculo  (conteúdo: \#\ DEFINE:\ X\\n\\n##\ Technical\ context\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_tc-minusculo.md
+🛑 sdd/features/DEFINE_tc-minusculo.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### tc-numerado  (conteúdo: \#\ DEFINE:\ X\\n\\n##\ 7.\ Technical\ Context\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_tc-numerado.md
+🛑 sdd/features/DEFINE_tc-numerado.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### tc-com-tab  (conteúdo: \#\ DEFINE:\ X\\n\\n##\\tTechnical\ Context\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_tc-com-tab.md
+🛑 sdd/features/DEFINE_tc-com-tab.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### tc-dentro-de-cerca  (conteúdo: \#\ DEFINE:\ X\\n\\n\`\`\`\\n##\ Technical\ Context\\n\`\`\`\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_tc-dentro-de-cerca.md
+🛑 sdd/features/DEFINE_tc-dentro-de-cerca.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### h2-dentro-de-cerca-no-tc  (conteúdo: \#\ DEFINE:\ X\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\`\`\`\\n##\ Goals\\n\`\`\`\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_h2-dentro-de-cerca-no-tc.md
+✅ sdd/features/DEFINE_h2-dentro-de-cerca-no-tc.md: KB Domains válido (fiscal)
+RESULTADO: VERDE
+EXIT=0
+
+### crlf  (conteúdo: \#\ DEFINE:\ X\\r\\n\\r\\n##\ Technical\ Context\\r\\n\\r\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\r\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_crlf.md
+✅ sdd/features/DEFINE_crlf.md: KB Domains válido (fiscal)
+RESULTADO: VERDE
+EXIT=0
+
+### bom-tc-1a-linha  (conteúdo: \\xef\\xbb\\xbf##\ Technical\ Context\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ nenhum\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_bom-tc-1a-linha.md
+🛑 sdd/features/DEFINE_bom-tc-1a-linha.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### bom-h1  (conteúdo: \\xef\\xbb\\xbf#\ DEFINE:\ X\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ nenhum\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_bom-h1.md
+✅ sdd/features/DEFINE_bom-h1.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+EXIT=0
+
+### dois-tc  (conteúdo: \#\ DEFINE:\ X\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*IaC\*\*\ \|\ x\ \|\ x\ \|\\n\\n##\ Goals\\n\\n##\ Technical\ Context\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ inexistente\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_dois-tc.md
+🛑 sdd/features/DEFINE_dois-tc.md: KB Domains: 'inexistente' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+== L2: sdd/kb ilegível
+$ chmod 000 sdd/kb; cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_l2.md
+🛑 sdd/features/DEFINE_l2.md: não consegui ler sdd/kb/ ([Errno 13] Permission denied: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.12tJSwibTJ/sdd/kb')
+RESULTADO: VERMELHO
+→ confira a permissão da pasta sdd/kb/ e rode de novo
+EXIT=1
+$ chmod 000 sdd/kb/fiscal (subpasta ilegível, sdd/kb legível)
+Traceback (most recent call last):
+  File "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py", line 162, in <module>
+    sys.exit(main(sys.argv))
+  File "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py", line 146, in main
+    erros, conserto, linhas = lint(define, texto)
+  File "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py", line 125, in lint
+    if not rm.is_file():
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1446, in is_file
+    return S_ISREG(self.stat().st_mode)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1222, in stat
+    return self._accessor.stat(self)
+PermissionError: [Errno 13] Permission denied: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.12tJSwibTJ/sdd/kb/fiscal/RULE_MAP.md'
+EXIT=1
+$ sdd/kb/trab/RULE_MAP.md como diretório
+✅ sdd/features/DEFINE_rmdir.md: KB Domains válido (trab)
+RESULTADO: VERDE
+EXIT=0
+== DEFINE real do projeto
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/sdd/bin/kb-dominios.py sdd/features/DEFINE_F5_CONHECIMENTO.md
+✅ sdd/features/DEFINE_F5_CONHECIMENTO.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+EXIT=0

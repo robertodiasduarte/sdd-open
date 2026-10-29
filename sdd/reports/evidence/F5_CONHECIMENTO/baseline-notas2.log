@@ -1,0 +1,7 @@
+$ (testes das notas do ciclo 2, contra o código de 0e0dba5) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_sdd_kb test_kb_dominios
+FAIL: test_kb_normativo_quebrado_tem_diagnostico_proprio (test_sdd_kb.Gate)
+FAIL: test_link_dentro_do_projeto_para_fora_passa (test_sdd_kb.Strict)
+FAIL: test_bom_no_inicio_nao_esconde_a_secao (test_kb_dominios.KbDominios)
+FAIL: test_dominio_ilegivel_nao_da_traceback (test_kb_dominios.KbDominios)
+Ran 43 tests in 17.019s
+FAILED (failures=4)

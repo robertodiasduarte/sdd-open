@@ -1,0 +1,69 @@
+$ for f in sdd/bin/verify-gate.sh sdd/bin/report-lint.py sdd/bin/skill-lint.py sdd/bin/design-lint.py sdd/bin/handoff-lint.py sdd/bin/playbook-lint.sh scripts/publish-gate.sh scripts/check-versions.py $(git ls-tree -r --name-only v2.2.5 sdd/fixtures); do cmp <(git show v2.2.5:$f) $f && echo "IGUAL $f" || echo "DIFERENTE $f"; done
+IGUAL sdd/bin/verify-gate.sh
+IGUAL sdd/bin/report-lint.py
+IGUAL sdd/bin/skill-lint.py
+IGUAL sdd/bin/design-lint.py
+IGUAL sdd/bin/handoff-lint.py
+IGUAL sdd/bin/playbook-lint.sh
+IGUAL scripts/publish-gate.sh
+IGUAL scripts/check-versions.py
+IGUAL sdd/fixtures/BRAINSTORM_EXEMPLO.md
+IGUAL sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md
+IGUAL sdd/fixtures/DEFINE_FIXTURE_GOVERNANCA.md
+IGUAL sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md
+IGUAL sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md
+IGUAL sdd/fixtures/conversa/conversa-com-outro/SKILL.md
+IGUAL sdd/fixtures/conversa/conversa-com-outro/references/como-falar.md
+IGUAL sdd/fixtures/conversa/conversa-controle/SKILL.md
+IGUAL sdd/fixtures/conversa/conversa-controle/references/como-falar.md
+IGUAL sdd/fixtures/conversa/conversa-dois-recomendados/SKILL.md
+IGUAL sdd/fixtures/conversa/conversa-dois-recomendados/references/como-falar.md
+IGUAL sdd/fixtures/conversa/conversa-sem-como-falar/SKILL.md
+IGUAL sdd/fixtures/conversa/conversa-sem-nao-sei/SKILL.md
+IGUAL sdd/fixtures/conversa/conversa-sem-nao-sei/references/como-falar.md
+IGUAL sdd/fixtures/conversa/conversa-sem-recomendado/SKILL.md
+IGUAL sdd/fixtures/conversa/conversa-sem-recomendado/references/como-falar.md
+IGUAL sdd/fixtures/conversa/conversa-sem-secao/SKILL.md
+IGUAL sdd/fixtures/design/DESIGN_VALIDO.md
+IGUAL sdd/fixtures/handoff/HANDOFF_VALIDO.md
+IGUAL sdd/fixtures/playbook/playbook-colapso.md
+IGUAL sdd/fixtures/playbook/playbook-delta-ok.md
+IGUAL sdd/fixtures/playbook/playbook-invalido.md
+IGUAL sdd/fixtures/playbook/playbook-valido.md
+$ git diff --stat v2.2.5 HEAD -- sdd/fixtures scripts sdd/bin ; git ls-tree -r --name-only HEAD sdd/fixtures | wc -l ; git ls-tree -r --name-only v2.2.5 sdd/fixtures | wc -l
+ sdd/bin/kb-dominios.py | 154 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 154 insertions(+)
+      23
+      23
+$ git diff v2.2.5 HEAD --stat -- .agents/skills | grep -v sdd-kb
+ .agents/skills/sdd-define/SKILL.md                 |  20 +-
+ .../casos/ub12-crt3-2026-09.json                   |   9 +
+ .../concepts/ano-teste-2026.md                     |  28 ++
+ .../assets/example-kb-normativo/fontes/CATALOGO.md |  18 +
+ .../fontes/registro-captura-2026-09-27.txt         |  13 +
+ .../patterns/conferir-vigencia-antes-de-usar.md    |  38 ++
+ .../assets/example-kb-normativo/quick-reference.md |  33 ++
+ .../example-kb-normativo/rules/ALIQ-REF-2026.md    |  26 ++
+ .../example-kb-normativo/rules/UB12-10-CRT3.md     |  26 ++
+ .../example-kb-normativo/rules/UB12-10-EXC1.md     |  26 ++
+ .../tabelas/2026-01-01/aliquotas-referencia.json   |   6 +
+ .../example-kb/concepts/regime-de-competencia.md   |  34 ++
+ .../patterns/conferir-antes-de-fechar.md           |  39 ++
+ .agents/skills/sdd-ux-review/SKILL.md              |   6 +-
+ .../sdd-ux-review/references/entrevista-publico.md | 111 +++++
+ 39 files changed, 2516 insertions(+), 5 deletions(-)
+$ git diff --name-only v2.2.5 HEAD | grep -v "^.agents/skills/sdd-kb/"
+.agents/skills/sdd-define/SKILL.md
+.agents/skills/sdd-ux-review/SKILL.md
+.agents/skills/sdd-ux-review/references/entrevista-publico.md
+.gitattributes
+MANIFEST.txt
+docs/cli-conventions.md
+sdd/bin/kb-dominios.py
+sdd/templates/DEFINE_TEMPLATE.md
+tests/test_conversa.py
+tests/test_kb_dominios.py
+tests/test_matriz_new_session.py
+tests/test_sdd_kb.py
+tests/test_sdd_kb_normativo.py
+tests/test_skill_lint.py

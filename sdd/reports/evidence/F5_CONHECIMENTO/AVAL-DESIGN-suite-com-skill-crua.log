@@ -1,0 +1,8 @@
+$ cd <mktemp: git archive v2.2.5 + skills/sdd-kb do starter sem agents/ + MANIFEST com os 35 arquivos> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py' 2>&1 | grep -E '^(FAIL|ERROR):|^Ran|^FAILED|^OK'
+FAIL: test_sao_16_e_as_14_da_f4_existem (test_conversa.Identificacao)
+FAIL: test_as_16_skills_reais_passam (test_skill_lint.SkillLint)
+FAIL: test_as_16_skills_reais_passam_com_conversa (test_skill_lint.SkillLint)
+Ran 388 tests in 214.919s
+FAILED (failures=3)
+
+[exited with code 0]

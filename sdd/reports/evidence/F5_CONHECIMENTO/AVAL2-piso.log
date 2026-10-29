@@ -1,0 +1,4 @@
+$ /usr/bin/python3 --version; /bin/bash --version | head -1; git -C $W rev-parse HEAD
+Python 3.9.6
+GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+0e0dba568caaa4b6f04e638e87ab63c350d431aa

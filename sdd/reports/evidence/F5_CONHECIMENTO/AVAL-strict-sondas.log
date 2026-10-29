@@ -1,0 +1,206 @@
+$ bash strict.sh   (validate_kb.py [--strict] sobre o example-kb-normativo revisado em <tmp>/proj/sdd/kb/dom, com implementacao/teste variados)
+### baseline-revisado  (implementacao: KEEP · teste: null )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### vazio-com-impl  (implementacao: src/engine.py:vbc · teste: "" )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: implementacao 'src/engine.py:vbc' has no teste — --strict requires the test the Verify Gate runs (RULE_TEMPLATE.md)
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### null-com-impl  (implementacao: src/engine.py:vbc · teste: null )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: implementacao 'src/engine.py:vbc' has no teste — --strict requires the test the Verify Gate runs (RULE_TEMPLATE.md)
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### til-com-impl  (implementacao: src/engine.py:vbc · teste: ~ )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: implementacao 'src/engine.py:vbc' has no teste — --strict requires the test the Verify Gate runs (RULE_TEMPLATE.md)
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### impl-til  (implementacao: ~ · teste: null )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### impl-None  (implementacao: None · teste: null )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: implementacao 'None' has no teste — --strict requires the test the Verify Gate runs (RULE_TEMPLATE.md)
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### impl-NULL  (implementacao: NULL · teste: null )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: implementacao 'NULL' has no teste — --strict requires the test the Verify Gate runs (RULE_TEMPLATE.md)
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### teste-NULL  (implementacao: src/engine.py:vbc · teste: NULL )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste 'NULL': NULL not found from the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Z6pmM7NHOJ/proj
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### inexistente  (implementacao: src/engine.py:vbc · teste: tests/test_x.py::t )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste 'tests/test_x.py::t': tests/test_x.py not found from the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Zl1zRux9LO/proj
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### existe  (implementacao: src/engine.py:vbc · teste: tests/test_engine.py::test_vbc )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### existe-aspas  (implementacao: src/engine.py:vbc · teste: "tests/test_engine.py::test_vbc" )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### existe-aspas-simples  (implementacao: src/engine.py:vbc · teste: 'tests/test_engine.py::test_vbc' )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### sem-impl-teste-inexistente  (implementacao: KEEP · teste: tests/nada.py )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste 'tests/nada.py': tests/nada.py not found from the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.zDxG87vnaX/proj
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### teste-diretorio  (implementacao: src/engine.py:vbc · teste: tests/ )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste 'tests/': tests/ not found from the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.aoYQRjfAes/proj
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### teste-dir-dois-pontos  (implementacao: src/engine.py:vbc · teste: tests::x )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste 'tests::x': tests not found from the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.HJh5E9cfaE/proj
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### absoluto-fora  (implementacao: src/engine.py:vbc · teste: /etc/hosts )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### traversal-fora  (implementacao: src/engine.py:vbc · teste: ../../../../../../../../etc/hosts::x )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### espaco-antes-2p  (implementacao: src/engine.py:vbc · teste: tests/test_engine.py ::x )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### comentario  (implementacao: src/engine.py:vbc · teste: tests/test_engine.py::x  # comentário )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### lista  (implementacao: src/engine.py:vbc · teste: [tests/test_engine.py] )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste must be a single value, got ['tests/test_engine.py']
+FAIL: rules/UB12-10-CRT3.md: implementacao 'src/engine.py:vbc' has no teste — --strict requires the test the Verify Gate runs (RULE_TEMPLATE.md)
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+FAIL: rules/UB12-10-CRT3.md: teste must be a single value, got ['tests/test_engine.py']
+EXIT=2
+
+### traco-em  (implementacao: src/engine.py:vbc · teste: — )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: implementacao 'src/engine.py:vbc' has no teste — --strict requires the test the Verify Gate runs (RULE_TEMPLATE.md)
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### pytest-k  (implementacao: src/engine.py:vbc · teste: "pytest tests/test_engine.py" )
+$ cd $R && validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste 'pytest tests/test_engine.py': pytest tests/test_engine.py not found from the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.EpusaH5ZAv/proj
+EXIT=2
+$ cd $R && validate_kb.py sdd/kb/dom
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### fora-de-sdd-kb, cwd=raiz-com-tests
+$ cd $R && validate_kb.py ../solto/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd / && validate_kb.py $R/../solto/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste 'tests/test_engine.py::x': tests/test_engine.py not found from the project root /
+EXIT=2
+### sob-sdd-kb, cwd=/
+$ cd / && validate_kb.py $R/sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ cd $R/sdd/kb/dom && validate_kb.py . --strict
+FAIL: index file not found: _index.yaml — register the domain (create it from KB_INDEX_TEMPLATE.yaml on the first run)
+WARN: parece normativo (LC, NT, alíquota, vigência) — if its rules hold only for a period, register the domain with `perfil: normativo` in the index
+EXIT=2
+$ validate_kb.py $R/sdd/kb/dom/ --strict --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+$ validate_kb.py --strict
+Usage: python3 .agents/skills/sdd-kb/scripts/validate_kb.py <kb-domain-dir> [index-file] [--strict]
+EXIT=64
+$ validate_kb.py $R/sdd/kb/dom extra1 extra2
+Usage: python3 .agents/skills/sdd-kb/scripts/validate_kb.py <kb-domain-dir> [index-file] [--strict]
+EXIT=64
+$ validate_kb.py $R/sdd/kb/dom -s
+FAIL: index file not found: -s — register the domain (create it from KB_INDEX_TEMPLATE.yaml on the first run)
+WARN: parece normativo (LC, NT, alíquota, vigência) — if its rules hold only for a period, register the domain with `perfil: normativo` in the index
+EXIT=2

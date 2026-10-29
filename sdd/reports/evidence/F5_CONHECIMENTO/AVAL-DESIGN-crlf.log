@@ -1,0 +1,4 @@
+$ python3 -B validate_kb.py <cópia do example-kb-normativo com CRLF em todos os arquivos, como num checkout Windows com core.autocrlf=true>
+WARN: index.md: PENDENTE DE REVISÃO — do not let software consume this KB before review (validate with --strict)
+FAIL: fontes/CATALOGO.md: CAPTURA-2026-09-27: SHA-256 of fontes/registro-captura-2026-09-27.txt differs from the catalog — the file changed; recatalog it as a new version
+rc=2

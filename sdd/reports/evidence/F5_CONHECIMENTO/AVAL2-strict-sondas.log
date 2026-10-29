@@ -1,0 +1,93 @@
+$ bash strict2.sh   (validate_kb.py --strict de 0e0dba5; rules/UB12-10-CRT3.md com implementacao: src/engine.py:vbc e teste variado; WARN filtrado)
+== L3: reprodução original (raiz /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj, via /var → /private/var)
+### absoluto-fora  (teste: /etc/hosts · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste '/etc/hosts': /etc/hosts is outside the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj — use a path relative to it
+EXIT=2
+
+### traversal-fora  (teste: ../../../../../../../../etc/hosts::x · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste '../../../../../../../../etc/hosts::x': ../../../../../../../../etc/hosts is outside the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj — use a path relative to it
+EXIT=2
+
+== controles
+### relativo-existe  (teste: tests/test_engine.py::test_vbc · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### ponto-barra  (teste: ./tests/test_engine.py::test_vbc · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### dentro-com-ponto-ponto  (teste: tests/../tests/test_engine.py::t · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### absoluto-dentro  (teste: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj/tests/test_engine.py::t · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj/tests/test_engine.py::t': /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj/tests/test_engine.py is outside the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj — use a path relative to it
+EXIT=2
+
+### inexistente  (teste: tests/nada.py::t · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste 'tests/nada.py::t': tests/nada.py not found from the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj
+EXIT=2
+
+### ponto  (teste: . · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste '.': . is outside the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj — use a path relative to it
+EXIT=2
+
+== raiz por link simbólico e caminho físico
+### fisico-relativo  (teste: tests/test_engine.py::t · cwd: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### dom-absoluto-fisico  (teste: tests/test_engine.py::t · cwd: /)
+$ cd "/" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj/sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### dom-absoluto-var  (teste: tests/test_engine.py::t · cwd: /)
+$ cd "/" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj/sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### raiz-por-symlink  (teste: tests/test_engine.py::t · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/link-proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/link-proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+### dom-por-symlink-absoluto  (teste: tests/test_engine.py::t · cwd: /)
+$ cd "/" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/link-proj/sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+== teste que é link simbólico
+### arquivo-symlink-para-fora  (teste: tests/test_link.py::t · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste 'tests/test_link.py::t': tests/test_link.py is outside the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj — use a path relative to it
+EXIT=2
+
+### pasta-symlink-para-fora  (teste: tests/comum/test_comum.py::t · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+FAIL: rules/UB12-10-CRT3.md: teste 'tests/comum/test_comum.py::t': tests/comum/test_comum.py is outside the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj — use a path relative to it
+EXIT=2
+
+### arquivo-symlink-dentro  (teste: tests/test_alias.py::t · cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj)
+$ cd "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/proj" && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xXAk4gheaj/aval2/.agents/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+
+== sem sdd/kb (raiz = cwd)
+### solto-cwd-raiz
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/solto && validate_kb.py dom --strict
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+EXIT=0
+### solto-cwd-raiz, teste fora: ../fora.py
+FAIL: rules/UB12-10-CRT3.md: teste '../fora.py': ../fora.py is outside the project root /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3TLymD9YaX/solto — use a path relative to it
+EXIT=2

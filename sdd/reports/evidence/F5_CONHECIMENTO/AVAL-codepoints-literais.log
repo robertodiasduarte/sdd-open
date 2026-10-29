@@ -1,0 +1,7 @@
+$ /usr/bin/python3 -B cp.py   (code points dos arquivos alterados v2.2.5..HEAD)
+arquivos: 50 achados: 0
+EXIT=0
+$ PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh <git archive HEAD>  (G2 só)
+G2 forbidden patterns
+  ✅ no forbidden pattern matched
+G3 allowlist (MANIFEST.txt)

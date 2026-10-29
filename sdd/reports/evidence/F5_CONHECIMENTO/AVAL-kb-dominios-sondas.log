@@ -1,0 +1,275 @@
+$ bash kbd.sh   (/usr/bin/python3 -B sdd/bin/kb-dominios.py sobre DEFINEs montados em <tmp>/sdd/features com <tmp>/sdd/kb; cada bloco: conteúdo, comando, saída, EXIT)
+### nenhum  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ nenhum\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_nenhum.md
+✅ sdd/features/DEFINE_nenhum.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+EXIT=0
+
+### Nenhum-maiusc  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ Nenhum\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_Nenhum-maiusc.md
+✅ sdd/features/DEFINE_Nenhum-maiusc.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+EXIT=0
+
+### existe  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ \`fiscal\`\,\ sdd/kb/trab/\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_existe.md
+✅ sdd/features/DEFINE_existe.md: KB Domains válido (fiscal, trab)
+  trab: R-1 → tests/t.py::a
+  trab: R-3 → tests/u.py
+RESULTADO: VERDE
+→ ponha estes testes no cmd do Verify Gate, ou registre no DEFINE por que não
+EXIT=0
+
+### ausente  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*IaC\*\*\ \|\ None\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_ausente.md
+🛑 sdd/features/DEFINE_ausente.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### vazio  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ \ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_vazio.md
+🛑 sdd/features/DEFINE_vazio.md: KB Domains: '' não é lista de domínios
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### placeholder  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ \{dominios\}\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_placeholder.md
+🛑 sdd/features/DEFINE_placeholder.md: KB Domains: '{dominios}' não é lista de domínios
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### NA  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ N/A\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_NA.md
+🛑 sdd/features/DEFINE_NA.md: KB Domains: 'N/A' não é lista de domínios
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### nenhum-com-nome  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ nenhum\,\ fiscal\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_nenhum-com-nome.md
+🛑 sdd/features/DEFINE_nenhum-com-nome.md: KB Domains: 'nenhum' vem sozinho
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### sem-pasta  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\,\ inexistente\,\ outro\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_sem-pasta.md
+🛑 sdd/features/DEFINE_sem-pasta.md: KB Domains: 'inexistente' não existe em sdd/kb/ (existem: fiscal, trab)
+🛑 sdd/features/DEFINE_sem-pasta.md: KB Domains: 'outro' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### oculta  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ .oculta\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_oculta.md
+🛑 sdd/features/DEFINE_oculta.md: KB Domains: '.oculta' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### arquivo  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ arquivo\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_arquivo.md
+🛑 sdd/features/DEFINE_arquivo.md: KB Domains: 'arquivo' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### index  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ _index.yaml\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_index.md
+🛑 sdd/features/DEFINE_index.md: KB Domains: '_index.yaml' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### traversal  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ ../features\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_traversal.md
+🛑 sdd/features/DEFINE_traversal.md: KB Domains: '../features' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### ponto  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ .\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_ponto.md
+🛑 sdd/features/DEFINE_ponto.md: KB Domains: '.' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### fora-da-secao  (conteúdo: \##\ Goals\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*IaC\*\*\ \|\ None\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_fora-da-secao.md
+✅ sdd/features/DEFINE_fora-da-secao.md: KB Domains válido (fiscal)
+RESULTADO: VERDE
+EXIT=0
+
+### outra-secao-antes  (conteúdo: \##\ Goals\\n\\n\|\ \*\*KB\ Domains\*\*\ \|\ nenhum\ \|\ exemplo\ \|\\n\\n##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ inexistente\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_outra-secao-antes.md
+✅ sdd/features/DEFINE_outra-secao-antes.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+EXIT=0
+
+### em-cerca  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\`\`\`\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\n\`\`\`\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_em-cerca.md
+🛑 sdd/features/DEFINE_em-cerca.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### angulo  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ \<dominio\>\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_angulo.md
+🛑 sdd/features/DEFINE_angulo.md: KB Domains: '<dominio>' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### so-virgula  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ \,\ \,\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_so-virgula.md
+🛑 sdd/features/DEFINE_so-virgula.md: KB Domains: ', ,' não é lista de domínios
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### nenhum-ponto  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ nenhum.\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_nenhum-ponto.md
+🛑 sdd/features/DEFINE_nenhum-ponto.md: KB Domains: 'nenhum.' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### traco  (conteúdo: $'## Technical Context\\n\\n| Aspect | Value | Notes |\\n|---|---|---|\\n| **KB Domains** | �\200\224 | x |\\n')
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_traco.md
+🛑 sdd/features/DEFINE_traco.md: KB Domains: '—' não é lista de domínios
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### negrito-sem-tabela  (conteúdo: \*\*KB\ Domains\*\*:\ fiscal\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_negrito-sem-tabela.md
+🛑 sdd/features/DEFINE_negrito-sem-tabela.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### crlf  (conteúdo: \##\ Technical\ Context\\r\\n\\r\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\ x\ \|\\r\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_crlf.md
+✅ sdd/features/DEFINE_crlf.md: KB Domains válido (fiscal)
+RESULTADO: VERDE
+EXIT=0
+
+### duas-colunas  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_duas-colunas.md
+✅ sdd/features/DEFINE_duas-colunas.md: KB Domains válido (fiscal)
+RESULTADO: VERDE
+EXIT=0
+
+### sem-pipe-final  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_sem-pipe-final.md
+🛑 sdd/features/DEFINE_sem-pipe-final.md: falta a linha **KB Domains** no Technical Context
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### bom-utf8  (conteúdo: \\xef\\xbb\\xbf##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ nenhum\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_bom-utf8.md
+✅ sdd/features/DEFINE_bom-utf8.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+EXIT=0
+
+### latin1  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ n\\xe3o\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_latin1.md
+🛑 sdd/features/DEFINE_latin1.md: não consegui ler: 'utf-8' codec can't decode byte 0xe3 in position 83: invalid continuation byte
+RESULTADO: VERMELHO
+→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo
+EXIT=1
+
+### espaco-nome  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\ trab\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_espaco-nome.md
+🛑 sdd/features/DEFINE_espaco-nome.md: KB Domains: 'fiscal trab' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### ponto-virgula  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ fiscal\;\ trab\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_ponto-virgula.md
+🛑 sdd/features/DEFINE_ponto-virgula.md: KB Domains: 'fiscal; trab' não existe em sdd/kb/ (existem: fiscal, trab)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### mais-de-10  (conteúdo: \##\ Technical\ Context\\n\\n\|\ Aspect\ \|\ Value\ \|\ Notes\ \|\\n\|---\|---\|---\|\\n\|\ \*\*KB\ Domains\*\*\ \|\ zzz\ \|\ x\ \|\\n)
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_mais-de-10.md
+🛑 sdd/features/DEFINE_mais-de-10.md: KB Domains: 'zzz' não existe em sdd/kb/ (existem: d1, d10, d11, d12, d13, d2, d3, d4, d5, d6 e mais 5)
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+
+### sdd-kb-ausente
+$ cd $R2 && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_x.md
+🛑 sdd/features/DEFINE_x.md: KB Domains: sdd/kb/ não existe
+RESULTADO: VERMELHO
+→ rode a sdd-kb para criar a base, ou escreva nenhum
+EXIT=1
+$ cd $R2 && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py sdd/features/DEFINE_n.md
+✅ sdd/features/DEFINE_n.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+EXIT=0
+$ cd / && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py $R/sdd/features/DEFINE_existe.md   # absoluto, cwd=/
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4qKnPNsEl1/sdd/features/DEFINE_existe.md: KB Domains válido (fiscal, trab)
+  trab: R-1 → tests/t.py::a
+  trab: R-3 → tests/u.py
+RESULTADO: VERDE
+→ ponha estes testes no cmd do Verify Gate, ou registre no DEFINE por que não
+EXIT=0
+$ cd / && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py $R/DEFINE_solto.md   # fora de sdd/features, cwd=/ (raiz = cwd)
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4qKnPNsEl1/DEFINE_solto.md: KB Domains: sdd/kb/ não existe
+RESULTADO: VERMELHO
+→ rode a sdd-kb para criar a base, ou escreva nenhum
+EXIT=1
+$ cd $R && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py DEFINE_solto.md   # fora de sdd/features, cwd=raiz
+✅ DEFINE_solto.md: KB Domains válido (fiscal, trab)
+  trab: R-1 → tests/t.py::a
+  trab: R-3 → tests/u.py
+RESULTADO: VERDE
+→ ponha estes testes no cmd do Verify Gate, ou registre no DEFINE por que não
+EXIT=0
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py
+uso: kb-dominios.py <DEFINE.md>
+EXIT=64
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py /nao/existe.md
+uso: kb-dominios.py <DEFINE.md>
+EXIT=64
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py a b
+uso: kb-dominios.py <DEFINE.md>
+EXIT=64
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py $R/sdd   # diretório
+uso: kb-dominios.py <DEFINE.md>
+EXIT=64
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py --help
+uso: kb-dominios.py <DEFINE.md>
+EXIT=64
+$ chmod 000 DEFINE_nenhum.md; /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py ...
+🛑 sdd/features/DEFINE_nenhum.md: não consegui ler: [Errno 13] Permission denied: 'sdd/features/DEFINE_nenhum.md'
+RESULTADO: VERMELHO
+→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo
+EXIT=1
+$ chmod 000 sdd/kb/trab/RULE_MAP.md; /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py DEFINE_existe.md
+✅ sdd/features/DEFINE_existe.md: KB Domains válido (fiscal, trab)
+⚠️ trab/RULE_MAP.md: não consegui ler ([Errno 13] Permission denied: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4qKnPNsEl1/sdd/kb/trab/RULE_MAP.md')
+RESULTADO: VERDE
+EXIT=0
+$ chmod 000 sdd/kb; /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py DEFINE_existe.md
+Traceback (most recent call last):
+  File "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py", line 154, in <module>
+    sys.exit(main(sys.argv))
+  File "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py", line 138, in main
+    erros, conserto, linhas = lint(define, texto)
+  File "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py", line 108, in lint
+    existentes = sorted(p.name for p in kb.iterdir() if p.is_dir() and not p.name.startswith("."))
+  File "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py", line 108, in <genexpr>
+    existentes = sorted(p.name for p in kb.iterdir() if p.is_dir() and not p.name.startswith("."))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1150, in iterdir
+    for name in self._accessor.listdir(self):
+PermissionError: [Errno 13] Permission denied: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4qKnPNsEl1/sdd/kb'
+EXIT=1

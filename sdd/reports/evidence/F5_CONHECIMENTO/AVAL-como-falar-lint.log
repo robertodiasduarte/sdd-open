@@ -1,0 +1,25 @@
+$ (cópia em mktemp; como-falar.md da sdd-kb sem '(recomendado)') python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/sdd-kb/SKILL.md
+0
+🛑 .agents/skills/sdd-kb/SKILL.md: references/como-falar.md:50 **Este domínio tem regra que vale por período, como lei, alíquota, prazo ou leiaute de documento fiscal?** — nenhuma opção (recomendado)
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+EXIT=1
+$ (cópia; como-falar.md com opção **Outro**) python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/sdd-kb/SKILL.md
+🛑 .agents/skills/sdd-kb/SKILL.md: references/como-falar.md:50 **Este domínio tem regra que vale por período, como lei, alíquota, prazo ou leiaute de documento fiscal?** — tem a opção **Outro**: resposta fora das opções é tratada como dúvida
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+EXIT=1
+$ (cópia; como-falar.md sem citar PERGUNTA_DECISAO.md) skill-lint --conversa + test_conversa
+✅ .agents/skills/sdd-kb/SKILL.md: frontmatter válido · camada de conversa ok
+EXIT=0
+FAIL: test_como_falar_existe_e_cita_o_fragmento (test_conversa.Camada) (skill='sdd-kb')
+Ran 18 tests in 0.067s
+FAILED (failures=1)
+$ (cópia; SKILL.md da sdd-kb com identificação v2.1.0) skill-lint --conversa
+✅ .agents/skills/sdd-kb/SKILL.md: frontmatter válido · camada de conversa ok
+EXIT=0
+$ (cópia; identificação da sdd-kb v2.1.0 ≠ metadata 2.2.0) cd tests && python3 -B -m unittest test_conversa test_skill_lint
+1
+FAIL: test_linha_de_identificacao_tem_a_versao_do_frontmatter (test_conversa.Identificacao) (skill='sdd-kb')
+Ran 47 tests in 2.252s
+FAILED (failures=1)

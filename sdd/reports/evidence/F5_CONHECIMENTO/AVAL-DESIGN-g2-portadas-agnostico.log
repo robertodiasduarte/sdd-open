@@ -1,0 +1,20 @@
+$ grep -c "def test_" tests/test_sdd_kb_normativo.py; while read rx; do grep -rInE -i "$rx" skills/sdd-kb tests/test_sdd_kb_normativo.py; done < <(grep -vE "^#|^$" <open>/scripts/publish-gate-patterns.txt); grep -rn "sdd-starter\|npx skills add\|sdd/ambiente.md" skills/sdd-kb
+62
+--- G2 hits:
+sed: 1: "s|^|[\(?\b[0-9]{2}\)?[  ...": bad flag in substitute command: '['
+sed: 1: "s|^|[\b(feedback|refere ...": bad flag in substitute command: 'r'
+--- Portadas proibidos:
+skills/sdd-kb/SKILL.md:14:`sdd-kb v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`
+--- agnostico:
+(fim)
+$ for rx in <publish-gate-patterns.txt>; do grep -rInE -i "$rx" skills/sdd-kb tests/test_sdd_kb_normativo.py; done  (starter 17c69c4)
+hits=0  /[0-9]{11,}/
+hits=0  /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/
+hits=0  /\+[0-9]{2}[ -]?\(?[0-9]{2}\)?[ -]?[0-9]{4,5}[ -]?[0-9]{4}/
+hits=0  /[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}/
+hits=0  /[0-9]{2}\.[0-9]{3}\.[0-9]{3}/[0-9]{4}-[0-9]{2}/
+hits=0  /\(?[0-9]{2}\)?[ -]?(9[0-9]{4}|[2-5][0-9]{3})-[0-9]{4}/
+hits=0  /\[\[[a-z0-9_-]+\]\]/
+hits=0  /(feedback|reference|project)_[a-z0-9_]+\.md/
+hits=0  //Users/[a-z]+//
+hits=0  //home/[a-z]+//

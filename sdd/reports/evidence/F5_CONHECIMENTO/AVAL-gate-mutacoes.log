@@ -1,0 +1,75 @@
+$ for m in <9 mutações numa cópia mktemp de .agents/skills/sdd-kb>; do /bin/bash $C/sdd-kb/scripts/gate.sh; done   (cada bloco: ### nome, a mutação, a saída, EXIT)
+### aceita-ruim
+$ (mutação: sed -i '' 's/"concept": 150/"concept": 151/' scripts/validate_kb.py; grep -n '"concept"' scripts/validate_kb.py | head -2) bash $C/sdd-kb/scripts/gate.sh
+🛑 limite-conceito: caso ruim ACEITO
+    PASS: KB lint passed (1 concept(s), 1 pattern(s))
+RESULTADO: VERMELHO
+→ o validador deixou de conferir isto
+EXIT=2
+
+### rejeita-bom
+$ (mutação: /usr/bin/python3 - <<'X'
+p='scripts/validate_kb.py'; t=open(p).read(); t=t.replace('def main():','def main():
+    if "bom-codigo" in " ".join(sys.argv): print("FAIL: x"); return 2',1); open(p,'w').write(t)
+X) bash $C/sdd-kb/scripts/gate.sh
+🛑 bom-codigo: caso bom REJEITADO
+    FAIL: x
+RESULTADO: VERMELHO
+→ o validador passou a reprovar conteúdo válido
+EXIT=2
+
+### razao-errada
+$ (mutação: sed -i '' 's/limit is {LIMITS\[.pattern.\]}/limite {LIMITS["pattern"]}/' scripts/validate_kb.py; grep -n 'limite {' scripts/validate_kb.py) bash $C/sdd-kb/scripts/gate.sh
+🛑 limite-receita: rejeitado por outro motivo (esperado: limit is 200)
+    FAIL: patterns/conferir-antes-de-fechar.md has 201 lines, limite 200
+RESULTADO: VERMELHO
+→ confira a mutação e o validador
+EXIT=2
+
+### ancora
+$ (mutação: sed -i '' 's/prática consolidada do escritório/pratica do escritorio/' assets/example-kb/concepts/regime-de-competencia.md) bash $C/sdd-kb/scripts/gate.sh
+🛑 placeholder: âncora ausente: prática consolidada do escritório
+    FAIL: domain 'dom' is not registered in _index.yaml — an unregistered KB is invisible to whoever consults the index
+RESULTADO: VERMELHO
+→ o exemplo mudou; atualize a âncora no gate.sh
+EXIT=2
+
+### rulemap-derivou
+$ (mutação: sed -i '' 's/UB12-10-CRT3/UB12-10-CRTX/' assets/example-kb-normativo/RULE_MAP.md) bash $C/sdd-kb/scripts/gate.sh
+🛑 normativo: caso bom REJEITADO
+    WARN: index.md: PENDENTE DE REVISÃO — do not let software consume this KB before review (validate with --strict)
+    FAIL: RULE_MAP.md: missing or differs from rules/ — run `python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map <domain>` (never edit it by hand)
+RESULTADO: VERMELHO
+→ o validador passou a reprovar conteúdo válido
+EXIT=2
+
+### strict-sem-isfile
+$ (mutação: sed -i '' 's/if not (projeto \/ arquivo).is_file():/if False:/' scripts/validate_kb.py; grep -c 'if False' scripts/validate_kb.py) bash $C/sdd-kb/scripts/gate.sh
+🛑 teste-inexistente-strict: caso ruim ACEITO
+    PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+RESULTADO: VERMELHO
+→ o validador deixou de conferir isto
+EXIT=2
+
+### strict-sem-vazio
+$ (mutação: sed -i '' 's/if impl and not teste:/if False:/' scripts/validate_kb.py; grep -c 'if False' scripts/validate_kb.py) bash $C/sdd-kb/scripts/gate.sh
+🛑 teste-vazio-strict: caso ruim ACEITO
+    PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+RESULTADO: VERMELHO
+→ o validador deixou de conferir isto
+EXIT=2
+
+### validador-ausente
+$ (mutação: rm scripts/validate_kb.py) bash $C/sdd-kb/scripts/gate.sh
+🛑 pacote incompleto: faltam scripts/ ou assets/ ao lado do gate.sh
+RESULTADO: VERMELHO
+→ reinstale a skill sdd-kb
+EXIT=2
+
+### python-quebrado
+$ (mutação: echo 'raise SystemExit(2)' > scripts/kb_normativo.py) bash $C/sdd-kb/scripts/gate.sh
+🛑 geral: caso bom REJEITADO
+RESULTADO: VERMELHO
+→ o validador passou a reprovar conteúdo válido
+EXIT=2
+

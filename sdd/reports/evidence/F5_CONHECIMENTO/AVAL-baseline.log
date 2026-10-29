@@ -1,0 +1,8 @@
+$ (árvore v2.2.5 + os 3 módulos novos) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_sdd_kb test_sdd_kb_normativo test_kb_dominios
+----------------------------------------------------------------------
+Ran 94 tests in 2.949s
+
+FAILED (failures=27, errors=69)
+test_sdd_kb exit=1
+test_sdd_kb_normativo exit=1
+test_kb_dominios exit=1

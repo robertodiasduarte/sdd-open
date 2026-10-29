@@ -1,0 +1,12 @@
+$ (testes das notas do ciclo 1, contra o código de 7e5b25c) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_sdd_kb test_kb_dominios test_conversa
+FAIL: test_ancora_ausente_e_vermelho_com_a_moldura (test_sdd_kb.Gate)
+FAIL: test_recusa_a_copia_gerada_pelo_init (test_sdd_kb.Gate)
+FAIL: test_rule_map_derivado_do_exemplo_aponta_o_rule_map (test_sdd_kb.Gate)
+FAIL: test_teste_fora_da_raiz_reprova (test_sdd_kb.Strict) (teste='/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-rwxco_g8/fora.py')
+FAIL: test_teste_fora_da_raiz_reprova (test_sdd_kb.Strict) (teste='../fora.py::t')
+FAIL: test_teste_fora_da_raiz_reprova (test_sdd_kb.Strict) (teste='tests/../../fora.py')
+FAIL: test_linha_fora_do_technical_context_nao_conta (test_kb_dominios.KbDominios)
+FAIL: test_nenhum_em_outra_secao_nao_esconde_o_technical_context (test_kb_dominios.KbDominios)
+FAIL: test_sdd_kb_ilegivel_e_1_sem_traceback (test_kb_dominios.KbDominios)
+Ran 58 tests in 14.615s
+FAILED (failures=9)

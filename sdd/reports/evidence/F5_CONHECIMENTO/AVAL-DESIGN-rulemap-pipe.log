@@ -1,0 +1,4 @@
+$ (RULE_MAP regerado com localizador "art. 5º | inciso II" e teste preenchido) — leitura da coluna Teste por split ingênuo em "|" × split em "|" não escapado
+ALIQ-REF-2026 | ingênuo → '—' | não escapado → '—'
+UB12-10-CRT3 | ingênuo → 'src/r.py' | não escapado → 'tests/test_r.py::t'
+UB12-10-EXC1 | ingênuo → '—' | não escapado → '—'
