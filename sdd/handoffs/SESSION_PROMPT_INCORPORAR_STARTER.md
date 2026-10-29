@@ -113,9 +113,9 @@ Depois, leia nesta ordem:
    ```bash
    cd /Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs
    T=$(mktemp -d) && GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter
-   git worktree add -q "$T" docs/incorporar-starter
+   git worktree add -q --detach "$T" origin/docs/incorporar-starter   # do remoto: a branch local pode estar atrás
    for d in features handoffs reports reviews; do mkdir -p "$T/sdd/$d" && rsync -a --delete "sdd/$d/" "$T/sdd/$d/"; done
-   git -C "$T" add sdd/features sdd/handoffs sdd/reports sdd/reviews && git -C "$T" commit -q -m "docs(incorporar-starter): sessão 4 — F6 Docs" && GIT_TERMINAL_PROMPT=0 git -C "$T" push -q origin docs/incorporar-starter
+   git -C "$T" add sdd/features sdd/handoffs sdd/reports sdd/reviews && git -C "$T" commit -q -m "docs(incorporar-starter): sessão 4 — F6 Docs" && GIT_TERMINAL_PROMPT=0 git -C "$T" push -q origin HEAD:docs/incorporar-starter
    git worktree remove --force "$T"
    ```
 
