@@ -38,8 +38,8 @@ preparar o computador, criar o primeiro projeto e publicá-lo.
   - **git** — guarda o histórico de versões;
   - **bash 3.2 ou mais novo** — já vem no Mac e no Linux; no Windows, use o Git Bash (vem com o git)
     ou o WSL;
-  - **python3 3.9 ou mais novo** — as fases rodam pequenos conferidores escritos nele (o do Verify
-    Gate, o do relatório, o do design).
+  - **python3 3.9 ou mais novo** — as fases rodam pequenos conferidores escritos nele (o do Define,
+    o do design, o do relatório).
 
 Não sabe se tem os três? A skill `sdd-checar-ambiente` olha por você e diz o comando que resolve cada
 falta.
@@ -88,11 +88,13 @@ git); depois rode `git init -b main`, que só cria o git vazio — nada é salvo
 
 **Quando sair versão nova:**
 1. `git pull` dentro da pasta `~/sdd-open`;
-2. `bash ~/sdd-open/bin/sdd-open.sh doctor` na pasta do projeto — ele aponta cada skill e cada
-   arquivo de `sdd/bin/` que diferem do pacote que você baixou (por isso o `git pull` vem antes);
+2. `bash ~/sdd-open/bin/sdd-open.sh doctor` na pasta do projeto — ele aponta cada skill com versão
+   mais velha que a do pacote que você baixou e cada arquivo de `sdd/bin/` diferente dele (por isso o
+   `git pull` vem antes);
 3. para cada skill apontada, apague a pasta dela em `.agents/skills/` (edições que você fez nela se
    perdem); para cada arquivo de `sdd/bin/` apontado, apague o arquivo, se você não o editou;
-4. rode o `init` de novo com `--yes`: ele copia de volta só o que você apagou;
+4. rode o `init` de novo com `--yes`: ele copia de volta o que você apagou e atualiza o trecho do
+   SDD Open no `AGENTS.md` (o resto do arquivo não é tocado);
 5. `bash ~/sdd-open/bin/sdd-open.sh sync --yes`, que regenera as cópias de cada agente.
 
 O `sync` sozinho não traz versão nova: ele só copia o que já está em `.agents/skills/`.
@@ -579,9 +581,9 @@ As skills já tratam os casos abaixo. O que você precisa saber é só como reag
 | **O `init` ou o `sync` respondeu `CANCELADO`** | Faltou o `--yes`: o agente rodou sem um terminal onde você pudesse confirmar. Rode o `--dry-run`, leia o plano e repita com `--yes`. |
 | **"este comando precisa de um repositório git"** | A pasta ainda não usa git. Confira que ela não está numa pasta sincronizada, rode `git init -b main` e repita o `init`. |
 | **Verify Gate devolveu `2`, `3`, `4`, `5` ou `64`** | Veja a tabela da seção 3: `2` a skill corrige; `3` falta uma ferramenta; `4` precisa da sua assinatura; `5` volte ao Define e responda a dúvida; `64` volte ao Define. |
-| **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certificado. Escolha: **corrigir** (tirar o arquivo desta versão ou pô-lo na lista do que fica de fora), **dado fictício** (ela troca o número por um inválido e salva) ou **gravar mesmo assim** (só se você conferiu que pode sair do computador). |
+| **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certificado, ou é uma planilha nova. Escolha: **corrigir** (tirar o arquivo desta versão ou pô-lo na lista do que fica de fora), **dado fictício** (ela troca o número por um inválido e salva) ou **gravar mesmo assim** (só se você conferiu que pode sair do computador). |
 | **Release não publicou** | Teste falhou, há segredo no que ia subir, ou a base está desatualizada. A skill diz qual. Corrija na frente e peça a release de novo. |
-| **O `doctor` diz que uma skill ou um arquivo de `sdd/bin/` difere do pacote** | Apague a pasta da skill em `.agents/skills/` (ou o arquivo de `sdd/bin/`, se você não o editou) e rode o `init` de novo com `--yes`; depois, `sync --yes` (seção 2, "Quando sair versão nova"). |
+| **O `doctor` diz que uma skill está mais velha que o pacote, ou que um arquivo de `sdd/bin/` difere dele** | Apague a pasta da skill em `.agents/skills/` (ou o arquivo de `sdd/bin/`, se você não o editou) e rode o `init` de novo com `--yes`; depois, `sync --yes` (seção 2, "Quando sair versão nova"). |
 | **A skill respondeu sem Status nem opções** | A skill pode não ter carregado, ou a versão é antiga. Confira a linha de identificação e rode o `doctor`. |
 | **"Não reconheço este erro"** | Peça a `sdd-checar-ambiente` e, se persistir, copie a resposta e peça ajuda a quem conhece git. |
 | **Perdi a conversa** | Abra o agente na pasta da frente e cole o último prompt de retomada. Se não tiver, peça: *"leia sdd/handoffs/HANDOFF_NOME.md e me diga onde paramos"*. |
@@ -624,7 +626,7 @@ As skills já tratam os casos abaixo. O que você precisa saber é só como reag
 | **slot** | Uma linha do `sdd/config.yaml` com um comando do seu projeto (o de testes, o de publicar). Vazio quer dizer "pule este passo e diga que pulou". |
 | **adaptador** | A cópia das skills e das regras no formato de um agente (`.claude/skills/`, `CLAUDE.md`). É gerada pelo `sync`; não edite. |
 | **`sync`** | O comando que regenera os adaptadores a partir de `.agents/skills/`. |
-| **`doctor`** | O diagnóstico da instalação: o que está instalado, o que está mais velho que o pacote, o que falta. |
+| **`doctor`** | O diagnóstico da instalação: o que está instalado, a skill mais velha que o pacote, o arquivo de `sdd/bin/` diferente dele, o que falta. |
 | **landmine** | Uma armadilha que já mordeu o projeto, registrada no playbook com o que fazer no lugar. |
 | **playbook** | O arquivo `sdd/playbook.md`, com as landmines do projeto. |
 | **contexto fresco** | Uma sessão do agente que não viu a conversa do build — quem confere não é quem construiu. |

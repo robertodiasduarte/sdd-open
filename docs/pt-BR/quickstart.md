@@ -172,12 +172,13 @@ sobe e se o push publica sozinho — e faz uma pergunta só. Nada é publicado s
 
 ```bash
 cd /tmp/sdd-open && git pull
-cd meu-projeto && bash /tmp/sdd-open/bin/sdd-open.sh doctor   # o que está mais velho que o pacote?
+cd meu-projeto && bash /tmp/sdd-open/bin/sdd-open.sh doctor   # o que ficou para trás do pacote?
 ```
 
 O `init` nunca sobrescreve uma skill nem um script de `sdd/bin/` que você já tem, e o `sync` só
 regenera os adaptadores — então nenhum dos dois, sozinho, traz a versão nova de uma skill. O `doctor`
-aponta cada skill e cada arquivo de `sdd/bin/` mais velhos que o pacote. Para cada skill apontada:
+aponta cada skill com versão mais velha que a do pacote e cada arquivo de `sdd/bin/` diferente dele.
+Para cada skill apontada:
 
 ```bash
 rm -r .agents/skills/sdd-build                                 # a pasta que o doctor apontou; edições suas nela se perdem
@@ -220,5 +221,7 @@ agente lê `.agents/skills/` nativamente, e se o CLI dele está no PATH.
 
 O [sdd-starter](https://github.com/robertodiasduarte/sdd-starter) é a rampa (skills para
 agentes sem sistema de arquivos, como claude.ai e ChatGPT); o SDD Open é a rodovia. Os nomes
-das skills coincidem de propósito: use **um ou outro** por projeto. O `doctor` avisa se
-detectar os dois.
+das skills coincidem de propósito: use **um ou outro** por projeto. O `doctor` avisa
+quando as skills do starter estão na pasta do projeto; a instalação global do starter (na pasta
+pessoal do agente, como `~/.claude/skills/` ou `~/.agents/skills/`) ele não vê — remova as pastas
+`sdd-*` de lá antes.

@@ -37,8 +37,12 @@ GUIA = RAIZ / "docs/pt-BR/guia-do-aluno.md"
 PROIBIDO_NO_GUIA = ("npx skills", "15 skills", "ux-review-builder", "sdd-starter/releases",
                     "sdd/BRAINSTORM_", "sdd/DEFINE_", "sdd/DESIGN_", "sdd/BUILD_REPORT_", "sdd/HANDOFF_",
                     "registra e libera")
-# "sdd/ fica fora do git", em qualquer redação: procurado em cada parágrafo (ou linha de tabela) que cita sdd/.
-FORA_DO_GIT = re.compile(r"(não vai|não entra|não sobe|ficam? fora)[^.|]{0,40}\b(git|github)\b", re.I)
+# "sdd/ fica fora do git", nas redações do starter e nas variações conhecidas (não vai/entra/sobe, fica fora,
+# fora do, não suba/envie, não é enviado/versionado, .gitignore): procurado em cada parágrafo (ou linha de
+# tabela) que cita sdd/. O autoteste abaixo guarda cada redação que já apareceu.
+FORA_DO_GIT = re.compile(
+    r"(não vai|não entra|não sobe|ficam? fora|fora do|não suba|não envie|não (?:é|são) (?:enviad|versionad)\w*)"
+    r"[^.|]{0,40}\b(git|github)\b|\.gitignore", re.I)
 
 QUICKSTART = {
     "en": (RAIZ / "docs/quickstart.md",
@@ -238,7 +242,11 @@ class Guia(unittest.TestCase):
         ruins = ("Os documentos ficam na pasta `sdd/` do projeto: `BRAINSTORM_NOME.md`, `DEFINE_NOME.md`, "
                  "`DESIGN_NOME.md`. Essa pasta **não vai para o GitHub** — é o seu caderno de trabalho.",
                  "| **`sdd/`** | A pasta do projeto onde ficam os documentos das fases. Não vai para o GitHub. |",
-                 "A pasta `sdd/` não entra no git.")
+                 "A pasta `sdd/` não entra no git.",
+                 "A pasta `sdd/` fica só no seu computador, fora do GitHub.",
+                 "A pasta `sdd/` está no `.gitignore`.",
+                 "Não suba a pasta `sdd/` para o GitHub.",
+                 "Os arquivos de `sdd/` não são enviados ao GitHub.")
         for frase in ruins:
             with self.subTest(frase=frase[:40]):
                 self.assertTrue(afirma_sdd_fora_do_git(frase))

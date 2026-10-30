@@ -172,12 +172,12 @@ whether the push publishes by itself — and asks a single question. Nothing shi
 
 ```bash
 cd /tmp/sdd-open && git pull
-cd my-project && bash /tmp/sdd-open/bin/sdd-open.sh doctor   # what is older than the package?
+cd my-project && bash /tmp/sdd-open/bin/sdd-open.sh doctor   # what fell behind the package?
 ```
 
 `init` never overwrites a skill or a `sdd/bin/` script you already have, and `sync` only regenerates
-the adapters — so neither one, alone, brings a new skill version. `doctor` names each skill and each
-`sdd/bin/` file older than the package. For each skill it names:
+the adapters — so neither one, alone, brings a new skill version. `doctor` names each skill whose version
+is older than the package's and each `sdd/bin/` file that differs from it. For each skill it names:
 
 ```bash
 rm -r .agents/skills/sdd-build                                 # the folder doctor named; your edits in it are lost
@@ -219,4 +219,6 @@ whether the agent reads `.agents/skills/` natively, and whether its CLI is on th
 
 [sdd-starter](https://github.com/robertodiasduarte/sdd-starter) is the on-ramp (skills for
 agents without a filesystem, such as claude.ai and ChatGPT); SDD Open is the highway. Skill
-names coincide on purpose: use **one or the other** per project. `doctor` warns if it finds both.
+names coincide on purpose: use **one or the other** per project. `doctor` warns when the starter's skills are in the project
+folder; a global starter install (in the agent's home folder, such as `~/.claude/skills/` or
+`~/.agents/skills/`) it cannot see — remove the `sdd-*` folders there first.
