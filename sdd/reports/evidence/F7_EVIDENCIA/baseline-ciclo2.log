@@ -1,0 +1,16 @@
+$ T=$(mktemp -d) && git archive bed1f69 | tar -x -C "$T" && cp tests/test_test_baseline.py tests/test_avaliador_guard.py tests/test_report_lint_evidencia.py tests/test_gate_shell_evidencia.py tests/test_verify_gate_trace.py "$T/tests/" && cd "$T/tests" && /usr/bin/python3 -B -m unittest test_test_baseline test_avaliador_guard test_report_lint_evidencia test_gate_shell_evidencia test_verify_gate_trace > "$T/saida.txt" 2>&1; rc=$?; grep -E "^(FAIL|ERROR|Ran|OK|FAILED)" "$T/saida.txt"; cd /; rm -rf "${T:?}"; exit $rc
+FAIL: test_pacote_go_sem_linha_de_teste_tambem_falha (test_test_baseline.TestBaseline)
+FAIL: test_saida_colorida_e_lida (test_test_baseline.TestBaseline)
+FAIL: test_so_remocao_staged_sugere_commit_sem_add (test_avaliador_guard.AvaliadorGuard)
+FAIL: test_rotulos_em_negrito_e_em_tabela_sem_c1 (test_report_lint_evidencia.Veredito) (texto='**Veredito do avaliador**: PASS · ciclos: 2\n')
+FAIL: test_rotulos_em_negrito_e_em_tabela_sem_c1 (test_report_lint_evidencia.Veredito) (texto='| Item | Valor |\n|---|---|\n| Veredito do avaliador | PASS |\n')
+FAIL: test_bordas_do_pipe (test_gate_shell_evidencia.GateShellEvidencia) (log='$\ncmd | tail -1\n[exit=0]\n')
+FAIL: test_bordas_do_pipe (test_gate_shell_evidencia.GateShellEvidencia) (log='$ cmd | tail -1 # PIPESTATUS\n[exit=0]\n')
+FAIL: test_bordas_do_pipe (test_gate_shell_evidencia.GateShellEvidencia) (log='$ cmd | (tail -1)\n[exit=0]\n')
+FAIL: test_bordas_do_pipe (test_gate_shell_evidencia.GateShellEvidencia) (log='$ cmd | command tail -1\n[exit=0]\n')
+FAIL: test_bordas_do_pipe (test_gate_shell_evidencia.GateShellEvidencia) (log='$ cmd | env LC_ALL=C sort -u\n[exit=0]\n')
+FAIL: test_bordas_do_pipe (test_gate_shell_evidencia.GateShellEvidencia) (log='$ out=$(cmd); r=$?; printf x | tail -1\n[exit=1]\n')
+FAIL: test_sem_permissao_diz_que_nao_gravou (test_verify_gate_trace.SemDefine)
+Ran 91 tests in 17.062s
+FAILED (failures=12)
+[exit=1]

@@ -1,0 +1,15 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/tb-go.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval
+$ cat sdd/baselines/tests.txt
+TestConhecido
+TestOutroConhecido
+$ bash sdd/bin/test-baseline.sh   # project.test_cmd = cat go.txt; exit 1
+▶ testes: cat go.txt; exit 1
+ℹ️  conhecida: TestConhecido
+✅ sarou — removido do baseline (commite sdd/baselines/tests.txt): TestOutroConhecido
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+$ cat sdd/baselines/tests.txt
+TestConhecido
+[exit=0]

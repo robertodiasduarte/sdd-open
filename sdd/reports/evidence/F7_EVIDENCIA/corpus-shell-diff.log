@@ -1,0 +1,3 @@
+$ bash sdd/bin/gate-shell-evidencia.sh $(ls -d sdd/reports/evidence/*/ | grep -v F7_EVIDENCIA) > "$TMPDIR/c.txt"; sed -n "s/^🛑 \([^ ]*\.log:[0-9]*\).*/\1/p" "$TMPDIR/c.txt" > "$TMPDIR/n0.txt"; LC_ALL=C sort -o "$TMPDIR/n.txt" "$TMPDIR/n0.txt"; diff sdd/reports/evidence/F7_EVIDENCIA/corpus-esperado.txt "$TMPDIR/n.txt" && echo "(diff vazio: as $(grep -c . "$TMPDIR/n.txt") acusações são as esperadas)"
+(diff vazio: as 22 acusações são as esperadas)
+[exit=0]

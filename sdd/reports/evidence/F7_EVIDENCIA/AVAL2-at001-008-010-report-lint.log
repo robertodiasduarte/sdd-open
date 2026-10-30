@@ -1,0 +1,185 @@
+$ P=$PWD; . /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/rl-setup.sh
+git add -A; git commit -qm base
+echo "== AT-001 sem tabela reconhecida (cabeçalho Outcome|Proof)"; printf "# R\n\n| ID | C | Outcome | Proof |\n|--|--|--|--|\n| AT-001 | x | true | nada |\n\navaliador: N.A. (1 camada)\n" > sdd/reports/BUILD_REPORT_X.md; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-002 cabeçalho | ID | Criterion | Result | Evidence | com true sem evidência"; printf "# R\n\n| ID | Criterion | Result | Evidence |\n|--|--|--|--|\n| AT-001 | x | true | deve funcionar |\n| AT-002 | y | true | \`evidence/X/AT-001.log\` |\n\navaliador: N.A. (1 camada)\n" > sdd/reports/BUILD_REPORT_X.md; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-003 fixture sem_avaliacao"; cp "$P"/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md sdd/reports/; mkdir -p sdd/reports/evidence/sem_avaliacao; cp sdd/reports/evidence/X/AT-001.log sdd/reports/evidence/sem_avaliacao/; RL sdd/reports/BUILD_REPORT_sem_avaliacao.md
+echo "== AT-003 declaração dentro de bloco cercado não vale"; rep "\`\`\`
+avaliador: N.A. (1 camada)
+\`\`\`"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-003 AVALIACAO vazio não vale"; : > sdd/reviews/AVALIACAO_X_20261030.md; rep "nada"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-003 AVALIACAO com nome fora do padrão (AVALIACAO_X_ciclo1.md) não vale"; rm sdd/reviews/AVALIACAO_X_20261030.md; echo PASS > sdd/reviews/AVALIACAO_X_ciclo1.md; RL sdd/reports/BUILD_REPORT_X.md; rm sdd/reviews/AVALIACAO_X_ciclo1.md
+echo "== AT-004 AVALIACAO existe, relatório não cita"; echo PASS > sdd/reviews/AVALIACAO_X_20261030-ciclo1.md; rep "nada sobre o avaliador"; RL sdd/reports/BUILD_REPORT_X.md; rm sdd/reviews/AVALIACAO_X_20261030-ciclo1.md
+printf "layers:\n  sql: \"supabase/migrations/*.sql\"\n  api: \"api/*\"\n  ui: \"web/*\"\nevidence:\n  require_avaliacao_layers: 2\n" > sdd/config.yaml
+dsg() { printf "# D\n\n## File Manifest\n\n| # | Arquivo | Ação |\n|---|---|---|\n%s\n\n## Outro\n" "$1" > sdd/features/DESIGN_X.md; }
+echo "== AT-004 N.A. com 1 camada"; dsg "| 1 | \`api/a.py\` | criar |"; rep "avaliador: N.A. (1 camada)"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-005 N.A. com 2 camadas"; dsg "| 1 | \`api/a.py\` | criar |
+| 2 | \`web/b.ts\` | criar |"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-005 N=1, 1 camada"; dsg "| 1 | \`api/a.py\` | criar |"; sed -i "" "s/require_avaliacao_layers: 2/require_avaliacao_layers: 1/" sdd/config.yaml; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-005 N inválido (abc) → 2 com aviso"; sed -i "" "s/require_avaliacao_layers: 1/require_avaliacao_layers: abc/" sdd/config.yaml; dsg "| 1 | \`api/a.py\` | criar |
+| 2 | \`web/b.ts\` | criar |"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-005 slot ausente → default 2"; printf "layers:\n  api: \"api/*\"\n  ui: \"web/*\"\n" > sdd/config.yaml; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-004 contagem impossível: sem DESIGN"; rm sdd/features/DESIGN_X.md; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-004 contagem impossível: DESIGN sem manifest"; printf "# D\n\n## Outra\n" > sdd/features/DESIGN_X.md; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-004 contagem impossível: nenhum caminho casa"; dsg "| 1 | \`docs/a.md\` | criar |"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-006 N.A. sem motivo"; rep "avaliador: N.A."; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-006 PENDENTE sem motivo"; rep "avaliador: PENDENTE"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-006 PENDENTE com () vazio"; rep "avaliador: PENDENTE ()"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-007 fixture pendente modo comum"; cp "$P"/sdd/fixtures/evidencia/BUILD_REPORT_pendente.md sdd/reports/; mkdir -p sdd/reports/evidence/pendente; cp sdd/reports/evidence/X/AT-001.log sdd/reports/evidence/pendente/; RL sdd/reports/BUILD_REPORT_pendente.md
+echo "== AT-007 --pendente"; RL --pendente sdd/reports/BUILD_REPORT_pendente.md
+echo "== AT-007 --pendente sem PENDENTE"; cp "$P"/sdd/fixtures/evidencia/BUILD_REPORT_controle.md sdd/reports/; RL --pendente sdd/reports/BUILD_REPORT_controle.md
+echo "== AT-007 --pendente ilegível / sem argumento"; RL --pendente sdd/reports/NAO.md; RL --pendente
+echo "== AT-007 --pendente com PENDENTE em bloco cercado"; printf "x\n\`\`\`\navaliador: PENDENTE (exemplo)\n\`\`\`\n" > sdd/reports/BUILD_REPORT_Y.md; RL --pendente sdd/reports/BUILD_REPORT_Y.md
+echo "== AT-008 fixture evidencia_ignorada"; cp "$P"/sdd/fixtures/evidencia/BUILD_REPORT_evidencia_ignorada.md sdd/reports/; mkdir -p sdd/reports/evidence/evidencia_ignorada; cp sdd/reports/evidence/X/AT-001.log sdd/reports/evidence/evidencia_ignorada/; echo "sdd/reports/evidence/evidencia_ignorada/" > .gitignore; RL sdd/reports/BUILD_REPORT_evidencia_ignorada.md
+echo "== AT-008 AVALIACAO ignorado (info/exclude) não satisfaz AT-003"; echo PASS > sdd/reviews/AVALIACAO_X_20261030.md; echo "sdd/reviews/AVALIACAO_X_*" >> .git/info/exclude; rep "nada"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-008 git check-ignore não roda (fora de repo, sem .git)"; cd "$T"; mkdir -p nr && cp -R r/sdd nr/ && rm -rf nr/sdd/reviews/*; cd nr; printf "# R\n\n%s\n\navaliador: N.A. (1 camada)\n" "$TAB" > sdd/reports/BUILD_REPORT_X.md; RL sdd/reports/BUILD_REPORT_X.md
+cd "$T/r"; rm -f .gitignore; : > .git/info/exclude
+echo "== AT-010 --stdin: mesmo conteúdo, mesmo exit (sem_avaliacao → 1)"; /usr/bin/python3 -B sdd/bin/report-lint.py --stdin sdd/reports/BUILD_REPORT_sem_avaliacao.md < sdd/reports/BUILD_REPORT_sem_avaliacao.md >/dev/null 2>&1; echo "stdin exit=$?"
+echo "== AT-010 --stdin: conteúdo diferente do disco (controle via stdin em caminho de X)"; rep "avaliador: N.A. (1 camada)"; dsg "| 1 | \`api/a.py\` | criar |"; rm -f sdd/reviews/AVALIACAO_X_*; printf "# R\n\nsem tabela\n" | /usr/bin/python3 -B sdd/bin/report-lint.py --stdin sdd/reports/BUILD_REPORT_X.md; echo "stdin(sem tabela) exit=$?"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== AT-010 --stdin com caminho inexistente no disco"; rep "avaliador: N.A. (1 camada)"; /usr/bin/python3 -B sdd/bin/report-lint.py --stdin sdd/reports/BUILD_REPORT_X.md < sdd/reports/BUILD_REPORT_X.md > /dev/null; echo "a=$?"; cp sdd/reports/BUILD_REPORT_X.md "$T/fora.md"; rm sdd/reports/BUILD_REPORT_X.md; /usr/bin/python3 -B sdd/bin/report-lint.py --stdin sdd/reports/BUILD_REPORT_X.md < "$T/fora.md" >/dev/null; echo "b(inexistente no disco)=$?"
+cd /; rm -rf "${T:?}"
+== AT-001 sem tabela reconhecida (cabeçalho Outcome|Proof)
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+🛑 [tabela] nenhuma tabela de critérios reconhecida (uma coluna Resultado, Status, Passou ou Result e uma coluna Evidência): sem ela, nenhum critério é conferido
+RESULTADO: VERMELHO
+exit=1
+== AT-002 cabeçalho | ID | Criterion | Result | Evidence | com true sem evidência
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+🛑 [evidência] AT-001: `true` sem evidência válida — evidência declarativa ('por raciocínio'/'deve funcionar') não é prova
+RESULTADO: VERMELHO
+exit=1
+== AT-003 fixture sem_avaliacao
+🛑 [avaliação ausente] não há `AVALIACAO_sem_avaliacao_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_sem_avaliacao_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+exit=1
+== AT-003 declaração dentro de bloco cercado não vale
+🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_X_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+exit=1
+== AT-003 AVALIACAO vazio não vale
+🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_X_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+exit=1
+== AT-003 AVALIACAO com nome fora do padrão (AVALIACAO_X_ciclo1.md) não vale
+🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_X_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+exit=1
+== AT-004 AVALIACAO existe, relatório não cita
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== AT-004 N.A. com 1 camada
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== AT-005 N.A. com 2 camadas
+🛑 [declaração] `N.A.` não vale: o File Manifest de DESIGN_X.md toca 2 camadas (api, ui), e o limite é 2 (`evidence.require_avaliacao_layers`). Rode o avaliador, ou declare `avaliador: PENDENTE (<motivo>)` se o build travou antes dele
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+exit=1
+== AT-005 N=1, 1 camada
+🛑 [declaração] `N.A.` não vale: o File Manifest de DESIGN_X.md toca 1 camadas (api), e o limite é 1 (`evidence.require_avaliacao_layers`). Rode o avaliador, ou declare `avaliador: PENDENTE (<motivo>)` se o build travou antes dele
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+exit=1
+== AT-005 N inválido (abc) → 2 com aviso
+⚠️  `evidence.require_avaliacao_layers: abc` não é inteiro ≥ 1 — usei 2
+🛑 [declaração] `N.A.` não vale: o File Manifest de DESIGN_X.md toca 2 camadas (api, ui), e o limite é 2 (`evidence.require_avaliacao_layers`). Rode o avaliador, ou declare `avaliador: PENDENTE (<motivo>)` se o build travou antes dele
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+exit=1
+== AT-005 slot ausente → default 2
+🛑 [declaração] `N.A.` não vale: o File Manifest de DESIGN_X.md toca 2 camadas (api, ui), e o limite é 2 (`evidence.require_avaliacao_layers`). Rode o avaliador, ou declare `avaliador: PENDENTE (<motivo>)` se o build travou antes dele
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+exit=1
+== AT-004 contagem impossível: sem DESIGN
+⚠️  N.A. aceito sem conferir camadas — DESIGN_X.md não encontrado em sdd/features/; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== AT-004 contagem impossível: DESIGN sem manifest
+⚠️  N.A. aceito sem conferir camadas — DESIGN_X.md sem `File Manifest`; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== AT-004 contagem impossível: nenhum caminho casa
+⚠️  N.A. aceito sem conferir camadas — nenhum caminho do File Manifest de DESIGN_X.md casa os globs de `layers:`; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== AT-006 N.A. sem motivo
+🛑 [declaração] `N.A.` sem motivo (linha 9) — escreva `avaliador: N.A. (<motivo>)`
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+exit=1
+== AT-006 PENDENTE sem motivo
+🛑 [declaração] `PENDENTE` sem motivo (linha 9) — escreva `avaliador: PENDENTE (<motivo>)`
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+exit=1
+== AT-006 PENDENTE com () vazio
+🛑 [declaração] `PENDENTE` sem motivo (linha 9) — escreva `avaliador: PENDENTE (<motivo>)`
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+exit=1
+== AT-007 fixture pendente modo comum
+⚠️  avaliação PENDENTE (o build travou no Verify Gate, exit 3, antes do passo 5d), linha 14 — a release não sai enquanto esta linha existir
+✅ sdd/reports/BUILD_REPORT_pendente.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== AT-007 --pendente
+sdd/reports/BUILD_REPORT_pendente.md:14: PENDENTE (o build travou no Verify Gate, exit 3, antes do passo 5d)
+RESULTADO: VERMELHO
+→ a release não sai com avaliação pendente: rode o avaliador e troque a linha pelo veredito.
+exit=1
+== AT-007 --pendente sem PENDENTE
+✅ nenhuma avaliação PENDENTE em 1 relatório(s)
+RESULTADO: VERDE
+exit=0
+== AT-007 --pendente ilegível / sem argumento
+🛑 não consegui ler sdd/reports/NAO.md: [Errno 2] No such file or directory: 'sdd/reports/NAO.md'
+RESULTADO: ERRO DE USO
+exit=64
+uso: report-lint.py --pendente sdd/reports/BUILD_REPORT_{FEATURE}.md …
+RESULTADO: ERRO DE USO
+exit=64
+== AT-007 --pendente com PENDENTE em bloco cercado
+✅ nenhuma avaliação PENDENTE em 1 relatório(s)
+RESULTADO: VERDE
+exit=0
+== AT-008 fixture evidencia_ignorada
+⚠️  N.A. aceito sem conferir camadas — DESIGN_evidencia_ignorada.md não encontrado em sdd/features/; preencha `layers:` em sdd/config.yaml para a contagem valer
+🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/evidencia_ignorada/AT-001.log` existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — remova a regra ou use `git add -f`
+RESULTADO: VERMELHO
+exit=1
+== AT-008 AVALIACAO ignorado (info/exclude) não satisfaz AT-003
+🛑 [avaliação ausente] `sdd/reviews/AVALIACAO_X_20261030.md` existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — remova a regra ou use `git add -f`: `git add -f sdd/reviews/AVALIACAO_X_20261030.md`
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_X_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+exit=1
+== AT-008 git check-ignore não roda (fora de repo, sem .git)
+⚠️  N.A. aceito sem conferir camadas — nenhum caminho do File Manifest de DESIGN_X.md casa os globs de `layers:`; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  não conferido: `git check-ignore` saiu 128 (fora de um repositório git?): persistência não conferida
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== AT-010 --stdin: mesmo conteúdo, mesmo exit (sem_avaliacao → 1)
+stdin exit=1
+== AT-010 --stdin: conteúdo diferente do disco (controle via stdin em caminho de X)
+🛑 [tabela] nenhuma tabela de critérios reconhecida (uma coluna Resultado, Status, Passou ou Result e uma coluna Evidência): sem ela, nenhum critério é conferido
+🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — o manifest toca 1 (api); (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ use a tabela do template: `| ID | Critério | Resultado | Evidência |`.
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_X_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+stdin(sem tabela) exit=1
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== AT-010 --stdin com caminho inexistente no disco
+a=0
+b(inexistente no disco)=0
+[exit=0]

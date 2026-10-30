@@ -1,0 +1,110 @@
+$ F=sdd/fixtures/evidencia
+for x in shell-honesto shell-falso-verde shell-pipe-assertivo; do echo "== $x"; bash sdd/bin/gate-shell-evidencia.sh $F/$x.log; echo "exit=$?"; done
+echo "== conteúdo shell-falso-verde.log (numerado)"; cat -n $F/shell-falso-verde.log
+T=$(mktemp -d)
+caso() { printf "%s\n" "$2" > "$T/$1.log"; bash sdd/bin/gate-shell-evidencia.sh "$T/$1.log" >"$T/o" 2>&1; r=$?; echo "-- $1 => exit=$r $(grep "^🛑 /" "$T/o" | sed "s#$T/##" | cut -c1-90)"; }
+caso sort-com-var "\$ cmd | LC_ALL=C sort
+[exit=0]"
+caso pipe-e "\$ cmd |& tail -1
+[exit=0]"
+caso exit-espaco "\$ cmd
+[exit= ]"
+caso exit-espaco-sem-colchete "\$ cmd
+exit= "
+caso pipestatus-bash "\$ cmd | tail; echo \${PIPESTATUS[0]}
+[exit=1]"
+caso rc-antes "\$ out=\$(cmd 2>&1); rc=\$?; printf %s \"\$out\" | tail -n 200; echo \"[exit=\$rc]\"
+[exit=1]"
+caso rc-depois "\$ cmd | tail -1; rc=\$?; echo \"[exit=\$rc]\"
+[exit=0]"
+caso literal "\$ cmd
+[exit=\$?]"
+caso grep-c "\$ cmd | grep -c X
+[exit=0]"
+caso jq-e "\$ cmd | jq -e .a
+[exit=0]"
+caso awk-exit "\$ cmd | awk \x27/x/{f=1} END{exit !f}\x27
+[exit=0]"
+caso ou-ou "\$ cmd || echo falhou
+[exit=0]"
+caso caminho-abs "\$ cmd | /usr/bin/tail -1
+[exit=0]"
+caso dois-vars "\$ cmd | A=1 B=2 wc -l
+[exit=0]"
+caso pipefail "\$ set -o pipefail; cmd | tail -1
+[exit=0]"
+caso exit-N-sem-colchete "\$ cmd | head -3
+exit=0"
+caso multilinha-bypass "\$ 
+cmd | tail -1
+[exit=0]"
+caso comentario-pipestatus "\$ cmd | tail -1 # PIPESTATUS
+[exit=0]"
+caso subshell-tail "\$ cmd | (tail -1)
+[exit=0]"
+caso command-tail "\$ cmd | command tail -1
+[exit=0]"
+rm -rf "${T:?}"
+== shell-honesto
+✅ 1 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+== shell-falso-verde
+🛑 sdd/fixtures/evidencia/shell-falso-verde.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ npm test | tail -5
+🛑 sdd/fixtures/evidencia/shell-falso-verde.log:6 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ go test ./... | tail -3; rc=$?
+🛑 sdd/fixtures/evidencia/shell-falso-verde.log:9 — o número gravado (exit=0) é o exit de `cut`, não do seu comando
+      $ pytest -q | cut -c1-80
+🛑 sdd/fixtures/evidencia/shell-falso-verde.log:12 — `[exit=]` vazio: não há exit nenhum aqui (no zsh, ${PIPESTATUS[0]} sai vazio)
+🛑 sdd/fixtures/evidencia/shell-falso-verde.log:15 — `[exit=$?]` literal: o exit nunca foi expandido
+🛑 sdd/fixtures/evidencia/shell-falso-verde.log:17 — `exit=` vazio: não há exit nenhum aqui (no zsh, ${PIPESTATUS[0]} sai vazio)
+🛑 6 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+exit=2
+== shell-pipe-assertivo
+✅ 1 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+== conteúdo shell-falso-verde.log (numerado)
+     1	$ npm test | tail -5
+     2	3 passed, 1 failed
+     3	[exit=0]
+     4	$ go test ./... | tail -3; rc=$?
+     5	FAIL exemplo/conta
+     6	[exit=0]
+     7	$ pytest -q | cut -c1-80
+     8	1 failed, 2 passed
+     9	exit=0
+    10	$ deno test conta_test.ts | tail -2
+    11	error: Test failed
+    12	[exit=]
+    13	$ deno check conta.ts
+    14	Check conta.ts
+    15	[exit=$?]
+    16	$ npm run lint 2>&1 | head -20
+    17	exit=
+-- sort-com-var => exit=2 🛑 sort-com-var.log:2 — o número gravado ([exit=0]) é o exit de `sort`, não do seu comando
+-- pipe-e => exit=2 🛑 pipe-e.log:2 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+-- exit-espaco => exit=2 🛑 exit-espaco.log:2 — `[exit= ]` vazio: não há exit nenhum aqui (no zsh, ${PIPESTATUS[0]} 
+-- exit-espaco-sem-colchete => exit=2 🛑 exit-espaco-sem-colchete.log:2 — `exit= ` vazio: não há exit nenhum aqui (no zsh, ${PIPE
+-- pipestatus-bash => exit=0 
+-- rc-antes => exit=0 
+-- rc-depois => exit=2 🛑 rc-depois.log:2 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+-- literal => exit=2 🛑 literal.log:2 — `[exit=$?]` literal: o exit nunca foi expandido
+-- grep-c => exit=0 
+-- jq-e => exit=0 
+-- awk-exit => exit=0 
+-- ou-ou => exit=0 
+-- caminho-abs => exit=2 🛑 caminho-abs.log:2 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+-- dois-vars => exit=2 🛑 dois-vars.log:2 — o número gravado ([exit=0]) é o exit de `wc`, não do seu comando
+-- pipefail => exit=0 
+-- exit-N-sem-colchete => exit=2 🛑 exit-N-sem-colchete.log:2 — o número gravado (exit=0) é o exit de `head`, não do seu com
+-- multilinha-bypass => exit=0 
+-- comentario-pipestatus => exit=0 
+-- subshell-tail => exit=0 
+-- command-tail => exit=0 
+[exit=0]

@@ -1,0 +1,122 @@
+$ B=.agents/skills/sdd-build/SKILL.md; R=.agents/skills/sdd-release/SKILL.md
+echo "== versões e linhas"; grep -m1 -nE "^version:|version:" $B; grep -m1 -nE "version:" $R; wc -l $B $R
+echo "== sdd-build: flag LLM Prompts (passo 1)"; grep -nE "LLM Prompts|LLM-prompts|prompts de LLM" $B | cut -c1-200
+echo "== sdd-build: avaliador-guard (1.5 e 5d)"; grep -nE "avaliador-guard" $B | cut -c1-160
+echo "== sdd-build: gate-baseline / test-baseline / PENDENTE / LLM_PROMPTS_BUILD_REPORT"; grep -nE "gate-baseline|test-baseline|PENDENTE|LLM_PROMPTS_BUILD_REPORT" $B | cut -c1-160
+echo "== sdd-build: seção Por que"; awk "/^## Por que cada regra existe/{f=1} f" $B | grep -E "^- \*\*" | cut -c1-120
+echo "== sdd-release: 0a e Gates de ABORTAR"; grep -nE "report-lint.py --pendente|gate-shell-evidencia|--sem-define|≠ 0|doctor" $R | cut -c1-200
+echo "== sdd-release: Por que"; awk "/^## Por que cada regra existe/{f=1} f" $R | grep -E "^- \*\*" | cut -c1-120
+echo "== bloco do OK: diff v2.2.7..HEAD restrito às linhas do bloco"; git diff v2.2.7..HEAD -- $R | grep -E "^[-+]" | grep -vE "^(\+\+\+|---)" | cut -c1-140
+echo "== templates"; E=sdd/templates/fragments/EVIDENCIA.md
+grep -c "rc=\$?" $E; grep -nE "reprova" $E | head -5 | cut -c1-140; grep -c "git check-ignore" $E; grep -nE "PENDENTE \(|N\.A\. \(" $E | head -4 | cut -c1-140
+grep -nE "PreToolUse|systemMessage|\.githooks/" $E; echo "proibidos no EVIDENCIA.md: $?(1=nenhum)"
+grep -n "PENDENTE" sdd/templates/BUILD_REPORT_TEMPLATE.md | cut -c1-160
+grep -nE "^#+ " sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md
+grep -nB2 "require_avaliacao_layers" sdd/config.example.yaml
+echo "== roadmap"; grep -nE "Hooks" docs/roadmap.md docs/pt-BR/roadmap.md | cut -c1-200
+== versões e linhas
+8:  version: "2.3.0"
+9:  version: "2.4.0"
+     260 .agents/skills/sdd-build/SKILL.md
+     309 .agents/skills/sdd-release/SKILL.md
+     569 total
+== sdd-build: flag LLM Prompts (passo 1)
+73:Confira a flag `LLM Prompts` do DEFINE contra o DESIGN: `true` sem a seção `LLM Prompts` no DESIGN,
+194:Release não sai com ela). Flag `LLM Prompts: true` ⇒ a seção do relatório segue o molde
+245:- **A flag `LLM Prompts` do DEFINE confere com o DESIGN antes de codar** — `true` sem inventário deixa
+== sdd-build: avaliador-guard (1.5 e 5d)
+88:brief. Antes de despachar, rode `bash sdd/bin/avaliador-guard.sh`: exit 1 ⇒ commite o que ele
+176:constrói. Antes de despachar, `bash sdd/bin/avaliador-guard.sh` (exit 1 ⇒ commite o listado; exit
+== sdd-build: gate-baseline / test-baseline / PENDENTE / LLM_PROMPTS_BUILD_REPORT
+159:`bash sdd/bin/gate-baseline.sh sdd/features/DEFINE_{F}.md --sobrepor <script do gate>` roda o gate
+163:**5b. Checks do projeto:** `{{TEST_CMD}}` via `bash sdd/bin/test-baseline.sh` (só falha nova
+193:(menos camadas que o limite) ou `avaliador: PENDENTE (<motivo>)` (build travado antes do 5d; a fase
+195:`sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md`. Valide:
+248:  relatório que não fala do avaliador; a ausência reprova, e `PENDENTE` registra o build travado.
+== sdd-build: seção Por que
+- **O critério de parada é o Verify Gate** — "parece pronto" muda com o cansaço de quem constrói; um
+- **A primeira tarefa é o gate, falhando** — um gate que nunca ficou vermelho não prova nada; script
+- **Commit antes de qualquer revisão** — um revisor de "o que não foi commitado" olhando uma árvore já
+- **Quem julga não é quem constrói** — o autor confirma o que quis fazer; quem não viu a conversa prova
+- **Evidência abrível, nunca "deve funcionar"** — a frase não pode ser conferida depois; um log com o
+- **Correção é redispatch fresco, não resposta na mesma conversa** — na 2ª falha, o contexto que errou
+- **Migration provada por leitura** — `exit 0` não prova que a coluna está no banco certo (LM-004), e o
+- **Prompt fora do inventário para o build e pergunta** — texto de produção improvisado escapa do
+- **Guard antes de despachar o avaliador** — ele usa o terminal e pode restaurar arquivos do último
+- **Gate corrigido roda contra o código anterior** — uma asserção que fica verde antes da mudança não
+- **Só falha de teste nova aborta** — uma falha antiga travando todo build ensina a ignorar vermelho;
+- **A flag `LLM Prompts` do DEFINE confere com o DESIGN antes de codar** — `true` sem inventário deixa
+- **A linha do avaliador é obrigatória** — o lint que só confere o veredito que aparece aprova o
+== sdd-release: 0a e Gates de ABORTAR
+107:   | sem DEFINE (fix pequeno) | rodar `bash sdd/bin/verify-gate.sh --sem-define <F>` (registra no trace que nenhum gate rodou) e declarar "sem DEFINE — SDD formal dispensado" |
+110:   **abortar**. Depois, `python3 sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_{F}.md`:
+111:   exit ≠ 0 ⇒ **abortar**, citando o exit e o `arquivo:linha` (avaliação `PENDENTE` não vai para
+112:   produção). Exit 64 ou 127 ⇒ acrescente "atualize `sdd/bin/`: rode o `doctor` e, para o que ele
+115:7. **Exit dos logs:** `bash sdd/bin/gate-shell-evidencia.sh` (os logs de `sdd/reports/evidence/`
+116:   do diff) — exit ≠ 0 ⇒ **abortar**, citando cada `arquivo:linha`: um `[exit=N]` que é o exit do
+265:`4` sem recibo · report-lint ≠0 · report-lint --pendente ≠0 · gate-shell-evidencia ≠0. Fase 0b: consumidor não modificado quebrado · invariante
+== sdd-release: Por que
+- **O OK vem antes do push** — com deploy automático, depois do push não há "antes" para onde voltar.
+- **`git add` por nome, nunca `-A`** — com outra frente aberta na mesma máquina, o `-A` publica o
+- **A base é integrada antes do OK e reconferida antes do push** — o que se aprova tem de ser o que vai
+- **Ledger dentro do commit atômico, append-only, sem SHA** — o registro e o código entram juntos ou não
+- **O deploy é conferido pelo SHA publicado** — com dois pushes seguidos, o "último run" é de outro
+- **Nunca redisparar um run antigo** — o rerun usa o commit daquele run; com fila, ele roda depois do
+- **Uma pergunta só, na última linha do bloco** — duas paradas viram duas aprovações pela metade; a
+- **A resposta sobre os testes antes do deploy vem do script** — a memória de como o workflow era não vale;
+- **O agente nunca emite WAIVED** — dispensar um achado é decisão de quem responde pela publicação, e
+- **Comando remoto sem pedir senha** — o pedido de senha aparece no terminal do agente, não na tela da
+- **Release sem DEFINE também deixa registro** — o trace com `no-define` separa o hotfix que pulou o
+- **Avaliação `PENDENTE` aborta a release** — o build que travou antes do avaliador pode registrar o
+- **O exit de cada log é conferido** — `cmd | tail` grava o exit do `tail`, sempre 0: sem a
+== bloco do OK: diff v2.2.7..HEAD restrito às linhas do bloco
+-  version: "2.3.1"
++  version: "2.4.0"
+-`sdd-release v2.3.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
++`sdd-release v2.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+-   | sem DEFINE (fix pequeno) | pular e declarar "sem DEFINE — SDD formal dispensado" |
++   | sem DEFINE (fix pequeno) | rodar `bash sdd/bin/verify-gate.sh --sem-define <F>` (registra no trace que nenhum gate rodou) e declarar "
+-   **abortar**.
++   **abortar**. Depois, `python3 sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_{F}.md`:
++   exit ≠ 0 ⇒ **abortar**, citando o exit e o `arquivo:linha` (avaliação `PENDENTE` não vai para
++   produção). Exit 64 ou 127 ⇒ acrescente "atualize `sdd/bin/`: rode o `doctor` e, para o que ele
++   apontar, apague e rode o `init`" — um `report-lint.py` antigo não conhece `--pendente`.
++7. **Exit dos logs:** `bash sdd/bin/gate-shell-evidencia.sh` (os logs de `sdd/reports/evidence/`
++   do diff) — exit ≠ 0 ⇒ **abortar**, citando cada `arquivo:linha`: um `[exit=N]` que é o exit do
++   `tail` não prova o comando. Exit 64 ou 127 ⇒ a mesma frase de atualizar `sdd/bin/` do item 5.
+-`4` sem recibo · report-lint ≠0. Fase 0b: consumidor não modificado quebrado · invariante
++`4` sem recibo · report-lint ≠0 · report-lint --pendente ≠0 · gate-shell-evidencia ≠0. Fase 0b: consumidor não modificado quebrado · invari
++- **Release sem DEFINE também deixa registro** — o trace com `no-define` separa o hotfix que pulou o
++  gate de propósito do gate que ninguém rodou; sem ele, os dois somem do histórico do mesmo jeito.
++- **Avaliação `PENDENTE` aborta a release** — o build que travou antes do avaliador pode registrar o
++  estado real; o que não pode é esse estado chegar a produção sem que ninguém tenha provado os critérios.
++- **O exit de cada log é conferido** — `cmd | tail` grava o exit do `tail`, sempre 0: sem a
++  conferência, um teste que falhou passa como evidência verde.
+== templates
+1
+16:   que o lint consegue abrir e conferir. Sem arquivo, o lint **reprova** o report (exit 1).
+76:Relatório **sem** tabela reconhecida **reprova** (classe `[tabela]`): sem ela, nenhum critério
+81:Todo BUILD_REPORT tem **uma** destas, e a ausência reprova (classe `[avaliação ausente]`):
+86:| `avaliador: N.A. (<motivo>)` | o File Manifest do DESIGN toca menos de N camadas de `layers:` | N vem de `evidence.require_avaliacao_la
+90:(`**Veredito do avaliador (C1):** N.A. (1 camada)`). Sem o `(motivo)`, reprova.
+1
+86:| `avaliador: N.A. (<motivo>)` | o File Manifest do DESIGN toca menos de N camadas de `layers:` | N vem de `evidence.require_avaliacao_la
+87:| `avaliador: PENDENTE (<motivo>)` | o build travou antes do avaliador | passa aqui, com aviso; `report-lint.py --pendente` sai 1 e a fas
+90:(`**Veredito do avaliador (C1):** N.A. (1 camada)`). Sem o `(motivo)`, reprova.
+proibidos no EVIDENCIA.md: 1(1=nenhum)
+200:> `N.A. (1 camada)`. Build travado antes do avaliador → `PENDENTE (<motivo>)`: o relatório pode ser
+205:**Veredito do avaliador (C1):** {PASS | NEEDS_WORK | N.A. (1 camada) | PENDENTE (motivo)} · ciclos: {n} · achados: {n} · `AVALIACAO_{FEATURE}_{YYYYMMDD-HHMM
+1:# Fragmento — Seção "LLM Prompts" do BUILD_REPORT
+8:## Por que existe
+14:## Inventário executado
+25:## Detalhe por prompt
+37:## Drift
+48:## Versionamento
+56:## Rollback
+28-# `avaliador: N.A. (<motivo>)` no BUILD_REPORT vale. 1 = avaliador sempre. Inteiro >= 1.
+29-evidence:
+30:  require_avaliacao_layers: 2
+== roadmap
+docs/roadmap.md:15:| **Hooks** | `pre-commit` and `pre-push` hooks that `init` installs with your confirmation; the build-report check before the file is written, in the agents that support it | *plan
+docs/pt-BR/roadmap.md:15:| **Hooks** | hooks de `pre-commit` e `pre-push` que o `init` instala com a sua confirmação; a conferência do relatório do build antes de o arquivo ser gravado, nos agentes qu
+[exit=0]

@@ -1,0 +1,81 @@
+$ git diff --stat v2.2.7 HEAD && git diff --name-status v2.2.7 HEAD
+ .agents/skills/sdd-build/SKILL.md                  |  46 ++-
+ .agents/skills/sdd-release/SKILL.md                |  22 +-
+ MANIFEST.txt                                       |  25 ++
+ docs/cli-conventions.md                            |   9 +-
+ docs/pt-BR/roadmap.md                              |   2 +-
+ docs/roadmap.md                                    |   2 +-
+ sdd/bin/avaliador-guard.sh                         | 118 ++++++
+ sdd/bin/gate-baseline.sh                           | 138 +++++++
+ sdd/bin/gate-shell-evidencia.sh                    | 131 +++++++
+ sdd/bin/report-lint.py                             | 420 ++++++++++++++++++---
+ sdd/bin/test-baseline.sh                           | 231 ++++++++++++
+ sdd/bin/verify-gate.sh                             |  71 +++-
+ sdd/config.example.yaml                            |   6 +
+ sdd/fixtures/evidencia/BUILD_REPORT_controle.md    |  14 +
+ .../evidencia/BUILD_REPORT_evidencia_ignorada.md   |  14 +
+ sdd/fixtures/evidencia/BUILD_REPORT_pendente.md    |  14 +
+ .../evidencia/BUILD_REPORT_sem_avaliacao.md        |  14 +
+ sdd/fixtures/evidencia/shell-falso-verde.log       |  17 +
+ sdd/fixtures/evidencia/shell-honesto.log           |   9 +
+ sdd/fixtures/evidencia/shell-pipe-assertivo.log    |   9 +
+ sdd/fixtures/evidencia/testes-deno.txt             |  21 ++
+ sdd/fixtures/evidencia/testes-go.txt               |   8 +
+ sdd/fixtures/evidencia/testes-jest.txt             |  15 +
+ sdd/fixtures/evidencia/testes-pytest.txt           |   9 +
+ sdd/fixtures/evidencia/testes-unittest.txt         |  17 +
+ sdd/fixtures/evidencia/testes-vitest.txt           |   9 +
+ sdd/templates/BUILD_REPORT_TEMPLATE.md             |  13 +-
+ sdd/templates/fragments/EVIDENCIA.md               |  57 ++-
+ .../fragments/LLM_PROMPTS_BUILD_REPORT.md          |  61 +++
+ tests/test_avaliador_guard.py                      | 115 ++++++
+ tests/test_bash32.py                               |  41 ++
+ tests/test_contrato_build_release.py               | 100 ++++-
+ tests/test_correcoes_w0.py                         |   2 +-
+ tests/test_gate_baseline.py                        | 107 ++++++
+ tests/test_gate_shell_evidencia.py                 | 147 ++++++++
+ tests/test_report_lint.py                          |   6 +-
+ tests/test_report_lint_evidencia.py                | 341 +++++++++++++++++
+ tests/test_test_baseline.py                        | 169 +++++++++
+ tests/test_verify_gate_trace.py                    | 168 +++++++++
+ 39 files changed, 2617 insertions(+), 101 deletions(-)
+M	.agents/skills/sdd-build/SKILL.md
+M	.agents/skills/sdd-release/SKILL.md
+M	MANIFEST.txt
+M	docs/cli-conventions.md
+M	docs/pt-BR/roadmap.md
+M	docs/roadmap.md
+A	sdd/bin/avaliador-guard.sh
+A	sdd/bin/gate-baseline.sh
+A	sdd/bin/gate-shell-evidencia.sh
+M	sdd/bin/report-lint.py
+A	sdd/bin/test-baseline.sh
+M	sdd/bin/verify-gate.sh
+M	sdd/config.example.yaml
+A	sdd/fixtures/evidencia/BUILD_REPORT_controle.md
+A	sdd/fixtures/evidencia/BUILD_REPORT_evidencia_ignorada.md
+A	sdd/fixtures/evidencia/BUILD_REPORT_pendente.md
+A	sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md
+A	sdd/fixtures/evidencia/shell-falso-verde.log
+A	sdd/fixtures/evidencia/shell-honesto.log
+A	sdd/fixtures/evidencia/shell-pipe-assertivo.log
+A	sdd/fixtures/evidencia/testes-deno.txt
+A	sdd/fixtures/evidencia/testes-go.txt
+A	sdd/fixtures/evidencia/testes-jest.txt
+A	sdd/fixtures/evidencia/testes-pytest.txt
+A	sdd/fixtures/evidencia/testes-unittest.txt
+A	sdd/fixtures/evidencia/testes-vitest.txt
+M	sdd/templates/BUILD_REPORT_TEMPLATE.md
+M	sdd/templates/fragments/EVIDENCIA.md
+A	sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md
+A	tests/test_avaliador_guard.py
+A	tests/test_bash32.py
+M	tests/test_contrato_build_release.py
+M	tests/test_correcoes_w0.py
+A	tests/test_gate_baseline.py
+A	tests/test_gate_shell_evidencia.py
+M	tests/test_report_lint.py
+A	tests/test_report_lint_evidencia.py
+A	tests/test_test_baseline.py
+A	tests/test_verify_gate_trace.py
+[exit=0]

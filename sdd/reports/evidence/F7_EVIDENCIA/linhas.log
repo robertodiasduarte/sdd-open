@@ -1,0 +1,11 @@
+$ wc -l .agents/skills/sdd-build/SKILL.md .agents/skills/sdd-release/SKILL.md sdd/bin/report-lint.py sdd/bin/verify-gate.sh sdd/bin/gate-baseline.sh sdd/bin/gate-shell-evidencia.sh sdd/bin/avaliador-guard.sh sdd/bin/test-baseline.sh
+     260 .agents/skills/sdd-build/SKILL.md
+     309 .agents/skills/sdd-release/SKILL.md
+     625 sdd/bin/report-lint.py
+     262 sdd/bin/verify-gate.sh
+     138 sdd/bin/gate-baseline.sh
+     131 sdd/bin/gate-shell-evidencia.sh
+     118 sdd/bin/avaliador-guard.sh
+     231 sdd/bin/test-baseline.sh
+    2074 total
+[exit=0]

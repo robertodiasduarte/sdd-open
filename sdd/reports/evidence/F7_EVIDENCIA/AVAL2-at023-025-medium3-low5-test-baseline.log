@@ -1,0 +1,221 @@
+$ P=$PWD; T=$(mktemp -d); cd "$T" && git init -q -b main r && cd r && git config user.email a@b.c && git config user.name t
+mkdir -p sdd/bin sdd/baselines fx && cp "$P"/sdd/bin/test-baseline.sh sdd/bin/ && cp "$P"/sdd/fixtures/evidencia/testes-*.txt fx/
+TB() { bash sdd/bin/test-baseline.sh "$@"; echo "exit=$?"; }
+cfg() { printf "project:\n  test_cmd: \"%s\"\n" "$1" > sdd/config.yaml; }
+echo "##### AT-023: 1 conhecida + 1 nova por formato (--cmd)"
+for f in unittest pytest jest vitest go deno; do
+  case $f in unittest) K="test_conta.Caso.test_conhecido";; pytest) K="tests/test_conta.py::test_conhecido";; jest) K="Conta › conhecido";; vitest) K="src/conta.test.ts > Conta > conhecido";; go) K=TestConhecido;; deno) K="conta_test.ts::conhecido";; esac
+  printf "%s\n" "$K" > sdd/baselines/tests.txt
+  echo "=== $f (baseline: $K)"; bash sdd/bin/test-baseline.sh --cmd "cat fx/testes-$f.txt; exit 1" | grep -E "nova|conhecida|RESULTADO"; echo "exit=${PIPESTATUS[0]}"
+  # só a conhecida: remove a linha da nova da saída
+  grep -v -iE "novo|test_novo" fx/testes-$f.txt > fx/so-$f.txt
+  bash sdd/bin/test-baseline.sh --cmd "cat fx/so-$f.txt; exit 1" | grep -E "nova|conhecida|RESULTADO"; echo "  só conhecida exit=${PIPESTATUS[0]}"
+done
+echo "##### MEDIUM-3: go [build failed] + conhecida, execução completa"
+printf "TestConhecido\nTestSarou\n" > sdd/baselines/tests.txt; cp sdd/baselines/tests.txt /tmp/../$T/antes.txt
+printf -- "--- FAIL: TestConhecido (0.00s)\nFAIL\texemplo/conta\t0.005s\nFAIL\texemplo/outro [build failed]\nFAIL\n" > fx/go-build.txt
+cfg "cat fx/go-build.txt; exit 1"; TB; cmp -s "$T/antes.txt" sdd/baselines/tests.txt && echo "baseline byte-idêntico" || { echo "BASELINE MUDOU:"; cat sdd/baselines/tests.txt; }
+printf -- "--- FAIL: TestConhecido (0.00s)\nFAIL\texemplo/conta\t0.005s\nFAIL\texemplo/outro [setup failed]\n" > fx/go-setup.txt
+cfg "cat fx/go-setup.txt; exit 1"; TB; cmp -s "$T/antes.txt" sdd/baselines/tests.txt && echo "baseline byte-idêntico" || echo BASELINE MUDOU
+echo "##### AT-024: execução completa sem falha nova poda e lista"
+cfg "cat fx/so-go.txt; exit 1"; TB; echo "baseline agora:"; cat sdd/baselines/tests.txt
+echo "##### AT-024: --cmd não poda"
+printf "TestConhecido\nTestSarou\n" > sdd/baselines/tests.txt; cp sdd/baselines/tests.txt antes2.txt
+TB --cmd "cat fx/so-go.txt; exit 1"; cmp -s antes2.txt sdd/baselines/tests.txt && echo "byte-idêntico"
+echo "##### AT-024: resultado 2 (nova) em execução completa não poda"
+cfg "cat fx/testes-go.txt; exit 1"; TB; cmp -s antes2.txt sdd/baselines/tests.txt && echo "byte-idêntico"
+echo "##### AT-024/LOW-5: --aceitar não roda o test_cmd (test_cmd grava marcador e imprime nada)"
+cfg "touch RODOU; exit 1"; rm -f RODOU; TB --aceitar "TestNovo"; [ -e RODOU ] && echo "RODOU o test_cmd (ERRO)" || echo "test_cmd NÃO rodou"; cat sdd/baselines/tests.txt; TB --aceitar "TestNovo"
+echo "##### AT-024: --touched"
+git add -A && git commit -qm base && git update-ref refs/remotes/origin/main HEAD
+printf "TestConhecido\n" > sdd/baselines/tests.txt; cp sdd/baselines/tests.txt antes3.txt
+mkdir -p pkg && echo x > pkg/conta_test.go
+printf -- "--- FAIL: TestConhecido (0.00s)\n--- FAIL: TestNovo (0.00s)\n    conta_test.go:15: x\n" > fx/go-touch.txt
+cfg "cat fx/go-touch.txt; exit 1"; TB --touched; cmp -s antes3.txt sdd/baselines/tests.txt && echo "byte-idêntico"
+printf "FAILED tests/test_a.py::test_x - e\nFAILED tests/test_b.py::test_y - e\n" > fx/py-touch.txt; mkdir -p tests; echo x > tests/test_a.py
+cfg "cat fx/py-touch.txt; exit 1"; TB --touched
+TB --touched --base nao/existe
+echo "##### AT-025"
+cfg "echo boom; exit 1"; TB
+cfg "comando_que_nao_existe_xyz"; TB
+cfg ""; TB
+rm sdd/config.yaml; TB
+TB --cmd
+cd /; rm -rf "${T:?}"
+##### AT-023: 1 conhecida + 1 nova por formato (--cmd)
+=== unittest (baseline: test_conta.Caso.test_conhecido)
+🛑 nova: test_conta.Caso.test_novo
+ℹ️  conhecida: test_conta.Caso.test_conhecido
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+ℹ️  conhecida: test_conta.Caso.test_conhecido
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+  só conhecida exit=0
+=== pytest (baseline: tests/test_conta.py::test_conhecido)
+🛑 nova: tests/test_conta.py::test_novo
+ℹ️  conhecida: tests/test_conta.py::test_conhecido
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+ℹ️  conhecida: tests/test_conta.py::test_conhecido
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+  só conhecida exit=0
+=== jest (baseline: Conta › conhecido)
+🛑 nova: Conta › novo
+ℹ️  conhecida: Conta › conhecido
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+ℹ️  conhecida: Conta › conhecido
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+  só conhecida exit=0
+=== vitest (baseline: src/conta.test.ts > Conta > conhecido)
+🛑 nova: src/conta.test.ts > Conta > novo
+ℹ️  conhecida: src/conta.test.ts > Conta > conhecido
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+ℹ️  conhecida: src/conta.test.ts > Conta > conhecido
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+  só conhecida exit=0
+=== go (baseline: TestConhecido)
+🛑 nova: TestNovo
+ℹ️  conhecida: TestConhecido
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+ℹ️  conhecida: TestConhecido
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+  só conhecida exit=0
+=== deno (baseline: conta_test.ts::conhecido)
+🛑 nova: conta_test.ts::novo
+ℹ️  conhecida: conta_test.ts::conhecido
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+ℹ️  conhecida: conta_test.ts::conhecido
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+  só conhecida exit=0
+##### MEDIUM-3: go [build failed] + conhecida, execução completa
+▶ testes: cat fx/go-build.txt; exit 1
+🛑 nova: build failed: exemplo/outro
+ℹ️  conhecida: TestConhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+baseline byte-idêntico
+▶ testes: cat fx/go-setup.txt; exit 1
+🛑 nova: setup failed: exemplo/outro
+ℹ️  conhecida: TestConhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+baseline byte-idêntico
+##### AT-024: execução completa sem falha nova poda e lista
+▶ testes: cat fx/so-go.txt; exit 1
+ℹ️  conhecida: TestConhecido
+✅ sarou — removido do baseline (commite sdd/baselines/tests.txt): TestSarou
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+baseline agora:
+TestConhecido
+##### AT-024: --cmd não poda
+▶ testes: cat fx/so-go.txt; exit 1
+ℹ️  conhecida: TestConhecido
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+byte-idêntico
+##### AT-024: resultado 2 (nova) em execução completa não poda
+▶ testes: cat fx/testes-go.txt; exit 1
+🛑 nova: TestNovo
+ℹ️  conhecida: TestConhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+byte-idêntico
+##### AT-024/LOW-5: --aceitar não roda o test_cmd (test_cmd grava marcador e imprime nada)
+✅ aceito: `TestNovo` entrou em sdd/baselines/tests.txt como falha conhecida.
+RESULTADO: VERDE
+→ commite sdd/baselines/tests.txt junto com o motivo no BUILD_REPORT.
+exit=0
+test_cmd NÃO rodou
+TestConhecido
+TestSarou
+TestNovo
+ℹ️  `TestNovo` já está no baseline.
+RESULTADO: VERDE
+→ commite sdd/baselines/tests.txt junto com o motivo no BUILD_REPORT.
+exit=0
+##### AT-024: --touched
+▶ testes: cat fx/go-touch.txt; exit 1
+⚠️  nova, fora do diff (não aborta com --touched): TestNovo
+ℹ️  conhecida: TestConhecido
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+byte-idêntico
+▶ testes: cat fx/py-touch.txt; exit 1
+🛑 nova: tests/test_a.py::test_x
+⚠️  nova, fora do diff (não aborta com --touched): tests/test_b.py::test_y
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 0 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+🛑 --touched: git diff nao/existe...HEAD falhou (base inválida?)
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/test-baseline.sh [--cmd <comando>] [--touched [--base <ref>]] [--aceitar <id>]
+exit=64
+##### AT-025
+▶ testes: echo boom; exit 1
+⚠️  o comando saiu 1 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+exit=3
+▶ testes: comando_que_nao_existe_xyz
+⚠️  o comando saiu 127 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  a ferramenta de teste não rodou (comando não encontrado).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+exit=3
+ℹ️  project.test_cmd vazio em sdd/config.yaml: não há comando de teste para comparar.
+RESULTADO: PULADO
+→ preencha project.test_cmd (ou passe --cmd) para usar o baseline de testes.
+exit=0
+ℹ️  project.test_cmd vazio em sdd/config.yaml: não há comando de teste para comparar.
+RESULTADO: PULADO
+→ preencha project.test_cmd (ou passe --cmd) para usar o baseline de testes.
+exit=0
+🛑 --cmd exige um comando
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/test-baseline.sh [--cmd <comando>] [--touched [--base <ref>]] [--aceitar <id>]
+exit=64
+[exit=0]

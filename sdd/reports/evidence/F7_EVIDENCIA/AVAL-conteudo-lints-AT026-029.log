@@ -1,0 +1,193 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/misc.sh
+$ grep -n 'rc=$?' sdd/templates/fragments/EVIDENCIA.md
+50:out=$(eval "$cmd" 2>&1); rc=$?
+[exit=0]
+
+$ grep -n 'forma mínima' sdd/templates/fragments/EVIDENCIA.md
+92:A **forma mínima** de um relatório que passa é, portanto: a tabela de critérios reconhecida e a
+[exit=0]
+
+$ grep -nE 'avaliador: (N\.A\.|PENDENTE) \(<motivo>\)' sdd/templates/fragments/EVIDENCIA.md
+86:| `avaliador: N.A. (<motivo>)` | o File Manifest do DESIGN toca menos de N camadas de `layers:` | N vem de `evidence.require_avaliacao_layers` do `sdd/config.yaml` (default 2); com N camadas ou mais, reprova (`[declaração]`); sem como contar (`layers:` vazio, sem DESIGN), aceita com aviso |
+87:| `avaliador: PENDENTE (<motivo>)` | o build travou antes do avaliador | passa aqui, com aviso; `report-lint.py --pendente` sai 1 e a fase Release aborta enquanto a linha existir |
+[exit=0]
+
+$ grep -niE 'reprova' sdd/templates/fragments/EVIDENCIA.md
+16:   que o lint consegue abrir e conferir. Sem arquivo, o lint **reprova** o report (exit 1).
+76:Relatório **sem** tabela reconhecida **reprova** (classe `[tabela]`): sem ela, nenhum critério
+81:Todo BUILD_REPORT tem **uma** destas, e a ausência reprova (classe `[avaliação ausente]`):
+86:| `avaliador: N.A. (<motivo>)` | o File Manifest do DESIGN toca menos de N camadas de `layers:` | N vem de `evidence.require_avaliacao_layers` do `sdd/config.yaml` (default 2); com N camadas ou mais, reprova (`[declaração]`); sem como contar (`layers:` vazio, sem DESIGN), aceita com aviso |
+90:(`**Veredito do avaliador (C1):** N.A. (1 camada)`). Sem o `(motivo)`, reprova.
+[exit=0]
+
+$ grep -n 'git check-ignore' sdd/templates/fragments/EVIDENCIA.md
+42:  existe no disco e some no commit — o lint nega (`git check-ignore -v <arquivo>` mostra a regra).
+[exit=0]
+
+$ grep -nE 'PreToolUse|systemMessage|\.githooks/|pelo hook' sdd/templates/fragments/EVIDENCIA.md sdd/templates/BUILD_REPORT_TEMPLATE.md sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md .agents/skills/sdd-build/SKILL.md .agents/skills/sdd-release/SKILL.md; test $? -eq 1
+
+[exit=0]
+
+$ grep -n 'sai 0' sdd/templates/fragments/EVIDENCIA.md
+
+[exit=1]
+
+$ grep -n 'PENDENTE' sdd/templates/BUILD_REPORT_TEMPLATE.md
+200:> `N.A. (1 camada)`. Build travado antes do avaliador → `PENDENTE (<motivo>)`: o relatório pode ser
+205:**Veredito do avaliador (C1):** {PASS | NEEDS_WORK | N.A. (1 camada) | PENDENTE (motivo)} · ciclos: {n} · achados: {n} · `AVALIACAO_{FEATURE}_{YYYYMMDD-HHMM}.md`
+[exit=0]
+
+$ grep -n '^## ' sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md
+8:## Por que existe
+14:## Inventário executado
+25:## Detalhe por prompt
+37:## Drift
+48:## Versionamento
+56:## Rollback
+[exit=0]
+
+$ grep -n -A1 '^evidence:' sdd/config.example.yaml
+29:evidence:
+30-  require_avaliacao_layers: 2
+[exit=0]
+
+$ grep -nE 'mapfile|declare -A|\$\{[a-zA-Z_]+\^\^' sdd/bin/gate-baseline.sh sdd/bin/gate-shell-evidencia.sh sdd/bin/avaliador-guard.sh sdd/bin/test-baseline.sh sdd/bin/verify-gate.sh; test $? -eq 1
+
+[exit=0]
+
+$ grep -n 'awk' sdd/bin/gate-baseline.sh sdd/bin/gate-shell-evidencia.sh sdd/bin/avaliador-guard.sh sdd/bin/test-baseline.sh
+sdd/bin/gate-shell-evidencia.sh:13:#   ✅ `| grep -c X`, `| jq -e`, `| awk '…exit 1'` não são acusados: ali o último estágio É a asserção.
+sdd/bin/gate-shell-evidencia.sh:24:# ⚠️ bash 3.2 (sem arrays) · todo awk com LC_ALL=C (o awk do macOS falha com UTF-8).
+sdd/bin/gate-shell-evidencia.sh:105:  LC_ALL=C awk -f "${PROG}" "${f}" >> "${ACHADOS}"
+[exit=0]
+
+$ wc -l .agents/skills/*/SKILL.md
+     269 .agents/skills/sdd-auditoria-harness/SKILL.md
+     179 .agents/skills/sdd-brainstorm/SKILL.md
+     258 .agents/skills/sdd-build/SKILL.md
+     265 .agents/skills/sdd-checar-ambiente/SKILL.md
+     215 .agents/skills/sdd-define/SKILL.md
+     195 .agents/skills/sdd-design/SKILL.md
+     144 .agents/skills/sdd-governanca/SKILL.md
+     161 .agents/skills/sdd-handoff/SKILL.md
+     230 .agents/skills/sdd-higiene-dado/SKILL.md
+     376 .agents/skills/sdd-iniciar-repo/SKILL.md
+     118 .agents/skills/sdd-iterate/SKILL.md
+     336 .agents/skills/sdd-kb/SKILL.md
+     304 .agents/skills/sdd-new-session/SKILL.md
+     145 .agents/skills/sdd-playbook/SKILL.md
+     144 .agents/skills/sdd-prompt-builder/SKILL.md
+     307 .agents/skills/sdd-release/SKILL.md
+     167 .agents/skills/sdd-ux-review/SKILL.md
+    3813 total
+[exit=0]
+
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/*/SKILL.md
+✅ .agents/skills/sdd-auditoria-harness/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-brainstorm/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-build/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-checar-ambiente/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-governanca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-handoff/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-higiene-dado/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iniciar-repo/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iterate/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-kb/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-new-session/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+[exit=0]
+
+$ ls -d .agents/skills/*/ | grep -c .
+17
+[exit=0]
+
+$ bash sdd/bin/playbook-lint.sh --self-test
+self-test (/bin/bash: 3.2.57(1)-release) — fixtures em sdd/fixtures/playbook/
+  ✅ lint fixture INVÁLIDA ⇒ exit 2 com ≥5 motivos distintos → exit 2
+  ✅ fixture inválida acusa 7 classes de defeito distintas (≥5)
+  ✅ --grep termo INEXISTENTE ⇒ exit 1 e '0 bullets' → exit 1
+  ✅ --anti-collapse válido×COLAPSO ⇒ exit 1 citando LM-002 → exit 1
+  ✅ --anti-collapse válido×REESCRITA 3/6=50% (sem sumiço) ⇒ exit 1 por percentual → exit 1
+  ✅ --check-fichas com ficha inexistente ⇒ exit 2 → exit 2
+  ✅ --grep termo só no CORPO ("Deploy só em push") ⇒ exit 1 (não é superfície) → exit 1
+  ✅ --grep-all termo só no CORPO ⇒ exit 0 e LM-002 → exit 0
+  ✅ lint com Backend e Infra TROCADOS ⇒ exit 2 (ordem fixa) → exit 2
+  ✅ lint playbook VAZIO ⇒ exit 2 (seções ausentes + 0 ativos) → exit 2
+  ✅ lint fixture VÁLIDA ⇒ exit 0 → exit 0
+  ✅ --grep termo_fixture ⇒ exit 0 e LM-001 → exit 0
+  ✅ --anti-collapse válido×DELTA-OK (3 novos, contadores, 1 tombstone=20%) ⇒ exit 0 → exit 0
+  ✅ --anti-collapse arquivo idêntico ⇒ exit 0 → exit 0
+  ✅ --anti-collapse limite EXATO 1/5 = 20% ⇒ exit 0 (pega off-by-one >=) → exit 0
+  ✅ --anti-collapse 2/5 = 40% ⇒ exit 1 → exit 1
+  ✅ --anti-collapse só CONTINUAÇÃO de LM-005 reescrita (1/5) ⇒ conta como alterado (20%) → exit 0
+🟢 self-test: todos os baselines vermelhos e verdes confirmados
+[exit=0]
+
+$ /usr/bin/python3 -B scripts/check-versions.py --base v2.2.7 --base-obrigatoria
+PASS: check-versions — 17 skills com versão coerente, comparadas a v2.2.7.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+$ grep -n 'ook' docs/roadmap.md docs/pt-BR/roadmap.md
+docs/roadmap.md:15:| **Hooks** | `pre-commit` and `pre-push` hooks that `init` installs with your confirmation; the build-report check before the file is written, in the agents that support it | *planned* |
+docs/roadmap.md:23:Every theme keeps the rules the package already follows: the truth lives in a script or a git hook
+docs/pt-BR/roadmap.md:15:| **Hooks** | hooks de `pre-commit` e `pre-push` que o `init` instala com a sua confirmação; a conferência do relatório do build antes de o arquivo ser gravado, nos agentes que permitem | *planejado* |
+docs/pt-BR/roadmap.md:23:Todo tema mantém as regras que o pacote já segue: a verdade mora num script ou num hook do git que
+[exit=0]
+
+$ for f in docs/roadmap.md docs/pt-BR/roadmap.md; do echo "$f: $(grep -cE '^\| *[0-9A-Z]' $f) linhas de tabela"; grep -nE '^\|' $f; done
+docs/roadmap.md: 1 linhas de tabela
+13:| Theme | What it brings | Status |
+14:|---|---|---|
+15:| **Hooks** | `pre-commit` and `pre-push` hooks that `init` installs with your confirmation; the build-report check before the file is written, in the agents that support it | *planned* |
+16:| **Chained flow** | each phase offers the next one; decision classes in the question format; a pause with a resume point when the agent cannot open a fresh session by itself | *planned* |
+17:| **Adversarial review** | review by a second vendor over a frozen diff, with an editable registry of engines and an offline gate that checks the review really happened | *planned* |
+18:| **Context and governance** | a map of the domain before the Define, project patterns the Design cites, and governance that blocks the Define of a financial system until it runs | *planned* |
+19:| **`sdd-loop-builder` and `sdd-drive`** | a skill for code that calls an LLM in a loop, and one that drives several phases in a row with the same human stops | *planned* |
+20:| **Spec ↔ code reconciliation** | checking that the file manifest covered every requirement, not only that acceptance passed | *planned* |
+21:| **Specs as deltas** | a spec written as a difference against a canonical capability set, instead of a long-lived document | *under evaluation* |
+docs/pt-BR/roadmap.md: 1 linhas de tabela
+13:| Tema | O que traz | Status |
+14:|---|---|---|
+15:| **Hooks** | hooks de `pre-commit` e `pre-push` que o `init` instala com a sua confirmação; a conferência do relatório do build antes de o arquivo ser gravado, nos agentes que permitem | *planejado* |
+16:| **Fluxo encadeado** | cada fase oferece a seguinte; classes de decisão no formato de pergunta; parada com ponto de retomada quando o agente não abre uma sessão nova sozinho | *planejado* |
+17:| **Revisão adversarial** | revisão por um segundo vendor sobre um diff congelado, com um registro editável de engines e um gate offline que confere que a revisão aconteceu | *planejado* |
+18:| **Contexto e governança** | um mapa do domínio antes do Define, patterns do projeto que o Design cita, e governança que segura o Define de um sistema financeiro até rodar | *planejado* |
+19:| **`sdd-loop-builder` e `sdd-drive`** | uma skill para código que chama um LLM em laço, e uma que conduz várias fases seguidas com as mesmas paradas humanas | *planejado* |
+20:| **Reconciliação spec ↔ código** | conferir que o manifest de arquivos cobriu todo requisito, não só que o aceite passou | *planejado* |
+21:| **Specs como deltas** | spec escrita como diferença contra um conjunto canônico de capacidades, no lugar de um documento de vida longa | *em avaliação* |
+[exit=0]
+
+$ LC_ALL=C sort -c MANIFEST.txt && echo ordenado
+ordenado
+[exit=0]
+
+$ for f in $(git diff --name-only --diff-filter=A v2.2.7 HEAD); do grep -qxF "$f" MANIFEST.txt || echo "FORA DO MANIFEST: $f"; done; echo fim
+fim
+[exit=0]
+
+$ git diff --name-only --diff-filter=A v2.2.7 HEAD | grep -c .
+25
+[exit=0]
+
+$ grep -rnE '/Users/|\.claude/sdd/' sdd/fixtures/evidencia/; test $? -eq 1
+
+[exit=0]
+
+$ echo '(grep -P indisponível no BSD grep; invisíveis conferidos pelo python abaixo)'
+(grep -P indisponível no BSD grep; invisíveis conferidos pelo python abaixo)
+[exit=0]
+
+$ /usr/bin/python3 -c "import sys,unicodedata as u
+for p in ['.agents/skills/sdd-build/SKILL.md','.agents/skills/sdd-release/SKILL.md']:
+    t=open(p,encoding='utf-8').read(); bad=[hex(ord(c)) for c in t if u.category(c) in ('Cf','Co','Cn') and c not in '️‍']; print(p, 'invisíveis:', bad)"
+.agents/skills/sdd-build/SKILL.md invisíveis: []
+.agents/skills/sdd-release/SKILL.md invisíveis: []
+[exit=0]
+[exit=0]

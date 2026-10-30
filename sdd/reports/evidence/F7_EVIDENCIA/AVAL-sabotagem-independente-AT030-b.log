@@ -1,0 +1,5 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/sab2.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval
+✅ verify-gate: --sem-define sai 1 → vermelho (test_grava_release_no_define_e_sai_0 (test_verify_gate_trace.SemDefine);test_nome_vira_nome_de_arquivo_seguro (test_verify_gate_trace.SemDefine);test_sdd_trace_off_diz_que_nao_gravou (test_verify_gate_trace.SemDefine);) · restaurado → verde
+✅ guard: renomeação só o lado novo (sed fica com o destino) → vermelho (test_renomear_para_dentro_de_evidence_conta_a_origem (test_avaliador_guard.AvaliadorGuard);) · restaurado → verde
+falhas=0
+[exit=0]

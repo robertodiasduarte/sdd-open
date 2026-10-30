@@ -1,0 +1,5 @@
+$ gh run view 41133637690 -R robertodiasduarte/sdd-open --json conclusion,headSha,jobs -q '.conclusion + " " + .headSha + " | " + ([.jobs[] | .name + "=" + .conclusion] | join(", "))' && gh release view v2.2.8 -R robertodiasduarte/sdd-open --json tagName,assets -q '.tagName + ": " + ([.assets[].name] | join(", "))' && cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/rel228 && shasum -a 256 -c SHA256SUMS.txt
+success 1d225e5a45fa072bd6e5abe99c22662f6d901541 | Testes no piso (macOS, só leitura)=success, Testes (só leitura)=success, Publicar release=success
+v2.2.8: sdd-open-v2.2.8.tar.gz, SHA256SUMS.txt
+sdd-open-v2.2.8.tar.gz: OK
+[exit=0]

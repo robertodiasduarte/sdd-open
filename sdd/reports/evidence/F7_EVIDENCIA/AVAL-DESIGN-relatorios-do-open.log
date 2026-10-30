@@ -1,0 +1,13 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/rel.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad
+F1_MANUTENCAO lint(header+Result)=0 avaliacao=[] ignorado=[] declaracoes=0
+F2_TERRENO lint(header+Result)=0 avaliacao=[] ignorado=[] declaracoes=0
+F3_BUILD_RELEASE lint(header+Result)=0 avaliacao=[] ignorado=[] declaracoes=0
+F4_CONVERSA lint(header+Result)=0 avaliacao=[AVALIACAO_F4_CONVERSA_20261029-ciclo1.md AVALIACAO_F4_CONVERSA_20261029-ciclo2.md ] ignorado=[] declaracoes=0
+F5_CONHECIMENTO lint(header+Result)=0 avaliacao=[AVALIACAO_F5_CONHECIMENTO_20261029-ciclo1.md AVALIACAO_F5_CONHECIMENTO_20261029-ciclo2.md ] ignorado=[] declaracoes=0
+F6_DOCS lint(header+Result)=0 avaliacao=[AVALIACAO_F6_DOCS_20261029-ciclo1.md AVALIACAO_F6_DOCS_20261029-ciclo2.md ] ignorado=[] declaracoes=0
+M1 lint(header+Result)=0 avaliacao=[] ignorado=[] declaracoes=0
+W0 lint(header+Result)=0 avaliacao=[] ignorado=[] declaracoes=0
+--pendente no report-lint atual:
+uso: report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md
+rc=64
+[exit=0]

@@ -1,0 +1,368 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/rl.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia
+### AT-001 sem tabela reconhecida (cabeçalho | ID | Critério | OK | Prova |)
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [tabela] nenhuma tabela de critérios reconhecida (uma coluna Resultado, Status, Passou ou Result e uma coluna Evidência): sem ela, nenhum critério é conferido
+RESULTADO: VERMELHO
+→ use a tabela do template: `| ID | Critério | Resultado | Evidência |`.
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+[exit=1]
+
+### AT-001 sem tabela nenhuma
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [tabela] nenhuma tabela de critérios reconhecida (uma coluna Resultado, Status, Passou ou Result e uma coluna Evidência): sem ela, nenhum critério é conferido
+RESULTADO: VERMELHO
+→ use a tabela do template: `| ID | Critério | Resultado | Evidência |`.
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+[exit=1]
+
+### AT-002 cabeçalho Result/Evidence com true sem evidência -> deve reprovar a linha
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [evidência] AT-001: `true` sem evidência válida — sem arquivo de evidência, AVALIACAO_*.md ou recibo humano
+RESULTADO: VERMELHO
+→ produza `evidence/F/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite `AVALIACAO_F_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+[exit=1]
+
+### AT-002 cabeçalho Result/Evidence com evidência válida -> 0
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-003 fixture sem_avaliacao (copiada para o repo temp)
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_sem_avaliacao.md
+🛑 [avaliação ausente] não há `AVALIACAO_sem_avaliacao_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_sem_avaliacao_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+[exit=1]
+
+### AT-003 declaração só dentro de bloco cercado -> continua ausente
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [avaliação ausente] não há `AVALIACAO_F_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_F_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+[exit=1]
+
+### AT-003 AVALIACAO vazio não conta
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [avaliação ausente] não há `AVALIACAO_F_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_F_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+[exit=1]
+
+### AT-003 AVALIACAO de outra feature (F2) não conta; nome sem data (AVALIACAO_F_x.md) não conta
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [avaliação ausente] não há `AVALIACAO_F_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_F_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+[exit=1]
+
+### AT-004 AVALIACAO existe (não citado) -> passa
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-004 N.A. sem config/DESIGN -> passa com ⚠️ e causa
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-004 N.A. com layers e sem DESIGN -> ⚠️ DESIGN não encontrado
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+⚠️  N.A. aceito sem conferir camadas — DESIGN_F.md não encontrado em sdd/features/; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-004 N.A. DESIGN sem File Manifest -> ⚠️
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+⚠️  N.A. aceito sem conferir camadas — DESIGN_F.md sem `File Manifest`; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-004 N.A. DESIGN com manifest de 1 camada -> 0
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-005 N.A. com manifest de 2 camadas -> 1
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [declaração] `N.A.` não vale: o File Manifest de DESIGN_F.md toca 2 camadas (api, ui), e o limite é 2 (`evidence.require_avaliacao_layers`). Rode o avaliador, ou declare `avaliador: PENDENTE (<motivo>)` se o build travou antes dele
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+[exit=1]
+
+### AT-005 N=3 -> 2 camadas passa
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-005 N inválido (abc) -> 2 com ⚠️, reprova 2 camadas
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [declaração] `N.A.` não vale: o File Manifest de DESIGN_F.md toca 2 camadas (api, ui), e o limite é 2 (`evidence.require_avaliacao_layers`). Rode o avaliador, ou declare `avaliador: PENDENTE (<motivo>)` se o build travou antes dele
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+⚠️  `evidence.require_avaliacao_layers: abc` não é inteiro ≥ 1 — usei 2
+[exit=1]
+
+### AT-005 N=0 -> 2 com ⚠️
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [declaração] `N.A.` não vale: o File Manifest de DESIGN_F.md toca 2 camadas (api, ui), e o limite é 2 (`evidence.require_avaliacao_layers`). Rode o avaliador, ou declare `avaliador: PENDENTE (<motivo>)` se o build travou antes dele
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+⚠️  `evidence.require_avaliacao_layers: 0` não é inteiro ≥ 1 — usei 2
+[exit=1]
+
+### AT-005 N=1, manifest de 1 camada -> 1
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [declaração] `N.A.` não vale: o File Manifest de DESIGN_F.md toca 1 camadas (api), e o limite é 1 (`evidence.require_avaliacao_layers`). Rode o avaliador, ou declare `avaliador: PENDENTE (<motivo>)` se o build travou antes dele
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+[exit=1]
+
+### AT-005 fallback _S1 -> DESIGN da família (F_S1 usa DESIGN_F.md), N=1 -> 1
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F_S1.md
+🛑 [declaração] `N.A.` não vale: o File Manifest de DESIGN_F.md toca 1 camadas (api), e o limite é 1 (`evidence.require_avaliacao_layers`). Rode o avaliador, ou declare `avaliador: PENDENTE (<motivo>)` se o build travou antes dele
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+[exit=1]
+
+### AT-006 N.A. sem motivo -> 1 com linha
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [declaração] `N.A.` sem motivo (linha 5) — escreva `avaliador: N.A. (<motivo>)`
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+[exit=1]
+
+### AT-006 PENDENTE sem motivo -> 1
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [declaração] `PENDENTE` sem motivo (linha 5) — escreva `avaliador: PENDENTE (<motivo>)`
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+[exit=1]
+
+### AT-006 PENDENTE com motivo vazio () -> 1
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [declaração] `PENDENTE` sem motivo (linha 5) — escreva `avaliador: PENDENTE (<motivo>)`
+RESULTADO: VERMELHO
+→ escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`.
+[exit=1]
+
+### AT-007 fixture pendente, modo comum -> 0 com ⚠️
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_pendente.md
+⚠️  avaliação PENDENTE (o build travou no Verify Gate, exit 3, antes do passo 5d), linha 14 — a release não sai enquanto esta linha existir
+✅ sdd/reports/BUILD_REPORT_pendente.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado; rode o avaliador quando o build destravar e troque a linha pelo veredito.
+[exit=0]
+
+### AT-007 --pendente sobre ele -> 1 com arquivo:linha
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_pendente.md
+sdd/reports/BUILD_REPORT_pendente.md:14: PENDENTE (o build travou no Verify Gate, exit 3, antes do passo 5d)
+RESULTADO: VERMELHO
+→ a release não sai com avaliação pendente: rode o avaliador e troque a linha pelo veredito.
+[exit=1]
+
+### AT-007 --pendente sobre controle (sem PENDENTE) -> 0
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py --pendente /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/BUILD_REPORT_controle.md
+✅ nenhuma avaliação PENDENTE em 1 relatório(s)
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+### AT-007 --pendente vários, um deles PENDENTE -> 1
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py --pendente /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/BUILD_REPORT_controle.md sdd/reports/BUILD_REPORT_pendente.md
+sdd/reports/BUILD_REPORT_pendente.md:14: PENDENTE (o build travou no Verify Gate, exit 3, antes do passo 5d)
+RESULTADO: VERMELHO
+→ a release não sai com avaliação pendente: rode o avaliador e troque a linha pelo veredito.
+[exit=1]
+
+### AT-007 --pendente sem argumento -> 64
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py --pendente
+uso: report-lint.py --pendente sdd/reports/BUILD_REPORT_{FEATURE}.md …
+RESULTADO: ERRO DE USO
+[exit=64]
+
+### AT-007 --pendente arquivo ilegível -> 64
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py --pendente /nao/existe.md
+🛑 não consegui ler /nao/existe.md: [Errno 2] No such file or directory: '/nao/existe.md'
+RESULTADO: ERRO DE USO
+[exit=64]
+
+### AT-007 --pendente PENDENTE dentro de bloco cercado -> 0
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_G.md
+✅ nenhuma avaliação PENDENTE em 1 relatório(s)
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+### AT-008 fixture evidencia_ignorada com .gitignore -> 1
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_evidencia_ignorada.md
+🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/evidencia_ignorada/AT-001.log` existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — remova a regra ou use `git add -f`
+RESULTADO: VERMELHO
+→ produza `evidence/evidencia_ignorada/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite `AVALIACAO_evidencia_ignorada_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+[exit=1]
+
+### AT-008 mesma coisa via .git/info/exclude (*.log)
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_evidencia_ignorada.md
+🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/evidencia_ignorada/AT-001.log` existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — remova a regra ou use `git add -f`
+RESULTADO: VERMELHO
+→ produza `evidence/evidencia_ignorada/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite `AVALIACAO_evidencia_ignorada_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+[exit=1]
+
+### AT-008 controle: sem a regra -> 0
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_evidencia_ignorada.md
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_evidencia_ignorada.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-008 AVALIACAO ignorado não satisfaz a existência
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [avaliação ausente] `sdd/reviews/AVALIACAO_F_20261030-1200.md` existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — remova a regra ou use `git add -f`: `git add -f sdd/reviews/AVALIACAO_F_20261030-1200.md`
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_F_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+[exit=1]
+
+### AT-008 AVALIACAO ignorado e citado no veredito
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [evidência] Veredito do avaliador `PASS`: `AVALIACAO_F_20261030-1200.md` existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — remova a regra ou use `git add -f`
+🛑 [avaliação ausente] `sdd/reviews/AVALIACAO_F_20261030-1200.md` existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — remova a regra ou use `git add -f`: `git add -f sdd/reviews/AVALIACAO_F_20261030-1200.md`
+RESULTADO: VERMELHO
+→ produza `evidence/F/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite `AVALIACAO_F_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_F_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+[exit=1]
+
+### AT-008 fora de repositório git -> ⚠️ persistência não conferida
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  não conferido: `git check-ignore` saiu 128 (fora de um repositório git?): persistência não conferida
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-008 git ausente do PATH -> ⚠️
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  não conferido: `git check-ignore` indisponível (FileNotFoundError): persistência não conferida
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-009 veredito inline PASS sem AVALIACAO citado, mas AVALIACAO existe -> 1 (unidade)
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_F_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+RESULTADO: VERMELHO
+→ produza `evidence/F/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite `AVALIACAO_F_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.
+[exit=1]
+
+### AT-009 veredito inline com AVALIACAO citado -> 0
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-009 tabela | **Veredito do avaliador (C1)** | NEEDS_WORK | sem AVALIACAO na linha -> 1
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-009 título + parágrafo seguinte com AVALIACAO -> 0
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-009 título + parágrafo seguinte sem AVALIACAO -> 1
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_F_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+RESULTADO: VERMELHO
+→ produza `evidence/F/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite `AVALIACAO_F_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.
+[exit=1]
+
+### AT-009 rótulo dentro de bloco cercado ignorado -> 0
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-009 rótulo sem (C1) e sem negrito: 'Veredito do avaliador: PASS' sem AVALIACAO citado
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-009 '## Veredito do avaliador' (título sem C1) + PASS sem AVALIACAO citado
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-009 veredito PENDENTE é declaração: '**Veredito do avaliador (C1):** PENDENTE (travou)' sem AVALIACAO -> 0 ⚠️
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+⚠️  avaliação PENDENTE (travou), linha 5 — a release não sai enquanto esta linha existir
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado; rode o avaliador quando o build destravar e troque a linha pelo veredito.
+[exit=0]
+
+### AT-009 veredito N.A. é declaração: '**Veredito do avaliador (C1):** N.A. (1 camada)' -> 0
+$ /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F.md
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+
+### AT-010 --stdin: conteúdo sem avaliação lido como se estivesse em caminho -> 1 igual ao arquivo
+$ python3 report-lint.py --stdin sdd/reports/BUILD_REPORT_F.md < sem_avaliacao(F)
+🛑 [avaliação ausente] não há `AVALIACAO_F_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_F_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+[exit=1]
+### AT-010 --stdin com conteúdo válido, caminho inexistente no disco -> 0
+$ ... --stdin sdd/reports/BUILD_REPORT_F.md < (tabela + N.A.)
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_F.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[exit=0]
+### AT-010 --stdin: arquivo no disco é válido mas stdin é inválido -> deve seguir o stdin (1)
+$ ... --stdin sdd/reports/BUILD_REPORT_F.md < '# vazio'
+🛑 [tabela] nenhuma tabela de critérios reconhecida (uma coluna Resultado, Status, Passou ou Result e uma coluna Evidência): sem ela, nenhum critério é conferido
+🛑 [avaliação ausente] não há `AVALIACAO_F_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ use a tabela do template: `| ID | Critério | Resultado | Evidência |`.
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_F_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+[exit=1]
+### AT-010 --stdin com nome inválido -> 64
+$ ... --stdin x.md
+🛑 x.md: o nome precisa ser BUILD_REPORT_{FEATURE}.md
+[exit=64]
+[exit=0]

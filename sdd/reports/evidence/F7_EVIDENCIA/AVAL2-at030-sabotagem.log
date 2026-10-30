@@ -1,0 +1,14 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/sab.sh
+== sabotado sdd/bin/report-lint.py → test_report_lint_evidencia: exit=1 · FAILED (failures=2) · testes vermelhos: test_uma_seta_por_classe test_sem_tabela_reprova 
+   depois de git checkout: exit=0 · OK
+== sabotado sdd/bin/verify-gate.sh → test_verify_gate_trace: exit=1 · FAILED (failures=4, errors=4) · testes vermelhos: test_grava_release_no_define_e_sai_0 test_nome_vira_nome_de_arquivo_seguro test_de_subpasta_com_caminho_relativo test_grava_o_exit_original_mesmo_com_strict test_sdd_trace_dir_troca_a_pasta test_trace
+   depois de git checkout: exit=0 · OK
+== sabotado sdd/bin/gate-baseline.sh → test_gate_baseline: exit=1 · FAILED (failures=3) · testes vermelhos: test_crash_com_rc_2_nao_prova_dentes test_crash_com_rc_2_nao_prova_dentes test_crash_com_rc_2_nao_prova_dentes 
+   depois de git checkout: exit=0 · OK
+== sabotado sdd/bin/gate-shell-evidencia.sh → test_gate_shell_evidencia: exit=1 · FAILED (failures=5) · testes vermelhos: test_bordas_do_pipe test_cada_formatador_e_acusado test_falso_verde_acusa_exatamente_as_linhas_esperadas test_pasta_e_utf8 test_rc_capturado_depois_do_pipe_nao_salva 
+   depois de git checkout: exit=0 · OK
+== sabotado sdd/bin/avaliador-guard.sh → test_avaliador_guard: exit=1 · FAILED (failures=4) · testes vermelhos: test_modificado_e_nao_rastreado_saem_1_com_o_commit test_o_commit_sugerido_funciona_com_renomeacao test_quatro_prefixos_nao_liberam_sdd_bin test_renomear_para_dentro_de_evidence_conta_a_origem 
+   depois de git checkout: exit=0 · OK
+== sabotado sdd/bin/test-baseline.sh → test_test_baseline: exit=1 · FAILED (failures=9) · testes vermelhos: test_cada_formato_so_aborta_pela_falha_nova test_cada_formato_so_aborta_pela_falha_nova test_cada_formato_so_aborta_pela_falha_nova test_cada_formato_so_aborta_pela_falha_nova test_cada_formato_so_abo
+   depois de git checkout: exit=0 · OK
+[exit=0]

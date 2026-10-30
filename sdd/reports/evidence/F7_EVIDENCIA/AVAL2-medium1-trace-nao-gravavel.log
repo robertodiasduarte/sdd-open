@@ -1,0 +1,39 @@
+$ P=$PWD; T=$(mktemp -d); cd "$T" && git init -q r && cd r && mkdir -p sdd/bin sdd/fixtures && cp "$P"/sdd/bin/verify-gate.sh sdd/bin/ && cp "$P"/sdd/fixtures/DEFINE_FIXTURE_*.md sdd/fixtures/
+for F in CONTROLE GOVERNANCA NEEDS_CLARIFICATION SEM_BLOCO; do
+  D=sdd/fixtures/DEFINE_FIXTURE_$F.md
+  SDD_TRACE=off bash sdd/bin/verify-gate.sh $D >ref.out 2>ref.err; r0=$?
+  # caso A: arquivo de trace 444
+  mkdir -p sdd/traces; : > sdd/traces/FIXTURE_$F.jsonl; chmod 444 sdd/traces/FIXTURE_$F.jsonl
+  bash sdd/bin/verify-gate.sh $D >a.out 2>a.err; ra=$?
+  # caso B: SDD_TRACE_DIR em pasta 555
+  mkdir -p ro; chmod 555 ro
+  SDD_TRACE_DIR=ro bash sdd/bin/verify-gate.sh $D >b.out 2>b.err; rb=$?
+  # caso C: SDD_TRACE_DIR inexistente dentro de pasta 555
+  SDD_TRACE_DIR=ro/sub bash sdd/bin/verify-gate.sh $D >c.out 2>c.err; rc_=$?
+  echo "$F: exit off=$r0 444=$ra dir555=$rb sub555=$rc_"
+  for k in a b c; do cmp -s ref.out $k.out && cmp -s ref.err $k.err && echo "  $k: stdout+stderr idênticos ao SDD_TRACE=off" || { echo "  $k: DIFERENTE"; diff ref.err $k.err; diff ref.out $k.out; }; done
+  echo "  linhas no trace 444: $(wc -l < sdd/traces/FIXTURE_$F.jsonl | tr -d " ")  arquivos em ro/: $(ls ro | wc -l | tr -d " ")"
+  chmod 755 ro; chmod 644 sdd/traces/FIXTURE_$F.jsonl
+done
+cd /; chmod -R u+w "$T"; rm -rf "${T:?}"
+CONTROLE: exit off=0 444=0 dir555=0 sub555=0
+  a: stdout+stderr idênticos ao SDD_TRACE=off
+  b: stdout+stderr idênticos ao SDD_TRACE=off
+  c: stdout+stderr idênticos ao SDD_TRACE=off
+  linhas no trace 444: 0  arquivos em ro/: 0
+GOVERNANCA: exit off=0 444=0 dir555=0 sub555=0
+  a: stdout+stderr idênticos ao SDD_TRACE=off
+  b: stdout+stderr idênticos ao SDD_TRACE=off
+  c: stdout+stderr idênticos ao SDD_TRACE=off
+  linhas no trace 444: 0  arquivos em ro/: 0
+NEEDS_CLARIFICATION: exit off=5 444=5 dir555=5 sub555=5
+  a: stdout+stderr idênticos ao SDD_TRACE=off
+  b: stdout+stderr idênticos ao SDD_TRACE=off
+  c: stdout+stderr idênticos ao SDD_TRACE=off
+  linhas no trace 444: 0  arquivos em ro/: 0
+SEM_BLOCO: exit off=64 444=64 dir555=64 sub555=64
+  a: stdout+stderr idênticos ao SDD_TRACE=off
+  b: stdout+stderr idênticos ao SDD_TRACE=off
+  c: stdout+stderr idênticos ao SDD_TRACE=off
+  linhas no trace 444: 0  arquivos em ro/: 0
+[exit=0]

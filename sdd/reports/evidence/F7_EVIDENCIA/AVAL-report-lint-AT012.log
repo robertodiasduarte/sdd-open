@@ -1,0 +1,22 @@
+$ T=$(mktemp -d) && git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval archive HEAD | tar -x -C $T && cd $T/tests && echo '--- testes atuais:' && /usr/bin/python3 -B -m unittest test_report_lint 2>&1 | tail -3 && git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval show v2.2.7:tests/test_report_lint.py > test_report_lint.py && echo '--- testes da v2.2.7 contra o report-lint.py novo:' && /usr/bin/python3 -B -m unittest test_report_lint > o.txt 2>&1; rc=$?; grep -E '^(FAIL|ERROR):|^Ran|^FAILED|^OK' o.txt; echo '--- motivos (linhas 🛑 nas falhas):'; grep -oE '🛑 \[[^]]+\]' o.txt | sort | uniq -c; cd /; rm -rf "$T"; exit $rc
+--- testes atuais:
+Ran 32 tests in 4.423s
+
+OK
+--- testes da v2.2.7 contra o report-lint.py novo:
+FAIL: test_ja_aplicada_em_vale_como_data (test_report_lint.Migrations)
+FAIL: test_layers_sql_vazio_usa_so_o_glob_fixo (test_report_lint.Migrations)
+FAIL: test_migration_apagada_nao_exige_linha (test_report_lint.Migrations)
+FAIL: test_migration_com_log_passa (test_report_lint.Migrations)
+FAIL: test_recibo_vale_mesmo_com_gate_test (test_report_lint.Migrations)
+FAIL: test_relatorio_sem_migration_nao_exige_a_secao (test_report_lint.Migrations)
+FAIL: test_sql_citado_fora_da_secao_de_arquivos_nao_conta (test_report_lint.Migrations)
+FAIL: test_criterio_false_nao_exige_evidencia (test_report_lint.ReportLint)
+FAIL: test_log_capturado_da_feature_passa (test_report_lint.ReportLint)
+FAIL: test_recibo_humano_em_gate_manual_ux_passa (test_report_lint.ReportLint)
+Ran 32 tests in 5.169s
+FAILED (failures=10)
+--- motivos (linhas 🛑 nas falhas):
+  10 🛑 [avaliação ausente]
+   7 🛑 [tabela]
+[exit=1]

@@ -1,0 +1,17 @@
+$ E=sdd/reports/evidence; O=$(mktemp); 
+bash sdd/bin/gate-shell-evidencia.sh $E/F1_MANUTENCAO $E/F2_TERRENO $E/F3_BUILD_RELEASE $E/F4_CONVERSA $E/F5_CONHECIMENTO $E/F6_DOCS $E/M1 $E/W0 > "$O" 2>&1; rc=$?
+echo "gate exit=$rc"; grep -v "^      " "$O" | grep -v "^🛑 sdd/" 
+grep -o "^🛑 sdd/[^ ]*" "$O" | sed "s/^🛑 //" | LC_ALL=C sort > "$O.got"
+LC_ALL=C sort $E/F7_EVIDENCIA/corpus-esperado.txt > "$O.exp"
+echo "acusadas=$(grep -c . "$O.got") esperadas=$(grep -c . "$O.exp")"
+if diff "$O.exp" "$O.got"; then echo "CONJUNTO IDÊNTICO"; else echo "CONJUNTO DIFERENTE"; fi
+echo "formatador=$(grep -c "é o exit de" "$O") vazio=$(grep -c "vazio:" "$O") literal=$(grep -c "literal:" "$O")"
+rm -f "$O" "$O.got" "$O.exp"; exit $rc
+gate exit=2
+🛑 21 linha(s) de exit que não provam o comando, em 245 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+acusadas=21 esperadas=21
+CONJUNTO IDÊNTICO
+formatador=18 vazio=4 literal=0
+[exit=2]

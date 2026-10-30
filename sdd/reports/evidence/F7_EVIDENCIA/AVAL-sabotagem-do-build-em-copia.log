@@ -1,0 +1,9 @@
+$ T=$(mktemp -d) && git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval archive HEAD | tar -x -C $T && cd $T && git init -q . && git add -A && git -c user.name=a -c user.email=a@example.com commit -q -m base && bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/sabotagem-do-build.sh; rc=$?; cd /; rm -rf "$T"; exit $rc
+✅ report-lint: sem a regra de existência → vermelho (test_avaliacao_de_slice_nao_prova_a_familia test_avaliacao_ignorada_pelo_git_nao_prova test_avaliacao_vazia_nao_prova test_contagem_impossivel_aceita_com_aviso test_declaracao_dentro_de_bloco_cercado_nao_vale ) · restaurado → verde
+✅ verify-gate: sem o trap do trace → vermelho (test_de_subpasta_com_caminho_relativo test_grava_o_exit_original_mesmo_com_strict test_sdd_trace_dir_troca_a_pasta test_trace_flag_e_aceita test_uma_linha_por_execucao_com_os_campos ) · restaurado → verde
+✅ gate-baseline: base verde vira dentes → vermelho (test_base_passa_sai_2 ) · restaurado → verde
+✅ gate-shell-evidencia: tail fora da lista → vermelho (test_cada_formatador_e_acusado test_falso_verde_acusa_exatamente_as_linhas_esperadas test_pasta_e_utf8 test_rc_capturado_depois_do_pipe_nao_salva ) · restaurado → verde
+✅ avaliador-guard: ignora não rastreados → vermelho (test_modificado_e_nao_rastreado_saem_1_com_o_commit test_quatro_prefixos_nao_liberam_sdd_bin ) · restaurado → verde
+✅ test-baseline: toda falha vira conhecida → vermelho (test_cada_formato_so_aborta_pela_falha_nova test_falha_nova_nao_poda_nem_na_execucao_completa test_touched_so_aborta_por_arquivo_tocado ) · restaurado → verde
+🟢 6/6 sabotagens vermelhas e restauradas
+[exit=0]

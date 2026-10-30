@@ -1,0 +1,145 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/ag.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval
+### AT-021 árvore limpa -> 0
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+[exit=0]
+
+### AT-021 logo após verify-gate gravar o trace (sdd/traces/) -> 0
+?? sdd/traces/X.jsonl
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+[exit=0]
+
+### AT-021 sujo só em sdd/reports/evidence/ -> 0
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+[exit=0]
+
+### AT-021 sujo em sdd/reviews/ só com --permitir sdd/reviews/ -> 0 (e sem ele -> 1)
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --permitir sdd/features/ --permitir sdd/handoffs/ --permitir sdd/reports/ --permitir sdd/reviews/
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+[exit=0]
+
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/reviews/AVALIACAO_X_20261030.md
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.eaEuH9Krj0 add -- 'sdd/reviews/AVALIACAO_X_20261030.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.eaEuH9Krj0 commit -m "wip(build): congelado para o avaliador"
+[exit=1]
+
+### AT-022 sdd/bin/x.sh modificado com os 4 prefixos -> 1
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --permitir sdd/features/ --permitir sdd/handoffs/ --permitir sdd/reports/ --permitir sdd/reviews/
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/bin/x.sh
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.eaEuH9Krj0 add -- 'sdd/bin/x.sh' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.eaEuH9Krj0 commit -m "wip(build): congelado para o avaliador"
+[exit=1]
+
+### AT-022 staged + não rastreado + apagado + renomeação (dois lados) + espaço no nome -> 1 listando tudo
+ D "arq com espaco.txt"
+R  renomear.txt -> renomeado.txt
+M  sdd/bin/x.sh
+?? novo.py
+?? "outro com espaco.md"
+?? sdd/reports/evidence/X/a.log
+?? sdd/traces/X.jsonl
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --permitir sdd/features/ --permitir sdd/handoffs/ --permitir sdd/reports/ --permitir sdd/reviews/
+🛑 6 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - arq com espaco.txt
+   - renomear.txt
+   - renomeado.txt
+   - sdd/bin/x.sh
+   - novo.py
+   - outro com espaco.md
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.eaEuH9Krj0 add -- 'arq com espaco.txt' 'renomear.txt' 'renomeado.txt' 'sdd/bin/x.sh' 'novo.py' 'outro com espaco.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.eaEuH9Krj0 commit -m "wip(build): congelado para o avaliador"
+[exit=1]
+
+### AT-022 o comando de commit sugerido funciona (executado numa cópia do repo)
+git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.hKsh1FxFHr add -- 'arq com espaco.txt' 'renomear.txt' 'renomeado.txt' 'sdd/bin/x.sh' 'novo.py' 'outro com espaco.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.hKsh1FxFHr commit -m "wip(build): congelado para o avaliador"
+rc_commit=128
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --root /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.hKsh1FxFHr --permitir sdd/features/ --permitir sdd/handoffs/ --permitir sdd/reports/ --permitir sdd/reviews/
+🛑 6 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - arq com espaco.txt
+   - renomear.txt
+   - renomeado.txt
+   - sdd/bin/x.sh
+   - novo.py
+   - outro com espaco.md
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.hKsh1FxFHr add -- 'arq com espaco.txt' 'renomear.txt' 'renomeado.txt' 'sdd/bin/x.sh' 'novo.py' 'outro com espaco.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.hKsh1FxFHr commit -m "wip(build): congelado para o avaliador"
+[exit=1]
+
+### AT-022 --root fora de git -> 2
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --root /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7O8lqECCm0
+⚠️  não consegui conferir a árvore: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7O8lqECCm0 não é um repositório git
+RESULTADO: INCONCLUSIVO
+→ não despache o avaliador até o guard conferir; rode dentro do repositório do projeto.
+[exit=2]
+
+### AT-022 git quebrado (.git aponta para o nada) -> 2
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --root /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7O8lqECCm0
+⚠️  não consegui conferir a árvore: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7O8lqECCm0 não é um repositório git
+RESULTADO: INCONCLUSIVO
+→ não despache o avaliador até o guard conferir; rode dentro do repositório do projeto.
+[exit=2]
+
+### AT-022 git ausente do PATH -> 2
+$ /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --root /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.eaEuH9Krj0
+/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh: line 39: tr: command not found
+⚠️  não consegui conferir a árvore: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.eaEuH9Krj0 não é um repositório git
+RESULTADO: INCONCLUSIVO
+→ não despache o avaliador até o guard conferir; rode dentro do repositório do projeto.
+[exit=2]
+
+### AT-022 SDD_AVALIADOR_GUARD=off com sujeira -> 0 ⚠️
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --permitir sdd/features/ --permitir sdd/handoffs/ --permitir sdd/reports/ --permitir sdd/reviews/
+⚠️  guard desligado (SDD_AVALIADOR_GUARD=off) — declare no BUILD_REPORT.
+RESULTADO: VERDE
+→ o avaliador pode ser despachado; o bypass é decisão sua e fica registrado.
+[exit=0]
+
+### uso: --root inexistente / argumento estranho / --permitir sem valor -> 64
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --root /nao/existe
+🛑 --root inexistente: /nao/existe
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/avaliador-guard.sh [--root <dir>] [--permitir <prefixo>]…
+[exit=64]
+
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh lixo
+🛑 argumento inesperado: lixo
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/avaliador-guard.sh [--root <dir>] [--permitir <prefixo>]…
+[exit=64]
+
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --permitir
+🛑 --permitir exige um prefixo
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/avaliador-guard.sh [--root <dir>] [--permitir <prefixo>]…
+[exit=64]
+
+### prefixo permitido sem barra (--permitir sdd) libera sdd/bin? (informativo)
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/avaliador-guard.sh --permitir sdd
+🛑 5 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - arq com espaco.txt
+   - renomear.txt
+   - renomeado.txt
+   - novo.py
+   - outro com espaco.md
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.eaEuH9Krj0 add -- 'arq com espaco.txt' 'renomear.txt' 'renomeado.txt' 'novo.py' 'outro com espaco.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.eaEuH9Krj0 commit -m "wip(build): congelado para o avaliador"
+[exit=1]
+[exit=0]

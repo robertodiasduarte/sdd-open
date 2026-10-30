@@ -1,0 +1,33 @@
+$ git diff v2.2.7 HEAD -- tests/test_report_lint.py
+diff --git a/tests/test_report_lint.py b/tests/test_report_lint.py
+index 37c8394..9a37baa 100644
+--- a/tests/test_report_lint.py
++++ b/tests/test_report_lint.py
+@@ -12,6 +12,8 @@ from apoio import PYTHON, Sandbox
+ SCRIPT = "sdd/bin/report-lint.py"
+ REPORT = "sdd/reports/BUILD_REPORT_EXEMPLO.md"
+ CABECALHO = "| AT | Critério | Resultado | Evidência |\n|---|---|---|---|\n"
++# forma mínima de um relatório que passa (F7): a tabela de critérios reconhecida e a linha do avaliador
++AVALIADOR = "avaliador: N.A. (1 camada)\n\n"
+ 
+ 
+ class ReportLint(Sandbox):
+@@ -29,7 +31,7 @@ class ReportLint(Sandbox):
+         self.escreve(self.r, rel, texto)
+ 
+     def lint(self, linhas: str, nome: str = REPORT) -> tuple[int, str]:
+-        self.escreve(self.r, nome, "# BUILD REPORT\n\n" + CABECALHO + linhas)
++        self.escreve(self.r, nome, "# BUILD REPORT\n\n" + AVALIADOR + CABECALHO + linhas)
+         rc, out, err = self.roda([PYTHON, "-B", SCRIPT, nome], self.r)
+         return rc, out + err
+ 
+@@ -127,7 +129,7 @@ class Migrations(Sandbox):
+                      "$ supabase migration list --linked\n " + TS + " | " + TS + " | 2026-10-29\n")
+ 
+     def lint(self, arquivos: str, aplicadas: str | None = None) -> tuple[int, str]:
+-        texto = "# BUILD REPORT\n\n" + ARQUIVOS + arquivos + "\n"
++        texto = "# BUILD REPORT\n\n" + AVALIADOR + CABECALHO + "\n" + ARQUIVOS + arquivos + "\n"
+         if aplicadas is not None:
+             texto += APLICADAS + aplicadas
+         self.escreve(self.r, REPORT, texto)
+[exit=0]

@@ -1,0 +1,5 @@
+$ gh pr checks 9 -R robertodiasduarte/sdd-open && gh run list -R robertodiasduarte/sdd-open --branch feat/f7-evidencia --limit 1 --json databaseId,headSha,conclusion,workflowName
+Testes no piso (macOS, só leitura)	pass	5m12s	https://github.com/robertodiasduarte/sdd-open/actions/runs/41126526373/job/124306373486	
+gate	pass	3m12s	https://github.com/robertodiasduarte/sdd-open/actions/runs/41126526373/job/124306374063	
+[{"conclusion":"success","databaseId":41126526373,"headSha":"1d225e5a45fa072bd6e5abe99c22662f6d901541","workflowName":"publish-gate"}]
+[exit=0]

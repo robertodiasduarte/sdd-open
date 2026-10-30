@@ -1,0 +1,17 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/vg-ro.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval
+$ SDD_TRACE=off bash sdd/bin/verify-gate.sh sdd/features/DEFINE_X.md
+▶ Verify Gate [test]: true
+   │ 
+✅ GATE VERDE (test) — pass_when: 'exit 0' satisfeito (rc=0).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+$ bash sdd/bin/verify-gate.sh sdd/features/DEFINE_X.md   # sdd/traces/X.jsonl com chmod 444
+▶ Verify Gate [test]: true
+   │ 
+✅ GATE VERDE (test) — pass_when: 'exit 0' satisfeito (rc=0).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/verify-gate.sh: line 72: sdd/traces/X.jsonl: Permission denied
+[exit=0]
+[exit=0]

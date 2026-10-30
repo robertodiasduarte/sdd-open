@@ -1,0 +1,158 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/gse.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia
+### fixtures: falso-verde (esperado 2 com 1:3? não — 3,6,9,12,15,17), honesto 0, assertivo 0
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/shell-falso-verde.log
+🛑 /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/shell-falso-verde.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ npm test | tail -5
+🛑 /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/shell-falso-verde.log:6 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ go test ./... | tail -3; rc=$?
+🛑 /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/shell-falso-verde.log:9 — o número gravado (exit=0) é o exit de `cut`, não do seu comando
+      $ pytest -q | cut -c1-80
+🛑 /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/shell-falso-verde.log:12 — `[exit=]` vazio: não há exit nenhum aqui (no zsh, ${PIPESTATUS[0]} sai vazio)
+🛑 /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/shell-falso-verde.log:15 — `[exit=$?]` literal: o exit nunca foi expandido
+🛑 /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/shell-falso-verde.log:17 — `exit=` vazio: não há exit nenhum aqui (no zsh, ${PIPESTATUS[0]} sai vazio)
+🛑 6 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+[exit=2]
+
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/shell-honesto.log
+✅ 1 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/shell-pipe-assertivo.log
+✅ 1 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+### casos próprios: esperado acusar linhas 3, 6, 18, 21, 24, 27 e não 9, 11, 13, 15
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ python3 -m pytest | tail -n 3
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:6 — o número gravado (exit=0) é o exit de `sed`, não do seu comando
+      $ make test 2>&1 | sed -n '1,5p'
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:18 — o número gravado (exit=0) é o exit de `wc`, não do seu comando
+      $ cmd | wc -l
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:21 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | /usr/bin/tail -1
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:24 — o número gravado ([exit=0]) é o exit de `uniq`, não do seu comando
+      $ cmd | sort | uniq -c
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:27 — o número gravado ([exit=0]) é o exit de `tee`, não do seu comando
+      $ cmd 2>&1 | tee saida.txt
+🛑 6 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+[exit=2]
+
+### bordas (informativo): env antes do formatador, PIPESTATUS depois do pipe, |&, [exit= ]
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/bordas.log
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/bordas.log:6 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1; echo "${PIPESTATUS[0]}"
+🛑 1 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+[exit=2]
+
+### pasta como argumento
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/bordas.log:6 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1; echo "${PIPESTATUS[0]}"
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ python3 -m pytest | tail -n 3
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:6 — o número gravado (exit=0) é o exit de `sed`, não do seu comando
+      $ make test 2>&1 | sed -n '1,5p'
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:18 — o número gravado (exit=0) é o exit de `wc`, não do seu comando
+      $ cmd | wc -l
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:21 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | /usr/bin/tail -1
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:24 — o número gravado ([exit=0]) é o exit de `uniq`, não do seu comando
+      $ cmd | sort | uniq -c
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/meus.log:27 — o número gravado ([exit=0]) é o exit de `tee`, não do seu comando
+      $ cmd 2>&1 | tee saida.txt
+🛑 7 linha(s) de exit que não provam o comando, em 2 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+[exit=2]
+
+### caminho inexistente -> 64
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/nao-existe.log
+🛑 não existe: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3pBbEnYHC1/nao-existe.log
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/gate-shell-evidencia.sh [--base <ref>] [<log|pasta>…]
+[exit=64]
+
+### pasta sem log -> 0
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.FWsZZJnybE
+ℹ️  nenhum *.log no escopo (caminhos): nada a conferir.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+### modo diff num repo: --base inválida -> 64
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh --base nao-existe
+🛑 git diff nao-existe...HEAD falhou: sem escopo confiável, não avalio
+RESULTADO: ERRO DE USO
+→ passe --base <ref> existente, ou os logs.
+[exit=64]
+
+### modo diff: nenhum log -> 0
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh --base base0
+ℹ️  nenhum *.log no escopo (diff): nada a conferir.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+### modo diff: log não rastreado falso -> 2
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh --base base0
+🛑 sdd/reports/evidence/X/novo.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ x | tail -1
+🛑 1 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+[exit=2]
+
+### modo diff: log commitado no diff -> 2
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh --base base0
+🛑 sdd/reports/evidence/X/novo.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ x | tail -1
+🛑 1 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+[exit=2]
+
+### modo diff: log só staged (git add, sem commit) -> deveria 2
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh --base base1
+ℹ️  nenhum *.log no escopo (diff): nada a conferir.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+### modo diff: log rastreado modificado na árvore (sem commit) -> deveria 2
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh --base base2
+ℹ️  nenhum *.log no escopo (diff): nada a conferir.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+### modo diff sem --base e sem origin -> 64
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh
+🛑 git diff origin/main...HEAD falhou: sem escopo confiável, não avalio
+RESULTADO: ERRO DE USO
+→ passe --base <ref> existente, ou os logs.
+[exit=64]
+
+### --base sem valor -> 64; opção desconhecida -> 64
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh --base
+🛑 --base exige uma ref
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/gate-shell-evidencia.sh [--base <ref>] [<log|pasta>…]
+[exit=64]
+
+$ bash /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/bin/gate-shell-evidencia.sh --xyz
+🛑 opção desconhecida: --xyz
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/gate-shell-evidencia.sh [--base <ref>] [<log|pasta>…]
+[exit=64]
+[exit=0]

@@ -1,0 +1,94 @@
+$ P=$PWD; . /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/rl-setup.sh
+echo "##### SEM nenhum AVALIACAO_X_* em sdd/reviews"
+echo "== a) Veredito do avaliador: PASS (sem C1, sem citação)"; rep "Veredito do avaliador: PASS"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== b) ## Veredito do avaliador + parágrafo PASS"; rep "## Veredito do avaliador
+
+PASS, 0 achados."; RL sdd/reports/BUILD_REPORT_X.md
+echo "##### COM AVALIACAO_X_20261030-ciclo1.md (NEEDS_WORK antigo) em sdd/reviews"
+echo "NEEDS_WORK" > sdd/reviews/AVALIACAO_X_20261030-ciclo1.md
+echo "== a2) Veredito do avaliador: PASS sem citar"; rep "Veredito do avaliador: PASS"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== a3) Veredito do avaliador: PASS citando"; rep "Veredito do avaliador: PASS · \`AVALIACAO_X_20261030-ciclo1.md\`"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== b2) ## Veredito do avaliador + parágrafo PASS sem citar"; rep "## Veredito do avaliador
+
+PASS, 0 achados."; RL sdd/reports/BUILD_REPORT_X.md
+echo "== b3) idem citando no parágrafo"; rep "## Veredito do avaliador
+
+PASS, em \`AVALIACAO_X_20261030-ciclo1.md\`."; RL sdd/reports/BUILD_REPORT_X.md
+echo "== c) tabela: rótulo (C1)+PASS numa linha, AVALIACAO noutra linha"; rep "| Campo | Valor |
+|---|---|
+| **Veredito do avaliador (C1)** | PASS |
+| Arquivo | \`AVALIACAO_X_20261030-ciclo1.md\` |"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== c2) tabela: mesma linha"; rep "| Campo | Valor | Arquivo |
+|---|---|---|
+| **Veredito do avaliador (C1)** | PASS | \`AVALIACAO_X_20261030-ciclo1.md\` |"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== c3) tabela SEM (C1) e sem dois-pontos: | Veredito do avaliador | PASS |"; rep "| Campo | Valor |
+|---|---|
+| Veredito do avaliador | PASS |"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== c4) **Veredito do avaliador**: PASS (negrito sem o dois-pontos dentro)"; rep "**Veredito do avaliador**: PASS"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== d) rótulo dentro de bloco cercado é ignorado"; rep "\`\`\`
+Veredito do avaliador: PASS
+\`\`\`"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== e) Veredito do avaliador: PENDENTE (motivo) é declaração"; rm sdd/reviews/AVALIACAO_X_20261030-ciclo1.md; rep "Veredito do avaliador: PENDENTE (travou no gate)"; RL sdd/reports/BUILD_REPORT_X.md
+echo "== e2) Veredito do avaliador (C1): N.A. (1 camada)"; rep "**Veredito do avaliador (C1):** N.A. (1 camada)"; RL sdd/reports/BUILD_REPORT_X.md
+cd /; rm -rf "${T:?}"
+##### SEM nenhum AVALIACAO_X_* em sdd/reviews
+== a) Veredito do avaliador: PASS (sem C1, sem citação)
+🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_X_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_X_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+exit=1
+== b) ## Veredito do avaliador + parágrafo PASS
+🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_X_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_X_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+exit=1
+##### COM AVALIACAO_X_20261030-ciclo1.md (NEEDS_WORK antigo) em sdd/reviews
+== a2) Veredito do avaliador: PASS sem citar
+🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_X_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+RESULTADO: VERMELHO
+exit=1
+== a3) Veredito do avaliador: PASS citando
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== b2) ## Veredito do avaliador + parágrafo PASS sem citar
+🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_X_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+RESULTADO: VERMELHO
+exit=1
+== b3) idem citando no parágrafo
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== c) tabela: rótulo (C1)+PASS numa linha, AVALIACAO noutra linha
+🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_X_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+RESULTADO: VERMELHO
+exit=1
+== c2) tabela: mesma linha
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== c3) tabela SEM (C1) e sem dois-pontos: | Veredito do avaliador | PASS |
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== c4) **Veredito do avaliador**: PASS (negrito sem o dois-pontos dentro)
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== d) rótulo dentro de bloco cercado é ignorado
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== e) Veredito do avaliador: PENDENTE (motivo) é declaração
+⚠️  avaliação PENDENTE (travou no gate), linha 9 — a release não sai enquanto esta linha existir
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+== e2) Veredito do avaliador (C1): N.A. (1 camada)
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_X.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+exit=0
+[exit=0]

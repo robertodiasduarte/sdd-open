@@ -1,0 +1,26 @@
+$ for F in F1_MANUTENCAO F2_TERRENO F3_BUILD_RELEASE M1 W0 F4_CONVERSA F5_CONHECIMENTO F6_DOCS; do
+  out=$(/usr/bin/python3 -B sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_$F.md 2>&1); rc=$?
+  cls=$(printf "%s\n" "$out" | grep -o "^🛑 \[[^]]*\]" | sort -u | tr "\n" " ")
+  echo "$F exit=$rc classes: ${cls:-nenhuma}"
+done
+echo "--- saída completa de F1:"; /usr/bin/python3 -B sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F1_MANUTENCAO.md; echo "exit=$?"
+echo "--- saída completa de F6:"; /usr/bin/python3 -B sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F6_DOCS.md; echo "exit=$?"
+F1_MANUTENCAO exit=1 classes: 🛑 [avaliação ausente] 
+F2_TERRENO exit=1 classes: 🛑 [avaliação ausente] 
+F3_BUILD_RELEASE exit=1 classes: 🛑 [avaliação ausente] 
+M1 exit=1 classes: 🛑 [avaliação ausente] 
+W0 exit=1 classes: 🛑 [avaliação ausente] 
+F4_CONVERSA exit=0 classes: nenhuma
+F5_CONHECIMENTO exit=0 classes: nenhuma
+F6_DOCS exit=0 classes: nenhuma
+--- saída completa de F1:
+🛑 [avaliação ausente] não há `AVALIACAO_F1_MANUTENCAO_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_F1_MANUTENCAO_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+exit=1
+--- saída completa de F6:
+✅ sdd/reports/BUILD_REPORT_F6_DOCS.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+exit=0
+[exit=0]

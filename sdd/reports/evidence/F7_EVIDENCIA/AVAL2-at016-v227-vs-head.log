@@ -1,0 +1,27 @@
+$ P=$PWD; T=$(mktemp -d); cd "$T" && git init -q r && cd r && mkdir -p sdd/bin sdd/fixtures && cp "$P"/sdd/fixtures/DEFINE_FIXTURE_*.md sdd/fixtures/
+git -C "$P" show v2.2.7:sdd/bin/verify-gate.sh > old.sh; cp "$P"/sdd/bin/verify-gate.sh sdd/bin/verify-gate.sh
+for F in CONTROLE GOVERNANCA NEEDS_CLARIFICATION SEM_BLOCO; do D=sdd/fixtures/DEFINE_FIXTURE_$F.md
+  for s in "" "--strict"; do
+    bash old.sh $s $D > o1 2>e1; r1=$?; bash sdd/bin/verify-gate.sh $s $D > o2 2>e2; r2=$?; SDD_TRACE=off bash sdd/bin/verify-gate.sh $s $D > o3 2>e3; r3=$?
+    cmp -s o1 o2 && cmp -s e1 e2 && cmp -s o2 o3 && cmp -s e2 e3 && same=idênticas || same=DIFERENTES
+    echo "$F ${s:-(sem flag)}: v2.2.7=$r1 HEAD=$r2 HEAD-off=$r3 · stdout/stderr $same"
+  done
+done
+echo "--- strict 3/4/5 → 1 (v2.2.7 vs HEAD)"
+mk() { printf "## Verify Gate\n\n\`\`\`yaml\nverify_gate:\n  kind: %s\n  cmd: \"%s\"\n  pass_when: \"exit 0\"\n\`\`\`\n" "$2" "$3" > sdd/fixtures/D_$1.md; }
+mk I test "nao_existe_xyz"; mk M manual-ux "N/A (manual-ux)"
+for x in I M FIXTURE_NEEDS_CLARIFICATION; do f=sdd/fixtures/D_$x.md; [ -f $f ] || f=sdd/fixtures/DEFINE_$x.md; bash old.sh --strict $f >/dev/null 2>&1; a=$?; bash sdd/bin/verify-gate.sh --strict $f >/dev/null 2>&1; b=$?; echo "$x --strict: v2.2.7=$a HEAD=$b"; done
+cd /; rm -rf "${T:?}"
+CONTROLE (sem flag): v2.2.7=0 HEAD=0 HEAD-off=0 · stdout/stderr idênticas
+CONTROLE --strict: v2.2.7=0 HEAD=0 HEAD-off=0 · stdout/stderr idênticas
+GOVERNANCA (sem flag): v2.2.7=0 HEAD=0 HEAD-off=0 · stdout/stderr idênticas
+GOVERNANCA --strict: v2.2.7=0 HEAD=0 HEAD-off=0 · stdout/stderr idênticas
+NEEDS_CLARIFICATION (sem flag): v2.2.7=5 HEAD=5 HEAD-off=5 · stdout/stderr idênticas
+NEEDS_CLARIFICATION --strict: v2.2.7=1 HEAD=1 HEAD-off=1 · stdout/stderr idênticas
+SEM_BLOCO (sem flag): v2.2.7=64 HEAD=64 HEAD-off=64 · stdout/stderr idênticas
+SEM_BLOCO --strict: v2.2.7=64 HEAD=64 HEAD-off=64 · stdout/stderr idênticas
+--- strict 3/4/5 → 1 (v2.2.7 vs HEAD)
+I --strict: v2.2.7=1 HEAD=1
+M --strict: v2.2.7=1 HEAD=1
+FIXTURE_NEEDS_CLARIFICATION --strict: v2.2.7=1 HEAD=1
+[exit=0]

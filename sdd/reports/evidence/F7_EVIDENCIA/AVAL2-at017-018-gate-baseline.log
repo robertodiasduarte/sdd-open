@@ -1,0 +1,82 @@
+$ P=$PWD; T=$(mktemp -d); cd "$T" && git init -q -b main r && cd r && git config user.email a@b.c && git config user.name t
+mkdir -p sdd/bin sdd/features tests && cp "$P"/sdd/bin/verify-gate.sh "$P"/sdd/bin/gate-baseline.sh sdd/bin/
+printf "def soma(a,b):\n    return a-b\n" > conta.py
+git add -A && git commit -qm base && git update-ref refs/remotes/origin/main HEAD
+git checkout -qb feat
+printf "def soma(a,b):\n    return a+b\n" > conta.py
+printf "import unittest, conta\nclass C(unittest.TestCase):\n    def test_soma(self):\n        self.assertEqual(conta.soma(1,2), 3)\n" > tests/test_conta.py
+mkd() { printf "## Verify Gate\n\n\`\`\`yaml\nverify_gate:\n  kind: %s\n  cmd: \"%s\"\n  pass_when: \"exit 0\"\n\`\`\`\n" "$2" "$3" > sdd/features/DEFINE_$1.md; }
+mkd UT test "python3 -B -m unittest discover -s tests -p test_*.py"
+mkd PASSA test "true"
+mkd FALTA test "bash scripts/nao_existe.sh"
+mkd SINTAXE test "bash -c \x27if then\x27; exit 2"
+mkd CRASH2 test "python3 -c \x27raise SystemExit(2)\x27"
+mkd MUX manual-ux "N/A (manual-ux)"
+git add -A; git commit -qm feat
+GB() { bash sdd/bin/gate-baseline.sh "$@" > o.txt 2>&1; r=$?; grep -E "RESULTADO|⚠️|✅|🛑" o.txt | grep -v "│"; echo "exit=$r"; }
+echo "== AT-017: unittest da feature levado por --sobrepor, base vermelha avaliando"; GB sdd/features/DEFINE_UT.md --sobrepor tests
+echo "-- BASELINE-gate.log, 1ª linha e exit_do_gate:"; sed -n 1,2p sdd/reports/evidence/UT/BASELINE-gate.log; grep -c "FAILED (failures=" sdd/reports/evidence/UT/BASELINE-gate.log
+echo "== sem --sobrepor (teste não existe na base)"; GB sdd/features/DEFINE_UT.md
+echo "== AT-018: base passa"; GB sdd/features/DEFINE_PASSA.md
+echo "== AT-018: arquivo ausente"; GB sdd/features/DEFINE_FALTA.md
+echo "== AT-018: rc=2 sem asserção (crash)"; GB sdd/features/DEFINE_CRASH2.md
+echo "== AT-018: manual-ux (4)"; GB sdd/features/DEFINE_MUX.md
+echo "== AT-018: sem ref de base"; GB sdd/features/DEFINE_UT.md --base nao/existe
+echo "== AT-018: base ausente (sem origin/main nem main)"; git update-ref -d refs/remotes/origin/main; git branch -q -m main velho; GB sdd/features/DEFINE_PASSA.md; git branch -q -m velho main
+echo "== uso: DEFINE ausente"; GB sdd/features/NAO.md
+echo "== uso: sem argumento"; GB
+echo "== uso: --sobrepor inexistente"; GB sdd/features/DEFINE_UT.md --sobrepor nada/
+echo "== árvore do build intacta?"; git status --short
+cd /; rm -rf "${T:?}"
+== AT-017: unittest da feature levado por --sobrepor, base vermelha avaliando
+✅ a base reprovou AVALIANDO: a asserção tem dentes.
+RESULTADO: VERDE
+exit=0
+-- BASELINE-gate.log, 1ª linha e exit_do_gate:
+$ bash sdd/bin/gate-baseline.sh sdd/features/DEFINE_UT.md --base origin/main --sobrepor tests
+# base=origin/main (383f551) · exit_do_gate=2
+1
+== sem --sobrepor (teste não existe na base)
+⚠️  a base ficou vermelha sem sinal de asserção (rc do comando=1): crash, arquivo ausente ou sintaxe não provam dentes
+RESULTADO: INCONCLUSIVO
+exit=3
+== AT-018: base passa
+🛑 a base PASSOU: a asserção fica verde no código anterior e não distingue o antes do depois.
+RESULTADO: VERMELHO
+exit=2
+== AT-018: arquivo ausente
+⚠️  o gate não chegou a avaliar na base (exit 3): ferramenta ou arquivo ausente, manual-ux, clarificação ou DEFINE sem gate
+RESULTADO: INCONCLUSIVO
+exit=3
+== AT-018: rc=2 sem asserção (crash)
+⚠️  a base ficou vermelha sem sinal de asserção (rc do comando=2): crash, arquivo ausente ou sintaxe não provam dentes
+RESULTADO: INCONCLUSIVO
+exit=3
+== AT-018: manual-ux (4)
+⚠️  o gate não chegou a avaliar na base (exit 4): ferramenta ou arquivo ausente, manual-ux, clarificação ou DEFINE sem gate
+RESULTADO: INCONCLUSIVO
+exit=3
+== AT-018: sem ref de base
+⚠️  ref de base inválida: nao/existe
+RESULTADO: INCONCLUSIVO
+exit=3
+== AT-018: base ausente (sem origin/main nem main)
+⚠️  sem estado anterior: nem origin/main nem main existem
+RESULTADO: INCONCLUSIVO
+exit=3
+== uso: DEFINE ausente
+🛑 uso: sdd/bin/gate-baseline.sh <DEFINE.md> [--base <ref>] [--feature <NOME>] [--sobrepor <caminho>]…
+RESULTADO: ERRO DE USO
+exit=64
+== uso: sem argumento
+🛑 uso: sdd/bin/gate-baseline.sh <DEFINE.md> [--base <ref>] [--feature <NOME>] [--sobrepor <caminho>]…
+RESULTADO: ERRO DE USO
+exit=64
+== uso: --sobrepor inexistente
+🛑 uso: sdd/bin/gate-baseline.sh <DEFINE.md> [--base <ref>] [--feature <NOME>] [--sobrepor <caminho>]…
+RESULTADO: ERRO DE USO
+exit=64
+== árvore do build intacta?
+?? o.txt
+?? sdd/reports/
+[exit=0]

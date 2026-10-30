@@ -1,0 +1,24 @@
+$ echo "== playbook-lint --self-test"; out=$(bash sdd/bin/playbook-lint.sh --self-test 2>&1); rc=$?; printf "%s\n" "$out" | grep -E "RESULTADO|✅" | sed -n 1,3p; echo "status=$rc"
+CV=scripts/check-versions.py; echo "== $CV --base v2.2.7 --base-obrigatoria"; out=$(/usr/bin/python3 -B $CV --base v2.2.7 --base-obrigatoria 2>&1); rc=$?; printf "%s\n" "$out" | grep -E "sdd-build|sdd-release|RESULTADO"; echo "status=$rc"
+echo "== bash 3.2 proibidos"; grep -nE "mapfile|declare -A|\\\$\{[a-zA-Z_]+\^\^" sdd/bin/gate-baseline.sh sdd/bin/gate-shell-evidencia.sh sdd/bin/avaliador-guard.sh sdd/bin/test-baseline.sh sdd/bin/verify-gate.sh; echo "status do grep=$? (1=nenhum)"
+echo "== awk sem LC_ALL=C nos 4 novos (só código)"; grep -nE "(^|[^=A-Za-z_#])awk " sdd/bin/gate-baseline.sh sdd/bin/gate-shell-evidencia.sh sdd/bin/avaliador-guard.sh sdd/bin/test-baseline.sh | grep -v "LC_ALL=C" | grep -v ":#"; echo "status do grep=$? (1=nenhum)"
+echo "== MANIFEST"; LC_ALL=C sort -c MANIFEST.txt && echo "ordenado LC_ALL=C"
+echo "== roadmap"; grep -cE "^\| \*\*" docs/roadmap.md docs/pt-BR/roadmap.md
+== playbook-lint --self-test
+  ✅ lint fixture INVÁLIDA ⇒ exit 2 com ≥5 motivos distintos → exit 2
+  ✅ fixture inválida acusa 7 classes de defeito distintas (≥5)
+  ✅ --grep termo INEXISTENTE ⇒ exit 1 e '0 bullets' → exit 1
+status=0
+== scripts/check-versions.py --base v2.2.7 --base-obrigatoria
+RESULTADO: VERDE
+status=0
+== bash 3.2 proibidos
+status do grep=1 (1=nenhum)
+== awk sem LC_ALL=C nos 4 novos (só código)
+status do grep=1 (1=nenhum)
+== MANIFEST
+ordenado LC_ALL=C
+== roadmap
+docs/roadmap.md:7
+docs/pt-BR/roadmap.md:7
+[exit=0]

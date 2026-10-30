@@ -1,0 +1,64 @@
+$ P=$PWD; T=$(mktemp -d); cd "$T" && git init -q r && cd r && mkdir -p sdd/bin sdd/fixtures && cp "$P"/sdd/bin/verify-gate.sh sdd/bin/ && cp "$P"/sdd/fixtures/DEFINE_FIXTURE_*.md sdd/fixtures/
+mk() { printf "## Verify Gate\n\n\`\`\`yaml\nverify_gate:\n  kind: %s\n  cmd: \"%s\"\n  pass_when: \"exit 0\"\n\`\`\`\n" "$2" "$3" > sdd/fixtures/DEFINE_$1.md; }
+mk V test "true"; mk R test "exit 1"; mk I test "nao_existe_cmd_xyz"; mk M manual-ux "N/A (manual-ux)"
+for f in V R I M FIXTURE_CONTROLE FIXTURE_NEEDS_CLARIFICATION FIXTURE_SEM_BLOCO; do bash sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_$f.md >/dev/null 2>&1; echo "$f exit=$?"; done
+bash sdd/bin/verify-gate.sh --strict sdd/fixtures/DEFINE_I.md >/dev/null 2>&1; echo "I --strict exit=$?"
+bash sdd/bin/verify-gate.sh --strict sdd/fixtures/DEFINE_M.md >/dev/null 2>&1; echo "M --strict exit=$?"
+bash sdd/bin/verify-gate.sh --print sdd/fixtures/DEFINE_V.md >/dev/null 2>&1; echo "V --print exit=$?"
+SDD_TRACE=off bash sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_V.md >/dev/null 2>&1; echo "V off exit=$?"
+echo "--- traces:"; for f in sdd/traces/*.jsonl; do echo "## $f ($(wc -l <"$f" | tr -d " ") linhas)"; cat "$f"; done
+echo "--- sem-define:"; bash sdd/bin/verify-gate.sh --sem-define F9_X; echo "exit=$?"; cat sdd/traces/F9_X.jsonl
+bash sdd/bin/verify-gate.sh --sem-define; echo "sem F exit=$?"
+echo "--- sem-define com trace 444:"; chmod 444 sdd/traces/F9_X.jsonl; bash sdd/bin/verify-gate.sh --sem-define F9_X; echo "exit=$?"; wc -l < sdd/traces/F9_X.jsonl
+echo "--- subdir: rodando de sdd/fixtures"; cd sdd/fixtures && bash ../bin/verify-gate.sh DEFINE_V.md >/dev/null 2>&1; echo "exit=$?"; cd ../..; ls sdd/fixtures/sdd 2>&1 | head -1; cat sdd/traces/V.jsonl
+cd /; chmod -R u+w "$T"; rm -rf "${T:?}"
+V exit=0
+R exit=2
+I exit=3
+M exit=4
+FIXTURE_CONTROLE exit=0
+FIXTURE_NEEDS_CLARIFICATION exit=5
+FIXTURE_SEM_BLOCO exit=64
+I --strict exit=1
+M --strict exit=1
+V --print exit=0
+V off exit=0
+--- traces:
+## sdd/traces/FIXTURE_CONTROLE.jsonl (1 linhas)
+{"ts":"2026-10-30T20:05:02Z","feature":"FIXTURE_CONTROLE","src":"verify-gate","kind":"test","exit":0,"define":"sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md"}
+## sdd/traces/FIXTURE_NEEDS_CLARIFICATION.jsonl (1 linhas)
+{"ts":"2026-10-30T20:05:02Z","feature":"FIXTURE_NEEDS_CLARIFICATION","src":"verify-gate","kind":"","exit":5,"define":"sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md"}
+## sdd/traces/FIXTURE_SEM_BLOCO.jsonl (1 linhas)
+{"ts":"2026-10-30T20:05:02Z","feature":"FIXTURE_SEM_BLOCO","src":"verify-gate","kind":"","exit":64,"define":"sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md"}
+## sdd/traces/I.jsonl (2 linhas)
+{"ts":"2026-10-30T20:05:02Z","feature":"I","src":"verify-gate","kind":"test","exit":3,"define":"sdd/fixtures/DEFINE_I.md"}
+{"ts":"2026-10-30T20:05:02Z","feature":"I","src":"verify-gate","kind":"test","exit":3,"define":"sdd/fixtures/DEFINE_I.md"}
+## sdd/traces/M.jsonl (2 linhas)
+{"ts":"2026-10-30T20:05:02Z","feature":"M","src":"verify-gate","kind":"manual-ux","exit":4,"define":"sdd/fixtures/DEFINE_M.md"}
+{"ts":"2026-10-30T20:05:02Z","feature":"M","src":"verify-gate","kind":"manual-ux","exit":4,"define":"sdd/fixtures/DEFINE_M.md"}
+## sdd/traces/R.jsonl (1 linhas)
+{"ts":"2026-10-30T20:05:02Z","feature":"R","src":"verify-gate","kind":"test","exit":2,"define":"sdd/fixtures/DEFINE_R.md"}
+## sdd/traces/V.jsonl (1 linhas)
+{"ts":"2026-10-30T20:05:02Z","feature":"V","src":"verify-gate","kind":"test","exit":0,"define":"sdd/fixtures/DEFINE_V.md"}
+--- sem-define:
+ℹ️  F9_X: release sem DEFINE — trace no-define gravado (nenhum gate rodou)
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+{"ts":"2026-10-30T20:05:02Z","feature":"F9_X","src":"release","kind":"no-define","exit":0,"define":""}
+🛑 uso: sdd/bin/verify-gate.sh --sem-define <FEATURE>
+RESULTADO: SPEC INVÁLIDA
+→ o arquivo não existe, não está num repositório git, ou não tem um bloco Verify Gate válido (ver sdd/templates/fragments/VERIFY_GATE.md).
+sem F exit=64
+--- sem-define com trace 444:
+ℹ️  F9_X: release sem DEFINE — trace no-define gravado (nenhum gate rodou)
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+       1
+--- subdir: rodando de sdd/fixtures
+exit=0
+ls: sdd/fixtures/sdd: No such file or directory
+{"ts":"2026-10-30T20:05:02Z","feature":"V","src":"verify-gate","kind":"test","exit":0,"define":"sdd/fixtures/DEFINE_V.md"}
+{"ts":"2026-10-30T20:05:02Z","feature":"V","src":"verify-gate","kind":"test","exit":0,"define":"sdd/fixtures/DEFINE_V.md"}
+[exit=0]

@@ -1,0 +1,81 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/vg.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval
+### AT-013: 1 linha por execução, para cada exit (0,2,2,3,4,64,5,64-sem-bloco)
+sdd/features/DEFINE_VERDE.md rc=0 linhas_antes=0 depois=1 :: {"ts":"2026-10-30T19:43:04Z","feature":"VERDE","src":"verify-gate","kind":"test","exit":0,"define":"sdd/features/DEFINE_VERDE.md"}
+sdd/features/DEFINE_VERM.md rc=2 linhas_antes=0 depois=1 :: {"ts":"2026-10-30T19:43:04Z","feature":"VERM","src":"verify-gate","kind":"test","exit":2,"define":"sdd/features/DEFINE_VERM.md"}
+sdd/features/DEFINE_DECL.md rc=2 linhas_antes=0 depois=1 :: {"ts":"2026-10-30T19:43:04Z","feature":"DECL","src":"verify-gate","kind":"test","exit":2,"define":"sdd/features/DEFINE_DECL.md"}
+sdd/features/DEFINE_INC.md rc=3 linhas_antes=0 depois=1 :: {"ts":"2026-10-30T19:43:04Z","feature":"INC","src":"verify-gate","kind":"test","exit":3,"define":"sdd/features/DEFINE_INC.md"}
+sdd/features/DEFINE_MANUAL.md rc=4 linhas_antes=0 depois=1 :: {"ts":"2026-10-30T19:43:04Z","feature":"MANUAL","src":"verify-gate","kind":"manual-ux","exit":4,"define":"sdd/features/DEFINE_MANUAL.md"}
+sdd/features/DEFINE_SEMKIND.md rc=64 linhas_antes=0 depois=1 :: {"ts":"2026-10-30T19:43:04Z","feature":"SEMKIND","src":"verify-gate","kind":"","exit":64,"define":"sdd/features/DEFINE_SEMKIND.md"}
+sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md rc=5 linhas_antes=0 depois=1 :: {"ts":"2026-10-30T19:43:05Z","feature":"FIXTURE_NEEDS_CLARIFICATION","src":"verify-gate","kind":"","exit":5,"define":"sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md"}
+sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md rc=64 linhas_antes=0 depois=1 :: {"ts":"2026-10-30T19:43:05Z","feature":"FIXTURE_SEM_BLOCO","src":"verify-gate","kind":"","exit":64,"define":"sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md"}
+### AT-013: JSON válido e campos
+['define', 'exit', 'feature', 'kind', 'src', 'ts'] verify-gate 2 int
+['define', 'exit', 'feature', 'kind', 'src', 'ts'] verify-gate 5 int
+['define', 'exit', 'feature', 'kind', 'src', 'ts'] verify-gate 64 int
+['define', 'exit', 'feature', 'kind', 'src', 'ts'] verify-gate 3 int
+['define', 'exit', 'feature', 'kind', 'src', 'ts'] verify-gate 4 int
+['define', 'exit', 'feature', 'kind', 'src', 'ts'] verify-gate 64 int
+['define', 'exit', 'feature', 'kind', 'src', 'ts'] verify-gate 0 int
+['define', 'exit', 'feature', 'kind', 'src', 'ts'] verify-gate 2 int
+### AT-013: --strict grava o exit ANTES do remapeamento (INC: 3 no trace, 1 no exit)
+rc=1 trace={"ts":"2026-10-30T19:43:05Z","feature":"INC","src":"verify-gate","kind":"test","exit":3,"define":"sdd/features/DEFINE_INC.md"}
+rc=1 trace={"ts":"2026-10-30T19:43:05Z","feature":"MANUAL","src":"verify-gate","kind":"manual-ux","exit":4,"define":"sdd/features/DEFINE_MANUAL.md"}
+rc=1 trace={"ts":"2026-10-30T19:43:05Z","feature":"FIXTURE_NEEDS_CLARIFICATION","src":"verify-gate","kind":"","exit":5,"define":"sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md"}
+### AT-013: default SDD_TRACE_DIR = sdd/traces na raiz, chamado de subpasta
+rc=0
+sdd/traces:
+VERDE.jsonl
+
+sub:
+{"ts":"2026-10-30T19:43:05Z","feature":"VERDE","src":"verify-gate","kind":"test","exit":0,"define":"sdd/features/DEFINE_VERDE.md"}
+### AT-013: --trace explícito aceito
+rc=0 linhas=       2
+### AT-014: --print não grava
+rc=0 antes=       2 depois=       2
+### AT-014: SDD_TRACE=off não grava
+rc=2 linhas VERM=       1 (era 1)
+### AT-014: diretório não gravável (pai sem escrita): saída e exit iguais a SDD_TRACE=off
+sdd/features/DEFINE_VERDE.md IGUAL rc=0
+sdd/features/DEFINE_VERM.md IGUAL rc=2
+### AT-014: diretório existe mas sem escrita (arquivo não criável)
+sdd/features/DEFINE_VERDE.md DIFERENTE ra=0 rb=0
+5a6
+> sdd/bin/verify-gate.sh: line 72: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6Qy75aXBEG/ro2/VERDE.jsonl: Permission denied
+sdd/features/DEFINE_VERM.md DIFERENTE ra=2 rb=2
+5a6
+> sdd/bin/verify-gate.sh: line 72: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6Qy75aXBEG/ro2/VERM.jsonl: Permission denied
+total 0
+dr-xr-xr-x@ 2 robertoduarte  staff   64 Oct 30 16:43 .
+drwx------@ 9 robertoduarte  staff  288 Oct 30 16:43 ..
+### AT-014: SDD_TRACE_DIR é um arquivo regular
+IGUAL rc=0
+### AT-015: --sem-define F
+ℹ️  F9_X: release sem DEFINE — trace no-define gravado (nenhum gate rodou)
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+{"ts":"2026-10-30T19:43:06Z","feature":"F9_X","src":"release","kind":"no-define","exit":0,"define":""}
+### AT-015: --sem-define sem F -> 64 e sem linha
+🛑 uso: sdd/bin/verify-gate.sh --sem-define <FEATURE>
+RESULTADO: SPEC INVÁLIDA
+→ o arquivo não existe, não está num repositório git, ou não tem um bloco Verify Gate válido (ver sdd/templates/fragments/VERIFY_GATE.md).
+rc=64
+nenhum arquivo novo
+### AT-015: --sem-define com SDD_TRACE=off -> 0 e nenhuma linha
+ℹ️  F9_Y: release sem DEFINE — trace NÃO gravado (SDD_TRACE=off)
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+ls: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6Qy75aXBEG/tr/F9_Y.jsonl: No such file or directory
+### AT-016: 4 fixtures — atual(trace on) vs atual(off) vs v2.2.7
+sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md on=0 off=0 v227=0 on==off:sim on==v227:sim
+sdd/fixtures/DEFINE_FIXTURE_GOVERNANCA.md on=0 off=0 v227=0 on==off:sim on==v227:sim
+sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md on=5 off=5 v227=5 on==off:sim on==v227:sim
+sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md on=64 off=64 v227=64 on==off:sim on==v227:sim
+### AT-016: --strict mapeia 3/4/5 -> 1 (atual e v2.2.7)
+sdd/features/DEFINE_INC.md strict atual=1 v227=1
+sdd/features/DEFINE_MANUAL.md strict atual=1 v227=1
+sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md strict atual=1 v227=1
+sdd/features/DEFINE_VERM.md strict atual=2 v227=2
+sdd/features/DEFINE_SEMKIND.md strict atual=64 v227=64
+[exit=0]
