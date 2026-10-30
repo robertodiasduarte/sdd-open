@@ -237,6 +237,15 @@ class Veredito(Base):
         rc, out = self.lint(self.relatorio("| Item | Valor |\n|---|---|\n" + linha))
         self.assertEqual(rc, 0, out)
 
+    def test_rotulos_em_negrito_e_em_tabela_sem_c1(self):
+        self.avaliacao("AVALIACAO_EXEMPLO_" + TS + "-ciclo1.md")  # avaliação antiga: a existência passa
+        for texto in ("**Veredito do avaliador**: PASS · ciclos: 2\n",
+                      "| Item | Valor |\n|---|---|\n| Veredito do avaliador | PASS |\n"):
+            with self.subTest(texto=texto):
+                rc, out = self.lint(self.relatorio(texto))
+                self.assertEqual(rc, 1, out)
+                self.assertIn("Veredito do avaliador `PASS`", out)
+
     def test_rotulos_sem_c1(self):
         for texto in ("Veredito do avaliador: PASS · ciclos: 1\n", "## Veredito do avaliador\n\n**PASS**\n"):
             with self.subTest(texto=texto):

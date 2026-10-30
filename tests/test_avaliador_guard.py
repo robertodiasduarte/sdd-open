@@ -71,6 +71,18 @@ class AvaliadorGuard(Sandbox):
         rc, out = self.guard()
         self.assertEqual(rc, 0, out)
 
+    def test_so_remocao_staged_sugere_commit_sem_add(self):
+        self.escreve(self.r, "sdd/features/DEFINE_F.md", "# f\n")
+        self.git(self.r, "rm", "-q", "src/app.py")
+        rc, out = self.guard(*QUATRO)
+        self.assertEqual(rc, 1, out)
+        comando = out.splitlines()[-1][len("→ "):]
+        self.assertNotIn(" add ", comando)
+        rc2, o2, e2 = self.roda(["bash", "-c", comando], self.r)
+        self.assertEqual(rc2, 0, o2 + e2)
+        self.assertEqual(self.git(self.r, "show", "--name-status", "--format=", "HEAD").split(), ["D", "src/app.py"])
+        self.assertIn("?? sdd/features/", self.git(self.r, "status", "--porcelain"))
+
     def test_quatro_prefixos_nao_liberam_sdd_bin(self):
         self.escreve(self.r, "sdd/features/DEFINE_X.md", "# x\n")
         self.escreve(self.r, "sdd/bin/x.sh", "echo x\n")

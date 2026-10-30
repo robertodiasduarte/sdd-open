@@ -108,6 +108,11 @@ done <<EOF
 ${SUJOS}
 EOF
 args="$(printf '%s' "${ADD}" | sed "s/'/'\\\\''/g; s/^/'/; s/\$/'/" | tr '\n' ' ')"
-printf 'RESULTADO: VERMELHO\n→ git -C %s add -A -- %s&& git -C %s commit -m "wip(build): congelado para o avaliador"\n' \
-  "${TOP}" "${args}" "${TOP}"
+if [ -n "${args}" ]; then
+  printf 'RESULTADO: VERMELHO\n→ git -C %s add -A -- %s&& git -C %s commit -m "wip(build): congelado para o avaliador"\n' \
+    "${TOP}" "${args}" "${TOP}"
+else
+  # só remoções já no índice: nada a acrescentar, e `git add -A` sem caminho poria a árvore inteira no stage
+  printf 'RESULTADO: VERMELHO\n→ git -C %s commit -m "wip(build): congelado para o avaliador"\n' "${TOP}"
+fi
 exit 1

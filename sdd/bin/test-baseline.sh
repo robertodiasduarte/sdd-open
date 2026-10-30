@@ -119,6 +119,7 @@ import sys
 
 saida, rc, arq, modo, tocados = sys.argv[1], int(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[5]
 txt = open(saida, encoding="utf-8", errors="replace").read()
+txt = re.sub(r"\x1b\[[0-9;]*[A-Za-z]", "", txt)  # cores ANSI (o deno colore mesmo com a saída redirecionada)
 
 ids = []
 
@@ -149,6 +150,18 @@ for m in re.finditer(r"^\s*--- FAIL: (\S+)", txt, re.M):
 # go: pacote que nem compilou ("FAIL\texemplo/x [build failed]") — os testes dele não rodaram
 for m in re.finditer(r"^FAIL\s+(\S+)\s+\[(build|setup) failed\]", txt, re.M):
     add("%s failed: %s" % (m.group(2), m.group(1)))
+# go: pacote que falhou sem nenhum "--- FAIL" antes da linha de resumo dele (timeout, os.Exit em TestMain,
+# panic de init) — a falha é do pacote, e os testes dele não contam como "sararam"
+sem_teste = 0
+for linha in txt.splitlines():
+    if re.match(r"^\s*--- FAIL: ", linha):
+        sem_teste += 1
+        continue
+    m = re.match(r"^(ok|FAIL|\?) *\t(\S+)(\t[\d.]+s|\t\[no test files\])?\s*$", linha)  # o go separa com TAB
+    if m:
+        if m.group(1) == "FAIL" and sem_teste == 0:
+            add("package failed: " + m.group(2))
+        sem_teste = 0
 # deno: "nome => ./arquivo.ts:12:6" (bloco de falhas)
 for m in re.finditer(r"^(.+?) => (?:\./)?(\S+?):\d+:\d+\s*$", txt, re.M):
     add(m.group(2) + "::" + m.group(1).strip())

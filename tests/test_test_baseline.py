@@ -108,6 +108,28 @@ class TestBaseline(Sandbox):
         self.assertIn("🛑 nova: build failed: exemplo/outro", out)
         self.assertEqual((self.r / BASELINE).read_bytes(), antes)
 
+    def test_pacote_go_sem_linha_de_teste_tambem_falha(self):
+        self.baseline("TestConhecido", "TestLento")
+        antes = (self.r / BASELINE).read_bytes()
+        self.escreve(self.r, "saida.txt", "--- FAIL: TestConhecido (0.00s)\nFAIL\nFAIL\texemplo/conta\t0.005s\n"
+                                          "panic: test timed out after 1s\nrunning tests:\n\tTestLento (1s)\n"
+                                          "FAIL\texemplo/lento\t1.012s\nFAIL\n")
+        self.config("cat saida.txt; exit 1")
+        rc, out = self.tb()
+        self.assertEqual(rc, 2, out)
+        self.assertIn("🛑 nova: package failed: exemplo/lento", out)
+        self.assertNotIn("sarou", out)
+        self.assertEqual((self.r / BASELINE).read_bytes(), antes)
+
+    def test_saida_colorida_e_lida(self):
+        self.baseline("conta_test.ts::conhecido")
+        self.escreve(self.r, "cor.txt", "conhecido\x1b[0m\x1b[38;5;245m => ./conta_test.ts:2:6\x1b[0m\n"
+                                        "novo\x1b[0m\x1b[38;5;245m => ./conta_test.ts:5:6\x1b[0m\n")
+        rc, out = self.tb("--cmd", "cat cor.txt; exit 1")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("🛑 nova: conta_test.ts::novo", out)
+        self.assertIn("conhecida: conta_test.ts::conhecido", out)
+
     def test_touched_com_base_invalida_e_64(self):
         rc, out = self.tb("--touched", "--base", "nao-existe", "--cmd", "true")
         self.assertEqual(rc, 64, out)

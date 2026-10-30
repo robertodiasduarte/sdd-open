@@ -61,6 +61,7 @@ TRACE_FEATURE=""
 TRACE_SRC="verify-gate"
 TRACE_KIND=""
 TRACE_DEFINE=""
+TRACE_GRAVOU=0
 json_esc() { printf '%s' "${1}" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g'; }
 trace_gravar() {
   rc="$?"
@@ -71,7 +72,7 @@ trace_gravar() {
   mkdir -p "${SDD_TRACE_DIR_VAL}" 2>/dev/null || return 0
   printf '{"ts":"%s","feature":"%s","src":"%s","kind":"%s","exit":%s,"define":"%s"}\n' \
     "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${TRACE_FEATURE}" "${TRACE_SRC}" "$(json_esc "${TRACE_KIND}")" "${rc}" \
-    "$(json_esc "${TRACE_DEFINE}")" 2>/dev/null >> "${SDD_TRACE_DIR_VAL}/${TRACE_FEATURE}.jsonl" || true
+    "$(json_esc "${TRACE_DEFINE}")" 2>/dev/null >> "${SDD_TRACE_DIR_VAL}/${TRACE_FEATURE}.jsonl" && TRACE_GRAVOU=1
   return 0
 }
 
@@ -101,12 +102,14 @@ if [ "${SEM_DEFINE}" = "1" ]; then
   REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "🛑 não é um repositório git" >&2; finalizar 64; }
   cd "${REPO_ROOT}" || finalizar 64
   TRACE_FEATURE="$(printf '%s' "${DEFINE}" | sed -E 's/[^A-Za-z0-9._-]/_/g')"
-  TRACE_SRC="release"; TRACE_KIND="no-define"; TRACE_DEFINE=""
-  trap trace_gravar EXIT
+  TRACE_SRC="release"; TRACE_KIND="no-define"; TRACE_DEFINE=""; TRACE_RC=0
+  trace_gravar  # grava já, para a frase dizer o que de fato aconteceu (sem trap: nada a gravar no EXIT)
   if [ "${SDD_TRACE_VAL}" = "off" ]; then
     echo "ℹ️  ${TRACE_FEATURE}: release sem DEFINE — trace NÃO gravado (SDD_TRACE=off)"
-  else
+  elif [ "${TRACE_GRAVOU}" = "1" ]; then
     echo "ℹ️  ${TRACE_FEATURE}: release sem DEFINE — trace no-define gravado (nenhum gate rodou)"
+  else
+    echo "⚠️  ${TRACE_FEATURE}: release sem DEFINE — trace NÃO gravado (sem permissão em ${SDD_TRACE_DIR_VAL})"
   fi
   finalizar 0
 fi

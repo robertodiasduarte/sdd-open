@@ -57,6 +57,12 @@ class GateShellEvidencia(Sandbox):
             "$ cmd\n[exit= ]\n": 2,
             "$ cmd | tail -3; echo \"[exit=${PIPESTATUS[0]}]\"\n[exit=1]\n": 0,
             "$ set -o pipefail; cmd | tail -3\n[exit=1]\n": 0,
+            "$\ncmd | tail -1\n[exit=0]\n": 2,
+            "$ cmd | tail -1 # PIPESTATUS\n[exit=0]\n": 2,
+            "$ cmd | (tail -1)\n[exit=0]\n": 2,
+            "$ cmd | command tail -1\n[exit=0]\n": 2,
+            "$ cmd | env LC_ALL=C sort -u\n[exit=0]\n": 2,
+            "$ out=$(cmd); r=$?; printf x | tail -1\n[exit=1]\n": 0,
         }
         for log, esperado in casos.items():
             with self.subTest(log=log):

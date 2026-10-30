@@ -7,8 +7,9 @@
 #
 # Regra (por linha `[exit=N]` ou `exit=N`, olhando o último `$ <comando>` acima dela no mesmo log):
 #   🛑 o comando tem `|` ou `|&` (`||` não conta), o último estágio é um FORMATADOR (tail head cat tee
-#      wc sed cut sort uniq column tr fold nl, mesmo com `VAR=valor` antes), não há `rc=$?` antes do
-#      último pipe nem `PIPESTATUS`/`pipefail` no comando ⇒ o número gravado é do formatador.
+#      wc sed cut sort uniq column tr fold nl, mesmo com `VAR=valor`, `command`, `env` ou `(` antes), não
+#      há `<var>=$?` antes do último pipe nem `PIPESTATUS`/`pipefail` no comando (comentário não conta)
+#      ⇒ o número gravado é do formatador. Um `$` sozinho na linha: o comando é a linha seguinte.
 #   🛑 `[exit=]` vazio (com ou sem espaço, com ou sem colchete), ou `[exit=$?]` literal ⇒ não há exit.
 #   ✅ `| grep -c X`, `| jq -e`, `| awk '…exit 1'` não são acusados: ali o último estágio É a asserção.
 #   A regra é conservadora com comando composto (`… | tail -1 && outro`, `for … done`): acusa pelo
@@ -69,7 +70,9 @@ fi
 LC_ALL=C sort -u -o "${LISTA}" "${LISTA}"
 
 cat > "${PROG}" <<'AWK'
-FNR == 1 { cmd = ""; cmdraw = "" }
+FNR == 1 { cmd = ""; cmdraw = ""; proxima = 0 }
+proxima == 1 && $0 !~ /^[ \t]*$/ { cmdraw = "$ " $0; cmd = $0; proxima = 0; next }
+/^\$[ \t]*$/ { proxima = 1; cmd = ""; cmdraw = ""; next }
 /^\$ / { cmdraw = $0; cmd = $0; sub(/^\$ /, "", cmd); next }
 /^\[?exit=/ {
   if ($0 ~ /^\[?exit=\$\?\]?/) {
@@ -80,7 +83,7 @@ FNR == 1 { cmd = ""; cmdraw = "" }
   }
   if (cmd == "") next
   c = cmd
-  i = index(c, "   #"); if (i > 0) c = substr(c, 1, i - 1)
+  sub(/[ \t]+#.*$/, "", c)
   if (c ~ /pipefail/ || c ~ /PIPESTATUS/) next
   gsub(/\|\|/, "\001", c)
   gsub(/\|&/, "|", c)
@@ -88,11 +91,12 @@ FNR == 1 { cmd = ""; cmdraw = "" }
   if (n < 2) next
   lp = 0; rest = c
   while ((k = index(rest, "|")) > 0) { lp += k; rest = substr(rest, k + 1) }
-  h = index(c, "rc=$?"); if (h > 0 && h < lp) next
+  antes = substr(c, 1, lp - 1); if (antes ~ /[A-Za-z_][A-Za-z0-9_]*=\$\?/) next
   last = parts[n]; sub(/^[ \t]+/, "", last); sub(/[ \t]+$/, "", last)
+  gsub(/^[({ \t]+/, "", last)
   nt = split(last, tk, /[ \t]+/); j = 1
-  while (j < nt && tk[j] ~ /^[A-Za-z_][A-Za-z0-9_]*=/) j++
-  t = tk[j]; sub(/^.*\//, "", t)
+  while (j < nt && (tk[j] ~ /^[A-Za-z_][A-Za-z0-9_]*=/ || tk[j] ~ /^(command|builtin|exec|env|nice|time|stdbuf|-[A-Za-z]+)$/)) j++
+  t = tk[j]; sub(/^.*\//, "", t); sub(/[)};]+$/, "", t)
   if (t ~ /^(tail|head|cat|tee|wc|sed|cut|sort|uniq|column|tr|fold|nl)$/) {
     show = cmdraw; if (length(show) > 110) show = substr(show, 1, 107) "..."
     printf("🛑 %s:%d — o número gravado (%s) é o exit de `%s`, não do seu comando\n", FILENAME, FNR, $0, t)

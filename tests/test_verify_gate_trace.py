@@ -144,6 +144,19 @@ class SemDefine(Sandbox):
         self.assertEqual(rc, 0)
         self.assertEqual(os.listdir(str(self.r / "sdd/traces")), ["a_b__c_.jsonl"])
 
+    def test_sem_permissao_diz_que_nao_gravou(self):
+        (self.r / "sdd/traces").mkdir(parents=True)
+        arq = self.escreve(self.r, "sdd/traces/X.jsonl", "")
+        arq.chmod(0o444)
+        try:
+            rc, out, err = self.roda([BASH, SCRIPT, "--sem-define", "X"], self.r)
+        finally:
+            arq.chmod(0o644)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("NÃO gravado (sem permissão", out)
+        self.assertNotIn("no-define gravado", out)
+        self.assertEqual(arq.read_text(encoding="utf-8"), "")
+
     def test_sdd_trace_off_diz_que_nao_gravou(self):
         rc, out, _ = self.roda([BASH, SCRIPT, "--sem-define", "X"], self.r, dict(self.env, SDD_TRACE="off"))
         self.assertEqual(rc, 0)

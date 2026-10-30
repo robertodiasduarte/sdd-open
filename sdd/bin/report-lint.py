@@ -51,8 +51,8 @@ PATH_RE = re.compile(r"`([^`]+\.(?:log|txt|md))`")
 # o 1º token de veredito depois do rótulo, no mesmo parágrafo ou no seguinte (quando o rótulo é título); numa
 # tabela, só a linha do rótulo. Também valem `Veredito do avaliador:` e `## Veredito do avaliador` sem (C1).
 VERDICT_LABEL_RE = re.compile(
-    r"Veredito do avaliador \(C1\)|\*\*Veredito do avaliador:\*\*|^#{1,6}[ \t]+Veredito do avaliador\b"
-    r"|^[ \t>*_-]*Veredito do avaliador:",
+    r"Veredito do avaliador \(C1\)|\*\*Veredito do avaliador:\*\*|\*\*Veredito do avaliador\*\*"
+    r"|^#{1,6}[ \t]+Veredito do avaliador\b|^[ \t>*_-]*Veredito do avaliador:|\|[ \t]*Veredito do avaliador\b",
     re.IGNORECASE | re.MULTILINE,
 )
 VERDICT_VALUE_RE = re.compile(r"\b(PASS_PENDENTE_RECIBO|PENDENTE|PASS|NEEDS_WORK|N\.?A\.?)\b", re.IGNORECASE)
