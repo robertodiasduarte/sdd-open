@@ -1,0 +1,17 @@
+$ npm test | tail -5
+3 passed, 1 failed
+[exit=0]
+$ go test ./... | tail -3; rc=$?
+FAIL exemplo/conta
+[exit=0]
+$ pytest -q | cut -c1-80
+1 failed, 2 passed
+exit=0
+$ deno test conta_test.ts | tail -2
+error: Test failed
+[exit=]
+$ deno check conta.ts
+Check conta.ts
+[exit=$?]
+$ npm run lint 2>&1 | head -20
+exit=

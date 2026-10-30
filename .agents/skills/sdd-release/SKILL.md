@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.1"
+  version: "2.4.0"
   updated: "2026-10"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.3.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -104,11 +104,17 @@ diff-base (`git merge-base origin/{default_branch} HEAD`).
    | `4` | exigir o **recibo humano** no BUILD_REPORT; sem recibo, não publicar |
    | `5` | **abortar** e voltar ao Define — spec ambígua não se dispensa |
    | DEFINE sem bloco (`64`) | não abortar: registrar **Aviso** "DEFINE anterior ao gate" |
-   | sem DEFINE (fix pequeno) | pular e declarar "sem DEFINE — SDD formal dispensado" |
+   | sem DEFINE (fix pequeno) | rodar `bash sdd/bin/verify-gate.sh --sem-define <F>` (registra no trace que nenhum gate rodou) e declarar "sem DEFINE — SDD formal dispensado" |
 5. **Relatório:** `python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{F}.md` — `true`
    sem evidência, ou migration listada sem a linha provada em `## Migrations aplicadas`, abre
-   **abortar**.
+   **abortar**. Depois, `python3 sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_{F}.md`:
+   exit ≠ 0 ⇒ **abortar**, citando o exit e o `arquivo:linha` (avaliação `PENDENTE` não vai para
+   produção). Exit 64 ou 127 ⇒ acrescente "atualize `sdd/bin/`: rode o `doctor` e, para o que ele
+   apontar, apague e rode o `init`" — um `report-lint.py` antigo não conhece `--pendente`.
 6. **Playbook:** `sdd/bin/playbook-lint.sh sdd/playbook.md` — exit 2 → abortar.
+7. **Exit dos logs:** `bash sdd/bin/gate-shell-evidencia.sh` (os logs de `sdd/reports/evidence/`
+   do diff) — exit ≠ 0 ⇒ **abortar**, citando cada `arquivo:linha`: um `[exit=N]` que é o exit do
+   `tail` não prova o comando. Exit 64 ou 127 ⇒ a mesma frase de atualizar `sdd/bin/` do item 5.
 
 Se 0a abortou, **nem inicie** as passadas de modelo.
 
@@ -256,7 +262,7 @@ removido.
 ## Gates de ABORTAR (parar e reportar, nunca pushar)
 
 Fase 0a: landmines exit 2 · drift ≠0 · lint · Verify Gate `2` ou `5` · `3` não resolvido ·
-`4` sem recibo · report-lint ≠0. Fase 0b: consumidor não modificado quebrado · invariante
+`4` sem recibo · report-lint ≠0 · report-lint --pendente ≠0 · gate-shell-evidencia ≠0. Fase 0b: consumidor não modificado quebrado · invariante
 violado. Fase 0c: credencial hardcoded · permissão frouxa · dado pessoal exposto. Fase 1:
 arquivo inesperado no diff · conflito real · base moveu · escrita em produção sem source.
 
@@ -286,6 +292,10 @@ vale **sempre**.
   fica registrada com motivo e nome.
 - **Comando remoto sem pedir senha** — o pedido de senha aparece no terminal do agente, não na tela da
   pessoa; com o OK já dado, a publicação trava pela metade sem ninguém ver.
+- **Avaliação `PENDENTE` aborta a release** — o build que travou antes do avaliador pode registrar o
+  estado real; o que não pode é esse estado chegar a produção sem que ninguém tenha provado os critérios.
+- **O exit de cada log é conferido** — `cmd | tail` grava o exit do `tail`, sempre 0: sem a
+  conferência, um teste que falhou passa como evidência verde.
 
 ## Encerramento (obrigatório)
 

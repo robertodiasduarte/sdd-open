@@ -1,0 +1,21 @@
+running 3 tests from ./conta_test.ts
+soma ... ok (1ms)
+conhecido ... FAILED (2ms)
+novo ... FAILED (1ms)
+
+ ERRORS 
+
+conhecido => ./conta_test.ts:3:6
+error: AssertionError: Values are not equal.
+
+novo => ./conta_test.ts:8:6
+error: AssertionError: Values are not equal.
+
+ FAILURES 
+
+conhecido => ./conta_test.ts:3:6
+novo => ./conta_test.ts:8:6
+
+FAILED | 1 passed | 2 failed (5ms)
+
+error: Test failed

@@ -1,0 +1,8 @@
+=== RUN   TestConhecido
+--- FAIL: TestConhecido (0.00s)
+    conta_test.go:10: esperado 2
+=== RUN   TestNovo
+--- FAIL: TestNovo (0.00s)
+    conta_test.go:15: esperado 4
+FAIL
+FAIL	exemplo/conta	0.005s

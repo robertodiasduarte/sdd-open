@@ -15,6 +15,13 @@
 #   sdd/bin/verify-gate.sh <DEFINE.md>            # roda o gate do DEFINE
 #   sdd/bin/verify-gate.sh --print <DEFINE.md>    # só extrai/mostra o bloco (não roda)
 #   sdd/bin/verify-gate.sh --strict <DEFINE.md>   # 3/4/5 saem ≠0 (para CI e pipelines com &&)
+#   sdd/bin/verify-gate.sh --sem-define <FEATURE> # release sem DEFINE: só registra no trace e sai 0
+#
+# Trace (ligado por default; `--trace` é aceito e não muda nada): toda execução que não é --print,
+# depois de achar a raiz do repositório, acrescenta 1 linha JSONL em ${SDD_TRACE_DIR:-sdd/traces}/<F>.jsonl
+# com ts, feature, src (verify-gate | release), kind, exit (o original, antes do --strict) e define.
+# Nunca muda o exit nem a saída; SDD_TRACE=off desliga. "Quantas voltas vermelhas levou a feature X"
+# vira `grep -c '"exit":2' sdd/traces/X.jsonl`.
 #
 # Contrato de exit (INALTERADO pelo --strict, que só remapeia 3/4/5 → 1 no fim):
 #   0  = VERDE (passou)              → build e release seguem
@@ -33,18 +40,44 @@ set -uo pipefail
 
 PRINT_ONLY=0
 STRICT=0
+SEM_DEFINE=0
 while [ $# -gt 0 ]; do
   case "${1}" in
     --print)  PRINT_ONLY=1; shift ;;
     --strict) STRICT=1; shift ;;
+    --trace)  shift ;;
+    --sem-define) SEM_DEFINE=1; shift ;;
     *) break ;;
   esac
 done
 
 DEFINE="${1:-}"
 
+# ---- trace: 1 linha por execução, gravada no EXIT, que nunca muda exit nem saída ------
+SDD_TRACE_VAL="${SDD_TRACE:-on}"
+SDD_TRACE_DIR_VAL="${SDD_TRACE_DIR:-sdd/traces}"
+TRACE_RC=""
+TRACE_FEATURE=""
+TRACE_SRC="verify-gate"
+TRACE_KIND=""
+TRACE_DEFINE=""
+json_esc() { printf '%s' "${1}" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g'; }
+trace_gravar() {
+  rc="$?"
+  [ -n "${TRACE_RC}" ] && rc="${TRACE_RC}"
+  [ "${PRINT_ONLY}" = "1" ] && return 0
+  [ "${SDD_TRACE_VAL}" = "off" ] && return 0
+  [ -n "${TRACE_FEATURE}" ] || return 0
+  mkdir -p "${SDD_TRACE_DIR_VAL}" 2>/dev/null || return 0
+  printf '{"ts":"%s","feature":"%s","src":"%s","kind":"%s","exit":%s,"define":"%s"}\n' \
+    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${TRACE_FEATURE}" "${TRACE_SRC}" "$(json_esc "${TRACE_KIND}")" "${rc}" \
+    "$(json_esc "${TRACE_DEFINE}")" >> "${SDD_TRACE_DIR_VAL}/${TRACE_FEATURE}.jsonl" 2>/dev/null || true
+  return 0
+}
+
 # ---- veredito final: PALAVRA + ação; --strict remapeia 3/4/5 → 1 -------------------
 finalizar() { # $1=exit original
+  TRACE_RC="${1}"
   case "${1}" in
     0)  printf 'RESULTADO: VERDE\n→ siga para o próximo passo.\n' ;;
     2)  printf 'RESULTADO: VERMELHO\n→ corrija o que o comando acima apontou e rode de novo.\n' ;;
@@ -59,21 +92,49 @@ finalizar() { # $1=exit original
   exit "${1}"
 }
 
+# ---- release sem DEFINE: só o registro no trace -------------------------------------
+if [ "${SEM_DEFINE}" = "1" ]; then
+  if [ -z "${DEFINE}" ]; then
+    echo "🛑 uso: sdd/bin/verify-gate.sh --sem-define <FEATURE>" >&2
+    finalizar 64
+  fi
+  REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "🛑 não é um repositório git" >&2; finalizar 64; }
+  cd "${REPO_ROOT}" || finalizar 64
+  TRACE_FEATURE="$(printf '%s' "${DEFINE}" | sed -E 's/[^A-Za-z0-9._-]/_/g')"
+  TRACE_SRC="release"; TRACE_KIND="no-define"; TRACE_DEFINE=""
+  trap trace_gravar EXIT
+  if [ "${SDD_TRACE_VAL}" = "off" ]; then
+    echo "ℹ️  ${TRACE_FEATURE}: release sem DEFINE — trace NÃO gravado (SDD_TRACE=off)"
+  else
+    echo "ℹ️  ${TRACE_FEATURE}: release sem DEFINE — trace no-define gravado (nenhum gate rodou)"
+  fi
+  finalizar 0
+fi
+
 if [ -z "${DEFINE}" ] || [ ! -f "${DEFINE}" ]; then
-  echo "🛑 uso: sdd/bin/verify-gate.sh [--print] [--strict] <DEFINE.md>" >&2
+  echo "🛑 uso: sdd/bin/verify-gate.sh [--print] [--strict] <DEFINE.md> | --sem-define <FEATURE>" >&2
   echo "   (arquivo não encontrado: '${DEFINE:-<vazio>}')" >&2
   finalizar 64
 fi
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "🛑 não é um repositório git — o gate resolve caminhos a partir da raiz do repo" >&2; finalizar 64; }
+# O caminho do DEFINE relativo à raiz é calculado ANTES do cd (o -f acima é relativo a quem chamou).
+DEFINE_ABS="$(cd "$(dirname "${DEFINE}")" 2>/dev/null && pwd -P)/$(basename "${DEFINE}")"
+RAIZ_ABS="$(cd "${REPO_ROOT}" 2>/dev/null && pwd -P)"
+case "${DEFINE_ABS}" in
+  "${RAIZ_ABS}"/*) TRACE_DEFINE="${DEFINE_ABS#"${RAIZ_ABS}"/}" ;;
+  *) TRACE_DEFINE="$(basename "${DEFINE}")" ;;
+esac
+TRACE_FEATURE="$(basename "${DEFINE}" .md | sed -E 's/^DEFINE_//; s/[^A-Za-z0-9._-]/_/g')"
 cd "${REPO_ROOT}" || finalizar 64
+trap trace_gravar EXIT
 
 # ---- clarificação pendente: DEFINE com dúvida ABERTA não roda gate (exit 5) ---------
 # Forma ativa canônica: colchete + "NEEDS CLARIFICATION" + dois-pontos (fragments/CLARIFY.md).
 # Menções documentais vivem em code fence ou sem colchetes — o scan remove blocos ``` antes.
 # --print é isento (uso de autoria durante a redação do DEFINE).
 if [ "${PRINT_ONLY}" -eq 0 ]; then
-  PENDENTES="$(awk '/^[[:space:]]*```/{f=!f;next} !f{print NR": "$0}' "${DEFINE}" | grep '\[NEEDS CLARIFICATION:' || true)"
+  PENDENTES="$(awk '/^[[:space:]]*```/{f=!f;next} !f{print NR": "$0}' "${DEFINE_ABS}" | grep '\[NEEDS CLARIFICATION:' || true)"
   if [ -n "${PENDENTES}" ]; then
     echo "🛑 CLARIFICAÇÃO PENDENTE (exit 5) — '${DEFINE}' tem marcador(es) ativo(s) de ambiguidade:" >&2
     printf '%s\n' "${PENDENTES}" | sed 's/^/   │ /' >&2
@@ -88,7 +149,7 @@ BLOCK="$(awk '
   /^##[[:space:]]+Verify Gate/ { insec=1; next }
   insec && /^##[[:space:]]/    { insec=0 }
   insec                        { print }
-' "${DEFINE}" | awk '
+' "${DEFINE_ABS}" | awk '
   /^```/ { fence = !fence; if (fence) next; else exit }
   fence  { print }
 ')"
@@ -106,6 +167,7 @@ field() {
 }
 
 KIND="$(field kind)"
+TRACE_KIND="${KIND}"
 CMD="$(field cmd)"
 PASS_WHEN="$(field pass_when)"
 THRESHOLD="$(field threshold)"

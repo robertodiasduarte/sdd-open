@@ -24,7 +24,8 @@ RESULTADO: <PALAVRA>
 
 Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` · `DRY-RUN` ·
 `CANCELADO` · `DIAGNÓSTICO CONCLUÍDO` · `ERRO` (sdd-open.sh) · `VERDE` · `VERMELHO` · `INCONCLUSIVO` ·
-`ASSINATURA HUMANA` · `CLARIFICAR` · `SPEC INVÁLIDA` (verify-gate.sh, report-lint.py).
+`ASSINATURA HUMANA` · `CLARIFICAR` · `SPEC INVÁLIDA` (verify-gate.sh, report-lint.py) · `PULADO` ·
+`ERRO DE USO` (gate-baseline.sh, gate-shell-evidencia.sh, avaliador-guard.sh, test-baseline.sh).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate
 (inconclusivo, que devolve `0`… sem `--strict`) de parecer verde para quem lê.
@@ -47,7 +48,11 @@ RESULTADO: ERRO
 | `verify-gate.sh` | `0` verde · `2` vermelho · `3` inconclusivo · `4` assinatura humana · `5` clarificar · `64` spec inválida — `--strict` remapeia 3/4/5 → `1` |
 | `sdd-open.sh` | `0` ok/ajuda/cancelado/dry-run · `1` divergente ou sem permissão · `64` uso/pré-condição · `65` marcadores do AGENTS.md · `66` JSON inválido |
 | `playbook-lint.sh` | `0` ok · `1` zero hits / colapso · `2` formato inválido · `64` uso |
-| `skill-lint.py` · `report-lint.py` · `design-lint.py` · `handoff-lint.py` · `kb-dominios.py` | `0` ok · `1` violações · `64` uso (no `skill-lint.py`, também opção desconhecida; `--conversa` liga a conferência da camada de conversa) |
+| `skill-lint.py` · `report-lint.py` · `design-lint.py` · `handoff-lint.py` · `kb-dominios.py` | `0` ok · `1` violações · `64` uso (no `skill-lint.py`, também opção desconhecida; `--conversa` liga a conferência da camada de conversa; no `report-lint.py`, `--pendente` sai `1` quando acha `avaliador: PENDENTE`) |
+| `gate-baseline.sh` | `0` a base reprovou avaliando · `2` a base passou (sem dentes) · `3` inconclusivo · `64` uso |
+| `gate-shell-evidencia.sh` | `0` nenhum exit de formatador · `2` ≥ 1 acusado · `64` uso ou git que falha |
+| `avaliador-guard.sh` | `0` árvore commitada · `1` suja (lista e comando de commit) · `2` não conferido · `64` uso |
+| `test-baseline.sh` | `0` só falhas conhecidas (ou `PULADO`) · `2` falha nova · `3` inconclusivo · `64` uso |
 | `sdd-kb/scripts/gate.sh` | `0` verde · `2` vermelho (caso bom rejeitado, caso ruim aceito ou por outro motivo, âncora ausente, RULE_MAP do exemplo derivado, ou rodado da cópia gerada pelo `sync`) |
 | `sdd-kb/scripts/validate_kb.py` · `kb_normativo.py` | `0` PASS · `2` FAIL · `64` uso |
 

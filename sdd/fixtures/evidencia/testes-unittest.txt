@@ -1,0 +1,17 @@
+.F.E
+======================================================================
+ERROR: test_conhecido (test_conta.Caso)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_conta.py", line 9, in test_conhecido
+KeyError: 'saldo'
+
+======================================================================
+FAIL: test_novo (test_conta.Caso.test_novo)
+----------------------------------------------------------------------
+AssertionError: 1 != 2
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.004s
+
+FAILED (failures=1, errors=1)

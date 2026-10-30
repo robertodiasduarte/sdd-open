@@ -1,0 +1,15 @@
+FAIL src/conta.test.js
+  Conta
+    ✓ soma (2 ms)
+    ✕ conhecido (3 ms)
+    ✕ novo (1 ms)
+
+  ● Conta › conhecido
+
+    expect(received).toBe(expected)
+
+  ● Conta › novo
+
+    expect(received).toBe(expected)
+
+Tests:       2 failed, 1 passed, 3 total

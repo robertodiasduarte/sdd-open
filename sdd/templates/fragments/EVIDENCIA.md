@@ -37,14 +37,26 @@ arquivo** (`| tail -n 200`) — evidência é o trecho que prova, não o log int
 - **1ª linha = o comando executado, prefixado por `$ `.**
 - Depois, o output **verbatim** (stdout+stderr).
 - Arquivo vazio, sem a 1ª linha `$ `, ou inexistente → o lint nega.
+- Última linha: `[exit=N]`, com o exit **do comando**, capturado antes de qualquer pipe.
+- O arquivo tem de ir para o commit: evidência que o git ignora (`.gitignore`, `.git/info/exclude`)
+  existe no disco e some no commit — o lint nega (`git check-ignore -v <arquivo>` mostra a regra).
 
-Como produzir (o `$ cmd` na 1ª linha vem do próprio comando, não de mão):
+Como produzir (o `$ cmd` na 1ª linha vem do próprio comando, não de mão; o `rc` é capturado
+**antes** do `tail` — funciona em bash e em zsh):
 
 ```bash
 mkdir -p sdd/reports/evidence/{FEATURE}
 cmd='npm test -- src/x.test.ts'
-{ echo "\$ $cmd"; eval "$cmd" 2>&1 | tail -n 200; } > sdd/reports/evidence/{FEATURE}/AT-001.log
+out=$(eval "$cmd" 2>&1); rc=$?
+log=sdd/reports/evidence/{FEATURE}/AT-001.log
+printf '$ %s\n' "$cmd" > "$log"
+printf '%s\n' "$out" | tail -n 200 >> "$log"
+printf '[exit=%s]\n' "$rc" >> "$log"
 ```
+
+`cmd | tail -5; echo "[exit=$?]"` grava o exit do `tail` (sempre 0): um teste que falhou vira
+evidência verde. No zsh, `${PIPESTATUS[0]}` sai vazio e o log fica `[exit=]`. O
+`sdd/bin/gate-shell-evidencia.sh` acusa os dois casos, e a fase Release o roda nos logs do diff.
 
 ## A tabela do BUILD_REPORT (formato que o lint parseia)
 
@@ -60,15 +72,32 @@ cmd='npm test -- src/x.test.ts'
 inspeciona linhas com `true`/✅/`pass`/`verde` — `false` passa livre (é o default honesto).
 
 O lint acha a tabela pelo **cabeçalho**: uma coluna que começa com `Evid` e outra com `Resultado`,
-`Status` ou `Passou` (o do template). Cabeçalho em inglês (`Result | Evidence`) não é
-reconhecido: o lint não confere linha nenhuma e sai 0. Use o cabeçalho do template.
+`Status`, `Passou` ou `Result` (o do template, ou o mesmo em inglês: `Result | Evidence`).
+Relatório **sem** tabela reconhecida **reprova** (classe `[tabela]`): sem ela, nenhum critério
+seria conferido. Use o cabeçalho do template.
+
+### A linha do avaliador (o relatório prova a avaliação, não só a cita)
+
+Todo BUILD_REPORT tem **uma** destas, e a ausência reprova (classe `[avaliação ausente]`):
+
+| Forma | Quando | O lint confere |
+|---|---|---|
+| `AVALIACAO_{FEATURE}_{AAAAMMDD-HHMM}.md` em `sdd/reviews/` | o avaliador de contexto fresco rodou (passo 5d da `sdd-build`) | o arquivo existe, não está vazio e o git não o ignora; o relatório nem precisa citá-lo |
+| `avaliador: N.A. (<motivo>)` | o File Manifest do DESIGN toca menos de N camadas de `layers:` | N vem de `evidence.require_avaliacao_layers` do `sdd/config.yaml` (default 2); com N camadas ou mais, reprova (`[declaração]`); sem como contar (`layers:` vazio, sem DESIGN), aceita com aviso |
+| `avaliador: PENDENTE (<motivo>)` | o build travou antes do avaliador | passa aqui, com aviso; `report-lint.py --pendente` sai 1 e a fase Release aborta enquanto a linha existir |
+
+A declaração vale em linha própria, fora de bloco cercado, e também na forma do template
+(`**Veredito do avaliador (C1):** N.A. (1 camada)`). Sem o `(motivo)`, reprova.
+
+A **forma mínima** de um relatório que passa é, portanto: a tabela de critérios reconhecida e a
+linha do avaliador. Um BUILD_REPORT anterior a esta regra precisa das duas para passar de novo.
 
 ### O que conta como evidência para `true` (uma das três)
 
 | Forma | Quando | O lint confere |
 |---|---|---|
 | `` `evidence/{FEATURE}/AT-nnn.log` `` | critério com `cmd` (test/smoke/eval/typecheck) | path contém `evidence/{FEATURE}/` **da mesma feature do report**, `.log`/`.txt`, existe, não-vazio, 1ª linha começa com `$ ` |
-| `` `AVALIACAO_{FEATURE}_{ts}.md` `` | critério provado pelo avaliador de contexto fresco (C1) — inclusive cliques | nome começa com `AVALIACAO_{FEATURE}_` e existe em `sdd/reviews/` |
+| `` `AVALIACAO_{FEATURE}_{ts}.md` `` | critério provado pelo avaliador de contexto fresco (C1) — inclusive cliques | nome começa com `AVALIACAO_{FEATURE}_`, existe em `sdd/reviews/` e o git não o ignora |
 | `recibo: {nome} {YYYY-MM-DD}` | gate `manual-ux` percorrido por humano | padrão textual (nome + data ISO) **e** `DEFINE_{FEATURE}.md` com `kind: manual-ux` (DEFINE ausente → aceita com aviso) |
 
 Evidência de OUTRA feature, `README.md` com `$ ` na 1ª linha, recibo em feature com gate
@@ -84,13 +113,20 @@ Migration listada nos arquivos do relatório exige a linha dela, com o mesmo cam
 banco é o aluno. `exit 0` na célula é negado: o comando ter saído bem não diz que a migration está
 no banco certo. Procedimento: `.agents/skills/sdd-build/references/aplicar-migration.md`.
 
-### O que o lint NEGA (na tabela de cabeçalho reconhecido)
+### O que o lint NEGA
 
-- `true` sem nenhuma das três formas acima.
+- Relatório sem tabela de critérios reconhecida.
+- `true` sem nenhuma das três formas acima, ou com evidência que o git ignora.
 - Evidência contendo `por raciocínio`, `by reasoning`, `by inspection`, `deve funcionar`,
   `provavelmente` — declaração fantasiada de prova.
-- `**Veredito do avaliador (C1):** PASS` ou `NEEDS_WORK` sem citar um
-  `AVALIACAO_*.md` existente. (`N.A.` com motivo — ex. "1 camada" — passa.)
+- `**Veredito do avaliador (C1):** PASS` ou `NEEDS_WORK` sem um `AVALIACAO_*.md` existente
+  (e não ignorado) no mesmo parágrafo — inclusive em título seguido de parágrafo, ou numa linha
+  de tabela. Veredito citado dentro de bloco cercado é documentação e não conta.
+- Avaliação ausente: nenhum `AVALIACAO_{FEATURE}_*.md` e nenhuma linha do avaliador.
+- `N.A.` com N camadas ou mais, e `N.A.`/`PENDENTE` sem motivo.
+
+Cada problema sai com a classe (`[tabela]`, `[evidência]`, `[avaliação ausente]`,
+`[declaração]`, `[migration]`), e cada classe ganha a sua linha `→` com o conserto.
 
 ## Regras de ouro
 
@@ -101,7 +137,6 @@ no banco certo. Procedimento: `.agents/skills/sdd-build/references/aplicar-migra
 3. **`manual-ux` não é atalho.** Recibo humano vale para o que um humano percorreu; se o
    avaliador C1 clicou, cite o `AVALIACAO_*.md` — não o recibo.
 4. **O lint falha FECHADO em erro interno**: exceção sai ≠0 com traceback, e relatório que não
-   saiu 0 no `report-lint.py` não está conferido — nunca declare sucesso por cima dele. E o 0
-   só vale com a tabela no cabeçalho do template (ver acima).
+   saiu 0 no `report-lint.py` não está conferido — nunca declare sucesso por cima dele.
 5. **Bypass é decisão do humano responsável**, não do agente: pular o `report-lint.py`
    desliga a conferência — e isso vai declarado no BUILD_REPORT e no resumo da sessão.

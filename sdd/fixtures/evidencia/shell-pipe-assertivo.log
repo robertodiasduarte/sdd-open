@@ -1,0 +1,9 @@
+$ grep -rn 'TODO' src/ | grep -c 'FIXME'
+0
+[exit=1]
+$ curl -s localhost/saude | jq -e '.ok'
+true
+[exit=0]
+$ test -f arquivo-inexistente.txt || echo ausente
+ausente
+[exit=0]

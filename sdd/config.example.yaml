@@ -23,6 +23,12 @@ layers:
   ui: ""
   sql: ""
 
+# Evidência do build (report-lint.py): a partir de quantas camadas de `layers:` tocadas pelo File
+# Manifest do DESIGN a avaliação em contexto fresco é obrigatória. Abaixo disso, a linha
+# `avaliador: N.A. (<motivo>)` no BUILD_REPORT vale. 1 = avaliador sempre. Inteiro >= 1.
+evidence:
+  require_avaliacao_layers: 2
+
 deploy:
   # Roda na fase Release, depois da única aprovação humana.
   cmd: ""

@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.1"
+  version: "2.3.0"
   updated: "2026-10"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.2.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
 critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
@@ -67,7 +67,13 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 
 Leia DESIGN, DEFINE, `AGENTS.md`, `sdd/config.yaml`. **Conte as camadas** do manifest usando
 `layers:` do config (ex.: `api`, `ui`, `sql`): ≥2 camadas distintas ⇒ os passos 1.5 e 5d são
-obrigatórios; 1 camada ⇒ registre `avaliador: N.A. (1 camada)` no relatório.
+obrigatórios; 1 camada ⇒ registre `avaliador: N.A. (1 camada)` no relatório. O limite é
+`evidence.require_avaliacao_layers` do config (default 2), e o `report-lint.py` confere a contagem.
+
+Confira a flag `LLM Prompts` do DEFINE contra o DESIGN: `true` sem a seção `LLM Prompts` no DESIGN,
+ou `false` com ela, ⇒ pare e itere o DESIGN antes de codar. O drift do passo 4 continua armado nos
+dois casos. Script de `sdd/bin/` que não existir (instalação antiga) ⇒ rode o `init` de novo: ele
+completa o que falta em `sdd/`.
 
 Repita a varredura de landmines por superfície (o manifest cresce no build):
 `sdd/bin/playbook-lint.sh --grep "<termo>" sdd/playbook.md`. Registre **só os IDs** em
@@ -79,7 +85,8 @@ listou vira tarefa **antes** do código.
 Antes de codar, alguém **que não viu esta conversa** revisa os ATs e o Verify Gate contra o
 DESIGN e propõe ≤5 ajustes (classes: não-verificável · estado sem critério · gate não cobre
 AT · aceite circular · efeito não observável). Ver `references/contexto-fresco.md` para o
-brief. Negocie com o usuário (múltipla escolha, uma opção por proposta); toda proposta recebe
+brief. Antes de despachar, rode `bash sdd/bin/avaliador-guard.sh`: exit 1 ⇒ commite o que ele
+listar e rode de novo; exit 2 ⇒ pare. Negocie com o usuário (múltipla escolha, uma opção por proposta); toda proposta recebe
 **ACEITA** (aplicada no DEFINE, `Revision History` atualizado, `verify-gate.sh --print` ainda
 parseia) ou **RECUSADA (motivo)** — registradas em `## Contrato de aceite` do DESIGN. Nunca
 silêncio. Se o DESIGN já tem contrato negociado após a última edição do DEFINE, pule.
@@ -148,8 +155,14 @@ não se fala de banco.
 | `5` | clarificação pendente — **pare** e volte ao Define; não é vermelho de build |
 | `64` | DEFINE sem gate válido — volte ao Define |
 
-**5b. Checks do projeto:** `{{TEST_CMD}}`, `{{TYPECHECK_CMD}}`, `{{LINT_CMD}}` do config,
-quando preenchidos. Slot vazio = pular **e dizer que pulou**.
+Se o build corrigiu (ou escreveu) a asserção do gate, prove que ela tem dentes:
+`bash sdd/bin/gate-baseline.sh sdd/features/DEFINE_{F}.md --sobrepor <script do gate>` roda o gate
+contra a branch de produção e exige vermelho **avaliando** (exit 0). Exit 2 ⇒ a asserção não
+distingue o antes do depois: reancore e rode de novo; exit 3 ⇒ registre no relatório.
+
+**5b. Checks do projeto:** `{{TEST_CMD}}` via `bash sdd/bin/test-baseline.sh` (só falha nova
+aborta; aceitar uma falha como conhecida, com `--aceitar`, é decisão do usuário), `{{TYPECHECK_CMD}}`,
+`{{LINT_CMD}}` do config, quando preenchidos. Slot vazio = pular **e dizer que pulou**.
 
 **5c. Review adversarial pós-build (recomende; o usuário decide).** Sim quando o diff toca
 segurança, rota pública, lógica sutil entre arquivos, ou o build rodou em ralph/briefs. Não em
@@ -160,7 +173,8 @@ REBATIDA_ESCOPO no Advisor Ledger do relatório. Vendor que não seguiu o format
 nunca leia como "zero achados". Review nunca substitui smoke real.
 
 **5d. Avaliador de contexto fresco (bloqueante em ≥2 camadas).** Quem julga não é quem
-constrói. Alguém sem esta conversa (agente novo, sessão nova, ou subagente onde o vendor
+constrói. Antes de despachar, `bash sdd/bin/avaliador-guard.sh` (exit 1 ⇒ commite o listado; exit
+2 ⇒ pare). Alguém sem esta conversa (agente novo, sessão nova, ou subagente onde o vendor
 tiver) lê o DEFINE como contrato e **prova cada AT executando** — comando, chamada, clique
 — nunca lendo o diff. O brief leva só: modo `veredito`, feature, caminhos do DEFINE e do
 DESIGN, pasta do projeto, URL base e se há credenciais autorizadas. Persista o bloco
@@ -174,7 +188,11 @@ Detalhes em `references/contexto-fresco.md`.
 `sdd/reports/BUILD_REPORT_{FEATURE}.md`, do template. **Default-FAIL:** a tabela de ATs nasce
 com todo AT `false`. `true` exige evidência abrível — `sdd/reports/evidence/{F}/AT-nnn.log`
 (1ª linha `$ comando`, saída verbatim), `AVALIACAO_{F}_*.md`, ou `recibo: nome YYYY-MM-DD`
-(só gate manual-ux). "Por raciocínio" e "deve funcionar" são negados. Valide:
+(só gate manual-ux). "Por raciocínio" e "deve funcionar" são negados. A linha do avaliador é
+obrigatória, numa de 3 formas: o `AVALIACAO_{F}_*.md` em `sdd/reviews/`, `avaliador: N.A. (<motivo>)`
+(menos camadas que o limite) ou `avaliador: PENDENTE (<motivo>)` (build travado antes do 5d; a fase
+Release não sai com ela). Flag `LLM Prompts: true` ⇒ a seção do relatório segue o molde
+`sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md`. Valide:
 
 ```bash
 python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md   # exit 0 obrigatório
@@ -190,7 +208,7 @@ migration listada sem a linha).
 ## Quality Gate
 
 ```text
-[ ] Camadas contadas; ≥2 ⇒ 1.5 e 5d rodaram · 1 ⇒ "avaliador: N.A." no relatório
+[ ] Camadas contadas; ≥2 ⇒ 1.5 e 5d rodaram, com o guard antes · 1 ⇒ "avaliador: N.A." no relatório
 [ ] Contrato de aceite: toda proposta ACEITA|RECUSADA (ou "já negociado" / N.A.)
 [ ] Verify Gate exit 0 (ou 4 com recibo) — nunca 2, nem 3 sem resolução
 [ ] Todos os arquivos do manifest criados; verificações passam; sem TODO no código
@@ -218,6 +236,14 @@ migration listada sem a linha).
   código iria para produção chamando o que não existe.
 - **Prompt fora do inventário para o build e pergunta** — texto de produção improvisado escapa do
   contrato que o Design fechou e de toda revisão.
+- **Guard antes de despachar o avaliador** — ele usa o terminal e pode restaurar arquivos do último
+  commit; o que não foi commitado se perde, e com tudo commitado restaurar devolve o próprio trabalho.
+- **Gate corrigido roda contra o código anterior** — uma asserção que fica verde antes da mudança não
+  avalia nada, e "corrigir até ficar verde" é igual a afrouxar.
+- **Só falha de teste nova aborta** — uma falha antiga travando todo build ensina a ignorar vermelho;
+  separada no baseline, a nova continua aparecendo, e aceitar uma é decisão registrada.
+- **A linha do avaliador é obrigatória** — o lint que só confere o veredito que aparece aprova o
+  relatório que não fala do avaliador; a ausência reprova, e `PENDENTE` registra o build travado.
 
 ## Encerramento (obrigatório)
 

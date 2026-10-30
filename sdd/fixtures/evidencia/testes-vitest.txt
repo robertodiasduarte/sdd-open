@@ -1,0 +1,9 @@
+ ❯ src/conta.test.ts (3 tests | 2 failed)
+
+ FAIL  src/conta.test.ts > Conta > conhecido
+AssertionError: expected 1 to be 2
+ FAIL  src/conta.test.ts > Conta > novo
+AssertionError: expected 3 to be 4
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)

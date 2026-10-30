@@ -1,0 +1,9 @@
+============================= test session starts ==============================
+collected 5 items
+
+tests/test_conta.py ..FF.                                                  [100%]
+
+=========================== short test summary info ============================
+FAILED tests/test_conta.py::test_conhecido - assert 1 == 2
+FAILED tests/test_conta.py::test_novo - AssertionError
+========================= 2 failed, 3 passed in 0.12s ==========================

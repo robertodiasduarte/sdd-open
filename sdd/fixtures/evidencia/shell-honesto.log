@@ -1,0 +1,9 @@
+$ out=$(npm test 2>&1); rc=$?; printf '%s\n' "$out" | tail -5
+3 passed, 1 failed
+[exit=1]
+$ python3 -B -m unittest discover -s tests
+OK
+[exit=0]
+$ set -o pipefail; go test ./... | tail -3
+ok exemplo/conta
+exit=0

@@ -195,15 +195,18 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 
 ## Contrato de aceite (C2) e avaliador de contexto fresco (C1)
 
-> Gate de ativação: manifest toca **≥2 camadas** (`sql` · `edge` · `front` · `scripts` · `harness`).
-> 1 camada → as duas linhas abaixo recebem `N.A. (1 camada)`.
+> Gate de ativação: o File Manifest toca **≥ N camadas** de `layers:` do `sdd/config.yaml`
+> (N = `evidence.require_avaliacao_layers`, default 2). Abaixo disso → as duas linhas abaixo recebem
+> `N.A. (1 camada)`. Build travado antes do avaliador → `PENDENTE (<motivo>)`: o relatório pode ser
+> gravado, mas a fase Release não sai enquanto a linha existir.
 
 **Camadas do manifest:** {n} ({lista})
 **Contrato de aceite (passo 1.5 da `sdd-build`):** {n propostas / n aceitas — seção `## Contrato de aceite` do DESIGN} | já negociado em {data} | N.A. (1 camada)
-**Veredito do avaliador (C1):** {PASS | NEEDS_WORK | N.A. (1 camada)} · ciclos: {n} · achados: {n} · `AVALIACAO_{FEATURE}_{YYYYMMDD-HHMM}.md`
+**Veredito do avaliador (C1):** {PASS | NEEDS_WORK | N.A. (1 camada) | PENDENTE (motivo)} · ciclos: {n} · achados: {n} · `AVALIACAO_{FEATURE}_{YYYYMMDD-HHMM}.md`
 
-> O `sdd/bin/report-lint.py` nega `PASS`/`NEEDS_WORK` sem o `AVALIACAO_*.md` existente em
-> `sdd/reviews/`. A contagem de achados mede a calibração do avaliador
+> O `sdd/bin/report-lint.py` nega `PASS`/`NEEDS_WORK` sem o `AVALIACAO_*.md` existente (e não
+> ignorado pelo git) em `sdd/reviews/`, e reprova o relatório sem nenhuma das 3 formas — avaliação
+> ausente (`sdd/templates/fragments/EVIDENCIA.md`, "A linha do avaliador"). A contagem de achados mede a calibração do avaliador
 > (`.agents/skills/sdd-build/references/contexto-fresco.md`).
 
 ---
