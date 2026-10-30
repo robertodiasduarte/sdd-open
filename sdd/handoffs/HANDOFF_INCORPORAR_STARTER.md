@@ -59,6 +59,7 @@
 - 2026-10-29 — Revisão do DESIGN da F6 em contexto fresco (modo contrato): NEEDS_WORK, 3 HIGH, 4 MEDIUM, 3 LOW, aplicadas antes do build (DEFINE v1.1, DESIGN v1.1). H2 achou um P1 no produto publicado: o passo 5 dos quickstarts ensinava `git pull` + `sync`, que não atualiza skill nenhuma (o `init` não sobrescreve, o `sync` só regera adaptadores) — corrigido nos quickstarts e no guia. M4: a regra "um OK só" entrou como regra 7 do `AGENTS.md.tmpl`.
 - 2026-10-29 — Revisão do build da F6, ciclo 1 sobre `963c47e`: NEEDS_WORK, 3 HIGH (o guia dizia que o alarme "registra e libera"; que a `sdd-design` devolve Define com dúvida; uma regra inventada no brainstorm), 3 MEDIUM, 6 LOW, todas aplicadas em `aaae1b4`. Ciclo 2 sobre `aaae1b4`: **PASS**, 6 LOW aplicados em `1c9bbc7`.
 - 2026-10-30 — Roberto: "Push sdd-open autorizado". CI do PR #8 verde (run 40984992013: `gate` e `Testes no piso (macOS)`). Push fast-forward `7e19462..1c9bbc7` em `main`; PR #8 MERGED; run `release` 41025735985 com `testes` e `testes-macos` antes do `Publicar release`; publicou `v2.2.7`. Com a F6, os itens do P3 (F1–F6) estão entregues; o programa segue no P4 (F7–F15).
+- 2026-10-30 — Frente F7 aberta com a `sdd-new-session` (starter 1.3.0): pré-voo verde; worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f7-evidencia`, branch `feat/f7-evidencia` nascida de `origin/main` = `1c9bbc7`, nomes no padrão da família (lidos de `sdd/ambiente.md` do checkout principal); os artefatos SDD da branch `docs/incorporar-starter` já copiados para lá, fora do commit. O prompt da sessão 5 passou de "crie a worktree" para "confira a worktree".
 
 ---
 
@@ -107,7 +108,7 @@
 
 ### Próximos passos
 
-1. **Sessão 5 — F7 Evidência** (prompt em `sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`), numa worktree nova `/Users/robertoduarte/rdd-worktrees/sdd-open-f7-evidencia`, branch `feat/f7-evidencia` de `origin/main` = `1c9bbc7`. Pronto quando: `report-lint.py` reprova as fixtures `BUILD_REPORT_sem_avaliacao`, `…_pendente` e `…_evidencia_ignorada`; `gate-shell-evidencia.sh` acusa `| tail` sem `rc=$?`; `verify-gate.sh --trace` grava 1 linha JSONL por execução; Release publicada com o hash conferido.
+1. **Sessão 5 — F7 Evidência** (prompt em `sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`), na worktree já aberta `/Users/robertoduarte/rdd-worktrees/sdd-open-f7-evidencia` (branch `feat/f7-evidencia`, de `origin/main` = `1c9bbc7`, com os artefatos SDD copiados). Pronto quando: `report-lint.py` reprova as fixtures `BUILD_REPORT_sem_avaliacao`, `…_pendente` e `…_evidencia_ignorada`; `gate-shell-evidencia.sh` acusa `| tail` sem `rc=$?`; `verify-gate.sh --trace` grava 1 linha JSONL por execução; Release publicada com o hash conferido.
 2. **F8 → F14** e **F15** (plano, seções 8 e 10); a frente do sdd-starter gerado (Decisão 5) entra quando o Roberto quiser.
 
 ### Alertas — o que não quebrar

@@ -1,24 +1,33 @@
 # Continuar: INCORPORAR_STARTER — sessão 5: F7 Evidência
 
-Esta sessão começa numa **worktree nova**. Os artefatos SDD da família (features, handoffs, reports, reviews) vivem na branch `docs/incorporar-starter` do remoto, nunca mesclada em `main`.
+Esta sessão começa numa **worktree limpa**. Os artefatos SDD da família (features, handoffs, reports, reviews) vivem na branch `docs/incorporar-starter` do remoto, nunca mesclada em `main`.
 
 ## Preparar a worktree (antes de ler qualquer coisa)
 
-A worktree da F7 ainda não existe. Crie a partir do checkout principal, com `main` atualizado do remoto:
+A frente já foi aberta pela `sdd-new-session` no fim da sessão 4: worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f7-evidencia`, branch `feat/f7-evidencia` nascida de `origin/main` = `1c9bbc7` (tag `v2.2.7`), com os artefatos SDD da branch `docs/incorporar-starter` já copiados (fora do commit). Abra o agente **nessa pasta** e confira:
+
+```bash
+cd /Users/robertoduarte/rdd-worktrees/sdd-open-f7-evidencia
+git branch --show-current                                                 # esperado: feat/f7-evidencia
+git status --short | head -4                                              # esperado: só "?? sdd/…"
+git log --oneline -1                                                      # esperado: 1c9bbc7 ou mais novo
+ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md
+GIT_TERMINAL_PROMPT=0 git fetch -q origin && git log --oneline -1 origin/main   # se main andou, rebase antes de começar
+GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.7                      # base do check-versions
+```
+
+Se a pasta não existir (alguém a removeu), recrie do zero:
 
 ```bash
 cd /Users/robertoduarte/rdd-public/sdd-open
 GIT_TERMINAL_PROMPT=0 git fetch -q origin
-git log --oneline -1 origin/main                                          # esperado: 1c9bbc7 ou mais novo
 git worktree add /Users/robertoduarte/rdd-worktrees/sdd-open-f7-evidencia -b feat/f7-evidencia origin/main
 cd /Users/robertoduarte/rdd-worktrees/sdd-open-f7-evidencia
 git checkout origin/docs/incorporar-starter -- sdd/features sdd/handoffs sdd/reports sdd/reviews
 git rm -r -q --cached sdd/features sdd/handoffs sdd/reports sdd/reviews   # ficam no disco, fora do commit
-git status --short | head -4                                              # esperado: só "?? sdd/…"
-GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.7                      # base do check-versions
 ```
 
-Abra o agente **nessa pasta**. Se `/Users/robertoduarte/rdd-public/sdd-open` não for o clone de `https://github.com/robertodiasduarte/sdd-open.git`, use a worktree da sessão 4 como base (`git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs worktree add …`), se ela ainda existir. Não trabalhe nas worktrees antigas (`sdd-open-incorporar-starter`, `sdd-open-f6-docs`). O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
+Se `/Users/robertoduarte/rdd-public/sdd-open` não for o clone de `https://github.com/robertodiasduarte/sdd-open.git`, use a worktree da sessão 4 como base (`git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs worktree add …`), se ela ainda existir. Não trabalhe nas worktrees antigas (`sdd-open-incorporar-starter`, `sdd-open-f6-docs`). O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
 
 Depois, leia nesta ordem:
 - `sdd/features/PLANO_F4_F15_CONSOLIDADO.md`:
