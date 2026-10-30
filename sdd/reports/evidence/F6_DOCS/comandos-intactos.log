@@ -1,0 +1,10 @@
+$ /usr/bin/python3 -B sdd/reports/evidence/F6_DOCS/comandos-intactos.py
+OK    sdd-brainstorm: extração 7 → 7 linhas (idêntica) · texto normalizado igual · seção nova presente
+OK    sdd-define: extração 14 → 14 linhas (idêntica) · texto normalizado igual · seção nova presente
+OK    sdd-governanca: extração 4 → 4 linhas (idêntica) · texto normalizado igual · seção nova presente
+OK    sdd-ux-review: extração 8 → 8 linhas (idêntica) · texto normalizado igual · seção nova presente
+OK    sdd-design: extração 12 → 12 linhas (idêntica) · texto normalizado igual · seção nova presente
+OK    sdd-build: extração 16 → 16 linhas (idêntica) · texto normalizado igual · seção nova presente
+OK    sdd-release: extração 55 → 55 linhas (idêntica) · texto normalizado igual · seção nova presente
+skills: 7 · com diferença: 0
+exit=0

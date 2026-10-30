@@ -1,0 +1,10 @@
+$ init --vendors claude --yes (pacote v2.2.6) ; simula 'git pull' subindo sdd-build no pacote para 2.2.1 ; sync --vendors claude --yes ; grep version .agents/skills/sdd-build/SKILL.md ; doctor
+init exit=0
+pacote:   version: "2.2.1"
+0 a criar · 0 a atualizar · 96 já corretos
+RESULTADO: EM DIA
+→ nada a fazer.
+sync exit=0
+projeto depois do sync:   version: "2.2.0"
+⚠️  sdd-build 2.2.0 no projeto, 2.2.1 no pacote — para receber: apague .agents/skills/sdd-build e rode init (edições suas nela se perdem)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO

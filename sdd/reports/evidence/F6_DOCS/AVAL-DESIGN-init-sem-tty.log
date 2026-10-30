@@ -1,0 +1,7 @@
+$ (pasta com git init, stdin sem terminal, como no shell de um agente) bash /Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs/bin/sdd-open.sh init --vendors claude < /dev/null ; ls -A
++ .claude/skills/sdd-ux-review/references/entrevista-publico.md (novo)
+114 a criar · 0 a atualizar · 0 já corretos
+RESULTADO: CANCELADO
+→ nenhum arquivo foi escrito; sem terminal interativo, use --yes para aplicar.
+exit=0
+.git

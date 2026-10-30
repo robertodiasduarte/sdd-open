@@ -1,0 +1,14 @@
+$ (no clone simulado) troca 3 regras fora de passo numerado/comando e commita; python3 -B comandos-intactos-f6.py
+ .agents/skills/sdd-brainstorm/SKILL.md | 2 +-
+ .agents/skills/sdd-governanca/SKILL.md | 2 +-
+ .agents/skills/sdd-release/SKILL.md    | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+OK    sdd-brainstorm: 7 → 7 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-define: 14 → 14 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-governanca: 4 → 4 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-ux-review: 8 → 8 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-design: 12 → 12 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-build: 16 → 16 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-release: 55 → 55 linhas extraídas (passos, itens numerados e comandos), idêntico
+skills: 7 · com diferença não declarada: 0
+exit=0

@@ -1,0 +1,24 @@
+$ bash sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md   # guia :366 (ficha da sdd-design) e :622
+🛑 CLARIFICAÇÃO PENDENTE (exit 5) — 'sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md' tem marcador(es) ativo(s) de ambiguidade:
+   │ 9: O envio usa a fila do provedor [NEEDS CLARIFICATION: qual classe de throttle se aplica — lote com 120s ou interativo sem espera?] e precisa respeitar o teto.
+   Resolva pelo protocolo (sdd/templates/fragments/CLARIFY.md): ≤5 perguntas,
+   resposta integrada NO CORPO da spec, registro em '## Clarifications'.
+RESULTADO: CLARIFICAR
+→ resolva os marcadores de ambiguidade no DEFINE e volte ao Define.
+exit=
+$ grep -n "python" sdd/bin/verify-gate.sh   # guia :41-42 diz que o conferidor do Verify Gate é escrito em python3
+exit=1
+$ head -1 sdd/bin/verify-gate.sh; ls sdd/bin
+#!/usr/bin/env bash
+design-lint.py
+handoff-lint.py
+kb-dominios.py
+playbook-lint.sh
+report-lint.py
+skill-lint.py
+verify-gate.sh
+$ grep -n "conferidores escritos nele" docs/pt-BR/guia-do-aluno.md
+41:  - **python3 3.9 ou mais novo** — as fases rodam pequenos conferidores escritos nele (o do Verify
+42-    Gate, o do relatório, o do design).
+$ bash sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md >/dev/null 2>&1; echo exit=$?   # medição do exit sem pipe
+exit=5

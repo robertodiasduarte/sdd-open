@@ -1,0 +1,12 @@
+$ T=$(mktemp -d) && git archive aaae1b4 | tar -x -C "$T" && /usr/bin/python3 -B sdd/reports/evidence/F6_DOCS/baseline-notas2.py "$T/tests/test_docs.py" "$T/tests"; rc=$?; echo "aaae1b4 exit=$rc"; /usr/bin/python3 -B sdd/reports/evidence/F6_DOCS/baseline-notas2.py tests/test_docs.py tests; echo "árvore com a correção exit=$?"; rm -rf "${T:?}"; exit $rc
+NÃO PEGO  A pasta `sdd/` fica só no seu computador, fora do GitHub.
+NÃO PEGO  A pasta `sdd/` está no `.gitignore`.
+NÃO PEGO  Não suba a pasta `sdd/` para o GitHub.
+NÃO PEGO  Os arquivos de `sdd/` não são enviados ao GitHub.
+aaae1b4 exit=1
+pego      A pasta `sdd/` fica só no seu computador, fora do GitHub.
+pego      A pasta `sdd/` está no `.gitignore`.
+pego      Não suba a pasta `sdd/` para o GitHub.
+pego      Os arquivos de `sdd/` não são enviados ao GitHub.
+árvore com a correção exit=0
+exit=1

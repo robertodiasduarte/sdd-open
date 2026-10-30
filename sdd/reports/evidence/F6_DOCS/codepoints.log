@@ -1,0 +1,32 @@
+$ /usr/bin/python3 -B -c "
+import re, unicodedata
+from pathlib import Path
+vistos = dict()
+for s in (\"brainstorm\", \"define\", \"governanca\", \"ux-review\", \"design\", \"build\", \"release\"):
+    t = Path(\".agents/skills/sdd-%s/SKILL.md\" % s).read_text(encoding=\"utf-8\")
+    sec = re.search(r\"\n## Por que cada regra existe\n.*?(?=\n## )\", t, re.S).group(0)
+    for c in sec:
+        if ord(c) > 127:
+            vistos[c] = vistos.get(c, 0) + 1
+for c in sorted(vistos):
+    print(\"U+%04X %-4s %-3s %d  %s\" % (ord(c), unicodedata.category(c), c, vistos[c], unicodedata.name(c, \"?\")))
+invisiveis = [c for c in vistos if unicodedata.category(c) in (\"Cf\", \"Zs\") and c != \" \"]
+print(\"invisíveis ou espaços especiais:\", len(invisiveis))
+"
+U+00AA Lo   ª   2  FEMININE ORDINAL INDICATOR
+U+00E0 Ll   à   1  LATIN SMALL LETTER A WITH GRAVE
+U+00E1 Ll   á   27  LATIN SMALL LETTER A WITH ACUTE
+U+00E3 Ll   ã   71  LATIN SMALL LETTER A WITH TILDE
+U+00E7 Ll   ç   30  LATIN SMALL LETTER C WITH CEDILLA
+U+00E9 Ll   é   28  LATIN SMALL LETTER E WITH ACUTE
+U+00EA Ll   ê   11  LATIN SMALL LETTER E WITH CIRCUMFLEX
+U+00ED Ll   í   8  LATIN SMALL LETTER I WITH ACUTE
+U+00F3 Ll   ó   25  LATIN SMALL LETTER O WITH ACUTE
+U+00F4 Ll   ô   3  LATIN SMALL LETTER O WITH CIRCUMFLEX
+U+00F5 Ll   õ   11  LATIN SMALL LETTER O WITH TILDE
+U+00FA Ll   ú   7  LATIN SMALL LETTER U WITH ACUTE
+U+2013 Pd   –   2  EN DASH
+U+2014 Pd   —   51  EM DASH
+U+2796 So   ➖   1  HEAVY MINUS SIGN
+invisíveis ou espaços especiais: 0
+exit=0

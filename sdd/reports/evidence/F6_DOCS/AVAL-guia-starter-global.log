@@ -1,0 +1,9 @@
+# guia, seção 10: 'O doctor avisa se encontrar os dois'. O starter instala com 'npx skills add … -g' (global, na pasta pessoal).
+# sonda 1: starter global (HOME falso com ~/.claude/skills, ~/.agents/skills e ~/.codex/skills/sdd-define/agents/openai.yaml)
+$ HOME=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/home bash $T/pkg/bin/sdd-open.sh doctor | grep -c starter
+0
+exit=1
+# sonda 2: a mesma marca do starter dentro do projeto
+$ bash $T/pkg/bin/sdd-open.sh doctor | grep starter
+⚠️  skills do sdd-starter detectadas no mesmo projeto: os nomes sdd-* colidem — use um ou outro por projeto
+exit=0

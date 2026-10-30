@@ -1,0 +1,27 @@
+$ /usr/bin/python3 -B sdd/bin/design-lint.py $D/D_ok.md   # D_ok = DESIGN_F6_DOCS.md; D_decisao/D_adr = títulos 'Decision N:' trocados
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_ok.md: DESIGN válido
+exit=0
+$ /usr/bin/python3 -B sdd/bin/design-lint.py $D/D_decisao.md   # D_ok = DESIGN_F6_DOCS.md; D_decisao/D_adr = títulos 'Decision N:' trocados
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_decisao.md: título fora do padrão '### Decision N: <nome>': ### Decisão 1: Guia do aluno: o que muda em relação ao starter
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_decisao.md: título fora do padrão '### Decision N: <nome>': ### Decisão 2: Quickstart: regra do método, 4 validações e a tabela "onde roda"
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_decisao.md: título fora do padrão '### Decision N: <nome>': ### Decisão 3: Roadmap: tabela com status literal, sem data
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_decisao.md: título fora do padrão '### Decision N: <nome>': ### Decisão 4: README e `AGENTS.md.tmpl`: o que entra e as frases fixas
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_decisao.md: título fora do padrão '### Decision N: <nome>': ### Decisão 5: "Por que cada regra existe": posição, formato e conteúdo por skill
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_decisao.md: título fora do padrão '### Decision N: <nome>': ### Decisão 6: `tests/test_docs.py`: o que confere e como
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_decisao.md: título fora do padrão '### Decision N: <nome>': ### Decisão 7: Correção P1 do `adaptation-guide.md`
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_decisao.md: título fora do padrão '### Decision N: <nome>': ### Decisão 8: Evidência, contratos intactos e sabotagem
+RESULTADO: VERMELHO
+→ corrija o DESIGN nos pontos acima (molde: sdd/templates/DESIGN_TEMPLATE.md) e rode de novo
+exit=1
+$ /usr/bin/python3 -B sdd/bin/design-lint.py $D/D_adr.md   # D_ok = DESIGN_F6_DOCS.md; D_decisao/D_adr = títulos 'Decision N:' trocados
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_adr.md: título fora do padrão '### Decision N: <nome>': ### ADR-1: Guia do aluno: o que muda em relação ao starter
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_adr.md: título fora do padrão '### Decision N: <nome>': ### ADR-2: Quickstart: regra do método, 4 validações e a tabela "onde roda"
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_adr.md: título fora do padrão '### Decision N: <nome>': ### ADR-3: Roadmap: tabela com status literal, sem data
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_adr.md: título fora do padrão '### Decision N: <nome>': ### ADR-4: README e `AGENTS.md.tmpl`: o que entra e as frases fixas
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_adr.md: título fora do padrão '### Decision N: <nome>': ### ADR-5: "Por que cada regra existe": posição, formato e conteúdo por skill
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_adr.md: título fora do padrão '### Decision N: <nome>': ### ADR-6: `tests/test_docs.py`: o que confere e como
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_adr.md: título fora do padrão '### Decision N: <nome>': ### ADR-7: Correção P1 do `adaptation-guide.md`
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.67mvFDv1yB/D_adr.md: título fora do padrão '### Decision N: <nome>': ### ADR-8: Evidência, contratos intactos e sabotagem
+RESULTADO: VERMELHO
+→ corrija o DESIGN nos pontos acima (molde: sdd/templates/DESIGN_TEMPLATE.md) e rode de novo
+exit=1

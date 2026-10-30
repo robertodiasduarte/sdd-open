@@ -1,0 +1,38 @@
+$ cd <tmp>/proj && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs/bin/sdd-open.sh init --vendors codex --dry-run ; git init -q && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f6-docs/bin/sdd-open.sh init --vendors codex --yes ; git rev-parse --verify -q HEAD
+## 1) pasta sem git
+🛑 este comando precisa de um repositório git
+RESULTADO: ERRO
+→ rode 'git init' aqui, ou entre na pasta do seu projeto
+exit=64
+## 2) depois de git init (sem commit)
++ .agents/skills/sdd-checar-ambiente (novo)
++ .agents/skills/sdd-define (novo)
++ .agents/skills/sdd-design (novo)
++ .agents/skills/sdd-governanca (novo)
++ .agents/skills/sdd-handoff (novo)
++ .agents/skills/sdd-higiene-dado (novo)
++ .agents/skills/sdd-iniciar-repo (novo)
++ .agents/skills/sdd-iterate (novo)
++ .agents/skills/sdd-kb (novo)
++ .agents/skills/sdd-new-session (novo)
++ .agents/skills/sdd-playbook (novo)
++ .agents/skills/sdd-prompt-builder (novo)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+19 a criar · 0 a atualizar · 0 já corretos
+▶ sdd-open doctor — projeto: /private<tmp>/proj
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.15
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+exit=0
+## 3) HEAD existe?
+rev-parse exit=1
+?? .agents/
+?? AGENTS.md
+?? sdd/

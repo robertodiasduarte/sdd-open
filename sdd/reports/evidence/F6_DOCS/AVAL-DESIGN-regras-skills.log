@@ -1,0 +1,20 @@
+$ grep -nE '<regra prevista na Decision 5>' .agents/skills/sdd-{release,ux-review}/SKILL.md
+## sdd-release: onde a base é integrada (FASE 1 = antes do OK) e o que acontece depois do OK (FASE 2)
+81:## FASE 0 — Gate pré-release
+140:## FASE 1 — Autônoma (só aborta se um gate falhar)
+150:5. **Landar na branch padrão** via worktree temporário fresco de `origin/{default_branch}` +
+151:   cherry-pick. Conflito → tentar aplicar só o incremento por patch (`git apply --check`); só
+155:7. **PARAR e mostrar (o 1 OK) — um bloco só.** Antes, rode
+192:## FASE 2 — Após o "go"
+194:8. **Push.** Re-check de base: `GIT_TERMINAL_PROMPT=0 git fetch` + `git merge-base --is-ancestor origin/{default_branch} HEAD`
+195:   (falhou → base moveu; re-landar). **Nunca `--force`.** `GIT_TERMINAL_PROMPT=0 git push origin HEAD:{default_branch}`.
+229:## FASE 3 — Higiene do git
+238:## FASE 4 — Ficha da feature e playbook
+## sdd-release: regra do ledger (pedida pelo DEFINE, ausente da tabela da Decision 5)
+145:3. **Ledger** (dentro do commit atômico): `sdd/releases/{F}/{slice}_{versão-ou-data}.yaml` com
+147:   Sem SHA (deriva do git). Arquivo novo a cada release: append-only. Ver `references/ledger.md`.
+## sdd-ux-review: quando a entrevista roda
+87:   Se o DEFINE não diz quem usa e em que contexto, ou se o aluno pedir, conduza antes a entrevista
+88:   de `references/entrevista-publico.md` e grave o resultado em `## User and Context`.
+## starter (fonte da adaptação): a regra que não vale no open
+335:- **A base é conferida antes e integrada depois do OK**: se outra frente entrou primeiro, os testes

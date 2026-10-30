@@ -1,0 +1,5 @@
+$ python3 -B <scratchpad>/links.py .   # Pattern 1 verbatim + varredura de README.md, README.pt-BR.md, CONTRIBUTING.md, docs/**/*.md
+docs/adaptation-guide.md:34 → ../{{LANDMINES_CMD}}  (arquivo não existe)
+docs/pt-BR/adaptation-guide.md:36 → ../../{{LANDMINES_CMD}}  (arquivo não existe)
+links relativos: 52 · quebrados: 2
+exit=0

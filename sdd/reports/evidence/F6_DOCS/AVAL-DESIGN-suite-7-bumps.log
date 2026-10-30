@@ -1,0 +1,10 @@
+$ (clone temporário de 7e19462 + simula.py: 7 bumps de patch e 7 seções antes de ## Encerramento, commitado) SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+FAIL: test_versao (test_contrato_build_release.SddBuild)
+AssertionError: '2.2.1' != '2.2.0'
+FAIL: test_versao (test_contrato_build_release.SddRelease)
+AssertionError: '2.3.1' != '2.3.0'
+FAIL: test_versao_do_build (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia)
+AssertionError: '2.2.1' != '2.2.0'
+Ran 499 tests in 233.779s
+FAILED (failures=3)
+exit=1

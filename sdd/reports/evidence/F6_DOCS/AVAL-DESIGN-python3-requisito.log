@@ -1,0 +1,15 @@
+$ grep -nE 'python3 (sdd/bin|\.agents)' .agents/skills/sdd-{define,design,build,release}/SKILL.md ; grep -n 'python3' docs/pt-BR/quickstart.md:77 ; grep -c python3 .agents/skills/sdd-checar-ambiente/scripts/checar.sh ; sed -n 24,30p <starter>/docs/guia-do-aluno.pt-BR.md
+.agents/skills/sdd-release/SKILL.md:108:5. **Relatório:** `python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{F}.md` — `true`
+.agents/skills/sdd-release/SKILL.md:156:   `python3 .agents/skills/sdd-release/scripts/deploy-espera-testes.py .` (só lê
+.agents/skills/sdd-define/SKILL.md:164:`python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{FEATURE}.md` sobre o arquivo gravado: o KB Domains
+.agents/skills/sdd-design/SKILL.md:146:`python3 sdd/bin/design-lint.py sdd/features/DESIGN_{FEATURE}.md` sobre o arquivo gravado: títulos
+.agents/skills/sdd-build/SKILL.md:180:python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md   # exit 0 obrigatório
+Requisitos: `bash ≥ 3.2`, `git`. `python3` só para o adaptador Gemini e para os validadores.
+checar.sh linhas com python3: 1
+## 1. O que você precisa
+
+**Ter:**
+- um computador (Mac, Windows ou Linux);
+- uma conta no [GitHub](https://github.com) — gratuita; é onde a cópia de segurança do seu projeto vai morar;
+- um **agente de código** instalado: [Claude Code](https://claude.com/claude-code) ou [Codex](https://openai.com/codex). É o programa em que você conversa com a IA; as skills rodam dentro dele.
+

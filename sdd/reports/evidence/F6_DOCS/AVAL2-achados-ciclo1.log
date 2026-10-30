@@ -1,0 +1,158 @@
+# ciclo 2 — cada achado do ciclo 1: o texto corrigido (aaae1b4) contra a fonte (skill / bin/sdd-open.sh)
+## H1
+$ grep -n 'registra e libera\|troca o número\|troco o número' docs/pt-BR/guia-do-aluno.md .agents/skills/sdd-higiene-dado/SKILL.md
+docs/pt-BR/guia-do-aluno.md:290:| **O que vai perguntar** | "Posso instalar?" — com as opções e o efeito de cada uma. Quando um commit for barrado: corrigir, dado fictício (ela troca o número por um inválido) ou gravar mesmo assim (só se você conferiu). |
+docs/pt-BR/guia-do-aluno.md:582:| **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certificado. Escolha: **corrigir** (tirar o arquivo desta versão ou pô-lo na lista do que fica de fora), **dado fictício** (ela troca o número por um inválido e salva) ou **gravar mesmo assim** (só se você conferiu que pode sair do computador). |
+.agents/skills/sdd-higiene-dado/SKILL.md:145:   **dado fictício** (troco o número por um inválido e salvo), **gravar mesmo assim** (você conferiu e o
+exit=0
+## H2
+$ sed -n 366p docs/pt-BR/guia-do-aluno.md
+| **Quando não usar** | Com o Define ainda cheio de dúvidas marcadas — responda antes no Define: enquanto houver uma, o Verify Gate devolve `5` e o Build não termina. |
+exit=0
+$ grep -n -i 'clarif\|dúvida' .agents/skills/sdd-design/SKILL.md | grep -v 'responda a dúvida' 
+exit=1
+$ grep -n '| `5`' .agents/skills/sdd-build/SKILL.md
+148:| `5` | clarificação pendente — **pare** e volte ao Define; não é vermelho de build |
+exit=0
+(exit 5 medido: AVAL2-verify-gate-5-e-python.log)
+## H3
+$ grep -n 'YAGNI fica registrado' -A1 .agents/skills/sdd-brainstorm/SKILL.md
+160:- **O que sai pelo YAGNI fica registrado** — com o motivo e se pode voltar depois, o registro impede
+161-  que a ideia volte escondida no Design como se ninguém a tivesse descartado.
+exit=0
+$ sed -n 114,118p .agents/skills/sdd-brainstorm/SKILL.md
+### 5. YAGNI
+
+Para cada funcionalidade que surgiu: precisa para a primeira versão? Resolve o problema
+central? Se não, sai — e fica **registrada** na tabela "Removidas", com o motivo e se pode
+voltar depois. O que sai é tão importante quanto o que fica.
+exit=0
+$ grep -c 'nenhum corte é inventado' .agents/skills/sdd-brainstorm/SKILL.md
+0
+exit=1
+## M1
+$ sed -n 683,689p docs/pt-BR/guia-do-aluno.md
+**Eu já uso o sdd-starter. E agora?**
+Os nomes das skills coincidem de propósito: use **um ou outro** por projeto. O `doctor` só olha dentro
+do projeto: ele avisa quando as skills do starter estão na pasta do projeto, mas não vê a instalação
+global que o starter costuma fazer (a pasta pessoal do agente, como `~/.claude/skills/`,
+`~/.agents/skills/` ou `~/.codex/skills/`). Se você instalou o starter assim, remova as pastas `sdd-*`
+de lá (ou use o comando de remover do mesmo instalador) antes de usar o SDD Open; senão, o agente
+pode carregar a skill do starter no lugar da do projeto.
+exit=0
+$ sed -n 600,602p bin/sdd-open.sh
+  if ls "${ROOT}"/.agents/skills/sdd-*/agents/openai.yaml >/dev/null 2>&1 || ls "${ROOT}"/.claude/skills/sdd-*/agents/openai.yaml >/dev/null 2>&1; then
+    warn "skills do sdd-starter detectadas no mesmo projeto: os nomes sdd-* colidem — use um ou outro por projeto"
+  fi
+exit=0
+(sonda: AVAL2-guia-fluxo.log, seção M1)
+## M2
+$ sed -n 40,41p tests/test_docs.py
+# "sdd/ fica fora do git", em qualquer redação: procurado em cada parágrafo (ou linha de tabela) que cita sdd/.
+FORA_DO_GIT = re.compile(r"(não vai|não entra|não sobe|ficam? fora)[^.|]{0,40}\b(git|github)\b", re.I)
+exit=0
+(sonda: AVAL2-sabotagens.log AT-002c..e6)
+## M3
+$ sed -n 89,98p docs/pt-BR/guia-do-aluno.md
+**Quando sair versão nova:**
+1. `git pull` dentro da pasta `~/sdd-open`;
+2. `bash ~/sdd-open/bin/sdd-open.sh doctor` na pasta do projeto — ele aponta cada skill e cada
+   arquivo de `sdd/bin/` que diferem do pacote que você baixou (por isso o `git pull` vem antes);
+3. para cada skill apontada, apague a pasta dela em `.agents/skills/` (edições que você fez nela se
+   perdem); para cada arquivo de `sdd/bin/` apontado, apague o arquivo, se você não o editou;
+4. rode o `init` de novo com `--yes`: ele copia de volta só o que você apagou;
+5. `bash ~/sdd-open/bin/sdd-open.sh sync --yes`, que regenera as cópias de cada agente.
+
+O `sync` sozinho não traz versão nova: ele só copia o que já está em `.agents/skills/`.
+exit=0
+$ sed -n 613,617p bin/sdd-open.sh
+  for f in "${PKG}"/sdd/bin/*; do
+    [ -f "${f}" ] && [ -f "${ROOT}/sdd/bin/${f##*/}" ] || continue
+    cmp -s "${f}" "${ROOT}/sdd/bin/${f##*/}" && continue
+    warn "sdd/bin/${f##*/} difere do pacote — se você não editou, apague e rode init"
+    atrasados=$((atrasados + 1))
+exit=0
+(sonda: AVAL2-guia-fluxo.log passos 2-5)
+## L1
+$ grep -n 'def existe' -A15 tests/test_docs.py | head -16
+124:def existe(destino: Path, raiz: Path) -> bool:
+125-    """Existe com a caixa exata: no macOS o disco não diferencia maiúsculas, e o GitHub diferencia."""
+126-    destino = Path(os.path.normpath(str(destino)))
+127-    if not destino.exists():
+128-        return False
+129-    try:
+130-        partes = destino.relative_to(raiz).parts
+131-    except ValueError:
+132-        return True  # fora da árvore (não acontece nos docs do pacote): só a existência
+133-    atual = raiz
+134-    for parte in partes:
+135-        if parte not in os.listdir(str(atual)):
+136-            return False
+137-        atual = atual / parte
+138-    return True
+139-
+exit=0
+(sonda: AVAL2-sabotagens.log AT-008b, AT-008b2)
+## L2
+$ grep -n 'sync --yes\|ou o `sync` respondeu' docs/pt-BR/guia-do-aluno.md docs/quickstart.md docs/pt-BR/quickstart.md
+docs/pt-BR/guia-do-aluno.md:96:5. `bash ~/sdd-open/bin/sdd-open.sh sync --yes`, que regenera as cópias de cada agente.
+docs/pt-BR/guia-do-aluno.md:579:| **O `init` ou o `sync` respondeu `CANCELADO`** | Faltou o `--yes`: o agente rodou sem um terminal onde você pudesse confirmar. Rode o `--dry-run`, leia o plano e repita com `--yes`. |
+docs/pt-BR/guia-do-aluno.md:584:| **O `doctor` diz que uma skill ou um arquivo de `sdd/bin/` difere do pacote** | Apague a pasta da skill em `.agents/skills/` (ou o arquivo de `sdd/bin/`, se você não o editou) e rode o `init` de novo com `--yes`; depois, `sync --yes` (seção 2, "Quando sair versão nova"). |
+docs/quickstart.md:185:bash /tmp/sdd-open/bin/sdd-open.sh sync --yes                  # regenerates the adapters from it
+docs/pt-BR/quickstart.md:185:bash /tmp/sdd-open/bin/sdd-open.sh sync --yes                  # regenera os adaptadores a partir dela
+exit=0
+$ sed -n 34,39p bin/lib/plan.sh
+# Enter = NÃO. --yes pula. Fora de terminal interativo sem --yes = NÃO (nunca adivinha).
+confirmar() {
+  [ "${ASSUME_YES:-0}" = "1" ] && return 0
+  if [ ! -t 0 ]; then
+    resultado "CANCELADO" "nenhum arquivo foi escrito; sem terminal interativo, use --yes para aplicar."
+    exit 0
+exit=0
+## L3
+$ sed -n 404p docs/pt-BR/guia-do-aluno.md
+| **O que vai perguntar** | Uma pergunta só, no fim de um bloco que diz o que sobe (em palavras), o que muda em produção, se o envio publica sozinho e se a publicação espera os testes — **sim** publica, **não** encerra sem publicar (a versão preparada fica só no seu computador). |
+exit=0
+$ sed -n 148,158p .agents/skills/sdd-release/SKILL.md
+4. **Commit atômico.** `git add <arquivos específicos>` — **nunca `-A`**. Confira
+   `git diff --cached --name-only`.
+5. **Landar na branch padrão** via worktree temporário fresco de `origin/{default_branch}` +
+   cherry-pick. Conflito → tentar aplicar só o incremento por patch (`git apply --check`); só
+   abortar se os hunks se sobrepõem de verdade.
+6. **Gates pré-push:** diff contra `origin/{default_branch}` tem só os arquivos esperados;
+   nenhuma deleção de algo que está publicado; classificar se o diff deploya ou é no-op.
+7. **PARAR e mostrar (o 1 OK) — um bloco só.** Antes, rode
+   `python3 .agents/skills/sdd-release/scripts/deploy-espera-testes.py .` (só lê
+   `.github/workflows/`). No **Agora**, duas frases: os campos já foram conferidos por você; a pessoa
+   só responde à última linha — **sim** publica exatamente o descrito, **não** encerra sem publicar.
+exit=0
+## L4
+$ sed -n 173,174p .agents/skills/sdd-design/SKILL.md
+- **Títulos `### Decision N:` fixos** — outras ferramentas leem as decisões por esse título; renomear
+  para "Decisão 1" ou "ADR-1" faz o `design-lint` reprovar e quem lê as decisões deixar de achá-las.
+exit=0
+(sonda: AVAL2-design-lint-titulo.log)
+## L5
+$ awk '/^## Por que cada regra existe/{f=1} /^## Encerramento/{f=0} f' .agents/skills/sdd-release/SKILL.md | grep -c '\*\*[^*]*?[^*]*\*\*'
+0
+exit=1
+## L6
+$ sed -n 75,76p docs/pt-BR/guia-do-aluno.md
+2. O `--dry-run` mostra o plano — o que vai ser criado (`+`) e o que muda (`~`), mais a contagem do
+   que já está certo — **sem escrever nada**. Leia.
+exit=0
+$ sed -n 678,681p docs/pt-BR/guia-do-aluno.md
+**Como sei que as skills estão atualizadas?**
+A linha de identificação da primeira resposta traz a versão da skill no seu projeto e o link da mais
+nova publicada. O `doctor` compara o projeto com o pacote que você baixou — por isso, rode `git pull`
+na pasta `~/sdd-open` antes dele (seção 2, "Quando sair versão nova").
+exit=0
+$ grep -n 'every front\|a cada frente:' README.md README.pt-BR.md
+README.md:67:every front:   sdd-new-session
+README.pt-BR.md:67:a cada frente:     sdd-new-session
+exit=0
+$ sed -n 28,30p bin/lib/plan.sh
+plano_resumo() {
+  printf '%s a criar · %s a atualizar · %s já corretos\n' "${PLANO_NOVOS}" "${PLANO_ATUALIZAR}" "${PLANO_EMDIA}"
+}
+exit=0

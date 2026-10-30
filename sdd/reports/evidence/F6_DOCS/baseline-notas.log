@@ -1,0 +1,8 @@
+$ T=$(mktemp -d) && git archive 963c47e | tar -x -C "$T" && cp tests/test_docs.py "$T/tests/" && cd "$T/tests" && /usr/bin/python3 -B -m unittest test_docs 2>&1 | grep -E "^(FAIL|ERROR|Ran|OK|FAILED)|registra e libera"; rc=${PIPESTATUS[0]}; cd / && rm -rf "${T:?}"; exit $rc
+FAIL: test_sem_as_premissas_do_starter (test_docs.Guia)
+AssertionError: Lists differ: ['registra e libera'] != []
+'registra e libera'
+- ['registra e libera']
+Ran 15 tests in 0.020s
+FAILED (failures=1)
+exit=1

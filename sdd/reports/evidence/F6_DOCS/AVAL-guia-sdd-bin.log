@@ -1,0 +1,20 @@
+# projeto de AVAL-guia-atualizacao.log; simula um sdd/bin/ de versão anterior (1 linha a mais em kb-dominios.py)
+$ bash $T/pkg/bin/sdd-open.sh doctor | grep -E 'sdd/bin|em dia'
+⚠️  sdd/bin/kb-dominios.py difere do pacote — se você não editou, apague e rode init
+$ bash $T/pkg/bin/sdd-open.sh init --vendors claude --yes | grep -E 'sdd/|RESULTADO'   # sem apagar o arquivo
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+⚠️  sdd/bin/kb-dominios.py difere do pacote — se você não editou, apague e rode init
+RESULTADO: EM DIA
+$ tail -1 sdd/bin/kb-dominios.py
+# antiga
+$ grep -n 'sdd/bin' $GUIA (docs/pt-BR/guia-do-aluno.md, seção 2 'Quando sair versão nova' e seção 8)
+**Quando sair versão nova:**
+1. `git pull` dentro da pasta `~/sdd-open`;
+2. `bash ~/sdd-open/bin/sdd-open.sh doctor` na pasta do projeto — ele aponta cada skill mais velha
+   que o pacote;
+3. para cada skill apontada, apague a pasta dela em `.agents/skills/` e rode o `init` de novo com
+   `--yes` (edições que você fez nela se perdem);
+4. `bash ~/sdd-open/bin/sdd-open.sh sync`, que regenera as cópias de cada agente.
+
+O `sync` sozinho não traz versão nova: ele só copia o que já está em `.agents/skills/`.
+| **O `doctor` diz que uma skill está mais velha que o pacote** | Apague a pasta da skill em `.agents/skills/` e rode o `init` de novo com `--yes`; depois, `sync` (seção 2, "Quando sair versão nova"). |
