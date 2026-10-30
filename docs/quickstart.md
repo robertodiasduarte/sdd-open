@@ -182,7 +182,7 @@ the adapters — so neither one, alone, brings a new skill version. `doctor` nam
 ```bash
 rm -r .agents/skills/sdd-build                                 # the folder doctor named; your edits in it are lost
 bash /tmp/sdd-open/bin/sdd-open.sh init --vendors codex --yes  # copies the package version back
-bash /tmp/sdd-open/bin/sdd-open.sh sync                        # regenerates the adapters from it
+bash /tmp/sdd-open/bin/sdd-open.sh sync --yes                  # regenerates the adapters from it
 ```
 
 A `sdd/bin/` file goes the same way: delete it (if you did not edit it) and run `init`.

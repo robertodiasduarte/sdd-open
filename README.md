@@ -63,7 +63,8 @@ path, from the first install to the first release.
 ## The workflow
 
 ```text
-prepare once:  sdd-checar-ambiente · sdd-iniciar-repo · sdd-higiene-dado · sdd-new-session · (optional) sdd-kb
+prepare once:  sdd-checar-ambiente · sdd-iniciar-repo · sdd-higiene-dado · (optional) sdd-kb
+every front:   sdd-new-session
 
 /sdd-brainstorm → /sdd-define → /sdd-governanca → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
   (optional)           ↑          (if money)          (if UI)           ↑             │             │

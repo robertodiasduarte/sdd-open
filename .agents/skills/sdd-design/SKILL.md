@@ -171,7 +171,7 @@ registre `diversidade: nenhuma` — mais fraco, mas honesto.
 ## Por que cada regra existe
 
 - **Títulos `### Decision N:` fixos** — outras ferramentas leem as decisões por esse título; renomear
-  para "Decisão 1" ou "ADR-1" quebra quem lê, sem erro visível.
+  para "Decisão 1" ou "ADR-1" faz o `design-lint` reprovar e quem lê as decisões deixar de achá-las.
 - **Manifest sem ciclo e com `Total Files`** — com dependência circular não existe ordem de build
   possível; o total confere que nenhuma linha se perdeu.
 - **Varredura de landmines sempre registrada, mesmo com 0 achados** — "0 aplicáveis" escrito prova que

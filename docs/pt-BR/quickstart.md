@@ -182,7 +182,7 @@ aponta cada skill e cada arquivo de `sdd/bin/` mais velhos que o pacote. Para ca
 ```bash
 rm -r .agents/skills/sdd-build                                 # a pasta que o doctor apontou; edições suas nela se perdem
 bash /tmp/sdd-open/bin/sdd-open.sh init --vendors codex --yes  # copia de volta a versão do pacote
-bash /tmp/sdd-open/bin/sdd-open.sh sync                        # regenera os adaptadores a partir dela
+bash /tmp/sdd-open/bin/sdd-open.sh sync --yes                  # regenera os adaptadores a partir dela
 ```
 
 Um arquivo de `sdd/bin/` segue o mesmo caminho: apague-o (se você não o editou) e rode o `init`.

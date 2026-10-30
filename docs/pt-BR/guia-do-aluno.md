@@ -72,8 +72,8 @@ bash ~/sdd-open/bin/sdd-open.sh init --vendors codex --yes
 
 1. O `git clone` baixa o pacote para a pasta `sdd-open` da sua pasta pessoal. É lá que ele fica para
    as próximas atualizações.
-2. O `--dry-run` mostra o plano — o que vai ser criado (`+`), o que muda (`~`) e o que já está certo
-   (`=`) — **sem escrever nada**. Leia.
+2. O `--dry-run` mostra o plano — o que vai ser criado (`+`) e o que muda (`~`), mais a contagem do
+   que já está certo — **sem escrever nada**. Leia.
 3. O `--yes` aplica o plano. Ele é necessário porque o agente roda o comando sem um terminal onde
    você possa digitar "y": sem o `--yes`, o `init` responde `CANCELADO` e não escreve nada.
 
@@ -88,11 +88,12 @@ git); depois rode `git init -b main`, que só cria o git vazio — nada é salvo
 
 **Quando sair versão nova:**
 1. `git pull` dentro da pasta `~/sdd-open`;
-2. `bash ~/sdd-open/bin/sdd-open.sh doctor` na pasta do projeto — ele aponta cada skill mais velha
-   que o pacote;
-3. para cada skill apontada, apague a pasta dela em `.agents/skills/` e rode o `init` de novo com
-   `--yes` (edições que você fez nela se perdem);
-4. `bash ~/sdd-open/bin/sdd-open.sh sync`, que regenera as cópias de cada agente.
+2. `bash ~/sdd-open/bin/sdd-open.sh doctor` na pasta do projeto — ele aponta cada skill e cada
+   arquivo de `sdd/bin/` que diferem do pacote que você baixou (por isso o `git pull` vem antes);
+3. para cada skill apontada, apague a pasta dela em `.agents/skills/` (edições que você fez nela se
+   perdem); para cada arquivo de `sdd/bin/` apontado, apague o arquivo, se você não o editou;
+4. rode o `init` de novo com `--yes`: ele copia de volta só o que você apagou;
+5. `bash ~/sdd-open/bin/sdd-open.sh sync --yes`, que regenera as cópias de cada agente.
 
 O `sync` sozinho não traz versão nova: ele só copia o que já está em `.agents/skills/`.
 
@@ -286,7 +287,7 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **Quando não usar** | Para limpar dado que já foi para o git — ela não mexe no histórico. Para parecer sobre LGPD — ela só alarma. |
 | **Como pedir** | *"use a skill sdd-higiene-dado para proteger este projeto"* |
 | **O que produz** | O alarme instalado no projeto (um arquivo `pre-commit` dentro da pasta `.git`). |
-| **O que vai perguntar** | "Posso instalar?" — com as opções e o efeito de cada uma. Quando um commit for barrado: corrigir, é dado fictício, ou gravar mesmo assim (só se você conferiu). |
+| **O que vai perguntar** | "Posso instalar?" — com as opções e o efeito de cada uma. Quando um commit for barrado: corrigir, dado fictício (ela troca o número por um inválido) ou gravar mesmo assim (só se você conferiu). |
 
 #### sdd-new-session
 
@@ -362,7 +363,7 @@ está começando não sabe o nome da skill, sabe em que momento está.
 |---|---|
 | **Para que serve** | Decide **como** será feito, por escrito: os blocos do sistema, os arquivos que serão criados, as decisões técnicas e os motivos, como testar, o que fazer em cada erro. |
 | **Quando usar** | Depois do Define (e das revisões de governança e UX, quando houver). |
-| **Quando não usar** | Com o Define ainda cheio de dúvidas marcadas — ela devolve para responder antes. |
+| **Quando não usar** | Com o Define ainda cheio de dúvidas marcadas — responda antes no Define: enquanto houver uma, o Verify Gate devolve `5` e o Build não termina. |
 | **Como pedir** | *"use a skill sdd-design com sdd/features/DEFINE_HONORARIOS.md"* |
 | **O que produz** | `sdd/features/DESIGN_NOME.md`, com a lista exata de arquivos que o Build vai tocar, conferido por `sdd/bin/design-lint.py`. |
 | **O que vai perguntar** | Decisões técnicas que só você pode tomar (onde guardar os dados, com que sistema integrar), sempre com opções e uma recomendada. Se o projeto já tem padrões, ela segue sem perguntar. |
@@ -400,7 +401,7 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **Quando não usar** | Com trabalho pela metade ou teste falhando — ela detecta e não publica. |
 | **Como pedir** | *"use a skill sdd-release para publicar esta frente"* |
 | **O que produz** | A versão integrada em produção e conferida, o registro em `sdd/releases/` e a ficha da feature atualizada. |
-| **O que vai perguntar** | Uma pergunta só, no fim de um bloco que diz o que sobe (em palavras), o que muda em produção, se o envio publica sozinho e se a publicação espera os testes — **sim** publica, **não** encerra sem mudar nada. |
+| **O que vai perguntar** | Uma pergunta só, no fim de um bloco que diz o que sobe (em palavras), o que muda em produção, se o envio publica sozinho e se a publicação espera os testes — **sim** publica, **não** encerra sem publicar (a versão preparada fica só no seu computador). |
 
 ### Bloco 4 — Transversais (quando o caso pedir)
 
@@ -575,12 +576,12 @@ As skills já tratam os casos abaixo. O que você precisa saber é só como reag
 | O que aconteceu | O que fazer |
 |---|---|
 | **Status com ⏸️** | Falta algo que só você resolve. Siga os passos numerados (onde, o quê, o que ver na tela), volte e repita o pedido. Nada foi publicado. |
-| **O `init` respondeu `CANCELADO`** | Faltou o `--yes`: o agente rodou sem um terminal onde você pudesse confirmar. Rode o `--dry-run`, leia o plano e repita com `--yes`. |
+| **O `init` ou o `sync` respondeu `CANCELADO`** | Faltou o `--yes`: o agente rodou sem um terminal onde você pudesse confirmar. Rode o `--dry-run`, leia o plano e repita com `--yes`. |
 | **"este comando precisa de um repositório git"** | A pasta ainda não usa git. Confira que ela não está numa pasta sincronizada, rode `git init -b main` e repita o `init`. |
 | **Verify Gate devolveu `2`, `3`, `4`, `5` ou `64`** | Veja a tabela da seção 3: `2` a skill corrige; `3` falta uma ferramenta; `4` precisa da sua assinatura; `5` volte ao Define e responda a dúvida; `64` volte ao Define. |
-| **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certificado. Escolha: **corrigir** (tirar o dado), **é dado fictício** (ela registra e libera) ou **gravar mesmo assim** (só se você conferiu que pode sair do computador). |
+| **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certificado. Escolha: **corrigir** (tirar o arquivo desta versão ou pô-lo na lista do que fica de fora), **dado fictício** (ela troca o número por um inválido e salva) ou **gravar mesmo assim** (só se você conferiu que pode sair do computador). |
 | **Release não publicou** | Teste falhou, há segredo no que ia subir, ou a base está desatualizada. A skill diz qual. Corrija na frente e peça a release de novo. |
-| **O `doctor` diz que uma skill está mais velha que o pacote** | Apague a pasta da skill em `.agents/skills/` e rode o `init` de novo com `--yes`; depois, `sync` (seção 2, "Quando sair versão nova"). |
+| **O `doctor` diz que uma skill ou um arquivo de `sdd/bin/` difere do pacote** | Apague a pasta da skill em `.agents/skills/` (ou o arquivo de `sdd/bin/`, se você não o editou) e rode o `init` de novo com `--yes`; depois, `sync --yes` (seção 2, "Quando sair versão nova"). |
 | **A skill respondeu sem Status nem opções** | A skill pode não ter carregado, ou a versão é antiga. Confira a linha de identificação e rode o `doctor`. |
 | **"Não reconheço este erro"** | Peça a `sdd-checar-ambiente` e, se persistir, copie a resposta e peça ajuda a quem conhece git. |
 | **Perdi a conversa** | Abra o agente na pasta da frente e cole o último prompt de retomada. Se não tiver, peça: *"leia sdd/handoffs/HANDOFF_NOME.md e me diga onde paramos"*. |
@@ -676,11 +677,16 @@ rode a `sdd-checar-ambiente` e cole a resposta para quem puder ajudar.
 
 **Como sei que as skills estão atualizadas?**
 A linha de identificação da primeira resposta traz a versão da skill no seu projeto e o link da mais
-nova. O `doctor` compara as duas e diz o que fazer (seção 2, "Quando sair versão nova").
+nova publicada. O `doctor` compara o projeto com o pacote que você baixou — por isso, rode `git pull`
+na pasta `~/sdd-open` antes dele (seção 2, "Quando sair versão nova").
 
 **Eu já uso o sdd-starter. E agora?**
-Os nomes das skills coincidem de propósito: use **um ou outro** por projeto. O `doctor` avisa se
-encontrar os dois.
+Os nomes das skills coincidem de propósito: use **um ou outro** por projeto. O `doctor` só olha dentro
+do projeto: ele avisa quando as skills do starter estão na pasta do projeto, mas não vê a instalação
+global que o starter costuma fazer (a pasta pessoal do agente, como `~/.claude/skills/`,
+`~/.agents/skills/` ou `~/.codex/skills/`). Se você instalou o starter assim, remova as pastas `sdd-*`
+de lá (ou use o comando de remover do mesmo instalador) antes de usar o SDD Open; senão, o agente
+pode carregar a skill do starter no lugar da do projeto.
 
 ---
 

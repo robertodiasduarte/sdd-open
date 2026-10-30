@@ -16,6 +16,7 @@ As frases fixas ficam nas constantes abaixo: mudar a redação de uma delas é m
 """
 from __future__ import annotations
 
+import os
 import re
 import tempfile
 import unicodedata
@@ -34,8 +35,10 @@ COM_SECAO = FASE + ("sdd-new-session", "sdd-iniciar-repo")
 GUIA = RAIZ / "docs/pt-BR/guia-do-aluno.md"
 # O que o guia do sdd-starter dizia e no open é falso.
 PROIBIDO_NO_GUIA = ("npx skills", "15 skills", "ux-review-builder", "sdd-starter/releases",
-                    "sdd/BRAINSTORM_", "sdd/DEFINE_", "sdd/DESIGN_", "sdd/BUILD_REPORT_", "sdd/HANDOFF_")
-SDD_FORA_DO_GIT = re.compile(r"sdd/.{0,80}(não vai para o GitHub|fora do git)")
+                    "sdd/BRAINSTORM_", "sdd/DEFINE_", "sdd/DESIGN_", "sdd/BUILD_REPORT_", "sdd/HANDOFF_",
+                    "registra e libera")
+# "sdd/ fica fora do git", em qualquer redação: procurado em cada parágrafo (ou linha de tabela) que cita sdd/.
+FORA_DO_GIT = re.compile(r"(não vai|não entra|não sobe|ficam? fora)[^.|]{0,40}\b(git|github)\b", re.I)
 
 QUICKSTART = {
     "en": (RAIZ / "docs/quickstart.md",
@@ -110,12 +113,37 @@ def ancoras(p: Path) -> set:
     return saida
 
 
+def afirma_sdd_fora_do_git(texto: str) -> list:
+    achados = []
+    for bloco in re.split(r"\n\s*\n", texto):
+        partes = bloco.splitlines() if bloco.lstrip().startswith("|") else [bloco]
+        achados += [m.group(0) for parte in partes if "sdd/" in parte for m in FORA_DO_GIT.finditer(parte)]
+    return achados
+
+
+def existe(destino: Path, raiz: Path) -> bool:
+    """Existe com a caixa exata: no macOS o disco não diferencia maiúsculas, e o GitHub diferencia."""
+    destino = Path(os.path.normpath(str(destino)))
+    if not destino.exists():
+        return False
+    try:
+        partes = destino.relative_to(raiz).parts
+    except ValueError:
+        return True  # fora da árvore (não acontece nos docs do pacote): só a existência
+    atual = raiz
+    for parte in partes:
+        if parte not in os.listdir(str(atual)):
+            return False
+        atual = atual / parte
+    return True
+
+
 def docs() -> list:
     raiz = [RAIZ / n for n in ("README.md", "README.pt-BR.md", "CONTRIBUTING.md")]
     return [p for p in raiz if p.is_file()] + sorted((RAIZ / "docs").rglob("*.md"))
 
 
-def links_quebrados(p: Path) -> list:
+def links_quebrados(p: Path, raiz: Path = RAIZ) -> list:
     saida = []
     for n, ln in linhas_fora_de_cerca(p):
         for alvo in LINK.findall(CRASE.sub("", ln)):
@@ -123,8 +151,8 @@ def links_quebrados(p: Path) -> list:
                 continue
             caminho, _, anc = alvo.partition("#")
             destino = (p.parent / caminho) if caminho else p
-            onde = "%s:%d → %s" % (p.relative_to(RAIZ), n, alvo)
-            if not destino.exists():
+            onde = "%s:%d → %s" % (p.relative_to(raiz), n, alvo)
+            if not existe(destino, raiz):
                 saida.append(onde + " (arquivo não existe)")
             elif anc and destino.suffix == ".md" and anc not in ancoras(destino):
                 saida.append(onde + " (âncora não existe)")
@@ -166,25 +194,14 @@ class Links(unittest.TestCase):
 
     def test_o_teste_acusa_link_quebrado(self):
         with tempfile.TemporaryDirectory() as d:
-            p = Path(d) / "a.md"
-            p.write_text("# Título\n\n[ok](#título) [falta](b.md) [âncora](#outra)\n"
+            raiz = Path(d).resolve()
+            (raiz / "c.md").write_text("# C\n", encoding="utf-8")
+            p = raiz / "a.md"
+            p.write_text("# Título\n\n[ok](#título) [ok](c.md) [falta](b.md) [âncora](#outra) [caixa](C.md)\n"
                          "```\n[dentro de bloco](nao-existe.md)\n```\n", encoding="utf-8")
-            achados = [x.split("→", 1)[1].strip() for x in links_quebrados_fora_da_raiz(p)]
-        self.assertEqual(achados, ["b.md (arquivo não existe)", "#outra (âncora não existe)"])
-
-
-def links_quebrados_fora_da_raiz(p: Path) -> list:
-    """links_quebrados() para um arquivo fora de RAIZ (o teste do próprio teste)."""
-    saida = []
-    for n, ln in linhas_fora_de_cerca(p):
-        for alvo in LINK.findall(CRASE.sub("", ln)):
-            caminho, _, anc = alvo.partition("#")
-            destino = (p.parent / caminho) if caminho else p
-            if not destino.exists():
-                saida.append("%d → %s (arquivo não existe)" % (n, alvo))
-            elif anc and destino.suffix == ".md" and anc not in ancoras(destino):
-                saida.append("%d → %s (âncora não existe)" % (n, alvo))
-    return saida
+            achados = [x.split("→", 1)[1].strip() for x in links_quebrados(p, raiz)]
+        self.assertEqual(achados, ["b.md (arquivo não existe)", "#outra (âncora não existe)",
+                                   "C.md (arquivo não existe)"])
 
 
 class Guia(unittest.TestCase):
@@ -209,13 +226,23 @@ class Guia(unittest.TestCase):
         for termo in ("init --vendors", "--yes", "python3", "doctor", "sdd-open/releases/latest"):
             with self.subTest(termo=termo):
                 self.assertIn(termo, self.texto)
-        self.assertTrue(any("apague" in ln and "init" in ln for ln in self.texto.splitlines()),
+        self.assertTrue(any("apague" in ln.lower() and "init" in ln for ln in self.texto.splitlines()),
                         "o guia não diz como receber uma skill nova: apagar a pasta e rodar init")
 
     def test_sem_as_premissas_do_starter(self):
-        achados = [t for t in PROIBIDO_NO_GUIA if t in self.texto]
-        achados += [m.group(0) for m in SDD_FORA_DO_GIT.finditer(self.texto)]
+        achados = [t for t in PROIBIDO_NO_GUIA if t in self.texto] + afirma_sdd_fora_do_git(self.texto)
         self.assertEqual(achados, [])
+
+    def test_o_teste_acusa_sdd_fora_do_git(self):
+        # As 2 frases do guia do sdd-starter e uma 3ª redação; o .env fora do GitHub continua livre.
+        ruins = ("Os documentos ficam na pasta `sdd/` do projeto: `BRAINSTORM_NOME.md`, `DEFINE_NOME.md`, "
+                 "`DESIGN_NOME.md`. Essa pasta **não vai para o GitHub** — é o seu caderno de trabalho.",
+                 "| **`sdd/`** | A pasta do projeto onde ficam os documentos das fases. Não vai para o GitHub. |",
+                 "A pasta `sdd/` não entra no git.")
+        for frase in ruins:
+            with self.subTest(frase=frase[:40]):
+                self.assertTrue(afirma_sdd_fora_do_git(frase))
+        self.assertEqual(afirma_sdd_fora_do_git("O `.env` não vai para o GitHub.\n\nA pasta `sdd/` entra no git."), [])
 
 
 class Quickstart(unittest.TestCase):

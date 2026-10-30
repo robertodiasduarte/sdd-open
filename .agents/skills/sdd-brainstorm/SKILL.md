@@ -157,9 +157,8 @@ assunções em "O que precisa de você" no fechamento. Nunca invente uma respost
   derruba (o campo que vem vazio, o formato que muda no meio do mês).
 - **Liderar com a recomendação** — três opções sem opinião devolvem a decisão a quem pediu ajuda
   justamente para decidir.
-- **O que sai pelo YAGNI fica registrado, e nenhum corte é inventado** — o registro impede que a ideia
-  volte escondida no Design; um corte inventado só para preencher a tabela apaga uma decisão que
-  ninguém tomou.
+- **O que sai pelo YAGNI fica registrado** — com o motivo e se pode voltar depois, o registro impede
+  que a ideia volte escondida no Design como se ninguém a tivesse descartado.
 - **Duas confirmações antes de gravar** — o documento vira a entrada do Define; um mal-entendido gravado
   aqui chega ao código com cara de requisito.
 - **Sessão autônoma marca `ASSUMIDO`, nunca inventa a resposta do usuário** — no documento, uma resposta

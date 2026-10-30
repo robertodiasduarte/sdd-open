@@ -280,7 +280,7 @@ vale **sempre**.
   push mais novo e publica código velho por cima.
 - **Uma pergunta só, na última linha do bloco** — duas paradas viram duas aprovações pela metade; a
   ambiguidade vai dentro do bloco, antes da pergunta.
-- **"O deploy espera os testes?" vem do script** — a memória de como o workflow era não vale;
+- **A resposta sobre os testes antes do deploy vem do script** — a memória de como o workflow era não vale;
   `continue-on-error` ou `|| true` fazem um teste vermelho não segurar nada.
 - **O agente nunca emite WAIVED** — dispensar um achado é decisão de quem responde pela publicação, e
   fica registrada com motivo e nome.

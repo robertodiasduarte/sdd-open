@@ -63,7 +63,8 @@ inteiro, da primeira instalação à primeira publicação.
 ## O fluxo
 
 ```text
-preparar uma vez:  sdd-checar-ambiente · sdd-iniciar-repo · sdd-higiene-dado · sdd-new-session · (opcional) sdd-kb
+preparar uma vez:  sdd-checar-ambiente · sdd-iniciar-repo · sdd-higiene-dado · (opcional) sdd-kb
+a cada frente:     sdd-new-session
 
 /sdd-brainstorm → /sdd-define → /sdd-governanca → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
   (opcional)           ↑       (se há dinheiro)     (se há UI)          ↑             │             │
