@@ -255,9 +255,13 @@ linha_marca() { # $1=estilo $2=texto (o caminho vem do disco: o que fecharia o c
   esac
 }
 
-renderizar_gerado() { # $1=fonte $2=skill $3=arquivo-relativo → conteúdo exato da cópia no stdout
+renderizar_gerado() { # $1=fonte $2=skill $3=arquivo-relativo [$4=prefixo da fonte] → conteúdo exato da cópia no stdout
   local LC_ALL=C; export LC_ALL   # idem perfil_arquivo: o caminho e as linhas mantidas são bytes
   local estilo manter verif bom
+  # Prefixo default: a skill do projeto. Os adaptadores de hook vêm de bin/adapters/<vendor>/ do PACOTE —
+  # caminho que não existe no projeto, por isso o cabeçalho diz de onde ele vem.
+  local prefixo="${4:-.agents/skills}" sufixo=""
+  [ -n "${4:-}" ] && sufixo=" (pacote sdd-open)"
   read -r estilo manter verif bom <<PERFIL
 $(perfil_arquivo "${1}")
 PERFIL
@@ -267,18 +271,18 @@ PERFIL
   [ "${manter}" -gt 0 ] && printf '%s\n' "$(sem_bom "${1}" | head -n "${manter}")"
   # O caminho vem do disco e entra num comentário de outra linguagem: só [A-Za-z0-9._/-] passa, o resto vira
   # '?'. Um codec da fonte (utf-7, unicode_escape) ou um fechador de comentário no nome não vira código (V8-R1).
-  local caminho; caminho="$(printf '%s' ".agents/skills/${2}/${3}" | LC_ALL=C tr -c 'A-Za-z0-9._/-' '?')"
-  linha_marca "${estilo}" "${MARCA} - fonte: ${caminho}"
+  local caminho; caminho="$(printf '%s' "${prefixo}/${2}/${3}" | LC_ALL=C tr -c 'A-Za-z0-9._/-' '?')"
+  linha_marca "${estilo}" "${MARCA} - fonte: ${caminho}${sufixo}"
   linha_marca "${estilo}" "${MARCA} - sync reescreve este arquivo; edite a fonte e rode sync"
   sem_bom "${1}" | tail -n +"$((manter + 1))"
 }
 
 mesmo_bit_x() { local a=0 b=0; [ -x "${1}" ] && a=1; [ -x "${2}" ] && b=1; [ "${a}" = "${b}" ]; }
 
-escrever_gerado() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo
+escrever_gerado() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo [$5=prefixo da fonte]
   local fonte="${1}" dest="${2}"
   mkdir -p "$(dirname "${dest}")" || return 1
-  renderizar_gerado "${fonte}" "${3}" "${4}" > "${dest}" || return 1
+  renderizar_gerado "${fonte}" "${3}" "${4}" "${5:-}" > "${dest}" || return 1
   # Shebang preservado só serve para ./script se o bit de execução vier junto.
   if [ -x "${fonte}" ]; then chmod +x "${dest}" || return 1; else chmod a-x "${dest}" || return 1; fi
 }
@@ -287,9 +291,9 @@ escrever_gerado() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo
 # resultado continua certo. Mas o printf do render escreveria "write error: Broken pipe" no terminal, 1 linha
 # por cópia divergente (avaliador ciclo 6: 40–80 linhas no 1º sync pós-upgrade). O stderr desse render é
 # descartado: ele só compara. A escrita de verdade (escrever_gerado) não passa por pipe e mostra os erros reais.
-gerado_em_dia() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo → 0 se idêntico ao render atual
+gerado_em_dia() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo [$5=prefixo] → 0 se idêntico ao render atual
   [ -f "${2}" ] || return 1
-  renderizar_gerado "${1}" "${3}" "${4}" 2>/dev/null | cmp -s - "${2}" || return 1
+  renderizar_gerado "${1}" "${3}" "${4}" "${5:-}" 2>/dev/null | cmp -s - "${2}" || return 1
   mesmo_bit_x "${1}" "${2}"
 }
 
@@ -365,6 +369,39 @@ EOF
   done
 }
 
+# Adaptadores de hook do vendor (bin/adapters/<vendor>/* do PACOTE, no init e no sync): cópias em <destdir>
+# com o mesmo cabeçalho sdd-open:generated. O nome da ferramenta do vendor mora só nesses arquivos e no gerado.
+declare_alvos_adaptadores() { # $1=vendor $2=diretório destino (.claude/hooks) $3=modo plan|apply|check
+  local vendor="${1}" destdir="${2}" modo="${3}" f rel dest alvo _estilo _manter verif _bom rc
+  for f in "${PKG}/bin/adapters/${vendor}"/*; do
+    [ -f "${f}" ] || continue
+    rel="$(basename "${f}")"; dest="${ROOT}/${destdir}/${rel}"; alvo="${destdir}/${rel}"
+    case "${modo}" in
+      plan)  if gerado_em_dia "${f}" "${dest}" "${vendor}" "${rel}" bin/adapters; then plano_estado "${alvo}" emdia
+             elif [ -e "${dest}" ]; then plano_estado "${alvo}" atualizar
+             else plano_estado "${alvo}" novo; fi ;;
+      apply) gerado_em_dia "${f}" "${dest}" "${vendor}" "${rel}" bin/adapters \
+               || escrever_gerado "${f}" "${dest}" "${vendor}" "${rel}" bin/adapters || return 1 ;;
+      check)
+        if [ ! -e "${dest}" ]; then
+          printf '%s (ausente: rode sync)\n' "${alvo}"; DIVERGENTES=$((DIVERGENTES + 1))
+        elif ! gerado_em_dia "${f}" "${dest}" "${vendor}" "${rel}" bin/adapters; then
+          printf '%s (desatualizado: rode sync)\n' "${alvo}"; DIVERGENTES=$((DIVERGENTES + 1))
+        else
+          read -r _estilo _manter verif _bom <<PERFIL
+$(perfil_arquivo "${f}")
+PERFIL
+          compila "${dest}" "${verif}"; rc=$?
+          if [ "${rc}" = "1" ]; then
+            printf '%s (a cópia gerada não compila com %s; a fonte é bin/adapters/%s/%s do pacote — abra uma issue)\n' \
+              "${alvo}" "$(nome_verificador "${verif}")" "${vendor}" "${rel}"
+            DIVERGENTES=$((DIVERGENTES + 1))
+          fi
+        fi ;;
+    esac
+  done
+}
+
 CORPO_AGENTS="$(mktemp)"; trap 'rm -f "${CORPO_AGENTS}"' EXIT
 gerar_corpo_agents() {
   sed -e "s|{{VENDORS}}|$(printf '%s' "${VENDORS}" | sed 's/^ *//; s/ /, /g')|g" "${PKG}/AGENTS.md.tmpl" > "${CORPO_AGENTS}"
@@ -392,7 +429,7 @@ agents_md_checar() { # valida marcadores sem escrever (mesmas regras do merge: l
 destinos_checar() {
   local d arquivos="AGENTS.md" dirs=""
   if [ "${VERBO}" = "init" ]; then arquivos="${arquivos} sdd/config.yaml"; dirs="${dirs} sdd .agents/skills"; fi
-  vendor_pedido claude && { arquivos="${arquivos} CLAUDE.md"; dirs="${dirs} .claude/skills"; }
+  vendor_pedido claude && { arquivos="${arquivos} CLAUDE.md .claude/settings.json"; dirs="${dirs} .claude/skills .claude/hooks"; }
   vendor_pedido cursor && dirs="${dirs} .cursor/skills"
   vendor_pedido gemini && { arquivos="${arquivos} GEMINI.md .gemini/settings.json"; dirs="${dirs} .gemini"; }
   for d in ${arquivos}; do
@@ -436,11 +473,65 @@ except json.JSONDecodeError as e:
         "corrija ou renomeie o arquivo e rode de novo — nada foi alterado" 66
 }
 
-# Arquivos do pacote que sustentam as skills (bin, templates, playbook, config) e faltam em sdd/ do
-# projeto — relativos a sdd/. Vazio = árvore completa. Fixtures ficam fora (exemplos, apagáveis).
+# .claude/settings.json: python3 é pré-condição do adaptador claude (guards e merge), checada ANTES de
+# qualquer escrita, como no Gemini; JSON inválido também para tudo antes de escrever.
+claude_settings_checar() {
+  local dest="${ROOT}/.claude/settings.json" saida
+  command -v python3 >/dev/null 2>&1 || die "o adaptador claude precisa de python3 para editar .claude/settings.json com segurança e para os guards de .claude/hooks/" \
+    "instale python3 ou rode sem o vendor claude — nada foi alterado" 64
+  [ -f "${dest}" ] || return 0
+  saida=$(python3 -I -c 'import json,sys
+try:
+    json.load(open(sys.argv[1], encoding="utf-8"))
+except json.JSONDecodeError as e:
+    print(f"{e.lineno}: {e.msg}"); sys.exit(66)' "${dest}" 2>&1) || \
+    die ".claude/settings.json não é JSON válido (linha ${saida})" \
+        "corrija ou renomeie o arquivo e rode de novo — nada foi alterado" 66
+}
+
+# ── hooks de git (sdd/hooks) ────────────────────────────────────────────────────
+MARCA_HIGIENE='# sdd-higiene-dado: alarme de commit (pre-commit)'
+HOOKS_ESTADO=""   # calculado em planejar (init)
+
+# O arquivo de hook legado é SEMPRE <git-common-dir>/hooks/pre-commit: `git rev-parse --git-path
+# hooks/pre-commit` segue o core.hooksPath e, com o dispatcher ligado, apontaria para ele mesmo.
+hook_legado() {
+  local common; common="$(git rev-parse --git-common-dir 2>/dev/null)"
+  case "${common}" in /*) ;; *) common="${ROOT}/${common}" ;; esac
+  printf '%s/hooks/pre-commit' "${common}"
+}
+
+hooks_estado() { # → LIVRE | LIGADO | HIGIENE | OUTRO <descrição>
+  local hp legado
+  hp="$(git config --get core.hooksPath 2>/dev/null || true)"
+  legado="$(hook_legado)"
+  if [ "${hp}" = "sdd/hooks" ] || [ "${hp}" = "${ROOT}/sdd/hooks" ]; then printf 'LIGADO\n'
+  elif [ -n "${hp}" ]; then printf 'OUTRO core.hooksPath = %s (husky, lefthook ou outro gerenciador)\n' "${hp}"
+  elif [ -f "${legado}" ] && grep -qF "${MARCA_HIGIENE}" "${legado}"; then printf 'HIGIENE\n'
+  elif [ -f "${legado}" ]; then printf 'OUTRO um pre-commit em %s\n' "${legado}"
+  else printf 'LIVRE\n'; fi
+}
+
+hooks_executaveis() { [ -x "${ROOT}/sdd/hooks/pre-commit" ] && [ -x "${ROOT}/sdd/hooks/pre-push" ]; }
+
+# 0 quando HEAD está em project.default_branch e origin/<branch> existe: o pre-commit (H6) recusaria
+# o commit da própria instalação, e a linha final do init diz como contornar.
+na_branch_padrao_com_remoto() {
+  local b db
+  db="$(sed -n '/^project:/,/^[^[:space:]#]/ s/^[[:space:]]*default_branch:[[:space:]]*//p' "${ROOT}/sdd/config.yaml" 2>/dev/null \
+    | head -1 | sed 's/[[:space:]]*#.*$//' | tr -d '"'"'"' ')"
+  [ -n "${db}" ] || db=main
+  b="$(git symbolic-ref --quiet --short HEAD 2>/dev/null)" || return 1
+  [ "${b}" = "${db}" ] && git rev-parse --verify --quiet "refs/remotes/origin/${db}" >/dev/null 2>&1
+}
+
+LINHA_ACRESCENTAR='bash sdd/hooks/pre-commit || exit 1'
+
+# Arquivos do pacote que sustentam as skills (bin, hooks, templates, playbook, config) e faltam em sdd/
+# do projeto — relativos a sdd/. Vazio = árvore completa. Fixtures ficam fora (exemplos, apagáveis).
 sdd_faltantes() {
   local rel
-  ( cd "${PKG}/sdd" && find templates bin playbook.md -type f | sort ) | while IFS= read -r rel; do
+  ( cd "${PKG}/sdd" && find templates bin hooks playbook.md -type f | sort ) | while IFS= read -r rel; do
     [ -e "${ROOT}/sdd/${rel}" ] || printf '%s\n' "${rel}"
   done
   [ -f "${ROOT}/sdd/config.yaml" ] || printf 'config.yaml\n'
@@ -467,12 +558,22 @@ planejar() {
   else plano_estado "AGENTS.md (só o bloco entre os marcadores)" atualizar; fi
 
   if [ "${VERBO}" = "init" ]; then
-    if [ ! -d "${ROOT}/sdd" ]; then plano_estado "sdd/ (templates, fixtures, bin, playbook, config)" novo
+    if [ ! -d "${ROOT}/sdd" ]; then plano_estado "sdd/ (templates, fixtures, bin, hooks, playbook, config)" novo
     else
       n_falt=$(sdd_faltantes | grep -c . || true)
       if [ "${n_falt}" = "0" ]; then plano_estado "sdd/ (já existe — não será tocado)" emdia
       else plano_estado "sdd/ (já existe — completar ${n_falt} arquivo(s) do pacote ausente(s); o que existe não será tocado)" atualizar; fi
     fi
+    # Hooks de git: a linha do plano diz o EFEITO (é o único aviso que o aluno recebe de que o projeto
+    # passa a recusar commits). Alarme alheio nunca é desligado: só a linha para acrescentar a ele.
+    HOOKS_ESTADO="$(hooks_estado)"
+    case "${HOOKS_ESTADO}" in
+      LIGADO) plano_estado "core.hooksPath = sdd/hooks" emdia ;;
+      LIVRE|HIGIENE) plano_estado "core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez" novo ;;
+      OUTRO*)
+        warn "hooks do open não ligados: já existe ${HOOKS_ESTADO#OUTRO }. Nada foi alterado nele."
+        warn "para ter as 5 regras + relatório, acrescente a ele a linha: ${LINHA_ACRESCENTAR}" ;;
+    esac
     for skill in $(skills_da_fonte "${FONTE_PKG_SKILLS}"); do
       if [ -d "${FONTE_SKILLS}/${skill}" ]; then plano_estado ".agents/skills/${skill} (já existe — fonte do usuário, não será tocada)" emdia
       else plano_estado ".agents/skills/${skill}" novo; fi
@@ -480,9 +581,14 @@ planejar() {
   fi
 
   vendor_pedido claude && {
+    claude_settings_checar
     if [ -f "${ROOT}/CLAUDE.md" ] && grep -qF '@AGENTS.md' "${ROOT}/CLAUDE.md"; then plano_estado "CLAUDE.md" emdia
     elif [ -f "${ROOT}/CLAUDE.md" ]; then plano_estado "CLAUDE.md (acrescentar @AGENTS.md)" atualizar
     else plano_estado "CLAUDE.md" novo; fi
+    declare_alvos_adaptadores claude ".claude/hooks" plan
+    if claude_settings_em_dia "${ROOT}/.claude/settings.json"; then plano_estado ".claude/settings.json" emdia
+    elif [ -f "${ROOT}/.claude/settings.json" ]; then plano_estado ".claude/settings.json (hooks += 2 guards do sdd-open)" atualizar
+    else plano_estado ".claude/settings.json" novo; fi
   }
   vendor_pedido gemini && {
     gemini_settings_checar
@@ -514,6 +620,7 @@ aplicar() {
     primeira_vez=1; [ -d "${ROOT}/sdd" ] && primeira_vez=0
     mkdir -p "${ROOT}/sdd/features" "${ROOT}/sdd/reports" "${ROOT}/sdd/reviews" "${ROOT}/sdd/releases" \
              "${ROOT}/sdd/handoffs" "${ROOT}/sdd/contexto" "${ROOT}/sdd/templates" "${ROOT}/sdd/fixtures" "${ROOT}/sdd/bin" \
+             "${ROOT}/sdd/hooks" \
       || die "${falha_escrita} (mkdir sdd/)" "verifique permissões e espaço em disco; rode init de novo" 1
     # fixtures são exemplos: copiadas só na 1ª instalação (o usuário pode apagá-las de propósito).
     if [ "${primeira_vez}" = "1" ]; then
@@ -547,6 +654,20 @@ aplicar() {
       [ -d "${FONTE_SKILLS}/${skill}" ] || cp -R "${FONTE_PKG_SKILLS}/${skill}" "${FONTE_SKILLS}/${skill}" \
         || die "${falha_escrita} (.agents/skills/${skill})" "verifique permissões; rode init de novo" 1
     done
+    # Hooks: bit de execução (o git ignora em silêncio um hook sem ele; um checkout no Windows pode
+    # perdê-lo) e core.hooksPath, só quando não há alarme alheio. O alarme da higiene já instalado em
+    # .git/hooks migra para o dispatcher (sdd.higieneDado=on); o arquivo antigo fica, inerte.
+    for h in pre-commit pre-push; do
+      [ -f "${ROOT}/sdd/hooks/${h}" ] && { chmod +x "${ROOT}/sdd/hooks/${h}" || die "${falha_escrita} (chmod sdd/hooks/${h})" "verifique permissões; rode init de novo" 1; }
+    done
+    case "${HOOKS_ESTADO}" in
+      LIVRE|HIGIENE)
+        git config core.hooksPath sdd/hooks || die "${falha_escrita} (core.hooksPath)" "verifique a permissão de .git/config; rode init de novo" 1
+        if [ "${HOOKS_ESTADO}" = "HIGIENE" ]; then
+          git config sdd.higieneDado on || die "${falha_escrita} (sdd.higieneDado)" "verifique a permissão de .git/config; rode init de novo" 1
+          warn "alarme da sdd-higiene-dado migrado: continua ligado, agora pelos hooks do projeto (sdd/hooks). Para desligar: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar"
+        fi ;;
+    esac
   fi
 
   merge_agents_md "${ROOT}/AGENTS.md" "${CORPO_AGENTS}" || die "${falha_escrita} (AGENTS.md)" "verifique permissões; rode de novo" 1
@@ -556,6 +677,8 @@ aplicar() {
     elif ! grep -qF '@AGENTS.md' "${ROOT}/CLAUDE.md"; then printf '%s\n' '' '@AGENTS.md' >> "${ROOT}/CLAUDE.md" || die "${falha_escrita} (CLAUDE.md)" "verifique permissões; rode de novo" 1; fi
     declare_alvos_skills ".claude/skills" apply || die "${falha_escrita} (.claude/skills)" "verifique permissões; rode de novo" 1
     for o in $(orfaos_listar ".claude/skills" | cut -d' ' -f1); do warn "adaptador órfão mantido (sync nunca apaga): ${o} — remova à mão se não quiser mais a skill"; done
+    declare_alvos_adaptadores claude ".claude/hooks" apply || die "${falha_escrita} (.claude/hooks)" "verifique permissões; rode de novo" 1
+    merge_claude_settings "${ROOT}/.claude/settings.json"
   }
   vendor_pedido cursor && {
     declare_alvos_skills ".cursor/skills" apply || die "${falha_escrita} (.cursor/skills)" "verifique permissões; rode de novo" 1
@@ -583,14 +706,33 @@ doctor() {
                              || warn "AGENTS.md sem o bloco sdd-open — rode init ou sync"
   [ -d "${FONTE_SKILLS}" ] && ok ".agents/skills/ com $(skills_da_fonte "${FONTE_SKILLS}" | wc -l | tr -d ' ') skill(s) sdd-*" \
                             || warn ".agents/skills/ ausente"
+  # Hooks de git: ligados (hooksPath + bit de execução) ou um ⚠️ por causa, cada um com o comando.
+  local he h
+  he="$(hooks_estado)"
+  case "${he}" in
+    LIGADO)
+      if hooks_executaveis; then
+        ok "hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene $(git config --get sdd.higieneDado 2>/dev/null || echo off), pre-push)"
+      else
+        for h in pre-commit pre-push; do
+          if [ ! -f "${ROOT}/sdd/hooks/${h}" ]; then warn "hooks: sdd/hooks/${h} ausente — rode init (completa sdd/hooks)"
+          elif [ ! -x "${ROOT}/sdd/hooks/${h}" ]; then warn "hooks: sdd/hooks/${h} sem permissão de execução (o git o ignora em silêncio) — rode: chmod +x sdd/hooks/${h}"; fi
+        done
+      fi ;;
+    OUTRO*) warn "hooks do open não ligados: já existe ${he#OUTRO }. Para ter as 5 regras + relatório, acrescente a ele a linha: ${LINHA_ACRESCENTAR}" ;;
+    *) warn "hooks do open não ligados (core.hooksPath vazio) — rode init" ;;
+  esac
   local lista_doc="${VENDORS}"; [ -z "${lista_doc}" ] && lista_doc="${VENDORS_SUPORTADOS}"
   for v in ${lista_doc}; do
     bin="$(vendor_binario "${v}")"
     if command -v "${bin}" >/dev/null 2>&1; then st="CLI encontrado"; else st="CLI não encontrado no PATH"; fi
     case "${v}" in
       codex|kimi) ok "${v}: nativo — nada a gerar ($(vendor_nativo_motivo "${v}")) · ${st}" ;;
-      claude) if [ -d "${ROOT}/.claude/skills" ]; then ok "claude: gerado (.claude/skills · CLAUDE.md) · ${st} · cobre também Grok Build e GLM"
-              else warn "claude: adaptador não gerado — rode sync --vendors claude"; fi ;;
+      claude) if [ ! -d "${ROOT}/.claude/skills" ]; then warn "claude: adaptador não gerado — rode sync --vendors claude"
+              elif [ -f "${ROOT}/.claude/hooks/sdd-report-guard.py" ] && [ -f "${ROOT}/.claude/hooks/sdd-avaliador-guard.py" ] \
+                   && command -v python3 >/dev/null 2>&1 && claude_settings_em_dia "${ROOT}/.claude/settings.json"; then
+                ok "claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · ${st} · cobre também Grok Build e GLM"
+              else warn "claude: adaptador incompleto (guards de .claude/hooks ou .claude/settings.json; exige python3) — rode sync --vendors claude"; fi ;;
       cursor) if [ -d "${ROOT}/.cursor/skills" ]; then ok "cursor: gerado (.cursor/skills) · ${st}"
               else warn "cursor: adaptador não gerado — rode sync --vendors cursor"; fi ;;
       gemini) if [ -f "${ROOT}/GEMINI.md" ] && gemini_settings_em_dia "${ROOT}/.gemini/settings.json"; then ok "gemini: gerado (GEMINI.md · .gemini/settings.json) · ${st}"
@@ -651,6 +793,8 @@ case "${VERBO}" in
         orfaos_listar ".claude/skills" | while IFS= read -r o; do [ -n "${o}" ] && printf '%s\n' "${o}"; done
         n_orf=$(orfaos_listar ".claude/skills" | grep -c . || true); DIVERGENTES=$((DIVERGENTES + n_orf))
         { [ -f "${ROOT}/CLAUDE.md" ] && grep -qF '@AGENTS.md' "${ROOT}/CLAUDE.md"; } || { printf 'CLAUDE.md (sem a linha @AGENTS.md)\n'; DIVERGENTES=$((DIVERGENTES + 1)); }
+        declare_alvos_adaptadores claude ".claude/hooks" check
+        claude_settings_em_dia "${ROOT}/.claude/settings.json" || { printf '.claude/settings.json (guards do sdd-open fora de hooks.PreToolUse)\n'; DIVERGENTES=$((DIVERGENTES + 1)); }
       }
       vendor_pedido cursor && {
         declare_alvos_skills ".cursor/skills" check
@@ -681,7 +825,12 @@ confirmar
 aplicar
 if [ "${VERBO}" = "init" ]; then
   doctor
-  resultado "INSTALADO" "abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define)."
+  dica="abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define)."
+  # Na branch padrão com remoto, o pre-commit recém-ligado (H6) recusaria o commit da própria instalação.
+  if [ "$(hooks_estado)" = "LIGADO" ] && na_branch_padrao_com_remoto; then
+    dica="leve a instalação para uma branch nova antes de commitar (a branch padrão já tem remoto e o hook recusa commit direto): git switch -c sdd-open-init · depois, ${dica}"
+  fi
+  resultado "INSTALADO" "${dica}"
 else
   resultado "SINCRONIZADO" "adaptadores regenerados a partir de .agents/skills/."
 fi

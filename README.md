@@ -95,6 +95,7 @@ Works on macOS, Linux and Windows (Git Bash/WSL): bash 3.2, zero zsh, zero symli
 - [Verify Gate contract](docs/verify-gate-contract.md) ([PT](docs/pt-BR/verify-gate-contract.md))
 - [Adaptation guide](docs/adaptation-guide.md) ([PT](docs/pt-BR/adaptation-guide.md)) — config slots, landmines, worktrees
 - [Comparison](docs/comparison.md) ([PT](docs/pt-BR/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
+- [Git hooks](docs/hooks.md) ([PT](docs/pt-BR/hooks.md)) — the pre-commit rules `init` installs, the data-hygiene alarm, the `--no-verify` limit
 - [Roadmap](docs/roadmap.md) ([PT](docs/pt-BR/roadmap.md)) — what is planned and what is under evaluation
 - [Student guide](docs/pt-BR/guia-do-aluno.md) (PT) — step by step for someone who never used git or a terminal
 

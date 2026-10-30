@@ -1,0 +1,8 @@
+{
+  "tool_name": "Agent",
+  "tool_input": {
+    "description": "avaliador de contexto fresco",
+    "prompt": "modo: veredito · ciclo: 1 · FEATURE: EXEMPLO · DEFINE: sdd/features/DEFINE_EXEMPLO.md · DESIGN: sdd/features/DESIGN_EXEMPLO.md · projeto: __CWD__\n\nVocê não viu a conversa do build. Leia o DEFINE como contrato e prove cada AT executando."
+  },
+  "cwd": "__CWD__"
+}

@@ -1,0 +1,10 @@
+{
+  "comentario": "Fixture da regra H3 do pre-commit (sdd/hooks): chaves de credencial com PLACEHOLDER passam. O caso que reprova (valor real) é montado pelo teste em tempo de execução.",
+  "db_password": "${DB_PASSWORD}",
+  "api_key": "CHANGEME",
+  "ftp_password": "<your-ftp-password>",
+  "token": "example-token-value",
+  "secret": "{{ vault.secret }}",
+  "smtp_password": "***",
+  "parse-passwd": "^1.0.0"
+}

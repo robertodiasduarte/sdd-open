@@ -5,6 +5,7 @@ Exit: 0 ok · 1 divergente (sync --check) · 64 uso ou pré-condição (verbo, o
 """
 from __future__ import annotations
 
+import os
 import re
 import unittest
 
@@ -133,7 +134,10 @@ class Projeto(Sandbox):
 
     def test_doctor_nao_perde_o_resto_de_nome_com_quebra_de_linha(self):
         self.escreve(self.p, "nova\nlinha.p12", "x\n")
-        self.commit(self.p, "p12")
+        # com os hooks ligados pelo init (F8), o gitleaks instalado recusa um .p12 (pkcs12-file): o commit
+        # deste teste passa por cima do hook, porque o alvo aqui é a mensagem do doctor, não a recusa
+        self.git(self.p, "add", "-A")
+        self.git(self.p, "commit", "-q", "--no-verify", "-m", "p12")
         rc, out = self.cli("doctor")
         self.assertEqual(rc, 0, out)
         self.assertIn("O certificado digital nova", out)
@@ -203,3 +207,144 @@ class Projeto(Sandbox):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Hooks(Sandbox):
+    """F8: o init copia sdd/hooks/, liga core.hooksPath sob a confirmação única e nunca desliga alarme alheio;
+    o doctor diz o estado dos hooks com o comando que resolve."""
+
+    def setUp(self):
+        super().setUp()
+        self.p = self.repo("projeto")
+        self.git(self.p, "symbolic-ref", "HEAD", "refs/heads/main")
+        self.escreve(self.p, "AGENTS.md", "# Meu projeto\n")
+        self.commit(self.p, "base")
+
+    def cli(self, *args: str) -> tuple[int, str]:
+        rc, out, err = self.roda([BASH, CLI, *args], self.p)
+        return rc, out + err
+
+    def hooks_path(self) -> str:
+        rc, out, _ = self.roda(["git", "config", "--get", "core.hooksPath"], self.p)
+        return out.strip() if rc == 0 else ""
+
+    def legado(self):
+        return self.p / ".git/hooks/pre-commit"
+
+    def test_init_liga_os_hooks_e_a_linha_do_plano_diz_o_efeito(self):
+        rc, out = self.cli("init", "--yes", "--vendors", "codex")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("+ core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit", out)
+        self.assertIn("git commit --no-verify pula uma vez", out)
+        self.assertEqual(self.hooks_path(), "sdd/hooks")
+        for h in ("pre-commit", "pre-push"):
+            self.assertTrue(os.access(self.p / "sdd/hooks" / h, os.X_OK), h)
+        self.assertIn("✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)", out)
+        self.assertNotIn("git switch -c", out)
+        # o 1º commit depois do init passa: fixtures e template de BUILD_REPORT são pulados pelo hook
+        self.roda(["git", "add", "-A"], self.p)
+        rc, out, err = self.roda(["git", "commit", "-q", "-m", "init"], self.p)
+        self.assertEqual(rc, 0, out + err)
+        self.assertEqual((out + err).strip(), "")
+
+    def test_dry_run_mostra_a_linha_e_nao_liga(self):
+        rc, out = self.cli("init", "--dry-run", "--vendors", "codex")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("+ core.hooksPath = sdd/hooks", out)
+        self.assertIn("RESULTADO: DRY-RUN", out)
+        self.assertEqual(self.hooks_path(), "")
+        self.assertFalse((self.p / "sdd").exists())
+
+    def test_outro_hooks_path_nao_e_tocado(self):
+        self.git(self.p, "config", "core.hooksPath", ".husky/_")
+        rc, out = self.cli("init", "--yes", "--vendors", "codex")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.hooks_path(), ".husky/_")
+        self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)
+        self.assertIn("Nada foi alterado nele.", out)
+        self.assertIn("bash sdd/hooks/pre-commit || exit 1", out)
+        self.assertIn("RESULTADO: INSTALADO", out)
+        self.assertTrue((self.p / "sdd/hooks/pre-commit").is_file())
+        self.assertNotIn("+ core.hooksPath", out)
+
+    def test_pre_commit_alheio_nao_e_tocado(self):
+        alheio = "#!/bin/sh\necho alheio\n"
+        self.legado().write_text(alheio, encoding="utf-8")
+        rc, out = self.cli("init", "--yes", "--vendors", "codex")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.hooks_path(), "")
+        self.assertEqual(self.legado().read_text(encoding="utf-8"), alheio)
+        self.assertIn("hooks do open não ligados: já existe um pre-commit em", out)
+        self.assertIn("bash sdd/hooks/pre-commit || exit 1", out)
+
+    def test_migra_o_alarme_da_higiene_sem_perder_a_protecao(self):
+        rc, out, err = self.roda([BASH, RAIZ / ".agents/skills/sdd-higiene-dado/scripts/alarme.sh", "instalar"], self.p)
+        self.assertEqual(rc, 0, out + err)
+        self.assertTrue(self.legado().is_file())
+        rc, out = self.cli("init", "--yes", "--vendors", "codex")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.hooks_path(), "sdd/hooks")
+        rc, cfg, _ = self.roda(["git", "config", "--get", "sdd.higieneDado"], self.p)
+        self.assertEqual(cfg.strip(), "on")
+        self.assertTrue(self.legado().is_file(), "o arquivo antigo fica (inerte); quem o remove é o desinstalar")
+        self.assertIn("⚠️  alarme da sdd-higiene-dado migrado: continua ligado, agora pelos hooks do projeto (sdd/hooks)", out)
+        self.assertIn("alarme.sh desinstalar", out)
+        self.assertIn("alarme da higiene on", out)
+        # a proteção continua: .env é recusado pelo dispatcher
+        self.escreve(self.p, ".env", "X=1\n")
+        self.roda(["git", "add", "-A"], self.p)
+        rc, out, err = self.roda(["git", "commit", "-q", "-m", "env"], self.p)
+        self.assertEqual(rc, 1)
+        self.assertIn("arquivo de senhas", out + err)
+        self.assertIn("RESULTADO: COMMIT RECUSADO", out + err)
+
+    def test_init_repetido_e_idempotente_e_completa_hook_apagado(self):
+        self.cli("init", "--yes", "--vendors", "codex")
+        self.roda(["git", "add", "-A"], self.p)
+        self.roda(["git", "commit", "-q", "-m", "init"], self.p)
+        rc, out = self.cli("init", "--yes", "--vendors", "codex", "--verbose")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("= core.hooksPath = sdd/hooks (já correto)", out)
+        self.assertNotIn("+ core.hooksPath", out)
+        self.assertEqual(self.git(self.p, "status", "--porcelain"), "")
+        (self.p / "sdd/hooks/pre-push").unlink()
+        rc, out = self.cli("init", "--yes", "--vendors", "codex")
+        self.assertEqual(rc, 0, out)
+        self.assertTrue(os.access(self.p / "sdd/hooks/pre-push", os.X_OK))
+
+    def test_doctor_diz_o_estado_dos_hooks_com_o_comando(self):
+        self.cli("init", "--yes", "--vendors", "codex")
+        rc, out = self.cli("doctor")
+        self.assertIn("✅ hooks ligados (sdd/hooks:", out)
+        self.roda(["git", "config", "--unset", "core.hooksPath"], self.p)
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks do open não ligados (core.hooksPath vazio) — rode init", out)
+        self.git(self.p, "config", "core.hooksPath", "sdd/hooks")
+        (self.p / "sdd/hooks/pre-commit").chmod(0o644)
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks: sdd/hooks/pre-commit sem permissão de execução (o git o ignora em silêncio) — rode: chmod +x sdd/hooks/pre-commit", out)
+        self.assertNotIn("✅ hooks ligados", out)
+        (self.p / "sdd/hooks/pre-commit").chmod(0o755)
+        (self.p / "sdd/hooks/pre-push").unlink()
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks: sdd/hooks/pre-push ausente — rode init", out)
+        self.git(self.p, "config", "core.hooksPath", ".husky/_")
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)
+        self.assertIn("bash sdd/hooks/pre-commit || exit 1", out)
+        self.assertResultado(out)
+
+    def test_init_na_branch_padrao_com_remoto_diz_como_commitar(self):
+        self.git(self.p, "update-ref", "refs/remotes/origin/main", "HEAD")
+        rc, out = self.cli("init", "--yes", "--vendors", "codex")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("RESULTADO: INSTALADO", out)
+        self.assertIn("→ leve a instalação para uma branch nova antes de commitar", out)
+        self.assertIn("git switch -c sdd-open-init", out)
+        self.roda(["git", "add", "-A"], self.p)
+        rc, out, err = self.roda(["git", "commit", "-q", "-m", "init"], self.p)
+        self.assertEqual(rc, 1)
+        self.assertIn("🛑 [H6] commit direto em main", out + err)
+        self.git(self.p, "switch", "-q", "-c", "sdd-open-init")
+        rc, out, err = self.roda(["git", "commit", "-q", "-m", "init"], self.p)
+        self.assertEqual(rc, 0, out + err)

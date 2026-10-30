@@ -29,6 +29,7 @@ on:
       - '.agents/skills/**'
       - 'bin/**'
       - 'sdd/bin/**'
+      - 'sdd/hooks/**'
       - 'sdd/templates/**'
       - 'sdd/fixtures/**'
       - 'sdd/playbook.md'

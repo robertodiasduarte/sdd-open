@@ -1,0 +1,250 @@
+#!/usr/bin/env bash
+# sdd-open: dispatcher de hooks (pre-commit)
+#
+# Instalado pelo `sdd-open.sh init` (core.hooksPath = sdd/hooks), com a sua confirmação. Roda a cada
+# `git commit` e recusa a versão quando encontra, no que está indo para o git:
+#   [H6] commit direto na branch padrão do projeto (project.default_branch) quando ela já tem remoto;
+#   [H2] arquivo de contexto do agente (AGENTS.md, CLAUDE.md, GEMINI.md, .cursorrules) acima do teto
+#        (project.context_file_max_kb em sdd/config.yaml; vazio = 100 KB);
+#   [H5] byte NUL em arquivo de texto (o git passa a tratá-lo como binário e o diff some);
+#   [H3] credencial em texto claro em .json/.yml/.toml/.ini/.cfg/.conf/.env (placeholder passa);
+#        mais `gitleaks protect --staged`, quando o gitleaks está instalado;
+#   [H4] sdd/playbook.md apagado, renomeado ou perdendo conhecimento (playbook-lint --anti-collapse);
+#   [REPORT] BUILD_REPORT_*.md que não passa no sdd/bin/report-lint.py (conteúdo staged);
+#   e, por fim, o alarme da sdd-higiene-dado (CPF/CNPJ, .env, certificado, planilha) quando
+#   `git config sdd.higieneDado` = on.
+# Todas as regras rodam; os achados saem juntos, numa recusa só. Sucesso é silencioso.
+#
+# Limite: `git commit --no-verify` pula este hook. A verdade final é o report-lint da fase Release e o
+# CI. Documentação: docs/hooks.md. Este arquivo é seu (o sync não o reescreve); para desligar:
+# git config --unset core.hooksPath.
+#
+# ⚠️ bash 3.2 · só bash e git são obrigatórios; python3 só para o relatório (sem ele, avisa e segue).
+
+set -u
+
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+cd "$ROOT" || exit 0
+CONFIG="sdd/config.yaml"
+
+# Lista de arquivos de contexto por vendor. Igual a VENDOR_ARQUIVOS_CONTEXTO em bin/lib/vendors.sh do
+# pacote (tests/test_hooks.py confere as duas).
+ARQUIVOS_CONTEXTO="AGENTS.md CLAUDE.md GEMINI.md .cursorrules"
+
+slot() { # $1=seção $2=chave → valor sem aspas nem comentário, ou vazio
+  [ -f "$CONFIG" ] || return 0
+  sed -n "/^$1:/,/^[^[:space:]#]/ s/^[[:space:]]*$2:[[:space:]]*//p" "$CONFIG" | head -1 \
+    | sed 's/[[:space:]]*#.*$//' | tr -d '"'"'"' '
+}
+
+DEFAULT_BRANCH="$(slot project default_branch)"; [ -n "$DEFAULT_BRANCH" ] || DEFAULT_BRANCH=main
+TETO_KB="$(slot project context_file_max_kb)"
+case "$TETO_KB" in ''|*[!0-9]*) TETO_KB=100 ;; esac
+[ "$TETO_KB" -gt 0 ] 2>/dev/null || TETO_KB=100
+
+TMPD="$(mktemp -d 2>/dev/null)" || {
+  printf '🛑 sdd-open: não consegui criar a pasta temporária do hook\nRESULTADO: COMMIT RECUSADO\n→ confira o espaço em disco e a variável TMPDIR; se o ambiente estiver são, grave com git commit --no-verify\n' >&2
+  exit 1
+}
+trap 'rm -rf "${TMPD:?}"' EXIT
+STAGED="$TMPD/staged"
+# Lista staged NUL-separada, lida de arquivo (um $(…) descartaria o NUL): nomes com espaço ou acento passam inteiros.
+if ! git diff --cached --name-only -z --diff-filter=ACMR > "$STAGED" 2>"$TMPD/err"; then
+  printf '🛑 sdd-open: não consegui ler o índice do git (%s)\nRESULTADO: COMMIT RECUSADO\n→ rode "git status"; se o repositório estiver são, grave com git commit --no-verify\n' \
+    "$(head -1 "$TMPD/err")" >&2
+  exit 1
+fi
+
+ACHADOS=""; CLASSES=""; AVISOS=""
+achado() # $1=classe $2=texto
+{
+  ACHADOS="$ACHADOS  🛑 [$1] $2"$'\n'
+  case " $CLASSES " in *" $1 "*) ;; *) CLASSES="$CLASSES $1" ;; esac
+}
+aviso() # $1=texto (não bloqueia)
+{
+  AVISOS="${AVISOS}⚠️  sdd-open: $1"$'\n'   # chaves: no bash 3.2, byte não-ASCII colado vira parte do nome
+}
+
+# ── [H6] commit direto na branch padrão com remoto ────────────────────────────────────────────────
+regra_h6() {
+  local branch
+  branch="$(git symbolic-ref --quiet --short HEAD 2>/dev/null)" || return 0   # HEAD destacado passa
+  [ "$branch" = "$DEFAULT_BRANCH" ] || return 0
+  git rev-parse --verify --quiet "refs/remotes/origin/$DEFAULT_BRANCH" >/dev/null 2>&1 || return 0   # sem remoto, nada a proteger
+  achado H6 "commit direto em $branch (a branch padrão do projeto, que já tem origin/$branch)"
+  return 0
+}
+
+# ── [H2] teto do arquivo de contexto, pelo blob staged ────────────────────────────────────────────
+regra_h2() {
+  local f base sz limite=$((TETO_KB * 1024))
+  while IFS= read -r -d '' f; do
+    base="$(basename "$f")"
+    case " $ARQUIVOS_CONTEXTO " in *" $base "*) ;; *) continue ;; esac
+    sz="$(git cat-file -s ":$f" 2>/dev/null)" || sz=0
+    [ "${sz:-0}" -gt "$limite" ] && achado H2 "$f: $sz bytes (teto $TETO_KB KB)"
+  done < "$STAGED"
+  return 0
+}
+
+# ── [H5] byte NUL em arquivo de texto ─────────────────────────────────────────────────────────────
+TEXT_EXT='\.(js|mjs|cjs|ts|tsx|jsx|php|sh|zsh|bash|md|py|sql|json|css|scss|html|htm|yaml|yml|toml|txt|csv|xml|svg|ini|cfg|conf|env|jsonl|mdx)$'
+regra_h5() {
+  local f total semnul cab
+  while IFS= read -r -d '' f; do
+    git cat-file blob ":$f" > "$TMPD/blob" 2>/dev/null || continue
+    cab="$(head -c 2 "$TMPD/blob" | od -An -tx1 | tr -d ' \n')"
+    if ! printf '%s' "$f" | LC_ALL=C grep -qiE "$TEXT_EXT"; then
+      case "$(basename "$f")" in *.*) continue ;; esac            # tem extensão e não é de texto: fora
+      [ "$cab" = "2321" ] || continue                              # sem extensão: só com shebang (#!)
+    fi
+    case "$cab" in fffe|feff) continue ;; esac                     # texto em UTF-16 (PowerShell, Excel): NUL legítimo
+    total="$(wc -c < "$TMPD/blob" | tr -d ' ')"
+    semnul="$(LC_ALL=C tr -d '\000' < "$TMPD/blob" | wc -c | tr -d ' ')"
+    [ "${total:-0}" -ne "${semnul:-0}" ] && achado H5 "$f: $((total - semnul)) byte(s) NUL em arquivo de texto"
+  done < "$STAGED"
+  return 0
+}
+
+# ── [H3] credencial em texto claro em arquivo de configuração ────────────────────────────────────
+# A chave precisa ser um token completo (delimitador antes), senão "parse-passwd": "^1.0.0" de um
+# package-lock.json casa. Só a CHAVE aparece na mensagem; o valor nunca é reimpresso.
+CRED_PFX='(api|access|auth|db|ftp|smtp|client|private)[_-]'
+CRED_KEY="($CRED_PFX)?(password|passwd|senha|secret|token|key|api[_-]?key|access[_-]?key)"
+CRED_RE="(^|[^A-Za-z0-9_-])\"?$CRED_KEY\"?[[:space:]]*[:=][[:space:]]*[\"'][^\"']{6,}[\"']"
+regra_h3() {
+  local f val baixo chave
+  while IFS= read -r -d '' f; do
+    printf '%s' "$f" | LC_ALL=C grep -qiE '\.(json|ya?ml|toml|ini|cfg|conf)$|(^|/)\.env' || continue
+    val="$(git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$CRED_RE" | head -1)"
+    [ -n "$val" ] || continue
+    baixo="$(printf '%s' "$val" | tr '[:upper:]' '[:lower:]')"
+    case "$val" in *'${'*|*'{{'*|*'<'*|*'***'*) continue ;; esac                 # interpolação, template, mascarado
+    case "$baixo" in *changeme*|*example*|*xxx*) continue ;; esac                 # placeholder declarado
+    chave="$(printf '%s' "$val" | sed -E 's/[[:space:]]*[:=].*$//; s/^[^A-Za-z0-9_-]+//; s/"//g')"
+    achado H3 "$f: credencial em texto claro (chave: $chave)"
+  done < "$STAGED"
+  gitleaks_staged
+  return 0
+}
+gitleaks_staged() { # opcional: só quando o gitleaks está no PATH
+  command -v gitleaks >/dev/null 2>&1 || return 0
+  local out rc det
+  out="$(gitleaks protect --staged -v --redact --no-banner 2>&1)"; rc=$?
+  case "$rc" in
+    0) ;;
+    1) det="$(printf '%s\n' "$out" | grep -E '^(File|RuleID|Line):' | head -6 | sed 's/[[:space:]]*$//' | tr '\n' ' ')"
+       [ -n "$det" ] || det="$(printf '%s\n' "$out" | grep -o 'leaks found: [0-9]*' | head -1)"
+       achado H3 "gitleaks: ${det:-leaks found}" ;;
+    *) aviso "gitleaks saiu $rc (não é vazamento): a conferência do gitleaks foi pulada neste commit" ;;
+  esac
+  return 0
+}
+
+# ── [H4] anti-collapse do playbook ────────────────────────────────────────────────────────────────
+regra_h4() {
+  local pb=sdd/playbook.md out rc
+  if git -c core.quotePath=false diff --cached --name-status 2>/dev/null | grep -qE "^(D|R[0-9]*)[[:space:]]+$pb([[:space:]]|\$)"; then
+    achado H4 "$pb seria apagado ou renomeado: todos os [LM-nnn] desapareceriam de uma vez"
+    return 0
+  fi
+  git -c core.quotePath=false diff --cached --name-only --diff-filter=M 2>/dev/null | grep -qx "$pb" || return 0
+  if [ ! -f sdd/bin/playbook-lint.sh ]; then
+    aviso "sdd/bin/playbook-lint.sh ausente: a regra do playbook (H4) foi pulada — rode init (completa sdd/bin)"
+    return 0
+  fi
+  git show "HEAD:$pb" > "$TMPD/head.md" 2>/dev/null || return 0
+  git show ":$pb" > "$TMPD/staged.md" 2>/dev/null || return 0
+  out="$(bash sdd/bin/playbook-lint.sh --anti-collapse "$TMPD/head.md" "$TMPD/staged.md" 2>&1)"; rc=$?
+  case "$rc" in
+    0) ;;
+    1) achado H4 "$pb perderia conhecimento (delta only): $(printf '%s\n' "$out" | grep -E '^⛔' | head -2 | sed 's/^⛔ //' | tr '\n' ' ')" ;;
+    *) aviso "playbook-lint saiu $rc (não é colapso): a regra do playbook (H4) foi pulada neste commit" ;;
+  esac
+  return 0
+}
+
+# ── [REPORT] BUILD_REPORT staged passa pelo report-lint ───────────────────────────────────────────
+# As fixtures de sdd/fixtures/ reprovam de propósito (são o exemplo do que o lint nega) e o molde de
+# sdd/templates/ (BUILD_REPORT_TEMPLATE.md) é um molde, não um relatório: os dois ficam fora.
+# O lint confere evidência e AVALIACAO no disco; a fase Release confere de novo.
+regra_report() {
+  local f out rc avisou=0
+  while IFS= read -r -d '' f; do
+    case "$(basename "$f")" in BUILD_REPORT_*.md) ;; *) continue ;; esac
+    case "/$f" in */sdd/fixtures/*|*/sdd/templates/*) continue ;; esac
+    if ! command -v python3 >/dev/null 2>&1; then
+      [ "$avisou" = 1 ] || aviso "python3 ausente: $f não foi conferido pelo report-lint neste commit (a fase Release confere)"
+      avisou=1; continue
+    fi
+    if [ ! -f sdd/bin/report-lint.py ]; then
+      [ "$avisou" = 1 ] || aviso "sdd/bin/report-lint.py ausente: $f não foi conferido — rode init (completa sdd/bin)"
+      avisou=1; continue
+    fi
+    out="$(git show ":$f" 2>/dev/null | python3 -B sdd/bin/report-lint.py --stdin "$f" 2>&1)"; rc=$?
+    case "$rc" in
+      0) ;;
+      1) achado REPORT "$f não passa no report-lint:"$'\n'"$(printf '%s\n' "$out" | grep -E '^🛑' | sed 's/^/        /')" ;;
+      *) aviso "report-lint saiu $rc em $f: relatório não conferido neste commit (atualize sdd/bin com init)" ;;
+    esac
+  done < "$STAGED"
+  return 0
+}
+
+# ── alarme da sdd-higiene-dado (quando ligado) ────────────────────────────────────────────────────
+HIG_OUT=""; HIG_RC=0
+regra_higiene() {
+  local on script=.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh
+  on="$(git config --get sdd.higieneDado 2>/dev/null || true)"
+  [ "$on" = "on" ] || return 0
+  if [ ! -f "$script" ]; then
+    aviso "alarme da sdd-higiene-dado ligado (sdd.higieneDado=on), mas $script não existe — rode init"
+    return 0
+  fi
+  HIG_OUT="$(bash "$script" 2>&1)"; HIG_RC=$?
+  [ "$HIG_RC" -eq 0 ] || [ -n "$HIG_OUT" ] || HIG_OUT="sdd-higiene-dado: commit recusado (o alarme saiu $HIG_RC)"
+  return 0
+}
+
+porque() { # $1=classe → por que importa, em uma frase
+  case "$1" in
+    H6) printf '%s' "a branch padrão é o que está publicado; trabalho novo nasce numa frente e chega lá por PR" ;;
+    H2) printf '%s' "o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt" ;;
+    H5) printf '%s' "um byte NUL faz o git e o grep tratarem o arquivo como binário: o diff fica invisível para quem revisa" ;;
+    H3) printf '%s' "o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto" ;;
+    H4) printf '%s' "o playbook só cresce por delta: um [LM-nnn] que some leva junto a lição que ele guardava" ;;
+    REPORT) printf '%s' "um relatório de build que não prova a evidência vira verde falso na fase Release" ;;
+  esac
+}
+conserto() { # $1=classe → como corrigir, com o comando
+  case "$1" in
+    H6) printf '%s' "leve o que está preparado para uma frente nova: git switch -c <nome> (o que está staged vai junto) e commite lá; para a próxima feature, peça a sdd-new-session" ;;
+    H2) printf '%s' "mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml" ;;
+    H5) printf '%s' "escreva a grafia de escape (\\0, \\x00, \\u0000) no fonte: o valor em runtime é o mesmo e o arquivo continua texto" ;;
+    H3) printf '%s' "troque o valor por um placeholder (\${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged \"<arquivo>\"" ;;
+    H4) printf '%s' "aposentar = mover para ## Tombstones mantendo o ID; reescrita grande = 2 ou mais commits; apagar ou renomear o playbook não é opção" ;;
+    REPORT) printf '%s' "acrescente a tabela de critérios e a linha do avaliador (sdd/templates/fragments/EVIDENCIA.md) ou corrija a evidência citada; python3 sdd/bin/report-lint.py <arquivo> mostra cada classe" ;;
+  esac
+}
+
+regra_h6; regra_h2; regra_h5; regra_h3; regra_h4; regra_report; regra_higiene
+
+[ -n "$AVISOS" ] && printf '%s' "$AVISOS" >&2
+if [ -z "$ACHADOS" ] && [ "$HIG_RC" -eq 0 ]; then exit 0; fi
+
+{
+  printf '\nsdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:\n\n'
+  [ -n "$ACHADOS" ] && printf '%s\n' "$ACHADOS"
+  if [ -n "$CLASSES" ]; then
+    printf 'Por que importa:\n'
+    for c in $CLASSES; do printf '  [%s] %s\n' "$c" "$(porque "$c")"; done
+    printf '\n'
+  fi
+  [ "$HIG_RC" -ne 0 ] && printf '%s\n\n' "$HIG_OUT"
+  printf 'RESULTADO: COMMIT RECUSADO\n'
+  for c in $CLASSES; do printf '→ [%s] %s\n' "$c" "$(conserto "$c")"; done
+  printf '→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify\n'
+  printf '  Agente de IA: não use --no-verify sem o OK explícito da pessoa.\n'
+} >&2
+exit 1

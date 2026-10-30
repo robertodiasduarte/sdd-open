@@ -1,5 +1,5 @@
-"""Piso bash 3.2 (o /bin/bash do macOS) nos scripts de sdd/bin/: nada de mapfile, declare -A nem as
-expansões de caixa (`^^`, `,,`), que só existem no bash 4+. Comentário não conta.
+"""Piso bash 3.2 (o /bin/bash do macOS) nos scripts de sdd/bin/ e nos hooks de sdd/hooks/: nada de mapfile,
+declare -A nem as expansões de caixa (`^^`, `,,`), que só existem no bash 4+. Comentário não conta.
 """
 from __future__ import annotations
 
@@ -14,8 +14,9 @@ NOVOS = ("gate-baseline.sh", "gate-shell-evidencia.sh", "avaliador-guard.sh", "t
 
 class Bash32(unittest.TestCase):
     def test_sem_bashismo_em_sdd_bin(self):
-        scripts = sorted((RAIZ / "sdd/bin").glob("*.sh"))
-        self.assertGreaterEqual(len(scripts), 6)
+        scripts = sorted((RAIZ / "sdd/bin").glob("*.sh")) + sorted((RAIZ / "sdd/hooks").glob("pre-*"))
+        self.assertGreaterEqual(len(scripts), 8)
+        self.assertIn(RAIZ / "sdd/hooks/pre-commit", scripts)
         for s in scripts:
             for n, linha in enumerate(s.read_text(encoding="utf-8").splitlines(), 1):
                 if linha.lstrip().startswith("#"):

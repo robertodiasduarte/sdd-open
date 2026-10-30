@@ -18,7 +18,9 @@ conferiu e o dado é fictício ou autorizado, `git commit --no-verify` grava aqu
 
 A instalação só acontece com o OK de quem usa o computador e nunca por cima de outro alarme. O alarme
 fica em `.git/hooks/pre-commit`: vale para todas as frentes (worktrees) do projeto, não vai para o
-GitHub e sai com um comando.
+GitHub e sai com um comando. Num projeto em que o sdd-open já instalou os próprios hooks (`sdd/hooks`),
+o alarme não grava arquivo nenhum: é **ligado** nesses hooks por uma configuração do git
+(`sdd.higieneDado`), e o hook do projeto o chama no fim de cada commit; desligar é a mesma configuração.
 
 É um alarme, não uma garantia: não lê o conteúdo de `.xlsx`, `.xls` e `.ods` (por isso recusa qualquer
 planilha nova), não reconhece CNPJ alfanumérico e não olha commits antigos. Para saber se algo já foi

@@ -12,7 +12,6 @@ own document.
 
 | Theme | What it brings | Status |
 |---|---|---|
-| **Hooks** | `pre-commit` and `pre-push` hooks that `init` installs with your confirmation; the build-report check before the file is written, in the agents that support it | *planned* |
 | **Chained flow** | each phase offers the next one; decision classes in the question format; a pause with a resume point when the agent cannot open a fresh session by itself | *planned* |
 | **Adversarial review** | review by a second vendor over a frozen diff, with an editable registry of engines and an offline gate that checks the review really happened | *planned* |
 | **Context and governance** | a map of the domain before the Define, project patterns the Design cites, and governance that blocks the Define of a financial system until it runs | *planned* |

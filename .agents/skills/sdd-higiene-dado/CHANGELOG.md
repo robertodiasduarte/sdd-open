@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.0 - 2026-10
+
+- Modo "hooks do projeto": quando o sdd-open instalou os hooks dele (`core.hooksPath = sdd/hooks`, com o
+  dispatcher), `alarme.sh instalar` liga o alarme por `git config sdd.higieneDado on` (nada é gravado em
+  `.git/`) e `desinstalar` desliga; o dispatcher chama `pre-commit.sh` no fim de cada commit. Qualquer outro
+  `core.hooksPath` ou pre-commit alheio continua recusado (exit 2). O `init` do sdd-open migra um alarme já
+  instalado em `.git/hooks` para este modo.
+- O arquivo do alarme é sempre `<git-common-dir>/hooks/pre-commit`: `git rev-parse --git-path` seguia o
+  `core.hooksPath` e apontaria para o dispatcher. A última linha da recusa, com `core.hooksPath` definido,
+  passa a indicar `alarme.sh desinstalar` em vez de `rm`.
+- Detecções, mensagens de recusa e códigos de saída do alarme não mudam.
+
 ## 1.1.1 - 2026-10
 
 - Passa a ser mantida no sdd-open (`.agents/skills/sdd-higiene-dado/`); os testes ficam em `tests/` na

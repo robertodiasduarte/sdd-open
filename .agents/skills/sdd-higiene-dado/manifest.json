@@ -1,6 +1,6 @@
 {
   "name": "sdd-higiene-dado",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "escopo": "HD001 v1 (references/ESCOPO_CONFIRMADO.md)",
   "perfil_pedido": "operacional",
   "perfil_efetivo": "C",
@@ -10,7 +10,8 @@
     "Verificar estado do alarme (somente leitura)",
     "Instalar o alarme pre-commit com OK explícito",
     "Recusar commit com CPF/CNPJ válido, .env, .pfx/.p12, .pem com chave privada ou planilha nova",
-    "Desinstalar somente o alarme desta skill"
+    "Desinstalar somente o alarme desta skill",
+    "Ligar e desligar o alarme pelos hooks do sdd-open (core.hooksPath = sdd/hooks) via git config sdd.higieneDado"
   ],
   "ferramentas_necessarias": ["bash", "git", "awk"],
   "testes_escritos": ["tests/test_alarme.py", "evals/cases.json"],

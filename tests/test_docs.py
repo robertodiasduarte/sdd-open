@@ -57,9 +57,14 @@ QUICKSTART = {
 
 ROADMAP = {
     "en": (RAIZ / "docs/roadmap.md", "[Português](pt-BR/roadmap.md)", "planned", "under evaluation",
-           ("Hooks", "Chained", "Adversarial", "governance", "sdd-loop-builder", "reconciliation")),
+           ("Chained", "Adversarial", "governance", "sdd-loop-builder", "reconciliation")),
     "pt": (RAIZ / "docs/pt-BR/roadmap.md", "[English](../roadmap.md)", "planejado", "em avaliação",
-           ("Hooks", "encadeado", "adversarial", "governança", "sdd-loop-builder", "Reconciliação")),
+           ("encadeado", "adversarial", "governança", "sdd-loop-builder", "Reconciliação")),
+}
+# Hooks (F8) saíram do roadmap e ganharam documento próprio, linkado dos dois READMEs.
+HOOKS_DOCS = {
+    "en": (RAIZ / "docs/hooks.md", RAIZ / "README.md", "docs/hooks.md"),
+    "pt": (RAIZ / "docs/pt-BR/hooks.md", RAIZ / "README.pt-BR.md", "docs/pt-BR/hooks.md"),
 }
 
 COMPARISON = {
@@ -286,6 +291,21 @@ class Roadmap(unittest.TestCase):
                 self.assertIn(avaliacao, deltas[0])
                 self.assertNotIn(planejado, deltas[0])
                 self.assertIsNone(re.search(r"\b20\d\d\b", texto), "o roadmap não leva data")
+                # F8 entregou os hooks: a linha saiu do roadmap (6 temas) e virou docs/hooks.md.
+                self.assertEqual(len([ln for ln in linhas if not ln.startswith("| Tema") and not ln.startswith("| Theme")]), 6)
+                self.assertFalse([ln for ln in linhas if "**Hooks**" in ln], "a linha Hooks saiu com a F8")
+
+    def test_hooks_tem_documento_proprio_linkado_do_readme(self):
+        for lingua, (doc, readme, link) in HOOKS_DOCS.items():
+            with self.subTest(lingua=lingua):
+                self.assertTrue(doc.is_file(), "falta %s" % doc.relative_to(RAIZ))
+                texto = ler(doc)
+                self.assertIn("--no-verify", texto)
+                self.assertIn("core.hooksPath", texto)
+                for classe in ("H2", "H3", "H4", "H5", "H6"):
+                    self.assertIn(classe, texto)
+                self.assertIn(link, ler(readme))
+                self.assertEqual(links_quebrados(doc), [])
 
 
 class Comparison(unittest.TestCase):

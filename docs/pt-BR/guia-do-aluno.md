@@ -288,7 +288,7 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **Quando usar** | Ao preparar a máquina do escritório; quando a `sdd-iniciar-repo` oferecer; quando um commit for recusado e você quiser entender por quê. |
 | **Quando não usar** | Para limpar dado que já foi para o git — ela não mexe no histórico. Para parecer sobre LGPD — ela só alarma. |
 | **Como pedir** | *"use a skill sdd-higiene-dado para proteger este projeto"* |
-| **O que produz** | O alarme instalado no projeto (um arquivo `pre-commit` dentro da pasta `.git`). |
+| **O que produz** | O alarme instalado no projeto: um arquivo `pre-commit` dentro da pasta `.git` ou, se o sdd-open já instalou os hooks dele (`sdd/hooks`), o alarme ligado nesses hooks por uma configuração do git. |
 | **O que vai perguntar** | "Posso instalar?" — com as opções e o efeito de cada uma. Quando um commit for barrado: corrigir, dado fictício (ela troca o número por um inválido) ou gravar mesmo assim (só se você conferiu). |
 
 #### sdd-new-session

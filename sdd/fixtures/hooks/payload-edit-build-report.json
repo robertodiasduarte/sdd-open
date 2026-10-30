@@ -1,0 +1,9 @@
+{
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "__FILE__",
+    "old_string": "__OLD__",
+    "new_string": "__NEW__"
+  },
+  "cwd": "__CWD__"
+}

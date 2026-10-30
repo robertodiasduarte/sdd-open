@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# sdd-open: hook de aviso (pre-push)
+#
+# Só avisa, nunca bloqueia (exit 0 sempre): quando o que você está empurrando está N commits atrás de
+# <remote>/<project.default_branch> (base velha), diz quantos e o que fazer. Sem acesso à rede: compara
+# com o ref remoto já baixado. Instalado pelo `sdd-open.sh init` (core.hooksPath = sdd/hooks).
+#
+# stdin: "<local_ref> <local_sha> <remote_ref> <remote_sha>" por ref empurrada · args: $1 remote, $2 url.
+# ⚠️ bash 3.2 · só bash e git.
+
+set -u
+
+remote="${1:-origin}"
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+cd "$ROOT" || exit 0
+
+DEFAULT_BRANCH=""
+if [ -f sdd/config.yaml ]; then
+  DEFAULT_BRANCH="$(sed -n '/^project:/,/^[^[:space:]#]/ s/^[[:space:]]*default_branch:[[:space:]]*//p' sdd/config.yaml \
+    | head -1 | sed 's/[[:space:]]*#.*$//' | tr -d '"'"'"' ')"
+fi
+[ -n "$DEFAULT_BRANCH" ] || DEFAULT_BRANCH=main
+ref="refs/remotes/$remote/$DEFAULT_BRANCH"
+git rev-parse --verify --quiet "$ref" >/dev/null 2>&1 || exit 0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ -n "${remote_ref:-}" ] || continue
+  case "$local_sha" in *[!0]*) ;; *) continue ;; esac          # sha só de zeros = deleção de ref
+  behind="$(git rev-list --count "$local_sha..$ref" 2>/dev/null)" || continue
+  if [ "${behind:-0}" -gt 0 ]; then
+    short="${remote_ref#refs/heads/}"
+    printf '⚠️  sdd-open: %s está %s commit(s) atrás de %s/%s (base velha).\n' "$short" "$behind" "$remote" "$DEFAULT_BRANCH" >&2
+    printf '→ traga a base: peça ao agente para rebasear a frente sobre %s/%s antes de abrir o PR.\n' "$remote" "$DEFAULT_BRANCH" >&2
+  fi
+done
+exit 0

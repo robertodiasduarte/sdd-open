@@ -22,7 +22,7 @@ def sem_comentarios(texto: str) -> str:
     """Só as linhas de YAML: os comentários explicam as garantias e citam as palavras proibidas."""
     return "\n".join(l for l in texto.splitlines() if not l.lstrip().startswith("#"))
 
-PRODUTO = [".agents/skills/**", "bin/**", "sdd/bin/**", "sdd/templates/**", "sdd/fixtures/**",
+PRODUTO = [".agents/skills/**", "bin/**", "sdd/bin/**", "sdd/hooks/**", "sdd/templates/**", "sdd/fixtures/**",
            "sdd/playbook.md", "sdd/config.example.yaml", "AGENTS.md.tmpl"]
 
 

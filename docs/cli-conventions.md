@@ -25,7 +25,8 @@ RESULTADO: <PALAVRA>
 Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` · `DRY-RUN` ·
 `CANCELADO` · `DIAGNÓSTICO CONCLUÍDO` · `ERRO` (sdd-open.sh) · `VERDE` · `VERMELHO` · `INCONCLUSIVO` ·
 `ASSINATURA HUMANA` · `CLARIFICAR` · `SPEC INVÁLIDA` (verify-gate.sh, report-lint.py) · `PULADO` ·
-`ERRO DE USO` (gate-baseline.sh, gate-shell-evidencia.sh, avaliador-guard.sh, test-baseline.sh).
+`ERRO DE USO` (gate-baseline.sh, gate-shell-evidencia.sh, avaliador-guard.sh, test-baseline.sh) ·
+`COMMIT RECUSADO` (sdd/hooks/pre-commit; ver [hooks.md](hooks.md)).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate
 (inconclusivo, que devolve `0`… sem `--strict`) de parecer verde para quem lê.
@@ -53,6 +54,8 @@ RESULTADO: ERRO
 | `gate-shell-evidencia.sh` | `0` nenhum exit de formatador · `2` ≥ 1 acusado · `64` uso ou git que falha |
 | `avaliador-guard.sh` | `0` árvore commitada · `1` suja (lista e comando de commit) · `2` não conferido · `64` uso |
 | `test-baseline.sh` | `0` só falhas conhecidas (ou `PULADO`) · `2` falha nova · `3` inconclusivo · `64` uso |
+| `sdd/hooks/pre-commit` | `0` limpo (silêncio, ou `⚠️` de regra pulada) · `1` recusado — todos os achados `🛑 [classe]`, `RESULTADO: COMMIT RECUSADO`, um `→` por classe |
+| `sdd/hooks/pre-push` | `0` sempre (só avisa `⚠️` quando atrás de `origin/<branch padrão>`) |
 | `sdd-kb/scripts/gate.sh` | `0` verde · `2` vermelho (caso bom rejeitado, caso ruim aceito ou por outro motivo, âncora ausente, RULE_MAP do exemplo derivado, ou rodado da cópia gerada pelo `sync`) |
 | `sdd-kb/scripts/validate_kb.py` · `kb_normativo.py` | `0` PASS · `2` FAIL · `64` uso |
 

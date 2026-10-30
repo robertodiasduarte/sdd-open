@@ -4,7 +4,8 @@
 
 - **Terminal com bash, git e awk**, aberto na pasta do projeto: macOS, Linux, ou Git Bash no Windows
   (vem com o Git for Windows). O alarme não usa Python nem Node.
-- **Escrita em `.git/hooks/`** do projeto, só no passo `instalar` e só com o OK da pessoa.
+- **Escrita em `.git/hooks/`** do projeto, só no passo `instalar` e só com o OK da pessoa — ou, num projeto
+  com os hooks do sdd-open (`core.hooksPath = sdd/hooks`), só uma configuração do git (`sdd.higieneDado`).
 
 ## Onde funciona
 
@@ -19,8 +20,9 @@
 
 ## Limitações
 
-- Projetos com `core.hooksPath` (husky, lefthook) ou com `pre-commit` próprio: a skill não instala e
-  explica como acrescentar a verificação ao alarme existente.
+- Projetos com `core.hooksPath` de outra ferramenta (husky, lefthook) ou com `pre-commit` próprio: a skill
+  não instala e explica como acrescentar a verificação ao alarme existente. A exceção é o `sdd/hooks` do
+  sdd-open, com o qual ela convive (modo "hooks do projeto").
 - `git commit --no-verify` e ferramentas que fazem commit sem rodar hooks passam sem alarme.
 - Instruções de portabilidade não provam comportamento idêntico em todos os agentes; os cenários de
   `evals/cases.json` precisam ser rodados em cada um.

@@ -135,3 +135,86 @@ fn = [fn] if isinstance(fn, str) else fn
 sys.exit(0 if "AGENTS.md" in fn else 1)
 PY
 }
+
+# .claude/settings.json: acrescenta as 2 entradas de hook do sdd-open (os guards gerados em .claude/hooks/)
+# a hooks.PreToolUse, sem perder chave nem entrada de outra origem. Uma entrada do open conta como presente
+# quando algum item da lista tem um comando que cita o nome do script. JSON inválido é ERRO nomeando a
+# linha — nunca sobrescreve o arquivo do usuário. Mesma casca do merge do Gemini.
+merge_claude_settings() { # $1=destino
+  local dest="${1}" saida rc
+  command -v python3 >/dev/null 2>&1 || die "o adaptador claude precisa de python3 para editar .claude/settings.json com segurança (e para os guards de .claude/hooks/)" \
+    "instale python3 ou rode init sem o vendor claude" 64
+  mkdir -p "$(dirname "${dest}")"
+  saida=$(python3 -I - "${dest}" <<'PY' 2>&1
+import json, os, sys
+dest = sys.argv[1]
+ENTRADAS = (
+    ("Write|Edit|MultiEdit", 'python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-report-guard.py"', 10),
+    ("Agent|Task", 'python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-avaliador-guard.py"', None),
+)
+data = {}
+if os.path.exists(dest):
+    with open(dest, encoding="utf-8") as f:
+        raw = f.read()
+    if raw.strip():
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError as e:
+            print(f"JSONERR {e.lineno}: {e.msg}"); sys.exit(66)
+    if not isinstance(data, dict):
+        print("JSONERR 1: o topo do arquivo não é um objeto"); sys.exit(66)
+hooks = data.setdefault("hooks", {})
+if not isinstance(hooks, dict):
+    print("JSONERR 1: 'hooks' não é um objeto"); sys.exit(66)
+pre = hooks.setdefault("PreToolUse", [])
+if not isinstance(pre, list):
+    print("JSONERR 1: 'hooks.PreToolUse' não é uma lista"); sys.exit(66)
+
+def presente(nome):
+    for e in pre:
+        if not isinstance(e, dict):
+            continue
+        for h in e.get("hooks") or []:
+            if isinstance(h, dict) and nome in str(h.get("command", "")):
+                return True
+    return False
+
+alterado = False
+for matcher, cmd, timeout in ENTRADAS:
+    nome = cmd.rsplit("/", 1)[-1].rstrip('"')
+    if presente(nome):
+        continue
+    h = {"type": "command", "command": cmd}
+    if timeout:
+        h["timeout"] = timeout
+    pre.append({"matcher": matcher, "hooks": [h]})
+    alterado = True
+if alterado:
+    with open(dest, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    print("ALTERADO")
+else:
+    print("EMDIA")
+PY
+  ); rc=$?
+  case "${rc}" in
+    0) return 0 ;;
+    66) die "${dest} não é JSON válido (${saida#JSONERR })" \
+            "corrija ou renomeie o arquivo e rode sync de novo — nada foi alterado" 66 ;;
+    *) die "falha inesperada ao editar ${dest} (python3 saiu ${rc}): ${saida}" \
+           "verifique o arquivo manualmente" 1 ;;
+  esac
+}
+
+# 0 se as 2 entradas do sdd-open já estão em hooks.PreToolUse (para o plano marcar "=").
+claude_settings_em_dia() { # $1=destino
+  [ -f "${1}" ] || return 1
+  python3 -I - "${1}" <<'PY' >/dev/null 2>&1
+import json, sys
+d = json.load(open(sys.argv[1], encoding="utf-8"))
+pre = (d.get("hooks") or {}).get("PreToolUse") or []
+cmds = " ".join(str(h.get("command", "")) for e in pre if isinstance(e, dict) for h in (e.get("hooks") or []) if isinstance(h, dict))
+sys.exit(0 if "sdd-report-guard.py" in cmds and "sdd-avaliador-guard.py" in cmds else 1)
+PY
+}

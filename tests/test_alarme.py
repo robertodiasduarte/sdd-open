@@ -316,8 +316,10 @@ class TestInstalacao(Base):
 
 
 class TestCopiaGerada(Base):
-    """sdd-open: o sync copia a skill para .claude/skills com 2 linhas sdd-open:generated depois do shebang.
-    O hook instalado a partir dessa cópia tem de ser o mesmo instalado a partir da fonte."""
+    """sdd-open: o sync copia a skill para .claude/skills com 2 linhas sdd-open:generated depois do shebang, e o
+    init liga os hooks do projeto (core.hooksPath = sdd/hooks). A cópia gerada tem de reconhecer o dispatcher
+    e ligar o alarme nele, sem gravar nada em .git/hooks/ — e, sem o dispatcher, instalar da fonte ou da cópia
+    produz o mesmo arquivo."""
 
     def init_sdd_open(self, projeto: Path) -> None:
         vazio = self.tmp / "gitconfig-vazio"
@@ -329,23 +331,122 @@ class TestCopiaGerada(Base):
                            stdin=subprocess.DEVNULL, timeout=120)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
-    def test_hook_da_copia_gerada_sem_cabecalho_e_igual_ao_da_fonte(self):
+    def copia_alarme(self, acao: str) -> subprocess.CompletedProcess:
+        copia = self.repo.raiz / ".claude" / "skills" / "sdd-higiene-dado" / "scripts"
+        return subprocess.run([BASH, str(copia / "alarme.sh"), acao], cwd=self.repo.raiz,
+                              capture_output=True, encoding="utf-8", errors="replace", env=ISOLADO)
+
+    def test_copia_gerada_liga_o_alarme_nos_hooks_do_projeto(self):
         self.init_sdd_open(self.repo.raiz)
         copia = self.repo.raiz / ".claude" / "skills" / "sdd-higiene-dado" / "scripts"
         self.assertIn("sdd-open:generated", (copia / "pre-commit.sh").read_text(encoding="utf-8"),
                       "pré-condição: a cópia gerada deveria ter o cabeçalho do sync")
-        r = subprocess.run([BASH, str(copia / "alarme.sh"), "instalar"], cwd=self.repo.raiz,
-                           capture_output=True, encoding="utf-8", errors="replace", env=ISOLADO)
+        self.assertEqual(self.repo.git("config", "--get", "core.hooksPath").stdout.strip(), "sdd/hooks",
+                         "pré-condição: o init liga os hooks do projeto")
+        r = self.copia_alarme("verificar")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("hooks do sdd-open (sdd/hooks)", r.stdout)
+        self.assertIn("desligado", r.stdout)
+        r = self.copia_alarme("instalar")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("ligado nos hooks do projeto", r.stdout)
+        self.assertEqual(self.repo.git("config", "--get", "sdd.higieneDado").stdout.strip(), "on")
+        self.assertFalse((self.repo.raiz / ".git" / "hooks" / "pre-commit").exists(), "nada é gravado em .git/hooks/")
+        r = self.copia_alarme("verificar")
+        self.assertIn("ligado pelos hooks do projeto (sdd/hooks)", r.stdout)
+        # a cópia gerada e a fonte ligam o mesmo alarme: um .env staged é recusado pelo dispatcher
+        self.repo.escreve(".env", "X=1\n")
+        r = self.repo.commit(".env")
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("arquivo de senhas", r.stderr)
+
+    def test_sem_dispatcher_a_copia_gerada_grava_o_mesmo_arquivo_da_fonte(self):
+        self.init_sdd_open(self.repo.raiz)
+        self.repo.git("config", "--unset", "core.hooksPath")
+        copia = self.repo.raiz / ".claude" / "skills" / "sdd-higiene-dado" / "scripts"
+        r = self.copia_alarme("instalar")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         hook = (self.repo.raiz / ".git" / "hooks" / "pre-commit").read_text(encoding="utf-8")
         self.assertNotIn("sdd-open:generated", hook)
         fonte = Repo(self.tmp / "fonte")
         self.assertEqual(fonte.alarme("instalar").returncode, 0)
         self.assertEqual(hook, (fonte.raiz / ".git" / "hooks" / "pre-commit").read_text(encoding="utf-8"))
-        r = subprocess.run([BASH, str(copia / "alarme.sh"), "verificar"], cwd=self.repo.raiz,
-                           capture_output=True, encoding="utf-8", errors="replace", env=ISOLADO)
+        self.assertIn("o alarme desta skill já está instalado", self.copia_alarme("verificar").stdout)
+
+
+class TestModoHooks(Base):
+    """F8: com core.hooksPath = sdd/hooks e o dispatcher do sdd-open presente, o alarme é ligado/desligado por
+    `git config sdd.higieneDado`; qualquer outro hooksPath continua recusado; o desinstalar nunca toca o dispatcher."""
+
+    MARCA_DISPATCHER = "# sdd-open: dispatcher de hooks (pre-commit)"
+
+    def setUp(self) -> None:
+        super().setUp()
+        hooks = self.repo.raiz / "sdd" / "hooks"
+        hooks.mkdir(parents=True)
+        for nome in ("pre-commit", "pre-push"):
+            shutil.copy2(str(RAIZ / "sdd" / "hooks" / nome), str(hooks / nome))
+        (self.repo.raiz / "sdd" / "bin").mkdir()
+        # o dispatcher chama a skill instalada no projeto (.agents/skills/…), como depois de um init
+        scripts = self.repo.raiz / ".agents" / "skills" / "sdd-higiene-dado" / "scripts"
+        scripts.mkdir(parents=True)
+        shutil.copy2(str(HOOK_ORIGEM), str(scripts / "pre-commit.sh"))
+        shutil.copy2(str(ALARME), str(scripts / "alarme.sh"))
+        self.repo.git("config", "core.hooksPath", "sdd/hooks")
+
+    def config(self) -> str:
+        return self.repo.git("config", "--get", "sdd.higieneDado", check=False).stdout.strip()
+
+    def test_verificar_instalar_desinstalar_pela_config(self):
+        r = self.repo.alarme("verificar")
         self.assertEqual(r.returncode, 0, r.stdout)
-        self.assertIn("o alarme desta skill já está instalado", r.stdout)
+        self.assertIn("hooks do sdd-open (sdd/hooks)", r.stdout)
+        self.assertIn("Dá para ligar", r.stdout)
+        r = self.repo.alarme("instalar")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(self.config(), "on")
+        self.assertFalse((self.repo.raiz / ".git" / "hooks" / "pre-commit").exists())
+        self.assertIn("nada foi gravado em .git/", r.stdout)
+        self.assertIn("desinstalar", r.stdout)
+        r = self.repo.alarme("verificar")
+        self.assertIn("ligado pelos hooks do projeto", r.stdout)
+        r = self.repo.alarme("desinstalar")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertEqual(self.config(), "")
+        self.assertTrue((self.repo.raiz / "sdd" / "hooks" / "pre-commit").is_file(), "o dispatcher nunca é tocado")
+        self.assertIn("Os hooks do sdd-open continuam no lugar", r.stdout)
+        r = self.repo.alarme("desinstalar")
+        self.assertEqual(r.returncode, 0)
+        self.assertIn("Nada foi alterado", r.stdout)
+
+    def test_desinstalar_remove_o_arquivo_legado_da_migracao_e_so_ele(self):
+        legado = self.repo.raiz / ".git" / "hooks" / "pre-commit"
+        legado.parent.mkdir(parents=True, exist_ok=True)
+        legado.write_text("#!/usr/bin/env bash\n# sdd-higiene-dado: alarme de commit (pre-commit)\n# versão: 1.1.1\nexit 0\n",
+                          encoding="utf-8")
+        self.repo.git("config", "sdd.higieneDado", "on")
+        r = self.repo.alarme("desinstalar")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertFalse(legado.exists())
+        self.assertTrue((self.repo.raiz / "sdd" / "hooks" / "pre-commit").is_file())
+        self.assertIn(self.MARCA_DISPATCHER, (self.repo.raiz / "sdd" / "hooks" / "pre-commit").read_text(encoding="utf-8"))
+
+    def test_hooks_path_sem_o_dispatcher_e_outro(self):
+        (self.repo.raiz / "sdd" / "hooks" / "pre-commit").write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+        for acao in ("verificar", "instalar", "desinstalar"):
+            r = self.repo.alarme(acao)
+            self.assertEqual(r.returncode, 2, acao)
+            self.assertIn("core.hooksPath", r.stdout)
+        self.assertEqual(self.config(), "")
+
+    def test_recusa_pelo_dispatcher_ensina_desinstalar_sem_rm(self):
+        self.repo.git("config", "sdd.higieneDado", "on")
+        self.repo.escreve(".env", "X=1\n")
+        r = self.repo.commit(".env")
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("arquivo de senhas", r.stderr)
+        self.assertIn("alarme.sh desinstalar", r.stderr)
+        self.assertNotIn("rm ", r.stderr)
 
 
 class TestGeradores(unittest.TestCase):

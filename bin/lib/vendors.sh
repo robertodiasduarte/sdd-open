@@ -7,6 +7,19 @@
 
 VENDORS_SUPORTADOS="claude codex gemini cursor kimi"
 
+# Arquivo de contexto que cada vendor carrega inteiro em toda sessão (regra H2 do pre-commit: teto em
+# project.context_file_max_kb). A união é a lista que sdd/hooks/pre-commit traz embutida — o hook vai para
+# o projeto do usuário sem este arquivo; tests/test_hooks.py confere que as duas listas são iguais.
+VENDOR_ARQUIVOS_CONTEXTO="AGENTS.md CLAUDE.md GEMINI.md .cursorrules"
+vendor_arquivo_contexto() {
+  case "${1}" in
+    claude) printf 'CLAUDE.md' ;;
+    gemini) printf 'GEMINI.md' ;;
+    cursor) printf '.cursorrules' ;;
+    codex|kimi) printf 'AGENTS.md' ;;
+  esac
+}
+
 vendor_valido() {
   case "${1}" in
     claude|codex|gemini|cursor|kimi) return 0 ;;
@@ -18,7 +31,7 @@ vendor_valido() {
 # Vazio = lê .agents/skills/ nativamente; nada a gerar (e isso é confirmação, não ausência).
 vendor_alvos() {
   case "${1}" in
-    claude) printf '%s\n' 'CLAUDE.md' '.claude/skills' ;;
+    claude) printf '%s\n' 'CLAUDE.md' '.claude/skills' '.claude/hooks' '.claude/settings.json' ;;
     cursor) printf '%s\n' '.cursor/skills' ;;
     gemini) printf '%s\n' 'GEMINI.md' '.gemini/settings.json' ;;
     codex|kimi) : ;;

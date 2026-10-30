@@ -12,8 +12,12 @@ project:
   typecheck_cmd: ""
   # Checagem de sintaxe por tipo de arquivo (fase Release, passo 0a).
   lint_cmd: ""
-  # Branch de onde nascem as features. Nunca se trabalha nela diretamente.
+  # Branch de onde nascem as features. Nunca se trabalha nela diretamente (o pre-commit de sdd/hooks
+  # recusa commit direto nela quando ela já tem remoto).
   default_branch: main
+  # Teto, em KB, do arquivo de contexto do agente (AGENTS.md, CLAUDE.md, GEMINI.md, .cursorrules) num
+  # commit: ele entra inteiro em toda sessão do agente. Acima disso o pre-commit recusa. Vazio = 100.
+  context_file_max_kb: 100
 
 # Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho
 # do avaliador de contexto fresco. `sql` também diz o que conta como migration (report-lint.py).

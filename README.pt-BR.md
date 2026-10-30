@@ -96,6 +96,7 @@ Funciona em macOS, Linux e Windows (Git Bash/WSL): bash 3.2, zero zsh, zero syml
 - [Contrato do Verify Gate](docs/pt-BR/verify-gate-contract.md) ([EN](docs/verify-gate-contract.md))
 - [Guia de adaptação](docs/pt-BR/adaptation-guide.md) ([EN](docs/adaptation-guide.md)) — slots do config, landmines, worktrees
 - [Comparativo](docs/pt-BR/comparison.md) ([EN](docs/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
+- [Hooks de git](docs/pt-BR/hooks.md) ([EN](docs/hooks.md)) — as regras do pre-commit que o `init` instala, o alarme de higiene de dado, o limite do `--no-verify`
 - [Roadmap](docs/pt-BR/roadmap.md) ([EN](docs/roadmap.md)) — o que está planejado e o que está em avaliação
 - [Guia do aluno](docs/pt-BR/guia-do-aluno.md) — passo a passo para quem nunca usou git nem terminal
 

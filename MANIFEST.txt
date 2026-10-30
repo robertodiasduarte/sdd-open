@@ -102,6 +102,8 @@ MANIFEST.txt
 NOTICE
 README.md
 README.pt-BR.md
+bin/adapters/claude/sdd-avaliador-guard.py
+bin/adapters/claude/sdd-report-guard.py
 bin/lib/merge.sh
 bin/lib/plan.sh
 bin/lib/say.sh
@@ -110,9 +112,11 @@ bin/sdd-open.sh
 docs/adaptation-guide.md
 docs/cli-conventions.md
 docs/comparison.md
+docs/hooks.md
 docs/pt-BR/adaptation-guide.md
 docs/pt-BR/comparison.md
 docs/pt-BR/guia-do-aluno.md
+docs/pt-BR/hooks.md
 docs/pt-BR/quickstart.md
 docs/pt-BR/roadmap.md
 docs/pt-BR/verify-gate-contract.md
@@ -167,10 +171,17 @@ sdd/fixtures/evidencia/testes-pytest.txt
 sdd/fixtures/evidencia/testes-unittest.txt
 sdd/fixtures/evidencia/testes-vitest.txt
 sdd/fixtures/handoff/HANDOFF_VALIDO.md
+sdd/fixtures/hooks/config-placeholder.json
+sdd/fixtures/hooks/payload-agent-veredito.json
+sdd/fixtures/hooks/payload-edit-build-report.json
+sdd/fixtures/hooks/payload-write-build-report.json
+sdd/fixtures/hooks/settings-com-outros-hooks.json
 sdd/fixtures/playbook/playbook-colapso.md
 sdd/fixtures/playbook/playbook-delta-ok.md
 sdd/fixtures/playbook/playbook-invalido.md
 sdd/fixtures/playbook/playbook-valido.md
+sdd/hooks/pre-commit
+sdd/hooks/pre-push
 sdd/playbook.md
 sdd/templates/BRAINSTORM_TEMPLATE.md
 sdd/templates/BUILD_REPORT_TEMPLATE.md
@@ -194,6 +205,7 @@ tests/test_avaliador_guard.py
 tests/test_bash32.py
 tests/test_checar.py
 tests/test_check_versions.py
+tests/test_claude_adapter.py
 tests/test_contrato_build_release.py
 tests/test_conversa.py
 tests/test_correcoes_w0.py
@@ -203,6 +215,7 @@ tests/test_docs.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py
 tests/test_handoff_lint.py
+tests/test_hooks.py
 tests/test_inventario.py
 tests/test_kb_dominios.py
 tests/test_matriz_new_session.py

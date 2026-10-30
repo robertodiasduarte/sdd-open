@@ -18,10 +18,11 @@ TERMOS = re.compile(
     r"|(?i:\b(Task|Agent) tool\b)"
     r"|(?<![\w./-])/model\b"
 )
-ESCOPO = (".agents/skills", "sdd/templates", "AGENTS.md.tmpl", "sdd/playbook.md")
+ESCOPO = (".agents/skills", "sdd/templates", "AGENTS.md.tmpl", "sdd/playbook.md", "sdd/hooks")
 # Adaptador declarado de vendor dentro do escopo: caminho isento. Hoje nenhum — o init gera os
-# adaptadores a partir de bin/lib/vendors.sh, fora do escopo. Quem acrescentar um template por vendor
-# em sdd/templates/ declara o prefixo aqui.
+# adaptadores a partir de bin/lib/vendors.sh e de bin/adapters/<vendor>/ (os guards de hook do Claude
+# Code), ambos fora do escopo. Os hooks de git de sdd/hooks/ vão para o projeto de qualquer vendor e
+# ficam DENTRO do escopo. Quem acrescentar um template por vendor em sdd/templates/ declara o prefixo aqui.
 ADAPTADORES: tuple = ()
 
 

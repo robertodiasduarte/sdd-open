@@ -96,7 +96,16 @@ cab { next }
 
 [ -z "${ACHADOS}" ] && exit 0
 
-HOOK="$(git rev-parse --path-format=absolute --git-path hooks/pre-commit 2>/dev/null || git rev-parse --git-path hooks/pre-commit)"
+# Como desinstalar depende de onde o alarme mora. Com core.hooksPath definido, ele roda pelo dispatcher do
+# sdd-open (sdd/hooks) e sai por `alarme.sh desinstalar`; sem hooksPath, é o arquivo em <git-common-dir>/hooks.
+# Nunca `git rev-parse --git-path hooks/pre-commit`: ele segue o core.hooksPath e o `rm` apagaria o dispatcher.
+if [ -n "$(git config --get core.hooksPath 2>/dev/null || true)" ]; then
+  DESINSTALAR='Para desinstalar o alarme: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar'
+else
+  COMMON="$(git rev-parse --git-common-dir 2>/dev/null)"
+  case "${COMMON}" in /*) ;; *) COMMON="$(git rev-parse --show-toplevel)/${COMMON}" ;; esac
+  DESINSTALAR="Para desinstalar o alarme: rm \"${COMMON}/hooks/pre-commit\""
+fi
 {
   printf '\nsdd-higiene-dado: commit recusado. Encontrei o que não deveria ir para o git:\n\n'
   printf '%s\n' "${ACHADOS}"
@@ -115,6 +124,6 @@ Isso pula o alarme só neste commit. Agente de IA: não use --no-verify sem o OK
 explícito da pessoa.
 
 TXT
-  printf 'Para desinstalar o alarme: rm "%s"\n\n' "${HOOK}"
+  printf '%s\n\n' "${DESINSTALAR}"
 } >&2
 exit 1
