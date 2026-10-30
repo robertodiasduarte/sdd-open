@@ -14,7 +14,7 @@ git log --oneline -1                                                      # espe
 ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md
 GIT_TERMINAL_PROMPT=0 git fetch -q origin && git log --oneline -1 origin/main   # se main andou, rebase antes de começar
 GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.8                      # base do check-versions
-GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter && git diff --stat origin/docs/incorporar-starter -- sdd/handoffs   # vazio: a cópia está em dia
+GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter && git show origin/docs/incorporar-starter:sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md | cmp - sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md && echo copia-em-dia   # diferente: copie de novo da branch docs/
 ```
 
 Se a pasta não existir (alguém a removeu), recrie do zero:
