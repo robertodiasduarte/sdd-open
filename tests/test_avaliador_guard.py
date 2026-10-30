@@ -51,7 +51,7 @@ class AvaliadorGuard(Sandbox):
         self.assertIn("   - src/novo dir/ação.py", out)
         self.assertIn("commit -m", out)
         self.assertIn("'src/novo dir/ação.py'", out)
-        self.assertNotIn("add -A", out)
+        self.assertIn("add -A -- ", out)  # só os caminhos listados, nunca a árvore inteira
 
     def test_renomear_para_dentro_de_evidence_conta_a_origem(self):
         (self.r / "sdd/reports/evidence/X").mkdir(parents=True)
@@ -60,6 +60,16 @@ class AvaliadorGuard(Sandbox):
         self.assertEqual(rc, 1, out)
         self.assertIn("   - src/app.py", out)
         self.assertNotIn("   - sdd/reports/evidence/X/app.py", out)
+
+    def test_o_commit_sugerido_funciona_com_renomeacao(self):
+        self.git(self.r, "mv", "src/app.py", "src/app2.py")
+        rc, out = self.guard()
+        self.assertEqual(rc, 1, out)
+        comando = out.splitlines()[-1][len("→ "):]
+        rc2, o2, e2 = self.roda(["bash", "-c", comando], self.r)
+        self.assertEqual(rc2, 0, o2 + e2)
+        rc, out = self.guard()
+        self.assertEqual(rc, 0, out)
 
     def test_quatro_prefixos_nao_liberam_sdd_bin(self):
         self.escreve(self.r, "sdd/features/DEFINE_X.md", "# x\n")

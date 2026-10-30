@@ -242,6 +242,8 @@ migration listada sem a linha).
   avalia nada, e "corrigir até ficar verde" é igual a afrouxar.
 - **Só falha de teste nova aborta** — uma falha antiga travando todo build ensina a ignorar vermelho;
   separada no baseline, a nova continua aparecendo, e aceitar uma é decisão registrada.
+- **A flag `LLM Prompts` do DEFINE confere com o DESIGN antes de codar** — `true` sem inventário deixa
+  prompt de produção sem contrato; `false` com inventário constrói o que o Define disse que não existe.
 - **A linha do avaliador é obrigatória** — o lint que só confere o veredito que aparece aprova o
   relatório que não fala do avaliador; a ausência reprova, e `PENDENTE` registra o build travado.
 

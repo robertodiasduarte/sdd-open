@@ -232,7 +232,17 @@ class Veredito(Base):
         self.assertEqual(rc, 1, out)
         self.avaliacao(self.nome)
         rc, out = self.lint(self.relatorio(tabela + "| Relatório | `" + self.nome + "` |\n"))
+        self.assertEqual(rc, 1, out)  # numa tabela, a unidade é a linha do rótulo
+        linha = "| **Veredito do avaliador (C1)** | NEEDS_WORK · `" + self.nome + "` |\n"
+        rc, out = self.lint(self.relatorio("| Item | Valor |\n|---|---|\n" + linha))
         self.assertEqual(rc, 0, out)
+
+    def test_rotulos_sem_c1(self):
+        for texto in ("Veredito do avaliador: PASS · ciclos: 1\n", "## Veredito do avaliador\n\n**PASS**\n"):
+            with self.subTest(texto=texto):
+                rc, out = self.lint(self.relatorio(texto + "\navaliador: N.A. (x)\n"))
+                self.assertEqual(rc, 1, out)
+                self.assertIn("Veredito do avaliador `PASS`", out)
 
     def test_avaliacao_em_outro_paragrafo_nao_conta(self):
         self.avaliacao(self.nome)

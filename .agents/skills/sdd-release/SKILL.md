@@ -292,6 +292,8 @@ vale **sempre**.
   fica registrada com motivo e nome.
 - **Comando remoto sem pedir senha** — o pedido de senha aparece no terminal do agente, não na tela da
   pessoa; com o OK já dado, a publicação trava pela metade sem ninguém ver.
+- **Release sem DEFINE também deixa registro** — o trace com `no-define` separa o hotfix que pulou o
+  gate de propósito do gate que ninguém rodou; sem ele, os dois somem do histórico do mesmo jeito.
 - **Avaliação `PENDENTE` aborta a release** — o build que travou antes do avaliador pode registrar o
   estado real; o que não pode é esse estado chegar a produção sem que ninguém tenha provado os critérios.
 - **O exit de cada log é conferido** — `cmd | tail` grava o exit do `tail`, sempre 0: sem a

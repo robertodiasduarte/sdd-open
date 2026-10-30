@@ -71,7 +71,7 @@ trace_gravar() {
   mkdir -p "${SDD_TRACE_DIR_VAL}" 2>/dev/null || return 0
   printf '{"ts":"%s","feature":"%s","src":"%s","kind":"%s","exit":%s,"define":"%s"}\n' \
     "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${TRACE_FEATURE}" "${TRACE_SRC}" "$(json_esc "${TRACE_KIND}")" "${rc}" \
-    "$(json_esc "${TRACE_DEFINE}")" >> "${SDD_TRACE_DIR_VAL}/${TRACE_FEATURE}.jsonl" 2>/dev/null || true
+    "$(json_esc "${TRACE_DEFINE}")" 2>/dev/null >> "${SDD_TRACE_DIR_VAL}/${TRACE_FEATURE}.jsonl" || true
   return 0
 }
 

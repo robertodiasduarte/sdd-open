@@ -146,6 +146,9 @@ for m in re.finditer(r"^\s*(?:FAIL|×|✗)\s+(\S+\.(?:test|spec)\.[cm]?[jt]sx?)\
 # go: "--- FAIL: TestX (0.00s)"
 for m in re.finditer(r"^\s*--- FAIL: (\S+)", txt, re.M):
     add(m.group(1))
+# go: pacote que nem compilou ("FAIL\texemplo/x [build failed]") — os testes dele não rodaram
+for m in re.finditer(r"^FAIL\s+(\S+)\s+\[(build|setup) failed\]", txt, re.M):
+    add("%s failed: %s" % (m.group(2), m.group(1)))
 # deno: "nome => ./arquivo.ts:12:6" (bloco de falhas)
 for m in re.finditer(r"^(.+?) => (?:\./)?(\S+?):\d+:\d+\s*$", txt, re.M):
     add(m.group(2) + "::" + m.group(1).strip())

@@ -97,6 +97,17 @@ class TestBaseline(Sandbox):
         self.assertEqual(rc, 2, out)
         self.assertIn("🛑 nova: tests/test_conta.py::test_novo", out)
 
+    def test_pacote_go_que_nao_compila_nao_e_mascarado(self):
+        self.baseline("TestConhecido", "TestOutroConhecido")
+        antes = (self.r / BASELINE).read_bytes()
+        self.escreve(self.r, "saida.txt", "--- FAIL: TestConhecido (0.00s)\nFAIL\texemplo/conta\t0.005s\n"
+                                          "FAIL\texemplo/outro [build failed]\n")
+        self.config("cat saida.txt; exit 1")
+        rc, out = self.tb()
+        self.assertEqual(rc, 2, out)
+        self.assertIn("🛑 nova: build failed: exemplo/outro", out)
+        self.assertEqual((self.r / BASELINE).read_bytes(), antes)
+
     def test_touched_com_base_invalida_e_64(self):
         rc, out = self.tb("--touched", "--base", "nao-existe", "--cmd", "true")
         self.assertEqual(rc, 64, out)
@@ -117,10 +128,11 @@ class TestBaseline(Sandbox):
         self.assertIn("RESULTADO: PULADO", out)
 
     def test_aceitar_nao_roda_e_e_idempotente(self):
-        self.config("exit 1")
+        self.config("touch rodou.txt; exit 1")
         rc, out = self.tb("--aceitar", "mod.C.test_x")
         self.assertEqual(rc, 0, out)
         self.assertNotIn("▶ testes", out)
+        self.assertFalse((self.r / "rodou.txt").exists())
         self.tb("--aceitar", "mod.C.test_x")
         self.assertEqual((self.r / BASELINE).read_text(encoding="utf-8"), "mod.C.test_x\n")
 

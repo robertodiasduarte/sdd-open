@@ -153,7 +153,8 @@ class SddBuildEvidencia(unittest.TestCase):
     def test_um_por_que_por_regra_nova(self):
         texto = por_que(BUILD)
         for regra in ("**Guard antes de despachar o avaliador**", "**Gate corrigido roda contra o código anterior**",
-                      "**Só falha de teste nova aborta**", "**A linha do avaliador é obrigatória**"):
+                      "**Só falha de teste nova aborta**", "**A linha do avaliador é obrigatória**",
+                      "**A flag `LLM Prompts` do DEFINE confere com o DESIGN antes de codar**"):
             self.assertIn(regra, texto)
 
 
@@ -176,6 +177,7 @@ class SddReleaseEvidencia(unittest.TestCase):
         texto = por_que(RELEASE)
         self.assertIn("**Avaliação `PENDENTE` aborta a release**", texto)
         self.assertIn("**O exit de cada log é conferido**", texto)
+        self.assertIn("**Release sem DEFINE também deixa registro**", texto)
 
 
 class TemplatesEvidencia(unittest.TestCase):

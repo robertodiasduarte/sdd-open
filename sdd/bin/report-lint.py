@@ -48,8 +48,13 @@ FAKE_RE = re.compile(
 PATH_RE = re.compile(r"`([^`]+\.(?:log|txt|md))`")
 # Veredito em qualquer forma: inline `**Veredito do avaliador (C1):** PASS`, título `## Veredito do
 # avaliador (C1)` + parágrafo seguinte, ou tabela `| **Veredito do avaliador (C1)** | PASS |`. O valor é
-# o 1º token de veredito depois do rótulo, no mesmo parágrafo ou no seguinte (quando o rótulo é título).
-VERDICT_LABEL_RE = re.compile(r"Veredito do avaliador \(C1\)|\*\*Veredito do avaliador:\*\*", re.IGNORECASE)
+# o 1º token de veredito depois do rótulo, no mesmo parágrafo ou no seguinte (quando o rótulo é título); numa
+# tabela, só a linha do rótulo. Também valem `Veredito do avaliador:` e `## Veredito do avaliador` sem (C1).
+VERDICT_LABEL_RE = re.compile(
+    r"Veredito do avaliador \(C1\)|\*\*Veredito do avaliador:\*\*|^#{1,6}[ \t]+Veredito do avaliador\b"
+    r"|^[ \t>*_-]*Veredito do avaliador:",
+    re.IGNORECASE | re.MULTILINE,
+)
 VERDICT_VALUE_RE = re.compile(r"\b(PASS_PENDENTE_RECIBO|PENDENTE|PASS|NEEDS_WORK|N\.?A\.?)\b", re.IGNORECASE)
 # Declaração sobre o avaliador, em linha própria; o tipo em CAIXA ALTA, para que "avaliador na rodada 1"
 # não vire N.A. nem "avaliador pendente de recibo" vire PENDENTE.
@@ -340,10 +345,16 @@ def verdicts_in(content):
     """(veredito, texto onde o AVALIACAO vale) para cada rótulo de veredito."""
     found = []
     for lm in VERDICT_LABEL_RE.finditer(content):
-        parts = PARAGRAPH_END_RE.split(content[lm.end():], 2)
-        scope = parts[0]
-        if not VERDICT_VALUE_RE.search(scope) and len(parts) > 1:
-            scope = parts[0] + "\n\n" + parts[1]
+        inicio = content.rfind("\n", 0, lm.start()) + 1
+        fim = content.find("\n", lm.end())
+        fim = len(content) if fim < 0 else fim
+        if content[inicio:fim].lstrip().startswith("|"):
+            scope = content[lm.end():fim]  # numa tabela, a unidade é a linha do rótulo
+        else:
+            parts = PARAGRAPH_END_RE.split(content[lm.end():], 2)
+            scope = parts[0]
+            if not VERDICT_VALUE_RE.search(scope) and len(parts) > 1:
+                scope = parts[0] + "\n\n" + parts[1]
         vm = VERDICT_VALUE_RE.search(scope)
         if vm:
             found.append((vm.group(1).upper(), scope))

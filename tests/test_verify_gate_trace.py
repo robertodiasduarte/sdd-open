@@ -78,6 +78,24 @@ class Trace(Sandbox):
                 b = self.gate("sdd/fixtures/" + fx)
                 self.assertEqual(a, b)
 
+    def test_trace_sem_permissao_nao_muda_a_saida(self):
+        (self.r / "sdd/traces").mkdir(parents=True)
+        arq = self.escreve(self.r, "sdd/traces/FIXTURE_CONTROLE.jsonl", "")
+        arq.chmod(0o444)
+        tranca = self.r / "trancada"
+        tranca.mkdir()
+        tranca.chmod(0o555)
+        try:
+            a = self.gate("sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md", env=dict(self.env, SDD_TRACE="off"))
+            self.assertEqual(self.gate("sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md"), a)
+            for pasta in ("trancada", "trancada/sub"):
+                with self.subTest(pasta=pasta):
+                    self.assertEqual(self.gate("sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md",
+                                               env=dict(self.env, SDD_TRACE_DIR=pasta)), a)
+        finally:
+            tranca.chmod(0o755)
+            arq.chmod(0o644)
+
     def test_saida_igual_com_e_sem_trace(self):
         for fx in FIXTURES:
             for flags in ((), ("--strict",)):

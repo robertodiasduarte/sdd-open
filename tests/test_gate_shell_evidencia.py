@@ -50,6 +50,20 @@ class GateShellEvidencia(Sandbox):
                 rc, out = self.gate("l.log")
                 self.assertEqual(rc, 2, out)
 
+    def test_bordas_do_pipe(self):
+        casos = {
+            "$ cmd | LC_ALL=C sort\n[exit=0]\n": 2,
+            "$ cmd |& tail -1\n[exit=0]\n": 2,
+            "$ cmd\n[exit= ]\n": 2,
+            "$ cmd | tail -3; echo \"[exit=${PIPESTATUS[0]}]\"\n[exit=1]\n": 0,
+            "$ set -o pipefail; cmd | tail -3\n[exit=1]\n": 0,
+        }
+        for log, esperado in casos.items():
+            with self.subTest(log=log):
+                self.escreve(self.r, "l.log", log)
+                rc, out = self.gate("l.log")
+                self.assertEqual(rc, esperado, out)
+
     def test_rc_capturado_depois_do_pipe_nao_salva(self):
         self.escreve(self.r, "l.log", "$ npm test | tail -5; rc=$?\nerro\n[exit=0]\n")
         rc, out = self.gate("l.log")
@@ -100,6 +114,18 @@ class ModoDiff(Sandbox):
         self.assertEqual(rc, 2, out)
         self.assertEqual(sorted(re.findall(r"^🛑 (\S+\.log:\d+)", out, re.M)),
                          ["sdd/reports/evidence/NOVA/ação.log:2", "sdd/reports/evidence/NOVA/b.log:2"])
+
+    def test_staged_e_rastreado_modificado_tambem_entram(self):
+        self.escreve(self.r, "sdd/reports/evidence/NOVA/s.log", "$ y | head -1\ny\n[exit=0]\n")
+        self.git(self.r, "add", "sdd/reports/evidence/NOVA/s.log")
+        rc, out = self.gate()
+        self.assertEqual(rc, 2, out)  # só staged
+        self.git(self.r, "checkout", "-q", "main")
+        self.git(self.r, "checkout", "-q", "-b", "feat2")
+        self.escreve(self.r, "sdd/reports/evidence/VELHA/a.log", "$ npm test | cut -c1-9\n[exit=0]\n")
+        rc, out = self.gate()
+        self.assertEqual(rc, 2, out)  # rastreado, modificado e não commitado
+        self.assertIn("sdd/reports/evidence/VELHA/a.log:2", out)
 
     def test_de_subpasta(self):
         self.escreve(self.r, "sdd/reports/evidence/NOVA/b.log", "$ npm test | head -3\n[exit=0]\n")

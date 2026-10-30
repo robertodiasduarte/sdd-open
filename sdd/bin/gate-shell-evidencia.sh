@@ -6,17 +6,18 @@
 # "verde". No zsh, `${PIPESTATUS[0]}` sai vazio e o log fica `[exit=]`, sem exit nenhum.
 #
 # Regra (por linha `[exit=N]` ou `exit=N`, olhando o último `$ <comando>` acima dela no mesmo log):
-#   🛑 o comando tem `|` (pipe simples; `||` não conta), o último estágio é um FORMATADOR
-#      (tail head cat tee wc sed cut sort uniq column tr fold nl) e não há `rc=$?`, `PIPESTATUS` nem
-#      `pipefail` antes do último pipe ⇒ o número gravado é do formatador.
-#   🛑 `[exit=]` vazio, ou `[exit=$?]` literal ⇒ não há exit nenhum.
+#   🛑 o comando tem `|` ou `|&` (`||` não conta), o último estágio é um FORMATADOR (tail head cat tee
+#      wc sed cut sort uniq column tr fold nl, mesmo com `VAR=valor` antes), não há `rc=$?` antes do
+#      último pipe nem `PIPESTATUS`/`pipefail` no comando ⇒ o número gravado é do formatador.
+#   🛑 `[exit=]` vazio (com ou sem espaço, com ou sem colchete), ou `[exit=$?]` literal ⇒ não há exit.
 #   ✅ `| grep -c X`, `| jq -e`, `| awk '…exit 1'` não são acusados: ali o último estágio É a asserção.
 #   A regra é conservadora com comando composto (`… | tail -1 && outro`, `for … done`): acusa pelo
 #   último pipe, mesmo quando o exit gravado veio de outro comando depois dele — confira o log.
 #
 # Uso:
 #   sdd/bin/gate-shell-evidencia.sh                 # *.log de sdd/reports/evidence/ tocados contra
-#                                                   # origin/<project.default_branch>, mais os não rastreados
+#                                                   # origin/<project.default_branch>, mais os staged, os
+#                                                   # modificados e os não rastreados
 #   sdd/bin/gate-shell-evidencia.sh --base <ref>    # idem, outra base
 #   sdd/bin/gate-shell-evidencia.sh <log|pasta>…    # caminhos explícitos (pasta = todos os *.log dentro)
 #
@@ -62,6 +63,7 @@ if [ "${MODO}" = "diff" ]; then
   EVID="sdd/reports/evidence"
   git -c core.quotepath=false diff --name-only --diff-filter=AMR "${BASE}...HEAD" -- "${EVID}" > "${LISTA}" 2>/dev/null \
     || uso "git diff ${BASE}...HEAD falhou: sem escopo confiável, não avalio" "passe --base <ref> existente, ou os logs."
+  git -c core.quotepath=false diff --name-only --diff-filter=AMR HEAD -- "${EVID}" >> "${LISTA}" 2>/dev/null
   git -c core.quotepath=false ls-files --others --exclude-standard -- "${EVID}" >> "${LISTA}" 2>/dev/null
 fi
 LC_ALL=C sort -u -o "${LISTA}" "${LISTA}"
@@ -73,22 +75,24 @@ FNR == 1 { cmd = ""; cmdraw = "" }
   if ($0 ~ /^\[?exit=\$\?\]?/) {
     printf("🛑 %s:%d — `%s` literal: o exit nunca foi expandido\n", FILENAME, FNR, $0); next
   }
-  if ($0 ~ /^\[?exit=\]?[ \t]*$/) {
+  if ($0 ~ /^\[?exit=[ \t]*\]?[ \t]*$/) {
     printf("🛑 %s:%d — `%s` vazio: não há exit nenhum aqui (no zsh, ${PIPESTATUS[0]} sai vazio)\n", FILENAME, FNR, $0); next
   }
   if (cmd == "") next
   c = cmd
   i = index(c, "   #"); if (i > 0) c = substr(c, 1, i - 1)
-  if (c ~ /pipefail/) next
+  if (c ~ /pipefail/ || c ~ /PIPESTATUS/) next
   gsub(/\|\|/, "\001", c)
+  gsub(/\|&/, "|", c)
   n = split(c, parts, "|")
   if (n < 2) next
   lp = 0; rest = c
   while ((k = index(rest, "|")) > 0) { lp += k; rest = substr(rest, k + 1) }
   h = index(c, "rc=$?"); if (h > 0 && h < lp) next
-  h = index(c, "PIPESTATUS"); if (h > 0 && h < lp) next
   last = parts[n]; sub(/^[ \t]+/, "", last); sub(/[ \t]+$/, "", last)
-  split(last, tk, /[ \t]+/); t = tk[1]; sub(/^.*\//, "", t)
+  nt = split(last, tk, /[ \t]+/); j = 1
+  while (j < nt && tk[j] ~ /^[A-Za-z_][A-Za-z0-9_]*=/) j++
+  t = tk[j]; sub(/^.*\//, "", t)
   if (t ~ /^(tail|head|cat|tee|wc|sed|cut|sort|uniq|column|tr|fold|nl)$/) {
     show = cmdraw; if (length(show) > 110) show = substr(show, 1, 107) "..."
     printf("🛑 %s:%d — o número gravado (%s) é o exit de `%s`, não do seu comando\n", FILENAME, FNR, $0, t)

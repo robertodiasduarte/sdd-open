@@ -95,7 +95,19 @@ N="$(printf '%s' "${SUJOS}" | grep -c .)"
 echo "🛑 ${N} arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do"
 echo "   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):"
 printf '%s' "${SUJOS}" | sed 's/^/   - /'
-args="$(printf '%s' "${SUJOS}" | sed "s/'/'\\\\''/g; s/^/'/; s/\$/'/" | tr '\n' ' ')"
-printf 'RESULTADO: VERMELHO\n→ git -C %s add -- %s&& git -C %s commit -m "wip(build): congelado para o avaliador"\n' \
+# o comando leva só o que o git ainda reconhece (no disco ou no índice): a origem de uma renomeação já
+# staged não existe em nenhum dos dois, e `git add` com ela falharia
+ADD=""
+while IFS= read -r p; do
+  [ -n "${p}" ] || continue
+  if [ -e "${TOP}/${p}" ] || git -C "${TOP}" ls-files --error-unmatch -- "${p}" >/dev/null 2>&1; then
+    ADD="${ADD}${p}
+"
+  fi
+done <<EOF
+${SUJOS}
+EOF
+args="$(printf '%s' "${ADD}" | sed "s/'/'\\\\''/g; s/^/'/; s/\$/'/" | tr '\n' ' ')"
+printf 'RESULTADO: VERMELHO\n→ git -C %s add -A -- %s&& git -C %s commit -m "wip(build): congelado para o avaliador"\n' \
   "${TOP}" "${args}" "${TOP}"
 exit 1
