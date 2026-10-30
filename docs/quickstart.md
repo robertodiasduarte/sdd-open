@@ -112,7 +112,19 @@ as success.
 
 ## 4. Your first spec
 
-Ask your agent for the Define phase on the example that ships with the install:
+> **The method's rule:** never move on to the next phase with a document you have not read.
+> Fixing a sentence now costs minutes; fixing it after the code exists costs hours.
+
+Each phase reads the document the previous one wrote, so each one ends the same way: you read what
+it produced before asking for the next.
+
+**Brainstorm (optional).** When the idea is still vague, `/sdd-brainstorm <your idea>` asks one
+question at a time, compares 2–3 approaches and writes `sdd/features/BRAINSTORM_<FEATURE>.md`.
+
+**Validate before moving on:** is the idea described the way you think of it? Is anything missing
+or extra? Ask for the fix now.
+
+**Define.** Ask your agent for the Define phase on the example that ships with the install:
 
 ```text
 /sdd-define sdd/fixtures/BRAINSTORM_EXEMPLO.md
@@ -128,16 +140,52 @@ The agent will push back in three ways, all deliberate:
 - **The gate is a command.** The DEFINE only leaves with a `## Verify Gate` block that
   `sdd/bin/verify-gate.sh --print` parses without error.
 
-Then: `/sdd-design`, `/sdd-build` (the gate is the stop condition) and `/sdd-release` (one
-human approval before anything ships).
+**Validate before moving on:** read the acceptance tests and the out-of-scope list — that is what
+will be built, no more and no less.
+
+**Design.** `/sdd-design sdd/features/DEFINE_<FEATURE>.md` writes the technical plan and the exact
+list of files the Build will touch. Say where the solution will run: it shapes the Design, not the
+agent you build with.
+
+| You want… | Write in the Design | In the Build |
+|---|---|---|
+| a website or a web system | web application (SaaS) | any of the 7 agents, opened in the project folder |
+| a Windows program | Windows executable (.exe) | any of the 7 agents, opened in the project folder |
+| a Mac program | macOS application | any of the 7 agents, opened in the project folder |
+| a routine with no screen | command-line script that reads and writes files | any of the 7 agents, opened in the project folder |
+
+The Build runs the Verify Gate in a terminal, and all 7 have one: Claude Code, Codex CLI,
+Gemini CLI, Cursor, Kimi Code, Grok Build and GLM via Claude Code.
+
+**Validate before moving on:** this is the last cheap stop. After it, a change means rewriting code.
+
+**Build.** `/sdd-build sdd/features/DESIGN_<FEATURE>.md` builds only the files in the manifest and
+stops when the Verify Gate exits `0`.
+
+**Validate before moving on:** use what was built and compare it with the Define; anything different
+goes back to the agent before the release.
+
+**Release.** `/sdd-release <what to ship>` runs the checks again, shows one block — what goes up and
+whether the push publishes by itself — and asks a single question. Nothing ships without your yes.
 
 ## 5. When the package updates
 
 ```bash
 cd /tmp/sdd-open && git pull
-cd my-project && bash /tmp/sdd-open/bin/sdd-open.sh sync --check   # what drifted?
-bash /tmp/sdd-open/bin/sdd-open.sh sync                            # regenerate the adapters
+cd my-project && bash /tmp/sdd-open/bin/sdd-open.sh doctor   # what is older than the package?
 ```
+
+`init` never overwrites a skill or a `sdd/bin/` script you already have, and `sync` only regenerates
+the adapters — so neither one, alone, brings a new skill version. `doctor` names each skill and each
+`sdd/bin/` file older than the package. For each skill it names:
+
+```bash
+rm -r .agents/skills/sdd-build                                 # the folder doctor named; your edits in it are lost
+bash /tmp/sdd-open/bin/sdd-open.sh init --vendors codex --yes  # copies the package version back
+bash /tmp/sdd-open/bin/sdd-open.sh sync                        # regenerates the adapters from it
+```
+
+A `sdd/bin/` file goes the same way: delete it (if you did not edit it) and run `init`.
 
 `sync` **never** writes inside `sdd/` — your specs, reports, handoffs and playbook are yours.
 Files under `.claude/skills/`, `.cursor/skills/`, `CLAUDE.md` and `GEMINI.md` are generated:

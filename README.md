@@ -37,7 +37,7 @@ of yours is overwritten. [Full quickstart →](docs/quickstart.md)
 | **Verify Gate** | acceptance as a command, with a six-state exit contract (`0/2/3/4/5/64`) — including *inconclusive* and *needs a human signature*, because "red or green" lies when a tool is missing or the criterion is aesthetic. Output always ends in `RESULTADO:` + what to do; `--strict` for CI | `sdd/bin/verify-gate.sh` · `sdd/templates/fragments/VERIFY_GATE.md` |
 | **EARS grammar** | acceptance tests in fixed patterns (When / While / If–Then / Where / shall); the *unwanted* pattern forces you to name the failure mode before building | `fragments/EARS.md` |
 | **Clarify protocol** | ambiguity becomes a marker in the spec, never an assumption; an active marker returns exit `5`, a distinct state no loop can "fix" by iterating the design | `fragments/CLARIFY.md` |
-| **Graded release verdict** | PASS / CONCERNS / FAIL / WAIVED; a waiver is human-only, class-restricted, with a written reason | skill `sdd-release` |
+| **Graded release verdict** | PASS / CONCERNS / FAIL / WAIVED; a waiver is human-only, class-restricted, with a written reason. Publishing takes a single approval, after one block that says what goes up and whether the push publishes by itself | skill `sdd-release` |
 | **Evidence contract** | in the build report a criterion only becomes `true` with an openable file or a dated human receipt — "should work" is `false` | `sdd/bin/report-lint.py` · `fragments/EVIDENCIA.md` |
 | **Landmine playbook (ACE-lite)** | pitfalls with stable IDs, *helped/bit* counters, greppable surfaces and delta-only updates — a session proposes, the Release phase applies with human approval | `sdd/playbook.md` · `sdd/bin/playbook-lint.sh` · skill `sdd-playbook` |
 | **Fresh-context evaluation** | whoever judges did not build: an agent without the build conversation proves each criterion by executing, never by reading the diff | skill `sdd-build` › `references/contexto-fresco.md` |
@@ -45,11 +45,26 @@ of yours is overwritten. [Full quickstart →](docs/quickstart.md)
 | **Second-vendor adversarial review** | fixed-format answer (verdict, ≤3 risks, fixes, what to ignore); every note is applied or rebutted in writing | `fragments/ADVISOR_CONSULT.md` |
 | **Read-only harness audit** | a harness accretes: commands nobody calls, agents nobody dispatches, docs that drifted from the code. One read-only pass inventories every command, agent, skill, hook and script, measures inbound references and recency, and emits a single `AUDITORIA_SDD_<date>.md` — it never deletes: the cleanup itself stays a human decision | skill `sdd-auditoria-harness` · `scripts/collect_evidence.py` |
 | **Governance review** | for financial, accounting or tax systems, checks the DEFINE against a curated catalog (entries that cannot be deleted, period close, audit trail, segregation of duties, exact arithmetic…) and recommends EARS requirements with a negative test the Verify Gate runs; a legal basis is only cited once confirmed in the catalog; one decision per item, and a rejection is recorded as an accepted risk | skill `sdd-governanca` |
+| **Knowledge base** | what you know about a domain (a process, a regulation, a manual) organized as concepts and recipes the agent can consult; for regulations, the period each rule applies, the source with SHA-256 and the rule → source → test map. The Define cites only domains that exist, checked by `sdd/bin/kb-dominios.py` | skill `sdd-kb` · `sdd/kb/` |
 | **Handoff by feature card** | one file per feature in the repository, with a self-contained resume prompt — no dependency on any agent's memory | skill `sdd-handoff` · `sdd/handoffs/` |
+
+## The 17 skills
+
+| Block | Skills | When |
+|---|---|---|
+| **Prepare** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | once per computer and per project (is everything ready? put it in git, a commit alarm against client data); the new-session for every work front |
+| **Create** | `sdd-kb` (optional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-ux-review` · `sdd-design` · `sdd-build` | once per feature — the SDD flow |
+| **Close** | `sdd-handoff` · `sdd-release` | at the end of each session and of each front |
+| **Cross-cutting** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-auditoria-harness` | when the case calls for it |
+
+New to git and the terminal? The [student guide](docs/pt-BR/guia-do-aluno.md) (PT) walks the whole
+path, from the first install to the first release.
 
 ## The workflow
 
 ```text
+prepare once:  sdd-checar-ambiente · sdd-iniciar-repo · sdd-higiene-dado · sdd-new-session · (optional) sdd-kb
+
 /sdd-brainstorm → /sdd-define → /sdd-governanca → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
   (optional)           ↑          (if money)          (if UI)           ↑             │             │
                        └───────── /sdd-iterate corrects course ─────────┘             │             │
@@ -79,6 +94,8 @@ Works on macOS, Linux and Windows (Git Bash/WSL): bash 3.2, zero zsh, zero symli
 - [Verify Gate contract](docs/verify-gate-contract.md) ([PT](docs/pt-BR/verify-gate-contract.md))
 - [Adaptation guide](docs/adaptation-guide.md) ([PT](docs/pt-BR/adaptation-guide.md)) — config slots, landmines, worktrees
 - [Comparison](docs/comparison.md) ([PT](docs/pt-BR/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
+- [Roadmap](docs/roadmap.md) ([PT](docs/pt-BR/roadmap.md)) — what is planned and what is under evaluation
+- [Student guide](docs/pt-BR/guia-do-aluno.md) (PT) — step by step for someone who never used git or a terminal
 
 ## The path
 

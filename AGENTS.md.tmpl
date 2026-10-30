@@ -7,8 +7,10 @@ que ficou pronto**. O critério de aceite é um **comando com exit code**, não 
 
 | Fase | Skill | Produz |
 |---|---|---|
+| Antes | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | máquina conferida · projeto no git e no GitHub privado · alarme de commit contra dado de cliente · frente de trabalho isolada |
+| KB | `sdd-kb` | `sdd/kb/<domínio>/` (opcional) — o que o agente consulta sobre o domínio |
 | 0 | `sdd-brainstorm` | `sdd/features/BRAINSTORM_{F}.md` (opcional) |
-| 1 | `sdd-define` | `sdd/features/DEFINE_{F}.md` — ATs em EARS + `## Verify Gate` executável |
+| 1 | `sdd-define` | `sdd/features/DEFINE_{F}.md` — ATs em EARS + `## Verify Gate` executável; o KB Domains passa por `sdd/bin/kb-dominios.py` |
 | Gov | `sdd-governanca` | `sdd/reviews/GOVERNANCA_REVIEW_{F}.md` (quando o DEFINE trata dinheiro, tributo ou dado pessoal) |
 | UX | `sdd-ux-review` | `sdd/reviews/UX_REVIEW_{F}.md` (quando há interface) |
 | 2 | `sdd-design` | `sdd/features/DESIGN_{F}.md` — decisões + manifest de arquivos |
@@ -31,6 +33,8 @@ que ficou pronto**. O critério de aceite é um **comando com exit code**, não 
    (`sdd/reports/evidence/…`) ou recibo humano datado. "Deve funcionar" é `false`.
 5. **Artefatos ficam em `sdd/`.** Templates em `sdd/templates/`; config em `sdd/config.yaml`.
 6. Feche toda fase com o resumo de etapa (`sdd/templates/fragments/RESUMO_ETAPA.md`).
+7. **Publicar pede um OK só.** A `sdd-release` mostra um bloco com o que sobe e se o push publica
+   sozinho, e só segue com o sim de quem usa.
 
 Agentes preparados neste projeto: {{VENDORS}}. Arquivos em `.claude/skills/`, `.cursor/skills/`,
 `CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.

@@ -112,9 +112,12 @@ docs/cli-conventions.md
 docs/comparison.md
 docs/pt-BR/adaptation-guide.md
 docs/pt-BR/comparison.md
+docs/pt-BR/guia-do-aluno.md
 docs/pt-BR/quickstart.md
+docs/pt-BR/roadmap.md
 docs/pt-BR/verify-gate-contract.md
 docs/quickstart.md
+docs/roadmap.md
 docs/verify-gate-contract.md
 scripts/check-versions.py
 scripts/next-version.sh
@@ -176,6 +179,7 @@ tests/test_conversa.py
 tests/test_correcoes_w0.py
 tests/test_deploy_espera_testes.py
 tests/test_design_lint.py
+tests/test_docs.py
 tests/test_handoff_lint.py
 tests/test_inventario.py
 tests/test_kb_dominios.py

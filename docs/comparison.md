@@ -52,7 +52,7 @@ port it into whatever you already run.
 
 - **OpenSpec's specs-as-diffs** solves a problem SDD Open has not solved: when many branches run
   in parallel, each carrying a full spec, the canonical truth drifts. Deltas against a canonical
-  capability set are a better answer than long-lived documents. This is on the roadmap here.
+  capability set are a better answer than long-lived documents. This is on the [roadmap](roadmap.md) here.
 - **Spec-Kit's `/analyze`** checks bidirectional coverage — every requirement has a task, every
   task traces to a requirement. SDD Open has no equivalent yet, which is a real gap: its gate
   proves the *acceptance* passed, not that the manifest *covered* every requirement.

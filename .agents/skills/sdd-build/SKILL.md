@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.0"
+  version: "2.2.1"
   updated: "2026-10"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.2.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
 critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
@@ -199,6 +199,25 @@ migration listada sem a linha).
 [ ] Drift registrado (mesmo zero) · candidatos ao playbook com evidência (ou "nenhum")
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
+
+## Por que cada regra existe
+
+- **O critério de parada é o Verify Gate** — "parece pronto" muda com o cansaço de quem constrói; um
+  comando com exit dá a mesma resposta para todos, inclusive para a release, que roda o gate de novo.
+- **A primeira tarefa é o gate, falhando** — um gate que nunca ficou vermelho não prova nada; script
+  ausente sai 3 (inconclusivo), não 2.
+- **Commit antes de qualquer revisão** — um revisor de "o que não foi commitado" olhando uma árvore já
+  commitada revisa o vazio, e um review que passou sobre nada é pior que nenhum.
+- **Quem julga não é quem constrói** — o autor confirma o que quis fazer; quem não viu a conversa prova
+  o que o DEFINE pede, executando, não lendo o diff.
+- **Evidência abrível, nunca "deve funcionar"** — a frase não pode ser conferida depois; um log com o
+  comando na 1ª linha pode, e o `report-lint.py` reprova o critério sem ele.
+- **Correção é redispatch fresco, não resposta na mesma conversa** — na 2ª falha, o contexto que errou
+  carrega a hipótese errada; recomeçar só com o critério e o erro quebra o ciclo.
+- **Migration provada por leitura** — `exit 0` não prova que a coluna está no banco certo (LM-004), e o
+  código iria para produção chamando o que não existe.
+- **Prompt fora do inventário para o build e pergunta** — texto de produção improvisado escapa do
+  contrato que o Design fechou e de toda revisão.
 
 ## Encerramento (obrigatório)
 

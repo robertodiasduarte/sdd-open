@@ -5,7 +5,7 @@ compatibility: "Requer bash >= 3.2 e git >= 2.20. Não executa nada no banco do 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.0"
+  version: "2.2.1"
   updated: "2026-10"
   fase: "Gov"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-governanca — revisão de governança
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-governanca v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-governanca v2.2.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Num sistema financeiro, contábil ou fiscal, governança responde uma pergunta: **daqui a cinco anos,
 um fiscal, um auditor ou um perito reconstrói o que aconteceu, quem fez e por quê — com prova de que
@@ -115,6 +115,22 @@ DEFINE e esta skill.
 [ ] Aplicados viram AT no DEFINE + script em sdd/tests/governanca/ chamado pelo cmd do gate
 [ ] Clarity Score antes e depois · linha fixa de responsabilidade · resumo de etapa
 ```
+
+## Por que cada regra existe
+
+- **Base legal só do catálogo, e só confirmada** — um artigo errado citado num sistema fiscal vira
+  argumento contra o próprio cliente; o fundamento técnico basta até a base ser conferida.
+- **Uma decisão por lacuna** — "aplicar todos" põe no Define requisitos que ninguém leu, e cada um custa
+  uma migração depois do build.
+- **Sem tema financeiro, N.A. sem relatório** — relatório vazio ensina a pessoa a não ler o próximo, que
+  pode ter achado de verdade.
+- **O script de prova só sai 0 quando o banco recusa** — sem `!` nem `|| true` na frente: inverter o
+  sinal faz o gate aprovar justamente o banco que aceita a ação proibida.
+- **Nunca contra produção** — mesmo com `rollback`, a tentativa trava a linha e dispara os triggers.
+- **Quem escreveu o Define não se revisa** — o autor lê o que quis escrever, não o que escreveu; a
+  lacuna que não viu ao escrever ele também não vê ao revisar.
+- **A skill recomenda; o profissional decide e responde** — a responsabilidade técnica é de quem assina,
+  e a linha fixa no fim do relatório deixa isso registrado.
 
 ## Encerramento (obrigatório)
 

@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.0"
+  version: "2.3.1"
   updated: "2026-10"
   fase: "1"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-define — Fase 1
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-define v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-define v2.3.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
 depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
@@ -180,6 +180,23 @@ entram no `cmd` do Verify Gate; se algum não entrar, registre o motivo no DEFIN
 [ ] kb-dominios.py sai 0 (KB Domains de ls sdd/kb/ ou nenhum)
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
+
+## Por que cada regra existe
+
+- **O aceite é um comando com exit** — prosa ("o desconto deve funcionar") cada um lê do seu jeito; um
+  comando dá a mesma resposta para quem construiu, para quem revisa e para a release.
+- **EARS, com o padrão indesejado (If–Then)** — a gramática fixa obriga a nomear o gatilho, e o If–Then
+  obriga a nomear a falha antes de construir, quando decidir o que fazer com ela ainda é barato.
+- **Adjetivo sem número é recusado** — "rápido" passa em qualquer teste e não reprova nenhum; "em menos
+  de 2 s" pode falhar, e só o que pode falhar prova alguma coisa.
+- **A dúvida vira marcador no lugar exato, nunca suposição** — a suposição silenciosa vira código; o
+  marcador faz o gate devolver 5 e segura todas as fases até alguém responder.
+- **Cerca de 10 ATs, no máximo** — acima disso a spec está descrevendo implementação ou juntando duas
+  features, e o gate fica caro demais para rodar a cada mudança.
+- **KB Domains só de `ls sdd/kb/`, ou `nenhum`** — um domínio inventado manda o Design procurar padrões
+  onde não há nada; o `kb-dominios.py` reprova o nome que não tem pasta.
+- **O gate composto nasce vermelho** — uma asserção que já passa antes da mudança não prova a mudança;
+  rodá-la contra a árvore antiga mostra que ela avalia alguma coisa.
 
 ## Encerramento (obrigatório)
 

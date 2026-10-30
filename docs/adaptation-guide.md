@@ -31,9 +31,10 @@ prompts:
 
 ## The extension point that matters most: landmines
 
-[`{{LANDMINES_CMD}}`](../{{LANDMINES_CMD}}) ships as a **mechanism with
-three generic rules** — a secret literal in a tracked file, an out-of-band migration without a
-matching commit, a dirty working tree at release time.
+The `release.landmines_cmd` slot of [`sdd/config.yaml`](../sdd/config.example.yaml)
+(`{{LANDMINES_CMD}}` in the skills) ships **empty**: the release runs your script when you fill it.
+A good first version has three generic rules — a secret literal in a tracked file, an out-of-band
+migration without a matching commit, a dirty working tree at release time.
 
 That emptiness is deliberate. In the codebase this came from, that script carries dozens of
 rules, and every one of them is a scar: a specific outage, a specific silent failure, a specific

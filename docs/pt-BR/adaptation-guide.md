@@ -33,9 +33,11 @@ prompts:
 
 ## O ponto de extensão que mais importa: landmines
 
-O [`{{LANDMINES_CMD}}`](../../{{LANDMINES_CMD}}) vem como um **mecanismo com
-três regras genéricas** — um segredo literal em arquivo versionado, uma migration aplicada fora de
-banda sem commit correspondente, e uma árvore de trabalho suja na hora do release.
+O slot `release.landmines_cmd` do [`sdd/config.yaml`](../../sdd/config.example.yaml)
+(`{{LANDMINES_CMD}}` nas skills) vem **vazio**: o release roda o seu script quando você o preenche.
+Uma boa primeira versão tem três regras genéricas — um segredo literal em arquivo versionado, uma
+migration aplicada fora de banda sem commit correspondente, e uma árvore de trabalho suja na hora do
+release.
 
 Esse vazio é deliberado. No codebase de onde isto veio, aquele script carrega dezenas de regras, e
 cada uma delas é uma cicatriz: uma queda específica, uma falha silenciosa específica, uma

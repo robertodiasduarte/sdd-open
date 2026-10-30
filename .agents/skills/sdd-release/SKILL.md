@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.0"
+  version: "2.3.1"
   updated: "2026-10"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.3.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -264,6 +264,28 @@ arquivo inesperado no diff · conflito real · base moveu · escrita em produç�
 
 Fix pequeno com decisão clara pode pular BRAINSTORM/DEFINE/DESIGN — mas a sequência 0–20
 vale **sempre**.
+
+## Por que cada regra existe
+
+- **O OK vem antes do push** — com deploy automático, depois do push não há "antes" para onde voltar.
+- **`git add` por nome, nunca `-A`** — com outra frente aberta na mesma máquina, o `-A` publica o
+  trabalho que nem terminou.
+- **A base é integrada antes do OK e reconferida antes do push** — o que se aprova tem de ser o que vai
+  subir; se outra frente entrou no meio, re-landar, nunca `--force`, que apagaria o trabalho dela.
+- **Ledger dentro do commit atômico, append-only, sem SHA** — o registro e o código entram juntos ou não
+  entram; o SHA sai do git, e copiá-lo no arquivo criaria um segundo dono para o mesmo fato.
+- **O deploy é conferido pelo SHA publicado** — com dois pushes seguidos, o "último run" é de outro
+  commit, e um run verde de outro commit não diz nada sobre o seu.
+- **Nunca redisparar um run antigo** — o rerun usa o commit daquele run; com fila, ele roda depois do
+  push mais novo e publica código velho por cima.
+- **Uma pergunta só, na última linha do bloco** — duas paradas viram duas aprovações pela metade; a
+  ambiguidade vai dentro do bloco, antes da pergunta.
+- **"O deploy espera os testes?" vem do script** — a memória de como o workflow era não vale;
+  `continue-on-error` ou `|| true` fazem um teste vermelho não segurar nada.
+- **O agente nunca emite WAIVED** — dispensar um achado é decisão de quem responde pela publicação, e
+  fica registrada com motivo e nome.
+- **Comando remoto sem pedir senha** — o pedido de senha aparece no terminal do agente, não na tela da
+  pessoa; com o OK já dado, a publicação trava pela metade sem ninguém ver.
 
 ## Encerramento (obrigatório)
 

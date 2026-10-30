@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; funciona em qualquer agente que
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.0"
+  version: "2.1.1"
   updated: "2026-10"
   fase: "0"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-brainstorm — Fase 0 (opcional)
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-brainstorm v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-brainstorm v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Explorar antes de especificar. O produto desta fase é **clareza**, não código: um documento
 que o `/sdd-define` consegue transformar em spec com pouca pergunta.
@@ -146,6 +146,24 @@ assunções em "O que precisa de você" no fechamento. Nunca invente uma respost
 [ ] Requisitos-rascunho para o Define incluídos
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
+
+## Por que cada regra existe
+
+- **Uma pergunta por mensagem** — duas perguntas juntas recebem uma resposta só, quase sempre à mais
+  fácil; a outra some sem ninguém perceber.
+- **Pelo menos 3 perguntas antes das abordagens** — abordagem proposta cedo ancora a conversa: as
+  perguntas seguintes passam a confirmar a solução em vez de entender o problema.
+- **Sempre perguntar por amostras** — uma planilha real derruba suposições que uma descrição não
+  derruba (o campo que vem vazio, o formato que muda no meio do mês).
+- **Liderar com a recomendação** — três opções sem opinião devolvem a decisão a quem pediu ajuda
+  justamente para decidir.
+- **O que sai pelo YAGNI fica registrado, e nenhum corte é inventado** — o registro impede que a ideia
+  volte escondida no Design; um corte inventado só para preencher a tabela apaga uma decisão que
+  ninguém tomou.
+- **Duas confirmações antes de gravar** — o documento vira a entrada do Define; um mal-entendido gravado
+  aqui chega ao código com cara de requisito.
+- **Sessão autônoma marca `ASSUMIDO`, nunca inventa a resposta do usuário** — no documento, uma resposta
+  inventada não se distingue de uma real, e o Define a trata como decisão tomada.
 
 ## Encerramento (obrigatório)
 

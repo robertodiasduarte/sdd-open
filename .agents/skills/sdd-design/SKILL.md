@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.0"
+  version: "2.1.1"
   updated: "2026-10"
   fase: "2"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Plano + especificação + decisões num documento. O DESIGN diz **como** construir o que o
 DEFINE contratou — e é o último ponto em que mudar de abordagem é barato.
@@ -167,6 +167,21 @@ registre `diversidade: nenhuma` — mais fraco, mas honesto.
 [ ] LLM Prompts: se true, inventário 100% + contrato por linha; se false, re-check com zero hits
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
+
+## Por que cada regra existe
+
+- **Títulos `### Decision N:` fixos** — outras ferramentas leem as decisões por esse título; renomear
+  para "Decisão 1" ou "ADR-1" quebra quem lê, sem erro visível.
+- **Manifest sem ciclo e com `Total Files`** — com dependência circular não existe ordem de build
+  possível; o total confere que nenhuma linha se perdeu.
+- **Varredura de landmines sempre registrada, mesmo com 0 achados** — "0 aplicáveis" escrito prova que
+  a varredura rodou; a seção ausente não distingue "rodou e não achou" de "esqueceu".
+- **O DESIGN não escreve o prompt de produção** — escreve o contrato (tom, saída, fallback); o texto
+  final sai no Build, pela skill de prompt, em vez de virar rascunho congelado no documento.
+- **Revisão por outro vendor aqui, antes do código** — é o último ponto em que mudar de abordagem custa
+  uma edição de texto; depois do build, custa reescrever.
+- **`design-lint` no arquivo gravado** — conferir o rascunho na conversa não prova o arquivo que o Build
+  vai ler.
 
 ## Encerramento (obrigatório)
 

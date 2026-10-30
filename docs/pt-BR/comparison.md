@@ -57,7 +57,7 @@ você pode portar pra qualquer coisa que você já rode.
 - **O specs-as-diffs do OpenSpec** resolve um problema que o SDD Open não resolveu: quando muitas
   branches rodam em paralelo, cada uma carregando uma spec inteira, a verdade canônica desliza.
   Deltas contra um conjunto canônico de capacidades são uma resposta melhor que documentos de vida
-  longa. Isso está no roadmap aqui.
+  longa. Isso está no [roadmap](roadmap.md) aqui.
 - **O `/analyze` do Spec-Kit** confere cobertura bidirecional — todo requisito tem uma tarefa, toda
   tarefa remete a um requisito. O SDD Open ainda não tem equivalente, o que é uma lacuna real: o
   gate dele prova que o *aceite* passou, não que o manifest *cobriu* todos os requisitos.

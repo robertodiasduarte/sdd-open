@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Independe de stack visual; usa 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.0"
+  version: "2.3.1"
   updated: "2026-10"
   fase: "UX"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-ux-review — gate de UX/CX
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-ux-review v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-ux-review v2.3.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Traduzir requisitos em experiência **antes** que arquitetura e código endureçam. "Interface"
 inclui tela, linha de comando, arquivo gerado, e-mail: qualquer coisa que uma pessoa lê e
@@ -139,6 +139,21 @@ arquivo ou mensagem que alguém vai ler? Então existe UX.
 [ ] Handoff concreto para o Design
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
+
+## Por que cada regra existe
+
+- **Interface inclui linha de comando, arquivo gerado e e-mail** — tudo que uma pessoa lê e precisa
+  entender sem ajuda pode confundir, e o suporte paga por cada confusão.
+- **Violação de princípio vira MUST** — "premium" e "se tem que explicar, está errado" deixados como
+  sugestão são os primeiros cortados quando o prazo aperta.
+- **Contraste medido, nunca estimado** — o olho de quem desenhou se acostuma com a tela; o número
+  (4.5:1, 3:1) não.
+- **Lente cognitiva nunca vira MUST nem muda o status** — as lentes são heurísticas com exceções
+  conhecidas; promovê-las a regra bloqueia telas que estão certas.
+- **Entrevista de público só quando o DEFINE não diz quem usa, ou quando o aluno pede** — perguntar o que
+  já está escrito gasta a paciência que a pessoa vai precisar nas decisões que importam.
+- **Sem interface de nenhum tipo, ➖ registrado; nunca revisão por cerimônia** — revisão sem objeto
+  produz recomendações genéricas que o Design ignora, e ensina a ignorar as próximas.
 
 ## Encerramento (obrigatório)
 
