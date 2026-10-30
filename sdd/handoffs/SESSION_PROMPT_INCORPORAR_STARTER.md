@@ -4,18 +4,29 @@ Esta sessão começa numa **worktree limpa**. Os artefatos SDD da família (feat
 
 ## Preparar a worktree (antes de ler qualquer coisa)
 
-A frente **ainda não foi aberta**. Crie a worktree a partir de `origin/main` = `1d225e5` (tag `v2.2.8`) e copie os artefatos SDD para fora do commit:
+A frente já foi aberta pela `sdd-new-session` no fim da sessão 5: worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f8-hooks`, branch `feat/f8-hooks` nascida de `origin/main` = `1d225e5` (tag `v2.2.8`), com os artefatos SDD da branch `docs/incorporar-starter` já copiados (fora do commit). Abra o agente **nessa pasta** e confira:
+
+```bash
+cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-hooks
+git branch --show-current                                                 # esperado: feat/f8-hooks
+git status --short | head -4                                              # esperado: só "?? sdd/…"
+git log --oneline -1                                                      # esperado: 1d225e5 ou mais novo
+ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md
+GIT_TERMINAL_PROMPT=0 git fetch -q origin && git log --oneline -1 origin/main   # se main andou, rebase antes de começar
+GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.8                      # base do check-versions
+GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter && git diff --stat origin/docs/incorporar-starter -- sdd/handoffs   # vazio: a cópia está em dia
+```
+
+Se a pasta não existir (alguém a removeu), recrie do zero:
 
 ```bash
 cd /Users/robertoduarte/rdd-public/sdd-open
-GIT_TERMINAL_PROMPT=0 git fetch -q origin && git log --oneline -1 origin/main   # esperado: 1d225e5 ou mais novo
+GIT_TERMINAL_PROMPT=0 git fetch -q origin
 git worktree add /Users/robertoduarte/rdd-worktrees/sdd-open-f8-hooks -b feat/f8-hooks origin/main
 cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-hooks
 GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter
 git checkout origin/docs/incorporar-starter -- sdd/features sdd/handoffs sdd/reports sdd/reviews
 git rm -r -q --cached sdd/features sdd/handoffs sdd/reports sdd/reviews   # ficam no disco, fora do commit
-GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.8                      # base do check-versions
-git branch --show-current; git status --short | head -4                    # esperado: feat/f8-hooks; só "?? sdd/…"
 ```
 
 Se `/Users/robertoduarte/rdd-public/sdd-open` não for o clone de `https://github.com/robertodiasduarte/sdd-open.git`, use a worktree da sessão 5 como base (`git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f7-evidencia worktree add …`), se ela ainda existir. Não trabalhe nas worktrees antigas (`sdd-open-incorporar-starter`, `sdd-open-f6-docs`, `sdd-open-f7-evidencia`). O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
