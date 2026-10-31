@@ -42,7 +42,7 @@ uma nota, o sistema marca a linha da planilha". Ficou 1 ponto sem resposta, marc
 **Agora: etapa 4 — Perguntas** — Uma nota pode chegar duas vezes (o fornecedor reenvia o e-mail). Sem
 essa resposta, a conferência final não tem como saber o que é certo.
 
-**Sua decisão** — **O que fazer com uma nota que chega duas vezes?**
+**Sua decisão** — [D2 · muda o produto] **O que fazer com uma nota que chega duas vezes?**
 - **marcar uma vez e avisar** (recomendado) — a linha é marcada só na 1ª, e a 2ª vai para uma lista de
   repetidas: nas amostras, 2 de 40 notas vieram repetidas.
 - **ignorar a repetida** — marca uma vez e não avisa; mais simples, mas você não fica sabendo.

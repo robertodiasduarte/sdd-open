@@ -40,7 +40,7 @@ corrigir o valor de um lançamento já gravado; numa fiscalização, não haveri
 original. Se aplicada, a correção passa a ser um lançamento novo de estorno, e o teste de aceitação 4
 muda de "o analista edita o valor" para "o analista lança o estorno".
 
-**Sua decisão** — **O lançamento gravado passa a ser imutável?**
+**Sua decisão** — [D2 · muda o produto] **O lançamento gravado passa a ser imutável?**
 - **aplicar** (recomendado) — o requisito entra no DEFINE e o teste 4 é reescrito: é a garantia que um
   fiscal pede primeiro.
 - **recusar** — não entra; preciso do seu motivo, que vai para os riscos aceitos com o seu nome e a data.

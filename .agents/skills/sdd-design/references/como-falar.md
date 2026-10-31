@@ -40,7 +40,7 @@ projeto não tem armadilha registrada para leitura de XML.
 **Agora: etapa 2 — Decisões** — Antes de listar os arquivos, uma escolha muda o resto: onde fica a
 memória do que já foi conferido, para a nota repetida não ser marcada duas vezes.
 
-**Sua decisão** — **Onde guardar as notas já conferidas?**
+**Sua decisão** — [D2 · muda o produto] **Onde guardar as notas já conferidas?**
 - **uma coluna na própria planilha** (recomendado) — nada novo para instalar; a planilha já é o que você
   abre todo mês.
 - **um arquivo à parte** — a planilha fica limpa, mas são 2 arquivos para manter juntos.

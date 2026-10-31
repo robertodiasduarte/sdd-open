@@ -35,7 +35,7 @@ conflito, 3 sem uso há meses e 1 duplicado. Nada foi mudado.
 **Agora: etapa 5 — Relatório** — O arquivo do relatório de hoje já existe, e eu não sobrescrevo o que
 já está gravado.
 
-**Sua decisão** — **Onde gravo o relatório desta auditoria?**
+**Sua decisão** — [auto · de rotina] **Onde gravo o relatório desta auditoria?**
 - **arquivo novo com "-2" no nome** (recomendado) — o relatório da manhã fica intacto, e os dois podem
   ser comparados.
 - **só aqui na conversa** — mostro o resumo e nada é gravado.

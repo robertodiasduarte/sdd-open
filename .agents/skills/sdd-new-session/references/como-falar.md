@@ -35,7 +35,7 @@ Nenhuma frente foi criada.
 **Agora: etapa 1 — Pré-voo** — A frente nasce do histórico de versões no GitHub, e este projeto ainda não
 tem um. Dá para resolver agora, conferindo antes o que não pode sair do computador.
 
-**Sua decisão** — **Posso pôr este projeto no git e num GitHub privado, conferindo antes o que não pode ir?**
+**Sua decisão** — [D1 · não se desfaz] **Posso pôr este projeto no git e num GitHub privado, conferindo antes o que não pode ir?**
 - **sim** (recomendado) — sigo pela `sdd-iniciar-repo`, uma etapa por vez, com o seu OK em cada uma;
   depois volto e crio a frente.
 - **não** — paro aqui; nada é criado.

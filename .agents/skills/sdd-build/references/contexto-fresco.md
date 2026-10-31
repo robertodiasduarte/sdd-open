@@ -20,8 +20,10 @@ ordem de preferência:
 
 1. **Subagente em contexto limpo** (Claude Code, Codex, Kimi Code, Grok Build e outros que
    suportam agentes): despache com o brief abaixo como prompt inteiro.
-2. **Sessão nova** do mesmo agente: grave o brief em `sdd/reports/briefs/BRIEF_avaliador_{F}.md`
-   e abra uma sessão nova que só lê esse arquivo.
+2. **Sessão nova** do mesmo agente: grave o brief em `sdd/reports/briefs/BRIEF_avaliador_{F}.md`,
+   rode `bash sdd/bin/sdd-fluxo.sh despachar avaliador {F} sdd/reports/briefs/BRIEF_avaliador_{F}.md`
+   (passe esse mesmo caminho) e **pare** no exit 40 `AGUARDANDO_HUMANO`, repassando a parada que ele
+   imprime: a pessoa abre uma sessão nova que só lê esse arquivo e cola de volta a linha `VEREDITO: …`.
 3. **Outro vendor** em sessão nova: idem, e ganha diversidade de erro.
 
 ⛔ O brief **não** leva BUILD_REPORT, diff, resumo do que foi feito, nem hipóteses do build.

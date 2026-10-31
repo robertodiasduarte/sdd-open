@@ -41,7 +41,7 @@ conferência automática da ficha passou.
 **Agora: etapa 5 — Limpeza** — A feature já está publicada, então a pasta separada desta tarefa (a
 worktree) não é mais necessária. Apagar a pasta não apaga nada do que foi publicado.
 
-**Sua decisão** — **Posso te dar o comando para remover a pasta desta tarefa?**
+**Sua decisão** — [D1 · não se desfaz] **Posso te dar o comando para remover a pasta desta tarefa?**
 - **sim** (recomendado) — mostro 1 comando, para rodar de fora desta pasta; tudo já está na versão
   publicada.
 - **não** — a pasta fica; dá para remover depois.

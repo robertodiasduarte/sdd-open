@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.1"
+  version: "2.2.0"
   updated: "2026-10"
   fase: "2"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Plano + especificação + decisões num documento. O DESIGN diz **como** construir o que o
 DEFINE contratou — e é o último ponto em que mudar de abordagem é barato.
@@ -72,7 +72,11 @@ código: como o projeto já resolve problemas parecidos? Que convenções valem?
 Extraia o flag **LLM Prompts** do DEFINE. Ausente ou em branco → ambíguo: pergunte antes de
 seguir. Com `false`, rode um re-check silencioso (nomes de provedor, "prompt", paths de
 prompt no escopo); hits → pergunte: corrigir o DEFINE, confirmar falso positivo, ou virar o
-flag neste DESIGN (anotando em Revision History).
+flag neste DESIGN (anotando em Revision History). Com o encadeamento ligado
+(`bash sdd/bin/sdd-fluxo.sh estado` sai 0), essas perguntas são de rotina: flag ausente vira `true`
+(o lado conservador), re-check com hits vira `true`, e a proposta de verificabilidade do avaliador é
+aceita; cada uma vira uma linha `[auto] <decisão> — porque <…> · para desfazer: <…>` em Revision
+History e no recibo **Decidi sozinho**.
 
 ### 2. Arquitetura
 
@@ -155,7 +159,12 @@ revise o DESIGN com o contrato de `sdd/templates/fragments/ADVISOR_CONSULT.md` �
 ≤3 riscos ranqueados, correções específicas, o que ignorar. Toda nota recebe **APLICADA ·
 REBATIDA_EVIDENCIA (com arquivo:linha) · REBATIDA_ESCOPO** no Advisor Ledger do DESIGN.
 Nunca descartada em silêncio. Com um vendor só, use uma **sessão nova** do mesmo agente e
-registre `diversidade: nenhuma` — mais fraco, mas honesto.
+registre `diversidade: nenhuma` — mais fraco, mas honesto. Se esta sessão não abre o papel fresco
+sozinha, grave o brief em `sdd/reports/briefs/BRIEF_revisor-design_{FEATURE}.md`, rode
+`bash sdd/bin/sdd-fluxo.sh despachar revisor-design {FEATURE} sdd/reports/briefs/BRIEF_revisor-design_{FEATURE}.md`
+e pare no exit 40, repassando a parada que ele imprime. Se a revisão é exigida:
+`bash sdd/bin/sdd-fluxo.sh review-design sdd/features/DESIGN_{FEATURE}.md` (0 exigida · 1 dispensável ·
+64 manifest ilegível: rode assim mesmo e registre o motivo).
 
 ## Quality Gate
 
@@ -189,6 +198,21 @@ Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o �
 `/sdd-design`.
 
 **Próximo passo:** `/sdd-build sdd/features/DESIGN_{FEATURE}.md`
+
+### Fluxo encadeado
+
+Ao fechar, rode `bash sdd/bin/sdd-fluxo.sh seguir <fase> <DEFINE> <próxima>` só quando a linha
+"Nesta skill" abaixo nomeia o `seguir` (contrato em `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+Exit 0: escreva a linha de transição que o script imprimiu, o recibo **Decidi sozinho** (se houver) e
+chame a próxima fase nesta sessão. Exit 1 com `encadeamento desligado`: só o Próximo passo acima, sem
+repassar a linha. Exit 1 por outro motivo: diga o motivo em 1 frase e mostre o Próximo passo. Exit 64:
+repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o encadeamento ligado
+vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam perguntadas. "Pare"
+desliga nesta chamada (`--parar`).
+
+Nesta skill: `seguir design sdd/features/DEFINE_{FEATURE}.md build`, depois da revisão do DESIGN
+quando `bash sdd/bin/sdd-fluxo.sh review-design sdd/features/DESIGN_{FEATURE}.md` diz que ela é
+exigida (exit 0 ou 64); o `seguir` confere que ela foi registrada no Advisor Ledger.
 
 ---
 

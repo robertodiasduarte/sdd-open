@@ -57,11 +57,15 @@ QUICKSTART = {
 
 ROADMAP = {
     "en": (RAIZ / "docs/roadmap.md", "[Português](pt-BR/roadmap.md)", "planned", "under evaluation",
-           ("Chained", "Adversarial", "governance", "sdd-loop-builder", "reconciliation")),
+           ("Adversarial", "governance", "sdd-loop-builder", "reconciliation")),
     "pt": (RAIZ / "docs/pt-BR/roadmap.md", "[English](../roadmap.md)", "planejado", "em avaliação",
-           ("encadeado", "adversarial", "governança", "sdd-loop-builder", "Reconciliação")),
+           ("adversarial", "governança", "sdd-loop-builder", "Reconciliação")),
 }
-# Hooks (F8) saíram do roadmap e ganharam documento próprio, linkado dos dois READMEs.
+# Hooks (F8) e fluxo encadeado (F9) saíram do roadmap e ganharam documento próprio, linkado dos dois READMEs.
+FLUXO_DOCS = {
+    "en": (RAIZ / "docs/chained-flow.md", RAIZ / "README.md", "docs/chained-flow.md"),
+    "pt": (RAIZ / "docs/pt-BR/chained-flow.md", RAIZ / "README.pt-BR.md", "docs/pt-BR/chained-flow.md"),
+}
 HOOKS_DOCS = {
     "en": (RAIZ / "docs/hooks.md", RAIZ / "README.md", "docs/hooks.md"),
     "pt": (RAIZ / "docs/pt-BR/hooks.md", RAIZ / "README.pt-BR.md", "docs/pt-BR/hooks.md"),
@@ -291,9 +295,12 @@ class Roadmap(unittest.TestCase):
                 self.assertIn(avaliacao, deltas[0])
                 self.assertNotIn(planejado, deltas[0])
                 self.assertIsNone(re.search(r"\b20\d\d\b", texto), "o roadmap não leva data")
-                # F8 entregou os hooks: a linha saiu do roadmap (6 temas) e virou docs/hooks.md.
-                self.assertEqual(len([ln for ln in linhas if not ln.startswith("| Tema") and not ln.startswith("| Theme")]), 6)
+                # F8 entregou os hooks e a F9 o fluxo encadeado: as linhas saíram do roadmap (5 temas) e
+                # viraram docs/hooks.md e docs/chained-flow.md.
+                self.assertEqual(len([ln for ln in linhas if not ln.startswith("| Tema") and not ln.startswith("| Theme")]), 5)
                 self.assertFalse([ln for ln in linhas if "**Hooks**" in ln], "a linha Hooks saiu com a F8")
+                self.assertFalse([ln for ln in linhas if "Chained flow" in ln or "Fluxo encadeado" in ln],
+                                 "a linha do fluxo encadeado saiu com a F9")
 
     def test_hooks_tem_documento_proprio_linkado_do_readme(self):
         for lingua, (doc, readme, link) in HOOKS_DOCS.items():
@@ -304,6 +311,18 @@ class Roadmap(unittest.TestCase):
                 self.assertIn("core.hooksPath", texto)
                 for classe in ("H2", "H3", "H4", "H5", "H6"):
                     self.assertIn(classe, texto)
+                self.assertIn(link, ler(readme))
+                self.assertEqual(links_quebrados(doc), [])
+
+
+    def test_fluxo_encadeado_tem_documento_proprio_linkado_do_readme(self):
+        for lingua, (doc, readme, link) in FLUXO_DOCS.items():
+            with self.subTest(lingua=lingua):
+                self.assertTrue(doc.is_file(), "falta %s" % doc.relative_to(RAIZ))
+                texto = ler(doc)
+                for termo in ("flow.autonomous", "[D1 · não se desfaz]", "[auto · de rotina]", "40",
+                              "AGUARDANDO_HUMANO", "sdd-fluxo.sh seguir", "Release"):
+                    self.assertIn(termo, texto)
                 self.assertIn(link, ler(readme))
                 self.assertEqual(links_quebrados(doc), [])
 

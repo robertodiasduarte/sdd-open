@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20 (sdd/bin/playbook-lint.sh).
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.0"
+  version: "2.1.1"
   updated: "2026-10"
   fase: "transversal"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-playbook — landmines com ID, contadores e delta updates
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-playbook v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-playbook v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Fonte: ACE (Agentic Context Engineering, arXiv 2510.04618). O que portamos: **delta updates
 itemizados** (sem eles o ganho do paper cai de +12,5 para +3,6) e um **papel que julga separado

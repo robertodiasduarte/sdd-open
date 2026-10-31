@@ -239,6 +239,18 @@
 
 ---
 
+## Advisor Ledger
+
+Preenchido pela revisão de contexto fresco do DESIGN (ou por outro vendor), antes do build. Toda nota
+recebe APLICADA, REBATIDA_EVIDENCIA (com arquivo:linha) ou REBATIDA_ESCOPO. Com o encadeamento ligado,
+`sdd/bin/sdd-fluxo.sh seguir design` só segue para o build quando a revisão é dispensável ou quando esta
+tabela tem linha e nenhuma nota HIGH está sem veredito.
+
+| # | Nota | Severidade | Veredito | Evidência |
+|---|---|---|---|---|
+
+---
+
 ## Revision History
 
 | Version | Date | Author | Changes |

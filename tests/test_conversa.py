@@ -196,6 +196,12 @@ class Fragmento(unittest.TestCase):
         for trecho in ("(recomendado)", "**não sei**", "**Outro**", "(ref:", "[Dn]", "eco"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, texto)
+        # F9: o item 9 deixou de ser reservado; a tabela das 6 marcas é a dona do rótulo de cada classe.
+        for marca in ("[D1 · não se desfaz]", "[D2 · muda o produto]", "[D3 · muda a regra do método]",
+                      "[D4 · limite de tentativas]", "[D5 · provas em conflito]", "[auto · de rotina]"):
+            with self.subTest(marca=marca):
+                self.assertIn("| `%s` |" % marca, texto)
+        self.assertNotIn("Classe da decisão: reservado", texto)
 
     def test_parada_tem_os_campos(self):
         texto = ler(FRAGMENTO)

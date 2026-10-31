@@ -35,7 +35,7 @@ trabalho: a pasta do projeto está dentro do iCloud. Nada foi mudado.
 **Agora: etapa 2 — Explicar** — O iCloud copia os arquivos enquanto o git ainda está gravando o
 histórico, e o histórico se corrompe. A saída é mover a pasta para fora da nuvem; leva 2 minutos.
 
-**Sua decisão** — **Quer o passo a passo para mover a pasta para fora do iCloud?**
+**Sua decisão** — [auto · de rotina] **Quer o passo a passo para mover a pasta para fora do iCloud?**
 - **sim** (recomendado) — mostro 2 passos, com o que você deve ver em cada um.
 - **não** — fica como está; o problema volta a aparecer na próxima conferência.
 - **não sei** — explico o que pode acontecer com o histórico se a pasta ficar no iCloud.

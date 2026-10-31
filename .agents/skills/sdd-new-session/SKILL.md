@@ -12,7 +12,7 @@ compatibility: Requer git >= 2.20 e um agente com acesso ao terminal (bash, zsh 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.2.0"
+  version: "1.3.0"
   updated: "2026-10"
   fase: "0"
 ---
@@ -20,7 +20,7 @@ metadata:
 # sdd-new-session — abrir uma frente
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-new-session v1.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-new-session v1.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Um comando, uma tarefa, um diretório: `git worktree` + branch nova nascida do estado **remoto atual**
 da branch padrão. A outra ponta é a `sdd-release`.
@@ -298,6 +298,20 @@ a evidência — ela vai para o Passo 2, item 6.
 
 Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é
 `/sdd-new-session`.
+
+### Fluxo encadeado
+
+Ao fechar, rode `bash sdd/bin/sdd-fluxo.sh seguir <fase> <DEFINE> <próxima>` só quando a linha
+"Nesta skill" abaixo nomeia o `seguir` (contrato em `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+Exit 0: escreva a linha de transição que o script imprimiu, o recibo **Decidi sozinho** (se houver) e
+chame a próxima fase nesta sessão. Exit 1 com `encadeamento desligado`: só o Próximo passo acima, sem
+repassar a linha. Exit 1 por outro motivo: diga o motivo em 1 frase e mostre o Próximo passo. Exit 64:
+repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o encadeamento ligado
+vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam perguntadas. "Pare"
+desliga nesta chamada (`--parar`).
+
+Nesta skill: não encadeia — a fase seguinte roda na pasta nova, em outra janela (troca de janela,
+não decisão).
 
 ---
 

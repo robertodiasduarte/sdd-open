@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; funciona em qualquer agente que
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.1"
+  version: "2.2.0"
   updated: "2026-10"
   fase: "0"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-brainstorm — Fase 0 (opcional)
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-brainstorm v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-brainstorm v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Explorar antes de especificar. O produto desta fase é **clareza**, não código: um documento
 que o `/sdd-define` consegue transformar em spec com pouca pergunta.
@@ -78,6 +78,17 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 Leia `AGENTS.md`, `sdd/templates/BRAINSTORM_TEMPLATE.md` e a seção `## Sempre` de
 `sdd/playbook.md`. Explore a estrutura do projeto e os commits recentes: o que já existe que
 se parece com o pedido? Onde uma feature assim moraria?
+
+Como tratar cada tipo de entrada (o foco muda; as etapas obrigatórias, não):
+
+| Entrada | Como tratar |
+|---|---|
+| ideia vaga | "conte mais" antes de qualquer opção: o problema e quem sente a dor |
+| pedido específico | confirme o entendimento numa frase antes de perguntar o resto |
+| problema | investigue a dor (quando acontece, quanto custa) antes de falar de solução |
+| feature | questione a necessidade: o que a pessoa faz hoje sem ela, e o que muda com ela |
+| comparação entre alternativas | o que se ganha e o que se perde em cada uma |
+| notas ou arquivo | leia tudo antes da primeira pergunta e cite o que já está respondido |
 
 ### 2. Perguntas de descoberta — UMA por vez
 
@@ -173,6 +184,19 @@ bloqueante; senão omita o bloco) · O que vem depois, na ordem (com ⚠️ inli
 landmine morde).
 
 **Próximo passo:** `/sdd-define sdd/features/BRAINSTORM_{FEATURE}.md`
+
+### Fluxo encadeado
+
+Ao fechar, rode `bash sdd/bin/sdd-fluxo.sh seguir <fase> <DEFINE> <próxima>` só quando a linha
+"Nesta skill" abaixo nomeia o `seguir` (contrato em `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+Exit 0: escreva a linha de transição que o script imprimiu, o recibo **Decidi sozinho** (se houver) e
+chame a próxima fase nesta sessão. Exit 1 com `encadeamento desligado`: só o Próximo passo acima, sem
+repassar a linha. Exit 1 por outro motivo: diga o motivo em 1 frase e mostre o Próximo passo. Exit 64:
+repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o encadeamento ligado
+vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam perguntadas. "Pare"
+desliga nesta chamada (`--parar`).
+
+Nesta skill: não encadeia — o brainstorm não tem gate; o Define começa quando você pedir.
 
 ---
 

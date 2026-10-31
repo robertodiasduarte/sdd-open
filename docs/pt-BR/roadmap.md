@@ -12,7 +12,6 @@ mecanismo chega com o próprio documento.
 
 | Tema | O que traz | Status |
 |---|---|---|
-| **Fluxo encadeado** | cada fase oferece a seguinte; classes de decisão no formato de pergunta; parada com ponto de retomada quando o agente não abre uma sessão nova sozinho | *planejado* |
 | **Revisão adversarial** | revisão por um segundo vendor sobre um diff congelado, com um registro editável de engines e um gate offline que confere que a revisão aconteceu | *planejado* |
 | **Contexto e governança** | um mapa do domínio antes do Define, patterns do projeto que o Design cita, e governança que segura o Define de um sistema financeiro até rodar | *planejado* |
 | **`sdd-loop-builder` e `sdd-drive`** | uma skill para código que chama um LLM em laço, e uma que conduz várias fases seguidas com as mesmas paradas humanas | *planejado* |

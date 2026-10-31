@@ -63,7 +63,7 @@ class IterateVeClarificacaoAberta(Sandbox):
         return rc, out + err
 
     def test_versao(self):
-        self.assertEqual(versao(ITERATE), "2.1.0")
+        self.assertEqual(versao(ITERATE), "2.2.0")
 
     def test_passo_4_tem_as_duas_chamadas(self):
         chamadas = chamadas_do_gate()
@@ -141,7 +141,7 @@ class AvaliadorFrescoSoGravaEvidencia(unittest.TestCase):
                        r"`sdd/reports/evidence/\{F\}/AVAL-\*\.log`")
 
     def test_versao_do_build(self):
-        self.assertEqual(versao(SKILLS / "sdd-build/SKILL.md"), "2.3.0")
+        self.assertEqual(versao(SKILLS / "sdd-build/SKILL.md"), "2.4.0")
 
     def test_os_dois_briefs_permitem_so_o_log_aval(self):
         texto = ler(CONTEXTO_FRESCO)

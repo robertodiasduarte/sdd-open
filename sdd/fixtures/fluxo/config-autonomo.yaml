@@ -1,0 +1,3 @@
+# sdd/config.yaml de fixture: encadeamento ligado (sdd-fluxo.sh --self-test e tests/test_fluxo.py).
+flow:
+  autonomous: true

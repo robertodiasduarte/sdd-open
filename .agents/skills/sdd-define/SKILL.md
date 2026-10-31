@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.1"
+  version: "2.4.0"
   updated: "2026-10"
   fase: "1"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-define — Fase 1
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-define v2.3.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-define v2.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
 depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
@@ -125,7 +125,13 @@ e no log `## Clarifications / ### Session YYYY-MM-DD`. Enquanto houver marcador 
 A feature cria ou edita prompt que roda em produção (system prompt, classificador, passe de
 pipeline)? Sinais: nomes de provedor, "prompt", "embeddings", "RAG", paths `**/prompts/**`,
 chamadas `messages.create`/`chat.completions`. Marque `true`/`false` em Technical Context com
-justificativa. Nomes de provedor citados como **plataforma-alvo** não contam.
+justificativa. Nomes de provedor citados como **plataforma-alvo** não contam. Pontue os sinais:
+
+| Sinal | Exemplos | Peso |
+|---|---|---|
+| forte | provedor ou modelo nomeado como dependência, `messages.create`/`chat.completions`, `**/prompts/**`, "system prompt" | 1 forte → `true` |
+| fraco | "prompt", "RAG", "embeddings", "classificar", "resumir", "chatbot" | 2 fracos → `true`; 1 fraco → `true` com a nota "conservador" |
+| loop | agente, "até convergir", "a cada resposta", várias chamadas encadeadas | anote "candidato a loop" na justificativa |
 
 ### 8. Verify Gate (obrigatório — recuse DEFINE sem gate)
 
@@ -209,6 +215,20 @@ saldo, lançamento, nota fiscal, tributo, folha ou dado pessoal; senão
 `/sdd-ux-review sdd/features/DEFINE_{FEATURE}.md` se há interface; senão
 `/sdd-design sdd/features/DEFINE_{FEATURE}.md` (registre no DEFINE por que o UX review foi
 pulado — kanban marca ➖ só com decisão registrada).
+
+### Fluxo encadeado
+
+Ao fechar, rode `bash sdd/bin/sdd-fluxo.sh seguir <fase> <DEFINE> <próxima>` só quando a linha
+"Nesta skill" abaixo nomeia o `seguir` (contrato em `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+Exit 0: escreva a linha de transição que o script imprimiu, o recibo **Decidi sozinho** (se houver) e
+chame a próxima fase nesta sessão. Exit 1 com `encadeamento desligado`: só o Próximo passo acima, sem
+repassar a linha. Exit 1 por outro motivo: diga o motivo em 1 frase e mostre o Próximo passo. Exit 64:
+repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o encadeamento ligado
+vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam perguntadas. "Pare"
+desliga nesta chamada (`--parar`).
+
+Nesta skill: `seguir define sdd/features/DEFINE_{FEATURE}.md <próxima>`, com a próxima do Próximo
+passo acima (governanca, ux-review ou design).
 
 ---
 

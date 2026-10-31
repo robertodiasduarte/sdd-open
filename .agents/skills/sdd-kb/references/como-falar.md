@@ -47,7 +47,7 @@ escrever, preciso saber se este assunto tem regra que vale por período (alíquo
 cada regra ganha a data em que vale, porque uma regra certa hoje fica errada no ano que vem sem mudar uma
 linha.
 
-**Sua decisão** — **Este domínio tem regra que vale por período, como lei, alíquota, prazo ou leiaute de documento fiscal?**
+**Sua decisão** — [D2 · muda o produto] **Este domínio tem regra que vale por período, como lei, alíquota, prazo ou leiaute de documento fiscal?**
 - **não** (recomendado) — perfil geral, com conceitos e receitas e sem datas de vigência: o fechamento que
   você descreveu é processo do escritório. Se aparecer lei ou alíquota no caminho, eu pergunto de novo.
 - **sim** — perfil normativo: toda regra ganha vigência, toda fonte ganha a impressão digital do arquivo,

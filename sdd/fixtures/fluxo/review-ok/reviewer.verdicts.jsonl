@@ -1,0 +1,2 @@
+{"achado":"R1@rev","arquivo":"src/relatorio/mensal.py","linha":10,"severidade":"HIGH","confianca":"CONFIRMED","resumo":"total do mês soma o mês anterior"}
+{"achado":"R2@rev","arquivo":"src/relatorio/anual.py","linha":3,"severidade":"MED","confianca":"PLAUSIBLE","resumo":"nome de variável enganoso"}

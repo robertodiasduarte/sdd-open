@@ -4,7 +4,7 @@ license: MIT
 description: "Diagnostica, sem alterar nada, se este computador e este repositório estão prontos para trabalhar com SDD: repositório git, agente de código, identidade do git, acesso ao remoto (credencial, rede, repositório ainda vazio), worktrees órfãs, dependências, editor e dado exposto (senha, certificado A1 ou chave privada já salvos no git; .env fora do .gitignore; npm sem ignore-scripts; repositório público). Responde em uma linha quando está tudo certo e, quando não está, lista o que impede primeiro, cada item com o comando exato que resolve. Use quando o usuário pedir para checar o ambiente, antes de abrir a primeira frente de trabalho num projeto, ou quando algo estranho acontecer (commit que falha, comando não encontrado, worktree que sumiu)."
 metadata:
   author: Roberto Dias Duarte
-  version: "1.4.0"
+  version: "1.4.1"
   updated: "2026-10"
 ---
 
@@ -71,7 +71,7 @@ no projeto ou na pasta global do agente.)
 script: blocos `🔴 Dado exposto`, `🔴 Impede o trabalho` e `⚠️ Vale arrumar` só se tiverem itens, e por
 último a linha `✅ Pronto: repo …` (ou `✅ Repo …` quando houver problema). Checagem que passou ou não se
 aplica não é mencionada fora dessa linha. Termine a linha ✅ com a identificação desta skill:
-`sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-checar-ambiente v1.4.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 (o script faz isso sozinho, lendo a versão deste arquivo).
 
 **Só o dado exposto** — `bash <pasta desta skill>/scripts/checar.sh --segredo` imprime apenas o bloco
@@ -215,7 +215,7 @@ ordem, **omitindo os vazios**:
 3. **⚠️ Vale arrumar** — `.env` fora do `.gitignore`, npm sem `ignore-scripts` (estes primeiro),
    worktree órfã, frente integrada ainda aberta, `.env` ausente.
 4. **✅ Resumo em uma linha**, terminando com a identificação desta skill — ex.:
-   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.4.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Se estiver tudo certo, a resposta inteira é **o Status e a linha ✅** — nenhuma outra frase antes nem
 depois: nada de "Tudo limpo", de lista do que foi verificado ou de oferta de ajuda. Ambiente saudável
@@ -227,7 +227,7 @@ Saudável (a resposta inteira são estas duas linhas):
 
 ```text
 Ambiente: ✅ 1 Verificar · ✅ 2 Explicar
-✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 Com o certificado A1 salvo no git de um repositório público:
@@ -240,7 +240,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git rm --cached "certificados/empresa.pfx" && echo "certificados/empresa.pfx" >> .gitignore
   Depois, revogue o certificado com a autoridade certificadora e emita outro.
 
-✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 Com dois problemas:
@@ -257,7 +257,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git worktree remove ../meu-app-frentes/relatorio-mensal
   git branch -d relatorio-mensal
 
-✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 ---

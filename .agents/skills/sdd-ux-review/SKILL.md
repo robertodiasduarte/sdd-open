@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Independe de stack visual; usa 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.1"
+  version: "2.4.0"
   updated: "2026-10"
   fase: "UX"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-ux-review — gate de UX/CX
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-ux-review v2.3.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-ux-review v2.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Traduzir requisitos em experiência **antes** que arquitetura e código endureçam. "Interface"
 inclui tela, linha de comando, arquivo gerado, e-mail: qualquer coisa que uma pessoa lê e
@@ -84,6 +84,8 @@ bug?" ou "como faço X?" — essa pergunta **é** o bug; resolve-se na interface
 1. **Contexto.** Leia o DEFINE, `sdd/templates/UX_REVIEW_TEMPLATE.md`, `AGENTS.md` e, se
    existir, o design system do projeto. Extraia usuário, objetivo, dor, critérios, restrições e
    fora de escopo.
+   Leia também os `sdd/reviews/UX_REVIEW_*.md` anteriores: o que já foi decidido de copy, estados e
+   símbolos vale aqui, salvo motivo registrado.
    Se o DEFINE não diz quem usa e em que contexto, ou se o aluno pedir, conduza antes a entrevista
    de `references/entrevista-publico.md` e grave o resultado em `## User and Context`.
 2. **Jornada.** Antes → Entrada → Ação central → Feedback → Recuperação →
@@ -161,6 +163,19 @@ Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o �
 `/sdd-ux-review`.
 
 **Próximo passo:** `/sdd-design sdd/features/DEFINE_{FEATURE}.md`
+
+### Fluxo encadeado
+
+Ao fechar, rode `bash sdd/bin/sdd-fluxo.sh seguir <fase> <DEFINE> <próxima>` só quando a linha
+"Nesta skill" abaixo nomeia o `seguir` (contrato em `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+Exit 0: escreva a linha de transição que o script imprimiu, o recibo **Decidi sozinho** (se houver) e
+chame a próxima fase nesta sessão. Exit 1 com `encadeamento desligado`: só o Próximo passo acima, sem
+repassar a linha. Exit 1 por outro motivo: diga o motivo em 1 frase e mostre o Próximo passo. Exit 64:
+repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o encadeamento ligado
+vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam perguntadas. "Pare"
+desliga nesta chamada (`--parar`).
+
+Nesta skill: `seguir ux-review sdd/features/DEFINE_{FEATURE}.md design`.
 
 ---
 

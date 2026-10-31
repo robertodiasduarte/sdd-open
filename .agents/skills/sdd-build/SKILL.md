@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.0"
+  version: "2.4.0"
   updated: "2026-10"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
 critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
@@ -181,6 +181,10 @@ DESIGN, pasta do projeto, URL base e se há credenciais autorizadas. Persista o 
 `<<<AVALIACAO … >>>` em `sdd/reviews/AVALIACAO_{F}_{YYYYMMDD-HHMM}.md`. `PASS` → seguir.
 `NEEDS_WORK` → os achados são o brief do ciclo seguinte (fresco); máximo 2 ciclos, depois
 `Status: Blocked`. Sem browser/sessão para superfície visual → `NAO_VERIFICADO`, nunca PASS.
+Se esta sessão não abre o papel fresco sozinha: grave o brief em
+`sdd/reports/briefs/BRIEF_avaliador_{F}.md`, rode
+`bash sdd/bin/sdd-fluxo.sh despachar avaliador {F} sdd/reports/briefs/BRIEF_avaliador_{F}.md` e pare no
+exit 40, repassando a parada; continue quando a pessoa colar a linha `VEREDITO: …`.
 Detalhes em `references/contexto-fresco.md`.
 
 ### 6. BUILD_REPORT
@@ -254,6 +258,20 @@ Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o �
 
 **Próximo passo:** `/sdd-release <o que liberar>` — a fase Release roda o Verify Gate de novo
 antes de qualquer publicação.
+
+### Fluxo encadeado
+
+Ao fechar, rode `bash sdd/bin/sdd-fluxo.sh seguir <fase> <DEFINE> <próxima>` só quando a linha
+"Nesta skill" abaixo nomeia o `seguir` (contrato em `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+Exit 0: escreva a linha de transição que o script imprimiu, o recibo **Decidi sozinho** (se houver) e
+chame a próxima fase nesta sessão. Exit 1 com `encadeamento desligado`: só o Próximo passo acima, sem
+repassar a linha. Exit 1 por outro motivo: diga o motivo em 1 frase e mostre o Próximo passo. Exit 64:
+repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o encadeamento ligado
+vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam perguntadas. "Pare"
+desliga nesta chamada (`--parar`).
+
+Nesta skill: `seguir build sdd/features/DEFINE_{FEATURE}.md release` sempre para — publicar não se
+desfaz e é decisão sua (D1).
 
 ---
 

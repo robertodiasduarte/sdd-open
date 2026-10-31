@@ -26,7 +26,9 @@ Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` �
 `CANCELADO` · `DIAGNÓSTICO CONCLUÍDO` · `ERRO` (sdd-open.sh) · `VERDE` · `VERMELHO` · `INCONCLUSIVO` ·
 `ASSINATURA HUMANA` · `CLARIFICAR` · `SPEC INVÁLIDA` (verify-gate.sh, report-lint.py) · `PULADO` ·
 `ERRO DE USO` (gate-baseline.sh, gate-shell-evidencia.sh, avaliador-guard.sh, test-baseline.sh) ·
-`COMMIT RECUSADO` (sdd/hooks/pre-commit; ver [hooks.md](hooks.md)).
+`COMMIT RECUSADO` (sdd/hooks/pre-commit; ver [hooks.md](hooks.md)) · `PRONTO` · `CONTINUAR` · `BLOQUEADO` ·
+`AGUARDANDO_RECIBO` · `AGUARDANDO_HUMANO` · `PARAR` · `MANIFEST ILEGÍVEL` · `ENTRADA ILEGÍVEL` · `SLOT INVÁLIDO`
+(sdd-fluxo.sh; ver [chained-flow.md](chained-flow.md)).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate
 (inconclusivo, que devolve `0`… sem `--strict`) de parecer verde para quem lê.
@@ -56,6 +58,8 @@ RESULTADO: ERRO
 | `test-baseline.sh` | `0` só falhas conhecidas (ou `PULADO`) · `2` falha nova · `3` inconclusivo · `64` uso |
 | `sdd/hooks/pre-commit` | `0` limpo (silêncio, ou `⚠️` de regra pulada) · `1` recusado — todos os achados `🛑 [classe]`, `RESULTADO: COMMIT RECUSADO`, um `→` por classe |
 | `sdd/hooks/pre-push` | `0` sempre (só avisa `⚠️` quando atrás de `origin/<branch padrão>`) |
+| `sdd-fluxo.sh` | `review-design`: `0` EXIGIDO · `1` DISPENSAVEL · `64` manifest ilegível (rode a revisão) · `loop`: `0` PRONTO · `10` CONTINUAR · `20` BLOQUEADO · `30` AGUARDANDO_RECIBO · `64` · `despachar`: `40` AGUARDANDO_HUMANO · `64` · `seguir`: `0` SEGUIR · `1` PARAR · `64` · `estado`: `0` ligado · `1` desligado · `64` valor inválido |
+| `sdd-decisoes-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, caminho inexistente, tabela de marcas ausente ou nenhuma pergunta |
 | `sdd-kb/scripts/gate.sh` | `0` verde · `2` vermelho (caso bom rejeitado, caso ruim aceito ou por outro motivo, âncora ausente, RULE_MAP do exemplo derivado, ou rodado da cópia gerada pelo `sync`) |
 | `sdd-kb/scripts/validate_kb.py` · `kb_normativo.py` | `0` PASS · `2` FAIL · `64` uso |
 

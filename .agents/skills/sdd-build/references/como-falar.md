@@ -45,7 +45,7 @@ uma depende da outra. Nenhum arquivo foi alterado.
 **Agora: etapa 2 — Modo** — Antes de alterar qualquer arquivo, você escolhe como as tarefas rodam (o modo
 de execução). Nada vai para a internet em nenhum dos modos; cada tarefa termina com uma conferência.
 
-**Sua decisão** — **Como as tarefas devem rodar?**
+**Sua decisão** — [auto · de rotina] **Como as tarefas devem rodar?**
 - **default** (recomendado) — uma tarefa de cada vez, nesta conversa: são 5 arquivos que dependem uns
   dos outros, e assim eu mantenho os nomes iguais entre eles.
 - **ralph** — cada tarefa numa conversa limpa; mais isolamento, um pouco mais lento.

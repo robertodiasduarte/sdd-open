@@ -108,6 +108,12 @@ jobs:
       - name: Skill frontmatter (Agent Skills spec)
         run: python3 sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md
 
+      - name: Decision classes and chained flow
+        run: |
+          bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills sdd/templates/fragments
+          bash sdd/bin/sdd-decisoes-lint.sh --self-test
+          bash sdd/bin/sdd-fluxo.sh --self-test
+
       - name: Unit tests (contracts of every script)
         run: python3 -B -m unittest discover -s tests -p 'test_*.py'
 

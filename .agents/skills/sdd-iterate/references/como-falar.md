@@ -36,7 +36,7 @@ uma linha no histórico de revisões. A conferência do DEFINE não achou dúvid
 **Agora: etapa 4 — Cascata** — O DESIGN foi feito antes desta mudança e não sabe das notas de serviço:
 o leitor de XML dele lê só um formato.
 
-**Sua decisão** — **O que faço com o DESIGN?**
+**Sua decisão** — [auto · de rotina] **O que faço com o DESIGN?**
 - **atualizo agora** (recomendado) — acrescento o 2º formato ao leitor e 1 arquivo ao manifest; sem isso,
   o build constrói só metade do pedido.
 - **só o DEFINE** — paro aqui; você cuida do DESIGN depois.

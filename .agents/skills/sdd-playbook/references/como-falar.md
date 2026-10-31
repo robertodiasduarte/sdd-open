@@ -39,7 +39,7 @@ candidato novo trouxe prova. O playbook não foi alterado.
 **Agora: etapa 3 — Promoção** — Duas mordidas querem dizer que a regra escrita não bastou. A saída é um
 mecanismo que barre o erro sem depender de alguém lembrar da regra.
 
-**Sua decisão** — **Promovo a LM-004 para uma conferência automática no relatório do build?**
+**Sua decisão** — [D3 · muda a regra do método] **Promovo a regra que mordeu 2 vezes para uma conferência automática no relatório do build?**
 - **promover** (recomendado) — registro que ela vira conferência automática; a regra fica até a
   conferência ter um teste que falha sem ela (ref: LM-004).
 - **manter escrita** — a regra continua só no texto, com a contagem em 2.

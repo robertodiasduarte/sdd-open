@@ -1,0 +1,3 @@
+# AVALIACAO fixture
+
+VEREDITO: PASS

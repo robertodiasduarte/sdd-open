@@ -102,7 +102,7 @@ primeiro plano") e é apresentada para confirmar, nunca como fato.
 Depois das perguntas, mostre o resumo em 5 linhas (público, frequência e aparelho, estágio, referência,
 o que fica em dúvida) e pergunte:
 
-**Sua decisão** — **Posso gravar este público em User and Context?**
+**Sua decisão** — [auto · de rotina] **Posso gravar este público em User and Context?**
 - **sim** (recomendado) — gravo as 4 linhas confirmadas e sigo para a jornada: com o público definido, cada passo da jornada tem de quem partir.
 - **ajustar** — você diz o que muda; eu corrijo o resumo e pergunto de novo.
 - **não sei** — explico com um exemplo o que cada linha muda na revisão e pergunto de novo.

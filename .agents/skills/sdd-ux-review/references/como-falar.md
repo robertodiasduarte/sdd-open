@@ -38,7 +38,7 @@ que só atrapalha.)
 **Agora: etapa 4 — Prioridades** — Um achado muda o resultado para a pessoa: com a pasta vazia, a
 planilha sai igual a "nenhuma nota chegou", e ela pode cobrar 40 fornecedores sem motivo.
 
-**Sua decisão** — **A mensagem "nenhum XML encontrado na pasta" entra como MUST?**
+**Sua decisão** — [D2 · muda o produto] **A mensagem "nenhum XML encontrado na pasta" entra como MUST?**
 - **MUST** (recomendado) — o Design é obrigado a tratar a pasta vazia: sem isso, a pessoa tira a
   conclusão errada.
 - **SHOULD** — entra como importante, mas o Design pode deixar para depois.

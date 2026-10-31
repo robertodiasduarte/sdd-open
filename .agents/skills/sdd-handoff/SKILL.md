@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Não depende de memória propri
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.0"
+  version: "2.1.1"
   updated: "2026-10"
   fase: "transversal"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-handoff — ficha da feature + passar o bastão
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-handoff v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-handoff v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Duas responsabilidades, sempre nesta ordem:
 

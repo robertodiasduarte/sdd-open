@@ -96,6 +96,12 @@ class Release(unittest.TestCase):
         self.assertIn("--base-obrigatoria", bloco)
         self.assertIn("PUBLISH_GATE_MODE: ci", bloco)
 
+    def test_gate_roda_as_classes_de_decisao_e_o_fluxo_encadeado(self):
+        bloco = job(GATE, "gate")
+        for cmd in ("bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills sdd/templates/fragments",
+                    "bash sdd/bin/sdd-decisoes-lint.sh --self-test", "bash sdd/bin/sdd-fluxo.sh --self-test"):
+            self.assertIn(cmd, bloco)
+
     def test_publicacao_com_pacote_hash_e_release_idempotente(self):
         bloco = job(RELEASE, "release")
         self.assertIn("bash scripts/next-version.sh", bloco)

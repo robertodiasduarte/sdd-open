@@ -37,7 +37,7 @@ pagamento.
 **Agora: etapa 1 — Objetivo e contrato** — Antes das regras, preciso saber em que formato a resposta
 sai, porque é o sistema, não uma pessoa, que vai ler o que o modelo responder.
 
-**Sua decisão** — **Em que formato o modelo responde?**
+**Sua decisão** — [D2 · muda o produto] **Em que formato o modelo responde?**
 - **sim ou não, em uma palavra** (recomendado) — o sistema só precisa separar os e-mails: é o formato
   com menos jeito de sair errado.
 - **sim ou não, com o motivo** — uma linha a mais, útil para conferir os casos duvidosos.

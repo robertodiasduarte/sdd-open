@@ -50,6 +50,19 @@ review:
   # Vendors disponíveis para o review adversarial (revisor → auditor de vendor DIFERENTE).
   # Com um só vendor, o review degrada com aviso registrado — nunca é pulado em silêncio.
   vendors: ""
+  # Superfície de segurança do projeto, em globs separados por vírgula (ex.: "auth/**,api/public/**").
+  # Uma linha do File Manifest que casa um destes globs torna a revisão do DESIGN obrigatória
+  # (sdd/bin/sdd-fluxo.sh review-design). Vazio = só os termos fixos do script (auth, login, token,
+  # senha, password, jwt, GRANT, rota pública) e os globs de layers.sql.
+  security_globs: ""
+
+# Fluxo encadeado (sdd/templates/fragments/FLUXO_ENCADEADO.md). false = cada fase termina e mostra o
+# Próximo passo, como sempre. true = com o gate da fase verde, a fase seguinte começa na mesma sessão,
+# as perguntas [auto · de rotina] seguem a opção recomendada e vão para o recibo "Decidi sozinho"; as
+# marcadas D1 a D5 continuam perguntadas e a release nunca começa sozinha. Não liga nem desliga o jeito
+# de conversar das skills.
+flow:
+  autonomous: false
 
 # Preenchido pelo sdd-open (`init`): agentes para os quais os adaptadores são gerados.
 vendors: ""

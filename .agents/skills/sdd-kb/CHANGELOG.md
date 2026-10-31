@@ -1,5 +1,10 @@
 # Changelog — sdd-kb
 
+## 2.2.1 — out/2026
+
+- A pergunta de exemplo de `references/como-falar.md` leva a marca da classe da decisão
+  (`[D2 · muda o produto]`), conferida pelo `sdd/bin/sdd-decisoes-lint.sh` (F9, fluxo encadeado).
+
 ## 2.2.0 — out/2026
 
 Entrada no sdd-open como 17ª skill, portada do starter (2.1.0, commit `17c69c4`).

@@ -36,7 +36,7 @@ mesmas três colunas com outros nomes. Nenhum arquivo foi criado ainda.
 **Agora: etapa 4 — Abordagens** — Há três jeitos de resolver. Recomendo começar pelo mais simples, porque
 as duas amostras já trazem os três campos que precisam bater.
 
-**Sua decisão** — **Qual abordagem seguimos?**
+**Sua decisão** — [D2 · muda o produto] **Qual abordagem seguimos?**
 - **planilha de conferência** (recomendado) — um script lê os XMLs de uma pasta e marca na planilha o que
   bateu; você baixa os anexos à mão. Menos peças, pronto em 1 fase de build.
 - **leitura direta do e-mail** — o sistema busca os anexos sozinho; exige dar acesso à caixa de e-mail.
