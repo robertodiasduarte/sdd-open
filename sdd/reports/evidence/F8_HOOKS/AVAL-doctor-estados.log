@@ -1,0 +1,78 @@
+$ cd /tmp/sdd-aval/doctor && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex >/dev/null; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/doctor
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+→ se algum item está ⚠️, a linha diz qual comando resolve.
+[exit=0]
+$ cd /tmp/sdd-aval/doctor && chmod -x sdd/hooks/pre-push && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/doctor
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+⚠️  hooks: sdd/hooks/pre-push sem permissão de execução (o git o ignora em silêncio) — rode: chmod +x sdd/hooks/pre-push
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+→ se algum item está ⚠️, a linha diz qual comando resolve.
+[exit=0]
+$ cd /tmp/sdd-aval/doctor && chmod +x sdd/hooks/pre-push && rm sdd/hooks/pre-commit && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/doctor
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+⚠️  sdd/ incompleto — 1 arquivo(s) do pacote ausente(s), ex.: sdd/hooks/pre-commit — rode init de novo (completa sem tocar o que existe)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+⚠️  hooks: sdd/hooks/pre-commit ausente — rode init (completa sdd/hooks)
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+→ se algum item está ⚠️, a linha diz qual comando resolve.
+[exit=0]
+$ cd /tmp/sdd-aval/doctor && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/hooks/pre-commit sdd/hooks/pre-commit && chmod +x sdd/hooks/pre-commit && git config --unset core.hooksPath && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/doctor
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+⚠️  hooks do open não ligados (core.hooksPath vazio) — rode init
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+→ se algum item está ⚠️, a linha diz qual comando resolve.
+[exit=0]
+$ cd /tmp/sdd-aval/doctor && git config core.hooksPath .husky/_ && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/doctor
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_ (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+→ se algum item está ⚠️, a linha diz qual comando resolve.
+[exit=0]
+$ cd /tmp/sdd-aval/doctor && git config core.hooksPath $PWD/sdd/hooks && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/doctor
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+⚠️  hooks do open não ligados: já existe core.hooksPath = /tmp/sdd-aval/doctor/sdd/hooks (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+→ se algum item está ⚠️, a linha diz qual comando resolve.
+[exit=0]

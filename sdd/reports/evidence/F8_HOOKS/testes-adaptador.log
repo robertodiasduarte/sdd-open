@@ -1,0 +1,18 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p "test_claude_adapter.py" -v
+test_avaliador_guard_nega_com_arvore_suja_e_so_com_veredito (test_claude_adapter.Projeto) ... ok
+test_check_acusa_guard_editado_e_entrada_removida (test_claude_adapter.Projeto) ... ok
+test_init_gera_os_guards_e_as_entradas_do_settings (test_claude_adapter.Projeto) ... ok
+test_merge_preserva_o_settings_do_usuario_e_nao_duplica (test_claude_adapter.Projeto) ... ok
+test_report_guard_falha_aberta_com_aviso (test_claude_adapter.Projeto) ... ok
+test_report_guard_ignora_outros_arquivos_fixtures_e_template (test_claude_adapter.Projeto) ... ok
+test_report_guard_nega_write_que_o_lint_reprova (test_claude_adapter.Projeto) ... ok
+test_report_guard_simula_o_edit (test_claude_adapter.Projeto) ... ok
+test_sem_python3_o_vendor_claude_para_antes_de_escrever (test_claude_adapter.Projeto) ... ok
+test_settings_com_forma_errada_aborta_antes_de_escrever (test_claude_adapter.Projeto) ... ok
+test_settings_invalido_aborta_antes_de_escrever (test_claude_adapter.Projeto) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 64.716s
+
+OK
+[exit=0]

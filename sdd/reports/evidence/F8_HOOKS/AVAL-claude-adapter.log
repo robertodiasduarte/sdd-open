@@ -1,0 +1,79 @@
+$ cd /tmp/sdd-aval/claude && ls -l .claude/hooks/ && head -4 .claude/hooks/sdd-report-guard.py && grep -c 'sdd-open:generated' .claude/hooks/sdd-report-guard.py .claude/hooks/sdd-avaliador-guard.py
+total 24
+-rw-r--r--@ 1 robertoduarte  wheel  3069 Oct 30 21:21 sdd-avaliador-guard.py
+-rw-r--r--@ 1 robertoduarte  wheel  4639 Oct 30 21:21 sdd-report-guard.py
+#!/usr/bin/env python3
+# sdd-open:generated - fonte: bin/adapters/claude/sdd-report-guard.py (pacote sdd-open)
+# sdd-open:generated - sync reescreve este arquivo; edite a fonte e rode sync
+"""sdd-report-guard.py — guard do Claude Code (PreToolUse em Write|Edit|MultiEdit), gerado pelo sdd-open.
+.claude/hooks/sdd-report-guard.py:2
+.claude/hooks/sdd-avaliador-guard.py:2
+[exit=0]
+$ cd /tmp/sdd-aval/claude && python3 -m py_compile .claude/hooks/sdd-report-guard.py .claude/hooks/sdd-avaliador-guard.py && echo compilam
+compilam
+[exit=0]
+$ cd /tmp/sdd-aval/claude && cat .claude/settings.json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-report-guard.py\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-avaliador-guard.py\""
+          }
+        ]
+      }
+    ]
+  }
+}
+[exit=0]
+$ cd /tmp/sdd-aval/claude && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh sync --vendors claude --check
+RESULTADO: EM DIA
+→ todos os adaptadores refletem .agents/skills/.
+[exit=0]
+$ cd /tmp/sdd-aval/claude && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh sync --vendors claude --yes && python3 -c "import json;d=json.load(open('.claude/settings.json'));print('entradas PreToolUse =',len(d['hooks']['PreToolUse']))"
+▶ sync — plano
+0 a criar · 0 a atualizar · 99 já corretos
+RESULTADO: EM DIA
+→ nada a fazer.
+entradas PreToolUse = 2
+[exit=0]
+$ cd /tmp/sdd-aval/claude && printf '# editado\n' >> .claude/hooks/sdd-report-guard.py && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh sync --vendors claude --check
+.claude/hooks/sdd-report-guard.py (desatualizado: rode sync)
+RESULTADO: DIVERGENTE (1)
+→ os arquivos acima são gerados: edite a fonte em .agents/skills/ e rode sync; edições neles são sobrescritas. Órfãos não são apagados: remova à mão.
+[exit=1]
+$ cd /tmp/sdd-aval/claude && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh sync --vendors claude --yes >/dev/null && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh sync --vendors claude --check && python3 - <<'EOF'
+import json;p='.claude/settings.json';d=json.load(open(p));d['hooks']['PreToolUse']=[e for e in d['hooks']['PreToolUse'] if 'avaliador' not in json.dumps(e)];json.dump(d,open(p,'w'),indent=2)
+EOF
+bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh sync --vendors claude --check
+RESULTADO: EM DIA
+→ todos os adaptadores refletem .agents/skills/.
+.claude/settings.json (guards do sdd-open fora de hooks.PreToolUse)
+RESULTADO: DIVERGENTE (1)
+→ os arquivos acima são gerados: edite a fonte em .agents/skills/ e rode sync; edições neles são sobrescritas. Órfãos não são apagados: remova à mão.
+[exit=1]
+$ cd /tmp/sdd-aval/claude && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh sync --vendors claude --yes && python3 -c "import json;d=json.load(open('.claude/settings.json'));print('entradas PreToolUse =',len(d['hooks']['PreToolUse']))"
+▶ sync — plano
+~ .claude/settings.json (hooks += 2 guards do sdd-open) (atualizar)
+0 a criar · 1 a atualizar · 98 já corretos
+RESULTADO: SINCRONIZADO
+→ adaptadores regenerados a partir de .agents/skills/.
+entradas PreToolUse = 2
+[exit=0]
+$ cd /tmp/sdd-aval/claude && git status --short && git add -A && git commit -q -m claude && echo COMMIT-OK
+On branch main
+nothing to commit, working tree clean
+[exit=1]

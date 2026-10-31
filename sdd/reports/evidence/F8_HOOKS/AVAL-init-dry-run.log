@@ -1,0 +1,63 @@
+$ cd /tmp/sdd-aval/init-dry && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --dry-run --vendors codex
+▶ init — plano
++ AGENTS.md (novo)
++ sdd/ (templates, fixtures, bin, hooks, playbook, config) (novo)
++ core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez (novo)
++ .agents/skills/sdd-auditoria-harness (novo)
++ .agents/skills/sdd-brainstorm (novo)
++ .agents/skills/sdd-build (novo)
++ .agents/skills/sdd-checar-ambiente (novo)
++ .agents/skills/sdd-define (novo)
++ .agents/skills/sdd-design (novo)
++ .agents/skills/sdd-governanca (novo)
++ .agents/skills/sdd-handoff (novo)
++ .agents/skills/sdd-higiene-dado (novo)
++ .agents/skills/sdd-iniciar-repo (novo)
++ .agents/skills/sdd-iterate (novo)
++ .agents/skills/sdd-kb (novo)
++ .agents/skills/sdd-new-session (novo)
++ .agents/skills/sdd-playbook (novo)
++ .agents/skills/sdd-prompt-builder (novo)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+20 a criar · 0 a atualizar · 0 já corretos
+RESULTADO: DRY-RUN
+→ nada foi escrito; rode sem --dry-run para aplicar.
+[exit=0]
+$ cd /tmp/sdd-aval/init-dry && git config --get core.hooksPath; echo hooksPath="$(git config --get core.hooksPath)"
+hooksPath=
+[exit=0]
+$ cd /tmp/sdd-aval/init-dry && ls sdd 2>&1; ls -d sdd/hooks 2>&1
+ls: sdd: No such file or directory
+ls: sdd/hooks: No such file or directory
+[exit=1]
+$ cd /tmp/sdd-aval/init-dry && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --vendors codex </dev/null
+▶ init — plano
++ AGENTS.md (novo)
++ sdd/ (templates, fixtures, bin, hooks, playbook, config) (novo)
++ core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez (novo)
++ .agents/skills/sdd-auditoria-harness (novo)
++ .agents/skills/sdd-brainstorm (novo)
++ .agents/skills/sdd-build (novo)
++ .agents/skills/sdd-checar-ambiente (novo)
++ .agents/skills/sdd-define (novo)
++ .agents/skills/sdd-design (novo)
++ .agents/skills/sdd-governanca (novo)
++ .agents/skills/sdd-handoff (novo)
++ .agents/skills/sdd-higiene-dado (novo)
++ .agents/skills/sdd-iniciar-repo (novo)
++ .agents/skills/sdd-iterate (novo)
++ .agents/skills/sdd-kb (novo)
++ .agents/skills/sdd-new-session (novo)
++ .agents/skills/sdd-playbook (novo)
++ .agents/skills/sdd-prompt-builder (novo)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+20 a criar · 0 a atualizar · 0 já corretos
+RESULTADO: CANCELADO
+→ nenhum arquivo foi escrito; sem terminal interativo, use --yes para aplicar.
+[exit=0]
+$ cd /tmp/sdd-aval/init-dry && echo hooksPath="$(git config --get core.hooksPath)"; ls -d sdd/hooks 2>&1; git status --short
+hooksPath=
+ls: sdd/hooks: No such file or directory
+[exit=0]

@@ -1,0 +1,54 @@
+$ cd /tmp/sdd-aval/init-precommit-alheio && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex
+▶ init — plano
++ AGENTS.md (novo)
++ sdd/ (templates, fixtures, bin, hooks, playbook, config) (novo)
+⚠️  hooks do open não ligados: já existe um pre-commit em /private/tmp/sdd-aval/init-precommit-alheio/.git/hooks/pre-commit. Nada foi alterado nele.
+⚠️  para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
++ .agents/skills/sdd-auditoria-harness (novo)
++ .agents/skills/sdd-brainstorm (novo)
++ .agents/skills/sdd-build (novo)
++ .agents/skills/sdd-checar-ambiente (novo)
++ .agents/skills/sdd-define (novo)
++ .agents/skills/sdd-design (novo)
++ .agents/skills/sdd-governanca (novo)
++ .agents/skills/sdd-handoff (novo)
++ .agents/skills/sdd-higiene-dado (novo)
++ .agents/skills/sdd-iniciar-repo (novo)
++ .agents/skills/sdd-iterate (novo)
++ .agents/skills/sdd-kb (novo)
++ .agents/skills/sdd-new-session (novo)
++ .agents/skills/sdd-playbook (novo)
++ .agents/skills/sdd-prompt-builder (novo)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+19 a criar · 0 a atualizar · 0 já corretos
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/init-precommit-alheio
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+⚠️  hooks do open não ligados: já existe um pre-commit em /private/tmp/sdd-aval/init-precommit-alheio/.git/hooks/pre-commit. Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+[exit=0]
+$ cd /tmp/sdd-aval/init-precommit-alheio && echo hooksPath="$(git config --get core.hooksPath)"; cat .git/hooks/pre-commit
+hooksPath=
+#!/bin/sh
+echo meu-hook
+[exit=0]
+$ cd /tmp/sdd-aval/init-precommit-alheio && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/init-precommit-alheio
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+⚠️  hooks do open não ligados: já existe um pre-commit em /private/tmp/sdd-aval/init-precommit-alheio/.git/hooks/pre-commit. Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+→ se algum item está ⚠️, a linha diz qual comando resolve.
+[exit=0]

@@ -1,0 +1,37 @@
+$ cd /tmp/sdd-aval/borda-slot && sed -i '' 's/^  context_file_max_kb:.*/  context_file_max_kb: 50   # metade do padrão/' sdd/config.yaml && sed -i '' 's/^  default_branch:.*/  default_branch: "main"  # com aspas/' sdd/config.yaml && grep -nE 'context_file_max_kb|default_branch' sdd/config.yaml && head -c 51201 /dev/zero | tr '\000' 'a' > AGENTS.md && git add -A && git commit -q -m slot
+17:  default_branch: "main"  # com aspas
+20:  context_file_max_kb: 50   # metade do padrão
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H2] AGENTS.md: 51201 bytes (teto 50 KB)
+
+Por que importa:
+  [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt
+
+RESULTADO: COMMIT RECUSADO
+→ [H2] mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/borda-slot && sed -i '' 's/^  context_file_max_kb:.*/  context_file_max_kb: "0"/' sdd/config.yaml && git add -A && git commit -q -m slot-zero; echo rc=$?
+rc=0
+[exit=0]
+$ cd /tmp/sdd-aval/borda-slot && sed -i '' 's/^  context_file_max_kb:.*/  context_file_max_kb: -5/' sdd/config.yaml && git add -A && git commit -q -m slot-negativo; echo rc=$?
+rc=0
+[exit=0]
+$ cd /tmp/sdd-aval/borda-slot && git update-ref refs/remotes/origin/main HEAD && git checkout -q -- sdd/config.yaml && git reset -q && git status --short; git commit -q --allow-empty -m em-main-com-aspas; echo rc=$?
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H6] commit direto em main (a branch padrão do projeto, que já tem origin/main)
+
+Por que importa:
+  [H6] a branch padrão é o que está publicado; trabalho novo nasce numa frente e chega lá por PR
+
+RESULTADO: COMMIT RECUSADO
+→ [H6] leve o que está preparado para uma frente nova: git switch -c <nome> (o que está staged vai junto) e commite lá; para a próxima feature, peça a sdd-new-session
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+rc=1
+[exit=0]

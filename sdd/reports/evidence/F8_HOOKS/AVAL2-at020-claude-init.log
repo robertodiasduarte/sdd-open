@@ -1,0 +1,29 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at020 || exit 99; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors claude 2>&1 | grep -E '\.claude/(hooks|settings)|RESULTADO'; echo rc=${PIPESTATUS[0]}; ls -l .claude/hooks/; for f in .claude/hooks/*.py; do echo "== $f: linhas sdd-open:generated = $(grep -c 'sdd-open:generated' $f)"; sed -n 1,3p $f; done; python3 -c 'import json,sys; d=json.load(open(".claude/settings.json")); p=d["hooks"]["PreToolUse"]; print("permissions:",d.get("permissions")); print("Stop:",d["hooks"].get("Stop")); print("PreToolUse entradas:",len(p)); [print(" ",e.get("matcher"),"->",[(h.get("command"),h.get("timeout")) for h in e["hooks"]]) for e in p]'
++ .claude/hooks/sdd-avaliador-guard.py (novo)
++ .claude/hooks/sdd-report-guard.py (novo)
+~ .claude/settings.json (hooks += 2 guards do sdd-open) (atualizar)
+✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+RESULTADO: INSTALADO
+rc=0
+total 24
+-rw-r--r--@ 1 robertoduarte  wheel  3069 Oct 30 22:12 sdd-avaliador-guard.py
+-rw-r--r--@ 1 robertoduarte  wheel  4639 Oct 30 22:12 sdd-report-guard.py
+== .claude/hooks/sdd-avaliador-guard.py: linhas sdd-open:generated = 2
+#!/usr/bin/env python3
+# sdd-open:generated - fonte: bin/adapters/claude/sdd-avaliador-guard.py (pacote sdd-open)
+# sdd-open:generated - sync reescreve este arquivo; edite a fonte e rode sync
+== .claude/hooks/sdd-report-guard.py: linhas sdd-open:generated = 2
+#!/usr/bin/env python3
+# sdd-open:generated - fonte: bin/adapters/claude/sdd-report-guard.py (pacote sdd-open)
+# sdd-open:generated - sync reescreve este arquivo; edite a fonte e rode sync
+permissions: {'allow': ['Bash(git status:*)']}
+Stop: [{'hooks': [{'type': 'command', 'command': 'echo fim-da-sessao'}]}]
+PreToolUse entradas: 3
+  Bash -> [('echo hook-do-usuario', None)]
+  Write|Edit|MultiEdit -> [('python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-report-guard.py"', 10)]
+  Agent|Task -> [('python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-avaliador-guard.py"', None)]
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at020 || exit 99; diff <(grep -v 'sdd-open:generated' .claude/hooks/sdd-report-guard.py) /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/adapters/claude/sdd-report-guard.py && echo report-guard-igual-ao-adaptador-fora-das-2-linhas; diff <(grep -v 'sdd-open:generated' .claude/hooks/sdd-avaliador-guard.py) /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/adapters/claude/sdd-avaliador-guard.py && echo avaliador-guard-igual-ao-adaptador-fora-das-2-linhas
+report-guard-igual-ao-adaptador-fora-das-2-linhas
+avaliador-guard-igual-ao-adaptador-fora-das-2-linhas
+[exit=0]

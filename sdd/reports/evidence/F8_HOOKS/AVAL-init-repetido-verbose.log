@@ -1,0 +1,6 @@
+$ cd /tmp/sdd-aval/borda-worktree2 && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex --verbose 2>&1 | grep -E '= (sdd|core)|já corretos|RESULTADO'
+   = sdd/ (já existe — não será tocado) (já correto)
+   = core.hooksPath = sdd/hooks (já correto)
+0 a criar · 0 a atualizar · 20 já corretos
+RESULTADO: EM DIA
+[exit=0]

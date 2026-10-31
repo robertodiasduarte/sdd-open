@@ -1,0 +1,70 @@
+$ cd /tmp/sdd-aval/alarme && git config --get core.hooksPath && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar
+sdd/hooks
+Estado: o projeto usa os hooks do sdd-open (sdd/hooks) e o alarme desta skill está desligado neles.
+Dá para ligar: o alarme passa a rodar pelos hooks do projeto (sdd/hooks) a cada commit, sem gravar nada em .git/.
+[exit=0]
+$ cd /tmp/sdd-aval/alarme && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh instalar && echo higieneDado="$(git config --get sdd.higieneDado)" && ls .git/hooks/ | grep -v sample; echo nada-em-git-hooks
+Alarme ligado nos hooks do projeto (sdd/hooks), versão 1.2.0 da skill; nada foi gravado em .git/.
+Vale para todas as frentes deste projeto. Para pular um commit, depois de conferir: git commit --no-verify
+Para desligar: bash "/tmp/sdd-aval/alarme/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar
+higieneDado=on
+nada-em-git-hooks
+[exit=0]
+$ cd /tmp/sdd-aval/alarme && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar
+Estado: o alarme desta skill está ligado pelos hooks do projeto (sdd/hooks), versão 1.2.0 da skill.
+Ligar de novo não muda nada. Para desligar: bash "/tmp/sdd-aval/alarme/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar
+[exit=0]
+$ cd /tmp/sdd-aval/alarme && shasum -a 256 sdd/hooks/pre-commit > /tmp/sdd-aval/sha-antes && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar && echo higieneDado="$(git config --get sdd.higieneDado)" && shasum -a 256 -c /tmp/sdd-aval/sha-antes && test -f sdd/hooks/pre-commit && echo dispatcher-intacto
+Alarme desligado dos hooks do projeto (sdd/hooks). Os hooks do sdd-open continuam no lugar.
+higieneDado=
+sdd/hooks/pre-commit: OK
+dispatcher-intacto
+[exit=0]
+$ cd /tmp/sdd-aval/alarme && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+Não há alarme desta skill ligado neste projeto. Nada foi alterado.
+[exit=0]
+$ cd /tmp/sdd-aval/alarme && git config core.hooksPath .husky/_ && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = .husky/_, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/tmp/sdd-aval/alarme/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+[exit=2]
+$ cd /tmp/sdd-aval/alarme && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh instalar
+Recusado: o projeto usa outro gerenciador de alarmes (core.hooksPath = .husky/_, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/tmp/sdd-aval/alarme/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+[exit=2]
+$ cd /tmp/sdd-aval/alarme && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+Recusado: o projeto usa outro gerenciador de alarmes (core.hooksPath = .husky/_, comum com husky), e ele não é desta skill. Nada foi alterado.
+[exit=2]
+$ cd /tmp/sdd-aval/alarme && git config core.hooksPath sdd/hooks && sed -i '' 's/^# sdd-open: dispatcher de hooks (pre-commit)$/# outro hook/' sdd/hooks/pre-commit && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = sdd/hooks, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/tmp/sdd-aval/alarme/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+[exit=2]
+$ cd /tmp/sdd-aval/alarme && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh instalar
+Recusado: o projeto usa outro gerenciador de alarmes (core.hooksPath = sdd/hooks, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/tmp/sdd-aval/alarme/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+[exit=2]
+$ cd /tmp/sdd-aval/alarme && git checkout -q -- sdd/hooks/pre-commit && git config --unset core.hooksPath && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh instalar && head -3 .git/hooks/pre-commit && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar && test ! -f .git/hooks/pre-commit && echo modo-arquivo-ok-1.1.1
+Estado: nenhum alarme de commit instalado.
+Dá para instalar: o alarme seria gravado em /private/tmp/sdd-aval/alarme/.git/hooks/pre-commit e vale para todas as frentes deste projeto.
+Alarme instalado em /private/tmp/sdd-aval/alarme/.git/hooks/pre-commit (versão 1.2.0).
+Vale para todas as frentes deste projeto. Para pular um commit, depois de conferir: git commit --no-verify
+Para desinstalar: bash "/tmp/sdd-aval/alarme/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar   (ou: rm "/private/tmp/sdd-aval/alarme/.git/hooks/pre-commit")
+#!/usr/bin/env bash
+# sdd-higiene-dado: alarme de commit (pre-commit)
+# versão: 1.2.0
+Estado: o alarme desta skill já está instalado (versão 1.2.0).
+Instalar de novo atualiza para a versão 1.2.0. Para remover: bash "/tmp/sdd-aval/alarme/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar
+Alarme removido de /private/tmp/sdd-aval/alarme/.git/hooks/pre-commit.
+modo-arquivo-ok-1.1.1
+[exit=0]
+$ cd /tmp/sdd-aval/alarme && git config core.hooksPath $(git rev-parse --show-toplevel)/sdd/hooks && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar
+Estado: o projeto usa os hooks do sdd-open (sdd/hooks) e o alarme desta skill está desligado neles.
+Dá para ligar: o alarme passa a rodar pelos hooks do projeto (sdd/hooks) a cada commit, sem gravar nada em .git/.
+[exit=0]

@@ -1,0 +1,16 @@
+$ cd /tmp/sdd-aval/borda-cred-valor && V="ghp_$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 36)" && printf '{"github_token": "%s", "senha": "%s"}\n' "$V" "$V" > c.json && printf 'token="%s"\n' "$V" > n.md && git add c.json n.md && out=$(git commit -q -m cred 2>&1); rc=$?; printf '%s\n' "$out" | grep -c "${V#ghp_}" | sed 's/^/vezes-que-o-valor-aparece=/'; printf '%s\n' "$out"; exit $rc
+vezes-que-o-valor-aparece=0
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] c.json: credencial em texto claro (chave: senha)
+  🛑 [H3] gitleaks: RuleID:      github-pat File:        c.json Line:        1 RuleID:      github-pat File:        c.json Line:        1 
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]

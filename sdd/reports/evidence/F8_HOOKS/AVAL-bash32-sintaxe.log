@@ -1,0 +1,17 @@
+$ /bin/bash --version | head -1
+GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+[exit=0]
+$ /bin/bash -n /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/hooks/pre-commit && /bin/bash -n /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/hooks/pre-push && /bin/bash -n /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh && /bin/bash -n /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/lib/merge.sh && /bin/bash -n /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/lib/vendors.sh && /bin/bash -n /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/.agents/skills/sdd-higiene-dado/scripts/alarme.sh && echo sintaxe-ok
+sintaxe-ok
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -nE 'mapfile|declare -A|\$\{[a-zA-Z_]+\^\^|readarray|\$\{[a-zA-Z_]+,,' sdd/hooks/pre-commit sdd/hooks/pre-push bin/sdd-open.sh bin/lib/merge.sh bin/lib/vendors.sh .agents/skills/sdd-higiene-dado/scripts/alarme.sh .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh; echo grep-rc=$?
+bin/sdd-open.sh:14:# ⚠️ bash 3.2 · sem declare -A · ${VAR} com chaves antes de não-ASCII · exit medido sem pipe.
+bin/lib/vendors.sh:4:# ⛔ bash 3.2 (o /bin/bash do macOS) NÃO tem `declare -A`. A tabela é `case` + funções.
+grep-rc=0
+[exit=0]
+$ cd /tmp/sdd-aval && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/hooks/pre-commit; echo rc-fora-do-git=$?
+rc-fora-do-git=0
+[exit=0]
+$ cd /tmp/sdd-aval && printf 'refs/heads/x 1 refs/heads/x 2\n' | bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/hooks/pre-push origin url; echo rc-fora-do-git=$?
+rc-fora-do-git=0
+[exit=0]

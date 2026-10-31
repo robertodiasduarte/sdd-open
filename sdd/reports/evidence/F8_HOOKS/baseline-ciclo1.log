@@ -1,0 +1,9 @@
+$ B=$(mktemp -d) && git archive 6a238d2 | tar -x -C "$B" && cp tests/test_hooks.py tests/test_claude_adapter.py tests/test_alarme.py tests/test_sdd_open.py "$B/tests/" && cd "$B" && for m in "test_hooks.Hooks.test_h3_credencial_em_config_mostra_a_chave_e_nunca_o_valor" "test_hooks.Hooks.test_h3_placeholder_e_package_lock_passam" "test_hooks.Hooks.test_higiene_ligada_recusa_cpf_env_e_diz_como_desinstalar_sem_rm" "test_claude_adapter.Projeto.test_settings_com_forma_errada_aborta_antes_de_escrever" "test_sdd_open.Hooks.test_hooks_path_absoluto_por_link_simbolico_e_nosso" "test_sdd_open.Hooks.test_init_repetido_sem_paste_no_path_mantem_os_vendors" "test_alarme.TestModoHooks.test_hooks_path_absoluto_por_link_simbolico_e_modo_hooks"; do (cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest "$m" > ../r.txt 2>&1); rc=$?; printf "%s em 6a238d2: rc=%s · %s\n" "$m" "$rc" "$(grep -E "^Ran|^(OK|FAILED)" r.txt | tr "\n" " ")"; done; cd /; rm -rf "${B:?}"
+test_hooks.Hooks.test_h3_credencial_em_config_mostra_a_chave_e_nunca_o_valor em 6a238d2: rc=1 · Ran 1 test in 1.570s FAILED (failures=1) 
+test_hooks.Hooks.test_h3_placeholder_e_package_lock_passam em 6a238d2: rc=1 · Ran 1 test in 1.175s FAILED (failures=1) 
+test_hooks.Hooks.test_higiene_ligada_recusa_cpf_env_e_diz_como_desinstalar_sem_rm em 6a238d2: rc=1 · Ran 1 test in 1.184s FAILED (failures=1) 
+test_claude_adapter.Projeto.test_settings_com_forma_errada_aborta_antes_de_escrever em 6a238d2: rc=1 · Ran 1 test in 14.812s FAILED (failures=3) 
+test_sdd_open.Hooks.test_hooks_path_absoluto_por_link_simbolico_e_nosso em 6a238d2: rc=1 · Ran 1 test in 1.071s FAILED (failures=1) 
+test_sdd_open.Hooks.test_init_repetido_sem_paste_no_path_mantem_os_vendors em 6a238d2: rc=1 · Ran 1 test in 1.176s FAILED (failures=1) 
+test_alarme.TestModoHooks.test_hooks_path_absoluto_por_link_simbolico_e_modo_hooks em 6a238d2: rc=1 · Ran 1 test in 0.104s FAILED (failures=1) 
+[exit=0]

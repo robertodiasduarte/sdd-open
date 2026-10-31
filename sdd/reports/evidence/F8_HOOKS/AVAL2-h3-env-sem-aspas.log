@@ -1,0 +1,15 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s2-h3 && V=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 24) && printf 'PASSWORD=%s\n' "$V" > .env.prod && git add .env.prod && out=$(PATH=/bin:/usr/bin git commit -q -m h3-env 2>&1); rc=$?; echo vezes-que-o-valor-aparece=$(printf '%s\n' "$out" | grep -c "$V"); printf '%s\n' "$out"; git rm -q --cached .env.prod; rm -f .env.prod; exit $rc
+vezes-que-o-valor-aparece=0
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] .env.prod: credencial em texto claro (chave: PASSWORD)
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]

@@ -1,0 +1,38 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at018 || exit 99; git config core.hooksPath .husky/_; for v in verificar instalar desinstalar; do echo "== $v"; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh $v; echo rc=$?; done; echo higieneDado="$(git config --get sdd.higieneDado)"; ls .git/hooks | grep -vc '\.sample$'
+== verificar
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = .husky/_, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at018/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+rc=2
+== instalar
+Recusado: o projeto usa outro gerenciador de alarmes (core.hooksPath = .husky/_, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at018/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+rc=2
+== desinstalar
+Recusado: o projeto usa outro gerenciador de alarmes (core.hooksPath = .husky/_, comum com husky), e ele não é desta skill. Nada foi alterado.
+rc=2
+higieneDado=
+0
+[exit=1]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at018 || exit 99; git config core.hooksPath sdd/hooks; grep -v 'sdd-open: dispatcher de hooks' sdd/hooks/pre-commit > sdd/hooks/pre-commit.tmp && mv sdd/hooks/pre-commit.tmp sdd/hooks/pre-commit && chmod +x sdd/hooks/pre-commit; echo marca=$(grep -c 'sdd-open: dispatcher de hooks' sdd/hooks/pre-commit); for v in verificar instalar desinstalar; do echo "== $v"; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh $v; echo rc=$?; done; echo higieneDado="$(git config --get sdd.higieneDado)"; git checkout -q -- sdd/hooks/pre-commit
+marca=0
+== verificar
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = sdd/hooks, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at018/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+rc=2
+== instalar
+Recusado: o projeto usa outro gerenciador de alarmes (core.hooksPath = sdd/hooks, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at018/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+rc=2
+== desinstalar
+Recusado: o projeto usa outro gerenciador de alarmes (core.hooksPath = sdd/hooks, comum com husky), e ele não é desta skill. Nada foi alterado.
+rc=2
+higieneDado=
+[exit=0]

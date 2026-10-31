@@ -1,0 +1,4 @@
+$ cd <tmp> && printf 'nome;valor\nx;1\n' | iconv -f UTF-8 -t UTF-16LE > saida.txt && printf '\xff\xfe' | cat - saida.txt > bom.txt && for f in saida.txt bom.txt; do a=$(wc -c < $f); b=$(LC_ALL=C tr -d '\000' < $f | wc -c); echo "$f: bytes=$a sem-NUL=$b -> $([ $a -ne $b ] && echo 'H5 RECUSA' || echo passa); head -c 2 $f | od -An -tx1"; done
+saida.txt: bytes=      30 sem-NUL=      15 -> H5 RECUSA; head -c 2 saida.txt | od -An -tx1
+bom.txt: bytes=      32 sem-NUL=      17 -> H5 RECUSA; head -c 2 bom.txt | od -An -tx1
+[exit=0]

@@ -1,0 +1,7 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_alarme.py'
+...................................
+----------------------------------------------------------------------
+Ran 35 tests in 20.902s
+
+OK
+[exit=0]

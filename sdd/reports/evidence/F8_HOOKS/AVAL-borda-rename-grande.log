@@ -1,0 +1,17 @@
+$ cd /tmp/sdd-aval/borda-rename && head -c 204800 /dev/zero | tr '\000' 'a' > GRANDE.md && git add GRANDE.md && git commit -q -m grande && git mv GRANDE.md CLAUDE.md && git commit -q -m rename-para-contexto
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H2] CLAUDE.md: 204800 bytes (teto 100 KB)
+
+Por que importa:
+  [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt
+
+RESULTADO: COMMIT RECUSADO
+→ [H2] mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/borda-rename && git status --short
+R  GRANDE.md -> CLAUDE.md
+[exit=0]

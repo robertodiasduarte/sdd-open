@@ -1,0 +1,14 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at005 || exit 99; git config sdd.higieneDado on; rm sdd/hooks/pre-push; printf '# edicao-local-do-usuario\n' >> sdd/hooks/pre-commit; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex --verbose 2>&1 | grep -E 'hooks|hooksPath|RESULTADO|já corretos'; echo rc=${PIPESTATUS[0]}; ls -l sdd/hooks/; echo edicao-preservada=$(grep -c edicao-local-do-usuario sdd/hooks/pre-commit); echo higieneDado=$(git config --get sdd.higieneDado); cmp sdd/hooks/pre-push /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/hooks/pre-push && echo pre-push-recriado-igual-ao-pacote
+   = core.hooksPath = sdd/hooks (já correto)
+0 a criar · 1 a atualizar · 19 já corretos
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at005
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene on, pre-push)
+RESULTADO: INSTALADO
+rc=0
+total 40
+-rwxr-xr-x@ 1 robertoduarte  wheel  15205 Oct 30 22:11 pre-commit
+-rwxr-xr-x@ 1 robertoduarte  wheel   1664 Oct 30 22:11 pre-push
+edicao-preservada=1
+higieneDado=on
+pre-push-recriado-igual-ao-pacote
+[exit=0]

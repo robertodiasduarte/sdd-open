@@ -1,0 +1,11 @@
+$ cd /tmp/sdd-aval/borda-sync && printf '# meu\n' >> sdd/hooks/pre-commit && rm sdd/hooks/pre-push && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh sync --vendors claude --yes 2>&1 | tail -3; ls sdd/hooks; tail -1 sdd/hooks/pre-commit
+0 a criar · 0 a atualizar · 99 já corretos
+RESULTADO: EM DIA
+→ nada a fazer.
+pre-commit
+# meu
+[exit=0]
+$ cd /tmp/sdd-aval/borda-sync && git status --short
+ M sdd/hooks/pre-commit
+ D sdd/hooks/pre-push
+[exit=0]

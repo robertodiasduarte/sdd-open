@@ -1,0 +1,116 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_hooks.py' 2>&1 | tail -4
+----------------------------------------------------------------------
+Ran 22 tests in 30.734s
+
+OK
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_claude_adapter.py' 2>&1 | tail -4
+----------------------------------------------------------------------
+Ran 10 tests in 66.283s
+
+OK
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_alarme.py' 2>&1 | tail -4
+----------------------------------------------------------------------
+Ran 34 tests in 20.727s
+
+OK
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v tests.test_alarme 2>&1 | grep -cE '^test_.*(TestDeteccao|TestInstalacao|TestGeradores).* ok$'
+28
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && git diff --stat v2.2.8 -- tests/test_alarme.py && git diff v2.2.8 -- tests/test_alarme.py | grep -E '^[-+]class |^@@' | head -20
+ tests/test_alarme.py | 117 +++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 109 insertions(+), 8 deletions(-)
+@@ -316,8 +316,10 @@ class TestInstalacao(Base):
+@@ -329,23 +331,122 @@ class TestCopiaGerada(Base):
++class TestModoHooks(Base):
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_docs.py' 2>&1 | tail -4
+----------------------------------------------------------------------
+Ran 16 tests in 0.025s
+
+OK
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_bash32.py' 2>&1 | tail -4
+----------------------------------------------------------------------
+Ran 3 tests in 0.008s
+
+OK
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_agnostico.py' 2>&1 | tail -4
+----------------------------------------------------------------------
+Ran 7 tests in 0.064s
+
+OK
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_open.py' 2>&1 | tail -4
+----------------------------------------------------------------------
+Ran 28 tests in 222.737s
+
+OK
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -nE 'mapfile|declare -A|\$\{[a-zA-Z_]+\^\^' sdd/hooks/pre-commit sdd/hooks/pre-push bin/sdd-open.sh bin/lib/*.sh .agents/skills/sdd-higiene-dado/scripts/*.sh; echo grep-rc=$?
+bin/sdd-open.sh:14:# ⚠️ bash 3.2 · sem declare -A · ${VAR} com chaves antes de não-ASCII · exit medido sem pipe.
+bin/lib/say.sh:8:# ⚠️ bash 3.2: sem declare -A, sem ${var,,}. Expansão colada em não-ASCII usa ${VAR}.
+bin/lib/vendors.sh:4:# ⛔ bash 3.2 (o /bin/bash do macOS) NÃO tem `declare -A`. A tabela é `case` + funções.
+grep-rc=0
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -rn 'PreToolUse\|subagent_type\|tool_input' --include='*' . 2>/dev/null | grep -v '^./.git/' | grep -vE '^./(bin/adapters/claude/|tests/|docs/hooks\.md|docs/pt-BR/hooks\.md|sdd/features/|sdd/reports/)' ; echo grep-rc=$?
+./bin/sdd-open.sh:797:        claude_settings_em_dia "${ROOT}/.claude/settings.json" || { printf '.claude/settings.json (guards do sdd-open fora de hooks.PreToolUse)\n'; DIVERGENTES=$((DIVERGENTES + 1)); }
+./bin/lib/merge.sh:140:# a hooks.PreToolUse, sem perder chave nem entrada de outra origem. Uma entrada do open conta como presente
+./bin/lib/merge.sh:169:pre = hooks.setdefault("PreToolUse", [])
+./bin/lib/merge.sh:171:    print("JSONERR 1: 'hooks.PreToolUse' não é uma lista"); sys.exit(66)
+./bin/lib/merge.sh:210:# 0 se as 2 entradas do sdd-open já estão em hooks.PreToolUse (para o plano marcar "=").
+./bin/lib/merge.sh:216:pre = (d.get("hooks") or {}).get("PreToolUse") or []
+./sdd/fixtures/hooks/settings-com-outros-hooks.json:8:    "PreToolUse": [
+./sdd/fixtures/hooks/payload-edit-build-report.json:3:  "tool_input": {
+./sdd/fixtures/hooks/payload-write-build-report.json:3:  "tool_input": {
+./sdd/fixtures/hooks/payload-agent-veredito.json:3:  "tool_input": {
+grep-rc=0
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && /usr/bin/python3 -B scripts/check-versions.py --base v2.2.8 --base-obrigatoria 2>&1 | tail -5
+PASS: check-versions — 17 skills com versão coerente, comparadas a v2.2.8.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -n 'version' .agents/skills/sdd-higiene-dado/manifest.json; grep -nE '^  version:|1\.2\.0' .agents/skills/sdd-higiene-dado/SKILL.md | head -3; grep -n '1.2.0' .agents/skills/sdd-higiene-dado/CHANGELOG.md | head -2
+3:  "version": "1.2.0",
+8:  version: "1.2.0"
+15:`sdd-higiene-dado v1.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+3:## 1.2.0 - 2026-10
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/*/ 2>&1 | tail -3
+🛑 .agents/skills/sdd-ux-review/: não consegui ler: [Errno 21] Is a directory: '.agents/skills/sdd-ux-review/'
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && bash sdd/bin/playbook-lint.sh --self-test 2>&1 | tail -3
+  ✅ --anti-collapse 2/5 = 40% ⇒ exit 1 → exit 1
+  ✅ --anti-collapse só CONTINUAÇÃO de LM-005 reescrita (1/5) ⇒ conta como alterado (20%) → exit 0
+🟢 self-test: todos os baselines vermelhos e verdes confirmados
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -n 'hooks' README.md README.pt-BR.md | head; grep -c 'no-verify' docs/hooks.md docs/pt-BR/hooks.md; grep -c '^| ' docs/roadmap.md docs/pt-BR/roadmap.md; grep -in 'hooks' docs/roadmap.md docs/pt-BR/roadmap.md; echo fim
+README.md:98:- [Git hooks](docs/hooks.md) ([PT](docs/pt-BR/hooks.md)) — the pre-commit rules `init` installs, the data-hygiene alarm, the `--no-verify` limit
+README.pt-BR.md:99:- [Hooks de git](docs/pt-BR/hooks.md) ([EN](docs/hooks.md)) — as regras do pre-commit que o `init` instala, o alarme de higiene de dado, o limite do `--no-verify`
+docs/hooks.md:6
+docs/pt-BR/hooks.md:6
+docs/roadmap.md:7
+docs/pt-BR/roadmap.md:7
+fim
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -n 'hooks' MANIFEST.txt | head -20
+115:docs/hooks.md
+119:docs/pt-BR/hooks.md
+174:sdd/fixtures/hooks/config-placeholder.json
+175:sdd/fixtures/hooks/payload-agent-veredito.json
+176:sdd/fixtures/hooks/payload-edit-build-report.json
+177:sdd/fixtures/hooks/payload-write-build-report.json
+178:sdd/fixtures/hooks/settings-com-outros-hooks.json
+183:sdd/hooks/pre-commit
+184:sdd/hooks/pre-push
+218:tests/test_hooks.py
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && LC_ALL=C sort -c MANIFEST.txt && echo manifest-ordenado
+manifest-ordenado
+[exit=0]

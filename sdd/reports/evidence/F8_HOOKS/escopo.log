@@ -1,0 +1,42 @@
+$ git diff --shortstat v2.2.8 HEAD && git diff --name-status v2.2.8 HEAD
+ 39 files changed, 2244 insertions(+), 88 deletions(-)
+M	.agents/skills/sdd-higiene-dado/CHANGELOG.md
+M	.agents/skills/sdd-higiene-dado/SKILL.md
+M	.agents/skills/sdd-higiene-dado/evals/cases.json
+M	.agents/skills/sdd-higiene-dado/manifest.json
+M	.agents/skills/sdd-higiene-dado/references/COMO_FUNCIONA.md
+M	.agents/skills/sdd-higiene-dado/references/RUNTIME_COMPATIBILITY.md
+M	.agents/skills/sdd-higiene-dado/scripts/alarme.sh
+M	.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh
+M	.github/workflows/release.yml
+M	MANIFEST.txt
+M	README.md
+M	README.pt-BR.md
+A	bin/adapters/claude/sdd-avaliador-guard.py
+A	bin/adapters/claude/sdd-report-guard.py
+M	bin/lib/merge.sh
+M	bin/lib/vendors.sh
+M	bin/sdd-open.sh
+M	docs/cli-conventions.md
+A	docs/hooks.md
+M	docs/pt-BR/guia-do-aluno.md
+A	docs/pt-BR/hooks.md
+M	docs/pt-BR/roadmap.md
+M	docs/roadmap.md
+M	sdd/config.example.yaml
+A	sdd/fixtures/hooks/config-placeholder.json
+A	sdd/fixtures/hooks/payload-agent-veredito.json
+A	sdd/fixtures/hooks/payload-edit-build-report.json
+A	sdd/fixtures/hooks/payload-write-build-report.json
+A	sdd/fixtures/hooks/settings-com-outros-hooks.json
+A	sdd/hooks/pre-commit
+A	sdd/hooks/pre-push
+M	tests/test_agnostico.py
+M	tests/test_alarme.py
+M	tests/test_bash32.py
+A	tests/test_claude_adapter.py
+M	tests/test_docs.py
+A	tests/test_hooks.py
+M	tests/test_release_workflow.py
+M	tests/test_sdd_open.py
+[exit=0]

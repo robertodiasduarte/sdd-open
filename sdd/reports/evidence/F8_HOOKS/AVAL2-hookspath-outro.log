@@ -1,0 +1,50 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo || exit 99; ls -d /tmp/aval2sym.NN5ql7/repo/sdd/hooks && git config core.hooksPath /tmp/aval2sym.NN5ql7/repo/sdd/hooks && git config --get core.hooksPath && /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i hooks; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex --verbose 2>&1 | grep -E 'hooksPath|RESULTADO|⚠'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar; echo rc-alarme=$?
+/tmp/aval2sym.NN5ql7/repo/sdd/hooks
+/tmp/aval2sym.NN5ql7/repo/sdd/hooks
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo
+⚠️  hooks do open não ligados: já existe core.hooksPath = /tmp/aval2sym.NN5ql7/repo/sdd/hooks (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+⚠️  hooks do open não ligados: já existe core.hooksPath = /tmp/aval2sym.NN5ql7/repo/sdd/hooks (husky, lefthook ou outro gerenciador). Nada foi alterado nele.
+⚠️  para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+⚠️  hooks do open não ligados: já existe core.hooksPath = /tmp/aval2sym.NN5ql7/repo/sdd/hooks (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+RESULTADO: EM DIA
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = /tmp/aval2sym.NN5ql7/repo/sdd/hooks, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+rc-alarme=2
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo || exit 99; git config core.hooksPath /nao/existe/sdd/hooks && /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i hooks; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex --verbose 2>&1 | grep -E 'hooksPath|RESULTADO|⚠'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar; echo rc-alarme=$?
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo
+⚠️  hooks do open não ligados: já existe core.hooksPath = /nao/existe/sdd/hooks (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+⚠️  hooks do open não ligados: já existe core.hooksPath = /nao/existe/sdd/hooks (husky, lefthook ou outro gerenciador). Nada foi alterado nele.
+⚠️  para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+⚠️  hooks do open não ligados: já existe core.hooksPath = /nao/existe/sdd/hooks (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+RESULTADO: EM DIA
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = /nao/existe/sdd/hooks, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+rc-alarme=2
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo || exit 99; for hp in sdd/hooks/ ./sdd/hooks; do git config core.hooksPath $hp; echo "== core.hooksPath=$hp"; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i hooks; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar | head -1; echo rc-alarme=${PIPESTATUS[0]}; printf 'X=1\n' > .env && git add .env && PATH=/bin:/usr/bin git commit -q -m env 2>&1 | grep -cE '🛑|recusado' | sed 's/^/o-git-rodou-o-dispatcher(linhas-de-recusa)=/'; git reset -q HEAD -- .env; rm -f .env; done; git config core.hooksPath sdd/hooks
+== core.hooksPath=sdd/hooks/
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo
+⚠️  hooks do open não ligados: já existe core.hooksPath = sdd/hooks/ (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = sdd/hooks/, comum com husky).
+rc-alarme=2
+o-git-rodou-o-dispatcher(linhas-de-recusa)=0
+== core.hooksPath=./sdd/hooks
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo
+⚠️  hooks do open não ligados: já existe core.hooksPath = ./sdd/hooks (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = ./sdd/hooks, comum com husky).
+rc-alarme=2
+o-git-rodou-o-dispatcher(linhas-de-recusa)=0
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo || exit 99; echo '== complemento: com core.hooksPath=sdd/hooks/ (barra final) o git RODA o dispatcher, mas doctor/alarme dizem OUTRO'; git config core.hooksPath sdd/hooks/; V=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 24) && V=$V bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/h3case.sh cfg.json '{"db_password": "%s"}\n' "$V"; echo rc-commit=$?; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i 'hooks do open'; git config core.hooksPath sdd/hooks
+== complemento: com core.hooksPath=sdd/hooks/ (barra final) o git RODA o dispatcher, mas doctor/alarme dizem OUTRO
+vezes-que-o-valor-aparece=0
+  🛑 [H3] cfg.json: credencial em texto claro (chave: db_password)
+RESULTADO: COMMIT RECUSADO
+rc-commit=1
+⚠️  hooks do open não ligados: já existe core.hooksPath = sdd/hooks/ (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+[exit=0]

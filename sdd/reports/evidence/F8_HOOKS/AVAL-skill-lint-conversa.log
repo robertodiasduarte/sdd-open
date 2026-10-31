@@ -1,0 +1,5 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/*/SKILL.md 2>&1 | tail -3
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+[exit=0]

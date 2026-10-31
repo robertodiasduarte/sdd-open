@@ -1,0 +1,6 @@
+$ python3 -B scripts/check-versions.py --base v2.2.8 --base-obrigatoria && printf "sdd-higiene-dado %s → %s\n" "$(sed -n "s/^  version: \"\(.*\)\"$/\1/p" <(git show v2.2.8:.agents/skills/sdd-higiene-dado/SKILL.md))" "$(sed -n "s/^  version: \"\(.*\)\"$/\1/p" .agents/skills/sdd-higiene-dado/SKILL.md)"
+PASS: check-versions — 17 skills com versão coerente, comparadas a v2.2.8.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+sdd-higiene-dado 1.1.1 → 1.2.0
+[exit=0]

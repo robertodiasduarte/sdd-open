@@ -1,0 +1,37 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -n 'git config --unset core.hooksPath' docs/hooks.md docs/pt-BR/hooks.md sdd/hooks/pre-commit | head
+docs/hooks.md:89:git config --unset core.hooksPath
+docs/pt-BR/hooks.md:89:git config --unset core.hooksPath
+sdd/hooks/pre-commit:20:# git config --unset core.hooksPath.
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -n 'SDD_REPORT_GUARD\|SDD_AVALIADOR_GUARD' docs/hooks.md docs/pt-BR/hooks.md bin/adapters/claude/*.py sdd/bin/avaliador-guard.sh | head
+docs/hooks.md:111:`⚠️ sdd-open: … não conferido` message and the action goes on. `SDD_REPORT_GUARD=off` and
+docs/hooks.md:112:`SDD_AVALIADOR_GUARD=off` disable them with a message (declare it in the BUILD_REPORT). Since this version the
+docs/pt-BR/hooks.md:111:`⚠️ sdd-open: … não conferido` e a ação segue. `SDD_REPORT_GUARD=off` e `SDD_AVALIADOR_GUARD=off` os desligam,
+bin/adapters/claude/sdd-avaliador-guard.py:9:o comando de commit; exit 0 ⇒ silêncio (um ⚠️ do script, como o bypass SDD_AVALIADOR_GUARD=off, vira
+bin/adapters/claude/sdd-report-guard.py:11:sdd/fixtures/ (exemplos do que o lint nega) ficam fora. SDD_REPORT_GUARD=off desliga, com aviso
+bin/adapters/claude/sdd-report-guard.py:67:    if os.environ.get("SDD_REPORT_GUARD", "").lower() == "off":
+bin/adapters/claude/sdd-report-guard.py:68:        aviso("guard do BUILD_REPORT desligado (SDD_REPORT_GUARD=off) — declare isso no BUILD_REPORT")
+sdd/bin/avaliador-guard.sh:15:#       · 64 uso. SDD_AVALIADOR_GUARD=off → 0 com aviso (bypass humano, declarado no BUILD_REPORT).
+sdd/bin/avaliador-guard.sh:39:if [ "$(printf '%s' "${SDD_AVALIADOR_GUARD:-}" | tr '[:upper:]' '[:lower:]')" = "off" ]; then
+sdd/bin/avaliador-guard.sh:40:  echo "⚠️  guard desligado (SDD_AVALIADOR_GUARD=off) — declare no BUILD_REPORT."
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -n 'cherry-pick\|--no-verify' docs/pt-BR/hooks.md | head -5
+18:  de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez (novo)
+48:→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+49:  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+59:## O limite: `--no-verify`
+61:Hook de cliente é pulado por `git commit --no-verify` (e por ferramentas que commitam sem rodar hooks, como o
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -n 'hooks' docs/pt-BR/guia-do-aluno.md | head -8
+291:| **O que produz** | O alarme instalado no projeto: um arquivo `pre-commit` dentro da pasta `.git` ou, se o sdd-open já instalou os hooks dele (`sdd/hooks`), o alarme ligado nesses hooks por uma configuração do git. |
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && grep -rn '\.git/hooks' .agents/skills/sdd-higiene-dado/SKILL.md .agents/skills/sdd-higiene-dado/references/*.md | head -12
+.agents/skills/sdd-higiene-dado/SKILL.md:139:   - onde ele fica: num projeto comum, grava um único arquivo, `.git/hooks/pre-commit`, que vale para
+.agents/skills/sdd-higiene-dado/SKILL.md:223:  projeto: arquivo em `.git/hooks/pre-commit` (sem `core.hooksPath`) ou ligado nos hooks do sdd-open
+.agents/skills/sdd-higiene-dado/SKILL.md:227:- `scripts/pre-commit.sh` — o alarme em si; é a fonte copiada para `.git/hooks/pre-commit` com a
+.agents/skills/sdd-higiene-dado/references/COMO_FUNCIONA.md:20:fica em `.git/hooks/pre-commit`: vale para todas as frentes (worktrees) do projeto, não vai para o
+.agents/skills/sdd-higiene-dado/references/RUNTIME_COMPATIBILITY.md:7:- **Escrita em `.git/hooks/`** do projeto, só no passo `instalar` e só com o OK da pessoa — ou, num projeto
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && wc -l .agents/skills/sdd-higiene-dado/SKILL.md
+     248 .agents/skills/sdd-higiene-dado/SKILL.md
+[exit=0]

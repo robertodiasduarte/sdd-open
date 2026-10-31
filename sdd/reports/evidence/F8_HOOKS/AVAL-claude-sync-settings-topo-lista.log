@@ -1,0 +1,14 @@
+$ cd /tmp/sdd-aval/claude-sync-topo-lista && printf '[1,2]\n' > .claude/settings.json && rm .claude/hooks/sdd-report-guard.py && git add -A && git commit -q --no-verify -m quebra && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh sync --vendors claude --yes 2>&1 | grep -vE '^\+ \.claude/skills'; echo rc=${PIPESTATUS[0]}
+▶ sync — plano
++ .claude/hooks/sdd-report-guard.py (novo)
+~ .claude/settings.json (hooks += 2 guards do sdd-open) (atualizar)
+1 a criar · 1 a atualizar · 97 já corretos
+🛑 /private/tmp/sdd-aval/claude-sync-topo-lista/.claude/settings.json não é JSON válido (1: o topo do arquivo não é um objeto)
+RESULTADO: ERRO
+→ corrija ou renomeie o arquivo e rode sync de novo — nada foi alterado
+rc=
+[exit=0]
+$ cd /tmp/sdd-aval/claude-sync-topo-lista && git status --short; cat .claude/settings.json
+?? .claude/hooks/sdd-report-guard.py
+[1,2]
+[exit=0]

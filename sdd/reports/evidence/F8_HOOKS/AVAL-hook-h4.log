@@ -1,0 +1,56 @@
+$ cd /tmp/sdd-aval/hook-h4 && git log --oneline -1 && diff -q sdd/playbook.md /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/playbook/playbook-valido.md && echo HEAD-tem-playbook-valido
+c5f5fff pb-valido
+HEAD-tem-playbook-valido
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h4 && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/playbook/playbook-colapso.md sdd/playbook.md && git add sdd/playbook.md && git commit -q -m pb-colapso
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H4] sdd/playbook.md perderia conhecimento (delta only): anti-collapse: 1 ID(s) de HEAD DESAPARECERAM do staged: LM-002 
+
+Por que importa:
+  [H4] o playbook só cresce por delta: um [LM-nnn] que some leva junto a lição que ele guardava
+
+RESULTADO: COMMIT RECUSADO
+→ [H4] aposentar = mover para ## Tombstones mantendo o ID; reescrita grande = 2 ou mais commits; apagar ou renomear o playbook não é opção
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-h4 && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/playbook/playbook-delta-ok.md sdd/playbook.md && git add sdd/playbook.md && git commit -q -m pb-delta && echo PASSOU-delta-ok
+PASSOU-delta-ok
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h4 && git rm -q sdd/playbook.md && git commit -q -m pb-delete
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H4] sdd/playbook.md seria apagado ou renomeado: todos os [LM-nnn] desapareceriam de uma vez
+
+Por que importa:
+  [H4] o playbook só cresce por delta: um [LM-nnn] que some leva junto a lição que ele guardava
+
+RESULTADO: COMMIT RECUSADO
+→ [H4] aposentar = mover para ## Tombstones mantendo o ID; reescrita grande = 2 ou mais commits; apagar ou renomear o playbook não é opção
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-h4 && git restore --staged sdd/playbook.md && git checkout -- sdd/playbook.md && git mv sdd/playbook.md sdd/playbook-old.md && git commit -q -m pb-rename
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H4] sdd/playbook.md seria apagado ou renomeado: todos os [LM-nnn] desapareceriam de uma vez
+
+Por que importa:
+  [H4] o playbook só cresce por delta: um [LM-nnn] que some leva junto a lição que ele guardava
+
+RESULTADO: COMMIT RECUSADO
+→ [H4] aposentar = mover para ## Tombstones mantendo o ID; reescrita grande = 2 ou mais commits; apagar ou renomear o playbook não é opção
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-h4 && git mv sdd/playbook-old.md sdd/playbook.md && git status --short; mv sdd/bin/playbook-lint.sh /tmp/sdd-aval/pl.sh && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/playbook/playbook-colapso.md sdd/playbook.md && git add sdd/playbook.md && git commit -q -m pb-sem-lint && echo PASSOU-sem-lint-com-aviso
+⚠️  sdd-open: sdd/bin/playbook-lint.sh ausente: a regra do playbook (H4) foi pulada — rode init (completa sdd/bin)
+PASSOU-sem-lint-com-aviso
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h4 && mv /tmp/sdd-aval/pl.sh sdd/bin/playbook-lint.sh && git reset -q --hard HEAD~1 && git rm -q sdd/playbook.md && git commit -q --no-verify -m sem-playbook && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/playbook/playbook-valido.md sdd/playbook.md && git add sdd/playbook.md && git commit -q -m playbook-novo && echo PASSOU-playbook-novo
+PASSOU-playbook-novo
+[exit=0]

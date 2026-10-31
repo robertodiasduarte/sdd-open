@@ -1,0 +1,22 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p "test_docs.py" && /usr/bin/python3 -B -m unittest discover -s tests -p "test_bash32.py" && /usr/bin/python3 -B -m unittest discover -s tests -p "test_agnostico.py" && /usr/bin/python3 -B -m unittest discover -s tests -p "test_release_workflow.py"
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.028s
+
+OK
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.008s
+
+OK
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.068s
+
+OK
+...........................
+----------------------------------------------------------------------
+Ran 27 tests in 1.510s
+
+OK
+[exit=0]

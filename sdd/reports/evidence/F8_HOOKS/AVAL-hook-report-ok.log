@@ -1,0 +1,35 @@
+$ cat /tmp/sdd-aval/RELATORIO_OK.md
+# BUILD REPORT: X
+
+| ID | Critério (EARS) | Resultado | Evidência |
+|----|---|---|---|
+| AT-001 | When x, the system shall y | false | — |
+
+avaliador: N.A. (1 camada)
+[exit=0]
+$ cd /tmp/sdd-aval/hook-report-ok && mkdir -p sdd/reports && cp /tmp/sdd-aval/RELATORIO_OK.md sdd/reports/BUILD_REPORT_X.md && git add sdd/reports/BUILD_REPORT_X.md && printf '# quebrado no disco\n' > sdd/reports/BUILD_REPORT_X.md && git commit -q -m report-ok-staged && echo PASSOU-relatorio-ok-staged-disco-quebrado
+PASSOU-relatorio-ok-staged-disco-quebrado
+[exit=0]
+$ cd /tmp/sdd-aval/hook-report-ok && git add sdd/reports/BUILD_REPORT_X.md && cp /tmp/sdd-aval/RELATORIO_OK.md sdd/reports/BUILD_REPORT_X.md && git commit -q -m report-staged-quebrado-disco-ok
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [REPORT] sdd/reports/BUILD_REPORT_X.md não passa no report-lint:
+        🛑 [tabela] nenhuma tabela de critérios reconhecida (uma coluna Resultado, Status, Passou ou Result e uma coluna Evidência): sem ela, nenhum critério é conferido
+        🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+
+Por que importa:
+  [REPORT] um relatório de build que não prova a evidência vira verde falso na fase Release
+
+RESULTADO: COMMIT RECUSADO
+→ [REPORT] acrescente a tabela de critérios e a linha do avaliador (sdd/templates/fragments/EVIDENCIA.md) ou corrija a evidência citada; python3 sdd/bin/report-lint.py <arquivo> mostra cada classe
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-report-ok && git restore --staged sdd/reports/BUILD_REPORT_X.md && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md sdd/reports/BUILD_REPORT_X.md && git add sdd/reports/BUILD_REPORT_X.md && PATH=/tmp/sdd-aval/path-sem-python3 git commit -q -m report-sem-python3 && echo PASSOU-sem-python3
+⚠️  sdd-open: python3 ausente: sdd/reports/BUILD_REPORT_X.md não foi conferido pelo report-lint neste commit (a fase Release confere)
+PASSOU-sem-python3
+[exit=0]
+$ cd /tmp/sdd-aval/hook-report-ok && PATH=/tmp/sdd-aval/path-sem-python3 command -v python3; echo rc=$?
+rc=1
+[exit=0]

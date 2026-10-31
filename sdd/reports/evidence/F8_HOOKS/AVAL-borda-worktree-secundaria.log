@@ -1,0 +1,28 @@
+$ cd /tmp/sdd-aval/borda-worktree2 && git worktree add -q /tmp/sdd-aval/borda-wt3 -b frente3 && cd /tmp/sdd-aval/borda-wt3 && git config --get core.hooksPath && git rev-parse --git-dir && head -c 204800 /dev/zero | tr '\000' 'a' > AGENTS.md && git add AGENTS.md && git commit -q -m h2-na-worktree
+sdd/hooks
+/private/tmp/sdd-aval/borda-worktree2/.git/worktrees/borda-wt3
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H2] AGENTS.md: 204800 bytes (teto 100 KB)
+
+Por que importa:
+  [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt
+
+RESULTADO: COMMIT RECUSADO
+→ [H2] mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/borda-wt3 && git reset -q && git checkout -q -- AGENTS.md && printf 'ok\n' > w.md && git add w.md && git commit -q -m ok && echo PASSOU-worktree-limpa
+PASSOU-worktree-limpa
+[exit=0]
+$ cd /tmp/sdd-aval/borda-wt3 && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh instalar | head -1 && cd /tmp/sdd-aval/borda-worktree2 && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar | head -1 && ls /tmp/sdd-aval/borda-worktree2/.git/hooks | grep -vc sample; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+Alarme ligado nos hooks do projeto (sdd/hooks), versão 1.2.0 da skill; nada foi gravado em .git/.
+Estado: o alarme desta skill está ligado pelos hooks do projeto (sdd/hooks), versão 1.2.0 da skill.
+0
+Alarme desligado dos hooks do projeto (sdd/hooks). Os hooks do sdd-open continuam no lugar.
+[exit=0]
+$ cd /tmp/sdd-aval/borda-wt3 && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep hooks
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+[exit=0]

@@ -1,0 +1,40 @@
+$ cd /tmp/sdd-aval/borda-nomes && mkdir -p 'pasta com espaço' && head -c 102401 /dev/zero | tr '\000' 'a' > 'pasta com espaço/AGENTS.md' && printf 'a\0b\n' > 'ação ñ.md' && V=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 24) && printf '{"api_key": "%s"}\n' "$V" > 'conf ig.json' && git add -A && PATH=/bin:/usr/bin git commit -q -m nomes
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H2] pasta com espaço/AGENTS.md: 102401 bytes (teto 100 KB)
+  🛑 [H5] ação ñ.md: 1 byte(s) NUL em arquivo de texto
+  🛑 [H3] conf ig.json: credencial em texto claro (chave: api_key)
+
+Por que importa:
+  [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt
+  [H5] um byte NUL faz o git e o grep tratarem o arquivo como binário: o diff fica invisível para quem revisa
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H2] mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml
+→ [H5] escreva a grafia de escape (\0, \x00, \u0000) no fonte: o valor em runtime é o mesmo e o arquivo continua texto
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/borda-nomes && git reset -q && rm -rf 'pasta com espaço' 'ação ñ.md' 'conf ig.json' && printf 'ok\n' > 'nome com espaço e ção.md' && git add -A && git commit -q -m nomes-ok && echo PASSOU-nome-limpo
+PASSOU-nome-limpo
+[exit=0]
+$ cd /tmp/sdd-aval/borda-nomes && git mv 'nome com espaço e ção.md' renomeado.md && printf 'a\0' >> renomeado.md && git add -A && git commit -q -m renomeado
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H5] renomeado.md: 1 byte(s) NUL em arquivo de texto
+
+Por que importa:
+  [H5] um byte NUL faz o git e o grep tratarem o arquivo como binário: o diff fica invisível para quem revisa
+
+RESULTADO: COMMIT RECUSADO
+→ [H5] escreva a grafia de escape (\0, \x00, \u0000) no fonte: o valor em runtime é o mesmo e o arquivo continua texto
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/borda-nomes && git -c core.quotePath=false status --short
+R  "nome com espaço e ção.md" -> renomeado.md
+[exit=0]

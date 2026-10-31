@@ -1,0 +1,24 @@
+$ cd /tmp/sdd-aval/prepush && base=$(git rev-parse HEAD) && git switch -q -c frente && printf 'f\n' > f.md && git add f.md && git commit -q -m f1 && git switch -q main && printf 'm\n' > m.md && git add m.md && git commit -q -m m1 && printf 'n\n' > n.md && git add n.md && git commit -q -m m2 && git update-ref refs/remotes/origin/main HEAD && printf 'refs/heads/frente %s refs/heads/frente %s\n' "$(git rev-parse frente)" "$base" | bash sdd/hooks/pre-push origin url
+⚠️  sdd-open: frente está 2 commit(s) atrás de origin/main (base velha).
+→ traga a base: peça ao agente para rebasear a frente sobre origin/main antes de abrir o PR.
+[exit=0]
+$ cd /tmp/sdd-aval/prepush && printf 'refs/heads/main %s refs/heads/main %s\n' "$(git rev-parse HEAD)" "$(git rev-parse HEAD~2)" | bash sdd/hooks/pre-push origin url; echo saida-vazia-em-dia
+saida-vazia-em-dia
+[exit=0]
+$ cd /tmp/sdd-aval/prepush && printf '(delete) %s refs/heads/frente %s\n' 0000000000000000000000000000000000000000 "$(git rev-parse frente)" | bash sdd/hooks/pre-push origin url; echo saida-vazia-delecao
+saida-vazia-delecao
+[exit=0]
+$ cd /tmp/sdd-aval/prepush && git update-ref -d refs/remotes/origin/main && printf 'refs/heads/frente %s refs/heads/frente %s\n' "$(git rev-parse frente)" "$(git rev-parse HEAD~2)" | bash sdd/hooks/pre-push origin url; echo saida-vazia-sem-ref-remoto
+saida-vazia-sem-ref-remoto
+[exit=0]
+$ cd /tmp/sdd-aval/prepush && git update-ref refs/remotes/upstream/main HEAD && printf 'refs/heads/frente %s refs/heads/frente %s\n' "$(git rev-parse frente)" "$(git rev-parse HEAD~2)" | bash sdd/hooks/pre-push upstream url
+⚠️  sdd-open: frente está 2 commit(s) atrás de upstream/main (base velha).
+→ traga a base: peça ao agente para rebasear a frente sobre upstream/main antes de abrir o PR.
+[exit=0]
+$ cd /tmp/sdd-aval/prepush && git init -q --bare -b main /tmp/sdd-aval/prepush-origin.git && git remote add origin /tmp/sdd-aval/prepush-origin.git && git push -q origin main 2>&1; git push origin frente 2>&1 | grep -v '^remote:'; echo push-rc=${PIPESTATUS[0]}
+⚠️  sdd-open: frente está 2 commit(s) atrás de origin/main (base velha).
+→ traga a base: peça ao agente para rebasear a frente sobre origin/main antes de abrir o PR.
+To /tmp/sdd-aval/prepush-origin.git
+ * [new branch]      frente -> frente
+push-rc=0
+[exit=0]

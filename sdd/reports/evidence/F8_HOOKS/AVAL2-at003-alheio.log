@@ -1,0 +1,22 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at003-husky || exit 99; mkdir -p .husky/_ && git config core.hooksPath .husky/_ && /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex 2>&1 | grep -E '⚠|hooksPath|RESULTADO'; echo rc=${PIPESTATUS[0]}; echo hooksPath=$(git config --get core.hooksPath); ls -l sdd/hooks/ | tail -2
+⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_ (husky, lefthook ou outro gerenciador). Nada foi alterado nele.
+⚠️  para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_ (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+RESULTADO: INSTALADO
+rc=0
+hooksPath=.husky/_
+-rwxr-xr-x@ 1 robertoduarte  wheel  15179 Oct 30 22:11 pre-commit
+-rwxr-xr-x@ 1 robertoduarte  wheel   1664 Oct 30 22:11 pre-push
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at003-precommit || exit 99; printf '#!/bin/sh\nexit 0\n' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit && /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex 2>&1 | grep -E '⚠|hooksPath|RESULTADO'; echo rc=${PIPESTATUS[0]}; echo hooksPath="$(git config --get core.hooksPath)"; ls -l sdd/hooks/ | tail -2; cat .git/hooks/pre-commit
+⚠️  hooks do open não ligados: já existe um pre-commit em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at003-precommit/.git/hooks/pre-commit. Nada foi alterado nele.
+⚠️  para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+⚠️  hooks do open não ligados: já existe um pre-commit em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at003-precommit/.git/hooks/pre-commit. Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+RESULTADO: INSTALADO
+rc=0
+hooksPath=
+-rwxr-xr-x@ 1 robertoduarte  wheel  15179 Oct 30 22:11 pre-commit
+-rwxr-xr-x@ 1 robertoduarte  wheel   1664 Oct 30 22:11 pre-push
+#!/bin/sh
+exit 0
+[exit=0]

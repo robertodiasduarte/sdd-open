@@ -1,0 +1,44 @@
+$ cd /tmp/sdd-aval/guards && git status --short | head -3; sed -e 's|__CWD__|'"$PWD"'|' /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-agent-veredito.json | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py
+?? sdd/reports/
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDecisionReason": "🛑 sdd-open: despacho do avaliador negado — há trabalho não commitado:\n🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do\n   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):\n   - sdd/reports/BUILD_REPORT_X.md\nRESULTADO: VERMELHO\n→ git -C /private/tmp/sdd-aval/guards add -A -- 'sdd/reports/BUILD_REPORT_X.md' && git -C /private/tmp/sdd-aval/guards commit -m \"wip(build): congelado para o avaliador\""}}
+[exit=0]
+$ cd /tmp/sdd-aval/guards && sed -e 's|__CWD__|'"$PWD"'|' /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-agent-veredito.json | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py | python3 -c "import json,sys;d=json.load(sys.stdin);print(d['hookSpecificOutput']['permissionDecision']); print(d['hookSpecificOutput']['permissionDecisionReason'])"
+deny
+🛑 sdd-open: despacho do avaliador negado — há trabalho não commitado:
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/reports/BUILD_REPORT_X.md
+RESULTADO: VERMELHO
+→ git -C /private/tmp/sdd-aval/guards add -A -- 'sdd/reports/BUILD_REPORT_X.md' && git -C /private/tmp/sdd-aval/guards commit -m "wip(build): congelado para o avaliador"
+[exit=0]
+$ cd /tmp/sdd-aval/guards && sed -e 's|__CWD__|'"$PWD"'|' -e 's|veredito|revisao|' /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-agent-veredito.json | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py; echo rc=$? saida-vazia=sem-veredito
+rc=0 saida-vazia=sem-veredito
+[exit=0]
+$ cd /tmp/sdd-aval/guards && git add -A && git commit -q -m tudo && git status --short && sed -e 's|__CWD__|'"$PWD"'|' /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-agent-veredito.json | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py; echo rc=$? saida-vazia=arvore-limpa
+rc=0 saida-vazia=arvore-limpa
+[exit=0]
+$ cd /tmp/sdd-aval/guards && mkdir -p sdd/reports/evidence/X && printf 'x\n' > sdd/reports/evidence/X/a.log && sed -e 's|__CWD__|'"$PWD"'|' /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-agent-veredito.json | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py; echo rc=$? saida-vazia=evidencia-permitida
+rc=0 saida-vazia=evidencia-permitida
+[exit=0]
+$ cd /tmp/sdd-aval/guards && printf '{"tool_name":"Task","tool_input":{"description":"VEREDITO final","prompt":"x"}}' | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py; echo rc=$?
+rc=0
+[exit=0]
+$ cd /tmp/sdd-aval/guards && printf '{"tool_name":"Bash","tool_input":{"command":"echo veredito"}}' | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py; echo rc=$? saida-vazia=outra-ferramenta
+rc=0 saida-vazia=outra-ferramenta
+[exit=0]
+$ cd /tmp/sdd-aval/guards && sed -e 's|__CWD__|'"$PWD"'|' /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-agent-veredito.json | SDD_AVALIADOR_GUARD=off CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py; echo rc=$?
+{"systemMessage": "⚠️ sdd-open: ⚠️  guard desligado (SDD_AVALIADOR_GUARD=off) — declare no BUILD_REPORT.\nRESULTADO: VERDE\n→ o avaliador pode ser despachado; o bypass é decisão sua e fica registrado."}
+rc=0
+[exit=0]
+$ cd /tmp/sdd-aval/guards && sed -e 's|__CWD__|'"$PWD"'|' /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-agent-veredito.json | CLAUDE_PROJECT_DIR=/tmp/sdd-aval python3 -B .claude/hooks/sdd-avaliador-guard.py; echo rc=$?
+{"systemMessage": "⚠️ sdd-open: sdd/bin/avaliador-guard.sh não encontrado em /tmp/sdd-aval — despacho não conferido (rode init)"}
+rc=0
+[exit=0]
+$ cd /tmp/sdd-aval/guards && printf '#!/bin/bash\nexit 2\n' > sdd/bin/avaliador-guard.sh && sed -e 's|__CWD__|'"$PWD"'|' /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-agent-veredito.json | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py; echo rc=$?; git checkout -q -- sdd/bin/avaliador-guard.sh
+{"systemMessage": "⚠️ sdd-open: avaliador-guard.sh saiu 2 — despacho não conferido"}
+rc=0
+[exit=0]
+$ cd /tmp/sdd-aval/guards && printf 'x' | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py; echo rc=$?
+{"systemMessage": "⚠️ sdd-open: payload do hook ilegível (JSONDecodeError) — despacho não conferido"}
+rc=0
+[exit=0]

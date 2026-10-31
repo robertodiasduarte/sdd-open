@@ -1,0 +1,7 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_claude_adapter.py'
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 69.181s
+
+OK
+[exit=0]

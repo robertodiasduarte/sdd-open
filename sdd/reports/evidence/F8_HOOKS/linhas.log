@@ -1,0 +1,15 @@
+$ wc -l sdd/hooks/pre-commit sdd/hooks/pre-push bin/sdd-open.sh bin/lib/vendors.sh bin/lib/merge.sh bin/adapters/claude/sdd-report-guard.py bin/adapters/claude/sdd-avaliador-guard.py .agents/skills/sdd-higiene-dado/scripts/alarme.sh .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh .agents/skills/sdd-higiene-dado/SKILL.md tests/test_hooks.py tests/test_claude_adapter.py
+     272 sdd/hooks/pre-commit
+      36 sdd/hooks/pre-push
+     855 bin/sdd-open.sh
+      72 bin/lib/vendors.sh
+     220 bin/lib/merge.sh
+     107 bin/adapters/claude/sdd-report-guard.py
+      71 bin/adapters/claude/sdd-avaliador-guard.py
+     136 .agents/skills/sdd-higiene-dado/scripts/alarme.sh
+     129 .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh
+     248 .agents/skills/sdd-higiene-dado/SKILL.md
+     404 tests/test_hooks.py
+     246 tests/test_claude_adapter.py
+    2796 total
+[exit=0]

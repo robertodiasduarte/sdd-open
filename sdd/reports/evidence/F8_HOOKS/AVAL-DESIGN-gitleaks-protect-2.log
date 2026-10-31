@@ -1,0 +1,11 @@
+$ cd <tmp> && git init -q -b main r && cd r && git config user.email t@example.com && git config user.name t && printf 'api_token: "ghp_Xq7v9Lm2ZtKj8vQ2mN4pR7sT9wZxAbCdEf"\n' > b.yml && git add b.yml && echo '--- protect --staged, repo SEM commit:' && gitleaks protect --staged --redact --no-banner 2>&1 | grep -vE 'INF|^$'; echo "exit=${PIPESTATUS[0]}"; git reset -q && echo base > a.txt && git add a.txt && git commit -q -m base && git add b.yml && echo '--- protect --staged, repo COM commit:' && gitleaks protect --staged --redact --no-banner 2>&1 | grep -vE 'INF|^$'; echo "exit=${PIPESTATUS[0]}"; echo '--- git --pre-commit --staged:' && gitleaks git --pre-commit --staged --redact --no-banner 2>&1 | grep -vE 'INF|^$'; echo "exit=${PIPESTATUS[0]}"
+--- protect --staged, repo SEM commit:
+[90m7:57PM[0m [33mWRN[0m [1mleaks found: 1[0m
+exit=1
+--- protect --staged, repo COM commit:
+[90m7:57PM[0m [33mWRN[0m [1mleaks found: 1[0m
+exit=1
+--- git --pre-commit --staged:
+[90m7:57PM[0m [33mWRN[0m [1mleaks found: 1[0m
+exit=1
+[exit=0]

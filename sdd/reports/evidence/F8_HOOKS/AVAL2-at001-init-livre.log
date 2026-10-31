@@ -1,0 +1,29 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at001 || exit 99; echo hooksPath-antes="$(git config --get core.hooksPath)"; ls .git/hooks/pre-commit 2>&1; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex 2>&1 | grep -vE "^\+ (\.agents|\.claude/skills)"; exit ${PIPESTATUS[0]}
+hooksPath-antes=
+ls: .git/hooks/pre-commit: No such file or directory
+▶ init — plano
++ AGENTS.md (novo)
++ sdd/ (templates, fixtures, bin, hooks, playbook, config) (novo)
++ core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez (novo)
+20 a criar · 0 a atualizar · 0 já corretos
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at001
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.15
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at001 || exit 99; ls -l sdd/hooks/; echo hooksPath=$(git config --get core.hooksPath); head -2 sdd/hooks/pre-commit; echo setas-com-switch=$(grep -c 'git switch -c' /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/reports/evidence/F8_HOOKS/AVAL2-at001-init-livre.log)
+total 40
+-rwxr-xr-x@ 1 robertoduarte  wheel  15179 Oct 30 22:11 pre-commit
+-rwxr-xr-x@ 1 robertoduarte  wheel   1664 Oct 30 22:11 pre-push
+hooksPath=sdd/hooks
+#!/usr/bin/env bash
+# sdd-open: dispatcher de hooks (pre-commit)
+setas-com-switch=1
+[exit=0]

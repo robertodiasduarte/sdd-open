@@ -1,0 +1,7 @@
+$ B=$(mktemp -d) && git archive v2.2.8 | tar -x -C "$B" && cp tests/test_hooks.py tests/test_claude_adapter.py tests/test_alarme.py tests/test_sdd_open.py "$B/tests/" && cd "$B" && for m in test_hooks test_claude_adapter "test_alarme.TestModoHooks" "test_alarme.TestCopiaGerada" "test_sdd_open.Hooks"; do (cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest "$m" > ../r.txt 2>&1); rc=$?; printf "%s na v2.2.8: rc=%s · %s\n" "$m" "$rc" "$(grep -E "^Ran|^(OK|FAILED)" r.txt | tr "\n" " ")"; done; cd /; rm -rf "${B:?}"
+test_hooks na v2.2.8: rc=1 · Ran 22 tests in 0.586s FAILED (errors=22) 
+test_claude_adapter na v2.2.8: rc=1 · Ran 10 tests in 36.624s FAILED (failures=5, errors=9) 
+test_alarme.TestModoHooks na v2.2.8: rc=1 · Ran 4 tests in 0.169s FAILED (errors=4) 
+test_alarme.TestCopiaGerada na v2.2.8: rc=1 · Ran 2 tests in 7.811s FAILED (errors=2) 
+test_sdd_open.Hooks na v2.2.8: rc=1 · Ran 8 tests in 5.923s FAILED (failures=8) 
+[exit=0]

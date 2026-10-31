@@ -1,0 +1,7 @@
+$ gitleaks detect --source tests --no-git --redact --no-banner --exit-code 1 && gitleaks detect --source sdd/fixtures/hooks --no-git --redact --no-banner --exit-code 1 && echo "(G1 verde em tests/ e sdd/fixtures/hooks/)"
+[90m10:34PM[0m [32mINF[0m [1mscanned ~374048 bytes (374.05 KB) in 54.7ms[0m
+[90m10:34PM[0m [32mINF[0m [1mno leaks found[0m
+[90m10:34PM[0m [32mINF[0m [1mscanned ~1538 bytes (1.54 KB) in 12.4ms[0m
+[90m10:34PM[0m [32mINF[0m [1mno leaks found[0m
+(G1 verde em tests/ e sdd/fixtures/hooks/)
+[exit=0]

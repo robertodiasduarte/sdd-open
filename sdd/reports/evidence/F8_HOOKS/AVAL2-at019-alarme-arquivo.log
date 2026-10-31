@@ -1,0 +1,29 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at019 || exit 99; echo hooksPath="$(git config --get core.hooksPath)"; echo '== verificar'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar; echo rc=$?; echo '== instalar'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh instalar; echo rc=$?; ls -l .git/hooks/pre-commit; head -3 .git/hooks/pre-commit; echo '== verificar'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar; echo rc=$?; echo '== commit com .env: recusado pelo arquivo'; printf 'X=1\n' > .env; git add .env; PATH=/bin:/usr/bin git commit -q -m env 2>&1 | grep -E 'recusado|desinstalar'; echo rc-commit=${PIPESTATUS[0]}; git reset -q HEAD -- .env; rm -f .env; echo '== desinstalar'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar; echo rc=$?; ls .git/hooks/pre-commit 2>&1; echo higieneDado="$(git config --get sdd.higieneDado)"
+hooksPath=
+== verificar
+Estado: nenhum alarme de commit instalado.
+Dá para instalar: o alarme seria gravado em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at019/.git/hooks/pre-commit e vale para todas as frentes deste projeto.
+rc=0
+== instalar
+Alarme instalado em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at019/.git/hooks/pre-commit (versão 1.2.0).
+Vale para todas as frentes deste projeto. Para pular um commit, depois de conferir: git commit --no-verify
+Para desinstalar: bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at019/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar   (ou: rm "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at019/.git/hooks/pre-commit")
+rc=0
+-rwxr-xr-x@ 1 robertoduarte  wheel  6515 Oct 30 22:11 .git/hooks/pre-commit
+#!/usr/bin/env bash
+# sdd-higiene-dado: alarme de commit (pre-commit)
+# versão: 1.2.0
+== verificar
+Estado: o alarme desta skill já está instalado (versão 1.2.0).
+Instalar de novo atualiza para a versão 1.2.0. Para remover: bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at019/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar
+rc=0
+== commit com .env: recusado pelo arquivo
+sdd-higiene-dado: commit recusado. Encontrei o que não deveria ir para o git:
+Para desinstalar o alarme: rm "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at019/.git/hooks/pre-commit"
+rc-commit=1
+== desinstalar
+Alarme removido de /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at019/.git/hooks/pre-commit.
+rc=0
+ls: .git/hooks/pre-commit: No such file or directory
+higieneDado=
+[exit=0]

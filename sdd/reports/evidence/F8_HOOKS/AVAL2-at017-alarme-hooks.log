@@ -1,0 +1,39 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at017 || exit 99; echo hooksPath=$(git config --get core.hooksPath); grep -c 'sdd-open: dispatcher de hooks' sdd/hooks/pre-commit; echo '== verificar'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar; echo rc=$?; echo '== instalar'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh instalar; echo rc=$?; echo higieneDado=$(git config --get sdd.higieneDado); echo "arquivos em .git/hooks sem .sample: $(ls .git/hooks | grep -vc '\.sample$')"; echo '== verificar (ligado)'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar; echo rc=$?
+hooksPath=sdd/hooks
+1
+== verificar
+Estado: o projeto usa os hooks do sdd-open (sdd/hooks) e o alarme desta skill está desligado neles.
+Dá para ligar: o alarme passa a rodar pelos hooks do projeto (sdd/hooks) a cada commit, sem gravar nada em .git/.
+rc=0
+== instalar
+Alarme ligado nos hooks do projeto (sdd/hooks), versão 1.2.0 da skill; nada foi gravado em .git/.
+Vale para todas as frentes deste projeto. Para pular um commit, depois de conferir: git commit --no-verify
+Para desligar: bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at017/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar
+rc=0
+higieneDado=on
+arquivos em .git/hooks sem .sample: 0
+== verificar (ligado)
+Estado: o alarme desta skill está ligado pelos hooks do projeto (sdd/hooks), versão 1.2.0 da skill.
+Ligar de novo não muda nada. Para desligar: bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at017/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar
+rc=0
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at017 || exit 99; printf '#!/bin/sh\n# sdd-higiene-dado: alarme de commit (pre-commit)\nexit 0\n' > .git/hooks/pre-commit; echo '== desinstalar (com resto legado em .git/hooks com a marca)'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar; echo rc=$?; echo higieneDado="$(git config --get sdd.higieneDado)"; ls .git/hooks/pre-commit 2>&1; ls -l sdd/hooks/pre-commit; grep -c 'sdd-open: dispatcher de hooks' sdd/hooks/pre-commit; echo '== desinstalar de novo (nada ligado)'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar; echo rc=$?
+== desinstalar (com resto legado em .git/hooks com a marca)
+Alarme desligado dos hooks do projeto (sdd/hooks). Os hooks do sdd-open continuam no lugar.
+rc=0
+higieneDado=
+ls: .git/hooks/pre-commit: No such file or directory
+-rwxr-xr-x@ 1 robertoduarte  wheel  15179 Oct 30 22:11 sdd/hooks/pre-commit
+1
+== desinstalar de novo (nada ligado)
+Não há alarme desta skill ligado neste projeto. Nada foi alterado.
+rc=0
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at017 || exit 99; printf '#!/bin/sh\nexit 0\n' > .git/hooks/pre-commit; git config sdd.higieneDado on; echo '== desinstalar com .git/hooks/pre-commit ALHEIO (sem a marca): não pode apagar'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar; echo rc=$?; ls .git/hooks/pre-commit && cat .git/hooks/pre-commit
+== desinstalar com .git/hooks/pre-commit ALHEIO (sem a marca): não pode apagar
+Alarme desligado dos hooks do projeto (sdd/hooks). Os hooks do sdd-open continuam no lugar.
+rc=0
+.git/hooks/pre-commit
+#!/bin/sh
+exit 0
+[exit=0]

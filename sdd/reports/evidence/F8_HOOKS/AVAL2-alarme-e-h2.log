@@ -1,0 +1,46 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s3-alarme || exit 99; echo higieneDado=$(git config --get sdd.higieneDado); printf 'X=1\n' > .env; git add .env; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/mkbig.sh CLAUDE.md 103500; PATH=/bin:/usr/bin git commit -q -m h2-e-alarme
+higieneDado=on
+staged CLAUDE.md: 103500 bytes, NUL=0
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H2] CLAUDE.md: 103500 bytes (teto 100 KB)
+
+Por que importa:
+  [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt
+
+
+sdd-higiene-dado: commit recusado. Encontrei o que não deveria ir para o git:
+
+  .env: arquivo de senhas (.env)
+
+Por que importa: o que entra no git fica no histórico e vai junto em todo push.
+Apagar depois não desfaz: quem já copiou o repositório continua com o dado.
+
+Como corrigir:
+  1. Tire o arquivo deste commit:      git restore --staged "<arquivo>"
+  2. Se ele nunca deve ir para o git:  echo "<arquivo>" >> .gitignore
+  3. Se o dado é necessário, use um fictício ou anonimizado.
+
+Se você conferiu e o dado é fictício ou autorizado, grave mesmo assim:
+  git commit --no-verify
+Isso pula o alarme só neste commit. Agente de IA: não use --no-verify sem o OK
+explícito da pessoa.
+
+Para desinstalar o alarme: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+
+RESULTADO: COMMIT RECUSADO
+→ [H2] mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml
+→ [alarme] siga o "Como corrigir" da mensagem do alarme acima (tirar o arquivo desta versão, .gitignore ou dado fictício)
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s3-alarme || exit 99; out=$(PATH=/bin:/usr/bin git commit -q -m h2-e-alarme 2>&1); rc=$?; echo bloco-achados=$(printf '%s\n' "$out" | grep -c 'Encontrei o que não pode entrar'); echo h2=$(printf '%s\n' "$out" | grep -c '🛑 \[H2\]'); echo bloco-alarme=$(printf '%s\n' "$out" | grep -c 'sdd-higiene-dado: commit recusado'); echo resultado=$(printf '%s\n' "$out" | grep -c 'RESULTADO: COMMIT RECUSADO'); echo seta-h2=$(printf '%s\n' "$out" | grep -c '^→ \[H2\]'); echo seta-alarme=$(printf '%s\n' "$out" | grep -c '^→ \[alarme\]'); echo setas-total=$(printf '%s\n' "$out" | grep -c '^→'); git reset -q HEAD -- .env CLAUDE.md; rm -f .env CLAUDE.md; exit $rc
+bloco-achados=1
+h2=1
+bloco-alarme=1
+resultado=1
+seta-h2=1
+seta-alarme=1
+setas-total=3
+[exit=1]

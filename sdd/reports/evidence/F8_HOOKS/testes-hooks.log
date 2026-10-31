@@ -1,0 +1,30 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p "test_hooks.py" -v
+test_commit_limpo_passa_em_silencio (test_hooks.Hooks) ... ok
+test_h2_default_100kb_com_slot_vazio_ou_invalido (test_hooks.Hooks) ... ok
+test_h2_teto_do_arquivo_de_contexto (test_hooks.Hooks) ... ok
+test_h3_credencial_em_config_mostra_a_chave_e_nunca_o_valor (test_hooks.Hooks) ... ok
+test_h3_gitleaks_quando_instalado (test_hooks.Hooks) ... ok
+test_h3_placeholder_antes_nao_absolve_a_credencial_real (test_hooks.Hooks) ... ok
+test_h3_placeholder_e_package_lock_passam (test_hooks.Hooks) ... ok
+test_h4_apagar_ou_renomear_o_playbook_e_recusado (test_hooks.Hooks) ... ok
+test_h4_playbook_que_perde_conhecimento_e_recusado (test_hooks.Hooks) ... ok
+test_h4_sem_playbook_lint_avisa_e_segue (test_hooks.Hooks) ... ok
+test_h5_byte_nul_em_texto_e_recusado_e_binario_passa (test_hooks.Hooks) ... ok
+test_h5_sem_extensao_so_com_shebang (test_hooks.Hooks) ... ok
+test_h6_le_default_branch_do_config (test_hooks.Hooks) ... ok
+test_h6_recusa_so_na_branch_padrao_com_remoto (test_hooks.Hooks) ... ok
+test_higiene_desligada_ou_sem_script (test_hooks.Hooks) ... ok
+test_higiene_ligada_recusa_cpf_env_e_diz_como_desinstalar_sem_rm (test_hooks.Hooks) ... ok
+test_lista_de_arquivos_de_contexto_igual_a_do_pacote (test_hooks.Hooks) ... ok
+test_pre_push_avisa_base_velha_e_sai_0 (test_hooks.Hooks) ... ok
+test_report_confere_o_staged_e_nao_o_disco (test_hooks.Hooks) ... ok
+test_report_pula_fixtures_e_template_copiados_pelo_init (test_hooks.Hooks) ... ok
+test_report_sem_python3_ou_sem_lint_avisa_e_segue (test_hooks.Hooks) ... ok
+test_report_staged_passa_pelo_report_lint (test_hooks.Hooks) ... ok
+test_varios_achados_numa_recusa_so_e_no_verify_grava (test_hooks.Hooks) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 31.405s
+
+OK
+[exit=0]

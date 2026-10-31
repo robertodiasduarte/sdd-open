@@ -1,0 +1,20 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && git archive v2.2.8 | tar -x -C /tmp/sdd-aval/base-v228 && cp tests/test_hooks.py tests/test_claude_adapter.py /tmp/sdd-aval/base-v228/tests/ && ls /tmp/sdd-aval/base-v228/sdd/hooks /tmp/sdd-aval/base-v228/bin/adapters 2>&1; grep -c 'MARCA_DISPATCHER' /tmp/sdd-aval/base-v228/.agents/skills/sdd-higiene-dado/scripts/alarme.sh
+ls: /tmp/sdd-aval/base-v228/bin/adapters: No such file or directory
+ls: /tmp/sdd-aval/base-v228/sdd/hooks: No such file or directory
+0
+[exit=1]
+$ cd /tmp/sdd-aval/base-v228 && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_hooks.py' 2>&1 | tail -3
+Ran 22 tests in 0.466s
+
+FAILED (errors=22)
+[exit=0]
+$ cd /tmp/sdd-aval/base-v228 && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_claude_adapter.py' 2>&1 | tail -3
+Ran 10 tests in 32.734s
+
+FAILED (failures=5, errors=9)
+[exit=0]
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && cp tests/test_alarme.py tests/apoio.py /tmp/sdd-aval/base-v228/tests/ && cd /tmp/sdd-aval/base-v228 && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest tests.test_alarme.TestModoHooks tests.test_alarme.TestCopiaGerada 2>&1 | tail -3
+Ran 6 tests in 7.343s
+
+FAILED (errors=6)
+[exit=0]

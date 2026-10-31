@@ -1,0 +1,38 @@
+$ cd /tmp/sdd-aval/hook-h5 && printf 'a\0b\n' > nul.md && printf '#!/bin/sh\necho a\0\n' > nul.sh && printf 'PNG\0\0' > img.png && printf '%%PDF\0' > doc.pdf && printf '#!/bin/sh\n\0' > semext && printf 'x\0y' > semext-sem-shebang && git add nul.md nul.sh img.png doc.pdf semext semext-sem-shebang && git commit -q -m h5
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H5] nul.md: 1 byte(s) NUL em arquivo de texto
+  🛑 [H5] nul.sh: 1 byte(s) NUL em arquivo de texto
+  🛑 [H5] semext: 1 byte(s) NUL em arquivo de texto
+
+Por que importa:
+  [H5] um byte NUL faz o git e o grep tratarem o arquivo como binário: o diff fica invisível para quem revisa
+
+RESULTADO: COMMIT RECUSADO
+→ [H5] escreva a grafia de escape (\0, \x00, \u0000) no fonte: o valor em runtime é o mesmo e o arquivo continua texto
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-h5 && git rm -q --cached nul.md nul.sh semext && rm -f nul.md nul.sh semext && git commit -q -m h5-binarios-passam && echo PASSOU-png-pdf-e-sem-shebang
+PASSOU-png-pdf-e-sem-shebang
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h5 && printf '\xff\xfea\0b\0' > utf16.txt && git add utf16.txt && git commit -q -m h5-utf16 && echo PASSOU-utf16-bom
+PASSOU-utf16-bom
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h5 && printf 'x\0' > a.py && printf 'y\0' > b.json && printf 'z\0' > c.sql && git add a.py b.json c.sql && git commit -q -m h5-outras-ext
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H5] a.py: 1 byte(s) NUL em arquivo de texto
+  🛑 [H5] b.json: 1 byte(s) NUL em arquivo de texto
+  🛑 [H5] c.sql: 1 byte(s) NUL em arquivo de texto
+
+Por que importa:
+  [H5] um byte NUL faz o git e o grep tratarem o arquivo como binário: o diff fica invisível para quem revisa
+
+RESULTADO: COMMIT RECUSADO
+→ [H5] escreva a grafia de escape (\0, \x00, \u0000) no fonte: o valor em runtime é o mesmo e o arquivo continua texto
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]

@@ -1,0 +1,10 @@
+$ cd <tmp> && git init -q -b main r && cd r && git config core.hooksPath sdd/hooks && echo 'git-path hooks/pre-commit:' && git rev-parse --git-path hooks/pre-commit && echo 'path-format=absolute:' && git rev-parse --path-format=absolute --git-path hooks/pre-commit && echo 'git-common-dir:' && git rev-parse --git-common-dir && git config --unset core.hooksPath && echo 'sem hooksPath:' && git rev-parse --git-path hooks/pre-commit
+git-path hooks/pre-commit:
+sdd/hooks/pre-commit
+path-format=absolute:
+/private<tmp>/r/sdd/hooks/pre-commit
+git-common-dir:
+.git
+sem hooksPath:
+.git/hooks/pre-commit
+[exit=0]

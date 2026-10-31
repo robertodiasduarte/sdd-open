@@ -1,0 +1,17 @@
+$ cd <tmp> && git init -q -b main r && cd r && git config user.email t@example.com && git config user.name t && echo limpo > a.txt && git add a.txt && echo '--- protect --staged limpo:' && gitleaks protect --staged --redact --no-banner; echo "exit=$?"; printf 'aws_secret_access_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"\n' > b.ini && git add b.ini && echo '--- protect --staged com segredo:' && gitleaks protect --staged --redact --no-banner; echo "exit=$?"; echo '--- git --pre-commit --staged (forma nova):'; gitleaks git --pre-commit --staged --redact --no-banner; echo "exit=$?"
+--- protect --staged limpo:
+[90m7:55PM[0m [32mINF[0m [1m0 commits scanned.[0m
+[90m7:55PM[0m [32mINF[0m [1mscanned ~6 bytes (6 bytes) in 46.4ms[0m
+[90m7:55PM[0m [32mINF[0m [1mno leaks found[0m
+exit=0
+--- protect --staged com segredo:
+[90m7:55PM[0m [32mINF[0m [1m0 commits scanned.[0m
+[90m7:55PM[0m [32mINF[0m [1mscanned ~73 bytes (73 bytes) in 35ms[0m
+[90m7:55PM[0m [32mINF[0m [1mno leaks found[0m
+exit=0
+--- git --pre-commit --staged (forma nova):
+[90m7:55PM[0m [32mINF[0m [1m0 commits scanned.[0m
+[90m7:55PM[0m [32mINF[0m [1mscanned ~73 bytes (73 bytes) in 26ms[0m
+[90m7:55PM[0m [32mINF[0m [1mno leaks found[0m
+exit=0
+[exit=0]
