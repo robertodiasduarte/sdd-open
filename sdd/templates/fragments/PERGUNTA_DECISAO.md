@@ -92,7 +92,7 @@ abre uma conversa nova sozinho.
 
 **O que não foi feito:** o relatório não foi gravado e nada foi publicado.
 
-**Brief:** `sdd/reports/evidence/PAGAMENTOS/AVAL-brief.md`
+**Brief:** `sdd/reports/briefs/BRIEF_avaliador_PAGAMENTOS.md`
 
 **Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
 

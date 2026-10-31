@@ -23,7 +23,8 @@ ordem de preferência:
 2. **Sessão nova** do mesmo agente: grave o brief em `sdd/reports/briefs/BRIEF_avaliador_{F}.md`,
    rode `bash sdd/bin/sdd-fluxo.sh despachar avaliador {F} sdd/reports/briefs/BRIEF_avaliador_{F}.md`
    (passe esse mesmo caminho) e **pare** no exit 40 `AGUARDANDO_HUMANO`, repassando a parada que ele
-   imprime: a pessoa abre uma sessão nova que só lê esse arquivo e cola de volta a linha `VEREDITO: …`.
+   imprime: a pessoa abre uma sessão nova que só lê esse arquivo e cola de volta o bloco
+   `<<<AVALIACAO … >>>` inteiro (com a linha `VEREDITO: …`).
 3. **Outro vendor** em sessão nova: idem, e ganha diversidade de erro.
 
 ⛔ O brief **não** leva BUILD_REPORT, diff, resumo do que foi feito, nem hipóteses do build.
@@ -69,7 +70,7 @@ que você grava de propósito, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.l
 |---|---|
 | `PASS` | seguir; os ATs provados citam `sdd/reviews/AVALIACAO_{F}_{ts}.md` como evidência |
 | `NEEDS_WORK` | os ACHADOS são o brief de correção do ciclo seguinte (redispatch fresco); corrigir, rodar o gate, re-despachar com `ciclo: 2`. Máximo 2 ciclos → `Status: Blocked` com os achados abertos. Nunca contornar o critério |
-| `PASS_PENDENTE_RECIBO` | só em gate manual-ux: mostrar o roteiro ao humano e colher `recibo: nome YYYY-MM-DD`; sem recibo, tratar como NEEDS_WORK |
+| `PASS_PENDENTE_RECIBO` | só em gate manual-ux: mostrar o roteiro ao humano e colher `recibo: nome YYYY-MM-DD`; sem recibo, é parada que não é decisão (`sdd-fluxo.sh loop` sai 30 AGUARDANDO_RECIBO): o build espera o recibo e não avança |
 
 Persista o bloco verbatim em `sdd/reviews/AVALIACAO_{F}_{YYYYMMDD-HHMM}.md` — é a evidência
 que o `report-lint.py` exige para o veredito no BUILD_REPORT. Registre a contagem de achados:

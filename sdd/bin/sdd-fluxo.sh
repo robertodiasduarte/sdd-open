@@ -50,7 +50,7 @@ precisa_python() {
 
 raiz() { git rev-parse --show-toplevel 2>/dev/null || pwd; }
 
-nome_ok() { printf '%s' "$1" | grep -Eq '^[A-Za-z0-9_-]+$'; }
+nome_ok() { case "$1" in ''|*[!A-Za-z0-9_-]*) return 1 ;; esac; return 0; }
 
 # ── despachar (bash puro) ────────────────────────────────────────────────────────────────────────
 cmd_despachar() {
@@ -71,7 +71,7 @@ cmd_despachar() {
   fi
   cmp -s "$brief" "$R/$rel" || { echo "🛑 sdd-fluxo: a cópia do brief não confere: $rel" >&2; exit 64; }
   if [ "$papel" = "avaliador" ]; then
-    retorno='a última linha da resposta (`VEREDITO: …`)'
+    retorno='o bloco inteiro da resposta, de `<<<AVALIACAO` até `>>>` (com a linha `VEREDITO: …`)'
   else
     retorno='o bloco final da resposta (o que começa com <<<)'
   fi
@@ -177,6 +177,8 @@ def review_design(design):
 
     if texto is None:
         return ilegivel("DESIGN ausente ou ilegível: " + design)
+    # um File Manifest de exemplo dentro de bloco cercado não é o manifest do DESIGN
+    texto = re.sub(r"^(```|~~~).*?^\1[^\n]*$", lambda c: "\n" * c.group(0).count("\n"), texto, flags=re.M | re.S)
     m = re.search(r"^##[ \t]+(?:\d+(?:\.\d+)*\.?[ \t]+)?File Manifest\b[^\n]*\n(.*?)(?=^## |\Z)",
                   texto, re.M | re.S | re.I)
     if not m:
@@ -231,7 +233,71 @@ def cmd_review_design():
 import json
 
 
+class _Tee:
+    def __init__(self, real, buf):
+        self.real, self.buf = real, buf
+
+    def write(self, s):
+        self.buf.append(s)
+        return self.real.write(s)
+
+    def flush(self):
+        self.real.flush()
+
+
 def cmd_loop():
+    """Com --log, grava `$ comando`, toda a saída e `[exit=N]` em TODA saída, inclusive 64: um log antigo
+    nunca fica no lugar com um exit que esta chamada não deu."""
+    log = None
+    if "--log" in args:
+        k = args.index("--log")
+        log = args[k + 1] if k + 1 < len(args) and not args[k + 1].startswith("--") else None
+    if not log:
+        _loop()
+        return
+    resto, j = [], 0
+    while j < len(args):
+        if args[j] == "--log":
+            j += 2
+            continue
+        resto.append(args[j])
+        j += 1
+    buf, so, se = [], sys.stdout, sys.stderr
+    sys.stdout, sys.stderr = _Tee(so, buf), _Tee(se, buf)
+    rc = 0
+    try:
+        _loop()
+    except SystemExit as e:
+        rc = e.code if isinstance(e.code, int) else (0 if e.code is None else 64)
+    finally:
+        sys.stdout, sys.stderr = so, se
+    try:
+        pasta = os.path.dirname(log)
+        if pasta:
+            os.makedirs(pasta, exist_ok=True)
+        with open(log, "w", encoding="utf-8") as h:
+            h.write("$ sdd-fluxo.sh loop " + " ".join(shlex.quote(x) for x in resto) + "\n")
+            h.write("".join(buf))
+            h.write("[exit=%d]\n" % rc)
+    except OSError as e:
+        print("⚠️ sdd-fluxo: não consegui gravar o --log: %s" % e, file=sys.stderr)
+    sys.exit(rc)
+
+
+def recibo_valido(recibo):
+    """`nome AAAA-MM-DD`: um nome e uma data que existe no calendário."""
+    import datetime
+    m = re.match(r"^(.*\S)\s+(\d{4}-\d{2}-\d{2})$", recibo.strip())
+    if not m or not re.search(r"[^\d\s-]", m.group(1)):
+        return False
+    try:
+        datetime.date(*(int(x) for x in m.group(2).split("-")))
+    except ValueError:
+        return False
+    return True
+
+
+def _loop():
     op = {"--review": "", "--ledger": "", "--rodada": "", "--teto": "3", "--avaliacao": "",
           "--ciclo-avaliador": "0", "--recibo": "", "--log": ""}
     i = 0
@@ -387,7 +453,7 @@ def cmd_loop():
             continuar_aval = True
             motivos.append("avaliador: NEEDS_WORK (ciclo %d)" % ciclo)
         elif vered == "PASS_PENDENTE_RECIBO":
-            if re.search(r"\S+.*\b\d{4}-\d{2}-\d{2}\b", recibo):
+            if recibo_valido(recibo):
                 motivos.append("avaliador: recibo humano — " + recibo)
             else:
                 aguarda_recibo = True
@@ -422,19 +488,6 @@ def cmd_loop():
     saida += ["RESULTADO: " + est, "→ " + seta]
     texto = "\n".join(saida) + "\n"
     sys.stdout.write(texto)
-    if op["--log"]:
-        resto, j = [], 0
-        while j < len(args):
-            if args[j] != "--log":
-                resto += args[j:j + 2]
-            j += 2
-        try:
-            with open(op["--log"], "w", encoding="utf-8") as h:
-                h.write("$ sdd-fluxo.sh loop " + " ".join(shlex.quote(x) for x in resto) + "\n")
-                h.write(texto)
-                h.write("[exit=%d]\n" % rc)
-        except OSError as e:
-            print("⚠️ sdd-fluxo: não consegui gravar o --log: %s" % e, file=sys.stderr)
     sys.exit(rc)
 
 
@@ -472,7 +525,7 @@ def ledger(texto):
             continue
         if not any(c):
             continue
-        sev = next((c[k] for k, h in enumerate(cab) if h.startswith(("severidade", "severity")) and k < len(c)), "")
+        sev = next((c[k] for k, h in enumerate(cab) if h.startswith(("sev", "severidade", "severity")) and k < len(c)), None)
         ver = next((c[k] for k, h in enumerate(cab) if h.startswith(("veredito", "verdict")) and k < len(c)), "")
         saida.append((c[0], sev, ver))
     return saida
@@ -519,10 +572,14 @@ def cmd_seguir():
     artefato = {"define": define, "governanca": define, "design": design,
                 "ux-review": os.path.join(raiz, "sdd/reviews/UX_REVIEW_%s.md" % feat)}[fase]
     st = status_de(artefato)
+    fem = DOC[fase][1] == "a"
     if st is None:
-        para("%s não encontrado: %s" % (DOC[fase][0], artefato))
+        para("%s não %s: %s" % (DOC[fase][0], "encontrada" if fem else "encontrado", artefato))
     if not st.startswith("Ready for"):
-        para("%s não está pronto (Status: %s)" % (DOC[fase][0], st or "ausente"))
+        para("%s não está %s (Status: %s)" % (DOC[fase][0], DOC[fase][2], st or "ausente"))
+    git = subprocess.run(["git", "-C", raiz, "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+    if git.returncode != 0:
+        para("a pasta não é um repositório git, e o verify-gate.sh precisa de um (rode git init)")
     r = subprocess.run(["bash", os.path.join(BIN, "verify-gate.sh"), "--print", os.path.abspath(define)],
                        cwd=raiz, capture_output=True, text=True)
     if r.returncode != 0:
@@ -546,7 +603,9 @@ def cmd_seguir():
             linhas = ledger(ler(design))
             if not linhas:
                 para("revisão do DESIGN exigida e não registrada no Advisor Ledger")
-            abertos = [n for n, sev, ver in linhas if sev.upper().startswith("HIGH")
+            if any(sev is None for _, sev, _ in linhas):
+                para("Advisor Ledger sem coluna de severidade (Severidade ou Severity): não dá para conferir HIGH aberto")
+            abertos = [n for n, sev, ver in linhas if (sev or "").upper().startswith("HIGH")
                        and not re.match(r"^\W*(APLICADA|REBATIDA_|APPLIED|REBUTTED)", ver, re.I)]
             if abertos:
                 para("HIGH aberto no Advisor Ledger: " + ", ".join(abertos))

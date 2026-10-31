@@ -184,7 +184,8 @@ DESIGN, pasta do projeto, URL base e se há credenciais autorizadas. Persista o 
 Se esta sessão não abre o papel fresco sozinha: grave o brief em
 `sdd/reports/briefs/BRIEF_avaliador_{F}.md`, rode
 `bash sdd/bin/sdd-fluxo.sh despachar avaliador {F} sdd/reports/briefs/BRIEF_avaliador_{F}.md` e pare no
-exit 40, repassando a parada; continue quando a pessoa colar a linha `VEREDITO: …`.
+exit 40, repassando a parada; continue quando a pessoa colar o bloco `<<<AVALIACAO … >>>` inteiro
+(com a linha `VEREDITO: …`), que vai verbatim para `sdd/reviews/`.
 Detalhes em `references/contexto-fresco.md`.
 
 ### 6. BUILD_REPORT

@@ -29,8 +29,12 @@ define → (governanca, se dinheiro/tributo/dado pessoal) → (ux-review, se há
        → revisão do DESIGN (se review-design diz EXIGIDO) → build → ⏸️ release (sempre pergunta: D1)
 ```
 
-- **`seguir <fase> <DEFINE> <próxima>`** sai 0 só com o encadeamento ligado, `verify-gate.sh --print`
-  0 no DEFINE, nenhum marcador de clarificação aberto e, na fase design, o `design-lint.py` 0 no DESIGN.
+- **`seguir <fase> <DEFINE> <próxima>`** sai 0 só com o encadeamento ligado, o documento da fase em
+  `Ready for …` (o DEFINE na define e na governança, `sdd/reviews/UX_REVIEW_<F>.md` na ux-review, o
+  DESIGN na design), num repositório git, com `verify-gate.sh --print` 0 e o bloco do gate com `kind` e
+  `cmd`, nenhum marcador de clarificação aberto e, na fase design, o `design-lint.py` 0 e — quando o
+  `review-design` exige a revisão — o Advisor Ledger do DESIGN com linha, coluna de severidade e
+  nenhuma nota HIGH sem APLICADA ou REBATIDA_.
   Pares válidos: define → governanca, ux-review ou design · governanca → ux-review ou design ·
   ux-review → design · design → build · qualquer → release (sempre PARAR).
 - **`review-design <DESIGN>`**: exit 0 EXIGIDO ⇒ a revisão de contexto fresco roda; exit 1 DISPENSAVEL ⇒
@@ -81,8 +85,9 @@ Revision History com o prefixo `[auto]`.
 - Ledger da rodada, 1 linha por achado grave:
   `| <achado> | HIGH | APLICADA \| REBATIDA_EVIDENCIA \| REBATIDA_ESCOPO | rodada=N | <arquivo:linha ou motivo> |`.
   Sem `rodada=N` o decisor ignora a linha: os ids (R1, R2…) recomeçam a cada revisão.
-- Grave o resultado com `--log evidence/<F>/LOOP-rodada-N.log`, nunca com `| tee`: o exit de um
-  pipeline é o do `tee` (0), e o BLOQUEADO viraria "seguir".
+- Grave o resultado com `--log sdd/reports/evidence/<F>/LOOP-rodada-N.log`, nunca com `| tee`: o exit
+  de um pipeline é o do `tee` (0), e o BLOQUEADO viraria "seguir". O `--log` é regravado em toda
+  chamada, inclusive a que sai 64, e cria a pasta que faltar.
 - `BLOQUEADO` por teto ⇒ BUILD_REPORT `Status: Blocked` e **uma** pergunta, com o que foi tentado (n
   rodadas) e cada grave restante em 1 frase com o arquivo:
 

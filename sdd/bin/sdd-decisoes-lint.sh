@@ -78,7 +78,7 @@ MARCA = re.compile(r"\[(?:D\d+|auto)\b[^\]]*\]")
 FORMA = re.compile(r"^\[(D[1-5]|auto) · ([^\]]+)\]$")
 NUA = re.compile(r"^\[(D[1-5]|auto)\]$")
 REF = re.compile(r"\(ref:[^)]*\)\s*\.?\s*$")
-ID = re.compile(r"\b(?:AT|LM)-\d+\b|\bD\d+\b|\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b")
+ID = re.compile(r"\b(?:AT|LM)-\d+\b|\bD\d+\b|\b(?=[0-9a-fA-F]*\d)(?=[0-9a-fA-F]*[a-fA-F])[0-9a-fA-F]{7,40}\b")
 MD = re.compile(r"^```markdown[ \t]*\n(.*?)^```[ \t]*$", re.M | re.S)
 
 

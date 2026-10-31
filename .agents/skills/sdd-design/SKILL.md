@@ -74,9 +74,10 @@ seguir. Com `false`, rode um re-check silencioso (nomes de provedor, "prompt", p
 prompt no escopo); hits → pergunte: corrigir o DEFINE, confirmar falso positivo, ou virar o
 flag neste DESIGN (anotando em Revision History). Com o encadeamento ligado
 (`bash sdd/bin/sdd-fluxo.sh estado` sai 0), essas perguntas são de rotina: flag ausente vira `true`
-(o lado conservador), re-check com hits vira `true`, e a proposta de verificabilidade do avaliador é
-aceita; cada uma vira uma linha `[auto] <decisão> — porque <…> · para desfazer: <…>` em Revision
-History e no recibo **Decidi sozinho**.
+(o lado conservador), re-check com hits vira `true`, e os ajustes do contrato de aceite da revisão do
+DESIGN (modo `contrato`) são aceitos; cada uma vira uma linha `[auto] <decisão> — porque <…> · para
+desfazer: <…>` em Revision History e no recibo **Decidi sozinho**. Desligado, essas perguntas são
+feitas como hoje, com a marca `[auto · de rotina]`.
 
 ### 2. Arquitetura
 

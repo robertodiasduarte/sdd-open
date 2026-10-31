@@ -82,6 +82,13 @@ class ReviewDesign(Base):
         rc, out = self.fluxo("review-design", self.escreve(r, "sdd/features/DESIGN_H.md", base), cwd=r)
         self.assertEqual(rc, 1, out)
 
+    def test_manifest_de_exemplo_em_bloco_cercado_nao_conta(self):
+        exemplo = "```markdown\n## File Manifest\n\n| # | File | Action |\n|---|---|---|\n| 1 | `a.py` | Modify |\n```\n\n"
+        texto = ler(FX / "DESIGN_novos.md").replace("## File Manifest", exemplo + "## File Manifest", 1)
+        rc, out = self.fluxo("review-design", self.escreve(self.tmp, "D.md", texto))
+        self.assertEqual(rc, 0, out)
+        self.assertIn("EXIGIDO: 3 arquivo(s) novo(s)", out)
+
     def test_manifest_ilegivel_sai_64_com_o_default_seguro(self):
         sem_linhas = self.escreve(self.tmp, "D.md", "# D\n\n## File Manifest\n\n| # | File | Action |\n|---|---|---|\n")
         for d in (FX / "DESIGN_sem_manifest.md", sem_linhas, self.tmp / "nao-existe.md"):
@@ -197,6 +204,29 @@ class Loop(Base):
                 self.assertEqual(rc, 64, out)
                 self.assertIn("RESULTADO: ERRO DE USO", out)
 
+    def test_log_e_regravado_mesmo_quando_sai_64_e_cria_a_pasta(self):
+        log = self.tmp / "nova/pasta/LOOP-rodada-1.log"
+        rc, out = self.loop("review-ok", "--ledger", FX / "ledger-rebatida.md", "--log", log)
+        self.assertEqual(rc, 0, out)
+        self.assertTrue(ler(log).rstrip().endswith("[exit=0]"))
+        rc, out = self.loop(self.tmp / "nao-existe", "--log", log)
+        self.assertEqual(rc, 64, out)
+        texto = ler(log)
+        self.assertNotIn("ESTADO: PRONTO", texto)
+        self.assertIn("META.txt ausente", texto)
+        self.assertTrue(texto.rstrip().endswith("[exit=64]"), texto)
+        rc, out = self.fluxo("loop", "--review", FX / "review-ok", "--rodada", "x", "--log", log)
+        self.assertEqual(rc, 64, out)
+        self.assertTrue(ler(log).rstrip().endswith("[exit=64]"))
+
+    def test_recibo_exige_nome_e_data_que_existe(self):
+        args = ("review-ok", "--ledger", FX / "ledger-rebatida.md", "--avaliacao", FX / "AVALIACAO_recibo.md")
+        for recibo, esperado in (("2026-10-31", 30), ("Ana 2026-99-99", 30), ("Ana 2026-02-30", 30),
+                                 ("Ana Souza 2026-10-31", 0)):
+            with self.subTest(recibo=recibo):
+                rc, out = self.loop(*args, "--recibo", recibo)
+                self.assertEqual(rc, esperado, out)
+
     def test_log_grava_o_exit_real_e_tee_e_acusado(self):
         ev = self.tmp / "ev"
         ev.mkdir()
@@ -229,7 +259,7 @@ class Despachar(Base):
         for rotulo in ("⏸️", "**Por que parei:**", "**Onde:**", "**Passos:**", "1. ", "2. ", "3. ",
                        "**O que não foi feito:**", "**Brief:** sdd/reports/briefs/BRIEF_avaliador_PAGAMENTOS.md",
                        "**Sessão nova:**", "Quando terminar, me peça de novo, eu continuo daqui.",
-                       "VEREDITO: …", "RESULTADO: AGUARDANDO_HUMANO", "→ "):
+                       "`<<<AVALIACAO` até `>>>`", "VEREDITO: …", "RESULTADO: AGUARDANDO_HUMANO", "→ "):
             self.assertIn(rotulo, out)
 
     def test_retorno_de_outro_papel_e_o_bloco_final(self):
@@ -255,7 +285,8 @@ class Despachar(Base):
         vazio = self.escreve(self.tmp, "vazio.md", "")
         brief = FX / "brief-avaliador.md"
         for args in (("avaliador", "X", self.tmp / "nao-existe.md"), ("avaliador", "X", vazio),
-                     ("../fora", "X", brief), ("avaliador", "X/Y", brief), ("avaliador", "X")):
+                     ("../fora", "X", brief), ("avaliador", "X/Y", brief), ("avaliador", "X"),
+                     ("ava\nx", "X", brief), ("avaliador", "F9\n", brief)):
             with self.subTest(args=[str(a) for a in args]):
                 rc, out = self.fluxo("despachar", *args, cwd=r)
                 self.assertEqual(rc, 64, out)
@@ -343,7 +374,7 @@ class Seguir(Base):
             (("define", "DEFINE_R", "design"), "DEFINE não está pronto (Status: Draft)"),
             (("define", "DEFINE_K", "design"), "Verify Gate sem kind ou cmd"),
             (("define", "DEFINE_M", "design"), "o DEFINE tem marcador de clarificação aberto"),
-            (("ux-review", "DEFINE_X", "design"), "UX REVIEW não está pronto (Status: Needs Requirement Iteration)"),
+            (("ux-review", "DEFINE_X", "design"), "UX REVIEW não está pronta (Status: Needs Requirement Iteration)"),
             (("design", "DEFINE_R", "build"), "DESIGN não encontrado"),
             (("design", "DEFINE_V", "build"), "revisão do DESIGN exigida e não registrada no Advisor Ledger"),
             (("design", "DEFINE_H", "build"), "HIGH aberto no Advisor Ledger: A1"),
@@ -357,6 +388,41 @@ class Seguir(Base):
                 self.assertIn("PARAR: " + motivo, out)
                 self.assertIn("RESULTADO: PARAR", out)
                 self.assertIn("→ Próximo passo: /sdd-%s " % prox, out)
+
+    def test_ledger_sem_coluna_de_severidade_para(self):
+        r = self.projeto()
+        self.poe(r, "DEFINE_pronto.md", "DEFINE_X.md")
+        texto = ler(FX / "DESIGN_pronto.md").replace("| # | Nota | Severidade | Veredito | Evidência |",
+                                                     "| # | Nota | Decisão | Onde |")
+        self.escreve(r, "sdd/features/DESIGN_X.md", texto)
+        rc, out = self.fluxo("seguir", "design", "sdd/features/DEFINE_X.md", "build", cwd=r)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("PARAR: Advisor Ledger sem coluna de severidade", out)
+        self.escreve(r, "sdd/features/DESIGN_X.md", ler(FX / "DESIGN_pronto.md").replace(
+            "| # | Nota | Severidade | Veredito | Evidência |", "| # | Note | Sev | Verdict | Evidence |").replace(
+            "| HIGH | APLICADA (Decision 1) |", "| HIGH | PENDENTE |"))
+        rc, out = self.fluxo("seguir", "design", "sdd/features/DEFINE_X.md", "build", cwd=r)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("PARAR: HIGH aberto no Advisor Ledger: A1", out)
+
+    def test_fora_de_git_o_motivo_e_o_git(self):
+        r = self.tmp / "semgit"
+        (r / "sdd/features").mkdir(parents=True)
+        self.escreve(r, "sdd/config.yaml", "flow:\n  autonomous: true\n")
+        shutil.copy(str(FX / "DEFINE_pronto.md"), str(r / "sdd/features/DEFINE_X.md"))
+        rc, out = self.fluxo("seguir", "define", "sdd/features/DEFINE_X.md", "design", cwd=r)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("PARAR: a pasta não é um repositório git", out)
+
+    def test_motivo_com_a_concordancia_do_documento(self):
+        r = self.projeto()
+        self.poe(r, "DEFINE_pronto.md", "DEFINE_X.md")
+        rc, out = self.fluxo("seguir", "ux-review", "sdd/features/DEFINE_X.md", "design", cwd=r)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("PARAR: UX REVIEW não encontrada", out)
+        self.poe(r, "DEFINE_rascunho.md", "DEFINE_R.md")
+        rc, out = self.fluxo("seguir", "governanca", "sdd/features/DEFINE_R.md", "design", cwd=r)
+        self.assertIn("PARAR: GOVERNANÇA não está pronta (Status: Draft)", out)
 
     def test_desligado_ou_sem_config_para_em_silencio_de_motivo(self):
         for autonomo in (False, None):
@@ -501,7 +567,8 @@ class Fragmentos(Base):
         for marca in ("[D1 · não se desfaz]", "[D2 · muda o produto]", "[D3 · muda a regra do método]",
                       "[D4 · limite de tentativas]", "[D5 · provas em conflito]", "[auto · de rotina]"):
             self.assertIn("| `%s` |" % marca, texto)
-        for trecho in ("[Dn]", "bash sdd/bin/sdd-fluxo.sh estado", "Posso finalizar", "**Por que parei:**"):
+        for trecho in ("[Dn]", "bash sdd/bin/sdd-fluxo.sh estado", "Posso finalizar", "**Por que parei:**",
+                       "**Brief:** `sdd/reports/briefs/BRIEF_avaliador_PAGAMENTOS.md`"):
             self.assertIn(trecho, texto)
 
     def test_fluxo_encadeado_tem_o_contrato(self):
@@ -509,7 +576,8 @@ class Fragmentos(Base):
         for trecho in ("flow.autonomous", "seguir <fase> <DEFINE> <próxima>", "review-design <DESIGN>",
                        "✅ DEFINE pronto → seguindo para o DESIGN", "**Decidi sozinho:**", " — porque ",
                        "para desfazer:", "AGUARDANDO_HUMANO", "AGUARDANDO_RECIBO", "3 rodadas", "2 ciclos",
-                       "[D4 · limite de tentativas]", "--parar", "nunca com `| tee`"):
+                       "[D4 · limite de tentativas]", "--parar", "nunca com `| tee`",
+                       "--log sdd/reports/evidence/<F>/LOOP-rodada-N.log", "`Ready for …`", "coluna de severidade"):
             self.assertIn(trecho, texto)
 
 

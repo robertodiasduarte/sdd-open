@@ -80,6 +80,8 @@ class Regras(Base):
              "identificador técnico fora do (ref: …): LM-004"),
             ("SHA no efeito", sd + "[auto · de rotina] " + PERGUNTA,
              OPCOES.replace("pergunto de novo", "comparo com 7c640eb"), "identificador técnico fora do (ref: …): 7c640eb"),
+            ("SHA maiúsculo", sd + "[auto · de rotina] " + PERGUNTA,
+             OPCOES.replace("pergunto de novo", "comparo com 7C640EB"), "identificador técnico fora do (ref: …): 7C640EB"),
         )
         for nome, linha, opcoes, motivo in casos:
             with self.subTest(caso=nome):
