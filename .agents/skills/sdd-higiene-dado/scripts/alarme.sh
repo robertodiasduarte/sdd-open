@@ -40,9 +40,14 @@ HOOK="${COMMON}/hooks/pre-commit"
 VERSAO="$(versao_skill)"
 
 # Modo: arquivo (sem hooksPath) | hooks (sdd/hooks com o dispatcher) | outro (qualquer outro hooksPath)
+# Relativo (sdd/hooks) ou absoluto que resolve para <raiz>/sdd/hooks (links simbólicos inclusos: /tmp no macOS).
+hooks_path_e_nosso() {
+  [ "${1}" = "sdd/hooks" ] && return 0
+  case "${1}" in /*) [ -d "${1}" ] && [ "$(cd "${1}" 2>/dev/null && pwd -P)" = "$(cd "${ROOT}/sdd/hooks" 2>/dev/null && pwd -P)" ] ;; *) return 1 ;; esac
+}
 MODO="arquivo"
 if [ -n "${HOOKS_PATH}" ]; then
-  if { [ "${HOOKS_PATH}" = "sdd/hooks" ] || [ "${HOOKS_PATH}" = "${ROOT}/sdd/hooks" ]; } \
+  if hooks_path_e_nosso "${HOOKS_PATH}" \
      && [ -f "${ROOT}/sdd/hooks/pre-commit" ] && grep -qF "${MARCA_DISPATCHER}" "${ROOT}/sdd/hooks/pre-commit"; then
     MODO="hooks"
   else

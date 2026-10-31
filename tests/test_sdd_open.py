@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import os
 import re
+import shutil
 import unittest
 
 from apoio import BASH, RAIZ, Sandbox
@@ -333,6 +334,36 @@ class Hooks(Sandbox):
         self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)
         self.assertIn("bash sdd/hooks/pre-commit || exit 1", out)
         self.assertResultado(out)
+
+    def test_hooks_path_absoluto_por_link_simbolico_e_nosso(self):
+        # ciclo 1 do avaliador: /tmp é link para /private/tmp no macOS; o caminho pelo link era tratado como OUTRO
+        self.cli("init", "--yes", "--vendors", "codex")
+        link = self.tmp / "link-para-o-projeto"
+        os.symlink(self.p, link)
+        self.git(self.p, "config", "core.hooksPath", str(link / "sdd/hooks"))
+        rc, out = self.cli("doctor")
+        self.assertIn("✅ hooks ligados (sdd/hooks:", out)
+        self.assertNotIn("hooks do open não ligados", out)
+        rc, out = self.cli("init", "--yes", "--vendors", "codex", "--verbose")
+        self.assertIn("= core.hooksPath = sdd/hooks (já correto)", out)
+
+    def test_init_repetido_sem_paste_no_path_mantem_os_vendors(self):
+        # ciclo 1 do avaliador: a união dos vendors passava por `paste`; sem ele no PATH a lista esvaziava em
+        # silêncio e o init terminava INSTALADO sem vendor nenhum
+        self.cli("init", "--yes", "--vendors", "codex")
+        d = self.tmp / "path-sem-paste"
+        d.mkdir()
+        for f in ("bash", "sh", "git", "awk", "sed", "grep", "tr", "wc", "basename", "dirname", "mktemp", "cat",
+                  "head", "tail", "cmp", "od", "rm", "env", "cut", "sort", "uniq", "ls", "cp", "mkdir", "chmod",
+                  "mv", "find", "touch", "uname", "readlink", "date", "python3"):
+            alvo = shutil.which(f)
+            if alvo:
+                os.symlink(alvo, d / f)
+        rc, out, err = self.roda([BASH, CLI, "init", "--yes", "--vendors", "kimi"], self.p, env=dict(self.env, PATH=str(d)))
+        self.assertEqual(rc, 0, out + err)
+        self.assertNotIn("command not found", out + err)
+        vendors = re.search(r"(?m)^vendors: (.*)$", (self.p / "sdd/config.yaml").read_text(encoding="utf-8")).group(1)
+        self.assertEqual(sorted(vendors.split(",")), ["codex", "kimi"])
 
     def test_init_na_branch_padrao_com_remoto_diz_como_commitar(self):
         self.git(self.p, "update-ref", "refs/remotes/origin/main", "HEAD")

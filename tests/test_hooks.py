@@ -144,7 +144,8 @@ class Hooks(Sandbox):
         segredo = valor_aleatorio(self.rng)
         for nome, texto in (("app.json", '{\n  "db_password": "%s"\n}\n' % segredo),
                             ("settings.yml", "smtp:\n  api_token: '%s'\n" % segredo),
-                            (".env", 'DB_PASSWORD="%s"\n' % segredo)):
+                            (".env", 'DB_PASSWORD="%s"\n' % segredo),
+                            (".env.prod", "PASSWORD=%s\n" % segredo)):      # dotenv sem aspas (ciclo 1)
             with self.subTest(arquivo=nome):
                 self.escreve(self.p, nome, texto)
                 rc, saida = self.tenta_commit()
@@ -157,7 +158,8 @@ class Hooks(Sandbox):
 
     def test_h3_placeholder_e_package_lock_passam(self):
         shutil.copy2(str(RAIZ / "sdd/fixtures/hooks/config-placeholder.json"), str(self.p / "config.json"))
-        self.escreve(self.p, "package-lock.json", '{\n  "parse-passwd": "^1.0.0",\n  "token-types": "2.0.0"\n}\n')
+        self.escreve(self.p, "package-lock.json",
+                     '{\n  "parse-passwd": "^1.0.0",\n  "token-types": "2.0.0",\n  "dependencies": {"token": "^2.0.0", "secret": "~1.4.2"}\n}\n')
         rc, saida = self.tenta_commit()
         self.assertEqual(rc, 0, saida)
 
@@ -327,6 +329,10 @@ class Hooks(Sandbox):
         self.assertEqual(saida.count("RESULTADO: COMMIT RECUSADO"), 1)
         self.assertIn("alarme.sh desinstalar", saida)
         self.assertNotIn("rm ", saida)
+        # só o alarme falhou: cabeçalho próprio, sem bloco vazio de achados, e um → da classe alarme (ciclo 1)
+        self.assertIn("commit recusado pelo alarme da sdd-higiene-dado", saida)
+        self.assertNotIn("Encontrei o que não pode entrar", saida)
+        self.assertIn("→ [alarme]", saida)
         (self.p / "clientes.md").unlink()
         self.roda(["git", "rm", "-q", "--cached", "clientes.md"], self.p)
         self.escreve(self.p, "nota.md", "cnpj %s\n" % cnpj(self.rng))

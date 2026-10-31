@@ -119,7 +119,9 @@ fi
 # pedidos agora — o bloco do AGENTS.md e o config saem coerentes (avaliador, ciclo 1).
 if [ "${VERBO}" = "init" ] && [ -f "${ROOT}/sdd/config.yaml" ]; then
   atuais="$(config_vendors)"
-  VENDORS=" $(printf '%s\n%s\n' "$(printf '%s' "${atuais}" | tr ',' '\n')" "$(printf '%s' "${VENDORS}" | tr ' ' '\n')" | grep -v '^$' | awk '!seen[$0]++' | paste -sd' ' -)"
+  # tr, não paste: sem o paste no PATH a lista esvaziava em silêncio e o init terminava INSTALADO sem vendor.
+  VENDORS=" $(printf '%s\n%s\n' "$(printf '%s' "${atuais}" | tr ',' '\n')" "$(printf '%s' "${VENDORS}" | tr ' ' '\n')" | grep -v '^$' | awk '!seen[$0]++' | tr '\n' ' ')"
+  VENDORS="${VENDORS% }"
 fi
 
 vendor_pedido() { case " ${VENDORS} " in *" ${1} "*) return 0 ;; *) return 1 ;; esac; }
@@ -480,11 +482,20 @@ claude_settings_checar() {
   command -v python3 >/dev/null 2>&1 || die "o adaptador claude precisa de python3 para editar .claude/settings.json com segurança e para os guards de .claude/hooks/" \
     "instale python3 ou rode sem o vendor claude — nada foi alterado" 64
   [ -f "${dest}" ] || return 0
+  # Sintaxe E forma (topo objeto, hooks objeto, PreToolUse lista): o merge recusaria depois de sdd/, skills e
+  # core.hooksPath já gravados, e "nada foi alterado" seria falso (avaliador do build, ciclo 1).
   saida=$(python3 -I -c 'import json,sys
 try:
-    json.load(open(sys.argv[1], encoding="utf-8"))
+    d = json.load(open(sys.argv[1], encoding="utf-8"))
 except json.JSONDecodeError as e:
-    print(f"{e.lineno}: {e.msg}"); sys.exit(66)' "${dest}" 2>&1) || \
+    print(f"{e.lineno}: {e.msg}"); sys.exit(66)
+if not isinstance(d, dict):
+    print("1: o topo do arquivo não é um objeto"); sys.exit(66)
+h = d.get("hooks", {})
+if not isinstance(h, dict):
+    print("1: a chave hooks não é um objeto"); sys.exit(66)
+if not isinstance(h.get("PreToolUse", []), list):
+    print("1: hooks.PreToolUse não é uma lista"); sys.exit(66)' "${dest}" 2>&1) || \
     die ".claude/settings.json não é JSON válido (linha ${saida})" \
         "corrija ou renomeie o arquivo e rode de novo — nada foi alterado" 66
 }
@@ -501,11 +512,18 @@ hook_legado() {
   printf '%s/hooks/pre-commit' "${common}"
 }
 
+# 0 quando $1 é sdd/hooks relativo, ou um caminho absoluto que resolve (links simbólicos inclusos: /tmp
+# no macOS) para <raiz>/sdd/hooks. O alarme.sh da higiene usa o mesmo critério.
+hooks_path_e_nosso() {
+  [ "${1}" = "sdd/hooks" ] && return 0
+  case "${1}" in /*) [ -d "${1}" ] && [ "$(cd "${1}" 2>/dev/null && pwd -P)" = "$(cd "${ROOT}/sdd/hooks" 2>/dev/null && pwd -P)" ] ;; *) return 1 ;; esac
+}
+
 hooks_estado() { # → LIVRE | LIGADO | HIGIENE | OUTRO <descrição>
   local hp legado
   hp="$(git config --get core.hooksPath 2>/dev/null || true)"
   legado="$(hook_legado)"
-  if [ "${hp}" = "sdd/hooks" ] || [ "${hp}" = "${ROOT}/sdd/hooks" ]; then printf 'LIGADO\n'
+  if [ -n "${hp}" ] && hooks_path_e_nosso "${hp}"; then printf 'LIGADO\n'
   elif [ -n "${hp}" ]; then printf 'OUTRO core.hooksPath = %s (husky, lefthook ou outro gerenciador)\n' "${hp}"
   elif [ -f "${legado}" ] && grep -qF "${MARCA_HIGIENE}" "${legado}"; then printf 'HIGIENE\n'
   elif [ -f "${legado}" ]; then printf 'OUTRO um pre-commit em %s\n' "${legado}"

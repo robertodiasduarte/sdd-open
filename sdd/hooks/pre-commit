@@ -113,15 +113,22 @@ regra_h5() {
 CRED_PFX='(api|access|auth|db|ftp|smtp|client|private)[_-]'
 CRED_KEY="($CRED_PFX)?(password|passwd|senha|secret|token|key|api[_-]?key|access[_-]?key)"
 CRED_RE="(^|[^A-Za-z0-9_-])\"?$CRED_KEY\"?[[:space:]]*[:=][[:space:]]*[\"'][^\"']{6,}[\"']"
+# .env: a sintaxe comum é KEY=valor sem aspas; a mesma chave, valor sem espaço com 6+ caracteres.
+ENV_RE="(^|[^A-Za-z0-9_-])$CRED_KEY[[:space:]]*=[[:space:]]*[^[:space:]\"'][^[:space:]]{5,}"
 regra_h3() {
-  local f val baixo chave
+  local f val valor baixo chave
   while IFS= read -r -d '' f; do
     printf '%s' "$f" | LC_ALL=C grep -qiE '\.(json|ya?ml|toml|ini|cfg|conf)$|(^|/)\.env' || continue
     val="$(git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$CRED_RE" | head -1)"
+    if [ -z "$val" ] && printf '%s' "$f" | LC_ALL=C grep -qiE '(^|/)\.env'; then
+      val="$(git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$ENV_RE" | head -1)"
+    fi
     [ -n "$val" ] || continue
     baixo="$(printf '%s' "$val" | tr '[:upper:]' '[:lower:]')"
+    valor="$(printf '%s' "$val" | sed -E 's/^[^:=]*[:=][[:space:]]*//; s/^["'"'"']//; s/["'"'"']$//')"
     case "$val" in *'${'*|*'{{'*|*'<'*|*'***'*) continue ;; esac                 # interpolação, template, mascarado
     case "$baixo" in *changeme*|*example*|*xxx*) continue ;; esac                 # placeholder declarado
+    case "$valor" in [\^~\>\<=]*[0-9].[0-9]*|[0-9]*.[0-9]*.[0-9]*) continue ;; esac   # versão (^2.0.0 num package-lock)
     chave="$(printf '%s' "$val" | sed -E 's/[[:space:]]*[:=].*$//; s/^[^A-Za-z0-9_-]+//; s/"//g')"
     achado H3 "$f: credencial em texto claro (chave: $chave)"
   done < "$STAGED"
@@ -234,16 +241,19 @@ regra_h6; regra_h2; regra_h5; regra_h3; regra_h4; regra_report; regra_higiene
 if [ -z "$ACHADOS" ] && [ "$HIG_RC" -eq 0 ]; then exit 0; fi
 
 {
-  printf '\nsdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:\n\n'
-  [ -n "$ACHADOS" ] && printf '%s\n' "$ACHADOS"
-  if [ -n "$CLASSES" ]; then
+  if [ -n "$ACHADOS" ]; then
+    printf '\nsdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:\n\n'
+    printf '%s\n' "$ACHADOS"
     printf 'Por que importa:\n'
     for c in $CLASSES; do printf '  [%s] %s\n' "$c" "$(porque "$c")"; done
     printf '\n'
+  else
+    printf '\nsdd-open: commit recusado pelo alarme da sdd-higiene-dado:\n\n'
   fi
   [ "$HIG_RC" -ne 0 ] && printf '%s\n\n' "$HIG_OUT"
   printf 'RESULTADO: COMMIT RECUSADO\n'
   for c in $CLASSES; do printf '→ [%s] %s\n' "$c" "$(conserto "$c")"; done
+  [ "$HIG_RC" -ne 0 ] && printf '→ [alarme] siga o "Como corrigir" da mensagem do alarme acima (tirar o arquivo desta versão, .gitignore ou dado fictício)\n'
   printf '→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify\n'
   printf '  Agente de IA: não use --no-verify sem o OK explícito da pessoa.\n'
 } >&2

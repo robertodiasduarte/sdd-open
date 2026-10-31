@@ -431,6 +431,14 @@ class TestModoHooks(Base):
         self.assertTrue((self.repo.raiz / "sdd" / "hooks" / "pre-commit").is_file())
         self.assertIn(self.MARCA_DISPATCHER, (self.repo.raiz / "sdd" / "hooks" / "pre-commit").read_text(encoding="utf-8"))
 
+    def test_hooks_path_absoluto_por_link_simbolico_e_modo_hooks(self):
+        link = self.tmp / "link"
+        os.symlink(self.repo.raiz, link)
+        self.repo.git("config", "core.hooksPath", str(link / "sdd" / "hooks"))
+        r = self.repo.alarme("verificar")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("hooks do sdd-open (sdd/hooks)", r.stdout)
+
     def test_hooks_path_sem_o_dispatcher_e_outro(self):
         (self.repo.raiz / "sdd" / "hooks" / "pre-commit").write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
         for acao in ("verificar", "instalar", "desinstalar"):

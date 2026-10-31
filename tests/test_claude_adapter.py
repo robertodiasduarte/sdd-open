@@ -128,6 +128,22 @@ class Projeto(Sandbox):
         self.assertFalse((self.p / ".claude/hooks").exists())
         self.assertFalse((self.p / "sdd").exists())
 
+    def test_settings_com_forma_errada_aborta_antes_de_escrever(self):
+        # ciclo 1 do avaliador: topo lista, hooks lista ou PreToolUse objeto passavam pela checagem de sintaxe
+        # e o merge só reclamava DEPOIS de sdd/, skills e core.hooksPath gravados, com "nada foi alterado" falso
+        for texto in ("[1, 2]\n", '{"hooks": []}\n', '{"hooks": {"PreToolUse": {}}}\n'):
+            with self.subTest(settings=texto.strip()):
+                (self.p / ".claude").mkdir(exist_ok=True)
+                (self.p / ".claude/settings.json").write_text(texto, encoding="utf-8")
+                rc, out = self.cli("init", "--yes", "--vendors", "claude")
+                self.assertEqual(rc, 66, out)
+                self.assertIn("nada foi alterado", out)
+                self.assertFalse((self.p / ".claude/hooks").exists())
+                self.assertFalse((self.p / "sdd").exists())
+                self.assertFalse((self.p / ".agents").exists())
+                rc, hp, _ = self.roda(["git", "config", "--get", "core.hooksPath"], self.p)
+                self.assertEqual(hp.strip(), "")
+
     def test_sem_python3_o_vendor_claude_para_antes_de_escrever(self):
         d = self.tmp / "path-sem-python3"
         d.mkdir()
