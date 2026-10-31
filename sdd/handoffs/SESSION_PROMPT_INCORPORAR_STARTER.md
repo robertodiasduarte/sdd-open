@@ -4,24 +4,33 @@ Esta sessão começa numa **worktree limpa**. Os artefatos SDD da família (feat
 
 ## Preparar a worktree (antes de ler qualquer coisa)
 
-A frente da F9 **ainda não foi aberta**. Crie a worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f9-fluxo` com a branch `feat/f9-fluxo` nascida de `origin/main` = `7c640eb` (tag `v2.2.9`) — do remoto, porque a `main` local do checkout principal está em `1c9bbc7`, atrás:
+A frente já foi aberta pela `sdd-new-session` no fim da sessão 6: worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f9-fluxo`, branch `feat/f9-fluxo` nascida de `origin/main` = `7c640eb` (tag `v2.2.9`), com os artefatos SDD da branch `docs/incorporar-starter` já copiados (fora do commit). Abra o agente **nessa pasta** e confira:
+
+```bash
+cd /Users/robertoduarte/rdd-worktrees/sdd-open-f9-fluxo
+git branch --show-current                                                 # esperado: feat/f9-fluxo
+git status --short | head -4                                              # esperado: só "?? sdd/…"
+git log --oneline -1                                                      # esperado: 7c640eb ou mais novo
+ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md
+GIT_TERMINAL_PROMPT=0 git fetch -q origin && git log --oneline -1 origin/main   # se main andou, rebase antes de começar
+GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.9                      # base do check-versions
+GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter && git show origin/docs/incorporar-starter:sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md | cmp - sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md && echo copia-em-dia   # diferente: copie de novo da branch docs/
+```
+
+Se a pasta não existir (alguém a removeu), recrie do zero:
 
 ```bash
 cd /Users/robertoduarte/rdd-public/sdd-open
 GIT_TERMINAL_PROMPT=0 git fetch -q origin
-git log --oneline -1 origin/main                                          # esperado: 7c640eb ou mais novo
 git worktree add /Users/robertoduarte/rdd-worktrees/sdd-open-f9-fluxo -b feat/f9-fluxo origin/main
 cd /Users/robertoduarte/rdd-worktrees/sdd-open-f9-fluxo
-GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.9                      # base do check-versions
+GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.9
 GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter
 git checkout origin/docs/incorporar-starter -- sdd/features sdd/handoffs sdd/reports sdd/reviews
 git rm -r -q --cached sdd/features sdd/handoffs sdd/reports sdd/reviews   # ficam no disco, fora do commit
-git branch --show-current                                                 # esperado: feat/f9-fluxo
-git status --short | head -4                                              # esperado: só "?? sdd/…"
-ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md
 ```
 
-Se `/Users/robertoduarte/rdd-public/sdd-open` não for o clone de `https://github.com/robertodiasduarte/sdd-open.git`, use a worktree da sessão 6 como base (`git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f8-hooks worktree add …`), se ela ainda existir. Não trabalhe na worktree antiga `sdd-open-f8-hooks` (branch já mesclada). O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite. Se a `sdd-new-session` for usada para abrir a frente, os nomes acima são os da família (não o `../sdd-open-frentes/<slug>` padrão da skill).
+Se `/Users/robertoduarte/rdd-public/sdd-open` não for o clone de `https://github.com/robertodiasduarte/sdd-open.git`, use a worktree da sessão 6 como base (`git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f8-hooks worktree add …`), se ela ainda existir. Não trabalhe na worktree antiga `sdd-open-f8-hooks` (branch já mesclada). O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
 
 Depois, leia nesta ordem:
 - `sdd/features/PLANO_F4_F15_CONSOLIDADO.md`:
