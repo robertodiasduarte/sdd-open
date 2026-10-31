@@ -41,16 +41,27 @@ uso() {
   exit 64
 }
 
-precisa_python() {
+precisa_python() { # [$@ do loop]: com --log, o log também diz o 64 (nunca fica um log antigo no lugar)
   command -v python3 >/dev/null 2>&1 && return 0
-  echo "🛑 sdd-fluxo: python3 não encontrado no PATH." >&2
-  printf 'RESULTADO: ERRO DE USO\n→ instale o Python 3 (3.9 ou mais novo) e rode de novo.\n' >&2
+  msg='🛑 sdd-fluxo: python3 não encontrado no PATH.'
+  seta='→ instale o Python 3 (3.9 ou mais novo) e rode de novo.'
+  echo "$msg" >&2
+  printf 'RESULTADO: ERRO DE USO\n%s\n' "$seta" >&2
+  log=""; tudo="$*"
+  while [ $# -gt 0 ]; do [ "$1" = "--log" ] && [ $# -ge 2 ] && log="$2"; shift; done
+  if [ -n "$log" ]; then
+    mkdir -p "$(dirname "$log")" 2>/dev/null
+    printf '$ sdd-fluxo.sh loop %s\n%s\nRESULTADO: ERRO DE USO\n%s\n[exit=64]\n' "$tudo" "$msg" "$seta" > "$log" 2>/dev/null
+  fi
   exit 64
 }
 
 raiz() { git rev-parse --show-toplevel 2>/dev/null || pwd; }
 
-nome_ok() { case "$1" in ''|*[!A-Za-z0-9_-]*) return 1 ;; esac; return 0; }
+# Lista explícita, sem faixa: no bash 3.2 com locale UTF-8, [A-Za-z] segue a ordenação do locale e aceita
+# letra acentuada (avaliação, INTEGRAÇÃO).
+LETRAS='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'
+nome_ok() { case "$1" in ''|*[!"$LETRAS"]*) return 1 ;; esac; return 0; }
 
 # ── despachar (bash puro) ────────────────────────────────────────────────────────────────────────
 cmd_despachar() {
@@ -269,6 +280,10 @@ def cmd_loop():
         _loop()
     except SystemExit as e:
         rc = e.code if isinstance(e.code, int) else (0 if e.code is None else 64)
+    except Exception as e:  # erro interno também é 64, com o log regravado
+        print("🛑 sdd-fluxo: erro interno no loop: %s: %s" % (type(e).__name__, e), file=sys.stderr)
+        print("RESULTADO: ENTRADA ILEGÍVEL\n→ confira os argumentos e as entradas; nada foi decidido.", file=sys.stderr)
+        rc = 64
     finally:
         sys.stdout, sys.stderr = so, se
     try:
@@ -280,7 +295,10 @@ def cmd_loop():
             h.write("".join(buf))
             h.write("[exit=%d]\n" % rc)
     except OSError as e:
-        print("⚠️ sdd-fluxo: não consegui gravar o --log: %s" % e, file=sys.stderr)
+        print("🛑 sdd-fluxo: não consegui gravar o --log: %s" % e, file=sys.stderr)
+        print("RESULTADO: ERRO DE USO\n→ passe em --log um arquivo que dá para gravar; sem o log, a decisão não vale.",
+              file=sys.stderr)
+        rc = 64
     sys.exit(rc)
 
 
@@ -313,7 +331,7 @@ def _loop():
     teto, aval, ciclo, recibo = op["--teto"], op["--avaliacao"], op["--ciclo-avaliador"], op["--recibo"]
     if not review or not rodada:
         erro_uso("loop exige --review <dir> e --rodada N")
-    if not re.match(r"^[0-9]+[a-z]?$", rodada) or not teto.isdigit() or not ciclo.isdigit():
+    if not re.match(r"^[0-9]+[a-z]?$", rodada) or not re.match(r"^[0-9]+$", teto) or not re.match(r"^[0-9]+$", ciclo):
         erro_uso("--rodada é inteiro com sufixo de lote opcional (5 ou 5a); --teto/--ciclo-avaliador são inteiros")
     teto, ciclo = int(teto), int(ciclo)
 
@@ -510,7 +528,8 @@ def status_de(caminho):
 
 def ledger(texto):
     """[(nº, severidade, veredito)] das linhas de dados da tabela de `## Advisor Ledger`."""
-    m = re.search(r"^## Advisor Ledger[^\n]*\n(.*?)(?=^## |\Z)", texto or "", re.M | re.S)
+    texto = re.sub(r"^(```|~~~).*?^\1[^\n]*$", lambda c: "\n" * c.group(0).count("\n"), texto or "", flags=re.M | re.S)
+    m = re.search(r"^## Advisor Ledger[^\n]*\n(.*?)(?=^## |\Z)", texto, re.M | re.S)
     if not m:
         return []
     cab, saida = None, []
@@ -605,7 +624,7 @@ def cmd_seguir():
                 para("revisão do DESIGN exigida e não registrada no Advisor Ledger")
             if any(sev is None for _, sev, _ in linhas):
                 para("Advisor Ledger sem coluna de severidade (Severidade ou Severity): não dá para conferir HIGH aberto")
-            abertos = [n for n, sev, ver in linhas if (sev or "").upper().startswith("HIGH")
+            abertos = [n for n, sev, ver in linhas if re.search(r"\bHIGH\b", re.sub(r"[*`_]", "", sev or "").upper())
                        and not re.match(r"^\W*(APLICADA|REBATIDA_|APPLIED|REBUTTED)", ver, re.I)]
             if abertos:
                 para("HIGH aberto no Advisor Ledger: " + ", ".join(abertos))
@@ -707,7 +726,8 @@ cmd_self_test() {
 }
 
 case "${1:-}" in
-  review-design|loop|seguir|estado) precisa_python; v="$1"; shift; nucleo "$v" "$@" ;;
+  review-design|seguir|estado) precisa_python; v="$1"; shift; nucleo "$v" "$@" ;;
+  loop)        shift; precisa_python "$@"; nucleo loop "$@" ;;
   despachar)   precisa_python; shift; cmd_despachar "$@" ;;
   --self-test) precisa_python; cmd_self_test ;;
   *)           uso ;;

@@ -22,7 +22,7 @@ FASE = ("sdd-brainstorm", "sdd-define", "sdd-governanca", "sdd-ux-review", "sdd-
         "sdd-iterate", "sdd-release", "sdd-new-session")
 ENCADEIAM = ("sdd-define", "sdd-governanca", "sdd-ux-review", "sdd-design")
 LEDGER_CAB = "| achado | sev | veredito | rodada | evidência |\n|---|---|---|---|---|\n"
-FERRAMENTAS = ("bash", "sh", "git", "sed", "grep", "dirname", "cat", "mktemp", "rm", "env")
+FERRAMENTAS = ("bash", "sh", "git", "sed", "grep", "dirname", "cat", "mktemp", "rm", "env", "mkdir")
 
 
 def ler(p) -> str:
@@ -219,6 +219,22 @@ class Loop(Base):
         self.assertEqual(rc, 64, out)
         self.assertTrue(ler(log).rstrip().endswith("[exit=64]"))
 
+    def test_erro_interno_e_log_que_nao_grava_saem_64(self):
+        log = self.tmp / "L.log"
+        rc, out = self.loop("review-ok", "--ledger", FX / "ledger-rebatida.md", "--log", log)
+        self.assertEqual(rc, 0, out)
+        for opcao in ("--teto", "--ciclo-avaliador"):
+            with self.subTest(opcao=opcao):
+                rc, out = self.loop("review-ok", opcao, "\u00b2", "--log", log)
+                self.assertEqual(rc, 64, out)
+                self.assertNotIn("Traceback", out)
+                self.assertTrue(ler(log).rstrip().endswith("[exit=64]"), ler(log))
+        pasta = self.tmp / "sou-uma-pasta"
+        pasta.mkdir()
+        rc, out = self.loop("review-ok", "--ledger", FX / "ledger-rebatida.md", "--log", pasta)
+        self.assertEqual(rc, 64, out)
+        self.assertIn("não consegui gravar o --log", out)
+
     def test_recibo_exige_nome_e_data_que_existe(self):
         args = ("review-ok", "--ledger", FX / "ledger-rebatida.md", "--avaliacao", FX / "AVALIACAO_recibo.md")
         for recibo, esperado in (("2026-10-31", 30), ("Ana 2026-99-99", 30), ("Ana 2026-02-30", 30),
@@ -279,6 +295,16 @@ class Despachar(Base):
                 self.assertEqual(rc, 40, out)
                 self.assertEqual(ler(destino), "modo: veredito\n")
                 self.assertEqual(int(destino.stat().st_mtime), 1000000000)
+
+    def test_nome_acentuado_sai_64_em_locale_utf8(self):
+        r = self.repo()
+        for locale in ("C", "en_US.UTF-8", "pt_BR.UTF-8"):
+            for args in (("avaliação", "F9"), ("avaliador", "F9_INTEGRAÇÃO")):
+                with self.subTest(locale=locale, args=args):
+                    rc, out = self.fluxo("despachar", *args, FX / "brief-avaliador.md", cwd=r,
+                                         env=dict(self.env, LC_ALL=locale, LANG=locale))
+                    self.assertEqual(rc, 64, out)
+                    self.assertFalse((r / "sdd/reports/briefs").exists())
 
     def test_erros_saem_64_e_nada_e_gravado(self):
         r = self.repo()
@@ -405,6 +431,25 @@ class Seguir(Base):
         self.assertEqual(rc, 1, out)
         self.assertIn("PARAR: HIGH aberto no Advisor Ledger: A1", out)
 
+    def test_severidade_formatada_e_ledger_de_exemplo_cercado(self):
+        r = self.projeto()
+        self.poe(r, "DEFINE_pronto.md", "DEFINE_X.md")
+        base = ler(FX / "DESIGN_pronto.md")
+        for sev in ("**HIGH**", "`HIGH`", "\U0001F534 HIGH", "high"):
+            with self.subTest(sev=sev):
+                self.escreve(r, "sdd/features/DESIGN_X.md",
+                             base.replace("| HIGH | APLICADA (Decision 1) |", "| %s | PENDENTE |" % sev))
+                rc, out = self.fluxo("seguir", "design", "sdd/features/DEFINE_X.md", "build", cwd=r)
+                self.assertEqual(rc, 1, out)
+                self.assertIn("PARAR: HIGH aberto no Advisor Ledger: A1", out)
+        exemplo = ("## Advisor Ledger\n\n```markdown\n## Advisor Ledger\n\n| # | Nota | Severidade | Veredito |\n"
+                   "|---|---|---|---|\n| E1 | exemplo | HIGH | APLICADA |\n```\n\n")
+        aberto = base.replace("| HIGH | APLICADA (Decision 1) |", "| HIGH | PENDENTE |")
+        self.escreve(r, "sdd/features/DESIGN_X.md", aberto.replace("## Advisor Ledger\n\n", exemplo, 1))
+        rc, out = self.fluxo("seguir", "design", "sdd/features/DEFINE_X.md", "build", cwd=r)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("HIGH aberto no Advisor Ledger: A1", out)
+
     def test_fora_de_git_o_motivo_e_o_git(self):
         r = self.tmp / "semgit"
         (r / "sdd/features").mkdir(parents=True)
@@ -471,6 +516,15 @@ class UsoESemPython(Base):
                 rc, out = self.fluxo(*verbo, env=env)
                 self.assertEqual(rc, 64, out)
                 self.assertIn("python3 não encontrado", out)
+        log = self.tmp / "ev/L.log"
+        log.parent.mkdir()
+        log.write_text("$ sdd-fluxo.sh loop antigo\nESTADO: PRONTO\n[exit=0]\n", encoding="utf-8")
+        rc, out = self.fluxo("loop", "--review", FX / "review-ok", "--rodada", "1", "--log", log, env=env)
+        self.assertEqual(rc, 64, out)
+        texto = ler(log)
+        self.assertNotIn("ESTADO: PRONTO", texto)
+        self.assertIn("python3 não encontrado", texto)
+        self.assertTrue(texto.rstrip().endswith("[exit=64]"), texto)
 
 
 class SelfTest(Base):
