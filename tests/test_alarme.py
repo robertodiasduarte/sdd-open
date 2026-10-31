@@ -439,6 +439,14 @@ class TestModoHooks(Base):
         self.assertEqual(r.returncode, 0, r.stdout)
         self.assertIn("hooks do sdd-open (sdd/hooks)", r.stdout)
 
+    def test_hooks_path_relativo_com_barra_ou_ponto_e_modo_hooks(self):
+        for hp in ("sdd/hooks/", "./sdd/hooks"):
+            with self.subTest(hooksPath=hp):
+                self.repo.git("config", "core.hooksPath", hp)
+                r = self.repo.alarme("verificar")
+                self.assertEqual(r.returncode, 0, r.stdout)
+                self.assertIn("hooks do sdd-open (sdd/hooks)", r.stdout)
+
     def test_hooks_path_sem_o_dispatcher_e_outro(self):
         (self.repo.raiz / "sdd" / "hooks" / "pre-commit").write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
         for acao in ("verificar", "instalar", "desinstalar"):

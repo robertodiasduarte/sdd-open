@@ -115,21 +115,33 @@ CRED_KEY="($CRED_PFX)?(password|passwd|senha|secret|token|key|api[_-]?key|access
 CRED_RE="(^|[^A-Za-z0-9_-])\"?$CRED_KEY\"?[[:space:]]*[:=][[:space:]]*[\"'][^\"']{6,}[\"']"
 # .env: a sintaxe comum é KEY=valor sem aspas; a mesma chave, valor sem espaço com 6+ caracteres.
 ENV_RE="(^|[^A-Za-z0-9_-])$CRED_KEY[[:space:]]*=[[:space:]]*[^[:space:]\"'][^[:space:]]{5,}"
+# Um placeholder ou uma versão NÃO absolve o arquivo: toda ocorrência é olhada e a primeira que não é
+# placeholder conta (avaliador do build, ciclo 2).
+credencial_real() { # $1=ocorrência → 0 quando é credencial de verdade (não placeholder, não versão)
+  local val="$1" baixo valor
+  baixo="$(printf '%s' "$val" | tr '[:upper:]' '[:lower:]')"
+  valor="$(printf '%s' "$val" | sed -E 's/^[^:=]*[:=][[:space:]]*//; s/^["'"'"']//; s/["'"'"']$//')"
+  case "$val" in *'${'*|*'{{'*|*'<'*|*'***'*) return 1 ;; esac                  # interpolação, template, mascarado
+  case "$baixo" in *changeme*|*example*|*xxx*) return 1 ;; esac                  # placeholder declarado
+  case "$valor" in [\^~\>\<=]*[0-9].[0-9]*|[0-9]*.[0-9]*.[0-9]*) return 1 ;; esac    # versão (^2.0.0 num package-lock)
+  return 0
+}
 regra_h3() {
-  local f val valor baixo chave
+  local f val chave achou
   while IFS= read -r -d '' f; do
     printf '%s' "$f" | LC_ALL=C grep -qiE '\.(json|ya?ml|toml|ini|cfg|conf)$|(^|/)\.env' || continue
-    val="$(git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$CRED_RE" | head -1)"
-    if [ -z "$val" ] && printf '%s' "$f" | LC_ALL=C grep -qiE '(^|/)\.env'; then
-      val="$(git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$ENV_RE" | head -1)"
+    git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$CRED_RE" > "$TMPD/cred"
+    if printf '%s' "$f" | LC_ALL=C grep -qiE '(^|/)\.env'; then
+      git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$ENV_RE" >> "$TMPD/cred"
     fi
-    [ -n "$val" ] || continue
-    baixo="$(printf '%s' "$val" | tr '[:upper:]' '[:lower:]')"
-    valor="$(printf '%s' "$val" | sed -E 's/^[^:=]*[:=][[:space:]]*//; s/^["'"'"']//; s/["'"'"']$//')"
-    case "$val" in *'${'*|*'{{'*|*'<'*|*'***'*) continue ;; esac                 # interpolação, template, mascarado
-    case "$baixo" in *changeme*|*example*|*xxx*) continue ;; esac                 # placeholder declarado
-    case "$valor" in [\^~\>\<=]*[0-9].[0-9]*|[0-9]*.[0-9]*.[0-9]*) continue ;; esac   # versão (^2.0.0 num package-lock)
-    chave="$(printf '%s' "$val" | sed -E 's/[[:space:]]*[:=].*$//; s/^[^A-Za-z0-9_-]+//; s/"//g')"
+    achou=""
+    while IFS= read -r val; do
+      [ -n "$val" ] || continue
+      credencial_real "$val" || continue
+      achou="$val"; break
+    done < "$TMPD/cred"
+    [ -n "$achou" ] || continue
+    chave="$(printf '%s' "$achou" | sed -E 's/[[:space:]]*[:=].*$//; s/^[^A-Za-z0-9_-]+//; s/"//g')"
     achado H3 "$f: credencial em texto claro (chave: $chave)"
   done < "$STAGED"
   gitleaks_staged

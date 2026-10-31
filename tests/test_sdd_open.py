@@ -347,6 +347,16 @@ class Hooks(Sandbox):
         rc, out = self.cli("init", "--yes", "--vendors", "codex", "--verbose")
         self.assertIn("= core.hooksPath = sdd/hooks (já correto)", out)
 
+    def test_hooks_path_relativo_com_barra_ou_ponto_e_nosso(self):
+        # ciclo 2 do avaliador: o git aceita `sdd/hooks/` e `./sdd/hooks`; doctor e init os tratavam como OUTRO
+        self.cli("init", "--yes", "--vendors", "codex")
+        for hp in ("sdd/hooks/", "./sdd/hooks"):
+            with self.subTest(hooksPath=hp):
+                self.git(self.p, "config", "core.hooksPath", hp)
+                rc, out = self.cli("doctor")
+                self.assertIn("✅ hooks ligados (sdd/hooks:", out)
+                self.assertNotIn("hooks do open não ligados", out)
+
     def test_init_repetido_sem_paste_no_path_mantem_os_vendors(self):
         # ciclo 1 do avaliador: a união dos vendors passava por `paste`; sem ele no PATH a lista esvaziava em
         # silêncio e o init terminava INSTALADO sem vendor nenhum

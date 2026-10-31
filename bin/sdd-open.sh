@@ -515,8 +515,9 @@ hook_legado() {
 # 0 quando $1 é sdd/hooks relativo, ou um caminho absoluto que resolve (links simbólicos inclusos: /tmp
 # no macOS) para <raiz>/sdd/hooks. O alarme.sh da higiene usa o mesmo critério.
 hooks_path_e_nosso() {
-  [ "${1}" = "sdd/hooks" ] && return 0
-  case "${1}" in /*) [ -d "${1}" ] && [ "$(cd "${1}" 2>/dev/null && pwd -P)" = "$(cd "${ROOT}/sdd/hooks" 2>/dev/null && pwd -P)" ] ;; *) return 1 ;; esac
+  local hp="${1%/}"; hp="${hp#./}"   # o git aceita sdd/hooks/ e ./sdd/hooks (edição manual): são o mesmo lugar
+  [ "${hp}" = "sdd/hooks" ] && return 0
+  case "${hp}" in /*) [ -d "${hp}" ] && [ "$(cd "${hp}" 2>/dev/null && pwd -P)" = "$(cd "${ROOT}/sdd/hooks" 2>/dev/null && pwd -P)" ] ;; *) return 1 ;; esac
 }
 
 hooks_estado() { # → LIVRE | LIGADO | HIGIENE | OUTRO <descrição>

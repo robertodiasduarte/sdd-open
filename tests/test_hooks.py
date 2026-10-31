@@ -156,6 +156,21 @@ class Hooks(Sandbox):
                 self.roda(["git", "rm", "-q", "--cached", nome], self.p)
                 (self.p / nome).unlink()
 
+    def test_h3_placeholder_antes_nao_absolve_a_credencial_real(self):
+        # ciclo 2 do avaliador: a regra decidia pela primeira ocorrência; um placeholder ou uma versão antes da
+        # credencial real deixava o arquivo passar
+        segredo = valor_aleatorio(self.rng)
+        for nome, texto in (("cfg.json", '{"dependencies": {"token": "^2.0.0"}, "db_password": "%s"}\n' % segredo),
+                            (".env.prod", "DB_HOST=${DB_HOST}\nPASSWORD=${DB_PASSWORD}\nSECRET=%s\n" % segredo)):
+            with self.subTest(arquivo=nome):
+                self.escreve(self.p, nome, texto)
+                rc, saida = self.tenta_commit()
+                self.assertEqual(rc, 1, saida)
+                self.assertIn("🛑 [H3] %s: credencial em texto claro (chave: " % nome, saida)
+                self.assertNotIn(segredo, saida)
+                self.roda(["git", "rm", "-q", "--cached", nome], self.p)
+                (self.p / nome).unlink()
+
     def test_h3_placeholder_e_package_lock_passam(self):
         shutil.copy2(str(RAIZ / "sdd/fixtures/hooks/config-placeholder.json"), str(self.p / "config.json"))
         self.escreve(self.p, "package-lock.json",

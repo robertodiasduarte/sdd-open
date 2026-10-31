@@ -42,8 +42,9 @@ VERSAO="$(versao_skill)"
 # Modo: arquivo (sem hooksPath) | hooks (sdd/hooks com o dispatcher) | outro (qualquer outro hooksPath)
 # Relativo (sdd/hooks) ou absoluto que resolve para <raiz>/sdd/hooks (links simbólicos inclusos: /tmp no macOS).
 hooks_path_e_nosso() {
-  [ "${1}" = "sdd/hooks" ] && return 0
-  case "${1}" in /*) [ -d "${1}" ] && [ "$(cd "${1}" 2>/dev/null && pwd -P)" = "$(cd "${ROOT}/sdd/hooks" 2>/dev/null && pwd -P)" ] ;; *) return 1 ;; esac
+  local hp="${1%/}"; hp="${hp#./}"   # o git aceita sdd/hooks/ e ./sdd/hooks: são o mesmo lugar
+  [ "${hp}" = "sdd/hooks" ] && return 0
+  case "${hp}" in /*) [ -d "${hp}" ] && [ "$(cd "${hp}" 2>/dev/null && pwd -P)" = "$(cd "${ROOT}/sdd/hooks" 2>/dev/null && pwd -P)" ] ;; *) return 1 ;; esac
 }
 MODO="arquivo"
 if [ -n "${HOOKS_PATH}" ]; then
