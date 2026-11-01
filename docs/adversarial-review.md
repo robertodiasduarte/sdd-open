@@ -55,7 +55,10 @@ bash sdd/bin/adversarial-review.sh --feature MY_FEATURE --dry-run # see the plan
 
 Every role records its tokens and cost in the `META.txt`, plus a total. The cost is what the engine reports
 (`US$`), else an estimate from `sdd/review/precos.tsv` (`≈US$`), else `assinatura` (included in a plan),
-else `$?` — an unknown cost is never shown as 0. Update `precos.tsv` from the provider's public price list,
+else `$?` — an unknown cost is never shown as 0. The price is the one of the model that answered: a
+reported model other than the configured one without its own line in `precos.tsv` is `$?`. A call that hit
+the time cap on a pay-per-token engine may have been billed without a report, so the role shows
+`US$ x + $?`. Update `precos.tsv` from the provider's public price list,
 with its URL and the date; never from memory.
 
 ## Privacy
@@ -100,6 +103,48 @@ bash sdd/bin/adversarial-review.sh --ledger sdd/releases/<F>/<file>.yaml   # 0: 
 — before the single OK — whether to run the review now or publish without it, with a written reason that
 goes into the ledger as `review_externo: dispensado — <reason>`. `--ledger` runs in the feature's folder
 right after the release commit: the review folder is ignored by git and only exists there.
+
+When the diff called for a 2nd reviewer and the review ran with `--no-revisor2`, `--conferir` does not
+accept it alone: add `--aceitar-sem-revisor2 "<reason>"`, and the reason goes into the ledger line as
+`revisor2=dispensado — <reason>`.
+
+## Offline gate
+
+```bash
+bash sdd/bin/adversarial-review-gate.sh       # -v also prints the value read in each check
+```
+
+It runs the review end to end with the **real** adapters, against stubs that answer in the format of each
+engine (`sdd/review/stubs/`: a JSON like `claude -p`, the JSONL of `codex exec`, the JSON of `gemini -o json`
+and a local HTTP server shaped like the OpenRouter API). It checks in `META.txt` what each adapter extracted —
+verdicts, engine and model, tokens, cost — and the contract (exits 65, 67, 68; 429 retried on the same engine;
+quota moving to the next one; no engine called outside the script of each scenario; the key never in a file).
+No network and no credit: proxies point to a dead port, the key is fake and generated in the run, and the
+CLIs on the `PATH` of the adapters are the stubs (an exported function or a `BASH_ENV` cannot swap them).
+
+| Exit | `RESULTADO:` | Meaning |
+|---|---|---|
+| 0 | GATE VERDE | every check passed |
+| 2 | GATE VERMELHO | some check failed; each ❌ names the field and the value read |
+| 3 | GATE QUEBRADO | the gate could not isolate itself (missing stub, registry without the 4 engines, real CLI first in the adapters' shell); nothing was called |
+| 64 | PAROU | usage |
+
+The gate proves the package's 4 engines (`sdd/review/registry.tsv` next to `sdd/bin/`), not engines you
+added. The failure texts of the stubs are synthetic (marked in `cenarios.tsv`): a CLI that changes its error
+message is caught by the real review, not here. A CLI that changes its output format: update its
+`<engine>.py` and its lines in `cenarios.tsv`.
+
+## eval-agree
+
+```bash
+bash sdd/bin/eval-agree.sh [<reviews folder>]   # default: review.output_dir
+```
+
+It reads the reviews already made (`EXTERNAL_REVIEW_*/META.txt` and `auditor.verdicts.jsonl`) and prints, per
+auditor (engine and model), how many verdicts were AGREE, DISAGREE_EVIDENCE, DISAGREE_CONCERN and NOVO, and
+`taxa_agree` = AGREE / (AGREE + DISAGREE_EVIDENCE + DISAGREE_CONCERN). An auditor that almost always agrees
+may not be auditing: compare it with another engine as auditor. The rate reflects the diffs this project
+reviewed, not a benchmark. It never calls an engine. Exits: `0` MEDIDO · `2` SEM DADOS · `64` usage.
 
 ## Limits
 

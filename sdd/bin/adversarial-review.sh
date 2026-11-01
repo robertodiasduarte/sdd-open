@@ -384,9 +384,12 @@ if modo == "conferir":
     if p:
         dirrev = p if os.path.isabs(p) else os.path.join(raiz, p)
     else:
+        def candidata(d):
+            # pasta sem META (revisão interrompida) não é candidata: o padrão é a mais nova que completou o registro
+            m = ler_meta(ler(os.path.join(saida_abs, d, "META.txt")))
+            return bool(m) and m.get("paths", "-") in ("", "-")
         cands = sorted(d for d in (os.listdir(saida_abs) if os.path.isdir(saida_abs) else [])
-                       if d.startswith("EXTERNAL_REVIEW_")
-                       and ler_meta(ler(os.path.join(saida_abs, d, "META.txt"))).get("paths", "-") in ("", "-"))
+                       if d.startswith("EXTERNAL_REVIEW_") and candidata(d))
         if not cands:
             nao("nenhuma revisão em %s" % saida_rel, "rode adversarial-review.sh nesta frente, ou registre a dispensa (pergunta D3).")
         dirrev = os.path.join(saida_abs, cands[-1])
@@ -417,6 +420,15 @@ if modo == "conferir":
         if len(mot) < 3:
             nao("o 2º revisor foi acionado e não deu resultado (revisor2_exit=%s)" % r2,
                 "rode de novo com outra engine (--revisor2) ou registre a dispensa com --aceitar-sem-revisor2 \"<motivo>\".")
+        extra = " revisor2=dispensado — " + mot
+    gat_meta = meta.get("gatilho_2o_revisor", "")
+    if not extra and gat_meta.endswith(" — dispensado por --no-revisor2"):
+        # o 2º revisor era exigido e alguém o dispensou na linha de comando: a release registra o motivo
+        mot = (op["--aceitar-sem-revisor2"] or "").strip()
+        if len(mot) < 3:
+            nao("o 2º revisor era exigido (%s) e foi dispensado por --no-revisor2"
+                % gat_meta[:-len(" — dispensado por --no-revisor2")],
+                "registre o motivo com --aceitar-sem-revisor2 \"<motivo>\" ou rode a revisão sem --no-revisor2.")
         extra = " revisor2=dispensado — " + mot
     print("✅ a revisão %s é desta versão do código (sha256 igual)." % rel)
     print("review_externo: %s sha256=%s diversidade=%s%s" % (rel, sha, meta.get("diversidade", "-"), extra))
@@ -465,6 +477,9 @@ if F:
         t = ler(os.path.join(raiz, d, nome % F))
         if t is not None:
             docs.append((nome % F, t))
+    if not docs:
+        avisos.append("⚠️ --feature %s: nenhum documento encontrado (sdd/features/BRAINSTORM_%s.md, DEFINE_%s.md, "
+                      "DESIGN_%s.md, sdd/reports/BUILD_REPORT_%s.md)" % (F, F, F, F, F))
     def junta(ds):
         return "".join("### %s\n\n%s\n\n" % (n, t) for n, t in ds)
     teto = max_kb * 1024
@@ -646,6 +661,9 @@ def papel(nome, cands, prompt_txt, excluir=()):
             t_cham = time.time()
             rc, tmo = invocar(d, arq_p, saida)
             reg["segundos"] = int(round(time.time() - t_cham))
+            if tmo and d["cobranca"] != "assinatura":
+                # a engine pode ter processado (e cobrado) sem chegar a reportar: o custo do papel fica incerto
+                reg["custo_incerto"] = True
             ext = extrair(d, saida) if rc == 0 and not tmo else {}
             if isinstance(ext.get("custo_usd"), (int, float)):
                 custo_acum = (custo_acum or 0) + ext["custo_usd"]   # toda tentativa cobrada entra no custo
@@ -774,6 +792,13 @@ def usd(v):
 
 
 def custo(reg):
+    b = custo_base(reg)
+    if reg.get("custo_incerto"):
+        return "$?" if b in ("$?", "n/d") else b + " + $?"
+    return b
+
+
+def custo_base(reg):
     d = reg.get("linha")
     if isinstance(reg.get("custo_usd"), (int, float)):
         return "US$ " + usd(reg["custo_usd"])
@@ -782,7 +807,8 @@ def custo(reg):
     if d is None or reg.get("exit") in ("-", None):
         return "n/d"
     reportado = (reg.get("modelo") or "").split(" via ", 1)[0]
-    t = PRECOS.get((d["engine"], reportado)) or PRECOS.get((d["engine"], d["modelo"]))
+    # o modelo que respondeu manda: outro modelo que o configurado só tem preço se ele mesmo estiver na tabela
+    t = PRECOS.get((d["engine"], reportado if reportado and reportado != d["modelo"] else d["modelo"]))
     if t and isinstance(reg["tokens_entrada"], int) and isinstance(reg["tokens_saida"], int):
         return "≈US$ " + usd((reg["tokens_entrada"] * t[0] + reg["tokens_saida"] * t[1]) / 1e6)
     return "assinatura" if d["cobranca"] == "assinatura" else "$?"
@@ -967,6 +993,9 @@ for nome, r in papeis_meta:
 soma, estimado, desconhecidos = 0.0, False, 0
 for nome, r in papeis_meta:
     c = custos[nome]
+    if c.endswith(" + $?"):
+        desconhecidos += 1
+        c = c[:-len(" + $?")]
     if c.startswith("US$ "):
         soma += float(c[4:])
     elif c.startswith("≈US$ "):
@@ -1048,6 +1077,8 @@ else:
 
 
 def humano(c):
+    if c.endswith(" + $?"):
+        return humano(c[:-len(" + $?")]) + " + custo desconhecido"
     if c.startswith("US$ "):
         return "US$ " + c[4:].replace(".", ",")
     if c.startswith("≈US$ "):

@@ -12,7 +12,6 @@ own document.
 
 | Theme | What it brings | Status |
 |---|---|---|
-| **Adversarial review** | review by a second vendor over a frozen diff, with an editable registry of engines and an offline gate that checks the review really happened | *planned* |
 | **Context and governance** | a map of the domain before the Define, project patterns the Design cites, and governance that blocks the Define of a financial system until it runs | *planned* |
 | **`sdd-loop-builder` and `sdd-drive`** | a skill for code that calls an LLM in a loop, and one that drives several phases in a row with the same human stops | *planned* |
 | **Spec ↔ code reconciliation** | checking that the file manifest covered every requirement, not only that acceptance passed | *planned* |

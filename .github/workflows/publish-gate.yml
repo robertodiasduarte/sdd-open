@@ -149,7 +149,8 @@ jobs:
   testes-macos:
     name: Testes no piso (macOS, só leitura)
     runs-on: macos-latest
-    timeout-minutes: 20
+    # 18m31s medidos no PR da F10 (v2.3.0) e a F11 acrescenta o gate offline: 30 dá folga à variação do runner
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:

@@ -98,7 +98,7 @@ Funciona em macOS, Linux e Windows (Git Bash/WSL): bash 3.2, zero zsh, zero syml
 - [Comparativo](docs/pt-BR/comparison.md) ([EN](docs/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
 - [Hooks de git](docs/pt-BR/hooks.md) ([EN](docs/hooks.md)) — as regras do pre-commit que o `init` instala, o alarme de higiene de dado, o limite do `--no-verify`
 - [Fluxo encadeado](docs/pt-BR/chained-flow.md) ([EN](docs/chained-flow.md)) — a classe da decisão em toda pergunta, o `flow.autonomous`, a parada com exit 40 quando o agente não abre uma sessão nova sozinho
-- [Revisão adversarial](docs/pt-BR/adversarial-review.md) ([EN](docs/adversarial-review.md)) — uma engine revisa o diff congelado, outra audita a revisão; custo por papel, privacidade e o review externo que a release exige
+- [Revisão adversarial](docs/pt-BR/adversarial-review.md) ([EN](docs/adversarial-review.md)) — uma engine revisa o diff congelado, outra audita a revisão; custo por papel, privacidade, o review externo que a release exige, o gate offline e o `eval-agree`
 - [Roadmap](docs/pt-BR/roadmap.md) ([EN](docs/roadmap.md)) — o que está planejado e o que está em avaliação
 - [Guia do aluno](docs/pt-BR/guia-do-aluno.md) — passo a passo para quem nunca usou git nem terminal
 

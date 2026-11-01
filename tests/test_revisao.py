@@ -587,7 +587,8 @@ class Custo(Base):
         reg = self.registry([self.linha("stub-a", "revisor-ok", "assinatura"),
                              self.linha("stub-b", "auditor-agree", "pay-per-token"),
                              self.linha("stub-c", "revisor2-ok", "desconhecida")])
-        (reg.parent / "precos.tsv").write_text("stub-b\tauditor-agree\t1.0\t2.0\thttps://exemplo.example/precos\t"
+        # F11 AT-019: a tarifa é a do modelo que a engine reportou (o stub reporta "stub-modelo")
+        (reg.parent / "precos.tsv").write_text("stub-b\tstub-modelo\t1.0\t2.0\thttps://exemplo.example/precos\t"
                                                "2026-10-31\n", encoding="utf-8")
         r = self.projeto(registry=reg)
         rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2")
@@ -1098,3 +1099,99 @@ class RevisaoRodada2(Base):
                           "--no-revisor2", env=env)
         self.assertEqual(rc, 0, out)
         self.assertEqual(meta(self.pasta(r))["reviewer_custo"], "US$ 0.0200")
+
+
+class F11Adiados(Base):
+    """F11 AT-018–AT-022: os achados da rodada 3 da F10 adiados para a F11 (#15, #17, #18)."""
+
+    def test_at018_no_revisor2_com_gatilho_exige_motivo_no_conferir(self):
+        r = self.projeto()
+        self.escreve(r, "src/auth/login.sh", "x\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("dispensado por --no-revisor2", meta(self.pasta(r))["gatilho_2o_revisor"])
+        rc, out = self.ar(r, "--conferir")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("o 2º revisor era exigido (segurança (src/auth/login.sh)) e foi dispensado por --no-revisor2", out)
+        self.assertIn('--aceitar-sem-revisor2 "<motivo>"', out)
+        rc, out = self.ar(r, "--conferir", "--aceitar-sem-revisor2", "só o teste mudou")
+        self.assertEqual(rc, 0, out)
+        self.assertRegex(out, r"(?m)^review_externo: .* revisor2=dispensado — só o teste mudou$")
+
+    def test_at018_sem_gatilho_o_no_revisor2_continua_conferindo(self):
+        r = self.projeto()
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2")
+        self.assertEqual(rc, 0, out)
+        rc, out = self.ar(r, "--conferir")
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("revisor2=", out)
+
+    def test_at019_modelo_reportado_sem_preco_e_desconhecido(self):
+        # o stub reporta "stub-modelo"; o registry configura "revisor-ok" e só ele tem preço
+        reg = self.registry([self.linha("x-a", "revisor-ok", "pay-per-token"),
+                             self.linha("x-b", "auditor-agree", "assinatura")])
+        (reg.parent / "precos.tsv").write_text("x-a\trevisor-ok\t1.0\t2.0\thttps://exemplo.example/p\t2026-11-01\n",
+                                               encoding="utf-8")
+        r = self.projeto(registry=reg)
+        rc, out = self.rev(r, "--reviewer", "x-a", "--auditor", "x-b", "--no-revisor2")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["reviewer_custo"], "$?")
+
+    def test_at019_modelo_reportado_igual_ao_configurado_usa_a_tarifa(self):
+        reg = self.registry([self.linha("x-a", "stub-modelo", "pay-per-token"),
+                             self.linha("x-b", "auditor-agree", "assinatura")])
+        (reg.parent / "precos.tsv").write_text("x-a\tstub-modelo\t1.0\t2.0\thttps://exemplo.example/p\t2026-11-01\n",
+                                               encoding="utf-8")
+        r = self.projeto(registry=reg)
+        env = self.respostas_copia(**{"stub-modelo": ler(FXR / "respostas/revisor-ok.md")})
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "x-a", "--auditor", "x-b", "--no-revisor2", env=env)
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["reviewer_custo"], "≈US$ 0.0014")
+
+    def respostas_copia(self, **arquivos):
+        resp = self.tmp / "resp"
+        if not resp.exists():
+            shutil.copytree(str(FXR / "respostas"), str(resp))
+        for nome, texto in arquivos.items():
+            (resp / (nome + ".md")).write_text(texto, encoding="utf-8")
+        return dict(self.env, SDD_REVIEW_STUB_RESPOSTAS=str(resp))
+
+    def test_at020_tentativa_que_estourou_o_teto_marca_custo_incerto(self):
+        reg = self.registry([self.linha("x-lenta", "dorme", "pay-per-token", timeout="1"),
+                             self.linha("stub-a", "revisor-ok"), self.linha("stub-b", "auditor-agree")])
+        r = self.projeto(registry=reg)
+        env = dict(self.env, SDD_REVIEW_STUB_CUSTO="0.01")
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "x-lenta,stub-a", "--auditor", "stub-b", "--no-revisor2",
+                          env=env)
+        self.assertEqual(rc, 0, out)
+        m = meta(self.pasta(r))
+        self.assertEqual(m["reviewer_custo"], "US$ 0.0100 + $?")
+        self.assertEqual(m["auditor_custo"], "US$ 0.0100")
+        self.assertEqual(m["custo_total"], "US$ 0.0200 (+ 1 papel(is) com custo $?)")
+        self.assertIn("US$ 0,0100 + custo desconhecido", out)
+
+    def test_at020_tentativa_recusada_nao_marca(self):
+        reg = self.registry([self.linha("x-cota", "falha-quota", "pay-per-token"),
+                             self.linha("stub-a", "revisor-ok"), self.linha("stub-b", "auditor-agree")])
+        r = self.projeto(registry=reg)
+        env = dict(self.env, SDD_REVIEW_STUB_CUSTO="0.01")
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "x-cota,stub-a", "--auditor", "stub-b", "--no-revisor2",
+                          env=env)
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["reviewer_custo"], "US$ 0.0100")
+
+    def test_at021_conferir_pula_pasta_sem_meta(self):
+        r = self.projeto()
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2")
+        self.assertEqual(rc, 0, out)
+        (r / "sdd/reports/reviews/EXTERNAL_REVIEW_99990101-000000").mkdir()
+        rc, out = self.ar(r, "--conferir")
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("99990101", out)
+
+    def test_at022_feature_sem_documento_avisa_e_segue(self):
+        r = self.projeto()
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2", "--feature", "NADA")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("⚠️ --feature NADA: nenhum documento encontrado (sdd/features/BRAINSTORM_NADA.md, "
+                      "DEFINE_NADA.md, DESIGN_NADA.md, sdd/reports/BUILD_REPORT_NADA.md)", out)

@@ -1,0 +1,32 @@
+# cenarios.tsv — o que cada stub de engine emite (sdd/review/stubs/<engine>.py) e o que o gate espera ler no META.
+# Uma fonte só: o stub emite estes valores no formato da engine; o adapter REAL extrai; o gate compara o META com
+# estas colunas (sdd/bin/adversarial-review-gate.sh). 10 colunas separadas por TAB:
+#
+#   1 engine          claude | codex | gemini | openrouter
+#   2 cenario         nome usado na fila SDD_STUB_<ENGINE> (ex.: SDD_STUB_CODEX=429,revisor)
+#   3 resposta        arquivo em respostas/ (sucesso); "-" quando o cenário é uma falha
+#   4 modelo          modelo que a engine reporta; "-" = não reporta (o codex nunca reporta)
+#   5 custo           US$ que a engine reporta; "-" = não reporta
+#   6 tokens_entrada  tokens de entrada reportados
+#   7 tokens_saida    tokens de saída reportados
+#   8 status          CLI: exit (0 sucesso, 1 falha) · openrouter: status HTTP
+#   9 falha           texto da falha (stderr da CLI ou corpo HTTP); "-" no sucesso
+#  10 fonte           medido (formato das saídas reais de sdd/fixtures/revisao/saidas/) | sintético (texto escrito
+#                     para casar com o sinal do registry; uma CLI que mude a mensagem real não é pega aqui)
+#
+# Formato novo de uma CLI = mude o <engine>.py e as linhas dela aqui; a revisão real continua sendo a prova final.
+claude	revisor	revisor.md	claude-stub-5	0.0421	3000	400	0	-	medido
+claude	auditor	auditor-agree.md	claude-stub-5	0.0137	2500	150	0	-	medido
+claude	auth	-	-	-	0	0	1	{"type":"result","is_error":true,"api_error_status":401,"result":"Invalid API key · Please run /login"}	sintético
+codex	revisor	revisor.md	-	-	24000	900	0	-	medido
+codex	auditor	auditor-agree.md	-	-	18000	300	0	-	medido
+codex	auditor-sem-bloco	auditor-sem-bloco.md	-	-	18000	300	0	-	medido
+codex	429	-	-	-	0	0	1	ERROR: unexpected status 429 Too Many Requests	sintético
+gemini	revisor	revisor.md	gemini-stub-pro	-	5000	700	0	-	medido
+gemini	auditor	auditor-agree.md	gemini-stub-pro	-	4000	120	0	-	medido
+gemini	cota	-	-	-	0	0	1	{"error":{"code":8,"status":"RESOURCE_EXHAUSTED","message":"quota exceeded for this project"}}	sintético
+openrouter	revisor	revisor.md	qwen/qwen3.7-plus	0.0031	2000	300	200	-	medido
+openrouter	auditor	auditor-agree.md	qwen/qwen3.7-plus	0.0012	1500	90	200	-	medido
+openrouter	sem-custo	revisor.md	qwen/qwen3.7-plus	-	1234567	234567	200	-	medido
+openrouter	modelo-sem-preco	revisor.md	qwen/qwen3.7-plus-preview	-	1234567	234567	200	-	medido
+openrouter	429	-	-	-	0	0	429	{"error":{"code":429,"message":"Rate limit exceeded: free-models-per-min"}}	sintético

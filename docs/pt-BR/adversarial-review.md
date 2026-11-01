@@ -56,7 +56,9 @@ bash sdd/bin/adversarial-review.sh --feature MINHA_FEATURE --dry-run # mostra o 
 
 Cada papel registra tokens e custo no `META.txt`, mais o total. O custo é o que a engine reporta (`US$`);
 senão, uma estimativa pelo `sdd/review/precos.tsv` (`≈US$`); senão `assinatura` (incluído num plano); senão
-`$?` — custo desconhecido nunca aparece como 0. Atualize o `precos.tsv` pela lista pública de preços do
+`$?` — custo desconhecido nunca aparece como 0. O preço é o do modelo que respondeu: um modelo reportado
+diferente do configurado, sem linha própria no `precos.tsv`, é `$?`. Uma chamada que estourou o teto de
+tempo numa engine paga por token pode ter sido cobrada sem reportar, então o papel mostra `US$ x + $?`. Atualize o `precos.tsv` pela lista pública de preços do
 provedor, com a URL e a data; nunca de memória.
 
 ## Privacidade
@@ -101,6 +103,49 @@ O `--conferir` recalcula o diff e compara o `sha256`. Sem uma revisão que confi
 do OK único — se roda a revisão agora ou se publica sem ela, com um motivo escrito que vai para o ledger como
 `review_externo: dispensado — <motivo>`. O `--ledger` roda na pasta da frente, logo depois do commit da
 release: a pasta da revisão é ignorada pelo git e só existe ali.
+
+Quando o diff pedia um 2º revisor e a revisão rodou com `--no-revisor2`, o `--conferir` não a aceita sozinha:
+acrescente `--aceitar-sem-revisor2 "<motivo>"`, e o motivo vai para a linha do ledger como
+`revisor2=dispensado — <motivo>`.
+
+## Gate offline
+
+```bash
+bash sdd/bin/adversarial-review-gate.sh       # -v mostra também o valor lido em cada conferência
+```
+
+Ele roda a revisão de ponta a ponta com os adapters **reais**, contra stubs que respondem no formato de cada
+engine (`sdd/review/stubs/`: um JSON como o do `claude -p`, o JSONL do `codex exec`, o JSON do
+`gemini -o json` e um servidor HTTP local com a forma da API da OpenRouter). Confere no `META.txt` o que cada
+adapter extraiu — vereditos, engine e modelo, tokens, custo — e o contrato (exits 65, 67, 68; 429 tentado de
+novo na mesma engine; cota passando para a próxima; nenhuma engine chamada fora do roteiro de cada cenário; a
+chave nunca num arquivo). Sem rede e sem crédito: os proxies apontam para uma porta morta, a chave é falsa e
+gerada na execução, e as CLIs no `PATH` dos adapters são os stubs (uma função exportada ou um `BASH_ENV` não
+conseguem trocá-las).
+
+| Exit | `RESULTADO:` | Significado |
+|---|---|---|
+| 0 | GATE VERDE | todas as conferências passaram |
+| 2 | GATE VERMELHO | alguma falhou; cada ❌ diz o campo e o valor lido |
+| 3 | GATE QUEBRADO | o gate não conseguiu se isolar (stub ausente, registry sem as 4 engines, CLI real à frente no shell dos adapters); nada foi chamado |
+| 64 | PAROU | uso |
+
+O gate prova as 4 engines do pacote (`sdd/review/registry.tsv` ao lado de `sdd/bin/`), não engines que você
+acrescentou. Os textos de falha dos stubs são sintéticos (marcados no `cenarios.tsv`): uma CLI que muda a
+mensagem de erro é pega pela revisão real, não aqui. Uma CLI que muda o formato de saída: atualize o
+`<engine>.py` dela e as linhas dela no `cenarios.tsv`.
+
+## eval-agree
+
+```bash
+bash sdd/bin/eval-agree.sh [<pasta das revisões>]   # padrão: review.output_dir
+```
+
+Lê as revisões já feitas (`EXTERNAL_REVIEW_*/META.txt` e `auditor.verdicts.jsonl`) e mostra, por auditor
+(engine e modelo), quantos vereditos foram AGREE, DISAGREE_EVIDENCE, DISAGREE_CONCERN e NOVO, e a
+`taxa_agree` = AGREE / (AGREE + DISAGREE_EVIDENCE + DISAGREE_CONCERN). Um auditor que quase sempre concorda
+pode não estar auditando: compare com outra engine no papel de auditor. A taxa reflete os diffs que este
+projeto revisou, não um benchmark. Nunca chama engine. Exits: `0` MEDIDO · `2` SEM DADOS · `64` uso.
 
 ## Limites
 

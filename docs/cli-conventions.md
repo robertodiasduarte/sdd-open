@@ -60,6 +60,8 @@ RESULTADO: ERRO
 | `sdd/hooks/pre-push` | `0` sempre (só avisa `⚠️` quando atrás de `origin/<branch padrão>`) |
 | `sdd-fluxo.sh` | `review-design`: `0` EXIGIDO · `1` DISPENSAVEL · `64` manifest ilegível (rode a revisão) · `loop`: `0` PRONTO · `10` CONTINUAR · `20` BLOQUEADO · `30` AGUARDANDO_RECIBO · `64` · `despachar`: `40` AGUARDANDO_HUMANO · `64` · `seguir`: `0` SEGUIR · `1` PARAR · `64` · `estado`: `0` ligado · `1` desligado · `64` valor inválido |
 | `adversarial-review.sh` | `0` REVIEW COMPLETA · `64` uso, slot vazio, diff vazio ou > 8 MB, pasta não ignorada · `65` credencial (sem troca de engine) · `66` CLI ausente · `67` auditor = revisor ou lista esgotada · `68` REVIEW INVÁLIDA (resposta sem vereditos) · `--conferir`: `0` CONFERE · `2` NÃO CONFERE · `--ledger`: `0` LEDGER OK · `2` LEDGER SEM REVIEW · `64` ilegível ([adversarial-review.md](adversarial-review.md)) |
+| `adversarial-review-gate.sh` | `0` GATE VERDE · `2` GATE VERMELHO (cada ❌ com o campo e o valor lido) · `3` GATE QUEBRADO (não conseguiu se isolar; nada foi chamado) · `64` uso ([adversarial-review.md](adversarial-review.md)) |
+| `eval-agree.sh` | `0` MEDIDO · `2` SEM DADOS · `64` uso ou pasta inexistente |
 | `sdd-decisoes-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, caminho inexistente, tabela de marcas ausente ou nenhuma pergunta |
 | `sdd-kb/scripts/gate.sh` | `0` verde · `2` vermelho (caso bom rejeitado, caso ruim aceito ou por outro motivo, âncora ausente, RULE_MAP do exemplo derivado, ou rodado da cópia gerada pelo `sync`) |
 | `sdd-kb/scripts/validate_kb.py` · `kb_normativo.py` | `0` PASS · `2` FAIL · `64` uso |

@@ -54,6 +54,17 @@ class Extracao(Sandbox):
         self.assertEqual((o["tokens_entrada"], o["tokens_saida"], o["modelo"]), (16, 136, "qwen/qwen3.7-plus via Alibaba"))
         self.assertAlmostEqual(o["custo_usd"], 0.0001792)
 
+    def test_f11_at023_gemini_com_dois_modelos_soma_os_tokens(self):
+        d = json.loads(ler(SAIDAS / "gemini.json"))
+        d["stats"]["models"]["gemini-roteador-lite"] = {"tokens": {"prompt": 100, "candidates": 7, "total": 107}}
+        f = self.escreve(self.tmp, "gemini2.json", json.dumps(d))
+        rc, out, err = self.roda([BASH, "-c", 'source "$1"; adapter_extrair "$2"', "_", ADAPTERS / "gemini.sh", f],
+                                 self.tmp)
+        self.assertEqual(rc, 0, err)
+        g = json.loads(out.strip().splitlines()[-1])
+        self.assertEqual((g["tokens_entrada"], g["tokens_saida"], g["modelo"]),
+                         (1930, 49, "gemini-3.8-flash+gemini-roteador-lite"))
+
     def test_saida_de_erro_vira_texto_vazio(self):
         for adapter, conteudo in (("claude", '{"is_error": true, "result": "x"}'),
                                   ("codex", '{"type":"error","message":"401 Unauthorized"}'),

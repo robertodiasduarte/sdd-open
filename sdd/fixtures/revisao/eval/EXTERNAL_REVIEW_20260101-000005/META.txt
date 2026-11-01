@@ -1,0 +1,6 @@
+protocolo              : cadeia REVISOR → AUDITOR; paralelo não existe
+reviewer_engine_efetivo : codex
+reviewer_exit          : 0
+auditor_engine_efetivo : openrouter
+auditor_modelo         : qwen/qwen3.7-plus via OutroProvedor
+auditor_exit           : 0

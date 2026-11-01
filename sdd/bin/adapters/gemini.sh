@@ -42,10 +42,19 @@ try:
 except OSError:
     d = {}
 modelos = ((d.get("stats") or {}).get("models")) or {}
-modelo = next(iter(modelos), None)
-tok = ((modelos.get(modelo) or {}).get("tokens") or {}) if modelo else {}
-ent = tok.get("prompt") if isinstance(tok.get("prompt"), int) else None
-sai = tok.get("candidates") if isinstance(tok.get("candidates"), int) else None
+if not isinstance(modelos, dict):
+    modelos = {}
+def tokens(m):
+    t = (modelos.get(m) or {}).get("tokens") or {}
+    return t if isinstance(t, dict) else {}
+# o gemini pode rotear uma chamada por mais de um modelo: soma os tokens de todos e reporta todos,
+# o de mais tokens primeiro
+nomes = sorted(modelos, key=lambda m: -(tokens(m).get("total") or 0))
+modelo = "+".join(nomes) or None
+ents = [tokens(m).get("prompt") for m in nomes]
+sais = [tokens(m).get("candidates") for m in nomes]
+ent = sum(ents) if nomes and all(isinstance(x, int) for x in ents) else None
+sai = sum(sais) if nomes and all(isinstance(x, int) for x in sais) else None
 texto = d.get("response") if isinstance(d.get("response"), str) and not d.get("error") else ""
 print(json.dumps({"texto": texto, "tokens_entrada": ent, "tokens_saida": sai, "modelo": modelo,
                   "custo_usd": None}, ensure_ascii=False))

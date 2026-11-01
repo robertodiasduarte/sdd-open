@@ -57,11 +57,11 @@ QUICKSTART = {
 
 ROADMAP = {
     "en": (RAIZ / "docs/roadmap.md", "[Português](pt-BR/roadmap.md)", "planned", "under evaluation",
-           ("Adversarial", "governance", "sdd-loop-builder", "reconciliation")),
+           ("governance", "sdd-loop-builder", "reconciliation")),
     "pt": (RAIZ / "docs/pt-BR/roadmap.md", "[English](../roadmap.md)", "planejado", "em avaliação",
-           ("adversarial", "governança", "sdd-loop-builder", "Reconciliação")),
+           ("governança", "sdd-loop-builder", "Reconciliação")),
 }
-# Hooks (F8) e fluxo encadeado (F9) saíram do roadmap e ganharam documento próprio, linkado dos dois READMEs.
+# Hooks (F8), fluxo encadeado (F9) e revisão adversarial (F10 + F11) saíram do roadmap e ganharam documento próprio, linkado dos dois READMEs.
 FLUXO_DOCS = {
     "en": (RAIZ / "docs/chained-flow.md", RAIZ / "README.md", "docs/chained-flow.md"),
     "pt": (RAIZ / "docs/pt-BR/chained-flow.md", RAIZ / "README.pt-BR.md", "docs/pt-BR/chained-flow.md"),
@@ -295,9 +295,10 @@ class Roadmap(unittest.TestCase):
                 self.assertIn(avaliacao, deltas[0])
                 self.assertNotIn(planejado, deltas[0])
                 self.assertIsNone(re.search(r"\b20\d\d\b", texto), "o roadmap não leva data")
-                # F8 entregou os hooks e a F9 o fluxo encadeado: as linhas saíram do roadmap (5 temas) e
-                # viraram docs/hooks.md e docs/chained-flow.md.
-                self.assertEqual(len([ln for ln in linhas if not ln.startswith("| Tema") and not ln.startswith("| Theme")]), 5)
+                # F8 entregou os hooks, a F9 o fluxo encadeado e a F10 + F11 a revisão adversarial: as linhas saíram
+                # do roadmap (4 temas) e viraram docs/hooks.md, docs/chained-flow.md e docs/adversarial-review.md.
+                self.assertEqual(len([ln for ln in linhas if not ln.startswith("| Tema") and not ln.startswith("| Theme")]), 4)
+                self.assertFalse([ln for ln in linhas if "dversari" in ln], "a revisão adversarial já foi entregue")
                 self.assertFalse([ln for ln in linhas if "**Hooks**" in ln], "a linha Hooks saiu com a F8")
                 self.assertFalse([ln for ln in linhas if "Chained flow" in ln or "Fluxo encadeado" in ln],
                                  "a linha do fluxo encadeado saiu com a F9")

@@ -188,7 +188,12 @@ class Projeto(Sandbox):
         # F10 (AT-035): sdd/review/ (registry, preços, prompts) e sdd/bin/adapters/ vêm com o init
         for rel in ("sdd/review/registry.tsv", "sdd/review/precos.tsv", "sdd/review/prompts/reviewer.md",
                     "sdd/review/prompts/auditor.md", "sdd/review/prompts/desempate.md",
-                    "sdd/bin/adversarial-review.sh", "sdd/bin/adapters/openrouter.sh"):
+                    "sdd/bin/adversarial-review.sh", "sdd/bin/adapters/openrouter.sh",
+                    # F11 (AT-027): o gate offline, o eval-agree e os stubs por engine vêm junto
+                    "sdd/bin/adversarial-review-gate.sh", "sdd/bin/eval-agree.sh", "sdd/review/stubs/cenarios.tsv",
+                    "sdd/review/stubs/comum.py", "sdd/review/stubs/claude.py", "sdd/review/stubs/codex.py",
+                    "sdd/review/stubs/gemini.py", "sdd/review/stubs/openrouter.py",
+                    "sdd/review/stubs/respostas/revisor.md"):
             with self.subTest(arquivo=rel):
                 self.assertTrue((self.p / rel).is_file(), rel)
         reg = self.p / "sdd/review/registry.tsv"

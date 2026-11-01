@@ -97,7 +97,7 @@ Works on macOS, Linux and Windows (Git Bash/WSL): bash 3.2, zero zsh, zero symli
 - [Comparison](docs/comparison.md) ([PT](docs/pt-BR/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
 - [Git hooks](docs/hooks.md) ([PT](docs/pt-BR/hooks.md)) — the pre-commit rules `init` installs, the data-hygiene alarm, the `--no-verify` limit
 - [Chained flow](docs/chained-flow.md) ([PT](docs/pt-BR/chained-flow.md)) — decision classes in every question, `flow.autonomous`, the stop with exit 40 when the agent cannot open a fresh session
-- [Adversarial review](docs/adversarial-review.md) ([PT](docs/pt-BR/adversarial-review.md)) — one engine reviews the frozen diff, another audits the review; cost per role, privacy, and the external review the release requires
+- [Adversarial review](docs/adversarial-review.md) ([PT](docs/pt-BR/adversarial-review.md)) — one engine reviews the frozen diff, another audits the review; cost per role, privacy, the external review the release requires, the offline gate and `eval-agree`
 - [Roadmap](docs/roadmap.md) ([PT](docs/pt-BR/roadmap.md)) — what is planned and what is under evaluation
 - [Student guide](docs/pt-BR/guia-do-aluno.md) (PT) — step by step for someone who never used git or a terminal
 
