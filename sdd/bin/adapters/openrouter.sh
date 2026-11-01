@@ -43,7 +43,8 @@ try:
         open(out, "wb").write(r.read())
     sys.exit(0)
 except urllib.error.HTTPError as e:
-    open(out, "wb").write(e.read() or ("HTTP %d" % e.code).encode())
+    # a 1ª linha é sempre "HTTP <código>": o registry classifica por ela mesmo sem corpo JSON
+    open(out, "wb").write(("HTTP %d\n" % e.code).encode() + (e.read() or b""))
     open(err, "w").write("HTTP %d\n" % e.code)
     sys.exit(1)
 except Exception as e:

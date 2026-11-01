@@ -344,7 +344,12 @@ def congelar(base, paths):
         _, novos, _ = git(raiz, "ls-files", "--others", "--exclude-standard", "-z", "--", *spec, env=env)
         nomes = [n for n in novos.split("\0") if n]
         for k in range(0, len(nomes), 200):
-            git(raiz, "add", "--intent-to-add", "--", *nomes[k:k + 200], env=env)
+            # --literal-pathspecs: um arquivo chamado ":(glob)x" é um nome, não um pathspec mágico
+            rc_add, _, err_add = git(raiz, "--literal-pathspecs", "add", "--intent-to-add", "--", *nomes[k:k + 200],
+                                     env=env)
+            if rc_add != 0:
+                uso("não consegui incluir %d arquivo(s) novo(s) no diff (%s…): %s"
+                    % (len(nomes[k:k + 200]), nomes[k], err_add.strip()))
         rc, patch, err = git(raiz, "-c", "core.quotepath=true", "-c", "diff.suppressBlankEmpty=false",
                              "-c", "core.attributesFile=/dev/null", "diff", "--binary", "--no-color", "--no-ext-diff",
                              "--no-renames", "--diff-algorithm=myers", "--indent-heuristic", "--src-prefix=a/",
@@ -579,7 +584,10 @@ def invocar(d, prompt, saida):
         return p.wait(timeout=d["timeout_s"]), False
     except subprocess.TimeoutExpired:
         try:
-            os.killpg(p.pid, signal.SIGKILL)
+            if hasattr(os, "killpg"):
+                os.killpg(p.pid, signal.SIGKILL)   # o grupo inteiro: a CLI neta também
+            else:
+                p.kill()                            # Python sem killpg (Windows nativo)
         except OSError:
             pass
         p.wait()
@@ -631,6 +639,7 @@ def papel(nome, cands, prompt_txt, excluir=()):
         print("▶ %s: %s (%s) — até %d min" % (NOME_PAPEL[nome], d["id"], d["modelo"], max(1, d["timeout_s"] // 60)),
               flush=True)
         tent = 0
+        custo_acum = None
         while True:
             tent += 1
             saida = os.path.join(TMP, "%s-%s-%d.out" % (nome, rotulo(d["id"]), tent))
@@ -638,6 +647,8 @@ def papel(nome, cands, prompt_txt, excluir=()):
             rc, tmo = invocar(d, arq_p, saida)
             reg["segundos"] = int(round(time.time() - t_cham))
             ext = extrair(d, saida) if rc == 0 and not tmo else {}
+            if isinstance(ext.get("custo_usd"), (int, float)):
+                custo_acum = (custo_acum or 0) + ext["custo_usd"]   # toda tentativa cobrada entra no custo
             texto = ext.get("texto") or ""
             bruto = (ler(saida) or "") + "\n" + (ler(saida + ".err") or "")
             c = classe(rc, tmo, texto, bruto, d)
@@ -645,7 +656,10 @@ def papel(nome, cands, prompt_txt, excluir=()):
                 time.sleep(ESPERA)
                 continue
             break
+        if custo_acum is not None:
+            reg["custo_usd"] = custo_acum + (reg["custo_usd"] or 0)
         if c == "ok":
+            ext["custo_usd"] = reg["custo_usd"]
             reg.update(ext)
             reg.update({"engine_efetivo": d["id"], "exit": "0", "linha": d,
                         "fallback_usado": "sim" if d["id"] != reg["engine_default"] else "nao"})
@@ -683,7 +697,9 @@ def bloco(texto):
     fim = [k for k, l in enumerate(ls) if l.strip() == "VERDICTS>>>" and k > ini[-1]]
     if not fim:
         return None
-    return [l.strip() for l in ls[ini[-1] + 1:fim[0]] if l.strip() and not l.strip().startswith("```")]
+    # só a linha que é SÓ cerca (```, ```json) é ignorada; uma linha com crases e conteúdo segue para o parser,
+    # que a reprova (68): nunca some um achado em silêncio
+    return [l.strip() for l in ls[ini[-1] + 1:fim[0]] if l.strip() and not re.match(r"^```[A-Za-z]*$", l.strip())]
 
 
 CHAVES_REV = ("achado", "arquivo", "linha", "severidade", "confianca", "resumo")
@@ -799,8 +815,9 @@ elif gat2:
         # o revisor pode ter caído para a reserva: a mesma engine não revisa duas vezes
         cand = [r2_forcado] if chave(r2_forcado) != chave(rev["linha"]) else []
     else:
+        chaves = {chave(rev["linha"]), chave(auditores[0])}
         cand = [candidato(e, "revisor2") for e in ORDEM if e not in excl]
-        cand = [d for d in cand if d and disponivel(d)][:1]
+        cand = [d for d in cand if d and chave(d) not in chaves and disponivel(d)][:1]
     if not cand:
         r2 = {"engine_efetivo": "indisponível", "engine_default": "-", "exit": "67", "segundos": 0, "achados": 0,
               "motivo": "nenhuma engine disponível fora do revisor e do auditor", "linha": None,

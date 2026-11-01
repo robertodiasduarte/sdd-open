@@ -203,3 +203,25 @@ class Invocacao(Sandbox):
         rc, out = self.ar("--reviewer", "openrouter,claude", "--auditor", "codex")
         self.assertEqual(rc, 65, out)
         self.assertFalse((self.log / "claude.argv").exists())
+
+    def test_openrouter_401_sem_corpo_e_auth(self):
+        # rodada 2 da revisão real (R3@codex): erro HTTP sem corpo JSON também é classificado
+        class H(http.server.BaseHTTPRequestHandler):
+            def do_POST(self):
+                self.rfile.read(int(self.headers.get("Content-Length") or 0))
+                self.send_response(401)
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+
+            def log_message(self, *a):
+                pass
+
+        srv = http.server.HTTPServer(("127.0.0.1", 0), H)
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+        self.addCleanup(srv.server_close)
+        self.addCleanup(srv.shutdown)
+        self.env = dict(self.env, OPENROUTER_API_KEY="teste-" + secrets.token_hex(8),
+                        SDD_REVIEW_OPENROUTER_URL="http://127.0.0.1:%d/" % srv.server_port)
+        rc, out = self.ar("--reviewer", "openrouter,claude", "--auditor", "codex")
+        self.assertEqual(rc, 65, out)
+        self.assertFalse((self.log / "claude.argv").exists())

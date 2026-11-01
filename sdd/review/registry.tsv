@@ -17,7 +17,7 @@
 # Não há cadeia padrão: quem revisa e quem audita vem de review.revisor1 / review.auditor (sdd/config.yaml)
 # ou de --reviewer / --auditor. Engine nova = 1 linha aqui (+ 1 adapter, se for uma CLI nova).
 # O codex roda sempre com -s read-only (no adapter).
-claude	claude	-	assinatura	revisor,auditor,desempate	900	(?i)(authentication_error|invalid api key|not logged in|please run /login|\b401\b)	(?i)(rate_limit|overloaded|\b429\b|\b529\b)	(?i)(usage limit|credit balance is too low|quota)
-codex	codex	-	assinatura	revisor,auditor,desempate	900	(?i)(unauthorized|not logged in|codex login|\b401\b)	(?i)(rate limit|too many requests|\b429\b)	(?i)(usage limit|insufficient_quota|quota)
-gemini	gemini	-	desconhecida	revisor,auditor,desempate	900	(?i)(ProjectIdRequiredError|UNAUTHENTICATED|API key not valid|\b401\b|\b403\b)	(?i)(\b429\b|rate limit|too many requests)	(?i)(RESOURCE_EXHAUSTED|quota|billing)
-openrouter	openrouter	qwen/qwen3.7-plus	pay-per-token	revisor,auditor,desempate	900	(?i)(\"code\":\s*40[13]\b|User not found|No auth credentials|OPENROUTER_API_KEY ausente)	(?i)(\"code\":\s*429\b|rate limit)	(?i)(\"code\":\s*402\b|insufficient credits|quota|No endpoints found)
+claude	claude	-	assinatura	revisor,auditor,desempate	900	(?i)(authentication_error|invalid api key|not logged in|please run /login|"api_error_status":\s*401)	(?i)(rate_limit|overloaded|\b429\b|\b529\b)	(?i)(usage limit|credit balance is too low|quota)
+codex	codex	-	assinatura	revisor,auditor,desempate	900	(?i)(401 unauthorized|unauthorized|not logged in|codex login)	(?i)(rate limit|too many requests|\b429\b)	(?i)(usage limit|insufficient_quota|quota)
+gemini	gemini	-	desconhecida	revisor,auditor,desempate	900	(?i)(ProjectIdRequiredError|UNAUTHENTICATED|API key not valid|"code":\s*40[13]\b)	(?i)(\b429\b|rate limit|too many requests)	(?i)(RESOURCE_EXHAUSTED|quota|billing)
+openrouter	openrouter	qwen/qwen3.7-plus	pay-per-token	revisor,auditor,desempate	900	(?im)("code":\s*40[13]\b|^HTTP 40[13]\b|User not found|No auth credentials|OPENROUTER_API_KEY ausente)	(?im)("code":\s*429\b|^HTTP 429\b|rate limit)	(?im)("code":\s*402\b|^HTTP 402\b|insufficient credits|quota|No endpoints found)

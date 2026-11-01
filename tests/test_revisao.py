@@ -1016,3 +1016,85 @@ class RevisaoFinal(Base):
         rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a", "--auditor", "stub-b:novo", "--no-revisor2",
                           env=env)
         self.assertEqual(rc, 68, out)
+
+
+class RevisaoRodada2(Base):
+    """Achados da revisão real, rodada 2 (EXTERNAL_REVIEW_20261101-010707; ledger-review.md)."""
+
+    def respostas(self, **arquivos):
+        resp = self.tmp / "resp"
+        if not resp.exists():
+            shutil.copytree(str(FXR / "respostas"), str(resp))
+        for nome, texto in arquivos.items():
+            (resp / (nome + ".md")).write_text(texto, encoding="utf-8")
+        return dict(self.env, SDD_REVIEW_STUB_RESPOSTAS=str(resp))
+
+    def test_r1_codex_linha_com_crases_e_conteudo_e_68_e_cerca_sozinha_passa(self):
+        linha = '{"achado":"R1","arquivo":"a","linha":1,"severidade":"HIGH","confianca":"CONFIRMED","resumo":"x"}'
+        env = self.respostas(crase="R.\n\n<<<VERDICTS\n```" + linha + "\nVERDICTS>>>\n",
+                             cerca="R.\n\n<<<VERDICTS\n```json\n" + linha + "\n```\nVERDICTS>>>\n",
+                             aud1='A.\n\n<<<VERDICTS\n{"achado":"R1","veredito":"AGREE","justificativa":"x"}\nVERDICTS>>>\n')
+        r = self.projeto()
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a:crase", "--auditor", "stub-b:aud1", "--no-revisor2",
+                          env=env)
+        self.assertEqual(rc, 68, out)
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a:cerca", "--auditor", "stub-b:aud1", "--no-revisor2",
+                          env=env)
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["reviewer_achados"], "1")
+
+    def test_r1_claude_e_r3_codex_sinais_de_fabrica(self):
+        reg = {}
+        for ln in ler(RAIZ / "sdd/review/registry.tsv").splitlines():
+            c = ln.split("\t")
+            if len(c) == 9 and not ln.startswith("#"):
+                reg[c[0]] = c
+        casos = (
+            ("claude", 6, '{"duration_ms":401,"is_error":true,"result":"usage limit reached"}', False),
+            ("claude", 6, '{"is_error":true,"api_error_status": 401,"result":"x"}', True),
+            ("claude", 8, '{"duration_ms":401,"is_error":true,"result":"usage limit reached"}', True),
+            ("codex", 6, '{"type":"error","message":"401 Unauthorized"}', True),
+            ("codex", 6, '{"type":"turn.completed","usage":{"input_tokens":401}}', False),
+            ("gemini", 6, '{"error":{"code": 403,"message":"x"}}', True),
+            ("gemini", 6, '{"stats":{"tokens":{"prompt":401}}}', False),
+            ("openrouter", 6, "HTTP 401\n", True),
+            ("openrouter", 7, "HTTP 429\n", True),
+            ("openrouter", 8, "HTTP 402\n", True),
+            ("openrouter", 6, "HTTP 429\n", False),
+        )
+        for eng, col, texto, casa in casos:
+            with self.subTest(engine=eng, coluna=col, texto=texto[:30]):
+                self.assertEqual(bool(re.search(reg[eng][col], texto)), casa)
+
+    def test_r2_claude_falha_do_git_add_n_e_64_e_nome_com_dois_pontos_entra(self):
+        r = self.projeto()
+        self.escreve(r, ":(glob)nome.sh", "x\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--dry-run")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("4 arquivo(s)", out)
+        falso = self.tmp / "bin-git"
+        falso.mkdir()
+        (falso / "git").write_text('#!/bin/sh\nfor a in "$@"; do [ "$a" = "--intent-to-add" ] && exit 1; done\n'
+                                   'exec "%s" "$@"\n' % shutil.which("git"), encoding="utf-8")
+        (falso / "git").chmod(0o755)
+        env = dict(self.env, PATH=str(falso) + os.pathsep + self.env["PATH"])
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a", "--auditor", "stub-b", "--dry-run", env=env)
+        self.assertEqual(rc, 64, out)
+        self.assertIn("não consegui incluir", out)
+
+    def test_r2_codex_segundo_revisor_automatico_pula_a_mesma_engine(self):
+        reg = self.registry([self.linha("stub-a", "revisor-ok"), self.linha("stub-b", "auditor-agree-dois"),
+                             self.linha("x-igual", "auditor-agree-dois"), self.linha("stub-c", "revisor2-ok")])
+        r = self.projeto(registry=reg)
+        self.escreve(r, "src/auth/login.sh", "x\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["revisor2_engine"], "stub-c")
+
+    def test_r4_codex_custo_de_tentativa_anterior_entra_no_papel(self):
+        env = dict(self.respostas(vazio=""), SDD_REVIEW_STUB_CUSTO="0.01")
+        r = self.projeto()
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a:vazio,stub-c", "--auditor", "stub-b",
+                          "--no-revisor2", env=env)
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["reviewer_custo"], "US$ 0.0200")
