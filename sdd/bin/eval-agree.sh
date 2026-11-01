@@ -95,8 +95,10 @@ for d in sorted(os.listdir(pasta)):
     if texto is None:
         fora.append((d, "sem auditor.verdicts.jsonl"))
         continue
-    # o mesmo auditor numa linha só: o provedor que a OpenRouter escolheu (" via …") não parte a conta
-    quem = "%s (%s)" % (meta.get("auditor_engine_efetivo", "-"), meta.get("auditor_modelo", "-").split(" via ", 1)[0])
+    # o mesmo auditor numa linha só: nem o slug no id (openrouter:<modelo>) nem o provedor que a OpenRouter
+    # escolheu (" via …") partem a conta — a linha é engine base + modelo que respondeu
+    quem = "%s (%s)" % (meta.get("auditor_engine_efetivo", "-").split(":", 1)[0],
+                        meta.get("auditor_modelo", "-").split(" via ", 1)[0])
     c = por.setdefault(quem, {"revisoes": 0, **{t: 0 for t in TIPOS}})
     c["revisoes"] += 1
     for ln in texto.splitlines():

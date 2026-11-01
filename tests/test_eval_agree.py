@@ -3,6 +3,7 @@
 Fixture: sdd/fixtures/revisao/eval/ — 5 pastas EXTERNAL_REVIEW_*: codex audita 1 (2 AGREE, 1 DISAGREE_EVIDENCE,
 1 NOVO); openrouter audita 2, com provedores diferentes (" via …") que somam numa linha só (3 AGREE, 1
 DISAGREE_CONCERN); 1 auditoria com exit 68 e 1 sem auditor.verdicts.jsonl ficam fora da conta.
+A 5ª pasta usa o id com slug (openrouter:qwen/…) e outro provedor: soma na mesma linha da 2ª.
 O script só lê arquivos: o teste roda sem CLI de engine no PATH e com proxies mortos.
 """
 from __future__ import annotations
