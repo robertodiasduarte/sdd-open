@@ -1,0 +1,19 @@
+$ T=$(mktemp -d); bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --log "$T/L.log" >/dev/null; echo "1ª chamada rc=$?"; bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --teto ² --log "$T/L.log"; rc=$?; echo "2ª chamada (--teto ², isdigit() verdadeiro e int() falha) rc=$rc; o --log ficou assim:"; cat "$T/L.log"; rm -rf "${T:?}"; test $rc -eq 64
+1ª chamada rc=0
+Traceback (most recent call last):
+  File "<stdin>", line 524, in <module>
+  File "<stdin>", line 174, in cmd_loop
+  File "<stdin>", line 223, in _loop
+ValueError: invalid literal for int() with base 10: '²'
+2ª chamada (--teto ², isdigit() verdadeiro e int() falha) rc=1; o --log ficou assim:
+$ sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]
+[exit=1]

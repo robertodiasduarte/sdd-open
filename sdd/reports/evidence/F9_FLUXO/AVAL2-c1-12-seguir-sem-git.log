@@ -1,0 +1,8 @@
+$ T=$(mktemp -d); W=$PWD; R="$T/r"; mkdir -p "$R/sdd/features"; cp sdd/fixtures/fluxo/DEFINE_pronto.md "$R/sdd/features/DEFINE_X.md"; cp sdd/fixtures/fluxo/config-autonomo.yaml "$R/sdd/config.yaml"; cd "$R"; GIT_CEILING_DIRECTORIES="$T" bash "$W/sdd/bin/sdd-fluxo.sh" estado; echo "estado rc=$?"; GIT_CEILING_DIRECTORIES="$T" bash "$W/sdd/bin/sdd-fluxo.sh" seguir define sdd/features/DEFINE_X.md design; rc=$?; echo "seguir rc=$rc"; cd "$W"; rm -rf "${T:?}"; test $rc -eq 1
+encadeamento: ligado
+estado rc=0
+PARAR: a pasta não é um repositório git, e o verify-gate.sh precisa de um (rode git init)
+RESULTADO: PARAR
+→ Próximo passo: /sdd-design sdd/features/DEFINE_X.md
+seguir rc=1
+[exit=0]

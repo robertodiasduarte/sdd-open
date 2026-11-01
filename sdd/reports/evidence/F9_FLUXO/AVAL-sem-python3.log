@@ -1,0 +1,29 @@
+$ P=$(mktemp -d); for t in bash sh dirname sed grep cat mkdir cp cmp git mktemp rm pwd; do ln -s "$(command -v $t)" "$P/$t"; done; n=0; for v in "review-design x" "loop --review x --rodada 1" "despachar a b c" "seguir define x design" "estado" "--self-test"; do o=$(PATH="$P" /bin/bash sdd/bin/sdd-fluxo.sh $v 2>&1); r=$?; echo "sdd-fluxo.sh $v → $r :: $o"; [ $r = 64 ] && printf "%s" "$o" | grep -q python3 || n=$((n+1)); done; for v in "--sites x" "--self-test"; do o=$(PATH="$P" /bin/bash sdd/bin/sdd-decisoes-lint.sh $v 2>&1); r=$?; echo "sdd-decisoes-lint.sh $v → $r :: $o"; [ $r = 64 ] && printf "%s" "$o" | grep -q python3 || n=$((n+1)); done; for v in "" "bogus"; do PATH="$P" /bin/bash sdd/bin/sdd-fluxo.sh $v >/dev/null 2>&1; r=$?; echo "sdd-fluxo.sh [$v] → $r (uso)"; [ $r = 64 ] || n=$((n+1)); done; rm -rf "${P:?}"; echo "divergências: $n"; (exit $n)
+sdd-fluxo.sh review-design x → 64 :: 🛑 sdd-fluxo: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+sdd-fluxo.sh loop --review x --rodada 1 → 64 :: 🛑 sdd-fluxo: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+sdd-fluxo.sh despachar a b c → 64 :: 🛑 sdd-fluxo: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+sdd-fluxo.sh seguir define x design → 64 :: 🛑 sdd-fluxo: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+sdd-fluxo.sh estado → 64 :: 🛑 sdd-fluxo: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+sdd-fluxo.sh --self-test → 64 :: 🛑 sdd-fluxo: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+sdd-decisoes-lint.sh --sites x → 64 :: 🛑 sdd-decisoes-lint: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+sdd-decisoes-lint.sh --self-test → 64 :: 🛑 sdd-decisoes-lint: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+sdd-fluxo.sh [] → 64 (uso)
+sdd-fluxo.sh [bogus] → 64 (uso)
+divergências: 0
+[exit=0]

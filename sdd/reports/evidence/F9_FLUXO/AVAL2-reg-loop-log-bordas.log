@@ -1,0 +1,47 @@
+$ T=$(mktemp -d); mkdir -p "$T/com espaço/ev" "$T/rv"; cp -R sdd/fixtures/fluxo/review-impasse/. "$T/com espaço/rv/" 2>/dev/null || cp -R sdd/fixtures/fluxo/review-impasse "$T/com espaço/rv"; bash sdd/bin/sdd-fluxo.sh loop --review "$T/com espaço/rv" --rodada 1 --log "$T/com espaço/ev/LOOP-rodada-1.log" > "$T/stdout.txt" 2> "$T/stderr.txt"; rc=$?; echo "A) caminho com espaço rc=$rc (esperado 20); stdout ainda impresso:"; cat "$T/stdout.txt"; echo "--- log:"; cat "$T/com espaço/ev/LOOP-rodada-1.log"; bash sdd/bin/gate-shell-evidencia.sh "$T/com espaço/ev"; echo "gate-shell-evidencia rc=$?"; echo; echo "B) --log sem valor no fim:"; bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --rodada 1 --log; echo "rc=$?"; echo; echo "C) --log apontando para uma pasta:"; mkdir "$T/pasta.log"; bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --log "$T/pasta.log" >/dev/null; echo "rc=$?"; echo; echo "D) --log repetido (a e b):"; bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --log "$T/a.log" --log "$T/b.log" >/dev/null; echo "rc=$? a.log existe: $(test -f "$T/a.log" && echo sim || echo não) · b.log existe: $(test -f "$T/b.log" && echo sim || echo não)"; echo; echo "E) stderr e stdout no log, na ordem (avaliação ambígua):"; bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_ambigua.md --log "$T/e.log" 2>/dev/null; echo "rc=$?"; cat "$T/e.log"; rm -rf "${T:?}"; test $rc -eq 20
+A) caminho com espaço rc=20 (esperado 20); stdout ainda impresso:
+ESTADO: BLOQUEADO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: D5 impasse de evidência: grave(s) refutado(s) pelo auditor sem veredito no ledger: R1@rev
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+--- log:
+$ sdd-fluxo.sh loop --review '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.t1LmUDH8wX/com espaço/rv' --rodada 1
+ESTADO: BLOQUEADO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: D5 impasse de evidência: grave(s) refutado(s) pelo auditor sem veredito no ledger: R1@rev
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[exit=20]
+✅ 1 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+gate-shell-evidencia rc=0
+
+B) --log sem valor no fim:
+🛑 sdd-fluxo: --log exige um valor
+RESULTADO: ERRO DE USO
+→ rode `sdd-fluxo.sh` sem argumentos para ver o uso.
+rc=64
+
+C) --log apontando para uma pasta:
+⚠️ sdd-fluxo: não consegui gravar o --log: [Errno 21] Is a directory: '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.t1LmUDH8wX/pasta.log'
+rc=0
+
+D) --log repetido (a e b):
+rc=0 a.log existe: sim · b.log existe: não
+
+E) stderr e stdout no log, na ordem (avaliação ambígua):
+rc=64
+$ sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_ambigua.md
+🛑 sdd-fluxo: avaliação ilegível ou ambígua em sdd/fixtures/fluxo/AVALIACAO_ambigua.md (esperado 1 linha VEREDITO: X)
+RESULTADO: ENTRADA ILEGÍVEL
+→ sem essa entrada não há como declarar PRONTO; refaça a revisão ou conserte o arquivo.
+[exit=64]
+[exit=0]

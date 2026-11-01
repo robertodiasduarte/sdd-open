@@ -1,0 +1,10 @@
+$ for d in sdd/features/DESIGN_F[1-8]_*.md; do p=$(/bin/bash sdd/bin/sdd-fluxo.sh review-design "$d" | grep -oE "[0-9]+ arquivo\(s\) novo" | grep -oE "^[0-9]+"); f=$(zsh "$FONTE" review-design "$d" | grep -oE "[0-9]+ arquivo\(s\) Create" | grep -oE "^[0-9]+"); printf "%s porte=%s fonte=%s %s\n" "$(basename "$d")" "$p" "$f" "$([ "$p" = "$f" ] && echo igual || echo DIFERENTE)"; [ "$p" = "$f" ] || exit 1; done
+DESIGN_F1_MANUTENCAO.md porte=13 fonte=13 igual
+DESIGN_F2_TERRENO.md porte=17 fonte=17 igual
+DESIGN_F3_BUILD_RELEASE.md porte=4 fonte=4 igual
+DESIGN_F4_CONVERSA.md porte=10 fonte=10 igual
+DESIGN_F5_CONHECIMENTO.md porte=17 fonte=17 igual
+DESIGN_F6_DOCS.md porte=7 fonte=7 igual
+DESIGN_F7_EVIDENCIA.md porte=25 fonte=25 igual
+DESIGN_F8_HOOKS.md porte=13 fonte=13 igual
+[exit=0]

@@ -1,0 +1,8 @@
+$ wc -l sdd/bin/sdd-fluxo.sh sdd/bin/sdd-decisoes-lint.sh sdd/templates/fragments/FLUXO_ENCADEADO.md tests/test_fluxo.py tests/test_decisoes_lint.py
+     734 sdd/bin/sdd-fluxo.sh
+     203 sdd/bin/sdd-decisoes-lint.sh
+     103 sdd/templates/fragments/FLUXO_ENCADEADO.md
+     642 tests/test_fluxo.py
+     159 tests/test_decisoes_lint.py
+    1841 total
+[exit=0]

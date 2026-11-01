@@ -1,0 +1,2560 @@
+$ HOME=<temporário> CODEX_HOME=<temporário, só auth.json> codex exec --ignore-user-config --ephemeral -s workspace-write  -C <cópia> "<prompt abaixo>"
+codex: codex-cli 0.163.0
+prompt: Siga a skill do projeto em .agents/skills/sdd-define/SKILL.md (leia o arquivo inteiro e as referências que ela manda ler) para gerar sdd/features/DEFINE_EXEMPLO.md a partir de sdd/fixtures/BRAINSTORM_EXEMPLO.md. Esta execução não é interativa: em toda pergunta de decisão, escolha a opção recomendada e continue sem esperar resposta. Ao fechar a fase, siga a subseção '### Fluxo encadeado' do Encerramento da skill. Se o script disser para seguir, escreva a linha de transição e pare aí, sem começar a fase seguinte.
+
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: none
+session id: 01a191e2-6a57-7463-aff9-526f7cafb964
+--------
+user
+Siga a skill do projeto em .agents/skills/sdd-define/SKILL.md (leia o arquivo inteiro e as referências que ela manda ler) para gerar sdd/features/DEFINE_EXEMPLO.md a partir de sdd/fixtures/BRAINSTORM_EXEMPLO.md. Esta execução não é interativa: em toda pergunta de decisão, escolha a opção recomendada e continue sem esperar resposta. Ao fechar a fase, siga a subseção '### Fluxo encadeado' do Encerramento da skill. Se o script disser para seguir, escreva a linha de transição e pare aí, sem começar a fase seguinte.
+codex
+Vou ler a skill sdd-define e as referências exigidas, gerar o DEFINE com as opções recomendadas e executar o fechamento encadeado conforme solicitado.
+exec
+/bin/zsh -lc "pwd; rg --files -g 'AGENTS.md' -g 'SKILL.md' -g '*EXEMPLO*' -g 'playbook.md' -g '*config*' .agents sdd . 2>/dev/null" in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+.agents/skills/sdd-higiene-dado/SKILL.md
+sdd/fixtures/fluxo/config-autonomo.yaml
+./sdd/fixtures/fluxo/config-autonomo.yaml
+.agents/skills/sdd-checar-ambiente/SKILL.md
+sdd/fixtures/hooks/config-placeholder.json
+sdd/fixtures/BRAINSTORM_EXEMPLO.md
+./sdd/fixtures/hooks/config-placeholder.json
+./sdd/fixtures/BRAINSTORM_EXEMPLO.md
+.agents/skills/sdd-prompt-builder/SKILL.md
+sdd/fixtures/conversa/conversa-sem-nao-sei/SKILL.md
+./sdd/fixtures/conversa/conversa-sem-nao-sei/SKILL.md
+.agents/skills/sdd-define/SKILL.md
+sdd/fixtures/conversa/conversa-dois-recomendados/SKILL.md
+./sdd/fixtures/conversa/conversa-dois-recomendados/SKILL.md
+.agents/skills/sdd-governanca/SKILL.md
+sdd/fixtures/conversa/conversa-com-outro/SKILL.md
+./sdd/fixtures/conversa/conversa-com-outro/SKILL.md
+./sdd/config.example.yaml
+sdd/fixtures/conversa/conversa-controle/SKILL.md
+./sdd/fixtures/conversa/conversa-controle/SKILL.md
+./sdd/playbook.md
+./sdd/config.yaml
+.agents/skills/sdd-brainstorm/SKILL.md
+./sdd/fixtures/conversa/conversa-sem-como-falar/SKILL.md
+sdd/playbook.md
+sdd/config.yaml
+sdd/config.example.yaml
+.agents/skills/sdd-design/SKILL.md
+./sdd/fixtures/conversa/conversa-sem-secao/SKILL.md
+./sdd/fixtures/conversa/conversa-sem-recomendado/SKILL.md
+sdd/fixtures/conversa/conversa-sem-recomendado/SKILL.md
+sdd/fixtures/conversa/conversa-sem-secao/SKILL.md
+sdd/fixtures/conversa/conversa-sem-como-falar/SKILL.md
+.agents/skills/sdd-auditoria-harness/SKILL.md
+.agents/skills/sdd-release/SKILL.md
+.agents/skills/sdd-iterate/SKILL.md
+.agents/skills/sdd-handoff/SKILL.md
+.agents/skills/sdd-new-session/SKILL.md
+.agents/skills/sdd-playbook/SKILL.md
+.agents/skills/sdd-iniciar-repo/SKILL.md
+.agents/skills/sdd-build/SKILL.md
+.agents/skills/sdd-ux-review/SKILL.md
+.agents/skills/sdd-kb/SKILL.md
+
+exec
+/bin/zsh -lc 'cat .agents/skills/sdd-define/SKILL.md' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+---
+name: sdd-define
+description: Fase 1 do SDD Open — transforma um brainstorm, notas ou pedido direto em especificação com testes de aceitação em EARS, protocolo de ambiguidade (NEEDS CLARIFICATION) e um Verify Gate executável, gravando sdd/features/DEFINE_{FEATURE}.md. Use quando o usuário pedir para especificar, definir requisitos, escrever a spec, ou disser /sdd-define.
+compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --print para validar o bloco do gate.
+license: MIT
+metadata:
+  author: Roberto Dias Duarte
+  version: "2.4.0"
+  updated: "2026-10"
+  fase: "1"
+---
+
+# sdd-define — Fase 1
+
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
+`sdd-define v2.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+
+Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
+depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
+executável** — um comando com exit code, não prosa.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Ler o brainstorm | 1 e 2 |
+| 2 | Requisitos | 3 |
+| 3 | Testes de aceitação | 4 e 5 |
+| 4 | Perguntas | 6 e 7 |
+| 5 | Verify Gate | 8 |
+| 6 | Gravar | 9 e 10 |
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
+
+## Entrada
+
+`/sdd-define <BRAINSTORM_*.md | notas.md | "pedido direto">`. Vindo de um BRAINSTORM, a
+extração é direta: perguntas já respondidas, abordagem já escolhida, YAGNI já aplicado.
+
+## Processo
+
+### 1. Contexto
+
+Leia `sdd/templates/DEFINE_TEMPLATE.md`, `AGENTS.md`, a entrada, e os 3 fragmentos que regem
+esta fase: `sdd/templates/fragments/EARS.md`, `CLARIFY.md`, `VERIFY_GATE.md`. Leia `## Sempre`
+de `sdd/playbook.md`.
+
+### 2. Classificar a entrada
+
+| Tipo | Foco |
+|---|---|
+| BRAINSTORM | extrair direto; validado |
+| notas de reunião | decisões e requisitos |
+| conversa / pedido direto | problema central, usuários |
+| fontes mistas | consolidar, deduplicar |
+
+### 3. Extrair
+
+Problema · Usuários (com a dor de cada um) · Objetivos (MUST/SHOULD/COULD) · Critérios de
+sucesso (com números) · Testes de aceitação · Restrições · Fora de escopo.
+
+**KB Domains** (Technical Context): só nomes de `ls sdd/kb/` (as pastas; o `_index.yaml` não conta) ou
+`nenhum`, conferidos de novo a cada Define. Sem `sdd/kb/`, escreva `nenhum` e diga ao aluno, em 1 frase,
+que a `sdd-kb` cria uma base. Ao mostrar um domínio pela 1ª vez, ponha ao lado o `name:` dele no
+`sdd/kb/_index.yaml`.
+
+### 4. Testes de aceitação em EARS (obrigatório)
+
+Reescreva cada AT na gramática de `fragments/EARS.md`: keywords em inglês (**When / While /
+If–Then / Where / shall / shall continue to**), corpo na língua do projeto. **Recuse** o DEFINE
+(não grave) se:
+
+- algum AT está fora dos padrões (sem keyword);
+- há gatilho indesejado plausível (provedor fora, permissão negada, fila cheia) e **nenhum**
+  AT If/Then;
+- é bugfix e não há ≥1 **shall continue to**;
+- há adjetivo sem número ("rápido" → "em <2 s");
+- While / If–Then / Where não foram **considerados** (AT presente ou N.A. em 1 linha);
+- há mais de ~10 ATs;
+- há AT de UX visual (isso é gate `manual-ux`, fora do EARS);
+- algum AT está sem `kind` na coluna Gate ou sem cobertura no `cmd` do Verify Gate.
+
+### 5. Clarity Score
+
+Pontue Problema · Usuários · Objetivos · Sucesso · Escopo de 0 a 3. **Mínimo 12/15.** Abaixo
+disso, pergunte (múltipla escolha, recomendada primeiro) até fechar as lacunas.
+
+### 6. Clarify — marcar, nunca chutar
+
+Protocolo em `fragments/CLARIFY.md`. Ambiguidade real vira marcador **no lugar exato da
+dúvida**, na forma canônica (colchete + NEEDS CLARIFICATION + dois-pontos + pergunta). Varra as
+9 categorias (escopo, dados, UX, NFRs, integrações, edge cases, restrições, terminologia,
+sinal de conclusão). Resolva por rodadas de ≤5 perguntas; a resposta entra **no corpo** da spec
+e no log `## Clarifications / ### Session YYYY-MM-DD`. Enquanto houver marcador ativo,
+`sdd/bin/verify-gate.sh` devolve exit **5** e nenhuma fase avança.
+
+### 7. LLM Prompts (flag binário)
+
+A feature cria ou edita prompt que roda em produção (system prompt, classificador, passe de
+pipeline)? Sinais: nomes de provedor, "prompt", "embeddings", "RAG", paths `**/prompts/**`,
+chamadas `messages.create`/`chat.completions`. Marque `true`/`false` em Technical Context com
+justificativa. Nomes de provedor citados como **plataforma-alvo** não contam. Pontue os sinais:
+
+| Sinal | Exemplos | Peso |
+|---|---|---|
+| forte | provedor ou modelo nomeado como dependência, `messages.create`/`chat.completions`, `**/prompts/**`, "system prompt" | 1 forte → `true` |
+| fraco | "prompt", "RAG", "embeddings", "classificar", "resumir", "chatbot" | 2 fracos → `true`; 1 fraco → `true` com a nota "conservador" |
+| loop | agente, "até convergir", "a cada resposta", várias chamadas encadeadas | anote "candidato a loop" na justificativa |
+
+### 8. Verify Gate (obrigatório — recuse DEFINE sem gate)
+
+Derive o gate dos ATs e critérios de sucesso, seguindo `fragments/VERIFY_GATE.md`:
+
+| Natureza do aceite | `kind` | `cmd` típico |
+|---|---|---|
+| lógica testável | `test` | `{{TEST_CMD}} -- <arquivo>.test` |
+| rota/HTTP responde | `smoke` | `curl -sS -o /dev/null -w '%{http_code}' <url>` |
+| qualidade com limiar | `eval` | limiar embutido no comando |
+| tipos/compilação | `typecheck` | `{{TYPECHECK_CMD}}` |
+| UX pura | `manual-ux` | `N/A (manual-ux)` + `manual_fallback` = checklist |
+
+Os slots `{{TEST_CMD}}`/`{{TYPECHECK_CMD}}` vêm de `sdd/config.yaml`. Slot vazio: pergunte o
+comando real; nunca adivinhe. Valide o bloco:
+
+```bash
+sdd/bin/verify-gate.sh --print sdd/features/DEFINE_{FEATURE}.md   # lista kind/cmd/pass_when sem erro 64
+```
+
+Anti-padrões a recusar: gate de prosa; `kind: test` com `cmd` vazio; feature de UX marcada
+`test` só para "passar técnico".
+
+**Gate composto** (feature com vários ATs automatizáveis): escreva um script
+`sdd/bin/gates/gate-{feature}.sh` com **um bloco por AT**, imprimindo `AT-00N ✅/❌`, e aponte
+o `cmd` para ele. Toda asserção precisa de **baseline vermelho**: rode contra a árvore antes da
+mudança; se já passa, ela não prova nada.
+
+### 9. Gravar
+
+`sdd/features/DEFINE_{FEATURE}.md` com o template preenchido, Status `Ready for Design` (ou
+`Ready for UX Review` se há interface).
+
+### 10. Conferir o KB Domains
+
+`python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{FEATURE}.md` sobre o arquivo gravado: o KB Domains
+só cita pastas de `sdd/kb/`, ou diz `nenhum`. Exit 0 segue; exit 1 ⇒ corrija o campo e rode de novo antes
+de entregar. Os testes que ele listar (`<domínio>: <REGRA> → <teste>`, das regras de uma base normativa)
+entram no `cmd` do Verify Gate; se algum não entrar, registre o motivo no DEFINE e rode
+`verify-gate.sh --print` de novo.
+
+## Quality Gate
+
+```text
+[ ] Problema claro e específico · ≥1 persona · critérios de sucesso com números
+[ ] ATs em EARS: keyword em cada um · If/Then presente se há gatilho indesejado · While/If-Then/Where considerados · ≤~10 · zero UX visual · bugfix com shall continue to
+[ ] Rastreabilidade AT→gate: todo AT tem kind e está coberto pelo cmd do Verify Gate
+[ ] Zero marcadores ativos (verify-gate.sh não devolve 5)
+[ ] Fora de escopo explícito · Clarity ≥12/15 · LLM Prompts true/false com nota
+[ ] ## Verify Gate com kind+cmd+pass_when executáveis (ou manual-ux com manual_fallback)
+[ ] verify-gate.sh --print lista o bloco sem erro 64
+[ ] kb-dominios.py sai 0 (KB Domains de ls sdd/kb/ ou nenhum)
+[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
+```
+
+## Por que cada regra existe
+
+- **O aceite é um comando com exit** — prosa ("o desconto deve funcionar") cada um lê do seu jeito; um
+  comando dá a mesma resposta para quem construiu, para quem revisa e para a release.
+- **EARS, com o padrão indesejado (If–Then)** — a gramática fixa obriga a nomear o gatilho, e o If–Then
+  obriga a nomear a falha antes de construir, quando decidir o que fazer com ela ainda é barato.
+- **Adjetivo sem número é recusado** — "rápido" passa em qualquer teste e não reprova nenhum; "em menos
+  de 2 s" pode falhar, e só o que pode falhar prova alguma coisa.
+- **A dúvida vira marcador no lugar exato, nunca suposição** — a suposição silenciosa vira código; o
+  marcador faz o gate devolver 5 e segura todas as fases até alguém responder.
+- **Cerca de 10 ATs, no máximo** — acima disso a spec está descrevendo implementação ou juntando duas
+  features, e o gate fica caro demais para rodar a cada mudança.
+- **KB Domains só de `ls sdd/kb/`, ou `nenhum`** — um domínio inventado manda o Design procurar padrões
+  onde não há nada; o `kb-dominios.py` reprova o nome que não tem pasta.
+- **O gate composto nasce vermelho** — uma asserção que já passa antes da mudança não prova a mudança;
+  rodá-la contra a árvore antiga mostra que ela avalia alguma coisa.
+
+## Encerramento (obrigatório)
+
+Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é
+`/sdd-define`. Os 4 blocos na ordem: micro-kanban · Onde estamos · O que precisa de você (só se
+N≥1) · O que vem depois, com ⚠️ inline.
+
+**Próximo passo:** `/sdd-governanca sdd/features/DEFINE_{FEATURE}.md` se o DEFINE trata dinheiro,
+saldo, lançamento, nota fiscal, tributo, folha ou dado pessoal; senão
+`/sdd-ux-review sdd/features/DEFINE_{FEATURE}.md` se há interface; senão
+`/sdd-design sdd/features/DEFINE_{FEATURE}.md` (registre no DEFINE por que o UX review foi
+pulado — kanban marca ➖ só com decisão registrada).
+
+### Fluxo encadeado
+
+Ao fechar, rode `bash sdd/bin/sdd-fluxo.sh seguir <fase> <DEFINE> <próxima>` só quando a linha
+"Nesta skill" abaixo nomeia o `seguir` (contrato em `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+Exit 0: escreva a linha de transição que o script imprimiu, o recibo **Decidi sozinho** (se houver) e
+chame a próxima fase nesta sessão. Exit 1 com `encadeamento desligado`: só o Próximo passo acima, sem
+repassar a linha. Exit 1 por outro motivo: diga o motivo em 1 frase e mostre o Próximo passo. Exit 64:
+repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o encadeamento ligado
+vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam perguntadas. "Pare"
+desliga nesta chamada (`--parar`).
+
+Nesta skill: `seguir define sdd/features/DEFINE_{FEATURE}.md <próxima>`, com a próxima do Próximo
+passo acima (governanca, ux-review ou design).
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open
+
+exec
+/bin/zsh -lc 'cat .agents/skills/sdd-define/references/como-falar.md sdd/templates/DEFINE_TEMPLATE.md sdd/templates/fragments/EARS.md sdd/templates/fragments/CLARIFY.md sdd/templates/fragments/VERIFY_GATE.md sdd/templates/fragments/PERGUNTA_DECISAO.md sdd/templates/fragments/RESUMO_ETAPA.md sdd/templates/fragments/FLUXO_ENCADEADO.md' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+# Como falar com o aluno — sdd-define
+
+Quem chega ao Define traz um brainstorm e nenhum vocabulário de requisitos. A seção "Como falar com o
+aluno" do `SKILL.md` dá o formato; este arquivo dá as palavras e um exemplo inteiro.
+
+## Glossário (explique na primeira vez em que o termo aparecer)
+
+- requisito — "uma frase que diz o que o sistema precisa fazer, de um jeito que dê para conferir depois";
+- MUST / SHOULD / COULD — "o que é obrigatório, o que é importante mas pode esperar, e o que seria bom
+  ter";
+- critério de sucesso — "como a gente vai saber que deu certo: um número ou algo que dá para observar";
+- teste de aceitação — "uma frase do tipo 'quando acontece X, o sistema faz Y', que vira a prova de que
+  o requisito foi atendido";
+- EARS — "o jeito padronizado de escrever essas frases (quando…, se…, enquanto…); as palavras ficam em
+  inglês porque é uma convenção";
+- Clarity Score — "uma nota de 0 a 15 que mede se o documento está claro o bastante para seguir";
+- marcador de dúvida — "uma marca no texto onde ainda falta uma resposta sua; com ela, nada segue";
+- Verify Gate — "a conferência final: um comando que roda e diz passou ou não passou";
+- exit 0 / 2 / 3 / 4 / 5 / 64 — "o código com que a conferência termina: 0 passou, 2 falhou, 3 não deu
+  para saber, 4 precisa da sua assinatura, 5 tem dúvida aberta, 64 o documento está mal escrito";
+- LLM — "um modelo de linguagem, como o que você está usando agora";
+- DEFINE — "o documento desta fase; a próxima (Design) parte dele".
+
+Não fale em stakeholder, NFR, edge case ou data model sem traduzir: "quem é afetado", "exigência de
+velocidade ou segurança", "caso raro", "que informações o sistema guarda".
+
+## Status desta skill, preenchido
+
+`Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar`
+
+## Exemplo — resposta completa, com decisão (etapa 4 — Perguntas)
+
+Situação: o DEFINE da conferência de notas fiscais tem 6 testes de aceitação; falta decidir o que fazer
+com nota que aparece duas vezes.
+
+**Status** — `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar`
+(no Status: "Verify Gate" é a conferência final, um comando que diz passou ou não passou.)
+
+**O que foi feito** — Escrevi os 4 objetivos e os 6 testes de aceitação, frases do tipo "quando chega
+uma nota, o sistema marca a linha da planilha". Ficou 1 ponto sem resposta, marcado no texto.
+
+**Agora: etapa 4 — Perguntas** — Uma nota pode chegar duas vezes (o fornecedor reenvia o e-mail). Sem
+essa resposta, a conferência final não tem como saber o que é certo.
+
+**Sua decisão** — [D2 · muda o produto] **O que fazer com uma nota que chega duas vezes?**
+- **marcar uma vez e avisar** (recomendado) — a linha é marcada só na 1ª, e a 2ª vai para uma lista de
+  repetidas: nas amostras, 2 de 40 notas vieram repetidas.
+- **ignorar a repetida** — marca uma vez e não avisa; mais simples, mas você não fica sabendo.
+- **marcar as duas** — a planilha fica com a linha duplicada.
+- **não sei** — mostro o que cada opção faz com as 2 notas repetidas da amostra.
+
+**Próximo passo** — Com a sua resposta, escrevo a conferência final (o Verify Gate).
+
+Formato completo de pergunta e de parada: `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+# DEFINE: {Feature Name}
+
+> One-sentence description of what we're building
+
+## Metadata
+
+| Attribute | Value |
+|-----------|-------|
+| **Feature** | {FEATURE_NAME} |
+| **Date** | {YYYY-MM-DD} |
+| **Author** | {author} |
+| **Status** | {Draft / In Progress / Needs Clarification / Ready for Design} |
+| **Clarity Score** | {X}/15 |
+
+---
+
+## Problem Statement
+
+{1-2 sentences describing the pain point we're solving. Be specific about who has the problem and what the impact is.}
+
+---
+
+## Target Users
+
+| User | Role | Pain Point |
+|------|------|------------|
+| {User 1} | {Their role} | {What frustrates them} |
+| {User 2} | {Their role} | {What frustrates them} |
+
+---
+
+## Goals
+
+What success looks like (prioritized):
+
+| Priority | Goal |
+|----------|------|
+| **MUST** | {Primary goal - non-negotiable for MVP} |
+| **MUST** | {Another critical goal} |
+| **SHOULD** | {Important but can defer if timeline tight} |
+| **COULD** | {Nice-to-have if time permits} |
+
+**Priority Guide:**
+- **MUST** = MVP fails without this
+- **SHOULD** = Important, but workaround exists
+- **COULD** = Nice-to-have, cut first if needed
+
+---
+
+## Success Criteria
+
+Measurable outcomes (must include numbers):
+
+- [ ] {Metric 1: e.g., "Handle 1000 requests per minute"}
+- [ ] {Metric 2: e.g., "Achieve 99.9% uptime"}
+- [ ] {Metric 3: e.g., "Response time under 200ms"}
+
+---
+
+## Acceptance Tests
+
+> Gramática **EARS** obrigatória em DEFINE novo/retocado (keywords em inglês, corpo em PT-BR) —
+> padrões, exemplos e mapa padrão→`kind` de gate em
+> [`fragments/EARS.md`](fragments/EARS.md). Regras que o `/define` recusa se faltarem:
+> ≥1 AT **If/Then** (unwanted) quando houver gatilho indesejado plausível; padrões
+> **While/If-Then/Where** considerados (AT presente ou N.A. justificado — estado não lido ·
+> erro silencioso · flag de config são as 3 classes que mais mordem); em **bugfix**,
+> ≥1 cláusula **shall continue to** (não-regressão). Máx ~10 ATs. Cada AT mapeia no
+> `## Verify Gate` pela coluna `Gate (kind)`. ⛔ UX visual NÃO vira AT EARS (é `manual-ux`).
+
+| ID | Padrão | Critério (EARS) | Gate (`kind`) |
+|----|--------|-----------------|---------------|
+| AT-001 | Event-driven | **When** {trigger}, the system **shall** {response} | test |
+| AT-002 | Unwanted | **If** {gatilho indesejado}, **then** the system **shall** {tratamento} | test/smoke negativo |
+| AT-003 | State-driven | **While** {estado}, the system **shall** {response} | test |
+| AT-00N | Non-regression (bugfix) | The system **shall continue to** {comportamento existente} | test |
+
+---
+
+## Clarifications
+
+> **Regra de honestidade:** ambiguidade não vira suposição — vira marcador ativo no lugar
+> exato da dúvida, na forma canônica abaixo (protocolo completo, 9 categorias e convenção de
+> menção em [`fragments/CLARIFY.md`](fragments/CLARIFY.md)):
+>
+> ```
+> [NEEDS CLARIFICATION: <pergunta específica>]
+> ```
+>
+> Enquanto houver marcador ativo, `sdd/bin/verify-gate.sh` devolve **exit 5** e
+> `/build` e a fase Release param. Resolver pelo protocolo de `fragments/CLARIFY.md` (≤5 por rodada),
+> integrar a resposta NO CORPO da spec e logar abaixo.
+
+### Session {YYYY-MM-DD}
+
+- [x] ({categoria}) {pergunta} → {resposta}; integrado em {seção}
+
+---
+
+## Verify Gate
+
+> **Gate executável de aceite (pass/fail).** `/build` (Step 5) e a fase Release (Fase 0a) rodam isto via
+> `sdd/bin/verify-gate.sh` e tratam como **BLOQUEANTE** — não é prosa, é comando.
+> Habilitador da F1 (loop engineering): o critério de parada de qualquer loop.
+> Taxonomia completa: [`fragments/VERIFY_GATE.md`](fragments/VERIFY_GATE.md).
+
+```yaml
+verify_gate:
+  kind: test
+  cmd: "npm test -- src/{modulo}.test.ts"
+  pass_when: "exit 0"
+  threshold: "—"
+  manual_fallback: "—"
+```
+
+**Preencher exatamente um bloco** (substitua o exemplo acima pelo gate real da feature):
+
+- `kind`: `test` | `smoke` | `eval` | `typecheck` | `manual-ux`
+- `cmd`: comando executável; em `manual-ux` use `"N/A (manual-ux)"`
+- `pass_when`: `exit 0` (default) | `exit N` | `contains: TEXTO`
+- `threshold`: só `eval` (ex.: `"recall >= 0.80"` — limiar embutido no `cmd`)
+- `manual_fallback`: só `manual-ux` — checklist humano assinado no BUILD_REPORT
+
+**Regras:** `manual-ux` é gate HUMANO (não finge automação). Smoke 403 do WAF×runner =
+inconclusivo, não vermelho (rode na origem via SSH). Nenhum gate cruza o a fase Release.
+
+Rodar localmente: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{FEATURE_NAME}.md`
+
+---
+
+## Out of Scope
+
+Explicitly NOT included in this feature:
+
+- {Item 1: What we're NOT doing}
+- {Item 2: What's deferred to future}
+- {Item 3: What's explicitly excluded}
+
+---
+
+## Constraints
+
+| Type | Constraint | Impact |
+|------|------------|--------|
+| Technical | {e.g., "Must use existing database schema"} | {How this affects design} |
+| Timeline | {e.g., "Must ship by Q1"} | {How this affects scope} |
+| Resource | {e.g., "No additional infrastructure budget"} | {How this affects approach} |
+
+---
+
+## Technical Context
+
+> Essential context for Design phase - prevents misplaced files and missed infrastructure needs.
+
+| Aspect | Value | Notes |
+|--------|-------|-------|
+| **Deployment Location** | {src/ \| functions/ \| gen/ \| deploy/ \| custom path} | {Why this location} |
+| **KB Domains** | {bases de conhecimento do projeto a consultar (nomes de pasta em `sdd/kb/`, de `ls sdd/kb/`), ou `nenhum` explícito} | {Which patterns to consult} |
+| **IaC Impact** | {New resources \| Modify existing \| None \| TBD} | {Terraform/Terragrunt changes needed} |
+| **LLM Prompts** | {true \| false} | {Set true se a feature cria/edita prompts runtime — system prompts, passes de pipeline, classificadores. Quando true, a fase Design inventaria cada prompt e a fase Build trata cada um como entregável com contrato próprio.} |
+
+**Why This Matters:**
+
+- **Location** → Design phase uses correct project structure, prevents misplaced files
+- **KB Domains** → a fase Design puxa os padrões certos da base de conhecimento do projeto
+- **IaC Impact** → Triggers infrastructure planning, avoids "works locally" failures
+- **LLM Prompts** → Gate condicional para a etapa de engenharia de prompts; evita overhead em features sem LLM
+
+**LLM Prompts — gatilhos para marcar `true`:**
+
+A feature provavelmente envolve prompts runtime se aparecer qualquer um dos sinais abaixo (literal no texto da feature ou inferido do escopo):
+
+- Palavras: `LLM`, `GPT`, `Claude`, `Anthropic`, `OpenAI`, `Gemini`, `Vercel AI`
+- Conceitos: `system prompt`, `user prompt`, `prompt`, `embeddings`, `RAG`, `vector search`, `completion`, `classificador`, `sintetizador`, `pass de pipeline`
+- Paths: `**/prompts/**`, arquivos de template de prompt, código que chama `messages.create` / `chat.completions`
+- Atores do produto que conversam com o usuário ou classificam texto (chatbot, assistente, indexador)
+
+Em dúvida, marcar `true` e justificar em **Notes**. Reverter para `false` durante a fase Design só se a heurística confirmar que nenhum arquivo do manifest contém prompt runtime.
+
+---
+
+## Assumptions
+
+Assumptions that if wrong could invalidate the design:
+
+| ID | Assumption | If Wrong, Impact | Validated? |
+|----|------------|------------------|------------|
+| A-001 | {e.g., "Database can handle expected load"} | {Would need caching layer} | [ ] |
+| A-002 | {e.g., "Request volume stays under 1000/hour"} | {Would need rate limiting} | [ ] |
+| A-003 | {e.g., "Users have modern browsers"} | {Would need polyfills for legacy support} | [ ] |
+
+**Note:** Validate critical assumptions before DESIGN phase. Unvalidated assumptions become risks.
+
+---
+
+## Clarity Score Breakdown
+
+| Element | Score (0-3) | Notes |
+|---------|-------------|-------|
+| Problem | {0-3} | {Why this score} |
+| Users | {0-3} | {Why this score} |
+| Goals | {0-3} | {Why this score} |
+| Success | {0-3} | {Why this score} |
+| Scope | {0-3} | {Why this score} |
+| **Total** | **{X}/15** | |
+
+**Scoring Guide:**
+- 0 = Missing entirely
+- 1 = Vague or incomplete
+- 2 = Clear but missing details
+- 3 = Crystal clear, actionable
+
+**Minimum to proceed: 12/15**
+
+---
+
+## Open Questions
+
+{List any remaining questions that need answers before Design phase. If none, state "None - ready for Design."}
+
+---
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---------|------|--------|---------|
+| 1.0 | {YYYY-MM-DD} | define-agent | Initial version |
+
+---
+
+## Next Step
+
+**Ready for:** `/sdd-design sdd/features/DEFINE_{FEATURE_NAME}.md`
+# Fragmento — EARS (gramática dos Acceptance Tests)
+
+> Reusável. Lido pela `sdd-define` (passo 4).
+> EARS = Easy Approach to Requirements Syntax (Alistair Mavin, Rolls-Royce 2009).
+> **Por quê:** cada padrão mapeia mecanicamente num tipo de teste do Verify Gate, e o
+> padrão *Unwanted* obriga a enumerar o comportamento indesejado ANTES do build — a
+> classe de bug que as landmines do playbook (`sdd/playbook.md`) mostram que mais escapa (provedor que responde "enviado" sem entregar,
+> knob ausente, clamp de régua…).
+
+## Regras
+
+1. **Keywords em inglês** (When/While/If-Then/Where/shall — âncora grepável); corpo em PT-BR.
+2. Todo AT usa **exatamente um** padrão da tabela e declara **um** comportamento observável.
+3. **Bugfix ⇒ ≥1 cláusula "shall continue to"** (não-regressão): o que NÃO pode mudar,
+   escrito como requisito, vira entrada de regressão no gate.
+4. Adjetivo sem número não é critério ("rápido" → "em <2s").
+5. **Máx ~10 ATs por DEFINE** — acima disso o gate vira cerimônia; agrupar por risco ou
+   cortar o que não é MUST.
+6. **Considerar OBRIGATORIAMENTE os padrões State (While), Unwanted (If/Then) e Optional
+   (Where)** — são as 3 classes que mais mordem nesta plataforma: estado não lido, erro
+   silencioso (provedor que responde "enviado" sem entregar), flag de config (ex.: `ehMatriz`). "Considerar" = para cada um dos
+   3, ou existe ≥1 AT ou o DEFINE registra em 1 linha por que o padrão não se aplica.
+7. **⛔ EARS não cobre UX visual** (estética, contraste, craft percebido) — isso é gate
+   `manual-ux`/rubrica, nunca AT EARS.
+8. **Rastreabilidade AT→gate:** todo AT declara na coluna `Gate (kind)` o tipo de teste que
+   o cobre, e o `cmd` do `## Verify Gate` deve exercitar cada AT declarado — AT sem
+   cobertura no gate = DEFINE incompleto.
+
+## Os 5 padrões + não-regressão
+
+| Padrão | Forma | Exemplo | Gate (`kind`) |
+|---|---|---|---|
+| **Ubiquitous** | The ⟨system⟩ **shall** ⟨response⟩ | O sistema shall exibir o menu principal em toda página autenticada | `test`/`typecheck` |
+| **Event-driven** | **When** ⟨trigger⟩, the ⟨system⟩ **shall** ⟨response⟩ | **When** o cliente envia a resposta, the system **shall** gravar `turno='atendente'` | `test` (dispara evento, asserta estado) |
+| **State-driven** | **While** ⟨state⟩, the ⟨system⟩ **shall** ⟨response⟩ | **While** o pedido estiver arquivado, the system **shall** ocultar o botão de edição | `test` (fixture de estado) |
+| **Unwanted behaviour** | **If** ⟨trigger indesejado⟩, **then** the ⟨system⟩ **shall** ⟨response⟩ | **If** o provedor de mensagens estiver desconectado, **then** the system **shall** marcar a mensagem como não-entregue | `smoke`/`test` **negativo** (provocar pelo caminho real, nunca só o caminho feliz) |
+| **Optional feature** | **Where** ⟨feature presente⟩, the ⟨system⟩ **shall** ⟨response⟩ | **Where** o kill-switch estiver ligado, the system **shall** suprimir o envio | `test` (matriz de flag) |
+| **Non-regression** (bugfix) | The ⟨system⟩ **shall continue to** ⟨comportamento existente⟩ | The system **shall continue to** enviar o relatório semanal na segunda às 08h00 | `test` (entrada de regressão) |
+
+Combinações (Complex) são permitidas: `While ⟨estado⟩, when ⟨trigger⟩, the system shall …`.
+
+## Mapa padrão → teste (como derivar o Verify Gate)
+
+- **When** → o teste dispara o evento e asserta a resposta.
+- **If/Then** → teste **negativo**: provoca o gatilho indesejado pelo caminho real e asserta o
+  tratamento (nunca só o caminho feliz).
+- **While** → o teste monta a fixture do estado e asserta o comportamento sob ele.
+- **Where** → o teste roda com a feature ligada E desligada (matriz).
+- **shall continue to** → vira caso de regressão explícito no gate do fix.
+
+## Checklist de recusa (o `/define` aplica em DEFINE novo/retocado)
+
+- [ ] Todo AT usa um padrão da tabela (keyword presente)
+- [ ] ≥1 AT **Unwanted** quando a feature tem gatilho indesejado plausível (provider fora,
+      linha ausente, permissão negada, fila cheia)
+- [ ] Padrões **While / If-Then / Where** considerados: AT presente ou N.A. justificado
+      em 1 linha (as 3 classes que mais mordem: estado · erro silencioso · flag de config)
+- [ ] Bugfix: ≥1 **shall continue to**
+- [ ] Zero adjetivo sem número
+- [ ] ≤ ~10 ATs no total
+- [ ] Nenhum AT de UX visual (estética/craft → `manual-ux`, fora do EARS)
+- [ ] Todo AT tem `kind` na coluna Gate e é coberto pelo `cmd` do `## Verify Gate`
+
+> **Limite deste slice (v5.0):** a conformidade EARS é disciplina de prompt + este checklist —
+> não há linter mecânico de ATs. Linter determinístico + rastreabilidade AT-ID→assert do gate
+> composto são escopo da **v5.1** (ver PESQUISA_FRAMEWORKS_SDD_2026-08-15).
+# Fragmento — Clarify (protocolo do token de ambiguidade)
+
+> Reusável. Lido pela `sdd-define` (passo 6). **Regra de honestidade:** diante de ambiguidade,
+> o agente **marca, nunca chuta** — suposição silenciosa é a classe de erro mais cara do
+> funil (só aparece no smoke ou em prod).
+
+## O token
+
+Forma ativa canônica (a ÚNICA que o `verify-gate.sh` detecta, e só fora de code fences):
+
+```
+[NEEDS CLARIFICATION: <pergunta específica>]
+```
+
+- Vai **no lugar exato da ambiguidade** (Problem, ATs, Constraints — qualquer seção).
+- Enquanto houver token ativo, `sdd/bin/verify-gate.sh` devolve **exit 5**
+  (`clarification-pending`): `/build` e a fase Release **param e voltam ao `/define`**.
+  Não é gate vermelho de build — **nunca** aciona iteração de DESIGN.
+- `--print` é isento (uso de autoria durante a redação do DEFINE).
+
+### Convenção de menção (anti-falso-positivo)
+
+Toda referência **documental** ao token — em template, fragmento, exemplo ou histórico —
+vai **dentro de code fence** (como acima) ou **sem os colchetes** (ex.: "o protocolo NEEDS
+CLARIFICATION…"). A forma canônica em prosa aberta = marcador ativo, e bloqueia.
+
+## As 9 categorias (varrer TODAS antes de declarar o DEFINE pronto)
+
+| # | Categoria | Pergunta-guia |
+|---|---|---|
+| 1 | Escopo | O que está dentro/fora? Qual slice é este? |
+| 2 | Modelo de dados | Que entidades/colunas/estados? Quem é o dono da tabela? |
+| 3 | Fluxo UX | O que o usuário vê em cada estado (vazio, erro, sucesso)? |
+| 4 | NFRs | Latência, volume, custo de token, janela de cron? |
+| 5 | Integrações | provedor de mensagens, videoconferência, e-mail, servidores MCP — qual contrato/limite? |
+| 6 | Edge cases | Gatilho indesejado, linha ausente, permissão negada, fila cheia? |
+| 7 | Restrições | O que não pode mudar? Precedente/landmine aplicável? |
+| 8 | Terminologia | Termo do domínio com 2 leituras (cliente×conta, pedido×ordem)? |
+| 9 | Sinal de conclusão | Como sabemos que acabou? Qual o comando pass/fail? |
+
+Para cada categoria: **Clear / Partial / Missing**. Partial e Missing geram token.
+
+## Protocolo de resolução
+
+1. **≤5 perguntas por rodada**, pela ferramenta de pergunta do seu agente ou em texto — múltipla
+   escolha (2–4 opções), **opção recomendada primeiro** com "(recomendado)" e a saída "não sei"
+   (formato em `sdd/templates/fragments/PERGUNTA_DECISAO.md`). Mais de 5 pendências? Prioridade:
+   o que muda arquitetura > escopo > o resto; nova rodada depois.
+2. **Resposta integra NO CORPO da spec**: substituir o texto ambíguo (e o token) pela decisão —
+   nunca deixar a resposta só em apêndice com o texto contraditório intacto.
+3. **Registrar no log** `## Clarifications` do DEFINE:
+   ```markdown
+   ## Clarifications
+   ### Session 2026-08-15
+   - [x] (6-edge cases) Fila cheia descarta ou enfileira? → enfileira com TTL 24h; integrado em ATs (AT-004)
+   ```
+   (Formato: `- [x] (categoria) pergunta → resposta; integrado em <seção>`. Sem a forma
+   canônica do token — convenção de menção.)
+4. **Gate mecânico:** DEFINE pronto = **zero tokens ativos**. Conferir: o bloco de gate roda
+   `verify-gate.sh` (exit 5 enquanto restar token).
+# Fragmento — Verify Gate (taxonomia dos gates executáveis)
+
+> Reusável. Anexado conceitualmente ao DEFINE (bloco `## Verify Gate`) e lido por
+> `/build`, a fase Release e `sdd/bin/verify-gate.sh`. É o habilitador da F1 do SDD v2
+> (loop engineering / Boris Cherny): **o critério de aceite vira comando, não prosa.**
+
+## Por que existe
+
+No SDD v1 o aceite morava em prosa (`Acceptance Tests`, `Success Criteria`) que ninguém
+executava de forma determinística. Sem um gate executável, autonomia (F3 Ralph, F4 driver)
+vira **lixo em escala** — "o loop roda, mas contra o quê ele para?". O Verify Gate é esse
+critério de parada: um comando `pass/fail` que qualquer loop (humano ou agente) roda.
+
+## O bloco (vai no DEFINE)
+
+````markdown
+## Verify Gate
+
+> Gate executável de aceite (pass/fail). `/build` e a fase Release rodam isto — é **bloqueante**.
+
+```yaml
+verify_gate:
+  kind: test
+  cmd: "npm test -- src/x.test.ts"
+  pass_when: "exit 0"
+  threshold: "—"
+  manual_fallback: "—"
+```
+````
+
+Rodar: `sdd/bin/verify-gate.sh sdd/features/DEFINE_<FEATURE>.md`
+
+## Campos
+
+| Campo | Obrigatório | Significado |
+|---|---|---|
+| `kind` | sempre | categoria do gate (tabela abaixo) |
+| `cmd` | exceto `manual-ux` | comando executável; em `manual-ux` use `"N/A (manual-ux)"` |
+| `pass_when` | sempre | critério objetivo: `exit 0` (default) · `exit N` · `contains: TEXTO` |
+| `threshold` | só `eval` | meta numérica embutida no `cmd` (ex.: `recall >= 0.80`) — informativa aqui |
+| `manual_fallback` | só `manual-ux` | checklist humano a percorrer + assinar no BUILD_REPORT |
+
+> **Sem inline comments nas linhas de valor** do bloco machine-read — o parser pega tudo
+> após o primeiro `:`. Comentários ficam fora do fence.
+
+## Taxonomia (`kind`)
+
+| kind | Quando | `cmd` típico | `pass_when` |
+|---|---|---|---|
+| `test` | lógica pura testável | `npm test -- <arquivo>.test.ts` · `pytest tests/x -q` | `exit 0` |
+| `smoke` | edge/HTTP responde o esperado | `curl -sS -o /dev/null -w '%{http_code}' <url>` | `contains: 401` |
+| `eval` | qualidade com limiar (avaliação de saída de LLM etc.) | `scripts/eval/run.sh --threshold 0.80` | `exit 0` (limiar no cmd) |
+| `typecheck` | tipos/compilação | `tsc --noEmit` · `mypy .` | `exit 0` |
+| `manual-ux` | UX pura (mobile/PWA/estética) | `N/A (manual-ux)` | gate **humano** (`manual_fallback`) |
+
+### Derivar o `kind` do padrão EARS do AT (ver `fragments/EARS.md`)
+
+| Padrão EARS do AT | `kind` natural |
+|---|---|
+| **When** (event-driven) | `test` — dispara o evento, asserta a resposta |
+| **If/Then** (unwanted) | `test`/`smoke` **negativo** — provoca o gatilho pelo caminho real |
+| **While** (state-driven) | `test` com fixture do estado |
+| **Where** (optional) | `test` em matriz (flag on/off) |
+| **shall continue to** (non-regression, bugfix) | `test` — caso de regressão explícito |
+
+### Contrato de exit do `sdd/bin/verify-gate.sh`
+
+| exit | Significado | Efeito em `/build` e a fase Release |
+|---|---|---|
+| `0` | 🟢 verde (passou) | segue |
+| `2` | 🔴 vermelho (falhou) | **ABORTA** |
+| `3` | inconclusivo (tool ausente OU ruído 403 WAF×runner) | caller decide; não conta vermelho |
+| `4` | `manual-ux`: exige assinatura humana | `/build` mostra checklist · a fase Release exige recibo |
+| `5` | clarification-pending: marcador ativo de ambiguidade no DEFINE (forma canônica fora de fence — ver `fragments/CLARIFY.md`) | **PARAR e voltar ao `/define`**. NÃO é vermelho de build: nem o build nem loop algum itera o DESIGN por causa dele |
+| `64` | bloco ausente/malformado | DEFINE inválido (sem gate) |
+
+## Regras de ouro
+
+1. **`manual-ux` NÃO finge automação.** É gate humano explícito (anti "passa técnico, é lixo
+   estético"). `cmd: "N/A (manual-ux)"`; o `manual_fallback` é um checklist assinado no BUILD_REPORT.
+2. **Ruído de infra ≠ regressão.** Smoke que recebe 403 do WAF×IP-do-runner é inconclusivo
+   (exit 3), nunca vermelho. Prefira smoke rodando **na origem via SSH** (lição do fix do changelog).
+3. **Nenhum gate cruza o a fase Release.** O gate é pré-condição do deploy, não o deploy.
+4. **Tool ausente = inconclusivo (3), não vermelho.** Não trava a entrega por falta de uma ferramenta.
+5. **`eval` embute o limiar no `cmd`** (o runner devolve exit≠0 se ficar abaixo) — `threshold`
+   no bloco é documentação para humanos.
+
+## Exemplos prontos (1 de cada kind)
+
+```yaml
+# test — módulo com teste ao lado
+verify_gate: { kind: test, cmd: "npm test -- src/pricing.test.ts", pass_when: "exit 0", threshold: "—", manual_fallback: "—" }
+```
+```yaml
+# smoke — edge protegida devolve 401 sem JWT
+verify_gate: { kind: smoke, cmd: "curl -sS -o /dev/null -w '%{http_code}' https://api.exemplo.com/v1/relatorios", pass_when: "contains: 401", threshold: "—", manual_fallback: "—" }
+```
+```yaml
+# manual-ux — app mobile, gate humano
+verify_gate: { kind: manual-ux, cmd: "N/A (manual-ux)", pass_when: "checklist assinado", threshold: "—", manual_fallback: "smoke no celular real: (1) a tela inicial abre em <2s; (2) as listas rolam; (3) ▶ Continuar funciona; (4) o card de destaque aparece; (5) ← Voltar volta." }
+```
+
+> Nota: o bloco pode ser multi-linha (legível) ou inline `{ ... }` (compacto) — o parser
+> lê `kind:`/`cmd:`/`pass_when:` na 1ª ocorrência em qualquer um dos formatos multi-linha.
+> Para `manual-ux` o `cmd` é ignorado na execução (sempre cai no gate humano, exit 4).
+# Fragmento — Pergunta de decisão e parada
+
+> Reusável. Lido pelo `references/como-falar.md` de cada skill e pelo bloco "O que precisa de você"
+> do `RESUMO_ETAPA.md`. É o **dono único** do formato: as skills apontam para cá e trazem só os
+> próprios exemplos. O `sdd/bin/skill-lint.py --conversa` confere as perguntas desses exemplos.
+
+## Por que existe
+
+Quem responde à skill, em geral, nunca usou git nem terminal, e decide sem abrir arquivo. Pergunta sem
+opção vira "pode" sem saber o que autoriza; opção sem efeito vira chute; e uma parada sem passos deixa a
+pessoa sem saber o que fazer.
+
+## Pergunta de autorização
+
+Quando a skill precisa de um sim, de uma escolha entre caminhos conhecidos ou de um OK antes de algo que
+não se desfaz:
+
+```markdown
+**Sua decisão** — [auto · de rotina] **Posso gravar o DEFINE com estes 6 testes de aceitação?**
+- **sim** (recomendado) — gravo o arquivo e sigo para o Verify Gate: os 6 testes cobrem os 4 objetivos.
+- **mostrar antes** — mostro os 6 testes, um por linha, e pergunto de novo.
+- **não** — paro aqui; nada é gravado.
+- **não sei** — explico o que é um teste de aceitação com o teste 1 como exemplo.
+```
+
+1. A pergunta vai em negrito e termina em `?`. Ela é decidível sem abrir arquivo: o contexto necessário
+   está na própria resposta.
+2. Uma opção por linha, `- **rótulo** — efeito`. O efeito diz o que acontece, não o que a opção "é".
+3. A recomendada vem **primeiro**, com `(recomendado)` e o porquê no efeito. Exatamente uma.
+4. Números em vez de adjetivos: "6 testes", "3 arquivos", "leva uns 4 minutos"; nunca "alguns", "rápido".
+5. Identificadores técnicos (AT-003, LM-004, um SHA) só no fim do efeito, entre parênteses: `(ref: AT-003)`.
+   A frase tem de fazer sentido sem eles.
+6. Sempre a opção **não sei**: a skill responde à dúvida e repete as opções.
+7. Nunca uma opção **Outro** escrita. Quem quer outra coisa diz, e a resposta que não casa com nenhuma
+   opção é tratada como dúvida: responder e repetir as opções. Se a ferramenta de pergunta do agente
+   acrescentar um campo livre sozinha, ele continua lá; a skill não escreve um.
+8. **Eco** de 1 linha: no "O que foi feito" da resposta seguinte, o eco registra a escolha: *"Você escolheu
+   **sim**: gravei o DEFINE com os 6 testes."*
+9. **Classe da decisão.** Toda pergunta de decisão leva **uma** marca logo antes do negrito, com o
+   rótulo fixo da classe (a forma geral, `[Dn]` + rótulo):
+   `**Sua decisão** — [D1 · não se desfaz] **Posso publicar estas 5 mudanças?**`. A marca diz o tipo
+   da decisão em palavras e se ela continua sendo perguntada com o encadeamento ligado
+   (`flow.autonomous: true`; ver `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+
+   | Marca | Quando | Com o encadeamento ligado |
+   |---|---|---|
+   | `[D1 · não se desfaz]` | efeito fora da pasta que o git não desfaz: publicar, enviar, apagar, comprar, usar credencial | pergunta |
+   | `[D2 · muda o produto]` | muda o que a feature faz ou o texto que a pessoa lê: escopo, regra de negócio, dúvida do DEFINE | pergunta |
+   | `[D3 · muda a regra do método]` | muda regra que vale para todas as features: playbook, gate, dispensar uma revisão | pergunta |
+   | `[D4 · limite de tentativas]` | o loop de revisão não convergiu: 3 rodadas ou 2 ciclos do avaliador | pergunta |
+   | `[D5 · provas em conflito]` | dois lados com prova: um achado grave refutado com evidência | pergunta |
+   | `[auto · de rotina]` | a recomendada resolve: modo de execução, onde gravar, formato | não pergunta: vale a recomendada, e a decisão vai para o recibo "Decidi sozinho" |
+
+   Antes da primeira pergunta `[auto · de rotina]` da sessão, rode `bash sdd/bin/sdd-fluxo.sh estado`:
+   0 ligado · 1 desligado · 64 valor inválido (avise com a linha que ele imprimiu e trate como
+   desligado). A pergunta do OK da `sdd-release` ("Posso finalizar…?") é D1 por construção e não leva
+   marca: o texto dela é contrato. `sdd/bin/sdd-decisoes-lint.sh --sites` confere a marca e o rótulo.
+
+## Pergunta aberta
+
+Quando a resposta não cabe em opções (um nome, um número, um caminho):
+
+```markdown
+**Sua decisão** — [D2 · muda o produto] **Qual é o tempo máximo aceitável para processar um extrato?** Responda com um número
+e a unidade (por exemplo, "30 segundos"), ou "não sei": aí eu proponho um valor com base nas amostras.
+```
+
+Não invente opções para uma pergunta aberta. Diga como responder e deixe a saída "não sei".
+
+## Várias perguntas de uma vez
+
+Só quando a etapa precisa delas juntas, até 5, numeradas; a pessoa pode responder pelos números
+("1 sim, 2 mostrar antes"). Cada uma segue o formato acima.
+
+## Parada ⏸️
+
+Quando a etapa não pode seguir sem uma ação da pessoa (instalar algo, fazer login, abrir uma sessão
+nova do agente para um avaliador sem esta conversa):
+
+```markdown
+**Status** — `Build: ✅ 1 Plano · ✅ 2 Modo · ✅ 3 Tarefas 5/5 · ⏸️ 4 Verify Gate · ⬜ 5 Relatório`
+
+**Por que parei:** a conferência final precisa de alguém que não viu esta conversa, e este agente não
+abre uma conversa nova sozinho.
+
+**Onde:** numa janela nova do seu agente, na mesma pasta do projeto.
+
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o pedido que está no arquivo do brief → o agente começa a ler o DEFINE.
+3. Quando ele terminar, copie a última linha (`VEREDITO: …`) → é ela que eu preciso.
+
+**O que não foi feito:** o relatório não foi gravado e nada foi publicado.
+
+**Brief:** `sdd/reports/evidence/PAGAMENTOS/AVAL-brief.md`
+
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+```
+
+- O Status mostra ⏸️ na etapa parada.
+- **Por que parei:** uma frase, com o motivo da pessoa, não a regra da skill.
+- **Onde:** terminal, navegador, pasta, outra janela do agente.
+- **Passos:** numerados, um comando por passo quando houver comando, com o que esperar na tela.
+- **O que não foi feito:** sempre ("Nada foi publicado.", "Nenhuma frente foi criada.").
+- **Brief:** e **Sessão nova:** só quando a parada é por uma sessão sem esta conversa: o caminho do
+  arquivo que a skill gravou e como abrir a sessão. Sem isso, as duas linhas somem.
+- A frase final só quando a pessoa tem algo a fazer.
+# Fragmento — Resumo de Etapa (micro-kanban da linha de produção)
+
+> Reusável. Lido pelo **encerramento obrigatório** de `/brainstorm`, `/define`, `/ux-review`,
+> `/design`, `/build`, a fase Release e `/adversarial-review`. É o **dono único** do formato: as
+> superfícies apontam pra cá, nunca copiam o texto normativo.
+
+## Por que existe
+
+Com ~25 frentes SDD simultâneas, o custo real não é executar a etapa — é **reconstruir o
+contexto ao voltar nela**: em que etapa está, o que trava, qual a próxima ação. Esse resumo
+existia só por improviso, quando sobrava contexto, e sumia justamente nas sessões longas (as
+que mais precisam dele). Aqui ele vira contrato.
+
+## Os 4 blocos (nesta ordem, sempre)
+
+````markdown
+## 📍 Linha de produção — {FEATURE}
+
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design — ⬜ review adversarial — ⬜ /build — ⬜ /release
+
+**Onde estamos:** {≤2 linhas: o que esta etapa produziu + o fato notável que o leitor não adivinha}
+
+**O que precisa de você ({N} pergunta{s}):**
+1. {pergunta bloqueante, com contexto suficiente pra decidir SEM abrir arquivo}
+
+**O que vem depois, na ordem:**
+1. {próxima ação concreta} — {⚠️ landmine inline, se houver}
+2. {…}
+````
+
+## Os 4 símbolos
+
+| Símbolo | Significado | Regra |
+|---|---|---|
+| ✅ | Etapa concluída | Só por **artefato presente** no worktree (tabela abaixo) |
+| 🏃 | Etapa que acabou de rodar | Exatamente uma por resumo (exceto `/brainstorm`, que é pré-linha) |
+| ⬜ | Pendente | Default de tudo que não foi feito |
+| ➖ | Pulado | **Só com decisão registrada** (DEFINE § Clarifications). Sem rastro ⇒ `⬜`, nunca `➖` |
+
+## Tabela de inferência (a fonte da verdade é o filesystem)
+
+| Etapa | ✅ quando existe no worktree |
+|---|---|
+| setup | worktree + branch (`git rev-parse --abbrev-ref HEAD`) |
+| /sdd-brainstorm | `sdd/features/BRAINSTORM_{F}.md` |
+| /sdd-define | `sdd/features/DEFINE_{F}.md` |
+| /sdd-ux-review | `sdd/reviews/UX_REVIEW_{F}.md` |
+| /sdd-design | `sdd/features/DESIGN_{F}.md` |
+| review adversarial | `sdd/reviews/EXTERNAL_REVIEW_*/` **com `reviewer.md` + `META.txt` dentro** (o `/adversarial-review` grava por TIMESTAMP, sem `{F}` no nome — conferir pelo `diff_sha256`/branch do META que o diff revisado é o desta frente; `auditor_exit ≠ 0` = auditor FALHOU, não "zero achados") |
+| /sdd-build | `sdd/reports/BUILD_REPORT_{F}.md` |
+| /sdd-release | `sdd/releases/{F}/` **com ledger do slice ATUAL** — famílias com vários slices (ex.: `ALERTAS_AULA_GRUPO` tem s1/s2/s3) já têm ledger no `main`: casar o slice desta frente, senão a fase Release sai `✅` antes do ship |
+
+**Nada é escrito em disco.** O kanban é derivado na hora, a cada resumo — por isso não pode
+divergir da realidade: ele *é* a realidade. Nunca criar arquivo de estado paralelo.
+
+## Regras de omissão (as duas que mais importam)
+
+1. **`O que precisa de você` só existe se N ≥ 1.** Sem pergunta bloqueante, o bloco inteiro
+   **some** — não renderizar vazio nem com "nada pendente". Bloco vazio treina o leitor a pular
+   a seção, e aí a pergunta que importa passa batido.
+2. **Etapa que não se aplica é `➖`, nunca `⬜` perpétuo.** Uma frente sem UI não vai rodar
+   `/ux-review` jamais; deixá-la `⬜` faz o kanban mentir, e um kanban que mente contamina a
+   confiança no resumo inteiro. O `➖` exige decisão registrada — citar onde foi decidida.
+
+## Forma do kanban — duas renderizações
+
+Primária, uma linha (use sempre que couber em ~100 caracteres):
+
+```markdown
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design — ⬜ review adversarial — ⬜ /build — ⬜ /release
+```
+
+Fallback, duas linhas — quebre **no `🏃`**, com o passado acima e o futuro abaixo (nunca
+quebrar no meio de uma casa, nunca abreviar nomes: `/define` e `/design` viram ambíguos).
+**Sem `🏃` na linha** (caso do `/brainstorm`, que é pré-linha): quebrar após a última casa `✅`/`➖`
+— mesma semântica de passado acima, futuro abaixo:
+
+```markdown
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design
+⬜ review adversarial — ⬜ /build — ⬜ /release
+```
+
+## Exemplo real completo
+
+> Exemplo real (anonimizado) — o caso que originou este contrato.
+
+````markdown
+## 📍 Linha de produção — CERTIFICADO_POR_MODULO
+
+✅ setup — ➖ /sdd-brainstorm — ✅ /sdd-define — ✅ /sdd-ux-review — ✅ /sdd-design — 🏃 review adversarial — ⬜ /sdd-build — ⬜ /sdd-release
+
+**Onde estamos:** 3 commits na branch, zero código ainda — o ponto certo pra revisar a
+abordagem.
+
+**O que precisa de você (1 pergunta):**
+1. **Matrícula inativa com tarefa aprovada merece certificado?** Um participante concluiu a
+   tarefa e depois foi desativado. Ele **fez o trabalho** — mas perdeu o vínculo. Hoje o design
+   diz **não emite**. É 1 caso, mas o backfill é imutável: emitido, não desemite.
+
+**O que vem depois, na ordem:**
+1. **Review de 2º vendor chega** → aplico ou rebato cada nota no *Advisor Ledger* (nunca descartar em silêncio).
+2. **`/sdd-build`** → 15 arquivos. ⚠️ Migrations aplicadas fora do git precisam de commit correspondente na hora, senão viram órfãs.
+3. **Kill-switch antes do backfill** — não é opcional. Sem ele, 1.107 emissões imutáveis sem freio.
+4. **Preencher a carga horária dos 21 módulos** — trabalho de conteúdo, seu, não de código.
+5. **Backfill** com dry-run + consulta inversa, uma execução por vez.
+6. **Review adversarial de verdade** — aí sim, com código no diff.
+7. **`/sdd-release`** — ⚠️ bloqueado por uma migration órfã de outra frente.
+````
+
+## Regras de redação (o que separa um resumo útil de um relatório)
+
+- **Densidade > completude.** ≤35 linhas no total; "Onde estamos" em ≤2. Se não cabe, você está
+  narrando processo em vez de reportar estado.
+- **O fato notável, não o óbvio.** "DEFINE gravado" não informa nada — o comando acabou de rodar.
+  "Grep provou que o formato nunca existiu escrito" informa.
+- **Pergunta decidível sem abrir arquivo.** Quem lê tem de conseguir responder ali; se precisa
+  abrir o DESIGN pra entender a pergunta, ela está mal escrita.
+- **Landmine inline, na ação que ela morde** — não numa seção de avisos no fim, que ninguém lê
+  no momento em que importa.
+- **PII:** o resumo é efêmero (nunca gravado), mas prefira identificador não-pessoal ("1 participante
+  do grupo X") a nome/e-mail literal.
+# Fragmento — Fluxo encadeado (o SDD só para para pedir decisão)
+
+> Reusável. **Dono único** de: ordem das fases, quando uma fase chama a seguinte, linha de transição,
+> recibo "Decidi sozinho", paradas que não são decisão e teto do loop de revisão. Lido pela subseção
+> `### Fluxo encadeado` das skills de fase. As marcas de classe (`[D1 · não se desfaz]` …) e o formato
+> de pergunta e de parada são do `PERGUNTA_DECISAO.md`. Os decisores são de `sdd/bin/sdd-fluxo.sh`.
+
+## Por que existe
+
+Cada fase terminava com "Próximo passo: rode a fase seguinte" e várias perguntavam "posso seguir?".
+Quem liga o encadeamento quer o contrário: o SDD segue sozinho e **só interrompe quando a decisão é da
+pessoa**. O risco do outro lado é a opacidade: um fluxo que não pergunta precisa dizer onde está, por que
+não perguntou e o que decidiu sozinho.
+
+## Ligar e desligar
+
+- `flow.autonomous: false` (default, em `sdd/config.yaml`): nada encadeia; toda pergunta é feita, com a
+  marca da classe. É o comportamento de sempre.
+- `flow.autonomous: true`: a fase seguinte é chamada na mesma sessão quando o `seguir` sai 0; a pergunta
+  `[auto · de rotina]` vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam
+  perguntadas.
+- "Pare", numa fase, desliga só naquela chamada (`--parar`).
+- Quem decide é o script: `bash sdd/bin/sdd-fluxo.sh estado` (0 ligado · 1 desligado · 64 valor inválido).
+
+## A ordem
+
+```text
+define → (governanca, se dinheiro/tributo/dado pessoal) → (ux-review, se há interface) → design
+       → revisão do DESIGN (se review-design diz EXIGIDO) → build → ⏸️ release (sempre pergunta: D1)
+```
+
+- **`seguir <fase> <DEFINE> <próxima>`** sai 0 só com o encadeamento ligado, `verify-gate.sh --print`
+  0 no DEFINE, nenhum marcador de clarificação aberto e, na fase design, o `design-lint.py` 0 no DESIGN.
+  Pares válidos: define → governanca, ux-review ou design · governanca → ux-review ou design ·
+  ux-review → design · design → build · qualquer → release (sempre PARAR).
+- **`review-design <DESIGN>`**: exit 0 EXIGIDO ⇒ a revisão de contexto fresco roda; exit 1 DISPENSAVEL ⇒
+  segue sem rodar; exit 64 (manifest ilegível) ⇒ roda (default seguro) e registra. Dispensar um
+  EXIGIDO é decisão da pessoa (D3).
+- Brainstorm, iterate, new-session e release não encadeiam: o brainstorm não tem gate; o iterate volta
+  à fase do documento; a fase seguinte à new-session roda na pasta nova (troca de janela); publicar é D1.
+
+## Linha de transição
+
+```text
+✅ DEFINE pronto → seguindo para o DESIGN (encadeamento ligado em sdd/config.yaml)
+→ /sdd-design sdd/features/DEFINE_PAGAMENTOS.md
+```
+
+O `seguir` imprime as duas linhas; a skill repassa a primeira, o recibo (se houver) e então chama a
+próxima. Vem por último no fim da fase, logo antes da fase seguinte, para não competir com o recibo.
+Com `PARAR: encadeamento desligado`, a skill não repassa nada: mostra o Próximo passo de sempre. Com
+outro motivo de parar, diz o motivo em uma frase e mostra o Próximo passo.
+
+## Recibo "Decidi sozinho"
+
+No resumo de etapa, depois de "O que vem depois", quando o encadeamento estava ligado e alguma pergunta
+`[auto]` foi decidida pela recomendada:
+
+```text
+**Decidi sozinho:**
+- Gravei o DEFINE com os 6 testes de aceitação — porque o Verify Gate saiu 0 e não havia dúvida aberta · para desfazer: rode a fase Define de novo com "pare"
+- Tratei o flag LLM Prompts como true — porque o DEFINE não dizia · para desfazer: escreva false em Technical Context do DEFINE e rode o Design de novo
+```
+
+Uma linha por decisão, na ordem em que foram tomadas; mais de 5 ⇒ agrupe por fase. Bloco vazio ⇒
+omitido. Sem recibo, decisão automática é decisão invisível. No DESIGN, a mesma linha vai para o
+Revision History com o prefixo `[auto]`.
+
+## Paradas que não são decisão
+
+| Parada | Exit | O que a mensagem traz |
+|---|---|---|
+| Sessão nova para um papel fresco (avaliador, revisor do DESIGN) num agente que não a abre sozinho | `despachar` 40 AGUARDANDO_HUMANO | a parada ⏸️ do `PERGUNTA_DECISAO.md`, o brief em `sdd/reports/briefs/BRIEF_<papel>_<F>.md` e o que colar de volta |
+| Avaliador em `PASS_PENDENTE_RECIBO` (gate `manual-ux`) | `loop` 30 AGUARDANDO_RECIBO | o roteiro e "aguardando seu recibo" (`--recibo "nome AAAA-MM-DD"`) |
+| Credencial ausente | — | qual credencial e onde ela vive; nada foi feito |
+
+## Loop de revisão (a F10 liga a chamada)
+
+- Teto: **3 rodadas** de revisão pós-build (`sdd-fluxo.sh loop --teto 3`) e **2 ciclos NEEDS_WORK** do
+  avaliador. Revisão refeita depois de corrigir achado do avaliador conta rodada.
+- Ledger da rodada, 1 linha por achado grave:
+  `| <achado> | HIGH | APLICADA \| REBATIDA_EVIDENCIA \| REBATIDA_ESCOPO | rodada=N | <arquivo:linha ou motivo> |`.
+  Sem `rodada=N` o decisor ignora a linha: os ids (R1, R2…) recomeçam a cada revisão.
+- Grave o resultado com `--log evidence/<F>/LOOP-rodada-N.log`, nunca com `| tee`: o exit de um
+  pipeline é o do `tee` (0), e o BLOQUEADO viraria "seguir".
+- `BLOQUEADO` por teto ⇒ BUILD_REPORT `Status: Blocked` e **uma** pergunta, com o que foi tentado (n
+  rodadas) e cada grave restante em 1 frase com o arquivo:
+
+```markdown
+**Sua decisão** — [D4 · limite de tentativas] **A revisão não convergiu em 3 rodadas: como seguimos?**
+- **mais 1 rodada com outra abordagem** (recomendado) — mudo o jeito de corrigir os 2 achados restantes e rodo a revisão uma última vez.
+- **aceitar e registrar como dívida** — os 2 achados viram pendência visível no relatório e no handoff; nada some.
+- **voltar ao DESIGN** — paro o build; o DESIGN é revisto antes de qualquer correção nova.
+- **não sei** — explico cada achado restante com o arquivo e o que já foi tentado.
+```
+
+- `BLOQUEADO` por impasse de evidência (o auditor refutou um achado grave com prova) ⇒ pergunta
+  `[D5 · provas em conflito]` com os dois lados lado a lado.
+
+exec
+/bin/zsh -lc "cat AGENTS.md sdd/fixtures/BRAINSTORM_EXEMPLO.md sdd/config.yaml; sed -n '/"'^## Sempre/,/''^## /p'"' sdd/playbook.md; ls sdd/kb; git status --short" in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+cat: AGENTS.md: No such file or directory
+# BRAINSTORM: CONCILIADOR_EXTRATO
+
+> Exemplo pronto para o primeiro teste do SDD Open. Use-o como entrada da fase Define
+> (`/sdd-define sdd/fixtures/BRAINSTORM_EXEMPLO.md`) e confira se o DEFINE gerado passa em
+> `sdd/bin/verify-gate.sh --print`. Pode ser apagado depois.
+
+## Metadata
+
+| Attribute | Value |
+|-----------|-------|
+| **Feature** | CONCILIADOR_EXTRATO |
+| **Date** | 2026-09-05 |
+| **Status** | Ready for Define |
+
+## Initial Idea
+
+**Raw Input:** "Quero uma ferramenta de linha de comando que leia um extrato bancário em CSV e
+um razão contábil em CSV e aponte os lançamentos que não batem: presentes em um lado e
+ausentes no outro, ou com valor diferente."
+
+**Context Gathered:**
+- Extratos vêm em CSV com colunas `data`, `descricao`, `valor`; o razão em CSV com `data`,
+  `historico`, `debito`, `credito`.
+- O casamento é por data e valor absoluto; descrição não é confiável.
+- Volume típico: até 5.000 linhas por arquivo.
+
+## Discovery Questions & Answers
+
+| # | Question | Answer | Impact |
+|---|----------|--------|--------|
+| 1 | Quem usa? | O próprio contador, uma vez por mês | Não precisa de interface gráfica |
+| 2 | O que é "bater"? | Mesma data e mesmo valor absoluto | Regra de casamento fechada |
+| 3 | E os duplicados? | Dois lançamentos iguais no mesmo dia são legítimos | Casar por multiplicidade, não por conjunto |
+
+## Approaches Explored
+
+### Approach A: Script único em Python com saída em CSV ⭐ Recommended
+
+**Pros:** roda em qualquer máquina com Python; saída abre em planilha.
+**Cons:** sem interface; o contador precisa do terminal.
+
+### Approach B: Planilha com fórmulas
+
+**Why not recommended:** quebra acima de algumas centenas de linhas e não é reprodutível.
+
+## Selected Approach
+
+Approach A.
+
+## Suggested Requirements for /define
+
+### Problem Statement (Draft)
+O contador gasta horas comparando extrato e razão à mão e deixa passar diferenças de valor.
+
+### Success Criteria (Draft)
+- [ ] Dois CSVs de 5.000 linhas processados em menos de 5 segundos.
+- [ ] Toda divergência listada com o lado de origem e o motivo (ausente ou valor diferente).
+- [ ] Duplicados legítimos não aparecem como divergência.
+
+### Out of Scope (Confirmed)
+- Importar direto do banco; corrigir lançamentos; interface gráfica.
+
+## Next Step
+
+**Ready for:** `/sdd-define sdd/fixtures/BRAINSTORM_EXEMPLO.md`
+# sdd/config.yaml — copiado de config.example.yaml pelo `init`. Preencha para o seu projeto.
+#
+# As skills consultam estes slots ({{TEST_CMD}}, {{DEPLOY_CMD}}, …) em vez de fixar comandos.
+# Slot VAZIO significa "pule este passo e diga que pulou" — nunca "adivinhe um comando".
+# Parser: chaves simples `chave: valor` e mapas de 1 nível; sem âncoras, sem listas complexas.
+
+project:
+  name: meu-projeto
+  # Comando de teste, usado por gates `kind: test`.
+  test_cmd: ""
+  # Checagem de tipos/compilação, usada por gates `kind: typecheck`.
+  typecheck_cmd: ""
+  # Checagem de sintaxe por tipo de arquivo (fase Release, passo 0a).
+  lint_cmd: ""
+  # Branch de onde nascem as features. Nunca se trabalha nela diretamente (o pre-commit de sdd/hooks
+  # recusa commit direto nela quando ela já tem remoto).
+  default_branch: main
+  # Teto, em KB, do arquivo de contexto do agente (AGENTS.md, CLAUDE.md, GEMINI.md, .cursorrules) num
+  # commit: ele entra inteiro em toda sessão do agente. Acima disso o pre-commit recusa. Vazio = 100.
+  context_file_max_kb: 100
+
+# Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho
+# do avaliador de contexto fresco. `sql` também diz o que conta como migration (report-lint.py).
+# Exemplos: sql: "db/migrations/**" · api: "src/api/**" · ui: "src/ui/**" · infra: "deploy/**"
+layers:
+  api: ""
+  ui: ""
+  sql: ""
+
+# Evidência do build (report-lint.py): a partir de quantas camadas de `layers:` tocadas pelo File
+# Manifest do DESIGN a avaliação em contexto fresco é obrigatória. Abaixo disso, a linha
+# `avaliador: N.A. (<motivo>)` no BUILD_REPORT vale. 1 = avaliador sempre. Inteiro >= 1.
+evidence:
+  require_avaliacao_layers: 2
+
+deploy:
+  # Roda na fase Release, depois da única aprovação humana.
+  cmd: ""
+  # Detecta o que chegou em produção sem commit correspondente (função publicada pelo console,
+  # migration aplicada pelo painel). Vazio = você só deploya via git e esse drift não existe.
+  drift_check_cmd: ""
+
+release:
+  # Bloqueadores próprios do projeto: começa com regras genéricas, cresce a cada incidente.
+  landmines_cmd: ""
+  # Opcional, pós-deploy (changelog, comunicado, ledger).
+  changelog_hook: ""
+
+review:
+  # Vendors disponíveis para o review adversarial (revisor → auditor de vendor DIFERENTE).
+  # Com um só vendor, o review degrada com aviso registrado — nunca é pulado em silêncio.
+  vendors: ""
+  # Superfície de segurança do projeto, em globs separados por vírgula (ex.: "auth/**,api/public/**").
+  # Uma linha do File Manifest que casa um destes globs torna a revisão do DESIGN obrigatória
+  # (sdd/bin/sdd-fluxo.sh review-design). Vazio = só os termos fixos do script (auth, login, token,
+  # senha, password, jwt, GRANT, rota pública) e os globs de layers.sql.
+  security_globs: ""
+
+# Fluxo encadeado (sdd/templates/fragments/FLUXO_ENCADEADO.md). false = cada fase termina e mostra o
+# Próximo passo, como sempre. true = com o gate da fase verde, a fase seguinte começa na mesma sessão,
+# as perguntas [auto · de rotina] seguem a opção recomendada e vão para o recibo "Decidi sozinho"; as
+# marcadas D1 a D5 continuam perguntadas e a release nunca começa sozinha. Não liga nem desliga o jeito
+# de conversar das skills.
+flow:
+  autonomous: true
+
+# Preenchido pelo sdd-open (`init`): agentes para os quais os adaptadores são gerados.
+vendors: ""
+# Editor e pasta de worktrees são usados pela skill de nova sessão (sdd-new-session).
+editor: ""
+worktree_base: ""
+
+# Skill de engenharia de prompt usada pela fase Build quando o DESIGN inventaria prompts de
+# producao. Vem preenchida com a skill que acompanha o pacote; troque pelo nome da sua se
+# tiver outra. Vazio = a fase Build bloqueia o item de prompt e pede decisao, em vez de
+# improvisar o texto que vai para producao.
+prompts:
+  builder_skill: "sdd-prompt-builder"
+## Sempre
+
+- [LM-001] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `grep -q` `verify-gate` `if (true)` `asserção` :: Um gate que só confere FIAÇÃO (o `grep` acha a chamada, a regra CSS existe) fica verde com `if (true)` — ele prova que o texto está lá, não que o comportamento acontece. **Do instead:** o gate EXECUTA o código com fixtures dos dois lados (caso que passa E caso que falha) e valida-se com um mutante que derruba uma asserção nomeada. · promovido_para: —
+- [LM-002] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `exit 0` `baseline` `sed -n` `grep -c` :: Uma asserção que NÃO AVALIA NADA sai `exit 0`: quoting corrompido faz o `grep` nem rodar, âncora de `sed` casa o bloco errado e a contagem dá zero antes e depois. **Do instead:** toda asserção precisa de baseline VERMELHO — rode-a contra a árvore ANTES da mudança; se já passa, ela não prova a mudança. · promovido_para: —
+- [LM-003] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `git status` `--uncommitted` `review` `untracked` :: Trabalho commitado com arquivos untracked ao lado faz um review de "não commitado" revisar o VAZIO — e um review que passou sobre diff nenhum é pior que review nenhum. **Do instead:** commitar antes de qualquer review externo; conferir que o diff revisado tem os arquivos que você mudou (`git diff --stat` bate com a lista do review). · promovido_para: —
+- [LM-004] ajudou=0 mordeu=0 · conf=2026-10-29 · sup: `exit 0` `migration` `db push` `apply_migration` `Migrations aplicadas` :: Migration "aplicada" porque o comando saiu `exit 0` pode não estar no banco: a CLI ligada a outro projeto, `declined` do servidor, SQL sem efeito — e o código vai para produção chamando a coluna que não existe. **Do instead:** prova é ler de volta — `migration list` mostra a versão no remoto e um `select` acha o efeito (ou a ausência esperada); registre em `## Migrations aplicadas` com o log em `evidence/`. · promovido_para: `sdd/bin/report-lint.py`
+
+## Tombstones
+ls: sdd/kb: No such file or directory
+
+exec
+/bin/zsh -lc 'cat sdd/templates/fragments/CLARIFY.md sdd/templates/fragments/VERIFY_GATE.md sdd/templates/fragments/PERGUNTA_DECISAO.md sdd/templates/fragments/RESUMO_ETAPA.md' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+# Fragmento — Clarify (protocolo do token de ambiguidade)
+
+> Reusável. Lido pela `sdd-define` (passo 6). **Regra de honestidade:** diante de ambiguidade,
+> o agente **marca, nunca chuta** — suposição silenciosa é a classe de erro mais cara do
+> funil (só aparece no smoke ou em prod).
+
+## O token
+
+Forma ativa canônica (a ÚNICA que o `verify-gate.sh` detecta, e só fora de code fences):
+
+```
+[NEEDS CLARIFICATION: <pergunta específica>]
+```
+
+- Vai **no lugar exato da ambiguidade** (Problem, ATs, Constraints — qualquer seção).
+- Enquanto houver token ativo, `sdd/bin/verify-gate.sh` devolve **exit 5**
+  (`clarification-pending`): `/build` e a fase Release **param e voltam ao `/define`**.
+  Não é gate vermelho de build — **nunca** aciona iteração de DESIGN.
+- `--print` é isento (uso de autoria durante a redação do DEFINE).
+
+### Convenção de menção (anti-falso-positivo)
+
+Toda referência **documental** ao token — em template, fragmento, exemplo ou histórico —
+vai **dentro de code fence** (como acima) ou **sem os colchetes** (ex.: "o protocolo NEEDS
+CLARIFICATION…"). A forma canônica em prosa aberta = marcador ativo, e bloqueia.
+
+## As 9 categorias (varrer TODAS antes de declarar o DEFINE pronto)
+
+| # | Categoria | Pergunta-guia |
+|---|---|---|
+| 1 | Escopo | O que está dentro/fora? Qual slice é este? |
+| 2 | Modelo de dados | Que entidades/colunas/estados? Quem é o dono da tabela? |
+| 3 | Fluxo UX | O que o usuário vê em cada estado (vazio, erro, sucesso)? |
+| 4 | NFRs | Latência, volume, custo de token, janela de cron? |
+| 5 | Integrações | provedor de mensagens, videoconferência, e-mail, servidores MCP — qual contrato/limite? |
+| 6 | Edge cases | Gatilho indesejado, linha ausente, permissão negada, fila cheia? |
+| 7 | Restrições | O que não pode mudar? Precedente/landmine aplicável? |
+| 8 | Terminologia | Termo do domínio com 2 leituras (cliente×conta, pedido×ordem)? |
+| 9 | Sinal de conclusão | Como sabemos que acabou? Qual o comando pass/fail? |
+
+Para cada categoria: **Clear / Partial / Missing**. Partial e Missing geram token.
+
+## Protocolo de resolução
+
+1. **≤5 perguntas por rodada**, pela ferramenta de pergunta do seu agente ou em texto — múltipla
+   escolha (2–4 opções), **opção recomendada primeiro** com "(recomendado)" e a saída "não sei"
+   (formato em `sdd/templates/fragments/PERGUNTA_DECISAO.md`). Mais de 5 pendências? Prioridade:
+   o que muda arquitetura > escopo > o resto; nova rodada depois.
+2. **Resposta integra NO CORPO da spec**: substituir o texto ambíguo (e o token) pela decisão —
+   nunca deixar a resposta só em apêndice com o texto contraditório intacto.
+3. **Registrar no log** `## Clarifications` do DEFINE:
+   ```markdown
+   ## Clarifications
+   ### Session 2026-08-15
+   - [x] (6-edge cases) Fila cheia descarta ou enfileira? → enfileira com TTL 24h; integrado em ATs (AT-004)
+   ```
+   (Formato: `- [x] (categoria) pergunta → resposta; integrado em <seção>`. Sem a forma
+   canônica do token — convenção de menção.)
+4. **Gate mecânico:** DEFINE pronto = **zero tokens ativos**. Conferir: o bloco de gate roda
+   `verify-gate.sh` (exit 5 enquanto restar token).
+# Fragmento — Verify Gate (taxonomia dos gates executáveis)
+
+> Reusável. Anexado conceitualmente ao DEFINE (bloco `## Verify Gate`) e lido por
+> `/build`, a fase Release e `sdd/bin/verify-gate.sh`. É o habilitador da F1 do SDD v2
+> (loop engineering / Boris Cherny): **o critério de aceite vira comando, não prosa.**
+
+## Por que existe
+
+No SDD v1 o aceite morava em prosa (`Acceptance Tests`, `Success Criteria`) que ninguém
+executava de forma determinística. Sem um gate executável, autonomia (F3 Ralph, F4 driver)
+vira **lixo em escala** — "o loop roda, mas contra o quê ele para?". O Verify Gate é esse
+critério de parada: um comando `pass/fail` que qualquer loop (humano ou agente) roda.
+
+## O bloco (vai no DEFINE)
+
+````markdown
+## Verify Gate
+
+> Gate executável de aceite (pass/fail). `/build` e a fase Release rodam isto — é **bloqueante**.
+
+```yaml
+verify_gate:
+  kind: test
+  cmd: "npm test -- src/x.test.ts"
+  pass_when: "exit 0"
+  threshold: "—"
+  manual_fallback: "—"
+```
+````
+
+Rodar: `sdd/bin/verify-gate.sh sdd/features/DEFINE_<FEATURE>.md`
+
+## Campos
+
+| Campo | Obrigatório | Significado |
+|---|---|---|
+| `kind` | sempre | categoria do gate (tabela abaixo) |
+| `cmd` | exceto `manual-ux` | comando executável; em `manual-ux` use `"N/A (manual-ux)"` |
+| `pass_when` | sempre | critério objetivo: `exit 0` (default) · `exit N` · `contains: TEXTO` |
+| `threshold` | só `eval` | meta numérica embutida no `cmd` (ex.: `recall >= 0.80`) — informativa aqui |
+| `manual_fallback` | só `manual-ux` | checklist humano a percorrer + assinar no BUILD_REPORT |
+
+> **Sem inline comments nas linhas de valor** do bloco machine-read — o parser pega tudo
+> após o primeiro `:`. Comentários ficam fora do fence.
+
+## Taxonomia (`kind`)
+
+| kind | Quando | `cmd` típico | `pass_when` |
+|---|---|---|---|
+| `test` | lógica pura testável | `npm test -- <arquivo>.test.ts` · `pytest tests/x -q` | `exit 0` |
+| `smoke` | edge/HTTP responde o esperado | `curl -sS -o /dev/null -w '%{http_code}' <url>` | `contains: 401` |
+| `eval` | qualidade com limiar (avaliação de saída de LLM etc.) | `scripts/eval/run.sh --threshold 0.80` | `exit 0` (limiar no cmd) |
+| `typecheck` | tipos/compilação | `tsc --noEmit` · `mypy .` | `exit 0` |
+| `manual-ux` | UX pura (mobile/PWA/estética) | `N/A (manual-ux)` | gate **humano** (`manual_fallback`) |
+
+### Derivar o `kind` do padrão EARS do AT (ver `fragments/EARS.md`)
+
+| Padrão EARS do AT | `kind` natural |
+|---|---|
+| **When** (event-driven) | `test` — dispara o evento, asserta a resposta |
+| **If/Then** (unwanted) | `test`/`smoke` **negativo** — provoca o gatilho pelo caminho real |
+| **While** (state-driven) | `test` com fixture do estado |
+| **Where** (optional) | `test` em matriz (flag on/off) |
+| **shall continue to** (non-regression, bugfix) | `test` — caso de regressão explícito |
+
+### Contrato de exit do `sdd/bin/verify-gate.sh`
+
+| exit | Significado | Efeito em `/build` e a fase Release |
+|---|---|---|
+| `0` | 🟢 verde (passou) | segue |
+| `2` | 🔴 vermelho (falhou) | **ABORTA** |
+| `3` | inconclusivo (tool ausente OU ruído 403 WAF×runner) | caller decide; não conta vermelho |
+| `4` | `manual-ux`: exige assinatura humana | `/build` mostra checklist · a fase Release exige recibo |
+| `5` | clarification-pending: marcador ativo de ambiguidade no DEFINE (forma canônica fora de fence — ver `fragments/CLARIFY.md`) | **PARAR e voltar ao `/define`**. NÃO é vermelho de build: nem o build nem loop algum itera o DESIGN por causa dele |
+| `64` | bloco ausente/malformado | DEFINE inválido (sem gate) |
+
+## Regras de ouro
+
+1. **`manual-ux` NÃO finge automação.** É gate humano explícito (anti "passa técnico, é lixo
+   estético"). `cmd: "N/A (manual-ux)"`; o `manual_fallback` é um checklist assinado no BUILD_REPORT.
+2. **Ruído de infra ≠ regressão.** Smoke que recebe 403 do WAF×IP-do-runner é inconclusivo
+   (exit 3), nunca vermelho. Prefira smoke rodando **na origem via SSH** (lição do fix do changelog).
+3. **Nenhum gate cruza o a fase Release.** O gate é pré-condição do deploy, não o deploy.
+4. **Tool ausente = inconclusivo (3), não vermelho.** Não trava a entrega por falta de uma ferramenta.
+5. **`eval` embute o limiar no `cmd`** (o runner devolve exit≠0 se ficar abaixo) — `threshold`
+   no bloco é documentação para humanos.
+
+## Exemplos prontos (1 de cada kind)
+
+```yaml
+# test — módulo com teste ao lado
+verify_gate: { kind: test, cmd: "npm test -- src/pricing.test.ts", pass_when: "exit 0", threshold: "—", manual_fallback: "—" }
+```
+```yaml
+# smoke — edge protegida devolve 401 sem JWT
+verify_gate: { kind: smoke, cmd: "curl -sS -o /dev/null -w '%{http_code}' https://api.exemplo.com/v1/relatorios", pass_when: "contains: 401", threshold: "—", manual_fallback: "—" }
+```
+```yaml
+# manual-ux — app mobile, gate humano
+verify_gate: { kind: manual-ux, cmd: "N/A (manual-ux)", pass_when: "checklist assinado", threshold: "—", manual_fallback: "smoke no celular real: (1) a tela inicial abre em <2s; (2) as listas rolam; (3) ▶ Continuar funciona; (4) o card de destaque aparece; (5) ← Voltar volta." }
+```
+
+> Nota: o bloco pode ser multi-linha (legível) ou inline `{ ... }` (compacto) — o parser
+> lê `kind:`/`cmd:`/`pass_when:` na 1ª ocorrência em qualquer um dos formatos multi-linha.
+> Para `manual-ux` o `cmd` é ignorado na execução (sempre cai no gate humano, exit 4).
+# Fragmento — Pergunta de decisão e parada
+
+> Reusável. Lido pelo `references/como-falar.md` de cada skill e pelo bloco "O que precisa de você"
+> do `RESUMO_ETAPA.md`. É o **dono único** do formato: as skills apontam para cá e trazem só os
+> próprios exemplos. O `sdd/bin/skill-lint.py --conversa` confere as perguntas desses exemplos.
+
+## Por que existe
+
+Quem responde à skill, em geral, nunca usou git nem terminal, e decide sem abrir arquivo. Pergunta sem
+opção vira "pode" sem saber o que autoriza; opção sem efeito vira chute; e uma parada sem passos deixa a
+pessoa sem saber o que fazer.
+
+## Pergunta de autorização
+
+Quando a skill precisa de um sim, de uma escolha entre caminhos conhecidos ou de um OK antes de algo que
+não se desfaz:
+
+```markdown
+**Sua decisão** — [auto · de rotina] **Posso gravar o DEFINE com estes 6 testes de aceitação?**
+- **sim** (recomendado) — gravo o arquivo e sigo para o Verify Gate: os 6 testes cobrem os 4 objetivos.
+- **mostrar antes** — mostro os 6 testes, um por linha, e pergunto de novo.
+- **não** — paro aqui; nada é gravado.
+- **não sei** — explico o que é um teste de aceitação com o teste 1 como exemplo.
+```
+
+1. A pergunta vai em negrito e termina em `?`. Ela é decidível sem abrir arquivo: o contexto necessário
+   está na própria resposta.
+2. Uma opção por linha, `- **rótulo** — efeito`. O efeito diz o que acontece, não o que a opção "é".
+3. A recomendada vem **primeiro**, com `(recomendado)` e o porquê no efeito. Exatamente uma.
+4. Números em vez de adjetivos: "6 testes", "3 arquivos", "leva uns 4 minutos"; nunca "alguns", "rápido".
+5. Identificadores técnicos (AT-003, LM-004, um SHA) só no fim do efeito, entre parênteses: `(ref: AT-003)`.
+   A frase tem de fazer sentido sem eles.
+6. Sempre a opção **não sei**: a skill responde à dúvida e repete as opções.
+7. Nunca uma opção **Outro** escrita. Quem quer outra coisa diz, e a resposta que não casa com nenhuma
+   opção é tratada como dúvida: responder e repetir as opções. Se a ferramenta de pergunta do agente
+   acrescentar um campo livre sozinha, ele continua lá; a skill não escreve um.
+8. **Eco** de 1 linha: no "O que foi feito" da resposta seguinte, o eco registra a escolha: *"Você escolheu
+   **sim**: gravei o DEFINE com os 6 testes."*
+9. **Classe da decisão.** Toda pergunta de decisão leva **uma** marca logo antes do negrito, com o
+   rótulo fixo da classe (a forma geral, `[Dn]` + rótulo):
+   `**Sua decisão** — [D1 · não se desfaz] **Posso publicar estas 5 mudanças?**`. A marca diz o tipo
+   da decisão em palavras e se ela continua sendo perguntada com o encadeamento ligado
+   (`flow.autonomous: true`; ver `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+
+   | Marca | Quando | Com o encadeamento ligado |
+   |---|---|---|
+   | `[D1 · não se desfaz]` | efeito fora da pasta que o git não desfaz: publicar, enviar, apagar, comprar, usar credencial | pergunta |
+   | `[D2 · muda o produto]` | muda o que a feature faz ou o texto que a pessoa lê: escopo, regra de negócio, dúvida do DEFINE | pergunta |
+   | `[D3 · muda a regra do método]` | muda regra que vale para todas as features: playbook, gate, dispensar uma revisão | pergunta |
+   | `[D4 · limite de tentativas]` | o loop de revisão não convergiu: 3 rodadas ou 2 ciclos do avaliador | pergunta |
+   | `[D5 · provas em conflito]` | dois lados com prova: um achado grave refutado com evidência | pergunta |
+   | `[auto · de rotina]` | a recomendada resolve: modo de execução, onde gravar, formato | não pergunta: vale a recomendada, e a decisão vai para o recibo "Decidi sozinho" |
+
+   Antes da primeira pergunta `[auto · de rotina]` da sessão, rode `bash sdd/bin/sdd-fluxo.sh estado`:
+   0 ligado · 1 desligado · 64 valor inválido (avise com a linha que ele imprimiu e trate como
+   desligado). A pergunta do OK da `sdd-release` ("Posso finalizar…?") é D1 por construção e não leva
+   marca: o texto dela é contrato. `sdd/bin/sdd-decisoes-lint.sh --sites` confere a marca e o rótulo.
+
+## Pergunta aberta
+
+Quando a resposta não cabe em opções (um nome, um número, um caminho):
+
+```markdown
+**Sua decisão** — [D2 · muda o produto] **Qual é o tempo máximo aceitável para processar um extrato?** Responda com um número
+e a unidade (por exemplo, "30 segundos"), ou "não sei": aí eu proponho um valor com base nas amostras.
+```
+
+Não invente opções para uma pergunta aberta. Diga como responder e deixe a saída "não sei".
+
+## Várias perguntas de uma vez
+
+Só quando a etapa precisa delas juntas, até 5, numeradas; a pessoa pode responder pelos números
+("1 sim, 2 mostrar antes"). Cada uma segue o formato acima.
+
+## Parada ⏸️
+
+Quando a etapa não pode seguir sem uma ação da pessoa (instalar algo, fazer login, abrir uma sessão
+nova do agente para um avaliador sem esta conversa):
+
+```markdown
+**Status** — `Build: ✅ 1 Plano · ✅ 2 Modo · ✅ 3 Tarefas 5/5 · ⏸️ 4 Verify Gate · ⬜ 5 Relatório`
+
+**Por que parei:** a conferência final precisa de alguém que não viu esta conversa, e este agente não
+abre uma conversa nova sozinho.
+
+**Onde:** numa janela nova do seu agente, na mesma pasta do projeto.
+
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o pedido que está no arquivo do brief → o agente começa a ler o DEFINE.
+3. Quando ele terminar, copie a última linha (`VEREDITO: …`) → é ela que eu preciso.
+
+**O que não foi feito:** o relatório não foi gravado e nada foi publicado.
+
+**Brief:** `sdd/reports/evidence/PAGAMENTOS/AVAL-brief.md`
+
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+```
+
+- O Status mostra ⏸️ na etapa parada.
+- **Por que parei:** uma frase, com o motivo da pessoa, não a regra da skill.
+- **Onde:** terminal, navegador, pasta, outra janela do agente.
+- **Passos:** numerados, um comando por passo quando houver comando, com o que esperar na tela.
+- **O que não foi feito:** sempre ("Nada foi publicado.", "Nenhuma frente foi criada.").
+- **Brief:** e **Sessão nova:** só quando a parada é por uma sessão sem esta conversa: o caminho do
+  arquivo que a skill gravou e como abrir a sessão. Sem isso, as duas linhas somem.
+- A frase final só quando a pessoa tem algo a fazer.
+# Fragmento — Resumo de Etapa (micro-kanban da linha de produção)
+
+> Reusável. Lido pelo **encerramento obrigatório** de `/brainstorm`, `/define`, `/ux-review`,
+> `/design`, `/build`, a fase Release e `/adversarial-review`. É o **dono único** do formato: as
+> superfícies apontam pra cá, nunca copiam o texto normativo.
+
+## Por que existe
+
+Com ~25 frentes SDD simultâneas, o custo real não é executar a etapa — é **reconstruir o
+contexto ao voltar nela**: em que etapa está, o que trava, qual a próxima ação. Esse resumo
+existia só por improviso, quando sobrava contexto, e sumia justamente nas sessões longas (as
+que mais precisam dele). Aqui ele vira contrato.
+
+## Os 4 blocos (nesta ordem, sempre)
+
+````markdown
+## 📍 Linha de produção — {FEATURE}
+
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design — ⬜ review adversarial — ⬜ /build — ⬜ /release
+
+**Onde estamos:** {≤2 linhas: o que esta etapa produziu + o fato notável que o leitor não adivinha}
+
+**O que precisa de você ({N} pergunta{s}):**
+1. {pergunta bloqueante, com contexto suficiente pra decidir SEM abrir arquivo}
+
+**O que vem depois, na ordem:**
+1. {próxima ação concreta} — {⚠️ landmine inline, se houver}
+2. {…}
+````
+
+## Os 4 símbolos
+
+| Símbolo | Significado | Regra |
+|---|---|---|
+| ✅ | Etapa concluída | Só por **artefato presente** no worktree (tabela abaixo) |
+| 🏃 | Etapa que acabou de rodar | Exatamente uma por resumo (exceto `/brainstorm`, que é pré-linha) |
+| ⬜ | Pendente | Default de tudo que não foi feito |
+| ➖ | Pulado | **Só com decisão registrada** (DEFINE § Clarifications). Sem rastro ⇒ `⬜`, nunca `➖` |
+
+## Tabela de inferência (a fonte da verdade é o filesystem)
+
+| Etapa | ✅ quando existe no worktree |
+|---|---|
+| setup | worktree + branch (`git rev-parse --abbrev-ref HEAD`) |
+| /sdd-brainstorm | `sdd/features/BRAINSTORM_{F}.md` |
+| /sdd-define | `sdd/features/DEFINE_{F}.md` |
+| /sdd-ux-review | `sdd/reviews/UX_REVIEW_{F}.md` |
+| /sdd-design | `sdd/features/DESIGN_{F}.md` |
+| review adversarial | `sdd/reviews/EXTERNAL_REVIEW_*/` **com `reviewer.md` + `META.txt` dentro** (o `/adversarial-review` grava por TIMESTAMP, sem `{F}` no nome — conferir pelo `diff_sha256`/branch do META que o diff revisado é o desta frente; `auditor_exit ≠ 0` = auditor FALHOU, não "zero achados") |
+| /sdd-build | `sdd/reports/BUILD_REPORT_{F}.md` |
+| /sdd-release | `sdd/releases/{F}/` **com ledger do slice ATUAL** — famílias com vários slices (ex.: `ALERTAS_AULA_GRUPO` tem s1/s2/s3) já têm ledger no `main`: casar o slice desta frente, senão a fase Release sai `✅` antes do ship |
+
+**Nada é escrito em disco.** O kanban é derivado na hora, a cada resumo — por isso não pode
+divergir da realidade: ele *é* a realidade. Nunca criar arquivo de estado paralelo.
+
+## Regras de omissão (as duas que mais importam)
+
+1. **`O que precisa de você` só existe se N ≥ 1.** Sem pergunta bloqueante, o bloco inteiro
+   **some** — não renderizar vazio nem com "nada pendente". Bloco vazio treina o leitor a pular
+   a seção, e aí a pergunta que importa passa batido.
+2. **Etapa que não se aplica é `➖`, nunca `⬜` perpétuo.** Uma frente sem UI não vai rodar
+   `/ux-review` jamais; deixá-la `⬜` faz o kanban mentir, e um kanban que mente contamina a
+   confiança no resumo inteiro. O `➖` exige decisão registrada — citar onde foi decidida.
+
+## Forma do kanban — duas renderizações
+
+Primária, uma linha (use sempre que couber em ~100 caracteres):
+
+```markdown
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design — ⬜ review adversarial — ⬜ /build — ⬜ /release
+```
+
+Fallback, duas linhas — quebre **no `🏃`**, com o passado acima e o futuro abaixo (nunca
+quebrar no meio de uma casa, nunca abreviar nomes: `/define` e `/design` viram ambíguos).
+**Sem `🏃` na linha** (caso do `/brainstorm`, que é pré-linha): quebrar após a última casa `✅`/`➖`
+— mesma semântica de passado acima, futuro abaixo:
+
+```markdown
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design
+⬜ review adversarial — ⬜ /build — ⬜ /release
+```
+
+## Exemplo real completo
+
+> Exemplo real (anonimizado) — o caso que originou este contrato.
+
+````markdown
+## 📍 Linha de produção — CERTIFICADO_POR_MODULO
+
+✅ setup — ➖ /sdd-brainstorm — ✅ /sdd-define — ✅ /sdd-ux-review — ✅ /sdd-design — 🏃 review adversarial — ⬜ /sdd-build — ⬜ /sdd-release
+
+**Onde estamos:** 3 commits na branch, zero código ainda — o ponto certo pra revisar a
+abordagem.
+
+**O que precisa de você (1 pergunta):**
+1. **Matrícula inativa com tarefa aprovada merece certificado?** Um participante concluiu a
+   tarefa e depois foi desativado. Ele **fez o trabalho** — mas perdeu o vínculo. Hoje o design
+   diz **não emite**. É 1 caso, mas o backfill é imutável: emitido, não desemite.
+
+**O que vem depois, na ordem:**
+1. **Review de 2º vendor chega** → aplico ou rebato cada nota no *Advisor Ledger* (nunca descartar em silêncio).
+2. **`/sdd-build`** → 15 arquivos. ⚠️ Migrations aplicadas fora do git precisam de commit correspondente na hora, senão viram órfãs.
+3. **Kill-switch antes do backfill** — não é opcional. Sem ele, 1.107 emissões imutáveis sem freio.
+4. **Preencher a carga horária dos 21 módulos** — trabalho de conteúdo, seu, não de código.
+5. **Backfill** com dry-run + consulta inversa, uma execução por vez.
+6. **Review adversarial de verdade** — aí sim, com código no diff.
+7. **`/sdd-release`** — ⚠️ bloqueado por uma migration órfã de outra frente.
+````
+
+## Regras de redação (o que separa um resumo útil de um relatório)
+
+- **Densidade > completude.** ≤35 linhas no total; "Onde estamos" em ≤2. Se não cabe, você está
+  narrando processo em vez de reportar estado.
+- **O fato notável, não o óbvio.** "DEFINE gravado" não informa nada — o comando acabou de rodar.
+  "Grep provou que o formato nunca existiu escrito" informa.
+- **Pergunta decidível sem abrir arquivo.** Quem lê tem de conseguir responder ali; se precisa
+  abrir o DESIGN pra entender a pergunta, ela está mal escrita.
+- **Landmine inline, na ação que ela morde** — não numa seção de avisos no fim, que ninguém lê
+  no momento em que importa.
+- **PII:** o resumo é efêmero (nunca gravado), mas prefira identificador não-pessoal ("1 participante
+  do grupo X") a nome/e-mail literal.
+
+exec
+/bin/zsh -lc 'rg --files sdd/bin sdd/fixtures | head -90; find .. -name AGENTS.md -print; cat .agents/skills/sdd-playbook/SKILL.md' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+sdd/bin/design-lint.py
+sdd/bin/verify-gate.sh
+sdd/bin/kb-dominios.py
+sdd/bin/avaliador-guard.sh
+sdd/bin/skill-lint.py
+sdd/bin/handoff-lint.py
+sdd/bin/sdd-fluxo.sh
+sdd/bin/report-lint.py
+sdd/bin/playbook-lint.sh
+sdd/bin/sdd-decisoes-lint.sh
+sdd/bin/gate-shell-evidencia.sh
+sdd/bin/test-baseline.sh
+sdd/bin/gate-baseline.sh
+sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md
+sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md
+sdd/fixtures/fluxo/review-impasse/reviewer.verdicts.jsonl
+sdd/fixtures/fluxo/review-impasse/auditor.verdicts.jsonl
+sdd/fixtures/fluxo/review-impasse/META.txt
+sdd/fixtures/fluxo/DEFINE_sem_kind.md
+sdd/fixtures/fluxo/DESIGN_sem_manifest.md
+sdd/fixtures/fluxo/DESIGN_seguranca.md
+sdd/fixtures/fluxo/DESIGN_dispensavel.md
+sdd/fixtures/fluxo/ledger-aplicada.md
+sdd/fixtures/fluxo/AVALIACAO_needs_work.md
+sdd/fixtures/fluxo/DEFINE_pronto.md
+sdd/fixtures/fluxo/AVALIACAO_ambigua.md
+sdd/fixtures/fluxo/AVALIACAO_recibo.md
+sdd/fixtures/fluxo/review-invalida/reviewer.verdicts.jsonl
+sdd/fixtures/fluxo/review-invalida/auditor.verdicts.jsonl
+sdd/fixtures/fluxo/review-invalida/META.txt
+sdd/fixtures/fluxo/DESIGN_ledger_vazio.md
+sdd/fixtures/fluxo/DESIGN_pronto.md
+sdd/fixtures/fluxo/review-ok/reviewer.verdicts.jsonl
+sdd/fixtures/fluxo/review-ok/auditor.verdicts.jsonl
+sdd/fixtures/fluxo/review-ok/META.txt
+sdd/fixtures/fluxo/DEFINE_rascunho.md
+sdd/fixtures/fluxo/brief-avaliador.md
+sdd/fixtures/fluxo/AVALIACAO_pass.md
+sdd/fixtures/fluxo/ledger-rebatida.md
+sdd/fixtures/fluxo/config-autonomo.yaml
+sdd/fixtures/fluxo/DESIGN_numerado.md
+sdd/fixtures/fluxo/DESIGN_novos.md
+sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md
+sdd/fixtures/hooks/payload-agent-veredito.json
+sdd/fixtures/hooks/config-placeholder.json
+sdd/fixtures/hooks/payload-write-build-report.json
+sdd/fixtures/hooks/payload-edit-build-report.json
+sdd/fixtures/hooks/settings-com-outros-hooks.json
+sdd/fixtures/BRAINSTORM_EXEMPLO.md
+sdd/fixtures/evidencia/BUILD_REPORT_pendente.md
+sdd/fixtures/evidencia/testes-vitest.txt
+sdd/fixtures/evidencia/testes-go.txt
+sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md
+sdd/fixtures/evidencia/testes-jest.txt
+sdd/fixtures/evidencia/BUILD_REPORT_controle.md
+sdd/fixtures/evidencia/testes-deno.txt
+sdd/fixtures/evidencia/shell-falso-verde.log
+sdd/fixtures/evidencia/testes-pytest.txt
+sdd/fixtures/evidencia/shell-honesto.log
+sdd/fixtures/evidencia/testes-unittest.txt
+sdd/fixtures/evidencia/shell-pipe-assertivo.log
+sdd/fixtures/evidencia/BUILD_REPORT_evidencia_ignorada.md
+sdd/fixtures/conversa/conversa-sem-nao-sei/SKILL.md
+sdd/fixtures/conversa/conversa-sem-nao-sei/references/como-falar.md
+sdd/fixtures/conversa/conversa-dois-recomendados/SKILL.md
+sdd/fixtures/conversa/conversa-dois-recomendados/references/como-falar.md
+sdd/fixtures/conversa/conversa-com-outro/SKILL.md
+sdd/fixtures/conversa/conversa-com-outro/references/como-falar.md
+sdd/fixtures/conversa/conversa-controle/SKILL.md
+sdd/fixtures/conversa/conversa-controle/references/como-falar.md
+sdd/fixtures/conversa/conversa-sem-recomendado/SKILL.md
+sdd/fixtures/conversa/conversa-sem-recomendado/references/como-falar.md
+sdd/fixtures/conversa/decisoes/controle.md
+sdd/fixtures/conversa/decisoes/sem-classe.md
+sdd/fixtures/conversa/decisoes/com-jargao.md
+sdd/fixtures/conversa/decisoes/dois-recomendados.md
+sdd/fixtures/conversa/decisoes/com-outro.md
+sdd/fixtures/conversa/conversa-sem-secao/SKILL.md
+sdd/fixtures/conversa/conversa-sem-como-falar/SKILL.md
+sdd/fixtures/handoff/HANDOFF_VALIDO.md
+sdd/fixtures/playbook/playbook-colapso.md
+sdd/fixtures/playbook/playbook-delta-ok.md
+sdd/fixtures/playbook/playbook-invalido.md
+sdd/fixtures/playbook/playbook-valido.md
+sdd/fixtures/DEFINE_FIXTURE_GOVERNANCA.md
+sdd/fixtures/design/DESIGN_VALIDO.md
+---
+name: sdd-playbook
+description: >-
+  Playbook de landmines do projeto em sdd/playbook.md, formato ACE-lite — bullets com ID estável (LM-nnn), contadores ajudou/mordeu, superfícies greppáveis e atualização só por delta. Ativa em toda sessão: lê apenas a seção "## Sempre" no início; o resto entra por superfície via sdd/bin/playbook-lint.sh --grep. Nunca reescreve, comprime ou apaga bullets — uma sessão só PROPÕE candidatos; quem aplica é a fase Release, com OK humano por delta. Use quando alguém disser "isso já mordeu antes?", "registra essa armadilha", /sdd-playbook, ou ao tocar qualquer superfície durante Design e Build.
+compatibility: Requer bash >= 3.2 e git >= 2.20 (sdd/bin/playbook-lint.sh).
+license: MIT
+metadata:
+  author: Roberto Dias Duarte
+  version: "2.1.1"
+  updated: "2026-10"
+  fase: "transversal"
+---
+
+# sdd-playbook — landmines com ID, contadores e delta updates
+
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
+`sdd-playbook v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+
+Fonte: ACE (Agentic Context Engineering, arXiv 2510.04618). O que portamos: **delta updates
+itemizados** (sem eles o ganho do paper cai de +12,5 para +3,6) e um **papel que julga separado
+do que executa**. O que **não** portamos: curador autônomo (lição auto-gerada sem verificação
+piora), dedup por embedding, carga integral em toda sessão.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Leitura | Início de sessão |
+| 2 | Candidato | Candidato |
+| 3 | Promoção | Escada de promoção |
+
+A etapa 1 é silenciosa: não gera resposta própria. A camada vale quando a skill fala com o aluno
+(propor um candidato, pedir o OK de uma promoção).
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Playbook: ✅ 1 Leitura · ▶️ 2 Candidato · ⬜ 3 Promoção`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
+
+## Início de sessão (obrigatório, silencioso)
+
+Ler **só** a seção `## Sempre` — nunca o arquivo inteiro:
+
+```bash
+awk '/^## Sempre/{f=1;next} /^## /{f=0} f' sdd/playbook.md
+```
+
+Aplicar sem anunciar. As demais seções entram **por superfície**, quando a superfície é tocada:
+
+```bash
+sdd/bin/playbook-lint.sh --grep "<arquivo|comando|tabela|conceito>" sdd/playbook.md
+```
+
+Casa os termos de `sup:`; imprime os `LM-nnn`; exit 1 quando não há nenhum (ausência é
+informação). `--grep-all` busca no bloco inteiro quando você não sabe a superfície. A fase
+Design faz isso por superfície do manifest e registra em `## Landmines aplicáveis`; a fase Build
+repete e registra só os IDs em `## Landmines lidas no build`. É esse `✔ tratado` que vira
+`ajudou` na curadoria.
+
+## Formato (o lint é o juiz — `sdd/bin/playbook-lint.sh sdd/playbook.md`)
+
+```markdown
+- [LM-014] ajudou=1 mordeu=0 · conf=2026-09-02 · sup: `pedido` `status_pagamento` :: regra em 1–3 linhas. **Do instead:** ação concreta. → ficha: HANDOFF_X · promovido_para: —
+- [LM-007] ☠ 2026-09-02 :: motivo da aposentadoria                      (só sob ## Tombstones)
+```
+
+- `LM-nnn` é único e **nunca reusado**; `sup:` ≥1 termo greppável em crase; `Do instead:`
+  obrigatório; `→ ficha:` aponta para `sdd/handoffs/<nome>.md` ou incidente (o bullet aponta,
+  nunca duplica); `promovido_para:` = path do mecanismo (hook, check, script) quando a landmine
+  virou código, ou `—`.
+- Seções na ordem fixa: `Sempre` (≤10 bullets, ≤1.500 palavras) · `Dados` · `Backend` ·
+  `Frontend` · `Infra / deploy` · `Reviews / harness` · `Domínio` · `Tombstones` (última).
+  Só `Sempre` e `Tombstones` são obrigatórias; troque as intermediárias em
+  `PLAYBOOK_SECTIONS` se o seu projeto precisar (mesma ordem, `|` entre nomes).
+
+## Papéis
+
+| Papel | Quem | O que faz |
+|---|---|---|
+| Generator | você, em qualquer sessão | cita `LM-nnn` em `## Landmines aplicáveis` (`✔ tratado` vira `ajudou`); pode **propor** candidato |
+| Reflector | artefatos existentes | achados do avaliador fresco, Advisor Ledger, incidentes, gate vermelho, `WAIVED` — achado cuja causa **já tinha bullet** ⇒ `mordeu+1` |
+| Curator | passo 17b da fase Release, com o humano decidindo por delta | propõe `ajudou`/`mordeu` · `ADD` · `TOMBSTONE` · `REFINE` · `promovido_para=` com evidência `arquivo:linha`; aplica **só o aprovado** (lint verde, `--anti-collapse` verde, commit só do playbook); `mordeu ≥ 2` ⇒ pergunta de promoção obrigatória |
+
+A escrita legítima no playbook é a fase Release (delta aprovado) — ou, fora dela, um commit
+revisado com lint verde e OK humano. Nunca "no meio do trabalho".
+
+## Proibições (o lint aplica)
+
+- **Não reescrever, comprimir, reordenar em massa ou renumerar.** `--anti-collapse <antes>
+  <depois>` bloqueia quando um `LM-` desaparece ou >20% dos bullets mudam de conteúdo/seção
+  (contadores e `conf` não contam). Reescrita grande = 2+ commits.
+- **Não apagar.** Aposentar = mover para `## Tombstones` como `- [LM-nnn] ☠ data :: motivo`.
+- **Não escrever a partir da fase Design** (a varredura é read-only).
+- **Não inflar `## Sempre`**: só landmine de sessão sem superfície greppável.
+
+## Candidato — o único jeito de uma sessão "escrever"
+
+No BUILD_REPORT (seção "Candidatos ao playbook") ou na ficha, bloco literal:
+
+```text
+<<<CANDIDATO_PLAYBOOK
+secao: Backend
+sup: `termo1` `termo2`
+regra: … **Do instead:** …
+evidencia: caminho do log/incidente/AT que prova que mordeu (ou DESIGN onde ajudou)
+ficha: HANDOFF_X (se existir; senão "—")
+mordeu_antes: LM-nnn (se a causa já tinha bullet) | —
+>>>
+```
+
+Sem `evidencia:` o candidato não é candidato (lição sem verificação piora o contexto).
+
+## Escada de promoção
+
+`mordeu ≥ 2` = a regra escrita não bastou. O destino é um **mecanismo** (hook de pre-commit,
+check no gate, script), e o bullet ganha `promovido_para:`; cai para `## Tombstones` só quando
+o mecanismo tiver caso de teste que **falha** sem ele. `sdd/bin/playbook-lint.sh --stats`
+conta por `mordeu`.
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open
+
+codex
+sdd-define v2.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+
+Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar
+
+O brainstorm define casamento por data, valor absoluto e quantidade de ocorrências. Vou registrar as escolhas recomendadas para formato dos CSVs, entradas inválidas e diferenças de valor, conforme sua autorização para execução não interativa.
+
+Não há base em `sdd/kb/`; a skill sdd-kb permite criar uma. Também não há `AGENTS.md` nem comando de testes configurado. Vou preparar uma conferência executável com recursos padrão do Python e comprovar que ela falha antes de existir a ferramenta. A próxima fase será Governança, pois o escopo trata lançamentos contábeis.
+exec
+/bin/zsh -lc "bash sdd/bin/sdd-fluxo.sh estado; git rev-parse --abbrev-ref HEAD; ls sdd/features; python3 --version; sed -n '1,160p' sdd/bin/sdd-fluxo.sh" in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+encadeamento: ligado
+main
+ls: sdd/features: No such file or directory
+Python 3.9.6
+#!/usr/bin/env bash
+# sdd-fluxo.sh — decisores mecânicos do fluxo encadeado do SDD Open. Contrato de uso em
+# sdd/templates/fragments/FLUXO_ENCADEADO.md.
+#
+# Por que existe: "este DESIGN precisa de revisão?", "o loop de review convergiu?" e "a fase seguinte
+# pode começar sem perguntar?" eram decididos por leitura de prosa. Aqui viram exit code.
+#
+# USO-INICIO
+#   sdd-fluxo.sh review-design <DESIGN.md>
+#       0 EXIGIDO (≥ 3 arquivos novos no File Manifest, ou superfície de segurança: termo fixo,
+#         glob de review.security_globs ou de layers.sql) · 1 DISPENSAVEL · 64 manifest ilegível
+#         (quem chama RODA a revisão — default seguro — e registra o motivo)
+#   sdd-fluxo.sh loop --review <dir> --ledger <arquivo> --rodada N[a] [--teto 3]
+#                     [--avaliacao <AVALIACAO.md> --ciclo-avaliador K] [--recibo "nome AAAA-MM-DD"]
+#                     [--log <arquivo>]
+#       0 PRONTO · 10 CONTINUAR · 20 BLOQUEADO (D4 teto, D4 ciclos, D5 impasse de evidência)
+#       30 AGUARDANDO_RECIBO · 64 entrada ausente ou ilegível — nunca PRONTO por omissão
+#   sdd-fluxo.sh despachar <papel> <FEATURE> <brief.md>
+#       40 AGUARDANDO_HUMANO: brief em sdd/reports/briefs/BRIEF_<papel>_<FEATURE>.md e a parada ⏸️ · 64
+#   sdd-fluxo.sh seguir <fase> <DEFINE.md> <próxima> [--parar]
+#       0 SEGUIR (linha de transição) · 1 PARAR (o motivo) · 64 uso ou flow.autonomous inválido
+#   sdd-fluxo.sh estado
+#       0 encadeamento ligado · 1 desligado · 64 flow.autonomous inválido
+#   sdd-fluxo.sh --self-test
+#       um cenário por exit sobre sdd/fixtures/fluxo/ e o do `| tee`; 0 quando todos batem
+# USO-FIM
+#
+# Ledger do loop: 1 linha por achado, lida por CÉLULA — `| R1 | HIGH | APLICADA | rodada=2 | arquivo:linha |`.
+# Toda saída que não é sucesso termina em `RESULTADO: <PALAVRA>` + `→ <o que fazer>`.
+# ⚠️ bash 3.2 (o /bin/bash do macOS: nada além do que ele tem) · o núcleo de dados é Python 3.9 stdlib.
+
+set -u
+
+BIN="$(cd "$(dirname "$0")" && pwd)"
+export SDD_FLUXO_BIN="$BIN"
+
+uso() {
+  [ -n "${1:-}" ] && echo "🛑 sdd-fluxo: ${1}" >&2
+  sed -n '/^# USO-INICIO$/,/^# USO-FIM$/p' "$0" | sed '1d;$d;s/^# \{0,1\}//' >&2
+  printf 'RESULTADO: ERRO DE USO\n→ rode com um dos verbos acima.\n' >&2
+  exit 64
+}
+
+precisa_python() {
+  command -v python3 >/dev/null 2>&1 && return 0
+  echo "🛑 sdd-fluxo: python3 não encontrado no PATH." >&2
+  printf 'RESULTADO: ERRO DE USO\n→ instale o Python 3 (3.9 ou mais novo) e rode de novo.\n' >&2
+  exit 64
+}
+
+raiz() { git rev-parse --show-toplevel 2>/dev/null || pwd; }
+
+nome_ok() { printf '%s' "$1" | grep -Eq '^[A-Za-z0-9_-]+$'; }
+
+# ── despachar (bash puro) ────────────────────────────────────────────────────────────────────────
+cmd_despachar() {
+  [ $# -eq 3 ] || uso "despachar exige <papel> <FEATURE> <brief>"
+  papel="$1"; feat="$2"; brief="$3"
+  nome_ok "$papel" || uso "papel inválido: '$papel' (letras, números, - e _)"
+  nome_ok "$feat" || uso "FEATURE inválida: '$feat' (letras, números, - e _)"
+  if [ ! -r "$brief" ] || [ ! -s "$brief" ] || [ -d "$brief" ]; then
+    echo "🛑 sdd-fluxo: brief ausente, vazio ou ilegível: $brief" >&2
+    printf 'RESULTADO: ERRO DE USO\n→ grave o brief num arquivo e rode de novo; nada foi gravado em sdd/reports/briefs/.\n' >&2
+    exit 64
+  fi
+  R="$(raiz)"
+  rel="sdd/reports/briefs/BRIEF_${papel}_${feat}.md"
+  mkdir -p "$R/sdd/reports/briefs" || exit 64
+  if [ ! "$brief" -ef "$R/$rel" ]; then
+    cp "$brief" "$R/$rel" || exit 64
+  fi
+  cmp -s "$brief" "$R/$rel" || { echo "🛑 sdd-fluxo: a cópia do brief não confere: $rel" >&2; exit 64; }
+  if [ "$papel" = "avaliador" ]; then
+    retorno='a última linha da resposta (`VEREDITO: …`)'
+  else
+    retorno='o bloco final da resposta (o que começa com <<<)'
+  fi
+  printf '⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: %s).\n\n' "$papel"
+  printf '**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.\n'
+  printf '**Onde:** numa janela nova do seu agente, na pasta %s.\n' "$R"
+  printf '**Passos:**\n'
+  printf '1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.\n'
+  printf '2. Cole o conteúdo de %s → o agente começa a ler o DEFINE.\n' "$rel"
+  printf '3. Quando ele terminar, copie %s e cole aqui → é o que eu preciso para continuar.\n' "$retorno"
+  printf '**O que não foi feito:** nada foi publicado e o relatório não foi gravado.\n'
+  printf '**Brief:** %s\n' "$rel"
+  printf '**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.\n\n'
+  printf 'Quando terminar, me peça de novo, eu continuo daqui.\n'
+  printf 'RESULTADO: AGUARDANDO_HUMANO\n→ quando a pessoa colar o retorno, continue do passo que parou.\n'
+  exit 40
+}
+
+# ── núcleo de dados (Python 3.9 stdlib): review-design, loop, seguir, estado ─────────────────────
+nucleo() {
+  python3 -B - "$@" <<'PY'
+import fnmatch, os, re, shlex, subprocess, sys
+
+BIN = os.environ["SDD_FLUXO_BIN"]
+verbo, args = sys.argv[1], sys.argv[2:]
+
+
+def ler(caminho):
+    try:
+        with open(caminho, encoding="utf-8") as h:
+            return h.read()
+    except (OSError, UnicodeDecodeError):
+        return None
+
+
+def raiz_de(pasta):
+    try:
+        r = subprocess.run(["git", "-C", pasta, "rev-parse", "--show-toplevel"],
+                           capture_output=True, text=True)
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout.strip()
+    except OSError:
+        pass
+    return os.getcwd()
+
+
+def slot(caminho, bloco, chave):
+    """Valor de bloco.chave num YAML de 1 nível; None se o arquivo ou a chave não existem."""
+    texto = ler(caminho)
+    if texto is None:
+        return None
+    dentro = False
+    for ln in texto.splitlines():
+        if ln and not ln[0].isspace() and not ln.startswith("#"):
+            dentro = ln.split("#", 1)[0].strip() == bloco + ":"
+            continue
+        m = re.match(r"^\s+" + re.escape(chave) + r":\s*(.*)$", ln) if dentro else None
+        if m:
+            return m.group(1).split(" #", 1)[0].strip().strip('"').strip("'")
+    return None
+
+
+def erro_uso(msg, seta="rode `sdd-fluxo.sh` sem argumentos para ver o uso."):
+    print("🛑 sdd-fluxo: " + msg, file=sys.stderr)
+    print("RESULTADO: ERRO DE USO\n→ " + seta, file=sys.stderr)
+    sys.exit(64)
+
+
+# ── estado ───────────────────────────────────────────────────────────────────────────────────────
+def estado(raiz):
+    """(rc, linha): 0 ligado · 1 desligado · 64 valor inválido."""
+    v = slot(os.path.join(raiz, "sdd/config.yaml"), "flow", "autonomous")
+    if v == "true":
+        return 0, "encadeamento: ligado"
+    if v in (None, "", "false"):
+        return 1, "encadeamento: desligado"
+    return 64, ('⚠️ sdd-open: flow.autonomous = "%s" em sdd/config.yaml não é true nem false — '
+                "encadeamento desligado.\n→ troque por true (liga) ou false (desliga)" % v)
+
+
+def cmd_estado():
+    if args:
+        erro_uso("estado não recebe argumentos")
+    rc, linha = estado(raiz_de(os.getcwd()))
+    print(linha)
+    if rc == 64:
+
+apply patch
+patch: completed
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a/sdd/bin/gates/gate-exemplo.sh
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a/sdd/features/DEFINE_EXEMPLO.md
+diff --git a/sdd/bin/gates/gate-exemplo.sh b/sdd/bin/gates/gate-exemplo.sh
+new file mode 100644
+index 0000000000000000000000000000000000000000..0b3a369f131c7f9c0529fb1552fa541839f092f5
+--- /dev/null
++++ b/sdd/bin/gates/gate-exemplo.sh
+@@ -0,0 +1,142 @@
++#!/usr/bin/env bash
++# Contrato de aceite de DEFINE_EXEMPLO: executa a CLI real em arquivos temporários.
++set -eu
++GATE_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
++export GATE_ROOT
++command -v python3 >/dev/null 2>&1 || exit 3
++python3 -B - <<'PY'
++import csv
++import io
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import time
++
++CLI = Path(os.environ['GATE_ROOT']) / 'src/conciliador_extrato.py'
++HEADER = ['origem', 'linha', 'data', 'valor', 'motivo', 'linha_relacionada']
++E = 'data,descricao,valor\n'
++R = 'data,historico,debito,credito\n'
++
++
++def require(condition, message):
++    if not condition:
++        raise AssertionError(message)
++
++
++def run(extrato, razao, expected=0, missing=False):
++    require(CLI.is_file(), 'CLI ainda não implementada: src/conciliador_extrato.py')
++    with tempfile.TemporaryDirectory(prefix='gate-exemplo-') as folder:
++        folder = Path(folder)
++        e, r, out = (folder / name for name in ('extrato.csv', 'razao.csv', 'saida.csv'))
++        e.write_text(extrato, encoding='utf-8')
++        r.write_text(razao, encoding='utf-8')
++        before = (e.read_bytes(), r.read_bytes())
++        if expected:
++            out.write_bytes(b'relatorio anterior\n')
++        def invoke():
++            return subprocess.run(
++                [sys.executable, str(CLI), '--extrato', str(folder / 'ausente.csv') if missing else str(e),
++                 '--razao', str(r), '--saida', str(out)],
++                capture_output=True, timeout=15)
++        start = time.perf_counter()
++        result = invoke()
++        elapsed = time.perf_counter() - start
++        require(result.returncode == expected,
++                'exit esperado %s, obtido %s: %s' % (expected, result.returncode, result.stderr.decode('utf-8', 'replace')))
++        require((e.read_bytes(), r.read_bytes()) == before, 'entradas foram alteradas')
++        if expected:
++            require(result.stderr.strip(), 'erro sem diagnóstico em stderr')
++            require(out.read_bytes() == b'relatorio anterior\n', 'erro sobrescreveu relatório anterior')
++            return [], elapsed
++        require(out.is_file(), 'relatório não foi criado')
++        first = out.read_bytes()
++        reader = csv.DictReader(io.StringIO(first.decode('utf-8')))
++        require(reader.fieldnames == HEADER, 'cabeçalho de saída diverge do contrato')
++        rows = list(reader)
++        require(all(None not in row and all(v is not None for v in row.values()) for row in rows), 'CSV irregular')
++        again = invoke()
++        require(again.returncode == 0 and out.read_bytes() == first, 'reexecução não determinística')
++        require((e.read_bytes(), r.read_bytes()) == before, 'reexecução alterou entradas')
++        return rows, elapsed
++
++
++def row(origin, line, date, value, reason, related=''):
++    return dict(zip(HEADER, [origin, str(line), date, value, reason, str(related)]))
++
++
++def at001():
++    rows, _ = run(E+'2026-09-01,texto A,-10.00\n', R+'2026-09-01,texto B,10.00,0.00\n')
++    require(rows == [], 'par por data e valor absoluto não casou')
++
++
++def at002():
++    rows, _ = run(E+'2026-09-01,A,10.00\n', R+'2026-09-02,B,0.00,20.00\n')
++    require(rows == [row('extrato', 2, '2026-09-01', '10.00', 'ausente'),
++                     row('razao', 2, '2026-09-02', '20.00', 'ausente')], 'ausências incorretas')
++
++
++def at003():
++    rows, _ = run(E+'2026-09-01,A,10.00\n2026-09-01,B,20.00\n',
++                  R+'2026-09-01,C,10.00,0.00\n2026-09-01,D,21.00,0.00\n')
++    require(rows == [row('extrato', 3, '2026-09-01', '20.00', 'valor_diferente', 3),
++                     row('razao', 3, '2026-09-01', '21.00', 'valor_diferente', 3)], 'diferença inequívoca incorreta')
++
++
++def at004():
++    rows, _ = run(E+'2026-09-01,A,10.00\n2026-09-01,B,10.00\n',
++                  R+'2026-09-01,C,10.00,0.00\n2026-09-01,D,10.00,0.00\n')
++    require(rows == [], 'duplicados legítimos divergiram')
++    rows, _ = run(E+'2026-09-01,A,10.00\n2026-09-01,B,10.00\n', R+'2026-09-01,C,10.00,0.00\n')
++    require(rows == [row('extrato', 3, '2026-09-01', '10.00', 'ausente')], 'multiplicidade excedente incorreta')
++
++
++def at005():
++    rows, _ = run(E+'2026-09-01,A,10.00\n2026-09-01,B,20.00\n', R+'2026-09-01,C,30.00,0.00\n')
++    require(rows == [row('extrato', 2, '2026-09-01', '10.00', 'ausente'),
++                     row('extrato', 3, '2026-09-01', '20.00', 'ausente'),
++                     row('razao', 2, '2026-09-01', '30.00', 'ausente')], 'pareamento ambíguo inventado')
++
++
++def at006():
++    rows, _ = run(E+'2026-09-01,A,-0.10\n2026-09-01,B,0.20\n2026-09-02,C,0.30\n',
++                  R+'2026-09-01,D,0.00,0.10\n2026-09-01,E,0.20,0.00\n2026-09-02,F,0.30,0.00\n')
++    require(rows == [], 'centavos exatos ou sinal incorretos')
++    rows, _ = run(E+'2026-09-01,A,0.30\n', R+'2026-09-01,B,0.31,0.00\n')
++    require(len(rows) == 2 and all(r['motivo'] == 'valor_diferente' for r in rows), 'tolerância monetária indevida')
++
++
++def at007():
++    valid_r = R+'2026-09-01,B,1.00,0.00\n'
++    for invalid_e in ['data,valor\n2026-09-01,1.00\n', E+'2026-02-30,A,1.00\n',
++                      E+'2026-09-01,A,NaN\n', E+'2026-09-01,A,1.001\n', E+'2026-09-01,A,abc\n']:
++        run(invalid_e, valid_r, expected=2)
++    run(E+'2026-09-01,A,1.00\n', valid_r, expected=2, missing=True)
++    run(E, R+'2026-09-01,B,1.00,1.00\n', expected=2)
++    run(E, R+'2026-09-01,B,-1.00,0.00\n', expected=2)
++
++
++def at008():
++    e = E + ''.join('2026-09-01,item,%d.00\n' % n for n in range(1, 5001))
++    r = R + ''.join('2026-09-01,item,%d.00,0.00\n' % n for n in range(1, 5001))
++    rows, elapsed = run(e, r)
++    require(rows == [], 'carga conciliável gerou divergências')
++    require(elapsed < 5, '5000 linhas por entrada levaram %.3fs (limite <5s)' % elapsed)
++
++
++def at009():
++    rows, _ = run(E, R)
++    require(rows == [], 'entradas vazias com cabeçalho não produziram relatório vazio')
++
++
++failed = False
++for number, case in enumerate([at001, at002, at003, at004, at005, at006, at007, at008, at009], 1):
++    try:
++        case()
++        print('AT-%03d ✅' % number)
++    except Exception as error:
++        failed = True
++        print('AT-%03d ❌ %s' % (number, error))
++sys.exit(1 if failed else 0)
++PY
+diff --git a/sdd/features/DEFINE_EXEMPLO.md b/sdd/features/DEFINE_EXEMPLO.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..9d96e0993a40a3280e786789becd7431d16093bb
+--- /dev/null
++++ b/sdd/features/DEFINE_EXEMPLO.md
+@@ -0,0 +1,169 @@
++# DEFINE: CONCILIADOR_EXTRATO (EXEMPLO)
++
++> Ferramenta local de linha de comando que compara extrato bancário e razão contábil em CSV e exporta divergências sem modificar as entradas.
++
++## Metadata
++
++| Attribute | Value |
++|-----------|-------|
++| **Feature** | EXEMPLO — CONCILIADOR_EXTRATO |
++| **Date** | 2026-10-31 |
++| **Author** | Codex · sdd-define |
++| **Status** | Ready for UX Review |
++| **Clarity Score** | 15/15 |
++| **Source** | `sdd/fixtures/BRAINSTORM_EXEMPLO.md` |
++
++O nome EXEMPLO segue o destino solicitado; o produto mantém o nome da entrada. Governança antecede UX Review por tratar valores e lançamentos contábeis. A CLI é uma interface e requer UX Review, mesmo sem tela gráfica.
++
++## Problem Statement
++
++O contador gasta horas comparando extrato bancário e razão contábil manualmente a cada mês, podendo deixar passar diferenças de valor. Precisa identificar lançamentos sem correspondência preservando duplicados legítimos, com resultado reproduzível que possa abrir em planilha.
++
++## Target Users
++
++| User | Role | Pain Point |
++|------|------|------------|
++| Contador responsável pela conciliação mensal | Seleciona os dois CSVs e analisa as divergências | Comparação manual demorada e risco de ignorar diferenças ou tratar duplicados legítimos como erro |
++
++## Goals
++
++| Priority | Goal |
++|----------|------|
++| **MUST** | Comparar pela data e pelo valor absoluto exato, consumindo cada ocorrência no máximo uma vez. |
++| **MUST** | Exportar cada ocorrência divergente com origem, linha, data, valor e motivo. |
++| **MUST** | Processar até 5.000 registros por entrada em menos de 5 segundos e preservar os arquivos de entrada. |
++| **MUST** | Recusar entradas inválidas com diagnóstico e sem substituir relatório existente. |
++| **SHOULD** | Oferecer ajuda de uso com exemplos e mensagens compreensíveis ao contador; detalhamento na UX Review. |
++| **COULD** | Nenhum recurso adicional neste recorte. |
++
++MUST significa obrigatório; SHOULD, importante mas adiável; COULD, opcional.
++
++## Success Criteria
++
++- [ ] 2 arquivos de 5.000 registros cada são conciliados em <5 s de tempo de parede, incluindo inicialização, leitura e gravação, no computador que executar o gate; o BUILD_REPORT registra máquina e tempo.
++- [ ] 100% das ocorrências sem correspondência são exportadas exatamente uma vez; 0 ocorrências casadas aparecem no relatório.
++- [ ] 0 divergências para multiplicidades iguais; com 2 ocorrências no extrato e 1 no razão, exatamente 1 excedente é informado.
++- [ ] Diferença de R$ 0,01 é detectada, com tolerância monetária igual a 0 centavos.
++- [ ] 2 execuções com os mesmos arquivos produzem saída idêntica byte a byte e 0 alterações nas entradas.
++- [ ] 100% dos casos inválidos enumerados em AT-007 terminam com código 2, diagnóstico em stderr e relatório anterior intacto.
++
++## Acceptance Tests
++
++EARS padroniza as frases de aceite com palavras em inglês e conteúdo em português. Todos os testes abaixo executam a CLI real por subprocesso; a coluna Gate indica a conferência automatizada.
++
++| ID | Padrão | Critério (EARS) | Gate (`kind`) |
++|----|--------|-----------------|---------------|
++| AT-001 | Event-driven | **When** as entradas contêm ocorrências com mesma data e mesmo valor absoluto, o sistema **shall** conciliá-las independentemente de descrição e sinal, sem exportar essas ocorrências. | test |
++| AT-002 | Event-driven | **When** uma ocorrência não tem contraparte na mesma data, o sistema **shall** exportá-la com origem, linha, data, valor e motivo `ausente`. | test |
++| AT-003 | State-driven | **While** restar exatamente uma ocorrência de cada lado na mesma data após consumir todos os casamentos exatos, o sistema **shall** exportar as duas ocorrências como `valor_diferente`, cada uma referenciando a linha da outra. | test |
++| AT-004 | Event-driven | **When** existirem ocorrências duplicadas da mesma chave, o sistema **shall** consumir pares por ordem de linha até a menor multiplicidade, exportando somente o excedente. | test |
++| AT-005 | Unwanted | **If** sobrarem ocorrências dos dois lados na mesma data sem um par residual único, **then** o sistema **shall** exportar todas as sobras como `ausente`, sem inventar associação por valor diferente. | test |
++| AT-006 | Event-driven | **When** valores monetários com até duas casas decimais forem comparados, o sistema **shall** usar igualdade exata em centavos, detectando inclusive diferença de 0,01. | test |
++| AT-007 | Unwanted | **If** faltar arquivo ou coluna obrigatória, ou houver data inexistente, valor não numérico/não finito/com mais de duas casas, débito/crédito negativo ou ambos não zero, **then** o sistema **shall** encerrar com código 2 e diagnóstico em stderr, preservando entradas e relatório anterior. | test |
++| AT-008 | Event-driven | **When** cada CSV tiver 5.000 registros conciliáveis, o sistema **shall** concluir com código 0 e relatório sem divergências em menos de 5 segundos. | test |
++| AT-009 | Event-driven | **When** ambos os CSVs contiverem somente cabeçalho, o sistema **shall** gerar relatório somente com cabeçalho e encerrar com código 0. | test |
++
++**Consideração dos padrões:** While coberto por AT-003; If–Then por AT-005 e AT-007; Where N.A., pois não há opção que altere a regra de conciliação. Não regressão N.A.: feature nova, sem correção de comportamento existente.
++
++Preservação de entradas e determinismo são verificados em todas as chamadas válidas do gate, que executa cada cenário duas vezes. UX visual não integra estes ATs; ajuda, clareza das mensagens e jornada da CLI serão revisadas na UX Review.
++
++## Clarifications
++
++### Session 2026-10-31
++
++Execução não interativa autorizada pelo usuário: em cada decisão abaixo foi escolhida a opção recomendada. As escolhas adicionais são decisões desta execução, não respostas atribuídas ao brainstorm.
++
++- [x] (escopo) Qual abordagem e nome de artefato? → Script Python local, abordagem A já escolhida; destino EXEMPLO solicitado; integrado em Metadata e Technical Context.
++- [x] (dados) Qual formato de intercâmbio? → Recomendado: CSV UTF-8, vírgula, cabeçalho obrigatório, data ISO `YYYY-MM-DD`, decimal com ponto e até duas casas; integrado em Constraints.
++- [x] (terminologia) O que representa valor no razão? → Recomendado: valor absoluto de `debito - credito`, sem tolerância; ambos não negativos e no máximo um não zero; integrado em Constraints e AT-006/007.
++- [x] (edge cases) Como identificar valor diferente se descrição não serve como identidade? → Recomendado: primeiro casar exatos; somente par residual único por data recebe `valor_diferente`; outras sobras recebem `ausente`; integrado em AT-003/005 e Constraints.
++- [x] (UX) Como invocar e informar sucesso, vazio e erro? → Recomendado: caminhos explícitos de entrada/saída, relatório com cabeçalho inclusive sem divergência, códigos 0/2 e diagnóstico no erro; integrado em Constraints e AT-007/009.
++- [x] (NFRs) Como medir o limite? → Recomendado: tempo de parede no computador do gate, 5.000 registros por entrada, incluindo subprocesso e I/O; integrado em Success Criteria e AT-008.
++- [x] (integrações) Haverá banco, rede ou serviço externo? → Nenhum; apenas arquivos locais; integrado em Out of Scope e Technical Context.
++- [x] (restrições) Como tratar mudanças na origem? → Recomendado: entradas somente leitura e saída distinta de ambas; integrado em Constraints.
++- [x] (sinal de conclusão) Qual comando usar se o slot de testes está vazio? → Recomendado e adotado nesta execução: gate próprio `bash sdd/bin/gates/gate-exemplo.sh`, com Python padrão disponível, sem presumir runner ou preencher o slot global; integrado em Verify Gate.
++- [x] (restrições) UX Review pode ser pulada por não haver GUI? → Não: há CLI; manter UX Review após Governança; integrado em Metadata e Next Step.
++- [x] (escopo) Pode gravar os nove testes e o DEFINE? → Sim, opção recomendada aplicada por autorização não interativa; integrado neste documento e gate composto.
++
++Varredura final das nove categorias: escopo Clear; dados Clear; UX Clear; NFRs Clear; integrações Clear; edge cases Clear; restrições Clear; terminologia Clear; sinal de conclusão Clear. Zero dúvidas ativas.
++
++## Verify Gate
++
++```yaml
++verify_gate:
++  kind: test
++  cmd: "bash sdd/bin/gates/gate-exemplo.sh"
++  pass_when: "exit 0"
++  threshold: "—"
++  manual_fallback: "—"
++```
++
++Gate composto com um bloco por AT, imprimindo `AT-001` a `AT-009` com ✅/❌. Usa fixtures temporárias e executa `src/conciliador_extrato.py`; nenhuma asserção se limita à presença de texto. Cada AT falha enquanto a CLI estiver ausente. A validação `--print` confere apenas a estrutura do contrato; o gate comportamental deve nascer vermelho e passar após a implementação. Baseline desta fase: `sdd/reports/evidence/EXEMPLO/BASELINE_DEFINE.log`.
++
++Rastreabilidade: AT-001 → `at001`; AT-002 → `at002`; AT-003 → `at003`; AT-004 → `at004`; AT-005 → `at005`; AT-006 → `at006`; AT-007 → `at007`; AT-008 → `at008`; AT-009 → `at009`, todos no script do gate. Os seis critérios de sucesso são cobertos respectivamente por AT-008; AT-001/002/003/005; AT-004; AT-006; verificações comuns a todas as execuções válidas; AT-007.
++
++## Out of Scope
++
++- Importação direta do banco, OFX, API bancária, rede e autenticação.
++- Corrigir, apagar ou gravar lançamentos contábeis; atualizar qualquer entrada.
++- Interface gráfica, banco de dados, persistência de histórico ou serviço hospedado.
++- Casamento por descrição, aproximação de data, tolerância monetária ou soma de vários lançamentos.
++- Descoberta automática de formatos CSV e arquivos com mais de 5.000 registros por entrada.
++
++## Constraints
++
++| Type | Constraint | Impact |
++|------|------------|--------|
++| Technical | Python 3.9+ e biblioteca padrão; `src/conciliador_extrato.py` é o ponto de entrada proposto e adotado para o aceite. | Sem instalar dependências ou precisar de serviço. |
++| Dados | CSV UTF-8 separado por vírgula, aspas conforme CSV; cabeçalhos `data,descricao,valor` no extrato e `data,historico,debito,credito` no razão. Colunas adicionais são ignoradas. | Datas ISO válidas e números decimais finitos, ponto decimal e até duas casas; campos monetários obrigatórios, inclusive zeros. |
++| Financeiro | Chave `(data, abs(valor))`; no razão `abs(debito - credito)`. Débito e crédito não negativos, no máximo um não zero; zero/zero é aceito. | Comparação em centavos inteiros ou decimal exato, nunca ponto flutuante binário. Sem considerar sinal na chave. |
++| Casamento | Consumir pares exatos na ordem das linhas; depois classificar sobras por data conforme AT-003/005. | Não agregar valores nem atribuir identidade pela descrição. |
++| CLI | `python3 src/conciliador_extrato.py --extrato <csv> --razao <csv> --saida <csv>` | Código 0 significa execução válida, inclusive com divergências; código 2 significa erro de entrada/uso, com stderr identificando o motivo e arquivo/linha quando aplicável. |
++| Saída | CSV UTF-8 com cabeçalho `origem,linha,data,valor,motivo,linha_relacionada`; origem `extrato` ou `razao`; linha física a partir de 2; valor absoluto com duas casas e ponto decimal. | Uma linha por ocorrência divergente, ordenada por origem (extrato antes de razão) e linha crescente; `linha_relacionada` vazia para ausente. Registros de entrada não contêm quebras de linha dentro de campos. |
++| Segurança de arquivos | Entradas somente leitura; saída deve ser caminho distinto das duas entradas, inclusive links que apontem para elas; validar tudo antes de substituir saída. | Erro preserva relatório anterior. Falhas de leitura/gravação encerram com código 2 e diagnóstico, sem relatório parcial. |
++| Volume | Até 5.000 registros por entrada; excedentes são recusados com código 2. | Limita o recorte de desempenho; entradas sem registros são válidas se tiverem cabeçalho. |
++| Timeline | Sem prazo informado; entrega desta execução é a especificação e o aceite executável. | Implementação e revisões pertencem às fases seguintes. |
++
++## Technical Context
++
++| Aspect | Value | Notes |
++|--------|-------|-------|
++| **Deployment Location** | `src/conciliador_extrato.py` | CLI local proposta; ainda não implementada. Gate em `sdd/bin/gates/gate-exemplo.sh`. |
++| **KB Domains** | nenhum | Não existe `sdd/kb/`; sdd-kb permite criar a base. |
++| **IaC Impact** | None | Nenhum recurso de infraestrutura. |
++| **LLM Prompts** | false | Não cria nem edita prompts em produção; conciliação determinística local, zero sinais de modelo/provedor/pipeline ou loop. |
++
++Não existe `AGENTS.md` neste repositório. `project.test_cmd` e `project.typecheck_cmd` estão vazios; não foram tratados como comandos existentes. A escolha explícita do gate próprio está registrada em Clarifications; nenhuma configuração global é alterada.
++
++## Assumptions
++
++| ID | Assumption | If Wrong, Impact | Validated? |
++|----|------------|------------------|------------|
++| A-001 | A descrição não é identidade; chave por data/valor absoluto e multiplicidade é suficiente para este recorte. | Mudaria o contrato de casamento. | Sim: brainstorm, respostas 2 e 3. |
++| A-002 | Python 3.9+ está disponível no ambiente de aceite. | Gate inconclusivo sem ferramenta; máquina de destino precisa de Python. | Sim no ambiente desta fase: Python 3.9.6; destino conferido no Build. |
++| A-003 | O formato canônico de CSV é o contrato de entrada deste exemplo. | Outros formatos precisam de conversão ou novo requisito. | Sim: opção recomendada adotada nesta execução e registrada acima. |
++
++## Clarity Score Breakdown
++
++| Element | Score (0-3) | Notes |
++|---------|-------------|-------|
++| Problem | 3 | Comparação mensal manual e divergências não identificadas. |
++| Users | 3 | Contador, entradas e resultado definidos. |
++| Goals | 3 | Obrigações e prioridades delimitadas. |
++| Success | 3 | Tempo, volume, precisão, preservação e determinismo mensuráveis. |
++| Scope | 3 | Regras de casamento, formatos, limites e exclusões explícitos. |
++| **Total** | **15/15** | Mínimo 12/15 atendido. |
++
++## Open Questions
++
++Nenhuma pergunta de requisito pendente. Governança e UX Review ainda não executadas. O vermelho do gate antes da implementação é esperado e não representa validação do produto.
++
++## Revision History
++
++| Version | Date | Author | Changes |
++|---------|------|--------|---------|
++| 1.0 | 2026-10-31 | Codex · define-agent | Extração do brainstorm, decisões recomendadas autorizadas, nove ATs, gate composto e encaminhamento à Governança. |
++
++## Next Step
++
++**Ready for:** `/sdd-governanca sdd/features/DEFINE_EXEMPLO.md` por tratar dinheiro e lançamentos contábeis. Depois: UX Review da CLI e Design. Nesta execução, encerrar após a linha de transição, sem iniciar a próxima fase, conforme pedido do usuário.
+
+codex
+Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ▶️ 5 Verify Gate · ⬜ 6 Gravar
+
+O documento foi gravado com nove testes de aceitação. Para evitar associações arbitrárias, a escolha recomendada registra “valor diferente” somente quando sobra um lançamento de cada lado na mesma data.
+
+Agora vou validar o documento e executar a conferência final, chamada Verify Gate. A ferramenta ainda não existe, então os nove testes devem falhar nesta primeira execução; esse resultado ficará registrado como evidência.
+exec
+/bin/zsh -lc 'mkdir -p sdd/reports/evidence/EXEMPLO
+bash sdd/bin/gates/gate-exemplo.sh > sdd/reports/evidence/EXEMPLO/BASELINE_DEFINE.log 2>&1
+baseline_result=$?
+cat sdd/reports/evidence/EXEMPLO/BASELINE_DEFINE.log
+printf '"'baseline_exit=%s\\n' \""'$baseline_result"
+test "$baseline_result" -eq 1' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+AT-001 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+AT-002 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+AT-003 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+AT-004 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+AT-005 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+AT-006 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+AT-007 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+AT-008 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+AT-009 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+baseline_exit=1
+
+exec
+/bin/zsh -lc 'bash sdd/bin/verify-gate.sh --print sdd/features/DEFINE_EXEMPLO.md
+python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_EXEMPLO.md' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+── Verify Gate de sdd/features/DEFINE_EXEMPLO.md ──
+kind:       test
+cmd:        bash sdd/bin/gates/gate-exemplo.sh
+pass_when:  exit 0
+threshold:  —
+✅ sdd/features/DEFINE_EXEMPLO.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+
+exec
+/bin/zsh -lc 'bash sdd/bin/verify-gate.sh sdd/features/DEFINE_EXEMPLO.md > sdd/reports/evidence/EXEMPLO/VERIFY_GATE_DEFINE.log 2>&1
+verify_result=$?
+cat sdd/reports/evidence/EXEMPLO/VERIFY_GATE_DEFINE.log
+printf '"'verify_gate_exit=%s\\n' \""'$verify_result"
+test "$verify_result" -eq 2' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 19ms:
+▶ Verify Gate [test]: bash sdd/bin/gates/gate-exemplo.sh
+   │ AT-001 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+   │ AT-002 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+   │ AT-003 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+   │ AT-004 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+   │ AT-005 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+   │ AT-006 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+   │ AT-007 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+   │ AT-008 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+   │ AT-009 ❌ CLI ainda não implementada: src/conciliador_extrato.py
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+verify_gate_exit=2
+
+exec
+/bin/zsh -lc 'git diff --check
+ git status --short' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+?? sdd/bin/gates/
+?? sdd/features/
+?? sdd/reports/
+?? sdd/traces/
+
+exec
+/bin/zsh -lc 'bash sdd/bin/sdd-fluxo.sh seguir define sdd/features/DEFINE_EXEMPLO.md governanca' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CCvJ3Q8Nie/a
+ succeeded in 0ms:
+✅ DEFINE pronto → seguindo para a GOVERNANÇA (encadeamento ligado em sdd/config.yaml)
+→ /sdd-governanca sdd/features/DEFINE_EXEMPLO.md
+
+codex
+Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ✅ 5 Verify Gate · ✅ 6 Gravar
+
+⬜ /sdd-brainstorm — 🏃 /sdd-define
+⬜ /sdd-governanca — ⬜ /sdd-ux-review — ⬜ /sdd-design — ⬜ /sdd-build — ⬜ /sdd-release
+
+**Onde estamos:** [DEFINE_EXEMPLO.md](sdd/features/DEFINE_EXEMPLO.md) criado com nove testes. Estrutura do Verify Gate e KB Domains válidos; os nove testes falharam como esperado antes da implementação.
+
+**O que vem depois:** Governança, por tratar lançamentos contábeis; depois, UX Review da CLI e Design.
+
+**Decidi sozinho:** apliquei as opções recomendadas e registrei as escolhas em Clarifications, conforme sua autorização.
+
+✅ DEFINE pronto → seguindo para a GOVERNANÇA (encadeamento ligado em sdd/config.yaml)
+tokens used
+54.619
+Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ✅ 5 Verify Gate · ✅ 6 Gravar
+
+⬜ /sdd-brainstorm — 🏃 /sdd-define
+⬜ /sdd-governanca — ⬜ /sdd-ux-review — ⬜ /sdd-design — ⬜ /sdd-build — ⬜ /sdd-release
+
+**Onde estamos:** [DEFINE_EXEMPLO.md](sdd/features/DEFINE_EXEMPLO.md) criado com nove testes. Estrutura do Verify Gate e KB Domains válidos; os nove testes falharam como esperado antes da implementação.
+
+**O que vem depois:** Governança, por tratar lançamentos contábeis; depois, UX Review da CLI e Design.
+
+**Decidi sozinho:** apliquei as opções recomendadas e registrei as escolhas em Clarifications, conforme sua autorização.
+
+✅ DEFINE pronto → seguindo para a GOVERNANÇA (encadeamento ligado em sdd/config.yaml)
+[exit=0]
+── conferência do critério (a)
+4
+2
+4
+DEFINE_EXEMPLO.md
+AT-030: PASS

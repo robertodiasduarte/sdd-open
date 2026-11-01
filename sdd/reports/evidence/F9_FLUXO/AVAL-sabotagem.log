@@ -1,0 +1,96 @@
+$ cat '/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f9-fluxo/94899e31-441d-456b-92d6-96e16fa6305d/scratchpad/sabota.sh'; /bin/bash '/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f9-fluxo/94899e31-441d-456b-92d6-96e16fa6305d/scratchpad/sabota.sh'
+#!/bin/bash
+# Sabotagem em cópia temporária (git archive HEAD da worktree de avaliação); nunca toca a worktree.
+set -u
+W=/Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval
+T=$(mktemp -d "/tmp/aval sabot.XXXX") || exit 1
+trap 'rm -rf "${T:?}"' EXIT
+cd "$W" && git archive HEAD | tar -x -C "$T" && cd "$T" || exit 1
+git init -q && git add -A && git -c user.name=aval -c user.email=aval@example.com commit -qm base || exit 1
+roda() { SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "$1" 2>&1 | grep -E '^(FAIL|ERROR):|^Ran |^OK|^FAILED'; return "${PIPESTATUS[0]}"; }
+sab() { # sab <nome> <arquivo> <python-replace-old> <new> <pattern de teste>
+  nome="$1"; arq="$2"; old="$3"; new="$4"; pat="$5"
+  /usr/bin/python3 - "$arq" "$old" "$new" <<'PY' || { echo "🛑 $nome: trecho não achado"; return 1; }
+import sys
+p, old, new = sys.argv[1:]
+t = open(p, encoding="utf-8").read()
+if t.count(old) != 1: sys.exit(1)
+open(p, "w", encoding="utf-8").write(t.replace(old, new))
+PY
+  echo "=== sabotagem: $nome ($arq)"; git diff --stat | tail -1
+  roda "$pat"; rc=$?; echo "[sabotado: exit=$rc]"
+  git checkout -q -- "$arq"; roda "$pat"; rc2=$?; echo "[restaurado por git checkout: exit=$rc2]"
+  [ "$rc" -ne 0 ] && [ "$rc2" -eq 0 ]
+}
+F=0
+sab "review-design: limiar 3 vira 4" sdd/bin/sdd-fluxo.sh 'if novos >= 3:' 'if novos >= 4:' 'test_fluxo.py' || F=$((F+1))
+sab "loop: review inválida exige os 2 exits ≠ 0 (or → and)" sdd/bin/sdd-fluxo.sh 'if rev_ec != "0" or aud_ec != "0":' 'if rev_ec != "0" and aud_ec != "0":' 'test_fluxo.py' || F=$((F+1))
+sab "seguir: Status Ready for removido" sdd/bin/sdd-fluxo.sh 'if not st.startswith("Ready for"):' 'if False:' 'test_fluxo.py' || F=$((F+1))
+sab "decisoes-lint: regra da marca removida" sdd/bin/sdd-decisoes-lint.sh '    if not marcas:
+        erros.append("sem marca' '    if False:
+        erros.append("sem marca' 'test_decisoes_lint.py' || F=$((F+1))
+sab "decisoes-lint: regra do rótulo invertida" sdd/bin/sdd-decisoes-lint.sh 'elif ROTULOS.get(m.group(1)) != m.group(2).strip():' 'elif ROTULOS.get(m.group(1)) == m.group(2).strip():' 'test_decisoes_lint.py' || F=$((F+1))
+echo "sabotagens não pegas ou não restauradas: $F"
+exit $F
+=== sabotagem: review-design: limiar 3 vira 4 (sdd/bin/sdd-fluxo.sh)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+FAIL: test_titulo_numerado_com_qualificador_e_acoes_novo_new (test_fluxo.ReviewDesign)
+FAIL: test_tres_arquivos_novos_exige_e_modify_nao_conta (test_fluxo.ReviewDesign)
+FAIL: test_para_por_cada_motivo (test_fluxo.Seguir) (fase='design', define='DEFINE_V', prox='build')
+FAIL: test_para_por_cada_motivo (test_fluxo.Seguir) (fase='design', define='DEFINE_H', prox='build')
+FAIL: test_self_test_numa_copia_sem_git (test_fluxo.SelfTest)
+Ran 39 tests in 7.191s
+FAILED (failures=5)
+[sabotado: exit=1]
+Ran 39 tests in 7.417s
+OK
+[restaurado por git checkout: exit=0]
+=== sabotagem: loop: review inválida exige os 2 exits ≠ 0 (or → and) (sdd/bin/sdd-fluxo.sh)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+FAIL: test_review_invalida_nao_le_os_jsonl_e_sai_10 (test_fluxo.Loop)
+FAIL: test_self_test_numa_copia_sem_git (test_fluxo.SelfTest)
+Ran 39 tests in 7.171s
+FAILED (failures=2)
+[sabotado: exit=1]
+Ran 39 tests in 7.341s
+OK
+[restaurado por git checkout: exit=0]
+=== sabotagem: seguir: Status Ready for removido (sdd/bin/sdd-fluxo.sh)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+FAIL: test_para_por_cada_motivo (test_fluxo.Seguir) (fase='define', define='DEFINE_R', prox='design')
+FAIL: test_para_por_cada_motivo (test_fluxo.Seguir) (fase='ux-review', define='DEFINE_X', prox='design')
+FAIL: test_self_test_numa_copia_sem_git (test_fluxo.SelfTest)
+Ran 39 tests in 7.910s
+FAILED (failures=3)
+[sabotado: exit=1]
+Ran 39 tests in 7.082s
+OK
+[restaurado por git checkout: exit=0]
+=== sabotagem: decisoes-lint: regra da marca removida (sdd/bin/sdd-decisoes-lint.sh)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='sem marca')
+FAIL: test_citacao_e_pasta_com_varios_arquivos (test_decisoes_lint.Regras)
+FAIL: test_pergunta_em_bloco_markdown_conta_em_outro_bloco_nao (test_decisoes_lint.Regras)
+FAIL: test_as_4_fixtures_reprovam_e_o_controle_passa (test_decisoes_lint.SelfTest)
+Ran 11 tests in 1.248s
+FAILED (failures=4)
+[sabotado: exit=1]
+Ran 11 tests in 1.296s
+OK
+[restaurado por git checkout: exit=0]
+=== sabotagem: decisoes-lint: regra do rótulo invertida (sdd/bin/sdd-decisoes-lint.sh)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+FAIL: test_fragmentos_2_perguntas (test_decisoes_lint.AlvosReais)
+FAIL: test_skills_do_pacote_15_perguntas (test_decisoes_lint.AlvosReais)
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='rótulo diferente')
+FAIL: test_citacao_e_pasta_com_varios_arquivos (test_decisoes_lint.Regras)
+FAIL: test_controle_passa_com_ref_no_fim (test_decisoes_lint.Regras)
+FAIL: test_as_4_fixtures_reprovam_e_o_controle_passa (test_decisoes_lint.SelfTest)
+Ran 11 tests in 1.180s
+FAILED (failures=6)
+[sabotado: exit=1]
+Ran 11 tests in 1.163s
+OK
+[restaurado por git checkout: exit=0]
+sabotagens não pegas ou não restauradas: 0
+[exit=0]

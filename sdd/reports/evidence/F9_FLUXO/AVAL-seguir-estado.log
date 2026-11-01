@@ -1,0 +1,84 @@
+$ S="$PWD/sdd/bin/sdd-fluxo.sh"; FX="$PWD/sdd/fixtures/fluxo"; T=$(mktemp -d "/tmp/aval seg.XXXX"); R="$T/repo com espaço"; mkdir -p "$R/sdd/features" "$R/sdd/reviews"; cd "$R" && git init -q; cp "$FX/DEFINE_pronto.md" sdd/features/DEFINE_X.md; cp "$FX/DESIGN_pronto.md" sdd/features/DESIGN_X.md; cp "$FX/DEFINE_rascunho.md" sdd/features/DEFINE_R.md; cp "$FX/DEFINE_pronto.md" sdd/features/DEFINE_V.md; cp "$FX/DESIGN_ledger_vazio.md" sdd/features/DESIGN_V.md; printf "| **Status** | Ready for Design |\n" > sdd/reviews/UX_REVIEW_X.md; n=0; t(){ w=$1; shift; o=$(bash "$S" "$@" 2>&1); r=$?; printf "%s\n" "--- $* → exit $r (esperado $w)" "$o"; [ $r = $w ] || n=$((n+1)); }; t 1 estado; t 1 seguir define sdd/features/DEFINE_X.md design; printf "flow:\n  autonomous: false\n" > sdd/config.yaml; t 1 estado; printf "flow:\n  autonomous:\n" > sdd/config.yaml; t 1 estado; cp "$FX/config-autonomo.yaml" sdd/config.yaml; t 0 estado; t 0 seguir define sdd/features/DEFINE_X.md design; t 0 seguir define sdd/features/DEFINE_X.md governanca; t 0 seguir define sdd/features/DEFINE_X.md ux-review; t 0 seguir governanca sdd/features/DEFINE_X.md ux-review; t 0 seguir governanca sdd/features/DEFINE_X.md design; t 0 seguir ux-review sdd/features/DEFINE_X.md design; t 0 seguir design sdd/features/DEFINE_X.md build; t 1 seguir define sdd/features/DEFINE_X.md design --parar; t 1 seguir define sdd/features/DEFINE_R.md design; t 1 seguir design sdd/features/DEFINE_V.md build; t 1 seguir build sdd/features/DEFINE_X.md release; t 1 seguir define sdd/features/DEFINE_X.md release; t 64 seguir define sdd/features/DEFINE_X.md build; t 64 seguir release sdd/features/DEFINE_X.md release; t 64 seguir define sdd/features/NAO.md design; t 64 seguir define sdd/features/DEFINE_X.md; t 64 estado x; printf "flow:\n  autonomous: sim\n" > sdd/config.yaml; t 64 estado; t 64 seguir define sdd/features/DEFINE_X.md design; cd /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval; rm -rf "${T:?}"; echo "divergências: $n"; (exit $n)
+--- estado → exit 1 (esperado 1)
+encadeamento: desligado
+--- seguir define sdd/features/DEFINE_X.md design → exit 1 (esperado 1)
+PARAR: encadeamento desligado
+RESULTADO: PARAR
+→ Próximo passo: /sdd-design sdd/features/DEFINE_X.md
+--- estado → exit 1 (esperado 1)
+encadeamento: desligado
+--- estado → exit 1 (esperado 1)
+encadeamento: desligado
+--- estado → exit 0 (esperado 0)
+encadeamento: ligado
+--- seguir define sdd/features/DEFINE_X.md design → exit 0 (esperado 0)
+✅ DEFINE pronto → seguindo para o DESIGN (encadeamento ligado em sdd/config.yaml)
+→ /sdd-design sdd/features/DEFINE_X.md
+--- seguir define sdd/features/DEFINE_X.md governanca → exit 0 (esperado 0)
+✅ DEFINE pronto → seguindo para a GOVERNANÇA (encadeamento ligado em sdd/config.yaml)
+→ /sdd-governanca sdd/features/DEFINE_X.md
+--- seguir define sdd/features/DEFINE_X.md ux-review → exit 0 (esperado 0)
+✅ DEFINE pronto → seguindo para a UX REVIEW (encadeamento ligado em sdd/config.yaml)
+→ /sdd-ux-review sdd/features/DEFINE_X.md
+--- seguir governanca sdd/features/DEFINE_X.md ux-review → exit 0 (esperado 0)
+✅ GOVERNANÇA pronta → seguindo para a UX REVIEW (encadeamento ligado em sdd/config.yaml)
+→ /sdd-ux-review sdd/features/DEFINE_X.md
+--- seguir governanca sdd/features/DEFINE_X.md design → exit 0 (esperado 0)
+✅ GOVERNANÇA pronta → seguindo para o DESIGN (encadeamento ligado em sdd/config.yaml)
+→ /sdd-design sdd/features/DEFINE_X.md
+--- seguir ux-review sdd/features/DEFINE_X.md design → exit 0 (esperado 0)
+✅ UX REVIEW pronta → seguindo para o DESIGN (encadeamento ligado em sdd/config.yaml)
+→ /sdd-design sdd/features/DEFINE_X.md
+--- seguir design sdd/features/DEFINE_X.md build → exit 0 (esperado 0)
+✅ DESIGN pronto → seguindo para o BUILD (encadeamento ligado em sdd/config.yaml)
+→ /sdd-build sdd/features/DESIGN_X.md
+--- seguir define sdd/features/DEFINE_X.md design --parar → exit 1 (esperado 1)
+PARAR: pedido de parar nesta chamada (--parar)
+RESULTADO: PARAR
+→ Próximo passo: /sdd-design sdd/features/DEFINE_X.md
+--- seguir define sdd/features/DEFINE_R.md design → exit 1 (esperado 1)
+PARAR: DEFINE não está pronto (Status: Draft)
+RESULTADO: PARAR
+→ Próximo passo: /sdd-design sdd/features/DEFINE_R.md
+--- seguir design sdd/features/DEFINE_V.md build → exit 1 (esperado 1)
+PARAR: revisão do DESIGN exigida e não registrada no Advisor Ledger
+RESULTADO: PARAR
+→ Próximo passo: /sdd-build sdd/features/DESIGN_V.md
+--- seguir build sdd/features/DEFINE_X.md release → exit 1 (esperado 1)
+PARAR: publicar não se desfaz — é decisão sua (D1)
+RESULTADO: PARAR
+→ Próximo passo: /sdd-release sdd/features/DEFINE_X.md
+--- seguir define sdd/features/DEFINE_X.md release → exit 1 (esperado 1)
+PARAR: publicar não se desfaz — é decisão sua (D1)
+RESULTADO: PARAR
+→ Próximo passo: /sdd-release sdd/features/DEFINE_X.md
+--- seguir define sdd/features/DEFINE_X.md build → exit 64 (esperado 64)
+🛑 sdd-fluxo: par de fases inválido: define → build (válidos: define→governanca|ux-review|design, governanca→ux-review|design, ux-review→design, design→build, qualquer→release)
+RESULTADO: ERRO DE USO
+→ trate o encadeamento como desligado e mostre o Próximo passo.
+--- seguir release sdd/features/DEFINE_X.md release → exit 64 (esperado 64)
+🛑 sdd-fluxo: par de fases inválido: release → release (válidos: define→governanca|ux-review|design, governanca→ux-review|design, ux-review→design, design→build, qualquer→release)
+RESULTADO: ERRO DE USO
+→ trate o encadeamento como desligado e mostre o Próximo passo.
+--- seguir define sdd/features/NAO.md design → exit 64 (esperado 64)
+🛑 sdd-fluxo: DEFINE ausente ou ilegível: sdd/features/NAO.md
+RESULTADO: ERRO DE USO
+→ trate o encadeamento como desligado e mostre o Próximo passo.
+--- seguir define sdd/features/DEFINE_X.md → exit 64 (esperado 64)
+🛑 sdd-fluxo: seguir exige <fase> <DEFINE.md> <próxima> [--parar]
+RESULTADO: ERRO DE USO
+→ trate o encadeamento como desligado e mostre o Próximo passo.
+--- estado x → exit 64 (esperado 64)
+🛑 sdd-fluxo: estado não recebe argumentos
+RESULTADO: ERRO DE USO
+→ rode `sdd-fluxo.sh` sem argumentos para ver o uso.
+--- estado → exit 64 (esperado 64)
+⚠️ sdd-open: flow.autonomous = "sim" em sdd/config.yaml não é true nem false — encadeamento desligado.
+→ troque por true (liga) ou false (desliga)
+RESULTADO: SLOT INVÁLIDO
+--- seguir define sdd/features/DEFINE_X.md design → exit 64 (esperado 64)
+⚠️ sdd-open: flow.autonomous = "sim" em sdd/config.yaml não é true nem false — encadeamento desligado.
+→ troque por true (liga) ou false (desliga)
+RESULTADO: SLOT INVÁLIDO
+divergências: 0
+[exit=0]

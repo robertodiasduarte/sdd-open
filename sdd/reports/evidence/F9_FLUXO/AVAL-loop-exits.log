@@ -1,0 +1,163 @@
+$ F=sdd/fixtures/fluxo; Tl=$(mktemp -d); sed "s/rodada=1 | tests/rodada=3 | tests/" $F/ledger-rebatida.md > "$Tl/ledger-r3.md"; L="bash sdd/bin/sdd-fluxo.sh loop"; n=0; t(){ w=$1; shift; o=$($L "$@" 2>&1); r=$?; printf "%s\n" "--- loop $* → exit $r (esperado $w)" "$o"; [ $r = $w ] || n=$((n+1)); }; t 0 --review $F/review-ok --ledger $F/ledger-rebatida.md --rodada 1 --avaliacao $F/AVALIACAO_pass.md --ciclo-avaliador 1; t 10 --review $F/review-ok --ledger $F/ledger-aplicada.md --rodada 1; t 10 --review $F/review-ok --rodada 1; t 10 --review $F/review-invalida --rodada 1; t 10 --review $F/review-ok --ledger $F/ledger-rebatida.md --rodada 1 --avaliacao $F/AVALIACAO_needs_work.md --ciclo-avaliador 1; t 10 --review $F/review-ok --ledger $F/ledger-rebatida.md --rodada 2; t 20 --review $F/review-ok --rodada 3; t 20 --review $F/review-ok --ledger $F/ledger-rebatida.md --rodada 1 --avaliacao $F/AVALIACAO_needs_work.md --ciclo-avaliador 2; t 20 --review $F/review-impasse --rodada 1; t 30 --review $F/review-ok --ledger $F/ledger-rebatida.md --rodada 1 --avaliacao $F/AVALIACAO_recibo.md; t 0 --review $F/review-ok --ledger $F/ledger-rebatida.md --rodada 1 --avaliacao $F/AVALIACAO_recibo.md --recibo "Ana 2026-10-31"; t 10 --review $F/review-ok --rodada 1 --avaliacao $F/AVALIACAO_recibo.md; t 20 --review $F/review-invalida --rodada 3 --avaliacao $F/AVALIACAO_needs_work.md --ciclo-avaliador 1; t 10 --review $F/review-ok --ledger "$Tl/ledger-r3.md" --rodada 3 --avaliacao $F/AVALIACAO_needs_work.md --ciclo-avaliador 1; t 64 --review $F/review-ok --ledger $F/ledger-rebatida.md --rodada 1 --avaliacao $F/AVALIACAO_ambigua.md; t 64 --review sdd/fixtures --rodada 1; t 64 --review $F/review-ok --rodada x; t 64 --review $F/review-ok --rodada 1 --teto 2.5; t 64 --review $F/review-ok --rodada; t 64 --review $F/review-ok --ledger /nao/existe --rodada 1; rm -rf "${Tl:?}"; echo "divergências: $n"; (exit $n)
+--- loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_pass.md --ciclo-avaliador 1 → exit 0 (esperado 0)
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+--- loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-aplicada.md --rodada 1 → exit 10 (esperado 10)
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 1
+rebatidas: 0
+motivo: grave(s) corrigido(s) — código mudou, exige nova review: R1@rev
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+--- loop --review sdd/fixtures/fluxo/review-ok --rodada 1 → exit 10 (esperado 10)
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: R1@rev
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+--- loop --review sdd/fixtures/fluxo/review-invalida --rodada 1 → exit 10 (esperado 10)
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: review inválida (reviewer_exit=0 auditor_exit=68) — refazer
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+--- loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_needs_work.md --ciclo-avaliador 1 → exit 10 (esperado 10)
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+motivo: avaliador: NEEDS_WORK (ciclo 1)
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+--- loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 2 → exit 10 (esperado 10)
+ESTADO: CONTINUAR
+rodada: 2 de 3
+graves_abertos: 0
+aplicadas: 1
+rebatidas: 0
+motivo: grave(s) corrigido(s) — código mudou, exige nova review: R1@rev
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 3.
+--- loop --review sdd/fixtures/fluxo/review-ok --rodada 3 → exit 20 (esperado 20)
+ESTADO: BLOQUEADO
+rodada: 3 de 3
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: R1@rev
+motivo: D4 teto: 3 rodadas de review atingido
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+--- loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_needs_work.md --ciclo-avaliador 2 → exit 20 (esperado 20)
+ESTADO: BLOQUEADO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+motivo: avaliador: NEEDS_WORK (ciclo 2)
+motivo: D4 ciclos: 2 ciclos NEEDS_WORK do avaliador
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+--- loop --review sdd/fixtures/fluxo/review-impasse --rodada 1 → exit 20 (esperado 20)
+ESTADO: BLOQUEADO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: D5 impasse de evidência: grave(s) refutado(s) pelo auditor sem veredito no ledger: R1@rev
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+--- loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_recibo.md → exit 30 (esperado 30)
+ESTADO: AGUARDANDO_RECIBO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+motivo: avaliador: PASS_PENDENTE_RECIBO — aguardando o recibo humano do roteiro (não é decisão)
+RESULTADO: AGUARDANDO_RECIBO
+→ percorra o roteiro do avaliador e rode de novo com --recibo "nome AAAA-MM-DD".
+--- loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_recibo.md --recibo Ana 2026-10-31 → exit 0 (esperado 0)
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+motivo: avaliador: recibo humano — Ana 2026-10-31
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+--- loop --review sdd/fixtures/fluxo/review-ok --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_recibo.md → exit 10 (esperado 10)
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: R1@rev
+motivo: avaliador: PASS_PENDENTE_RECIBO — aguardando o recibo humano do roteiro (não é decisão)
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+--- loop --review sdd/fixtures/fluxo/review-invalida --rodada 3 --avaliacao sdd/fixtures/fluxo/AVALIACAO_needs_work.md --ciclo-avaliador 1 → exit 20 (esperado 20)
+ESTADO: BLOQUEADO
+rodada: 3 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: review inválida (reviewer_exit=0 auditor_exit=68) — refazer
+motivo: avaliador: NEEDS_WORK (ciclo 1)
+motivo: D4 teto: 3 rodadas de review atingido
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+--- loop --review sdd/fixtures/fluxo/review-ok --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.pMJnUI7BJe/ledger-r3.md --rodada 3 --avaliacao sdd/fixtures/fluxo/AVALIACAO_needs_work.md --ciclo-avaliador 1 → exit 10 (esperado 10)
+ESTADO: CONTINUAR
+rodada: 3 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+motivo: avaliador: NEEDS_WORK (ciclo 1)
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 4.
+--- loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_ambigua.md → exit 64 (esperado 64)
+🛑 sdd-fluxo: avaliação ilegível ou ambígua em sdd/fixtures/fluxo/AVALIACAO_ambigua.md (esperado 1 linha VEREDITO: X)
+RESULTADO: ENTRADA ILEGÍVEL
+→ sem essa entrada não há como declarar PRONTO; refaça a revisão ou conserte o arquivo.
+--- loop --review sdd/fixtures --rodada 1 → exit 64 (esperado 64)
+🛑 sdd-fluxo: sdd/fixtures/META.txt ausente — sem review não há como declarar PRONTO
+RESULTADO: ENTRADA ILEGÍVEL
+→ sem essa entrada não há como declarar PRONTO; refaça a revisão ou conserte o arquivo.
+--- loop --review sdd/fixtures/fluxo/review-ok --rodada x → exit 64 (esperado 64)
+🛑 sdd-fluxo: --rodada é inteiro com sufixo de lote opcional (5 ou 5a); --teto/--ciclo-avaliador são inteiros
+RESULTADO: ERRO DE USO
+→ rode `sdd-fluxo.sh` sem argumentos para ver o uso.
+--- loop --review sdd/fixtures/fluxo/review-ok --rodada 1 --teto 2.5 → exit 64 (esperado 64)
+🛑 sdd-fluxo: --rodada é inteiro com sufixo de lote opcional (5 ou 5a); --teto/--ciclo-avaliador são inteiros
+RESULTADO: ERRO DE USO
+→ rode `sdd-fluxo.sh` sem argumentos para ver o uso.
+--- loop --review sdd/fixtures/fluxo/review-ok --rodada → exit 64 (esperado 64)
+🛑 sdd-fluxo: --rodada exige um valor
+RESULTADO: ERRO DE USO
+→ rode `sdd-fluxo.sh` sem argumentos para ver o uso.
+--- loop --review sdd/fixtures/fluxo/review-ok --ledger /nao/existe --rodada 1 → exit 64 (esperado 64)
+🛑 sdd-fluxo: ledger ilegível: /nao/existe
+RESULTADO: ENTRADA ILEGÍVEL
+→ sem essa entrada não há como declarar PRONTO; refaça a revisão ou conserte o arquivo.
+divergências: 0
+[exit=0]

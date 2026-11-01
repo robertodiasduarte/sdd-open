@@ -1,0 +1,11 @@
+$ for f in sdd/features/DESIGN_F*.md; do <awk: linhas de tabela em ## Advisor Ledger menos cabeçalho e separador>; done
+sdd/features/DESIGN_F1_MANUTENCAO.md linhas_de_dados_no_Advisor_Ledger=0
+sdd/features/DESIGN_F2_TERRENO.md linhas_de_dados_no_Advisor_Ledger=0
+sdd/features/DESIGN_F3_BUILD_RELEASE.md linhas_de_dados_no_Advisor_Ledger=0
+sdd/features/DESIGN_F4_CONVERSA.md linhas_de_dados_no_Advisor_Ledger=0
+sdd/features/DESIGN_F5_CONHECIMENTO.md linhas_de_dados_no_Advisor_Ledger=8
+sdd/features/DESIGN_F6_DOCS.md linhas_de_dados_no_Advisor_Ledger=10
+sdd/features/DESIGN_F7_EVIDENCIA.md linhas_de_dados_no_Advisor_Ledger=14
+sdd/features/DESIGN_F8_HOOKS.md linhas_de_dados_no_Advisor_Ledger=15
+sdd/features/DESIGN_F9_FLUXO.md linhas_de_dados_no_Advisor_Ledger=0
+[exit=0]

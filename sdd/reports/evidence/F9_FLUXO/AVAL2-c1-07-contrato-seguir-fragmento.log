@@ -1,0 +1,37 @@
+$ sed -n "/seguir/,+14p" sdd/templates/fragments/FLUXO_ENCADEADO.md > /dev/null; awk "NR>=25 && NR<=50" sdd/templates/fragments/FLUXO_ENCADEADO.md; for k in "Ready for" "kind" "cmd" "Advisor Ledger" "git" "design-lint" "marcador" "--parar" "release"; do grep -qF -- "$k" sdd/templates/fragments/FLUXO_ENCADEADO.md && echo "tem: $k" || { echo "FALTA: $k"; m=1; }; done; test -z "$m"
+## A ordem
+
+```text
+define → (governanca, se dinheiro/tributo/dado pessoal) → (ux-review, se há interface) → design
+       → revisão do DESIGN (se review-design diz EXIGIDO) → build → ⏸️ release (sempre pergunta: D1)
+```
+
+- **`seguir <fase> <DEFINE> <próxima>`** sai 0 só com o encadeamento ligado, o documento da fase em
+  `Ready for …` (o DEFINE na define e na governança, `sdd/reviews/UX_REVIEW_<F>.md` na ux-review, o
+  DESIGN na design), num repositório git, com `verify-gate.sh --print` 0 e o bloco do gate com `kind` e
+  `cmd`, nenhum marcador de clarificação aberto e, na fase design, o `design-lint.py` 0 e — quando o
+  `review-design` exige a revisão — o Advisor Ledger do DESIGN com linha, coluna de severidade e
+  nenhuma nota HIGH sem APLICADA ou REBATIDA_.
+  Pares válidos: define → governanca, ux-review ou design · governanca → ux-review ou design ·
+  ux-review → design · design → build · qualquer → release (sempre PARAR).
+- **`review-design <DESIGN>`**: exit 0 EXIGIDO ⇒ a revisão de contexto fresco roda; exit 1 DISPENSAVEL ⇒
+  segue sem rodar; exit 64 (manifest ilegível) ⇒ roda (default seguro) e registra. Dispensar um
+  EXIGIDO é decisão da pessoa (D3).
+- Brainstorm, iterate, new-session e release não encadeiam: o brainstorm não tem gate; o iterate volta
+  à fase do documento; a fase seguinte à new-session roda na pasta nova (troca de janela); publicar é D1.
+
+## Linha de transição
+
+```text
+✅ DEFINE pronto → seguindo para o DESIGN (encadeamento ligado em sdd/config.yaml)
+→ /sdd-design sdd/features/DEFINE_PAGAMENTOS.md
+tem: Ready for
+tem: kind
+tem: cmd
+tem: Advisor Ledger
+tem: git
+tem: design-lint
+tem: marcador
+tem: --parar
+tem: release
+[exit=0]

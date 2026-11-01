@@ -1,0 +1,9 @@
+$ T=$(mktemp -d); R="$T/r"; mkdir -p "$R/sdd/features"; cp sdd/fixtures/fluxo/DEFINE_pronto.md "$R/sdd/features/DEFINE_X.md"; cp sdd/fixtures/fluxo/config-autonomo.yaml "$R/sdd/config.yaml"; sed "s/| # | Nota | Severidade | Veredito | Evidência |/| # | Note | Sev | Verdict | Evidence |/; s/| HIGH | APLICADA (Decision 1)/| HIGH | PENDENTE/" sdd/fixtures/fluxo/DESIGN_pronto.md > "$R/sdd/features/DESIGN_X.md"; grep -n -A3 "^| # | Note" "$R/sdd/features/DESIGN_X.md"; S="$PWD/sdd/bin/sdd-fluxo.sh"; cd "$R" && git init -q && bash "$S" seguir design sdd/features/DEFINE_X.md build; rc=$?; cd /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval; rm -rf "${T:?}"; echo "esperado 1 (HIGH A1 sem veredito); o [exit] abaixo é o do seguir"; (exit $rc)
+107:| # | Note | Sev | Verdict | Evidence |
+108-|---|---|---|---|---|
+109-| A1 | O contador ignora a última linha sem quebra | HIGH | PENDENTE | `tests/test_conta.py` |
+110-| L1 | Mensagem de erro sem o caminho | LOW | REBATIDA_ESCOPO | — |
+✅ DESIGN pronto → seguindo para o BUILD (encadeamento ligado em sdd/config.yaml)
+→ /sdd-build sdd/features/DESIGN_X.md
+esperado 1 (HIGH A1 sem veredito); o [exit] abaixo é o do seguir
+[exit=0]

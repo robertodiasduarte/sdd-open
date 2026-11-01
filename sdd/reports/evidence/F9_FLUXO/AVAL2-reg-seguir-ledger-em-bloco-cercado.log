@@ -1,0 +1,11 @@
+$ T=$(mktemp -d); W=$PWD; R="$T/r"; mkdir -p "$R/sdd/features"; cp sdd/fixtures/fluxo/DEFINE_pronto.md "$R/sdd/features/DEFINE_X.md"; cp sdd/fixtures/fluxo/config-autonomo.yaml "$R/sdd/config.yaml"; sed "s/| HIGH | APLICADA (Decision 1)/| HIGH | PENDENTE/" sdd/fixtures/fluxo/DESIGN_pronto.md > "$T/d.md"; awk "/^## Advisor Ledger/ && !f {print \"## Exemplo\"; print \"\"; print \"\`\`\`markdown\"; print \"## Advisor Ledger\"; print \"\"; print \"| # | Nota | Severidade | Veredito | Evidência |\"; print \"|---|---|---|---|---|\"; print \"| E1 | exemplo | HIGH | APLICADA | x |\"; print \"\`\`\`\"; print \"\"; f=1} {print}" "$T/d.md" > "$R/sdd/features/DESIGN_X.md"; grep -n "Advisor Ledger\|| A1 \|| E1 " "$R/sdd/features/DESIGN_X.md"; python3 -B sdd/bin/design-lint.py "$R/sdd/features/DESIGN_X.md" > /dev/null; echo "design-lint rc=$?"; cd "$R" && git init -q; bash "$W/sdd/bin/sdd-fluxo.sh" seguir design sdd/features/DEFINE_X.md build; rc=$?; cd "$W"; rm -rf "${T:?}"; echo "seguir rc=$rc (esperado 1: o ledger real tem HIGH A1 PENDENTE)"; test $rc -eq 1
+4:> novos (o `review-design` sai EXIGIDO) e a revisão registrada no Advisor Ledger (SEGUIR).
+106:## Advisor Ledger
+110:| E1 | exemplo | HIGH | APLICADA | x |
+113:## Advisor Ledger
+119:| A1 | O contador ignora a última linha sem quebra | HIGH | PENDENTE | `tests/test_conta.py` |
+design-lint rc=0
+✅ DESIGN pronto → seguindo para o BUILD (encadeamento ligado em sdd/config.yaml)
+→ /sdd-build sdd/features/DESIGN_X.md
+seguir rc=0 (esperado 1: o ledger real tem HIGH A1 PENDENTE)
+[exit=1]

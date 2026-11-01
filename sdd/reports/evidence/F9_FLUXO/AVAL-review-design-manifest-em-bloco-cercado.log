@@ -1,0 +1,20 @@
+$ T=$(mktemp -d); printf "# D\n\n\`\`\`markdown\n## File Manifest\n\n| 1 | \`a\` | Modify | exemplo |\n\`\`\`\n\n## File Manifest\n\n| # | File | Action |\n|---|---|---|\n| 1 | \`a\` | Create | x |\n| 2 | \`b\` | Create | x |\n| 3 | \`c\` | Create | x |\n" > "$T/DESIGN_T.md"; cat "$T/DESIGN_T.md"; echo ----; bash sdd/bin/sdd-fluxo.sh review-design "$T/DESIGN_T.md"; rc=$?; rm -rf "${T:?}"; echo "esperado 0 EXIGIDO (3 Create no manifest real); o [exit] abaixo é o do review-design"; (exit $rc)
+# D
+
+```markdown
+## File Manifest
+
+| 1 | `a` | Modify | exemplo |
+```
+
+## File Manifest
+
+| # | File | Action |
+|---|---|---|
+| 1 | `a` | Create | x |
+| 2 | `b` | Create | x |
+| 3 | `c` | Create | x |
+----
+DISPENSAVEL: 0 arquivo(s) novo(s), sem superfície de segurança no manifest
+esperado 0 EXIGIDO (3 Create no manifest real); o [exit] abaixo é o do review-design
+[exit=1]

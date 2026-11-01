@@ -1,0 +1,55 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p "test_fluxo.py" -v
+test_brief_ja_no_destino_por_caminho_relativo_e_absoluto (test_fluxo.Despachar) ... ok
+test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar) ... ok
+test_grava_o_brief_imprime_a_parada_e_sai_40 (test_fluxo.Despachar) ... ok
+test_nome_acentuado_sai_64_em_locale_utf8 (test_fluxo.Despachar) ... ok
+test_retorno_de_outro_papel_e_o_bloco_final (test_fluxo.Despachar) ... ok
+test_ligado_desligado_e_invalido (test_fluxo.Estado) ... ok
+test_fluxo_encadeado_tem_o_contrato (test_fluxo.Fragmentos) ... ok
+test_pergunta_decisao_tem_as_6_marcas_e_o_estado (test_fluxo.Fragmentos) ... ok
+test_aguardando_recibo_e_recibo_com_data (test_fluxo.Loop) ... ok
+test_bloqueado_d4_teto_d4_ciclos_e_d5 (test_fluxo.Loop) ... ok
+test_bordas_da_fonte_needs_work_no_teto_e_high_com_recibo_pendente_saem_10 (test_fluxo.Loop) ... ok
+test_continuar_por_cada_causa (test_fluxo.Loop) ... ok
+test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) ... ok
+test_erro_interno_e_log_que_nao_grava_saem_64 (test_fluxo.Loop) ... ok
+test_log_e_regravado_mesmo_quando_sai_64_e_cria_a_pasta (test_fluxo.Loop) ... ok
+test_log_grava_o_exit_real_e_tee_e_acusado (test_fluxo.Loop) ... ok
+test_pronto_com_rebatida_e_justificativa_que_cita_outro_veredito (test_fluxo.Loop) ... ok
+test_recibo_exige_nome_e_data_que_existe (test_fluxo.Loop) ... ok
+test_review_invalida_nao_le_os_jsonl_e_sai_10 (test_fluxo.Loop) ... ok
+test_dispensavel (test_fluxo.ReviewDesign) ... ok
+test_glob_do_slot_e_de_layers_sql_exigem (test_fluxo.ReviewDesign) ... ok
+test_manifest_de_exemplo_em_bloco_cercado_nao_conta (test_fluxo.ReviewDesign) ... ok
+test_manifest_ilegivel_sai_64_com_o_default_seguro (test_fluxo.ReviewDesign) ... ok
+test_termo_de_seguranca_exige_com_um_arquivo_novo (test_fluxo.ReviewDesign) ... ok
+test_titulo_numerado_com_qualificador_e_acoes_novo_new (test_fluxo.ReviewDesign) ... ok
+test_tres_arquivos_novos_exige_e_modify_nao_conta (test_fluxo.ReviewDesign) ... ok
+test_concordancia_e_artigo_por_documento (test_fluxo.Seguir) ... ok
+test_design_segue_com_a_revisao_registrada_ou_dispensavel (test_fluxo.Seguir) ... ok
+test_desligado_ou_sem_config_para_em_silencio_de_motivo (test_fluxo.Seguir) ... ok
+test_fora_de_git_o_motivo_e_o_git (test_fluxo.Seguir) ... ok
+test_ledger_sem_coluna_de_severidade_para (test_fluxo.Seguir) ... ok
+test_motivo_com_a_concordancia_do_documento (test_fluxo.Seguir) ... ok
+test_para_por_cada_motivo (test_fluxo.Seguir) ... ok
+test_segue_com_tudo_pronto_e_a_linha_cabe_em_100 (test_fluxo.Seguir) ... ok
+test_severidade_formatada_e_ledger_de_exemplo_cercado (test_fluxo.Seguir) ... ok
+test_uso_errado_e_slot_invalido_saem_64 (test_fluxo.Seguir) ... ok
+test_self_test_fica_vermelho_com_fixture_trocada (test_fluxo.SelfTest) ... ok
+test_self_test_numa_copia_sem_git (test_fluxo.SelfTest) ... ok
+test_config_example_tem_os_dois_slots_com_default (test_fluxo.Slots) ... ok
+test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao) ... ok
+test_build_nunca_segue_para_a_release (test_fluxo.Subsecao) ... ok
+test_despacho_sem_papel_fresco_para_no_exit_40 (test_fluxo.TextoDoPorte) ... ok
+test_f10_brainstorm_trata_cada_tipo_de_entrada (test_fluxo.TextoDoPorte) ... ok
+test_f11_ux_review_le_as_revisoes_anteriores (test_fluxo.TextoDoPorte) ... ok
+test_f6_design_decide_sozinho_so_com_o_encadeamento_ligado (test_fluxo.TextoDoPorte) ... ok
+test_f8_define_pontua_forte_e_fraco (test_fluxo.TextoDoPorte) ... ok
+test_sem_python3_todo_verbo_sai_64 (test_fluxo.UsoESemPython) ... ok
+test_sem_verbo_ou_verbo_desconhecido_mostra_o_uso (test_fluxo.UsoESemPython) ... ok
+
+----------------------------------------------------------------------
+Ran 48 tests in 9.129s
+
+OK
+[exit=0]

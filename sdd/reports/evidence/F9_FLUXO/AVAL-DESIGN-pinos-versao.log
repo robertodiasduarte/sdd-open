@@ -1,0 +1,7 @@
+$ grep -nE <pinos de versão das skills que a F9 sobe> tests/test_contrato_build_release.py tests/test_correcoes_w0.py tests/test_matriz_new_session.py
+tests/test_contrato_build_release.py:36:        self.assertEqual(versao(RELEASE), "2.4.0")
+tests/test_contrato_build_release.py:75:        self.assertEqual(versao(BUILD), "2.3.0")
+tests/test_correcoes_w0.py:66:        self.assertEqual(versao(ITERATE), "2.1.0")
+tests/test_correcoes_w0.py:144:        self.assertEqual(versao(SKILLS / "sdd-build/SKILL.md"), "2.3.0")
+tests/test_matriz_new_session.py:73:        self.assertIn('version: "1.2.0"', self.texto)
+[exit=0]

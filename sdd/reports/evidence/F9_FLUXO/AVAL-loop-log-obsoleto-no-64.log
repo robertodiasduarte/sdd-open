@@ -1,0 +1,21 @@
+$ T=$(mktemp -d); bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --log "$T/LOOP-rodada-1.log" >/dev/null; echo "1ª chamada rc=$?"; bash sdd/bin/sdd-fluxo.sh loop --review "$T/nao-existe" --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --log "$T/LOOP-rodada-1.log"; rc=$?; echo "2ª chamada (META ausente) rc=$rc; o --log ficou assim:"; cat "$T/LOOP-rodada-1.log"; mkdir "$T/ev"; mv "$T/LOOP-rodada-1.log" "$T/ev/"; bash sdd/bin/gate-shell-evidencia.sh "$T/ev"; echo "gate-shell-evidencia rc=$?"; rm -rf "${T:?}"; test $rc -eq 64
+1ª chamada rc=0
+🛑 sdd-fluxo: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.YZfTOd40Pt/nao-existe/META.txt ausente — sem review não há como declarar PRONTO
+RESULTADO: ENTRADA ILEGÍVEL
+→ sem essa entrada não há como declarar PRONTO; refaça a revisão ou conserte o arquivo.
+2ª chamada (META ausente) rc=64; o --log ficou assim:
+$ sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]
+✅ 1 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+gate-shell-evidencia rc=0
+[exit=0]

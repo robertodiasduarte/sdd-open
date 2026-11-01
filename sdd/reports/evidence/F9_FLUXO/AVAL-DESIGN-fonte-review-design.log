@@ -1,0 +1,11 @@
+$ bash fonte-review-design.sh <repo> <privado> <tmp>
+DESIGN_F1_MANUTENCAO.md rc=0 EXIGIDO: 13 arquivo(s) Create (limiar 3)
+DESIGN_F2_TERRENO.md rc=0 EXIGIDO: 17 arquivo(s) Create (limiar 3)
+DESIGN_F3_BUILD_RELEASE.md rc=0 EXIGIDO: 4 arquivo(s) Create (limiar 3)
+DESIGN_F4_CONVERSA.md rc=0 EXIGIDO: 10 arquivo(s) Create (limiar 3)
+DESIGN_F5_CONHECIMENTO.md rc=0 EXIGIDO: 17 arquivo(s) Create (limiar 3) · 2 linha(s) do manifest em superfície de segurança/rota pública
+DESIGN_F6_DOCS.md rc=0 EXIGIDO: 7 arquivo(s) Create (limiar 3)
+DESIGN_F7_EVIDENCIA.md rc=0 EXIGIDO: 25 arquivo(s) Create (limiar 3)
+DESIGN_F8_HOOKS.md rc=0 EXIGIDO: 13 arquivo(s) Create (limiar 3)
+DESIGN_F9_FLUXO.md rc=0 EXIGIDO: 33 arquivo(s) Create (limiar 3) · 2 linha(s) do manifest em superfície de segurança/rota pública
+[exit=0]

@@ -1,0 +1,8 @@
+$ grep -n "sdd-design/references/como-falar.md\|sdd-iterate/references/como-falar.md" sdd/features/DESIGN_F9_FLUXO.md; echo "--- marcas implementadas:"; grep -n "Sua decisão" .agents/skills/sdd-design/references/como-falar.md .agents/skills/sdd-iterate/references/como-falar.md; grep -n "sdd-design.*D2\|sdd-design/references/como-falar.md.*D2" sdd/features/DESIGN_F9_FLUXO.md > /dev/null; a=$?; grep -n "sdd-iterate/references/como-falar.md.*auto" sdd/features/DESIGN_F9_FLUXO.md > /dev/null; b=$?; grep -q "\[D2 · muda o produto\]" .agents/skills/sdd-design/references/como-falar.md; c=$?; grep -q "\[auto · de rotina\]" .agents/skills/sdd-iterate/references/como-falar.md; d=$?; echo "DESIGN diz design=D2: $a · iterate=auto: $b · código design=D2: $c · iterate=auto: $d (0=sim)"; test $a -eq 0 -a $b -eq 0 -a $c -eq 0 -a $d -eq 0
+261:| 55 | `.agents/skills/sdd-design/references/como-falar.md` | Modify | marca `[D2 · muda o produto]` (onde a pessoa guarda os dados dela muda o produto) | (general) | 3 |
+264:| 58 | `.agents/skills/sdd-iterate/references/como-falar.md` | Modify | marca `[auto · de rotina]` (atualizar o DESIGN junto é a rotina da iteração) | (general) | 3 |
+--- marcas implementadas:
+.agents/skills/sdd-design/references/como-falar.md:43:**Sua decisão** — [D2 · muda o produto] **Onde guardar as notas já conferidas?**
+.agents/skills/sdd-iterate/references/como-falar.md:39:**Sua decisão** — [auto · de rotina] **O que faço com o DESIGN?**
+DESIGN diz design=D2: 0 · iterate=auto: 0 · código design=D2: 0 · iterate=auto: 0 (0=sim)
+[exit=0]

@@ -1,0 +1,5 @@
+$ T=$(mktemp -d); cd "$T"; printf "brief\n" > b.md; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval/sdd/bin/sdd-fluxo.sh despachar "$(printf "ava\nx")" F9 b.md >/dev/null; rc=$?; ls sdd/reports/briefs/; cd /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval; rm -rf "${T:?}"; echo "esperado 64 (papel fora de ^[A-Za-z0-9_-]+$); o [exit] abaixo é o do despachar"; (exit $rc)
+BRIEF_ava
+x_F9.md
+esperado 64 (papel fora de ^[A-Za-z0-9_-]+$); o [exit] abaixo é o do despachar
+[exit=40]

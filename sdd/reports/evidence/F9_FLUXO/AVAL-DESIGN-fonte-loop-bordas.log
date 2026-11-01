@@ -1,0 +1,6 @@
+$ bash fonte-loop.sh <privado> <tmp>
+A) review inválida (auditor_exit 68), SEM jsonl: rc=10 :: ESTADO: CONTINUAR rodada: 1 de 3 graves_abertos: 0 aplicadas: 0 rebatidas: 0 motivo: review inválida (reviewer_exit=0 auditor_exit=68) — refazer 
+B) só NEEDS_WORK ciclo 1 na rodada 3 (teto 3): rc=10 :: ESTADO: CONTINUAR rodada: 3 de 3 graves_abertos: 0 aplicadas: 0 rebatidas: 0 motivo: avaliador: NEEDS_WORK (ciclo 1) 
+C) HIGH aberto + PASS_PENDENTE_RECIBO sem recibo: rc=10 :: ESTADO: CONTINUAR rodada: 1 de 3 graves_abertos: 1 aplicadas: 0 rebatidas: 0 motivo: grave(s) sem veredito no ledger: R1 motivo: avaliador: PASS_PENDENTE_RECIBO — aguardando o recibo humano do roteiro (não é decisão) 
+D) sem --ledger, HIGH aberto: rc=10 :: ESTADO: CONTINUAR rodada: 1 de 3 graves_abertos: 1 aplicadas: 0 rebatidas: 0 motivo: grave(s) sem veredito no ledger: R1 
+[exit=0]

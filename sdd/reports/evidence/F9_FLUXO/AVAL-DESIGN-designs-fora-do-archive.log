@@ -1,0 +1,5 @@
+$ git ls-files sdd/features | grep -c . ; git archive HEAD | tar -t | grep -c ^sdd/features/DESIGN_F ; grep -c ^sdd/features MANIFEST.txt ; grep -n sdd/features .gitignore
+0
+0
+0
+[exit=1]

@@ -1,0 +1,30 @@
+$ T=$(mktemp -d); W=$PWD; printf "brief de teste\n" > "$T/b.md"; (cd "$T" && git init -q && bash "$W/sdd/bin/sdd-fluxo.sh" despachar avaliador F9 "$T/b.md"); rc1=$?; echo "avaliador rc=$rc1"; echo; (cd "$T" && bash "$W/sdd/bin/sdd-fluxo.sh" despachar revisor F9 "$T/b.md" > "$T/rev.out"); rc2=$?; echo "revisor rc=$rc2; passo 3:"; grep -F "3. " "$T/rev.out"; echo; echo "--- textos das skills:"; grep -n "VEREDITO: …\|<<<AVALIACAO" .agents/skills/sdd-build/SKILL.md .agents/skills/sdd-build/references/contexto-fresco.md .agents/skills/sdd-design/SKILL.md; echo; echo "--- restou pedido de só a linha VEREDITO?"; grep -n "cola de volta a linha\|colar a linha \`VEREDITO\|a última linha da resposta" .agents/skills/sdd-build/SKILL.md .agents/skills/sdd-build/references/contexto-fresco.md sdd/bin/sdd-fluxo.sh sdd/templates/fragments/*.md; r=$?; rm -rf "${T:?}"; test $rc1 -eq 40 -a $rc2 -eq 40 -a $r -eq 1
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: avaliador).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.tLHKfpQYCz.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_avaliador_F9.md → o agente começa a ler o DEFINE.
+3. Quando ele terminar, copie o bloco inteiro da resposta, de `<<<AVALIACAO` até `>>>` (com a linha `VEREDITO: …`) e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** nada foi publicado e o relatório não foi gravado.
+**Brief:** sdd/reports/briefs/BRIEF_avaliador_F9.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+avaliador rc=40
+
+revisor rc=40; passo 3:
+3. Quando ele terminar, copie o bloco final da resposta (o que começa com <<<) e cole aqui → é o que eu preciso para continuar.
+
+--- textos das skills:
+.agents/skills/sdd-build/SKILL.md:181:`<<<AVALIACAO … >>>` em `sdd/reviews/AVALIACAO_{F}_{YYYYMMDD-HHMM}.md`. `PASS` → seguir.
+.agents/skills/sdd-build/SKILL.md:187:exit 40, repassando a parada; continue quando a pessoa colar o bloco `<<<AVALIACAO … >>>` inteiro
+.agents/skills/sdd-build/SKILL.md:188:(com a linha `VEREDITO: …`), que vai verbatim para `sdd/reviews/`.
+.agents/skills/sdd-build/references/contexto-fresco.md:27:   `<<<AVALIACAO … >>>` inteiro (com a linha `VEREDITO: …`).
+.agents/skills/sdd-build/references/contexto-fresco.md:60:nada que grave ou envie. Devolva <<<AVALIACAO … >>> com: veredito PASS | NEEDS_WORK |
+
+--- restou pedido de só a linha VEREDITO?
+[exit=0]

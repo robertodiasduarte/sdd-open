@@ -1,0 +1,3 @@
+$ /usr/bin/python3 -B -c <conta os casos de teste de tests/test_*.py>
+683
+[exit=0]

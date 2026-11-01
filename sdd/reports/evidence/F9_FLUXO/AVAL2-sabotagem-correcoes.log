@@ -1,0 +1,15 @@
+$ T=$(mktemp -d); git archive HEAD | tar -x -C "$T"; cd "$T"; f=sdd/bin/sdd-fluxo.sh; cp $f $f.orig; bad=0; sab() { cp $f.orig $f; /usr/bin/python3 -c "import sys;p=sys.argv[1];t=open(p).read();a,b=sys.argv[2],sys.argv[3];assert a in t,a;open(p,\"w\").write(t.replace(a,b,1))" $f "$2" "$3" || { echo "sabotagem $1 não aplicou"; bad=$((bad+1)); return; }; out=$(SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_fluxo.py 2>&1); rc=$?; n=$(printf "%s\n" "$out" | grep -cE "^(FAIL|ERROR):"); echo "[$1] suite test_fluxo rc=$rc, $n teste(s) vermelho(s)"; printf "%s\n" "$out" | grep -E "^(FAIL|ERROR):" | sed -n 1,3p; [ $rc -ne 0 ] || bad=$((bad+1)); }; sab log-so-no-sucesso "    try:
+        pasta = os.path.dirname(log)" "    if rc != 0:
+        sys.exit(rc)
+    try:
+        pasta = os.path.dirname(log)"; sab severidade-ausente-aceita "if any(sev is None for _, sev, _ in linhas):" "if False:"; sab cerca-nao-removida "texto = re.sub(r\"^(\`\`\`|~~~)" "texto = (lambda *a, **k: a[2])(r\"^(\`\`\`|~~~)"; cp $f.orig $f; out=$(SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_fluxo.py 2>&1); rc=$?; echo "restaurado: test_fluxo rc=$rc"; cd /; rm -rf "${T:?}"; test $bad -eq 0 -a $rc -eq 0
+[log-so-no-sucesso] suite test_fluxo rc=1, 3 teste(s) vermelho(s)
+ERROR: test_log_grava_o_exit_real_e_tee_e_acusado (test_fluxo.Loop)
+FAIL: test_log_e_regravado_mesmo_quando_sai_64_e_cria_a_pasta (test_fluxo.Loop)
+FAIL: test_self_test_numa_copia_sem_git (test_fluxo.SelfTest)
+[severidade-ausente-aceita] suite test_fluxo rc=1, 1 teste(s) vermelho(s)
+FAIL: test_ledger_sem_coluna_de_severidade_para (test_fluxo.Seguir)
+[cerca-nao-removida] suite test_fluxo rc=1, 1 teste(s) vermelho(s)
+FAIL: test_manifest_de_exemplo_em_bloco_cercado_nao_conta (test_fluxo.ReviewDesign)
+restaurado: test_fluxo rc=0
+[exit=0]

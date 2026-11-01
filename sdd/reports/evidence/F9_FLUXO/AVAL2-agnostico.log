@@ -1,0 +1,17 @@
+$ for p in test_agnostico.py test_fluxo.py test_decisoes_lint.py; do SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "$p" 2>&1 || exit 1; done
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.072s
+
+OK
+.............................................
+----------------------------------------------------------------------
+Ran 45 tests in 7.979s
+
+OK
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 1.250s
+
+OK
+[exit=0]

@@ -1,0 +1,14 @@
+$ grep -n "\-\-log evidence" sdd/templates/fragments/FLUXO_ENCADEADO.md; T=$(mktemp -d); bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-impasse --rodada 1 --log "$T/evidence/F/LOOP-rodada-1.log"; rc=$?; ls "$T/evidence/F/LOOP-rodada-1.log"; rm -rf "${T:?}"; echo "loop rc=$rc (o log não existe: só um aviso no stderr)"
+84:- Grave o resultado com `--log evidence/<F>/LOOP-rodada-N.log`, nunca com `| tee`: o exit de um
+⚠️ sdd-fluxo: não consegui gravar o --log: [Errno 2] No such file or directory: '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.KMZU2DnXwD/evidence/F/LOOP-rodada-1.log'
+ESTADO: BLOQUEADO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: D5 impasse de evidência: grave(s) refutado(s) pelo auditor sem veredito no ledger: R1@rev
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+ls: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.KMZU2DnXwD/evidence/F/LOOP-rodada-1.log: No such file or directory
+loop rc=20 (o log não existe: só um aviso no stderr)
+[exit=0]

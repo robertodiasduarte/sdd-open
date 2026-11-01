@@ -1,0 +1,30 @@
+$ S="$PWD/sdd/bin/sdd-fluxo.sh"; B="$PWD/sdd/fixtures/fluxo/brief-avaliador.md"; T=$(mktemp -d "/tmp/aval desp.XXXX"); cd "$T"; n=0; bash "$S" despachar avaliador F9 "$B"; r=$?; echo "[despachar rc=$r]"; [ $r = 40 ] || n=$((n+1)); cmp "$B" sdd/reports/briefs/BRIEF_avaliador_F9.md && echo "brief idêntico" || n=$((n+1)); touch -t 202001010000 sdd/reports/briefs/BRIEF_avaliador_F9.md; bash "$S" despachar avaliador F9 "$T/sdd/reports/briefs/BRIEF_avaliador_F9.md" >/dev/null; r=$?; ls -l sdd/reports/briefs/; [ $r = 40 ] || n=$((n+1)); rm -rf sdd; : > vazio.md; for a in "avaliador F9" "ava/x F9 $B" "avaliador F.9 $B" "avaliador F9 vazio.md" "avaliador F9 nao.md" "avaliador F9 ." "avaliador F9 $B extra"; do bash "$S" despachar $a >/dev/null 2>&1; r=$?; echo "despachar $a → $r"; [ $r = 64 ] || n=$((n+1)); done; test -e sdd && { echo "🛑 algo gravado"; n=$((n+1)); } || echo "nada gravado em sdd/ nos 64"; cd /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval; rm -rf "${T:?}"; echo "divergências: $n"; (exit $n)
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: avaliador).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /tmp/aval desp.ZyTM.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_avaliador_F9.md → o agente começa a ler o DEFINE.
+3. Quando ele terminar, copie a última linha da resposta (`VEREDITO: …`) e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** nada foi publicado e o relatório não foi gravado.
+**Brief:** sdd/reports/briefs/BRIEF_avaliador_F9.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+[despachar rc=40]
+brief idêntico
+total 8
+-rw-r--r--@ 1 robertoduarte  wheel  376 Jan  1  2020 BRIEF_avaliador_F9.md
+despachar avaliador F9 → 64
+despachar ava/x F9 /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval/sdd/fixtures/fluxo/brief-avaliador.md → 64
+despachar avaliador F.9 /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval/sdd/fixtures/fluxo/brief-avaliador.md → 64
+despachar avaliador F9 vazio.md → 64
+despachar avaliador F9 nao.md → 64
+despachar avaliador F9 . → 64
+despachar avaliador F9 /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval/sdd/fixtures/fluxo/brief-avaliador.md extra → 64
+nada gravado em sdd/ nos 64
+divergências: 0
+[exit=0]

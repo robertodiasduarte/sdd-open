@@ -1,0 +1,10 @@
+$ for f in sdd/features/DESIGN_F[1-8]_*.md; do /bin/bash sdd/bin/sdd-fluxo.sh review-design "$f" || exit 99; done
+EXIGIDO: 13 arquivo(s) novo(s) (limiar 3)
+EXIGIDO: 17 arquivo(s) novo(s) (limiar 3)
+EXIGIDO: 4 arquivo(s) novo(s) (limiar 3)
+EXIGIDO: 10 arquivo(s) novo(s) (limiar 3)
+EXIGIDO: 17 arquivo(s) novo(s) (limiar 3)
+EXIGIDO: 7 arquivo(s) novo(s) (limiar 3)
+EXIGIDO: 25 arquivo(s) novo(s) (limiar 3)
+EXIGIDO: 13 arquivo(s) novo(s) (limiar 3)
+[exit=0]

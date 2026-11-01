@@ -1,0 +1,20 @@
+$ git archive bb91c42 numa pasta temporária + tests/test_fluxo.py e test_decisoes_lint.py de agora; lista os testes que falham
+ERROR: test_log_e_regravado_mesmo_quando_sai_64_e_cria_a_pasta (test_fluxo.Loop)
+FAIL: test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar) (args=['ava\nx', 'X', '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7PJwMDv85Y/sdd/fixtures/fluxo/brief-avaliador.md'])
+FAIL: test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar) (args=['avaliador', 'F9\n', '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7PJwMDv85Y/sdd/fixtures/fluxo/brief-avaliador.md'])
+FAIL: test_grava_o_brief_imprime_a_parada_e_sai_40 (test_fluxo.Despachar)
+FAIL: test_fluxo_encadeado_tem_o_contrato (test_fluxo.Fragmentos)
+FAIL: test_pergunta_decisao_tem_as_6_marcas_e_o_estado (test_fluxo.Fragmentos)
+FAIL: test_recibo_exige_nome_e_data_que_existe (test_fluxo.Loop) (recibo='Ana 2026-99-99')
+FAIL: test_recibo_exige_nome_e_data_que_existe (test_fluxo.Loop) (recibo='Ana 2026-02-30')
+FAIL: test_manifest_de_exemplo_em_bloco_cercado_nao_conta (test_fluxo.ReviewDesign)
+FAIL: test_fora_de_git_o_motivo_e_o_git (test_fluxo.Seguir)
+FAIL: test_ledger_sem_coluna_de_severidade_para (test_fluxo.Seguir)
+FAIL: test_motivo_com_a_concordancia_do_documento (test_fluxo.Seguir)
+FAIL: test_para_por_cada_motivo (test_fluxo.Seguir) (fase='ux-review', define='DEFINE_X', prox='design')
+Ran 45 tests in 7.620s
+FAILED (failures=12, errors=1)
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='SHA maiúsculo')
+Ran 11 tests in 1.170s
+FAILED (failures=1)
+[exit=0]

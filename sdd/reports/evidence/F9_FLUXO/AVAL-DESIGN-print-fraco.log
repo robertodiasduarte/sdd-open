@@ -1,0 +1,5 @@
+$ bash print-probe.sh <repo>  (verify-gate.sh --print: bloco sem kind/cmd; marcador ativo + cmd vazio; fora de git)
+print sem kind/cmd: exit=0
+print com marcador e cmd vazio: exit=0
+print fora de git: exit=64
+[exit=0]

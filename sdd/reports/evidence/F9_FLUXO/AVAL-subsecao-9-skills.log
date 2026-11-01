@@ -1,0 +1,23 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f9-fluxo/94899e31-441d-456b-92d6-96e16fa6305d/scratchpad/subsecao.py .
+skills com Encerramento: 9
+sdd-brainstorm         subsec=1 proximo_antes=sim antes_do_enc='## Por que cada regra existe'
+    própria: Nesta skill: não encadeia — o brainstorm não tem gate; o Define começa quando você pedir.
+sdd-build              subsec=1 proximo_antes=sim antes_do_enc='## Por que cada regra existe'
+    própria: Nesta skill: `seguir build sdd/features/DEFINE_{FEATURE}.md release` sempre para — publicar não se desfaz e é decisão sua (D1).
+sdd-define             subsec=1 proximo_antes=sim antes_do_enc='## Por que cada regra existe'
+    própria: Nesta skill: `seguir define sdd/features/DEFINE_{FEATURE}.md <próxima>`, com a próxima do Próximo passo acima (governanca, ux-review ou design).
+sdd-design             subsec=1 proximo_antes=sim antes_do_enc='## Por que cada regra existe'
+    própria: Nesta skill: `seguir design sdd/features/DEFINE_{FEATURE}.md build`, depois da revisão do DESIGN quando `bash sdd/bin/sdd-fluxo.sh review-design sdd/features/DESIGN_{FEATURE}.md` diz que ela é exigida
+sdd-governanca         subsec=1 proximo_antes=sim antes_do_enc='## Por que cada regra existe'
+    própria: Nesta skill: `seguir governanca sdd/features/DEFINE_{FEATURE}.md <próxima>`, com a próxima do Próximo passo acima (ux-review ou design).
+sdd-iterate            subsec=1 proximo_antes=sem PP antes_do_enc='## Saída'
+    própria: Nesta skill: não encadeia — a próxima fase é a do documento alterado, e quem a chama é você.
+sdd-new-session        subsec=1 proximo_antes=sem PP antes_do_enc='## Por que cada regra existe'
+    própria: Nesta skill: não encadeia — a fase seguinte roda na pasta nova, em outra janela (troca de janela, não decisão).
+sdd-release            subsec=1 proximo_antes=sem PP antes_do_enc='## Por que cada regra existe'
+    própria: Nesta skill: não encadeia — publicar não se desfaz; a release sempre termina perguntando (D1).
+sdd-ux-review          subsec=1 proximo_antes=sim antes_do_enc='## Por que cada regra existe'
+    própria: Nesta skill: `seguir ux-review sdd/features/DEFINE_{FEATURE}.md design`.
+blocos comuns distintos: {'ed716cb2b0': ['sdd-brainstorm', 'sdd-build', 'sdd-define', 'sdd-design', 'sdd-governanca', 'sdd-iterate', 'sdd-new-session', 'sdd-release', 'sdd-ux-review']}
+subseções em todas as skills: 9
+[exit=0]

@@ -1,0 +1,11 @@
+$ codex exec --help | grep -n -A1 -- --skip-git-repo-check
+87:      --skip-git-repo-check
+88-          Allow running Codex outside a Git repository
+[exit=0]
+$ bash archive-print.sh <repo> <tmp>
+cópia sem .git
+🛑 não é um repositório git — o gate resolve caminhos a partir da raiz do repo
+RESULTADO: SPEC INVÁLIDA
+→ o arquivo não existe, não está num repositório git, ou não tem um bloco Verify Gate válido (ver sdd/templates/fragments/VERIFY_GATE.md).
+verify-gate --print na cópia: exit=64
+[exit=0]

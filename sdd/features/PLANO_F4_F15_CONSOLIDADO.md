@@ -228,6 +228,8 @@ O que é comum a todas:
 | Raio de impacto por superfície (F14/O2) | um subagente por superfície, em paralelo | sequencial, na mesma sessão |
 | Hooks de git (F8), lints, `deploy-espera-testes.py`, camada de conversa (F4) | iguais | iguais |
 
+**Correção medida na F9 (2026-10-31):** o Codex CLI 0.163 tem `multi_agent` estável e ligado e abre colaborador mesmo com `--disable multi_agent` (`sdd/reports/evidence/F9_FLUXO/codex-despacho-subagente.log`): ele está na coluna do subagente, não na do `exit 40`. O `exit 40 AGUARDANDO_HUMANO` não é por vendor; é o degrau 2 (sessão nova) da escada de `sdd-build/references/contexto-fresco.md`, para qualquer agente que não abre o papel fresco sozinho. A prova da F9 no Codex pôs a condição "sem subagente" no prompt (`codex-despacho-40.log`).
+
 Eixo diferente, não de agente: o `deploy-espera-testes.py` só lê GitHub Actions; em outro CI responde `NAO_SE_APLICA` (corte YAGNI da F3, registrado).
 
 ### Manutenção M1 (entre a W0 e a F4, ou logo depois da F6)

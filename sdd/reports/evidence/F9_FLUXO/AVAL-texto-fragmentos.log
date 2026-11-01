@@ -1,0 +1,8 @@
+$ grep -n "AVAL-brief.md\|sdd/reports/briefs" sdd/templates/fragments/PERGUNTA_DECISAO.md sdd/templates/fragments/FLUXO_ENCADEADO.md; grep -n "sai 0 só com" -A2 sdd/templates/fragments/FLUXO_ENCADEADO.md; grep -n "verificabilidade" .agents/skills/sdd-design/SKILL.md
+sdd/templates/fragments/PERGUNTA_DECISAO.md:95:**Brief:** `sdd/reports/evidence/PAGAMENTOS/AVAL-brief.md`
+sdd/templates/fragments/FLUXO_ENCADEADO.md:73:| Sessão nova para um papel fresco (avaliador, revisor do DESIGN) num agente que não a abre sozinho | `despachar` 40 AGUARDANDO_HUMANO | a parada ⏸️ do `PERGUNTA_DECISAO.md`, o brief em `sdd/reports/briefs/BRIEF_<papel>_<F>.md` e o que colar de volta |
+32:- **`seguir <fase> <DEFINE> <próxima>`** sai 0 só com o encadeamento ligado, `verify-gate.sh --print`
+33-  0 no DEFINE, nenhum marcador de clarificação aberto e, na fase design, o `design-lint.py` 0 no DESIGN.
+34-  Pares válidos: define → governanca, ux-review ou design · governanca → ux-review ou design ·
+77:(o lado conservador), re-check com hits vira `true`, e a proposta de verificabilidade do avaliador é
+[exit=0]
