@@ -37,6 +37,7 @@ Depois, leia nesta ordem:
 - **F1–F11, W0 e M1 entregues; o P3 (starter) está concluído; o P4 está na F12.** A última Release é https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.3.1: tag em `9508ff0`, publicada automática no push de `main` (run `release` 41307505438), `SHA256SUMS.txt` conferido (`def48c99e135bd394bb11f9673a87ca56476711d666f0923cbf246ce75ff8ecc`). A `v2.3.0` (F10) saiu por tag em `248301d`.
 - **Estado do pacote:** 17 skills; **894 testes** verdes no piso `SDD_TEST_BASH=/bin/bash /usr/bin/python3` (Python 3.9.6, bash 3.2.57), local e no CI (≈ 13 min no Ubuntu, ≈ 18 no macOS); roadmap (`docs/roadmap.md` + PT) com 4 linhas; `MANIFEST.txt` 353 linhas.
 - **A sessão 8 fez F10 + F11** do brainstorm à release (o par permitido); esta sessão faz a **F12 inteira**, do brainstorm à release.
+- **F12 sozinha** (decisão de 2026-11-01): F12 e F13 não são par — a F12 é a maior frente do P4 e as duas mexem na `sdd-design`/`DESIGN_TEMPLATE.md`. A F13 (UX e LLM no código, skill nova `sdd-loop-builder`) é a sessão 10; só entra aqui se o Roberto pedir, e só depois da Release da F12 publicada e conferida.
 
 ## Contexto que você precisa ter
 
