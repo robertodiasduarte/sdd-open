@@ -291,7 +291,7 @@ class Contexto(Base):
         self.assertEqual(rc, 0, out)
         p = self.pasta(r)
         m = meta(p)
-        self.assertEqual(m["docs_sdd"], "BRAINSTORM_X.md, DEFINE_X.md, DESIGN_X.md, BUILD_REPORT_X.md")
+        self.assertEqual(m["docs_sdd"], "DEFINE_X.md, DESIGN_X.md, BUILD_REPORT_X.md")
         self.assertEqual(m["contexto_cortado"], "BRAINSTORM")
         ctx = ler(p / "context-sdd.md")
         self.assertNotIn("BBBB", ctx)
@@ -772,3 +772,89 @@ class RevisaoReal(Base):
         m = meta(self.pasta(r))
         self.assertEqual(m["reviewer_custo"], "US$ 0.000010")
         self.assertEqual(m["custo_total"], "US$ 0.000020")
+
+
+class AvaliadorCiclo1(Base):
+    """Achados do avaliador de contexto fresco, ciclo 1 (sdd/reviews/AVALIACAO_F10_REVISAO_20261101-ciclo1.md)."""
+
+    def loop(self, r, ledger=None):
+        args = [BASH, FLUXO, "loop", "--review", self.pasta(r), "--rodada", "1"] + (["--ledger", ledger] if ledger else [])
+        rc, out, err = self.roda(args, r, self.env)
+        return rc, out + err
+
+    def com_r2(self, r2):
+        r = self.projeto()
+        self.escreve(r, "src/auth/login.sh", "x\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-vazio+revisor-vazio", "--auditor", "stub-b:revisor-vazio",
+                           "--revisor2", r2)
+        return r, rc, out
+
+    def test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3(self):
+        r, rc, out = self.com_r2("stub-c:sem-cli")
+        self.assertEqual(rc, 0, out)
+        m = meta(self.pasta(r))
+        self.assertEqual((m["revisor2_engine"], m["revisor2_exit"]), ("stub-c:sem-cli", "66"))
+        self.assertIn("⚠️ o 2º revisor (stub-c:sem-cli) falhou", out)
+        rc, out = self.loop(r)
+        self.assertEqual(rc, 20, out)
+        self.assertIn("D3: 2º revisor acionado e indisponível (stub-c:sem-cli, exit 66)", out)
+
+    def test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem(self):
+        for cen in ("falha-quota", "dorme"):
+            with self.subTest(cenario=cen):
+                shutil.rmtree(str(self.tmp / "repo"), ignore_errors=True)
+                r, rc, out = self.com_r2("stub-c:" + cen)
+                self.assertEqual(rc, 0, out)
+                m = meta(self.pasta(r))
+                self.assertEqual((m["revisor2_engine"], m["revisor2_exit"]), ("stub-c:" + cen, "67"))
+                rc, out = self.loop(r)
+                self.assertEqual(rc, 10, out)
+                self.assertIn("2º revisor acionado e falhou (stub-c:%s, exit 67)" % cen, out)
+
+    def test_1_desempate_que_falhou_registra_a_engine(self):
+        reg = self.registry([self.linha("stub-a", "revisor-ok"), self.linha("stub-b", "auditor-refuta-high"),
+                             self.linha("stub-d", "falha-quota")])
+        r = self.projeto(registry=reg)
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2")
+        self.assertEqual(rc, 0, out)
+        m = meta(self.pasta(r))
+        self.assertEqual((m["desempate_engine"], m["desempate_decisao"]), ("stub-d", "-"))
+
+    def test_2_custo_todo_desconhecido_nunca_e_zero(self):
+        reg = self.registry([self.linha("x-a", "revisor-ok", "pay-per-token"), self.linha("x-b", "auditor-agree",
+                                                                                            "pay-per-token")])
+        r = self.projeto(registry=reg)
+        rc, out = self.rev(r, "--reviewer", "x-a", "--auditor", "x-b", "--no-revisor2")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["custo_total"], "$?")
+        self.assertIn("custo total: custo desconhecido", out)
+        self.assertNotIn("0,0000", out)
+
+    def test_3_contexto_do_diff_do_usuario_nao_muda_o_sha(self):
+        r = self.projeto()
+        self.escreve(r, "longo.txt", "".join("linha %d\n" % k for k in range(60)))
+        self.commit(r, "longo")
+        self.escreve(r, "longo.txt", "".join(("mudou %d\n" if k in (20, 30) else "linha %d\n") % k for k in range(60)))
+        sha = lambda s: re.search(r"diff_sha256: ([0-9a-f]{64})", s).group(1)
+        _, a = self.ar(r, "--base", "HEAD", "--dry-run", "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.git(r, "config", "diff.context", "10")
+        self.git(r, "config", "diff.interHunkContext", "20")
+        _, b = self.ar(r, "--base", "HEAD", "--dry-run", "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.assertEqual(sha(a), sha(b))
+
+    def test_4_docs_sdd_sem_o_brainstorm_descartado(self):
+        r = self.projeto(extra_cfg="  context_max_kb: 2\n")
+        self.escreve(r, "sdd/features/BRAINSTORM_X.md", "B" * 3000 + "\n")
+        self.escreve(r, "sdd/features/DEFINE_X.md", "definição\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2", "--feature", "X")
+        self.assertEqual(rc, 0, out)
+        m = meta(self.pasta(r))
+        self.assertEqual(m["docs_sdd"], "DEFINE_X.md")
+        self.assertIn("(1 doc SDD)", m["contexto"])
+
+    def test_5_auditor_excluido_nao_e_diversidade_nenhuma(self):
+        r = self.projeto()
+        rc, out = self.rev(r, "--reviewer", "stub-a:falha-quota,stub-c", "--auditor", "stub-c", "--no-revisor2")
+        self.assertEqual(rc, 67, out)
+        self.assertNotIn("a mesma engine revisou e auditou", out)
+        self.assertEqual(meta(self.pasta(r))["diversidade"], "-")

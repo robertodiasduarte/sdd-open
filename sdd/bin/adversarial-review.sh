@@ -327,6 +327,7 @@ def congelar(base, paths):
             git(raiz, "add", "--intent-to-add", "--", *nomes[k:k + 200], env=env)
         rc, patch, err = git(raiz, "-c", "core.quotepath=true", "diff", "--binary", "--no-color", "--no-ext-diff",
                              "--no-renames", "--diff-algorithm=myers", "--src-prefix=a/", "--dst-prefix=b/",
+                             "-U3", "--inter-hunk-context=0",
                              mb, "--", *spec, env=env, binario=True)
         if rc != 0:
             uso("git diff falhou: " + err.strip())
@@ -440,9 +441,9 @@ if F:
     teto = max_kb * 1024
     ctx_txt = junta(docs)
     if len(ctx_txt.encode("utf-8")) > teto and docs and docs[0][0].startswith("BRAINSTORM"):
-        docs_ctx = docs[1:]
+        docs = docs[1:]
         cortado = "BRAINSTORM"
-        ctx_txt = junta(docs_ctx)
+        ctx_txt = junta(docs)
     if len(ctx_txt.encode("utf-8")) > teto:
         marca = "\n[… cortado: teto de %d KB do contexto SDD (review.context_max_kb) …]\n" % max_kb
         ctx_txt = ctx_txt.encode("utf-8")[:teto - len(marca.encode("utf-8"))].decode("utf-8", "ignore") + marca
@@ -592,12 +593,13 @@ def papel(nome, cands, prompt_txt, excluir=()):
            "modelo": None, "custo_usd": None, "linha": None, "credencial": None}
     arq_p = os.path.join(TMP, nome + "-prompt.md")
     open(arq_p, "w", encoding="utf-8").write(prompt_txt)
-    causas, motivos = [], []
+    causas, motivos, ultimo = [], [], None
     for d in cands:
         if d["id"] in excluir:
             motivos.append("%s excluída (já tem outro papel nesta revisão)" % d["id"])
             causas.append("exclusao")
             continue
+        ultimo = d
         print("▶ %s: %s (%s) — até %d min" % (NOME_PAPEL[nome], d["id"], d["modelo"], max(1, d["timeout_s"] // 60)),
               flush=True)
         tent = 0
@@ -634,6 +636,9 @@ def papel(nome, cands, prompt_txt, excluir=()):
     else:
         reg["exit"] = "66" if causas and all(x == "launcher" for x in causas) else "67"
         reg["motivo"] = "; ".join(motivos) or "nenhuma engine na lista"
+        if ultimo is not None:
+            # a última engine tentada fica registrada: com "-", o loop leria "não houve este papel"
+            reg["engine_efetivo"] = ultimo["id"]
     if reg["fallback_usado"] == "sim":
         avisos.append("⚠️ o %s previsto (%s) falhou (%s); quem %s foi %s" % (
             NOME_PAPEL[nome], reg["engine_default"], reg["motivo"], VERBO_PAPEL[nome], reg["engine_efetivo"]))
@@ -879,9 +884,10 @@ else:
 if raso1:
     avisos.append("⚠️ o revisor terminou em %d s sem achados: isso não conta como revisão" % rev["segundos"])
 
-lin_rev = rev["linha"] or revisores[0]
-lin_aud = (aud["linha"] if aud and aud["linha"] else None) or auditores[0]
-div = diversidade(lin_rev, lin_aud)
+if aud is not None and aud["exit"] == "0" and rev["linha"] and aud["linha"]:
+    div = diversidade(rev["linha"], aud["linha"])
+else:
+    div = "-"
 if div == "nenhuma":
     avisos.insert(0, "⚠️ a mesma engine revisou e auditou: a auditoria tem os mesmos pontos cegos da revisão")
 
@@ -905,8 +911,16 @@ for nome, r in papeis_meta:
         estimado = True
     elif c == "$?":
         desconhecidos += 1
-custo_total = ("≈US$ " if estimado else "US$ ") + usd(soma)
-if desconhecidos:
+# o total só vira número quando algum papel tem número; senão diz o que se sabe (assinatura) ou $? — nunca 0
+numericos = sum(1 for nome, r in papeis_meta if custos[nome].startswith(("US$ ", "≈US$ ")))
+if numericos:
+    custo_total = ("≈US$ " if estimado else "US$ ") + usd(soma)
+elif "assinatura" in custos.values():
+    custo_total = "assinatura"
+else:
+    custo_total = "$?" if desconhecidos else "n/d"
+conhecidos = custo_total != "$?"
+if desconhecidos and conhecidos:
     custo_total += " (+ %d papel(is) com custo $?)" % desconhecidos
 
 # ── META ─────────────────────────────────────────────────────────────────────────────────────────
@@ -1000,7 +1014,7 @@ if ec == "0":
     novos = [j for j in aud_v if j["veredito"] == "NOVO"]
     print("achados: " + contagem(todos_rev) + (" (+ %d novo(s) do auditor)" % len(novos) if novos else ""))
 print("custo total: " + humano(custo_total.split(" (+")[0]) + (" (+ %d papel(is) com custo desconhecido)" % desconhecidos
-                                                              if desconhecidos else ""))
+                                                              if desconhecidos and conhecidos else ""))
 if ec == "0":
     print("→ rode: bash sdd/bin/sdd-fluxo.sh loop --review %s --ledger <ledger da revisão> --rodada <N>" % rel_rev)
 elif ec == "65":
