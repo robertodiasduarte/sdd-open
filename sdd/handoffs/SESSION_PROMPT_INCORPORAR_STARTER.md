@@ -1,30 +1,34 @@
 # Continuar: INCORPORAR_STARTER — sessão 8: F10 Revisão adversarial (+ F11 se sobrar folga)
 
-Esta sessão começa numa **worktree nova**. Os artefatos SDD da família (features, handoffs, reports, reviews) vivem na branch `docs/incorporar-starter` do remoto, nunca mesclada em `main`.
+Esta sessão começa numa **worktree limpa**. Os artefatos SDD da família (features, handoffs, reports, reviews) vivem na branch `docs/incorporar-starter` do remoto, nunca mesclada em `main`.
 
 ## Preparar a worktree (antes de ler qualquer coisa)
 
-A worktree da F10 **ainda não existe**. Crie-a de `origin/main` = `89ac76f` (tag `v2.2.10`) e traga os artefatos SDD, fora do commit:
+A frente já foi aberta pela `sdd-new-session` no fim da sessão 7: worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f10-revisao`, branch `feat/f10-revisao` nascida de `origin/main` = `89ac76f` (tag `v2.2.10`), com os artefatos SDD da branch `docs/incorporar-starter` já copiados (fora do commit). Abra o agente **nessa pasta** e confira:
+
+```bash
+cd /Users/robertoduarte/rdd-worktrees/sdd-open-f10-revisao
+git branch --show-current                                                 # esperado: feat/f10-revisao
+git status --short | head -4                                              # esperado: só "?? sdd/…"
+git log --oneline -1                                                      # esperado: 89ac76f ou mais novo
+ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md
+GIT_TERMINAL_PROMPT=0 git fetch -q origin && git log --oneline -1 origin/main   # se main andou, rebase antes de começar
+GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.10                     # base do check-versions
+GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter && git show origin/docs/incorporar-starter:sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md | cmp - sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md && echo copia-em-dia   # diferente: copie de novo da branch docs/
+command -v codex gemini claude                                            # nesta máquina, os 3 existem
+```
+
+Se a pasta não existir (alguém a removeu), recrie do zero:
 
 ```bash
 cd /Users/robertoduarte/rdd-public/sdd-open
 GIT_TERMINAL_PROMPT=0 git fetch -q origin
 git worktree add /Users/robertoduarte/rdd-worktrees/sdd-open-f10-revisao -b feat/f10-revisao origin/main
 cd /Users/robertoduarte/rdd-worktrees/sdd-open-f10-revisao
-GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.10                     # base do check-versions
+GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.2.10
 GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter
 git checkout origin/docs/incorporar-starter -- sdd/features sdd/handoffs sdd/reports sdd/reviews
 git rm -r -q --cached sdd/features sdd/handoffs sdd/reports sdd/reviews   # ficam no disco, fora do commit
-```
-
-E confira:
-
-```bash
-git branch --show-current                                                 # esperado: feat/f10-revisao
-git status --short | head -4                                              # esperado: só "?? sdd/…"
-git log --oneline -1                                                      # esperado: 89ac76f ou mais novo
-ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md
-command -v codex gemini claude                                            # nesta máquina, os 3 existem
 ```
 
 Se `/Users/robertoduarte/rdd-public/sdd-open` não for o clone de `https://github.com/robertodiasduarte/sdd-open.git`, use a worktree da sessão 7 como base (`git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f9-fluxo worktree add …`), se ela ainda existir. Não trabalhe na worktree antiga `sdd-open-f9-fluxo` (branch já mesclada). O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
