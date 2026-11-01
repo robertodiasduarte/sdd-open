@@ -139,9 +139,12 @@ for e in CLIS:
     os.chmod(p, 0o755)
 
 CHAVE = "gate-%d-falsa" % os.getpid()
+# Nada herdado que mude QUAL repositório o git usa: um hook numa worktree exporta GIT_DIR e GIT_INDEX_FILE, e o
+# repositório descartável viraria o do usuário (commit na branch dele). Todo GIT_* sai; os que o gate precisa
+# voltam abaixo, e GIT_CEILING_DIRECTORIES impede o git de subir para fora da pasta temporária.
 BASE_ENV = {k: v for k, v in os.environ.items()
-            if not k.startswith("BASH_FUNC_") and k not in ("BASH_ENV", "ENV")
-            and not k.startswith(("SDD_REVIEW_", "SDD_STUB_")) and k.lower() not in ("no_proxy",)}
+            if not k.startswith(("BASH_FUNC_", "GIT_", "SDD_REVIEW_", "SDD_STUB_")) and k not in ("BASH_ENV", "ENV")
+            and k.lower() not in ("no_proxy",)}
 BASE_ENV.update({
     "PATH": TBIN + os.pathsep + os.environ.get("PATH", ""),
     "http_proxy": "http://127.0.0.1:9", "https_proxy": "http://127.0.0.1:9",
@@ -149,6 +152,7 @@ BASE_ENV.update({
     "no_proxy": "127.0.0.1,localhost", "NO_PROXY": "127.0.0.1,localhost",
     "OPENROUTER_API_KEY": CHAVE, "SDD_REVIEW_ESPERA": "0",
     "GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1", "GIT_TERMINAL_PROMPT": "0",
+    "GIT_CEILING_DIRECTORIES": os.path.realpath(TMP),
     "GIT_AUTHOR_NAME": "gate", "GIT_AUTHOR_EMAIL": "gate@example.com",
     "GIT_COMMITTER_NAME": "gate", "GIT_COMMITTER_EMAIL": "gate@example.com",
 })
@@ -177,6 +181,10 @@ def git(*a):
 
 
 git("init", "-q")
+topo = git("rev-parse", "--show-toplevel").stdout.strip()
+if os.path.realpath(topo or "/") != os.path.realpath(REPO):
+    quebrado("o repositório de teste resolve para %r, não para %s" % (topo, REPO),
+             "rode o gate fora de um hook do git, ou sem GIT_DIR/GIT_WORK_TREE no ambiente.")
 git("checkout", "-q", "-b", "main")
 with open(os.path.join(REPO, "src/calculo.py"), "w") as h:
     h.write("def calcula(xs):\n    return sum(xs)\n")
@@ -384,12 +392,13 @@ isolamento("67 (exclusão)", est, {"gemini": 1, "codex": 1})
 
 rc, saida, m, pasta, est = executa("misto", {"claude": "revisor", "gemini": "auditor-misto"},
                                    "--reviewer", "claude", "--auditor", "gemini", "--no-revisor2")
-confere("auditor com os 4 tipos de veredito: exit 0", rc, 0)
-confere("auditor com os 4 tipos de veredito: jsonl com DISAGREE_EVIDENCE, DISAGREE_CONCERN e NOVO",
-        [((j or {}).get("achado"), (j or {}).get("veredito")) for j in
+confere("auditor com DISAGREE e NOVO: exit 0", rc, 0)
+confere("auditor com DISAGREE e NOVO: jsonl (achado, veredito, arquivo, linha, severidade)",
+        [tuple((j or {}).get(k) for k in ("achado", "veredito", "arquivo", "linha", "severidade")) for j in
          (jsonl(os.path.join(pasta, "auditor.verdicts.jsonl")) if pasta else [])],
-        [("R1", "DISAGREE_EVIDENCE"), ("R2", "DISAGREE_CONCERN"), ("N1", "NOVO")])
-confere("auditor com os 4 tipos de veredito: META (vereditos, convergência, sem desempate em MED)",
+        [("R1", "DISAGREE_EVIDENCE", None, None, None), ("R2", "DISAGREE_CONCERN", None, None, None),
+         ("N1", "NOVO", "src/calculo.py", 2, "LOW")])
+confere("auditor com DISAGREE e NOVO: META (vereditos, convergência, sem desempate em MED)",
         (m.get("auditor_vereditos"), m.get("convergencia_1o_passe"), m.get("desempate_alvo")), ("3", "nao", "-"))
 isolamento("vereditos mistos", est, {"claude": 1, "gemini": 1})
 

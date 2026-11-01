@@ -111,7 +111,7 @@ class Gate(Sandbox):
     def test_aval1_m1_parser_que_so_aceita_agree_e_pego(self):
         self.sabotado("sdd/bin/adversarial-review.sh",
                       'j.get("veredito") in ("AGREE", "DISAGREE_EVIDENCE", "DISAGREE_CONCERN", "NOVO")',
-                      'j.get("veredito") in ("AGREE",)', "auditor com os 4 tipos de veredito")
+                      'j.get("veredito") in ("AGREE",)', "auditor com DISAGREE e NOVO")
 
     def test_aval1_l1_custo_do_claude_lido_do_modelusage_e_pego(self):
         self.sabotado("sdd/bin/adapters/claude.sh",
@@ -135,6 +135,33 @@ class Gate(Sandbox):
                 rc, out = self.gate(p)
                 self.assertEqual(rc, 2, out)
                 self.assertRegex(out, r"(?m)^  ❌ \d+\. falha de credencial \(%s\)" % eng)
+
+    def test_aval2_l1_severidade_do_novo_e_conferida(self):
+        self.sabotado("sdd/bin/adversarial-review.sh",
+                      '            j["severidade"] = "MED" if s == "MEDIUM" else s\n',
+                      '            j["severidade"] = "HIGH"\n', "auditor com DISAGREE e NOVO: jsonl")
+
+    def test_aval2_h1_git_dir_herdado_de_um_hook_nao_toca_o_repositorio_do_usuario(self):
+        # um hook numa worktree exporta GIT_DIR e GIT_INDEX_FILE absolutos: o gate não pode commitar no repo de quem
+        # o chamou, nem trocar a branch dele
+        r = self.repo("usuario")
+        self.git(r, "checkout", "-q", "-b", "main")
+        self.escreve(r, "a.txt", "a\n")
+        self.commit(r, "base")
+        wt = self.tmp / "wt"
+        self.git(r, "worktree", "add", "-q", str(wt), "-b", "minha-feature")
+        self.escreve(wt, "meu.txt", "trabalho\n")
+        self.git(wt, "add", "meu.txt")
+        gd = self.git(wt, "rev-parse", "--absolute-git-dir").strip()
+        antes = (self.git(wt, "rev-parse", "HEAD").strip(), self.git(r, "branch", "--list").strip())
+        fora = self.tmp / "fora"
+        fora.mkdir()
+        rc, out, err = self.roda([BASH, RAIZ / GATE_REL], fora,
+                                 dict(self.env, GIT_DIR=gd, GIT_INDEX_FILE=gd + "/index", GIT_WORK_TREE=str(wt)))
+        self.assertEqual(rc, 0, out + err)
+        self.assertEqual(self.git(wt, "branch", "--show-current").strip(), "minha-feature")
+        self.assertEqual((self.git(wt, "rev-parse", "HEAD").strip(), self.git(r, "branch", "--list").strip()), antes)
+        self.assertEqual(self.git(wt, "diff", "--cached", "--name-only").strip(), "meu.txt")
 
     def test_extracao_nula_derruba_uma_assercao_de_cada_engine(self):
         for eng in ("claude", "codex", "gemini", "openrouter"):
