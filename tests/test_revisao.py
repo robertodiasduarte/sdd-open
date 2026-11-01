@@ -182,7 +182,8 @@ class Exclusao(Base):
         avisos = [l for l in out.splitlines() if l.startswith("⚠️")]
         self.assertEqual(avisos[0], "⚠️ a mesma engine revisou e auditou: a auditoria tem os mesmos pontos cegos "
                                     "da revisão")
-        self.assertLess(out.index(avisos[0]), out.index("RESULTADO:"))
+        self.assertLess(out.index(avisos[0]), out.index("▶"))
+        self.assertEqual(out.count(avisos[0]), 1)
         self.assertEqual(self.chamadas(), 2)
 
     def test_diversidade_modelo_e_vendor(self):
@@ -352,7 +353,7 @@ class Vereditos(Base):
 
     def test_bloco_vazio_e_zero_achados(self):
         r = self.projeto()
-        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-vazio", "--auditor", "stub-b:revisor-vazio",
+        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-vazio", "--auditor", "stub-b:auditor-vazio",
                            "--no-revisor2")
         self.assertEqual(rc, 0, out)
         self.assertEqual(meta(self.pasta(r))["reviewer_achados"], "0")
@@ -428,7 +429,7 @@ class SegundoRevisor(Base):
 
     def test_raso_aciona_o_segundo_revisor(self):
         r = self.projeto()
-        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-vazio", "--auditor", "stub-b:revisor-vazio")
+        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-vazio", "--auditor", "stub-b:auditor-agree-dois")
         self.assertEqual(rc, 0, out)
         m = meta(self.pasta(r))
         self.assertEqual(m["revisor1_raso"], "sim")
@@ -439,7 +440,7 @@ class SegundoRevisor(Base):
     def test_escolhe_a_primeira_disponivel_fora_do_revisor_e_do_auditor_e_rotula(self):
         r = self.projeto()
         self.escreve(r, "src/auth/login.sh", "x\n")
-        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b:auditor-agree-dois")
         self.assertEqual(rc, 0, out)
         p = self.pasta(r)
         m = meta(p)
@@ -533,7 +534,8 @@ class Falhas(Base):
                                       "<<<VERDICTS\nVERDICTS>>>\n", encoding="utf-8")
         env = dict(self.env, SDD_REVIEW_STUB_RESPOSTAS=str(resp))
         r = self.projeto()
-        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a:cita", "--auditor", "stub-b:cita",
+        (resp / "cita2.md").write_text((resp / "cita.md").read_text(encoding="utf-8"), encoding="utf-8")
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a:cita", "--auditor", "stub-b:cita2",
                           "--no-revisor2", env=env)
         self.assertEqual(rc, 0, out)
 
@@ -584,7 +586,7 @@ class Custo(Base):
     def test_quatro_formas_e_nunca_zero_desconhecido(self):
         reg = self.registry([self.linha("stub-a", "revisor-ok", "assinatura"),
                              self.linha("stub-b", "auditor-agree", "pay-per-token"),
-                             self.linha("stub-c", "revisor-ok", "desconhecida")])
+                             self.linha("stub-c", "revisor2-ok", "desconhecida")])
         (reg.parent / "precos.tsv").write_text("stub-b\tauditor-agree\t1.0\t2.0\thttps://exemplo.example/precos\t"
                                                "2026-10-31\n", encoding="utf-8")
         r = self.projeto(registry=reg)
@@ -595,14 +597,15 @@ class Custo(Base):
         self.assertEqual(m["auditor_custo"], "≈US$ 0.0014")
         self.assertIn("revisor: stub-a (stub-modelo) — incluído na assinatura", out)
         self.assertIn("≈ US$ 0,0014 (estimado)", out)
-        rc, out = self.rev(r, "--reviewer", "stub-c", "--auditor", "stub-a", "--no-revisor2")
+        rc, out = self.rev(r, "--reviewer", "stub-c", "--auditor", "stub-a:auditor-agree", "--no-revisor2")
         m = meta(self.pasta(r))
         self.assertEqual(m["reviewer_custo"], "$?")
         self.assertIn("custo desconhecido", out)
         self.assertIn("(+ 1 papel(is) com custo desconhecido)", out)
         self.assertNotRegex(ler(self.pasta(r) / "META.txt"), r"reviewer_custo\s*:\s*(0|US\$ 0\.0000)")
         env = dict(self.env, SDD_REVIEW_STUB_CUSTO="0.0123")
-        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-c", "--auditor", "stub-a", "--no-revisor2", env=env)
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-c", "--auditor", "stub-a:auditor-agree", "--no-revisor2",
+                          env=env)
         m = meta(self.pasta(r))
         self.assertEqual((m["reviewer_custo"], m["reviewer_tokens_entrada"], m["reviewer_tokens_total"]),
                          ("US$ 0.0123", "1000", "1200"))
@@ -720,7 +723,7 @@ class RevisaoReal(Base):
 
     def test_r2_conferir_recusa_revisao_rasa(self):
         r = self.projeto()
-        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-vazio", "--auditor", "stub-b:revisor-vazio", "--no-revisor2")
+        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-vazio", "--auditor", "stub-b:auditor-vazio", "--no-revisor2")
         self.assertEqual(rc, 0, out)
         rc, out = self.ar(r, "--conferir")
         self.assertEqual(rc, 2, out)
@@ -785,7 +788,7 @@ class AvaliadorCiclo1(Base):
     def com_r2(self, r2):
         r = self.projeto()
         self.escreve(r, "src/auth/login.sh", "x\n")
-        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-vazio+revisor-vazio", "--auditor", "stub-b:revisor-vazio",
+        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-vazio+revisor-vazio", "--auditor", "stub-b:auditor-vazio",
                            "--revisor2", r2)
         return r, rc, out
 
@@ -912,3 +915,100 @@ class AvaliadorCiclo2(Base):
         cfg = ler(RAIZ / "sdd/config.example.yaml")
         bloco = cfg.split("review:", 1)[1].split('security_globs: ""', 1)[0]
         self.assertIn("aciona o 2º revisor", bloco)
+
+
+class RevisaoFinal(Base):
+    """Achados da revisão real final, rodada 1 (EXTERNAL_REVIEW_20261101-004259; ledger em
+    sdd/reports/evidence/F10_REVISAO/ledger-review.md)."""
+
+    def respostas(self, **arquivos):
+        resp = self.tmp / "resp"
+        if not resp.exists():
+            shutil.copytree(str(FXR / "respostas"), str(resp))
+        for nome, texto in arquivos.items():
+            (resp / (nome + ".md")).write_text(texto, encoding="utf-8")
+        return dict(self.env, SDD_REVIEW_STUB_RESPOSTAS=str(resp))
+
+    def test_r1_codex_auditoria_parcial_e_68(self):
+        env = self.respostas(parcial='Auditoria.\n\n<<<VERDICTS\n{"achado":"R1","veredito":"AGREE","justificativa":"x"}\n'
+                                     'VERDICTS>>>\n')
+        r = self.projeto()
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a", "--auditor", "stub-b:parcial", "--no-revisor2",
+                          env=env)
+        self.assertEqual(rc, 68, out)
+        m = meta(self.pasta(r))
+        self.assertIn("auditoria incompleta: sem veredito para R2", m["auditor_motivo"])
+        self.assertFalse((self.pasta(r) / "auditor.verdicts.jsonl").exists())
+
+    def test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64(self):
+        r = self.projeto()
+        for r2 in ("stub-a", "stub-c:revisor-ok", "stub-b"):
+            with self.subTest(revisor2=r2):
+                rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--revisor2", r2)
+                self.assertEqual(rc, 64, out)
+                self.assertIn("precisa ser outra engine (adapter e modelo)", out)
+        self.assertEqual(self.chamadas(), 0)
+
+    def test_r1_claude_mesmo_adapter_e_modelo_e_a_mesma_engine(self):
+        r = self.projeto()
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b:revisor-ok")
+        self.assertEqual(rc, 67, out)
+        self.assertEqual(self.chamadas(), 0)
+
+    def test_r2_claude_candidato_com_adapter_ausente_e_pulado(self):
+        reg = self.registry([self.linha("stub-a", "revisor-ok"), self.linha("stub-b", "auditor-agree-dois"),
+                             self.linha("x-sem", "revisor2-ok", adapter="nao-existe"),
+                             self.linha("stub-c", "revisor2-ok")])
+        r = self.projeto(registry=reg)
+        self.escreve(r, "src/auth/login.sh", "x\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["revisor2_engine"], "stub-c")
+
+    def test_r3_supress_blank_empty_e_atributos_do_usuario_nao_mudam_o_sha(self):
+        r = self.projeto()
+        self.escreve(r, "longo.txt", "".join(("\n" if k % 5 == 0 else "linha %d\n" % k) for k in range(40)))
+        self.commit(r, "longo")
+        self.escreve(r, "longo.txt", "".join(("\n" if k % 5 == 0 else ("mudou %d\n" if k == 21 else "linha %d\n") % k)
+                                            for k in range(40)))
+        sha = lambda s: re.search(r"diff_sha256: ([0-9a-f]{64})", s).group(1)
+        _, a = self.ar(r, "--base", "HEAD", "--dry-run", "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.git(r, "config", "diff.suppressBlankEmpty", "true")
+        self.escreve(self.tmp, "attr", "*.txt diff=fn\n")
+        self.git(r, "config", "core.attributesFile", str(self.tmp / "attr"))
+        self.git(r, "config", "diff.fn.xfuncname", "^(linha 1.*)$")
+        _, b = self.ar(r, "--base", "HEAD", "--dry-run", "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.assertEqual(sha(a), sha(b))
+
+    def test_r5_claude_aviso_de_uma_engine_antes_mesmo_com_auditor_falho(self):
+        r = self.projeto()
+        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-ok+auditor-sem-bloco", "--um-engine", "--no-revisor2")
+        self.assertEqual(rc, 68, out)
+        aviso = "⚠️ a mesma engine revisou e auditou: a auditoria tem os mesmos pontos cegos da revisão"
+        self.assertTrue(out.startswith(aviso), out[:200])
+
+    def test_r4_codex_preco_pelo_modelo_reportado(self):
+        reg = self.registry([self.linha("x-a", "revisor-ok", "pay-per-token"), self.linha("x-b", "auditor-agree",
+                                                                                            "assinatura")])
+        (reg.parent / "precos.tsv").write_text("x-a\tstub-modelo\t1.0\t2.0\thttps://exemplo.example/p\t2026-11-01\n",
+                                               encoding="utf-8")
+        r = self.projeto(registry=reg)
+        rc, out = self.rev(r, "--reviewer", "x-a", "--auditor", "x-b", "--no-revisor2")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["reviewer_custo"], "≈US$ 0.0014")
+
+    def test_r5_codex_papel_chamado_que_falhou_tem_custo_desconhecido(self):
+        r = self.projeto()
+        self.escreve(r, "src/auth/login.sh", "x\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--revisor2", "stub-c:falha-quota")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["revisor2_custo"], "$?")
+
+    def test_n1_novo_sem_arquivo_e_68(self):
+        env = self.respostas(novo='Auditoria.\n\n<<<VERDICTS\n{"achado":"R1","veredito":"AGREE","justificativa":"x"}\n'
+                                  '{"achado":"R2","veredito":"AGREE","justificativa":"x"}\n'
+                                  '{"achado":"N1","veredito":"NOVO","severidade":"HIGH","resumo":"x"}\nVERDICTS>>>\n')
+        r = self.projeto()
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a", "--auditor", "stub-b:novo", "--no-revisor2",
+                          env=env)
+        self.assertEqual(rc, 68, out)

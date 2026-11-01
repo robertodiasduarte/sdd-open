@@ -1,6 +1,6 @@
 {
   "session_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa3",
-  "response": "Revisão de exemplo.\n\n<<<VERDICTS\nVERDICTS>>>",
+  "response": "Auditoria de exemplo.\n\n<<<VERDICTS\n{\"achado\":\"R1\",\"veredito\":\"AGREE\",\"justificativa\":\"exemplo\"}\nVERDICTS>>>",
   "stats": {
     "models": {
       "gemini-3.8-flash": {

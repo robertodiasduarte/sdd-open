@@ -250,9 +250,11 @@ sdd/fixtures/revisao/bin/gemini
 sdd/fixtures/revisao/ledger-dispensado.yaml
 sdd/fixtures/revisao/ledger-sem-review.yaml
 sdd/fixtures/revisao/registry-stub.tsv
+sdd/fixtures/revisao/respostas/auditor-agree-dois.md
 sdd/fixtures/revisao/respostas/auditor-agree.md
 sdd/fixtures/revisao/respostas/auditor-refuta-high.md
 sdd/fixtures/revisao/respostas/auditor-sem-bloco.md
+sdd/fixtures/revisao/respostas/auditor-vazio.md
 sdd/fixtures/revisao/respostas/desempate-refutado.md
 sdd/fixtures/revisao/respostas/falha-429.txt
 sdd/fixtures/revisao/respostas/falha-auth.txt
@@ -260,6 +262,7 @@ sdd/fixtures/revisao/respostas/falha-quota.txt
 sdd/fixtures/revisao/respostas/revisor-ok.md
 sdd/fixtures/revisao/respostas/revisor-sem-bloco.md
 sdd/fixtures/revisao/respostas/revisor-vazio.md
+sdd/fixtures/revisao/respostas/revisor2-ok.md
 sdd/fixtures/revisao/saidas/claude.json
 sdd/fixtures/revisao/saidas/codex.jsonl
 sdd/fixtures/revisao/saidas/gemini.json

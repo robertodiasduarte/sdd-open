@@ -284,8 +284,24 @@ def rotulo(id_):
     return re.sub(r"[^A-Za-z0-9._-]", "-", id_)
 
 
+def chave(d):
+    """Identidade de uma engine: o mesmo adapter com o mesmo modelo é a mesma engine, com qualquer id."""
+    return (d["adapter"], d["modelo"])
+
+
+def candidato(e, papel):
+    """Linha do registry pronta para um papel escolhido em execução; None quando não serve (nunca sai 64:
+    o revisor já pode ter sido pago)."""
+    d = dict(REG[e])
+    d["id"] = e
+    papel_reg = "revisor" if papel in ("reviewer", "revisor2") else papel
+    if papel_reg not in d["papeis"] or not os.path.isfile(os.path.join(ADAPTERS, d["adapter"] + ".sh")):
+        return None
+    return d
+
+
 def diversidade(a, b):
-    if a["id"] == b["id"]:
+    if a["id"] == b["id"] or chave(a) == chave(b):
         return "nenhuma"
     return "modelo" if a["adapter"] == b["adapter"] else "vendor"
 
@@ -322,20 +338,24 @@ def congelar(base, paths):
             # copy2 preserva o mtime: com mtime novo o git perde a checagem de índice "racy" e uma edição do
             # mesmo tamanho, feita no mesmo segundo do commit, some do diff
             shutil.copy2(idx, tidx)
-        env = dict(os.environ, GIT_INDEX_FILE=tidx)
+        # GIT_ATTR_NOSYSTEM e core.attributesFile=/dev/null: atributos do sistema e do usuário (textconv,
+        # funcname) não mudam os bytes; os .gitattributes do repositório valem, porque são do código
+        env = dict(os.environ, GIT_INDEX_FILE=tidx, GIT_ATTR_NOSYSTEM="1")
         _, novos, _ = git(raiz, "ls-files", "--others", "--exclude-standard", "-z", "--", *spec, env=env)
         nomes = [n for n in novos.split("\0") if n]
         for k in range(0, len(nomes), 200):
             git(raiz, "add", "--intent-to-add", "--", *nomes[k:k + 200], env=env)
-        rc, patch, err = git(raiz, "-c", "core.quotepath=true", "diff", "--binary", "--no-color", "--no-ext-diff",
-                             "--no-renames", "--diff-algorithm=myers", "--src-prefix=a/", "--dst-prefix=b/",
-                             "-U3", "--inter-hunk-context=0", "-O/dev/null", "--no-textconv",
+        rc, patch, err = git(raiz, "-c", "core.quotepath=true", "-c", "diff.suppressBlankEmpty=false",
+                             "-c", "core.attributesFile=/dev/null", "diff", "--binary", "--no-color", "--no-ext-diff",
+                             "--no-renames", "--diff-algorithm=myers", "--indent-heuristic", "--src-prefix=a/",
+                             "--dst-prefix=b/", "-U3", "--inter-hunk-context=0", "-O/dev/null", "--no-textconv",
                              mb, "--", *spec, env=env, binario=True)
         if rc != 0:
             uso("git diff falhou: " + err.strip())
         # os nomes vêm do git com -z, nunca do cabeçalho do patch: um caminho com acento, espaço ou aspas sai
         # entre aspas no cabeçalho e escaparia dos gatilhos de segurança e da contagem de arquivos
-        _, nomes_z, _ = git(raiz, "diff", "--name-only", "-z", "--no-renames", "-O/dev/null", mb, "--", *spec, env=env)
+        _, nomes_z, _ = git(raiz, "-c", "core.attributesFile=/dev/null", "diff", "--name-only", "-z", "--no-renames",
+                            "-O/dev/null", mb, "--", *spec, env=env)
         arquivos = [n for n in nomes_z.split("\0") if n]
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
@@ -407,12 +427,14 @@ if not auditores and flags["--um-engine"]:
     auditores = [resolve(r["id"], "auditor") for r in revisores]
 if not auditores:
     uso("nenhum auditor: preencha review.auditor em sdd/config.yaml ou passe --auditor (válidas: %s)" % ", ".join(ORDEM))
-if auditores[0]["id"] == revisores[0]["id"] and not flags["--um-engine"]:
+if chave(auditores[0]) == chave(revisores[0]) and not flags["--um-engine"]:
     sai(67, "PAROU", "o auditor (%s) é a mesma engine do revisor: ninguém audita a própria revisão" % auditores[0]["id"],
         "escolha outra engine para auditar (review.auditor) ou rode com --um-engine")
 if flags["--no-revisor2"] and op["--revisor2"]:
     uso("--revisor2 e --no-revisor2 juntos")
 r2_forcado = resolve(op["--revisor2"], "revisor2") if op["--revisor2"] else None
+if r2_forcado and chave(r2_forcado) in (chave(revisores[0]), chave(auditores[0])):
+    uso("o 2º revisor (%s) precisa ser outra engine (adapter e modelo) que o revisor e o auditor" % r2_forcado["id"])
 
 try:
     max_kb = int(caminho_cfg("context_max_kb", "180"))
@@ -522,6 +544,10 @@ os.makedirs(dirrev)
 rel_rev = os.path.relpath(dirrev, raiz)
 open(os.path.join(dirrev, "diff.patch"), "wb").write(patch)
 open(os.path.join(dirrev, "context-sdd.md"), "w", encoding="utf-8").write(ctx_txt)
+AVISO_UM = "⚠️ a mesma engine revisou e auditou: a auditoria tem os mesmos pontos cegos da revisão"
+AVISO_UM_IMPRESSO = diversidade(revisores[0], auditores[0]) == "nenhuma"
+if AVISO_UM_IMPRESSO:
+    print(AVISO_UM, flush=True)   # AT-005: a saída começa com ele, mesmo que o auditor falhe depois
 TMP = tempfile.mkdtemp(prefix="sdd-review-")
 VAZIA = os.path.join(TMP, "cwd")
 os.makedirs(VAZIA)
@@ -597,7 +623,7 @@ def papel(nome, cands, prompt_txt, excluir=()):
     open(arq_p, "w", encoding="utf-8").write(prompt_txt)
     causas, motivos, ultimo = [], [], None
     for d in cands:
-        if d["id"] in excluir:
+        if chave(d) in excluir:
             motivos.append("%s excluída (já tem outro papel nesta revisão)" % d["id"])
             causas.append("exclusao")
             continue
@@ -702,7 +728,7 @@ def vereditos_auditor(texto):
         if ok and j["veredito"] == "NOVO":
             s = str(j.get("severidade", "")).upper()
             j["severidade"] = "MED" if s == "MEDIUM" else s
-            ok = j["severidade"] in ("HIGH", "MED", "LOW")
+            ok = j["severidade"] in ("HIGH", "MED", "LOW") and all(k in j for k in ("arquivo", "linha", "resumo"))
         if not ok:
             return None, "linha do bloco inválida para o auditor: " + l[:80]
         out.append(j)
@@ -732,12 +758,15 @@ def usd(v):
 
 
 def custo(reg):
-    d = reg["linha"]
-    if d is None or reg["exit"] in ("-",):
-        return "n/d"
-    if isinstance(reg["custo_usd"], (int, float)):
+    d = reg.get("linha")
+    if isinstance(reg.get("custo_usd"), (int, float)):
         return "US$ " + usd(reg["custo_usd"])
-    t = PRECOS.get((d["engine"], d["modelo"]))
+    if reg.get("exit") not in ("0", "-", None) and reg.get("engine_efetivo") not in ("-", None, "indisponível"):
+        return "$?"   # chamada que falhou pode ter sido cobrada: desconhecido, nunca n/d
+    if d is None or reg.get("exit") in ("-", None):
+        return "n/d"
+    reportado = (reg.get("modelo") or "").split(" via ", 1)[0]
+    t = PRECOS.get((d["engine"], reportado)) or PRECOS.get((d["engine"], d["modelo"]))
     if t and isinstance(reg["tokens_entrada"], int) and isinstance(reg["tokens_saida"], int):
         return "≈US$ " + usd((reg["tokens_entrada"] * t[0] + reg["tokens_saida"] * t[1]) / 1e6)
     return "assinatura" if d["cobranca"] == "assinatura" else "$?"
@@ -767,10 +796,11 @@ elif gat2:
     gatilho = gat2
     excl = {base_id(rev["engine_efetivo"]), base_id(auditores[0]["id"])}
     if r2_forcado:
-        cand = [r2_forcado]
+        # o revisor pode ter caído para a reserva: a mesma engine não revisa duas vezes
+        cand = [r2_forcado] if chave(r2_forcado) != chave(rev["linha"]) else []
     else:
-        cand = [resolve(e, "revisor2") for e in ORDEM if "revisor" in REG[e]["papeis"] and e not in excl]
-        cand = [d for d in cand if disponivel(d)][:1]
+        cand = [candidato(e, "revisor2") for e in ORDEM if e not in excl]
+        cand = [d for d in cand if d and disponivel(d)][:1]
     if not cand:
         r2 = {"engine_efetivo": "indisponível", "engine_default": "-", "exit": "67", "segundos": 0, "achados": 0,
               "motivo": "nenhuma engine disponível fora do revisor e do auditor", "linha": None,
@@ -819,15 +849,26 @@ if rev["exit"] == "0":
         if dois:
             rv += "\nAchados desta revisão, com os identificadores a citar:\n" + "\n".join(
                 json.dumps(j, ensure_ascii=False) for j in vs) + "\n"
-    excl = set() if flags["--um-engine"] else {rev["engine_efetivo"]} | ({r2["engine_efetivo"]} if dois else set())
+    excl = set() if flags["--um-engine"] else {chave(rev["linha"])} | ({chave(r2["linha"])} if dois else set())
     aud = papel("auditor", auditores, prompt_de("auditor") + material("\n\n## REVISÕES\n" + rv), excluir=excl)
     if aud["exit"] == "0":
         open(os.path.join(dirrev, "auditor.md"), "w", encoding="utf-8").write(aud["texto"])
         aud_v, erro = vereditos_auditor(aud["texto"])
+        if aud_v is not None:
+            # todo achado recebido precisa de veredito (pelo id completo ou pela base única): auditoria parcial
+            # não é auditoria
+            ids = {j["achado"] for j in aud_v}
+            todos = [j["achado"] for j in rev_v + (r2_v if dois else [])]
+            bases = [x.split("@", 1)[0] for x in todos]
+            faltam = [x for x in todos if x not in ids and not (x.split("@", 1)[0] in ids
+                                                                and bases.count(x.split("@", 1)[0]) == 1)]
+            if faltam:
+                aud_v, erro = None, "auditoria incompleta: sem veredito para " + ", ".join(faltam)
         if aud_v is None:
             aud.update({"exit": "68", "motivo": "%s: %s" % (aud["engine_efetivo"], erro)})
             aud_v = []
-        grava("auditor.verdicts.jsonl", aud_v)
+        else:
+            grava("auditor.verdicts.jsonl", aud_v)
     aud["vereditos"] = len(aud_v)
 
 todos_rev = rev_v + (r2_v if dois else [])
@@ -851,8 +892,10 @@ if aud is not None and aud["exit"] == "0" and not flags["--no-desempate"]:
     if alvo:
         des["alvo"] = alvo["achado"]
         excl = {base_id(origem.get(alvo["achado"])), base_id(aud["engine_efetivo"])}
-        cand = [resolve(e, "desempate") for e in ORDEM if "desempate" in REG[e]["papeis"] and e not in excl]
-        cand = [d for d in cand if disponivel(d)][:1]
+        chaves = {chave(aud["linha"])} | {chave(x["linha"]) for x in (rev, r2) if x and x.get("linha")
+                                            and x["engine_efetivo"] == origem.get(alvo["achado"])}
+        cand = [candidato(e, "desempate") for e in ORDEM if e not in excl]
+        cand = [d for d in cand if d and chave(d) not in chaves and disponivel(d)][:1]
         if not cand:
             des["engine"] = "indisponível"
         else:
@@ -891,8 +934,8 @@ if aud is not None and aud["exit"] == "0" and rev["linha"] and aud["linha"]:
     div = diversidade(rev["linha"], aud["linha"])
 else:
     div = "-"
-if div == "nenhuma":
-    avisos.insert(0, "⚠️ a mesma engine revisou e auditou: a auditoria tem os mesmos pontos cegos da revisão")
+if div == "nenhuma" and not AVISO_UM_IMPRESSO:
+    avisos.insert(0, AVISO_UM)
 
 
 def n(v):

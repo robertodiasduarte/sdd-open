@@ -2,5 +2,5 @@
 # O modelo é o cenário do stub (sdd/fixtures/revisao/adapters/stub.sh); o teste troca por id:cenario.
 stub-a	stub	revisor-ok	assinatura	revisor,auditor,desempate	5	FALHA-AUTH	FALHA-429	FALHA-QUOTA
 stub-b	stub	auditor-agree	pay-per-token	revisor,auditor,desempate	5	FALHA-AUTH	FALHA-429	FALHA-QUOTA
-stub-c	stub	revisor-ok	desconhecida	revisor,auditor,desempate	5	FALHA-AUTH	FALHA-429	FALHA-QUOTA
+stub-c	stub	revisor2-ok	desconhecida	revisor,auditor,desempate	5	FALHA-AUTH	FALHA-429	FALHA-QUOTA
 stub-d	stub	desempate-refutado	assinatura	revisor,auditor,desempate	5	FALHA-AUTH	FALHA-429	FALHA-QUOTA

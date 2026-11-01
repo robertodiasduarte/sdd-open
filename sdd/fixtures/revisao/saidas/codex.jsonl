@@ -1,4 +1,4 @@
 {"type": "thread.started", "thread_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa2"}
 {"type": "turn.started"}
-{"type": "item.completed", "item": {"id": "item_0", "type": "agent_message", "text": "Revisão de exemplo.\n\n<<<VERDICTS\nVERDICTS>>>"}}
+{"type": "item.completed", "item": {"id": "item_0", "type": "agent_message", "text": "Auditoria de exemplo.\n\n<<<VERDICTS\n{\"achado\":\"R1\",\"veredito\":\"AGREE\",\"justificativa\":\"exemplo\"}\nVERDICTS>>>"}}
 {"type": "turn.completed", "usage": {"input_tokens": 24673, "cached_input_tokens": 13184, "cache_write_input_tokens": 0, "output_tokens": 5, "reasoning_output_tokens": 0}}
