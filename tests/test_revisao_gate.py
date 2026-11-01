@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import re
 import shutil
-import time
 from pathlib import Path
 
 from apoio import BASH, RAIZ, Sandbox
@@ -47,7 +46,8 @@ class Gate(Sandbox):
         arq.write_text(t.replace(antes, depois), encoding="utf-8")
 
     def test_pacote_intacto_sai_0_sem_rede(self):
-        t0 = time.time()
+        # o tempo (alvo ≤ 120 s no piso) é medido na evidência local, não asserido aqui: um runner lento da CI não
+        # pode avermelhar o gate (revisão real, rodada 1, R2)
         rc, out = self.gate()
         self.assertEqual(rc, 0, out)
         self.assertIn("RESULTADO: GATE VERDE", out)
@@ -58,7 +58,6 @@ class Gate(Sandbox):
                     "gemini (auditor): modelo de stats.models", "openrouter (revisor): modelo e provedor",
                     "a OpenRouter recebeu Authorization: Bearer <chave gerada>", "revisor caiu na engine do auditor"):
             self.assertIn(rot, out)
-        self.assertLess(time.time() - t0, 120)
 
     def test_verboso_mostra_o_valor_lido(self):
         rc, out = self.gate(RAIZ, "-v")
@@ -120,20 +119,22 @@ class Gate(Sandbox):
                       "claude (revisor): custo de total_cost_usd")
 
     def test_aval1_l2_sinal_de_credencial_de_cada_engine(self):
+        # os 4 sinais inertes numa cópia só: cada cenário 65 é independente e nomeia a própria engine
+        # (uma execução do gate em vez de 4 — o tempo da suíte no macOS, revisão real rodada 1, R1@claude)
+        p = self.pacote()
+        reg = p / "sdd/review/registry.tsv"
+        linhas = []
+        for ln in reg.read_text(encoding="utf-8").splitlines():
+            c = ln.split("\t")
+            if len(c) == 9 and not ln.startswith("#"):
+                c[6] = "(?i)(NUNCA-CASA-XYZ)"
+                ln = "\t".join(c)
+            linhas.append(ln)
+        reg.write_text("\n".join(linhas) + "\n", encoding="utf-8")
+        rc, out = self.gate(p)
+        self.assertEqual(rc, 2, out)
         for eng in ("claude", "codex", "gemini", "openrouter"):
             with self.subTest(engine=eng):
-                p = self.pacote("pkg-" + eng)
-                reg = p / "sdd/review/registry.tsv"
-                linhas = []
-                for ln in reg.read_text(encoding="utf-8").splitlines():
-                    c = ln.split("\t")
-                    if c[0] == eng and len(c) == 9:
-                        c[6] = "(?i)(NUNCA-CASA-XYZ)"
-                        ln = "\t".join(c)
-                    linhas.append(ln)
-                reg.write_text("\n".join(linhas) + "\n", encoding="utf-8")
-                rc, out = self.gate(p)
-                self.assertEqual(rc, 2, out)
                 self.assertRegex(out, r"(?m)^  ❌ \d+\. falha de credencial \(%s\)" % eng)
 
     def test_aval2_l1_severidade_do_novo_e_conferida(self):
@@ -164,14 +165,35 @@ class Gate(Sandbox):
         self.assertEqual(self.git(wt, "diff", "--cached", "--name-only").strip(), "meu.txt")
 
     def test_extracao_nula_derruba_uma_assercao_de_cada_engine(self):
+        # as 4 extrações nulas numa cópia só: as asserções de campo são por engine, então cada uma aparece pelo
+        # próprio nome (uma execução do gate em vez de 4)
+        p = self.pacote()
+        for eng in ("claude", "codex", "gemini", "openrouter"):
+            a = p / "sdd/bin/adapters" / (eng + ".sh")
+            a.write_text(a.read_text(encoding="utf-8") + NULA, encoding="utf-8")
+        rc, out = self.gate(p)
+        self.assertEqual(rc, 2, out)
         for eng in ("claude", "codex", "gemini", "openrouter"):
             with self.subTest(engine=eng):
-                p = self.pacote("pkg-" + eng)
-                a = p / "sdd/bin/adapters" / (eng + ".sh")
-                a.write_text(a.read_text(encoding="utf-8") + NULA, encoding="utf-8")
-                rc, out = self.gate(p)
-                self.assertEqual(rc, 2, out)
                 self.assertRegex(out, r"(?m)^  ❌ \d+\. %s \((revisor|auditor)[^)]*\): (?!engine efetiva)" % eng)
+
+    def test_real1_caminho_com_metacaractere_de_shell(self):
+        # R1@codex: o wrapper gerado não pode expandir $ nem crase do caminho do pacote
+        p = self.pacote("pkg $ZZ_NAO_DEFINIDA `x` 'a'")
+        rc, out = self.gate(p)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("RESULTADO: GATE VERDE", out)
+
+    def test_real1_cenario_ausente_sai_3_antes_de_qualquer_chamada(self):
+        # R3@claude: "nada foi chamado" tem de ser verdade — a tabela é conferida no pré-voo
+        p = self.pacote()
+        cen = p / "sdd/review/stubs/cenarios.tsv"
+        cen.write_text("\n".join(l for l in cen.read_text(encoding="utf-8").splitlines()
+                                 if not l.startswith("gemini\tauditor-misto\t")) + "\n", encoding="utf-8")
+        rc, out = self.gate(p)
+        self.assertEqual(rc, 3, out)
+        self.assertIn("gemini/auditor-misto", out)
+        self.assertNotIn("✅", out)
 
     def test_preco_atualizado_no_projeto_nao_quebra_o_gate(self):
         p = self.pacote()

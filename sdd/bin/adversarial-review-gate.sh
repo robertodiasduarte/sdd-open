@@ -35,7 +35,7 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 SDD_GATE_BIN="$BIN" SDD_GATE_BASH="${BASH:-bash}" exec python3 -B - "$@" <<'PY'
-import atexit, json, os, re, shutil, subprocess, sys, tempfile, time
+import atexit, json, os, re, shlex, shutil, subprocess, sys, tempfile, time
 
 BIN = os.environ.pop("SDD_GATE_BIN")
 BASH = os.environ.pop("SDD_GATE_BASH") or "bash"
@@ -125,6 +125,17 @@ for e in ENGINES:
                                                                          ADAPTERS),
                  "o gate prova as 4 engines do pacote: restaure a linha (o registry do pacote vem com as 4).")
 CEN = {(l[0], l[1]): l for l in tsv(os.path.join(STUBS, "cenarios.tsv"), 10)}
+# todo cenário que o gate usa precisa existir ANTES da 1ª chamada: faltar no meio violaria o "nada foi chamado" do 3
+NECESSARIOS = [("claude", c) for c in ("revisor", "auditor", "auth")] + \
+    [("codex", c) for c in ("revisor", "auditor", "auditor-sem-bloco", "429", "auth")] + \
+    [("gemini", c) for c in ("revisor", "auditor", "auditor-misto", "cota", "auth")] + \
+    [("openrouter", c) for c in ("revisor", "auditor", "sem-custo", "modelo-sem-preco", "429", "auth")]
+for e, c in NECESSARIOS:
+    if (e, c) not in CEN:
+        quebrado("cenarios.tsv sem a linha %s/%s" % (e, c), "restaure sdd/review/stubs/cenarios.tsv do pacote.")
+    if CEN[(e, c)][2] != "-" and not os.path.isfile(os.path.join(STUBS, "respostas", CEN[(e, c)][2])):
+        quebrado("resposta ausente: respostas/%s (cenário %s/%s)" % (CEN[(e, c)][2], e, c),
+                 "reinstale sdd/review/stubs/ (rode o init do sdd-open).")
 PRECOS = {(l[0], l[1]): (float(l[2]), float(l[3])) for l in tsv(os.path.join(REVIEW, "precos.tsv"), 6)
           if re.match(r"^[0-9.]+$", l[2]) and re.match(r"^[0-9.]+$", l[3])}
 
@@ -135,7 +146,8 @@ os.makedirs(TBIN)
 for e in CLIS:
     p = os.path.join(TBIN, e)
     with open(p, "w") as h:
-        h.write('#!/bin/sh\nexec "%s" -B "%s" "$@"\n' % (sys.executable, os.path.join(STUBS, e + ".py")))
+        # shlex.quote: um caminho com $, crase ou aspas é texto para o /bin/sh, nunca expansão
+        h.write('#!/bin/sh\nexec %s -B %s "$@"\n' % (shlex.quote(sys.executable), shlex.quote(os.path.join(STUBS, e + ".py"))))
     os.chmod(p, 0o755)
 
 CHAVE = "gate-%d-falsa" % os.getpid()
@@ -240,10 +252,10 @@ def executa(nome, filas, *flags):
             break
         time.sleep(0.05)
     if not os.path.exists(porta_arq):
+        # cenários anteriores já rodaram: não é "nada foi chamado" (3), é uma falha deste cenário, e o resto segue
         srv.kill()
         srv.wait()
-        shutil.rmtree(TMP, ignore_errors=True)
-        quebrado("o stub da OpenRouter não subiu em 5 s (127.0.0.1)", "confira se o Python pode abrir porta local.")
+        return None, "o stub da OpenRouter não subiu em 5 s (127.0.0.1)", {}, None, est
     env["SDD_REVIEW_OPENROUTER_URL"] = "http://127.0.0.1:%s/api/v1/chat/completions" % open(porta_arq).read().strip()
     antes = set(os.listdir(REVS)) if os.path.isdir(REVS) else set()
     try:
