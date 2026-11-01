@@ -64,7 +64,8 @@ review:
   context_max_kb: 180
   # Superfície de segurança do projeto, em globs separados por vírgula (ex.: "auth/**,api/public/**").
   # Uma linha do File Manifest que casa um destes globs torna a revisão do DESIGN obrigatória
-  # (sdd/bin/sdd-fluxo.sh review-design). Vazio = só os termos fixos do script (auth, login, token,
+  # (sdd/bin/sdd-fluxo.sh review-design) e, num diff que toca um caminho destes, aciona o 2º revisor da
+  # revisão adversarial (uma chamada de engine a mais, que pode ser paga). Vazio = só os termos fixos do script (auth, login, token,
   # senha, password, jwt, GRANT, rota pública) e os globs de layers.sql.
   security_globs: ""
 

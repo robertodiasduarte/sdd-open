@@ -721,3 +721,11 @@ class LoopF10(Base):
             meta = ler(FX / d / "META.txt")
             for chave in ("revisor2_engine", "revisor1_raso", "desempate_alvo", "convergencia_1o_passe"):
                 self.assertNotIn(chave, meta, d)
+
+    def test_dispensa_sem_motivo_nao_vale(self):
+        for linha in ("revisor2: dispensado rodada=1\n", "revisor2: dispensado rodada=1 —\n",
+                      "revisor2: dispensado rodada=1 — ok\n"):
+            with self.subTest(linha=linha.strip()):
+                led = self.escreve(self.tmp, "l.md", linha)
+                rc, out = self.loop("review-r2-indisponivel", "--ledger", led)
+                self.assertEqual(rc, 20, out)

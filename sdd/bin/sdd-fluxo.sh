@@ -403,7 +403,9 @@ def _loop():
         if "revisor2_exit" not in meta:
             sai64("META com revisor2_engine=%s e sem revisor2_exit — a cadeia não registrou o 2º revisor" % r2_eng)
         r2_ec = meta["revisor2_exit"]
-        r2_disp = any(re.match(r"^\s*revisor2:\s*dispensado\s+rodada=" + re.escape(rodada) + r"\b", ln)
+        # a dispensa vale só como linha própria, da rodada, com motivo de 3+ caracteres (como --conferir e --ledger)
+        r2_disp = any(re.match(r"^\s*revisor2:\s*dispensado\s+rodada=" + re.escape(rodada)
+                               + r"\s*(?:—|–|-{1,2})\s*\S.{2,}$", ln.rstrip())
                       for ln in led_txt.split("\n"))
         if r2_ec == "0":
             r2_ok = True

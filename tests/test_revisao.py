@@ -858,3 +858,57 @@ class AvaliadorCiclo1(Base):
         self.assertEqual(rc, 67, out)
         self.assertNotIn("a mesma engine revisou e auditou", out)
         self.assertEqual(meta(self.pasta(r))["diversidade"], "-")
+
+
+class AvaliadorCiclo2(Base):
+    """Achados do avaliador de contexto fresco, ciclo 2 (sdd/reviews/AVALIACAO_F10_REVISAO_20261101-ciclo2.md)."""
+
+    def longo(self, r):
+        self.escreve(r, "longo.txt", "".join("linha %02d\n" % k for k in range(60)))
+        self.commit(r, "longo")
+
+    def test_1_edicao_do_mesmo_tamanho_no_mesmo_instante_do_indice_entra_no_diff(self):
+        r = self.projeto()
+        self.git(r, "config", "core.trustctime", "false")   # o ctime não volta; sem isto o git o compararia
+        self.longo(r)
+        arq = r / "longo.txt"
+        st = os.stat(str(arq))
+        arq.write_text(ler(arq).replace("linha 30", "mudou 30"), encoding="utf-8")
+        self.assertEqual(os.stat(str(arq)).st_size, st.st_size)
+        # mesmo mtime do que o índice registrou e índice escrito no mesmo instante: só a checagem "racy" do
+        # git (que exige o mtime original do índice) enxerga a mudança
+        os.utime(str(arq), ns=(st.st_atime_ns, st.st_mtime_ns))
+        os.utime(str(r / ".git/index"), ns=(st.st_atime_ns, st.st_mtime_ns))
+        rc, out = self.ar(r, "--base", "HEAD", "--dry-run", "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("longo.txt", self.git(r, "diff", "HEAD", "--name-only"))
+        rc, out = self.ar(r, "--base", "HEAD", "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2")
+        self.assertEqual(rc, 0, out)
+        self.assertIn(b"+mudou 30", (self.pasta(r) / "diff.patch").read_bytes())
+
+    def test_2_order_file_e_textconv_do_usuario_nao_mudam_o_sha(self):
+        r = self.projeto()
+        sha = lambda s: re.search(r"diff_sha256: ([0-9a-f]{64})", s).group(1)
+        _, a = self.rev(r, "--dry-run", "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.escreve(self.tmp, "ordem.txt", "src/novo.sh\n")
+        self.git(r, "config", "diff.orderFile", str(self.tmp / "ordem.txt"))
+        self.escreve(self.tmp, "atributos", "*.sh diff=maiusculo\n")
+        self.git(r, "config", "core.attributesFile", str(self.tmp / "atributos"))
+        self.git(r, "config", "diff.maiusculo.textconv", "tr a-z A-Z <")
+        _, b = self.rev(r, "--dry-run", "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.assertEqual(sha(a), sha(b))
+
+    def test_3_lista_esgotada_registra_a_troca_e_nao_diz_quem_revisou(self):
+        r = self.projeto()
+        rc, out = self.rev(r, "--reviewer", "stub-a:falha-quota,stub-c:falha-quota", "--auditor", "stub-b",
+                           "--no-revisor2")
+        self.assertEqual(rc, 67, out)
+        m = meta(self.pasta(r))
+        self.assertEqual((m["reviewer_engine_efetivo"], m["reviewer_fallback_usado"]), ("stub-c:falha-quota", "sim"))
+        self.assertIn("revisor: falhou (exit 67) — última engine tentada: stub-c:falha-quota", out)
+        self.assertNotIn("quem revisou", out)
+
+    def test_5_comentario_de_security_globs_cita_o_segundo_revisor(self):
+        cfg = ler(RAIZ / "sdd/config.example.yaml")
+        bloco = cfg.split("review:", 1)[1].split('security_globs: ""', 1)[0]
+        self.assertIn("aciona o 2º revisor", bloco)

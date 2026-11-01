@@ -319,7 +319,9 @@ def congelar(base, paths):
         idx = idx if os.path.isabs(idx) else os.path.join(raiz, idx)
         tidx = os.path.join(tmp, "index")
         if os.path.isfile(idx):
-            shutil.copyfile(idx, tidx)
+            # copy2 preserva o mtime: com mtime novo o git perde a checagem de índice "racy" e uma edição do
+            # mesmo tamanho, feita no mesmo segundo do commit, some do diff
+            shutil.copy2(idx, tidx)
         env = dict(os.environ, GIT_INDEX_FILE=tidx)
         _, novos, _ = git(raiz, "ls-files", "--others", "--exclude-standard", "-z", "--", *spec, env=env)
         nomes = [n for n in novos.split("\0") if n]
@@ -327,13 +329,13 @@ def congelar(base, paths):
             git(raiz, "add", "--intent-to-add", "--", *nomes[k:k + 200], env=env)
         rc, patch, err = git(raiz, "-c", "core.quotepath=true", "diff", "--binary", "--no-color", "--no-ext-diff",
                              "--no-renames", "--diff-algorithm=myers", "--src-prefix=a/", "--dst-prefix=b/",
-                             "-U3", "--inter-hunk-context=0",
+                             "-U3", "--inter-hunk-context=0", "-O/dev/null", "--no-textconv",
                              mb, "--", *spec, env=env, binario=True)
         if rc != 0:
             uso("git diff falhou: " + err.strip())
         # os nomes vêm do git com -z, nunca do cabeçalho do patch: um caminho com acento, espaço ou aspas sai
         # entre aspas no cabeçalho e escaparia dos gatilhos de segurança e da contagem de arquivos
-        _, nomes_z, _ = git(raiz, "diff", "--name-only", "-z", "--no-renames", mb, "--", *spec, env=env)
+        _, nomes_z, _ = git(raiz, "diff", "--name-only", "-z", "--no-renames", "-O/dev/null", mb, "--", *spec, env=env)
         arquivos = [n for n in nomes_z.split("\0") if n]
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
@@ -639,7 +641,8 @@ def papel(nome, cands, prompt_txt, excluir=()):
         if ultimo is not None:
             # a última engine tentada fica registrada: com "-", o loop leria "não houve este papel"
             reg["engine_efetivo"] = ultimo["id"]
-    if reg["fallback_usado"] == "sim":
+            reg["fallback_usado"] = "sim" if ultimo["id"] != reg["engine_default"] else "nao"
+    if reg["fallback_usado"] == "sim" and reg["exit"] == "0":
         avisos.append("⚠️ o %s previsto (%s) falhou (%s); quem %s foi %s" % (
             NOME_PAPEL[nome], reg["engine_default"], reg["motivo"], VERBO_PAPEL[nome], reg["engine_efetivo"]))
     return reg
@@ -1005,6 +1008,9 @@ print("pasta: " + rel_rev)
 print("diff_sha256: " + sha)
 for nome, r in papeis_meta:
     if r and r.get("engine_efetivo") not in (None, "-"):
+        if r.get("exit") not in ("0", None):
+            print("%s: falhou (exit %s) — última engine tentada: %s" % (NOME_PAPEL[nome], r["exit"], r["engine_efetivo"]))
+            continue
         print("%s: %s (%s)%s — %s" % (NOME_PAPEL[nome], r["engine_efetivo"], r.get("modelo") or
                                        (r.get("linha") or {}).get("modelo") or "n/d",
                                        " (troca de engine)" if r.get("fallback_usado") == "sim" else "",
