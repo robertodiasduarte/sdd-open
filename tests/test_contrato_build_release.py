@@ -207,8 +207,6 @@ class TemplatesEvidencia(unittest.TestCase):
         self.assertRegex(texto, r"(?m)^evidence:\n  require_avaliacao_layers: 2$")
 
 
-if __name__ == "__main__":
-    unittest.main()
 
 
 ENGINES = re.compile(r"\b(claude|codex|gemini|openrouter)\b", re.I)
@@ -277,3 +275,7 @@ class RevisaoAdversarial(unittest.TestCase):
                 self.assertIn("sdd/bin/adversarial-review.sh", texto)
                 self.assertNotIn("/adversarial-review`", texto.replace("sdd/bin/adversarial-review", ""))
         self.assertIn("review.output_dir", ler(RAIZ / "sdd/templates/fragments/RESUMO_ETAPA.md"))
+
+
+if __name__ == "__main__":
+    unittest.main()

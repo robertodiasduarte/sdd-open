@@ -699,3 +699,76 @@ class Prompts(Base):
                 self.assertIn("inline", corpo)
                 self.assertIn("Nenhuma ferramenta é necessária", corpo)
                 self.assertNotRegex(corpo.lower(), r"\b(claude|codex|gemini|openrouter|anthropic|openai|google)\b")
+
+
+class RevisaoReal(Base):
+    """Achados da revisão real sobre o diff da F10 (EXTERNAL_REVIEW_20261031-233526, R1–R7)."""
+
+    def test_r1_conferir_recusa_revisao_so_de_paths_e_o_padrao_a_pula(self):
+        r = self.projeto()
+        self.escreve(r, "sdd/features/DESIGN_X.md", "d\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2",
+                           "--paths", "sdd/features/DESIGN_X.md")
+        self.assertEqual(rc, 0, out)
+        p = self.pasta(r).relative_to(r)
+        rc, out = self.ar(r, "--conferir", str(p))
+        self.assertEqual(rc, 2, out)
+        self.assertIn("cobre só --paths sdd/features/DESIGN_X.md", out)
+        rc, out = self.ar(r, "--conferir")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("nenhuma revisão em sdd/reports/reviews", out)
+
+    def test_r2_conferir_recusa_revisao_rasa(self):
+        r = self.projeto()
+        rc, out = self.rev(r, "--reviewer", "stub-a:revisor-vazio", "--auditor", "stub-b:revisor-vazio", "--no-revisor2")
+        self.assertEqual(rc, 0, out)
+        rc, out = self.ar(r, "--conferir")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("foi rasa", out)
+
+    def test_r3_caminho_com_acento_conta_e_aciona_seguranca(self):
+        r = self.projeto()
+        self.escreve(r, "src/ação/auth.sh", "x\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--dry-run")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("2º revisor: segurança (src/ação/auth.sh)", out)
+        self.assertIn("diff: 4 arquivo(s)", out)
+
+    def test_r4_segundos_sao_da_chamada_que_respondeu(self):
+        r = self.projeto()
+        env = dict(self.env, SDD_REVIEW_ESPERA="1")
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a:falha-429+revisor-ok", "--auditor", "stub-b",
+                          "--no-revisor2", env=env)
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["reviewer_segundos"], "0")
+
+    def test_r5_revisao_invalida_nao_grava_jsonl(self):
+        r = self.projeto()
+        rc, _ = self.rev(r, "--reviewer", "stub-a:revisor-sem-bloco", "--auditor", "stub-b", "--no-revisor2")
+        self.assertEqual(rc, 68)
+        self.assertFalse((self.pasta(r) / "reviewer.verdicts.jsonl").exists())
+
+    def test_r6_achado_numerico_nao_derruba_o_script(self):
+        resp = self.tmp / "resp"
+        shutil.copytree(str(FXR / "respostas"), str(resp))
+        (resp / "num.md").write_text('Achado.\n\n<<<VERDICTS\n{"achado":1,"arquivo":"src/conta.sh","linha":1,'
+                                     '"severidade":"HIGH","confianca":"CONFIRMED","resumo":"x"}\nVERDICTS>>>\n',
+                                     encoding="utf-8")
+        (resp / "aud.md").write_text('Auditoria.\n\n<<<VERDICTS\n{"achado":1,"veredito":"AGREE","justificativa":"x"}\n'
+                                     'VERDICTS>>>\n', encoding="utf-8")
+        env = dict(self.env, SDD_REVIEW_STUB_RESPOSTAS=str(resp))
+        r = self.projeto()
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a:num", "--auditor", "stub-b:aud",
+                          "--no-revisor2", env=env)
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("Traceback", out)
+        self.assertEqual(meta(self.pasta(r))["convergencia_1o_passe"], "sim")
+
+    def test_r7_custo_pequeno_nunca_aparece_como_zero(self):
+        r = self.projeto()
+        env = dict(self.env, SDD_REVIEW_STUB_CUSTO="0.00001")
+        rc, out = self.ar(r, "--base", "main", "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2", env=env)
+        self.assertEqual(rc, 0, out)
+        m = meta(self.pasta(r))
+        self.assertEqual(m["reviewer_custo"], "US$ 0.000010")
+        self.assertEqual(m["custo_total"], "US$ 0.000020")

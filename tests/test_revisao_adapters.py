@@ -156,6 +156,7 @@ class Invocacao(Sandbox):
 
         srv = http.server.HTTPServer(("127.0.0.1", 0), H)
         threading.Thread(target=srv.serve_forever, daemon=True).start()
+        self.addCleanup(srv.server_close)
         self.addCleanup(srv.shutdown)
         chave = "teste-" + secrets.token_hex(8)
         self.env = dict(self.env, OPENROUTER_API_KEY=chave,
@@ -195,6 +196,7 @@ class Invocacao(Sandbox):
 
         srv = http.server.HTTPServer(("127.0.0.1", 0), H)
         threading.Thread(target=srv.serve_forever, daemon=True).start()
+        self.addCleanup(srv.server_close)
         self.addCleanup(srv.shutdown)
         self.env = dict(self.env, OPENROUTER_API_KEY="teste-" + secrets.token_hex(8),
                         SDD_REVIEW_OPENROUTER_URL="http://127.0.0.1:%d/" % srv.server_port)

@@ -330,18 +330,13 @@ def congelar(base, paths):
                              mb, "--", *spec, env=env, binario=True)
         if rc != 0:
             uso("git diff falhou: " + err.strip())
+        # os nomes vêm do git com -z, nunca do cabeçalho do patch: um caminho com acento, espaço ou aspas sai
+        # entre aspas no cabeçalho e escaparia dos gatilhos de segurança e da contagem de arquivos
+        _, nomes_z, _ = git(raiz, "diff", "--name-only", "-z", "--no-renames", mb, "--", *spec, env=env)
+        arquivos = [n for n in nomes_z.split("\0") if n]
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    return mb, patch
-
-
-def arquivos_do_patch(patch):
-    out = []
-    for ln in patch.decode("utf-8", "replace").splitlines():
-        m = re.match(r"^diff --git a/(.+?) b/(.+)$", ln)
-        if m:
-            out.append(m.group(2))
-    return out
+    return mb, patch, arquivos
 
 
 # ── --conferir ───────────────────────────────────────────────────────────────────────────────────
@@ -362,7 +357,8 @@ if modo == "conferir":
         dirrev = p if os.path.isabs(p) else os.path.join(raiz, p)
     else:
         cands = sorted(d for d in (os.listdir(saida_abs) if os.path.isdir(saida_abs) else [])
-                       if d.startswith("EXTERNAL_REVIEW_"))
+                       if d.startswith("EXTERNAL_REVIEW_")
+                       and ler_meta(ler(os.path.join(saida_abs, d, "META.txt"))).get("paths", "-") in ("", "-"))
         if not cands:
             nao("nenhuma revisão em %s" % saida_rel, "rode adversarial-review.sh nesta frente, ou registre a dispensa (pergunta D3).")
         dirrev = os.path.join(saida_abs, cands[-1])
@@ -371,13 +367,21 @@ if modo == "conferir":
     if not meta:
         nao("%s/META.txt ausente" % rel, "aponte a pasta de uma revisão (EXTERNAL_REVIEW_…).")
     paths = meta.get("paths", "-")
-    _, patch = congelar(meta.get("base") or resolve_base(None), None if paths in ("", "-") else paths)
+    if paths not in ("", "-"):
+        nao("a revisão %s cobre só --paths %s, não o diff inteiro desta frente" % (rel, paths),
+            "rode a revisão sem --paths (a da release revisa o código, não só o DESIGN).")
+    _, patch, _ = congelar(meta.get("base") or resolve_base(None), None if paths in ("", "-") else paths)
     sha = hashlib.sha256(patch).hexdigest()
     if sha != meta.get("diff_sha256"):
         nao("o código mudou depois da revisão %s (sha256 diferente)" % rel, "rode a revisão de novo sobre esta versão.")
     if meta.get("reviewer_exit") != "0" or meta.get("auditor_exit") != "0":
         nao("a revisão %s não completou (reviewer_exit=%s, auditor_exit=%s)" % (
             rel, meta.get("reviewer_exit"), meta.get("auditor_exit")), "rode a revisão de novo.")
+    conv = meta.get("convergencia_1o_passe", "")
+    if conv.startswith("n/a (revisor1 raso") or conv.startswith("n/a (2º revisor raso") or \
+            (meta.get("revisor1_raso") == "sim" and meta.get("revisor2_exit", "-") != "0"):
+        nao("a revisão %s foi rasa (%s): não conta como revisão" % (rel, conv or "revisor1_raso: sim"),
+            "rode a revisão de novo, com outra engine se preciso.")
     r2 = meta.get("revisor2_exit", "-")
     extra = ""
     if r2 not in ("0", "-", ""):
@@ -414,13 +418,12 @@ except (ValueError, AssertionError):
     uso("review.context_max_kb precisa ser um inteiro positivo (KB)")
 
 base = resolve_base(op["--base"])
-mb, patch = congelar(base, op["--paths"])
+mb, patch, arqs = congelar(base, op["--paths"])
 if not patch.strip():
     uso("o diff contra %s está vazio: a revisão não teria o que revisar" % base)
 if len(patch) > DIFF_MAX_MB * 1024 * 1024:
     uso("o diff tem %d KB, acima do teto de %d MB: use --paths para revisar por partes" % (len(patch) // 1024, DIFF_MAX_MB))
 sha = hashlib.sha256(patch).hexdigest()
-arqs = arquivos_do_patch(patch)
 head = git(raiz, "rev-parse", "HEAD")[1].strip()
 
 # ── contexto SDD ─────────────────────────────────────────────────────────────────────────────────
@@ -589,7 +592,7 @@ def papel(nome, cands, prompt_txt, excluir=()):
            "modelo": None, "custo_usd": None, "linha": None, "credencial": None}
     arq_p = os.path.join(TMP, nome + "-prompt.md")
     open(arq_p, "w", encoding="utf-8").write(prompt_txt)
-    t0, causas, motivos = time.time(), [], []
+    causas, motivos = [], []
     for d in cands:
         if d["id"] in excluir:
             motivos.append("%s excluída (já tem outro papel nesta revisão)" % d["id"])
@@ -601,7 +604,9 @@ def papel(nome, cands, prompt_txt, excluir=()):
         while True:
             tent += 1
             saida = os.path.join(TMP, "%s-%s-%d.out" % (nome, rotulo(d["id"]), tent))
+            t_cham = time.time()
             rc, tmo = invocar(d, arq_p, saida)
+            reg["segundos"] = int(round(time.time() - t_cham))
             ext = extrair(d, saida) if rc == 0 and not tmo else {}
             texto = ext.get("texto") or ""
             bruto = (ler(saida) or "") + "\n" + (ler(saida + ".err") or "")
@@ -629,7 +634,6 @@ def papel(nome, cands, prompt_txt, excluir=()):
     else:
         reg["exit"] = "66" if causas and all(x == "launcher" for x in causas) else "67"
         reg["motivo"] = "; ".join(motivos) or "nenhuma engine na lista"
-    reg["segundos"] = int(round(time.time() - t0))
     if reg["fallback_usado"] == "sim":
         avisos.append("⚠️ o %s previsto (%s) falhou (%s); quem %s foi %s" % (
             NOME_PAPEL[nome], reg["engine_default"], reg["motivo"], VERBO_PAPEL[nome], reg["engine_efetivo"]))
@@ -663,6 +667,7 @@ def vereditos_revisor(texto):
             return None, "linha do bloco não é JSON: " + l[:80]
         if not isinstance(j, dict) or any(k not in j for k in CHAVES_REV) or not str(j["achado"]).strip():
             return None, "linha do bloco sem as chaves obrigatórias: " + l[:80]
+        j["achado"] = str(j["achado"]).strip()
         s = str(j["severidade"]).upper()
         s = "MED" if s == "MEDIUM" else s
         if s not in ("HIGH", "MED", "LOW"):
@@ -682,7 +687,9 @@ def vereditos_auditor(texto):
             j = json.loads(l)
         except ValueError:
             return None, "linha do bloco não é JSON: " + l[:80]
-        ok = isinstance(j, dict) and str(j.get("achado", "")).strip() and \
+        if isinstance(j, dict) and "achado" in j:
+            j["achado"] = str(j["achado"]).strip()
+        ok = isinstance(j, dict) and j.get("achado", "") != "" and \
             j.get("veredito") in ("AGREE", "DISAGREE_EVIDENCE", "DISAGREE_CONCERN", "NOVO")
         if ok and j["veredito"] == "NOVO":
             s = str(j.get("severidade", "")).upper()
@@ -711,15 +718,20 @@ for ln in (ler(precos_arq) or "").splitlines():
         pass
 
 
+def usd(v):
+    """4 casas; abaixo de 0,0001, 6 casas — um custo conhecido nunca aparece como 0,0000."""
+    return ("%.4f" if v == 0 or v >= 0.0001 else "%.6f") % v
+
+
 def custo(reg):
     d = reg["linha"]
     if d is None or reg["exit"] in ("-",):
         return "n/d"
     if isinstance(reg["custo_usd"], (int, float)):
-        return "US$ %.4f" % reg["custo_usd"]
+        return "US$ " + usd(reg["custo_usd"])
     t = PRECOS.get((d["engine"], d["modelo"]))
     if t and isinstance(reg["tokens_entrada"], int) and isinstance(reg["tokens_saida"], int):
-        return "≈US$ %.4f" % ((reg["tokens_entrada"] * t[0] + reg["tokens_saida"] * t[1]) / 1e6)
+        return "≈US$ " + usd((reg["tokens_entrada"] * t[0] + reg["tokens_saida"] * t[1]) / 1e6)
     return "assinatura" if d["cobranca"] == "assinatura" else "$?"
 
 
@@ -779,7 +791,7 @@ if dois:
         j["achado"] = "%s@%s" % (j["achado"], rotulo(rev["engine_efetivo"]))
     for j in r2_v:
         j["achado"] = "%s@%s" % (j["achado"], rotulo(r2["engine_efetivo"]))
-if rev["exit"] in ("0", "68") and os.path.exists(os.path.join(dirrev, "reviewer.md")):
+if rev["exit"] == "0":
     grava("reviewer.verdicts.jsonl", rev_v)
 if dois:
     grava("reviewer2.verdicts.jsonl", r2_v)
@@ -893,7 +905,7 @@ for nome, r in papeis_meta:
         estimado = True
     elif c == "$?":
         desconhecidos += 1
-custo_total = ("≈US$ %.4f" if estimado else "US$ %.4f") % soma
+custo_total = ("≈US$ " if estimado else "US$ ") + usd(soma)
 if desconhecidos:
     custo_total += " (+ %d papel(is) com custo $?)" % desconhecidos
 
