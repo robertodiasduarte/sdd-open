@@ -102,6 +102,27 @@ class EvalAgree(Sandbox):
         self.assertNotIn("Traceback", out + err)
         self.assertIn("| codex (-) | 1 | 4 | 2 | 1 | 0 | 1 | 66.7% |", out)
 
+    def test_real2_comentario_sem_indentacao_no_bloco_review(self):
+        r = self.repo()
+        self.escreve(r, "sdd/config.yaml", "review:\n# pasta das revisões\n  output_dir: revisoes/adv\n")
+        shutil.copytree(str(FIX), str(r / "revisoes/adv"))
+        rc, out = self.ea(cwd=r)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("revisoes/adv", out)
+
+    def test_real2_gemini_com_varios_modelos_fica_numa_linha(self):
+        d = self.tmp / "revs"
+        for n, modelo in ((1, "gemini-x-pro"), (2, "gemini-x-pro+gemini-x-lite")):
+            p = d / ("EXTERNAL_REVIEW_20260202-00000%d" % n)
+            p.mkdir(parents=True)
+            (p / "META.txt").write_text("auditor_engine_efetivo : gemini\nauditor_modelo : %s\nauditor_exit : 0\n" % modelo,
+                                        encoding="utf-8")
+            (p / "auditor.verdicts.jsonl").write_text('{"achado":"R1","veredito":"AGREE","justificativa":"x"}\n',
+                                                      encoding="utf-8")
+        rc, out = self.ea(d)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("| gemini (gemini-x-pro) | 2 | 2 | 2 | 0 | 0 | 0 | 100.0% |", out)
+
     def test_at017_so_le_arquivos(self):
         texto = EA.read_text(encoding="utf-8")
         for proibido in ("urllib", "socket", "adapters/", "http.client"):

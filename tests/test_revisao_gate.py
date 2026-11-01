@@ -177,6 +177,22 @@ class Gate(Sandbox):
             with self.subTest(engine=eng):
                 self.assertRegex(out, r"(?m)^  ❌ \d+\. %s \((revisor|auditor)[^)]*\): (?!engine efetiva)" % eng)
 
+    def test_real2_servidor_que_nao_sobe_e_gate_quebrado(self):
+        # R1@claude/R2@codex: o servidor local é provado no pré-voo — sem ele, nada é chamado e o exit é 3
+        p = self.pacote()
+        o = p / "sdd/review/stubs/openrouter.py"
+        o.write_text(o.read_text(encoding="utf-8").replace("def main():\n", "def main():\n    sys.exit(1)\n", 1),
+                     encoding="utf-8")
+        rc, out = self.gate(p)
+        self.assertEqual(rc, 3, out)
+        self.assertIn("RESULTADO: GATE QUEBRADO", out)
+        self.assertNotIn("✅", out)
+
+    def test_real2_anel_confere_auditor_exit(self):
+        rc, out = self.gate()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("claude → codex: exit e auditor_exit", out)
+
     def test_real1_caminho_com_metacaractere_de_shell(self):
         # R1@codex: o wrapper gerado não pode expandir $ nem crase do caminho do pacote
         p = self.pacote("pkg $ZZ_NAO_DEFINIDA `x` 'a'")

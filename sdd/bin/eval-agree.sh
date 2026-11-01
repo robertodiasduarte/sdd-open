@@ -67,6 +67,8 @@ else:
     rel = "sdd/reports/reviews"
     no_bloco = False
     for ln in (ler(os.path.join(raiz, "sdd/config.yaml")) or "").splitlines():
+        if not ln.strip() or ln.lstrip().startswith("#"):
+            continue   # comentário (mesmo sem indentação) não fecha o bloco review:
         if re.match(r"^\S", ln):
             no_bloco = ln.split("#", 1)[0].strip() == "review:"
             continue
@@ -100,10 +102,11 @@ for d in sorted(os.listdir(pasta) if os.path.isdir(pasta) else []):
     if texto is None:
         fora.append((d, "sem auditor.verdicts.jsonl"))
         continue
-    # o mesmo auditor numa linha só: nem o slug no id (openrouter:<modelo>) nem o provedor que a OpenRouter
-    # escolheu (" via …") partem a conta — a linha é engine base + modelo que respondeu
+    # o mesmo auditor numa linha só: nem o slug no id (openrouter:<modelo>), nem o provedor que a OpenRouter
+    # escolheu (" via …"), nem os modelos auxiliares que o gemini usou ("a+b") partem a conta — a linha é engine
+    # base + modelo principal que respondeu
     quem = "%s (%s)" % (meta.get("auditor_engine_efetivo", "-").split(":", 1)[0],
-                        meta.get("auditor_modelo", "-").split(" via ", 1)[0])
+                        meta.get("auditor_modelo", "-").split(" via ", 1)[0].split("+", 1)[0])
     c = por.setdefault(quem, {"revisoes": 0, **{t: 0 for t in TIPOS}})
     c["revisoes"] += 1
     for ln in texto.splitlines():

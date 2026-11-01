@@ -183,6 +183,22 @@ if len(sonda.stdout.splitlines()) != len(CLIS):
     quebrado("a sonda do PATH não respondeu: %s" % (sonda.stderr.strip() or sonda.stdout.strip()),
              "confira o bash em uso (%s)." % BASH)
 
+# o stub da OpenRouter precisa subir aqui, antes de qualquer cenário: sem ele, nada é chamado e o exit é 3
+sonda_est = os.path.join(TMP, "estado-preflight")
+os.makedirs(sonda_est)
+srv = subprocess.Popen([sys.executable, "-B", os.path.join(STUBS, "openrouter.py")],
+                       env=dict(BASE_ENV, SDD_STUB_ESTADO=sonda_est), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+for _ in range(100):
+    if os.path.exists(os.path.join(sonda_est, "openrouter.porta")) or srv.poll() is not None:
+        break
+    time.sleep(0.05)
+subiu = os.path.exists(os.path.join(sonda_est, "openrouter.porta"))
+if srv.poll() is None:
+    srv.terminate()
+srv.wait()
+if not subiu:
+    quebrado("o stub da OpenRouter não subiu em 5 s (127.0.0.1)", "confira se o Python pode abrir porta local.")
+
 # ── repositório descartável com um diff real ─────────────────────────────────────────────────────
 REPO = os.path.join(TMP, "repo")
 os.makedirs(os.path.join(REPO, "src"))
@@ -354,7 +370,7 @@ for rv, au in ANEL:
     rc, saida, m, pasta, est = executa("anel-%s-%s" % (rv, au), filas, "--reviewer", rv, "--auditor", au,
                                        "--no-revisor2")
     print("▸ %s" % rot)
-    confere(rot + ": exit", rc, 0)
+    confere(rot + ": exit e auditor_exit", (rc, m.get("auditor_exit")), (0, "0"))
     if rc != 0:
         print("        saída: " + " | ".join(saida.strip().splitlines()[-3:]))
     confere(rot + ": achados e vereditos no META", (m.get("reviewer_achados"), m.get("auditor_vereditos")), ("2", "2"))
