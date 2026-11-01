@@ -144,7 +144,8 @@ It reads the reviews already made (`EXTERNAL_REVIEW_*/META.txt` and `auditor.ver
 auditor (engine and model), how many verdicts were AGREE, DISAGREE_EVIDENCE, DISAGREE_CONCERN and NOVO, and
 `taxa_agree` = AGREE / (AGREE + DISAGREE_EVIDENCE + DISAGREE_CONCERN). An auditor that almost always agrees
 may not be auditing: compare it with another engine as auditor. The rate reflects the diffs this project
-reviewed, not a benchmark. It never calls an engine. Exits: `0` MEDIDO · `2` SEM DADOS · `64` usage.
+reviewed, not a benchmark. It never calls an engine. Exits: `0` MEDIDO · `2` SEM DADOS (also when the default folder does not exist yet) ·
+`64` usage, or a folder given that does not exist.
 
 ## Limits
 

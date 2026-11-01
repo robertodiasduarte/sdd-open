@@ -30,9 +30,9 @@ print(json.dumps({"texto": d.get("texto"), "tokens_entrada": None, "tokens_saida
 
 
 class Gate(Sandbox):
-    def pacote(self) -> Path:
+    def pacote(self, nome: str = "pkg") -> Path:
         """Cópia de sdd/bin e sdd/review para sabotar sem tocar no repositório."""
-        p = self.tmp / "pkg"
+        p = self.tmp / nome
         for d in ("sdd/bin", "sdd/review"):
             shutil.copytree(str(RAIZ / d), str(p / d))
         return p
@@ -108,16 +108,43 @@ class Gate(Sandbox):
                       'reportado if reportado and reportado != d["modelo"] else d["modelo"]', 'd["modelo"]',
                       "openrouter (revisor, modelo-sem-preco): custo estimado pelo precos.tsv")
 
+    def test_aval1_m1_parser_que_so_aceita_agree_e_pego(self):
+        self.sabotado("sdd/bin/adversarial-review.sh",
+                      'j.get("veredito") in ("AGREE", "DISAGREE_EVIDENCE", "DISAGREE_CONCERN", "NOVO")',
+                      'j.get("veredito") in ("AGREE",)', "auditor com os 4 tipos de veredito")
+
+    def test_aval1_l1_custo_do_claude_lido_do_modelusage_e_pego(self):
+        self.sabotado("sdd/bin/adapters/claude.sh",
+                      'custo = d.get("total_cost_usd") if isinstance(d.get("total_cost_usd"), (int, float)) else None',
+                      'custo = sum((v or {}).get("costUSD") or 0 for v in mu.values()) if mu else None',
+                      "claude (revisor): custo de total_cost_usd")
+
+    def test_aval1_l2_sinal_de_credencial_de_cada_engine(self):
+        for eng in ("claude", "codex", "gemini", "openrouter"):
+            with self.subTest(engine=eng):
+                p = self.pacote("pkg-" + eng)
+                reg = p / "sdd/review/registry.tsv"
+                linhas = []
+                for ln in reg.read_text(encoding="utf-8").splitlines():
+                    c = ln.split("\t")
+                    if c[0] == eng and len(c) == 9:
+                        c[6] = "(?i)(NUNCA-CASA-XYZ)"
+                        ln = "\t".join(c)
+                    linhas.append(ln)
+                reg.write_text("\n".join(linhas) + "\n", encoding="utf-8")
+                rc, out = self.gate(p)
+                self.assertEqual(rc, 2, out)
+                self.assertRegex(out, r"(?m)^  ❌ \d+\. falha de credencial \(%s\)" % eng)
+
     def test_extracao_nula_derruba_uma_assercao_de_cada_engine(self):
         for eng in ("claude", "codex", "gemini", "openrouter"):
             with self.subTest(engine=eng):
-                p = self.pacote()
+                p = self.pacote("pkg-" + eng)
                 a = p / "sdd/bin/adapters" / (eng + ".sh")
                 a.write_text(a.read_text(encoding="utf-8") + NULA, encoding="utf-8")
                 rc, out = self.gate(p)
                 self.assertEqual(rc, 2, out)
                 self.assertRegex(out, r"(?m)^  ❌ \d+\. %s \((revisor|auditor)[^)]*\): (?!engine efetiva)" % eng)
-                shutil.rmtree(str(p))
 
     def test_preco_atualizado_no_projeto_nao_quebra_o_gate(self):
         p = self.pacote()

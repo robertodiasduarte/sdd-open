@@ -30,3 +30,7 @@ openrouter	auditor	auditor-agree.md	qwen/qwen3.7-plus	0.0012	1500	90	200	-	medid
 openrouter	sem-custo	revisor.md	qwen/qwen3.7-plus	-	1234567	234567	200	-	medido
 openrouter	modelo-sem-preco	revisor.md	qwen/qwen3.7-plus-preview	-	1234567	234567	200	-	medido
 openrouter	429	-	-	-	0	0	429	{"error":{"code":429,"message":"Rate limit exceeded: free-models-per-min"}}	sintético
+gemini	auditor-misto	auditor-misto.md	gemini-stub-pro	-	4000	160	0	-	medido
+codex	auth	-	-	-	0	0	1	ERROR: 401 Unauthorized: Missing bearer or basic authentication in header	sintético
+gemini	auth	-	-	-	0	0	1	{"error":{"code":16,"status":"UNAUTHENTICATED","message":"API key not valid. Please pass a valid API key."}}	sintético
+openrouter	auth	-	-	-	0	0	401	{"error":{"message":"User not found.","code":401}}	sintético

@@ -111,7 +111,8 @@ def tsv(p, colunas):
 
 # ── pré-voo: nada é chamado antes de o isolamento estar provado ──────────────────────────────────
 for f in ["comum.py", "cenarios.tsv"] + [e + ".py" for e in ENGINES] + \
-         ["respostas/revisor.md", "respostas/auditor-agree.md", "respostas/auditor-sem-bloco.md"]:
+         ["respostas/revisor.md", "respostas/auditor-agree.md", "respostas/auditor-sem-bloco.md",
+          "respostas/auditor-misto.md"]:
     if not os.path.isfile(os.path.join(STUBS, f)):
         quebrado("stub ausente: %s" % os.path.join(STUBS, f),
                  "reinstale sdd/review/stubs/ (rode o init do sdd-open) e rode o gate de novo.")
@@ -381,10 +382,25 @@ confere("revisor caiu na engine do auditor: auditor excluído, revisor efetivo c
         ("67", True, "codex"))
 isolamento("67 (exclusão)", est, {"gemini": 1, "codex": 1})
 
-rc, saida, m, pasta, est = executa("65", {"claude": "auth"}, "--reviewer", "claude,codex", "--auditor", "gemini")
-confere("falha de credencial: exit 65", rc, 65)
-confere("falha de credencial: parou no claude", m.get("reviewer_engine_efetivo"), "claude")
-isolamento("65 (sem troca de engine)", est, {"claude": 1})
+rc, saida, m, pasta, est = executa("misto", {"claude": "revisor", "gemini": "auditor-misto"},
+                                   "--reviewer", "claude", "--auditor", "gemini", "--no-revisor2")
+confere("auditor com os 4 tipos de veredito: exit 0", rc, 0)
+confere("auditor com os 4 tipos de veredito: jsonl com DISAGREE_EVIDENCE, DISAGREE_CONCERN e NOVO",
+        [((j or {}).get("achado"), (j or {}).get("veredito")) for j in
+         (jsonl(os.path.join(pasta, "auditor.verdicts.jsonl")) if pasta else [])],
+        [("R1", "DISAGREE_EVIDENCE"), ("R2", "DISAGREE_CONCERN"), ("N1", "NOVO")])
+confere("auditor com os 4 tipos de veredito: META (vereditos, convergência, sem desempate em MED)",
+        (m.get("auditor_vereditos"), m.get("convergencia_1o_passe"), m.get("desempate_alvo")), ("3", "nao", "-"))
+isolamento("vereditos mistos", est, {"claude": 1, "gemini": 1})
+
+# a falha de credencial de CADA engine para tudo (exit 65) e nunca passa para a próxima da lista
+PROXIMA = {"claude": ("codex", "gemini"), "codex": ("claude", "gemini"), "gemini": ("claude", "codex"),
+           "openrouter": ("claude", "codex")}
+for e in ENGINES:
+    prox, aud = PROXIMA[e]
+    rc, saida, m, pasta, est = executa("65-" + e, {e: "auth"}, "--reviewer", e + "," + prox, "--auditor", aud)
+    confere("falha de credencial (%s): exit 65 e parou nela" % e, (rc, m.get("reviewer_engine_efetivo")), (65, e))
+    isolamento("falha de credencial (%s): sem troca de engine" % e, est, {e: 1})
 
 rc, saida, m, pasta, est = executa("429-cli", {"codex": "429,revisor", "openrouter": "auditor"},
                                    "--reviewer", "codex", "--auditor", "openrouter", "--no-revisor2")

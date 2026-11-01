@@ -80,6 +80,28 @@ class EvalAgree(Sandbox):
         self.assertIn("revisoes/adv", out)
         self.assertIn("| codex (-) | 1 | 4 | 2 | 1 | 0 | 1 | 66.7% |", out)
 
+    def test_aval1_l3_projeto_sem_revisoes_ainda_e_sem_dados(self):
+        r = self.repo()
+        rc, out = self.ea(cwd=r)
+        self.assertEqual(rc, 2, out)
+        self.assertIn("RESULTADO: SEM DADOS", out)
+        self.assertIn("(0 pasta(s) lida(s)", out)
+
+    def test_aval1_l4_sem_git_no_path_usa_a_pasta_atual(self):
+        d = self.tmp / "sem-git"
+        shutil.copytree(str(FIX), str(d / "sdd/reports/reviews"))
+        binp = self.tmp / "bin-sem-git"
+        binp.mkdir()
+        for f in ("bash", "sh", "sed"):
+            w = shutil.which(f)
+            if w:
+                (binp / f).symlink_to(w)
+        (binp / "python3").symlink_to(sys.executable)
+        rc, out, err = self.roda([BASH, EA], d, dict(self.env, PATH=str(binp)))
+        self.assertEqual(rc, 0, out + err)
+        self.assertNotIn("Traceback", out + err)
+        self.assertIn("| codex (-) | 1 | 4 | 2 | 1 | 0 | 1 | 66.7% |", out)
+
     def test_at017_so_le_arquivos(self):
         texto = EA.read_text(encoding="utf-8")
         for proibido in ("urllib", "socket", "adapters/", "http.client"):

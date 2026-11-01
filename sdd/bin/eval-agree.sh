@@ -10,7 +10,8 @@
 #   eval-agree.sh [<pasta-das-revisões>]
 #       padrão: review.output_dir do sdd/config.yaml da raiz git (sdd/reports/reviews se vazio)
 #       taxa_agree = AGREE / (AGREE + DISAGREE_EVIDENCE + DISAGREE_CONCERN), 1 casa; NOVO fica em coluna própria
-#       0 MEDIDO · 2 SEM DADOS (nenhuma revisão com auditoria completa) · 64 uso ou pasta inexistente
+#       0 MEDIDO · 2 SEM DADOS (nenhuma revisão com auditoria completa, ou a pasta padrão ainda não existe)
+#       64 uso, ou a pasta passada não existe
 # USO-FIM
 #
 # ⚠️ bash 3.2 (o /bin/bash do macOS) · núcleo em Python 3.9 stdlib.
@@ -58,8 +59,11 @@ if args and args[0].startswith("-"):
 if args:
     pasta = os.path.abspath(args[0])
 else:
-    r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True)
-    raiz = r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else os.getcwd()
+    try:
+        r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+        raiz = r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else os.getcwd()
+    except OSError:
+        raiz = os.getcwd()   # sem git no PATH: a pasta atual é a raiz
     rel = "sdd/reports/reviews"
     no_bloco = False
     for ln in (ler(os.path.join(raiz, "sdd/config.yaml")) or "").splitlines():
@@ -72,11 +76,12 @@ else:
             if v:
                 rel = v
     pasta = rel if os.path.isabs(rel) else os.path.join(raiz, rel)
-if not os.path.isdir(pasta):
+if not os.path.isdir(pasta) and args:
     para("a pasta %s não existe" % pasta)
+# a pasta padrão ainda não existe num projeto que nunca rodou uma revisão: é "sem dados", não erro de uso
 
 por, fora, lidas = {}, [], 0
-for d in sorted(os.listdir(pasta)):
+for d in sorted(os.listdir(pasta) if os.path.isdir(pasta) else []):
     if not d.startswith("EXTERNAL_REVIEW_") or not os.path.isdir(os.path.join(pasta, d)):
         continue
     lidas += 1

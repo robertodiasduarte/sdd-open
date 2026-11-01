@@ -18,5 +18,7 @@ saida = {"type": "result", "subtype": "success", "is_error": False, "duration_ms
          "result": texto(c), "session_id": "stub-sessao-claude", "total_cost_usd": custo(c["custo"]),
          "usage": {"input_tokens": te, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0,
                    "output_tokens": ts},
-         "modelUsage": {c["modelo"]: {"inputTokens": te, "outputTokens": ts, "costUSD": custo(c["custo"])}}}
+         # costUSD por modelo diferente do total de propósito: o gate prova que o custo vem de total_cost_usd
+         "modelUsage": {c["modelo"]: {"inputTokens": te, "outputTokens": ts,
+                                      "costUSD": round(custo(c["custo"]) / 2, 6) if custo(c["custo"]) else None}}}
 sys.stdout.write(json.dumps(saida, ensure_ascii=False))

@@ -145,7 +145,8 @@ Lê as revisões já feitas (`EXTERNAL_REVIEW_*/META.txt` e `auditor.verdicts.js
 (engine e modelo), quantos vereditos foram AGREE, DISAGREE_EVIDENCE, DISAGREE_CONCERN e NOVO, e a
 `taxa_agree` = AGREE / (AGREE + DISAGREE_EVIDENCE + DISAGREE_CONCERN). Um auditor que quase sempre concorda
 pode não estar auditando: compare com outra engine no papel de auditor. A taxa reflete os diffs que este
-projeto revisou, não um benchmark. Nunca chama engine. Exits: `0` MEDIDO · `2` SEM DADOS · `64` uso.
+projeto revisou, não um benchmark. Nunca chama engine. Exits: `0` MEDIDO · `2` SEM DADOS (também quando a pasta padrão ainda não existe) ·
+`64` uso, ou uma pasta passada que não existe.
 
 ## Limites
 
