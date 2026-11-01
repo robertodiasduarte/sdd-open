@@ -156,7 +156,7 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 > (backlog) ou `APLICADA`. É o Caso B do paper arXiv:2608.18167 (crítico cede a rebatida
 > fraca, bug some).
 
-**Consulta:** {tipo: plan-review | delivery-review | conflito | judgment call} · {data} · {ferramenta: /adversarial-review | /codex:rescue | …}
+**Consulta:** {tipo: plan-review | delivery-review | conflito | judgment call} · {data} · {ferramenta: sdd/bin/adversarial-review.sh (pasta em review.output_dir) | sessão nova do agente | …}
 **VERDICT do advisor:** {1 linha, verbatim}
 **Proveniência:** {engines efetivos por papel; se houve fallback, declarar aqui — troca silenciosa é falso-verde}
 

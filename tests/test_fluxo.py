@@ -640,3 +640,84 @@ class Slots(Base):
         texto = ler(RAIZ / "sdd/config.example.yaml")
         self.assertRegex(texto, r"(?m)^flow:\n(?:\s+#.*\n)*\s+autonomous: false$")
         self.assertRegex(texto, r"(?m)^review:\n(?:\s+.*\n)*?\s+security_globs: \"\"$")
+
+
+class LoopF10(Base):
+    """Delta da F10 no `loop`: 2º revisor, revisão rasa e desempate (AT-028–AT-031)."""
+
+    def loop(self, review, *extra):
+        return self.fluxo("loop", "--review", FX / review, "--rodada", "1", *extra)
+
+    def test_segundo_revisor_indisponivel_sem_dispensa_e_bloqueado_d3(self):
+        rc, out = self.loop("review-r2-indisponivel")
+        self.assertEqual(rc, 20, out)
+        self.assertIn("ESTADO: BLOQUEADO", out)
+        self.assertIn("D3: 2º revisor acionado e indisponível (indisponível, exit 67)", out)
+
+    def test_segundo_revisor_dispensado_no_ledger_segue_para_o_resto(self):
+        for review in ("review-r2-indisponivel", "review-r2-falhou"):
+            with self.subTest(review=review):
+                rc, out = self.loop(review, "--ledger", FX / "ledger-r2-dispensado.md")
+                self.assertEqual(rc, 0, out)
+                self.assertIn("motivo: 2º revisor dispensado no ledger (rodada 1)", out)
+
+    def test_dispensa_de_outra_rodada_nao_vale(self):
+        led = self.escreve(self.tmp, "l.md", "revisor2: dispensado rodada=2 — outra rodada\n")
+        rc, out = self.loop("review-r2-indisponivel", "--ledger", led)
+        self.assertEqual(rc, 20, out)
+
+    def test_segundo_revisor_que_falhou_e_refazer(self):
+        rc, out = self.loop("review-r2-falhou")
+        self.assertEqual(rc, 10, out)
+        self.assertIn("2º revisor acionado e falhou (engine-b, exit 68) — refazer a review", out)
+
+    def test_meta_com_revisor2_e_sem_exit_e_64(self):
+        d = self.tmp / "r2-sem-exit"
+        shutil.copytree(str(FX / "review-r2-falhou"), str(d))
+        meta = ler(d / "META.txt")
+        (d / "META.txt").write_text(re.sub(r"(?m)^revisor2_exit.*\n", "", meta), encoding="utf-8")
+        rc, out = self.fluxo("loop", "--review", d, "--rodada", "1")
+        self.assertEqual(rc, 64, out)
+        self.assertIn("sem revisor2_exit", out)
+
+    def test_rasa_nunca_e_pronto(self):
+        rc, out = self.loop("review-rasa", "--ledger", FX / "ledger-r2-dispensado.md")
+        self.assertEqual(rc, 10, out)
+        self.assertIn("review rasa (n/a (revisor1 raso: 0 achados em 6s))", out)
+
+    def test_dois_revisores_le_os_dois_jsonl(self):
+        rc, out = self.loop("review-2-revisores")
+        self.assertEqual(rc, 10, out)
+        self.assertIn("grave(s) sem veredito no ledger: R1@engine-c", out)
+
+    def test_mesmo_id_nos_dois_revisores_e_64(self):
+        d = self.tmp / "dup"
+        shutil.copytree(str(FX / "review-2-revisores"), str(d))
+        (d / "reviewer2.verdicts.jsonl").write_text(ler(d / "reviewer.verdicts.jsonl"), encoding="utf-8")
+        rc, out = self.fluxo("loop", "--review", d, "--rodada", "1")
+        self.assertEqual(rc, 64, out)
+        self.assertIn("ledger é ambíguo", out)
+
+    def test_desempate_refutado_fecha_e_procede_mantem_aberto(self):
+        rc, out = self.loop("review-desempate-refutado")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("refutado(s) com evidência (auditor + desempate): R1", out)
+        rc, out = self.loop("review-desempate-procede")
+        self.assertEqual(rc, 10, out)
+        self.assertIn("grave(s) sem veredito no ledger: R1", out)
+        self.assertNotIn("D5", out)
+
+    def test_decisao_do_desempate_e_igualdade_exata(self):
+        d = self.tmp / "quase"
+        shutil.copytree(str(FX / "review-desempate-refutado"), str(d))
+        meta = ler(d / "META.txt").replace("DECISAO:REFUTADO", "DECISAO:IRREFUTADO")
+        (d / "META.txt").write_text(meta, encoding="utf-8")
+        rc, out = self.fluxo("loop", "--review", d, "--rodada", "1")
+        self.assertEqual(rc, 20, out)
+        self.assertIn("D5 impasse de evidência", out)
+
+    def test_fixtures_da_f9_nao_tem_as_chaves_novas(self):
+        for d in ("review-ok", "review-invalida", "review-impasse"):
+            meta = ler(FX / d / "META.txt")
+            for chave in ("revisor2_engine", "revisor1_raso", "desempate_alvo", "convergencia_1o_passe"):
+                self.assertNotIn(chave, meta, d)

@@ -326,6 +326,27 @@ class Roadmap(unittest.TestCase):
                 self.assertIn(link, ler(readme))
                 self.assertEqual(links_quebrados(doc), [])
 
+    def test_revisao_adversarial_tem_documento_proprio_linkado_do_readme(self):
+        # F10 (AT-041): o mecanismo vem com o seu documento; a linha do roadmap fica *planned* até a F11.
+        casos = {"en": (RAIZ / "docs/adversarial-review.md", RAIZ / "README.md", "docs/adversarial-review.md",
+                        ("Exits and what to do", "Only one engine", "In the release", "Privacy", "Cost")),
+                 "pt": (RAIZ / "docs/pt-BR/adversarial-review.md", RAIZ / "README.pt-BR.md",
+                        "docs/pt-BR/adversarial-review.md",
+                        ("Exits e o que fazer", "Uma engine só", "Na release", "Privacidade", "Custo"))}
+        for lingua, (doc, readme, link, secoes) in casos.items():
+            with self.subTest(lingua=lingua):
+                texto = ler(doc)
+                for termo in secoes + ("review.revisor1", "review.auditor", "--um-engine", "--conferir", "--ledger",
+                                       "data_collection", "diversidade: nenhuma", "review_externo: dispensado",
+                                       "git-common-dir"):
+                    self.assertIn(termo, texto)
+                for exitc in ("| 0 |", "| 64 |", "| 65 |", "| 66 |", "| 67 |", "| 68 |"):
+                    self.assertIn(exitc, texto)
+                self.assertIn(link, ler(readme))
+                self.assertEqual(links_quebrados(doc), [])
+        for guia in (RAIZ / "docs/adaptation-guide.md", RAIZ / "docs/pt-BR/adaptation-guide.md"):
+            self.assertIn("sdd/review/registry.tsv", ler(guia))
+
 
 class Comparison(unittest.TestCase):
     def test_deltas_continua_em_avaliacao_na_coluna_do_open(self):

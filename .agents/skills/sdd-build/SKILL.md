@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.4.0"
+  version: "2.5.0"
   updated: "2026-10"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.5.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
 critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
@@ -62,6 +62,18 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 `/sdd-build sdd/features/DESIGN_{FEATURE}.md [--mode ralph]`
 
 ## Processo
+
+### 0. Revisão do DESIGN
+
+Antes da 1ª tarefa, rode `bash sdd/bin/sdd-fluxo.sh review-design sdd/features/DESIGN_{F}.md`:
+
+| Exit | Ação |
+|---|---|
+| `0` exigida | se o Advisor Ledger do DESIGN não tem nenhuma linha de revisão, rode a revisão do DESIGN antes de codar — revisor e depois auditor, `bash sdd/bin/adversarial-review.sh --feature {F} --paths "sdd/features/DEFINE_{F}.md sdd/features/DESIGN_{F}.md"`, como na `sdd-design` — e registre cada nota no ledger |
+| `1` dispensável | registre no relatório `revisão do DESIGN: dispensável (<o motivo que o script imprimiu>)` |
+| `64` manifest ilegível | rode a revisão assim mesmo (o lado seguro) e registre por quê |
+
+Mudar a abordagem depois do código custa uma reescrita; antes, uma edição no DESIGN.
 
 ### 1. Contexto e landmines
 
@@ -164,13 +176,15 @@ distingue o antes do depois: reancore e rode de novo; exit 3 ⇒ registre no rel
 aborta; aceitar uma falha como conhecida, com `--aceitar`, é decisão do usuário), `{{TYPECHECK_CMD}}`,
 `{{LINT_CMD}}` do config, quando preenchidos. Slot vazio = pular **e dizer que pulou**.
 
-**5c. Review adversarial pós-build (recomende; o usuário decide).** Sim quando o diff toca
-segurança, rota pública, lógica sutil entre arquivos, ou o build rodou em ralph/briefs. Não em
-fix trivial. **Commite antes** (trabalho commitado com arquivos untracked ao lado faz um
-review de "não commitado" revisar o vazio). Contrato de resposta em
-`sdd/templates/fragments/ADVISOR_CONSULT.md`; cada nota → APLICADA · REBATIDA_EVIDENCIA ·
-REBATIDA_ESCOPO no Advisor Ledger do relatório. Vendor que não seguiu o formato **falhou**:
-nunca leia como "zero achados". Review nunca substitui smoke real.
+**5c. Review adversarial pós-build.** A `sdd-release` exige o review externo desta versão do código
+(ou uma dispensa com motivo): rodá-lo aqui, enquanto o contexto está fresco, sai mais barato do que na
+release. **Commite antes**, e rode `bash sdd/bin/adversarial-review.sh --feature {F}` — uma engine do
+registry revisa o diff congelado e outra audita a revisão, em cadeia, nunca em paralelo; o 2º revisor
+e o desempate entram sozinhos quando o diff pede. Depois, `bash sdd/bin/sdd-fluxo.sh loop --review
+<pasta que ele imprimiu> --ledger <ledger da revisão> --rodada N` decide se segue, corrige ou pergunta.
+Contrato de resposta em `sdd/templates/fragments/ADVISOR_CONSULT.md`; cada nota → APLICADA ·
+REBATIDA_EVIDENCIA · REBATIDA_ESCOPO no Advisor Ledger do relatório. Engine que não seguiu o formato
+**falhou** (exit 68): nunca leia como "zero achados". Review nunca substitui smoke real.
 
 **5d. Avaliador de contexto fresco (bloqueante em ≥2 camadas).** Quem julga não é quem
 constrói. Antes de despachar, `bash sdd/bin/avaliador-guard.sh` (exit 1 ⇒ commite o listado; exit

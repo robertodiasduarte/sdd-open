@@ -9,13 +9,16 @@ import unittest
 from apoio import RAIZ
 
 BASHISMO = re.compile(r"mapfile|readarray|declare -A|\$\{[a-zA-Z_]+(?:\^\^|,,)")
-NOVOS = ("gate-baseline.sh", "gate-shell-evidencia.sh", "avaliador-guard.sh", "test-baseline.sh")
+NOVOS = ("gate-baseline.sh", "gate-shell-evidencia.sh", "avaliador-guard.sh", "test-baseline.sh",
+         "adversarial-review.sh")
 
 
 class Bash32(unittest.TestCase):
     def test_sem_bashismo_em_sdd_bin(self):
-        scripts = sorted((RAIZ / "sdd/bin").glob("*.sh")) + sorted((RAIZ / "sdd/hooks").glob("pre-*"))
-        self.assertGreaterEqual(len(scripts), 8)
+        scripts = (sorted((RAIZ / "sdd/bin").glob("*.sh")) + sorted((RAIZ / "sdd/bin/adapters").glob("*.sh"))
+                   + sorted((RAIZ / "sdd/hooks").glob("pre-*")) + [RAIZ / "sdd/fixtures/revisao/adapters/stub.sh"])
+        self.assertGreaterEqual(len(scripts), 13)
+        self.assertIn(RAIZ / "sdd/bin/adapters/openrouter.sh", scripts)
         self.assertIn(RAIZ / "sdd/hooks/pre-commit", scripts)
         for s in scripts:
             for n, linha in enumerate(s.read_text(encoding="utf-8").splitlines(), 1):

@@ -392,14 +392,53 @@ def _loop():
         motivos.append("review inválida (reviewer_exit=%s auditor_exit=%s) — refazer" % (rev_ec, aud_ec))
         continuar_review = True
 
-    # 2. graves: HIGH do revisor (última linha por id) + NOVO HIGH do auditor (depois do dedup)
+    # 1b. 2º revisor acionado e sem resultado (F10): cadeia incompleta. Credencial, CLI ausente ou nenhuma
+    #     engine disponível ⇒ refazer não adianta: BLOQUEADO (D3), salvo a linha própria
+    #     `revisor2: dispensado rodada=N — <motivo>` no ledger. Outra falha ⇒ refazer. META sem as chaves
+    #     da F10 (revisor2_engine ausente) ⇒ nada muda em relação à F9.
+    r2_eng = meta.get("revisor2_engine", "-")
+    r2_ok = False
+    r2_estrutural = False
+    if r2_eng not in ("-", ""):
+        if "revisor2_exit" not in meta:
+            sai64("META com revisor2_engine=%s e sem revisor2_exit — a cadeia não registrou o 2º revisor" % r2_eng)
+        r2_ec = meta["revisor2_exit"]
+        r2_disp = any(re.match(r"^\s*revisor2:\s*dispensado\s+rodada=" + re.escape(rodada) + r"\b", ln)
+                      for ln in led_txt.split("\n"))
+        if r2_ec == "0":
+            r2_ok = True
+        elif r2_disp:
+            motivos.append("2º revisor dispensado no ledger (rodada %s)" % rodada)
+        elif r2_ec in ("65", "66") or r2_eng == "indisponível":
+            r2_estrutural = True
+            motivos.append("D3: 2º revisor acionado e indisponível (%s, exit %s) — restaurar a engine ou dispensar "
+                           "o 2º revisor nesta rodada no ledger" % (r2_eng, r2_ec))
+        else:
+            continuar_review = True
+            motivos.append("2º revisor acionado e falhou (%s, exit %s) — refazer a review" % (r2_eng, r2_ec))
+
+    # 1c. review rasa não conta como review (F10)
+    conv = meta.get("convergencia_1o_passe", "")
+    if conv.startswith("n/a (revisor1 raso") or conv.startswith("n/a (2º revisor raso") or \
+            (meta.get("revisor1_raso") == "sim" and r2_eng in ("-", "")):
+        continuar_review = True
+        motivos.append("review rasa (%s) — não conta como review, refazer" % (conv or "revisor1_raso: sim"))
+
+    # 2. graves: HIGH do(s) revisor(es) (última linha por id) + NOVO HIGH do auditor (depois do dedup)
     grave, aud, todos = {}, {}, {}
     if not continuar_review:
-        ult, ordem = {}, []
-        for v in jsonl(os.path.join(review, "reviewer.verdicts.jsonl"), "revisor"):
-            if v["achado"] not in ult:
-                ordem.append(v["achado"])
-            ult[v["achado"]] = v
+        ult, ordem, origem = {}, [], {}
+        arquivos = ["reviewer.verdicts.jsonl"] + (["reviewer2.verdicts.jsonl"] if r2_ok else [])
+        for arq in arquivos:
+            vistos = set()
+            for v in jsonl(os.path.join(review, arq), "revisor"):
+                if v["achado"] in origem and origem[v["achado"]] != arq:
+                    sai64("id %s aparece em %s e em %s — sem o rótulo @engine o ledger é ambíguo"
+                          % (v["achado"], origem[v["achado"]], arq))
+                origem[v["achado"]] = arq
+                if v["achado"] not in ult:
+                    ordem.append(v["achado"])
+                ult[v["achado"]] = v
         for id_ in ordem:
             todos[id_] = ult[id_]["severidade"]
             if ult[id_]["severidade"] == "HIGH":
@@ -441,13 +480,22 @@ def _loop():
             if c[0] == id_ or (b is not None and c[0] == b):
                 led[id_] = c[2]
 
-    # refutação do auditor sem veredito no ledger da rodada = impasse de evidência (D5)
-    impasse = []
+    # refutação do auditor sem veredito no ledger da rodada: desempate REFUTADO (igualdade exata) fecha;
+    # PROCEDE mantém o grave aberto; sem desempate decisivo = impasse de evidência (D5)
+    impasse, refutados = [], []
+    alvo, decisao = meta.get("desempate_alvo", "-"), meta.get("desempate_decisao", "-")
     for id_ in sorted(grave):
         if veredito_aud(id_) == "DISAGREE_EVIDENCE" and id_ not in led:
-            impasse.append(id_)
-    for id_ in impasse:
+            if id_ == alvo and decisao == "DECISAO:REFUTADO":
+                refutados.append(id_)
+            elif id_ == alvo and decisao == "DECISAO:PROCEDE":
+                continue
+            else:
+                impasse.append(id_)
+    for id_ in impasse + refutados:
         del grave[id_]
+    if refutados:
+        motivos.append("refutado(s) com evidência (auditor + desempate): " + " ".join(refutados))
     abertos, aplicadas, rebatidas = [], [], []
     for id_ in sorted(grave):
         s = led.get(id_, "")
@@ -492,7 +540,7 @@ def _loop():
     if continuar_aval and ciclo >= 2:
         est, rc = "BLOQUEADO", 20
         motivos.append("D4 ciclos: 2 ciclos NEEDS_WORK do avaliador")
-    if impasse:
+    if impasse or r2_estrutural:
         est, rc = "BLOQUEADO", 20
     seta = {
         "PRONTO": "siga para o avaliador ou para a release.",

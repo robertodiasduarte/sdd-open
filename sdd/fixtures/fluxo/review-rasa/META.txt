@@ -1,0 +1,9 @@
+reviewer_exit              : 0
+reviewer_segundos          : 6
+revisor1_raso              : sim
+gatilho_2o_revisor         : revisor1 raso (6s, 0 achados) — dispensado por --no-revisor2
+revisor2_engine            : -
+auditor_exit               : 0
+convergencia_1o_passe      : n/a (revisor1 raso: 0 achados em 6s)
+desempate_alvo             : -
+desempate_decisao          : -

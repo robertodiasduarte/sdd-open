@@ -184,6 +184,28 @@ class Projeto(Sandbox):
         self.assertIn("sdd/bin/report-lint.py difere do pacote — se você não editou, apague e rode init", out)
         self.assertResultado(out)
 
+    def test_init_copia_review_e_adapters_e_nunca_sobrescreve(self):
+        # F10 (AT-035): sdd/review/ (registry, preços, prompts) e sdd/bin/adapters/ vêm com o init
+        for rel in ("sdd/review/registry.tsv", "sdd/review/precos.tsv", "sdd/review/prompts/reviewer.md",
+                    "sdd/review/prompts/auditor.md", "sdd/review/prompts/desempate.md",
+                    "sdd/bin/adversarial-review.sh", "sdd/bin/adapters/openrouter.sh"):
+            with self.subTest(arquivo=rel):
+                self.assertTrue((self.p / rel).is_file(), rel)
+        reg = self.p / "sdd/review/registry.tsv"
+        reg.write_text(reg.read_text(encoding="utf-8") + "# minha engine\n", encoding="utf-8")
+        (self.p / "sdd/review/prompts/auditor.md").unlink()
+        rc, out = self.cli("init", "--yes", "--vendors", "claude,codex")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("# minha engine", reg.read_text(encoding="utf-8"))
+        self.assertTrue((self.p / "sdd/review/prompts/auditor.md").is_file())
+
+    def test_doctor_avisa_adapter_diferente_do_pacote(self):
+        ad = self.p / "sdd/bin/adapters/claude.sh"
+        ad.write_text(ad.read_text(encoding="utf-8") + "# editado\n", encoding="utf-8")
+        rc, out = self.cli("doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("sdd/bin/adapters/claude.sh difere do pacote — se você não editou, apague e rode init", out)
+
     def test_doctor_em_dia_com_o_pacote(self):
         # versão do projeto MAIOR que a do pacote é evolução da pessoa, não atraso
         self.versao_da_skill(self.p / ".agents/skills/sdd-release/SKILL.md", "9.0.0")

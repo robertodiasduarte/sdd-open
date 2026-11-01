@@ -47,9 +47,21 @@ release:
   changelog_hook: ""
 
 review:
-  # Vendors disponíveis para o review adversarial (revisor → auditor de vendor DIFERENTE).
-  # Com um só vendor, o review degrada com aviso registrado — nunca é pulado em silêncio.
-  vendors: ""
+  # Revisão adversarial (sdd/bin/adversarial-review.sh; docs/adversarial-review.md): uma engine revisa o
+  # diff, OUTRA audita a revisão. As engines moram no registry (1 linha por engine; engine nova = 1 linha).
+  registry: sdd/review/registry.tsv
+  # Quem revisa e quem audita: ids do registry (claude, codex, gemini, openrouter ou openrouter:<modelo>).
+  # Uma lista separada por vírgula é a cadeia: a 1ª é a padrão, as outras entram se a anterior ficar sem
+  # cota. Vazio = a skill pergunta. O auditor precisa ser outra engine (igual = exit 67; com uma engine
+  # só, rode com --um-engine e a revisão registra "diversidade: nenhuma").
+  revisor1: ""
+  auditor: ""
+  # Pasta das revisões (diff, respostas, META.txt). Precisa estar ignorada pelo git (.gitignore ou
+  # .git/info/exclude): o script recusa gravar o diff numa pasta que iria para o repositório.
+  output_dir: sdd/reports/reviews
+  # Teto, em KB, do contexto SDD (BRAINSTORM, DEFINE, DESIGN, BUILD_REPORT) enviado junto do diff.
+  # Acima disso o BRAINSTORM sai primeiro. Inteiro > 0.
+  context_max_kb: 180
   # Superfície de segurança do projeto, em globs separados por vírgula (ex.: "auth/**,api/public/**").
   # Uma linha do File Manifest que casa um destes globs torna a revisão do DESIGN obrigatória
   # (sdd/bin/sdd-fluxo.sh review-design). Vazio = só os termos fixos do script (auth, login, token,

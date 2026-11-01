@@ -92,8 +92,11 @@ O framework é agnóstico de modelo em princípio, com duas ressalvas práticas:
   correlacionado — uma família de modelo diferente revisando o trabalho da primeira. Revisar com o
   mesmo modelo que escreveu o código te dá concordância, não review.
 
-Nomes de modelo estão deliberadamente ausentes dos arquivos entregues: eles envelhecem mal. Coloque
-os seus no `sdd/config.yaml`.
+Nomes de modelo estão deliberadamente ausentes das skills e dos templates: eles envelhecem mal. A revisão
+adversarial é a exceção que confirma a regra — as engines e os modelos dela moram em
+`sdd/review/registry.tsv` e `sdd/review/precos.tsv`, uma linha cada, e trocar de modelo é uma edição;
+escolha os seus no `sdd/config.yaml` (`review.revisor1`, `review.auditor`). Veja
+[adversarial-review.md](adversarial-review.md).
 
 ## O que ficou de fora, e por quê
 

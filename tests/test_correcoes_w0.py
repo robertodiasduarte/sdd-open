@@ -141,7 +141,7 @@ class AvaliadorFrescoSoGravaEvidencia(unittest.TestCase):
                        r"`sdd/reports/evidence/\{F\}/AVAL-\*\.log`")
 
     def test_versao_do_build(self):
-        self.assertEqual(versao(SKILLS / "sdd-build/SKILL.md"), "2.4.0")
+        self.assertEqual(versao(SKILLS / "sdd-build/SKILL.md"), "2.5.0")
 
     def test_os_dois_briefs_permitem_so_o_log_aval(self):
         texto = ler(CONTEXTO_FRESCO)

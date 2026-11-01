@@ -32,6 +32,7 @@ on:
       - 'sdd/hooks/**'
       - 'sdd/templates/**'
       - 'sdd/fixtures/**'
+      - 'sdd/review/**'
       - 'sdd/playbook.md'
       - 'sdd/config.example.yaml'
       - 'AGENTS.md.tmpl'

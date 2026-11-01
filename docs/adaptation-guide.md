@@ -88,8 +88,10 @@ The framework is model-agnostic in principle, with two practical caveats:
   profile — a different model family reviewing the first one's work. Reviewing with the same
   model that wrote the code gets you agreement, not review.
 
-Model names are deliberately absent from the shipped files: they age badly. Put yours in
-`sdd/config.yaml`.
+Model names are deliberately absent from the skills and templates: they age badly. The adversarial review
+is the exception that proves the rule — its engines and models live in `sdd/review/registry.tsv` and
+`sdd/review/precos.tsv`, one line each, so swapping a model is one edit; choose yours in `sdd/config.yaml`
+(`review.revisor1`, `review.auditor`). See [adversarial-review.md](adversarial-review.md).
 
 ## What was left out, and why
 

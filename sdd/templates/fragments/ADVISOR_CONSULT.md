@@ -83,12 +83,12 @@ falha que este ledger existe para prevenir.
 
 ## 4. Proveniência do engine (obrigatória quando houve fallback)
 
-O `/adversarial-review` declara em `META.txt` e no cabeçalho do relatório qual engine rodou
+O `sdd/bin/adversarial-review.sh` declara em `META.txt` (`<papel>_engine_default` × `_engine_efetivo`) e no resumo qual engine rodou
 cada papel. **Se o engine default não rodou, o ledger diz isso** — uma linha antes da tabela:
 
 ```markdown
-> ⚠️ Fallback de engine: o auditor default (`codex`) não rodou (PERSISTENTE: quota).
-> Esta auditoria foi produzida por `grok`.
+> ⚠️ Fallback de engine: o auditor default (`engine-a`) não rodou (cota esgotada).
+> Esta auditoria foi produzida por `engine-b`.
 ```
 
 Silenciar a troca transforma o ledger em falso-verde: um artefato auditado por um engine de

@@ -18,6 +18,9 @@ waived: null                       # ou: "classe=… · finding=… · motivo=�
 dod: "PIX aparece como opção no checkout e o webhook confirma em <10 s"
 descricao: "Botão PIX no checkout + webhook de confirmação + reconciliação noturna"
 deploy: no-op                      # no-op | real (o que subiu para produção)
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20260905-101500 sha256=<64 hex> diversidade=vendor
+                                   # a linha que `adversarial-review.sh --conferir` imprime, ou:
+                                   # review_externo: dispensado — <motivo em uma frase>
 avisos:                            # da Fase 0 que não abortaram — não podem evaporar
   - "teste de reconciliação vermelho pré-existente na baseline (waivable, não dispensado)"
 ```
@@ -30,6 +33,14 @@ sdd/releases/{F}/`).
 Já existem três camadas: o ledger (determinístico, git), a ficha (narrativa, git) e o
 changelog (comunicação). Um quarto artefato narrativo é duplicação — foi exatamente o que
 aposentou a fase "ship" separada no projeto de origem.
+
+## `review_externo` (obrigatório)
+
+Prova de que esta versão do código passou pela revisão adversarial (uma engine revisa, outra audita),
+ou de que alguém decidiu publicar sem ela e disse por quê. `bash sdd/bin/adversarial-review.sh --ledger
+<este arquivo>` confere a linha logo depois do commit atômico, na pasta da frente: ausente, malformada,
+ou com um `sha256` que não é o do `META.txt` da revisão ⇒ a release aborta. A pasta da revisão é
+ignorada pelo git: ela fica na máquina de quem publicou; o ledger guarda o caminho e o hash.
 
 ## Convenções
 

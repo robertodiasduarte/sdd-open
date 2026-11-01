@@ -56,5 +56,16 @@ relatório, o lint e o playbook passaram. Nada foi enviado ao GitHub ainda.
 
 **Próximo passo** — Com o seu sim, publico e confiro o deploy; com o não, encerro aqui.
 
+## Exemplo — antes do bloco, quando falta a revisão por outra engine (etapa 2 — Verificar)
+
+Situação: o `adversarial-review.sh --conferir` saiu 2 — esta versão do código não tem revisão por outra
+engine. A pergunta vem **antes** do bloco do OK, como uma pergunta própria; o bloco continua com uma só.
+
+**Sua decisão** — [D3 · muda a regra do método] **Esta versão não tem revisão por outra engine. Como seguimos?**
+- **rodar agora** (recomendado) — rodo o revisor e o auditor sobre o diff desta frente; leva em geral de 2 a
+  15 minutos e mostro o custo no fim.
+- **publicar sem revisão** — peço o motivo em uma frase; ele fica no registro da release.
+- **não sei** — explico o que a revisão confere, com o último achado dela nesta frente, se houver.
+
 As opções vêm logo depois da última linha do bloco: continua sendo uma pergunta só. Formato completo de
 pergunta e de parada: `sdd/templates/fragments/PERGUNTA_DECISAO.md`.

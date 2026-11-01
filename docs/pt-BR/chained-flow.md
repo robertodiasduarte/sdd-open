@@ -75,8 +75,9 @@ retorno.
 | `estado` | `0` ligado · `1` desligado · `64` valor inválido |
 | `--self-test` | `0` quando todos os cenários batem |
 
-O `loop` é o decisor da revisão adversarial depois do build; quem o chama é a frente que liga essa
-revisão às skills.
+O `loop` é o decisor da revisão adversarial: ele lê a pasta que o `sdd/bin/adversarial-review.sh` grava
+(`META.txt` e os arquivos de vereditos, inclusive os do 2º revisor e do desempate). Veja
+[adversarial-review.md](adversarial-review.md).
 
 ## Limite: projeto que já tinha o pacote
 

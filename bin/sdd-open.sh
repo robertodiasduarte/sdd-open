@@ -550,7 +550,7 @@ LINHA_ACRESCENTAR='bash sdd/hooks/pre-commit || exit 1'
 # do projeto — relativos a sdd/. Vazio = árvore completa. Fixtures ficam fora (exemplos, apagáveis).
 sdd_faltantes() {
   local rel
-  ( cd "${PKG}/sdd" && find templates bin hooks playbook.md -type f | sort ) | while IFS= read -r rel; do
+  ( cd "${PKG}/sdd" && find templates bin hooks review playbook.md -type f 2>/dev/null | sort ) | while IFS= read -r rel; do
     [ -e "${ROOT}/sdd/${rel}" ] || printf '%s\n' "${rel}"
   done
   [ -f "${ROOT}/sdd/config.yaml" ] || printf 'config.yaml\n'
@@ -763,7 +763,7 @@ doctor() {
   fi
   # Pacote mais novo que o projeto: init nunca sobrescreve .agents/skills/<skill> nem sdd/bin/*, então
   # quem já instalou continua com a versão velha sem saber. Só aponta; quem apaga é a pessoa.
-  local s vp vq f atrasados=0 pkg_skills="${PKG}/.agents/skills"
+  local s vp vq f rel atrasados=0 pkg_skills="${PKG}/.agents/skills"
   for s in $(skills_da_fonte "${pkg_skills}"); do
     [ -f "${FONTE_SKILLS}/${s}/SKILL.md" ] || continue
     vq="$(versao_skill "${pkg_skills}/${s}/SKILL.md")"; vp="$(versao_skill "${FONTE_SKILLS}/${s}/SKILL.md")"
@@ -771,10 +771,11 @@ doctor() {
     warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — para receber: apague .agents/skills/${s} e rode init (edições suas nela se perdem)"
     atrasados=$((atrasados + 1))
   done
-  for f in "${PKG}"/sdd/bin/*; do
-    [ -f "${f}" ] && [ -f "${ROOT}/sdd/bin/${f##*/}" ] || continue
-    cmp -s "${f}" "${ROOT}/sdd/bin/${f##*/}" && continue
-    warn "sdd/bin/${f##*/} difere do pacote — se você não editou, apague e rode init"
+  for f in "${PKG}"/sdd/bin/* "${PKG}"/sdd/bin/adapters/*; do
+    rel="${f#"${PKG}"/sdd/}"
+    [ -f "${f}" ] && [ -f "${ROOT}/sdd/${rel}" ] || continue
+    cmp -s "${f}" "${ROOT}/sdd/${rel}" && continue
+    warn "sdd/${rel} difere do pacote — se você não editou, apague e rode init"
     atrasados=$((atrasados + 1))
   done
   [ "${atrasados}" = "0" ] && ok "skills e sdd/bin/ em dia com o pacote"

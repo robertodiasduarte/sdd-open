@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.5.0"
+  version: "2.6.0"
   updated: "2026-10"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.5.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.6.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -115,6 +115,15 @@ diff-base (`git merge-base origin/{default_branch} HEAD`).
 7. **Exit dos logs:** `bash sdd/bin/gate-shell-evidencia.sh` (os logs de `sdd/reports/evidence/`
    do diff) — exit ≠ 0 ⇒ **abortar**, citando cada `arquivo:linha`: um `[exit=N]` que é o exit do
    `tail` não prova o comando. Exit 64 ou 127 ⇒ a mesma frase de atualizar `sdd/bin/` do item 5.
+8. **Review externo (obrigatório, com dispensa registrada):** `bash sdd/bin/adversarial-review.sh --conferir`
+   — confere se a revisão mais nova de `review.output_dir` é **desta** versão do código (mesmo
+   `diff_sha256`) e completou. Exit 0 ⇒ guarde a linha `review_externo: …` que ele imprimiu para o
+   ledger. Exit 2 ⇒ antes do bloco do OK, faça a pergunta própria `[D3 · muda a regra do método]` de
+   `references/como-falar.md`: **rodar agora** (o script sem `--conferir`, com `--feature {F}`, e o
+   `--conferir` de novo) ou **publicar sem revisão** (o motivo da pessoa vira
+   `review_externo: dispensado — <motivo>`). 2º revisor acionado e sem resultado ⇒ rode de novo com
+   outra engine ou registre a dispensa dele com `--aceitar-sem-revisor2 "<motivo>"`. O OK continua
+   sendo uma pergunta só: a dispensa é decidida antes dele.
 
 Se 0a abortou, **nem inicie** as passadas de modelo.
 
@@ -149,10 +158,14 @@ removido.
 2. **Versão** (se o projeto versiona): bump a partir da versão em `origin/{default_branch}`,
    não da branch local. Colisão → próxima livre.
 3. **Ledger** (dentro do commit atômico): `sdd/releases/{F}/{slice}_{versão-ou-data}.yaml` com
-   `feature_id`, `slice_id`, `versao`, `estado` (shipado | parcial | pausa), `dod`, `descricao`.
+   `feature_id`, `slice_id`, `versao`, `estado` (shipado | parcial | pausa), `dod`, `descricao` e a
+   linha `review_externo:` da 0a item 8 (a que o `--conferir` imprimiu, ou a dispensa com motivo).
    Sem SHA (deriva do git). Arquivo novo a cada release: append-only. Ver `references/ledger.md`.
 4. **Commit atômico.** `git add <arquivos específicos>` — **nunca `-A`**. Confira
-   `git diff --cached --name-only`.
+   `git diff --cached --name-only`. Logo depois, **nesta pasta** (a da frente) e antes do passo 5:
+   `bash sdd/bin/adversarial-review.sh --ledger sdd/releases/{F}/<arquivo>.yaml` — exit ≠ 0 ⇒
+   **abortar**: sem `review_externo` válido não se publica. Roda aqui porque a pasta da revisão é
+   ignorada pelo git e não existe no worktree temporário do passo 5.
 5. **Landar na branch padrão** via worktree temporário fresco de `origin/{default_branch}` +
    cherry-pick. Conflito → tentar aplicar só o incremento por patch (`git apply --check`); só
    abortar se os hunks se sobrepõem de verdade.
@@ -262,9 +275,9 @@ removido.
 ## Gates de ABORTAR (parar e reportar, nunca pushar)
 
 Fase 0a: landmines exit 2 · drift ≠0 · lint · Verify Gate `2` ou `5` · `3` não resolvido ·
-`4` sem recibo · report-lint ≠0 · report-lint --pendente ≠0 · gate-shell-evidencia ≠0. Fase 0b: consumidor não modificado quebrado · invariante
+`4` sem recibo · report-lint ≠0 · report-lint --pendente ≠0 · gate-shell-evidencia ≠0 · review externo sem revisão nem dispensa. Fase 0b: consumidor não modificado quebrado · invariante
 violado. Fase 0c: credencial hardcoded · permissão frouxa · dado pessoal exposto. Fase 1:
-arquivo inesperado no diff · conflito real · base moveu · escrita em produção sem source.
+arquivo inesperado no diff · conflito real · base moveu · escrita em produção sem source · `--ledger` ≠ 0.
 
 ## Quando pular o SDD formal
 
@@ -298,6 +311,9 @@ vale **sempre**.
   estado real; o que não pode é esse estado chegar a produção sem que ninguém tenha provado os critérios.
 - **O exit de cada log é conferido** — `cmd | tail` grava o exit do `tail`, sempre 0: sem a
   conferência, um teste que falhou passa como evidência verde.
+- **Review externo obrigatório, com dispensa registrada** — quando era opcional, no projeto de origem só
+  13 de 84 features tiveram review; a dispensa continua possível, mas com motivo escrito no ledger. O
+  `sha256` liga a revisão a esta versão do código: uma revisão antiga não vale para um código novo.
 
 ## Encerramento (obrigatório)
 

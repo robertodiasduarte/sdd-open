@@ -1,0 +1,10 @@
+#!/bin/sh
+# CLI falsa de TESTE (tests/test_revisao_adapters.py): grava argv, pasta atual e stdin em
+# $SDD_FAKE_LOG/claude.{argv,cwd,stdin} e responde com a saída medida da CLI real
+# ($SDD_FAKE_SAIDAS/claude.json, a pasta sdd/fixtures/revisao/saidas/). Nunca chama rede.
+
+printf '%s\n' "$@" > "$SDD_FAKE_LOG/claude.argv"
+pwd > "$SDD_FAKE_LOG/claude.cwd"
+ls -A > "$SDD_FAKE_LOG/claude.ls"
+cat > "$SDD_FAKE_LOG/claude.stdin"
+cat "$SDD_FAKE_SAIDAS/claude.json"

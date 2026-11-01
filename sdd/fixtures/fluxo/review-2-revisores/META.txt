@@ -1,0 +1,9 @@
+reviewer_exit              : 0
+revisor1_raso              : nao
+gatilho_2o_revisor         : segurança (src/auth/login.sh)
+revisor2_engine            : engine-c
+revisor2_exit              : 0
+auditor_exit               : 0
+convergencia_1o_passe      : sim
+desempate_alvo             : -
+desempate_decisao          : -

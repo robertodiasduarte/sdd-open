@@ -33,7 +33,7 @@ def bloco_do_ok() -> str:
 
 class SddRelease(unittest.TestCase):
     def test_versao(self):
-        self.assertEqual(versao(RELEASE), "2.5.0")
+        self.assertEqual(versao(RELEASE), "2.6.0")
 
     def test_item_7_roda_o_script(self):
         item = ler(RELEASE).split("7. **PARAR e mostrar (o 1 OK)", 1)[1].split("```markdown", 1)[0]
@@ -72,7 +72,7 @@ class SddRelease(unittest.TestCase):
 
 class SddBuild(unittest.TestCase):
     def test_versao(self):
-        self.assertEqual(versao(BUILD), "2.4.0")
+        self.assertEqual(versao(BUILD), "2.5.0")
 
     def test_passo_4b_manda_ler_a_referencia(self):
         passo = ler(BUILD).split("### 4b. Migration", 1)[1].split("### 5.", 1)[0]
@@ -209,3 +209,71 @@ class TemplatesEvidencia(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+ENGINES = re.compile(r"\b(claude|codex|gemini|openrouter)\b", re.I)
+DESIGN = SKILLS / "sdd-design/SKILL.md"
+
+
+def entre(texto: str, ini: str, fim: str) -> str:
+    return texto.split(ini, 1)[1].split(fim, 1)[0]
+
+
+class RevisaoAdversarial(unittest.TestCase):
+    """F10: R1 na sdd-release, R12 na sdd-design, R13 no sdd-build (AT-027, AT-032, AT-033, AT-037)."""
+
+    def secoes(self):
+        rel, bld, des = ler(RELEASE), ler(BUILD), ler(DESIGN)
+        return {
+            "release 0a item 8": entre(rel, "8. **Review externo", "Se 0a abortou"),
+            "release passo 3-4": entre(rel, "3. **Ledger**", "5. **Landar"),
+            "release como-falar D3": entre(ler(SKILLS / "sdd-release/references/como-falar.md"),
+                                           "## Exemplo — antes do bloco", "As opções vêm logo"),
+            "build passo 0": entre(bld, "### 0. Revisão do DESIGN", "### 1. Contexto"),
+            "build 5c": entre(bld, "**5c. Review adversarial pós-build.**", "**5d."),
+            "design revisão": entre(des, "## Review adversarial do DESIGN", "## Quality Gate"),
+        }
+
+    def test_secoes_novas_sem_nome_de_engine(self):
+        for nome, texto in self.secoes().items():
+            with self.subTest(secao=nome):
+                self.assertIsNone(ENGINES.search(texto), nome)
+
+    def test_release_exige_review_externo_e_confere_o_ledger_antes_do_passo_5(self):
+        s = self.secoes()
+        self.assertIn("bash sdd/bin/adversarial-review.sh --conferir", s["release 0a item 8"])
+        self.assertIn("[D3 · muda a regra do método]", s["release 0a item 8"])
+        self.assertIn("antes do bloco do OK", s["release 0a item 8"])
+        self.assertIn("review_externo: dispensado — <motivo>", s["release 0a item 8"])
+        self.assertIn("bash sdd/bin/adversarial-review.sh --ledger", s["release passo 3-4"])
+        self.assertIn("antes do passo 5", s["release passo 3-4"])
+        self.assertIn("**Sua decisão** — [D3 · muda a regra do método] **Esta versão não tem revisão por outra "
+                      "engine. Como seguimos?**", s["release como-falar D3"])
+        self.assertIn("review_externo:", ler(SKILLS / "sdd-release/references/ledger.md"))
+
+    def test_build_passo_0_e_5c(self):
+        s = self.secoes()
+        self.assertIn("bash sdd/bin/sdd-fluxo.sh review-design sdd/features/DESIGN_{F}.md", s["build passo 0"])
+        for exitc in ("`0` exigida", "`1` dispensável", "`64` manifest ilegível"):
+            self.assertIn(exitc, s["build passo 0"])
+        self.assertIn("bash sdd/bin/adversarial-review.sh --feature {F}", s["build 5c"])
+        self.assertIn("A `sdd-release` exige o review externo", s["build 5c"])
+        self.assertIn("nunca em paralelo", s["build 5c"])
+        self.assertIn("sdd-fluxo.sh loop --review", s["build 5c"])
+
+    def test_design_revisor_depois_auditor(self):
+        s = self.secoes()["design revisão"]
+        self.assertIn("bash sdd/bin/adversarial-review.sh --feature {FEATURE}", s)
+        self.assertIn("nunca os dois em paralelo", s)
+        self.assertIn("--um-engine", s)
+        self.assertIn("diversidade: nenhuma", s)
+        self.assertEqual(versao(DESIGN), "2.3.0")
+
+    def test_templates_citam_o_script(self):
+        for rel in ("sdd/templates/fragments/RESUMO_ETAPA.md", "sdd/templates/fragments/ADVISOR_CONSULT.md",
+                    "sdd/templates/BUILD_REPORT_TEMPLATE.md"):
+            texto = ler(RAIZ / rel)
+            with self.subTest(arquivo=rel):
+                self.assertIn("sdd/bin/adversarial-review.sh", texto)
+                self.assertNotIn("/adversarial-review`", texto.replace("sdd/bin/adversarial-review", ""))
+        self.assertIn("review.output_dir", ler(RAIZ / "sdd/templates/fragments/RESUMO_ETAPA.md"))

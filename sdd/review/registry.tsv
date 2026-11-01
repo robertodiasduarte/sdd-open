@@ -1,0 +1,23 @@
+# registry.tsv — engines da revisão adversarial (sdd/bin/adversarial-review.sh). Uma linha por engine,
+# 9 colunas separadas por TAB, nesta ordem (o script recusa linha com outra contagem, exit 64):
+#
+#   1 engine             id usado em --reviewer/--auditor/--revisor2 e em review.revisor1/review.auditor
+#   2 adapter            arquivo sdd/bin/adapters/<adapter>.sh (invocar, extrair, credencial)
+#   3 modelo             modelo passado à engine; "-" = o padrão da CLI. openrouter:<slug> troca só esta coluna
+#   4 cobranca           assinatura | pay-per-token | desconhecida — usada no custo quando a engine não o reporta
+#   5 papeis             revisor,auditor,desempate — papéis que a engine pode assumir
+#   6 timeout_s          teto, em segundos, de uma chamada
+#   7 sinal_auth         regex (Python): falha de credencial → para tudo (exit 65), nunca troca de engine
+#   8 sinal_transitorio  regex: limite passageiro (429) → mais 2 tentativas na mesma engine
+#   9 sinal_persistente  regex: cota ou cobrança esgotada → próxima engine da lista do slot
+#
+# Os sinais só são lidos quando a chamada FALHOU (exit do adapter ≠ 0, tempo esgotado ou resposta sem
+# texto): uma revisão que cita "401" no conteúdo nunca vira falha.
+#
+# Não há cadeia padrão: quem revisa e quem audita vem de review.revisor1 / review.auditor (sdd/config.yaml)
+# ou de --reviewer / --auditor. Engine nova = 1 linha aqui (+ 1 adapter, se for uma CLI nova).
+# O codex roda sempre com -s read-only (no adapter).
+claude	claude	-	assinatura	revisor,auditor,desempate	900	(?i)(authentication_error|invalid api key|not logged in|please run /login|\b401\b)	(?i)(rate_limit|overloaded|\b429\b|\b529\b)	(?i)(usage limit|credit balance is too low|quota)
+codex	codex	-	assinatura	revisor,auditor,desempate	900	(?i)(unauthorized|not logged in|codex login|\b401\b)	(?i)(rate limit|too many requests|\b429\b)	(?i)(usage limit|insufficient_quota|quota)
+gemini	gemini	-	desconhecida	revisor,auditor,desempate	900	(?i)(ProjectIdRequiredError|UNAUTHENTICATED|API key not valid|\b401\b|\b403\b)	(?i)(\b429\b|rate limit|too many requests)	(?i)(RESOURCE_EXHAUSTED|quota|billing)
+openrouter	openrouter	qwen/qwen3.7-plus	pay-per-token	revisor,auditor,desempate	900	(?i)(\"code\":\s*40[13]\b|User not found|No auth credentials|OPENROUTER_API_KEY ausente)	(?i)(\"code\":\s*429\b|rate limit)	(?i)(\"code\":\s*402\b|insufficient credits|quota|No endpoints found)

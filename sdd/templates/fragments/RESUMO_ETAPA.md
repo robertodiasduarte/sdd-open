@@ -1,7 +1,7 @@
 # Fragmento — Resumo de Etapa (micro-kanban da linha de produção)
 
 > Reusável. Lido pelo **encerramento obrigatório** de `/brainstorm`, `/define`, `/ux-review`,
-> `/design`, `/build`, a fase Release e `/adversarial-review`. É o **dono único** do formato: as
+> `/design`, `/build`, a fase Release e `sdd/bin/adversarial-review.sh`. É o **dono único** do formato: as
 > superfícies apontam pra cá, nunca copiam o texto normativo.
 
 ## Por que existe
@@ -46,7 +46,7 @@ que mais precisam dele). Aqui ele vira contrato.
 | /sdd-define | `sdd/features/DEFINE_{F}.md` |
 | /sdd-ux-review | `sdd/reviews/UX_REVIEW_{F}.md` |
 | /sdd-design | `sdd/features/DESIGN_{F}.md` |
-| review adversarial | `sdd/reviews/EXTERNAL_REVIEW_*/` **com `reviewer.md` + `META.txt` dentro** (o `/adversarial-review` grava por TIMESTAMP, sem `{F}` no nome — conferir pelo `diff_sha256`/branch do META que o diff revisado é o desta frente; `auditor_exit ≠ 0` = auditor FALHOU, não "zero achados") |
+| review adversarial | `<review.output_dir>/EXTERNAL_REVIEW_*/` (padrão `sdd/reports/reviews/`) **com `reviewer.md` + `META.txt` dentro** (o `sdd/bin/adversarial-review.sh` grava por TIMESTAMP, sem `{F}` no nome — conferir pelo `diff_sha256`/branch do META que o diff revisado é o desta frente; `auditor_exit ≠ 0` = auditor FALHOU, não "zero achados") |
 | /sdd-build | `sdd/reports/BUILD_REPORT_{F}.md` |
 | /sdd-release | `sdd/releases/{F}/` **com ledger do slice ATUAL** — famílias com vários slices (ex.: `ALERTAS_AULA_GRUPO` tem s1/s2/s3) já têm ledger no `main`: casar o slice desta frente, senão a fase Release sai `✅` antes do ship |
 

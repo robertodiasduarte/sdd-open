@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.0"
+  version: "2.3.0"
   updated: "2026-10"
   fase: "2"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Plano + especificação + decisões num documento. O DESIGN diz **como** construir o que o
 DEFINE contratou — e é o último ponto em que mudar de abordagem é barato.
@@ -155,12 +155,24 @@ ciclo, nenhum placeholder. Vermelho ⇒ corrija o DESIGN e rode de novo antes de
 ## Review adversarial do DESIGN (recomendado)
 
 É o ponto de **maior retorno** de uma revisão externa: mudar a abordagem custa pouco aqui e
-muito depois do código. Peça a um **segundo vendor** (agente de outra família de modelos) que
-revise o DESIGN com o contrato de `sdd/templates/fragments/ADVISOR_CONSULT.md` — veredito,
-≤3 riscos ranqueados, correções específicas, o que ignorar. Toda nota recebe **APLICADA ·
+muito depois do código. Uma engine do registry **revisa** o DESIGN e **outra audita** a revisão, em
+cadeia — o revisor primeiro, o auditor depois, nunca os dois em paralelo (dois revisores lado a lado
+acham menos que revisor e auditor encadeados). Commite o DEFINE e o DESIGN antes e rode:
+
+```bash
+bash sdd/bin/adversarial-review.sh --feature {FEATURE} \
+  --paths "sdd/features/DEFINE_{FEATURE}.md sdd/features/DESIGN_{FEATURE}.md"
+```
+
+As engines vêm de `review.revisor1` e `review.auditor` (`sdd/config.yaml`); vazios, pergunte à pessoa
+quais usar. Exit 0 ⇒ passe a pasta ao `bash sdd/bin/sdd-fluxo.sh loop --review <pasta> …`; 65 a 68 ⇒
+repasse o `RESULTADO:` e o `→` (credencial, CLI ausente, auditor igual ao revisor, resposta fora do
+formato — que nunca é "zero achados"). O contrato de resposta segue
+`sdd/templates/fragments/ADVISOR_CONSULT.md`. Toda nota recebe **APLICADA ·
 REBATIDA_EVIDENCIA (com arquivo:linha) · REBATIDA_ESCOPO** no Advisor Ledger do DESIGN.
-Nunca descartada em silêncio. Com um vendor só, use uma **sessão nova** do mesmo agente e
-registre `diversidade: nenhuma` — mais fraco, mas honesto. Se esta sessão não abre o papel fresco
+Nunca descartada em silêncio. Com uma engine só, rode com `--um-engine`: a revisão registra
+`diversidade: nenhuma` — mais fraca, mas honesta. Sem engine nenhuma, use uma **sessão nova** do
+agente como revisor. Se esta sessão não abre o papel fresco
 sozinha, grave o brief em `sdd/reports/briefs/BRIEF_revisor-design_{FEATURE}.md`, rode
 `bash sdd/bin/sdd-fluxo.sh despachar revisor-design {FEATURE} sdd/reports/briefs/BRIEF_revisor-design_{FEATURE}.md`
 e pare no exit 40, repassando a parada que ele imprime. Se a revisão é exigida:

@@ -72,8 +72,9 @@ answer.
 | `estado` | `0` on · `1` off · `64` invalid value |
 | `--self-test` | `0` when every scenario matches |
 
-`loop` decides the adversarial review after the build; the front that wires that review into the skills
-is the one that calls it.
+`loop` decides the adversarial review: it reads the folder that `sdd/bin/adversarial-review.sh` writes
+(`META.txt` and the verdict files, including the 2nd reviewer and the tie-break). See
+[adversarial-review.md](adversarial-review.md).
 
 ## Limit: a project that already had the package
 

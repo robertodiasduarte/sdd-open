@@ -1,0 +1,30 @@
+{
+  "id": "gen-exemplo-0001",
+  "provider": "Alibaba",
+  "model": "qwen/qwen3.7-plus",
+  "object": "chat.completion",
+  "created": 1793000000,
+  "choices": [
+    {
+      "index": 0,
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Auditoria de exemplo.\n\n<<<VERDICTS\n{\"achado\":\"R1\",\"veredito\":\"AGREE\",\"justificativa\":\"exemplo\"}\nVERDICTS>>>"
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 16,
+    "completion_tokens": 136,
+    "total_tokens": 152,
+    "cost": 0.0001792,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 132
+    }
+  }
+}

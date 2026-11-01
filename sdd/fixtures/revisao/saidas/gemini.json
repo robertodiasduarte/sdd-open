@@ -1,0 +1,30 @@
+{
+  "session_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa3",
+  "response": "Revisão de exemplo.\n\n<<<VERDICTS\nVERDICTS>>>",
+  "stats": {
+    "models": {
+      "gemini-3.8-flash": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 2100
+        },
+        "tokens": {
+          "prompt": 1830,
+          "candidates": 42,
+          "total": 1872,
+          "cached": 0,
+          "thoughts": 0,
+          "tool": 0
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 0
+    },
+    "files": {
+      "totalLinesAdded": 0,
+      "totalLinesRemoved": 0
+    }
+  }
+}
