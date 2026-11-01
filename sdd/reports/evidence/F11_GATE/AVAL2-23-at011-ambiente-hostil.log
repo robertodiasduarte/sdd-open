@@ -1,0 +1,8 @@
+$ W=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ; rm -f $W/marca-real; env BASH_ENV=$W/bashenv.sh ENV=$W/bashenv.sh 'BASH_FUNC_claude%%=() {  echo FUNC >> /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/marca-real; }' SDD_STUB_CLAUDE=revisor,revisor,revisor SDD_REVIEW_BIN=$W/real SDD_REVIEW_ADAPTERS=$W/real OPENROUTER_API_KEY=sk-or-v1-chave-do-usuario-aval SDD_REVIEW_OPENROUTER_URL=https://openrouter.ai/api/v1/chat/completions SDD_REVIEW_ESPERA=30 http_proxy= HTTPS_PROXY= no_proxy='*' NO_PROXY='*' PATH=$W/real:$PATH /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin/adversarial-review-gate.sh -v > $W/hostil.out 2>&1; rc=$?; grep -E 'asserções|RESULTADO|❌|Bearer|deny' $W/hostil.out; echo "[gate_rc=$rc]"; echo "marca-real: $(cat $W/marca-real 2>/dev/null || echo nenhuma)"; exit $rc
+  ✅ 101. a OpenRouter recebeu Authorization: Bearer <chave gerada>
+  ✅ 102. a OpenRouter recebeu provider.data_collection = deny
+103 asserções, 0 falha(s) em 7 s
+RESULTADO: GATE VERDE
+[gate_rc=0]
+marca-real: nenhuma
+[exit=0]

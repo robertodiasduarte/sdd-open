@@ -1,0 +1,6 @@
+$ W=/tmp/aval1-f11.wvW4zp; P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; cd $W/r18 && mkdir -p sdd/reports/reviews/EXTERNAL_REVIEW_29991231-235959 && B=$(mktemp -d) && (cd $P && git archive v2.3.0 sdd/bin sdd/review | tar -x -C $B) && /bin/bash $B/sdd/bin/adversarial-review.sh --conferir --aceitar-sem-revisor2 'motivo de teste'; echo "[conferir_v230_rc=$?]"; rm -rf sdd/reports/reviews/EXTERNAL_REVIEW_29991231-235959
+🛑 adversarial-review: sdd/reports/reviews/EXTERNAL_REVIEW_29991231-235959/META.txt ausente
+RESULTADO: NÃO CONFERE
+→ aponte a pasta de uma revisão (EXTERNAL_REVIEW_…).
+[conferir_v230_rc=2]
+[exit=0]

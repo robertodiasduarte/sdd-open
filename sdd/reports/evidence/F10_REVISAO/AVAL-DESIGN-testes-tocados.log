@@ -1,0 +1,7 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_fluxo test_decisoes_lint test_bash32 test_agnostico
+.....................................................................
+----------------------------------------------------------------------
+Ran 69 tests in 9.990s
+
+OK
+[exit=0]

@@ -1,0 +1,7 @@
+# NOTA (build): o comando desta sonda termina num formatador (sed) — o [exit] abaixo NÃO prova o comando. Fica como registro; o H1 é provado por AVAL2-43 e pelo teste vermelho em baseline-aval2.log.
+$ R=$(mktemp -d) && cd $R && export GIT_CONFIG_GLOBAL=/dev/null && git init -q -b main && printf '#!/bin/sh\nenv | grep "^GIT_" | sed "s/^/[%s] /" "$0"\n' > /dev/null; for h in pre-commit pre-push; do printf '#!/bin/sh\necho "[%s] GIT_DIR=${GIT_DIR:-<unset>} GIT_INDEX_FILE=${GIT_INDEX_FILE:-<unset>} GIT_WORK_TREE=${GIT_WORK_TREE:-<unset>}"\n' $h > .git/hooks/$h; chmod +x .git/hooks/$h; done; echo a > a; git add a; git -c user.name=u -c user.email=u@x -c commit.gpgsign=false commit -qm a; echo '### worktree'; git worktree add -q $R-wt -b outra 2>&1; cd $R-wt && echo b > b && git add b && git -c user.name=u -c user.email=u@x -c commit.gpgsign=false commit -qm b; git --version
+[pre-commit] GIT_DIR=<unset> GIT_INDEX_FILE=.git/index GIT_WORK_TREE=<unset>
+### worktree
+[pre-commit] GIT_DIR=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6Bw3Yp5KIE/.git/worktrees/tmp.6Bw3Yp5KIE-wt GIT_INDEX_FILE=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6Bw3Yp5KIE/.git/worktrees/tmp.6Bw3Yp5KIE-wt/index GIT_WORK_TREE=<unset>
+git version 2.54.0 (Apple Git-157)
+[exit=0]

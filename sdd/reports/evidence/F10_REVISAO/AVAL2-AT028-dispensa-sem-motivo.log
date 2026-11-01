@@ -1,0 +1,22 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at028b.sh
+--- ledger da fixture (com motivo):
+revisor2: dispensado rodada=1 — a engine do 2º revisor está sem cota hoje; revisão de uma engine só aceita
+=== 2º revisor indisponível, ledger com 'revisor2: dispensado rodada=1' (sem motivo)
+ESTADO: PRONTO
+motivo: 2º revisor dispensado no ledger (rodada 1)
+RESULTADO: PRONTO
+[rc=0]
+=== 2º revisor indisponível, ledger com 'revisor2: dispensado rodada=1 —' (motivo vazio)
+ESTADO: PRONTO
+motivo: 2º revisor dispensado no ledger (rodada 1)
+RESULTADO: PRONTO
+[rc=0]
+=== 2º revisor indisponível, motivo de 2 caracteres
+ESTADO: PRONTO
+motivo: 2º revisor dispensado no ledger (rodada 1)
+RESULTADO: PRONTO
+[rc=0]
+--- o --conferir e o --ledger, para comparação, exigem motivo de 3+ caracteres:
+170:        if len(d.group(1).strip()) >= 3:
+390:        if len(mot) < 3:
+[exit=1]

@@ -1,0 +1,31 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a4.sh AT013
+--- prompt do auditor (2ª chamada) tem diff, contexto e revisões:
+48:## CONTEXTO SDD
+53:## DIFF
+55:diff --git a/sdd/config.yaml b/sdd/config.yaml
+63:diff --git a/src/conta.sh b/src/conta.sh
+70:diff --git a/src/novo.sh b/src/novo.sh
+79:## REVISÕES
+82:### Revisão de stub-a
+auditor.md == resposta? sim
+{"achado": "R1", "veredito": "AGREE", "justificativa": "src/conta.sh:12 divide sem checar"}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "src/conta.sh:30 trunca"}
+--- auditor NOVO com severidade
+RESULTADO: REVIEW COMPLETA
+achados: 1 grave, 1 médio, 0 leves (+ 1 novo(s) do auditor)
+[rc=0]
+{"achado": "R1", "veredito": "AGREE"}
+{"achado": "R2", "veredito": "DISAGREE_CONCERN"}
+{"achado": "N1", "veredito": "NOVO", "severidade": "LOW", "resumo": "x"}
+convergencia_1o_passe   : nao
+--- o loop lê a pasta sem mudança
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: R1
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+[loop rc=10]
+[exit=0]

@@ -1,0 +1,8 @@
+# NOTA (build): este log do avaliador termina num formatador — o [exit] abaixo NÃO prova o comando (gate-shell-evidencia). Fica como registro da sonda; a prova do AT está em verde-adiados.log / gate-v.log / teste-gate.log.
+$ for d in /tmp/aval1-f11.wvW4zp/r19/sdd/reports/reviews/*; do echo "$(basename $d): $(grep -h '^reviewer_modelo\|^reviewer_custo' $d/META.txt | tr -s ' ' | tr '\n' ' ')"; done; echo '(ordem de execução: 073857=HEAD sem-custo, 073857-2=HEAD modelo-sem-preco, 073858=v2.3.0 sem-custo, 073858-2=v2.3.0 modelo-sem-preco)'
+EXTERNAL_REVIEW_20261101-073857: reviewer_modelo : qwen/qwen3.7-plus via StubProvider reviewer_custo : ≈US$ 0.6953 
+EXTERNAL_REVIEW_20261101-073857-2: reviewer_modelo : qwen/qwen3.7-plus-preview via StubProvider reviewer_custo : $? 
+EXTERNAL_REVIEW_20261101-073858: reviewer_modelo : qwen/qwen3.7-plus via StubProvider reviewer_custo : ≈US$ 0.6953 
+EXTERNAL_REVIEW_20261101-073858-2: reviewer_modelo : qwen/qwen3.7-plus-preview via StubProvider reviewer_custo : ≈US$ 0.6953 
+(ordem de execução: 073857=HEAD sem-custo, 073857-2=HEAD modelo-sem-preco, 073858=v2.3.0 sem-custo, 073858-2=v2.3.0 modelo-sem-preco)
+[exit=0]

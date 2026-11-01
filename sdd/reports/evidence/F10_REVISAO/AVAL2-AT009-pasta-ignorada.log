@@ -1,0 +1,18 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at009.sh
+=== pasta não ignorada
+🛑 a pasta sdd/reports/reviews não está ignorada pelo git: o diff e as respostas das engines iriam para o repositório.
+RESULTADO: PAROU
+→ rode: printf '%s\n' 'sdd/reports/reviews/' >> "$(git rev-parse --git-common-dir)/info/exclude"
+[rc=64] chamadas=0 pasta=nao
+=== aplica o comando impresso
+printf '%s\n' 'sdd/reports/reviews/' >> "$(git rev-parse --git-common-dir)/info/exclude"
+[rc=0]
+=== em worktree ligada, output_dir próprio
+🛑 a pasta out/revs não está ignorada pelo git: o diff e as respostas das engines iriam para o repositório.
+RESULTADO: PAROU
+→ rode: printf '%s\n' 'out/revs/' >> "$(git rev-parse --git-common-dir)/info/exclude"
+exclude comum: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xaAKeAvKCc/r1/.git/info/exclude
+sdd/reports/reviews/
+out/revs/
+[rc=0] pasta: EXTERNAL_REVIEW_20261101-002110
+[exit=0]

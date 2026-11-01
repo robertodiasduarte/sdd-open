@@ -1,0 +1,27 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/sonda-loop.sh
+== self-test atual
+RESULTADO: VERDE
+→ todos os cenários bateram.
+self-test rc=0
+== chaves novas nas fixtures da F9 (esperado: nenhuma)
+nenhuma
+== loop atual: 2º revisor indisponível, script parou antes do auditor, COM a dispensa no ledger
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: review inválida (reviewer_exit=0 auditor_exit=-) — refazer
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+rc=10
+== o mesmo META sem revisor2_exit (AT-015 não obriga a chave): AT-028 manda sair 64
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+rc(loop v2.2.10, ignora a chave)=0
+[exit=0]

@@ -1,0 +1,13 @@
+$ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/nula.sh codex
+### extração nula em codex
+  ❌ 9. codex (auditor): tokens de turn.completed
+        → lido ('n/d', 'n/d'), esperado ('18000', '300')
+--
+  ❌ 18. codex (revisor): tokens de turn.completed
+        → lido ('n/d', 'n/d'), esperado ('24000', '900')
+--
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+103 asserções, 2 falha(s) em 7 s
+RESULTADO: GATE VERMELHO
+[gate_rc=2]
+[exit=2]

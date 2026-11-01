@@ -1,0 +1,6 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iNp6lMZaXH/sonda_meta.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate
+claude→codex  (adapters reais)   exit=0 | reviewer_custo : US$ 0.0239;auditor_tokens_entrada : 24673;auditor_tokens_saida : 5;auditor_modelo : -;auditor_custo : assinatura;
+claude→codex  (codex sem tokens) exit=0 | reviewer_custo : assinatura;auditor_tokens_entrada : n/d;auditor_tokens_saida : n/d;auditor_modelo : -;auditor_custo : assinatura;
+claude→gemini (adapters reais)   exit=0 | reviewer_custo : US$ 0.0239;auditor_tokens_entrada : 1830;auditor_tokens_saida : 42;auditor_modelo : gemini-3.8-flash;auditor_custo : $?;
+claude→gemini (gemini sem modelo/tokens) exit=0 | reviewer_custo : assinatura;auditor_tokens_entrada : n/d;auditor_tokens_saida : n/d;auditor_modelo : -;auditor_custo : $?;
+[exit=0]

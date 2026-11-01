@@ -1,0 +1,7 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_revisao_gate.py' -k aval
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 47.520s
+
+OK
+[exit=0]

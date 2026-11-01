@@ -1,0 +1,14 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a11.sh
+sem config: 89a7fb7bd19dd683133ec9d5c243e51d5e4932239290e6e0577fcbbde5e3dc5e
+diff.context 10              SHA MUDOU (728ef147c7215a3ce773d53467c34f24b0e3abb83b74ca1c4dd1672f80c40a1f)
+diff.interHunkContext 20     SHA MUDOU (6582df358f768b8b16127358382f29c461f909157f0ee387b14ba4be02fd9224)
+diff.orderFile /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0ynDpq7EZC/ORDEM sha igual
+diff.relative true           sha igual
+diff.suppressBlankEmpty true sha igual
+diff.indentHeuristic false   sha igual
+core.quotePath false         sha igual
+diff.noprefix true           sha igual
+diff.algorithm histogram     sha igual
+diff.mnemonicPrefix true     sha igual
+diff.renames copies          sha igual
+[exit=0]

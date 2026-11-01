@@ -1,0 +1,13 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_revisao.Vereditos
+test_auditor_sem_bloco_e_68 (test_revisao.Vereditos) ... ok
+test_bloco_vazio_e_zero_achados (test_revisao.Vereditos) ... ok
+test_convergencia_nao_com_refutacao (test_revisao.Vereditos) ... ok
+test_linha_de_inicio_por_papel (test_revisao.Vereditos) ... ok
+test_revisao_completa_grava_tudo_e_o_loop_le (test_revisao.Vereditos) ... ok
+test_revisor_sem_bloco_e_68_e_nunca_zero_achados (test_revisao.Vereditos) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.346s
+
+OK
+[exit=0]

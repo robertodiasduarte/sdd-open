@@ -1,0 +1,105 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at023.sh
+=== 0: completa
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002605
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002605 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+=== 68: inválida
+RESULTADO: REVIEW INVÁLIDA
+revisor (stub-a:revisor-sem-bloco): a engine respondeu fora do formato; isto não é zero achados
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002606
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-a:revisor-sem-bloco (stub-modelo) — incluído na assinatura
+diversidade: -
+custo total: incluído na assinatura
+→ rode de novo; se repetir, troque a engine do revisor
+[rc=68]
+=== 65: credencial
+RESULTADO: PAROU
+auditor: falha de credencial em stub-b:falha-auth
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002606
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-b:falha-auth (falha-auth) — custo desconhecido
+diversidade: -
+custo total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)
+→ confira a credencial de stub-b:falha-auth (credencial do stub (exemplo de teste)); a revisão não troca de engine por falha de credencial
+[rc=65]
+=== 67: lista esgotada
+RESULTADO: PAROU
+revisor: stub-a:falha-quota falhou (cota, cobrança ou erro)
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002607
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-a:falha-quota (n/d) — n/d
+diversidade: -
+custo total: n/d
+→ acrescente outra engine à lista ou tente mais tarde
+[rc=67]
+=== 67: exclusão (auditor só tem a engine que revisou)
+⚠️ o revisor previsto (stub-a:falha-quota) falhou (stub-a:falha-quota falhou (cota, cobrança ou erro)); quem revisou foi stub-c
+RESULTADO: PAROU
+auditor: stub-c excluída (já tem outro papel nesta revisão)
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002607
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-c (stub-modelo) (troca de engine) — custo desconhecido
+diversidade: -
+custo total: custo desconhecido
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+[rc=67]
+=== 66: CLI ausente
+RESULTADO: PAROU
+revisor: CLI de stub-a:sem-cli fora do PATH
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002607
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-a:sem-cli (n/d) — n/d
+diversidade: -
+custo total: n/d
+→ instale a CLI da engine ou acrescente outra engine à lista (review.revisor1 / review.auditor)
+[rc=66]
+=== 2º revisor 66
+⚠️ o 2º revisor (stub-c:sem-cli) falhou (CLI de stub-c:sem-cli fora do PATH): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002608
+diff_sha256: dd359fe5a9d8fdb78edf6020c55bcb57f6040ab06430e9e3a490c08f5ce63d95
+revisor: stub-a (stub-modelo) — incluído na assinatura
+2º revisor: stub-c:sem-cli (n/d) — n/d
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002608 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+=== 2º revisor sem engine
+⚠️ o 2º revisor (stub-c:off-x) falhou (stub-c:off-x falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002608
+diff_sha256: dd359fe5a9d8fdb78edf6020c55bcb57f6040ab06430e9e3a490c08f5ce63d95
+revisor: stub-a (stub-modelo) — incluído na assinatura
+2º revisor: stub-c:off-x (n/d) — n/d
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002608 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+=== raso + fallback (ordem dos ⚠️ antes do RESULTADO)
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor previsto (stub-a:falha-quota) falhou (stub-a:falha-quota falhou (cota, cobrança ou erro)); quem revisou foi stub-c:revisor-vazio
+⚠️ o revisor terminou em 0 s sem achados: isso não conta como revisão
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002609
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-c:revisor-vazio (stub-modelo) (troca de engine) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 0 graves, 0 médios, 0 leves
+custo total: custo desconhecido
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002609 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+[exit=0]

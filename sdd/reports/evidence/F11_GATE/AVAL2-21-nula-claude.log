@@ -1,0 +1,17 @@
+$ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/nula.sh claude
+### extração nula em claude
+  ❌ 6. claude (revisor): modelo de modelUsage
+        → lido '-', esperado 'claude-stub-5'
+  ❌ 7. claude (revisor): custo de total_cost_usd
+        → lido 'assinatura', esperado 'US$ 0.0421'
+--
+  ❌ 47. claude (auditor): modelo de modelUsage
+        → lido '-', esperado 'claude-stub-5'
+  ❌ 48. claude (auditor): custo de total_cost_usd
+        → lido 'assinatura', esperado 'US$ 0.0137'
+--
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+103 asserções, 4 falha(s) em 7 s
+RESULTADO: GATE VERMELHO
+[gate_rc=2]
+[exit=2]

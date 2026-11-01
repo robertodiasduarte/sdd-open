@@ -1,0 +1,23 @@
+$ cat /tmp/aval1-f11.wvW4zp/sabota.sh; /tmp/aval1-f11.wvW4zp/sabota.sh claude-custo sdd/bin/adapters/claude.sh '"custo_usd": custo}, ensure_ascii' '"custo_usd": None}, ensure_ascii'
+#!/bin/bash
+# sabota.sh <nome> <arquivo-rel> <âncora> <troca>  — cópia nova de sdd/bin + sdd/review em mktemp, troca 1 ocorrência
+# exata (falha se a âncora não for única), roda o gate da cópia e mostra exit + linhas ❌ + resumo.
+P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate
+nome=$1; arq=$2; antes=$3; depois=$4
+C=$(mktemp -d); mkdir -p $C/sdd; cp -R $P/sdd/bin $P/sdd/review $C/sdd/
+/usr/bin/python3 -I -c 'import sys; p,a,d=sys.argv[1:]; t=open(p).read(); n=t.count(a); assert n==1, "âncora x%d" % n; open(p,"w").write(t.replace(a,d))' "$C/$arq" "$antes" "$depois" || { echo "ÂNCORA INVÁLIDA"; exit 9; }
+echo "### sabotagem $nome em $arq"
+out=$(/bin/bash $C/sdd/bin/adversarial-review-gate.sh 2>&1); rc=$?
+printf '%s\n' "$out" | grep -E '❌|→ lido|asserções|RESULTADO' 
+echo "[gate_rc=$rc]"
+rm -rf "$C"; exit $rc
+### sabotagem claude-custo em sdd/bin/adapters/claude.sh
+  ❌ 7. claude (revisor): custo de total_cost_usd
+        → lido 'assinatura', esperado 'US$ 0.0421'
+  ❌ 48. claude (auditor): custo de total_cost_usd
+        → lido 'assinatura', esperado 'US$ 0.0137'
+90 asserções, 2 falha(s) em 10 s
+RESULTADO: GATE VERMELHO
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+[gate_rc=2]
+[exit=2]

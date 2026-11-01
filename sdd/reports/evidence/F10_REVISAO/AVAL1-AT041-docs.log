@@ -1,0 +1,36 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a7.py AT041
+OK    docs/adversarial-review.md existe
+OK    docs/adversarial-review.md cita revisor1
+OK    docs/adversarial-review.md cita auditor
+OK    docs/adversarial-review.md cita --um-engine
+OK    docs/adversarial-review.md cita data_collection
+OK    docs/adversarial-review.md cita 65
+OK    docs/adversarial-review.md cita 66
+OK    docs/adversarial-review.md cita 67
+OK    docs/adversarial-review.md cita 68
+OK    docs/adversarial-review.md cita 64
+OK    docs/adversarial-review.md cita dispens
+OK    docs/adversarial-review.md fala de custo
+OK    docs/adversarial-review.md tabela de exits com 6 linhas
+OK    docs/pt-BR/adversarial-review.md existe
+OK    docs/pt-BR/adversarial-review.md cita revisor1
+OK    docs/pt-BR/adversarial-review.md cita auditor
+OK    docs/pt-BR/adversarial-review.md cita --um-engine
+OK    docs/pt-BR/adversarial-review.md cita data_collection
+OK    docs/pt-BR/adversarial-review.md cita 65
+OK    docs/pt-BR/adversarial-review.md cita 66
+OK    docs/pt-BR/adversarial-review.md cita 67
+OK    docs/pt-BR/adversarial-review.md cita 68
+OK    docs/pt-BR/adversarial-review.md cita 64
+OK    docs/pt-BR/adversarial-review.md cita dispens
+OK    docs/pt-BR/adversarial-review.md fala de custo
+OK    docs/pt-BR/adversarial-review.md tabela de exits com 6 linhas
+OK    README.md linka docs/adversarial-review.md
+OK    README.pt-BR.md linka docs/pt-BR/adversarial-review.md
+OK    docs/adaptation-guide.md cita registry.tsv e precos.tsv
+OK    docs/pt-BR/adaptation-guide.md cita registry.tsv e precos.tsv
+roadmap: | **Second-vendor adversarial review** | fixed-format answer (verdict, ≤3 risks, fixes, what to ignore); every note is applied or rebutted in writing | `fragmen
+roadmap: | **Review adversarial de 2º vendor** | resposta em formato fixo (veredito, ≤3 riscos, correções, o que ignorar); toda nota é aplicada ou rebatida por escrito |
+roadmap: | **Adversarial review** | review by a second vendor over a frozen diff, with an editable registry of engines and an offline gate that checks the review really 
+roadmap: | **Revisão adversarial** | revisão por um segundo vendor sobre um diff congelado, com um registro editável de engines e um gate offline que confere que a revis
+[exit=0]

@@ -1,0 +1,22 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_docs.py' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_release_workflow.py' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_open.py' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_bash32.py'
+..................
+----------------------------------------------------------------------
+Ran 18 tests in 0.035s
+
+OK
+............................
+----------------------------------------------------------------------
+Ran 28 tests in 1.623s
+
+OK
+.................................
+----------------------------------------------------------------------
+Ran 33 tests in 334.467s
+
+OK
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.028s
+
+OK
+[exit=0]

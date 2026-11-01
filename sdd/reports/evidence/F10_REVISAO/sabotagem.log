@@ -1,0 +1,17 @@
+$ bash sdd/reports/evidence/F10_REVISAO/sabotagem.sh
+✅ exclusão: auditor igual ao revisor passa → vermelho (test_auditor_igual_ao_revisor_e_67_sem_chamar_nada ) · restaurado → verde
+✅ vereditos: resposta sem bloco vira zero achados → vermelho (test_revisor_sem_bloco_e_68_e_nunca_zero_achados ) · restaurado → verde
+✅ falha: credencial vira persistente (troca de engine) → vermelho (test_auth_para_sem_chamar_a_proxima ) · restaurado → verde
+✅ custo: desconhecido vira US$ 0 → vermelho (test_quatro_formas_e_nunca_zero_desconhecido ) · restaurado → verde
+✅ conferir: não compara o sha256 → vermelho (test_confere_e_deixa_de_conferir_com_1_byte ) · restaurado → verde
+✅ 2º revisor: limiar de 8 arquivos vira 999 → vermelho (test_gatilhos_e_constantes ) · restaurado → verde
+✅ loop: desempate REFUTADO não fecha → vermelho (test_desempate_refutado_fecha_e_procede_mantem_aberto ) · restaurado → verde
+✅ loop: 2º revisor indisponível passa → vermelho (test_segundo_revisor_indisponivel_sem_dispensa_e_bloqueado_d3 ) · restaurado → verde
+✅ ciclo 1: papel que falha sem engine grava - → vermelho (test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3 ) · restaurado → verde
+✅ ciclo 2: índice copiado com mtime novo (copyfile) → vermelho (test_1_edicao_do_mesmo_tamanho_no_mesmo_instante_do_indice_entra_no_diff ) · restaurado → verde
+✅ ciclo 2: dispensa do 2º revisor sem motivo → vermelho (test_dispensa_sem_motivo_nao_vale ) · restaurado → verde
+✅ rodada 1: auditoria parcial passa → vermelho (test_r1_codex_auditoria_parcial_e_68 ) · restaurado → verde
+✅ rodada 1: --revisor2 igual ao revisor passa → vermelho (test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 ) · restaurado → verde
+✅ rodada 2: linha com crases e conteúdo some do bloco → vermelho (test_r1_codex_linha_com_crases_e_conteudo_e_68_e_cerca_sozinha_passa ) · restaurado → verde
+RESULTADO: VERDE — 14/14 sabotagens derrubaram um teste nomeado
+[exit=0]

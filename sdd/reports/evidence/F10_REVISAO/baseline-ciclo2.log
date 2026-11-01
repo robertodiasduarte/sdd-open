@@ -1,0 +1,11 @@
+$ cd <worktree em 9846919 com tests/test_revisao.py e tests/test_fluxo.py novos>/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_revisao.AvaliadorCiclo2 test_fluxo.LoopF10.test_dispensa_sem_motivo_nao_vale
+FAIL: test_1_edicao_do_mesmo_tamanho_no_mesmo_instante_do_indice_entra_no_diff (test_revisao.AvaliadorCiclo2)
+FAIL: test_2_order_file_e_textconv_do_usuario_nao_mudam_o_sha (test_revisao.AvaliadorCiclo2)
+FAIL: test_3_lista_esgotada_registra_a_troca_e_nao_diz_quem_revisou (test_revisao.AvaliadorCiclo2)
+FAIL: test_5_comentario_de_security_globs_cita_o_segundo_revisor (test_revisao.AvaliadorCiclo2)
+FAIL: test_dispensa_sem_motivo_nao_vale (test_fluxo.LoopF10) (linha='revisor2: dispensado rodada=1')
+FAIL: test_dispensa_sem_motivo_nao_vale (test_fluxo.LoopF10) (linha='revisor2: dispensado rodada=1 —')
+FAIL: test_dispensa_sem_motivo_nao_vale (test_fluxo.LoopF10) (linha='revisor2: dispensado rodada=1 — ok')
+Ran 5 tests in 1.190s
+FAILED (failures=7)
+[exit=1]

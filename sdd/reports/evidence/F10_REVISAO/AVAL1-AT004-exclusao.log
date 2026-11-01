@@ -1,0 +1,23 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a1.sh AT004
+--- review.auditor == review.revisor1 (1º id)
++ adversarial-review.sh --base main
+🛑 adversarial-review: o auditor (stub-a) é a mesma engine do revisor: ninguém audita a própria revisão
+RESULTADO: PAROU
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+[rc=67]
+chamadas=0 pasta_reviews_existe=nao
+--- flags iguais
++ adversarial-review.sh --base main --reviewer stub-c --auditor stub-c
+🛑 adversarial-review: o auditor (stub-c) é a mesma engine do revisor: ninguém audita a própria revisão
+RESULTADO: PAROU
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+[rc=67]
+chamadas=0 pasta_reviews_existe=nao
+--- registry de fábrica, claude/claude (nenhuma CLI real no PATH; nada deve ser chamado)
++ adversarial-review.sh --base main --reviewer claude --auditor claude
+🛑 adversarial-review: o auditor (claude) é a mesma engine do revisor: ninguém audita a própria revisão
+RESULTADO: PAROU
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+[rc=67]
+pasta_reviews_existe=nao
+[exit=0]

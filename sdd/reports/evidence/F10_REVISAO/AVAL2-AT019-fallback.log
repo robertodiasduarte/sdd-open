@@ -1,0 +1,77 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at019.sh
+=== cota no revisor avança
+⚠️ o revisor previsto (stub-a:falha-quota) falhou (stub-a:falha-quota falhou (cota, cobrança ou erro)); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+revisor: stub-c (stub-modelo) (troca de engine) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002455 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+reviewer_engine_default : stub-a:falha-quota
+reviewer_engine_efetivo : stub-c
+reviewer_fallback_usado : sim
+reviewer_motivo         : stub-a:falha-quota falhou (cota, cobrança ou erro)
+reviewer_exit           : 0
+auditor_engine_default  : stub-b
+auditor_engine_efetivo  : stub-b
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+=== tempo esgotado no auditor avança
+⚠️ o auditor previsto (stub-b:dorme) falhou (stub-b:dorme passou do teto de tempo); quem auditou foi stub-d:auditor-agree
+RESULTADO: REVIEW COMPLETA
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-d:auditor-agree (stub-modelo) (troca de engine) — incluído na assinatura
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002456 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+reviewer_engine_default : stub-a
+reviewer_engine_efetivo : stub-a
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+auditor_engine_default  : stub-b:dorme
+auditor_engine_efetivo  : stub-d:auditor-agree
+auditor_fallback_usado  : sim
+auditor_motivo          : stub-b:dorme passou do teto de tempo
+auditor_exit            : 0
+=== CLI ausente avança
+⚠️ o revisor previsto (stub-a:sem-cli) falhou (CLI de stub-a:sem-cli fora do PATH); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+revisor: stub-c (stub-modelo) (troca de engine) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002501 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+reviewer_engine_default : stub-a:sem-cli
+reviewer_engine_efetivo : stub-c
+reviewer_fallback_usado : sim
+reviewer_motivo         : CLI de stub-a:sem-cli fora do PATH
+reviewer_exit           : 0
+auditor_engine_default  : stub-b
+auditor_engine_efetivo  : stub-b
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+=== lista esgotada (cota + tempo) → 67
+RESULTADO: PAROU
+revisor: stub-a:falha-quota falhou (cota, cobrança ou erro); stub-c:dorme passou do teto de tempo
+revisor: stub-c:dorme (n/d) — n/d
+→ acrescente outra engine à lista ou tente mais tarde
+[rc=67]
+reviewer_engine_default : stub-a:falha-quota
+reviewer_engine_efetivo : stub-c:dorme
+reviewer_fallback_usado : nao
+reviewer_motivo         : stub-a:falha-quota falhou (cota, cobrança ou erro); stub-c:dorme passou do teto de tempo
+reviewer_exit           : 67
+auditor_exit            : -
+=== lista esgotada só por CLI ausente → 66
+RESULTADO: PAROU
+revisor: CLI de stub-a:sem-cli fora do PATH; CLI de stub-c:sem-cli fora do PATH
+revisor: stub-c:sem-cli (n/d) — n/d
+→ instale a CLI da engine ou acrescente outra engine à lista (review.revisor1 / review.auditor)
+[rc=66]
+reviewer_engine_default : stub-a:sem-cli
+reviewer_engine_efetivo : stub-c:sem-cli
+reviewer_fallback_usado : nao
+reviewer_motivo         : CLI de stub-a:sem-cli fora do PATH; CLI de stub-c:sem-cli fora do PATH
+reviewer_exit           : 66
+auditor_exit            : -
+[exit=0]

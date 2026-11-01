@@ -1,0 +1,202 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate && /bin/bash sdd/bin/adversarial-review-gate.sh -v
+── Gate offline da revisão adversarial (sem rede, sem crédito) ──
+Engines por stub: claude, codex, gemini, openrouter · registry: /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/review/registry.tsv
+▸ claude → codex
+  ✅ 1. claude → codex: exit
+        lido: 0
+  ✅ 2. claude → codex: achados e vereditos no META
+        lido: ('2', '2')
+  ✅ 3. claude → codex: achados do revisor no jsonl
+        lido: ['R1', 'R2']
+  ✅ 4. claude → codex: vereditos do auditor no jsonl
+        lido: [('R1', 'AGREE'), ('R2', 'AGREE')]
+  ✅ 5. claude (revisor): engine efetiva
+        lido: claude
+  ✅ 6. claude (revisor): modelo de modelUsage
+        lido: claude-stub-5
+  ✅ 7. claude (revisor): custo de total_cost_usd
+        lido: US$ 0.0421
+  ✅ 8. codex (auditor): engine efetiva
+        lido: codex
+  ✅ 9. codex (auditor): tokens de turn.completed
+        lido: ('18000', '300')
+  ✅ 10. codex (auditor): modelo e custo (a CLI não reporta)
+        lido: ('-', 'assinatura')
+  ✅ 11. claude → codex: nenhuma engine fora do roteiro foi chamada
+  ✅ 12. claude → codex: chamadas por engine
+        lido: {'claude': 1, 'codex': 1}
+▸ codex → gemini
+  ✅ 13. codex → gemini: exit
+        lido: 0
+  ✅ 14. codex → gemini: achados e vereditos no META
+        lido: ('2', '2')
+  ✅ 15. codex → gemini: achados do revisor no jsonl
+        lido: ['R1', 'R2']
+  ✅ 16. codex → gemini: vereditos do auditor no jsonl
+        lido: [('R1', 'AGREE'), ('R2', 'AGREE')]
+  ✅ 17. codex (revisor): engine efetiva
+        lido: codex
+  ✅ 18. codex (revisor): tokens de turn.completed
+        lido: ('24000', '900')
+  ✅ 19. codex (revisor): modelo e custo (a CLI não reporta)
+        lido: ('-', 'assinatura')
+  ✅ 20. gemini (auditor): engine efetiva
+        lido: gemini
+  ✅ 21. gemini (auditor): modelo de stats.models
+        lido: gemini-stub-pro
+  ✅ 22. gemini (auditor): tokens de stats.models
+        lido: ('4000', '120')
+  ✅ 23. gemini (auditor): custo sem tarifa
+        lido: $?
+  ✅ 24. codex → gemini: nenhuma engine fora do roteiro foi chamada
+  ✅ 25. codex → gemini: chamadas por engine
+        lido: {'codex': 1, 'gemini': 1}
+▸ gemini → openrouter
+  ✅ 26. gemini → openrouter: exit
+        lido: 0
+  ✅ 27. gemini → openrouter: achados e vereditos no META
+        lido: ('2', '2')
+  ✅ 28. gemini → openrouter: achados do revisor no jsonl
+        lido: ['R1', 'R2']
+  ✅ 29. gemini → openrouter: vereditos do auditor no jsonl
+        lido: [('R1', 'AGREE'), ('R2', 'AGREE')]
+  ✅ 30. gemini (revisor): engine efetiva
+        lido: gemini
+  ✅ 31. gemini (revisor): modelo de stats.models
+        lido: gemini-stub-pro
+  ✅ 32. gemini (revisor): tokens de stats.models
+        lido: ('5000', '700')
+  ✅ 33. gemini (revisor): custo sem tarifa
+        lido: $?
+  ✅ 34. openrouter (auditor): engine efetiva
+        lido: openrouter
+  ✅ 35. openrouter (auditor): modelo e provedor
+        lido: qwen/qwen3.7-plus via StubProvider
+  ✅ 36. openrouter (auditor): custo de usage.cost
+        lido: US$ 0.0012
+  ✅ 37. gemini → openrouter: nenhuma engine fora do roteiro foi chamada
+  ✅ 38. gemini → openrouter: chamadas por engine
+        lido: {'gemini': 1, 'openrouter': 1}
+▸ openrouter → claude
+  ✅ 39. openrouter → claude: exit
+        lido: 0
+  ✅ 40. openrouter → claude: achados e vereditos no META
+        lido: ('2', '2')
+  ✅ 41. openrouter → claude: achados do revisor no jsonl
+        lido: ['R1', 'R2']
+  ✅ 42. openrouter → claude: vereditos do auditor no jsonl
+        lido: [('R1', 'AGREE'), ('R2', 'AGREE')]
+  ✅ 43. openrouter (revisor): engine efetiva
+        lido: openrouter
+  ✅ 44. openrouter (revisor): modelo e provedor
+        lido: qwen/qwen3.7-plus via StubProvider
+  ✅ 45. openrouter (revisor): custo de usage.cost
+        lido: US$ 0.0031
+  ✅ 46. claude (auditor): engine efetiva
+        lido: claude
+  ✅ 47. claude (auditor): modelo de modelUsage
+        lido: claude-stub-5
+  ✅ 48. claude (auditor): custo de total_cost_usd
+        lido: US$ 0.0137
+  ✅ 49. openrouter → claude: nenhuma engine fora do roteiro foi chamada
+  ✅ 50. openrouter → claude: chamadas por engine
+        lido: {'claude': 1, 'openrouter': 1}
+▸ custo sem usage.cost
+  ✅ 51. openrouter sem-custo: exit
+        lido: 0
+  ✅ 52. openrouter (revisor, sem-custo): engine efetiva
+        lido: openrouter
+  ✅ 53. openrouter (revisor, sem-custo): modelo e provedor
+        lido: qwen/qwen3.7-plus via StubProvider
+  ✅ 54. openrouter (revisor, sem-custo): custo estimado pelo precos.tsv
+        lido: ≈US$ 0.6953
+  ✅ 55. openrouter sem-custo: nenhuma engine fora do roteiro foi chamada
+  ✅ 56. openrouter sem-custo: chamadas por engine
+        lido: {'claude': 1, 'openrouter': 1}
+  ✅ 57. openrouter modelo-sem-preco: exit
+        lido: 0
+  ✅ 58. openrouter (revisor, modelo-sem-preco): engine efetiva
+        lido: openrouter
+  ✅ 59. openrouter (revisor, modelo-sem-preco): modelo e provedor
+        lido: qwen/qwen3.7-plus-preview via StubProvider
+  ✅ 60. openrouter (revisor, modelo-sem-preco): custo estimado pelo precos.tsv
+        lido: $?
+  ✅ 61. openrouter modelo-sem-preco: nenhuma engine fora do roteiro foi chamada
+  ✅ 62. openrouter modelo-sem-preco: chamadas por engine
+        lido: {'claude': 1, 'openrouter': 1}
+▸ contrato
+  ✅ 63. auditor sem o bloco de vereditos: exit 68
+        lido: 68
+  ✅ 64. auditor sem o bloco: auditor_exit e nenhum auditor.verdicts.jsonl
+        lido: ('68', False)
+  ✅ 65. auditor sem o bloco: a saída diz REVIEW INVÁLIDA, não zero achados
+        lido: True
+  ✅ 66. 68: nenhuma engine fora do roteiro foi chamada
+  ✅ 67. 68: chamadas por engine
+        lido: {'claude': 1, 'codex': 1}
+  ✅ 68. mesma engine revisa e audita: exit 67
+        lido: 67
+  ✅ 69. 67 (mesma engine): nenhuma engine fora do roteiro foi chamada
+  ✅ 70. 67 (mesma engine): chamadas por engine
+        lido: {}
+  ✅ 71. revisor caiu na engine do auditor: exit 67
+        lido: 67
+  ✅ 72. revisor caiu na engine do auditor: auditor excluído, revisor efetivo codex
+        lido: ('67', True, 'codex')
+  ✅ 73. 67 (exclusão): nenhuma engine fora do roteiro foi chamada
+  ✅ 74. 67 (exclusão): chamadas por engine
+        lido: {'codex': 1, 'gemini': 1}
+  ✅ 75. auditor com os 4 tipos de veredito: exit 0
+        lido: 0
+  ✅ 76. auditor com os 4 tipos de veredito: jsonl com DISAGREE_EVIDENCE, DISAGREE_CONCERN e NOVO
+        lido: [('R1', 'DISAGREE_EVIDENCE'), ('R2', 'DISAGREE_CONCERN'), ('N1', 'NOVO')]
+  ✅ 77. auditor com os 4 tipos de veredito: META (vereditos, convergência, sem desempate em MED)
+        lido: ('3', 'nao', '-')
+  ✅ 78. vereditos mistos: nenhuma engine fora do roteiro foi chamada
+  ✅ 79. vereditos mistos: chamadas por engine
+        lido: {'claude': 1, 'gemini': 1}
+  ✅ 80. falha de credencial (claude): exit 65 e parou nela
+        lido: (65, 'claude')
+  ✅ 81. falha de credencial (claude): sem troca de engine: nenhuma engine fora do roteiro foi chamada
+  ✅ 82. falha de credencial (claude): sem troca de engine: chamadas por engine
+        lido: {'claude': 1}
+  ✅ 83. falha de credencial (codex): exit 65 e parou nela
+        lido: (65, 'codex')
+  ✅ 84. falha de credencial (codex): sem troca de engine: nenhuma engine fora do roteiro foi chamada
+  ✅ 85. falha de credencial (codex): sem troca de engine: chamadas por engine
+        lido: {'codex': 1}
+  ✅ 86. falha de credencial (gemini): exit 65 e parou nela
+        lido: (65, 'gemini')
+  ✅ 87. falha de credencial (gemini): sem troca de engine: nenhuma engine fora do roteiro foi chamada
+  ✅ 88. falha de credencial (gemini): sem troca de engine: chamadas por engine
+        lido: {'gemini': 1}
+  ✅ 89. falha de credencial (openrouter): exit 65 e parou nela
+        lido: (65, 'openrouter')
+  ✅ 90. falha de credencial (openrouter): sem troca de engine: nenhuma engine fora do roteiro foi chamada
+  ✅ 91. falha de credencial (openrouter): sem troca de engine: chamadas por engine
+        lido: {'openrouter': 1}
+  ✅ 92. 429 no codex: exit 0 na mesma engine
+        lido: (0, 'codex', 'nao')
+  ✅ 93. 429 (codex): nenhuma engine fora do roteiro foi chamada
+  ✅ 94. 429 (codex): chamadas por engine
+        lido: {'codex': 2, 'openrouter': 1}
+  ✅ 95. 429 HTTP na OpenRouter: exit 0 na mesma engine
+        lido: (0, 'openrouter')
+  ✅ 96. 429 (openrouter): nenhuma engine fora do roteiro foi chamada
+  ✅ 97. 429 (openrouter): chamadas por engine
+        lido: {'claude': 1, 'openrouter': 2}
+  ✅ 98. cota no gemini: a próxima engine da lista revisou
+        lido: (0, 'claude', 'sim')
+  ✅ 99. cota (gemini → claude): nenhuma engine fora do roteiro foi chamada
+  ✅ 100. cota (gemini → claude): chamadas por engine
+        lido: {'claude': 1, 'codex': 1, 'gemini': 1}
+▸ privacidade
+  ✅ 101. a OpenRouter recebeu Authorization: Bearer <chave gerada>
+        lido: True
+  ✅ 102. a OpenRouter recebeu provider.data_collection = deny
+        lido: True
+  ✅ 103. a chave não aparece em nenhum arquivo das revisões
+103 asserções, 0 falha(s) em 7 s
+RESULTADO: GATE VERDE
+→ os 4 adapters leem a saída das engines e a revisão segue o contrato; a revisão real continua sendo a prova contra a CLI de hoje.
+[exit=0]

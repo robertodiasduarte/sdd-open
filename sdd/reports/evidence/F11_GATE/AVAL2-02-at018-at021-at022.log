@@ -1,0 +1,39 @@
+$ W=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ; P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; R=$(mktemp -d)/r; echo '### revisão com gatilho de 2º revisor (src/auth.py) dispensado por --no-revisor2, --feature sem documentos (AT-022)'; $W/ar.sh $R src/auth.py 'claude=revisor codex=auditor' -- --base main --reviewer claude --auditor codex --no-revisor2 --feature F99_NADA; grep -h 'gatilho\|revisor2' $R/sdd/reports/reviews/*/META.txt; cd $R; echo '### AT-018 conferir sem motivo'; /bin/bash $P/sdd/bin/adversarial-review.sh --conferir; echo "[conferir_rc=$?]"; echo '### AT-018 conferir com motivo'; /bin/bash $P/sdd/bin/adversarial-review.sh --conferir --aceitar-sem-revisor2 'hotfix aprovado pelo dono'; echo "[conferir_rc=$?]"; echo '### AT-021: pasta mais nova sem META é pulada'; mkdir -p sdd/reports/reviews/EXTERNAL_REVIEW_29991231-235959 && echo parcial > sdd/reports/reviews/EXTERNAL_REVIEW_29991231-235959/reviewer.md; ls sdd/reports/reviews; /bin/bash $P/sdd/bin/adversarial-review.sh --conferir --aceitar-sem-revisor2 'hotfix aprovado pelo dono'; echo "[conferir_rc=$?]"
+### revisão com gatilho de 2º revisor (src/auth.py) dispensado por --no-revisor2, --feature sem documentos (AT-022)
+▶ revisor: claude (-) — até 15 min
+▶ auditor: codex (-) — até 15 min
+⚠️ --feature F99_NADA: nenhum documento encontrado (sdd/features/BRAINSTORM_F99_NADA.md, DEFINE_F99_NADA.md, DESIGN_F99_NADA.md, sdd/reports/BUILD_REPORT_F99_NADA.md)
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-080154
+diff_sha256: 2706745b9beb05e5bfb502d56cec3ab585e189548011598c18f69d4f39b21b68
+revisor: claude (claude-stub-5) — US$ 0,0421
+auditor: codex (-) — incluído na assinatura
+diversidade: vendor
+achados: 0 graves, 1 médio, 1 leve
+custo total: US$ 0,0421
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-080154 --ledger <ledger da revisão> --rodada <N>
+[ar_rc=0]
+chamadas claude: 1
+chamadas codex: 1
+gatilho_2o_revisor      : segurança (src/auth.py) — dispensado por --no-revisor2
+revisor2_engine         : -
+### AT-018 conferir sem motivo
+🛑 adversarial-review: o 2º revisor era exigido (segurança (src/auth.py)) e foi dispensado por --no-revisor2
+RESULTADO: NÃO CONFERE
+→ registre o motivo com --aceitar-sem-revisor2 "<motivo>" ou rode a revisão sem --no-revisor2.
+[conferir_rc=2]
+### AT-018 conferir com motivo
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-080154 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-080154 sha256=2706745b9beb05e5bfb502d56cec3ab585e189548011598c18f69d4f39b21b68 diversidade=vendor revisor2=dispensado — hotfix aprovado pelo dono
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[conferir_rc=0]
+### AT-021: pasta mais nova sem META é pulada
+EXTERNAL_REVIEW_20261101-080154
+EXTERNAL_REVIEW_29991231-235959
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-080154 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-080154 sha256=2706745b9beb05e5bfb502d56cec3ab585e189548011598c18f69d4f39b21b68 diversidade=vendor revisor2=dispensado — hotfix aprovado pelo dono
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[conferir_rc=0]
+[exit=0]

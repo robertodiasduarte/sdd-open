@@ -1,0 +1,11 @@
+$ /bin/bash sdd/bin/eval-agree.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f10-revisao/sdd/reports/reviews
+eval-agree — taxa de AGREE por auditor (4 pasta(s) lida(s) em /Users/robertoduarte/rdd-worktrees/sdd-open-f10-revisao/sdd/reports/reviews)
+
+| Auditor | Revisões | Vereditos | AGREE | DISAGREE_EVIDENCE | DISAGREE_CONCERN | NOVO | taxa_agree |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) | 4 | 34 | 26 | 5 | 1 | 2 | 81.2% |
+
+fora da conta: 0
+RESULTADO: MEDIDO
+→ uma taxa_agree alta com poucos DISAGREE pode ser auditor complacente: compare com outra engine no papel de auditor.
+[exit=0]

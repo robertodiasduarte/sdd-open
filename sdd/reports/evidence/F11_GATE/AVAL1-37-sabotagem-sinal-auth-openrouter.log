@@ -1,0 +1,6 @@
+$ /tmp/aval1-f11.wvW4zp/sabota.sh sinal-auth-openrouter-inerte sdd/review/registry.tsv '(?im)("code":\s*40[13]\b|^HTTP 40[13]\b|User not found|No auth credentials|OPENROUTER_API_KEY ausente)' '(?im)(NUNCA-CASA-XYZ)'
+### sabotagem sinal-auth-openrouter-inerte em sdd/review/registry.tsv
+90 asserções, 0 falha(s) em 6 s
+RESULTADO: GATE VERDE
+[gate_rc=0]
+[exit=0]

@@ -1,0 +1,23 @@
+$ P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; B=$(mktemp -d) && O=$(mktemp -d) && export GIT_CONFIG_GLOBAL=/dev/null && mkdir $B/repo && cd $B/repo && git init -q -b main && echo a > a && git add a && git -c user.name=u -c user.email=u@x -c commit.gpgsign=false commit -qm 'base do usuario' && git worktree add -q $B/wt -b minha-feature && cd $B/wt && echo 'trabalho em andamento' > meu.txt && git add meu.txt && echo '### worktree do usuário antes: branch, log, staged'; git branch --show-current; git log --oneline minha-feature; git diff --cached --name-status; echo '### gate rodado de um hook pre-commit nesta worktree (GIT_DIR e GIT_INDEX_FILE exportados pelo git)'; GD=$(git rev-parse --absolute-git-dir); (cd $O && GIT_DIR=$GD GIT_INDEX_FILE=$GD/index /bin/bash $P/sdd/bin/adversarial-review-gate.sh > $O/gate.out 2>&1; echo "[gate_rc=$?]"); cat $O/gate.out; echo '### worktree do usuário depois'; git branch --show-current; git log --format='%h %an: %s' minha-feature; git show --stat --format='%h %an %s' minha-feature; git diff --cached --name-status; git branch
+### worktree do usuário antes: branch, log, staged
+minha-feature
+54d372e base do usuario
+A	meu.txt
+### gate rodado de um hook pre-commit nesta worktree (GIT_DIR e GIT_INDEX_FILE exportados pelo git)
+[gate_rc=1]
+Traceback (most recent call last):
+  File "<stdin>", line 155, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-review-gate-7idi8tji/repo/.git/info/exclude'
+### worktree do usuário depois
+feat
+87775af gate: base
+54d372e u: base do usuario
+87775af gate base
+
+ meu.txt        | 1 +
+ src/calculo.py | 2 ++
+ 2 files changed, 3 insertions(+)
+* feat
++ main
+  minha-feature
+[exit=0]

@@ -1,0 +1,12 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at004.sh
+=== config auditor == revisor1
+🛑 adversarial-review: o auditor (stub-a) é a mesma engine do revisor: ninguém audita a própria revisão
+RESULTADO: PAROU
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+[rc=67] chamadas=0 pasta=nao
+=== flags iguais (listas com o mesmo 1º id)
+🛑 adversarial-review: o auditor (stub-b) é a mesma engine do revisor: ninguém audita a própria revisão
+RESULTADO: PAROU
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+[rc=67] chamadas=0 pasta=nao
+[exit=0]

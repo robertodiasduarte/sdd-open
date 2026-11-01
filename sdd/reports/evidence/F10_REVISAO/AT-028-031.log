@@ -1,0 +1,30 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_fluxo.LoopF10 test_fluxo.Loop
+test_decisao_do_desempate_e_igualdade_exata (test_fluxo.LoopF10) ... ok
+test_desempate_refutado_fecha_e_procede_mantem_aberto (test_fluxo.LoopF10) ... ok
+test_dispensa_de_outra_rodada_nao_vale (test_fluxo.LoopF10) ... ok
+test_dispensa_sem_motivo_nao_vale (test_fluxo.LoopF10) ... ok
+test_dois_revisores_le_os_dois_jsonl (test_fluxo.LoopF10) ... ok
+test_fixtures_da_f9_nao_tem_as_chaves_novas (test_fluxo.LoopF10) ... ok
+test_mesmo_id_nos_dois_revisores_e_64 (test_fluxo.LoopF10) ... ok
+test_meta_com_revisor2_e_sem_exit_e_64 (test_fluxo.LoopF10) ... ok
+test_rasa_nunca_e_pronto (test_fluxo.LoopF10) ... ok
+test_segundo_revisor_dispensado_no_ledger_segue_para_o_resto (test_fluxo.LoopF10) ... ok
+test_segundo_revisor_indisponivel_sem_dispensa_e_bloqueado_d3 (test_fluxo.LoopF10) ... ok
+test_segundo_revisor_que_falhou_e_refazer (test_fluxo.LoopF10) ... ok
+test_aguardando_recibo_e_recibo_com_data (test_fluxo.Loop) ... ok
+test_bloqueado_d4_teto_d4_ciclos_e_d5 (test_fluxo.Loop) ... ok
+test_bordas_da_fonte_needs_work_no_teto_e_high_com_recibo_pendente_saem_10 (test_fluxo.Loop) ... ok
+test_continuar_por_cada_causa (test_fluxo.Loop) ... ok
+test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) ... ok
+test_erro_interno_e_log_que_nao_grava_saem_64 (test_fluxo.Loop) ... ok
+test_log_e_regravado_mesmo_quando_sai_64_e_cria_a_pasta (test_fluxo.Loop) ... ok
+test_log_grava_o_exit_real_e_tee_e_acusado (test_fluxo.Loop) ... ok
+test_pronto_com_rebatida_e_justificativa_que_cita_outro_veredito (test_fluxo.Loop) ... ok
+test_recibo_exige_nome_e_data_que_existe (test_fluxo.Loop) ... ok
+test_review_invalida_nao_le_os_jsonl_e_sai_10 (test_fluxo.Loop) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 1.801s
+
+OK
+[exit=0]

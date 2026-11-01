@@ -1,0 +1,42 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a9.sh
++ sdd-open.sh init --vendors claude
+[init rc=0]
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+--- copiados:
+sdd/bin/adapters:
+claude.sh
+codex.sh
+gemini.sh
+openrouter.sh
+
+sdd/review:
+precos.tsv
+prompts
+registry.tsv
+
+sdd/review/prompts:
+auditor.md
+desempate.md
+reviewer.md
+review/registry.tsv            igual-ao-pacote
+review/precos.tsv              igual-ao-pacote
+review/prompts/reviewer.md     igual-ao-pacote
+review/prompts/auditor.md      igual-ao-pacote
+review/prompts/desempate.md    igual-ao-pacote
+bin/adapters/claude.sh         igual-ao-pacote
+bin/adapters/codex.sh          igual-ao-pacote
+bin/adapters/gemini.sh         igual-ao-pacote
+bin/adapters/openrouter.sh     igual-ao-pacote
+bin/adversarial-review.sh      igual-ao-pacote
+--- edito registry e adapter, apago precos e um prompt, rodo init de novo
+[init rc=0]
+registry preservado: # minha edição
+codex.sh preservado: # minha edição
+precos.tsv recriado: sim
+desempate.md recriado: sim
++ sdd-open.sh doctor
+[doctor rc=0]
+⚠️  sdd/bin/adapters/codex.sh difere do pacote — se você não editou, apague e rode init
+[exit=0]

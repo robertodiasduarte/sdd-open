@@ -1,0 +1,23 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_contrato_build_release.RevisaoAdversarial test_decisoes_lint
+test_build_passo_0_e_5c (test_contrato_build_release.RevisaoAdversarial) ... ok
+test_design_revisor_depois_auditor (test_contrato_build_release.RevisaoAdversarial) ... ok
+test_release_exige_review_externo_e_confere_o_ledger_antes_do_passo_5 (test_contrato_build_release.RevisaoAdversarial) ... ok
+test_secoes_novas_sem_nome_de_engine (test_contrato_build_release.RevisaoAdversarial) ... ok
+test_templates_citam_o_script (test_contrato_build_release.RevisaoAdversarial) ... ok
+test_fragmentos_2_perguntas (test_decisoes_lint.AlvosReais) ... ok
+test_o_ok_da_release_nao_conta_e_a_heuristica_da_kb_tambem_nao (test_decisoes_lint.AlvosReais) ... ok
+test_skills_do_pacote_16_perguntas (test_decisoes_lint.AlvosReais) ... ok
+test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) ... ok
+test_citacao_e_pasta_com_varios_arquivos (test_decisoes_lint.Regras) ... ok
+test_controle_passa_com_ref_no_fim (test_decisoes_lint.Regras) ... ok
+test_pergunta_em_bloco_markdown_conta_em_outro_bloco_nao (test_decisoes_lint.Regras) ... ok
+test_as_4_fixtures_reprovam_e_o_controle_passa (test_decisoes_lint.SelfTest) ... ok
+test_fixture_que_passa_deixa_o_self_test_vermelho (test_decisoes_lint.SelfTest) ... ok
+test_64_caminho_inexistente_zero_perguntas_e_tabela_ausente (test_decisoes_lint.Uso) ... ok
+test_sem_python3_sai_64 (test_decisoes_lint.Uso) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 1.446s
+
+OK
+[exit=0]

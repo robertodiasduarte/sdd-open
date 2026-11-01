@@ -1,0 +1,10 @@
+$ cat /tmp/aval1-f11.wvW4zp/gem2.json; echo '### HEAD'; /bin/bash -c 'source "$1"; adapter_extrair "$2"' _ /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin/adapters/gemini.sh /tmp/aval1-f11.wvW4zp/gem2.json; echo '### v2.3.0'; /bin/bash -c 'source "$1"; adapter_extrair "$2"' _ /tmp/aval1-f11.wvW4zp/v230/sdd/bin/adapters/gemini.sh /tmp/aval1-f11.wvW4zp/gem2.json; echo '### HEAD, um modelo sem prompt'; cat /tmp/aval1-f11.wvW4zp/gem3.json; /bin/bash -c 'source "$1"; adapter_extrair "$2"' _ /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin/adapters/gemini.sh /tmp/aval1-f11.wvW4zp/gem3.json
+{"response":"ok","stats":{"models":{"gemini-2.5-flash-lite":{"tokens":{"prompt":100,"candidates":7,"total":107}},"gemini-2.5-pro":{"tokens":{"prompt":5000,"candidates":700,"total":5700}}}}}
+### HEAD
+{"texto": "ok", "tokens_entrada": 5100, "tokens_saida": 707, "modelo": "gemini-2.5-pro+gemini-2.5-flash-lite", "custo_usd": null}
+### v2.3.0
+{"texto": "ok", "tokens_entrada": 100, "tokens_saida": 7, "modelo": "gemini-2.5-flash-lite", "custo_usd": null}
+### HEAD, um modelo sem prompt
+{"response":"ok","stats":{"models":{"m1":{"tokens":{"prompt":10,"candidates":1,"total":11}},"m2":{"tokens":{"candidates":3,"total":3}}}}}
+{"texto": "ok", "tokens_entrada": null, "tokens_saida": 4, "modelo": "m1+m2", "custo_usd": null}
+[exit=0]

@@ -1,0 +1,10 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/sab.sh classe
+sabotado sdd/bin/adversarial-review.sh: '    if rc == 65 or re.search(d["sinal_auth"], bruto):\n        return "' -> '    if rc == 65:\n        return "persistente"'
+FAIL: test_auth_para_sem_chamar_a_proxima (test_revisao.Falhas)
+FAIL: test_segundo_revisor_que_falha_nao_derruba_a_cadeia (test_revisao.SegundoRevisor)
+FAIL: test_openrouter_401_e_auth (test_revisao_adapters.Invocacao)
+FAIL: test_openrouter_sem_chave_e_65_com_onde_ela_mora (test_revisao_adapters.Invocacao)
+Ran 122 tests in 64.281s
+FAILED (failures=4)
+[unittest rc=1]
+[exit=0]

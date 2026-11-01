@@ -1,0 +1,29 @@
+$ P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; R=$(mktemp -d) && mkdir -p $R/sdd/reports/reviews && cp -R $P/sdd/fixtures/revisao/eval/ $R/sdd/reports/reviews/ && ls $R/sdd/reports/reviews && echo '### sem argumento, sem git no PATH, cwd = raiz com a pasta padrão'; cd $R && env -i HOME=$HOME PATH=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/pybin:/bin /bin/bash $P/sdd/bin/eval-agree.sh; echo "[rc=$?]"; echo '### sem git, cwd = subpasta (sem raiz git, usa a pasta atual)'; mkdir -p $R/sub && cd $R/sub && env -i HOME=$HOME PATH=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/pybin:/bin /bin/bash $P/sdd/bin/eval-agree.sh; echo "[rc=$?]"; echo '### sem git e sem a pasta padrão'; cd $(mktemp -d) && env -i HOME=$HOME PATH=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/pybin:/bin /bin/bash $P/sdd/bin/eval-agree.sh; echo "[rc=$?]"
+EXTERNAL_REVIEW_20260101-000001
+EXTERNAL_REVIEW_20260101-000002
+EXTERNAL_REVIEW_20260101-000003
+EXTERNAL_REVIEW_20260101-000004
+EXTERNAL_REVIEW_20260101-000005
+### sem argumento, sem git no PATH, cwd = raiz com a pasta padrão
+eval-agree — taxa de AGREE por auditor (5 pasta(s) lida(s) em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0AkYj8nPjb/sdd/reports/reviews)
+
+| Auditor | Revisões | Vereditos | AGREE | DISAGREE_EVIDENCE | DISAGREE_CONCERN | NOVO | taxa_agree |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| codex (-) | 1 | 4 | 2 | 1 | 0 | 1 | 66.7% |
+| openrouter (qwen/qwen3.7-plus) | 2 | 4 | 3 | 0 | 1 | 0 | 75.0% |
+
+fora da conta: 2 (EXTERNAL_REVIEW_20260101-000003: auditor_exit 68; EXTERNAL_REVIEW_20260101-000004: sem auditor.verdicts.jsonl)
+RESULTADO: MEDIDO
+→ uma taxa_agree alta com poucos DISAGREE pode ser auditor complacente: compare com outra engine no papel de auditor.
+[rc=0]
+### sem git, cwd = subpasta (sem raiz git, usa a pasta atual)
+eval-agree — taxa de AGREE por auditor (0 pasta(s) lida(s) em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0AkYj8nPjb/sub/sdd/reports/reviews)
+RESULTADO: SEM DADOS
+→ nenhuma revisão com auditoria completa nesta pasta: rode adversarial-review.sh e meça de novo.
+[rc=2]
+### sem git e sem a pasta padrão
+eval-agree — taxa de AGREE por auditor (0 pasta(s) lida(s) em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.WYjJ2wIKG7/sdd/reports/reviews)
+RESULTADO: SEM DADOS
+→ nenhuma revisão com auditoria completa nesta pasta: rode adversarial-review.sh e meça de novo.
+[rc=2]
+[exit=0]

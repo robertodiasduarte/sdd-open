@@ -1,0 +1,122 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/t3c.sh
+--- paralelo 1
+
+rc=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 1 arquivo(s), 0 KB, base HEAD, merge-base 0995f800cb22
+  diff_sha256: 1a63db5239b709cbe66a7c6b61b0d6d6a4eabee2ce18b5082be96d0c6c23f8b4
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+
+SEGUNDA rc=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+--- paralelo 2
+
+rc=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 1 arquivo(s), 0 KB, base HEAD, merge-base 0995f800cb22
+  diff_sha256: 1a63db5239b709cbe66a7c6b61b0d6d6a4eabee2ce18b5082be96d0c6c23f8b4
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+
+SEGUNDA rc=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+--- paralelo 3
+
+rc=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 1 arquivo(s), 0 KB, base HEAD, merge-base 0995f800cb22
+  diff_sha256: 1a63db5239b709cbe66a7c6b61b0d6d6a4eabee2ce18b5082be96d0c6c23f8b4
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+
+SEGUNDA rc=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+--- paralelo 4
+
+rc=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 1 arquivo(s), 0 KB, base HEAD, merge-base 0995f800cb22
+  diff_sha256: 1a63db5239b709cbe66a7c6b61b0d6d6a4eabee2ce18b5082be96d0c6c23f8b4
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+
+SEGUNDA rc=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+--- paralelo 5
+
+rc=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 1 arquivo(s), 0 KB, base HEAD, merge-base 0995f800cb22
+  diff_sha256: 1a63db5239b709cbe66a7c6b61b0d6d6a4eabee2ce18b5082be96d0c6c23f8b4
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+
+SEGUNDA rc=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+=== isolado
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.418s
+
+OK
+rc=64
+🛑 adversarial-review: o diff contra HEAD está vazio: a revisão não teria o que revisar
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+
+SEGUNDA rc=64
+🛑 adversarial-review: o diff contra HEAD está vazio: a revisão não teria o que revisar
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[exit=0]

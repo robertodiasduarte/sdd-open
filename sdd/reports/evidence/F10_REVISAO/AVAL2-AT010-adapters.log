@@ -1,0 +1,81 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at010.sh
+=== 4 funções em cada adapter
+claude: adapter_disponivel adapter_invocar adapter_extrair adapter_credencial 
+   credencial: login da CLI claude (rode claude e entre na conta) ou a chave que a própria CLI usa
+codex: adapter_disponivel adapter_invocar adapter_extrair adapter_credencial 
+   credencial: login da CLI codex (rode codex login)
+gemini: adapter_disponivel adapter_invocar adapter_extrair adapter_credencial 
+   credencial: login da CLI gemini e a variável GOOGLE_CLOUD_PROJECT, ou GEMINI_API_KEY no ambiente
+openrouter: adapter_disponivel adapter_invocar adapter_extrair adapter_credencial 
+   credencial: OPENROUTER_API_KEY no ambiente (export OPENROUTER_API_KEY=… antes de rodar; nunca num arquivo do repositório)
+=== revisão com claude (revisor), codex (2º revisor), gemini (auditor) — CLIs falsas
+## ar --reviewer claude --auditor gemini --revisor2 codex --feature NADA
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: codex (-) — até 15 min
+▶ auditor: gemini (-) — até 15 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002159
+diff_sha256: 81ed4f53956999f2a5ed9b13bb854f4a8257087066036c42909e282361e524e6
+revisor: claude (claude-opus-5-5) — US$ 0,0239
+2º revisor: codex (-) — incluído na assinatura
+auditor: gemini (gemini-3.8-flash) — custo desconhecido
+diversidade: vendor
+achados: 0 graves, 1 médio, 0 leves
+custo total: US$ 0,0239 (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002159 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+--- claude argv:
+-p --output-format json --tools  --safe-mode --no-session-persistence 
+    cwd: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-review-psdqxw_9/cwd · conteúdo do cwd: [] · stdin começa com: <goal> Você é um revisor de código sênior fazendo uma re · stdin tem '## DIFF'? 1
+--- codex argv:
+exec -s read-only --skip-git-repo-check --ephemeral --json - 
+    cwd: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-review-psdqxw_9/cwd · conteúdo do cwd: [] · stdin começa com: <goal> Você é um revisor de código sênior fazendo uma re · stdin tem '## DIFF'? 1
+--- gemini argv:
+-o json --approval-mode default 
+    cwd: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-review-psdqxw_9/cwd · conteúdo do cwd: [] · stdin começa com: <goal> Você é o auditor de uma revisão de código. Uma ou · stdin tem '## DIFF'? 1
+stderr nos .md? 0
+reviewer_exit           : 0
+reviewer_tokens_entrada : 3591
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 0.0239
+revisor2_exit           : 0
+revisor2_tokens_entrada : 24673
+revisor2_modelo         : -
+revisor2_custo          : assinatura
+auditor_exit            : 0
+auditor_tokens_entrada  : 1830
+auditor_modelo          : gemini-3.8-flash
+auditor_custo           : $?
+=== openrouter: servidor local grava o corpo e os cabeçalhos
+## ar --reviewer claude --auditor openrouter:vendor/modelo-x --no-revisor2
+▶ revisor: claude (-) — até 15 min
+▶ auditor: openrouter:vendor/modelo-x (vendor/modelo-x) — até 15 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002202
+diff_sha256: 9da8267cde78a564a7eb872688663fa6884423c9aa0dfc9554fbcb33c2f468e2
+revisor: claude (claude-opus-5-5) — US$ 0,0239
+auditor: openrouter:vendor/modelo-x (qwen/qwen3.7-plus via Alibaba) — US$ 0,0002
+diversidade: vendor
+achados: 0 graves, 1 médio, 0 leves
+custo total: US$ 0,0241
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002202 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+model= vendor/modelo-x  provider= {'data_collection': 'deny', 'require_parameters': True}  usage= {'include': True}  msgs= 1
+Authorization chegou: Bearer <chave falsa>
+chave em algum arquivo da pasta? 0
+diversidade             : vendor
+auditor_exit            : 0
+auditor_tokens_entrada  : 16
+auditor_tokens_saida    : 136
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0002
+=== openrouter sem chave → 65
+diversidade: -
+custo total: US$ 0,0239 (+ 1 papel(is) com custo desconhecido)
+→ confira a credencial de openrouter:vendor/modelo-x (OPENROUTER_API_KEY no ambiente (export OPENROUTER_API_KEY=… antes de rodar; nunca num arquivo do repositório)); a revisão não troca de engine por falha de credencial
+[rc=65]
+=== URL só por SDD_REVIEW_OPENROUTER_URL
+9:# SDD_REVIEW_OPENROUTER_URL troca a URL só nos testes (servidor local).
+29:url = os.environ.get("SDD_REVIEW_OPENROUTER_URL") or "https://openrouter.ai/api/v1/chat/completions"
+[exit=0]

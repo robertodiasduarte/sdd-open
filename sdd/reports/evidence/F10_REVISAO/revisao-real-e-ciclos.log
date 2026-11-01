@@ -1,0 +1,51 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_revisao.RevisaoReal test_revisao.AvaliadorCiclo1 test_revisao.AvaliadorCiclo2 test_revisao.RevisaoFinal test_revisao.RevisaoRodada2 test_fluxo.LoopF10
+test_r1_conferir_recusa_revisao_so_de_paths_e_o_padrao_a_pula (test_revisao.RevisaoReal) ... ok
+test_r2_conferir_recusa_revisao_rasa (test_revisao.RevisaoReal) ... ok
+test_r3_caminho_com_acento_conta_e_aciona_seguranca (test_revisao.RevisaoReal) ... ok
+test_r4_segundos_sao_da_chamada_que_respondeu (test_revisao.RevisaoReal) ... ok
+test_r5_revisao_invalida_nao_grava_jsonl (test_revisao.RevisaoReal) ... ok
+test_r6_achado_numerico_nao_derruba_o_script (test_revisao.RevisaoReal) ... ok
+test_r7_custo_pequeno_nunca_aparece_como_zero (test_revisao.RevisaoReal) ... ok
+test_1_desempate_que_falhou_registra_a_engine (test_revisao.AvaliadorCiclo1) ... ok
+test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3 (test_revisao.AvaliadorCiclo1) ... ok
+test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem (test_revisao.AvaliadorCiclo1) ... ok
+test_2_custo_todo_desconhecido_nunca_e_zero (test_revisao.AvaliadorCiclo1) ... ok
+test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1) ... ok
+test_4_docs_sdd_sem_o_brainstorm_descartado (test_revisao.AvaliadorCiclo1) ... ok
+test_5_auditor_excluido_nao_e_diversidade_nenhuma (test_revisao.AvaliadorCiclo1) ... ok
+test_1_edicao_do_mesmo_tamanho_no_mesmo_instante_do_indice_entra_no_diff (test_revisao.AvaliadorCiclo2) ... ok
+test_2_order_file_e_textconv_do_usuario_nao_mudam_o_sha (test_revisao.AvaliadorCiclo2) ... ok
+test_3_lista_esgotada_registra_a_troca_e_nao_diz_quem_revisou (test_revisao.AvaliadorCiclo2) ... ok
+test_5_comentario_de_security_globs_cita_o_segundo_revisor (test_revisao.AvaliadorCiclo2) ... ok
+test_n1_novo_sem_arquivo_e_68 (test_revisao.RevisaoFinal) ... ok
+test_r1_claude_mesmo_adapter_e_modelo_e_a_mesma_engine (test_revisao.RevisaoFinal) ... ok
+test_r1_codex_auditoria_parcial_e_68 (test_revisao.RevisaoFinal) ... ok
+test_r2_claude_candidato_com_adapter_ausente_e_pulado (test_revisao.RevisaoFinal) ... ok
+test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal) ... ok
+test_r3_supress_blank_empty_e_atributos_do_usuario_nao_mudam_o_sha (test_revisao.RevisaoFinal) ... ok
+test_r4_codex_preco_pelo_modelo_reportado (test_revisao.RevisaoFinal) ... ok
+test_r5_claude_aviso_de_uma_engine_antes_mesmo_com_auditor_falho (test_revisao.RevisaoFinal) ... ok
+test_r5_codex_papel_chamado_que_falhou_tem_custo_desconhecido (test_revisao.RevisaoFinal) ... ok
+test_r1_claude_e_r3_codex_sinais_de_fabrica (test_revisao.RevisaoRodada2) ... ok
+test_r1_codex_linha_com_crases_e_conteudo_e_68_e_cerca_sozinha_passa (test_revisao.RevisaoRodada2) ... ok
+test_r2_claude_falha_do_git_add_n_e_64_e_nome_com_dois_pontos_entra (test_revisao.RevisaoRodada2) ... ok
+test_r2_codex_segundo_revisor_automatico_pula_a_mesma_engine (test_revisao.RevisaoRodada2) ... ok
+test_r4_codex_custo_de_tentativa_anterior_entra_no_papel (test_revisao.RevisaoRodada2) ... ok
+test_decisao_do_desempate_e_igualdade_exata (test_fluxo.LoopF10) ... ok
+test_desempate_refutado_fecha_e_procede_mantem_aberto (test_fluxo.LoopF10) ... ok
+test_dispensa_de_outra_rodada_nao_vale (test_fluxo.LoopF10) ... ok
+test_dispensa_sem_motivo_nao_vale (test_fluxo.LoopF10) ... ok
+test_dois_revisores_le_os_dois_jsonl (test_fluxo.LoopF10) ... ok
+test_fixtures_da_f9_nao_tem_as_chaves_novas (test_fluxo.LoopF10) ... ok
+test_mesmo_id_nos_dois_revisores_e_64 (test_fluxo.LoopF10) ... ok
+test_meta_com_revisor2_e_sem_exit_e_64 (test_fluxo.LoopF10) ... ok
+test_rasa_nunca_e_pronto (test_fluxo.LoopF10) ... ok
+test_segundo_revisor_dispensado_no_ledger_segue_para_o_resto (test_fluxo.LoopF10) ... ok
+test_segundo_revisor_indisponivel_sem_dispensa_e_bloqueado_d3 (test_fluxo.LoopF10) ... ok
+test_segundo_revisor_que_falhou_e_refazer (test_fluxo.LoopF10) ... ok
+
+----------------------------------------------------------------------
+Ran 44 tests in 20.060s
+
+OK
+[exit=0]

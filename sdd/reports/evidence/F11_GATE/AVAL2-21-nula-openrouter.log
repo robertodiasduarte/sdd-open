@@ -1,0 +1,25 @@
+$ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/nula.sh openrouter
+### extração nula em openrouter
+  ❌ 35. openrouter (auditor): modelo e provedor
+        → lido 'qwen/qwen3.7-plus', esperado 'qwen/qwen3.7-plus via StubProvider'
+  ❌ 36. openrouter (auditor): custo de usage.cost
+        → lido '$?', esperado 'US$ 0.0012'
+--
+  ❌ 44. openrouter (revisor): modelo e provedor
+        → lido 'qwen/qwen3.7-plus', esperado 'qwen/qwen3.7-plus via StubProvider'
+  ❌ 45. openrouter (revisor): custo de usage.cost
+        → lido '$?', esperado 'US$ 0.0031'
+--
+  ❌ 53. openrouter (revisor, sem-custo): modelo e provedor
+        → lido 'qwen/qwen3.7-plus', esperado 'qwen/qwen3.7-plus via StubProvider'
+  ❌ 54. openrouter (revisor, sem-custo): custo estimado pelo precos.tsv
+        → lido '$?', esperado '≈US$ 0.6953'
+--
+  ❌ 59. openrouter (revisor, modelo-sem-preco): modelo e provedor
+        → lido 'qwen/qwen3.7-plus', esperado 'qwen/qwen3.7-plus-preview via StubProvider'
+--
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+103 asserções, 7 falha(s) em 7 s
+RESULTADO: GATE VERMELHO
+[gate_rc=2]
+[exit=2]

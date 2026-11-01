@@ -1,0 +1,60 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a5.sh AT016
+--- HIGH com DISAGREE_EVIDENCE → desempate fora de {origem, auditor}
+▶ revisor: a (revisor-ok) — até 1 min
+▶ auditor: b (auditor-refuta-high) — até 1 min
+▶ desempate: c (desempate-refutado) — até 1 min
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+desempate_alvo           : R1
+desempate_engine         : c
+desempate_decisao        : DECISAO:REFUTADO
+desempate_fallback_usado : nao
+desempate_motivo         : -
+desempate_exit           : 0
+desempate_segundos       : 0
+desempate_tokens_entrada : 1000
+desempate_tokens_saida   : 200
+desempate_tokens_total   : 1200
+desempate_modelo         : stub-modelo
+desempate_custo          : assinatura
+prompt do desempate:
+58:## ACHADO
+62:## AUDITORIA DO ACHADO
+META.txt
+auditor.md
+auditor.verdicts.jsonl
+context-sdd.md
+desempate.md
+diff.patch
+reviewer.md
+reviewer.verdicts.jsonl
+--- PROCEDE (c sem papel desempate)
+desempate_alvo           : R1
+desempate_engine         : d
+desempate_decisao        : DECISAO:PROCEDE
+--- com 2 revisores: alvo com @engine mesmo se o auditor usou o id base
+▶ revisor: a (revisor-ok) — até 1 min
+▶ 2º revisor: c (revisor-vazio) — até 1 min
+▶ auditor: b (auditor-refuta-high) — até 1 min
+▶ desempate: c (revisor-vazio) — até 1 min
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+revisor2_engine          : c
+desempate_alvo           : R1@a
+desempate_engine         : c
+desempate_decisao        : -
+--- --no-desempate
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+--- sem engine elegível
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+desempate_alvo          : R1
+desempate_engine        : indisponível
+desempate_decisao       : -
+--- HIGH com AGREE não desempata
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+[exit=0]

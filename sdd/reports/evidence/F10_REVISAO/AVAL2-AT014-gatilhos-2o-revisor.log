@@ -1,0 +1,44 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at014.sh
+base (3 arquivos, sem gatilho): sem gatilho no diff (o revisor raso ainda pode acionar)
+src/auth/x.sh → segurança (src/auth/x.sh)
+src/login.py → segurança (src/login.py)
+lib/token.ts → segurança (lib/token.ts)
+lib/tokens.go → segurança (lib/tokens.go)
+docs/senha.md → segurança (docs/senha.md)
+docs/senhas-x.md → segurança (docs/senhas-x.md)
+app/password_reset.rb → segurança (app/password_reset.rb)
+api/jwt-util.js → segurança (api/jwt-util.js)
+author.md → sem gatilho no diff (o revisor raso ainda pode acionar)
+src/authority.sh → sem gatilho no diff (o revisor raso ainda pode acionar)
+lib/tokenizer.py → sem gatilho no diff (o revisor raso ainda pode acionar)
+src/Auth.sh → segurança (src/Auth.sh)
+7 arquivos → sem gatilho no diff (o revisor raso ainda pode acionar)
+8 arquivos → 8 arquivos (limiar 8)
+patch 4 arquivo(s), 121 KB, base main, merge-base df38fdf09917 → 121 KB (limiar 120)
+patch 4 arquivo(s), 118 KB, base main, merge-base 43a5aa474279 → sem gatilho no diff (o revisor raso ainda pode acionar)
+security_globs src/cofre/* → segurança (src/cofre/a.sh)
+layers.sql db/*.sql → segurança (db/m.sql)
+2 camadas (ui+api) → 2 camadas (limiar 2)
+1 camada (api) → sem gatilho no diff (o revisor raso ainda pode acionar)
+=== META gatilho_2o_revisor
+gatilho_2o_revisor      : 9 arquivos (limiar 8)
+revisor2_engine         : stub-c
+gatilho_2o_revisor      : 9 arquivos (limiar 8) — dispensado por --no-revisor2
+revisor2_engine         : -
+gatilho_2o_revisor      : diff sem gatilho de risco — 1 revisor
+revisor2_engine         : -
+=== revisor raso (0 achados, < 30 s) aciona
+▶ revisor: stub-a:revisor-vazio (revisor-vazio) — até 1 min
+▶ 2º revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+RESULTADO: REVIEW COMPLETA
+revisor1_raso           : sim
+gatilho_2o_revisor      : revisor1 raso (0s, 0 achados)
+revisor2_engine         : stub-c
+revisor2_exit           : 0
+=== constantes nomeadas
+57:SEGUNDO_REVISOR_MIN_ARQUIVOS = 8      # arquivos no diff congelado
+58:SEGUNDO_REVISOR_MIN_KB = 120          # wc -c do patch / 1024
+59:SEGUNDO_REVISOR_MIN_CAMADAS = 2       # camadas de layers: tocadas
+60:RASO_SEGUNDOS = 30                    # revisor abaixo disso, com 0 achados, conta como raso
+[exit=0]

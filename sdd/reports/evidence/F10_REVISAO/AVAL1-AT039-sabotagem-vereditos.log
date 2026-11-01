@@ -1,0 +1,8 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/sab.sh vereditos
+sabotado sdd/bin/adversarial-review.sh: '        return None, "bloco <<<VERDICTS ausente ou malformado"\n    out' -> '        return [], None\n    out = []\n    for l in ls:\n        try:\n   '
+FAIL: test_r5_revisao_invalida_nao_grava_jsonl (test_revisao.RevisaoReal)
+FAIL: test_revisor_sem_bloco_e_68_e_nunca_zero_achados (test_revisao.Vereditos)
+Ran 122 tests in 64.657s
+FAILED (failures=2)
+[unittest rc=1]
+[exit=0]

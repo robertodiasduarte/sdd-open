@@ -1,0 +1,23 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at008.sh
+=== --feature FX: ordem no context-sdd.md
+RESULTADO: REVIEW COMPLETA
+### BRAINSTORM_FX.md
+### DEFINE_FX.md
+### DESIGN_FX.md
+### BUILD_REPORT_FX.md
+contexto                : 0KB (4 doc SDD)
+docs_sdd                : BRAINSTORM_FX.md, DEFINE_FX.md, DESIGN_FX.md, BUILD_REPORT_FX.md
+contexto_cortado        : -
+prompt do revisor contém o contexto? 1
+=== só DEFINE existe (os que existem)
+contexto                : 0KB (1 doc SDD)
+docs_sdd                : DEFINE_FX.md
+=== padrão 180 KB: BRAINSTORM de 200 KB sai primeiro
+contexto                : 0KB (1 doc SDD)
+docs_sdd                : DEFINE_FX.md
+contexto_cortado        : BRAINSTORM
+=== sem --feature
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+contexto                : 0KB (0 doc SDD)
+docs_sdd                : -
+[exit=0]

@@ -1,0 +1,35 @@
+$ W=/tmp/aval1-f11.wvW4zp; P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; cat $W/h.py $W/mkrepo.sh >/dev/null; $W/mkrepo.sh $W/r18 src/auth.py && /usr/bin/python3 -B $W/h.py $W/r18 $W/e18 'claude=revisor;codex=auditor' -- --base main --reviewer claude --auditor codex --no-revisor2 && grep -h gatilho_2o_revisor $W/r18/sdd/reports/reviews/*/META.txt && echo '--- conferir sem motivo' && (cd $W/r18 && /bin/bash $P/sdd/bin/adversarial-review.sh --conferir; echo "[conferir_rc=$?]") && echo '--- conferir motivo curto' && (cd $W/r18 && /bin/bash $P/sdd/bin/adversarial-review.sh --conferir --aceitar-sem-revisor2 'ab'; echo "[conferir_rc=$?]") && echo '--- conferir com motivo' && (cd $W/r18 && /bin/bash $P/sdd/bin/adversarial-review.sh --conferir --aceitar-sem-revisor2 'hotfix urgente aprovado'; echo "[conferir_rc=$?]")
+▶ revisor: claude (-) — até 15 min
+▶ auditor: codex (-) — até 15 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073755
+diff_sha256: 2706745b9beb05e5bfb502d56cec3ab585e189548011598c18f69d4f39b21b68
+revisor: claude (claude-stub-5) — US$ 0,0421
+auditor: codex (-) — incluído na assinatura
+diversidade: vendor
+achados: 0 graves, 1 médio, 1 leve
+custo total: US$ 0,0421
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073755 --ledger <ledger da revisão> --rodada <N>
+
+[ar_rc=0]
+chamadas claude=1
+chamadas codex=1
+gatilho_2o_revisor      : segurança (src/auth.py) — dispensado por --no-revisor2
+--- conferir sem motivo
+🛑 adversarial-review: o 2º revisor era exigido (segurança (src/auth.py)) e foi dispensado por --no-revisor2
+RESULTADO: NÃO CONFERE
+→ registre o motivo com --aceitar-sem-revisor2 "<motivo>" ou rode a revisão sem --no-revisor2.
+[conferir_rc=2]
+--- conferir motivo curto
+🛑 adversarial-review: o 2º revisor era exigido (segurança (src/auth.py)) e foi dispensado por --no-revisor2
+RESULTADO: NÃO CONFERE
+→ registre o motivo com --aceitar-sem-revisor2 "<motivo>" ou rode a revisão sem --no-revisor2.
+[conferir_rc=2]
+--- conferir com motivo
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073755 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073755 sha256=2706745b9beb05e5bfb502d56cec3ab585e189548011598c18f69d4f39b21b68 diversidade=vendor revisor2=dispensado — hotfix urgente aprovado
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[conferir_rc=0]
+[exit=0]

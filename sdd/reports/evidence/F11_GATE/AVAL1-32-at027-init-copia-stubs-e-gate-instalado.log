@@ -1,0 +1,29 @@
+$ T=$(mktemp -d) && cd $T && GIT_CONFIG_GLOBAL=/dev/null git init -q && /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/bin/sdd-open.sh init --vendors codex --yes > $T/../init-$$.out 2>&1; echo "[init_rc=$?]"; tail -3 $T/../init-$$.out; find sdd/review/stubs -type f | sort; ls sdd/bin/adversarial-review-gate.sh sdd/bin/eval-agree.sh; echo '### gate no projeto instalado'; /bin/bash sdd/bin/adversarial-review-gate.sh | tail -3; echo "[gate_rc=${PIPESTATUS[0]}]"; echo '### eval-agree no projeto instalado (sem revisões)'; /bin/bash sdd/bin/eval-agree.sh; echo "[eval_rc=$?]"; echo '### git status do projeto depois do gate (o gate não deixa rastro)'; git status --short | grep -v '^??' ; git status --short --untracked-files=all | grep -c reviews
+[init_rc=0]
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+sdd/review/stubs/cenarios.tsv
+sdd/review/stubs/claude.py
+sdd/review/stubs/codex.py
+sdd/review/stubs/comum.py
+sdd/review/stubs/gemini.py
+sdd/review/stubs/openrouter.py
+sdd/review/stubs/respostas/auditor-agree.md
+sdd/review/stubs/respostas/auditor-sem-bloco.md
+sdd/review/stubs/respostas/revisor.md
+sdd/bin/adversarial-review-gate.sh
+sdd/bin/eval-agree.sh
+### gate no projeto instalado
+90 asserções, 0 falha(s) em 6 s
+RESULTADO: GATE VERDE
+→ os 4 adapters leem a saída das engines e a revisão segue o contrato; a revisão real continua sendo a prova contra a CLI de hoje.
+[gate_rc=0]
+### eval-agree no projeto instalado (sem revisões)
+🛑 eval-agree: a pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Rxx7jPZDb7/sdd/reports/reviews não existe
+RESULTADO: PAROU
+→ rode `eval-agree.sh --help` para ver o uso.
+[eval_rc=64]
+### git status do projeto depois do gate (o gate não deixa rastro)
+0
+[exit=1]

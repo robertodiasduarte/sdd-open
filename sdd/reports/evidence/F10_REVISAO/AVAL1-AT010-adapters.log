@@ -1,0 +1,131 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a3.sh AT010
+--- as 4 funções em cada adapter
+claude: adapter_disponivel adapter_invocar adapter_extrair adapter_credencial | credencial: login da CLI claude (rode claude e entre na conta) ou a chave que a própria CLI usa
+codex: adapter_disponivel adapter_invocar adapter_extrair adapter_credencial | credencial: login da CLI codex (rode codex login)
+gemini: adapter_disponivel adapter_invocar adapter_extrair adapter_credencial | credencial: login da CLI gemini e a variável GOOGLE_CLOUD_PROJECT, ou GEMINI_API_KEY no ambiente
+openrouter: adapter_disponivel adapter_invocar adapter_extrair adapter_credencial | credencial: OPENROUTER_API_KEY no ambiente (export OPENROUTER_API_KEY=… antes de rodar; nunca num arquivo do repositório)
+--- claude revisa, codex audita (CLIs falsas)
++ adversarial-review.sh --base main --reviewer claude --auditor codex --no-revisor2
+▶ revisor: claude (-) — até 15 min
+▶ auditor: codex (-) — até 15 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235402
+diff_sha256: a7bc85f101e394b28e03f3628c8fcb1aa257c07cea08aa8334be901b33ab95a9
+revisor: claude (claude-opus-5-5) — US$ 0,0239
+auditor: codex (-) — incluído na assinatura
+diversidade: vendor
+achados: 0 graves, 1 médio, 0 leves
+custo total: US$ 0,0239
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235402 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+claude argv:
+-p$
+--output-format$
+json$
+--tools$
+$
+--safe-mode$
+--no-session-persistence$
+claude cwd: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-review-wb003ymn/cwd | conteúdo: [] | cwd é o repo? nao
+claude stdin começa com: <goal> Você é um revisor de código sênior fazendo uma revisão independente 
+stdin tem o diff? 3
+codex argv:
+exec$
+-s$
+read-only$
+--skip-git-repo-check$
+--ephemeral$
+--json$
+-$
+codex cwd: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-review-wb003ymn/cwd | conteúdo: []
+codex stdin tem REVISÕES? 1
+MARCA do stderr em reviewer.md? 0
+reviewer_exit           : 0
+reviewer_tokens_entrada : 3591
+reviewer_tokens_saida   : 4
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 0.0239
+auditor_exit            : 0
+auditor_tokens_entrada  : 24673
+auditor_tokens_saida    : 5
+auditor_modelo          : -
+auditor_custo           : assinatura
+--- gemini revisa (modelo explícito gemini:gm-x), claude audita
+RESULTADO: REVIEW INVÁLIDA
+[rc=68]
+gemini argv:
+-o$
+json$
+--approval-mode$
+default$
+-m$
+gm-x$
+gemini cwd: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-review-mgcytzsi/cwd | conteúdo: []
+reviewer_exit           : 0
+reviewer_tokens_entrada : 1830
+reviewer_tokens_saida   : 42
+reviewer_modelo         : gemini-3.8-flash
+reviewer_custo          : $?
+--- OpenRouter: servidor local grava o corpo e devolve a saída medida
++ adversarial-review.sh --base main --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --no-revisor2
+▶ revisor: claude (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235404
+diff_sha256: a7bc85f101e394b28e03f3628c8fcb1aa257c07cea08aa8334be901b33ab95a9
+revisor: claude (claude-opus-5-5) — US$ 0,0239
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0002
+diversidade: vendor
+achados: 0 graves, 1 médio, 0 leves
+custo total: US$ 0,0241
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235404 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+corpo recebido (sem mensagens):
+{"model": "qwen/qwen3.7-plus", "messages": ["<1 msg, 4039 chars>"], "provider": {"data_collection": "deny", "require_parameters": true}, "usage": {"include": true}}
+auth: Bearer <23 chars>
+diversidade             : vendor
+auditor_exit            : 0
+auditor_tokens_entrada  : 16
+auditor_tokens_saida    : 136
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0002
+custo_total             : US$ 0.0241
+chave em algum arquivo da pasta da revisão?        0
+--- a URL só muda por SDD_REVIEW_OPENROUTER_URL
+9:# SDD_REVIEW_OPENROUTER_URL troca a URL só nos testes (servidor local).
+29:url = os.environ.get("SDD_REVIEW_OPENROUTER_URL") or "https://openrouter.ai/api/v1/chat/completions"
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a3.sh: line 20: 83807 Terminated: 15          /usr/bin/python3 -B - $T  <<'PY'
+import http.server, json, sys, os
+T = sys.argv[1]
+class H(http.server.BaseHTTPRequestHandler):
+    def do_POST(self):
+        n = int(self.headers["Content-Length"]); b = self.rfile.read(n)
+        open(T + "/corpo.json", "wb").write(b)
+        auth = self.headers.get("Authorization", "")
+        open(T + "/auth.txt", "w").write("Bearer <%d chars>" % (len(auth) - 7) if auth.startswith("Bearer ") else "sem auth")
+        r = open(os.environ.get("FXR", "") + "/saidas/openrouter.json", "rb").read()
+        self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers(); self.wfile.write(r)
+    def log_message(self, *a): pass
+s = http.server.HTTPServer(("127.0.0.1", 0), H)
+open(T + "/porta", "w").write(str(s.server_port))
+s.handle_request(); s.handle_request()
+PY
+
+--- openrouter sem chave: 65 com onde a chave mora
++ adversarial-review.sh --base main --reviewer claude --auditor openrouter --no-revisor2
+▶ revisor: claude (-) — até 15 min
+▶ auditor: openrouter (qwen/qwen3.7-plus) — até 15 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PAROU
+auditor: falha de credencial em openrouter
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235404-2
+diff_sha256: a7bc85f101e394b28e03f3628c8fcb1aa257c07cea08aa8334be901b33ab95a9
+revisor: claude (claude-opus-5-5) — US$ 0,0239
+auditor: openrouter (qwen/qwen3.7-plus) — custo desconhecido
+diversidade: vendor
+custo total: US$ 0,0239 (+ 1 papel(is) com custo desconhecido)
+→ confira a credencial de openrouter (OPENROUTER_API_KEY no ambiente (export OPENROUTER_API_KEY=… antes de rodar; nunca num arquivo do repositório)); a revisão não troca de engine por falha de credencial
+[rc=65]
+[exit=65]

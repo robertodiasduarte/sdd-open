@@ -1,0 +1,38 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at017.sh
+=== revisor: sinal_auth na saída de falha, 2º id na lista
+▶ revisor: stub-a:falha-auth (falha-auth) — até 1 min
+RESULTADO: PAROU
+→ confira a credencial de stub-a:falha-auth (credencial do stub (exemplo de teste)); a revisão não troca de engine por falha de credencial
+[rc=65] chamadas=1
+reviewer_engine_efetivo : stub-a:falha-auth
+reviewer_exit           : 65
+auditor_exit            : -
+=== revisor: adapter sai 65 (sem chave)
+▶ revisor: stub-a:sem-chave (sem-chave) — até 1 min
+RESULTADO: PAROU
+→ confira a credencial de stub-a:sem-chave (credencial do stub (exemplo de teste)); a revisão não troca de engine por falha de credencial
+[rc=65] chamadas=1
+reviewer_engine_efetivo : stub-a:sem-chave
+reviewer_exit           : 65
+auditor_exit            : -
+=== auditor: sinal_auth, 2º id na lista
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-b:falha-auth (falha-auth) — até 1 min
+RESULTADO: PAROU
+→ confira a credencial de stub-b:falha-auth (credencial do stub (exemplo de teste)); a revisão não troca de engine por falha de credencial
+[rc=65] chamadas=2
+reviewer_engine_efetivo : stub-a
+reviewer_exit           : 0
+auditor_engine_efetivo  : stub-b:falha-auth
+auditor_exit            : 65
+=== resposta válida que cita os sinais não é falha
+▶ revisor: stub-a:rev-cita-sinais (rev-cita-sinais) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+RESULTADO: REVIEW COMPLETA
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002400 --ledger <ledger da revisão> --rodada <N>
+[rc=0] chamadas=2
+reviewer_engine_efetivo : stub-a:rev-cita-sinais
+reviewer_exit           : 0
+auditor_engine_efetivo  : stub-b
+auditor_exit            : 0
+[exit=0]

@@ -1,0 +1,20 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a7.py AT037 && cd /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval && for f in sdd/templates/fragments/RESUMO_ETAPA.md sdd/templates/fragments/ADVISOR_CONSULT.md sdd/templates/BUILD_REPORT_TEMPLATE.md; do echo "== $f (v2.2.10)"; git show v2.2.10:$f | grep -n 'adversarial-review\|EXTERNAL_REVIEW'; done
+OK    sdd/templates/fragments/RESUMO_ETAPA.md cita sdd/bin/adversarial-review.sh
+OK    sdd/templates/fragments/RESUMO_ETAPA.md sem /adversarial-review
+OK    sdd/templates/fragments/RESUMO_ETAPA.md sem sdd/reviews/EXTERNAL_REVIEW_*
+OK    sdd/templates/fragments/ADVISOR_CONSULT.md cita sdd/bin/adversarial-review.sh
+OK    sdd/templates/fragments/ADVISOR_CONSULT.md sem /adversarial-review
+OK    sdd/templates/fragments/ADVISOR_CONSULT.md sem sdd/reviews/EXTERNAL_REVIEW_*
+OK    sdd/templates/BUILD_REPORT_TEMPLATE.md cita sdd/bin/adversarial-review.sh
+OK    sdd/templates/BUILD_REPORT_TEMPLATE.md sem /adversarial-review
+OK    sdd/templates/BUILD_REPORT_TEMPLATE.md sem sdd/reviews/EXTERNAL_REVIEW_*
+OK    RESUMO_ETAPA e BUILD_REPORT citam review.output_dir
+ADVISOR_CONSULT output_dir: False
+== sdd/templates/fragments/RESUMO_ETAPA.md (v2.2.10)
+4:> `/design`, `/build`, a fase Release e `/adversarial-review`. É o **dono único** do formato: as
+49:| review adversarial | `sdd/reviews/EXTERNAL_REVIEW_*/` **com `reviewer.md` + `META.txt` dentro** (o `/adversarial-review` grava por TIMESTAMP, sem `{F}` no nome — conferir pelo `diff_sha256`/branch do META que o diff revisado é o desta frente; `auditor_exit ≠ 0` = auditor FALHOU, não "zero achados") |
+== sdd/templates/fragments/ADVISOR_CONSULT.md (v2.2.10)
+86:O `/adversarial-review` declara em `META.txt` e no cabeçalho do relatório qual engine rodou
+== sdd/templates/BUILD_REPORT_TEMPLATE.md (v2.2.10)
+159:**Consulta:** {tipo: plan-review | delivery-review | conflito | judgment call} · {data} · {ferramenta: /adversarial-review | /codex:rescue | …}
+[exit=0]

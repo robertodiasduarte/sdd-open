@@ -1,0 +1,38 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/c2.sh
+=== achado 2: todos os papéis com custo desconhecido (stub-c desconhecida revisa, stub-b pay-per-token sem preço audita)
+## ar --reviewer stub-c --auditor stub-b --no-revisor2
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001855
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-c (stub-modelo) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: custo desconhecido
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001855 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+reviewer_custo          : $?
+auditor_custo           : $?
+custo_total             : $?
+=== achado 2b: com custo reportado num papel
+## ar --reviewer stub-c --auditor stub-b --no-revisor2
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001856
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-c (stub-modelo) — US$ 0,0061
+auditor: stub-b (stub-modelo) — US$ 0,0061
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: US$ 0,0122
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001856 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+reviewer_custo          : US$ 0.0061
+auditor_custo           : US$ 0.0061
+custo_total             : US$ 0.0122
+[exit=0]

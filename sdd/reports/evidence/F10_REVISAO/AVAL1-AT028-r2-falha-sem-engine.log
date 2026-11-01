@@ -1,0 +1,69 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/b1.sh
+=== 2º revisor forçado stub-c:falha-auth
+⚠️ o 2º revisor (stub-c:falha-auth) falhou (falha de credencial em stub-c:falha-auth): a revisão vale só com a dispensa registrada no ledger
+[rc=0]
+revisor2_engine         : stub-c:falha-auth
+revisor2_engine_default : stub-c:falha-auth
+revisor2_engine_efetivo : stub-c:falha-auth
+revisor2_exit           : 65
++ sdd-fluxo.sh loop --review <pasta> --ledger ledger.md --rodada 1
+ESTADO: BLOQUEADO
+motivo: D3: 2º revisor acionado e indisponível (stub-c:falha-auth, exit 65) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger
+motivo: grave(s) sem veredito no ledger: R1
+RESULTADO: BLOQUEADO
+[loop rc=20]
++ adversarial-review.sh --conferir <pasta>
+RESULTADO: NÃO CONFERE
+=== 2º revisor forçado stub-c:sem-cli
+⚠️ o 2º revisor (-) falhou (CLI de stub-c:sem-cli fora do PATH): a revisão vale só com a dispensa registrada no ledger
+[rc=0]
+revisor2_engine         : -
+revisor2_engine_default : stub-c:sem-cli
+revisor2_engine_efetivo : -
+revisor2_exit           : 66
++ sdd-fluxo.sh loop --review <pasta> --ledger ledger.md --rodada 1
+ESTADO: CONTINUAR
+motivo: grave(s) sem veredito no ledger: R1
+RESULTADO: CONTINUAR
+[loop rc=10]
++ adversarial-review.sh --conferir <pasta>
+RESULTADO: NÃO CONFERE
+=== 2º revisor forçado stub-c:falha-quota
+⚠️ o 2º revisor (-) falhou (stub-c:falha-quota falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+[rc=0]
+revisor2_engine         : -
+revisor2_engine_default : stub-c:falha-quota
+revisor2_engine_efetivo : -
+revisor2_exit           : 67
++ sdd-fluxo.sh loop --review <pasta> --ledger ledger.md --rodada 1
+ESTADO: CONTINUAR
+motivo: grave(s) sem veredito no ledger: R1
+RESULTADO: CONTINUAR
+[loop rc=10]
++ adversarial-review.sh --conferir <pasta>
+RESULTADO: NÃO CONFERE
+=== 2º revisor forçado stub-c:revisor-sem-bloco
+⚠️ o 2º revisor (stub-c:revisor-sem-bloco) falhou (stub-c:revisor-sem-bloco: bloco <<<VERDICTS ausente ou malformado): a revisão vale só com a dispensa registrada no ledger
+[rc=0]
+revisor2_engine         : stub-c:revisor-sem-bloco
+revisor2_engine_default : stub-c:revisor-sem-bloco
+revisor2_engine_efetivo : stub-c:revisor-sem-bloco
+revisor2_exit           : 68
++ sdd-fluxo.sh loop --review <pasta> --ledger ledger.md --rodada 1
+ESTADO: CONTINUAR
+motivo: 2º revisor acionado e falhou (stub-c:revisor-sem-bloco, exit 68) — refazer a review
+RESULTADO: CONTINUAR
+[loop rc=10]
++ adversarial-review.sh --conferir <pasta>
+RESULTADO: NÃO CONFERE
+=== 2º revisor automático (sem --revisor2): registry com c sem CLI (modelo sem-cli) disponível
+⚠️ o 2º revisor (-) falhou (c falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+[rc=0]
+revisor2_engine         : -
+revisor2_engine_efetivo : -
+revisor2_exit           : 67
+ESTADO: CONTINUAR
+motivo: grave(s) sem veredito no ledger: R1
+RESULTADO: CONTINUAR
+[loop rc=10]
+[exit=0]

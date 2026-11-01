@@ -1,0 +1,23 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a5.sh AT018
+--- 429 e depois ok: 2 chamadas na mesma engine
+▶ revisor: stub-a:falha-429+revisor-ok (falha-429+revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+chamadas=3
+reviewer_engine_efetivo : stub-a:falha-429+revisor-ok
+reviewer_fallback_usado : nao
+reviewer_exit           : 0
+--- 429 persistente: 3 chamadas e avança
+▶ revisor: stub-a:falha-429 (falha-429) — até 1 min
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ o revisor previsto (stub-a:falha-429) falhou (stub-a:falha-429 seguiu no limite passageiro (429) depois de 3 tentativas); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+chamadas à stub-a=3
+--- espera SDD_REVIEW_ESPERA=1 entre as tentativas
+segundos=2 (esperado >= 2)
+--- espera padrão é 30 s
+54:ESPERA = int(os.environ.get("SDD_REVIEW_ESPERA") or "30")
+[exit=0]

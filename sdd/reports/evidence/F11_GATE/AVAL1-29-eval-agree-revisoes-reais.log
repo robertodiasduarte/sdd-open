@@ -1,0 +1,36 @@
+$ W=/tmp/aval1-f11.wvW4zp; P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; echo '### sem argumento, dentro de um repo com revisões reais feitas pelos stubs (r18, r20)'; (cd $W/r20/src && /bin/bash $P/sdd/bin/eval-agree.sh); echo "[rc=$?]"; echo '### review.output_dir customizado no sdd/config.yaml'; R=$(mktemp -d); $W/mkrepo.sh $R src/a.py >/dev/null; mkdir -p $R/sdd $R/outra/revs; printf 'review:   # bloco\n  output_dir: "outra/revs"   # comentário\n' > $R/sdd/config.yaml; cp -R $W/r18/sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073755 $R/outra/revs/; (cd $R && /bin/bash $P/sdd/bin/eval-agree.sh); echo "[rc=$?]"; echo '### sem argumento e sem git no PATH'; (cd $W/r20 && env -i HOME=$HOME PATH=$W/pybin:/bin /bin/bash $P/sdd/bin/eval-agree.sh); echo "[rc=$?]"
+### sem argumento, dentro de um repo com revisões reais feitas pelos stubs (r18, r20)
+eval-agree — taxa de AGREE por auditor (4 pasta(s) lida(s) em /private/tmp/aval1-f11.wvW4zp/r20/sdd/reports/reviews)
+
+| Auditor | Revisões | Vereditos | AGREE | DISAGREE_EVIDENCE | DISAGREE_CONCERN | NOVO | taxa_agree |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| claude (claude-stub-5) | 1 | 2 | 2 | 0 | 0 | 0 | 100.0% |
+| openrouter (qwen/qwen3.7-plus) | 3 | 6 | 6 | 0 | 0 | 0 | 100.0% |
+
+fora da conta: 0
+RESULTADO: MEDIDO
+→ uma taxa_agree alta com poucos DISAGREE pode ser auditor complacente: compare com outra engine no papel de auditor.
+[rc=0]
+### review.output_dir customizado no sdd/config.yaml
+eval-agree — taxa de AGREE por auditor (1 pasta(s) lida(s) em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.NppfChLiXY/outra/revs)
+
+| Auditor | Revisões | Vereditos | AGREE | DISAGREE_EVIDENCE | DISAGREE_CONCERN | NOVO | taxa_agree |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| codex (-) | 1 | 2 | 2 | 0 | 0 | 0 | 100.0% |
+
+fora da conta: 0
+RESULTADO: MEDIDO
+→ uma taxa_agree alta com poucos DISAGREE pode ser auditor complacente: compare com outra engine no papel de auditor.
+[rc=0]
+### sem argumento e sem git no PATH
+Traceback (most recent call last):
+  File "<stdin>", line 29, in <module>
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'git'
+[rc=1]
+[exit=0]

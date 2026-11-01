@@ -1,0 +1,77 @@
+$ git rev-parse HEAD
+7ecbc7826c60848df40ed2c3aa244774246c7e1e
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --no-revisor2 --feature F10_REVISAO
+▶ revisor: claude (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-233526
+diff_sha256: 3d50248ea7c413f52da52a15d47d87ae6a5d9b34eeb110b5c705ab146281fbac
+revisor: claude (claude-opus-5-5) — US$ 2,4538
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0458
+diversidade: vendor
+achados: 0 graves, 3 médios, 5 leves
+custo total: US$ 2,4996
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-233526 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261031-233526/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f10-revisao
+branch                  : feat/f10-revisao
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 89ac76f569026731174a4826be9d6757f5daa48e
+head                    : 7ecbc7826c60848df40ed2c3aa244774246c7e1e
+paths                   : -
+diff_sha256             : 3d50248ea7c413f52da52a15d47d87ae6a5d9b34eeb110b5c705ab146281fbac
+diff                    : 213KB (83 arquivo(s))
+contexto                : 104KB (3 doc SDD)
+docs_sdd                : BRAINSTORM_F10_REVISAO.md, DEFINE_F10_REVISAO.md, DESIGN_F10_REVISAO.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 505
+reviewer_achados        : 8
+reviewer_tokens_entrada : 161519
+reviewer_tokens_saida   : 54352
+reviewer_tokens_total   : 215871
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 2.4538
+revisor1_raso           : nao
+gatilho_2o_revisor      : segurança (sdd/fixtures/revisao/respostas/falha-auth.txt) — dispensado por --no-revisor2
+revisor2_engine         : -
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 136
+auditor_vereditos       : 8
+auditor_tokens_entrada  : 110530
+auditor_tokens_saida    : 8166
+auditor_tokens_total    : 118696
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0458
+convergencia_1o_passe   : nao
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 2.4996
+quando                  : 20261031-233526
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-233526 --rodada 1
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261031-233526
+🛑 adversarial-review: o código mudou depois da revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261031-233526 (sha256 diferente)
+RESULTADO: NÃO CONFERE
+→ rode a revisão de novo sobre esta versão.
+[exit=2]

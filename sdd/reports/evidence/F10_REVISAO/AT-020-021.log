@@ -1,0 +1,9 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_revisao.Custo test_revisao.Registry.test_precos_tem_fonte_url_e_data_iso
+test_quatro_formas_e_nunca_zero_desconhecido (test_revisao.Custo) ... ok
+test_precos_tem_fonte_url_e_data_iso (test_revisao.Registry) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.061s
+
+OK
+[exit=0]

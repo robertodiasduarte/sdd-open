@@ -1,0 +1,131 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a5.sh AT023
+=== completa (com ⚠️ de fallback e sem contexto)
++ adversarial-review.sh --base main --reviewer stub-a:falha-quota,stub-c --auditor stub-b --no-revisor2
+▶ revisor: stub-a:falha-quota (falha-quota) — até 1 min
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor previsto (stub-a:falha-quota) falhou (stub-a:falha-quota falhou (cota, cobrança ou erro)); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235907
+diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+revisor: stub-c (stub-modelo) (troca de engine) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: US$ 0,0000 (+ 2 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235907 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+=== inválida (auditor)
++ adversarial-review.sh --base main --reviewer stub-a --auditor stub-b:auditor-sem-bloco --no-revisor2
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-b:auditor-sem-bloco (auditor-sem-bloco) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW INVÁLIDA
+auditor (stub-b:auditor-sem-bloco): a engine respondeu fora do formato; isto não é zero achados
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235908
+diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-b:auditor-sem-bloco (stub-modelo) — custo desconhecido
+diversidade: modelo
+custo total: US$ 0,0000 (+ 1 papel(is) com custo desconhecido)
+→ rode de novo; se repetir, troque a engine do auditor
+[rc=68]
+=== 65
++ adversarial-review.sh --base main --reviewer stub-a:falha-auth --auditor stub-b --no-revisor2
+▶ revisor: stub-a:falha-auth (falha-auth) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PAROU
+revisor: falha de credencial em stub-a:falha-auth
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235908-2
+diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+revisor: stub-a:falha-auth (falha-auth) — incluído na assinatura
+diversidade: modelo
+custo total: US$ 0,0000
+→ confira a credencial de stub-a:falha-auth (credencial do stub (exemplo de teste)); a revisão não troca de engine por falha de credencial
+[rc=65]
+=== 67 exaurida
++ adversarial-review.sh --base main --reviewer stub-a:falha-quota --auditor stub-b --no-revisor2
+▶ revisor: stub-a:falha-quota (falha-quota) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PAROU
+revisor: stub-a:falha-quota falhou (cota, cobrança ou erro)
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235909
+diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+diversidade: modelo
+custo total: US$ 0,0000
+→ acrescente outra engine à lista ou tente mais tarde
+[rc=67]
+=== 67 exclusão
++ adversarial-review.sh --base main --reviewer stub-a --auditor stub-a
+🛑 adversarial-review: o auditor (stub-a) é a mesma engine do revisor: ninguém audita a própria revisão
+RESULTADO: PAROU
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+[rc=67]
+=== 2º revisor indisponível
++ adversarial-review.sh --base main --reviewer a --auditor b
+▶ revisor: a (revisor-ok) — até 1 min
+▶ auditor: b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o 2º revisor (nenhuma engine) não tinha engine disponível: a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235909-2
+diff_sha256: 419fbc9f70366ee07d9f3f588f96fd3ac4f9bc6d10fafe4511e51f60abf7896d
+revisor: a (stub-modelo) — incluído na assinatura
+2º revisor: indisponível (n/d) — n/d
+auditor: b (stub-modelo) — incluído na assinatura
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: US$ 0,0000
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235909-2 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+=== 2º revisor falhou
++ adversarial-review.sh --base main --reviewer stub-a --auditor stub-b --revisor2 stub-c:falha-quota
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ 2º revisor: stub-c:falha-quota (falha-quota) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o 2º revisor (-) falhou (stub-c:falha-quota falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235909-3
+diff_sha256: 4c3e347c5cf12e435df7d52d46d275bbd2db3b06131ecff639b3649bf9ef33ba
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: US$ 0,0000 (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235909-3 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+=== revisor raso
++ adversarial-review.sh --base main --reviewer stub-a:revisor-vazio --auditor stub-b:auditor-agree --no-revisor2
+▶ revisor: stub-a:revisor-vazio (revisor-vazio) — até 1 min
+▶ auditor: stub-b:auditor-agree (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor terminou em 0 s sem achados: isso não conta como revisão
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235910
+diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+revisor: stub-a:revisor-vazio (stub-modelo) — incluído na assinatura
+auditor: stub-b:auditor-agree (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 0 graves, 0 médios, 0 leves
+custo total: US$ 0,0000 (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235910 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+=== auditor 67 por exclusão na lista (auditor = revisor efetivo)
++ adversarial-review.sh --base main --reviewer stub-a:falha-quota,stub-c --auditor stub-c --no-revisor2
+▶ revisor: stub-a:falha-quota (falha-quota) — até 1 min
+▶ revisor: stub-c (revisor-ok) — até 1 min
+⚠️ a mesma engine revisou e auditou: a auditoria tem os mesmos pontos cegos da revisão
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor previsto (stub-a:falha-quota) falhou (stub-a:falha-quota falhou (cota, cobrança ou erro)); quem revisou foi stub-c
+RESULTADO: PAROU
+auditor: stub-c excluída (já tem outro papel nesta revisão)
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235910-2
+diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+revisor: stub-c (stub-modelo) (troca de engine) — custo desconhecido
+diversidade: nenhuma
+custo total: US$ 0,0000 (+ 1 papel(is) com custo desconhecido)
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+[rc=67]
+[exit=67]

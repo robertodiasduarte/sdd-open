@@ -1,0 +1,41 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a5.sh AT022
+--- sim
+convergencia_1o_passe   : sim
+--- nao (DISAGREE)
+convergencia_1o_passe   : nao
+--- auditor não rodou
+convergencia_1o_passe   : n/a (auditor não rodou)
+--- auditor falhou
+convergencia_1o_passe   : n/a (auditor falhou)
+--- revisor1 raso sem 2º
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+revisor1_raso           : sim
+convergencia_1o_passe   : n/a (revisor1 raso: 0 achados em 0s)
+--- 2º revisor raso
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+convergencia_1o_passe   : n/a (2º revisor raso: 0 achados em 0s)
+--- 2º revisor falhou → exit 0 mesmo assim
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+revisor2_exit           : 67
+convergencia_1o_passe   : sim
+--- desempate que falha → desempate_decisao: - e exit 0
+⚠️ o desempate (-) não decidiu: o achado R1 fica para uma pessoa (D5)
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+desempate_alvo           : R1
+desempate_engine         : -
+desempate_decisao        : -
+desempate_exit           : 67
+--- desempate sem linha DECISAO
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+desempate_engine         : c
+desempate_decisao        : -
+desempate_exit           : 68
+--- revisor falha 67 e auditor não roda → exit do revisor
+RESULTADO: PAROU
+[rc=67]
+[exit=0]

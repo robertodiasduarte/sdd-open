@@ -1,0 +1,18 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/base.sh
+Ran 122 tests in 21.986s
+FAILED (failures=70, errors=10)
+[unittest rc=1]
+FAIL: test_desempate_refutado_fecha_e_procede_mantem_aberto (test_fluxo.LoopF10)
+FAIL: test_dispensa_de_outra_rodada_nao_vale (test_fluxo.LoopF10)
+FAIL: test_dois_revisores_le_os_dois_jsonl (test_fluxo.LoopF10)
+FAIL: test_mesmo_id_nos_dois_revisores_e_64 (test_fluxo.LoopF10)
+FAIL: test_meta_com_revisor2_e_sem_exit_e_64 (test_fluxo.LoopF10)
+FAIL: test_rasa_nunca_e_pronto (test_fluxo.LoopF10)
+FAIL: test_segundo_revisor_dispensado_no_ledger_segue_para_o_resto (test_fluxo.LoopF10) (review='review-r2-indisponivel')
+FAIL: test_segundo_revisor_dispensado_no_ledger_segue_para_o_resto (test_fluxo.LoopF10) (review='review-r2-falhou')
+FAIL: test_segundo_revisor_indisponivel_sem_dispensa_e_bloqueado_d3 (test_fluxo.LoopF10)
+FAIL: test_segundo_revisor_que_falhou_e_refazer (test_fluxo.LoopF10)
+Ran 59 tests in 12.870s
+FAILED (failures=10)
+[test_fluxo na v2.2.10 rc=1]
+[exit=0]

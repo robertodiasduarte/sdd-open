@@ -1,0 +1,6 @@
+$ /tmp/aval1-f11.wvW4zp/sabota.sh claude-custo-de-modelUsage sdd/bin/adapters/claude.sh 'custo = d.get("total_cost_usd") if isinstance(d.get("total_cost_usd"), (int, float)) else None' 'custo = sum((v or {}).get("costUSD") or 0 for v in mu.values()) if mu else None'
+### sabotagem claude-custo-de-modelUsage em sdd/bin/adapters/claude.sh
+90 asserções, 0 falha(s) em 10 s
+RESULTADO: GATE VERDE
+[gate_rc=0]
+[exit=0]

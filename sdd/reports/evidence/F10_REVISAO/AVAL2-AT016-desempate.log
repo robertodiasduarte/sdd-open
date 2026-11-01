@@ -1,0 +1,52 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at016.sh
+=== desempate desempate-refutado
+▶ desempate: e-d (desempate-refutado) — até 1 min
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+desempate_alvo           : R1
+desempate_engine         : e-d
+desempate_decisao        : DECISAO:REFUTADO
+desempate_exit           : 0
+=== desempate des-procede
+▶ desempate: e-d (des-procede) — até 1 min
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+desempate_alvo           : R1
+desempate_engine         : e-d
+desempate_decisao        : DECISAO:PROCEDE
+desempate_exit           : 0
+=== desempate des-vago
+▶ desempate: e-d (des-vago) — até 1 min
+⚠️ o desempate (e-d) não decidiu: o achado R1 fica para uma pessoa (D5)
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+desempate_alvo           : R1
+desempate_engine         : e-d
+desempate_decisao        : -
+desempate_exit           : 68
+=== desempate fora de {origem, auditor}: só e-a e e-b têm desempate → indisponível
+[rc=0]
+desempate_alvo          : R1
+desempate_engine        : indisponível
+desempate_decisao       : -
+=== --no-desempate
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+=== 2 revisores: alvo com @engine mesmo quando o auditor usa o id base (R1 só no 1º revisor)
+▶ revisor: e-a (revisor-ok) — até 1 min
+▶ 2º revisor: e-c (rev-s) — até 1 min
+▶ auditor: e-b (auditor-refuta-high) — até 1 min
+▶ desempate: e-d (desempate-refutado) — até 1 min
+RESULTADO: REVIEW COMPLETA
+revisor2_engine          : e-c
+revisor2_exit            : 0
+desempate_alvo           : R1@e-a
+desempate_engine         : e-d
+desempate_decisao        : DECISAO:REFUTADO
+"achado": "R1@e-a" "achado": "R2@e-a" 
+motivo: refutado(s) com evidência (auditor + desempate): R1@e-a
+motivo: grave(s) sem veredito no ledger: S1@e-c
+RESULTADO: CONTINUAR
+[loop rc=10]
+[exit=0]

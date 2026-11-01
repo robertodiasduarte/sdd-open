@@ -1,0 +1,25 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at007.sh
+=== diff vazio (base = HEAD, tudo commitado)
+🛑 adversarial-review: o diff contra HEAD está vazio: a revisão não teria o que revisar
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0
+=== base inválida
+🛑 adversarial-review: --base nao-existe não resolve para um commit
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0
+=== diff > 8 MB
+8600000
+🛑 adversarial-review: o diff tem 8483 KB, acima do teto de 8 MB: use --paths para revisar por partes
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0
+=== diff logo abaixo de 8 MB (passa — dry-run)
+  diff: 4 arquivo(s), 8088 KB, base main, merge-base 4a06de76281e
+RESULTADO: PLANO
+[rc=0]
+61:DIFF_MAX_MB = 8                       # teto do diff congelado
+425:if len(patch) > DIFF_MAX_MB * 1024 * 1024:
+426:    uso("o diff tem %d KB, acima do teto de %d MB: use --paths para revisar por partes" % (len(patch) // 1024, DIFF_MAX_MB))
+[exit=0]

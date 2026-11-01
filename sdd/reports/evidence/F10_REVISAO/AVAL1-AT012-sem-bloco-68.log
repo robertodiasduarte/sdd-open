@@ -1,0 +1,38 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a4.sh AT012
+--- revisor sem bloco
++ adversarial-review.sh --base main --reviewer stub-a:revisor-sem-bloco --auditor stub-b --no-revisor2
+▶ revisor: stub-a:revisor-sem-bloco (revisor-sem-bloco) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW INVÁLIDA
+revisor (stub-a:revisor-sem-bloco): a engine respondeu fora do formato; isto não é zero achados
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235452
+diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+revisor: stub-a:revisor-sem-bloco (stub-modelo) — incluído na assinatura
+diversidade: modelo
+custo total: US$ 0,0000
+→ rode de novo; se repetir, troque a engine do revisor
+[rc=68]
+reviewer_motivo         : stub-a:revisor-sem-bloco: bloco <<<VERDICTS ausente ou malformado
+reviewer_exit           : 68
+reviewer_achados        : 0
+auditor_exit            : -
+convergencia_1o_passe   : n/a (auditor não rodou)
+META.txt
+context-sdd.md
+diff.patch
+reviewer.md
+--- auditor sem bloco
+RESULTADO: REVIEW INVÁLIDA
+auditor (stub-b:auditor-sem-bloco): a engine respondeu fora do formato; isto não é zero achados
+[rc=68]
+auditor_motivo          : stub-b:auditor-sem-bloco: bloco <<<VERDICTS ausente ou malformado
+auditor_exit            : 68
+convergencia_1o_passe   : n/a (auditor falhou)
+rev-falta-chave → [rc=68] RESULTADO: REVIEW INVÁLIDA | reviewer_motivo         : stub-a:rev-falta-chave: linha do bloco sem as chaves obrigatórias: {"achado":"R1","arquivo":"a","linha":1,"severidade":"HIGH","confianca":"C"}
+rev-lista → [rc=68] RESULTADO: REVIEW INVÁLIDA | reviewer_motivo         : stub-a:rev-lista: linha do bloco sem as chaves obrigatórias: ["R1","HIGH"]
+rev-prosa → [rc=68] RESULTADO: REVIEW INVÁLIDA | reviewer_motivo         : stub-a:rev-prosa: linha do bloco não é JSON: R1 HIGH divisão
+rev-sev → [rc=68] RESULTADO: REVIEW INVÁLIDA | reviewer_motivo         : stub-a:rev-sev: severidade inválida: {"achado":"R1","arquivo":"a","linha":1,"severidade":"CRITICAL","confianca":"C","
+rev-sem-fim → [rc=68] RESULTADO: REVIEW INVÁLIDA | reviewer_motivo         : stub-a:rev-sem-fim: bloco <<<VERDICTS ausente ou malformado
+aud-veredito → [rc=68] RESULTADO: REVIEW INVÁLIDA | auditor_motivo          : stub-b:aud-veredito: linha do bloco inválida para o auditor: {"achado":"R1","veredito":"TALVEZ"}
+aud-novo-sem-sev → [rc=68] RESULTADO: REVIEW INVÁLIDA | auditor_motivo          : stub-b:aud-novo-sem-sev: linha do bloco inválida para o auditor: {"achado":"N1","veredito":"NOVO"}
+[exit=0]

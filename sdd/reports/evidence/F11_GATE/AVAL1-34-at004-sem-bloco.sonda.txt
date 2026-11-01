@@ -1,0 +1,39 @@
+# NOTA (build): este log do avaliador termina num formatador — o [exit] abaixo NÃO prova o comando (gate-shell-evidencia). Fica como registro da sonda; a prova do AT está em verde-adiados.log / gate-v.log / teste-gate.log.
+$ W=/tmp/aval1-f11.wvW4zp; /usr/bin/python3 -B $W/h.py $W/r19 $W/e04 'claude=revisor;codex=auditor-sem-bloco' -- --base main --reviewer claude --auditor codex --no-revisor2; d=$(ls -td $W/r19/sdd/reports/reviews/*/ | head -1); ls $d; grep -E '^(auditor_|reviewer_achados)' $d/META.txt; echo "menções a 'zero achados' / 'achados: 0' na saída e na pasta: $(grep -rciE 'zero achados|achados: 0|0 graves, 0' $d | grep -v ':0' | wc -l | tr -d ' ')"
+▶ revisor: claude (-) — até 15 min
+▶ auditor: codex (-) — até 15 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW INVÁLIDA
+auditor (codex): a engine respondeu fora do formato; isto não é zero achados
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-074650
+diff_sha256: e915b81f7cab6980bf3deb9e187cbad403c9eccef9e15c9d308b95d16519bd63
+revisor: claude (claude-stub-5) — US$ 0,0421
+auditor: falhou (exit 68) — última engine tentada: codex
+diversidade: -
+custo total: US$ 0,0421 (+ 1 papel(is) com custo desconhecido)
+→ rode de novo; se repetir, troque a engine do auditor
+
+[ar_rc=68]
+chamadas claude=1
+chamadas codex=1
+META.txt
+auditor.md
+context-sdd.md
+diff.patch
+reviewer.md
+reviewer.verdicts.jsonl
+reviewer_achados        : 2
+auditor_engine_default  : codex
+auditor_engine_efetivo  : codex
+auditor_fallback_usado  : nao
+auditor_motivo          : codex: bloco <<<VERDICTS ausente ou malformado
+auditor_exit            : 68
+auditor_segundos        : 0
+auditor_vereditos       : 0
+auditor_tokens_entrada  : 18000
+auditor_tokens_saida    : 300
+auditor_tokens_total    : 18300
+auditor_modelo          : -
+auditor_custo           : $?
+menções a 'zero achados' / 'achados: 0' na saída e na pasta: 0
+[exit=0]

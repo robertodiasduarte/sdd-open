@@ -1,0 +1,33 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a8.sh AT031
+review-ok       vazio.md               r1  v2.2.10=10  agora=10  saída IGUAL
+review-ok       vazio.md               r3  v2.2.10=20  agora=20  saída IGUAL
+review-ok       aplicada.md            r1  v2.2.10=10  agora=10  saída IGUAL
+review-ok       aplicada.md            r3  v2.2.10=20  agora=20  saída IGUAL
+review-ok       ledger-rebatida.md     r1  v2.2.10=0  agora=0  saída IGUAL
+review-ok       ledger-rebatida.md     r3  v2.2.10=20  agora=20  saída IGUAL
+review-invalida vazio.md               r1  v2.2.10=10  agora=10  saída IGUAL
+review-invalida vazio.md               r3  v2.2.10=20  agora=20  saída IGUAL
+review-invalida aplicada.md            r1  v2.2.10=10  agora=10  saída IGUAL
+review-invalida aplicada.md            r3  v2.2.10=20  agora=20  saída IGUAL
+review-invalida ledger-rebatida.md     r1  v2.2.10=10  agora=10  saída IGUAL
+review-invalida ledger-rebatida.md     r3  v2.2.10=20  agora=20  saída IGUAL
+review-impasse  vazio.md               r1  v2.2.10=20  agora=20  saída IGUAL
+review-impasse  vazio.md               r3  v2.2.10=20  agora=20  saída IGUAL
+review-impasse  aplicada.md            r1  v2.2.10=10  agora=10  saída IGUAL
+review-impasse  aplicada.md            r3  v2.2.10=20  agora=20  saída IGUAL
+review-impasse  ledger-rebatida.md     r1  v2.2.10=0  agora=0  saída IGUAL
+review-impasse  ledger-rebatida.md     r3  v2.2.10=20  agora=20  saída IGUAL
+review-ok + AVALIACAO_needs_work.md  ciclo3                            v2.2.10=20 agora=20 saída IGUAL
+review-ok + AVALIACAO_needs_work.md  ciclo3 --recibo fulano-2026-10-31 v2.2.10=20 agora=20 saída IGUAL
+review-ok + AVALIACAO_pass.md        ciclo3                            v2.2.10=10 agora=10 saída IGUAL
+review-ok + AVALIACAO_pass.md        ciclo3 --recibo fulano-2026-10-31 v2.2.10=10 agora=10 saída IGUAL
+review-ok + AVALIACAO_recibo.md      ciclo3                            v2.2.10=10 agora=10 saída IGUAL
+review-ok + AVALIACAO_recibo.md      ciclo3 --recibo fulano-2026-10-31 v2.2.10=10 agora=10 saída IGUAL
+review-ok + AVALIACAO_ambigua.md     ciclo3                            v2.2.10=64 agora=64 saída IGUAL
+review-ok + AVALIACAO_ambigua.md     ciclo3 --recibo fulano-2026-10-31 v2.2.10=64 agora=64 saída IGUAL
+--- self-test
+[self-test rc=0]
+  ✅ seguir slot inválido → exit 64
+RESULTADO: VERDE
+→ todos os cenários bateram.
+[exit=0]

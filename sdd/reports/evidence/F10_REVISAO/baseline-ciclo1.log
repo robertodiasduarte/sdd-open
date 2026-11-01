@@ -1,0 +1,12 @@
+$ cd <worktree em 6f4ee5b com o tests/test_revisao.py novo>/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_revisao.AvaliadorCiclo1
+FAIL: test_1_desempate_que_falhou_registra_a_engine (test_revisao.AvaliadorCiclo1)
+FAIL: test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3 (test_revisao.AvaliadorCiclo1)
+FAIL: test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem (test_revisao.AvaliadorCiclo1) (cenario='falha-quota')
+FAIL: test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem (test_revisao.AvaliadorCiclo1) (cenario='dorme')
+FAIL: test_2_custo_todo_desconhecido_nunca_e_zero (test_revisao.AvaliadorCiclo1)
+FAIL: test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1)
+FAIL: test_4_docs_sdd_sem_o_brainstorm_descartado (test_revisao.AvaliadorCiclo1)
+FAIL: test_5_auditor_excluido_nao_e_diversidade_nenhuma (test_revisao.AvaliadorCiclo1)
+Ran 7 tests in 8.388s
+FAILED (failures=8)
+[exit=1]

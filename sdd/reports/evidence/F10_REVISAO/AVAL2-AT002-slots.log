@@ -1,0 +1,64 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at002.sh
+=== slot do config (lista com espaço; 1º cai por cota, 2º assume)
+## ar --no-revisor2
+▶ revisor: stub-a:falha-quota (falha-quota) — até 1 min
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor previsto (stub-a:falha-quota) falhou (stub-a:falha-quota falhou (cota, cobrança ou erro)); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002017
+diff_sha256: 27296c0c66a01c7ba18e41ffd7aa61858699294d40658235623980839a6a7884
+revisor: stub-c (stub-modelo) (troca de engine) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: custo desconhecido
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002017 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+reviewer_engine_default : stub-a:falha-quota
+reviewer_engine_efetivo : stub-c
+reviewer_fallback_usado : sim
+auditor_engine_efetivo  : stub-b
+=== flag sobrepõe o slot
+## ar --reviewer stub-c --no-revisor2
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002018
+diff_sha256: c8f3c9d34df61e8ef12166d127373b7ba7134c99053c44aa300920515dc276fe
+revisor: stub-c (stub-modelo) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: custo desconhecido
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002018 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+reviewer_engine_default : stub-c
+reviewer_engine_efetivo : stub-c
+=== openrouter:<slug> usa a linha openrouter com o slug como modelo (registry com linha openrouter → adapter stub)
+## ar --reviewer openrouter:revisor-ok --auditor stub-b --no-revisor2
+▶ revisor: openrouter:revisor-ok (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002018
+diff_sha256: 0b2f4c5fa3455bc7c8025d45e17cb5b652ada5905ce7295c045ca0578a4c2f15
+revisor: openrouter:revisor-ok (stub-modelo) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: custo desconhecido
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002018 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+reviewer_engine_efetivo : openrouter:revisor-ok
+reviewer_exit           : 0
+reviewer_modelo         : stub-modelo
+conta-auditor_agree
+conta-revisor_ok
+prompt-1.md
+prompt-2.md
+11conta-auditor_agree
+conta-revisor_ok
+[exit=0]

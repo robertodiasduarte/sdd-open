@@ -1,0 +1,16 @@
+$ cd <worktree em 486ed2e com tests/test_revisao.py e sdd/fixtures/revisao/ novos>/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_revisao.RevisaoFinal
+FAIL: test_n1_novo_sem_arquivo_e_68 (test_revisao.RevisaoFinal)
+FAIL: test_r1_claude_mesmo_adapter_e_modelo_e_a_mesma_engine (test_revisao.RevisaoFinal)
+FAIL: test_r1_codex_auditoria_parcial_e_68 (test_revisao.RevisaoFinal)
+FAIL: test_r2_claude_candidato_com_adapter_ausente_e_pulado (test_revisao.RevisaoFinal)
+FAIL: test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal) (revisor2='stub-a')
+FAIL: test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal) (revisor2='stub-c:revisor-ok')
+FAIL: test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal) (revisor2='stub-b')
+FAIL: test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal)
+FAIL: test_r3_supress_blank_empty_e_atributos_do_usuario_nao_mudam_o_sha (test_revisao.RevisaoFinal)
+FAIL: test_r4_codex_preco_pelo_modelo_reportado (test_revisao.RevisaoFinal)
+FAIL: test_r5_claude_aviso_de_uma_engine_antes_mesmo_com_auditor_falho (test_revisao.RevisaoFinal)
+FAIL: test_r5_codex_papel_chamado_que_falhou_tem_custo_desconhecido (test_revisao.RevisaoFinal)
+Ran 9 tests in 4.211s
+FAILED (failures=12)
+[exit=1]

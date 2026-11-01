@@ -1,0 +1,20 @@
+$ W=/tmp/aval1-f11.wvW4zp; P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; /usr/bin/python3 -B $W/h.py $W/r18 $W/e22 'claude=revisor;codex=auditor' -- --base main --reviewer claude --auditor codex --no-revisor2 --feature F99_NADA; echo '--- com 1 doc presente'; mkdir -p $W/r18/sdd/features && echo '# x' > $W/r18/sdd/features/DEFINE_F98.md && /usr/bin/python3 -B $W/h.py $W/r18 $W/e22b 'claude=revisor;codex=auditor' -- --base main --reviewer claude --auditor codex --no-revisor2 --feature F98 | grep -c 'nenhum documento encontrado'
+▶ revisor: claude (-) — até 15 min
+▶ auditor: codex (-) — até 15 min
+⚠️ --feature F99_NADA: nenhum documento encontrado (sdd/features/BRAINSTORM_F99_NADA.md, DEFINE_F99_NADA.md, DESIGN_F99_NADA.md, sdd/reports/BUILD_REPORT_F99_NADA.md)
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073808
+diff_sha256: 2706745b9beb05e5bfb502d56cec3ab585e189548011598c18f69d4f39b21b68
+revisor: claude (claude-stub-5) — US$ 0,0421
+auditor: codex (-) — incluído na assinatura
+diversidade: vendor
+achados: 0 graves, 1 médio, 1 leve
+custo total: US$ 0,0421
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073808 --ledger <ledger da revisão> --rodada <N>
+
+[ar_rc=0]
+chamadas claude=1
+chamadas codex=1
+--- com 1 doc presente
+0
+[exit=1]

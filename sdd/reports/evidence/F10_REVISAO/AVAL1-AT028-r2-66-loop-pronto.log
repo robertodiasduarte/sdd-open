@@ -1,0 +1,53 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/b2.sh
+=== 2º revisor: stub-c:revisor-ok
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+revisor2_engine         : stub-c:revisor-ok
+revisor2_exit           : 0
++ sdd-fluxo.sh loop --review <pasta> --ledger ledger.md --rodada 1
+ESTADO: CONTINUAR
+motivo: grave(s) sem veredito no ledger: R1@stub-c-revisor-ok
+RESULTADO: CONTINUAR
+[loop rc=10]
+=== 2º revisor: stub-c:sem-cli
+⚠️ o 2º revisor (-) falhou (CLI de stub-c:sem-cli fora do PATH): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+revisor2_engine         : -
+revisor2_exit           : 66
++ sdd-fluxo.sh loop --review <pasta> --ledger ledger.md --rodada 1
+ESTADO: PRONTO
+RESULTADO: PRONTO
+[loop rc=0]
+=== 2º revisor: stub-c:sem-chave
+⚠️ o 2º revisor (stub-c:sem-chave) falhou (falha de credencial em stub-c:sem-chave): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+revisor2_engine         : stub-c:sem-chave
+revisor2_exit           : 65
++ sdd-fluxo.sh loop --review <pasta> --ledger ledger.md --rodada 1
+ESTADO: BLOQUEADO
+motivo: D3: 2º revisor acionado e indisponível (stub-c:sem-chave, exit 65) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger
+RESULTADO: BLOQUEADO
+[loop rc=20]
+=== 2º revisor: stub-c:falha-quota
+⚠️ o 2º revisor (-) falhou (stub-c:falha-quota falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+revisor2_engine         : -
+revisor2_exit           : 67
++ sdd-fluxo.sh loop --review <pasta> --ledger ledger.md --rodada 1
+ESTADO: PRONTO
+RESULTADO: PRONTO
+[loop rc=0]
+=== 2º revisor: stub-c:dorme
+⚠️ o 2º revisor (-) falhou (stub-c:dorme passou do teto de tempo): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+revisor2_engine         : -
+revisor2_exit           : 67
++ sdd-fluxo.sh loop --review <pasta> --ledger ledger.md --rodada 1
+ESTADO: PRONTO
+RESULTADO: PRONTO
+[loop rc=0]
+[exit=0]

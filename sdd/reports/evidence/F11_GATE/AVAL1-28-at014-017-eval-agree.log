@@ -1,0 +1,40 @@
+$ W=/tmp/aval1-f11.wvW4zp; P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; echo '### AT-014/015: fixture, sem rede (proxies mortos), PATH só com python3 (nenhuma CLI de engine, nem git)'; env -i HOME=$HOME PATH=$W/pybin:/bin http_proxy=http://127.0.0.1:9 https_proxy=http://127.0.0.1:9 /bin/bash $P/sdd/bin/eval-agree.sh $P/sdd/fixtures/revisao/eval; echo "[rc=$?]"; echo '### AT-016: pasta só com revisões inúteis'; T=$(mktemp -d); cp -R $P/sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000003 $P/sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000004 $T/; mkdir $T/EXTERNAL_REVIEW_x-sem-meta; /bin/bash $P/sdd/bin/eval-agree.sh $T; echo "[rc=$?]"; echo '### AT-016: pasta vazia'; /bin/bash $P/sdd/bin/eval-agree.sh $(mktemp -d); echo "[rc=$?]"; echo '### AT-016: uso'; /bin/bash $P/sdd/bin/eval-agree.sh a b; echo "[rc=$?]"; /bin/bash $P/sdd/bin/eval-agree.sh --x; echo "[rc=$?]"; /bin/bash $P/sdd/bin/eval-agree.sh /nao/existe; echo "[rc=$?]"; echo '### AT-017: grep'; grep -nE 'urllib|socket|adapters/' $P/sdd/bin/eval-agree.sh; echo "[grep_rc=$? (1 = nada achado)]"
+### AT-014/015: fixture, sem rede (proxies mortos), PATH só com python3 (nenhuma CLI de engine, nem git)
+eval-agree — taxa de AGREE por auditor (5 pasta(s) lida(s) em /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/fixtures/revisao/eval)
+
+| Auditor | Revisões | Vereditos | AGREE | DISAGREE_EVIDENCE | DISAGREE_CONCERN | NOVO | taxa_agree |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| codex (-) | 1 | 4 | 2 | 1 | 0 | 1 | 66.7% |
+| openrouter (qwen/qwen3.7-plus) | 2 | 4 | 3 | 0 | 1 | 0 | 75.0% |
+
+fora da conta: 2 (EXTERNAL_REVIEW_20260101-000003: auditor_exit 68; EXTERNAL_REVIEW_20260101-000004: sem auditor.verdicts.jsonl)
+RESULTADO: MEDIDO
+→ uma taxa_agree alta com poucos DISAGREE pode ser auditor complacente: compare com outra engine no papel de auditor.
+[rc=0]
+### AT-016: pasta só com revisões inúteis
+eval-agree — taxa de AGREE por auditor (3 pasta(s) lida(s) em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.pADQAiFmAv)
+fora da conta: 3 (EXTERNAL_REVIEW_20260101-000003: auditor_exit 68; EXTERNAL_REVIEW_20260101-000004: sem auditor.verdicts.jsonl; EXTERNAL_REVIEW_x-sem-meta: META ilegível)
+RESULTADO: SEM DADOS
+→ nenhuma revisão com auditoria completa nesta pasta: rode adversarial-review.sh e meça de novo.
+[rc=2]
+### AT-016: pasta vazia
+eval-agree — taxa de AGREE por auditor (0 pasta(s) lida(s) em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.yF6PMFZwUL)
+RESULTADO: SEM DADOS
+→ nenhuma revisão com auditoria completa nesta pasta: rode adversarial-review.sh e meça de novo.
+[rc=2]
+### AT-016: uso
+🛑 eval-agree: argumento a mais: b
+RESULTADO: PAROU
+→ rode `eval-agree.sh --help` para ver o uso.
+[rc=64]
+🛑 eval-agree: opção desconhecida: --x
+RESULTADO: PAROU
+→ rode `eval-agree.sh --help` para ver o uso.
+[rc=64]
+🛑 eval-agree: a pasta /nao/existe não existe
+RESULTADO: PAROU
+→ rode `eval-agree.sh --help` para ver o uso.
+[rc=64]
+### AT-017: grep
+[grep_rc=1 (1 = nada achado)]
+[exit=0]

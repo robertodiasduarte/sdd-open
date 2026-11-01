@@ -1,0 +1,26 @@
+$ C=$(mktemp -d); mkdir -p $C/sdd; cp -R /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/review $C/sdd/; grep -v '^openrouter	' /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/review/registry.tsv > $C/sdd/review/registry.tsv; echo '### registry sem openrouter'; /bin/bash $C/sdd/bin/adversarial-review-gate.sh; echo "[gate_rc=$?]"; cp /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/review/registry.tsv $C/sdd/review/registry.tsv; rm $C/sdd/review/stubs/respostas/auditor-sem-bloco.md; echo '### sem respostas/auditor-sem-bloco.md'; /bin/bash $C/sdd/bin/adversarial-review-gate.sh; echo "[gate_rc=$?]"; cp /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/review/stubs/respostas/auditor-sem-bloco.md $C/sdd/review/stubs/respostas/; rm $C/sdd/bin/adapters/gemini.sh; echo '### sem adapters/gemini.sh'; /bin/bash $C/sdd/bin/adversarial-review-gate.sh; echo "[gate_rc=$?]"; echo '### uso'; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin/adversarial-review-gate.sh --x; echo "[gate_rc=$?]"; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin/adversarial-review-gate.sh -v -q; echo "[gate_rc=$?]"; rm -rf $C
+### registry sem openrouter
+🛑 adversarial-review-gate: o registry /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.tf5LcPBU99/sdd/review/registry.tsv não tem a engine openrouter com adapter em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.tf5LcPBU99/sdd/bin/adapters
+RESULTADO: GATE QUEBRADO
+→ o gate prova as 4 engines do pacote: restaure a linha (o registry do pacote vem com as 4).
+[gate_rc=3]
+### sem respostas/auditor-sem-bloco.md
+🛑 adversarial-review-gate: stub ausente: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.tf5LcPBU99/sdd/review/stubs/respostas/auditor-sem-bloco.md
+RESULTADO: GATE QUEBRADO
+→ reinstale sdd/review/stubs/ (rode o init do sdd-open) e rode o gate de novo.
+[gate_rc=3]
+### sem adapters/gemini.sh
+🛑 adversarial-review-gate: o registry /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.tf5LcPBU99/sdd/review/registry.tsv não tem a engine gemini com adapter em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.tf5LcPBU99/sdd/bin/adapters
+RESULTADO: GATE QUEBRADO
+→ o gate prova as 4 engines do pacote: restaure a linha (o registry do pacote vem com as 4).
+[gate_rc=3]
+### uso
+🛑 adversarial-review-gate: argumento desconhecido: --x
+RESULTADO: PAROU
+→ rode `adversarial-review-gate.sh --help` para ver o uso.
+[gate_rc=64]
+🛑 adversarial-review-gate: argumento desconhecido: -q
+RESULTADO: PAROU
+→ rode `adversarial-review-gate.sh --help` para ver o uso.
+[gate_rc=64]
+[exit=0]

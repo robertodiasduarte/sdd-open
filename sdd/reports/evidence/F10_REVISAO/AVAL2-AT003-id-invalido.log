@@ -1,0 +1,42 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at003.sh
+=== revisor sem id (slot e flag vazios)
+🛑 adversarial-review: nenhum revisor: preencha review.revisor1 em sdd/config.yaml ou passe --reviewer (válidas: stub-a, stub-b, stub-c, stub-d)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0 pastas=0
+=== auditor sem id
+🛑 adversarial-review: nenhum auditor: preencha review.auditor em sdd/config.yaml ou passe --auditor (válidas: stub-a, stub-b, stub-c, stub-d)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0 pastas=0
+=== id desconhecido
+🛑 adversarial-review: engine desconhecida: 'stub-x' — válidas: stub-a, stub-b, stub-c, stub-d (registry: ../../../../../../../../Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/revisao/registry-stub.tsv; engine nova = 1 linha)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0 pastas=0
+=== id desconhecido no fim da lista do auditor
+🛑 adversarial-review: engine desconhecida: 'nada' — válidas: stub-a, stub-b, stub-c, stub-d (registry: ../../../../../../../../Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/revisao/registry-stub.tsv; engine nova = 1 linha)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0 pastas=0
+=== registry ilegível
+🛑 adversarial-review: registry ilegível: /nao/existe.tsv
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0 pastas=0
+=== linha com 8 colunas
+🛑 adversarial-review: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.tHKgXPNTwW/r8.tsv:1 tem 8 colunas (esperado 9, separadas por TAB)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0 pastas=0
+=== linha com 10 colunas
+🛑 adversarial-review: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.tHKgXPNTwW/r10.tsv:1 tem 10 colunas (esperado 9, separadas por TAB)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0 pastas=0
+=== slot revisor1 vazio entre aspas
+🛑 adversarial-review: nenhum revisor: preencha review.revisor1 em sdd/config.yaml ou passe --reviewer (válidas: stub-a, stub-b, stub-c, stub-d)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64] chamadas=0 pastas=0
+[exit=0]

@@ -1,0 +1,9 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/racy.sh
+15 iterações: git status viu a edição em 15 · o script viu em 15 · o script disse 'diff vazio' em 0
+=== mesma situação: o script dentro da mesma segundo vs depois de 'git status' (que reescreve o índice)
+script 2 s depois, sem git status antes: 🛑 adversarial-review: o diff contra HEAD está vazio: a revisão não teria o que revisar
+git diff HEAD --stat:  1 file changed, 2 insertions(+), 2 deletions(-)
+script depois do git diff: 🛑 adversarial-review: o diff contra HEAD está vazio: a revisão não teria o que revisar
+=== cópia do índice no script
+322:            shutil.copyfile(idx, tidx)
+[exit=0]

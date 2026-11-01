@@ -1,0 +1,7 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/sonda-diff-commit.sh
+antes do commit : 21d9116ae30212112da260c2c2481c2fe89dc8937460f7260ca94561e03bb704
+depois do commit: 21d9116ae30212112da260c2c2481c2fe89dc8937460f7260ca94561e03bb704
+IGUAL_APOS_COMMIT=sim
+depois do merge da main: 21d9116ae30212112da260c2c2481c2fe89dc8937460f7260ca94561e03bb704
+IGUAL_APOS_MERGE=sim
+[exit=0]

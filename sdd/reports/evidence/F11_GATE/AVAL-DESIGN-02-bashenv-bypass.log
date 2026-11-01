@@ -1,0 +1,17 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iNp6lMZaXH/sonda_bashenv.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate
+== A: controle (sem BASH_ENV)
+  pré-voo no shell do gate: command -v claude = /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.HybYceRziQ/stub/claude (type: file)
+  adversarial-review exit=0
+  marcas da CLI real/função: 
+  stub claude chamado: sim | stub codex chamado: sim
+== B: BASH_ENV do usuário põe a pasta da CLI real à frente
+  pré-voo no shell do gate: command -v claude = /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.HybYceRziQ/stub/claude (type: file)
+  adversarial-review exit=0
+  marcas da CLI real/função: CLI-REAL-chamada 
+  stub claude chamado: NÃO | stub codex chamado: sim
+== C: função exportada claude (export -f)
+  pré-voo no shell do gate: command -v claude = claude (type: function)
+  adversarial-review exit=0
+  marcas da CLI real/função: FUNCAO-claude-chamada 
+  stub claude chamado: NÃO | stub codex chamado: sim
+[exit=0]

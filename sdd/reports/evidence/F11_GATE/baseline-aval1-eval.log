@@ -1,0 +1,35 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_eval_agree.py' -k aval1
+FF
+======================================================================
+FAIL: test_aval1_l3_projeto_sem_revisoes_ainda_e_sem_dados (test_eval_agree.EvalAgree)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_eval_agree.py", line 86, in test_aval1_l3_projeto_sem_revisoes_ainda_e_sem_dados
+    self.assertEqual(rc, 2, out)
+AssertionError: 64 != 2 : 🛑 eval-agree: a pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-futh9feg/repo/sdd/reports/reviews não existe
+RESULTADO: PAROU
+→ rode `eval-agree.sh --help` para ver o uso.
+
+
+======================================================================
+FAIL: test_aval1_l4_sem_git_no_path_usa_a_pasta_atual (test_eval_agree.EvalAgree)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_eval_agree.py", line 101, in test_aval1_l4_sem_git_no_path_usa_a_pasta_atual
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "<stdin>", line 29, in <module>
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'git'
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.216s
+
+FAILED (failures=2)
+[exit=1]

@@ -1,0 +1,15 @@
+$ P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; R=$(mktemp -d) && O=$(mktemp -d) && cd $R && export GIT_CONFIG_GLOBAL=/dev/null && git init -q -b trabalho && echo 'meu codigo' > meu.txt && git add meu.txt && git -c user.name=u -c user.email=u@x -c commit.gpgsign=false commit -qm 'commit do usuario' && echo '### repo do usuário antes'; git branch -a; git log --oneline --all; echo '### gate com GIT_DIR do usuário herdado (ex.: chamado de um hook)'; cd $O && GIT_DIR=$R/.git /bin/bash $P/sdd/bin/adversarial-review-gate.sh > $O/gate.out 2>&1; echo "[gate_rc=$?]"; grep -E 'asserções|RESULTADO|GATE' $O/gate.out; echo '### repo do usuário depois'; cd $R && git branch -a; git log --oneline --all; git status --short; ls
+### repo do usuário antes
+* trabalho
+7abf5d1 commit do usuario
+### gate com GIT_DIR do usuário herdado (ex.: chamado de um hook)
+[gate_rc=1]
+### repo do usuário depois
+* feat
+  main
+  trabalho
+4ea8185 base
+7abf5d1 commit do usuario
+ D src/calculo.py
+meu.txt
+[exit=0]

@@ -1,0 +1,17 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a7.py AT033
+OK    design Review adversarial sem nome de engine 
+OK    build 0 sem nome de engine 
+OK    build 5c sem nome de engine 
+OK    release 0a item 8 sem nome de engine 
+OK    release fase1 3-4 sem nome de engine 
+OK    como-falar D3 sem nome de engine 
+OK    design Review adversarial manda rodar o script
+OK    design Review adversarial alimenta o loop
+OK    design Review adversarial revisor→auditor, nunca em paralelo
+OK    design Review adversarial registra no Advisor Ledger
+OK    build 5c manda rodar o script
+OK    build 5c alimenta o loop
+OK    build 5c revisor→auditor, nunca em paralelo
+OK    build 5c registra no Advisor Ledger
+OK    5c diz que a release exige a review
+[exit=0]

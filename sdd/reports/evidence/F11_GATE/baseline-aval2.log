@@ -1,0 +1,143 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_revisao_gate.py' -k aval2
+FF
+======================================================================
+FAIL: test_aval2_h1_git_dir_herdado_de_um_hook_nao_toca_o_repositorio_do_usuario (test_revisao_gate.Gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_revisao_gate.py", line 161, in test_aval2_h1_git_dir_herdado_de_um_hook_nao_toca_o_repositorio_do_usuario
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "<stdin>", line 155, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-review-gate-zbwkyu8w/repo/.git/info/exclude'
+
+
+======================================================================
+FAIL: test_aval2_l1_severidade_do_novo_e_conferida (test_revisao_gate.Gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_revisao_gate.py", line 140, in test_aval2_l1_severidade_do_novo_e_conferida
+    self.sabotado("sdd/bin/adversarial-review.sh",
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_revisao_gate.py", line 80, in sabotado
+    self.assertEqual(rc, 2, out)
+AssertionError: 0 != 2 : ── Gate offline da revisão adversarial (sem rede, sem crédito) ──
+Engines por stub: claude, codex, gemini, openrouter · registry: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-yjvfx3fn/pkg/sdd/review/registry.tsv
+▸ claude → codex
+  ✅ 1. claude → codex: exit
+  ✅ 2. claude → codex: achados e vereditos no META
+  ✅ 3. claude → codex: achados do revisor no jsonl
+  ✅ 4. claude → codex: vereditos do auditor no jsonl
+  ✅ 5. claude (revisor): engine efetiva
+  ✅ 6. claude (revisor): modelo de modelUsage
+  ✅ 7. claude (revisor): custo de total_cost_usd
+  ✅ 8. codex (auditor): engine efetiva
+  ✅ 9. codex (auditor): tokens de turn.completed
+  ✅ 10. codex (auditor): modelo e custo (a CLI não reporta)
+  ✅ 11. claude → codex: nenhuma engine fora do roteiro foi chamada
+  ✅ 12. claude → codex: chamadas por engine
+▸ codex → gemini
+  ✅ 13. codex → gemini: exit
+  ✅ 14. codex → gemini: achados e vereditos no META
+  ✅ 15. codex → gemini: achados do revisor no jsonl
+  ✅ 16. codex → gemini: vereditos do auditor no jsonl
+  ✅ 17. codex (revisor): engine efetiva
+  ✅ 18. codex (revisor): tokens de turn.completed
+  ✅ 19. codex (revisor): modelo e custo (a CLI não reporta)
+  ✅ 20. gemini (auditor): engine efetiva
+  ✅ 21. gemini (auditor): modelo de stats.models
+  ✅ 22. gemini (auditor): tokens de stats.models
+  ✅ 23. gemini (auditor): custo sem tarifa
+  ✅ 24. codex → gemini: nenhuma engine fora do roteiro foi chamada
+  ✅ 25. codex → gemini: chamadas por engine
+▸ gemini → openrouter
+  ✅ 26. gemini → openrouter: exit
+  ✅ 27. gemini → openrouter: achados e vereditos no META
+  ✅ 28. gemini → openrouter: achados do revisor no jsonl
+  ✅ 29. gemini → openrouter: vereditos do auditor no jsonl
+  ✅ 30. gemini (revisor): engine efetiva
+  ✅ 31. gemini (revisor): modelo de stats.models
+  ✅ 32. gemini (revisor): tokens de stats.models
+  ✅ 33. gemini (revisor): custo sem tarifa
+  ✅ 34. openrouter (auditor): engine efetiva
+  ✅ 35. openrouter (auditor): modelo e provedor
+  ✅ 36. openrouter (auditor): custo de usage.cost
+  ✅ 37. gemini → openrouter: nenhuma engine fora do roteiro foi chamada
+  ✅ 38. gemini → openrouter: chamadas por engine
+▸ openrouter → claude
+  ✅ 39. openrouter → claude: exit
+  ✅ 40. openrouter → claude: achados e vereditos no META
+  ✅ 41. openrouter → claude: achados do revisor no jsonl
+  ✅ 42. openrouter → claude: vereditos do auditor no jsonl
+  ✅ 43. openrouter (revisor): engine efetiva
+  ✅ 44. openrouter (revisor): modelo e provedor
+  ✅ 45. openrouter (revisor): custo de usage.cost
+  ✅ 46. claude (auditor): engine efetiva
+  ✅ 47. claude (auditor): modelo de modelUsage
+  ✅ 48. claude (auditor): custo de total_cost_usd
+  ✅ 49. openrouter → claude: nenhuma engine fora do roteiro foi chamada
+  ✅ 50. openrouter → claude: chamadas por engine
+▸ custo sem usage.cost
+  ✅ 51. openrouter sem-custo: exit
+  ✅ 52. openrouter (revisor, sem-custo): engine efetiva
+  ✅ 53. openrouter (revisor, sem-custo): modelo e provedor
+  ✅ 54. openrouter (revisor, sem-custo): custo estimado pelo precos.tsv
+  ✅ 55. openrouter sem-custo: nenhuma engine fora do roteiro foi chamada
+  ✅ 56. openrouter sem-custo: chamadas por engine
+  ✅ 57. openrouter modelo-sem-preco: exit
+  ✅ 58. openrouter (revisor, modelo-sem-preco): engine efetiva
+  ✅ 59. openrouter (revisor, modelo-sem-preco): modelo e provedor
+  ✅ 60. openrouter (revisor, modelo-sem-preco): custo estimado pelo precos.tsv
+  ✅ 61. openrouter modelo-sem-preco: nenhuma engine fora do roteiro foi chamada
+  ✅ 62. openrouter modelo-sem-preco: chamadas por engine
+▸ contrato
+  ✅ 63. auditor sem o bloco de vereditos: exit 68
+  ✅ 64. auditor sem o bloco: auditor_exit e nenhum auditor.verdicts.jsonl
+  ✅ 65. auditor sem o bloco: a saída diz REVIEW INVÁLIDA, não zero achados
+  ✅ 66. 68: nenhuma engine fora do roteiro foi chamada
+  ✅ 67. 68: chamadas por engine
+  ✅ 68. mesma engine revisa e audita: exit 67
+  ✅ 69. 67 (mesma engine): nenhuma engine fora do roteiro foi chamada
+  ✅ 70. 67 (mesma engine): chamadas por engine
+  ✅ 71. revisor caiu na engine do auditor: exit 67
+  ✅ 72. revisor caiu na engine do auditor: auditor excluído, revisor efetivo codex
+  ✅ 73. 67 (exclusão): nenhuma engine fora do roteiro foi chamada
+  ✅ 74. 67 (exclusão): chamadas por engine
+  ✅ 75. auditor com os 4 tipos de veredito: exit 0
+  ✅ 76. auditor com os 4 tipos de veredito: jsonl com DISAGREE_EVIDENCE, DISAGREE_CONCERN e NOVO
+  ✅ 77. auditor com os 4 tipos de veredito: META (vereditos, convergência, sem desempate em MED)
+  ✅ 78. vereditos mistos: nenhuma engine fora do roteiro foi chamada
+  ✅ 79. vereditos mistos: chamadas por engine
+  ✅ 80. falha de credencial (claude): exit 65 e parou nela
+  ✅ 81. falha de credencial (claude): sem troca de engine: nenhuma engine fora do roteiro foi chamada
+  ✅ 82. falha de credencial (claude): sem troca de engine: chamadas por engine
+  ✅ 83. falha de credencial (codex): exit 65 e parou nela
+  ✅ 84. falha de credencial (codex): sem troca de engine: nenhuma engine fora do roteiro foi chamada
+  ✅ 85. falha de credencial (codex): sem troca de engine: chamadas por engine
+  ✅ 86. falha de credencial (gemini): exit 65 e parou nela
+  ✅ 87. falha de credencial (gemini): sem troca de engine: nenhuma engine fora do roteiro foi chamada
+  ✅ 88. falha de credencial (gemini): sem troca de engine: chamadas por engine
+  ✅ 89. falha de credencial (openrouter): exit 65 e parou nela
+  ✅ 90. falha de credencial (openrouter): sem troca de engine: nenhuma engine fora do roteiro foi chamada
+  ✅ 91. falha de credencial (openrouter): sem troca de engine: chamadas por engine
+  ✅ 92. 429 no codex: exit 0 na mesma engine
+  ✅ 93. 429 (codex): nenhuma engine fora do roteiro foi chamada
+  ✅ 94. 429 (codex): chamadas por engine
+  ✅ 95. 429 HTTP na OpenRouter: exit 0 na mesma engine
+  ✅ 96. 429 (openrouter): nenhuma engine fora do roteiro foi chamada
+  ✅ 97. 429 (openrouter): chamadas por engine
+  ✅ 98. cota no gemini: a próxima engine da lista revisou
+  ✅ 99. cota (gemini → claude): nenhuma engine fora do roteiro foi chamada
+  ✅ 100. cota (gemini → claude): chamadas por engine
+▸ privacidade
+  ✅ 101. a OpenRouter recebeu Authorization: Bearer <chave gerada>
+  ✅ 102. a OpenRouter recebeu provider.data_collection = deny
+  ✅ 103. a chave não aparece em nenhum arquivo das revisões
+103 asserções, 0 falha(s) em 6 s
+RESULTADO: GATE VERDE
+→ os 4 adapters leem a saída das engines e a revisão segue o contrato; a revisão real continua sendo a prova contra a CLI de hoje.
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 6.289s
+
+FAILED (failures=2)
+[exit=1]

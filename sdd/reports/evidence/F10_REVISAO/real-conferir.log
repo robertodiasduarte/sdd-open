@@ -1,0 +1,6 @@
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261031-233526
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261031-233526 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-233526 sha256=3d50248ea7c413f52da52a15d47d87ae6a5d9b34eeb110b5c705ab146281fbac diversidade=vendor
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[exit=0]

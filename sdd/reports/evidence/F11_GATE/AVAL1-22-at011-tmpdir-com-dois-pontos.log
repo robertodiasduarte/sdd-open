@@ -1,0 +1,7 @@
+$ W=/tmp/aval1-f11.wvW4zp; T=$(mktemp -d)/a:b; mkdir -p "$T"; rm -f $W/marca-real; TMPDIR="$T" PATH=$W/real:$PATH /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin/adversarial-review-gate.sh; echo "[gate_rc=$?]"; echo "marca-real: $(cat $W/marca-real 2>/dev/null || echo nenhuma)"
+🛑 adversarial-review-gate: no shell que roda os adapters, `claude` resolve para '/tmp/aval1-f11.wvW4zp/real/claude', não para o stub em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ltIjoqbW40/a:b/sdd-review-gate-s6mr9yua/bin
+RESULTADO: GATE QUEBRADO
+→ rode o gate num terminal sem função `claude` exportada e sem BASH_ENV que mude o PATH.
+[gate_rc=3]
+marca-real: nenhuma
+[exit=0]

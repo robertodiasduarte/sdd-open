@@ -1,0 +1,35 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at015.sh
+=== escolha: 1ª linha com papel revisor, disponível, fora do revisor e do auditor (a revisa, c audita → b? b só auditor → d)
+▶ revisor: e-a (revisor-ok) — até 1 min
+▶ 2º revisor: e-d (rev-s) — até 1 min
+▶ auditor: e-c (auditor-agree) — até 1 min
+RESULTADO: REVIEW COMPLETA
+gatilho_2o_revisor      : segurança (src/auth.sh)
+revisor2_engine         : e-d
+revisor2_exit           : 0
+reviewer.verdicts:
+{"achado": "R1@e-a", "arquivo": "src/conta.sh", "linha": 12, "severidade": "HIGH", "confianca": "CONFIRMED", "resumo": "divisão por zero com lista vazia"}
+{"achado": "R2@e-a", "arquivo": "src/conta.sh", "linha": 30, "severidade": "MED", "confianca": "PLAUSIBLE", "resumo": "arredondamento perde centavos"}
+reviewer2.verdicts:
+{"achado": "S1@e-d", "arquivo": "src/conta.sh", "linha": 12, "severidade": "HIGH", "confianca": "CONFIRMED", "resumo": "divisão por zero com lista vazia"}
+{"achado": "S2@e-d", "arquivo": "src/conta.sh", "linha": 30, "severidade": "MED", "confianca": "PLAUSIBLE", "resumo": "arredondamento perde centavos"}
+=== nenhuma disponível → indisponível / 67, auditor ainda roda
+▶ revisor: e-a (revisor-ok) — até 1 min
+▶ auditor: e-c (auditor-agree) — até 1 min
+⚠️ o 2º revisor (nenhuma engine) não tinha engine disponível: a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+2º revisor: indisponível (n/d) — n/d
+revisor2_engine         : indisponível
+revisor2_exit           : 67
+auditor_exit            : 0
+=== 2º revisor que falha com 68 (fora do formato): ⚠️ e o auditor roda sobre o 1º
+▶ revisor: e-a (revisor-ok) — até 1 min
+▶ 2º revisor: e-x (revisor-sem-bloco) — até 1 min
+▶ auditor: e-c (auditor-agree) — até 1 min
+⚠️ o 2º revisor (e-x) falhou (e-x: bloco <<<VERDICTS ausente ou malformado): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+2º revisor: e-x (stub-modelo) — incluído na assinatura
+revisor2_engine         : e-x
+revisor2_exit           : 68
+auditor_exit            : 0
+[exit=0]

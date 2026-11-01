@@ -1,0 +1,54 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at039.py
+== limpo: rc revisao=1 fluxo=0 · Ran 70 tests in 45.219s | FAILED (errors=1) | Ran 59 tests in 10.273s | OK
+    test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1)
+== exclusao: rc revisao=1 fluxo=0 · Ran 70 tests in 45.426s | FAILED (failures=1, errors=1) | Ran 59 tests in 10.254s | OK
+    test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1)
+    test_auditor_igual_ao_revisor_e_67_sem_chamar_nada (test_revisao.Exclusao)
+== vereditos: rc revisao=1 fluxo=0 · Ran 70 tests in 45.561s | FAILED (failures=2, errors=1) | Ran 59 tests in 10.227s | OK
+    test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1)
+    test_r5_revisao_invalida_nao_grava_jsonl (test_revisao.RevisaoReal)
+    test_revisor_sem_bloco_e_68_e_nunca_zero_achados (test_revisao.Vereditos)
+== classe-auth: rc revisao=1 fluxo=0 · Ran 70 tests in 45.294s | FAILED (failures=4, errors=1) | Ran 59 tests in 10.204s | OK
+    test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1)
+    test_auth_para_sem_chamar_a_proxima (test_revisao.Falhas)
+    test_openrouter_401_e_auth (test_revisao_adapters.Invocacao)
+    test_openrouter_sem_chave_e_65_com_onde_ela_mora (test_revisao_adapters.Invocacao)
+    test_segundo_revisor_que_falha_nao_derruba_a_cadeia (test_revisao.SegundoRevisor)
+== custo-fallback: rc revisao=1 fluxo=0 · Ran 70 tests in 45.056s | FAILED (failures=3, errors=1) | Ran 59 tests in 10.253s | OK
+    test_2_custo_todo_desconhecido_nunca_e_zero (test_revisao.AvaliadorCiclo1)
+    test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1)
+    test_gemini_e_modelo_explicito (test_revisao_adapters.Invocacao)
+    test_quatro_formas_e_nunca_zero_desconhecido (test_revisao.Custo)
+== conferir-sha: rc revisao=1 fluxo=0 · Ran 70 tests in 44.207s | FAILED (failures=1) | Ran 59 tests in 9.864s | OK
+    test_confere_e_deixa_de_conferir_com_1_byte (test_revisao.Conferir)
+== revisor2-gatilho: rc revisao=1 fluxo=0 · Ran 70 tests in 37.001s | FAILED (failures=2, errors=7) | Ran 59 tests in 9.825s | OK
+    test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3 (test_revisao.AvaliadorCiclo1)
+    test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem (test_revisao.AvaliadorCiclo1)
+    test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1)
+    test_escolhe_a_primeira_disponivel_fora_do_revisor_e_do_auditor_e_rotula (test_revisao.SegundoRevisor)
+    test_indisponivel_registra_67_avisa_e_o_auditor_roda (test_revisao.SegundoRevisor)
+    test_raso_aciona_o_segundo_revisor (test_revisao.SegundoRevisor)
+    test_segundo_revisor_que_falha_nao_derruba_a_cadeia (test_revisao.SegundoRevisor)
+    test_segundo_revisor_sem_resultado_exige_dispensa (test_revisao.Conferir)
+== desempate-loop: rc revisao=1 fluxo=1 · Ran 70 tests in 43.977s | FAILED (failures=1) | Ran 59 tests in 9.830s | FAILED (failures=1)
+    test_desempate_refutado_fecha_e_procede_mantem_aberto (test_fluxo.LoopF10)
+    test_refutado_fecha_no_loop (test_revisao.Desempate)
+== loop-r2-D3: rc revisao=1 fluxo=1 · Ran 70 tests in 44.065s | FAILED (failures=2) | Ran 59 tests in 9.901s | FAILED (failures=2)
+    test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3 (test_revisao.AvaliadorCiclo1)
+    test_dispensa_de_outra_rodada_nao_vale (test_fluxo.LoopF10)
+    test_indisponivel_registra_67_avisa_e_o_auditor_roda (test_revisao.SegundoRevisor)
+    test_segundo_revisor_indisponivel_sem_dispensa_e_bloqueado_d3 (test_fluxo.LoopF10)
+== c1-HIGH-ultimo: rc revisao=1 fluxo=0 · Ran 70 tests in 43.500s | FAILED (failures=4) | Ran 59 tests in 9.899s | OK
+    test_1_desempate_que_falhou_registra_a_engine (test_revisao.AvaliadorCiclo1)
+    test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3 (test_revisao.AvaliadorCiclo1)
+    test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem (test_revisao.AvaliadorCiclo1)
+== c1-custo-total: rc revisao=1 fluxo=0 · Ran 70 tests in 41.564s | FAILED (failures=1) | Ran 59 tests in 9.407s | OK
+    test_2_custo_todo_desconhecido_nunca_e_zero (test_revisao.AvaliadorCiclo1)
+== c1-U3: rc revisao=1 fluxo=0 · Ran 70 tests in 42.308s | FAILED (failures=1) | Ran 59 tests in 9.429s | OK
+    test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1)
+== c1-docs-sdd: rc revisao=1 fluxo=0 · Ran 70 tests in 42.126s | FAILED (failures=2) | Ran 59 tests in 9.463s | OK
+    test_4_docs_sdd_sem_o_brainstorm_descartado (test_revisao.AvaliadorCiclo1)
+    test_contexto_na_ordem_e_brainstorm_sai_primeiro (test_revisao.Contexto)
+== c1-diversidade: rc revisao=1 fluxo=0 · Ran 70 tests in 42.185s | FAILED (failures=1) | Ran 59 tests in 9.450s | OK
+    test_5_auditor_excluido_nao_e_diversidade_nenhuma (test_revisao.AvaliadorCiclo1)
+[exit=0]

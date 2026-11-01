@@ -1,0 +1,20 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/c3b.sh
+referência (config vazia): 8ea824b39862ddc8aa7ea3c7a7b956b38f444fb97e144c366bee1fea65e5802a
+--- diff.orderFile (arquivo de ordem do usuário: zzz antes de conta)
+sha=eacdc2b5a1965625960f4e70c787ec65f3099d66a4d80877872ba25b4bf3a0ab
+SHA MUDOU
+diff --git a/src/zzz.sh b/src/zzz.sh
+diff --git a/src/novo.sh b/src/novo.sh
+diff --git a/src/conta.sh b/src/conta.sh
+diff --git a/sdd/config.yaml b/sdd/config.yaml
+--- --conferir depois de o usuário tirar o diff.orderFile
+## /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/bin/adversarial-review.sh --conferir
+🛑 adversarial-review: o código mudou depois da revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001924 (sha256 diferente)
+RESULTADO: NÃO CONFERE
+→ rode a revisão de novo sobre esta versão.
+[rc=2]
+--- textconv do usuário (core.attributesFile + diff.up.textconv=/usr/bin/tr a-z A-Z)
+🛑 adversarial-review: git diff falhou: usage: tr [-Ccsu] string1 string2
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[exit=0]

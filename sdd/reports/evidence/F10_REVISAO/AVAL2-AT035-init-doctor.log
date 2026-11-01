@@ -1,0 +1,24 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at035.sh
+=== init --yes num projeto vazio
+[init rc=0]
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+  sdd/review/registry.tsv copiado, igual ao pacote: True
+  sdd/review/precos.tsv copiado, igual ao pacote: True
+  sdd/review/prompts/reviewer.md copiado, igual ao pacote: True
+  sdd/review/prompts/auditor.md copiado, igual ao pacote: True
+  sdd/review/prompts/desempate.md copiado, igual ao pacote: True
+  sdd/bin/adapters/claude.sh copiado, igual ao pacote: True
+  sdd/bin/adapters/codex.sh copiado, igual ao pacote: True
+  sdd/bin/adapters/gemini.sh copiado, igual ao pacote: True
+  sdd/bin/adapters/openrouter.sh copiado, igual ao pacote: True
+  sdd/bin/adversarial-review.sh copiado, igual ao pacote: True
+=== editar o registry e apagar um adapter; init de novo
+[init rc=0]
+  edição preservada: # edição local
+  gemini.sh recriado: sim
+=== doctor com adapter desatualizado
+[doctor rc=0]
+8:⚠️  sdd/bin/adapters/codex.sh difere do pacote — se você não editou, apague e rode init
+[exit=0]

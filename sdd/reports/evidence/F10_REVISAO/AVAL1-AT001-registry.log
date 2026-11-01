@@ -1,0 +1,15 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a1.sh AT001
+engines: ['claude', 'codex', 'gemini', 'openrouter']
+colunas: [9, 9, 9, 9]
+cabecalho descreve na ordem: [3, 4, 5, 6, 7, 8, 9, 10, 11] ordem ok: True
+codex -s read-only na invocacao: True ['set -- exec -s read-only --skip-git-repo-check --ephemeral --json']
+caminho_cfg revisor1/auditor com padrão: []
+config.example: ['  revisor1: ""', '  auditor: ""']
+--- sem slot e sem flag (registry de fábrica) → precisa parar, nunca escolher sozinho
++ adversarial-review.sh --base main
+🛑 adversarial-review: nenhum revisor: preencha review.revisor1 em sdd/config.yaml ou passe --reviewer (válidas: claude, codex, gemini, openrouter)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+[exit=0]

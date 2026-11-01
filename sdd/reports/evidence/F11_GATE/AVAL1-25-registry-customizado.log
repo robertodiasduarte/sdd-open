@@ -1,0 +1,15 @@
+$ C=$(mktemp -d); mkdir -p $C/sdd; cp -R /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/review $C/sdd/; /usr/bin/python3 -I -c 'import sys; p=sys.argv[1]; L=open(p).read().splitlines(); out=[]
+for l in L:
+    c=l.split("\t")
+    if c[0]=="codex": c[2]="gpt-5-codex"
+    if c[0]=="gemini": c[2]="gemini-2.5-pro"
+    if c[0]=="openrouter": c[2]="deepseek/deepseek-v4-flash"
+    out.append("\t".join(c))
+open(p,"w").write("\n".join(out)+"\n")' $C/sdd/review/registry.tsv; grep -v '^#' $C/sdd/review/registry.tsv | cut -f1-4; /bin/bash $C/sdd/bin/adversarial-review-gate.sh -v > $C/out 2>&1; rc=$?; grep -E -A2 '❌' $C/out; grep -E 'asserções|RESULTADO' $C/out; rm -rf $C; exit $rc
+claude	claude	-	assinatura
+codex	codex	gpt-5-codex	assinatura
+gemini	gemini	gemini-2.5-pro	desconhecida
+openrouter	openrouter	deepseek/deepseek-v4-flash	pay-per-token
+90 asserções, 0 falha(s) em 6 s
+RESULTADO: GATE VERDE
+[exit=0]

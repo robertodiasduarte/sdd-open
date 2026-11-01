@@ -1,0 +1,7 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a8.sh AT030
+desempate REFUTADO, ledger vazio (fecha → esperado 0): ESTADO: PRONTO motivo: refutado(s) com evidência (auditor + desempate): R1 RESULTADO: PRONTO [rc=0]
+desempate PROCEDE, ledger vazio (aberto, não impasse → 10): ESTADO: CONTINUAR motivo: grave(s) sem veredito no ledger: R1 RESULTADO: CONTINUAR [rc=10]
+sem decisão (D5 → 20): ESTADO: BLOQUEADO motivo: D5 impasse de evidência: grave(s) refutado(s) pelo auditor sem veredito no ledger: R1 RESULTADO: BLOQUEADO [rc=20]
+decisão não exata (D5 → 20): ESTADO: BLOQUEADO motivo: D5 impasse de evidência: grave(s) refutado(s) pelo auditor sem veredito no ledger: R1 RESULTADO: BLOQUEADO [rc=20]
+alvo é outro id (D5 → 20): ESTADO: BLOQUEADO motivo: D5 impasse de evidência: grave(s) refutado(s) pelo auditor sem veredito no ledger: R1 RESULTADO: BLOQUEADO [rc=20]
+[exit=0]

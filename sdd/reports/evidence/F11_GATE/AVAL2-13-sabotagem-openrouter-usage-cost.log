@@ -1,0 +1,11 @@
+$ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/sabota.sh openrouter-usage-cost sdd/bin/adapters/openrouter.sh 'custo = u.get("cost") if isinstance(u.get("cost"), (int, float)) else None' 'custo = u.get("costs") if isinstance(u.get("costs"), (int, float)) else None'
+### sabotagem openrouter-usage-cost em sdd/bin/adapters/openrouter.sh
+  ❌ 36. openrouter (auditor): custo de usage.cost
+        → lido '≈US$ 0.0006', esperado 'US$ 0.0012'
+  ❌ 45. openrouter (revisor): custo de usage.cost
+        → lido '≈US$ 0.0010', esperado 'US$ 0.0031'
+103 asserções, 2 falha(s) em 7 s
+RESULTADO: GATE VERMELHO
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+[gate_rc=2]
+[exit=2]

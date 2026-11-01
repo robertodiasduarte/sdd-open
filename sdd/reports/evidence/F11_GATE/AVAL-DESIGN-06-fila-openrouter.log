@@ -1,0 +1,11 @@
+$ grep -n "sobe sdd/review/stubs/openrouter\|SDD_STUB_<ENGINE>=fila\|engine sem fila\|Engine sem fila\|os.environ.get(\"SDD_STUB\|sys.exit(99)\|SDD_STUB_ESTADO=<tmp>/estado-N\|o servidor do openrouter escreveu a porta" sdd/features/DESIGN_F11_GATE.md
+28:   ├─ sobe sdd/review/stubs/openrouter.py (127.0.0.1:0)   └─ tabela + "fora da conta" → exit 0 | 2 | 64
+31:        SDD_STUB_<ENGINE>=fila de cenários ─┐
+38:              ▼                              │  engine sem fila → sentinela + exit 99
+73:- Fila: `SDD_STUB_<ENGINE>` (ex.: `SDD_STUB_CODEX=429,revisor`) é consumida uma entrada por chamada, com contador em `SDD_STUB_ESTADO/<engine>.n`; cada chamada grava `SDD_STUB_ESTADO/<engine>.<n>.argv` e `.entrada`. Engine sem fila ⇒ grava `<engine>` em `SDD_STUB_ESTADO/sentinela` e sai 99.
+102:- Pré-voo (AT-011), antes de qualquer chamada: os 4 `<engine>.py`, `comum.py` e `cenarios.tsv` existem; `command -v claude|codex|gemini` resolve para `<tmp>/bin`; o registry do pacote tem as 4 engines com adapter existente; o servidor do openrouter escreveu a porta em ≤ 5 s. Falhou ⇒ exit 3 nomeando o item.
+274:    est = os.environ.get("SDD_STUB_ESTADO") or ""
+275:    fila = [c for c in (os.environ.get("SDD_STUB_" + engine.upper()) or "").split(",") if c]
+279:        sys.exit(99)                                   # engine fora do teste: nunca responde
+324:3. por cenário: SDD_STUB_<ENGINE>=fila; SDD_STUB_ESTADO=<tmp>/estado-N
+[exit=0]

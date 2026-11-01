@@ -1,0 +1,33 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/sonda-flags.sh
+claude: /Users/robertoduarte/.local/bin/claude
+codex: /opt/homebrew/bin/codex
+gemini: /opt/homebrew/bin/gemini
+claude --version: 2.1.314 (Claude Code)
+claude: \-p, --print — presente
+claude: --output-format — presente
+claude: --tools  — presente
+claude: --safe-mode — presente
+claude: --no-session-persistence — presente
+claude: --model — presente
+claude: --bare — presente
+codex --version: codex-cli 0.163.0
+codex exec: \-s, --sandbox — presente
+codex exec: read-only — presente
+codex exec: --skip-git-repo-check — presente
+codex exec: --ephemeral — presente
+codex exec: --json — presente
+codex exec: \-m, --model — presente
+3:Usage: codex exec [OPTIONS] [PROMPT]
+13:  [PROMPT]
+15:          instructions are read from stdin. If stdin is piped and a prompt is also provided, stdin
+16:          is appended as a `<stdin>` block
+38:          Optional image(s) to attach to the initial prompt
+gemini --version: 0.22.2
+gemini: \-o, --output-format — presente
+gemini: --approval-mode — presente
+gemini: \-m, --model — presente
+20:      --approval-mode             Set the approval mode: default (prompt for approval), auto_edit (auto-approve edit tools), yolo (auto-approve all tools)  [string] [choices: "default", "auto_edit", "yolo"]
+21-      --experimental-acp          Starts the agent in ACP mode  [boolean]
+22-      --allowed-mcp-server-names  Allowed MCP server names  [array]
+flags ausentes: 0
+[exit=0]

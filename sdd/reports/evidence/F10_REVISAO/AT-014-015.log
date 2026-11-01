@@ -1,0 +1,14 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_revisao.SegundoRevisor
+test_author_nao_e_superficie_de_seguranca (test_revisao.SegundoRevisor) ... ok
+test_escolhe_a_primeira_disponivel_fora_do_revisor_e_do_auditor_e_rotula (test_revisao.SegundoRevisor) ... ok
+test_gatilhos_e_constantes (test_revisao.SegundoRevisor) ... ok
+test_indisponivel_registra_67_avisa_e_o_auditor_roda (test_revisao.SegundoRevisor) ... ok
+test_no_revisor2_registra_o_porque (test_revisao.SegundoRevisor) ... ok
+test_raso_aciona_o_segundo_revisor (test_revisao.SegundoRevisor) ... ok
+test_segundo_revisor_que_falha_nao_derruba_a_cadeia (test_revisao.SegundoRevisor) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 3.402s
+
+OK
+[exit=0]

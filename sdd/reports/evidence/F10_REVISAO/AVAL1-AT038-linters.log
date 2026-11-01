@@ -1,0 +1,27 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval && set -o pipefail; r=0; echo "+ skill-lint --conversa"; /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md 2>&1 | tail -4 || r=1; echo "+ decisoes-lint --sites"; /bin/bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills sdd/templates/fragments 2>&1 | tail -6 || r=1; /bin/bash sdd/bin/sdd-decisoes-lint.sh --self-test 2>&1 | tail -2 || r=1; echo "+ playbook-lint --self-test"; /bin/bash sdd/bin/playbook-lint.sh --self-test 2>&1 | tail -2 || r=1; echo "+ check-versions --base v2.2.10 --base-obrigatoria"; /usr/bin/python3 -B scripts/check-versions.py --base v2.2.10 --base-obrigatoria 2>&1 | tail -6 || r=1; echo "+ sdd-fluxo --self-test"; /bin/bash sdd/bin/sdd-fluxo.sh --self-test 2>&1 | tail -2 || r=1; echo "+ verify-gate --strict no DEFINE"; /bin/bash sdd/bin/verify-gate.sh --help 2>&1 | head -3; echo "+ bash 3.2: proibidos nos scripts novos"; grep -n -E "mapfile|declare -A|\\$\\{[A-Za-z_]+\\^\\^\\}" sdd/bin/adversarial-review.sh sdd/bin/adapters/*.sh sdd/fixtures/revisao/adapters/stub.sh sdd/bin/sdd-fluxo.sh && r=1; for f in sdd/bin/adversarial-review.sh sdd/bin/adapters/*.sh sdd/fixtures/revisao/adapters/stub.sh; do /bin/bash -n $f || r=1; done; echo "bash -n ok"; exit $r
++ skill-lint --conversa
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
++ decisoes-lint --sites
+🟢 sdd-decisoes-lint --sites: 18 pergunta(s) em 18 arquivo(s), cada uma com a marca de classe e no formato.
+RESULTADO: VERDE
+→ as 4 fixtures reprovam pelo motivo certo e o controle passa.
++ playbook-lint --self-test
+  ✅ --anti-collapse só CONTINUAÇÃO de LM-005 reescrita (1/5) ⇒ conta como alterado (20%) → exit 0
+🟢 self-test: todos os baselines vermelhos e verdes confirmados
++ check-versions --base v2.2.10 --base-obrigatoria
+PASS: check-versions — 17 skills com versão coerente, comparadas a v2.2.10.
+RESULTADO: VERDE
+→ siga para o próximo passo.
++ sdd-fluxo --self-test
+RESULTADO: VERDE
+→ todos os cenários bateram.
++ verify-gate --strict no DEFINE
+🛑 uso: sdd/bin/verify-gate.sh [--print] [--strict] <DEFINE.md> | --sem-define <FEATURE>
+   (arquivo não encontrado: '--help')
+RESULTADO: SPEC INVÁLIDA
++ bash 3.2: proibidos nos scripts novos
+bash -n ok
+[exit=0]

@@ -1,0 +1,11 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/sonda-ledger-worktree.sh
+na worktree da frente: META existe? sim
+no worktree temporário (passo 5): ledger existe? sim
+no worktree temporário (passo 5): sdd/reports/reviews/EXTERNAL_REVIEW_20261031-120000/META.txt existe? nao
+--- publish-gate [0-9]{11,} contra números típicos das saídas medidas (fixtures saidas/*.json):
+REPROVA  "total_cost_usd":0.06264225000000001
+passa    "cost":0.0001792
+passa    "created":1761868800
+REPROVA  "created_at":1761868800123
+REPROVA  diff_sha256 : 3aa23ed3617d0e8d8c4e9d51149be05cbf7c1a466403738843c91f5576474265
+[exit=0]

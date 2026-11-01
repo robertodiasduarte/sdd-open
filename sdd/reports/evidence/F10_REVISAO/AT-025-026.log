@@ -1,0 +1,12 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_revisao.Conferir
+test_confere_e_deixa_de_conferir_com_1_byte (test_revisao.Conferir) ... ok
+test_ledger (test_revisao.Conferir) ... ok
+test_ledger_de_outra_worktree_diz_onde_rodar (test_revisao.Conferir) ... ok
+test_segundo_revisor_sem_resultado_exige_dispensa (test_revisao.Conferir) ... ok
+test_sem_revisao_nao_confere (test_revisao.Conferir) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 3.592s
+
+OK
+[exit=0]

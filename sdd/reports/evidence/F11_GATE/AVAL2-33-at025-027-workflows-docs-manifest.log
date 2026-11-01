@@ -1,0 +1,15 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; echo '### AT-025'; for f in .github/workflows/release.yml .github/workflows/publish-gate.yml; do /usr/bin/python3 -I -c 'import re,sys; t=open(sys.argv[1]).read(); m=re.search(r"(?ms)^  testes-macos:\n(.*?)(?=^  \S|\Z)", t); print(sys.argv[1], re.findall(r"timeout-minutes:\s*(\d+)", m.group(1)) if m else "SEM JOB testes-macos")' $f; done; echo '### AT-026'; for d in docs/adversarial-review.md docs/pt-BR/adversarial-review.md; do echo "$d: gate=$(grep -c 'adversarial-review-gate.sh' $d) eval-agree=$(grep -c 'eval-agree' $d) taxa_agree=$(grep -c 'taxa_agree' $d)"; done; echo "roadmap EN 'Adversarial review': $(grep -ci 'adversarial review' docs/roadmap.md)"; echo "roadmap PT: $(grep -ciE 'revis[ãa]o adversarial|adversarial review' docs/pt-BR/roadmap.md)"; echo '### AT-027 MANIFEST: arquivos novos desde v2.3.0 fora do MANIFEST (exceto tests/)'; git diff --name-only --diff-filter=A v2.3.0 HEAD | grep -v '^tests/' | while read f; do grep -qxF "$f" MANIFEST.txt || echo "FALTA: $f"; done; echo '### AT-027 MANIFEST: entradas que não existem'; while read f; do [ -e "$f" ] || echo "NAO EXISTE: $f"; done < MANIFEST.txt; echo '### AT-027 bash 3.2 grep'; grep -nE 'mapfile|readarray|declare -A|\$\{[A-Za-z_]+\^\^|\$\{[A-Za-z_]+,,' sdd/bin/adversarial-review-gate.sh sdd/bin/eval-agree.sh sdd/bin/adapters/gemini.sh; echo "[grep32_rc=$? (1 = nada)]"; /bin/bash -n sdd/bin/adversarial-review-gate.sh && /bin/bash -n sdd/bin/eval-agree.sh && echo 'bash -n ok'
+### AT-025
+.github/workflows/release.yml ['30']
+.github/workflows/publish-gate.yml ['30']
+### AT-026
+docs/adversarial-review.md: gate=1 eval-agree=2 taxa_agree=1
+docs/pt-BR/adversarial-review.md: gate=1 eval-agree=2 taxa_agree=1
+roadmap EN 'Adversarial review': 0
+roadmap PT: 0
+### AT-027 MANIFEST: arquivos novos desde v2.3.0 fora do MANIFEST (exceto tests/)
+### AT-027 MANIFEST: entradas que não existem
+### AT-027 bash 3.2 grep
+[grep32_rc=1 (1 = nada)]
+bash -n ok
+[exit=0]
