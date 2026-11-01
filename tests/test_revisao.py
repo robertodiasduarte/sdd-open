@@ -873,8 +873,12 @@ class AvaliadorCiclo2(Base):
     def test_1_edicao_do_mesmo_tamanho_no_mesmo_instante_do_indice_entra_no_diff(self):
         r = self.projeto()
         self.git(r, "config", "core.trustctime", "false")   # o ctime não volta; sem isto o git o compararia
-        self.longo(r)
-        arq = r / "longo.txt"
+        arq = self.escreve(r, "longo.txt", "".join("linha %02d\n" % k for k in range(60)))
+        # o arquivo nasce 100 s no passado: o índice guarda esse mtime no commit, e o índice "agora" de uma
+        # cópia sem o mtime original (copyfile) fica longe dele em qualquer relógio, com ou sem nanossegundos
+        antigo = os.stat(str(arq)).st_mtime_ns - 100 * 10 ** 9
+        os.utime(str(arq), ns=(antigo, antigo))
+        self.commit(r, "longo")
         st = os.stat(str(arq))
         arq.write_text(ler(arq).replace("linha 30", "mudou 30"), encoding="utf-8")
         self.assertEqual(os.stat(str(arq)).st_size, st.st_size)
