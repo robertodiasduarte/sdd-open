@@ -7,8 +7,8 @@
   - `sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md`, com o estado em `v2.2.3`;
   - `/Users/robertoduarte/RDD/Wordpress/.claude/sdd/reports/PORTE_SDD_PRIVADO_PARA_OPEN_2026-10-29.md`, o plano do porte privado → open em ondas W0–W5, chamado aqui de **PORTE**;
   - `/Users/robertoduarte/RDD/Wordpress/.claude/sdd/reports/evidence/PORTE_SDD_OPEN/REVIEW-deepseek-2026-10-29.md`, a revisão externa do PORTE, chamada aqui de **REVIEW**.
-- **Status:** proposta, versão 1.3. Nenhum código mudou. Os itens marcados com **decidir** vão para o brainstorm da frente correspondente.
-- **Revisões:** 29/10 — 1ª versão (F4–F6 cruzadas com o PORTE). 29/10 — Roberto pediu frentes próprias para o porte: as ondas W1–W5 viram **F7–F14** (seção 8), com o mapa item a item (seção 9). 29/10 — auditoria de cobertura contra o PORTE: entraram os 9 princípios (8.0), os detalhes técnicos por frente (8.1), os slots com valor e unidade (8.2), as fontes no privado com o que generalizar (8.3) e as linhas que faltavam no mapa (seção 9). O plano passa a bastar sozinho: o PORTE fica como fonte histórica. 29/10 — v1.3: Roberto fixou os 4 parâmetros de verificação do programa (seção 0), pediu a tabela de degradação por vendor (8.0) e o teste de agnosticismo na F4 (item G), e definiu o fim do programa como **substituir o SDD privado pelo Open** (F15).
+- **Status:** proposta, versão 1.4. Nenhum código mudou. Os itens marcados com **decidir** vão para o brainstorm da frente correspondente.
+- **Revisões:** 29/10 — 1ª versão (F4–F6 cruzadas com o PORTE). 29/10 — Roberto pediu frentes próprias para o porte: as ondas W1–W5 viram **F7–F14** (seção 8), com o mapa item a item (seção 9). 29/10 — auditoria de cobertura contra o PORTE: entraram os 9 princípios (8.0), os detalhes técnicos por frente (8.1), os slots com valor e unidade (8.2), as fontes no privado com o que generalizar (8.3) e as linhas que faltavam no mapa (seção 9). O plano passa a bastar sozinho: o PORTE fica como fonte histórica. 29/10 — v1.3: Roberto fixou os 4 parâmetros de verificação do programa (seção 0), pediu a tabela de degradação por vendor (8.0) e o teste de agnosticismo na F4 (item G), e definiu o fim do programa como **substituir o SDD privado pelo Open** (F15). 02/11 — v1.4: Roberto incluiu a **F16 Ambiente agnóstico e proativo** (seção 8, depois da F15): `gh` no pré-voo, editor agnóstico e modo terminal, implementados **no Open** (escopo em `sdd/features/ESCOPO_F16_AMBIENTE.md`); e a **F17 Starter gerado a partir do Open**, que dá número à Decisão 5 e leva a F16 ao starter (sem remendo no starter até lá). A F15 continua sendo a substituição; o nome do arquivo fica, porque outros documentos o citam.
 
 ---
 
@@ -44,9 +44,12 @@ F3 ✅ v2.2.3 → W0 (correções) → F4 Conversa → F5 Conhecimento → F6 Do
             → F7 Evidência → F8 Hooks → F9 Fluxo encadeado → F10 Revisão adversarial (núcleo)
             → F11 Revisão adversarial (gate offline) → F12 Contexto e governança → F13 UX e LLM
             → F14 Playbook e orquestração → F15 Substituição do SDD privado
+
+F16 Ambiente agnóstico e proativo → F17 Starter gerado a partir do Open
+   (fora da fila do PORTE: entram entre quaisquer duas frentes, a F16 sempre antes da F17)
 ```
 
-As frentes F7–F14 são as ondas W1–W5 do PORTE (seção 8). W1 e W5 foram divididas em duas cada. A F15 é o fim do programa (parâmetro P4).
+As frentes F7–F14 são as ondas W1–W5 do PORTE (seção 8). W1 e W5 foram divididas em duas cada. A F15 é o fim do programa (parâmetro P4). F16 e F17 (2026-11-02) não são do PORTE: a F16 implementa no Open os ajustes de ambiente achados numa auditoria do sdd-starter (P2 e P3); a F17 executa a Decisão 5, e o starter passa a ser gerado do Open, levando a F16 junto.
 
 O PORTE propunha `F3 → F4 → W0 (em paralelo com a F4) → F5/F6 → W1 …`. A troca de ordem tem um motivo concreto: a W0 **toca SKILL.md**, ao contrário do que o PORTE diz na §2.5.
 
@@ -479,6 +482,41 @@ Receita por arquivo (PORTE §8.1): `grep -niE 'supabase|deno|wordpress|wp-conten
 | **Esforço** | não estimado pelo PORTE; a estimar no brainstorm da F15 |
 | **Pronto quando** | no privado: `doctor` ✅ sem ⚠️; uma feature real do RDD percorre brainstorm → define → design → build → release pelo Open, com Verify Gate, report-lint, review adversarial e deploy verificado pelo SHA; `git ls-files .claude/commands/workflow .claude/agents scripts/sdd-fluxo.sh sdd-public` vazio; `publish-gate.sh` do Open continua verde (nada da RDD vazou) |
 
+### F16 Ambiente agnóstico e proativo (parâmetros P2 e P3)
+
+Incluída em 2026-11-02 a pedido do Roberto. Escopo completo, com achados por arquivo e linha em
+`origin/main` = `9508ff0`: `sdd/features/ESCOPO_F16_AMBIENTE.md`. Os achados vieram de uma auditoria no
+sdd-starter; pela Decisão 5 a implementação é **no Open**, e o starter recebe o resultado pela F17
+(Roberto, 2026-11-02: sem remendo no starter até lá).
+
+| | |
+|---|---|
+| **Objetivo** | As skills de entrada do Open descobrem cedo tudo o que o aluno vai precisar (`git` **e** `gh`, login, editor) e funcionam igual com qualquer editor ou com nenhum, inclusive só com Claude Code ou só com Codex no terminal |
+| **Achados** | `sdd-checar-ambiente` 1.4.1: o `gh` só entra quando o remoto já recusou o acesso (`checar.sh:358,380`), e sem esse erro a saída é ✅ sem `gh`; nunca consulta `gh auth status` · `sdd-iniciar-repo` 1.1.1: `gh` só no Passo 6 (publicar), depois de inventário, alarme e 1º commit; Mac sem `brew install gh`, Linux sem instrução (`SKILL.md:264-272`) · `sdd-new-session` 1.3.0: slot `editor` vazio cai na lista fechada `code`/`cursor`/`subl` (`SKILL.md:213`, `checar.sh:469`); com o app instalado e o comando fora do `PATH` no macOS, vira "sem editor" (os `sdd/ambiente.md` locais do Open e do starter registram isso); sem editor não há caminho de "só terminal" (`:242`); o aviso final presume janela nova (`:271`) |
+| **Entrega** | (1) `sdd-checar-ambiente` → 1.5.0: `gh` ausente ou deslogado ⇒ ⚠️ (nunca 🔴; remoto fora do GitHub não acusa; `--frente` não muda) · (2) `sdd-iniciar-repo` → 1.2.0: `gh` e `gh auth status` no Passo 0 como aviso antecipado ("instalar agora / depois"); `inventario.sh` imprime `gh: ausente\|deslogado\|ok` · (3) `sdd-new-session` → 1.4.0: detecção de editor em 2 camadas (`PATH` ampliado; apps do macOS por `open -a`; `%LOCALAPPDATA%` no Windows), slot `editor` aceita comando com argumentos e é usado como está, **modo terminal** sem editor (terminal novo → `cd` → `claude`/`codex`) e aviso final em duas formas · (4) tabela única de instalação por sistema (macOS/Windows/Linux × git/gh) repetida nas 3 skills · testes em `tests/test_checar.py`, `test_inventario.py`, `test_matriz_new_session.py` |
+| **Decidir** | se o modo terminal entra também na tabela de degradação por vendor (8.0) · se o `gh` deslogado no `checar-ambiente` consulta a rede só no modo normal (proposta) ou também quando não há remoto |
+| **Depende de** | nada além da `v2.3.1`; **não** depende de F12–F15 nem as bloqueia |
+| **Atenção** | Vem **antes da F17**, que gera o starter a partir destas skills. A F14 também mexe na `sdd-new-session` (N1): F16 e F14 não fazem par na mesma sessão. `test_agnostico.py` vale para o texto novo (lista de editores e comandos de instalação não presumem um agente só) |
+| **Esforço** | pequeno: 3 skills existentes, sem skill nova (`test_skill_lint.py` não muda) |
+| **Pronto quando** | sem `gh` no `PATH`: `checar.sh` ⇒ ⚠️ do `gh` e rc 0, `checar.sh --frente` ⇒ ✅ sem menção ao `gh`; `gh` stub deslogado ⇒ ⚠️ `gh auth login`; `inventario.sh` imprime a linha `gh:`; `sdd-new-session` sem editor no `PATH` responde com o modo terminal e o aviso "terminal novo"; no macOS com o app do VS Code e sem `code` no `PATH`, o slot recebe `open -a "Visual Studio Code"` e a frente abre; `tests/test_agnostico.py` verde; Release com `SHA256SUMS.txt` conferido |
+
+### F17 Starter gerado a partir do Open (Decisão 5, parâmetro P3)
+
+A Decisão 5 (Roberto, 2026-10-29) estava registrada como "frente própria, depois da F6" e como pendência
+herdada no handoff, sem número nem lugar na sequência. Ganhou número em 2026-11-02, quando a F16 mostrou o
+custo de não tê-la: ajuste feito só no starter some na geração, e feito nos dois é trabalho dobrado sobre
+textos que já divergiram.
+
+| | |
+|---|---|
+| **Objetivo** | O sdd-starter deixa de ter texto próprio: cada skill dele é gerada de `.agents/skills/` do Open. O starter continua sendo a porta de quem usa claude.ai ou ChatGPT na web, sem terminal |
+| **Entrega** | (1) gerador no Open (ex.: `sdd/bin/gerar-starter.sh <destino>`) que copia as skills que funcionam sozinhas, troca o que depende do `init` pelo modo "confira à mão" e acrescenta o aviso de quando migrar para o Open · (2) o repositório `robertodiasduarte/sdd-starter` mantém instalação por `npx skills add`, zips por skill e Release, agora a partir da cópia gerada, com cabeçalho `GENERATED` · (3) teste no Open que reprova skill gerada que cite arquivo criado pelo `init` · (4) regenerar também as cópias `~/.claude/skills/sdd-*` (D6 do PORTE) |
+| **Decidir** | a lista de skills que vão (a Decisão 5 diz "só as que funcionam sozinhas"; quando ela foi tomada, 11 das 13 nativas citavam arquivos do `init`): no mínimo `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-new-session`, `sdd-higiene-dado`, `sdd-kb` · o que acontece com as skills que existem só no starter · se a geração é manual (comando na release do Open) ou automática (workflow que abre PR no starter) · como o `sdd/ambiente.md` do starter convive com os slots do `sdd/config.yaml` do Open (a F2 tirou o `ambiente.md` do Open) |
+| **Depende de** | F16 (para que a geração já leve os ajustes de ambiente) |
+| **Atenção** | O starter tem textos mais novos que o Open em pontos isolados (ex.: a "linguagem para leigos" da v1.5.15, `17c69c4`): antes da 1ª geração, comparar skill a skill e trazer para o Open o que o starter tiver melhor, senão a geração apaga. O starter tem release automática no push da `main`: a 1ª geração é uma release com diff grande, e merece um aviso no README |
+| **Esforço** | a estimar no brainstorm |
+| **Pronto quando** | o gerador roda sem rede e sai 0; o starter regenerado a partir de `.agents/skills/` passa no `publish-check.sh`, no `check-versions.py` e nos testes dele **sem diff funcional** em relação ao Open (critério do P3, seção 0); nenhuma skill gerada cita arquivo do `init`; Release do starter publicada |
+
 ### Itens de programa do PORTE
 
 | Item | Onde fica |
@@ -546,5 +584,7 @@ Uma frente grande por sessão; pares só quando as duas são pequenas e não toc
 | 10 | F13 | skill nova |
 | 11 | F14 | skill nova |
 | 12+ | F15 | no repositório privado; provavelmente mais de uma sessão (migração por fase) |
+| entre quaisquer duas | F16 | pequena (3 skills existentes, sem skill nova); não depende de F12–F15. Pode fazer par com uma frente pequena que não toque `sdd-checar-ambiente`, `sdd-iniciar-repo` nem `sdd-new-session` (a F14 toca a `sdd-new-session` no N1: não pareia com ela) |
+| depois da F16 | F17 | toca dois repositórios (gerador no Open, Release no starter); a 1ª geração exige comparar skill a skill antes |
 
 Sessões paralelas em worktrees distintas não ajudam: a release é fast-forward em `main`, uma por vez, e o `check-versions` compara com a última tag; frentes vizinhas tocam as mesmas skills. Se aparecer o aviso de compactação do contexto, fechar depois da release e passar o bastão.
