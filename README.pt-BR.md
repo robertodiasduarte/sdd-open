@@ -67,10 +67,10 @@ preparar uma vez:  sdd-checar-ambiente · sdd-iniciar-repo · sdd-higiene-dado �
 a cada frente:     sdd-new-session
 
 /sdd-brainstorm → /sdd-define (mapa do domínio + governança dentro) → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
-  (opcional)           ↑       (se há dinheiro)     (se há UI)          ↑             │             │
-                       └───────── /sdd-iterate corrige o rumo ──────────┘             │             │
-                                                                                      ▼             ▼
-                                                            o Verify Gate roda aqui — e de novo aqui — bloqueando as duas vezes
+  (opcional)           ↑                                                (se há UI)          ↑             │             │
+                       └─────────────────── /sdd-iterate corrige o rumo ────────────────────┘             │             │
+                                                                                                          ▼             ▼
+                                                                                o Verify Gate roda aqui — e de novo aqui — bloqueando as duas vezes
 ```
 
 `sdd-handoff` e `sdd-playbook` são transversais: fecham sessões e acumulam o que mordeu.

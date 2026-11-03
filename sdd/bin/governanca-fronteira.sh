@@ -82,8 +82,6 @@ todos_paths() { # $1 raiz · $2 arquivo de saída
 case "${1:-}" in
   --snapshot)
     [ "$#" -ge 3 ] || uso
-    # snapshot que falha, por qualquer motivo, não deixa o arquivo de uma tentativa anterior no lugar
-    rm -f "$3"
     [ -d "$2" ] || uso
     WT="$(cd "$2" && pwd -P)" || uso
     TOP="$(git -C "${WT}" rev-parse --show-toplevel 2>/dev/null)" || { echo "não é um repositório git: ${WT}" >&2; uso; }
@@ -92,6 +90,9 @@ case "${1:-}" in
     OUT="$3"; shift 3
     OUT_DIR="$(cd "$(dirname "${OUT}")" 2>/dev/null && pwd -P)" || { echo "pasta do snapshot inexistente: $(dirname "${OUT}")" >&2; uso; }
     case "${OUT_DIR}/" in "${WT}"/*) echo "o snapshot fica FORA do worktree (senão ele mesmo aparece como ??): ${OUT}" >&2; uso ;; esac
+    # só agora, com o destino validado fora do worktree: um snapshot que falha daqui em diante não deixa o
+    # arquivo de uma tentativa anterior no lugar (antes da validação, o rm apagaria um arquivo do projeto)
+    rm -f "${OUT}"
     INCL=""
     for x in "$@"; do
       case "${x}" in *$'\n'*) echo "incluir com quebra de linha: a fronteira não mede" >&2; uso ;; esac
@@ -105,7 +106,12 @@ case "${1:-}" in
     printf '%s' "${INCL}" | while IFS= read -r x; do [ -n "${x}" ] && printf '%s\n' "${x#"${WT}"/}"; done >> "${lista}"
     sort -u "${lista}" | while IFS= read -r p; do
       [ -z "${p}" ] && continue
-      if [ -f "${WT}/${p}" ]; then h="$(shasum -a 256 "${WT}/${p}" | cut -d' ' -f1)"; else h=AUSENTE; fi
+      if [ -f "${WT}/${p}" ]; then
+        # shasum que falha (arquivo ilegível) não vira hash vazio: o snapshot inteiro é recusado
+        h="$(shasum -a 256 "${WT}/${p}" 2>/dev/null)" || { echo "não consegui ler ${WT}/${p}: snapshot não gravado" >&2; exit 1; }
+        h="${h%% *}"
+        [ -n "${h}" ] || { echo "hash vazio para ${WT}/${p}: snapshot não gravado" >&2; exit 1; }
+      else h=AUSENTE; fi
       printf '%s\t%s\n' "${h}" "${WT}/${p}"
     done | sort > "${parcial}" || { echo "não consegui gravar o snapshot" >&2; uso; }
     head_sha="$(git -C "${WT}" rev-parse -q --verify HEAD 2>/dev/null || echo AUSENTE)"

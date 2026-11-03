@@ -276,8 +276,9 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
 6. **`PADRAO_AUSENTE`** (achou tema e o projeto não tem `sdd/GOVERNANCA_PADRAO.md`) ⇒ uma frase:
    `A revisão achou <tema> neste Define e o projeto ainda não tem o padrão de governança; são 5 perguntas,
    uma vez por projeto.` Pergunte os 5 campos do passo 2 da `sdd-governanca`, com a marca
-   `[D2 · muda o produto]`, grave o padrão pelo `assets/GOVERNANCA_PADRAO_TEMPLATE.md` dela e redespache
-   (não conta como falha). Projeto com revisão N.A. nunca ouve essas perguntas.
+   `[D2 · muda o produto]`, grave o padrão pelo `assets/GOVERNANCA_PADRAO_TEMPLATE.md` dela, **refaça o
+   snapshot de antes** (o padrão recém-gravado é escrita desta sessão, não do revisor; sem o snapshot novo ele
+   apareceria como `FORA:`) e redespache (não conta como falha). Projeto com revisão N.A. nunca ouve essas perguntas.
 7. **`NA`** ⇒ `✅ governança: N.A. — <motivo>` e a linha `| **Governança** | N.A. — <motivo> | revisor fresco, <data> |`.
    Nenhum arquivo.
    **`REVISADO` com 0 lacunas** ⇒ `✅ governança: 0 lacunas — <cobertura>` e item 8 sem perguntas.

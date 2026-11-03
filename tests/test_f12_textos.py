@@ -106,6 +106,9 @@ class Passo11(unittest.TestCase):
         self.assertIn('RESULTADOS = ("NA", "REVISADO", "PADRAO_AUSENTE", "FALHA")', bloco)
         self.assertIn("resultado: NA | REVISADO | PADRAO_AUSENTE | FALHA", REVISOR)
 
+    def test_padrao_ausente_refaz_o_snapshot(self):
+        self.assertIn("**refaça o\n   snapshot de antes**", PASSO_11)
+
     def test_briefs_proibem_commit(self):
         self.assertIn("**Não faz commit**", CARTOGRAFO)
         self.assertIn("sem crase, e cada um casa ao menos um arquivo versionado", CARTOGRAFO)

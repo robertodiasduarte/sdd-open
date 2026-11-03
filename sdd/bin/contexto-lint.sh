@@ -176,7 +176,7 @@ checa_paths() {
         real=$(resolve_basename "${path}")
         if [ -z "${real}" ]; then erro "path-morto" "${nome}: a âncora '${path}:${linha}' não aponta para um arquivo único do repositório"; continue; fi
         total=$(wc -l < "${real}" | tr -d ' ')
-        [ "${linha}" -le "${total}" ] || erro "path-morto" "${nome}: cita '${path}:${linha}', mas ${real} tem ${total} linhas"
+        [ "${linha}" -ge 1 ] && [ "${linha}" -le "${total}" ] || erro "path-morto" "${nome}: cita '${path}:${linha}', mas ${real} tem ${total} linhas"
         continue ;;
     esac
     case "${path}" in *'<'*|*'>'*|/*) continue ;; esac
@@ -184,7 +184,7 @@ checa_paths() {
     if [ -z "${real}" ]; then erro "path-morto" "${nome}: cita '${path}', que não existe no repositório"; continue; fi
     if [ -n "${linha}" ]; then
       total=$(wc -l < "${real}" | tr -d ' ')
-      [ "${linha}" -le "${total}" ] || erro "path-morto" "${nome}: cita '${path}:${linha}', mas ${real} tem ${total} linhas"
+      [ "${linha}" -ge 1 ] && [ "${linha}" -le "${total}" ] || erro "path-morto" "${nome}: cita '${path}:${linha}', mas ${real} tem ${total} linhas"
     fi
   done < "${TMP}/paths.txt"
 }
@@ -279,11 +279,14 @@ validade() {  # $1=arquivo $2=ref ⇒ 0 valido | 1 vencido | 2 sha-inexistente/c
   [ -n "${sha}" ] || { erro "cabecalho-ausente" "${nome}: sem linha 'sha:'"; return 2; }
   [ -n "${sups}" ] || { erro "cabecalho-ausente" "${nome}: sem linha 'superficies:'"; return 2; }
   case "${sups}" in *'`'*) erro "cabecalho-ausente" "${nome}: 'superficies:' com crase não é pathspec; a validade não mede nada assim"; return 2 ;; esac
-  set -f; set -- ${sups}; set +f
-  [ -n "$(git ls-files -- "$@" 2>/dev/null | head -1)" ] || { erro "path-morto" "${nome}: 'superficies:' não casa nenhum arquivo versionado; a validade não mediria nada"; return 2; }
   git cat-file -e "${sha}^{commit}" 2>/dev/null || { erro "sha-inexistente" "${nome}: o sha '${sha}' não existe neste repositório"; return 2; }
   git rev-parse --verify -q "${ref}^{commit}" >/dev/null 2>&1 || { erro "sha-inexistente" "${nome}: a ref '${ref}' não existe neste repositório (use --ref)"; return 2; }
   set -f; set -- ${sups}; set +f
+  # pathspec que não casava nada no sha nem casa hoje: a validade não mediria nada. Arquivo apagado depois do sha
+  # cai no diff abaixo e é VENCIDO, não erro.
+  if [ -z "$(git grep -l -I -e '' "${sha}" -- "$@" 2>/dev/null | head -1)" ] && [ -z "$(git ls-files -- "$@" 2>/dev/null | head -1)" ]; then
+    erro "path-morto" "${nome}: 'superficies:' não casa nenhum arquivo versionado; a validade não mediria nada"; return 2
+  fi
   if git diff --quiet "${sha}..${ref}" -- "$@"; then
     printf 'CONTEXTO VALIDO (%s..%s, %d pathspec)\n' "$(printf '%s' "${sha}" | cut -c1-7)" "${ref}" "$#"; return 0
   fi

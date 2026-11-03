@@ -127,6 +127,18 @@ class Aval1(Base):
         self.assertEqual(rc, 0, out + err)
 
 
+class Real1(Base):
+    def test_r4_ancora_na_linha_zero_e_path_morto(self):
+        p = self.r / "zero"
+        p.mkdir()
+        self.verde(p / "pedidos.md")
+        t = (p / "pedidos.md").read_text(encoding="utf-8").replace("app/pedidos.py:6", "app/pedidos.py:0")
+        (p / "pedidos.md").write_text(t, encoding="utf-8")
+        rc, out = self.lint(*PB, "zero")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("[path-morto]", out)
+
+
 class Sabotagem(Base):
     def test_idade_que_nao_bloqueia_no_design_derruba_o_self_test(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")

@@ -6,7 +6,7 @@ license: MIT
 metadata:
   author: Roberto Dias Duarte
   version: "2.2.1"
-  updated: "2026-10"
+  updated: "2026-11"
   fase: "cross"
 ---
 

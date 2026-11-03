@@ -172,6 +172,27 @@ class Aval2(Base):
         self.assertIn("faça o 1º commit", out + err)
 
 
+class Real1(Base):
+    def test_r3_ultimo_arquivo_da_superficie_apagado_e_vencido(self):
+        self.escreve(self.r, "mod/unico.py", "x = 1\n")
+        self.commit(self.r)
+        sha = self.git(self.r, "rev-parse", "HEAD").strip()
+        ctx = (self.r / FX / "validade-template.md").read_text(encoding="utf-8").replace("__SHA__", sha)
+        self.escreve(self.r, "c.md", ctx.replace("superficies: a.md", "superficies: mod/unico.py"))
+        (self.r / "mod/unico.py").unlink()
+        self.commit(self.r)
+        rc, out = self.lint("--validade", "c.md", "--ref", "HEAD")
+        self.assertEqual(rc, 1, out)
+        self.assertIn("CONTEXTO VENCIDO", out)
+
+    def test_r4_ancora_na_linha_zero_e_path_morto(self):
+        v = (self.r / FX / "valido-completo.md").read_text(encoding="utf-8")
+        self.escreve(self.r, "z.md", v.replace("app/pedidos.py:8`", "app/pedidos.py:0`"))
+        rc, out = self.lint(*DOM, "z.md")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("[path-morto]", out)
+
+
 class Sabotagem(Base):
     def test_sem_a_checagem_de_landmine_o_self_test_cai(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")

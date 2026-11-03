@@ -117,6 +117,26 @@ class Aval2(Base):
         self.assertRegex(out, r"(?m)^FORA: .*/b\.txt$")
 
 
+class Real1(Base):
+    def test_r1_snapshot_dentro_do_worktree_nao_apaga_o_arquivo(self):
+        alvo = self.escreve(self.w, "importante.md", "não apague\n")
+        rc, out = self.fr("--snapshot", str(self.w), str(alvo))
+        self.assertEqual(rc, 64, out)
+        self.assertEqual(alvo.read_text(encoding="utf-8"), "não apague\n")
+
+    def test_r2_arquivo_ilegivel_recusa_o_snapshot(self):
+        sujo = self.escreve(self.w, "DEFINE.md", "sujo\n")
+        os.chmod(str(sujo), 0)
+        try:
+            if os.access(str(sujo), os.R_OK):
+                self.skipTest("rodando como root: chmod 0 não impede a leitura")
+            rc, out = self.fr("--snapshot", str(self.w), str(self.s / "x"), self.rel)
+            self.assertEqual(rc, 64, out)
+            self.assertFalse((self.s / "x").exists())
+        finally:
+            os.chmod(str(sujo), 0o644)
+
+
 class Uso(Base):
     def test_fronteira_nao_verificada_sai_64(self):
         self.snap("antes")

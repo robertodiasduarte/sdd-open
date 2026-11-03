@@ -67,10 +67,10 @@ prepare once:  sdd-checar-ambiente · sdd-iniciar-repo · sdd-higiene-dado · (o
 every front:   sdd-new-session
 
 /sdd-brainstorm → /sdd-define (domain map + governance inside) → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
-  (optional)           ↑          (if money)          (if UI)           ↑             │             │
-                       └───────── /sdd-iterate corrects course ─────────┘             │             │
-                                                                                      ▼             ▼
-                                                             the Verify Gate runs here — and again here — blocking both times
+  (optional)           ↑                                             (if UI)           ↑             │             │
+                       └──────────────── /sdd-iterate corrects course ─────────────────┘             │             │
+                                                                                                     ▼             ▼
+                                                                            the Verify Gate runs here — and again here — blocking both times
 ```
 
 `sdd-handoff` and `sdd-playbook` are transversal: they close sessions and accumulate what bit.

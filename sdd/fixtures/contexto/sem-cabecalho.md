@@ -29,7 +29,7 @@ O pedido do cliente, do carrinho à entrega. Mapa em `sdd/fixtures/contexto/domi
 
 | Interface | Tipo | Chama |
 |---|---|---|
-| `/pedidos` | rota | `criar_pedido()` (`pedidos.py:6`) |
+| `/pedidos` | rota | `criar_pedido()` (`sdd/fixtures/contexto/app/pedidos.py:6`) |
 
 ## Regras vigentes
 
