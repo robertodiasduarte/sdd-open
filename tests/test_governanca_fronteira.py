@@ -152,6 +152,29 @@ class Real2(Base):
         self.assertNotIn("FORA:", out)
 
 
+class Real3(Base):
+    def test_snapshot_dentro_do_git_vale(self):
+        d = self.w / ".git/sdd-fronteira/X/governanca"
+        d.mkdir(parents=True)
+        rc, out = self.fr("--snapshot", str(self.w), str(d / "antes"), self.rel)
+        self.assertEqual(rc, 0, out)
+        rc, out = self.fr("--snapshot", str(self.w), str(d / "depois"), self.rel)
+        self.assertEqual(rc, 0, out)
+        rc, out = self.fr("--comparar", str(d / "antes"), str(d / "depois"), self.rel)
+        self.assertEqual(rc, 0, out)
+
+    def test_alias_por_link_do_permitido_casa_com_ele(self):
+        self.escreve(self.w, "sdd/reviews/REL.md", "")
+        # link NÃO versionado: o git status o lista, e o hash dele segue o arquivo permitido
+        os.symlink(str(self.w / "sdd/reviews/REL.md"), str(self.w / "atalho.md"))
+        self.snap("antes")
+        self.escreve(self.w, "sdd/reviews/REL.md", "relatório\n")
+        self.snap("depois")
+        rc, out = self.comparar()
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("FORA:", out)
+
+
 class Uso(Base):
     def test_fronteira_nao_verificada_sai_64(self):
         self.snap("antes")
@@ -174,10 +197,10 @@ class Uso(Base):
 class Sabotagem(Base):
     def test_comparar_so_o_caminho_esconde_a_sobrescrita(self):
         texto = (RAIZ / SCRIPT).read_text(encoding="utf-8")
-        alvo = 'printf \'%s\\t%s\\n\' "${h}" "${WT}/${p}"'
+        alvo = 'saida.append("%s\\t%s" % (h.hexdigest(), r))'
         self.assertIn(alvo, texto)
         sab = self.tmp / "sabotado.sh"
-        sab.write_text(texto.replace(alvo, 'printf \'X\\t%s\\n\' "${WT}/${p}"'), encoding="utf-8")
+        sab.write_text(texto.replace(alvo, 'saida.append("X\\t%s" % r)'), encoding="utf-8")
         self.escreve(self.w, "DEFINE.md", "sujo antes\n")
         self.snap("antes", script=str(sab))
         self.escreve(self.w, "DEFINE.md", "sobrescrito\n")

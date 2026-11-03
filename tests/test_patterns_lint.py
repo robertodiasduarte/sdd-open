@@ -152,6 +152,19 @@ class Real2(Base):
         self.assertEqual(rc, 2, out)
 
 
+class Real3(Base):
+    def test_ancora_na_ultima_linha_sem_quebra_final_vale(self):
+        (self.r / "sem-nl.py").write_text("a = 1\nb = 2", encoding="utf-8")
+        self.commit(self.r)
+        p = self.r / "nl"
+        p.mkdir()
+        self.verde(p / "pedidos.md")
+        t = (p / "pedidos.md").read_text(encoding="utf-8").replace("# ← sdd/fixtures/contexto/app/pedidos.py:6", "# ← sem-nl.py:2")
+        (p / "pedidos.md").write_text(t, encoding="utf-8")
+        rc, out = self.lint(*PB, "nl")
+        self.assertEqual(rc, 0, out)
+
+
 class Sabotagem(Base):
     def test_idade_que_nao_bloqueia_no_design_derruba_o_self_test(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")

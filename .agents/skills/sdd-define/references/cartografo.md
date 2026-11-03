@@ -14,7 +14,10 @@ Contrato de máquina: `sdd/WORKFLOW_CONTRACTS.yaml` › `cartografo`. Formato: `
 ctx: ctx:<slug> · saida: sdd/contexto/<slug>.md · worktree: <caminho absoluto> · dominio: sdd/patterns/dominio.md
 ```
 
-Se vier qualquer coisa além desses 4 campos (o pedido da feature, resumo da conversa, hipóteses, "a
+No redespacho (a 1ª tentativa não passou no lint), vem um 5º campo, `lint: <a saída do contexto-lint.sh da
+tentativa anterior>`: ele é previsto e não é contaminação — corrija o que as classes apontam.
+
+Se vier qualquer coisa além desses 4 campos (e do `lint:` do redespacho) (o pedido da feature, resumo da conversa, hipóteses, "a
 feature vai…"), escreva `CONTAMINAÇÃO: sim — <o que veio>` no `## Escopo` e mapeie **pelo código** mesmo
 assim. Sem contaminação, escreva `CONTAMINAÇÃO: não`.
 

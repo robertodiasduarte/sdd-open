@@ -83,7 +83,12 @@ case "${1:-}" in
     [ "$(cd "${TOP}" && pwd -P)" = "${WT}" ] || { echo "<raiz-do-worktree> tem de ser a raiz do repositório (${TOP}), não ${WT}" >&2; uso; }
     OUT="$3"; shift 3
     OUT_DIR="$(cd "$(dirname "${OUT}")" 2>/dev/null && pwd -P)" || { echo "pasta do snapshot inexistente: $(dirname "${OUT}")" >&2; uso; }
-    case "${OUT_DIR}/" in "${WT}"/*) echo "o snapshot fica FORA do worktree (senão ele mesmo aparece como ??): ${OUT}" >&2; uso ;; esac
+    # fora do worktree, ou dentro do .git dele (o git status nunca lista o .git): é lá que o passo 11 guarda o
+    # snapshot para a retomada depois de uma parada
+    case "${OUT_DIR}/" in
+      "${WT}"/.git/*) ;;
+      "${WT}"/*) echo "o snapshot fica FORA do worktree (senão ele mesmo aparece como ??), ou dentro do .git: ${OUT}" >&2; uso ;;
+    esac
     # só agora, com o destino validado fora do worktree: um snapshot que falha daqui em diante não deixa o
     # arquivo de uma tentativa anterior no lugar (antes da validação, o rm apagaria um arquivo do projeto)
     rm -f "${OUT}"
@@ -98,16 +103,33 @@ case "${1:-}" in
     lista="$(mktemp)"; parcial="${OUT}.parcial.$$"; trap 'rm -f "${lista}" "${parcial}"' EXIT
     todos_paths "${WT}" "${lista}" || { echo "a enumeração falhou (git status ou caminho com quebra de linha): snapshot não gravado" >&2; uso; }
     printf '%s' "${INCL}" | while IFS= read -r x; do [ -n "${x}" ] && printf '%s\n' "${x#"${WT}"/}"; done >> "${lista}"
-    sort -u "${lista}" | while IFS= read -r p; do
-      [ -z "${p}" ] && continue
-      if [ -f "${WT}/${p}" ]; then
-        # shasum que falha (arquivo ilegível) não vira hash vazio: o snapshot inteiro é recusado
-        h="$(shasum -a 256 "${WT}/${p}" 2>/dev/null)" || { echo "não consegui ler ${WT}/${p}: snapshot não gravado" >&2; exit 1; }
-        h="${h%% *}"
-        [ -n "${h}" ] || { echo "hash vazio para ${WT}/${p}: snapshot não gravado" >&2; exit 1; }
-      else h=AUSENTE; fi
-      printf '%s\t%s\n' "${h}" "${WT}/${p}"
-    done | sort > "${parcial}" || { echo "não consegui gravar o snapshot" >&2; uso; }
+    # hash e caminho canônico (realpath) num processo só: um link para o arquivo permitido vira o próprio
+    # permitido; o link em si entra com o destino como "hash" (re-apontar o link também é escrita); arquivo
+    # ilegível recusa o snapshot inteiro (nunca vira hash vazio)
+    sort -u "${lista}" | python3 -c '
+import hashlib, os, sys
+wt = sys.argv[1]
+saida = []
+for p in sys.stdin.read().split("\n"):
+    if not p:
+        continue
+    a = os.path.join(wt, p)
+    if os.path.islink(a):
+        saida.append("link:%s\t%s" % (os.readlink(a), a))
+    r = os.path.realpath(a)
+    if os.path.isfile(r):
+        h = hashlib.sha256()
+        try:
+            with open(r, "rb") as f:
+                for bloco in iter(lambda: f.read(1 << 20), b""):
+                    h.update(bloco)
+        except OSError as e:
+            sys.stderr.write("não consegui ler %s: snapshot não gravado (%s)\n" % (a, e)); sys.exit(1)
+        saida.append("%s\t%s" % (h.hexdigest(), r))
+    else:
+        saida.append("AUSENTE\t%s" % r)
+sys.stdout.write("".join(l + "\n" for l in sorted(set(saida))))
+' "${WT}" > "${parcial}" || { echo "não consegui gravar o snapshot" >&2; uso; }
     head_sha="$(git -C "${WT}" rev-parse -q --verify HEAD 2>/dev/null || echo AUSENTE)"
     printf '#HEAD\t%s\t%s\n' "${head_sha}" "${WT}" >> "${parcial}" && mv "${parcial}" "${OUT}" || { echo "não consegui gravar o snapshot" >&2; uso; }
     printf 'RESULTADO: SNAPSHOT GRAVADO\n→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.\n'

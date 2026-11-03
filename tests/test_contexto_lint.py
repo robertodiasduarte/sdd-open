@@ -219,6 +219,25 @@ class Real2(Base):
         self.assertIn("fixtures versionadas", out + err)
 
 
+class Real3(Base):
+    def test_ancora_na_ultima_linha_sem_quebra_final_vale(self):
+        (self.r / "sem-nl.py").write_text("a = 1\nb = 2", encoding="utf-8")
+        self.commit(self.r)
+        v = (self.r / FX / "valido-completo.md").read_text(encoding="utf-8")
+        self.escreve(self.r, "u.md", v.replace("- O saldo de estoque", "- Última linha — `sem-nl.py:2`\n- O saldo de estoque"))
+        rc, out = self.lint(*DOM, "u.md")
+        self.assertEqual(rc, 0, out)
+
+    def test_sup_so_com_crases_vazias_e_sup_ausente(self):
+        v = (self.r / FX / "valido-completo.md").read_text(encoding="utf-8")
+        for sup in ("sup: ``", "sup: `` ``", "sup: ` `"):
+            with self.subTest(sup=sup):
+                self.escreve(self.r, "s.md", v.replace("sup: `pedido_item` `checkout`", sup))
+                rc, out = self.lint(*DOM, "s.md")
+                self.assertEqual(rc, 2, out)
+                self.assertIn("[sup-ausente]", out)
+
+
 class Sabotagem(Base):
     def test_sem_a_checagem_de_landmine_o_self_test_cai(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")

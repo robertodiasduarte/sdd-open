@@ -129,7 +129,7 @@ checa_paths() {
         [ -n "${linha}" ] || continue
         real=$(resolve_basename "${path}")
         if [ -z "${real}" ]; then reporta "${bloqueia}" "path-morto" "${nome}: a âncora '${path}:${linha}' não aponta para um arquivo único do repositório"; continue; fi
-        total=$(wc -l < "${real}" | tr -d ' ')
+        total=$(awk 'END { print NR }' "${real}")   # awk conta a última linha sem quebra final; wc -l não
         [ "${linha}" -ge 1 ] && [ "${linha}" -le "${total}" ] || reporta "${bloqueia}" "path-morto" "${nome}: cita '${path}:${linha}', mas ${real} tem ${total} linhas"
         continue ;;
     esac
@@ -137,7 +137,7 @@ checa_paths() {
     real=$(resolve_path "${path}")
     if [ -z "${real}" ]; then reporta "${bloqueia}" "path-morto" "${nome}: cita '${path}', que não existe no repositório"; continue; fi
     if [ -n "${linha}" ]; then
-      total=$(wc -l < "${real}" | tr -d ' ')
+      total=$(awk 'END { print NR }' "${real}")   # awk conta a última linha sem quebra final; wc -l não
       [ "${linha}" -ge 1 ] && [ "${linha}" -le "${total}" ] || reporta "${bloqueia}" "path-morto" "${nome}: cita '${path}:${linha}', mas ${real} tem ${total} linhas"
     fi
   done < "${TMP}/paths.txt"

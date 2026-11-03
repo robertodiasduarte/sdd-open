@@ -118,8 +118,9 @@ checa_cabecalho() {
     grep -qE '^gerado_em: [0-9]{4}-[0-9]{2}-[0-9]{2}$' "${TMP}/cab.txt" || erro "cabecalho-ausente" "${nome}: 'gerado_em:' não é AAAA-MM-DD"
   fi
   if grep -q '^sup: ' "${TMP}/cab.txt"; then
-    n=$(grep '^sup: ' "${TMP}/cab.txt" | head -1 | tr -cd '`' | wc -c | tr -d ' ')
-    [ "${n}" -ge 2 ] || erro "sup-ausente" "${nome}: 'sup:' sem termo entre crases (formato do playbook: sup: \`t1\` \`t2\`)"
+    # ao menos um termo de verdade entre crases (crases vazias ou só com espaço não contam)
+    n=$(grep '^sup: ' "${TMP}/cab.txt" | head -1 | grep -cE '`[^`[:space:]][^`]*`')
+    [ "${n}" -ge 1 ] || erro "sup-ausente" "${nome}: 'sup:' sem termo entre crases (formato do playbook: sup: \`t1\` \`t2\`)"
   fi
   c=$(grep '^ctx: ' "${TMP}/cab.txt" | head -1 | sed 's/^ctx: //')
   if [ -n "${c}" ]; then
@@ -175,7 +176,7 @@ checa_paths() {
         [ -n "${linha}" ] || continue
         real=$(resolve_basename "${path}")
         if [ -z "${real}" ]; then erro "path-morto" "${nome}: a âncora '${path}:${linha}' não aponta para um arquivo único do repositório"; continue; fi
-        total=$(wc -l < "${real}" | tr -d ' ')
+        total=$(awk 'END { print NR }' "${real}")   # awk conta a última linha sem quebra final; wc -l não
         [ "${linha}" -ge 1 ] && [ "${linha}" -le "${total}" ] || erro "path-morto" "${nome}: cita '${path}:${linha}', mas ${real} tem ${total} linhas"
         continue ;;
     esac
@@ -183,7 +184,7 @@ checa_paths() {
     real=$(resolve_path "${path}")
     if [ -z "${real}" ]; then erro "path-morto" "${nome}: cita '${path}', que não existe no repositório"; continue; fi
     if [ -n "${linha}" ]; then
-      total=$(wc -l < "${real}" | tr -d ' ')
+      total=$(awk 'END { print NR }' "${real}")   # awk conta a última linha sem quebra final; wc -l não
       [ "${linha}" -ge 1 ] && [ "${linha}" -le "${total}" ] || erro "path-morto" "${nome}: cita '${path}:${linha}', mas ${real} tem ${total} linhas"
     fi
   done < "${TMP}/paths.txt"

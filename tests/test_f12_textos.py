@@ -153,6 +153,25 @@ class Contratos(unittest.TestCase):
             with self.subTest(caminho=c):
                 self.assertTrue((RAIZ / c).is_file(), c)
 
+    def test_exits_do_yaml_batem_com_o_verify_gate(self):
+        # R5@claude (rodada 3): os exits do contrato são os do cabeçalho do verify-gate.sh
+        bloco = re.search(r"(?ms)^  exits:\n((?:    \w+: \"\d+\"\n)+)", CONTRATOS).group(1)
+        do_yaml = sorted(int(x) for x in re.findall(r'"(\d+)"', bloco))
+        gate = ler("sdd/bin/verify-gate.sh")
+        contrato = gate[gate.index("# Contrato de exit"):gate.index("# Toda saída termina")]
+        do_gate = sorted(int(x) for x in re.findall(r"(?m)^#\s+(\d+)\s+=", contrato))
+        self.assertEqual(do_yaml, do_gate)
+        self.assertEqual(do_yaml, [0, 2, 3, 4, 5, 64])
+
+    def test_snapshot_num_lugar_fixo_e_lint_no_redespacho(self):
+        # R1@claude e R3@claude (rodada 3)
+        self.assertIn("sdd-fronteira/<F>/governanca", PASSO_11)
+        self.assertIn("sdd-fronteira/<F>/cartografo-<slug>", PASSO_15)
+        self.assertNotIn("mktemp -d)\"`;", PASSO_11)
+        self.assertIn("5º campo `lint:`", PASSO_15)
+        self.assertIn("`lint: <a saída do contexto-lint.sh", CARTOGRAFO)
+        self.assertIn('campo_redespacho: "lint"', CONTRATOS)
+
     def test_retornos_e_permitidos(self):
         self.assertIn('retorno: "<<<CONTEXTO"', CONTRATOS)
         self.assertIn("<<<CONTEXTO", CARTOGRAFO)

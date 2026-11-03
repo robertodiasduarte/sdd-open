@@ -99,8 +99,10 @@ com `arquivo:linha` em cada afirmação (brief: `references/cartografo.md`; form
    (<n> arquivos mudaram)` e ofereça gerar.
 4. **gerar** ⇒ imprima `🗺️ contexto: mapeando ctx:<slug> em contexto fresco (alguns minutos)` e:
    1. no degrau sem subagente, grave **antes** o brief em `sdd/reports/briefs/BRIEF_cartografo_<F>.md` (gravado
-      depois do snapshot, ele apareceria como escrita fora do permitido); depois `T="$(mktemp -d)"` (fora do
-      projeto) e `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/contexto/<slug>.md`
+      depois do snapshot, ele apareceria como escrita fora do permitido); depois
+      `T="$(cd "$(git rev-parse --git-common-dir)" && pwd -P)/sdd-fronteira/<F>/cartografo-<slug>"; mkdir -p "$T"`
+      (dentro do `.git`, que o `git status` não lista: o caminho é fixo e uma sessão nova o refaz igual depois de
+      uma parada) e `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/contexto/<slug>.md`
       imediatamente antes do despacho;
    2. despache pela escada de `sdd-build/references/contexto-fresco.md` com **só** os 4 campos
       `ctx: ctx:<slug> · saida: sdd/contexto/<slug>.md · worktree: <raiz> · dominio: sdd/patterns/dominio.md`
@@ -113,7 +115,8 @@ com `arquivo:linha` em cada afirmação (brief: `references/cartografo.md`; form
       e `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/contexto/<slug>.md`;
       depois `bash sdd/bin/contexto-lint.sh sdd/contexto/<slug>.md`;
    4. falha = `--comparar` ≠ 0, lint ≠ 0 ou bloco ilegível. `FORA:` ⇒ liste os caminhos, não apague
-      nada. **1 redespacho** fresco, com a saída do lint anexada, **refazendo antes** o brief (sem subagente) e o
+      nada. **1 redespacho** fresco, com a saída do lint como 5º campo `lint:` (o único extra que o brief aceita
+      sem marcar contaminação), **refazendo antes** o brief (sem subagente) e o
       snapshot de antes (o que ficou da 1ª tentativa não pode condenar a 2ª); 2ª falha ⇒
       `⚠️ contexto: o mapa não ficou válido (<motivo em palavras>); o Define segue sem ele.` e
       `nenhum (<motivo>)`.
@@ -246,7 +249,10 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
    `## Technical Context` — `| **Governança** | <valor> | <nota> |` —, a única que o `verify-gate.sh` lê.
 2. Imprima `⚖️ governança: revisando em contexto fresco (alguns minutos)`. No degrau sem subagente, grave
    **antes** o brief em `sdd/reports/briefs/BRIEF_revisor-governanca_<F>.md` (depois do snapshot ele
-   apareceria como escrita fora do permitido). `T="$(mktemp -d)"`;
+   apareceria como escrita fora do permitido).
+   `T="$(cd "$(git rev-parse --git-common-dir)" && pwd -P)/sdd-fronteira/<F>/governanca"; mkdir -p "$T"` — dentro
+   do `.git`, que o `git status` não lista: o caminho é fixo, e uma sessão nova que retoma depois da parada
+   (exit 40) o refaz igual e acha o snapshot e a cópia do DEFINE;
    `cp sdd/features/DEFINE_<F>.md "$T/DEFINE.antes"` (o snapshot só guarda o sha: é esta cópia que
    permite restaurar o DEFINE se o revisor o mexer);
    `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md`
