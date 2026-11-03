@@ -72,6 +72,8 @@ class Bloco(Sandbox):
             "lacuna sem muda/porque": revisado(lacunas=("G01 | alta | AT-003\nporque: p", "G05 | média | —\nmuda: m\nporque: p")),
             "relatorio diferente do saida": revisado(relatorio="/outro/caminho.md"),
             "gnn não bate com o relatório": revisado(lacunas=("G01 | alta | AT-003\nmuda: m\nporque: p",)),
+"lacuna repetida": revisado(lacunas=("G01 | alta | AT-003\nmuda: m\nporque: p", "G01 | alta | AT-003\nmuda: m\nporque: p",
+                                                "G05 | média | —\nmuda: m\nporque: p")),
             "NA com relatorio preenchido": "<<<GOVERNANCA\nresultado: NA\nmotivo: x\nrelatorio: SAIDA\n>>>",
         }
         for nome, resp in casos.items():

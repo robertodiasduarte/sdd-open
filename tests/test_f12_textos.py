@@ -54,6 +54,9 @@ class Passo15(unittest.TestCase):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, PASSO_15)
         self.assertLess(PASSO_15.index("--snapshot"), PASSO_15.index("despachar cartografo"))
+        # L5 (avaliador, ciclo 1): no degrau sem subagente o brief é gravado antes do snapshot
+        self.assertLess(PASSO_15.index("BRIEF_cartografo_<F>.md"), PASSO_15.index("--snapshot"))
+        self.assertLess(PASSO_11.index("BRIEF_revisor-governanca_<F>.md"), PASSO_11.index("--snapshot"))
 
     def test_os_4_campos_sao_os_do_brief_e_do_yaml(self):
         campos = ["ctx", "saida", "worktree", "dominio"]

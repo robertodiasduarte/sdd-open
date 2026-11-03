@@ -87,6 +87,20 @@ class Gate(Sandbox):
         self.assertIn("CLARIFICAÇÃO PENDENTE", out)
         self.assertIn("→ resolva os marcadores de ambiguidade", out)
 
+    def test_l2_marcador_de_governanca_com_outra_duvida_mostra_as_duas(self):
+        marcadores = ("## Clarifications\n\n- [NEEDS" + " CLARIFICATION: governança não rodou — rode só o passo 11]\n"
+                      "- [NEEDS" + " CLARIFICATION: o mês fecha quando?]\n\n")
+        rc, out = self.gate(define("| **Governança** | pendente | y |", extra=marcadores))
+        self.assert_governanca(rc, out)
+        self.assertIn("responda também as dúvidas abertas", out)
+        self.assertIn("o mês fecha quando?", out)
+
+    def test_l3_linha_com_recuo_ou_sem_negrito_vale(self):
+        for linha in ("  | **Governança** | N.A. — sem tema | x |", "| Governança | N.A. — sem tema | x |"):
+            with self.subTest(linha=linha):
+                rc, out = self.gate(define(linha))
+                self.assertEqual(rc, 0, out)
+
     def test_print_isento_strict_remapeia_e_ordem(self):
         rc, out = self.gate(define(None), "--print")
         self.assertEqual(rc, 0, out)

@@ -188,7 +188,9 @@ rodar_lint() {
   if [ -n "${design}" ]; then
     [ -f "${design}" ] || { echo "DESIGN inexistente: ${design}" >&2; exit 64; }
     # CITAÇÃO ≠ MENÇÃO: só a linha **Pattern:** conta (um caminho de fixture no File Manifest não é citação)
-    grep -oE '\*{0,2}Pattern:\*{0,2}[^|]*`?patterns/[A-Za-z0-9_-]+\.md' "${design}" \
+    # só a linha que COMEÇA com **Pattern:**, fora de cerca: o blockquote de orientação do template
+    # (`> **Pattern:** …`) e um exemplo dentro de ``` são menção, não citação
+    awk '/^[[:space:]]*```/{f=!f; next} !f && /^\*\*Pattern:\*\*/' "${design}" \
       | grep -oE 'patterns/[A-Za-z0-9_-]+\.md' | sed -E 's#^patterns/##' | sort -u > "${TMP}/citados.txt"
     [ -s "${TMP}/citados.txt" ] || aviso "nenhum pattern citado em $(basename "${design}"): o lint não tem o que exigir"
   fi
@@ -307,8 +309,10 @@ CASOS
   return 0
 }
 
+ORIG="$(pwd -P)"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "não é um repositório git" >&2; exit 64; }
 cd "${REPO_ROOT}" || exit 64
+de_quem_chamou() { case "$1" in /*) printf '%s' "$1" ;; *) if [ -e "${ORIG}/$1" ]; then printf '%s' "${ORIG}/$1"; else printf '%s' "$1"; fi ;; esac; }
 
 if [ $# -eq 0 ]; then
   echo "erro de uso: informe a pasta de patterns (ex.: ${PATTERNS_DIR_DEFAULT}), --design <DESIGN.md> ou --self-test" >&2
@@ -316,7 +320,7 @@ if [ $# -eq 0 ]; then
 fi
 while [ $# -gt 0 ]; do
   case "$1" in
-    --playbook) [ $# -ge 2 ] || { echo "--playbook exige valor" >&2; usage; }; PLAYBOOK="$2"; shift 2 ;;
+    --playbook) [ $# -ge 2 ] || { echo "--playbook exige valor" >&2; usage; }; PLAYBOOK="$(de_quem_chamou "$2")"; shift 2 ;;
     *) break ;;
   esac
 done
@@ -326,8 +330,8 @@ case "$1" in
   --design)
     [ $# -ge 2 ] || usage
     [ $# -le 3 ] || { echo "argumento a mais: $4" >&2; usage; }
-    rodar_lint "${3:-${PATTERNS_DIR_DEFAULT}}" "$2" ;;
+    rodar_lint "$(de_quem_chamou "${3:-${PATTERNS_DIR_DEFAULT}}")" "$(de_quem_chamou "$2")" ;;
   -h|--help) usage ;;
   --*) echo "flag desconhecida: $1" >&2; usage ;;
-  *) [ $# -eq 1 ] || { echo "argumento a mais: $2" >&2; usage; }; rodar_lint "$1" "" ;;
+  *) [ $# -eq 1 ] || { echo "argumento a mais: $2" >&2; usage; }; rodar_lint "$(de_quem_chamou "$1")" "" ;;
 esac

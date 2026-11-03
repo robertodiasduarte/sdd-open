@@ -95,6 +95,23 @@ class Lint(Base):
                 self.assertEqual(rc, 64)
 
 
+class Aval1(Base):
+    def test_m2_orientacao_do_template_e_exemplo_em_cerca_nao_sao_citacao(self):
+        shutil.copy(str(RAIZ / "sdd/templates/DESIGN_TEMPLATE.md"), str(self.r / "D.md"))
+        with open(self.r / "D.md", "a", encoding="utf-8") as f:
+            f.write("\n```markdown\n**Pattern:** `patterns/exemplo.md §Esqueleto` (validado_em 2026-11-03)\n```\n")
+        rc, out = self.lint(*PB, "--design", "D.md", "sdd/patterns")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("nenhum pattern citado", out)
+
+    def test_l4_caminho_relativo_de_uma_subpasta(self):
+        p = self.r / "sdd/pat"
+        p.mkdir()
+        self.verde(p / "pedidos.md")
+        rc, out, err = self.roda([BASH, "bin/patterns-lint.sh", "--playbook", "fixtures/contexto/playbook.md", "pat"], self.r / "sdd")
+        self.assertEqual(rc, 0, out + err)
+
+
 class Sabotagem(Base):
     def test_idade_que_nao_bloqueia_no_design_derruba_o_self_test(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")

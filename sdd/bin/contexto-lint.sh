@@ -89,10 +89,28 @@ checa_cabecalho() {
   local f="$1" nome="$2" k n c
   cabecalho "${f}" > "${TMP}/cab.txt"
   printf '%s\n' "${CHAVES}" > "${TMP}/chaves.txt"
+  local pos ultima=0 ordem=1
   while IFS= read -r k; do
     [ -n "${k}" ] || continue
-    grep -qE "^${k}: ." "${TMP}/cab.txt" || erro "cabecalho-ausente" "${nome}: falta a linha '${k}:' antes da 1ª seção"
+    pos=$(grep -nE "^${k}: ." "${TMP}/cab.txt" | head -1 | cut -d: -f1)
+    if [ -z "${pos}" ]; then erro "cabecalho-ausente" "${nome}: falta a linha '${k}:' antes da 1ª seção"; continue; fi
+    [ "${pos}" -gt "${ultima}" ] || ordem=0
+    ultima="${pos}"
   done < "${TMP}/chaves.txt"
+  [ "${ordem}" -eq 1 ] || erro "cabecalho-ausente" "${nome}: as linhas do cabeçalho estão fora da ordem (ctx, gerado_em, sha, superficies, sup)"
+  # superficies: pathspecs crus (sem crase), e cada um casa ≥ 1 arquivo versionado — senão o --validade
+  # compara o vazio e o CONTEXTO nunca vence
+  local sups spec
+  sups=$(grep '^superficies: ' "${TMP}/cab.txt" | head -1 | sed 's/^superficies: //')
+  if [ -n "${sups}" ]; then
+    case "${sups}" in *'`'*) erro "cabecalho-ausente" "${nome}: 'superficies:' leva caminhos crus, sem crase (as crases são da linha sup:)" ;; esac
+    set -f
+    for spec in ${sups}; do
+      case "${spec}" in *'`'*) continue ;; esac
+      [ -n "$(git ls-files -- "${spec}" 2>/dev/null | head -1)" ] || erro "path-morto" "${nome}: 'superficies:' tem '${spec}', que não casa nenhum arquivo versionado (o --validade não veria mudança nele)"
+    done
+    set +f
+  fi
   if grep -q '^sha: ' "${TMP}/cab.txt"; then
     grep -qE '^sha: [0-9a-f]{7,40}$' "${TMP}/cab.txt" || erro "cabecalho-ausente" "${nome}: 'sha:' não é hex de 7 a 40 caracteres"
   fi
@@ -260,6 +278,7 @@ validade() {  # $1=arquivo $2=ref ⇒ 0 valido | 1 vencido | 2 sha-inexistente/c
   sha=$(valor "${f}" sha); sups=$(valor "${f}" superficies)
   [ -n "${sha}" ] || { erro "cabecalho-ausente" "${nome}: sem linha 'sha:'"; return 2; }
   [ -n "${sups}" ] || { erro "cabecalho-ausente" "${nome}: sem linha 'superficies:'"; return 2; }
+  case "${sups}" in *'`'*) erro "cabecalho-ausente" "${nome}: 'superficies:' com crase não é pathspec; a validade não mede nada assim"; return 2 ;; esac
   git cat-file -e "${sha}^{commit}" 2>/dev/null || { erro "sha-inexistente" "${nome}: o sha '${sha}' não existe neste repositório"; return 2; }
   git rev-parse --verify -q "${ref}^{commit}" >/dev/null 2>&1 || { erro "sha-inexistente" "${nome}: a ref '${ref}' não existe neste repositório (use --ref)"; return 2; }
   set -f; set -- ${sups}; set +f
@@ -378,6 +397,9 @@ linha-alem-do-fim:path-morto
 sup-ausente:sup-ausente
 ctx-desconhecido:ctx-desconhecido
 lm-morto:lm-morto
+cabecalho-fora-de-ordem:cabecalho-ausente
+superficies-com-crase:cabecalho-ausente
+superficies-sem-arquivo:path-morto
 CASOS
   printf '\n' >> "${TMP}/casos.txt"
   while IFS= read -r caso; do
@@ -468,7 +490,7 @@ CASOS
     echo "  ✅ código citado fora de superficies: ⇒ aviso [superficie-nao-cobre], exit 0"
   else echo "  🛑 aviso superficie-nao-cobre ausente: ${out}"; fails=$((fails + 1)); fi
   out=$(bash "${SELF}" --dominio "${DX}" --playbook "${PX}" "${FIXTURES}/superficies-nao-e-ancora.md" 2>&1); rc=$?
-  if [ "${rc}" -eq 0 ]; then echo "  ✅ caminho inexistente só em superficies: ⇒ exit 0 (pathspec não é âncora)"
+  if [ "${rc}" -eq 0 ]; then echo "  ✅ glob em superficies: ⇒ exit 0 (pathspec, não âncora)"
   else echo "  🛑 superficies-nao-e-ancora ⇒ ${rc}: ${out}"; fails=$((fails + 1)); fi
   mkdir -p "${TMP}/pasta"; cp "${FIXTURES}/valido-completo.md" "${TMP}/pasta/pedidos.md"; echo "# readme" > "${TMP}/pasta/README.md"
   out=$(bash "${SELF}" --dominio "${DX}" --playbook "${PX}" "${TMP}/pasta" 2>&1); rc=$?
@@ -486,8 +508,11 @@ CASOS
 }
 
 # ── despacho ─────────────────────────────────────────────────────────────────
+ORIG="$(pwd -P)"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "não é um repositório git" >&2; exit 64; }
 cd "${REPO_ROOT}" || exit 64
+# caminho dado por quem chamou de uma subpasta: vale relativo a onde ele estava, se existir lá
+de_quem_chamou() { case "$1" in /*) printf '%s' "$1" ;; *) if [ -e "${ORIG}/$1" ]; then printf '%s' "${ORIG}/$1"; else printf '%s' "$1"; fi ;; esac; }
 
 if [ $# -eq 0 ]; then
   echo "erro de uso: informe <arquivo.md|pasta> (ex.: ${CONTEXTO_DIR_DEFAULT}), --validade <arquivo> [--ref R], --sugerir <entrada> [--dir D] [--ref R] ou --self-test" >&2
@@ -496,8 +521,8 @@ fi
 # opções globais antes do modo (shift 2 só com valor presente: sem valor, shift 2 falha e o laço não anda)
 while [ $# -gt 0 ]; do
   case "$1" in
-    --dominio)  [ $# -ge 2 ] || { echo "--dominio exige valor" >&2; usage; }; DOMINIO="$2"; shift 2 ;;
-    --playbook) [ $# -ge 2 ] || { echo "--playbook exige valor" >&2; usage; }; PLAYBOOK="$2"; shift 2 ;;
+    --dominio)  [ $# -ge 2 ] || { echo "--dominio exige valor" >&2; usage; }; DOMINIO="$(de_quem_chamou "$2")"; shift 2 ;;
+    --playbook) [ $# -ge 2 ] || { echo "--playbook exige valor" >&2; usage; }; PLAYBOOK="$(de_quem_chamou "$2")"; shift 2 ;;
     *) break ;;
   esac
 done
@@ -506,7 +531,7 @@ case "$1" in
   --self-test) self_test; exit $? ;;
   --validade)
     [ $# -ge 2 ] || usage
-    ARQ="$2"; REF=""; shift 2
+    ARQ="$(de_quem_chamou "$2")"; REF=""; shift 2
     while [ $# -gt 0 ]; do case "$1" in --ref) [ $# -ge 2 ] || { echo "--ref exige valor" >&2; usage; }; REF="$2"; shift 2 ;; *) echo "flag desconhecida: $1" >&2; usage ;; esac; done
     [ -f "${ARQ}" ] || { echo "arquivo inexistente: ${ARQ}" >&2; exit 64; }
     [ -n "${REF}" ] || REF="$(ref_padrao)"
@@ -519,12 +544,12 @@ case "$1" in
     exit "${rc}" ;;
   --sugerir)
     [ $# -ge 2 ] || usage
-    INPUT="$2"; DIR="${CONTEXTO_DIR_DEFAULT}"; REF=""; shift 2
-    while [ $# -gt 0 ]; do case "$1" in --dir) [ $# -ge 2 ] || { echo "--dir exige valor" >&2; usage; }; DIR="$2"; shift 2 ;; --ref) [ $# -ge 2 ] || { echo "--ref exige valor" >&2; usage; }; REF="$2"; shift 2 ;; *) echo "flag desconhecida: $1" >&2; usage ;; esac; done
+    INPUT="$(de_quem_chamou "$2")"; DIR="${CONTEXTO_DIR_DEFAULT}"; REF=""; shift 2
+    while [ $# -gt 0 ]; do case "$1" in --dir) [ $# -ge 2 ] || { echo "--dir exige valor" >&2; usage; }; DIR="$(de_quem_chamou "$2")"; shift 2 ;; --ref) [ $# -ge 2 ] || { echo "--ref exige valor" >&2; usage; }; REF="$2"; shift 2 ;; *) echo "flag desconhecida: $1" >&2; usage ;; esac; done
     [ -f "${INPUT}" ] || { echo "entrada inexistente: ${INPUT}" >&2; exit 64; }
     [ -n "${REF}" ] || REF="$(ref_padrao)"
     sugerir "${INPUT}" "${DIR}" "${REF}"; exit $? ;;
   -h|--help) usage ;;
   --*) echo "flag desconhecida: $1" >&2; usage ;;
-  *) [ $# -eq 1 ] || { echo "argumento a mais: $2" >&2; usage; }; rodar_lint "$1" ;;
+  *) [ $# -eq 1 ] || { echo "argumento a mais: $2" >&2; usage; }; rodar_lint "$(de_quem_chamou "$1")" ;;
 esac

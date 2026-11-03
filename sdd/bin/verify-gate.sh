@@ -169,6 +169,12 @@ if [ "${PRINT_ONLY}" -eq 0 ]; then
     # o marcador do passo 11: a mensagem é a da governança, com as 2 saídas
     CLARIFICAR_MOTIVO=governanca
     msg_governanca "o marcador \"governança não rodou\" na linha $(printf '%s' "${PENDENTES}" | grep 'governança não rodou' | head -1 | cut -d: -f1)"
+    OUTROS="$(printf '%s\n' "${PENDENTES}" | grep -v 'governança não rodou' || true)"
+    if [ -n "${OUTROS}" ]; then
+      # o passo 11 espera as outras dúvidas: mostrá-las aqui evita a volta em vão
+      echo "   Antes, responda também as dúvidas abertas (o passo 11 só roda sem elas):" >&2
+      printf '%s\n' "${OUTROS}" | sed 's/^/   │ /' >&2
+    fi
     finalizar 5
   fi
   if [ -n "${PENDENTES}" ]; then
@@ -184,7 +190,7 @@ if [ "${PRINT_ONLY}" -eq 0 ]; then
     f                                   { next }
     /^##[[:space:]]+Technical Context/  { sec=1; next }
     sec && /^##[[:space:]]/             { sec=0 }
-    sec && /^\|[[:space:]]*\*\*Governança\*\*[[:space:]]*\|/ {
+    sec && /^[[:space:]]*\|[[:space:]]*(\*\*)?Governança(\*\*)?[[:space:]]*\|/ {
       n=split($0, c, "|"); v=c[3]; sub(/^[[:space:]]+/, "", v); sub(/[[:space:]]+$/, "", v)
       if (v == "") v="(vazio)"; print v; exit }
   ' "${DEFINE_ABS}")"

@@ -82,6 +82,27 @@ class Fronteira(Base):
         self.assertEqual(rc, 0, out)
 
 
+class Aval1(Base):
+    def test_m1_arquivo_limpo_editado_e_commitado_pelo_agente_e_fora(self):
+        self.snap("antes")
+        self.escreve(self.w, "a.txt", "mexido pelo agente\n")
+        self.git(self.w, "commit", "-q", "-am", "agente commitou")
+        self.snap("depois")
+        rc, out = self.comparar()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("HEAD mudou durante o despacho", out)
+        self.assertRegex(out, r"(?m)^FORA: .*/a\.txt$")
+
+    def test_m1_snapshot_sem_head_nao_vale_como_nada_mudou(self):
+        self.snap("antes")
+        self.snap("depois")
+        sem = self.s / "sem-head"
+        sem.write_text("".join(l for l in (self.s / "antes").read_text(encoding="utf-8").splitlines(True)
+                               if not l.startswith("#HEAD")), encoding="utf-8")
+        rc, out = self.fr("--comparar", str(sem), str(self.s / "depois"), self.rel)
+        self.assertEqual(rc, 64, out)
+
+
 class Uso(Base):
     def test_fronteira_nao_verificada_sai_64(self):
         self.snap("antes")

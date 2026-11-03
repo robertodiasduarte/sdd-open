@@ -172,6 +172,7 @@ sdd/fixtures/contexto/INPUT_FIXTURE_PEDIDOS.md
 sdd/fixtures/contexto/INPUT_FIXTURE_SEM_DOMINIO.md
 sdd/fixtures/contexto/app/estoque.sql
 sdd/fixtures/contexto/app/pedidos.py
+sdd/fixtures/contexto/cabecalho-fora-de-ordem.md
 sdd/fixtures/contexto/ctx-desconhecido.md
 sdd/fixtures/contexto/dominio.md
 sdd/fixtures/contexto/linha-alem-do-fim.md
@@ -182,7 +183,9 @@ sdd/fixtures/contexto/secao-fora-de-ordem.md
 sdd/fixtures/contexto/sem-cabecalho.md
 sdd/fixtures/contexto/sem-secao.md
 sdd/fixtures/contexto/sup-ausente.md
+sdd/fixtures/contexto/superficies-com-crase.md
 sdd/fixtures/contexto/superficies-nao-e-ancora.md
+sdd/fixtures/contexto/superficies-sem-arquivo.md
 sdd/fixtures/contexto/validade-template.md
 sdd/fixtures/contexto/valido-completo.md
 sdd/fixtures/conversa/conversa-com-outro/SKILL.md

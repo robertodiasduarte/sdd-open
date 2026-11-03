@@ -98,12 +98,14 @@ com `arquivo:linha` em cada afirmação (brief: `references/cartografo.md`; form
    `✅ contexto: reusando sdd/contexto/<slug>.md (nada mudou desde <data>)`; 1 ⇒ `⚠️ contexto: venceu
    (<n> arquivos mudaram)` e ofereça gerar.
 4. **gerar** ⇒ imprima `🗺️ contexto: mapeando ctx:<slug> em contexto fresco (alguns minutos)` e:
-   1. `T="$(mktemp -d)"` (fora do projeto); `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/contexto/<slug>.md`
+   1. no degrau sem subagente, grave **antes** o brief em `sdd/reports/briefs/BRIEF_cartografo_<F>.md` (gravado
+      depois do snapshot, ele apareceria como escrita fora do permitido); depois `T="$(mktemp -d)"` (fora do
+      projeto) e `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/contexto/<slug>.md`
       imediatamente antes do despacho;
    2. despache pela escada de `sdd-build/references/contexto-fresco.md` com **só** os 4 campos
       `ctx: ctx:<slug> · saida: sdd/contexto/<slug>.md · worktree: <raiz> · dominio: sdd/patterns/dominio.md`
-      e o brief `references/cartografo.md` (nada do pedido, nada desta conversa). Sem subagente: grave o
-      brief em `sdd/reports/briefs/BRIEF_cartografo_<F>.md`, rode
+      e o brief `references/cartografo.md` (nada do pedido, nada desta conversa). Sem subagente, com o
+      brief já gravado no item 1, rode
       `bash sdd/bin/sdd-fluxo.sh despachar cartografo <F> sdd/reports/briefs/BRIEF_cartografo_<F>.md` e pare
       no exit 40 repassando a parada; quando as duas paradas deste Define vão acontecer, escreva antes
       `⏸️ parada 1 de 2 deste Define (o cartógrafo); a 2ª é a revisão de governança.`;
@@ -241,7 +243,9 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
    rode este passo depois; se o Define terminar com dúvida aberta, a trava fica e a linha diz
    `pendente — clarificação aberta`. A linha `Governança` é **sempre a linha da tabela** do
    `## Technical Context` — `| **Governança** | <valor> | <nota> |` —, a única que o `verify-gate.sh` lê.
-2. Imprima `⚖️ governança: revisando em contexto fresco (alguns minutos)`. `T="$(mktemp -d)"`;
+2. Imprima `⚖️ governança: revisando em contexto fresco (alguns minutos)`. No degrau sem subagente, grave
+   **antes** o brief em `sdd/reports/briefs/BRIEF_revisor-governanca_<F>.md` (depois do snapshot ele
+   apareceria como escrita fora do permitido). `T="$(mktemp -d)"`;
    `cp sdd/features/DEFINE_<F>.md "$T/DEFINE.antes"` (o snapshot só guarda o sha: é esta cópia que
    permite restaurar o DEFINE se o revisor o mexer);
    `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md`
@@ -249,7 +253,7 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
 3. **Despache** pela escada de `sdd-build/references/contexto-fresco.md` com **só** os 5 campos
    absolutos (também no redespacho):
    `define: <raiz>/sdd/features/DEFINE_<F>.md · skill: <raiz>/.agents/skills/sdd-governanca/ · padrao: <raiz>/sdd/GOVERNANCA_PADRAO.md · worktree: <raiz> · saida: <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md`.
-   Sem subagente: grave o brief em `sdd/reports/briefs/BRIEF_revisor-governanca_<F>.md`, rode
+   Sem subagente, com o brief já gravado no item 2, rode
    `bash sdd/bin/sdd-fluxo.sh despachar revisor-governanca <F> sdd/reports/briefs/BRIEF_revisor-governanca_<F>.md`
    e pare no exit 40 (`⏸️ parada 2 de 2 deste Define` quando houve a do cartógrafo). A trava do item 1
    segura o build até o bloco voltar.

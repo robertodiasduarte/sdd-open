@@ -3,10 +3,10 @@
 ctx: ctx:pedidos
 gerado_em: 2026-11-03
 sha: 0123456789abcdef0123456789abcdef01234567
-superficies: sdd/fixtures/contexto/app/pedidos.py sdd/fixtures/contexto/app/nao-existe-ainda.py sdd/fixtures/contexto/app/estoque.sql
+superficies: sdd/fixtures/contexto/app/*.py sdd/fixtures/contexto/app/estoque.sql
 sup: `pedido_item` `checkout`
 
-> Fixture VERDE: um caminho que não existe só na linha superficies: é pathspec, não âncora do self-test de `sdd/bin/contexto-lint.sh`: o `sha:` é só formato (a validade real é
+> Fixture VERDE: a linha superficies: é pathspec (glob incluído), não âncora — cada pathspec casa um arquivo versionado do self-test de `sdd/bin/contexto-lint.sh`: o `sha:` é só formato (a validade real é
 > provada num repositório temporário). As âncoras apontam para arquivos da fixture.
 
 ## Escopo

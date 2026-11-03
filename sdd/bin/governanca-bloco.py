@@ -114,6 +114,9 @@ def main(argv: list) -> int:
         erros.append("resultado fora de NA | REVISADO | PADRAO_AUSENTE | FALHA: '" + res + "'")
     if linhas and not campos.get("motivo"):
         erros.append("motivo: vazio")
+    repetidas = sorted(g for g in set(trios) if trios.count(g) > 1)
+    if repetidas:
+        erros.append("lacuna repetida no bloco: " + ", ".join(repetidas) + " (cada Gnn aparece uma vez)")
     rel = campos.get("relatorio", "")
     if res == "REVISADO":
         if not mesmo(rel, saida):

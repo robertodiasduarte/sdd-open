@@ -12,6 +12,9 @@
 #   governanca-fronteira.sh --comparar <antes> <depois> <permitido>…
 #       para cada caminho novo, sumido ou com sha diferente: "MUDOU: <caminho>" se permitido, "FORA: <caminho>" senão.
 #
+# O snapshot também guarda o HEAD (linha `#HEAD`): um agente que edita um arquivo limpo e COMMITA deixa a
+# árvore limpa de novo, e só o HEAD que andou denuncia — cada arquivo do commit sai como FORA.
+#
 # Exit: 0 só caminhos permitidos mudaram · 1 há FORA · 64 uso, snapshot ausente/ilegível ou enumeração que
 # falhou (fronteira não verificada nunca vale como "nada mudou").
 # Limites declarados: arquivo ignorado FORA de sdd/ (ex.: __pycache__/) não entra no snapshot; escrita FORA do
@@ -104,7 +107,9 @@ case "${1:-}" in
       [ -z "${p}" ] && continue
       if [ -f "${WT}/${p}" ]; then h="$(shasum -a 256 "${WT}/${p}" | cut -d' ' -f1)"; else h=AUSENTE; fi
       printf '%s\t%s\n' "${h}" "${WT}/${p}"
-    done | sort > "${parcial}" && mv "${parcial}" "${OUT}" || { echo "não consegui gravar o snapshot" >&2; uso; }
+    done | sort > "${parcial}" || { echo "não consegui gravar o snapshot" >&2; uso; }
+    head_sha="$(git -C "${WT}" rev-parse -q --verify HEAD 2>/dev/null || echo AUSENTE)"
+    printf '#HEAD\t%s\t%s\n' "${head_sha}" "${WT}" >> "${parcial}" && mv "${parcial}" "${OUT}" || { echo "não consegui gravar o snapshot" >&2; uso; }
     printf 'RESULTADO: SNAPSHOT GRAVADO\n→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.\n'
     ;;
   --comparar)
@@ -114,9 +119,20 @@ case "${1:-}" in
     tmp="$(mktemp -d)"; trap 'rm -rf "${tmp}"' EXIT; dif="${tmp}/dif"
     # diferença simétrica por linha (sha + caminho): cobre novo, sumido e sobrescrito. O comm roda FORA
     # de substituição de processo: lá o rc dele se perde e um snapshot ilegível viraria "nada mudou".
-    sort -o "${tmp}/a" "${A}" && sort -o "${tmp}/d" "${D}" || { echo "não consegui ler os snapshots" >&2; uso; }
+    grep -v '^#HEAD' "${A}" | sort > "${tmp}/a" && grep -v '^#HEAD' "${D}" | sort > "${tmp}/d" || { echo "não consegui ler os snapshots" >&2; uso; }
+    ha="$(grep '^#HEAD' "${A}" | head -1)"; hd="$(grep '^#HEAD' "${D}" | head -1)"
+    [ -n "${ha}" ] && [ -n "${hd}" ] || { echo "snapshot sem a linha #HEAD (gravado por outra versão?): refaça os dois" >&2; uso; }
     comm -3 "${tmp}/a" "${tmp}/d" > "${dif}" || { echo "não consegui comparar os snapshots" >&2; uso; }
-    sed $'s/^\t//' "${dif}" | cut -f2- | sort -u > "${tmp}/mudou"
+    sed $'s/^\t//' "${dif}" | cut -f2- > "${tmp}/mudou.0"
+    if [ "${ha}" != "${hd}" ]; then
+      # o HEAD andou durante o despacho: todo arquivo dos commits novos conta (um commit limpa a árvore)
+      wt="$(printf '%s' "${hd}" | cut -f3)"; sa="$(printf '%s' "${ha}" | cut -f2)"; sd="$(printf '%s' "${hd}" | cut -f2)"
+      echo "FORA: HEAD mudou durante o despacho (${sa} → ${sd}): o agente commitou"; fora=1
+      if [ "${sa}" != AUSENTE ] && [ "${sd}" != AUSENTE ]; then
+        git -C "${wt}" diff --name-only -z "${sa}" "${sd}" 2>/dev/null | tr '\0' '\n' | sed "s|^|${wt}/|" >> "${tmp}/mudou.0"
+      fi
+    fi
+    sort -u "${tmp}/mudou.0" > "${tmp}/mudou"
     while IFS= read -r p; do
       [ -z "${p}" ] && continue
       ok=0

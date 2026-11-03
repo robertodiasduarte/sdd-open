@@ -131,6 +131,29 @@ class Sugerir(Base):
         self.assertEqual(len([l for l in out.splitlines() if l.startswith("ctx:")]), 2, out)
 
 
+class Aval1(Base):
+    def test_m3_l1_superficies_com_crase_sem_arquivo_e_cabecalho_fora_de_ordem(self):
+        for fx, classe in (("superficies-com-crase", "cabecalho-ausente"), ("superficies-sem-arquivo", "path-morto"),
+                           ("cabecalho-fora-de-ordem", "cabecalho-ausente")):
+            with self.subTest(fixture=fx):
+                rc, out = self.lint(*DOM, FX + "/" + fx + ".md")
+                self.assertEqual(rc, 2, out)
+                self.assertIn("[" + classe + "]", out)
+
+    def test_m3_validade_recusa_superficies_com_crase(self):
+        sha = self.git(self.r, "rev-parse", "HEAD").strip()
+        ctx = (self.r / FX / "validade-template.md").read_text(encoding="utf-8").replace("__SHA__", sha)
+        self.escreve(self.r, "c.md", ctx.replace("superficies: a.md", "superficies: `sdd/fixtures/contexto/app/pedidos.py`"))
+        rc, out = self.lint("--validade", "c.md", "--ref", "HEAD")
+        self.assertEqual(rc, 2, out)
+
+    def test_l4_caminho_relativo_de_uma_subpasta(self):
+        rc, out, err = self.roda([BASH, "bin/contexto-lint.sh", "--dominio", "fixtures/contexto/dominio.md",
+                                  "--playbook", "fixtures/contexto/playbook.md", "fixtures/contexto/valido-completo.md"],
+                                 self.r / "sdd")
+        self.assertEqual(rc, 0, out + err)
+
+
 class Sabotagem(Base):
     def test_sem_a_checagem_de_landmine_o_self_test_cai(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")
