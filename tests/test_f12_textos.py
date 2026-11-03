@@ -168,9 +168,10 @@ class Contratos(unittest.TestCase):
 
     def test_snapshot_num_lugar_fixo_e_lint_no_redespacho(self):
         # R1@claude e R3@claude (rodada 3)
-        self.assertIn("sdd-fronteira/<F>/governanca", PASSO_11)
-        self.assertIn("sdd-fronteira/<F>/cartografo-<slug>", PASSO_15)
-        self.assertNotIn("mktemp -d)\"`;", PASSO_11)
+        # fixo por projeto e gravável em sandbox: a pasta temporária com o hash da raiz, nunca o .git
+        self.assertIn('"${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/<F>/governanca"', PASSO_11)
+        self.assertIn('"${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/<F>/cartografo-<slug>"', PASSO_15)
+        self.assertNotIn("git-common-dir", PASSO_11 + PASSO_15 + CONTRATOS)
         self.assertIn("5º campo `lint:`", PASSO_15)
         self.assertIn("`lint: <a saída do contexto-lint.sh", CARTOGRAFO)
         self.assertIn('campo_redespacho: "lint"', CONTRATOS)

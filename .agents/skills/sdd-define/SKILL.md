@@ -100,9 +100,9 @@ com `arquivo:linha` em cada afirmação (brief: `references/cartografo.md`; form
 4. **gerar** ⇒ imprima `🗺️ contexto: mapeando ctx:<slug> em contexto fresco (alguns minutos)` e:
    1. no degrau sem subagente, grave **antes** o brief em `sdd/reports/briefs/BRIEF_cartografo_<F>.md` (gravado
       depois do snapshot, ele apareceria como escrita fora do permitido); depois
-      `T="$(cd "$(git rev-parse --git-common-dir)" && pwd -P)/sdd-fronteira/<F>/cartografo-<slug>"; mkdir -p "$T"`
-      (dentro do `.git`, que o `git status` não lista: o caminho é fixo e uma sessão nova o refaz igual depois de
-      uma parada) e `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/contexto/<slug>.md`
+      `T="${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/<F>/cartografo-<slug>"; mkdir -p "$T"`
+      (na pasta temporária, fora do projeto e gravável mesmo em agente com sandbox; o nome vem da raiz do projeto,
+      então uma sessão nova o refaz igual depois de uma parada) e `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/contexto/<slug>.md`
       imediatamente antes do despacho;
    2. despache pela escada de `sdd-build/references/contexto-fresco.md` com **só** os 4 campos
       `ctx: ctx:<slug> · saida: sdd/contexto/<slug>.md · worktree: <raiz> · dominio: sdd/patterns/dominio.md`
@@ -250,9 +250,10 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
 2. Imprima `⚖️ governança: revisando em contexto fresco (alguns minutos)`. No degrau sem subagente, grave
    **antes** o brief em `sdd/reports/briefs/BRIEF_revisor-governanca_<F>.md` (depois do snapshot ele
    apareceria como escrita fora do permitido).
-   `T="$(cd "$(git rev-parse --git-common-dir)" && pwd -P)/sdd-fronteira/<F>/governanca"; mkdir -p "$T"` — dentro
-   do `.git`, que o `git status` não lista: o caminho é fixo, e uma sessão nova que retoma depois da parada
-   (exit 40) o refaz igual e acha o snapshot e a cópia do DEFINE;
+   `T="${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/<F>/governanca"; mkdir -p "$T"` — na pasta
+   temporária, fora do projeto e gravável mesmo em agente com sandbox; o nome vem da raiz do projeto, então uma
+   sessão nova que retoma depois da parada (exit 40) o refaz igual e acha o snapshot e a cópia do DEFINE. Se a
+   pasta temporária tiver sido limpa, o `--comparar` sai 64 e isso conta como falha: refaça e redespache;
    `cp sdd/features/DEFINE_<F>.md "$T/DEFINE.antes"` (o snapshot só guarda o sha: é esta cópia que
    permite restaurar o DEFINE se o revisor o mexer);
    `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md`

@@ -38,7 +38,7 @@ cartografo:
     - "worktree"
     - "dominio"
   campo_redespacho: "lint"
-  snapshot: "<git-common-dir>/sdd-fronteira/<F>/cartografo-<slug>/"
+  snapshot: "<pasta temporária>/sdd-fronteira-<hash da raiz>/<F>/cartografo-<slug>/"
   permitido: "sdd/contexto/<slug>.md"
   secoes:
     - "Escopo"
@@ -64,7 +64,7 @@ revisor_governanca:
     - "padrao"
     - "worktree"
     - "saida"
-  snapshot: "<git-common-dir>/sdd-fronteira/<F>/governanca/"
+  snapshot: "<pasta temporária>/sdd-fronteira-<hash da raiz>/<F>/governanca/"
   permitido: "sdd/reviews/GOVERNANCA_REVIEW_<F>.md"
   retorno: "<<<GOVERNANCA"
   validador: "`sdd/bin/governanca-bloco.py`"

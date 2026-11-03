@@ -83,12 +83,7 @@ case "${1:-}" in
     [ "$(cd "${TOP}" && pwd -P)" = "${WT}" ] || { echo "<raiz-do-worktree> tem de ser a raiz do repositório (${TOP}), não ${WT}" >&2; uso; }
     OUT="$3"; shift 3
     OUT_DIR="$(cd "$(dirname "${OUT}")" 2>/dev/null && pwd -P)" || { echo "pasta do snapshot inexistente: $(dirname "${OUT}")" >&2; uso; }
-    # fora do worktree, ou dentro do .git dele (o git status nunca lista o .git): é lá que o passo 11 guarda o
-    # snapshot para a retomada depois de uma parada
-    case "${OUT_DIR}/" in
-      "${WT}"/.git/*) ;;
-      "${WT}"/*) echo "o snapshot fica FORA do worktree (senão ele mesmo aparece como ??), ou dentro do .git: ${OUT}" >&2; uso ;;
-    esac
+    case "${OUT_DIR}/" in "${WT}"/*) echo "o snapshot fica FORA do worktree (senão ele mesmo aparece como ??): ${OUT}" >&2; uso ;; esac
     # só agora, com o destino validado fora do worktree: um snapshot que falha daqui em diante não deixa o
     # arquivo de uma tentativa anterior no lugar (antes da validação, o rm apagaria um arquivo do projeto)
     rm -f "${OUT}"

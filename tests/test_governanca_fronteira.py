@@ -153,15 +153,12 @@ class Real2(Base):
 
 
 class Real3(Base):
-    def test_snapshot_dentro_do_git_vale(self):
-        d = self.w / ".git/sdd-fronteira/X/governanca"
+    def test_snapshot_dentro_do_git_e_recusado(self):
+        # a sandbox de agentes (medido no Codex CLI) deixa o .git só para leitura: o snapshot não mora lá
+        d = self.w / ".git/sdd-fronteira"
         d.mkdir(parents=True)
         rc, out = self.fr("--snapshot", str(self.w), str(d / "antes"), self.rel)
-        self.assertEqual(rc, 0, out)
-        rc, out = self.fr("--snapshot", str(self.w), str(d / "depois"), self.rel)
-        self.assertEqual(rc, 0, out)
-        rc, out = self.fr("--comparar", str(d / "antes"), str(d / "depois"), self.rel)
-        self.assertEqual(rc, 0, out)
+        self.assertEqual(rc, 64, out)
 
     def test_alias_por_link_do_permitido_casa_com_ele(self):
         self.escreve(self.w, "sdd/reviews/REL.md", "")
