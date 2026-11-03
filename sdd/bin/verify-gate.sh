@@ -152,7 +152,8 @@ msg_governanca() { # $1 = o que foi encontrado
     echo "   antes disso param aqui uma vez."
     echo "   1. Numa sessão nova do agente, peça: \"rode só o passo 11 (Governança) do sdd-define sobre ${DEFINE}\"."
     echo "      Não rode o Define inteiro de novo: ele regravaria a spec."
-    echo "   2. Ou dispense: na tabela do ## Technical Context, troque a linha Governança por"
+    echo "   2. Ou dispense: na tabela do ## Technical Context (sem essa seção, crie-a com o cabeçalho"
+    echo "      | Aspect | Value | Notes |), ponha no lugar da linha Governança"
     echo "      | **Governança** | dispensada — <motivo> | <seu nome, data> |"
     echo "      e apague do DEFINE o marcador \"governança não rodou\", se houver."
   } >&2

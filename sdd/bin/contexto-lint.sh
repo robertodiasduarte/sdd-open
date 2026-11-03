@@ -159,10 +159,17 @@ resolve_basename() { # só o nome do arquivo: casamento ÚNICO entre os arquivos
   printf '%s' "${hits}"
 }
 
+# tokens de caminho: fora de cerca, todos; dentro de cerca (código copiável), só a âncora com :linha — um
+# import relativo no esqueleto (`../shared/x.ts`) é código, não citação
+tokens_de_caminho() { # $1 = arquivo
+  awk '/^[[:space:]]*(```|~~~)/{f=!f; next} !f' "$1" | grep -v '^superficies: ' | grep -oE "[A-Za-z0-9_./-]+\.(${EXT})(:[0-9]+)?"
+  awk '/^[[:space:]]*(```|~~~)/{f=!f; next} f' "$1" | grep -oE "[A-Za-z0-9_./-]+\.(${EXT}):[0-9]+"
+}
+
 # ── caminhos citados: existem e a linha cabe (a linha superficies: fica de fora) ─
 checa_paths() {
   local f="$1" nome="$2" tok path linha total real
-  grep -v '^superficies: ' "${f}" | grep -oE "[A-Za-z0-9_./-]+\.(${EXT})(:[0-9]+)?" | sort -u > "${TMP}/paths.txt"
+  tokens_de_caminho "${f}" | sort -u > "${TMP}/paths.txt"
   printf '\n' >> "${TMP}/paths.txt"
   while IFS= read -r tok; do
     [ -n "${tok}" ] || continue

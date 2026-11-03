@@ -92,12 +92,16 @@ case "${1:-}" in
     # só agora, com o destino validado fora do worktree: um snapshot que falha daqui em diante não deixa o
     # arquivo de uma tentativa anterior no lugar (antes da validação, o rm apagaria um arquivo do projeto)
     rm -f "${OUT}"
-    INCL=""
+    INCL=""; PERM=""
     for x in "$@"; do
       case "${x}" in *$'\n'*) echo "incluir com quebra de linha: a fronteira não mede" >&2; uso ;; esac
-      x="$(canon "${x}")"
-      case "${x}" in "${WT}"/*) ;; *) echo "incluir fora do worktree: ${x}" >&2; uso ;; esac
-      INCL="${INCL}${x}
+      c="$(canon "${x}")"
+      case "${c}" in "${WT}"/*) ;; *) echo "incluir fora do worktree: ${c}" >&2; uso ;; esac
+      INCL="${INCL}${c}
+"
+      # o permitido é resolvido AGORA, antes do despacho, e fica no snapshot: resolver depois deixaria um link
+      # criado pelo agente no caminho permitido autorizar a escrita noutro arquivo
+      PERM="${PERM}#PERMITIDO	${x}	${c}
 "
     done
     lista="$(mktemp)"; parcial="${OUT}.parcial.$$"; trap 'rm -f "${lista}" "${parcial}"' EXIT
@@ -131,7 +135,7 @@ for p in sys.stdin.read().split("\n"):
 sys.stdout.write("".join(l + "\n" for l in sorted(set(saida))))
 ' "${WT}" > "${parcial}" || { echo "não consegui gravar o snapshot" >&2; uso; }
     head_sha="$(git -C "${WT}" rev-parse -q --verify HEAD 2>/dev/null || echo AUSENTE)"
-    printf '#HEAD\t%s\t%s\n' "${head_sha}" "${WT}" >> "${parcial}" && mv "${parcial}" "${OUT}" || { echo "não consegui gravar o snapshot" >&2; uso; }
+    { printf '#HEAD\t%s\t%s\n' "${head_sha}" "${WT}"; printf '%s' "${PERM}"; } >> "${parcial}" && mv "${parcial}" "${OUT}" || { echo "não consegui gravar o snapshot" >&2; uso; }
     printf 'RESULTADO: SNAPSHOT GRAVADO\n→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.\n'
     ;;
   --comparar)
@@ -141,13 +145,17 @@ sys.stdout.write("".join(l + "\n" for l in sorted(set(saida))))
     tmp="$(mktemp -d)"; trap 'rm -rf "${tmp}"' EXIT; dif="${tmp}/dif"
     # diferença simétrica por linha (sha + caminho): cobre novo, sumido e sobrescrito. O comm roda FORA
     # de substituição de processo: lá o rc dele se perde e um snapshot ilegível viraria "nada mudou".
-    # grep -v sai 1 quando o snapshot só tem a linha #HEAD (árvore limpa): isso não é erro de leitura
-    { grep -v '^#HEAD' "${A}" || [ $? -eq 1 ]; } | sort > "${tmp}/a" && { grep -v '^#HEAD' "${D}" || [ $? -eq 1 ]; } | sort > "${tmp}/d" \
+    # grep -v sai 1 quando o snapshot só tem as linhas # (árvore limpa): isso não é erro de leitura
+    { grep -v '^#' "${A}" || [ $? -eq 1 ]; } | sort > "${tmp}/a" && { grep -v '^#' "${D}" || [ $? -eq 1 ]; } | sort > "${tmp}/d" \
       || { echo "não consegui ler os snapshots" >&2; uso; }
     ha="$(grep '^#HEAD' "${A}" | head -1)"; hd="$(grep '^#HEAD' "${D}" | head -1)"
     [ -n "${ha}" ] && [ -n "${hd}" ] || { echo "snapshot sem a linha #HEAD (gravado por outra versão?): refaça os dois" >&2; uso; }
     comm -3 "${tmp}/a" "${tmp}/d" > "${dif}" || { echo "não consegui comparar os snapshots" >&2; uso; }
     sed $'s/^\t//' "${dif}" | cut -f2- > "${tmp}/mudou.0"
+    # caminhos que são (ou passaram a ser) link: o permitido virar link é escrita fora do permitido
+    sed $'s/^\t//' "${dif}" | grep '^link:' | cut -f2- | sort -u > "${tmp}/links" || true
+    # o permitido como foi resolvido no snapshot de ANTES (nunca agora)
+    grep '^#PERMITIDO' "${A}" > "${tmp}/perm" || true
     if [ "${ha}" != "${hd}" ]; then
       # o HEAD andou durante o despacho: todo arquivo dos commits novos conta (um commit limpa a árvore)
       wt="$(printf '%s' "${hd}" | cut -f3)"; sa="$(printf '%s' "${ha}" | cut -f2)"; sd="$(printf '%s' "${hd}" | cut -f2)"
@@ -160,8 +168,15 @@ sys.stdout.write("".join(l + "\n" for l in sorted(set(saida))))
     while IFS= read -r p; do
       [ -z "${p}" ] && continue
       ok=0
-      for perm in "$@"; do [ "${p}" = "${perm}" ] || [ "${p}" = "$(canon "${perm}")" ] && ok=1; done
-      if [ "${ok}" = 1 ]; then printf 'MUDOU: %s\n' "${p}"; else printf 'FORA: %s\n' "${p}"; fora=1; fi
+      for perm in "$@"; do
+        [ "${p}" = "${perm}" ] && ok=1
+        while IFS="$(printf '\t')" read -r _ lit can; do
+          [ "${lit}" = "${perm}" ] && [ "${p}" = "${can}" ] && ok=1
+        done < "${tmp}/perm"
+      done
+      if grep -qxF -- "${p}" "${tmp}/links"; then
+        printf 'FORA: %s (virou ou deixou de ser link durante o despacho)\n' "${p}"; fora=1
+      elif [ "${ok}" = 1 ]; then printf 'MUDOU: %s\n' "${p}"; else printf 'FORA: %s\n' "${p}"; fora=1; fi
     done < "${tmp}/mudou"
     if [ "${fora}" = 1 ]; then
       printf 'RESULTADO: ESCRITA FORA DO PERMITIDO\n→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).\n'

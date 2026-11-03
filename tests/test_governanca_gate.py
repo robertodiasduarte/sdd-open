@@ -41,6 +41,7 @@ class Gate(Sandbox):
         self.assertIn("rode só o passo 11 (Governança) do sdd-define", out)
         self.assertIn("| **Governança** | dispensada — <motivo> | <seu nome, data> |", out)
         self.assertIn("RESULTADO: CLARIFICAR\n→ rode a revisão de governança", out)
+        self.assertIn("sem essa seção, crie-a com o cabeçalho", out)   # R2@claude, rodada 4
 
     def test_fixture_sem_a_linha_sai_5_com_as_duas_saidas(self):
         rc, out = self.gate(None, arquivo="sdd/fixtures/DEFINE_FIXTURE_SEM_GOVERNANCA.md")

@@ -175,6 +175,21 @@ class Real3(Base):
         self.assertNotIn("FORA:", out)
 
 
+class Real4(Base):
+    def test_link_criado_no_permitido_nao_autoriza_outro_arquivo(self):
+        # o agente cria um link no caminho permitido apontando para outro arquivo e escreve nesse outro
+        self.escreve(self.w, "DEFINE.md", "sujo\n")
+        (self.w / "sdd/reviews").mkdir(parents=True, exist_ok=True)
+        self.snap("antes")
+        os.symlink(str(self.w / "DEFINE.md"), self.rel)
+        self.escreve(self.w, "DEFINE.md", "reescrito pelo agente\n")
+        self.snap("depois")
+        rc, out = self.comparar()
+        self.assertEqual(rc, 1, out)
+        self.assertRegex(out, r"(?m)^FORA: .*/DEFINE\.md$")
+        self.assertIn("virou ou deixou de ser link", out)
+
+
 class Uso(Base):
     def test_fronteira_nao_verificada_sai_64(self):
         self.snap("antes")

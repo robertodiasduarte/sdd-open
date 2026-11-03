@@ -165,6 +165,27 @@ class Real3(Base):
         self.assertEqual(rc, 0, out)
 
 
+class Real4(Base):
+    def test_citacao_com_ponto_no_nome_conta(self):
+        p = self.r / "ponto"
+        p.mkdir()
+        shutil.copy(str(self.r / "sdd/fixtures/patterns/valido-vencido.md"), str(p / "api.v2.md"))
+        self.escreve(self.r, "D.md", "## Code Patterns\n\n**Pattern:** `patterns/api.v2.md §Esqueleto` (validado_em 2020-01-01)\n")
+        rc, out = self.lint(*PB, "--design", "D.md", "ponto")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("[validado-vencido]", out)
+
+    def test_import_relativo_no_esqueleto_nao_e_ancora(self):
+        p = self.r / "imp"
+        p.mkdir()
+        self.verde(p / "pedidos.md")
+        t = (p / "pedidos.md").read_text(encoding="utf-8").replace(
+            "def criar_pedido(itens):", "from ../shared/cors.ts import x  # import do esqueleto\ndef criar_pedido(itens):")
+        (p / "pedidos.md").write_text(t, encoding="utf-8")
+        rc, out = self.lint(*PB, "imp")
+        self.assertEqual(rc, 0, out)
+
+
 class Sabotagem(Base):
     def test_idade_que_nao_bloqueia_no_design_derruba_o_self_test(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")

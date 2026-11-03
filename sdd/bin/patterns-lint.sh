@@ -108,13 +108,20 @@ resolve_basename() {
   printf '%s' "${hits}"
 }
 
+# tokens de caminho: fora de cerca, todos; dentro de cerca (código copiável), só a âncora com :linha — um
+# import relativo no esqueleto (`../shared/x.ts`) é código, não citação
+tokens_de_caminho() { # $1 = arquivo
+  awk '/^[[:space:]]*(```|~~~)/{f=!f; next} !f' "$1" | grep -v '^superficies: ' | grep -oE "[A-Za-z0-9_./-]+\.(${EXT})(:[0-9]+)?"
+  awk '/^[[:space:]]*(```|~~~)/{f=!f; next} f' "$1" | grep -oE "[A-Za-z0-9_./-]+\.(${EXT}):[0-9]+"
+}
+
 reporta() { # $1=bloqueia(sim|nao) $2=classe $3=mensagem
   if [ "$1" = "sim" ]; then erro "$2" "$3"; else aviso "$3 — não citado no DESIGN, não bloqueia"; fi
 }
 
 checa_paths() {
   local f="$1" nome="$2" bloqueia="$3" tok path linha total real
-  grep -oE "[A-Za-z0-9_./-]+\.(${EXT})(:[0-9]+)?" "${f}" | sort -u > "${TMP}/paths.txt"
+  tokens_de_caminho "${f}" | sort -u > "${TMP}/paths.txt"
   printf '\n' >> "${TMP}/paths.txt"
   while IFS= read -r tok; do
     [ -n "${tok}" ] || continue
@@ -195,7 +202,7 @@ rodar_lint() {
     # só a linha que COMEÇA com **Pattern:** (também como item de lista ou com recuo), fora de cerca ``` ou ~~~:
     # o blockquote de orientação do template (`> **Pattern:** …`) e um exemplo em cerca são menção, não citação
     awk '/^[[:space:]]*(```|~~~)/{f=!f; next} !f && /^[[:space:]]*([-*+]|[0-9]+\.)?[[:space:]]*\*\*Pattern:?\*\*:?/' "${design}" \
-      | grep -oE 'patterns/[A-Za-z0-9_-]+\.md' | sed -E 's#^patterns/##' | sort -u > "${TMP}/citados.txt"
+      | grep -oE 'patterns/[A-Za-z0-9_.-]+\.md' | sed -E 's#^patterns/##' | sort -u > "${TMP}/citados.txt"
     [ -s "${TMP}/citados.txt" ] || aviso "nenhum pattern citado em $(basename "${design}"): o lint não tem o que exigir"
   fi
   printf '\n' >> "${TMP}/citados.txt"

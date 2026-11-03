@@ -32,7 +32,8 @@ Two ways out:
 
 1. In a new agent session, ask: *"run only step 11 (Governança) of sdd-define on sdd/features/DEFINE_X.md"*.
    Do not rerun the whole Define: it would rewrite the spec.
-2. Or dispense it, with a reason, in the `## Technical Context` table:
+2. Or dispense it, with a reason, in the `## Technical Context` table (an old DEFINE without that section gets
+   it, with the `| Aspect | Value | Notes |` header):
 
    ```markdown
    | **Governança** | dispensada — <reason> | <your name, date> |

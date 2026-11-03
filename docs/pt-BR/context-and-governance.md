@@ -33,7 +33,8 @@ Duas saídas:
 
 1. Numa sessão nova do agente, peça: *"rode só o passo 11 (Governança) do sdd-define sobre
    sdd/features/DEFINE_X.md"*. Não rode o Define inteiro de novo: ele regravaria a spec.
-2. Ou dispense, com motivo, na tabela do `## Technical Context`:
+2. Ou dispense, com motivo, na tabela do `## Technical Context` (um DEFINE antigo sem essa seção a ganha, com o
+   cabeçalho `| Aspect | Value | Notes |`):
 
    ```markdown
    | **Governança** | dispensada — <motivo> | <seu nome, data> |
