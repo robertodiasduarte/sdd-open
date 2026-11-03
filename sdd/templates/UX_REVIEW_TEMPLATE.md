@@ -256,7 +256,7 @@ Acceptance notes:
 
 If none, state: `None - ready for Design.`
 
-Se o papel de alguma surface (destaque, operacional, sobreposição) não estiver claro, registre aqui a pergunta para o responsável.
+Se o papel de alguma surface (destaque, operacional, sobreposição) não estiver claro, registre aqui a pergunta para o responsável. **Papel em aberto trava o Design:** o `sdd-design` pergunta antes de escrever, e não decide sozinho.
 
 ---
 

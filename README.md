@@ -44,7 +44,7 @@ of yours is overwritten. [Full quickstart →](docs/quickstart.md)
 | **Prompt engineering as a deliverable** | when the spec inventories a production prompt, the Build phase writes it through a skill with an explicit output contract, written-out formulas and a rule for missing context — instead of letting the model estimate. Wired as a replaceable slot (`prompts.builder_skill`), shipped with a default | skill `sdd-prompt-builder` |
 | **Second-vendor adversarial review** | fixed-format answer (verdict, ≤3 risks, fixes, what to ignore); every note is applied or rebutted in writing | `fragments/ADVISOR_CONSULT.md` |
 | **Read-only harness audit** | a harness accretes: commands nobody calls, agents nobody dispatches, docs that drifted from the code. One read-only pass inventories every command, agent, skill, hook and script, measures inbound references and recency, and emits a single `AUDITORIA_SDD_<date>.md` — it never deletes: the cleanup itself stays a human decision | skill `sdd-auditoria-harness` · `scripts/collect_evidence.py` |
-| **Governance review** | for financial, accounting or tax systems, checks the DEFINE against a curated catalog (entries that cannot be deleted, period close, audit trail, segregation of duties, exact arithmetic…) and recommends EARS requirements with a negative test the Verify Gate runs; a legal basis is only cited once confirmed in the catalog; one decision per item, and a rejection is recorded as an accepted risk | skill `sdd-governanca` |
+| **Governance review** | for financial, accounting or tax systems, checks the DEFINE against a curated catalog (entries that cannot be deleted, period close, audit trail, segregation of duties, exact arithmetic…) and recommends EARS requirements with a negative test the Verify Gate runs; a legal basis is only cited once confirmed in the catalog; one decision per item, and a rejection is recorded as an accepted risk. Since v2.4.0 it runs inside every Define (step 11), by a fresh agent, and the Verify Gate exits 5 until it closes | skill `sdd-governanca` |
 | **Knowledge base** | what you know about a domain (a process, a regulation, a manual) organized as concepts and recipes the agent can consult; for regulations, the period each rule applies, the source with SHA-256 and the rule → source → test map. The Define cites only domains that exist, checked by `sdd/bin/kb-dominios.py` | skill `sdd-kb` · `sdd/kb/` |
 | **Handoff by feature card** | one file per feature in the repository, with a self-contained resume prompt — no dependency on any agent's memory | skill `sdd-handoff` · `sdd/handoffs/` |
 
@@ -66,7 +66,7 @@ path, from the first install to the first release.
 prepare once:  sdd-checar-ambiente · sdd-iniciar-repo · sdd-higiene-dado · (optional) sdd-kb
 every front:   sdd-new-session
 
-/sdd-brainstorm → /sdd-define → /sdd-governanca → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
+/sdd-brainstorm → /sdd-define (domain map + governance inside) → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
   (optional)           ↑          (if money)          (if UI)           ↑             │             │
                        └───────── /sdd-iterate corrects course ─────────┘             │             │
                                                                                       ▼             ▼
@@ -97,6 +97,7 @@ Works on macOS, Linux and Windows (Git Bash/WSL): bash 3.2, zero zsh, zero symli
 - [Comparison](docs/comparison.md) ([PT](docs/pt-BR/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
 - [Git hooks](docs/hooks.md) ([PT](docs/pt-BR/hooks.md)) — the pre-commit rules `init` installs, the data-hygiene alarm, the `--no-verify` limit
 - [Chained flow](docs/chained-flow.md) ([PT](docs/pt-BR/chained-flow.md)) — decision classes in every question, `flow.autonomous`, the stop with exit 40 when the agent cannot open a fresh session
+- [Context and governance](docs/context-and-governance.md) ([PT](docs/pt-BR/context-and-governance.md)) — the domain map (step 1.5) and the governance review (step 11) of the Define, the exit 5 after upgrading, project patterns
 - [Adversarial review](docs/adversarial-review.md) ([PT](docs/pt-BR/adversarial-review.md)) — one engine reviews the frozen diff, another audits the review; cost per role, privacy, the external review the release requires, the offline gate and `eval-agree`
 - [Roadmap](docs/roadmap.md) ([PT](docs/pt-BR/roadmap.md)) — what is planned and what is under evaluation
 - [Student guide](docs/pt-BR/guia-do-aluno.md) (PT) — step by step for someone who never used git or a terminal

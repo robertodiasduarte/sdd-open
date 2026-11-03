@@ -59,13 +59,18 @@ começado. A distinção importa porque loops autônomos reagem ao vermelho iter
 driver vai reescrever o design, sem parar, em cima de uma premissa que ninguém validou. O exit `5`
 é um estado separado justamente pra que os loops parem em vez de iterar.
 
+Desde a v2.4.0 o exit `5` tem um 2º motivo: a tabela do `## Technical Context` não tem a linha
+`Governança` com valor final (`N.A. — …`, `GOVERNANCA_REVIEW_…` ou `dispensada — …`), isto é, o passo 11 do
+`sdd-define` (a revisão de governança) não fechou. A ordem das checagens é: marcador de ambiguidade →
+linha `Governança` → bloco do gate. Veja [context-and-governance.md](context-and-governance.md).
+
 | exit | Estado | Obrigação do chamador |
 |---|---|---|
 | `0` | verde | prossiga |
 | `2` | vermelho | **aborte**; conserte o código, ou itere a spec se o defeito estiver na spec |
 | `3` | inconclusivo | resolva explicitamente; nunca registre como verde, nunca conte como vermelho |
 | `4` | exige assinatura humana | mostre o `manual_fallback`, pare até o recibo ser registrado |
-| `5` | esclarecimento pendente | **pare**, volte pro `/sdd-define`; nunca itere o design |
+| `5` | esclarecimento pendente (marcador, ou linha `Governança` sem valor final) | **pare**, volte pro `/sdd-define` (ou rode só o passo 11 dele); nunca itere o design |
 | `64` | bloco inválido ou ausente | a spec não é válida |
 
 ## O marcador de ambiguidade

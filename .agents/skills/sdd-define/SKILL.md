@@ -5,15 +5,15 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.4.0"
-  updated: "2026-10"
+  version: "2.5.0"
+  updated: "2026-11"
   fase: "1"
 ---
 
 # sdd-define — Fase 1
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-define v2.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-define v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
 depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
@@ -27,16 +27,17 @@ Quem usa esta skill, em geral, nunca usou git nem terminal.
 
 | Etapa | Nome para o aluno | Passos desta skill |
 |---|---|---|
-| 1 | Ler o brainstorm | 1 e 2 |
+| 1 | Ler o brainstorm | 1, 1.5 e 2 |
 | 2 | Requisitos | 3 |
 | 3 | Testes de aceitação | 4 e 5 |
 | 4 | Perguntas | 6 e 7 |
 | 5 | Verify Gate | 8 |
 | 6 | Gravar | 9 e 10 |
+| 7 | Governança | 11 |
 
 Toda resposta, nesta ordem (pule a parte sem conteúdo):
 
-1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar`
+1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança`
    (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
    etapa, o motivo vai em Agora.
 2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
@@ -70,6 +71,55 @@ extração é direta: perguntas já respondidas, abordagem já escolhida, YAGNI 
 Leia `sdd/templates/DEFINE_TEMPLATE.md`, `AGENTS.md`, a entrada, e os 3 fragmentos que regem
 esta fase: `sdd/templates/fragments/EARS.md`, `CLARIFY.md`, `VERIFY_GATE.md`. Leia `## Sempre`
 de `sdd/playbook.md`.
+
+### 1.5. Contexto de domínio (cartógrafo)
+
+Antes de escrever a spec, saiba que regras o código **já** impõe no domínio que a feature toca. Quem
+mapeia é o cartógrafo, um agente fresco que não viu esta conversa e grava `sdd/contexto/<slug>.md`
+com `arquivo:linha` em cada afirmação (brief: `references/cartografo.md`; formato:
+`sdd/bin/contexto-lint.sh`). O cartógrafo **ajuda, não trava**: se falhar, o Define segue sem ele.
+
+1. **Recomendação.** `bash sdd/bin/contexto-lint.sh --sugerir <entrada>` (o BRAINSTORM ou as notas; pedido
+   direto sem arquivo vai antes para um arquivo em `"$(mktemp -d)"/entrada.md`) lê o mapa
+   `sdd/patterns/dominio.md` e as camadas de `layers:` e imprime até 2 domínios candidatos e uma linha
+   `recomendacao: gerar | reusar | pular (<motivo>)`. Aplique como decisão `[auto · de rotina]` (com o
+   encadeamento ligado, vai para o recibo "Decidi sozinho" com o sinal e como desfazer):
+
+   **Sua decisão** — [auto · de rotina] **Mapeio as regras do domínio de pedidos antes de escrever a spec?**
+   - **gerar o mapa agora** (recomendado) — um agente novo lê o código de pedidos e anota as regras que
+     já valem, com o arquivo e a linha; leva alguns minutos e não muda nada no código.
+   - **seguir sem o mapa** — o Define fica mais rápido, mas pode repetir ou contrariar uma regra que o
+     código já tem.
+   - **não sei** — explico com um exemplo de regra que o mapa acharia.
+2. **pular** ⇒ uma linha ao aluno: `🗺️ contexto: pulado — <motivo em palavras>. Sem problema: o Define
+   segue.` Sem mapa de domínios, acrescente: `Para ter o mapa, veja sdd/patterns/README.md.` No DEFINE:
+   `CONTEXTO de domínio` = `nenhum (pulado: <motivo>)`.
+3. **reusar** ⇒ `bash sdd/bin/contexto-lint.sh --validade sdd/contexto/<slug>.md`: 0 ⇒
+   `✅ contexto: reusando sdd/contexto/<slug>.md (nada mudou desde <data>)`; 1 ⇒ `⚠️ contexto: venceu
+   (<n> arquivos mudaram)` e ofereça gerar.
+4. **gerar** ⇒ imprima `🗺️ contexto: mapeando ctx:<slug> em contexto fresco (alguns minutos)` e:
+   1. `T="$(mktemp -d)"` (fora do projeto); `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/contexto/<slug>.md`
+      imediatamente antes do despacho;
+   2. despache pela escada de `sdd-build/references/contexto-fresco.md` com **só** os 4 campos
+      `ctx: ctx:<slug> · saida: sdd/contexto/<slug>.md · worktree: <raiz> · dominio: sdd/patterns/dominio.md`
+      e o brief `references/cartografo.md` (nada do pedido, nada desta conversa). Sem subagente: grave o
+      brief em `sdd/reports/briefs/BRIEF_cartografo_<F>.md`, rode
+      `bash sdd/bin/sdd-fluxo.sh despachar cartografo <F> sdd/reports/briefs/BRIEF_cartografo_<F>.md` e pare
+      no exit 40 repassando a parada; quando as duas paradas deste Define vão acontecer, escreva antes
+      `⏸️ parada 1 de 2 deste Define (o cartógrafo); a 2ª é a revisão de governança.`;
+   3. logo que o bloco `<<<CONTEXTO … >>>` voltar, **sem editar nada no meio**: `--snapshot … "$T/depois"`
+      e `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/contexto/<slug>.md`;
+      depois `bash sdd/bin/contexto-lint.sh sdd/contexto/<slug>.md`;
+   4. falha = `--comparar` ≠ 0, lint ≠ 0 ou bloco ilegível. `FORA:` ⇒ liste os caminhos, não apague
+      nada. **1 redespacho** fresco, com a saída do lint anexada; 2ª falha ⇒
+      `⚠️ contexto: o mapa não ficou válido (<motivo em palavras>); o Define segue sem ele.` e
+      `nenhum (<motivo>)`.
+5. **Preencha** a linha `CONTEXTO de domínio` do Technical Context:
+   `contexto/<slug>.md · sha <7 hex> · válido em <AAAA-MM-DD>` ou `nenhum (<motivo>)`. O que o CONTEXTO
+   diz em `## Regras vigentes` entra nos ATs e nas Constraints como **regra existente**, não como suposição.
+6. **No máximo 2 domínios por feature**, um despacho por vez (o 2º só depois que a fronteira do 1º
+   fechou: em paralelo, um cartógrafo veria o arquivo do outro como escrita fora do permitido). Mais que
+   isso é sinal de feature grande: proponha dividir.
 
 ### 2. Classificar a entrada
 
@@ -163,7 +213,8 @@ mudança; se já passa, ela não prova nada.
 ### 9. Gravar
 
 `sdd/features/DEFINE_{FEATURE}.md` com o template preenchido, Status `Ready for Design` (ou
-`Ready for UX Review` se há interface).
+`Ready for UX Review` se há interface), a linha `CONTEXTO de domínio` do passo 1.5 e a linha
+`Governança` = `pendente` (o passo 11 escreve a final).
 
 ### 10. Conferir o KB Domains
 
@@ -172,6 +223,82 @@ só cita pastas de `sdd/kb/`, ou diz `nenhum`. Exit 0 segue; exit 1 ⇒ corrija 
 de entregar. Os testes que ele listar (`<domínio>: <REGRA> → <teste>`, das regras de uma base normativa)
 entram no `cmd` do Verify Gate; se algum não entrar, registre o motivo no DEFINE e rode
 `verify-gate.sh --print` de novo.
+
+### 11. Governança (sempre, inclusive com `--parar`)
+
+Num sistema que trata dinheiro, tributo, folha ou dado pessoal, a revisão de governança acha o que a
+spec devia exigir antes que o código endureça. Ela roda em **todo** Define (o Step 6.5 do PORTE): sem
+tema, o revisor responde N.A. e isso fica registrado. **Quem escreveu o DEFINE não se revisa**: os
+passos 1 a 4 da `sdd-governanca` são do revisor, um agente fresco (brief
+`.agents/skills/sdd-governanca/references/revisor.md`); as decisões e a aplicação (passos 5 e 6) são
+desta sessão. `--parar` desliga o encadeamento, nunca este passo.
+
+1. **Antes de tudo, a trava.** Grave no DEFINE, em `## Clarifications`, uma sessão nova com o marcador
+   de governança (colchete + `NEEDS CLARIFICATION` + `: governança não rodou — rode só o passo 11 do
+   sdd-define numa sessão nova, ou dispense com motivo`, fora de cerca) e deixe a linha `Governança` =
+   `pendente`. Assim, se a sessão parar aqui (exit 40 ou a pessoa fecha a janela), o `verify-gate.sh`
+   sai 5 e o build não passa sem a revisão. Com outro marcador de dúvida aberto, espere a resposta e
+   rode este passo depois; se o Define terminar com dúvida aberta, a trava fica e a linha diz
+   `pendente — clarificação aberta`. A linha `Governança` é **sempre a linha da tabela** do
+   `## Technical Context` — `| **Governança** | <valor> | <nota> |` —, a única que o `verify-gate.sh` lê.
+2. Imprima `⚖️ governança: revisando em contexto fresco (alguns minutos)`. `T="$(mktemp -d)"`;
+   `cp sdd/features/DEFINE_<F>.md "$T/DEFINE.antes"` (o snapshot só guarda o sha: é esta cópia que
+   permite restaurar o DEFINE se o revisor o mexer);
+   `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md`
+   imediatamente antes do despacho.
+3. **Despache** pela escada de `sdd-build/references/contexto-fresco.md` com **só** os 5 campos
+   absolutos (também no redespacho):
+   `define: <raiz>/sdd/features/DEFINE_<F>.md · skill: <raiz>/.agents/skills/sdd-governanca/ · padrao: <raiz>/sdd/GOVERNANCA_PADRAO.md · worktree: <raiz> · saida: <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md`.
+   Sem subagente: grave o brief em `sdd/reports/briefs/BRIEF_revisor-governanca_<F>.md`, rode
+   `bash sdd/bin/sdd-fluxo.sh despachar revisor-governanca <F> sdd/reports/briefs/BRIEF_revisor-governanca_<F>.md`
+   e pare no exit 40 (`⏸️ parada 2 de 2 deste Define` quando houve a do cartógrafo). A trava do item 1
+   segura o build até o bloco voltar.
+4. **Na volta, sem editar nada no meio:** grave a resposta do revisor em `"$T/resposta.txt"`;
+   `--snapshot … "$T/depois"`;
+   `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md > "$T/comparar.txt"`;
+   e confira o bloco com
+   `python3 sdd/bin/governanca-bloco.py "$T/resposta.txt" --saida <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md --comparar "$T/comparar.txt"`
+   (0 bloco válido · 1 `resultado: FALHA` · 2 bloco inválido).
+5. **Falha** = `--comparar` ≠ 0 (1 = `FORA:`; 64 = fronteira não verificada) ou `governanca-bloco.py` ≠ 0
+   (1 = `resultado: FALHA`; 2 = bloco inválido: sem o par `<<<GOVERNANCA`/`>>>`, `resultado` fora da
+   lista, `lacuna:` sem os 3 campos ou sem `muda:`/`porque:`, `relatorio:` diferente do `saida:`, Gnn do
+   bloco diferente dos títulos `### Gnn — ` de `## Lacunas`, `REVISADO` sem `MUDOU: <saida>`, ou outro
+   resultado com o relatório gravado). Tratamento, **nada destrutivo**: DEFINE em `FORA:` ⇒
+   `cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md` e confira com `cmp`; outros `FORA:` ⇒ liste, não
+   apague; o `saida:` que estava `AUSENTE` no antes ⇒ remova.
+   Imprima `↻ governança: a 1ª tentativa falhou (<motivo>); tentando de novo em contexto fresco.`,
+   refaça o snapshot de antes e **redespache uma vez**, com os mesmos 5 campos (o motivo fica nesta
+   sessão). 2ª falha ⇒ item 9.
+6. **`PADRAO_AUSENTE`** (achou tema e o projeto não tem `sdd/GOVERNANCA_PADRAO.md`) ⇒ uma frase:
+   `A revisão achou <tema> neste Define e o projeto ainda não tem o padrão de governança; são 5 perguntas,
+   uma vez por projeto.` Pergunte os 5 campos do passo 2 da `sdd-governanca`, com a marca
+   `[D2 · muda o produto]`, grave o padrão pelo `assets/GOVERNANCA_PADRAO_TEMPLATE.md` dela e redespache
+   (não conta como falha). Projeto com revisão N.A. nunca ouve essas perguntas.
+7. **`NA`** ⇒ `✅ governança: N.A. — <motivo>` e a linha `| **Governança** | N.A. — <motivo> | revisor fresco, <data> |`.
+   Nenhum arquivo.
+   **`REVISADO` com 0 lacunas** ⇒ `✅ governança: 0 lacunas — <cobertura>` e item 8 sem perguntas.
+8. **`REVISADO` com lacunas** ⇒ `⚖️ governança: <n> lacuna(s) — <n> pergunta(s)` e o caminho do relatório
+   (uma vez). **Uma pergunta por lacuna**, em ordem de severidade, no formato do passo 5 da
+   `sdd-governanca` (`[D2 · muda o produto]`: aplicar no DEFINE · recusar com motivo · adiar; o AT que
+   contradiz o requisito mostrado antes e depois; nunca "aplicar todas"). Depois, o passo 6 da skill,
+   por esta sessão: AT contradito reescrito primeiro; AT novo no próximo ID; e, para cada lacuna aplicada
+   que tem `prova_script` no catálogo, **este passo é o dono da prova** (o Design só a lista no manifest):
+   grave o script adaptado em `sdd/tests/governanca/<F>_<Gnn>.sql` e acrescente
+   `psql -v ON_ERROR_STOP=1 -f sdd/tests/governanca/<F>_<Gnn>.sql` ao `cmd` do bloco `verify_gate`
+   existente, contra banco de desenvolvimento, de teste ou branch — **nunca produção**. Projeto só com o
+   banco de produção: escreva isso no DEFINE e use o `prova_manual` até existir um de teste. No
+   relatório: *Riscos aceitos* e *Aplicado no DEFINE*. Linha
+   `| **Governança** | GOVERNANCA_REVIEW_<F>.md · <a> aplicadas · <r> recusadas · <d> adiadas | <data> |`.
+   Toda saída que escreve a linha final (itens 7 e 8) **remove o marcador de governança** do item 1.
+9. **2ª falha** ⇒ o marcador fica e a linha diz `| **Governança** | falhou — <motivo> | <data> |`. Mensagem:
+   `🛑 governança não rodou — <motivo em palavras>. Efeito: o build e a release param até resolver.`
+   e as 2 saídas numeradas: (1) numa sessão nova, pedir "rode só o passo 11 (Governança) do sdd-define
+   sobre <DEFINE>" — não o Define inteiro, que regravaria a spec; (2) dispensar: trocar a linha da tabela
+   por `| **Governança** | dispensada — <motivo> | <nome, data> |` **e** trocar o marcador por
+   `- [x] (governança) dispensada — <motivo>` (com o marcador no arquivo, o gate continua em 5).
+
+A linha `Governança` só é escrita por este passo (ou pela dispensa da pessoa). O `verify-gate.sh` sai 5
+enquanto ela não tiver um valor final: `N.A. — …`, `GOVERNANCA_REVIEW_…` ou `dispensada — …`.
 
 ## Quality Gate
 
@@ -184,6 +311,8 @@ entram no `cmd` do Verify Gate; se algum não entrar, registre o motivo no DEFIN
 [ ] ## Verify Gate com kind+cmd+pass_when executáveis (ou manual-ux com manual_fallback)
 [ ] verify-gate.sh --print lista o bloco sem erro 64
 [ ] kb-dominios.py sai 0 (KB Domains de ls sdd/kb/ ou nenhum)
+[ ] Linha CONTEXTO de domínio preenchida (contexto/<slug>.md · sha · data, ou nenhum com motivo)
+[ ] Passo 11 rodou: linha Governança final (N.A. — …, GOVERNANCA_REVIEW_…, dispensada — …) e sem marcador de governança
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
 
@@ -201,6 +330,13 @@ entram no `cmd` do Verify Gate; se algum não entrar, registre o motivo no DEFIN
   features, e o gate fica caro demais para rodar a cada mudança.
 - **KB Domains só de `ls sdd/kb/`, ou `nenhum`** — um domínio inventado manda o Design procurar padrões
   onde não há nada; o `kb-dominios.py` reprova o nome que não tem pasta.
+- **O mapa do domínio vem de um agente que não viu a conversa** — quem vai escrever a spec já sabe o
+  que quer construir e lê o código procurando confirmação; o cartógrafo descreve o que o código faz hoje,
+  com o arquivo e a linha, e a fronteira prova que ele só gravou o mapa.
+- **A governança roda em todo Define e trava o build** — skill avulsa ninguém é obrigado a rodar, e a
+  lacuna esquecida só aparece depois do build, quando custa migração; N.A. registrado custa uma linha.
+- **A trava é gravada antes do despacho** — se a sessão parar no meio, o DEFINE já diz que a revisão
+  não rodou, e o gate segura o build em vez de deixá-lo passar em silêncio.
 - **O gate composto nasce vermelho** — uma asserção que já passa antes da mudança não prova a mudança;
   rodá-la contra a árvore antiga mostra que ela avalia alguma coisa.
 
@@ -210,9 +346,7 @@ Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o �
 `/sdd-define`. Os 4 blocos na ordem: micro-kanban · Onde estamos · O que precisa de você (só se
 N≥1) · O que vem depois, com ⚠️ inline.
 
-**Próximo passo:** `/sdd-governanca sdd/features/DEFINE_{FEATURE}.md` se o DEFINE trata dinheiro,
-saldo, lançamento, nota fiscal, tributo, folha ou dado pessoal; senão
-`/sdd-ux-review sdd/features/DEFINE_{FEATURE}.md` se há interface; senão
+**Próximo passo:** `/sdd-ux-review sdd/features/DEFINE_{FEATURE}.md` se há interface; senão
 `/sdd-design sdd/features/DEFINE_{FEATURE}.md` (registre no DEFINE por que o UX review foi
 pulado — kanban marca ➖ só com decisão registrada).
 
@@ -228,7 +362,7 @@ vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam 
 desliga nesta chamada (`--parar`).
 
 Nesta skill: `seguir define sdd/features/DEFINE_{FEATURE}.md <próxima>`, com a próxima do Próximo
-passo acima (governanca, ux-review ou design).
+passo acima (ux-review ou design). A governança já rodou no passo 11.
 
 ---
 

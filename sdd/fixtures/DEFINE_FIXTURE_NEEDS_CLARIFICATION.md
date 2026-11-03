@@ -8,6 +8,12 @@
 
 O envio usa a fila do provedor [NEEDS CLARIFICATION: qual classe de throttle se aplica — lote com 120s ou interativo sem espera?] e precisa respeitar o teto.
 
+## Technical Context
+
+| Aspect | Value | Notes |
+|---|---|---|
+| **Governança** | N.A. — fixture do pacote, sem dinheiro, tributo, folha ou dado pessoal | o exit 5 desta fixture vem do marcador |
+
 ## Verify Gate
 
 ```yaml

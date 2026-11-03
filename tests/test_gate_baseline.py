@@ -12,8 +12,12 @@ SCRIPT = "sdd/bin/gate-baseline.sh"
 CHECA = 'grep -q novo app.txt && echo ok || { echo "RESULTADO: VERMELHO"; exit 2; }\n'
 
 
+# Desde a v2.4.0 (F12) o DEFINE precisa da linha Governança final, senão o gate sai 5 antes do bloco.
+GOVERNANCA = "## Technical Context\n\n| Aspect | Value | Notes |\n|---|---|---|\n| **Governança** | N.A. — teste sem dinheiro, tributo ou dado pessoal | — |\n\n"
+
+
 def define(cmd: str) -> str:
-    return ('# DEFINE\n\n## Verify Gate\n\n```yaml\nverify_gate:\n  kind: test\n  cmd: "' + cmd
+    return ('# DEFINE\n\n' + GOVERNANCA + '## Verify Gate\n\n```yaml\nverify_gate:\n  kind: test\n  cmd: "' + cmd
             + '"\n  pass_when: "exit 0"\n```\n')
 
 

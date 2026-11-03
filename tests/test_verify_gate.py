@@ -13,11 +13,13 @@ SCRIPT = "sdd/bin/verify-gate.sh"
 # Montado em tempo de execução: o marcador ativo literal neste arquivo seria lido como dúvida aberta
 # por qualquer ferramenta que varra a árvore atrás dele.
 MARCADOR = "[NEEDS " + "CLARIFICATION: qual moeda?]"
+# Desde a v2.4.0 (F12) o DEFINE precisa da linha Governança final, senão o gate sai 5 antes do bloco.
+GOVERNANCA = "## Technical Context\n\n| Aspect | Value | Notes |\n|---|---|---|\n| **Governança** | N.A. — teste sem dinheiro, tributo ou dado pessoal | — |\n\n"
 
 
 def define(kind: str = "test", cmd: str = "true", pass_when: str = "exit 0", corpo: str = "") -> str:
     return (
-        "# DEFINE: EXEMPLO\n\n" + corpo + "\n## Verify Gate\n\n```yaml\nverify_gate:\n"
+        "# DEFINE: EXEMPLO\n\n" + corpo + "\n" + GOVERNANCA + "## Verify Gate\n\n```yaml\nverify_gate:\n"
         "  kind: " + kind + "\n"
         '  cmd: "' + cmd + '"\n'
         '  pass_when: "' + pass_when + '"\n'
@@ -83,7 +85,7 @@ class VerifyGate(Sandbox):
         self.assertEqual(rc, 0, out)
 
     def test_64_sem_bloco(self):
-        rc, out = self.gate("# DEFINE: EXEMPLO\n\nSem gate.\n")
+        rc, out = self.gate("# DEFINE: EXEMPLO\n\n" + GOVERNANCA + "Sem gate.\n")
         self.assertEqual(rc, 64, out)
         self.assertIn("RESULTADO: SPEC INVÁLIDA", out)
 
@@ -138,7 +140,7 @@ class VerifyGate(Sandbox):
                 self.assertEqual(rc, 1, out)
 
     def test_strict_preserva_0_2_64(self):
-        casos = {0: define(cmd="true"), 2: define(cmd="false"), 64: "# DEFINE sem gate\n"}
+        casos = {0: define(cmd="true"), 2: define(cmd="false"), 64: "# DEFINE sem gate\n\n" + GOVERNANCA}
         for esperado, texto in casos.items():
             with self.subTest(exit=esperado):
                 rc, out = self.gate(texto, "--strict")

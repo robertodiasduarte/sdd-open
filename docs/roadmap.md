@@ -12,7 +12,6 @@ own document.
 
 | Theme | What it brings | Status |
 |---|---|---|
-| **Context and governance** | a map of the domain before the Define, project patterns the Design cites, and governance that blocks the Define of a financial system until it runs | *planned* |
 | **`sdd-loop-builder` and `sdd-drive`** | a skill for code that calls an LLM in a loop, and one that drives several phases in a row with the same human stops | *planned* |
 | **Spec ↔ code reconciliation** | checking that the file manifest covered every requirement, not only that acceptance passed | *planned* |
 | **Specs as deltas** | a spec written as a difference against a canonical capability set, instead of a long-lived document | *under evaluation* |

@@ -52,6 +52,12 @@ duas vezes, e ninguém consegue dizer depois quem lançou cada pagamento nem em 
 | AT-006 | Unwanted | **If** o mesmo boleto (mesma linha digitável) for importado duas vezes, **then** o sistema **shall** recusar a 2ª inserção pela chave única da linha digitável e manter a mesma contagem | test |
 | AT-007 | Unwanted | **If** o usuário que criou um pagamento acima de R$ 5.000,00 tentar aprová-lo, **then** o sistema **shall** recusar a aprovação | test |
 
+## Technical Context
+
+| Aspect | Value | Notes |
+|---|---|---|
+| **Governança** | pendente | fixture de entrada da revisão de governança: ainda não revisada, o gate sai 5 até o passo 11 rodar |
+
 ## Verify Gate
 
 ```yaml

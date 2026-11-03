@@ -5,15 +5,15 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.5.0"
-  updated: "2026-10"
+  version: "2.5.1"
+  updated: "2026-11"
   fase: "3"
 ---
 
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.5.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
 critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
@@ -164,7 +164,7 @@ não se fala de banco.
 | `2` | vermelho — **abortar**; corrigir código (ou iterar DESIGN/DEFINE se a premissa está errada) e rodar de novo |
 | `3` | inconclusivo — **não** é verde: instale a ferramenta ou rode onde ela exista; registre |
 | `4` | manual-ux — mostre o `manual_fallback` ao humano e **pare** até o recibo (quem, data, resultado) |
-| `5` | clarificação pendente — **pare** e volte ao Define; não é vermelho de build |
+| `5` | clarificação pendente (marcador de dúvida, ou a linha `Governança` sem valor final: o passo 11 do `sdd-define` não fechou) — **pare** e volte ao Define, ou rode só o passo 11; não é vermelho de build |
 | `64` | DEFINE sem gate válido — volte ao Define |
 
 Se o build corrigiu (ou escreveu) a asserção do gate, prove que ela tem dentes:

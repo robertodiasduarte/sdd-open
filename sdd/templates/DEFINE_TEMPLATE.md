@@ -158,12 +158,16 @@ Explicitly NOT included in this feature:
 | **KB Domains** | {bases de conhecimento do projeto a consultar (nomes de pasta em `sdd/kb/`, de `ls sdd/kb/`), ou `nenhum` explícito} | {Which patterns to consult} |
 | **IaC Impact** | {New resources \| Modify existing \| None \| TBD} | {Terraform/Terragrunt changes needed} |
 | **LLM Prompts** | {true \| false} | {Set true se a feature cria/edita prompts runtime — system prompts, passes de pipeline, classificadores. Quando true, a fase Design inventaria cada prompt e a fase Build trata cada um como entregável com contrato próprio.} |
+| **CONTEXTO de domínio** | {contexto/<slug>.md · sha <7 hex> · válido em AAAA-MM-DD \| nenhum (<motivo>)} | {Preenchido pelo passo 1.5 do sdd-define (cartógrafo). O Design lê as Regras vigentes dele.} |
+| **Governança** | {pendente — o passo 11 escreve: N.A. — <motivo> \| GOVERNANCA_REVIEW_<F>.md · a aplicadas · r recusadas · d adiadas \| dispensada — <motivo>} | {Escrita só pelo passo 11 do sdd-define (ou pela dispensa da pessoa). Sem um desses 3 valores finais, o verify-gate.sh sai 5.} |
 
 **Why This Matters:**
 
 - **Location** → Design phase uses correct project structure, prevents misplaced files
 - **KB Domains** → a fase Design puxa os padrões certos da base de conhecimento do projeto
 - **IaC Impact** → Triggers infrastructure planning, avoids "works locally" failures
+- **CONTEXTO de domínio** → o Define e o Design partem das regras que o código já impõe, com arquivo:linha
+- **Governança** → nenhum DEFINE chega ao build sem a revisão de governança (ou sem a dispensa escrita)
 - **LLM Prompts** → Gate condicional para a etapa de engenharia de prompts; evita overhead em features sem LLM
 
 **LLM Prompts — gatilhos para marcar `true`:**

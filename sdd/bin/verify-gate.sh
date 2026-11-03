@@ -28,11 +28,17 @@
 #   2  = VERMELHO (falhou)           → build e release ABORTAM
 #   3  = INCONCLUSIVO (tool ausente ou ruído de infra) → o humano decide; NÃO é vermelho
 #   4  = manual-ux: exige ASSINATURA HUMANA (não auto-passa)
-#   5  = CLARIFICAR: DEFINE tem marcador ativo de ambiguidade → voltar ao Define
+#   5  = CLARIFICAR: DEFINE tem marcador ativo de ambiguidade → voltar ao Define;
+#        ou não tem a linha `Governança` final no Technical Context (passo 11 do sdd-define não rodou)
 #   64 = erro de uso / bloco ausente ou malformado → DEFINE sem gate válido
 #
 # Toda saída termina em `RESULTADO: <PALAVRA>` + `→ <o que fazer>`. Sem --strict, um `&&`
 # encadeado trata 3/4/5 como sucesso — por isso o quickstart e os exemplos de CI usam --strict.
+#
+# Linha Governança (desde a v2.4.0): na seção `## Technical Context`, fora de cercas, a linha da tabela
+# `| **Governança** | <valor> | … |` com valor final — `N.A. — <motivo>`, `GOVERNANCA_REVIEW_…` ou
+# `dispensada — <motivo>`. Ausente, vazia, `pendente` ou `falhou` ⇒ exit 5 (o passo 11 do sdd-define não
+# fechou). --print é isento, como no marcador.
 #
 # ⚠️ bash 3.2 · ${VAR} com chaves antes de não-ASCII.
 
@@ -62,6 +68,7 @@ TRACE_SRC="verify-gate"
 TRACE_KIND=""
 TRACE_DEFINE=""
 TRACE_GRAVOU=0
+CLARIFICAR_MOTIVO=marcador
 json_esc() { printf '%s' "${1}" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g'; }
 trace_gravar() {
   rc="$?"
@@ -84,7 +91,11 @@ finalizar() { # $1=exit original
     2)  printf 'RESULTADO: VERMELHO\n→ corrija o que o comando acima apontou e rode de novo.\n' ;;
     3)  printf 'RESULTADO: INCONCLUSIVO\n→ instale a ferramenta ausente ou rode onde ela exista; com --strict isto conta como falha.\n' ;;
     4)  printf 'RESULTADO: ASSINATURA HUMANA\n→ percorra o checklist do manual_fallback e assine no BUILD_REPORT.\n' ;;
-    5)  printf 'RESULTADO: CLARIFICAR\n→ resolva os marcadores de ambiguidade no DEFINE e volte ao Define.\n' ;;
+    5)  if [ "${CLARIFICAR_MOTIVO}" = "governanca" ]; then
+          printf 'RESULTADO: CLARIFICAR\n→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.\n'
+        else
+          printf 'RESULTADO: CLARIFICAR\n→ resolva os marcadores de ambiguidade no DEFINE e volte ao Define.\n'
+        fi ;;
     64) printf 'RESULTADO: SPEC INVÁLIDA\n→ o arquivo não existe, não está num repositório git, ou não tem um bloco Verify Gate válido (ver sdd/templates/fragments/VERIFY_GATE.md).\n' ;;
   esac
   if [ "${STRICT}" = "1" ]; then
@@ -132,17 +143,54 @@ TRACE_FEATURE="$(basename "${DEFINE}" .md | sed -E 's/^DEFINE_//; s/[^A-Za-z0-9.
 cd "${REPO_ROOT}" || finalizar 64
 trap trace_gravar EXIT
 
+# ---- governança não revisada: a mensagem com as 2 saídas (usada pelos dois casos abaixo) ---
+msg_governanca() { # $1 = o que foi encontrado
+  {
+    echo "🛑 GOVERNANÇA NÃO REVISADA (exit 5) — '${DEFINE}' não tem a linha Governança com um valor final"
+    echo "   (encontrado: ${1})."
+    echo "   Desde a v2.4.0, todo DEFINE passa pela revisão de governança antes do build; DEFINEs escritos"
+    echo "   antes disso param aqui uma vez."
+    echo "   1. Numa sessão nova do agente, peça: \"rode só o passo 11 (Governança) do sdd-define sobre ${DEFINE}\"."
+    echo "      Não rode o Define inteiro de novo: ele regravaria a spec."
+    echo "   2. Ou dispense: na tabela do ## Technical Context, troque a linha Governança por"
+    echo "      | **Governança** | dispensada — <motivo> | <seu nome, data> |"
+    echo "      e apague do DEFINE o marcador \"governança não rodou\", se houver."
+  } >&2
+}
+
+# Ordem das checagens (todas só sem --print): marcador ativo → linha Governança → bloco do gate.
 # ---- clarificação pendente: DEFINE com dúvida ABERTA não roda gate (exit 5) ---------
 # Forma ativa canônica: colchete + "NEEDS CLARIFICATION" + dois-pontos (fragments/CLARIFY.md).
 # Menções documentais vivem em code fence ou sem colchetes — o scan remove blocos ``` antes.
 # --print é isento (uso de autoria durante a redação do DEFINE).
 if [ "${PRINT_ONLY}" -eq 0 ]; then
   PENDENTES="$(awk '/^[[:space:]]*```/{f=!f;next} !f{print NR": "$0}' "${DEFINE_ABS}" | grep '\[NEEDS CLARIFICATION:' || true)"
+  if [ -n "${PENDENTES}" ] && printf '%s' "${PENDENTES}" | grep -q 'governança não rodou'; then
+    # o marcador do passo 11: a mensagem é a da governança, com as 2 saídas
+    CLARIFICAR_MOTIVO=governanca
+    msg_governanca "o marcador \"governança não rodou\" na linha $(printf '%s' "${PENDENTES}" | grep 'governança não rodou' | head -1 | cut -d: -f1)"
+    finalizar 5
+  fi
   if [ -n "${PENDENTES}" ]; then
     echo "🛑 CLARIFICAÇÃO PENDENTE (exit 5) — '${DEFINE}' tem marcador(es) ativo(s) de ambiguidade:" >&2
     printf '%s\n' "${PENDENTES}" | sed 's/^/   │ /' >&2
     echo "   Resolva pelo protocolo (sdd/templates/fragments/CLARIFY.md): ≤5 perguntas," >&2
     echo "   resposta integrada NO CORPO da spec, registro em '## Clarifications'." >&2
+    finalizar 5
+  fi
+  # ---- linha Governança: o passo 11 do sdd-define precisa ter fechado (exit 5) ----------
+  GOV="$(awk '
+    /^[[:space:]]*```/                  { f=!f; next }
+    f                                   { next }
+    /^##[[:space:]]+Technical Context/  { sec=1; next }
+    sec && /^##[[:space:]]/             { sec=0 }
+    sec && /^\|[[:space:]]*\*\*Governança\*\*[[:space:]]*\|/ {
+      n=split($0, c, "|"); v=c[3]; sub(/^[[:space:]]+/, "", v); sub(/[[:space:]]+$/, "", v)
+      if (v == "") v="(vazio)"; print v; exit }
+  ' "${DEFINE_ABS}")"
+  if ! printf '%s' "${GOV}" | grep -qE '^((N\.A\.|dispensada)[[:space:]]+(—|-)[[:space:]]+[^[:space:]<{]|GOVERNANCA_REVIEW_[^[:space:]<{])'; then
+    CLARIFICAR_MOTIVO=governanca
+    msg_governanca "${GOV:-ausente}"
     finalizar 5
   fi
 fi

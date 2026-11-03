@@ -57,13 +57,18 @@ started. The distinction matters because autonomous loops react to red by iterat
 a driver will rewrite the design, over and over, on top of an assumption nobody validated.
 Exit `5` is a separate state precisely so loops stop instead of iterating.
 
+Since v2.4.0 exit `5` has a second reason: the `## Technical Context` table has no `Governança` row with a
+final value (`N.A. — …`, `GOVERNANCA_REVIEW_…` or `dispensada — …`), meaning step 11 of `sdd-define` (the
+governance review) did not close. The checks run in this order: ambiguity marker → `Governança` row →
+gate block. See [context-and-governance.md](context-and-governance.md).
+
 | exit | State | Caller obligation |
 |---|---|---|
 | `0` | green | proceed |
 | `2` | red | **abort**; fix code, or iterate the spec if the defect is in the spec |
 | `3` | inconclusive | resolve explicitly; never record as green, never count as red |
 | `4` | human signature required | show `manual_fallback`, stop until the receipt is recorded |
-| `5` | clarification pending | **stop**, return to `/sdd-define`; never iterate the design |
+| `5` | clarification pending (marker, or no final `Governança` row) | **stop**, return to `/sdd-define` (or run only its step 11); never iterate the design |
 | `64` | invalid or missing block | the spec is not valid |
 
 ## The ambiguity marker

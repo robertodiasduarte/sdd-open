@@ -12,7 +12,6 @@ mecanismo chega com o próprio documento.
 
 | Tema | O que traz | Status |
 |---|---|---|
-| **Contexto e governança** | um mapa do domínio antes do Define, patterns do projeto que o Design cita, e governança que segura o Define de um sistema financeiro até rodar | *planejado* |
 | **`sdd-loop-builder` e `sdd-drive`** | uma skill para código que chama um LLM em laço, e uma que conduz várias fases seguidas com as mesmas paradas humanas | *planejado* |
 | **Reconciliação spec ↔ código** | conferir que o manifest de arquivos cobriu todo requisito, não só que o aceite passou | *planejado* |
 | **Specs como deltas** | spec escrita como diferença contra um conjunto canônico de capacidades, no lugar de um documento de vida longa | *em avaliação* |

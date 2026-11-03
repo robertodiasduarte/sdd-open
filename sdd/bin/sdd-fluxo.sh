@@ -81,19 +81,25 @@ cmd_despachar() {
     cp "$brief" "$R/$rel" || exit 64
   fi
   cmp -s "$brief" "$R/$rel" || { echo "🛑 sdd-fluxo: a cópia do brief não confere: $rel" >&2; exit 64; }
-  if [ "$papel" = "avaliador" ]; then
-    retorno='o bloco inteiro da resposta, de `<<<AVALIACAO` até `>>>` (com a linha `VEREDITO: …`)'
-  else
-    retorno='o bloco final da resposta (o que começa com <<<)'
-  fi
+  # texto por papel: o que o agente fresco lê, o bloco que volta e o que ainda não aconteceu
+  le='o DEFINE'; nao_feito='nada foi publicado e o relatório não foi gravado.'
+  case "$papel" in
+    avaliador)          retorno='o bloco inteiro da resposta, de `<<<AVALIACAO` até `>>>` (com a linha `VEREDITO: …`)' ;;
+    cartografo)         le='o código do domínio'
+                        retorno='o bloco que começa com `<<<CONTEXTO` até `>>>`'
+                        nao_feito='nada foi gravado em sdd/contexto/.' ;;
+    revisor-governanca) retorno='o bloco que começa com `<<<GOVERNANCA` até `>>>`'
+                        nao_feito='o relatório de governança não foi gravado; o DEFINE está marcado como pendente (o build não passa até a revisão voltar).' ;;
+    *)                  retorno='o bloco final da resposta (o que começa com <<<)' ;;
+  esac
   printf '⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: %s).\n\n' "$papel"
   printf '**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.\n'
   printf '**Onde:** numa janela nova do seu agente, na pasta %s.\n' "$R"
   printf '**Passos:**\n'
   printf '1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.\n'
-  printf '2. Cole o conteúdo de %s → o agente começa a ler o DEFINE.\n' "$rel"
+  printf '2. Cole o conteúdo de %s → o agente começa a ler %s.\n' "$rel" "$le"
   printf '3. Quando ele terminar, copie %s e cole aqui → é o que eu preciso para continuar.\n' "$retorno"
-  printf '**O que não foi feito:** nada foi publicado e o relatório não foi gravado.\n'
+  printf '**O que não foi feito:** %s\n' "$nao_feito"
   printf '**Brief:** %s\n' "$rel"
   printf '**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.\n\n'
   printf 'Quando terminar, me peça de novo, eu continuo daqui.\n'

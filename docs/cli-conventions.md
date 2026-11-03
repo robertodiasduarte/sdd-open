@@ -48,7 +48,7 @@ RESULTADO: ERRO
 
 | Script | Códigos |
 |---|---|
-| `verify-gate.sh` | `0` verde · `2` vermelho · `3` inconclusivo · `4` assinatura humana · `5` clarificar · `64` spec inválida — `--strict` remapeia 3/4/5 → `1` |
+| `verify-gate.sh` | `0` verde · `2` vermelho · `3` inconclusivo · `4` assinatura humana · `5` clarificar (marcador ativo, ou linha `Governança` sem valor final — GOVERNANÇA NÃO REVISADA) · `64` spec inválida — `--strict` remapeia 3/4/5 → `1` |
 | `sdd-open.sh` | `0` ok/ajuda/cancelado/dry-run · `1` divergente ou sem permissão · `64` uso/pré-condição · `65` marcadores do AGENTS.md · `66` JSON inválido |
 | `playbook-lint.sh` | `0` ok · `1` zero hits / colapso · `2` formato inválido · `64` uso |
 | `skill-lint.py` · `report-lint.py` · `design-lint.py` · `handoff-lint.py` · `kb-dominios.py` | `0` ok · `1` violações · `64` uso (no `skill-lint.py`, também opção desconhecida; `--conversa` liga a conferência da camada de conversa; no `report-lint.py`, `--pendente` sai `1` quando acha `avaliador: PENDENTE`) |
@@ -61,6 +61,11 @@ RESULTADO: ERRO
 | `sdd-fluxo.sh` | `review-design`: `0` EXIGIDO · `1` DISPENSAVEL · `64` manifest ilegível (rode a revisão) · `loop`: `0` PRONTO · `10` CONTINUAR · `20` BLOQUEADO · `30` AGUARDANDO_RECIBO · `64` · `despachar`: `40` AGUARDANDO_HUMANO · `64` · `seguir`: `0` SEGUIR · `1` PARAR · `64` · `estado`: `0` ligado · `1` desligado · `64` valor inválido |
 | `adversarial-review.sh` | `0` REVIEW COMPLETA · `64` uso, slot vazio, diff vazio ou > 8 MB, pasta não ignorada · `65` credencial (sem troca de engine) · `66` CLI ausente · `67` auditor = revisor ou lista esgotada · `68` REVIEW INVÁLIDA (resposta sem vereditos) · `--conferir`: `0` CONFERE · `2` NÃO CONFERE · `--ledger`: `0` LEDGER OK · `2` LEDGER SEM REVIEW · `64` ilegível ([adversarial-review.md](adversarial-review.md)) |
 | `adversarial-review-gate.sh` | `0` GATE VERDE · `2` GATE VERMELHO (cada ❌ com o campo e o valor lido) · `3` GATE QUEBRADO (não conseguiu se isolar; nada foi chamado) · `64` uso ([adversarial-review.md](adversarial-review.md)) |
+| `contexto-lint.sh` | `0` VERDE · `2` VERMELHO (`🛑 [classe]` por achado) · `--validade`: `0` VALIDO · `1` VENCIDO · `2` sha ou ref inexistente · `--sugerir`: `0` (GERAR · REUSAR · PULAR) · `64` uso ([context-and-governance.md](context-and-governance.md)) |
+| `patterns-lint.sh` | `0` VERDE · `2` VERMELHO · `64` uso |
+| `governanca-fronteira.sh` | `0` SÓ O PERMITIDO MUDOU · `1` ESCRITA FORA DO PERMITIDO (`FORA:`) · `64` fronteira não verificada |
+| `governanca-bloco.py` | `0` bloco válido (NA · REVISADO · PADRAO_AUSENTE) · `1` `resultado: FALHA` · `2` BLOCO INVÁLIDO · `64` uso |
+| `docs-extract-decisions.sh` | `0` índice gravado · `2` conservação violada · `64` uso |
 | `eval-agree.sh` | `0` MEDIDO · `2` SEM DADOS (inclusive sem a pasta padrão) · `64` uso ou pasta passada inexistente |
 | `sdd-decisoes-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, caminho inexistente, tabela de marcas ausente ou nenhuma pergunta |
 | `sdd-kb/scripts/gate.sh` | `0` verde · `2` vermelho (caso bom rejeitado, caso ruim aceito ou por outro motivo, âncora ausente, RULE_MAP do exemplo derivado, ou rodado da cópia gerada pelo `sync`) |

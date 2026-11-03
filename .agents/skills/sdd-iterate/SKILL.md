@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20.
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.0"
+  version: "2.2.1"
   updated: "2026-10"
   fase: "cross"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-iterate — mudança de rumo entre fases
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-iterate v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-iterate v2.2.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 ## Como falar com o aluno
 
@@ -84,8 +84,8 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
    - `sdd/bin/verify-gate.sh --print <DEFINE>` — mostra o bloco que o gate leu (exit 0) ou acusa
      bloco ausente (64). Não valida `kind` nem `cmd` e é isento de marcador: sozinho, nunca vê
      dúvida aberta.
-   - `sdd/bin/verify-gate.sh <DEFINE>` — exit 5 = marcador ativo de ambiguidade: parar e voltar
-     ao Define. 64 = bloco inválido (`kind` ou `cmd`): corrigir o `## Verify Gate` neste passe.
+   - `sdd/bin/verify-gate.sh <DEFINE>` — exit 5 = marcador ativo de ambiguidade, ou a linha
+     `Governança` sem valor final (o passo 11 do `sdd-define` não fechou): parar e voltar ao Define. 64 = bloco inválido (`kind` ou `cmd`): corrigir o `## Verify Gate` neste passe.
      Sem marcador, o gate **roda o `cmd`**: 0, 2 e 3 dizem do código, que pode nem existir
      ainda, e 4 é gate manual-ux — nenhum deles é deste passo, e a seta `→` do vermelho não vale
      aqui (o iterate não mexe em código).

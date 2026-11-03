@@ -285,6 +285,21 @@ class Despachar(Base):
         self.assertIn("o bloco final da resposta (o que começa com <<<)", out)
         self.assertNotIn("VEREDITO: …", out)
 
+    def test_cartografo_e_revisor_de_governanca_tem_texto_proprio(self):
+        # F12 AT-007 (UX U2): o que o agente fresco lê, o bloco que volta e o que ainda não aconteceu.
+        casos = {"cartografo": ("o código do domínio", "`<<<CONTEXTO` até `>>>`", "nada foi gravado em sdd/contexto/."),
+                 "revisor-governanca": ("o DEFINE", "`<<<GOVERNANCA` até `>>>`",
+                                        "o DEFINE está marcado como pendente (o build não passa até a revisão voltar).")}
+        for papel, (le, bloco, nao_feito) in casos.items():
+            with self.subTest(papel=papel):
+                r = self.repo(papel)
+                rc, out = self.fluxo("despachar", papel, "X", FX / "brief-avaliador.md", cwd=r)
+                self.assertEqual(rc, 40, out)
+                self.assertIn("o agente começa a ler " + le + ".", out)
+                self.assertIn(bloco, out)
+                self.assertIn(nao_feito, out[out.index("**O que não foi feito:**"):])
+                self.assertTrue((r / ("sdd/reports/briefs/BRIEF_%s_X.md" % papel)).is_file())
+
     def test_brief_ja_no_destino_por_caminho_relativo_e_absoluto(self):
         r = self.repo()
         destino = self.escreve(r, "sdd/reports/briefs/BRIEF_avaliador_X.md", "modo: veredito\n")

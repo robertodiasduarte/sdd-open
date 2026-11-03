@@ -5,15 +5,15 @@ compatibility: "Requer bash >= 3.2 e git >= 2.20. Não executa nada no banco do 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.0"
-  updated: "2026-10"
+  version: "2.4.0"
+  updated: "2026-11"
   fase: "Gov"
 ---
 
 # sdd-governanca — revisão de governança
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-governanca v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-governanca v2.4.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Num sistema financeiro, contábil ou fiscal, governança responde uma pergunta: **daqui a cinco anos,
 um fiscal, um auditor ou um perito reconstrói o que aconteceu, quem fez e por quê — com prova de que
@@ -91,8 +91,12 @@ mandar aplicar e que tenha `prova_script` no catálogo:
 O `prova_manual` vai para o AT como roteiro **sempre** — com ou sem script. O script prova a metade que o
 banco recusa; a metade que depende da aplicação (ex.: "cada estorno gera 1 linha na trilha") só o roteiro prova.
 
-Quem escreveu o Define não se revisa: rode em conversa nova ou despache um subagente que receba só o
-DEFINE e esta skill.
+Quem escreveu o Define não se revisa. Desde a v2.4.0 do pacote, o passo 11 (Governança) do `sdd-define`
+despacha esta skill em todo Define, num agente fresco, com o brief `references/revisor.md`: o revisor faz
+os passos 1 a 4 e devolve o bloco `<<<GOVERNANCA`; quem conduz o Define faz os passos 5 e 6, e é **dono do
+`prova_script`** (grava o `.sql` e o liga ao `cmd` do Verify Gate; o Design só o lista no manifest).
+Chamada avulsa desta skill continua valendo para revisar de novo um DEFINE já escrito: rode em conversa
+nova, com só o DEFINE e esta skill.
 
 ## Regras que não se negociam
 

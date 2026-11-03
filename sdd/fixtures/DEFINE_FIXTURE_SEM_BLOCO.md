@@ -8,6 +8,12 @@
 
 Uma spec que descreve o aceite em prosa e nunca em comando.
 
+## Technical Context
+
+| Aspect | Value | Notes |
+|---|---|---|
+| **Governança** | N.A. — fixture do pacote, sem dinheiro, tributo, folha ou dado pessoal | com a linha, o exit desta fixture continua 64 (sem bloco) |
+
 ## Acceptance Tests
 
 | ID | Padrão | Critério (EARS) | Gate (`kind`) |

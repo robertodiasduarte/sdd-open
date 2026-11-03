@@ -199,7 +199,7 @@ o Build e a Release rodam. Ele devolve um número, e a skill traduz:
 | `2` | o teste falhou | a skill corrige o que construiu e roda de novo; não termina com teste falhando |
 | `3` | não deu para conferir | falta uma ferramenta no computador; a skill diz qual |
 | `4` | precisa da sua assinatura | o aceite é visual: você confere a lista e responde com nome e data |
-| `5` | a spec tem uma dúvida marcada | volte ao Define e responda a dúvida |
+| `5` | a spec tem uma dúvida marcada, ou a revisão de governança ainda não rodou | volte ao Define e responda a dúvida; ou peça para rodar só o passo 11 (Governança) do `sdd-define` |
 | `64` | o Define não tem um Verify Gate válido | volte ao Define |
 
 ---
@@ -215,10 +215,10 @@ PREPARAR (uma vez por computador e por projeto; a new-session, a cada frente)
                                                   dado de cliente"    de trabalho"
 
 CRIAR (uma vez por feature — o fluxo SDD)
-   sdd-kb ──► sdd-brainstorm ──► sdd-define ──► sdd-governanca ──► sdd-ux-review ──► sdd-design ──► sdd-build
- (opcional)  "lapidar a ideia"  "o que precisa   (se trata         (se tem tela,     "como será      "a IA
- "ensinar                        fazer"           dinheiro)         arquivo ou        feito"          constrói"
-  o contexto"                                                       mensagem)
+   sdd-kb ──► sdd-brainstorm ──► sdd-define ──────────► sdd-ux-review ──► sdd-design ──► sdd-build
+ (opcional)  "lapidar a ideia"  "o que precisa      (se tem tela,     "como será      "a IA
+ "ensinar                        fazer"; já roda a  arquivo ou        feito"          constrói"
+  o contexto"                    governança dentro) mensagem)
 
 FECHAR (no fim de cada sessão e de cada frente)
    sdd-handoff ──► sdd-release
@@ -342,7 +342,7 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | | |
 |---|---|
 | **Para que serve** | Revisão de governança para sistemas que tratam **dinheiro, saldo, lançamento, nota fiscal, tributo, folha ou dado pessoal**: compara o Define com um catálogo de regras (lançamento que não se apaga, partidas dobradas, trilha de auditoria…) e propõe requisitos que faltam. |
-| **Quando usar** | Depois do Define e antes do Design, quando o sistema é financeiro, contábil ou fiscal. |
+| **Quando usar** | Desde a v2.4.0 ela roda sozinha dentro de todo Define (o passo 11, Governança), num agente que não viu a conversa. Chame-a à parte só para revisar de novo um Define já escrito. |
 | **Quando não usar** | Sistema sem esses temas — ela responde "não se aplica" em uma linha. |
 | **Como pedir** | *"use a skill sdd-governanca com sdd/features/DEFINE_HONORARIOS.md"* |
 | **O que produz** | `sdd/reviews/GOVERNANCA_REVIEW_NOME.md` e, para cada lacuna que você mandar aplicar, um requisito novo no Define com o roteiro que prova que a ação proibida falha. |
@@ -580,7 +580,7 @@ As skills já tratam os casos abaixo. O que você precisa saber é só como reag
 | **Status com ⏸️** | Falta algo que só você resolve. Siga os passos numerados (onde, o quê, o que ver na tela), volte e repita o pedido. Nada foi publicado. |
 | **O `init` ou o `sync` respondeu `CANCELADO`** | Faltou o `--yes`: o agente rodou sem um terminal onde você pudesse confirmar. Rode o `--dry-run`, leia o plano e repita com `--yes`. |
 | **"este comando precisa de um repositório git"** | A pasta ainda não usa git. Confira que ela não está numa pasta sincronizada, rode `git init -b main` e repita o `init`. |
-| **Verify Gate devolveu `2`, `3`, `4`, `5` ou `64`** | Veja a tabela da seção 3: `2` a skill corrige; `3` falta uma ferramenta; `4` precisa da sua assinatura; `5` volte ao Define e responda a dúvida; `64` volte ao Define. |
+| **Verify Gate devolveu `2`, `3`, `4`, `5` ou `64`** | Veja a tabela da seção 3: `2` a skill corrige; `3` falta uma ferramenta; `4` precisa da sua assinatura; `5` volte ao Define e responda a dúvida, ou, se a mensagem diz GOVERNANÇA NÃO REVISADA, peça para rodar só o passo 11 (Governança) do `sdd-define` ([contexto e governança](context-and-governance.md)); `64` volte ao Define. |
 | **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certificado, ou é uma planilha nova. Escolha: **corrigir** (tirar o arquivo desta versão ou pô-lo na lista do que fica de fora), **dado fictício** (ela troca o número por um inválido e salva) ou **gravar mesmo assim** (só se você conferiu que pode sair do computador). |
 | **Release não publicou** | Teste falhou, há segredo no que ia subir, ou a base está desatualizada. A skill diz qual. Corrija na frente e peça a release de novo. |
 | **O `doctor` diz que uma skill está mais velha que o pacote, ou que um arquivo de `sdd/bin/` difere dele** | Apague a pasta da skill em `.agents/skills/` (ou o arquivo de `sdd/bin/`, se você não o editou) e rode o `init` de novo com `--yes`; depois, `sync --yes` (seção 2, "Quando sair versão nova"). |

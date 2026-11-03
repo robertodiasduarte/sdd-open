@@ -20,20 +20,26 @@ aluno" do `SKILL.md` dá o formato; este arquivo dá as palavras e um exemplo in
   para saber, 4 precisa da sua assinatura, 5 tem dúvida aberta, 64 o documento está mal escrito";
 - LLM — "um modelo de linguagem, como o que você está usando agora";
 - DEFINE — "o documento desta fase; a próxima (Design) parte dele".
+- cartógrafo — "um agente novo, que não viu esta conversa, lê o código da parte do sistema que a feature
+  toca e anota as regras que já valem, com o arquivo e a linha";
+- CONTEXTO de domínio — "o mapa que o cartógrafo grava; o Define e o Design partem dele";
+- revisão de governança — "a conferência, feita por outro agente, do que um fiscal ou auditor exigiria
+  desta spec; num sistema sem dinheiro, tributo ou dado pessoal, ela responde N.A. em uma linha";
+- parada ⏸️ — "o ponto em que eu preciso que você abra uma sessão nova do agente e cole um texto de volta".
 
 Não fale em stakeholder, NFR, edge case ou data model sem traduzir: "quem é afetado", "exigência de
 velocidade ou segurança", "caso raro", "que informações o sistema guarda".
 
 ## Status desta skill, preenchido
 
-`Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar`
+`Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança`
 
 ## Exemplo — resposta completa, com decisão (etapa 4 — Perguntas)
 
 Situação: o DEFINE da conferência de notas fiscais tem 6 testes de aceitação; falta decidir o que fazer
 com nota que aparece duas vezes.
 
-**Status** — `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar`
+**Status** — `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança`
 (no Status: "Verify Gate" é a conferência final, um comando que diz passou ou não passou.)
 
 **O que foi feito** — Escrevi os 4 objetivos e os 6 testes de aceitação, frases do tipo "quando chega

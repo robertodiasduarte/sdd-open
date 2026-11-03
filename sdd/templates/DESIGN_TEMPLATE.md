@@ -141,6 +141,8 @@
 > **Pattern:** `patterns/edge.md §Esqueleto` (validado_em {YYYY-MM-DD}) — adaptações: {o que muda nesta feature, ou "nenhuma"}
 >
 > Camada sem pattern canônico → escrever o snippet e registrar `candidato a pattern: {camada}`.
+> Com citação, `bash sdd/bin/patterns-lint.sh --design <este DESIGN>` precisa sair 0 (formato e limite de
+> idade em `sdd/patterns/README.md`).
 
 ### Pattern 1: {Pattern Name}
 

@@ -51,6 +51,8 @@ class Trace(Sandbox):
 
     def test_vermelho_conta_no_trace(self):
         self.escreve(self.r, "sdd/features/DEFINE_X.md",
+                     '## Technical Context\n\n| Aspect | Value | Notes |\n|---|---|---|\n'
+                     '| **Governança** | N.A. — teste | — |\n\n'
                      '## Verify Gate\n\n```yaml\nverify_gate:\n  kind: test\n  cmd: "false"\n  pass_when: "exit 0"\n```\n')
         for _ in range(3):
             self.gate("sdd/features/DEFINE_X.md")

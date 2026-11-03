@@ -5,15 +5,15 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.0"
-  updated: "2026-10"
+  version: "2.4.0"
+  updated: "2026-11"
   fase: "2"
 ---
 
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.4.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Plano + especificação + decisões num documento. O DESIGN diz **como** construir o que o
 DEFINE contratou — e é o último ponto em que mudar de abordagem é barato.
@@ -69,6 +69,24 @@ Leia o DEFINE, o `UX_REVIEW_{FEATURE}.md` se existir, `sdd/templates/DESIGN_TEMP
 `AGENTS.md`, `sdd/config.yaml` (camadas em `layers:`) e `## Sempre` do playbook. Explore o
 código: como o projeto já resolve problemas parecidos? Que convenções valem?
 
+**Contexto de domínio.** A linha `CONTEXTO de domínio` do DEFINE cita `contexto/<slug>.md`? Leia o
+arquivo (`sdd/contexto/<slug>.md`): as `## Regras vigentes` são o que o código já impõe, e o DESIGN não
+as contraria sem uma decisão registrada. Rode `bash sdd/bin/contexto-lint.sh --validade sdd/contexto/<slug>.md`:
+exit 1 (vencido) vira um aviso no DESIGN, nunca uma trava. Os termos da linha `sup:` do CONTEXTO entram
+na varredura de landmines do passo 4.5.
+
+**Papel de surface em aberto trava.** Na tabela `| Surface (funcional) | Papel | …` da seção
+`## Surface Assignment` do `UX_REVIEW` (não na tabela 60/30/10), uma célula `Papel` que não é exatamente
+um de destaque, operacional ou sobreposição — inclusive o texto do template com os 3 juntos —, ou uma
+pergunta de surface pendente em `## Open UX Questions`, é papel em aberto: pare antes de escrever e
+pergunte — o Design não decide isso sozinho:
+
+**Sua decisão** — [D2 · muda o produto] **Qual o papel da surface "lista de pedidos"?**
+- **operacional** (recomendado) — é uma lista longa: fundo sóbrio e itens sem destaque, para ler rápido.
+- **destaque** — vira a primeira coisa que a pessoa vê, com a cor de destaque do projeto.
+- **sobreposição** — abre por cima da tela (janela ou painel lateral).
+- **não sei** — mostro um exemplo de cada papel nesta tela.
+
 Extraia o flag **LLM Prompts** do DEFINE. Ausente ou em branco → ambíguo: pergunte antes de
 seguir. Com `false`, rode um re-check silencioso (nomes de provedor, "prompt", paths de
 prompt no escopo); hits → pergunte: corrigir o DEFINE, confirmar falso positivo, ou virar o
@@ -98,7 +116,9 @@ Para cada escolha significativa:
 **Consequences:** o trade-off que aceitamos · o que ganhamos
 ```
 
-Decisões são permanentes: documente o **porquê**, não só o quê.
+Decisões são permanentes: documente o **porquê**, não só o quê. O título `### Decision N: <nome>` é
+contrato de máquina: o `design-lint.py` o confere e o `bash sdd/bin/docs-extract-decisions.sh` o lê para
+montar o índice `docs/adr/index.md` (um título renomeado tira a decisão do índice).
 
 ### 4. File Manifest
 
@@ -116,6 +136,11 @@ Para cada superfície do manifest (nome de arquivo, tabela, comando, conceito ce
 sdd/bin/playbook-lint.sh --grep "<termo>" sdd/playbook.md   # exit 1 = 0 hits (normal)
 ```
 
+O `--grep` mostra só o começo de cada entrada. Para cada `LM-nnn` que ele devolver, **abra a entrada
+inteira** (`grep -F '[LM-nnn]' sdd/playbook.md`) e a ficha que ela aponta em `→ ficha:` (se houver), e
+leia o **Do instead** inteiro antes de decidir o veredito: o gancho do índice não basta. Inclua na
+varredura os termos do `sup:` do CONTEXTO de domínio (passo 1).
+
 Toda landmine que casar entra na seção **`## Landmines aplicáveis`** com veredito
 **✔ tratado** (como, ou qual arquivo do manifest trata) ou **N.A.** (por que não se aplica).
 Zero achados → `varredura rodada em YYYY-MM-DD, 0 aplicáveis`. **Nunca omita a seção.**
@@ -123,9 +148,14 @@ Nunca escreva no playbook a partir daqui.
 
 ### 5. Code Patterns
 
-Snippets prontos para copiar dos padrões-chave. Se o projeto tem padrões canônicos
-(`sdd/patterns/` ou equivalente), **cite-os** e declare o que foi adaptado. Se não tem,
-escreva o snippet e registre `candidato a pattern: <camada>`.
+Snippets prontos para copiar dos padrões-chave. Se o projeto tem patterns em `sdd/patterns/`
+(formato em `sdd/patterns/README.md`), **cite-os** na forma canônica e declare o que foi adaptado:
+
+`**Pattern:** \`patterns/<x>.md §Esqueleto\` (validado_em AAAA-MM-DD) — adaptações: <o que muda, ou "nenhuma">`
+
+Depois de gravar, rode `bash sdd/bin/patterns-lint.sh --design sdd/features/DESIGN_{FEATURE}.md`: exit 2
+⇒ um pattern citado está vencido (mais de 90 dias) ou com âncora morta — revalide-o ou deixe de citá-lo.
+Sem pattern para a camada, escreva o snippet e registre `candidato a pattern: <camada>`.
 
 ### 5.5. LLM Prompts (só se `true`)
 
@@ -184,7 +214,9 @@ e pare no exit 40, repassando a parada que ele imprime. Se a revisão é exigida
 ```text
 [ ] Diagrama claro · decisões com rationale · manifest completo, sem ciclos
 [ ] ## Landmines aplicáveis presente (✔ tratado / N.A. por achado, ou "0 aplicáveis")
-[ ] Code patterns prontos para copiar; padrões canônicos citados ou candidato registrado
+[ ] Code patterns prontos para copiar; patterns citados na forma canônica e patterns-lint.sh --design sai 0, ou candidato registrado
+[ ] CONTEXTO de domínio lido (se citado) e --validade rodado; nenhum papel de surface em aberto
+[ ] Landmines: entrada inteira aberta para cada LM do --grep
 [ ] Estratégia de testes cobre todos os ATs
 [ ] LLM Prompts: se true, inventário 100% + contrato por linha; se false, re-check com zero hits
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
@@ -202,6 +234,12 @@ e pare no exit 40, repassando a parada que ele imprime. Se a revisão é exigida
   final sai no Build, pela skill de prompt, em vez de virar rascunho congelado no documento.
 - **Revisão por outro vendor aqui, antes do código** — é o último ponto em que mudar de abordagem custa
   uma edição de texto; depois do build, custa reescrever.
+- **A entrada inteira da landmine, não o gancho** — o `--grep` corta a linha; o que evita o erro está no
+  **Do instead**, que fica no fim da entrada.
+- **Papel de surface em aberto é pergunta, não escolha do Design** — destaque ou operacional muda o que a
+  pessoa vê primeiro; decidir isso sem ela é decidir o produto.
+- **Pattern citado com data e lint** — um esqueleto que ninguém conferiu há meses ensina a copiar o código
+  de antes; o limite de 90 dias obriga a olhar de novo.
 - **`design-lint` no arquivo gravado** — conferir o rascunho na conversa não prova o arquivo que o Build
   vai ler.
 

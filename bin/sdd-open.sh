@@ -550,7 +550,7 @@ LINHA_ACRESCENTAR='bash sdd/hooks/pre-commit || exit 1'
 # do projeto — relativos a sdd/. Vazio = árvore completa. Fixtures ficam fora (exemplos, apagáveis).
 sdd_faltantes() {
   local rel
-  ( cd "${PKG}/sdd" && find templates bin hooks review playbook.md -type f 2>/dev/null | sort ) | while IFS= read -r rel; do
+  ( cd "${PKG}/sdd" && find templates bin hooks review patterns playbook.md WORKFLOW_CONTRACTS.yaml -type f 2>/dev/null | sort ) | while IFS= read -r rel; do
     [ -e "${ROOT}/sdd/${rel}" ] || printf '%s\n' "${rel}"
   done
   [ -f "${ROOT}/sdd/config.yaml" ] || printf 'config.yaml\n'

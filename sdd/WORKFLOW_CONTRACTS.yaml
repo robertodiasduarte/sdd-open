@@ -1,0 +1,75 @@
+# sdd/WORKFLOW_CONTRACTS.yaml — contrato de máquina das peças que passam de uma fase a outra.
+# Formato: só `chave: "texto"`, mapas aninhados por 2 espaços e listas `- "texto"` (lido pela stdlib, sem
+# biblioteca de YAML). tests/test_f12_textos.py confere que todo caminho entre crases existe e que os campos,
+# seções e blocos daqui batem com os briefs, o lint e o passo 11 do sdd-define.
+
+version: "1"
+
+verify_gate:
+  runner: "`sdd/bin/verify-gate.sh`"
+  fragment: "`sdd/templates/fragments/VERIFY_GATE.md`"
+  produced_by: "`.agents/skills/sdd-define/SKILL.md` passo 8: todo DEFINE sai com um bloco ## Verify Gate executável"
+  consumed_by:
+    - "`.agents/skills/sdd-build/SKILL.md`: gate autoritativo e bloqueante; exit 2 aborta o build"
+    - "`.agents/skills/sdd-release/SKILL.md`: gate bloqueante da publicação"
+  exits:
+    ok: "0"
+    vermelho: "2"
+    inconclusivo: "3"
+    assinatura_humana: "4"
+    clarificar: "5"
+    spec_invalida: "64"
+  clarificar_motivos:
+    - "marcador ativo de ambiguidade (colchete + NEEDS CLARIFICATION + dois-pontos) fora de cerca"
+    - "linha Governança ausente ou sem valor final no ## Technical Context"
+  governanca_valores_finais:
+    - "N.A. — <motivo>"
+    - "GOVERNANCA_REVIEW_<F>.md · a aplicadas · r recusadas · d adiadas"
+    - "dispensada — <motivo>"
+
+cartografo:
+  brief: "`.agents/skills/sdd-define/references/cartografo.md`"
+  script: "`sdd/bin/contexto-lint.sh`"
+  fronteira: "`sdd/bin/governanca-fronteira.sh`"
+  activation: "passo 1.5 do sdd-define: contexto-lint.sh --sugerir decide gerar | reusar | pular"
+  campos:
+    - "ctx"
+    - "saida"
+    - "worktree"
+    - "dominio"
+  permitido: "sdd/contexto/<slug>.md"
+  secoes:
+    - "Escopo"
+    - "Dados"
+    - "Operações"
+    - "Interfaces"
+    - "Regras vigentes"
+    - "Landmines"
+    - "Histórico SDD"
+  retorno: "<<<CONTEXTO"
+  redespachos: "1"
+  falha: "o Define segue com CONTEXTO de domínio: nenhum (<motivo>)"
+  max_dominios: "2"
+
+revisor_governanca:
+  brief: "`.agents/skills/sdd-governanca/references/revisor.md`"
+  skill: "`.agents/skills/sdd-governanca/SKILL.md`"
+  fronteira: "`sdd/bin/governanca-fronteira.sh`"
+  activation: "passo 11 do sdd-define, sempre, inclusive com --parar; o marcador é gravado antes do despacho"
+  campos:
+    - "define"
+    - "skill"
+    - "padrao"
+    - "worktree"
+    - "saida"
+  permitido: "sdd/reviews/GOVERNANCA_REVIEW_<F>.md"
+  retorno: "<<<GOVERNANCA"
+  validador: "`sdd/bin/governanca-bloco.py`"
+  resultados:
+    - "NA"
+    - "REVISADO"
+    - "PADRAO_AUSENTE"
+    - "FALHA"
+  redespachos: "1"
+  falha: "o marcador fica no DEFINE e o verify-gate.sh sai 5"
+  prova_script: "gravado em sdd/tests/governanca/ e ligado ao cmd do Verify Gate pelo passo 11 do sdd-define; o Design só lista"

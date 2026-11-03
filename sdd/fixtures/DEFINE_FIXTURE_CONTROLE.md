@@ -8,6 +8,12 @@
 
 O envio de notificação usa a fila do provedor e precisa respeitar o teto de mensagens por minuto.
 
+## Technical Context
+
+| Aspect | Value | Notes |
+|---|---|---|
+| **Governança** | N.A. — fixture do pacote, sem dinheiro, tributo, folha ou dado pessoal | exemplo |
+
 ## Verify Gate
 
 ```yaml

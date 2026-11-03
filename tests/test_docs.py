@@ -57,11 +57,11 @@ QUICKSTART = {
 
 ROADMAP = {
     "en": (RAIZ / "docs/roadmap.md", "[Português](pt-BR/roadmap.md)", "planned", "under evaluation",
-           ("governance", "sdd-loop-builder", "reconciliation")),
+           ("sdd-loop-builder", "reconciliation")),
     "pt": (RAIZ / "docs/pt-BR/roadmap.md", "[English](../roadmap.md)", "planejado", "em avaliação",
-           ("governança", "sdd-loop-builder", "Reconciliação")),
+           ("sdd-loop-builder", "Reconciliação")),
 }
-# Hooks (F8), fluxo encadeado (F9) e revisão adversarial (F10 + F11) saíram do roadmap e ganharam documento próprio, linkado dos dois READMEs.
+# Hooks (F8), fluxo encadeado (F9), revisão adversarial (F10 + F11) e contexto e governança (F12) saíram do roadmap e ganharam documento próprio, linkado dos dois READMEs.
 FLUXO_DOCS = {
     "en": (RAIZ / "docs/chained-flow.md", RAIZ / "README.md", "docs/chained-flow.md"),
     "pt": (RAIZ / "docs/pt-BR/chained-flow.md", RAIZ / "README.pt-BR.md", "docs/pt-BR/chained-flow.md"),
@@ -295,9 +295,11 @@ class Roadmap(unittest.TestCase):
                 self.assertIn(avaliacao, deltas[0])
                 self.assertNotIn(planejado, deltas[0])
                 self.assertIsNone(re.search(r"\b20\d\d\b", texto), "o roadmap não leva data")
-                # F8 entregou os hooks, a F9 o fluxo encadeado e a F10 + F11 a revisão adversarial: as linhas saíram
-                # do roadmap (4 temas) e viraram docs/hooks.md, docs/chained-flow.md e docs/adversarial-review.md.
-                self.assertEqual(len([ln for ln in linhas if not ln.startswith("| Tema") and not ln.startswith("| Theme")]), 4)
+                # F8 entregou os hooks, a F9 o fluxo encadeado, a F10 + F11 a revisão adversarial e a F12 contexto e
+                # governança: as linhas saíram do roadmap (3 temas) e viraram docs/hooks.md, docs/chained-flow.md,
+                # docs/adversarial-review.md e docs/context-and-governance.md.
+                self.assertEqual(len([ln for ln in linhas if not ln.startswith("| Tema") and not ln.startswith("| Theme")]), 3)
+                self.assertFalse([ln for ln in linhas if "overnan" in ln], "contexto e governança saiu com a F12")
                 self.assertFalse([ln for ln in linhas if "dversari" in ln], "a revisão adversarial já foi entregue")
                 self.assertFalse([ln for ln in linhas if "**Hooks**" in ln], "a linha Hooks saiu com a F8")
                 self.assertFalse([ln for ln in linhas if "Chained flow" in ln or "Fluxo encadeado" in ln],
@@ -325,6 +327,23 @@ class Roadmap(unittest.TestCase):
                               "AGUARDANDO_HUMANO", "sdd-fluxo.sh seguir", "Release"):
                     self.assertIn(termo, texto)
                 self.assertIn(link, ler(readme))
+                self.assertEqual(links_quebrados(doc), [])
+
+    def test_contexto_e_governanca_tem_documento_proprio_linkado_do_readme(self):
+        # F12 (AT-022): passos 1.5 e 11, o exit 5 depois de atualizar, a linha de dispensa, patterns e os scripts.
+        casos = {"en": (RAIZ / "docs/context-and-governance.md", RAIZ / "README.md", "docs/context-and-governance.md"),
+                 "pt": (RAIZ / "docs/pt-BR/context-and-governance.md", RAIZ / "README.pt-BR.md",
+                        "docs/pt-BR/context-and-governance.md")}
+        for lingua, (doc, readme, link) in casos.items():
+            with self.subTest(lingua=lingua):
+                texto = ler(doc)
+                for termo in ("1.5", "11", "GOVERNANÇA NÃO REVISADA", "| **Governança** | dispensada —",
+                              "sdd/patterns/dominio.md", "contexto-lint.sh", "patterns-lint.sh",
+                              "governanca-fronteira.sh", "governanca-bloco.py", "docs-extract-decisions.sh",
+                              "exit 40", "90"):
+                    self.assertIn(termo, texto)
+                self.assertIn(link, ler(readme))
+                self.assertNotIn("/sdd-define → /sdd-governanca", ler(readme))
                 self.assertEqual(links_quebrados(doc), [])
 
     def test_revisao_adversarial_tem_documento_proprio_linkado_do_readme(self):

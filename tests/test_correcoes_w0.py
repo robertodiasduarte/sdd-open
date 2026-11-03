@@ -22,11 +22,12 @@ TEMPLATE = RAIZ / "sdd/templates/BUILD_REPORT_TEMPLATE.md"
 GATE = "sdd/bin/verify-gate.sh"
 FIXTURE_CLARIFICAR = "sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md"
 FIXTURE_CONTROLE = "sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md"
-# O que o pacote não tem: o contexto de domínio (volta na F12), a skill de drive (F14), o guard
-# de git hook (F7) e passos/skills de outro SDD. Só conta o que vai no pacote (MANIFEST.txt):
-# artefatos locais (sdd/features/, sdd/reviews/ …) ficam de fora.
+# O que o pacote não tem: a skill de drive (F14), o guard de git hook (F7) e passos/skills de outro SDD.
+# Só conta o que vai no pacote (MANIFEST.txt): artefatos locais (sdd/features/, sdd/reviews/ …) ficam de
+# fora. O "CONTEXTO de domínio" que a W0 tirou voltou na F12 com passo (1.5 do sdd-define), lint e brief;
+# continua proibido o nome do outro SDD (a grafia em inglês com maiúscula e "slice 2"); o Open escreve "passo 1.5".
 PROMESSA_VAZIA = re.compile(
-    r"build-report-guard|/drive|Step 1\.5|slice 2|CONTEXTO de domínio|/bug-pipeline|`/define` \(Step"
+    r"build-report-guard|/drive|Step 1\.5|slice 2|/bug-pipeline|`/define` \(Step"
 )
 MANIFEST = RAIZ / "MANIFEST.txt"
 
@@ -63,7 +64,7 @@ class IterateVeClarificacaoAberta(Sandbox):
         return rc, out + err
 
     def test_versao(self):
-        self.assertEqual(versao(ITERATE), "2.2.0")
+        self.assertEqual(versao(ITERATE), "2.2.1")
 
     def test_passo_4_tem_as_duas_chamadas(self):
         chamadas = chamadas_do_gate()
@@ -141,7 +142,7 @@ class AvaliadorFrescoSoGravaEvidencia(unittest.TestCase):
                        r"`sdd/reports/evidence/\{F\}/AVAL-\*\.log`")
 
     def test_versao_do_build(self):
-        self.assertEqual(versao(SKILLS / "sdd-build/SKILL.md"), "2.5.0")
+        self.assertEqual(versao(SKILLS / "sdd-build/SKILL.md"), "2.5.1")
 
     def test_os_dois_briefs_permitem_so_o_log_aval(self):
         texto = ler(CONTEXTO_FRESCO)

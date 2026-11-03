@@ -13,6 +13,12 @@
 
 O relatório mensal soma o mês anterior.
 
+## Technical Context
+
+| Aspect | Value | Notes |
+|---|---|---|
+| **Governança** | N.A. — fixture do pacote, sem dinheiro, tributo, folha ou dado pessoal | exemplo |
+
 ## Verify Gate
 
 ```yaml

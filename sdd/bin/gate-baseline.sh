@@ -134,5 +134,5 @@ case "${RC}" in
     rc_cmd="$(printf '%s\n' "${OUT}" | sed -n 's/.*GATE VERMELHO.*(rc=\([0-9][0-9]*\)).*/\1/p' | tail -1)"
     inconclusivo "a base ficou vermelha sem sinal de asserção (rc do comando=${rc_cmd:-?}): crash, arquivo ausente ou sintaxe não provam dentes" ;;
   *)
-    inconclusivo "o gate não chegou a avaliar na base (exit ${RC}): ferramenta ou arquivo ausente, manual-ux, clarificação ou DEFINE sem gate" ;;
+    inconclusivo "o gate não chegou a avaliar na base (exit ${RC}): ferramenta ou arquivo ausente, manual-ux, clarificação (marcador ou linha Governança sem valor final) ou DEFINE sem gate" ;;
 esac

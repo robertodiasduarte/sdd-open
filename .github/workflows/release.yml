@@ -33,6 +33,8 @@ on:
       - 'sdd/templates/**'
       - 'sdd/fixtures/**'
       - 'sdd/review/**'
+      - 'sdd/patterns/**'
+      - 'sdd/WORKFLOW_CONTRACTS.yaml'
       - 'sdd/playbook.md'
       - 'sdd/config.example.yaml'
       - 'AGENTS.md.tmpl'

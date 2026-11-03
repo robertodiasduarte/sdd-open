@@ -69,6 +69,21 @@ class Projeto(Sandbox):
             with self.subTest(arquivo=rel):
                 self.assertTrue((self.p / rel).is_file(), rel)
 
+    def test_init_copia_patterns_e_contratos_e_nunca_sobrescreve(self):
+        # F12 AT-021: o README dos patterns e o contrato de máquina vêm com o pacote; o init completa o que
+        # falta, mas nunca sobrescreve o que o projeto já mudou.
+        for rel in ("sdd/patterns/README.md", "sdd/WORKFLOW_CONTRACTS.yaml", "sdd/bin/contexto-lint.sh",
+                    "sdd/bin/governanca-fronteira.sh", "sdd/fixtures/contexto/dominio.md"):
+            with self.subTest(arquivo=rel):
+                self.assertTrue((self.p / rel).is_file(), rel)
+        meu = self.p / "sdd/patterns/README.md"
+        meu.write_text("# meus patterns\n", encoding="utf-8")
+        (self.p / "sdd/WORKFLOW_CONTRACTS.yaml").unlink()
+        rc, out = self.cli("init", "--yes", "--vendors", "claude")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meu.read_text(encoding="utf-8"), "# meus patterns\n")
+        self.assertTrue((self.p / "sdd/WORKFLOW_CONTRACTS.yaml").is_file())
+
     def test_init_copia_fixtures_de_exemplo_mas_nunca_os_testes(self):
         # fixtures são exemplo na 1ª instalação (aplicar(), bin/sdd-open.sh); tests/ é do pacote.
         self.assertTrue((self.p / "sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md").is_file())

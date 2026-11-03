@@ -44,7 +44,7 @@ seu é sobrescrito. [Quickstart completo →](docs/pt-BR/quickstart.md)
 | **Engenharia de prompt como entregável** | quando a spec inventaria um prompt de produção, a fase Build o escreve por uma skill com contrato de saída explícito, fórmulas escritas por extenso e regra para contexto ausente — em vez de deixar o modelo estimar. Ligada como slot substituível (`prompts.builder_skill`), já com um default | skill `sdd-prompt-builder` |
 | **Review adversarial de 2º vendor** | resposta em formato fixo (veredito, ≤3 riscos, correções, o que ignorar); toda nota é aplicada ou rebatida por escrito | `fragments/ADVISOR_CONSULT.md` |
 | **Auditoria read-only do harness** | harness acumula: comando que ninguém chama, agente que ninguém despacha, doc que derivou do código. Uma passada read-only inventaria cada comando, agente, skill, hook e script, mede referências de entrada e recência, e emite um único `AUDITORIA_SDD_<data>.md` — nunca apaga: a faxina em si continua decisão humana | skill `sdd-auditoria-harness` · `scripts/collect_evidence.py` |
-| **Revisão de governança** | em sistema financeiro, contábil ou fiscal, compara o DEFINE com um catálogo curado (lançamento que não se apaga, fechamento de período, trilha de auditoria, segregação de funções, aritmética exata…) e recomenda requisitos em EARS com teste negativo que o Verify Gate executa; base legal só citada quando confirmada no catálogo; uma decisão por item, e a recusa fica registrada como risco aceito | skill `sdd-governanca` |
+| **Revisão de governança** | em sistema financeiro, contábil ou fiscal, compara o DEFINE com um catálogo curado (lançamento que não se apaga, fechamento de período, trilha de auditoria, segregação de funções, aritmética exata…) e recomenda requisitos em EARS com teste negativo que o Verify Gate executa; base legal só citada quando confirmada no catálogo; uma decisão por item, e a recusa fica registrada como risco aceito. Desde a v2.4.0 roda dentro de todo Define (passo 11), por um agente fresco, e o Verify Gate sai 5 até ela fechar | skill `sdd-governanca` |
 | **Base de conhecimento** | o que você sabe sobre um domínio (um processo, uma norma, um manual) organizado em conceitos e receitas que o agente consulta; em norma, o período em que cada regra vale, a fonte com SHA-256 e o mapa regra → fonte → teste. O Define só cita domínio que existe, conferido por `sdd/bin/kb-dominios.py` | skill `sdd-kb` · `sdd/kb/` |
 | **Handoff por ficha** | um arquivo por feature no repositório, com prompt de retomada autossuficiente — sem depender da memória de nenhum agente | skill `sdd-handoff` · `sdd/handoffs/` |
 
@@ -66,7 +66,7 @@ inteiro, da primeira instalação à primeira publicação.
 preparar uma vez:  sdd-checar-ambiente · sdd-iniciar-repo · sdd-higiene-dado · (opcional) sdd-kb
 a cada frente:     sdd-new-session
 
-/sdd-brainstorm → /sdd-define → /sdd-governanca → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
+/sdd-brainstorm → /sdd-define (mapa do domínio + governança dentro) → /sdd-ux-review → /sdd-design → /sdd-build → /sdd-release
   (opcional)           ↑       (se há dinheiro)     (se há UI)          ↑             │             │
                        └───────── /sdd-iterate corrige o rumo ──────────┘             │             │
                                                                                       ▼             ▼
@@ -98,6 +98,7 @@ Funciona em macOS, Linux e Windows (Git Bash/WSL): bash 3.2, zero zsh, zero syml
 - [Comparativo](docs/pt-BR/comparison.md) ([EN](docs/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
 - [Hooks de git](docs/pt-BR/hooks.md) ([EN](docs/hooks.md)) — as regras do pre-commit que o `init` instala, o alarme de higiene de dado, o limite do `--no-verify`
 - [Fluxo encadeado](docs/pt-BR/chained-flow.md) ([EN](docs/chained-flow.md)) — a classe da decisão em toda pergunta, o `flow.autonomous`, a parada com exit 40 quando o agente não abre uma sessão nova sozinho
+- [Contexto e governança](docs/pt-BR/context-and-governance.md) ([EN](docs/context-and-governance.md)) — o mapa do domínio (passo 1.5) e a revisão de governança (passo 11) do Define, o exit 5 depois de atualizar, os patterns do projeto
 - [Revisão adversarial](docs/pt-BR/adversarial-review.md) ([EN](docs/adversarial-review.md)) — uma engine revisa o diff congelado, outra audita a revisão; custo por papel, privacidade, o review externo que a release exige, o gate offline e o `eval-agree`
 - [Roadmap](docs/pt-BR/roadmap.md) ([EN](docs/roadmap.md)) — o que está planejado e o que está em avaliação
 - [Guia do aluno](docs/pt-BR/guia-do-aluno.md) — passo a passo para quem nunca usou git nem terminal

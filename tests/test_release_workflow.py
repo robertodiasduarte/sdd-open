@@ -23,7 +23,7 @@ def sem_comentarios(texto: str) -> str:
     return "\n".join(l for l in texto.splitlines() if not l.lstrip().startswith("#"))
 
 PRODUTO = [".agents/skills/**", "bin/**", "sdd/bin/**", "sdd/hooks/**", "sdd/templates/**", "sdd/fixtures/**", "sdd/review/**",
-           "sdd/playbook.md", "sdd/config.example.yaml", "AGENTS.md.tmpl"]
+           "sdd/patterns/**", "sdd/WORKFLOW_CONTRACTS.yaml", "sdd/playbook.md", "sdd/config.example.yaml", "AGENTS.md.tmpl"]
 
 
 def job(texto: str, nome: str) -> str:
