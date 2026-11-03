@@ -1,0 +1,23 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1TRIWjgopM; for f in sdd/fixtures/DEFINE_FIXTURE_*.md sdd/fixtures/fluxo/DEFINE_*.md; do bash sdd/bin/verify-gate.sh "$f" >/dev/null 2>&1; rc=$?; bash sdd/bin/verify-gate.sh --print "$f" >/dev/null 2>&1; rp=$?; bash sdd/bin/verify-gate.sh --strict "$f" >/dev/null 2>&1; rs=$?; echo "$f rc=$rc print=$rp strict=$rs"; done; echo '--- AT-012 texto completo no DEFINE sem linha'; bash sdd/bin/verify-gate.sh sdd/fixtures/DEFINE_FIXTURE_SEM_GOVERNANCA.md; echo rc=$?
+sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md rc=0 print=0 strict=0
+sdd/fixtures/DEFINE_FIXTURE_GOVERNANCA.md rc=5 print=0 strict=1
+sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md rc=5 print=0 strict=1
+sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md rc=64 print=64 strict=64
+sdd/fixtures/DEFINE_FIXTURE_SEM_GOVERNANCA.md rc=5 print=0 strict=1
+sdd/fixtures/fluxo/DEFINE_pronto.md rc=0 print=0 strict=0
+sdd/fixtures/fluxo/DEFINE_rascunho.md rc=0 print=0 strict=0
+sdd/fixtures/fluxo/DEFINE_sem_kind.md rc=64 print=0 strict=64
+--- AT-012 texto completo no DEFINE sem linha
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/fixtures/DEFINE_FIXTURE_SEM_GOVERNANCA.md' não tem a linha Governança com um valor final
+   (encontrado: ausente).
+   Desde a v2.4.0, todo DEFINE passa pela revisão de governança antes do build; DEFINEs escritos
+   antes disso param aqui uma vez.
+   1. Numa sessão nova do agente, peça: "rode só o passo 11 (Governança) do sdd-define sobre sdd/fixtures/DEFINE_FIXTURE_SEM_GOVERNANCA.md".
+      Não rode o Define inteiro de novo: ele regravaria a spec.
+   2. Ou dispense: na tabela do ## Technical Context, troque a linha Governança por
+      | **Governança** | dispensada — <motivo> | <seu nome, data> |
+      e apague do DEFINE o marcador "governança não rodou", se houver.
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+[exit=0]

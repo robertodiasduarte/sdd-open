@@ -1,0 +1,24 @@
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.D4slNxccYt/sonda_casos.sh
+== A_dispensa_forma_dois_pontos → exit 5
+   🛑 GOVERNANÇA NÃO REVISADA (exit 5) — valor: ausente
+   RESULTADO: CLARIFICAR
+   → resolva os marcadores de ambiguidade no DEFINE e volte ao Define.
+== B_linha_dispensada_mas_marcador_ficou → exit 5
+   🛑 CLARIFICAÇÃO PENDENTE (exit 5) — 'sdd/features/DEFINE_B_linha_dispensada_mas_marcador_ficou.md' tem marcador(es) ativo(s) de ambiguidade:
+   RESULTADO: CLARIFICAR
+   → resolva os marcadores de ambiguidade no DEFINE e volte ao Define.
+== C_placeholder_do_template_N.A. → exit 0
+   RESULTADO: VERDE
+   → siga para o próximo passo.
+== D_sem_bloco_e_sem_linha → exit 5
+   🛑 GOVERNANÇA NÃO REVISADA (exit 5) — valor: ausente
+   RESULTADO: CLARIFICAR
+   → resolva os marcadores de ambiguidade no DEFINE e volte ao Define.
+== E_valor_falhou_sem_marcador → exit 5
+   🛑 GOVERNANÇA NÃO REVISADA (exit 5) — valor: falhou
+   RESULTADO: CLARIFICAR
+   → resolva os marcadores de ambiguidade no DEFINE e volte ao Define.
+== F_linha_valida → exit 0
+   RESULTADO: VERDE
+   → siga para o próximo passo.
+[exit=0]

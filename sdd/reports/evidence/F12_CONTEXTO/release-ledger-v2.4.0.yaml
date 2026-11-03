@@ -1,0 +1,7 @@
+feature_id: F12_CONTEXTO
+slice_id: contexto-patterns-governanca
+versao: v2.4.0
+estado: shipado
+dod: Verify Gate verde em 6b7633c (992 testes no piso); CI verde em Ubuntu e macOS; Codex CLI com os 2 despachos em exit 40; avaliador de contexto fresco PASS no ciclo 2
+descricao: passos 1.5 (cartógrafo) e 11 (governança) no sdd-define, exit 5 sem a linha Governança, patterns citados e ADR como contrato no sdd-design
+review_externo: dispensado — 5 rodadas da revisão real (a 3ª deu PRONTO), todo achado aplicado ou rebatido com evidência; os consertos da rodada 5 e o da sandbox do Codex têm teste vermelho no commit anterior; revisão focada na fronteira fica para a F14

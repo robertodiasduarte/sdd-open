@@ -1,0 +1,10 @@
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261103-112330 --ledger sdd/reports/evidence/F12_CONTEXTO/ledger-review.md --rodada 1
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 2
+rebatidas: 0
+motivo: grave(s) corrigido(s) — código mudou, exige nova review: R1@codex R2@codex
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+[exit=10]

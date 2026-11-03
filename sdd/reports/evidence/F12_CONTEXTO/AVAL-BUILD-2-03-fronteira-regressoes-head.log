@@ -1,0 +1,49 @@
+$ W=$(mktemp -d); G='git -c user.email=a@b -c user.name=a -c commit.gpgsign=false'; echo '=== (a) árvore limpa, sem incluir, nada mudou'; R=$W/a; mkdir $R; cd $R; git init -q; echo v1 > f.txt; $G add f.txt; $G commit -qm c1; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot $R $W/a1.snap; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot $R $W/a2.snap; cat $W/a1.snap; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --comparar $W/a1.snap $W/a2.snap $R/sdd/contexto/x.md; echo rc=$?; echo '=== (a2) árvore limpa, sem incluir, agente cria arquivo permitido'; mkdir -p sdd/contexto; echo x > sdd/contexto/x.md; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot $R $W/a3.snap; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --comparar $W/a1.snap $W/a3.snap $R/sdd/contexto/x.md; echo rc=$?; echo '=== (b) worktree sem nenhum commit; agente cria e commita novo.txt'; R=$W/b; mkdir $R; cd $R; git init -q; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot $R $W/b1.snap $R/sdd/contexto/x.md; echo novo > novo.txt; $G add novo.txt; $G commit -qm primeiro; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot $R $W/b2.snap $R/sdd/contexto/x.md; cat $W/b1.snap $W/b2.snap; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --comparar $W/b1.snap $W/b2.snap $R/sdd/contexto/x.md; echo rc=$?; echo '=== (b2) sem commit, agente só cria o permitido'; R=$W/b3; mkdir $R; cd $R; git init -q; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot $R $W/b31.snap $R/sdd/contexto/x.md; mkdir -p sdd/contexto; echo ok > sdd/contexto/x.md; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot $R $W/b32.snap $R/sdd/contexto/x.md; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --comparar $W/b31.snap $W/b32.snap $R/sdd/contexto/x.md; echo rc=$?; echo '=== (c) snapshot de versão anterior (sem #HEAD)'; grep -v '^#HEAD' $W/b31.snap > $W/velho.snap; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --comparar $W/velho.snap $W/b32.snap $R/sdd/contexto/x.md; echo rc=$?
+=== (a) árvore limpa, sem incluir, nada mudou
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+#HEAD	42763e08be7c577cfeb2c947b7579c69bb2d87f9	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.65hqbspDCj/a
+não consegui ler os snapshots
+uso: /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir…] | --comparar <antes> <depois> <permitido>…
+RESULTADO: ERRO DE USO
+→ a fronteira NÃO foi verificada; corrija a chamada e rode de novo.
+rc=64
+=== (a2) árvore limpa, sem incluir, agente cria arquivo permitido
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+não consegui ler os snapshots
+uso: /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir…] | --comparar <antes> <depois> <permitido>…
+RESULTADO: ERRO DE USO
+→ a fronteira NÃO foi verificada; corrija a chamada e rode de novo.
+rc=64
+=== (b) worktree sem nenhum commit; agente cria e commita novo.txt
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+AUSENTE	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.65hqbspDCj/b/sdd/contexto/x.md
+#HEAD	AUSENTE	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.65hqbspDCj/b
+AUSENTE	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.65hqbspDCj/b/sdd/contexto/x.md
+#HEAD	2c3acd91444ca5371872499e051c14cb5f7832a6	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.65hqbspDCj/b
+FORA: HEAD mudou durante o despacho (AUSENTE → 2c3acd91444ca5371872499e051c14cb5f7832a6): o agente commitou
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+rc=1
+=== (b2) sem commit, agente só cria o permitido
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.65hqbspDCj/b3/sdd/contexto/x.md
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+rc=0
+=== (c) snapshot de versão anterior (sem #HEAD)
+snapshot sem a linha #HEAD (gravado por outra versão?): refaça os dois
+uso: /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir…] | --comparar <antes> <depois> <permitido>…
+RESULTADO: ERRO DE USO
+→ a fronteira NÃO foi verificada; corrija a chamada e rode de novo.
+rc=64
+[exit=0]

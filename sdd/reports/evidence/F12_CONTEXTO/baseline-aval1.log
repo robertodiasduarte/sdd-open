@@ -1,0 +1,9 @@
+$ T=$(mktemp -d) && git archive fb77fa7 | tar -x -C $T && cp tests/*.py $T/tests/ && cp sdd/fixtures/contexto/cabecalho-fora-de-ordem.md sdd/fixtures/contexto/superficies-com-crase.md sdd/fixtures/contexto/superficies-sem-arquivo.md $T/sdd/fixtures/contexto/ && cd $T/tests && for t in test_governanca_fronteira.Aval1 test_patterns_lint.Aval1 test_contexto_lint.Aval1 test_governanca_gate.Gate.test_l2_marcador_de_governanca_com_outra_duvida_mostra_as_duas test_governanca_gate.Gate.test_l3_linha_com_recuo_ou_sem_negrito_vale test_governanca_bloco.Bloco.test_invalidos_saem_2 test_f12_textos.Passo15.test_roda_as_pecas_na_ordem_e_nao_trava; do SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest $t > $T/o.txt 2>&1; echo "$t: exit=$? $(grep -cE "^(FAIL|ERROR):" $T/o.txt) falha(s)"; done
+test_governanca_fronteira.Aval1: exit=1 2 falha(s)
+test_patterns_lint.Aval1: exit=1 2 falha(s)
+test_contexto_lint.Aval1: exit=1 5 falha(s)
+test_governanca_gate.Gate.test_l2_marcador_de_governanca_com_outra_duvida_mostra_as_duas: exit=1 1 falha(s)
+test_governanca_gate.Gate.test_l3_linha_com_recuo_ou_sem_negrito_vale: exit=1 2 falha(s)
+test_governanca_bloco.Bloco.test_invalidos_saem_2: exit=1 1 falha(s)
+test_f12_textos.Passo15.test_roda_as_pecas_na_ordem_e_nao_trava: exit=1 1 falha(s)
+[exit=0]

@@ -1,0 +1,20 @@
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/bloco.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-bloco.py
+== revisado-ok                        exit=0 | RESULTADO: REVISADO 
+== revisado-crlf                      exit=0 | RESULTADO: REVISADO 
+== revisado-lacuna-duplicada          exit=0 | RESULTADO: REVISADO 
+== revisado-media-sem-acento          exit=2 |   🛑 lacuna sem os 3 campos fixos (Gnn | severidade | AT ou —): G01 | media | — RESULTADO: BLOCO INVÁLIDO 
+== revisado-relatorio-relativo        exit=0 | RESULTADO: REVISADO 
+== na-ok                              exit=0 | RESULTADO: NA 
+== na-mas-gravou                      exit=2 |   🛑 NA, mas o revisor gravou o relatório (MUDOU: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5Xk8KeC0mG/GOVERNANCA_REVIEW_X.md) RESULTADO: BLOCO INVÁLIDO 
+== na-sem-comparar-relatorio-existe   exit=0 | RESULTADO: NA 
+== na-motivo-com-maiores              exit=0 | RESULTADO: NA 
+== resultado-minusculo                exit=2 |   🛑 resultado fora de NA | REVISADO | PADRAO_AUSENTE | FALHA: 'na' RESULTADO: BLOCO INVÁLIDO 
+== falha                              exit=1 | RESULTADO: FALHA 
+== sem-par                            exit=2 |   🛑 sem o par <<<GOVERNANCA / >>> RESULTADO: BLOCO INVÁLIDO 
+== bloco-em-cerca-e-outro-antes       exit=0 | RESULTADO: NA 
+== padrao-ausente                     exit=0 | RESULTADO: PADRAO_AUSENTE 
+== sem --saida exit=64
+== resposta inexistente exit=64
+== comparar inexistente exit=64
+== --saida sem valor exit=64
+[exit=0]

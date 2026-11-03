@@ -1,0 +1,6 @@
+$ T=$(mktemp -d) && git archive 0f51ac9 | tar -x -C $T && cp tests/*.py $T/tests/ && cd $T/tests && for t in test_governanca_fronteira.Real1 test_contexto_lint.Real1 test_patterns_lint.Real1 test_f12_textos.Passo11.test_padrao_ausente_refaz_o_snapshot; do SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest $t > $T/o.txt 2>&1; echo "$t: exit=$? $(grep -cE "^(FAIL|ERROR):" $T/o.txt) falha(s)"; done
+test_governanca_fronteira.Real1: exit=1 2 falha(s)
+test_contexto_lint.Real1: exit=1 2 falha(s)
+test_patterns_lint.Real1: exit=1 1 falha(s)
+test_f12_textos.Passo11.test_padrao_ausente_refaz_o_snapshot: exit=1 1 falha(s)
+[exit=0]

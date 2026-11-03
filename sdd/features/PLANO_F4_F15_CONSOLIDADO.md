@@ -308,7 +308,7 @@ Eixo diferente, não de agente: o `deploy-espera-testes.py` só lê GitHub Actio
 | | |
 |---|---|
 | **Itens** | C1–C11 (PORTE §5.5), mais a correção 4.6 do PORTE (dono do `prova_script`) |
-| **Entrega** | cartógrafo de domínio no `sdd-define` Step 1.5 + `sdd/bin/contexto-lint.sh` + brief `sdd-define/references/cartografo.md` (C1 — recoloca o "CONTEXTO de domínio" que a W0 tirou do template) · contexto por domínio no `sdd-design` (C2) · `sdd/patterns/README.md` + `sdd/bin/patterns-lint.sh` (C3) · `sdd/bin/docs-extract-decisions.sh` sobre os títulos de ADR que o `design-lint` da F4 fixou (C4) · `sdd/invariants.md` (C5) · governança obrigatória no `sdd-define` Step 6.5, fail-closed com exit 5 (C6, C7) · `sdd/bin/governanca-fronteira.sh` + brief `sdd-governanca/references/revisor.md` (C8) · `sdd/WORKFLOW_CONTRACTS.yaml` reduzido (C9) · abrir a ficha inteira da landmine no `sdd-design` (C10) · bucket de UX indeterminado trava o design (C11) |
+| **Entrega** | cartógrafo de domínio no `sdd-define` Step 1.5 + `sdd/bin/contexto-lint.sh` + brief `sdd-define/references/cartografo.md` (C1 — recoloca o "CONTEXTO de domínio" que a W0 tirou do template) · contexto por domínio no `sdd-design` (C2) · `sdd/patterns/README.md` + `sdd/bin/patterns-lint.sh` (C3) · `sdd/bin/docs-extract-decisions.sh` sobre os títulos de ADR que o `design-lint` da F4 fixou (C4) · governança obrigatória no `sdd-define` Step 6.5, fail-closed com exit 5 (C6, C7) · `sdd/bin/governanca-fronteira.sh` + brief `sdd-governanca/references/revisor.md` (C8) · `sdd/WORKFLOW_CONTRACTS.yaml` reduzido (C9) · abrir a ficha inteira da landmine no `sdd-design` (C10) · bucket de UX indeterminado trava o design (C11) |
 | **Decidir** | D5 (governança obrigatória no Define; recomendado: sim, N.A. registrado) · **D8** (dono do `prova_script`; recomendado: o `sdd-define` Step 6.5) |
 | **Depende de** | F7, F9 |
 | **Atenção** | A `sdd-governanca` tem o open como fonte canônica (Decisão 1): o passo entra na `sdd-define`, a skill não é reescrita. Testar o despacho do cartógrafo no Codex CLI (exit 40) |
@@ -332,7 +332,7 @@ Eixo diferente, não de agente: o `deploy-espera-testes.py` só lê GitHub Actio
 | | |
 |---|---|
 | **Itens** | P1–P4, O1–O4, N1, N3 (PORTE §5.6). N2 já entregue na F2 |
-| **Entrega** | `sdd/bin/playbook-curator.sh` com `--colher` e `--aplicar` (P1) + brief `sdd-playbook/references/curator.md` (P2) + contagem AUTO × pergunta de política e robustez do 17b no `sdd-release` (P3, P4) · **skill nova** `.agents/skills/sdd-drive/` + `sdd/bin/sdd-drive.sh` (O1) · raio de impacto por superfície no `sdd-release` (O2) · `sdd/bin/deploy-do-sha.sh` sobre `gh run` (O3) · `sdd/bin/sdd-archive.py` (O4) · `sdd-new-session` copia os documentos SDD de papel com match exato (N1) · `HANDOFF_TEMPLATE.md` completo (N3; o `handoff-lint` da F4 já aceita as seções extras) |
+| **Entrega** | `sdd/invariants.md` (C5, adiado da F12) · `sdd/bin/playbook-curator.sh` com `--colher` e `--aplicar` (P1) + brief `sdd-playbook/references/curator.md` (P2) + contagem AUTO × pergunta de política e robustez do 17b no `sdd-release` (P3, P4) · **skill nova** `.agents/skills/sdd-drive/` + `sdd/bin/sdd-drive.sh` (O1) · raio de impacto por superfície no `sdd-release` (O2) · `sdd/bin/deploy-do-sha.sh` sobre `gh run` (O3) · `sdd/bin/sdd-archive.py` (O4) · `sdd-new-session` copia os documentos SDD de papel com match exato (N1) · `HANDOFF_TEMPLATE.md` completo (N3; o `handoff-lint` da F4 já aceita as seções extras) |
 | **Decidir** | D1 já decidida na F9 (o `/drive` só faz sentido com o mecanismo de autonomia) · D11 (`drive.max_rounds`, `drive.max_tokens`) |
 | **Depende de** | F7–F13 |
 | **Atenção** | O `sdd-drive` reaproveita o modo ralph do `sdd-build` e tem barreira dura antes do release. `deploy-do-sha` e o item 10 da `sdd-release` 2.2.0 (verificar pelo SHA publicado) devem ser a mesma lógica, não duas. `test_skill_lint.py` 18 → 19 |
@@ -391,11 +391,11 @@ Eixo diferente, não de agente: o `deploy-espera-testes.py` só lê GitHub Actio
 - C1: heurística gerar/reusar/pular; agente fresco faz engenharia reversa com `arquivo:linha`; validade por `git diff <sha>..<default_branch> -- <superfícies>`; prova de que só o agente escreveu; **máx. 2 domínios por feature**; camadas de `layers:` (fonte 457 l., 12 refs).
 - C3: cita `§Esqueleto (validado_em)`; `patterns-lint.sh --design` bloqueia pattern vencido ou path morto (fonte 461 l., 4 refs).
 - C4: `docs-extract-decisions.sh` gera `docs/adr/index.md` com órfãos (fonte 164 l., 0 refs).
-- C5: `--cruzar` / `--validar-inv` no curator; opção atômica quando um TOMBSTONE afeta uma INV.
+- C5: **adiado para a F14** (decisão do brainstorm da F12: sem leitor até o curator, o arquivo apodrece); `sdd/invariants.md` nasce lá, com `--cruzar` / `--validar-inv` no curator e a opção atômica quando um TOMBSTONE afeta uma INV.
 - C6/C7: roda sempre, inclusive com `--parar`; N.A. permitido; 2ª falha ou clarificação aberta grava `[NEEDS CLARIFICATION: governança não rodou…]` → exit 5.
 - C8: prompt do revisor leva só 5 campos; snapshot sha256 antes/depois prova que só escreveu o relatório; 1 redespacho; bloco `<<<GOVERNANCA>>>` (fonte 110 l., 5 refs).
 - C9: `WORKFLOW_CONTRACTS.yaml` reduzido a produtor/consumidor do gate, schema e invariantes do cartógrafo e do revisor.
-- ⛔ não viaja: revisão de schema (`audita-schema-gate.sh`, GRANT na migration, `lint-data-api-grants.py`); fica só o slot `schema.check_cmd` vazio.
+- ⛔ não viaja: revisão de schema (`audita-schema-gate.sh`, GRANT na migration, `lint-data-api-grants.py`); o slot `schema.check_cmd` **caiu** no brainstorm da F12: na F15, o gate de schema do privado vai para `release.landmines_cmd`.
 
 **F13 UX e LLM**
 - U1: 7 critérios WCAG 2.2 AA com PASSA/REPROVA/N.A.; cada REPROVA vira 1 MUST com o SC e o par medido; 2.1.1 e 2.5.8 herdados para Acceptance Notes; 3.3.7 é nível A e 2.4.13 é AAA.
@@ -439,14 +439,13 @@ Eixo diferente, não de agente: o `deploy-espera-testes.py` só lê GitHub Actio
 | F10 | `review.context_max_kb` | `180` | teto do contexto SDD injetado |
 | F10 | `review.diff_max_mb` | `8` | teto do diff congelado |
 | F10 | `review.output_dir` | `sdd/reports/reviews` | deve estar no `.gitignore` ou `.git/info/exclude` |
-| F12 | `schema.check_cmd` | `""` | placeholder vazio; candidato a cair |
 | F13 | `prompts.loop_builder_skill` | `sdd-loop-builder` | — |
 | F13 | `prompts.wrapper_pattern` | `""` | regex do wrapper de LLM (ex.: `callLLM\\(`) |
 | F13 | `smoke.urls_cmd`, `smoke.a11y_cmd` | `""` | só projeto web; candidatos a cair |
 | F14 | `drive.max_rounds` | `3` | — |
 | F14 | `drive.max_tokens` | `0` | 0 = sem teto; candidato a cair |
 
-`layers:` já existe e passa a ser lido por `report-lint` (F7, já parcialmente na F3) e `sdd-fluxo.sh` (F9). Candidatos a cair, segundo o PORTE: `second_reviewer_*` (podem ser constantes no script), `smoke.*`, `drive.max_tokens`, `schema.check_cmd`.
+`layers:` já existe e passa a ser lido por `report-lint` (F7, já parcialmente na F3) e `sdd-fluxo.sh` (F9). Candidatos a cair, segundo o PORTE: `second_reviewer_*` (podem ser constantes no script), `smoke.*`, `drive.max_tokens`; `schema.check_cmd` caiu na F12.
 
 ### 8.3 Fontes no privado e o que generalizar (PORTE §8.2, §8.3, Anexo A)
 
@@ -475,7 +474,7 @@ Receita por arquivo (PORTE §8.1): `grep -niE 'supabase|deno|wordpress|wp-conten
 | | |
 |---|---|
 | **Objetivo** | O repositório privado (`~/RDD/Wordpress`) passa a usar o Open instalado pelo `init`, e o SDD privado deixa de existir como código próprio |
-| **Entrega** | (1) `bash bin/sdd-open.sh init --vendors claude` no privado, com `sdd/config.yaml` preenchido: `test_cmd` (deno), `deploy.cmd` (rsync Hostinger), `drift_check_cmd`, `landmines_cmd`, `layers` (edge/sql/wp-content), `review.*`, `schema.check_cmd` (gate de schema por migration, hoje `audita-schema-gate.sh`) · (2) o que é específico da RDD vai para onde o Open prevê: landmines LM-nnn → `sdd/playbook.md` do privado; 46 KBs → `sdd/kb/` (F5); patterns → `sdd/patterns/` (F12); invariantes → `sdd/invariants.md` (F12); buckets WARM/COOL e lentes por público → `sdd/contexto/` ou slot de UX a decidir · (3) remoção: `.claude/commands/workflow/*`, `.claude/agents/*` do SDD, `scripts/` do SDD (os 26 do Anexo A), `.githooks/` (substituído por `sdd/hooks/`), `sdd-public/`, `port-to-public.sh`, `sdd-public-allowlist.tsv`, `gate-sdd-open-s1.sh`, `gate-sdd-prompt-builder.sh` · (4) `CLAUDE.md` do privado aponta para `AGENTS.md` gerado · (5) as cópias `~/.claude/skills/sdd-*` e `anthropic-skills:sdd-*` regeneradas do Open (D6) |
+| **Entrega** | (1) `bash bin/sdd-open.sh init --vendors claude` no privado, com `sdd/config.yaml` preenchido: `test_cmd` (deno), `deploy.cmd` (rsync Hostinger), `drift_check_cmd`, `landmines_cmd`, `layers` (edge/sql/wp-content), `review.*`, `release.landmines_cmd` (inclui o gate de schema por migration, hoje `audita-schema-gate.sh`) · (2) o que é específico da RDD vai para onde o Open prevê: landmines LM-nnn → `sdd/playbook.md` do privado; 46 KBs → `sdd/kb/` (F5); patterns → `sdd/patterns/` (F12); invariantes → `sdd/invariants.md` (F12); buckets WARM/COOL e lentes por público → `sdd/contexto/` ou slot de UX a decidir · (3) remoção: `.claude/commands/workflow/*`, `.claude/agents/*` do SDD, `scripts/` do SDD (os 26 do Anexo A), `.githooks/` (substituído por `sdd/hooks/`), `sdd-public/`, `port-to-public.sh`, `sdd-public-allowlist.tsv`, `gate-sdd-open-s1.sh`, `gate-sdd-prompt-builder.sh` · (4) `CLAUDE.md` do privado aponta para `AGENTS.md` gerado · (5) as cópias `~/.claude/skills/sdd-*` e `anthropic-skills:sdd-*` regeneradas do Open (D6) |
 | **Decidir** | o que do Anexo C do PORTE vira slot, KB ou simplesmente some (ex.: `model:` por fase, `/fewer-permission-prompts`, memória do Roberto); se a migração é de uma vez ou por fase (ex.: `/define` do Open primeiro, `/release` por último, porque o deploy é o passo de maior risco); destino do espelho travado e dos 4 arquivos (D7) |
 | **Depende de** | F7–F14 (sem eles o Open não tem o que o privado tem: evidência fail-closed, hooks, review adversarial, contexto, curator, drive) |
 | **Atenção** | É a única frente que roda **no repositório privado**, não nesta worktree; o fluxo SDD dela pode ser o próprio Open já instalado lá. O caminho inverso §11 do PORTE (I1–I11) deixa de existir: não há mais privado para absorver nada. Mantém-se a regra "específico da RDD não viaja para o Open": o privado passa a ser um **usuário** do Open, com seus slots, KB e playbook |
@@ -541,7 +540,8 @@ textos que já divergiram.
 | F9 (KB Domains lista fechada) | F5 | incorporado (item G) |
 | R1–R10, R12, R13 | F10 | incorporado |
 | R11 | F11 | incorporado |
-| C1–C3, C5–C11 | F12 | incorporado |
+| C1–C3, C6–C11 | F12 | incorporado (`v2.4.0`) |
+| C5 | F14 | adiado no brainstorm da F12 |
 | C4 (ADR) | F4 + F12 | títulos fixos no `design-lint` (F4, item E); extrator na F12 |
 | U1–U3, L1–L4 | F13 | incorporado |
 | P1–P4, O1–O4, N1 | F14 | incorporado |

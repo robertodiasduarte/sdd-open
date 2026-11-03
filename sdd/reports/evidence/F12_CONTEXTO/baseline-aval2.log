@@ -1,0 +1,7 @@
+$ T=$(mktemp -d) && git archive a57fde6 | tar -x -C $T && cp tests/*.py $T/tests/ && cd $T/tests && for t in test_patterns_lint.Aval1.test_aval2_citacao_em_lista_conta_e_cerca_til_nao test_governanca_fronteira.Aval2 test_contexto_lint.Aval2 test_governanca_gate.Gate.test_aval2_duas_duvidas_na_mesma_linha_aparecem test_f12_textos.Passo11.test_briefs_proibem_commit; do SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest $t > $T/o.txt 2>&1; echo "$t: exit=$? $(grep -cE "^(FAIL|ERROR):" $T/o.txt) falha(s)"; done
+test_patterns_lint.Aval1.test_aval2_citacao_em_lista_conta_e_cerca_til_nao: exit=1 4 falha(s)
+test_governanca_fronteira.Aval2: exit=1 1 falha(s)
+test_contexto_lint.Aval2: exit=1 2 falha(s)
+test_governanca_gate.Gate.test_aval2_duas_duvidas_na_mesma_linha_aparecem: exit=1 1 falha(s)
+test_f12_textos.Passo11.test_briefs_proibem_commit: exit=1 1 falha(s)
+[exit=0]

@@ -1,0 +1,16 @@
+$ W=$(mktemp -d); git show fb77fa7:sdd/bin/governanca-fronteira.sh > $W/fr-fb77.sh; git show a57fde6:sdd/bin/governanca-fronteira.sh > $W/fr-a57.sh; R=$W/r; mkdir $R; cd $R; git init -q; echo a > a.txt; git add a.txt; git -c user.email=a@b -c user.name=a -c commit.gpgsign=false commit -qm c; for v in fb77 a57; do echo "=== $v: árvore limpa, snapshot sem [incluir], nada muda"; bash $W/fr-$v.sh --snapshot $R $W/$v-a >/dev/null; bash $W/fr-$v.sh --snapshot $R $W/$v-d >/dev/null; bash $W/fr-$v.sh --comparar $W/$v-a $W/$v-d $R/sdd/contexto/x.md 2>&1 | grep -vE '^uso:'; echo rc=${PIPESTATUS[0]}; done; echo '=== a57: árvore limpa, sem [incluir], agente escreve FORA (b.txt)'; bash $W/fr-a57.sh --snapshot $R $W/x-a >/dev/null; echo b > b.txt; bash $W/fr-a57.sh --snapshot $R $W/x-d >/dev/null; bash $W/fr-a57.sh --comparar $W/x-a $W/x-d $R/sdd/contexto/x.md 2>&1 | grep -vE '^uso:'; echo rc=${PIPESTATUS[0]}
+=== fb77: árvore limpa, snapshot sem [incluir], nada muda
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+rc=0
+=== a57: árvore limpa, snapshot sem [incluir], nada muda
+não consegui ler os snapshots
+RESULTADO: ERRO DE USO
+→ a fronteira NÃO foi verificada; corrija a chamada e rode de novo.
+rc=64
+=== a57: árvore limpa, sem [incluir], agente escreve FORA (b.txt)
+não consegui ler os snapshots
+RESULTADO: ERRO DE USO
+→ a fronteira NÃO foi verificada; corrija a chamada e rode de novo.
+rc=64
+[exit=0]

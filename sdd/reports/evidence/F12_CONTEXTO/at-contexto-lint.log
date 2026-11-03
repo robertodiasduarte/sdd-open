@@ -1,0 +1,31 @@
+$ git rev-parse --short HEAD && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_contexto_lint
+96a97ec
+test_l4_caminho_relativo_de_uma_subpasta (test_contexto_lint.Aval1) ... ok
+test_m3_l1_superficies_com_crase_sem_arquivo_e_cabecalho_fora_de_ordem (test_contexto_lint.Aval1) ... ok
+test_m3_validade_recusa_superficies_com_crase (test_contexto_lint.Aval1) ... ok
+test_self_test_sem_commit_sai_64_e_diz_por_que (test_contexto_lint.Aval2) ... ok
+test_validade_com_pathspec_que_nao_casa_nada_sai_2 (test_contexto_lint.Aval2) ... ok
+test_cada_fixture_vermelha_acusa_a_sua_classe (test_contexto_lint.Lint) ... ok
+test_fora_de_um_repositorio_git_sai_64 (test_contexto_lint.Lint) ... ok
+test_self_test_verde (test_contexto_lint.Lint) ... ok
+test_uso_sai_64 (test_contexto_lint.Lint) ... ok
+test_verde_com_aviso_de_superficie_e_pasta_pula_readme (test_contexto_lint.Lint) ... ok
+test_r3_ultimo_arquivo_da_superficie_apagado_e_vencido (test_contexto_lint.Real1) ... ok
+test_r4_ancora_na_linha_zero_e_path_morto (test_contexto_lint.Real1) ... ok
+test_self_test_sem_fixtures_versionadas_sai_64 (test_contexto_lint.Real2) ... ok
+test_superficie_vazia_ou_binaria_apagada_e_vencida (test_contexto_lint.Real2) ... ok
+test_ancora_na_ultima_linha_sem_quebra_final_vale (test_contexto_lint.Real3) ... ok
+test_sup_so_com_crases_vazias_e_sup_ausente (test_contexto_lint.Real3) ... ok
+test_titulo_dentro_de_cerca_til_nao_conta_como_secao (test_contexto_lint.Real5) ... ok
+test_sem_a_checagem_de_landmine_o_self_test_cai (test_contexto_lint.Sabotagem) ... ok
+test_camadas_vem_de_layers_e_gerar (test_contexto_lint.Sugerir) ... ok
+test_no_maximo_dois_dominios (test_contexto_lint.Sugerir) ... ok
+test_sem_mapa_de_dominios_pula_e_sai_0 (test_contexto_lint.Sugerir) ... ok
+test_ref_padrao_e_origin_da_branch_padrao_e_senao_a_local (test_contexto_lint.Validade) ... ok
+test_vencido_sai_1_e_nomeia_o_arquivo (test_contexto_lint.Validade) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 11.816s
+
+OK
+[exit=0]

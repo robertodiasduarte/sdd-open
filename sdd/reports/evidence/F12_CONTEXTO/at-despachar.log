@@ -1,0 +1,14 @@
+$ git rev-parse --short HEAD && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_fluxo.Despachar
+96a97ec
+test_brief_ja_no_destino_por_caminho_relativo_e_absoluto (test_fluxo.Despachar) ... ok
+test_cartografo_e_revisor_de_governanca_tem_texto_proprio (test_fluxo.Despachar) ... ok
+test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar) ... ok
+test_grava_o_brief_imprime_a_parada_e_sai_40 (test_fluxo.Despachar) ... ok
+test_nome_acentuado_sai_64_em_locale_utf8 (test_fluxo.Despachar) ... ok
+test_retorno_de_outro_papel_e_o_bloco_final (test_fluxo.Despachar) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.387s
+
+OK
+[exit=0]

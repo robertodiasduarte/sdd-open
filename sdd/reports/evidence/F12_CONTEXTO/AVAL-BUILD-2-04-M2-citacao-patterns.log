@@ -1,0 +1,99 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/m2.sh; echo ======; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/m2.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1TRIWjgopM
+# sonda M2: variações da linha de citação contra um pattern vencido (2020-01-01)
+S="$1"; cd "$S"; D=$(mktemp -d); mkdir "$D/pat"; cp sdd/fixtures/patterns/valido-vencido.md "$D/pat/pedidos.md"
+L='`patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma.'
+run() { printf '## Code Patterns\n\n%s\n' "$2" > "$D/DESIGN_X.md"; echo ">>> $1"; sed 's/^/    | /' "$D/DESIGN_X.md"
+  bash sdd/bin/patterns-lint.sh --playbook sdd/fixtures/contexto/playbook.md --design "$D/DESIGN_X.md" "$D/pat" > "$D/out" 2>&1; rc=$?
+  grep -E 'validado-vencido|nenhum pattern citado' "$D/out"; echo "rc=$rc"; }
+echo '=== DESIGN_TEMPLATE.md do pacote (blockquote de orientação) ==='
+bash sdd/bin/patterns-lint.sh --playbook sdd/fixtures/contexto/playbook.md --design sdd/templates/DESIGN_TEMPLATE.md "$D/pat"; echo "rc=$?"
+run 'forma canônica'               "**Pattern:** $L"
+run 'exemplo em cerca ```'          "$(printf '```markdown\n**Pattern:** %s\n```' "$L")"
+run 'exemplo em cerca ~~~'          "$(printf '~~~\n**Pattern:** %s\n~~~' "$L")"
+run 'blockquote'                    "> **Pattern:** $L"
+run 'item de lista (-)'             "- **Pattern:** $L"
+run 'item de lista (*)'             "* **Pattern:** $L"
+run 'lista numerada'                "1. **Pattern:** $L"
+run 'recuo de 2 espaços'            "  **Pattern:** $L"
+run 'dois-pontos fora do negrito'   "**Pattern**: $L"
+run 'célula de tabela'              "| **Pattern:** | $L |"
+run 'sdd/patterns/ no caminho'      "**Pattern:** \`sdd/patterns/pedidos.md §Esqueleto\` (validado_em 2020-01-01)"
+======
+=== DESIGN_TEMPLATE.md do pacote (blockquote de orientação) ===
+  ⚠️  nenhum pattern citado em DESIGN_TEMPLATE.md: o lint não tem o que exigir
+  ⚠️  pedidos.md: validado em 2020-01-01 (2498 dias; o limite é 90) — não citado no DESIGN, não bloqueia
+✅ patterns-lint: 1 pattern(s) OK, 2 aviso(s)
+RESULTADO: VERDE
+→ os patterns podem ser citados.
+rc=0
+>>> forma canônica
+    | ## Code Patterns
+    | 
+    | **Pattern:** `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma.
+  🛑 [validado-vencido] pedidos.md: citado no DESIGN e validado em 2020-01-01 (2498 dias; o limite é 90)
+rc=2
+>>> exemplo em cerca ```
+    | ## Code Patterns
+    | 
+    | ```markdown
+    | **Pattern:** `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma.
+    | ```
+  ⚠️  nenhum pattern citado em DESIGN_X.md: o lint não tem o que exigir
+rc=0
+>>> exemplo em cerca ~~~
+    | ## Code Patterns
+    | 
+    | ~~~
+    | **Pattern:** `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma.
+    | ~~~
+  🛑 [validado-vencido] pedidos.md: citado no DESIGN e validado em 2020-01-01 (2498 dias; o limite é 90)
+rc=2
+>>> blockquote
+    | ## Code Patterns
+    | 
+    | > **Pattern:** `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma.
+  ⚠️  nenhum pattern citado em DESIGN_X.md: o lint não tem o que exigir
+rc=0
+>>> item de lista (-)
+    | ## Code Patterns
+    | 
+    | - **Pattern:** `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma.
+  ⚠️  nenhum pattern citado em DESIGN_X.md: o lint não tem o que exigir
+rc=0
+>>> item de lista (*)
+    | ## Code Patterns
+    | 
+    | * **Pattern:** `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma.
+  ⚠️  nenhum pattern citado em DESIGN_X.md: o lint não tem o que exigir
+rc=0
+>>> lista numerada
+    | ## Code Patterns
+    | 
+    | 1. **Pattern:** `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma.
+  ⚠️  nenhum pattern citado em DESIGN_X.md: o lint não tem o que exigir
+rc=0
+>>> recuo de 2 espaços
+    | ## Code Patterns
+    | 
+    |   **Pattern:** `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma.
+  ⚠️  nenhum pattern citado em DESIGN_X.md: o lint não tem o que exigir
+rc=0
+>>> dois-pontos fora do negrito
+    | ## Code Patterns
+    | 
+    | **Pattern**: `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma.
+  ⚠️  nenhum pattern citado em DESIGN_X.md: o lint não tem o que exigir
+rc=0
+>>> célula de tabela
+    | ## Code Patterns
+    | 
+    | | **Pattern:** | `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01) — adaptações: nenhuma. |
+  ⚠️  nenhum pattern citado em DESIGN_X.md: o lint não tem o que exigir
+rc=0
+>>> sdd/patterns/ no caminho
+    | ## Code Patterns
+    | 
+    | **Pattern:** `sdd/patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01)
+  🛑 [validado-vencido] pedidos.md: citado no DESIGN e validado em 2020-01-01 (2498 dias; o limite é 90)
+rc=2
+[exit=0]

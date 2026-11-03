@@ -1,0 +1,6 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3 && cp sdd/templates/DESIGN_TEMPLATE.md /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/DESIGN_DO_TEMPLATE.md && bash sdd/bin/patterns-lint.sh --design /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/DESIGN_DO_TEMPLATE.md
+  🛑 [path-morto] DESIGN_DO_TEMPLATE.md cita patterns/edge.md, que não existe em sdd/patterns
+🛑 patterns-lint: 1 erro(s), 0 aviso(s) em 0 pattern(s)
+RESULTADO: VERMELHO
+→ cite o caminho e a linha atuais (o arquivo mudou) ou tire a âncora; no DESIGN, cite um pattern que exista.
+[exit=2]

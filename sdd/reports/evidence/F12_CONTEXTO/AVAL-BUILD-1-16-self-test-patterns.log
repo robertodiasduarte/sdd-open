@@ -1,0 +1,28 @@
+$ /bin/bash sdd/bin/patterns-lint.sh --self-test
+self-test (bash) — fixtures em sdd/fixtures/patterns/
+  ✅ nenhuma fixture casada pelo .gitignore
+── VERMELHOS (cada fixture falha pela SUA classe) ──
+  ✅ sem-secao ⇒ exit 2 [secao-ausente]
+  ✅ secao-fora-de-ordem ⇒ exit 2 [secao-fora-de-ordem]
+  ✅ path-morto ⇒ exit 2 [path-morto]
+  ✅ lm-morto ⇒ exit 2 [lm-morto]
+  ✅ linha-alem-do-fim ⇒ exit 2 [path-morto]
+  ✅ linha-alem-do-fim-basename ⇒ exit 2 [path-morto]
+  ✅ vencido CITADO ⇒ exit 2 [validado-vencido], com a data e o limite
+  ✅ caminho morto CITADO ⇒ exit 2 [path-morto]
+  ✅ DESIGN cita pattern inexistente ⇒ exit 2 [path-morto]
+── USO ──
+  ✅ sem argumento ⇒ exit 64
+  ✅ flag desconhecida ⇒ exit 64
+  ✅ pasta inexistente ⇒ exit 64
+  ✅ --design inexistente ⇒ exit 64
+  ✅ --playbook sem valor ⇒ exit 64
+── VERDES ──
+  ✅ fixture válida (data de hoje) ⇒ exit 0
+  ✅ vencido NÃO citado ⇒ exit 0 + aviso
+  ✅ caminho morto NÃO citado ⇒ exit 0 + aviso
+  ✅ DESIGN sem citação ⇒ exit 0 + aviso
+✅ self-test: cada classe vermelha acusa a classe certa; citado × não citado; verdes verdes.
+RESULTADO: VERDE
+→ o lint prova o que promete.
+[exit=0]

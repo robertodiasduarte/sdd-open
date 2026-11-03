@@ -1,0 +1,45 @@
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/contexto.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3
+== 1. cabeçalho com as chaves fora da ordem (AT-001 exige ctx, gerado_em, sha, superficies, sup nesta ordem)
+# CONTEXTO: pedidos
+
+gerado_em: 2026-11-03
+sha: 0123456789abcdef0123456789abcdef01234567
+ctx: ctx:pedidos
+superficies: sdd/fixtures/contexto/app/pedidos.py
+sup: `pedido_item` `checkout`
+
+  ⚠️  ordem.md: 'sdd/bin/contexto-lint.sh' é citado mas está fora de 'superficies:' (a validade não vê mudança nele) [superficie-nao-cobre]
+  ⚠️  ordem.md: 'sdd/fixtures/contexto/app/estoque.sql' é citado mas está fora de 'superficies:' (a validade não vê mudança nele) [superficie-nao-cobre]
+✅ contexto-lint: 1 CONTEXTO(s) OK, 2 aviso(s)
+RESULTADO: VERDE
+→ o CONTEXTO pode ser citado no DEFINE.
+[rc=0]
+== 2. --validade: superficies entre crases (como o sup:) e a superfície MUDOU depois do sha
+-- certo: CONTEXTO VENCIDO (89c8471..HEAD): superfícies alteradas desde o sha:
+sdd/bin/contexto-lint.sh: line 271: printf: write error: Broken pipe
+   [rc=141]
+-- crases: CONTEXTO VALIDO (89c8471..HEAD, 1 pathspec)
+   [rc=0]
+-- typo: CONTEXTO VALIDO (89c8471..HEAD, 1 pathspec)
+   [rc=0]
+-- lint do crases.md: RESULTADO: VERDE → o CONTEXTO pode ser citado no DEFINE. 
+-- lint do typo.md: RESULTADO: VERDE → o CONTEXTO pode ser citado no DEFINE. 
+== 3. caminho relativo chamado de uma subpasta
+arquivo ou pasta inexistente: fixtures/contexto/valido-completo.md
+[rc=64]
+arquivo inexistente: fixtures/contexto/valido-completo.md
+[rc=64]
+== 4. --sugerir com o mapa da fixture (COULD: termos que casaram)
+CONTEXTO_SUGERIR entrada=sdd/fixtures/contexto/INPUT_FIXTURE_PEDIDOS.md camadas=0 () dir=cx.u0jL ref=HEAD
+ctx:pedidos termos=3 (checkout, pedido, pedido_item) estado=ausente arquivo=cx.u0jL/pedidos.md
+recomendacao: gerar (ctx:pedidos ausente)
+RESULTADO: GERAR
+→ despache o cartógrafo para ctx:pedidos (passo 1.5 do sdd-define).
+[rc=0]
+== 5. --sugerir sem o mapa padrão (o pacote não traz sdd/patterns/dominio.md)
+CONTEXTO_SUGERIR entrada=sdd/fixtures/contexto/INPUT_FIXTURE_PEDIDOS.md camadas=0 () dir=sdd/contexto ref=main
+recomendacao: pular (sem sdd/patterns/dominio.md)
+RESULTADO: PULAR
+→ o Define segue sem CONTEXTO; para ter o mapa de domínios, veja sdd/patterns/README.md.
+[rc=0]
+[exit=0]

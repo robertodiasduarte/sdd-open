@@ -1,0 +1,5 @@
+$ grep -n 'primeira_vez\|find templates bin hooks review playbook.md' bin/sdd-open.sh
+553:  ( cd "${PKG}/sdd" && find templates bin hooks review playbook.md -type f 2>/dev/null | sort ) | while IFS= read -r rel; do
+639:    primeira_vez=1; [ -d "${ROOT}/sdd" ] && primeira_vez=0
+645:    if [ "${primeira_vez}" = "1" ]; then
+[exit=0]

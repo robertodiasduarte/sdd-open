@@ -1,0 +1,17 @@
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/dois-marcadores.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3
+3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+13:- [NEEDS CLARIFICATION: governança não rodou — rode só o passo 11 do sdd-define numa sessão nova, ou dispense com motivo]
+14:- [NEEDS CLARIFICATION: qual o teto por minuto?]
+20:| **Governança** | pendente — clarificação aberta | exemplo |
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dm.851d/DEFINE_X.md' não tem a linha Governança com um valor final
+   (encontrado: o marcador "governança não rodou" na linha 13).
+   Desde a v2.4.0, todo DEFINE passa pela revisão de governança antes do build; DEFINEs escritos
+   antes disso param aqui uma vez.
+   1. Numa sessão nova do agente, peça: "rode só o passo 11 (Governança) do sdd-define sobre /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dm.851d/DEFINE_X.md".
+      Não rode o Define inteiro de novo: ele regravaria a spec.
+   2. Ou dispense: na tabela do ## Technical Context, troque a linha Governança por
+      | **Governança** | dispensada — <motivo> | <seu nome, data> |
+      e apague do DEFINE o marcador "governança não rodou", se houver.
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+[exit=5]

@@ -1,0 +1,24 @@
+$ git rev-parse --short HEAD && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_patterns_lint
+96a97ec
+test_aval2_citacao_em_lista_conta_e_cerca_til_nao (test_patterns_lint.Aval1) ... ok
+test_l4_caminho_relativo_de_uma_subpasta (test_patterns_lint.Aval1) ... ok
+test_m2_orientacao_do_template_e_exemplo_em_cerca_nao_sao_citacao (test_patterns_lint.Aval1) ... ok
+test_classes_vermelhas (test_patterns_lint.Lint) ... ok
+test_design_nao_citado_so_avisa (test_patterns_lint.Lint) ... ok
+test_design_vencido_citado_bloqueia_com_data_dias_e_limite (test_patterns_lint.Lint) ... ok
+test_pasta_do_pacote_e_pasta_com_patterns_reais (test_patterns_lint.Lint) ... ok
+test_self_test_verde (test_patterns_lint.Lint) ... ok
+test_uso (test_patterns_lint.Lint) ... ok
+test_r4_ancora_na_linha_zero_e_path_morto (test_patterns_lint.Real1) ... ok
+test_design_sem_citacao_com_pattern_defeituoso_na_pasta_sai_0 (test_patterns_lint.Real2) ... ok
+test_ancora_na_ultima_linha_sem_quebra_final_vale (test_patterns_lint.Real3) ... ok
+test_citacao_com_ponto_no_nome_conta (test_patterns_lint.Real4) ... ok
+test_import_relativo_no_esqueleto_nao_e_ancora (test_patterns_lint.Real4) ... ok
+test_titulo_dentro_de_cerca_til_nao_conta_como_secao (test_patterns_lint.Real5) ... ok
+test_idade_que_nao_bloqueia_no_design_derruba_o_self_test (test_patterns_lint.Sabotagem) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 6.289s
+
+OK
+[exit=0]

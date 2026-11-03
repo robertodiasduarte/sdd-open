@@ -1,0 +1,61 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/at2.sh; echo ======; /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/at2.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto
+# sonda AT-002 (ref padrão) e AT-003 (--sugerir) com /bin/bash
+PRJ="$1"; W=$(mktemp -d); R="$W/r"; mkdir "$R"; cd "$R"; G='git -c user.email=a@b -c user.name=a -c commit.gpgsign=false'
+git init -q -b trunk; mkdir -p sdd/bin sdd/patterns sdd/contexto app; cp "$PRJ/sdd/bin/contexto-lint.sh" sdd/bin/
+printf 'project:\n  default_branch: trunk   # comentário\nlayers:\n  dados: "app/db/*"\n' > sdd/config.yaml
+echo v1 > app/pedidos.py; $G add -A; $G commit -qm c1; C1=$(git rev-parse HEAD)
+printf '# CONTEXTO: pedidos\n\nctx: ctx:pedidos\ngerado_em: 2026-11-03\nsha: %s\nsuperficies: app/pedidos.py\nsup: `pedido_item`\n\n## Escopo\n' "$C1" > sdd/contexto/pedidos.md
+$G add -A; $G commit -qm ctx
+echo '>>> sem origin: ref padrão = trunk (do config)'; /bin/bash sdd/bin/contexto-lint.sh --validade sdd/contexto/pedidos.md; echo "rc=$?"
+echo v2 > app/pedidos.py; $G commit -qam c2
+echo '>>> superfície mudou em trunk'; /bin/bash sdd/bin/contexto-lint.sh --validade sdd/contexto/pedidos.md; echo "rc=$?"
+git update-ref refs/remotes/origin/trunk "$C1"
+echo '>>> com origin/trunk = c1: ref padrão = origin/trunk ⇒ válido'; /bin/bash sdd/bin/contexto-lint.sh --validade sdd/contexto/pedidos.md; echo "rc=$?"
+echo '>>> sha inexistente'; sed -i.bak 's/^sha: .*/sha: abcdef1/' sdd/contexto/pedidos.md; /bin/bash sdd/bin/contexto-lint.sh --validade sdd/contexto/pedidos.md; echo "rc=$?"; mv sdd/contexto/pedidos.md.bak sdd/contexto/pedidos.md
+echo '=== AT-003'
+printf 'Quero mexer em pedido_item e no checkout de pedidos em app/db/x.\n' > in.md
+echo '>>> sem dominio.md'; /bin/bash sdd/bin/contexto-lint.sh --sugerir in.md; echo "rc=$?"
+printf '# Domínios\n\n### ctx:pedidos\n\n**Âncoras:** `pedido_item` `checkout` `app/pedidos.py`\nsup: `pedido_item`\n\n### ctx:estoque\n\n**Âncoras:** `estoque_saldo` `reserva`\nsup: `estoque_saldo`\n\n### ctx:fiscal\n\n**Âncoras:** `checkout` `pedido_item` `nota_fiscal`\nsup: `nota_fiscal`\n\n### ctx:frete\n\n**Âncoras:** `checkout` `pedido_item`\nsup: `frete`\n' > sdd/patterns/dominio.md
+echo '>>> 3 domínios com 2+ termos: no máximo 2, estado vencido (origin/trunk = c1? não: --ref trunk)'; /bin/bash sdd/bin/contexto-lint.sh --sugerir in.md --ref trunk; echo "rc=$?"
+echo '>>> recomendacao única'; /bin/bash sdd/bin/contexto-lint.sh --sugerir in.md --ref trunk | grep -c '^recomendacao:'
+======
+>>> sem origin: ref padrão = trunk (do config)
+CONTEXTO VALIDO (017c6ef..trunk, 1 pathspec)
+RESULTADO: VALIDO
+→ reuse o CONTEXTO.
+rc=0
+>>> superfície mudou em trunk
+CONTEXTO VENCIDO (017c6ef..trunk): superfícies alteradas desde o sha:
+  app/pedidos.py
+  🛑 [validade-vencida] pedidos.md: gere de novo (passo 1.5 do sdd-define ⇒ gerar)
+RESULTADO: VENCIDO
+→ gere o CONTEXTO de novo (passo 1.5 do sdd-define).
+rc=1
+>>> com origin/trunk = c1: ref padrão = origin/trunk ⇒ válido
+CONTEXTO VALIDO (017c6ef..origin/trunk, 1 pathspec)
+RESULTADO: VALIDO
+→ reuse o CONTEXTO.
+rc=0
+>>> sha inexistente
+  🛑 [sha-inexistente] pedidos.md: o sha 'abcdef1' não existe neste repositório
+RESULTADO: VERMELHO
+→ confira o sha do cabeçalho e a ref (--ref).
+rc=2
+=== AT-003
+>>> sem dominio.md
+CONTEXTO_SUGERIR entrada=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.L7ysmaYtSu/r/in.md camadas=1 (dados) dir=sdd/contexto ref=origin/trunk
+recomendacao: pular (sem sdd/patterns/dominio.md)
+RESULTADO: PULAR
+→ o Define segue sem CONTEXTO; para ter o mapa de domínios, veja sdd/patterns/README.md.
+rc=0
+>>> 3 domínios com 2+ termos: no máximo 2, estado vencido (origin/trunk = c1? não: --ref trunk)
+CONTEXTO_SUGERIR entrada=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.L7ysmaYtSu/r/in.md camadas=1 (dados) dir=sdd/contexto ref=trunk
+ctx:pedidos termos=2 (checkout, pedido_item) estado=vencido arquivo=sdd/contexto/pedidos.md
+ctx:fiscal termos=2 (checkout, pedido_item) estado=ausente arquivo=sdd/contexto/fiscal.md
+recomendacao: gerar (ctx:pedidos vencido; outros: ctx:fiscal(ausente))
+RESULTADO: GERAR
+→ despache o cartógrafo para ctx:pedidos (passo 1.5 do sdd-define).
+rc=0
+>>> recomendacao única
+1
+[exit=0]

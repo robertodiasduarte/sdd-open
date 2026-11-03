@@ -1,0 +1,27 @@
+$ git rev-parse --short HEAD && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_f12_textos
+96a97ec
+test_exits_do_yaml_batem_com_o_verify_gate (test_f12_textos.Contratos) ... ok
+test_retornos_e_permitidos (test_f12_textos.Contratos) ... ok
+test_snapshot_num_lugar_fixo_e_lint_no_redespacho (test_f12_textos.Contratos) ... ok
+test_todo_caminho_entre_crases_existe (test_f12_textos.Contratos) ... ok
+test_c11_papel_em_aberto_trava_com_pergunta (test_f12_textos.Design) ... ok
+test_c2_c3_c4_c10 (test_f12_textos.Design) ... ok
+test_5_campos_e_resultados_batem_com_brief_yaml_e_validador (test_f12_textos.Passo11) ... ok
+test_a_linha_governanca_so_aparece_como_linha_da_tabela (test_f12_textos.Passo11) ... ok
+test_brief_do_revisor_diz_quem_e_dono_da_prova (test_f12_textos.Passo11) ... ok
+test_briefs_proibem_commit (test_f12_textos.Passo11) ... ok
+test_padrao_ausente_refaz_o_snapshot (test_f12_textos.Passo11) ... ok
+test_proximo_passo_do_define_nao_manda_mais_para_a_governanca_avulsa (test_f12_textos.Passo11) ... ok
+test_redespacho_do_cartografo_refaz_brief_e_snapshot (test_f12_textos.Passo11) ... ok
+test_restauracao_do_define_desfaz_link_antes_do_cp (test_f12_textos.Passo11) ... ok
+test_trava_antes_do_despacho_e_todas_as_pecas (test_f12_textos.Passo11) ... ok
+test_os_4_campos_sao_os_do_brief_e_do_yaml (test_f12_textos.Passo15) ... ok
+test_roda_as_pecas_na_ordem_e_nao_trava (test_f12_textos.Passo15) ... ok
+test_secoes_do_brief_yaml_e_lint_sao_as_mesmas (test_f12_textos.Passo15) ... ok
+test_nada_especifico_da_rdd (test_f12_textos.SemRDD) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.013s
+
+OK
+[exit=0]

@@ -1,0 +1,95 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/m3.sh; echo ======; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/m3.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1TRIWjgopM
+# sonda M3: superficies: com crase / pathspec sem arquivo / arquivo não versionado / pathspec relativo / validade
+S="$1"; cd "$S"; D=$(mktemp -d); B=sdd/fixtures/contexto/valido-completo.md
+L() { echo ">>> lint: superficies: $1"; sed "s#^superficies: .*#superficies: $1#" "$B" > "$D/ctx.md"
+  bash sdd/bin/contexto-lint.sh --dominio sdd/fixtures/contexto/dominio.md --playbook sdd/fixtures/contexto/playbook.md "$D/ctx.md" > "$D/o" 2>&1; rc=$?
+  grep -E '🛑|RESULTADO' "$D/o"; echo "rc=$rc"; }
+L 'sdd/fixtures/contexto/app/pedidos.py'
+L '`sdd/fixtures/contexto/app/pedidos.py`'
+L 'sdd/fixtures/contexto/app/nao-existe.py'
+L 'sdd/fixtures/contexto/app/*.py'
+L 'sdd/fixtures/contexto/app/*.rb'
+L 'sdd/fixtures/contexto/app'
+L 'sdd/fixtures/contexto/app/'
+L ':(glob)sdd/fixtures/contexto/**/*.py'
+echo '--- arquivo presente mas NÃO versionado'
+mkdir -p novo; echo 'x' > novo/codigo.py
+L 'novo/codigo.py'
+L 'sdd/fixtures/contexto/app/pedidos.py novo/codigo.py'
+echo '--- lint chamado de subpasta (cwd=sdd/fixtures), superficies relativa à raiz'
+sed "s#^superficies: .*#superficies: sdd/fixtures/contexto/app/pedidos.py#" "$B" > "$D/ctx.md"
+(cd sdd/fixtures && bash ../bin/contexto-lint.sh --dominio contexto/dominio.md --playbook contexto/playbook.md "$D/ctx.md" | grep -E '🛑|RESULTADO'; echo "rc=${PIPESTATUS[0]}")
+echo '--- --validade com crase'
+H=$(git rev-parse HEAD)
+sed -e "s#^superficies: .*#superficies: \`sdd/fixtures/contexto/app/pedidos.py\`#" -e "s#^sha: .*#sha: $H#" "$B" > "$D/v.md"
+bash sdd/bin/contexto-lint.sh --validade "$D/v.md" --ref HEAD; echo "rc=$?"
+echo '--- --validade com pathspec que não casa nada (sem crase)'
+sed -e "s#^superficies: .*#superficies: app/nao-existe/*.py#" -e "s#^sha: .*#sha: $H#" "$B" > "$D/v2.md"
+bash sdd/bin/contexto-lint.sh --validade "$D/v2.md" --ref HEAD; echo "rc=$?"
+echo '--- --sugerir: CONTEXTO cuja superficies não casa nada fica "valido"?'
+mkdir -p "$D/dir"; cp "$D/v2.md" "$D/dir/pedidos.md"
+bash sdd/bin/contexto-lint.sh --dominio sdd/fixtures/contexto/dominio.md --sugerir sdd/fixtures/contexto/INPUT_FIXTURE_PEDIDOS.md --dir "$D/dir" --ref HEAD; echo "rc=$?"
+rm -rf novo
+======
+>>> lint: superficies: sdd/fixtures/contexto/app/pedidos.py
+RESULTADO: VERDE
+rc=0
+>>> lint: superficies: `sdd/fixtures/contexto/app/pedidos.py`
+  🛑 [cabecalho-ausente] ctx.md: 'superficies:' leva caminhos crus, sem crase (as crases são da linha sup:)
+🛑 contexto-lint: 1 erro(s), 3 aviso(s) em 1 CONTEXTO(s)
+RESULTADO: VERMELHO
+rc=2
+>>> lint: superficies: sdd/fixtures/contexto/app/nao-existe.py
+  🛑 [path-morto] ctx.md: 'superficies:' tem 'sdd/fixtures/contexto/app/nao-existe.py', que não casa nenhum arquivo versionado (o --validade não veria mudança nele)
+🛑 contexto-lint: 1 erro(s), 3 aviso(s) em 1 CONTEXTO(s)
+RESULTADO: VERMELHO
+rc=2
+>>> lint: superficies: sdd/fixtures/contexto/app/*.py
+RESULTADO: VERDE
+rc=0
+>>> lint: superficies: sdd/fixtures/contexto/app/*.rb
+  🛑 [path-morto] ctx.md: 'superficies:' tem 'sdd/fixtures/contexto/app/*.rb', que não casa nenhum arquivo versionado (o --validade não veria mudança nele)
+🛑 contexto-lint: 1 erro(s), 3 aviso(s) em 1 CONTEXTO(s)
+RESULTADO: VERMELHO
+rc=2
+>>> lint: superficies: sdd/fixtures/contexto/app
+RESULTADO: VERDE
+rc=0
+>>> lint: superficies: sdd/fixtures/contexto/app/
+RESULTADO: VERDE
+rc=0
+>>> lint: superficies: :(glob)sdd/fixtures/contexto/**/*.py
+RESULTADO: VERDE
+rc=0
+--- arquivo presente mas NÃO versionado
+>>> lint: superficies: novo/codigo.py
+  🛑 [path-morto] ctx.md: 'superficies:' tem 'novo/codigo.py', que não casa nenhum arquivo versionado (o --validade não veria mudança nele)
+🛑 contexto-lint: 1 erro(s), 3 aviso(s) em 1 CONTEXTO(s)
+RESULTADO: VERMELHO
+rc=2
+>>> lint: superficies: sdd/fixtures/contexto/app/pedidos.py novo/codigo.py
+  🛑 [path-morto] ctx.md: 'superficies:' tem 'novo/codigo.py', que não casa nenhum arquivo versionado (o --validade não veria mudança nele)
+🛑 contexto-lint: 1 erro(s), 2 aviso(s) em 1 CONTEXTO(s)
+RESULTADO: VERMELHO
+rc=2
+--- lint chamado de subpasta (cwd=sdd/fixtures), superficies relativa à raiz
+RESULTADO: VERDE
+rc=0
+--- --validade com crase
+  🛑 [cabecalho-ausente] v.md: 'superficies:' com crase não é pathspec; a validade não mede nada assim
+RESULTADO: VERMELHO
+→ confira o sha do cabeçalho e a ref (--ref).
+rc=2
+--- --validade com pathspec que não casa nada (sem crase)
+CONTEXTO VALIDO (229ce82..HEAD, 1 pathspec)
+RESULTADO: VALIDO
+→ reuse o CONTEXTO.
+rc=0
+--- --sugerir: CONTEXTO cuja superficies não casa nada fica "valido"?
+CONTEXTO_SUGERIR entrada=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1TRIWjgopM/sdd/fixtures/contexto/INPUT_FIXTURE_PEDIDOS.md camadas=0 () dir=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.dtXYItjgMg/dir ref=HEAD
+ctx:pedidos termos=3 (checkout, pedido, pedido_item) estado=valido arquivo=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.dtXYItjgMg/dir/pedidos.md
+recomendacao: reusar (ctx:pedidos valido)
+RESULTADO: REUSAR
+→ cite /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.dtXYItjgMg/dir/pedidos.md no DEFINE.
+rc=0
+[exit=0]

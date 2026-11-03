@@ -1,0 +1,9 @@
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261103-115727 --ledger sdd/reports/evidence/F12_CONTEXTO/ledger-review.md --rodada 3
+ESTADO: PRONTO
+rodada: 3 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]

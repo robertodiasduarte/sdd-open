@@ -1,0 +1,13 @@
+$ git rev-parse --short HEAD && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_contexto_lint.Sabotagem test_patterns_lint.Sabotagem test_governanca_fronteira.Sabotagem test_governanca_gate.Gate.test_sabotagem_sem_a_checagem_a_fixture_sem_linha_passa test_docs_extract_decisions.Extrator.test_sabotagem_que_perde_um_orfao_viola_a_conservacao
+96a97ec
+test_sem_a_checagem_de_landmine_o_self_test_cai (test_contexto_lint.Sabotagem) ... ok
+test_idade_que_nao_bloqueia_no_design_derruba_o_self_test (test_patterns_lint.Sabotagem) ... ok
+test_comparar_so_o_caminho_esconde_a_sobrescrita (test_governanca_fronteira.Sabotagem) ... ok
+test_sabotagem_sem_a_checagem_a_fixture_sem_linha_passa (test_governanca_gate.Gate) ... ok
+test_sabotagem_que_perde_um_orfao_viola_a_conservacao (test_docs_extract_decisions.Extrator) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 6.131s
+
+OK
+[exit=0]

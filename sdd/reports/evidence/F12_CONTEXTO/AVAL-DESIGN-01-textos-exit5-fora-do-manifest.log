@@ -1,0 +1,10 @@
+$ grep -nE 'clarification pending|esclarecimento pendente|clarificação pendente|marcador ativo de ambiguidade|dúvida marcada|clarificação ou DEFINE sem gate' docs/verify-gate-contract.md docs/pt-BR/verify-gate-contract.md .agents/skills/sdd-build/SKILL.md .agents/skills/sdd-iterate/SKILL.md docs/pt-BR/guia-do-aluno.md sdd/bin/gate-baseline.sh
+docs/verify-gate-contract.md:66:| `5` | clarification pending | **stop**, return to `/sdd-define`; never iterate the design |
+docs/pt-BR/verify-gate-contract.md:68:| `5` | esclarecimento pendente | **pare**, volte pro `/sdd-define`; nunca itere o design |
+.agents/skills/sdd-build/SKILL.md:167:| `5` | clarificação pendente — **pare** e volte ao Define; não é vermelho de build |
+.agents/skills/sdd-iterate/SKILL.md:87:   - `sdd/bin/verify-gate.sh <DEFINE>` — exit 5 = marcador ativo de ambiguidade: parar e voltar
+docs/pt-BR/guia-do-aluno.md:202:| `5` | a spec tem uma dúvida marcada | volte ao Define e responda a dúvida |
+docs/pt-BR/guia-do-aluno.md:338:| **O que vai perguntar** | Só o que falta para ficar testável: números ("até 30 segundos ou até 2 minutos?"), casos de borda, o que fazer quando der erro. Uma pergunta principal por vez, com opções e "não sei". O que ela não souber vira uma dúvida marcada no documento, nunca um chute. |
+docs/pt-BR/guia-do-aluno.md:624:| **dúvida marcada** | Um trecho da spec que ainda não tem resposta, escrito no lugar da dúvida; enquanto existir, o Verify Gate devolve `5`. |
+sdd/bin/gate-baseline.sh:137:    inconclusivo "o gate não chegou a avaliar na base (exit ${RC}): ferramenta ou arquivo ausente, manual-ux, clarificação ou DEFINE sem gate" ;;
+[exit=0]

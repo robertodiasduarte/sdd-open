@@ -1,0 +1,14 @@
+$ git rev-parse --short HEAD && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_governanca_bloco
+96a97ec
+test_bloco_incoerente_com_a_fronteira_sai_2 (test_governanca_bloco.Bloco) ... ok
+test_falha_sai_1 (test_governanca_bloco.Bloco) ... ok
+test_invalidos_saem_2 (test_governanca_bloco.Bloco) ... ok
+test_uso_sai_64 (test_governanca_bloco.Bloco) ... ok
+test_vale_o_ultimo_bloco (test_governanca_bloco.Bloco) ... ok
+test_validos (test_governanca_bloco.Bloco) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.828s
+
+OK
+[exit=0]

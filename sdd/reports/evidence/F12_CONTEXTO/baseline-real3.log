@@ -1,0 +1,9 @@
+$ T=$(mktemp -d) && git archive 363d8bc | tar -x -C $T && cp tests/*.py $T/tests/ && cd $T/tests && for t in test_governanca_fronteira.Real3.test_snapshot_dentro_do_git_vale test_governanca_fronteira.Real3.test_alias_por_link_do_permitido_casa_com_ele test_contexto_lint.Real3.test_ancora_na_ultima_linha_sem_quebra_final_vale test_contexto_lint.Real3.test_sup_so_com_crases_vazias_e_sup_ausente test_patterns_lint.Real3 test_f12_textos.Contratos.test_exits_do_yaml_batem_com_o_verify_gate test_f12_textos.Contratos.test_snapshot_num_lugar_fixo_e_lint_no_redespacho; do SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest $t > $T/o.txt 2>&1; echo "$t: exit=$? $(grep -cE "^(FAIL|ERROR):" $T/o.txt) falha(s)"; done
+test_governanca_fronteira.Real3.test_snapshot_dentro_do_git_vale: exit=1 1 falha(s)
+test_governanca_fronteira.Real3.test_alias_por_link_do_permitido_casa_com_ele: exit=0 0 falha(s)
+test_contexto_lint.Real3.test_ancora_na_ultima_linha_sem_quebra_final_vale: exit=1 1 falha(s)
+test_contexto_lint.Real3.test_sup_so_com_crases_vazias_e_sup_ausente: exit=1 3 falha(s)
+test_patterns_lint.Real3: exit=1 1 falha(s)
+test_f12_textos.Contratos.test_exits_do_yaml_batem_com_o_verify_gate: exit=0 0 falha(s)
+test_f12_textos.Contratos.test_snapshot_num_lugar_fixo_e_lint_no_redespacho: exit=1 1 falha(s)
+[exit=0]

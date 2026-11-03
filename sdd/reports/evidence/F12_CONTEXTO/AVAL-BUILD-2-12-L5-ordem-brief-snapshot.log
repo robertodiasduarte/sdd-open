@@ -1,0 +1,75 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/l5.sh; echo ======; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/l5.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto
+# sonda L5: a ordem dos passos 1.5 e 11 (brief → snapshot → despachar → agente grava → snapshot → comparar)
+# executada como o texto manda, contra a ordem antiga (snapshot → despachar grava o brief)
+PRJ="$1"; W=$(mktemp -d); R="$W/proj"; mkdir "$R"; (cd "$PRJ" && git archive HEAD) | tar -x -C "$R"; cd "$R"
+G='git -c user.email=a@b -c user.name=a -c commit.gpgsign=false'; git init -q; $G add -A; $G commit -qm base
+F=X; FR=sdd/bin/governanca-fronteira.sh
+echo '=== passo 1.5, ordem do texto (brief antes do snapshot)'
+mkdir -p sdd/reports/briefs; cp .agents/skills/sdd-define/references/cartografo.md sdd/reports/briefs/BRIEF_cartografo_$F.md
+T=$(mktemp -d); bash $FR --snapshot "$R" "$T/antes" "$R/sdd/contexto/pedidos.md" >/dev/null
+bash sdd/bin/sdd-fluxo.sh despachar cartografo $F sdd/reports/briefs/BRIEF_cartografo_$F.md > "$T/d.out" 2>&1; echo "despachar rc=$?"; grep RESULTADO "$T/d.out"
+mkdir -p sdd/contexto; echo mapa > sdd/contexto/pedidos.md   # o cartógrafo grava
+bash $FR --snapshot "$R" "$T/depois" "$R/sdd/contexto/pedidos.md" >/dev/null
+bash $FR --comparar "$T/antes" "$T/depois" "$R/sdd/contexto/pedidos.md"; echo "comparar rc=$?"
+echo '=== passo 1.5, ordem antiga (snapshot antes de gravar o brief)'
+rm -rf sdd/reports/briefs sdd/contexto; T=$(mktemp -d)
+bash $FR --snapshot "$R" "$T/antes" "$R/sdd/contexto/pedidos.md" >/dev/null
+cp .agents/skills/sdd-define/references/cartografo.md "$T/brief.md"
+bash sdd/bin/sdd-fluxo.sh despachar cartografo $F "$T/brief.md" >/dev/null 2>&1; echo "despachar rc=$?"
+mkdir -p sdd/contexto; echo mapa > sdd/contexto/pedidos.md
+bash $FR --snapshot "$R" "$T/depois" "$R/sdd/contexto/pedidos.md" >/dev/null
+bash $FR --comparar "$T/antes" "$T/depois" "$R/sdd/contexto/pedidos.md"; echo "comparar rc=$?"
+echo '=== passo 11, ordem do texto: marcador no DEFINE → brief → cópia → snapshot → despachar → revisor grava'
+rm -rf sdd/reports/briefs sdd/contexto; mkdir -p sdd/features
+awk '/^O envio/{print; print ""; print "[NEEDS CLARIFICATION: governança não rodou — rode só o passo 11 do sdd-define numa sessão nova, ou dispense com motivo]"; next} /\*\*Governança\*\*/{print "| **Governança** | pendente | — |"; next} {print}' sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md > sdd/features/DEFINE_$F.md
+mkdir -p sdd/reports/briefs; cp .agents/skills/sdd-governanca/references/revisor.md sdd/reports/briefs/BRIEF_revisor-governanca_$F.md
+T=$(mktemp -d); cp sdd/features/DEFINE_$F.md "$T/DEFINE.antes"
+bash $FR --snapshot "$R" "$T/antes" "$R/sdd/reviews/GOVERNANCA_REVIEW_$F.md" >/dev/null
+bash sdd/bin/sdd-fluxo.sh despachar revisor-governanca $F sdd/reports/briefs/BRIEF_revisor-governanca_$F.md > "$T/d.out" 2>&1; echo "despachar rc=$?"; grep -E 'O que não foi|RESULTADO' "$T/d.out"
+bash sdd/bin/verify-gate.sh sdd/features/DEFINE_$F.md > "$T/g.out" 2>&1; echo "verify-gate durante a parada rc=$?"; grep -E 'GOVERNANÇA NÃO|^   [12]\.|RESULTADO' "$T/g.out"
+mkdir -p sdd/reviews; printf '# R\n\n## Lacunas\n\n### G01 — x\n\nt\n\n## Já cobertos\n' > sdd/reviews/GOVERNANCA_REVIEW_$F.md
+bash $FR --snapshot "$R" "$T/depois" "$R/sdd/reviews/GOVERNANCA_REVIEW_$F.md" >/dev/null
+bash $FR --comparar "$T/antes" "$T/depois" "$R/sdd/reviews/GOVERNANCA_REVIEW_$F.md" > "$T/comparar.txt"; echo "comparar rc=$?"; cat "$T/comparar.txt"
+echo '=== passo 11: o revisor também mexe no DEFINE ⇒ FORA, restaurar com cp + cmp'
+echo 'mexi' >> sdd/features/DEFINE_$F.md
+bash $FR --snapshot "$R" "$T/depois2" "$R/sdd/reviews/GOVERNANCA_REVIEW_$F.md" >/dev/null
+bash $FR --comparar "$T/antes" "$T/depois2" "$R/sdd/reviews/GOVERNANCA_REVIEW_$F.md"; echo "comparar rc=$?"
+cp "$T/DEFINE.antes" sdd/features/DEFINE_$F.md && cmp "$T/DEFINE.antes" sdd/features/DEFINE_$F.md && echo 'DEFINE restaurado (cmp 0)'
+======
+=== passo 1.5, ordem do texto (brief antes do snapshot)
+despachar rc=40
+RESULTADO: AGUARDANDO_HUMANO
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.GphMAp4gwQ/proj/sdd/contexto/pedidos.md
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+comparar rc=0
+=== passo 1.5, ordem antiga (snapshot antes de gravar o brief)
+despachar rc=40
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.GphMAp4gwQ/proj/sdd/contexto/pedidos.md
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.GphMAp4gwQ/proj/sdd/reports/briefs/BRIEF_cartografo_X.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+comparar rc=1
+=== passo 11, ordem do texto: marcador no DEFINE → brief → cópia → snapshot → despachar → revisor grava
+despachar rc=40
+**O que não foi feito:** o relatório de governança não foi gravado; o DEFINE está marcado como pendente (o build não passa até a revisão voltar).
+RESULTADO: AGUARDANDO_HUMANO
+verify-gate durante a parada rc=5
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_X.md' não tem a linha Governança com um valor final
+   1. Numa sessão nova do agente, peça: "rode só o passo 11 (Governança) do sdd-define sobre sdd/features/DEFINE_X.md".
+   2. Ou dispense: na tabela do ## Technical Context, troque a linha Governança por
+RESULTADO: CLARIFICAR
+comparar rc=1
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.GphMAp4gwQ/proj/sdd/reviews/GOVERNANCA_REVIEW_X.md
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.GphMAp4gwQ/proj/sdd/traces/X.jsonl
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+=== passo 11: o revisor também mexe no DEFINE ⇒ FORA, restaurar com cp + cmp
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.GphMAp4gwQ/proj/sdd/features/DEFINE_X.md
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.GphMAp4gwQ/proj/sdd/reviews/GOVERNANCA_REVIEW_X.md
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.GphMAp4gwQ/proj/sdd/traces/X.jsonl
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+comparar rc=1
+DEFINE restaurado (cmp 0)
+[exit=0]

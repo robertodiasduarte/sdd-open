@@ -1,0 +1,27 @@
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.D4slNxccYt/sonda_porcelain.sh
+== 1. este repositório (read-only): git status --porcelain
+?? sdd/features/
+?? sdd/handoffs/
+?? sdd/reports/
+?? sdd/reviews/
+== 2. repo temporário: sdd/contexto/ vazio no git (o init cria a pasta, git não rastreia pasta vazia)
+-- antes (porcelain -z, default)
+?? .gitignore
+?? sdd/
+-- antes (--ignored, default)
+?? .gitignore
+?? sdd/
+!! sdd/traces/
+-- depois (porcelain -z, default): cartógrafo gravou sdd/contexto/pedidos.md
+?? .gitignore
+?? sdd/
+-- depois (--ignored, default)
+?? .gitignore
+?? sdd/
+!! sdd/traces/
+-- depois (-uall --ignored=matching): o que a fronteira precisa enxergar
+?? .gitignore
+?? sdd/contexto/pedidos.md
+?? sdd/reviews/GOVERNANCA_REVIEW_X.md
+!! sdd/traces/
+[exit=0]

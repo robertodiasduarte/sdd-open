@@ -1,0 +1,38 @@
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/dispensa.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3
+awk: newline in string - [NEEDS CLARIFICATI... at source line 1
+== dispensa_completa exit=0
+RESULTADO: VERDE
+→ siga para o próximo passo.
+== dispensa_so_linha exit=5
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dp.HeXs/DEFINE_dispensa_so_linha.md' não tem a linha Governança com um valor final
+   (encontrado: o marcador "governança não rodou" na linha 15).
+   1. Numa sessão nova do agente, peça: "rode só o passo 11 (Governança) do sdd-define sobre /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dp.HeXs/DEFINE_dispensa_so_linha.md".
+   2. Ou dispense: na tabela do ## Technical Context, troque a linha Governança por
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+== falhou_marcador exit=5
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dp.HeXs/DEFINE_falhou_marcador.md' não tem a linha Governança com um valor final
+   (encontrado: o marcador "governança não rodou" na linha 15).
+   1. Numa sessão nova do agente, peça: "rode só o passo 11 (Governança) do sdd-define sobre /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dp.HeXs/DEFINE_falhou_marcador.md".
+   2. Ou dispense: na tabela do ## Technical Context, troque a linha Governança por
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+== outro_marcador_e_gov exit=5
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dp.HeXs/DEFINE_outro_marcador_e_gov.md' não tem a linha Governança com um valor final
+   (encontrado: ausente).
+   1. Numa sessão nova do agente, peça: "rode só o passo 11 (Governança) do sdd-define sobre /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dp.HeXs/DEFINE_outro_marcador_e_gov.md".
+   2. Ou dispense: na tabela do ## Technical Context, troque a linha Governança por
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+== pendente_marcador exit=5
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dp.HeXs/DEFINE_pendente_marcador.md' não tem a linha Governança com um valor final
+   (encontrado: o marcador "governança não rodou" na linha 15).
+   1. Numa sessão nova do agente, peça: "rode só o passo 11 (Governança) do sdd-define sobre /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dp.HeXs/DEFINE_pendente_marcador.md".
+   2. Ou dispense: na tabela do ## Technical Context, troque a linha Governança por
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+== so_outro_marcador exit=5
+🛑 CLARIFICAÇÃO PENDENTE (exit 5) — '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/dp.HeXs/DEFINE_so_outro_marcador.md' tem marcador(es) ativo(s) de ambiguidade:
+RESULTADO: CLARIFICAR
+→ resolva os marcadores de ambiguidade no DEFINE e volte ao Define.
+[exit=0]

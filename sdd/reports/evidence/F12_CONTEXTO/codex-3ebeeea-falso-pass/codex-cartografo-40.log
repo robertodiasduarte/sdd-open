@@ -1,0 +1,2544 @@
+$ HOME=<temporário> CODEX_HOME=<temporário, só auth.json> codex exec --ignore-user-config --ephemeral -s workspace-write --disable multi_agent -C <cópia> "<prompt abaixo>"
+codex: codex-cli 0.163.0
+prompt: Siga a skill do projeto em .agents/skills/sdd-define/SKILL.md (leia o arquivo inteiro e as referências que ela manda ler) para gerar sdd/features/DEFINE_PEDIDOS.md a partir de sdd/features/BRAINSTORM_PEDIDOS.md, começando pelo passo 1.5 (contexto de domínio). Nesta sessão não há subagente nem colaborador disponível: você não consegue abrir um papel fresco sozinho, então siga o caminho que a skill dá para esse caso (sessão nova). Esta execução não é interativa: em toda pergunta de decisão, escolha a opção recomendada e continue sem esperar resposta; quando a skill mandar parar, pare.
+
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: none
+session id: 01a1a32c-9c1a-7d01-9989-4132ab42a584
+--------
+user
+Siga a skill do projeto em .agents/skills/sdd-define/SKILL.md (leia o arquivo inteiro e as referências que ela manda ler) para gerar sdd/features/DEFINE_PEDIDOS.md a partir de sdd/features/BRAINSTORM_PEDIDOS.md, começando pelo passo 1.5 (contexto de domínio). Nesta sessão não há subagente nem colaborador disponível: você não consegue abrir um papel fresco sozinho, então siga o caminho que a skill dá para esse caso (sessão nova). Esta execução não é interativa: em toda pergunta de decisão, escolha a opção recomendada e continue sem esperar resposta; quando a skill mandar parar, pare.
+codex
+Vou ler a skill inteira e as referências exigidas, começar pelo contexto de domínio e seguir as opções recomendadas. Se ela exigir uma sessão nova, vou parar no ponto indicado.
+exec
+/bin/zsh -lc 'cat .agents/skills/sdd-define/SKILL.md' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+ succeeded in 0ms:
+---
+name: sdd-define
+description: Fase 1 do SDD Open — transforma um brainstorm, notas ou pedido direto em especificação com testes de aceitação em EARS, protocolo de ambiguidade (NEEDS CLARIFICATION) e um Verify Gate executável, gravando sdd/features/DEFINE_{FEATURE}.md. Use quando o usuário pedir para especificar, definir requisitos, escrever a spec, ou disser /sdd-define.
+compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --print para validar o bloco do gate.
+license: MIT
+metadata:
+  author: Roberto Dias Duarte
+  version: "2.5.0"
+  updated: "2026-11"
+  fase: "1"
+---
+
+# sdd-define — Fase 1
+
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
+`sdd-define v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+
+Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
+depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
+executável** — um comando com exit code, não prosa.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Ler o brainstorm | 1, 1.5 e 2 |
+| 2 | Requisitos | 3 |
+| 3 | Testes de aceitação | 4 e 5 |
+| 4 | Perguntas | 6 e 7 |
+| 5 | Verify Gate | 8 |
+| 6 | Gravar | 9 e 10 |
+| 7 | Governança | 11 |
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
+
+## Entrada
+
+`/sdd-define <BRAINSTORM_*.md | notas.md | "pedido direto">`. Vindo de um BRAINSTORM, a
+extração é direta: perguntas já respondidas, abordagem já escolhida, YAGNI já aplicado.
+
+## Processo
+
+### 1. Contexto
+
+Leia `sdd/templates/DEFINE_TEMPLATE.md`, `AGENTS.md`, a entrada, e os 3 fragmentos que regem
+esta fase: `sdd/templates/fragments/EARS.md`, `CLARIFY.md`, `VERIFY_GATE.md`. Leia `## Sempre`
+de `sdd/playbook.md`.
+
+### 1.5. Contexto de domínio (cartógrafo)
+
+Antes de escrever a spec, saiba que regras o código **já** impõe no domínio que a feature toca. Quem
+mapeia é o cartógrafo, um agente fresco que não viu esta conversa e grava `sdd/contexto/<slug>.md`
+com `arquivo:linha` em cada afirmação (brief: `references/cartografo.md`; formato:
+`sdd/bin/contexto-lint.sh`). O cartógrafo **ajuda, não trava**: se falhar, o Define segue sem ele.
+
+1. **Recomendação.** `bash sdd/bin/contexto-lint.sh --sugerir <entrada>` (o BRAINSTORM ou as notas; pedido
+   direto sem arquivo vai antes para um arquivo em `"$(mktemp -d)"/entrada.md`) lê o mapa
+   `sdd/patterns/dominio.md` e as camadas de `layers:` e imprime até 2 domínios candidatos e uma linha
+   `recomendacao: gerar | reusar | pular (<motivo>)`. Aplique como decisão `[auto · de rotina]` (com o
+   encadeamento ligado, vai para o recibo "Decidi sozinho" com o sinal e como desfazer):
+
+   **Sua decisão** — [auto · de rotina] **Mapeio as regras do domínio de pedidos antes de escrever a spec?**
+   - **gerar o mapa agora** (recomendado) — um agente novo lê o código de pedidos e anota as regras que
+     já valem, com o arquivo e a linha; leva alguns minutos e não muda nada no código.
+   - **seguir sem o mapa** — o Define fica mais rápido, mas pode repetir ou contrariar uma regra que o
+     código já tem.
+   - **não sei** — explico com um exemplo de regra que o mapa acharia.
+2. **pular** ⇒ uma linha ao aluno: `🗺️ contexto: pulado — <motivo em palavras>. Sem problema: o Define
+   segue.` Sem mapa de domínios, acrescente: `Para ter o mapa, veja sdd/patterns/README.md.` No DEFINE:
+   `CONTEXTO de domínio` = `nenhum (pulado: <motivo>)`.
+3. **reusar** ⇒ `bash sdd/bin/contexto-lint.sh --validade sdd/contexto/<slug>.md`: 0 ⇒
+   `✅ contexto: reusando sdd/contexto/<slug>.md (nada mudou desde <data>)`; 1 ⇒ `⚠️ contexto: venceu
+   (<n> arquivos mudaram)` e ofereça gerar.
+4. **gerar** ⇒ imprima `🗺️ contexto: mapeando ctx:<slug> em contexto fresco (alguns minutos)` e:
+   1. no degrau sem subagente, grave **antes** o brief em `sdd/reports/briefs/BRIEF_cartografo_<F>.md` (gravado
+      depois do snapshot, ele apareceria como escrita fora do permitido); depois
+      `T="$(cd "$(git rev-parse --git-common-dir)" && pwd -P)/sdd-fronteira/<F>/cartografo-<slug>"; mkdir -p "$T"`
+      (dentro do `.git`, que o `git status` não lista: o caminho é fixo e uma sessão nova o refaz igual depois de
+      uma parada) e `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/contexto/<slug>.md`
+      imediatamente antes do despacho;
+   2. despache pela escada de `sdd-build/references/contexto-fresco.md` com **só** os 4 campos
+      `ctx: ctx:<slug> · saida: sdd/contexto/<slug>.md · worktree: <raiz> · dominio: sdd/patterns/dominio.md`
+      e o brief `references/cartografo.md` (nada do pedido, nada desta conversa). Sem subagente, com o
+      brief já gravado no item 1, rode
+      `bash sdd/bin/sdd-fluxo.sh despachar cartografo <F> sdd/reports/briefs/BRIEF_cartografo_<F>.md` e pare
+      no exit 40 repassando a parada; quando as duas paradas deste Define vão acontecer, escreva antes
+      `⏸️ parada 1 de 2 deste Define (o cartógrafo); a 2ª é a revisão de governança.`;
+   3. logo que o bloco `<<<CONTEXTO … >>>` voltar, **sem editar nada no meio**: `--snapshot … "$T/depois"`
+      e `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/contexto/<slug>.md`;
+      depois `bash sdd/bin/contexto-lint.sh sdd/contexto/<slug>.md`;
+   4. falha = `--comparar` ≠ 0, lint ≠ 0 ou bloco ilegível. `FORA:` ⇒ liste os caminhos, não apague
+      nada. **1 redespacho** fresco, com a saída do lint como 5º campo `lint:` (o único extra que o brief aceita
+      sem marcar contaminação), **refazendo antes** o brief (sem subagente) e o
+      snapshot de antes (o que ficou da 1ª tentativa não pode condenar a 2ª); 2ª falha ⇒
+      `⚠️ contexto: o mapa não ficou válido (<motivo em palavras>); o Define segue sem ele.` e
+      `nenhum (<motivo>)`.
+5. **Preencha** a linha `CONTEXTO de domínio` do Technical Context:
+   `contexto/<slug>.md · sha <7 hex> · válido em <AAAA-MM-DD>` ou `nenhum (<motivo>)`. O que o CONTEXTO
+   diz em `## Regras vigentes` entra nos ATs e nas Constraints como **regra existente**, não como suposição.
+6. **No máximo 2 domínios por feature**, um despacho por vez (o 2º só depois que a fronteira do 1º
+   fechou: em paralelo, um cartógrafo veria o arquivo do outro como escrita fora do permitido). Mais que
+   isso é sinal de feature grande: proponha dividir.
+
+### 2. Classificar a entrada
+
+| Tipo | Foco |
+|---|---|
+| BRAINSTORM | extrair direto; validado |
+| notas de reunião | decisões e requisitos |
+| conversa / pedido direto | problema central, usuários |
+| fontes mistas | consolidar, deduplicar |
+
+### 3. Extrair
+
+Problema · Usuários (com a dor de cada um) · Objetivos (MUST/SHOULD/COULD) · Critérios de
+sucesso (com números) · Testes de aceitação · Restrições · Fora de escopo.
+
+**KB Domains** (Technical Context): só nomes de `ls sdd/kb/` (as pastas; o `_index.yaml` não conta) ou
+`nenhum`, conferidos de novo a cada Define. Sem `sdd/kb/`, escreva `nenhum` e diga ao aluno, em 1 frase,
+que a `sdd-kb` cria uma base. Ao mostrar um domínio pela 1ª vez, ponha ao lado o `name:` dele no
+`sdd/kb/_index.yaml`.
+
+### 4. Testes de aceitação em EARS (obrigatório)
+
+Reescreva cada AT na gramática de `fragments/EARS.md`: keywords em inglês (**When / While /
+If–Then / Where / shall / shall continue to**), corpo na língua do projeto. **Recuse** o DEFINE
+(não grave) se:
+
+- algum AT está fora dos padrões (sem keyword);
+- há gatilho indesejado plausível (provedor fora, permissão negada, fila cheia) e **nenhum**
+  AT If/Then;
+- é bugfix e não há ≥1 **shall continue to**;
+- há adjetivo sem número ("rápido" → "em <2 s");
+- While / If–Then / Where não foram **considerados** (AT presente ou N.A. em 1 linha);
+- há mais de ~10 ATs;
+- há AT de UX visual (isso é gate `manual-ux`, fora do EARS);
+- algum AT está sem `kind` na coluna Gate ou sem cobertura no `cmd` do Verify Gate.
+
+### 5. Clarity Score
+
+Pontue Problema · Usuários · Objetivos · Sucesso · Escopo de 0 a 3. **Mínimo 12/15.** Abaixo
+disso, pergunte (múltipla escolha, recomendada primeiro) até fechar as lacunas.
+
+### 6. Clarify — marcar, nunca chutar
+
+Protocolo em `fragments/CLARIFY.md`. Ambiguidade real vira marcador **no lugar exato da
+dúvida**, na forma canônica (colchete + NEEDS CLARIFICATION + dois-pontos + pergunta). Varra as
+9 categorias (escopo, dados, UX, NFRs, integrações, edge cases, restrições, terminologia,
+sinal de conclusão). Resolva por rodadas de ≤5 perguntas; a resposta entra **no corpo** da spec
+e no log `## Clarifications / ### Session YYYY-MM-DD`. Enquanto houver marcador ativo,
+`sdd/bin/verify-gate.sh` devolve exit **5** e nenhuma fase avança.
+
+### 7. LLM Prompts (flag binário)
+
+A feature cria ou edita prompt que roda em produção (system prompt, classificador, passe de
+pipeline)? Sinais: nomes de provedor, "prompt", "embeddings", "RAG", paths `**/prompts/**`,
+chamadas `messages.create`/`chat.completions`. Marque `true`/`false` em Technical Context com
+justificativa. Nomes de provedor citados como **plataforma-alvo** não contam. Pontue os sinais:
+
+| Sinal | Exemplos | Peso |
+|---|---|---|
+| forte | provedor ou modelo nomeado como dependência, `messages.create`/`chat.completions`, `**/prompts/**`, "system prompt" | 1 forte → `true` |
+| fraco | "prompt", "RAG", "embeddings", "classificar", "resumir", "chatbot" | 2 fracos → `true`; 1 fraco → `true` com a nota "conservador" |
+| loop | agente, "até convergir", "a cada resposta", várias chamadas encadeadas | anote "candidato a loop" na justificativa |
+
+### 8. Verify Gate (obrigatório — recuse DEFINE sem gate)
+
+Derive o gate dos ATs e critérios de sucesso, seguindo `fragments/VERIFY_GATE.md`:
+
+| Natureza do aceite | `kind` | `cmd` típico |
+|---|---|---|
+| lógica testável | `test` | `{{TEST_CMD}} -- <arquivo>.test` |
+| rota/HTTP responde | `smoke` | `curl -sS -o /dev/null -w '%{http_code}' <url>` |
+| qualidade com limiar | `eval` | limiar embutido no comando |
+| tipos/compilação | `typecheck` | `{{TYPECHECK_CMD}}` |
+| UX pura | `manual-ux` | `N/A (manual-ux)` + `manual_fallback` = checklist |
+
+Os slots `{{TEST_CMD}}`/`{{TYPECHECK_CMD}}` vêm de `sdd/config.yaml`. Slot vazio: pergunte o
+comando real; nunca adivinhe. Valide o bloco:
+
+```bash
+sdd/bin/verify-gate.sh --print sdd/features/DEFINE_{FEATURE}.md   # lista kind/cmd/pass_when sem erro 64
+```
+
+Anti-padrões a recusar: gate de prosa; `kind: test` com `cmd` vazio; feature de UX marcada
+`test` só para "passar técnico".
+
+**Gate composto** (feature com vários ATs automatizáveis): escreva um script
+`sdd/bin/gates/gate-{feature}.sh` com **um bloco por AT**, imprimindo `AT-00N ✅/❌`, e aponte
+o `cmd` para ele. Toda asserção precisa de **baseline vermelho**: rode contra a árvore antes da
+mudança; se já passa, ela não prova nada.
+
+### 9. Gravar
+
+`sdd/features/DEFINE_{FEATURE}.md` com o template preenchido, Status `Ready for Design` (ou
+`Ready for UX Review` se há interface), a linha `CONTEXTO de domínio` do passo 1.5 e a linha
+`Governança` = `pendente` (o passo 11 escreve a final).
+
+### 10. Conferir o KB Domains
+
+`python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{FEATURE}.md` sobre o arquivo gravado: o KB Domains
+só cita pastas de `sdd/kb/`, ou diz `nenhum`. Exit 0 segue; exit 1 ⇒ corrija o campo e rode de novo antes
+de entregar. Os testes que ele listar (`<domínio>: <REGRA> → <teste>`, das regras de uma base normativa)
+entram no `cmd` do Verify Gate; se algum não entrar, registre o motivo no DEFINE e rode
+`verify-gate.sh --print` de novo.
+
+### 11. Governança (sempre, inclusive com `--parar`)
+
+Num sistema que trata dinheiro, tributo, folha ou dado pessoal, a revisão de governança acha o que a
+spec devia exigir antes que o código endureça. Ela roda em **todo** Define (o Step 6.5 do PORTE): sem
+tema, o revisor responde N.A. e isso fica registrado. **Quem escreveu o DEFINE não se revisa**: os
+passos 1 a 4 da `sdd-governanca` são do revisor, um agente fresco (brief
+`.agents/skills/sdd-governanca/references/revisor.md`); as decisões e a aplicação (passos 5 e 6) são
+desta sessão. `--parar` desliga o encadeamento, nunca este passo.
+
+1. **Antes de tudo, a trava.** Grave no DEFINE, em `## Clarifications`, uma sessão nova com o marcador
+   de governança (colchete + `NEEDS CLARIFICATION` + `: governança não rodou — rode só o passo 11 do
+   sdd-define numa sessão nova, ou dispense com motivo`, fora de cerca) e deixe a linha `Governança` =
+   `pendente`. Assim, se a sessão parar aqui (exit 40 ou a pessoa fecha a janela), o `verify-gate.sh`
+   sai 5 e o build não passa sem a revisão. Com outro marcador de dúvida aberto, espere a resposta e
+   rode este passo depois; se o Define terminar com dúvida aberta, a trava fica e a linha diz
+   `pendente — clarificação aberta`. A linha `Governança` é **sempre a linha da tabela** do
+   `## Technical Context` — `| **Governança** | <valor> | <nota> |` —, a única que o `verify-gate.sh` lê.
+2. Imprima `⚖️ governança: revisando em contexto fresco (alguns minutos)`. No degrau sem subagente, grave
+   **antes** o brief em `sdd/reports/briefs/BRIEF_revisor-governanca_<F>.md` (depois do snapshot ele
+   apareceria como escrita fora do permitido).
+   `T="$(cd "$(git rev-parse --git-common-dir)" && pwd -P)/sdd-fronteira/<F>/governanca"; mkdir -p "$T"` — dentro
+   do `.git`, que o `git status` não lista: o caminho é fixo, e uma sessão nova que retoma depois da parada
+   (exit 40) o refaz igual e acha o snapshot e a cópia do DEFINE;
+   `cp sdd/features/DEFINE_<F>.md "$T/DEFINE.antes"` (o snapshot só guarda o sha: é esta cópia que
+   permite restaurar o DEFINE se o revisor o mexer);
+   `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md`
+   imediatamente antes do despacho.
+3. **Despache** pela escada de `sdd-build/references/contexto-fresco.md` com **só** os 5 campos
+   absolutos (também no redespacho):
+   `define: <raiz>/sdd/features/DEFINE_<F>.md · skill: <raiz>/.agents/skills/sdd-governanca/ · padrao: <raiz>/sdd/GOVERNANCA_PADRAO.md · worktree: <raiz> · saida: <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md`.
+   Sem subagente, com o brief já gravado no item 2, rode
+   `bash sdd/bin/sdd-fluxo.sh despachar revisor-governanca <F> sdd/reports/briefs/BRIEF_revisor-governanca_<F>.md`
+   e pare no exit 40 (`⏸️ parada 2 de 2 deste Define` quando houve a do cartógrafo). A trava do item 1
+   segura o build até o bloco voltar.
+4. **Na volta, sem editar nada no meio:** grave a resposta do revisor em `"$T/resposta.txt"`;
+   `--snapshot … "$T/depois"`;
+   `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md > "$T/comparar.txt"`;
+   e confira o bloco com
+   `python3 sdd/bin/governanca-bloco.py "$T/resposta.txt" --saida <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md --comparar "$T/comparar.txt"`
+   (0 bloco válido · 1 `resultado: FALHA` · 2 bloco inválido).
+5. **Falha** = `--comparar` ≠ 0 (1 = `FORA:`; 64 = fronteira não verificada) ou `governanca-bloco.py` ≠ 0
+   (1 = `resultado: FALHA`; 2 = bloco inválido: sem o par `<<<GOVERNANCA`/`>>>`, `resultado` fora da
+   lista, `lacuna:` sem os 3 campos ou sem `muda:`/`porque:`, `relatorio:` diferente do `saida:`, Gnn do
+   bloco diferente dos títulos `### Gnn — ` de `## Lacunas`, `REVISADO` sem `MUDOU: <saida>`, ou outro
+   resultado com o relatório gravado). Tratamento, **nada destrutivo**: DEFINE em `FORA:` ⇒
+   `rm -f sdd/features/DEFINE_<F>.md && cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md` e confira com `cmp` (o
+   `rm` antes desfaz um link que o agente tenha posto no lugar do DEFINE: um `cp` sobre o link escreveria no
+   arquivo para onde ele aponta); outros `FORA:` ⇒ liste, não
+   apague; o `saida:` que estava `AUSENTE` no antes ⇒ remova.
+   Imprima `↻ governança: a 1ª tentativa falhou (<motivo>); tentando de novo em contexto fresco.`,
+   refaça o snapshot de antes e **redespache uma vez**, com os mesmos 5 campos (o motivo fica nesta
+   sessão). 2ª falha ⇒ item 9.
+6. **`PADRAO_AUSENTE`** (achou tema e o projeto não tem `sdd/GOVERNANCA_PADRAO.md`) ⇒ uma frase:
+   `A revisão achou <tema> neste Define e o projeto ainda não tem o padrão de governança; são 5 perguntas,
+   uma vez por projeto.` Pergunte os 5 campos do passo 2 da `sdd-governanca`, com a marca
+   `[D2 · muda o produto]`, grave o padrão pelo `assets/GOVERNANCA_PADRAO_TEMPLATE.md` dela, **refaça o
+   snapshot de antes** (o padrão recém-gravado é escrita desta sessão, não do revisor; sem o snapshot novo ele
+   apareceria como `FORA:`) e redespache (não conta como falha). Projeto com revisão N.A. nunca ouve essas perguntas.
+7. **`NA`** ⇒ `✅ governança: N.A. — <motivo>` e a linha `| **Governança** | N.A. — <motivo> | revisor fresco, <data> |`.
+   Nenhum arquivo.
+   **`REVISADO` com 0 lacunas** ⇒ `✅ governança: 0 lacunas — <cobertura>` e item 8 sem perguntas.
+8. **`REVISADO` com lacunas** ⇒ `⚖️ governança: <n> lacuna(s) — <n> pergunta(s)` e o caminho do relatório
+   (uma vez). **Uma pergunta por lacuna**, em ordem de severidade, no formato do passo 5 da
+   `sdd-governanca` (`[D2 · muda o produto]`: aplicar no DEFINE · recusar com motivo · adiar; o AT que
+   contradiz o requisito mostrado antes e depois; nunca "aplicar todas"). Depois, o passo 6 da skill,
+   por esta sessão: AT contradito reescrito primeiro; AT novo no próximo ID; e, para cada lacuna aplicada
+   que tem `prova_script` no catálogo, **este passo é o dono da prova** (o Design só a lista no manifest):
+   grave o script adaptado em `sdd/tests/governanca/<F>_<Gnn>.sql` e acrescente
+   `psql -v ON_ERROR_STOP=1 -f sdd/tests/governanca/<F>_<Gnn>.sql` ao `cmd` do bloco `verify_gate`
+   existente, contra banco de desenvolvimento, de teste ou branch — **nunca produção**. Projeto só com o
+   banco de produção: escreva isso no DEFINE e use o `prova_manual` até existir um de teste. No
+   relatório: *Riscos aceitos* e *Aplicado no DEFINE*. Linha
+   `| **Governança** | GOVERNANCA_REVIEW_<F>.md · <a> aplicadas · <r> recusadas · <d> adiadas | <data> |`.
+   Toda saída que escreve a linha final (itens 7 e 8) **remove o marcador de governança** do item 1.
+9. **2ª falha** ⇒ o marcador fica e a linha diz `| **Governança** | falhou — <motivo> | <data> |`. Mensagem:
+   `🛑 governança não rodou — <motivo em palavras>. Efeito: o build e a release param até resolver.`
+   e as 2 saídas numeradas: (1) numa sessão nova, pedir "rode só o passo 11 (Governança) do sdd-define
+   sobre <DEFINE>" — não o Define inteiro, que regravaria a spec; (2) dispensar: trocar a linha da tabela
+   por `| **Governança** | dispensada — <motivo> | <nome, data> |` **e** trocar o marcador por
+   `- [x] (governança) dispensada — <motivo>` (com o marcador no arquivo, o gate continua em 5).
+
+A linha `Governança` só é escrita por este passo (ou pela dispensa da pessoa). O `verify-gate.sh` sai 5
+enquanto ela não tiver um valor final: `N.A. — …`, `GOVERNANCA_REVIEW_…` ou `dispensada — …`.
+
+## Quality Gate
+
+```text
+[ ] Problema claro e específico · ≥1 persona · critérios de sucesso com números
+[ ] ATs em EARS: keyword em cada um · If/Then presente se há gatilho indesejado · While/If-Then/Where considerados · ≤~10 · zero UX visual · bugfix com shall continue to
+[ ] Rastreabilidade AT→gate: todo AT tem kind e está coberto pelo cmd do Verify Gate
+[ ] Zero marcadores ativos (verify-gate.sh não devolve 5)
+[ ] Fora de escopo explícito · Clarity ≥12/15 · LLM Prompts true/false com nota
+[ ] ## Verify Gate com kind+cmd+pass_when executáveis (ou manual-ux com manual_fallback)
+[ ] verify-gate.sh --print lista o bloco sem erro 64
+[ ] kb-dominios.py sai 0 (KB Domains de ls sdd/kb/ ou nenhum)
+[ ] Linha CONTEXTO de domínio preenchida (contexto/<slug>.md · sha · data, ou nenhum com motivo)
+[ ] Passo 11 rodou: linha Governança final (N.A. — …, GOVERNANCA_REVIEW_…, dispensada — …) e sem marcador de governança
+[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
+```
+
+## Por que cada regra existe
+
+- **O aceite é um comando com exit** — prosa ("o desconto deve funcionar") cada um lê do seu jeito; um
+  comando dá a mesma resposta para quem construiu, para quem revisa e para a release.
+- **EARS, com o padrão indesejado (If–Then)** — a gramática fixa obriga a nomear o gatilho, e o If–Then
+  obriga a nomear a falha antes de construir, quando decidir o que fazer com ela ainda é barato.
+- **Adjetivo sem número é recusado** — "rápido" passa em qualquer teste e não reprova nenhum; "em menos
+  de 2 s" pode falhar, e só o que pode falhar prova alguma coisa.
+- **A dúvida vira marcador no lugar exato, nunca suposição** — a suposição silenciosa vira código; o
+  marcador faz o gate devolver 5 e segura todas as fases até alguém responder.
+- **Cerca de 10 ATs, no máximo** — acima disso a spec está descrevendo implementação ou juntando duas
+  features, e o gate fica caro demais para rodar a cada mudança.
+- **KB Domains só de `ls sdd/kb/`, ou `nenhum`** — um domínio inventado manda o Design procurar padrões
+  onde não há nada; o `kb-dominios.py` reprova o nome que não tem pasta.
+- **O mapa do domínio vem de um agente que não viu a conversa** — quem vai escrever a spec já sabe o
+  que quer construir e lê o código procurando confirmação; o cartógrafo descreve o que o código faz hoje,
+  com o arquivo e a linha, e a fronteira prova que ele só gravou o mapa.
+- **A governança roda em todo Define e trava o build** — skill avulsa ninguém é obrigado a rodar, e a
+  lacuna esquecida só aparece depois do build, quando custa migração; N.A. registrado custa uma linha.
+- **A trava é gravada antes do despacho** — se a sessão parar no meio, o DEFINE já diz que a revisão
+  não rodou, e o gate segura o build em vez de deixá-lo passar em silêncio.
+- **O gate composto nasce vermelho** — uma asserção que já passa antes da mudança não prova a mudança;
+  rodá-la contra a árvore antiga mostra que ela avalia alguma coisa.
+
+## Encerramento (obrigatório)
+
+Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é
+`/sdd-define`. Os 4 blocos na ordem: micro-kanban · Onde estamos · O que precisa de você (só se
+N≥1) · O que vem depois, com ⚠️ inline.
+
+**Próximo passo:** `/sdd-ux-review sdd/features/DEFINE_{FEATURE}.md` se há interface; senão
+`/sdd-design sdd/features/DEFINE_{FEATURE}.md` (registre no DEFINE por que o UX review foi
+pulado — kanban marca ➖ só com decisão registrada).
+
+### Fluxo encadeado
+
+Ao fechar, rode `bash sdd/bin/sdd-fluxo.sh seguir <fase> <DEFINE> <próxima>` só quando a linha
+"Nesta skill" abaixo nomeia o `seguir` (contrato em `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+Exit 0: escreva a linha de transição que o script imprimiu, o recibo **Decidi sozinho** (se houver) e
+chame a próxima fase nesta sessão. Exit 1 com `encadeamento desligado`: só o Próximo passo acima, sem
+repassar a linha. Exit 1 por outro motivo: diga o motivo em 1 frase e mostre o Próximo passo. Exit 64:
+repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o encadeamento ligado
+vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam perguntadas. "Pare"
+desliga nesta chamada (`--parar`).
+
+Nesta skill: `seguir define sdd/features/DEFINE_{FEATURE}.md <próxima>`, com a próxima do Próximo
+passo acima (ux-review ou design). A governança já rodou no passo 11.
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open
+
+exec
+/bin/zsh -lc "pwd; rg --files -g AGENTS.md -g '*PEDIDOS*' -g 'sdd/playbook.md'" in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+ succeeded in 0ms:
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+sdd/fixtures/contexto/INPUT_FIXTURE_PEDIDOS.md
+sdd/playbook.md
+sdd/features/BRAINSTORM_PEDIDOS.md
+sdd/fixtures/patterns/DESIGN_FIXTURE_CITA_PEDIDOS.md
+
+exec
+/bin/zsh -lc 'cat .agents/skills/sdd-define/references/como-falar.md .agents/skills/sdd-define/references/cartografo.md .agents/skills/sdd-build/references/contexto-fresco.md sdd/templates/fragments/PERGUNTA_DECISAO.md sdd/templates/fragments/RESUMO_ETAPA.md sdd/templates/fragments/FLUXO_ENCADEADO.md' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+ succeeded in 0ms:
+# Como falar com o aluno — sdd-define
+
+Quem chega ao Define traz um brainstorm e nenhum vocabulário de requisitos. A seção "Como falar com o
+aluno" do `SKILL.md` dá o formato; este arquivo dá as palavras e um exemplo inteiro.
+
+## Glossário (explique na primeira vez em que o termo aparecer)
+
+- requisito — "uma frase que diz o que o sistema precisa fazer, de um jeito que dê para conferir depois";
+- MUST / SHOULD / COULD — "o que é obrigatório, o que é importante mas pode esperar, e o que seria bom
+  ter";
+- critério de sucesso — "como a gente vai saber que deu certo: um número ou algo que dá para observar";
+- teste de aceitação — "uma frase do tipo 'quando acontece X, o sistema faz Y', que vira a prova de que
+  o requisito foi atendido";
+- EARS — "o jeito padronizado de escrever essas frases (quando…, se…, enquanto…); as palavras ficam em
+  inglês porque é uma convenção";
+- Clarity Score — "uma nota de 0 a 15 que mede se o documento está claro o bastante para seguir";
+- marcador de dúvida — "uma marca no texto onde ainda falta uma resposta sua; com ela, nada segue";
+- Verify Gate — "a conferência final: um comando que roda e diz passou ou não passou";
+- exit 0 / 2 / 3 / 4 / 5 / 64 — "o código com que a conferência termina: 0 passou, 2 falhou, 3 não deu
+  para saber, 4 precisa da sua assinatura, 5 tem dúvida aberta, 64 o documento está mal escrito";
+- LLM — "um modelo de linguagem, como o que você está usando agora";
+- DEFINE — "o documento desta fase; a próxima (Design) parte dele".
+- cartógrafo — "um agente novo, que não viu esta conversa, lê o código da parte do sistema que a feature
+  toca e anota as regras que já valem, com o arquivo e a linha";
+- CONTEXTO de domínio — "o mapa que o cartógrafo grava; o Define e o Design partem dele";
+- revisão de governança — "a conferência, feita por outro agente, do que um fiscal ou auditor exigiria
+  desta spec; num sistema sem dinheiro, tributo ou dado pessoal, ela responde N.A. em uma linha";
+- parada ⏸️ — "o ponto em que eu preciso que você abra uma sessão nova do agente e cole um texto de volta".
+
+Não fale em stakeholder, NFR, edge case ou data model sem traduzir: "quem é afetado", "exigência de
+velocidade ou segurança", "caso raro", "que informações o sistema guarda".
+
+## Status desta skill, preenchido
+
+`Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança`
+
+## Exemplo — resposta completa, com decisão (etapa 4 — Perguntas)
+
+Situação: o DEFINE da conferência de notas fiscais tem 6 testes de aceitação; falta decidir o que fazer
+com nota que aparece duas vezes.
+
+**Status** — `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança`
+(no Status: "Verify Gate" é a conferência final, um comando que diz passou ou não passou.)
+
+**O que foi feito** — Escrevi os 4 objetivos e os 6 testes de aceitação, frases do tipo "quando chega
+uma nota, o sistema marca a linha da planilha". Ficou 1 ponto sem resposta, marcado no texto.
+
+**Agora: etapa 4 — Perguntas** — Uma nota pode chegar duas vezes (o fornecedor reenvia o e-mail). Sem
+essa resposta, a conferência final não tem como saber o que é certo.
+
+**Sua decisão** — [D2 · muda o produto] **O que fazer com uma nota que chega duas vezes?**
+- **marcar uma vez e avisar** (recomendado) — a linha é marcada só na 1ª, e a 2ª vai para uma lista de
+  repetidas: nas amostras, 2 de 40 notas vieram repetidas.
+- **ignorar a repetida** — marca uma vez e não avisa; mais simples, mas você não fica sabendo.
+- **marcar as duas** — a planilha fica com a linha duplicada.
+- **não sei** — mostro o que cada opção faz com as 2 notas repetidas da amostra.
+
+**Próximo passo** — Com a sua resposta, escrevo a conferência final (o Verify Gate).
+
+Formato completo de pergunta e de parada: `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+# Cartógrafo de domínio — brief do agente fresco do passo 1.5
+
+Você é o cartógrafo: mapeia **um** domínio do projeto **no código** e grava **um** arquivo,
+`sdd/contexto/<slug>.md`, antes de alguém escrever a spec. Você não viu a conversa do Define e não deve
+ver: o mapa vale porque descreve o que o código faz hoje, não o que a feature quer fazer.
+
+Quem despacha este brief é o passo 1.5 do `sdd-define`, pela escada de `sdd-build/references/contexto-fresco.md`:
+subagente em contexto limpo; sem subagente, sessão nova (`sdd-fluxo.sh despachar cartografo …`, exit 40).
+Contrato de máquina: `sdd/WORKFLOW_CONTRACTS.yaml` › `cartografo`. Formato: `sdd/bin/contexto-lint.sh`.
+
+## Entrada (só isto chega — 4 campos)
+
+```text
+ctx: ctx:<slug> · saida: sdd/contexto/<slug>.md · worktree: <caminho absoluto> · dominio: sdd/patterns/dominio.md
+```
+
+No redespacho (a 1ª tentativa não passou no lint), vem um 5º campo, `lint: <a saída do contexto-lint.sh da
+tentativa anterior>`: ele é previsto e não é contaminação — corrija o que as classes apontam.
+
+Se vier qualquer coisa além desses 4 campos (e do `lint:` do redespacho) (o pedido da feature, resumo da conversa, hipóteses, "a
+feature vai…"), escreva `CONTAMINAÇÃO: sim — <o que veio>` no `## Escopo` e mapeie **pelo código** mesmo
+assim. Sem contaminação, escreva `CONTAMINAÇÃO: não`.
+
+## Processo
+
+Leia por busca e por trecho (grep, listagem de arquivos, leitura de faixas de linhas), nunca arquivos
+inteiros grandes. Cada passo alimenta uma seção, na ordem do arquivo:
+
+1. **Delimitar** — abra só o bloco `### ctx:<slug>` do `dominio:`; as `**Âncoras:**` e o `sup:` são o
+   ponto de partida. Fronteiras com os domínios vizinhos vão no `## Escopo` (1 parágrafo, sem opinião).
+2. **Dados** — tabelas, modelos, esquemas, arquivos de dados do domínio: onde cada um é criado
+   (migration, modelo, schema) e os campos-chave, com `arquivo:linha`.
+3. **Operações** — funções, procedimentos, endpoints, jobs e comandos que leem ou gravam esses dados:
+   1 linha por operação, com o que faz (≤ 12 palavras), quem pode chamar e `arquivo:linha`.
+4. **Interfaces** — telas, rotas, comandos de terminal, mensagens que expõem as operações.
+5. **Regras vigentes** — a seção mais valiosa: as condições de negócio que o código já impõe (os `if`
+   que recusam, as exceções, os retornos de erro, as restrições do banco). **1 linha por regra**, verbo
+   no presente, com `arquivo:linha`. Sem âncora, a regra não entra.
+6. **Landmines** — para cada termo do `sup:`: `bash sdd/bin/playbook-lint.sh --grep "<termo>" sdd/playbook.md`.
+   Uma linha por termo, sempre: `` - `<termo>` → [LM-nnn] — 1 linha `` ou `` - `<termo>` → 0 bullets ``.
+   O conjunto de `LM-nnn` da seção é exatamente o que o `--grep` devolveu.
+7. **Histórico SDD** — os `sdd/features/*<SLUG>*`, `sdd/releases/` e `sdd/handoffs/` do domínio:
+   caminhos, 1 por linha, sem abrir os arquivos.
+
+**Cabeçalho** (antes da 1ª seção, uma linha por chave, nesta ordem): `ctx: ctx:<slug>` ·
+`gerado_em: <AAAA-MM-DD>` · `sha: <git rev-parse HEAD>` · `superficies:` os pathspecs separados por espaço
+que cobrem tudo o que as seções citam como código (é o que `--validade` compara) · `sup:` os termos
+entre crases, como no playbook.
+
+## Saída
+
+O título `# CONTEXTO: <slug>`, o cabeçalho e as 7 seções, nesta ordem (a mesma lista do lint):
+
+```text
+Escopo
+Dados
+Operações
+Interfaces
+Regras vigentes
+Landmines
+Histórico SDD
+```
+
+Formato de referência: `sdd/fixtures/contexto/valido-completo.md`.
+
+## Regras
+
+- **Não faz commit** (nem `git add`): quem despacha confere o HEAD antes e depois, e um commit seu conta como
+  escrita fora do permitido.
+- **`superficies:` leva caminhos crus, sem crase, e cada um casa ao menos um arquivo versionado** (o lint
+  recusa o contrário: um pathspec que não casa nada faria o mapa nunca vencer).
+- **Só escreve o arquivo `saida:`.** Nenhum outro arquivo: nem o DEFINE, nem código, nem `sdd/features/`,
+  nem relatório. Quem despacha compara o sha256 de cada arquivo do repositório antes e depois
+  (`sdd/bin/governanca-fronteira.sh`); qualquer outra escrita invalida o mapa.
+- **Toda linha de Dados, Operações, Interfaces e Regras vigentes tem `arquivo:linha`**, conferido lendo
+  aquela linha antes de gravar. "Por raciocínio" não é âncora.
+- **Zero dado pessoal** (nome, e-mail, documento, telefone de cliente — nem em exemplo); **zero consulta a
+  banco** (só o repositório); **zero opinião** ("deveria", "seria melhor"): o CONTEXTO descreve, o Design decide.
+- **No máximo 400 linhas.** Domínio maior: priorize regras vigentes > operações > dados > histórico; o que
+  ficou de fora vira 1 linha no `## Escopo` ("não mapeado: …").
+- **Termina lintado:** `bash sdd/bin/contexto-lint.sh sdd/contexto/<slug>.md` sai 0. Corrija o que a classe
+  apontar (no máximo 2 passadas); se ainda não sair 0, devolva a saída do lint no bloco.
+
+## Retorno (a última coisa da resposta)
+
+```text
+<<<CONTEXTO
+arquivo: sdd/contexto/<slug>.md
+linhas: <n>
+ancoras: <n de arquivo:linha>
+lint: <exit do contexto-lint.sh>
+landmines: <LM-nnn, LM-nnn | —>
+>>>
+```
+
+Nunca cole o CONTEXTO na resposta: quem despacha lê o arquivo.
+# Avaliação em contexto fresco — quem julga não é quem constrói
+
+## Por que existe
+
+Um build que lê o próprio diff e "vê o handler" conclui que o botão funciona. Ninguém clicou.
+Features foram publicadas com "Enviar não faz nada" exatamente assim. O avaliador nasce **sem
+a conversa do build**, lê o DEFINE como contrato e **prova cada critério executando**: comando,
+chamada HTTP, clique. Nunca lendo o diff.
+
+Duas landmines que este papel neutraliza:
+- **Asserção de fiação ≠ comportamento** — o `grep` acha a chamada, mas a condição pode ser
+  sempre-verdadeira.
+- **Régua validada contra o par que a construiu é circular** — por isso o brief abaixo é
+  **tudo** o que o avaliador recebe.
+
+## Como despachar (qualquer agente)
+
+O valor está no contexto limpo, não na API de subagente. Use o que o seu vendor tiver, nesta
+ordem de preferência:
+
+1. **Subagente em contexto limpo** (Claude Code, Codex, Kimi Code, Grok Build e outros que
+   suportam agentes): despache com o brief abaixo como prompt inteiro.
+2. **Sessão nova** do mesmo agente: grave o brief em `sdd/reports/briefs/BRIEF_avaliador_{F}.md`,
+   rode `bash sdd/bin/sdd-fluxo.sh despachar avaliador {F} sdd/reports/briefs/BRIEF_avaliador_{F}.md`
+   (passe esse mesmo caminho) e **pare** no exit 40 `AGUARDANDO_HUMANO`, repassando a parada que ele
+   imprime: a pessoa abre uma sessão nova que só lê esse arquivo e cola de volta o bloco
+   `<<<AVALIACAO … >>>` inteiro (com a linha `VEREDITO: …`).
+3. **Outro vendor** em sessão nova: idem, e ganha diversidade de erro.
+
+⛔ O brief **não** leva BUILD_REPORT, diff, resumo do que foi feito, nem hipóteses do build.
+Se vier, o avaliador registra `CONTAMINAÇÃO` e o veredito perde valor.
+
+## Brief — modo `contrato` (antes de codar, ≥2 camadas)
+
+```text
+modo: contrato · FEATURE: {F} · DEFINE: sdd/features/DEFINE_{F}.md ·
+DESIGN: sdd/features/DESIGN_{F}.md · projeto: {caminho absoluto}
+
+Você não viu a conversa do build. Leia o DEFINE (## Acceptance Tests e ## Verify Gate) e o
+DESIGN. Para cada AT, pergunte: é verificável por execução? o estado que quebra tem critério?
+o cmd do gate cobre este AT? o aceite é circular (prova a fiação, não o comportamento)? o
+efeito é observável? Proponha ≤5 ajustes, cada um com: alvo · classe · problema · redação em
+EARS · como verificar (comando/sonda). Rode as sondas read-only que puder AGORA (git diff,
+grep, execução das fixtures) e cite o que mediu. Não edite código nem documento do projeto:
+o único arquivo que você grava de propósito, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.log`
+(1ª linha `$ comando`, saída verbatim). Devolva o bloco <<<CONTRATO … >>>.
+```
+
+## Brief — modo `veredito` (depois do build)
+
+```text
+modo: veredito · ciclo: {1|2} · FEATURE: {F} · DEFINE: sdd/features/DEFINE_{F}.md ·
+DESIGN: sdd/features/DESIGN_{F}.md · projeto: {caminho absoluto} · URL base: {se houver} ·
+credenciais: {"autorizadas pelo humano nesta sessão" | "não autorizadas"}
+
+Você não viu a conversa do build. Leia o DEFINE como contrato. Para cada AT, PROVE por
+execução (comando, chamada, clique) — nunca lendo diff. Superfície visual: derive um roteiro
+clicável dos ATs e do manual_fallback e execute-o; sem browser/sessão, devolva o roteiro em
+NAO_VERIFICADO, nunca PASS. Só leitura em produção (GET, consultas SELECT, rotas idempotentes);
+nada que grave ou envie. Devolva <<<AVALIACAO … >>> com: veredito PASS | NEEDS_WORK |
+PASS_PENDENTE_RECIBO, tabela por AT (sonda · esperado · observado · resultado) e ACHADOS
+(cada um com reprodução exata). Não edite código nem documento do projeto: o único arquivo
+que você grava de propósito, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.log` (1ª linha
+`$ comando`, saída verbatim).
+```
+
+## O que o build faz com o veredito
+
+| Veredito | Ação |
+|---|---|
+| `PASS` | seguir; os ATs provados citam `sdd/reviews/AVALIACAO_{F}_{ts}.md` como evidência |
+| `NEEDS_WORK` | os ACHADOS são o brief de correção do ciclo seguinte (redispatch fresco); corrigir, rodar o gate, re-despachar com `ciclo: 2`. Máximo 2 ciclos → `Status: Blocked` com os achados abertos. Nunca contornar o critério |
+| `PASS_PENDENTE_RECIBO` | só em gate manual-ux: mostrar o roteiro ao humano e colher `recibo: nome YYYY-MM-DD`; sem recibo, é parada que não é decisão (`sdd-fluxo.sh loop` sai 30 AGUARDANDO_RECIBO): o build espera o recibo e não avança |
+
+Persista o bloco verbatim em `sdd/reviews/AVALIACAO_{F}_{YYYYMMDD-HHMM}.md` — é a evidência
+que o `report-lint.py` exige para o veredito no BUILD_REPORT. Registre a contagem de achados:
+zero achados em três features seguidas é sinal de calibração, não de perfeição.
+# Fragmento — Pergunta de decisão e parada
+
+> Reusável. Lido pelo `references/como-falar.md` de cada skill e pelo bloco "O que precisa de você"
+> do `RESUMO_ETAPA.md`. É o **dono único** do formato: as skills apontam para cá e trazem só os
+> próprios exemplos. O `sdd/bin/skill-lint.py --conversa` confere as perguntas desses exemplos.
+
+## Por que existe
+
+Quem responde à skill, em geral, nunca usou git nem terminal, e decide sem abrir arquivo. Pergunta sem
+opção vira "pode" sem saber o que autoriza; opção sem efeito vira chute; e uma parada sem passos deixa a
+pessoa sem saber o que fazer.
+
+## Pergunta de autorização
+
+Quando a skill precisa de um sim, de uma escolha entre caminhos conhecidos ou de um OK antes de algo que
+não se desfaz:
+
+```markdown
+**Sua decisão** — [auto · de rotina] **Posso gravar o DEFINE com estes 6 testes de aceitação?**
+- **sim** (recomendado) — gravo o arquivo e sigo para o Verify Gate: os 6 testes cobrem os 4 objetivos.
+- **mostrar antes** — mostro os 6 testes, um por linha, e pergunto de novo.
+- **não** — paro aqui; nada é gravado.
+- **não sei** — explico o que é um teste de aceitação com o teste 1 como exemplo.
+```
+
+1. A pergunta vai em negrito e termina em `?`. Ela é decidível sem abrir arquivo: o contexto necessário
+   está na própria resposta.
+2. Uma opção por linha, `- **rótulo** — efeito`. O efeito diz o que acontece, não o que a opção "é".
+3. A recomendada vem **primeiro**, com `(recomendado)` e o porquê no efeito. Exatamente uma.
+4. Números em vez de adjetivos: "6 testes", "3 arquivos", "leva uns 4 minutos"; nunca "alguns", "rápido".
+5. Identificadores técnicos (AT-003, LM-004, um SHA) só no fim do efeito, entre parênteses: `(ref: AT-003)`.
+   A frase tem de fazer sentido sem eles.
+6. Sempre a opção **não sei**: a skill responde à dúvida e repete as opções.
+7. Nunca uma opção **Outro** escrita. Quem quer outra coisa diz, e a resposta que não casa com nenhuma
+   opção é tratada como dúvida: responder e repetir as opções. Se a ferramenta de pergunta do agente
+   acrescentar um campo livre sozinha, ele continua lá; a skill não escreve um.
+8. **Eco** de 1 linha: no "O que foi feito" da resposta seguinte, o eco registra a escolha: *"Você escolheu
+   **sim**: gravei o DEFINE com os 6 testes."*
+9. **Classe da decisão.** Toda pergunta de decisão leva **uma** marca logo antes do negrito, com o
+   rótulo fixo da classe (a forma geral, `[Dn]` + rótulo):
+   `**Sua decisão** — [D1 · não se desfaz] **Posso publicar estas 5 mudanças?**`. A marca diz o tipo
+   da decisão em palavras e se ela continua sendo perguntada com o encadeamento ligado
+   (`flow.autonomous: true`; ver `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+
+   | Marca | Quando | Com o encadeamento ligado |
+   |---|---|---|
+   | `[D1 · não se desfaz]` | efeito fora da pasta que o git não desfaz: publicar, enviar, apagar, comprar, usar credencial | pergunta |
+   | `[D2 · muda o produto]` | muda o que a feature faz ou o texto que a pessoa lê: escopo, regra de negócio, dúvida do DEFINE | pergunta |
+   | `[D3 · muda a regra do método]` | muda regra que vale para todas as features: playbook, gate, dispensar uma revisão | pergunta |
+   | `[D4 · limite de tentativas]` | o loop de revisão não convergiu: 3 rodadas ou 2 ciclos do avaliador | pergunta |
+   | `[D5 · provas em conflito]` | dois lados com prova: um achado grave refutado com evidência | pergunta |
+   | `[auto · de rotina]` | a recomendada resolve: modo de execução, onde gravar, formato | não pergunta: vale a recomendada, e a decisão vai para o recibo "Decidi sozinho" |
+
+   Antes da primeira pergunta `[auto · de rotina]` da sessão, rode `bash sdd/bin/sdd-fluxo.sh estado`:
+   0 ligado · 1 desligado · 64 valor inválido (avise com a linha que ele imprimiu e trate como
+   desligado). A pergunta do OK da `sdd-release` ("Posso finalizar…?") é D1 por construção e não leva
+   marca: o texto dela é contrato. `sdd/bin/sdd-decisoes-lint.sh --sites` confere a marca e o rótulo.
+
+## Pergunta aberta
+
+Quando a resposta não cabe em opções (um nome, um número, um caminho):
+
+```markdown
+**Sua decisão** — [D2 · muda o produto] **Qual é o tempo máximo aceitável para processar um extrato?** Responda com um número
+e a unidade (por exemplo, "30 segundos"), ou "não sei": aí eu proponho um valor com base nas amostras.
+```
+
+Não invente opções para uma pergunta aberta. Diga como responder e deixe a saída "não sei".
+
+## Várias perguntas de uma vez
+
+Só quando a etapa precisa delas juntas, até 5, numeradas; a pessoa pode responder pelos números
+("1 sim, 2 mostrar antes"). Cada uma segue o formato acima.
+
+## Parada ⏸️
+
+Quando a etapa não pode seguir sem uma ação da pessoa (instalar algo, fazer login, abrir uma sessão
+nova do agente para um avaliador sem esta conversa):
+
+```markdown
+**Status** — `Build: ✅ 1 Plano · ✅ 2 Modo · ✅ 3 Tarefas 5/5 · ⏸️ 4 Verify Gate · ⬜ 5 Relatório`
+
+**Por que parei:** a conferência final precisa de alguém que não viu esta conversa, e este agente não
+abre uma conversa nova sozinho.
+
+**Onde:** numa janela nova do seu agente, na mesma pasta do projeto.
+
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o pedido que está no arquivo do brief → o agente começa a ler o DEFINE.
+3. Quando ele terminar, copie a última linha (`VEREDITO: …`) → é ela que eu preciso.
+
+**O que não foi feito:** o relatório não foi gravado e nada foi publicado.
+
+**Brief:** `sdd/reports/briefs/BRIEF_avaliador_PAGAMENTOS.md`
+
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+```
+
+- O Status mostra ⏸️ na etapa parada.
+- **Por que parei:** uma frase, com o motivo da pessoa, não a regra da skill.
+- **Onde:** terminal, navegador, pasta, outra janela do agente.
+- **Passos:** numerados, um comando por passo quando houver comando, com o que esperar na tela.
+- **O que não foi feito:** sempre ("Nada foi publicado.", "Nenhuma frente foi criada.").
+- **Brief:** e **Sessão nova:** só quando a parada é por uma sessão sem esta conversa: o caminho do
+  arquivo que a skill gravou e como abrir a sessão. Sem isso, as duas linhas somem.
+- A frase final só quando a pessoa tem algo a fazer.
+# Fragmento — Resumo de Etapa (micro-kanban da linha de produção)
+
+> Reusável. Lido pelo **encerramento obrigatório** de `/brainstorm`, `/define`, `/ux-review`,
+> `/design`, `/build`, a fase Release e `sdd/bin/adversarial-review.sh`. É o **dono único** do formato: as
+> superfícies apontam pra cá, nunca copiam o texto normativo.
+
+## Por que existe
+
+Com ~25 frentes SDD simultâneas, o custo real não é executar a etapa — é **reconstruir o
+contexto ao voltar nela**: em que etapa está, o que trava, qual a próxima ação. Esse resumo
+existia só por improviso, quando sobrava contexto, e sumia justamente nas sessões longas (as
+que mais precisam dele). Aqui ele vira contrato.
+
+## Os 4 blocos (nesta ordem, sempre)
+
+````markdown
+## 📍 Linha de produção — {FEATURE}
+
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design — ⬜ review adversarial — ⬜ /build — ⬜ /release
+
+**Onde estamos:** {≤2 linhas: o que esta etapa produziu + o fato notável que o leitor não adivinha}
+
+**O que precisa de você ({N} pergunta{s}):**
+1. {pergunta bloqueante, com contexto suficiente pra decidir SEM abrir arquivo}
+
+**O que vem depois, na ordem:**
+1. {próxima ação concreta} — {⚠️ landmine inline, se houver}
+2. {…}
+````
+
+## Os 4 símbolos
+
+| Símbolo | Significado | Regra |
+|---|---|---|
+| ✅ | Etapa concluída | Só por **artefato presente** no worktree (tabela abaixo) |
+| 🏃 | Etapa que acabou de rodar | Exatamente uma por resumo (exceto `/brainstorm`, que é pré-linha) |
+| ⬜ | Pendente | Default de tudo que não foi feito |
+| ➖ | Pulado | **Só com decisão registrada** (DEFINE § Clarifications). Sem rastro ⇒ `⬜`, nunca `➖` |
+
+## Tabela de inferência (a fonte da verdade é o filesystem)
+
+| Etapa | ✅ quando existe no worktree |
+|---|---|
+| setup | worktree + branch (`git rev-parse --abbrev-ref HEAD`) |
+| /sdd-brainstorm | `sdd/features/BRAINSTORM_{F}.md` |
+| /sdd-define | `sdd/features/DEFINE_{F}.md` |
+| /sdd-ux-review | `sdd/reviews/UX_REVIEW_{F}.md` |
+| /sdd-design | `sdd/features/DESIGN_{F}.md` |
+| review adversarial | `<review.output_dir>/EXTERNAL_REVIEW_*/` (padrão `sdd/reports/reviews/`) **com `reviewer.md` + `META.txt` dentro** (o `sdd/bin/adversarial-review.sh` grava por TIMESTAMP, sem `{F}` no nome — conferir pelo `diff_sha256`/branch do META que o diff revisado é o desta frente; `auditor_exit ≠ 0` = auditor FALHOU, não "zero achados") |
+| /sdd-build | `sdd/reports/BUILD_REPORT_{F}.md` |
+| /sdd-release | `sdd/releases/{F}/` **com ledger do slice ATUAL** — famílias com vários slices (ex.: `ALERTAS_AULA_GRUPO` tem s1/s2/s3) já têm ledger no `main`: casar o slice desta frente, senão a fase Release sai `✅` antes do ship |
+
+**Nada é escrito em disco.** O kanban é derivado na hora, a cada resumo — por isso não pode
+divergir da realidade: ele *é* a realidade. Nunca criar arquivo de estado paralelo.
+
+## Regras de omissão (as duas que mais importam)
+
+1. **`O que precisa de você` só existe se N ≥ 1.** Sem pergunta bloqueante, o bloco inteiro
+   **some** — não renderizar vazio nem com "nada pendente". Bloco vazio treina o leitor a pular
+   a seção, e aí a pergunta que importa passa batido.
+2. **Etapa que não se aplica é `➖`, nunca `⬜` perpétuo.** Uma frente sem UI não vai rodar
+   `/ux-review` jamais; deixá-la `⬜` faz o kanban mentir, e um kanban que mente contamina a
+   confiança no resumo inteiro. O `➖` exige decisão registrada — citar onde foi decidida.
+
+## Forma do kanban — duas renderizações
+
+Primária, uma linha (use sempre que couber em ~100 caracteres):
+
+```markdown
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design — ⬜ review adversarial — ⬜ /build — ⬜ /release
+```
+
+Fallback, duas linhas — quebre **no `🏃`**, com o passado acima e o futuro abaixo (nunca
+quebrar no meio de uma casa, nunca abreviar nomes: `/define` e `/design` viram ambíguos).
+**Sem `🏃` na linha** (caso do `/brainstorm`, que é pré-linha): quebrar após a última casa `✅`/`➖`
+— mesma semântica de passado acima, futuro abaixo:
+
+```markdown
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design
+⬜ review adversarial — ⬜ /build — ⬜ /release
+```
+
+## Exemplo real completo
+
+> Exemplo real (anonimizado) — o caso que originou este contrato.
+
+````markdown
+## 📍 Linha de produção — CERTIFICADO_POR_MODULO
+
+✅ setup — ➖ /sdd-brainstorm — ✅ /sdd-define — ✅ /sdd-ux-review — ✅ /sdd-design — 🏃 review adversarial — ⬜ /sdd-build — ⬜ /sdd-release
+
+**Onde estamos:** 3 commits na branch, zero código ainda — o ponto certo pra revisar a
+abordagem.
+
+**O que precisa de você (1 pergunta):**
+1. **Matrícula inativa com tarefa aprovada merece certificado?** Um participante concluiu a
+   tarefa e depois foi desativado. Ele **fez o trabalho** — mas perdeu o vínculo. Hoje o design
+   diz **não emite**. É 1 caso, mas o backfill é imutável: emitido, não desemite.
+
+**O que vem depois, na ordem:**
+1. **Review de 2º vendor chega** → aplico ou rebato cada nota no *Advisor Ledger* (nunca descartar em silêncio).
+2. **`/sdd-build`** → 15 arquivos. ⚠️ Migrations aplicadas fora do git precisam de commit correspondente na hora, senão viram órfãs.
+3. **Kill-switch antes do backfill** — não é opcional. Sem ele, 1.107 emissões imutáveis sem freio.
+4. **Preencher a carga horária dos 21 módulos** — trabalho de conteúdo, seu, não de código.
+5. **Backfill** com dry-run + consulta inversa, uma execução por vez.
+6. **Review adversarial de verdade** — aí sim, com código no diff.
+7. **`/sdd-release`** — ⚠️ bloqueado por uma migration órfã de outra frente.
+````
+
+## Regras de redação (o que separa um resumo útil de um relatório)
+
+- **Densidade > completude.** ≤35 linhas no total; "Onde estamos" em ≤2. Se não cabe, você está
+  narrando processo em vez de reportar estado.
+- **O fato notável, não o óbvio.** "DEFINE gravado" não informa nada — o comando acabou de rodar.
+  "Grep provou que o formato nunca existiu escrito" informa.
+- **Pergunta decidível sem abrir arquivo.** Quem lê tem de conseguir responder ali; se precisa
+  abrir o DESIGN pra entender a pergunta, ela está mal escrita.
+- **Landmine inline, na ação que ela morde** — não numa seção de avisos no fim, que ninguém lê
+  no momento em que importa.
+- **PII:** o resumo é efêmero (nunca gravado), mas prefira identificador não-pessoal ("1 participante
+  do grupo X") a nome/e-mail literal.
+# Fragmento — Fluxo encadeado (o SDD só para para pedir decisão)
+
+> Reusável. **Dono único** de: ordem das fases, quando uma fase chama a seguinte, linha de transição,
+> recibo "Decidi sozinho", paradas que não são decisão e teto do loop de revisão. Lido pela subseção
+> `### Fluxo encadeado` das skills de fase. As marcas de classe (`[D1 · não se desfaz]` …) e o formato
+> de pergunta e de parada são do `PERGUNTA_DECISAO.md`. Os decisores são de `sdd/bin/sdd-fluxo.sh`.
+
+## Por que existe
+
+Cada fase terminava com "Próximo passo: rode a fase seguinte" e várias perguntavam "posso seguir?".
+Quem liga o encadeamento quer o contrário: o SDD segue sozinho e **só interrompe quando a decisão é da
+pessoa**. O risco do outro lado é a opacidade: um fluxo que não pergunta precisa dizer onde está, por que
+não perguntou e o que decidiu sozinho.
+
+## Ligar e desligar
+
+- `flow.autonomous: false` (default, em `sdd/config.yaml`): nada encadeia; toda pergunta é feita, com a
+  marca da classe. É o comportamento de sempre.
+- `flow.autonomous: true`: a fase seguinte é chamada na mesma sessão quando o `seguir` sai 0; a pergunta
+  `[auto · de rotina]` vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam
+  perguntadas.
+- "Pare", numa fase, desliga só naquela chamada (`--parar`).
+- Quem decide é o script: `bash sdd/bin/sdd-fluxo.sh estado` (0 ligado · 1 desligado · 64 valor inválido).
+
+## A ordem
+
+```text
+define → (governanca, se dinheiro/tributo/dado pessoal) → (ux-review, se há interface) → design
+       → revisão do DESIGN (se review-design diz EXIGIDO) → build → ⏸️ release (sempre pergunta: D1)
+```
+
+- **`seguir <fase> <DEFINE> <próxima>`** sai 0 só com o encadeamento ligado, o documento da fase em
+  `Ready for …` (o DEFINE na define e na governança, `sdd/reviews/UX_REVIEW_<F>.md` na ux-review, o
+  DESIGN na design), num repositório git, com `verify-gate.sh --print` 0 e o bloco do gate com `kind` e
+  `cmd`, nenhum marcador de clarificação aberto e, na fase design, o `design-lint.py` 0 e — quando o
+  `review-design` exige a revisão — o Advisor Ledger do DESIGN com linha, coluna de severidade e
+  nenhuma nota HIGH sem APLICADA ou REBATIDA_.
+  Pares válidos: define → governanca, ux-review ou design · governanca → ux-review ou design ·
+  ux-review → design · design → build · qualquer → release (sempre PARAR).
+- **`review-design <DESIGN>`**: exit 0 EXIGIDO ⇒ a revisão de contexto fresco roda; exit 1 DISPENSAVEL ⇒
+  segue sem rodar; exit 64 (manifest ilegível) ⇒ roda (default seguro) e registra. Dispensar um
+  EXIGIDO é decisão da pessoa (D3).
+- Brainstorm, iterate, new-session e release não encadeiam: o brainstorm não tem gate; o iterate volta
+  à fase do documento; a fase seguinte à new-session roda na pasta nova (troca de janela); publicar é D1.
+
+## Linha de transição
+
+```text
+✅ DEFINE pronto → seguindo para o DESIGN (encadeamento ligado em sdd/config.yaml)
+→ /sdd-design sdd/features/DEFINE_PAGAMENTOS.md
+```
+
+O `seguir` imprime as duas linhas; a skill repassa a primeira, o recibo (se houver) e então chama a
+próxima. Vem por último no fim da fase, logo antes da fase seguinte, para não competir com o recibo.
+Com `PARAR: encadeamento desligado`, a skill não repassa nada: mostra o Próximo passo de sempre. Com
+outro motivo de parar, diz o motivo em uma frase e mostra o Próximo passo.
+
+## Recibo "Decidi sozinho"
+
+No resumo de etapa, depois de "O que vem depois", quando o encadeamento estava ligado e alguma pergunta
+`[auto]` foi decidida pela recomendada:
+
+```text
+**Decidi sozinho:**
+- Gravei o DEFINE com os 6 testes de aceitação — porque o Verify Gate saiu 0 e não havia dúvida aberta · para desfazer: rode a fase Define de novo com "pare"
+- Tratei o flag LLM Prompts como true — porque o DEFINE não dizia · para desfazer: escreva false em Technical Context do DEFINE e rode o Design de novo
+```
+
+Uma linha por decisão, na ordem em que foram tomadas; mais de 5 ⇒ agrupe por fase. Bloco vazio ⇒
+omitido. Sem recibo, decisão automática é decisão invisível. No DESIGN, a mesma linha vai para o
+Revision History com o prefixo `[auto]`.
+
+## Paradas que não são decisão
+
+| Parada | Exit | O que a mensagem traz |
+|---|---|---|
+| Sessão nova para um papel fresco (avaliador, revisor do DESIGN) num agente que não a abre sozinho | `despachar` 40 AGUARDANDO_HUMANO | a parada ⏸️ do `PERGUNTA_DECISAO.md`, o brief em `sdd/reports/briefs/BRIEF_<papel>_<F>.md` e o que colar de volta |
+| Avaliador em `PASS_PENDENTE_RECIBO` (gate `manual-ux`) | `loop` 30 AGUARDANDO_RECIBO | o roteiro e "aguardando seu recibo" (`--recibo "nome AAAA-MM-DD"`) |
+| Credencial ausente | — | qual credencial e onde ela vive; nada foi feito |
+
+## Loop de revisão (a F10 liga a chamada)
+
+- Teto: **3 rodadas** de revisão pós-build (`sdd-fluxo.sh loop --teto 3`) e **2 ciclos NEEDS_WORK** do
+  avaliador. Revisão refeita depois de corrigir achado do avaliador conta rodada.
+- Ledger da rodada, 1 linha por achado grave:
+  `| <achado> | HIGH | APLICADA \| REBATIDA_EVIDENCIA \| REBATIDA_ESCOPO | rodada=N | <arquivo:linha ou motivo> |`.
+  Sem `rodada=N` o decisor ignora a linha: os ids (R1, R2…) recomeçam a cada revisão.
+- Grave o resultado com `--log sdd/reports/evidence/<F>/LOOP-rodada-N.log`, nunca com `| tee`: o exit
+  de um pipeline é o do `tee` (0), e o BLOQUEADO viraria "seguir". O `--log` é regravado em toda
+  chamada, inclusive a que sai 64, e cria a pasta que faltar.
+- `BLOQUEADO` por teto ⇒ BUILD_REPORT `Status: Blocked` e **uma** pergunta, com o que foi tentado (n
+  rodadas) e cada grave restante em 1 frase com o arquivo:
+
+```markdown
+**Sua decisão** — [D4 · limite de tentativas] **A revisão não convergiu em 3 rodadas: como seguimos?**
+- **mais 1 rodada com outra abordagem** (recomendado) — mudo o jeito de corrigir os 2 achados restantes e rodo a revisão uma última vez.
+- **aceitar e registrar como dívida** — os 2 achados viram pendência visível no relatório e no handoff; nada some.
+- **voltar ao DESIGN** — paro o build; o DESIGN é revisto antes de qualquer correção nova.
+- **não sei** — explico cada achado restante com o arquivo e o que já foi tentado.
+```
+
+- `BLOQUEADO` por impasse de evidência (o auditor refutou um achado grave com prova) ⇒ pergunta
+  `[D5 · provas em conflito]` com os dois lados lado a lado.
+
+exec
+/bin/zsh -lc 'for p in AGENTS.md ../AGENTS.md; do if test -f "$p"; then cat "$p"; fi; done
+cat sdd/templates/DEFINE_TEMPLATE.md sdd/features/BRAINSTORM_PEDIDOS.md sdd/templates/fragments/EARS.md sdd/templates/fragments/CLARIFY.md sdd/templates/fragments/VERIFY_GATE.md
+sed -n '"'/"'^## Sempre/,/''^## /p'"' sdd/playbook.md" in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+ succeeded in 0ms:
+# DEFINE: {Feature Name}
+
+> One-sentence description of what we're building
+
+## Metadata
+
+| Attribute | Value |
+|-----------|-------|
+| **Feature** | {FEATURE_NAME} |
+| **Date** | {YYYY-MM-DD} |
+| **Author** | {author} |
+| **Status** | {Draft / In Progress / Needs Clarification / Ready for Design} |
+| **Clarity Score** | {X}/15 |
+
+---
+
+## Problem Statement
+
+{1-2 sentences describing the pain point we're solving. Be specific about who has the problem and what the impact is.}
+
+---
+
+## Target Users
+
+| User | Role | Pain Point |
+|------|------|------------|
+| {User 1} | {Their role} | {What frustrates them} |
+| {User 2} | {Their role} | {What frustrates them} |
+
+---
+
+## Goals
+
+What success looks like (prioritized):
+
+| Priority | Goal |
+|----------|------|
+| **MUST** | {Primary goal - non-negotiable for MVP} |
+| **MUST** | {Another critical goal} |
+| **SHOULD** | {Important but can defer if timeline tight} |
+| **COULD** | {Nice-to-have if time permits} |
+
+**Priority Guide:**
+- **MUST** = MVP fails without this
+- **SHOULD** = Important, but workaround exists
+- **COULD** = Nice-to-have, cut first if needed
+
+---
+
+## Success Criteria
+
+Measurable outcomes (must include numbers):
+
+- [ ] {Metric 1: e.g., "Handle 1000 requests per minute"}
+- [ ] {Metric 2: e.g., "Achieve 99.9% uptime"}
+- [ ] {Metric 3: e.g., "Response time under 200ms"}
+
+---
+
+## Acceptance Tests
+
+> Gramática **EARS** obrigatória em DEFINE novo/retocado (keywords em inglês, corpo em PT-BR) —
+> padrões, exemplos e mapa padrão→`kind` de gate em
+> [`fragments/EARS.md`](fragments/EARS.md). Regras que o `/define` recusa se faltarem:
+> ≥1 AT **If/Then** (unwanted) quando houver gatilho indesejado plausível; padrões
+> **While/If-Then/Where** considerados (AT presente ou N.A. justificado — estado não lido ·
+> erro silencioso · flag de config são as 3 classes que mais mordem); em **bugfix**,
+> ≥1 cláusula **shall continue to** (não-regressão). Máx ~10 ATs. Cada AT mapeia no
+> `## Verify Gate` pela coluna `Gate (kind)`. ⛔ UX visual NÃO vira AT EARS (é `manual-ux`).
+
+| ID | Padrão | Critério (EARS) | Gate (`kind`) |
+|----|--------|-----------------|---------------|
+| AT-001 | Event-driven | **When** {trigger}, the system **shall** {response} | test |
+| AT-002 | Unwanted | **If** {gatilho indesejado}, **then** the system **shall** {tratamento} | test/smoke negativo |
+| AT-003 | State-driven | **While** {estado}, the system **shall** {response} | test |
+| AT-00N | Non-regression (bugfix) | The system **shall continue to** {comportamento existente} | test |
+
+---
+
+## Clarifications
+
+> **Regra de honestidade:** ambiguidade não vira suposição — vira marcador ativo no lugar
+> exato da dúvida, na forma canônica abaixo (protocolo completo, 9 categorias e convenção de
+> menção em [`fragments/CLARIFY.md`](fragments/CLARIFY.md)):
+>
+> ```
+> [NEEDS CLARIFICATION: <pergunta específica>]
+> ```
+>
+> Enquanto houver marcador ativo, `sdd/bin/verify-gate.sh` devolve **exit 5** e
+> `/build` e a fase Release param. Resolver pelo protocolo de `fragments/CLARIFY.md` (≤5 por rodada),
+> integrar a resposta NO CORPO da spec e logar abaixo.
+
+### Session {YYYY-MM-DD}
+
+- [x] ({categoria}) {pergunta} → {resposta}; integrado em {seção}
+
+---
+
+## Verify Gate
+
+> **Gate executável de aceite (pass/fail).** `/build` (Step 5) e a fase Release (Fase 0a) rodam isto via
+> `sdd/bin/verify-gate.sh` e tratam como **BLOQUEANTE** — não é prosa, é comando.
+> Habilitador da F1 (loop engineering): o critério de parada de qualquer loop.
+> Taxonomia completa: [`fragments/VERIFY_GATE.md`](fragments/VERIFY_GATE.md).
+
+```yaml
+verify_gate:
+  kind: test
+  cmd: "npm test -- src/{modulo}.test.ts"
+  pass_when: "exit 0"
+  threshold: "—"
+  manual_fallback: "—"
+```
+
+**Preencher exatamente um bloco** (substitua o exemplo acima pelo gate real da feature):
+
+- `kind`: `test` | `smoke` | `eval` | `typecheck` | `manual-ux`
+- `cmd`: comando executável; em `manual-ux` use `"N/A (manual-ux)"`
+- `pass_when`: `exit 0` (default) | `exit N` | `contains: TEXTO`
+- `threshold`: só `eval` (ex.: `"recall >= 0.80"` — limiar embutido no `cmd`)
+- `manual_fallback`: só `manual-ux` — checklist humano assinado no BUILD_REPORT
+
+**Regras:** `manual-ux` é gate HUMANO (não finge automação). Smoke 403 do WAF×runner =
+inconclusivo, não vermelho (rode na origem via SSH). Nenhum gate cruza o a fase Release.
+
+Rodar localmente: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{FEATURE_NAME}.md`
+
+---
+
+## Out of Scope
+
+Explicitly NOT included in this feature:
+
+- {Item 1: What we're NOT doing}
+- {Item 2: What's deferred to future}
+- {Item 3: What's explicitly excluded}
+
+---
+
+## Constraints
+
+| Type | Constraint | Impact |
+|------|------------|--------|
+| Technical | {e.g., "Must use existing database schema"} | {How this affects design} |
+| Timeline | {e.g., "Must ship by Q1"} | {How this affects scope} |
+| Resource | {e.g., "No additional infrastructure budget"} | {How this affects approach} |
+
+---
+
+## Technical Context
+
+> Essential context for Design phase - prevents misplaced files and missed infrastructure needs.
+
+| Aspect | Value | Notes |
+|--------|-------|-------|
+| **Deployment Location** | {src/ \| functions/ \| gen/ \| deploy/ \| custom path} | {Why this location} |
+| **KB Domains** | {bases de conhecimento do projeto a consultar (nomes de pasta em `sdd/kb/`, de `ls sdd/kb/`), ou `nenhum` explícito} | {Which patterns to consult} |
+| **IaC Impact** | {New resources \| Modify existing \| None \| TBD} | {Terraform/Terragrunt changes needed} |
+| **LLM Prompts** | {true \| false} | {Set true se a feature cria/edita prompts runtime — system prompts, passes de pipeline, classificadores. Quando true, a fase Design inventaria cada prompt e a fase Build trata cada um como entregável com contrato próprio.} |
+| **CONTEXTO de domínio** | {contexto/<slug>.md · sha <7 hex> · válido em AAAA-MM-DD \| nenhum (<motivo>)} | {Preenchido pelo passo 1.5 do sdd-define (cartógrafo). O Design lê as Regras vigentes dele.} |
+| **Governança** | {pendente — o passo 11 escreve: N.A. — <motivo> \| GOVERNANCA_REVIEW_<F>.md · a aplicadas · r recusadas · d adiadas \| dispensada — <motivo>} | {Escrita só pelo passo 11 do sdd-define (ou pela dispensa da pessoa). Sem um desses 3 valores finais, o verify-gate.sh sai 5.} |
+
+**Why This Matters:**
+
+- **Location** → Design phase uses correct project structure, prevents misplaced files
+- **KB Domains** → a fase Design puxa os padrões certos da base de conhecimento do projeto
+- **IaC Impact** → Triggers infrastructure planning, avoids "works locally" failures
+- **CONTEXTO de domínio** → o Define e o Design partem das regras que o código já impõe, com arquivo:linha
+- **Governança** → nenhum DEFINE chega ao build sem a revisão de governança (ou sem a dispensa escrita)
+- **LLM Prompts** → Gate condicional para a etapa de engenharia de prompts; evita overhead em features sem LLM
+
+**LLM Prompts — gatilhos para marcar `true`:**
+
+A feature provavelmente envolve prompts runtime se aparecer qualquer um dos sinais abaixo (literal no texto da feature ou inferido do escopo):
+
+- Palavras: `LLM`, `GPT`, `Claude`, `Anthropic`, `OpenAI`, `Gemini`, `Vercel AI`
+- Conceitos: `system prompt`, `user prompt`, `prompt`, `embeddings`, `RAG`, `vector search`, `completion`, `classificador`, `sintetizador`, `pass de pipeline`
+- Paths: `**/prompts/**`, arquivos de template de prompt, código que chama `messages.create` / `chat.completions`
+- Atores do produto que conversam com o usuário ou classificam texto (chatbot, assistente, indexador)
+
+Em dúvida, marcar `true` e justificar em **Notes**. Reverter para `false` durante a fase Design só se a heurística confirmar que nenhum arquivo do manifest contém prompt runtime.
+
+---
+
+## Assumptions
+
+Assumptions that if wrong could invalidate the design:
+
+| ID | Assumption | If Wrong, Impact | Validated? |
+|----|------------|------------------|------------|
+| A-001 | {e.g., "Database can handle expected load"} | {Would need caching layer} | [ ] |
+| A-002 | {e.g., "Request volume stays under 1000/hour"} | {Would need rate limiting} | [ ] |
+| A-003 | {e.g., "Users have modern browsers"} | {Would need polyfills for legacy support} | [ ] |
+
+**Note:** Validate critical assumptions before DESIGN phase. Unvalidated assumptions become risks.
+
+---
+
+## Clarity Score Breakdown
+
+| Element | Score (0-3) | Notes |
+|---------|-------------|-------|
+| Problem | {0-3} | {Why this score} |
+| Users | {0-3} | {Why this score} |
+| Goals | {0-3} | {Why this score} |
+| Success | {0-3} | {Why this score} |
+| Scope | {0-3} | {Why this score} |
+| **Total** | **{X}/15** | |
+
+**Scoring Guide:**
+- 0 = Missing entirely
+- 1 = Vague or incomplete
+- 2 = Clear but missing details
+- 3 = Crystal clear, actionable
+
+**Minimum to proceed: 12/15**
+
+---
+
+## Open Questions
+
+{List any remaining questions that need answers before Design phase. If none, state "None - ready for Design."}
+
+---
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---------|------|--------|---------|
+| 1.0 | {YYYY-MM-DD} | define-agent | Initial version |
+
+---
+
+## Next Step
+
+**Ready for:** `/sdd-design sdd/features/DEFINE_{FEATURE_NAME}.md`
+# Pedido de fixture (self-test do --sugerir)
+
+Quero que o checkout recuse pedido_item com quantidade zero e mostre o motivo na tela.
+Mexe na api de pedidos e na tabela de itens.
+# Fragmento — EARS (gramática dos Acceptance Tests)
+
+> Reusável. Lido pela `sdd-define` (passo 4).
+> EARS = Easy Approach to Requirements Syntax (Alistair Mavin, Rolls-Royce 2009).
+> **Por quê:** cada padrão mapeia mecanicamente num tipo de teste do Verify Gate, e o
+> padrão *Unwanted* obriga a enumerar o comportamento indesejado ANTES do build — a
+> classe de bug que as landmines do playbook (`sdd/playbook.md`) mostram que mais escapa (provedor que responde "enviado" sem entregar,
+> knob ausente, clamp de régua…).
+
+## Regras
+
+1. **Keywords em inglês** (When/While/If-Then/Where/shall — âncora grepável); corpo em PT-BR.
+2. Todo AT usa **exatamente um** padrão da tabela e declara **um** comportamento observável.
+3. **Bugfix ⇒ ≥1 cláusula "shall continue to"** (não-regressão): o que NÃO pode mudar,
+   escrito como requisito, vira entrada de regressão no gate.
+4. Adjetivo sem número não é critério ("rápido" → "em <2s").
+5. **Máx ~10 ATs por DEFINE** — acima disso o gate vira cerimônia; agrupar por risco ou
+   cortar o que não é MUST.
+6. **Considerar OBRIGATORIAMENTE os padrões State (While), Unwanted (If/Then) e Optional
+   (Where)** — são as 3 classes que mais mordem nesta plataforma: estado não lido, erro
+   silencioso (provedor que responde "enviado" sem entregar), flag de config (ex.: `ehMatriz`). "Considerar" = para cada um dos
+   3, ou existe ≥1 AT ou o DEFINE registra em 1 linha por que o padrão não se aplica.
+7. **⛔ EARS não cobre UX visual** (estética, contraste, craft percebido) — isso é gate
+   `manual-ux`/rubrica, nunca AT EARS.
+8. **Rastreabilidade AT→gate:** todo AT declara na coluna `Gate (kind)` o tipo de teste que
+   o cobre, e o `cmd` do `## Verify Gate` deve exercitar cada AT declarado — AT sem
+   cobertura no gate = DEFINE incompleto.
+
+## Os 5 padrões + não-regressão
+
+| Padrão | Forma | Exemplo | Gate (`kind`) |
+|---|---|---|---|
+| **Ubiquitous** | The ⟨system⟩ **shall** ⟨response⟩ | O sistema shall exibir o menu principal em toda página autenticada | `test`/`typecheck` |
+| **Event-driven** | **When** ⟨trigger⟩, the ⟨system⟩ **shall** ⟨response⟩ | **When** o cliente envia a resposta, the system **shall** gravar `turno='atendente'` | `test` (dispara evento, asserta estado) |
+| **State-driven** | **While** ⟨state⟩, the ⟨system⟩ **shall** ⟨response⟩ | **While** o pedido estiver arquivado, the system **shall** ocultar o botão de edição | `test` (fixture de estado) |
+| **Unwanted behaviour** | **If** ⟨trigger indesejado⟩, **then** the ⟨system⟩ **shall** ⟨response⟩ | **If** o provedor de mensagens estiver desconectado, **then** the system **shall** marcar a mensagem como não-entregue | `smoke`/`test` **negativo** (provocar pelo caminho real, nunca só o caminho feliz) |
+| **Optional feature** | **Where** ⟨feature presente⟩, the ⟨system⟩ **shall** ⟨response⟩ | **Where** o kill-switch estiver ligado, the system **shall** suprimir o envio | `test` (matriz de flag) |
+| **Non-regression** (bugfix) | The ⟨system⟩ **shall continue to** ⟨comportamento existente⟩ | The system **shall continue to** enviar o relatório semanal na segunda às 08h00 | `test` (entrada de regressão) |
+
+Combinações (Complex) são permitidas: `While ⟨estado⟩, when ⟨trigger⟩, the system shall …`.
+
+## Mapa padrão → teste (como derivar o Verify Gate)
+
+- **When** → o teste dispara o evento e asserta a resposta.
+- **If/Then** → teste **negativo**: provoca o gatilho indesejado pelo caminho real e asserta o
+  tratamento (nunca só o caminho feliz).
+- **While** → o teste monta a fixture do estado e asserta o comportamento sob ele.
+- **Where** → o teste roda com a feature ligada E desligada (matriz).
+- **shall continue to** → vira caso de regressão explícito no gate do fix.
+
+## Checklist de recusa (o `/define` aplica em DEFINE novo/retocado)
+
+- [ ] Todo AT usa um padrão da tabela (keyword presente)
+- [ ] ≥1 AT **Unwanted** quando a feature tem gatilho indesejado plausível (provider fora,
+      linha ausente, permissão negada, fila cheia)
+- [ ] Padrões **While / If-Then / Where** considerados: AT presente ou N.A. justificado
+      em 1 linha (as 3 classes que mais mordem: estado · erro silencioso · flag de config)
+- [ ] Bugfix: ≥1 **shall continue to**
+- [ ] Zero adjetivo sem número
+- [ ] ≤ ~10 ATs no total
+- [ ] Nenhum AT de UX visual (estética/craft → `manual-ux`, fora do EARS)
+- [ ] Todo AT tem `kind` na coluna Gate e é coberto pelo `cmd` do `## Verify Gate`
+
+> **Limite deste slice (v5.0):** a conformidade EARS é disciplina de prompt + este checklist —
+> não há linter mecânico de ATs. Linter determinístico + rastreabilidade AT-ID→assert do gate
+> composto são escopo da **v5.1** (ver PESQUISA_FRAMEWORKS_SDD_2026-08-15).
+# Fragmento — Clarify (protocolo do token de ambiguidade)
+
+> Reusável. Lido pela `sdd-define` (passo 6). **Regra de honestidade:** diante de ambiguidade,
+> o agente **marca, nunca chuta** — suposição silenciosa é a classe de erro mais cara do
+> funil (só aparece no smoke ou em prod).
+
+## O token
+
+Forma ativa canônica (a ÚNICA que o `verify-gate.sh` detecta, e só fora de code fences):
+
+```
+[NEEDS CLARIFICATION: <pergunta específica>]
+```
+
+- Vai **no lugar exato da ambiguidade** (Problem, ATs, Constraints — qualquer seção).
+- Enquanto houver token ativo, `sdd/bin/verify-gate.sh` devolve **exit 5**
+  (`clarification-pending`): `/build` e a fase Release **param e voltam ao `/define`**.
+  Não é gate vermelho de build — **nunca** aciona iteração de DESIGN.
+- `--print` é isento (uso de autoria durante a redação do DEFINE).
+
+### Convenção de menção (anti-falso-positivo)
+
+Toda referência **documental** ao token — em template, fragmento, exemplo ou histórico —
+vai **dentro de code fence** (como acima) ou **sem os colchetes** (ex.: "o protocolo NEEDS
+CLARIFICATION…"). A forma canônica em prosa aberta = marcador ativo, e bloqueia.
+
+## As 9 categorias (varrer TODAS antes de declarar o DEFINE pronto)
+
+| # | Categoria | Pergunta-guia |
+|---|---|---|
+| 1 | Escopo | O que está dentro/fora? Qual slice é este? |
+| 2 | Modelo de dados | Que entidades/colunas/estados? Quem é o dono da tabela? |
+| 3 | Fluxo UX | O que o usuário vê em cada estado (vazio, erro, sucesso)? |
+| 4 | NFRs | Latência, volume, custo de token, janela de cron? |
+| 5 | Integrações | provedor de mensagens, videoconferência, e-mail, servidores MCP — qual contrato/limite? |
+| 6 | Edge cases | Gatilho indesejado, linha ausente, permissão negada, fila cheia? |
+| 7 | Restrições | O que não pode mudar? Precedente/landmine aplicável? |
+| 8 | Terminologia | Termo do domínio com 2 leituras (cliente×conta, pedido×ordem)? |
+| 9 | Sinal de conclusão | Como sabemos que acabou? Qual o comando pass/fail? |
+
+Para cada categoria: **Clear / Partial / Missing**. Partial e Missing geram token.
+
+## Protocolo de resolução
+
+1. **≤5 perguntas por rodada**, pela ferramenta de pergunta do seu agente ou em texto — múltipla
+   escolha (2–4 opções), **opção recomendada primeiro** com "(recomendado)" e a saída "não sei"
+   (formato em `sdd/templates/fragments/PERGUNTA_DECISAO.md`). Mais de 5 pendências? Prioridade:
+   o que muda arquitetura > escopo > o resto; nova rodada depois.
+2. **Resposta integra NO CORPO da spec**: substituir o texto ambíguo (e o token) pela decisão —
+   nunca deixar a resposta só em apêndice com o texto contraditório intacto.
+3. **Registrar no log** `## Clarifications` do DEFINE:
+   ```markdown
+   ## Clarifications
+   ### Session 2026-08-15
+   - [x] (6-edge cases) Fila cheia descarta ou enfileira? → enfileira com TTL 24h; integrado em ATs (AT-004)
+   ```
+   (Formato: `- [x] (categoria) pergunta → resposta; integrado em <seção>`. Sem a forma
+   canônica do token — convenção de menção.)
+4. **Gate mecânico:** DEFINE pronto = **zero tokens ativos**. Conferir: o bloco de gate roda
+   `verify-gate.sh` (exit 5 enquanto restar token).
+# Fragmento — Verify Gate (taxonomia dos gates executáveis)
+
+> Reusável. Anexado conceitualmente ao DEFINE (bloco `## Verify Gate`) e lido por
+> `/build`, a fase Release e `sdd/bin/verify-gate.sh`. É o habilitador da F1 do SDD v2
+> (loop engineering / Boris Cherny): **o critério de aceite vira comando, não prosa.**
+
+## Por que existe
+
+No SDD v1 o aceite morava em prosa (`Acceptance Tests`, `Success Criteria`) que ninguém
+executava de forma determinística. Sem um gate executável, autonomia (F3 Ralph, F4 driver)
+vira **lixo em escala** — "o loop roda, mas contra o quê ele para?". O Verify Gate é esse
+critério de parada: um comando `pass/fail` que qualquer loop (humano ou agente) roda.
+
+## O bloco (vai no DEFINE)
+
+````markdown
+## Verify Gate
+
+> Gate executável de aceite (pass/fail). `/build` e a fase Release rodam isto — é **bloqueante**.
+
+```yaml
+verify_gate:
+  kind: test
+  cmd: "npm test -- src/x.test.ts"
+  pass_when: "exit 0"
+  threshold: "—"
+  manual_fallback: "—"
+```
+````
+
+Rodar: `sdd/bin/verify-gate.sh sdd/features/DEFINE_<FEATURE>.md`
+
+## Campos
+
+| Campo | Obrigatório | Significado |
+|---|---|---|
+| `kind` | sempre | categoria do gate (tabela abaixo) |
+| `cmd` | exceto `manual-ux` | comando executável; em `manual-ux` use `"N/A (manual-ux)"` |
+| `pass_when` | sempre | critério objetivo: `exit 0` (default) · `exit N` · `contains: TEXTO` |
+| `threshold` | só `eval` | meta numérica embutida no `cmd` (ex.: `recall >= 0.80`) — informativa aqui |
+| `manual_fallback` | só `manual-ux` | checklist humano a percorrer + assinar no BUILD_REPORT |
+
+> **Sem inline comments nas linhas de valor** do bloco machine-read — o parser pega tudo
+> após o primeiro `:`. Comentários ficam fora do fence.
+
+## Taxonomia (`kind`)
+
+| kind | Quando | `cmd` típico | `pass_when` |
+|---|---|---|---|
+| `test` | lógica pura testável | `npm test -- <arquivo>.test.ts` · `pytest tests/x -q` | `exit 0` |
+| `smoke` | edge/HTTP responde o esperado | `curl -sS -o /dev/null -w '%{http_code}' <url>` | `contains: 401` |
+| `eval` | qualidade com limiar (avaliação de saída de LLM etc.) | `scripts/eval/run.sh --threshold 0.80` | `exit 0` (limiar no cmd) |
+| `typecheck` | tipos/compilação | `tsc --noEmit` · `mypy .` | `exit 0` |
+| `manual-ux` | UX pura (mobile/PWA/estética) | `N/A (manual-ux)` | gate **humano** (`manual_fallback`) |
+
+### Derivar o `kind` do padrão EARS do AT (ver `fragments/EARS.md`)
+
+| Padrão EARS do AT | `kind` natural |
+|---|---|
+| **When** (event-driven) | `test` — dispara o evento, asserta a resposta |
+| **If/Then** (unwanted) | `test`/`smoke` **negativo** — provoca o gatilho pelo caminho real |
+| **While** (state-driven) | `test` com fixture do estado |
+| **Where** (optional) | `test` em matriz (flag on/off) |
+| **shall continue to** (non-regression, bugfix) | `test` — caso de regressão explícito |
+
+### Contrato de exit do `sdd/bin/verify-gate.sh`
+
+| exit | Significado | Efeito em `/build` e a fase Release |
+|---|---|---|
+| `0` | 🟢 verde (passou) | segue |
+| `2` | 🔴 vermelho (falhou) | **ABORTA** |
+| `3` | inconclusivo (tool ausente OU ruído 403 WAF×runner) | caller decide; não conta vermelho |
+| `4` | `manual-ux`: exige assinatura humana | `/build` mostra checklist · a fase Release exige recibo |
+| `5` | clarification-pending: marcador ativo de ambiguidade no DEFINE (forma canônica fora de fence — ver `fragments/CLARIFY.md`) | **PARAR e voltar ao `/define`**. NÃO é vermelho de build: nem o build nem loop algum itera o DESIGN por causa dele |
+| `64` | bloco ausente/malformado | DEFINE inválido (sem gate) |
+
+## Regras de ouro
+
+1. **`manual-ux` NÃO finge automação.** É gate humano explícito (anti "passa técnico, é lixo
+   estético"). `cmd: "N/A (manual-ux)"`; o `manual_fallback` é um checklist assinado no BUILD_REPORT.
+2. **Ruído de infra ≠ regressão.** Smoke que recebe 403 do WAF×IP-do-runner é inconclusivo
+   (exit 3), nunca vermelho. Prefira smoke rodando **na origem via SSH** (lição do fix do changelog).
+3. **Nenhum gate cruza o a fase Release.** O gate é pré-condição do deploy, não o deploy.
+4. **Tool ausente = inconclusivo (3), não vermelho.** Não trava a entrega por falta de uma ferramenta.
+5. **`eval` embute o limiar no `cmd`** (o runner devolve exit≠0 se ficar abaixo) — `threshold`
+   no bloco é documentação para humanos.
+
+## Exemplos prontos (1 de cada kind)
+
+```yaml
+# test — módulo com teste ao lado
+verify_gate: { kind: test, cmd: "npm test -- src/pricing.test.ts", pass_when: "exit 0", threshold: "—", manual_fallback: "—" }
+```
+```yaml
+# smoke — edge protegida devolve 401 sem JWT
+verify_gate: { kind: smoke, cmd: "curl -sS -o /dev/null -w '%{http_code}' https://api.exemplo.com/v1/relatorios", pass_when: "contains: 401", threshold: "—", manual_fallback: "—" }
+```
+```yaml
+# manual-ux — app mobile, gate humano
+verify_gate: { kind: manual-ux, cmd: "N/A (manual-ux)", pass_when: "checklist assinado", threshold: "—", manual_fallback: "smoke no celular real: (1) a tela inicial abre em <2s; (2) as listas rolam; (3) ▶ Continuar funciona; (4) o card de destaque aparece; (5) ← Voltar volta." }
+```
+
+> Nota: o bloco pode ser multi-linha (legível) ou inline `{ ... }` (compacto) — o parser
+> lê `kind:`/`cmd:`/`pass_when:` na 1ª ocorrência em qualquer um dos formatos multi-linha.
+> Para `manual-ux` o `cmd` é ignorado na execução (sempre cai no gate humano, exit 4).
+## Sempre
+
+- [LM-001] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `grep -q` `verify-gate` `if (true)` `asserção` :: Um gate que só confere FIAÇÃO (o `grep` acha a chamada, a regra CSS existe) fica verde com `if (true)` — ele prova que o texto está lá, não que o comportamento acontece. **Do instead:** o gate EXECUTA o código com fixtures dos dois lados (caso que passa E caso que falha) e valida-se com um mutante que derruba uma asserção nomeada. · promovido_para: —
+- [LM-002] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `exit 0` `baseline` `sed -n` `grep -c` :: Uma asserção que NÃO AVALIA NADA sai `exit 0`: quoting corrompido faz o `grep` nem rodar, âncora de `sed` casa o bloco errado e a contagem dá zero antes e depois. **Do instead:** toda asserção precisa de baseline VERMELHO — rode-a contra a árvore ANTES da mudança; se já passa, ela não prova a mudança. · promovido_para: —
+- [LM-003] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `git status` `--uncommitted` `review` `untracked` :: Trabalho commitado com arquivos untracked ao lado faz um review de "não commitado" revisar o VAZIO — e um review que passou sobre diff nenhum é pior que review nenhum. **Do instead:** commitar antes de qualquer review externo; conferir que o diff revisado tem os arquivos que você mudou (`git diff --stat` bate com a lista do review). · promovido_para: —
+- [LM-004] ajudou=0 mordeu=0 · conf=2026-10-29 · sup: `exit 0` `migration` `db push` `apply_migration` `Migrations aplicadas` :: Migration "aplicada" porque o comando saiu `exit 0` pode não estar no banco: a CLI ligada a outro projeto, `declined` do servidor, SQL sem efeito — e o código vai para produção chamando a coluna que não existe. **Do instead:** prova é ler de volta — `migration list` mostra a versão no remoto e um `select` acha o efeito (ou a ausência esperada); registre em `## Migrations aplicadas` com o log em `evidence/`. · promovido_para: `sdd/bin/report-lint.py`
+
+## Tombstones
+
+exec
+/bin/zsh -lc 'bash sdd/bin/contexto-lint.sh --sugerir sdd/features/BRAINSTORM_PEDIDOS.md
+bash sdd/bin/sdd-fluxo.sh estado' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+ exited 1 in 83ms:
+CONTEXTO_SUGERIR entrada=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a/sdd/features/BRAINSTORM_PEDIDOS.md camadas=1 (api) dir=sdd/contexto ref=main
+ctx:pedidos termos=3 (checkout, pedido, pedido_item) estado=ausente arquivo=sdd/contexto/pedidos.md
+recomendacao: gerar (ctx:pedidos ausente)
+RESULTADO: GERAR
+→ despache o cartógrafo para ctx:pedidos (passo 1.5 do sdd-define).
+encadeamento: desligado
+
+codex
+sdd-define v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+
+**Status** — Define: ▶️ 1 Ler o brainstorm · ⬜ 2 Requisitos · ⬜ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança
+
+A recomendação foi gerar o mapa de pedidos, pois ele ainda não existe. Escolhi essa opção conforme sua instrução. Vou preparar o pedido para o cartógrafo: um agente numa sessão nova, sem esta conversa, que registra as regras já impostas pelo código.
+
+⏸️ parada 1 de 2 deste Define (o cartógrafo); a 2ª é a revisão de governança.
+exec
+/bin/zsh -lc 'cat sdd/bin/contexto-lint.sh sdd/bin/governanca-fronteira.sh' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+ succeeded in 0ms:
+#!/usr/bin/env bash
+# contexto-lint.sh — lint, validade e sugestão do CONTEXTO de domínio (sdd/contexto/<slug>.md).
+#
+# O CONTEXTO é a engenharia reversa de UM domínio (ctx:<slug> de sdd/patterns/dominio.md), gravada
+# pelo cartógrafo fresco do passo 1.5 do sdd-define (.agents/skills/sdd-define/references/cartografo.md):
+# cabeçalho (ctx · gerado_em · sha · superficies · sup) + 7 seções, toda afirmação com arquivo:linha.
+# Este lint prova que ele não apodreceu em silêncio.
+#
+# Uso:
+#   sdd/bin/contexto-lint.sh [--dominio F] [--playbook F] <arquivo.md | pasta>      # lint      exit 0 | 2
+#   (sem argumento ⇒ exit 64: nunca lintar um default em silêncio)
+#   sdd/bin/contexto-lint.sh [--dominio F] --validade <arquivo.md> [--ref <ref>]     # validade  exit 0 | 1 | 2
+#       0 CONTEXTO VALIDO  ⇔ git diff --quiet <sha>..<ref> -- <superficies>
+#       1 CONTEXTO VENCIDO + arquivos alterados (informativo; nunca é vermelho de gate)
+#       2 [sha-inexistente] (sha ou ref que não existe)
+#   sdd/bin/contexto-lint.sh [--dominio F] --sugerir <entrada.md> [--dir D] [--ref R]  # exit 0 | 2
+#       heurística do passo 1.5: até 2 ctx: do mapa citados na entrada, camadas de `layers:`, estado de
+#       <dir>/<slug>.md e UMA linha "recomendacao: gerar|reusar|pular (motivo)"
+#   sdd/bin/contexto-lint.sh --self-test                                              # exit 0 | 2
+#   <ref> padrão: origin/<project.default_branch> se existir, senão <project.default_branch> (main).
+#
+# Classes de erro (texto estável; o self-test exige a classe CERTA, não só exit ≠ 0):
+#   cabecalho-ausente · secao-ausente · secao-fora-de-ordem · path-morto · sup-ausente ·
+#   ctx-desconhecido · lm-morto · validade-vencida (só --validade, exit 1) · sha-inexistente
+#   aviso (não muda o exit): superficie-nao-cobre — código citado fora de `superficies:`
+#
+# Exit: 0 ok · 1 vencido (só --validade) · 2 formato inválido / self-test falhou · 64 erro de uso
+#
+# Compat: bash 3.2, awk POSIX, grep básico. Sem arrays associativos. ${VAR} com chaves antes de
+# não-ASCII. `while read` sempre sobre arquivo terminado em newline. `superficies:` é dividida com
+# globbing DESLIGADO (set -f) e passada ao git como argv. A regex de âncora e a resolução de caminho
+# são iguais às de sdd/bin/patterns-lint.sh: extensão nova entra nos dois.
+set -uo pipefail
+export LC_ALL=C
+
+SELF="$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
+
+CONTEXTO_DIR_DEFAULT="sdd/contexto"
+DOMINIO="sdd/patterns/dominio.md"
+PLAYBOOK="sdd/playbook.md"
+FIXTURES="sdd/fixtures/contexto"
+LIMIAR_TERMOS=2
+MAX_DOMINIOS=2
+EXT='ts|tsx|js|jsx|mjs|cjs|sql|md|php|sh|py|go|rb|rs|java|kt|cs|yaml|yml|toml|json|tsv|css|html'
+
+CHAVES="ctx
+gerado_em
+sha
+superficies
+sup"
+
+SECOES="Escopo
+Dados
+Operações
+Interfaces
+Regras vigentes
+Landmines
+Histórico SDD"
+
+usage() { sed -n '2,30p' "${SELF}" >&2; exit 64; }
+
+TMP="$(mktemp -d)"
+trap 'rm -rf "${TMP}"' EXIT
+
+erros=0
+avisos=0
+primeira_classe=""
+erro()  { printf '  🛑 [%s] %s\n' "$1" "$2"; erros=$((erros + 1)); [ -n "${primeira_classe}" ] || primeira_classe="$1"; }
+aviso() { printf '  ⚠️  %s\n' "$1"; avisos=$((avisos + 1)); }
+
+conserto() { # $1 = classe ⇒ o que fazer, em palavras
+  case "$1" in
+    cabecalho-ausente)   echo "escreva as 5 linhas do cabeçalho (ctx, gerado_em, sha, superficies, sup) antes da 1ª seção" ;;
+    secao-ausente)       echo "acrescente a seção que falta, mesmo vazia (as 7 seções estão no brief do cartógrafo)" ;;
+    secao-fora-de-ordem) echo "reordene as seções: Escopo, Dados, Operações, Interfaces, Regras vigentes, Landmines, Histórico SDD" ;;
+    path-morto)          echo "cite o caminho atual (o arquivo mudou de lugar ou encolheu) ou tire a linha; ou gere o CONTEXTO de novo" ;;
+    sup-ausente)         echo "ponha na linha sup: os termos do domínio entre crases, como no playbook" ;;
+    ctx-desconhecido)    echo "use um ctx: que exista em sdd/patterns/dominio.md, ou acrescente o bloco ### ctx:<slug> lá" ;;
+    lm-morto)            echo "tire a citação da landmine aposentada ou inexistente; rode playbook-lint.sh --grep de novo" ;;
+    *)                   echo "corrija o que a linha acima aponta e rode de novo" ;;
+  esac
+}
+
+# ── cabeçalho = tudo antes da 1ª linha "## " ─────────────────────────────────
+cabecalho() { awk '/^## /{exit} {print}' "$1"; }
+valor() { cabecalho "$1" | grep "^$2: " | head -1 | sed "s/^$2: //"; }
+
+checa_cabecalho() {
+  local f="$1" nome="$2" k n c
+  cabecalho "${f}" > "${TMP}/cab.txt"
+  printf '%s\n' "${CHAVES}" > "${TMP}/chaves.txt"
+  local pos ultima=0 ordem=1
+  while IFS= read -r k; do
+    [ -n "${k}" ] || continue
+    pos=$(grep -nE "^${k}: ." "${TMP}/cab.txt" | head -1 | cut -d: -f1)
+    if [ -z "${pos}" ]; then erro "cabecalho-ausente" "${nome}: falta a linha '${k}:' antes da 1ª seção"; continue; fi
+    [ "${pos}" -gt "${ultima}" ] || ordem=0
+    ultima="${pos}"
+  done < "${TMP}/chaves.txt"
+  [ "${ordem}" -eq 1 ] || erro "cabecalho-ausente" "${nome}: as linhas do cabeçalho estão fora da ordem (ctx, gerado_em, sha, superficies, sup)"
+  # superficies: pathspecs crus (sem crase), e cada um casa ≥ 1 arquivo versionado — senão o --validade
+  # compara o vazio e o CONTEXTO nunca vence
+  local sups spec
+  sups=$(grep '^superficies: ' "${TMP}/cab.txt" | head -1 | sed 's/^superficies: //')
+  if [ -n "${sups}" ]; then
+    case "${sups}" in *'`'*) erro "cabecalho-ausente" "${nome}: 'superficies:' leva caminhos crus, sem crase (as crases são da linha sup:)" ;; esac
+    set -f
+    for spec in ${sups}; do
+      case "${spec}" in *'`'*) continue ;; esac
+      [ -n "$(git ls-files -- "${spec}" 2>/dev/null | head -1)" ] || erro "path-morto" "${nome}: 'superficies:' tem '${spec}', que não casa nenhum arquivo versionado (o --validade não veria mudança nele)"
+    done
+    set +f
+  fi
+  if grep -q '^sha: ' "${TMP}/cab.txt"; then
+    grep -qE '^sha: [0-9a-f]{7,40}$' "${TMP}/cab.txt" || erro "cabecalho-ausente" "${nome}: 'sha:' não é hex de 7 a 40 caracteres"
+  fi
+  if grep -q '^gerado_em: ' "${TMP}/cab.txt"; then
+    grep -qE '^gerado_em: [0-9]{4}-[0-9]{2}-[0-9]{2}$' "${TMP}/cab.txt" || erro "cabecalho-ausente" "${nome}: 'gerado_em:' não é AAAA-MM-DD"
+  fi
+  if grep -q '^sup: ' "${TMP}/cab.txt"; then
+    # ao menos um termo de verdade entre crases (crases vazias ou só com espaço não contam)
+    n=$(grep '^sup: ' "${TMP}/cab.txt" | head -1 | grep -cE '`[^`[:space:]][^`]*`')
+    [ "${n}" -ge 1 ] || erro "sup-ausente" "${nome}: 'sup:' sem termo entre crases (formato do playbook: sup: \`t1\` \`t2\`)"
+  fi
+  c=$(grep '^ctx: ' "${TMP}/cab.txt" | head -1 | sed 's/^ctx: //')
+  if [ -n "${c}" ]; then
+    [ -f "${DOMINIO}" ] || { erro "ctx-desconhecido" "${nome}: ${DOMINIO} ausente, impossível validar '${c}'"; return; }
+    grep -qxF "### ${c}" "${DOMINIO}" || erro "ctx-desconhecido" "${nome}: '${c}' não é um '### ctx:<slug>' de ${DOMINIO}"
+  fi
+}
+
+# ── seções: presença e ordem (cercas ignoradas) ──────────────────────────────
+checa_secoes() {
+  local f="$1" nome="$2" s pos ultima_pos ordem_ok
+  awk '/^[[:space:]]*(```|~~~)/{b=!b;next} !b && /^## /' "${f}" | sed -E 's/^## //' > "${TMP}/achadas.txt"
+  printf '%s\n' "${SECOES}" > "${TMP}/esperadas.txt"
+  ultima_pos=0; ordem_ok=1
+  while IFS= read -r s; do
+    [ -n "${s}" ] || continue
+    pos=$(grep -nxF "${s}" "${TMP}/achadas.txt" 2>/dev/null | head -1 | cut -d: -f1)
+    if [ -z "${pos}" ]; then erro "secao-ausente" "${nome}: falta a seção '## ${s}'"; continue; fi
+    if [ "${pos}" -lt "${ultima_pos}" ]; then ordem_ok=0; fi
+    ultima_pos="${pos}"
+  done < "${TMP}/esperadas.txt"
+  [ "${ordem_ok}" -eq 1 ] || erro "secao-fora-de-ordem" "${nome}: seções fora da ordem (Escopo → Dados → Operações → Interfaces → Regras vigentes → Landmines → Histórico SDD)"
+}
+
+# ── resolução de caminho (igual à de patterns-lint.sh) ──────────────────────
+resolve_path() {
+  local p="$1"
+  p="${p#./}"
+  case "${p}" in ../*) p="${p#../}" ;; esac
+  [ -f "${p}" ] && printf '%s' "${p}"
+}
+resolve_basename() { # só o nome do arquivo: casamento ÚNICO entre os arquivos versionados
+  local nome="$1" hits
+  hits=$(git ls-files 2>/dev/null | awk -v n="${nome}" '{ b=$0; sub(/.*\//, "", b); if (b == n) print }' | head -2)
+  [ "$(printf '%s\n' "${hits}" | grep -c .)" -eq 1 ] || return 0
+  printf '%s' "${hits}"
+}
+
+# tokens de caminho: fora de cerca, todos; dentro de cerca (código copiável), só a âncora com :linha — um
+# import relativo no esqueleto (`../shared/x.ts`) é código, não citação
+tokens_de_caminho() { # $1 = arquivo
+  awk '/^[[:space:]]*(```|~~~)/{f=!f; next} !f' "$1" | grep -v '^superficies: ' | grep -oE "[A-Za-z0-9_./-]+\.(${EXT})(:[0-9]+)?"
+  awk '/^[[:space:]]*(```|~~~)/{f=!f; next} f' "$1" | grep -oE "[A-Za-z0-9_./-]+\.(${EXT}):[0-9]+"
+}
+
+# ── caminhos citados: existem e a linha cabe (a linha superficies: fica de fora) ─
+checa_paths() {
+  local f="$1" nome="$2" tok path linha total real
+  tokens_de_caminho "${f}" | sort -u > "${TMP}/paths.txt"
+  printf '\n' >> "${TMP}/paths.txt"
+  while IFS= read -r tok; do
+    [ -n "${tok}" ] || continue
+    case "${tok}" in
+      *:*) path="${tok%%:*}"; linha="${tok##*:}" ;;
+      *)   path="${tok}"; linha="" ;;
+    esac
+    case "${path}" in
+      */*) : ;;
+      *)
+        [ -n "${linha}" ] || continue
+        real=$(resolve_basename "${path}")
+        if [ -z "${real}" ]; then erro "path-morto" "${nome}: a âncora '${path}:${linha}' não aponta para um arquivo único do repositório"; continue; fi
+        total=$(awk 'END { print NR }' "${real}")   # awk conta a última linha sem quebra final; wc -l não
+        [ "${linha}" -ge 1 ] && [ "${linha}" -le "${total}" ] || erro "path-morto" "${nome}: cita '${path}:${linha}', mas ${real} tem ${total} linhas"
+        continue ;;
+    esac
+    case "${path}" in *'<'*|*'>'*|/*) continue ;; esac
+    real=$(resolve_path "${path}")
+    if [ -z "${real}" ]; then erro "path-morto" "${nome}: cita '${path}', que não existe no repositório"; continue; fi
+    if [ -n "${linha}" ]; then
+      total=$(awk 'END { print NR }' "${real}")   # awk conta a última linha sem quebra final; wc -l não
+      [ "${linha}" -ge 1 ] && [ "${linha}" -le "${total}" ] || erro "path-morto" "${nome}: cita '${path}:${linha}', mas ${real} tem ${total} linhas"
+    fi
+  done < "${TMP}/paths.txt"
+}
+
+# ── LM-nnn: existe no playbook e está ATIVO (fora de ## Tombstones) ──────────
+checa_landmines() {
+  local f="$1" nome="$2" id
+  grep -oE 'LM-[0-9]{3}' "${f}" | sort -u > "${TMP}/lms.txt"
+  [ -s "${TMP}/lms.txt" ] || return 0
+  [ -f "${PLAYBOOK}" ] || { erro "lm-morto" "${nome}: playbook '${PLAYBOOK}' ausente, impossível validar LM-nnn"; return; }
+  awk '/^## Tombstones/{t=1} t' "${PLAYBOOK}" > "${TMP}/tomb.txt"
+  printf '\n' >> "${TMP}/lms.txt"
+  while IFS= read -r id; do
+    [ -n "${id}" ] || continue
+    if ! grep -qF "[${id}]" "${PLAYBOOK}"; then erro "lm-morto" "${nome}: cita ${id}, que não existe em ${PLAYBOOK}"
+    elif grep -qF "[${id}]" "${TMP}/tomb.txt"; then erro "lm-morto" "${nome}: cita ${id}, que está aposentado (## Tombstones)"; fi
+  done < "${TMP}/lms.txt"
+}
+
+# ── superficies: cobrem todo arquivo de CÓDIGO citado? (aviso) ───────────────
+# Código = caminho citado que não é .md e não está nas pastas de documento do método (sdd/features,
+# reports, reviews, handoffs, patterns, contexto, kb). Fora de `superficies:`, ele pode mudar sem o
+# --validade acusar.
+checa_superficies() {
+  local f="$1" nome="$2" sups p cob spec
+  sups=$(valor "${f}" superficies); [ -n "${sups}" ] || return 0
+  grep -v '^superficies: ' "${f}" | grep -oE "[A-Za-z0-9_.-]+/[A-Za-z0-9_./-]+\.(${EXT})" \
+    | grep -vE '\.md$|^sdd/(features|reports|reviews|handoffs|patterns|contexto|kb)/' | sort -u > "${TMP}/cod.txt"
+  printf '\n' >> "${TMP}/cod.txt"
+  set -f; set -- ${sups}; set +f
+  while IFS= read -r p; do
+    [ -n "${p}" ] || continue
+    [ -e "${p}" ] || continue
+    cob=0
+    for spec in "$@"; do
+      case "${p}" in ${spec}|${spec}/*) cob=1; break ;; esac
+    done
+    [ "${cob}" -eq 1 ] || aviso "${nome}: '${p}' é citado mas está fora de 'superficies:' (a validade não vê mudança nele) [superficie-nao-cobre]"
+  done < "${TMP}/cod.txt"
+}
+
+lint_arquivo() {
+  local f="$1" nome; nome=$(basename "${f}")
+  checa_cabecalho    "${f}" "${nome}"
+  checa_secoes       "${f}" "${nome}"
+  checa_paths        "${f}" "${nome}"
+  checa_landmines    "${f}" "${nome}"
+  checa_superficies  "${f}" "${nome}"
+}
+
+rodar_lint() {  # $1 = arquivo ou pasta
+  local alvo="$1" f base n=0
+  if [ -f "${alvo}" ]; then
+    printf '%s\n' "${alvo}" > "${TMP}/arquivos.txt"
+  elif [ -d "${alvo}" ]; then
+    ls "${alvo}"/*.md > "${TMP}/arquivos.txt" 2>/dev/null
+  else
+    echo "arquivo ou pasta inexistente: ${alvo}" >&2; exit 64
+  fi
+  printf '\n' >> "${TMP}/arquivos.txt"
+  while IFS= read -r f; do
+    [ -n "${f}" ] || continue
+    base=$(basename "${f}")
+    [ "${base}" = "README.md" ] && continue
+    lint_arquivo "${f}"
+    n=$((n + 1))
+  done < "${TMP}/arquivos.txt"
+  if [ "${erros}" -gt 0 ]; then
+    printf '🛑 contexto-lint: %d erro(s), %d aviso(s) em %d CONTEXTO(s)\n' "${erros}" "${avisos}" "${n}"
+    printf 'RESULTADO: VERMELHO\n→ %s.\n' "$(conserto "${primeira_classe}")"
+    exit 2
+  fi
+  printf '✅ contexto-lint: %d CONTEXTO(s) OK, %d aviso(s)\n' "${n}" "${avisos}"
+  printf 'RESULTADO: VERDE\n→ o CONTEXTO pode ser citado no DEFINE.\n'
+  exit 0
+}
+
+# ── ref padrão: origin/<default_branch> se existir, senão <default_branch> ───
+ref_padrao() {
+  local db=""
+  if [ -f sdd/config.yaml ]; then
+    db=$(awk '/^project:/{p=1;next} /^[^[:space:]#]/{p=0} p && /^[[:space:]]+default_branch:/{sub(/^[[:space:]]+default_branch:[[:space:]]*/, ""); gsub(/["'"'"']/, ""); sub(/[[:space:]]+#.*$/, ""); print; exit}' sdd/config.yaml)
+  fi
+  [ -n "${db}" ] || db=main
+  if git rev-parse --verify -q "origin/${db}^{commit}" >/dev/null 2>&1; then printf 'origin/%s' "${db}"; else printf '%s' "${db}"; fi
+}
+
+# ── --validade: git diff <sha>..<ref> -- <superficies> ───────────────────────
+validade() {  # $1=arquivo $2=ref ⇒ 0 valido | 1 vencido | 2 sha-inexistente/cabeçalho
+  local f="$1" ref="$2" sha sups nome; nome=$(basename "${f}")
+  sha=$(valor "${f}" sha); sups=$(valor "${f}" superficies)
+  [ -n "${sha}" ] || { erro "cabecalho-ausente" "${nome}: sem linha 'sha:'"; return 2; }
+  [ -n "${sups}" ] || { erro "cabecalho-ausente" "${nome}: sem linha 'superficies:'"; return 2; }
+  case "${sups}" in *'`'*) erro "cabecalho-ausente" "${nome}: 'superficies:' com crase não é pathspec; a validade não mede nada assim"; return 2 ;; esac
+  git cat-file -e "${sha}^{commit}" 2>/dev/null || { erro "sha-inexistente" "${nome}: o sha '${sha}' não existe neste repositório"; return 2; }
+  git rev-parse --verify -q "${ref}^{commit}" >/dev/null 2>&1 || { erro "sha-inexistente" "${nome}: a ref '${ref}' não existe neste repositório (use --ref)"; return 2; }
+  set -f; set -- ${sups}; set +f
+  # 1º o diff: arquivo apagado (vazio, binário ou não) depois do sha é VENCIDO. Só sem diff, um pathspec que
+  # não casa nada no sha nem no índice é erro: a validade não mediria nada.
+  if git diff --quiet "${sha}..${ref}" -- "$@"; then
+    if [ -z "$(git grep -l -e '' "${sha}" -- "$@" 2>/dev/null | head -1)" ] && [ -z "$(git ls-files -- "$@" 2>/dev/null | head -1)" ]; then
+      erro "path-morto" "${nome}: 'superficies:' não casa nenhum arquivo versionado; a validade não mediria nada"; return 2
+    fi
+    printf 'CONTEXTO VALIDO (%s..%s, %d pathspec)\n' "$(printf '%s' "${sha}" | cut -c1-7)" "${ref}" "$#"; return 0
+  fi
+  printf 'CONTEXTO VENCIDO (%s..%s): superfícies alteradas desde o sha:\n' "$(printf '%s' "${sha}" | cut -c1-7)" "${ref}"
+  git diff --name-only "${sha}..${ref}" -- "$@" | head -20 | sed 's/^/  /'
+  printf '  🛑 [validade-vencida] %s: gere de novo (passo 1.5 do sdd-define ⇒ gerar)\n' "${nome}"
+  return 1
+}
+
+# ── camadas de layers: (sdd/config.yaml) citadas na entrada ──────────────────
+camadas_da_entrada() { # $1=entrada ⇒ imprime "N nome1 nome2"
+  local input="$1" nome globs g pref n=0 lista=""
+  [ -f sdd/config.yaml ] || { echo "0"; return; }
+  awk '/^layers:/{p=1;next} /^[^[:space:]#]/{p=0} p && /^[[:space:]]+[A-Za-z0-9_-]+:/{
+         k=$0; sub(/^[[:space:]]+/, "", k); v=k; sub(/:.*/, "", k); sub(/^[^:]*:[[:space:]]*/, "", v)
+         sub(/[[:space:]]+#.*$/, "", v); gsub(/["'"'"']/, "", v); gsub(/,/, " ", v); print k "\t" v }' sdd/config.yaml > "${TMP}/layers.tsv"
+  printf '\n' >> "${TMP}/layers.tsv"
+  while IFS="$(printf '\t')" read -r nome globs; do
+    [ -n "${nome}" ] || continue
+    [ -n "$(printf '%s' "${globs}" | tr -d '[:space:]')" ] || continue
+    if grep -qiwF -- "${nome}" "${input}"; then n=$((n + 1)); lista="${lista} ${nome}"; continue; fi
+    set -f
+    for g in ${globs}; do
+      pref="${g%%\**}"
+      if [ "${#pref}" -ge 3 ] && grep -qF -- "${pref}" "${input}"; then n=$((n + 1)); lista="${lista} ${nome}"; break; fi
+    done
+    set +f
+  done < "${TMP}/layers.tsv"
+  printf '%s%s' "${n}" "${lista}"
+}
+
+# ── --sugerir: heurística do passo 1.5 ───────────────────────────────────────
+termo_fraco() {  # sem _ - . / e com menos de 6 caracteres ⇒ fraco (nota, item…)
+  case "$1" in *_*|*-*|*.*|*/*) return 1 ;; esac
+  [ "${#1}" -lt 6 ]
+}
+sugerir() {  # $1=entrada $2=dir $3=ref
+  local input="$1" dir="$2" ref="$3" cam ncam nomes_cam
+  cam=$(camadas_da_entrada "${input}"); ncam="${cam%% *}"; nomes_cam="${cam#"${ncam}"}"; nomes_cam="${nomes_cam# }"
+  printf 'CONTEXTO_SUGERIR entrada=%s camadas=%s (%s) dir=%s ref=%s\n' "${input}" "${ncam}" "${nomes_cam}" "${dir}" "${ref}"
+  if [ ! -f "${DOMINIO}" ]; then
+    printf 'recomendacao: pular (sem %s)\n' "${DOMINIO}"
+    printf 'RESULTADO: PULAR\n→ o Define segue sem CONTEXTO; para ter o mapa de domínios, veja sdd/patterns/README.md.\n'
+    return 0
+  fi
+  # termos por ctx: linhas **Âncoras:** e sup: do bloco ### ctx:<slug>
+  awk '
+    /^### ctx:/ { c=substr($2,5); ordem[c]=++o; next }
+    /^#{1,3} / { c="" }
+    c!="" && (/^\*\*Âncoras:\*\*/ || /^sup: /) {
+      s=$0; while (match(s, /`[^`]+`/)) { t=substr(s, RSTART+1, RLENGTH-2); gsub(/\*/, "", t); print c "\t" t "\t" ordem[c]; s=substr(s, RSTART+RLENGTH) }
+    }
+  ' "${DOMINIO}" | sort -u > "${TMP}/termos.tsv"
+  : > "${TMP}/hits.tsv"
+  local c t o
+  printf '\n' >> "${TMP}/termos.tsv"
+  while IFS="$(printf '\t')" read -r c t o; do
+    [ -n "${c}" ] || continue
+    termo_fraco "${t}" && continue
+    grep -qiF -- "${t}" "${input}" && printf '%s\t%s\t%s\n' "${c}" "${t}" "${o}" >> "${TMP}/hits.tsv"
+  done < "${TMP}/termos.tsv"
+  # candidatos: ≥ LIMIAR_TERMOS termos distintos; ordem por contagem, empate pela ordem do mapa; no máximo MAX_DOMINIOS
+  awk -F'\t' '{ n[$1]++; o[$1]=$3; if (n[$1]<=4) l[$1]=(l[$1]==""?$2:l[$1] ", " $2) } END { for (c in n) printf "%d\t%d\t%s\t%s\n", n[c], o[c], c, l[c] }' "${TMP}/hits.tsv" \
+    | sort -t"$(printf '\t')" -k1,1nr -k2,2n > "${TMP}/cand.tsv"
+  printf '\n' >> "${TMP}/cand.tsv"
+  local ncand=0 n lista estado arq principal="" principal_estado="" outros=""
+  while IFS="$(printf '\t')" read -r n o c lista; do
+    [ -n "${c}" ] || continue
+    [ "${n}" -ge "${LIMIAR_TERMOS}" ] || continue
+    [ "${ncand}" -lt "${MAX_DOMINIOS}" ] || break
+    ncand=$((ncand + 1)); arq="${dir}/${c}.md"
+    if [ ! -f "${arq}" ]; then estado="ausente"
+    else
+      ( erros=0; validade "${arq}" "${ref}" >/dev/null 2>&1 ); case $? in 0) estado="valido" ;; *) estado="vencido" ;; esac
+    fi
+    if [ -z "${principal}" ]; then principal="${c}"; principal_estado="${estado}"; else outros="${outros} ctx:${c}(${estado})"; fi
+    printf 'ctx:%s termos=%d (%s) estado=%s arquivo=%s\n' "${c}" "${n}" "${lista}" "${estado}" "${arq}"
+  done < "${TMP}/cand.tsv"
+  if [ "${ncand}" -eq 0 ]; then
+    printf '0 dominios inferidos (nenhum ctx: com %d ou mais termos de %s na entrada)\n' "${LIMIAR_TERMOS}" "${DOMINIO}"
+    printf 'recomendacao: pular (nenhum domínio do mapa citado no pedido)\n'
+    printf 'RESULTADO: PULAR\n→ o Define segue sem CONTEXTO.\n'
+    return 0
+  fi
+  [ -n "${outros}" ] && outros="; outros:${outros}"
+  if [ "${principal_estado}" = "valido" ]; then
+    printf 'recomendacao: reusar (ctx:%s valido%s)\n' "${principal}" "${outros}"
+    printf 'RESULTADO: REUSAR\n→ cite %s/%s.md no DEFINE.\n' "${dir}" "${principal}"
+  else
+    printf 'recomendacao: gerar (ctx:%s %s%s)\n' "${principal}" "${principal_estado}" "${outros}"
+    printf 'RESULTADO: GERAR\n→ despache o cartógrafo para ctx:%s (passo 1.5 do sdd-define).\n' "${principal}"
+  fi
+  return 0
+}
+
+# ── --self-test: VERMELHOS antes dos VERDES ─────────────────────────────────
+self_test() {
+  local fails=0 out rc caso fx classe ign DX PX
+  DX="${FIXTURES}/dominio.md"; PX="${FIXTURES}/playbook.md"
+  echo "self-test (bash) — fixtures em ${FIXTURES}/"
+  git rev-parse -q --verify HEAD >/dev/null 2>&1 || { echo "🛑 o self-test precisa de um commit (âncoras e superficies: são conferidas contra os arquivos versionados): faça o 1º commit e rode de novo" >&2; return 64; }
+  [ -n "$(git ls-files -- "${FIXTURES}" 2>/dev/null | head -1)" ] || { echo "🛑 o self-test precisa das fixtures versionadas (âncoras e superficies: são conferidas contra os arquivos versionados): commite ${FIXTURES}/ e rode de novo" >&2; return 64; }
+  [ -d "${FIXTURES}" ] || { echo "🛑 fixtures ausentes em ${FIXTURES} (o init só as copia na 1ª instalação; copie a pasta do pacote)" >&2; return 64; }
+  ign=$(git check-ignore "${FIXTURES}"/*.md "${FIXTURES}"/app/* 2>/dev/null | wc -l | tr -d ' ')
+  if [ "${ign}" = "0" ]; then echo "  ✅ nenhuma fixture casada pelo .gitignore"
+  else echo "  🛑 ${ign} fixture(s) ignoradas pelo git: o self-test não viajaria"; fails=$((fails + 1)); fi
+
+  echo "── VERMELHOS (cada fixture falha pela SUA classe) ──"
+  cat > "${TMP}/casos.txt" <<'CASOS'
+sem-cabecalho:cabecalho-ausente
+sem-secao:secao-ausente
+secao-fora-de-ordem:secao-fora-de-ordem
+path-morto:path-morto
+linha-alem-do-fim:path-morto
+sup-ausente:sup-ausente
+ctx-desconhecido:ctx-desconhecido
+lm-morto:lm-morto
+cabecalho-fora-de-ordem:cabecalho-ausente
+superficies-com-crase:cabecalho-ausente
+superficies-sem-arquivo:path-morto
+CASOS
+  printf '\n' >> "${TMP}/casos.txt"
+  while IFS= read -r caso; do
+    [ -n "${caso}" ] || continue
+    fx="${caso%%:*}"; classe="${caso##*:}"
+    [ -f "${FIXTURES}/${fx}.md" ] || { echo "  🛑 fixture ausente: ${FIXTURES}/${fx}.md"; fails=$((fails + 1)); continue; }
+    out=$(bash "${SELF}" --dominio "${DX}" --playbook "${PX}" "${FIXTURES}/${fx}.md" 2>&1); rc=$?
+    if [ "${rc}" -ne 2 ]; then echo "  🛑 ${fx}: esperado exit 2, veio ${rc}"; fails=$((fails + 1))
+    elif ! printf '%s' "${out}" | grep -qF "[${classe}]"; then
+      echo "  🛑 ${fx}: saiu 2 pela classe ERRADA (esperava ${classe}) — $(printf '%s' "${out}" | grep -oE '\[[a-z-]+\]' | head -1)"; fails=$((fails + 1))
+    else echo "  ✅ ${fx} ⇒ exit 2 [${classe}]"; fi
+  done < "${TMP}/casos.txt"
+
+  echo "── VALIDADE (repositório temporário: c1 cria a.md · c2 altera a.md e cria b.md) ──"
+  local repo="${TMP}/repo" c1 c2
+  mkdir -p "${repo}"; git init -q "${repo}"
+  g() { git -C "${repo}" -c user.email=self-test@example.com -c user.name=self-test -c core.hooksPath=/dev/null -c commit.gpgsign=false "$@"; }
+  echo v1 > "${repo}/a.md"; g add a.md; g commit -q -m c1; c1=$(g rev-parse HEAD)
+  echo v2 > "${repo}/a.md"; echo b > "${repo}/b.md"; g add a.md b.md; g commit -q -m c2; c2=$(g rev-parse HEAD)
+  [ -f "${FIXTURES}/validade-template.md" ] || { echo "  🛑 fixture ausente: validade-template.md"; fails=$((fails + 1)); }
+  sed "s/__SHA__/${c2}/" "${FIXTURES}/validade-template.md" > "${repo}/ctx-valido.md"
+  sed "s/__SHA__/${c1}/" "${FIXTURES}/validade-template.md" > "${repo}/ctx-vencido.md"
+  sed "s/__SHA__/0000000/" "${FIXTURES}/validade-template.md" > "${repo}/ctx-sha.md"
+  out=$(cd "${repo}" && bash "${SELF}" --validade ctx-vencido.md --ref HEAD 2>&1); rc=$?
+  if [ "${rc}" -eq 1 ] && printf '%s' "${out}" | grep -qF 'CONTEXTO VENCIDO' && printf '%s' "${out}" | grep -qF 'a.md' && printf '%s' "${out}" | grep -qF '[validade-vencida]'; then
+    echo "  ✅ sha=c1 ⇒ exit 1 CONTEXTO VENCIDO nomeando a.md"
+  else echo "  🛑 sha=c1: esperado exit 1 'CONTEXTO VENCIDO' + a.md, veio ${rc}: ${out}"; fails=$((fails + 1)); fi
+  out=$(cd "${repo}" && bash "${SELF}" --validade ctx-sha.md --ref HEAD 2>&1); rc=$?
+  if [ "${rc}" -eq 2 ] && printf '%s' "${out}" | grep -qF '[sha-inexistente]'; then echo "  ✅ sha=0000000 ⇒ exit 2 [sha-inexistente]"
+  else echo "  🛑 sha inexistente: esperado exit 2 [sha-inexistente], veio ${rc}: ${out}"; fails=$((fails + 1)); fi
+  out=$(cd "${repo}" && bash "${SELF}" --validade ctx-valido.md --ref HEAD 2>&1); rc=$?
+  if [ "${rc}" -eq 0 ] && printf '%s' "${out}" | grep -qF 'CONTEXTO VALIDO'; then echo "  ✅ sha=c2 ⇒ exit 0 CONTEXTO VALIDO"
+  else echo "  🛑 sha=c2: esperado exit 0 'CONTEXTO VALIDO', veio ${rc}: ${out}"; fails=$((fails + 1)); fi
+  out=$(cd "${repo}" && bash "${SELF}" --validade ctx-valido.md --ref nao-existe 2>&1); rc=$?
+  if [ "${rc}" -eq 2 ] && printf '%s' "${out}" | grep -qF '[sha-inexistente]'; then echo "  ✅ ref inexistente ⇒ exit 2 [sha-inexistente]"
+  else echo "  🛑 ref inexistente: esperado exit 2, veio ${rc}: ${out}"; fails=$((fails + 1)); fi
+
+  echo "── SUGERIR (entrada × estado do CONTEXTO) ──"
+  local IN2="${FIXTURES}/INPUT_FIXTURE_PEDIDOS.md" IN0="${FIXTURES}/INPUT_FIXTURE_SEM_DOMINIO.md" head_sha
+  mkdir -p "${TMP}/vazio" "${TMP}/dir-ok"
+  out=$(bash "${SELF}" --dominio "${DX}" --sugerir "${IN2}" --dir "${TMP}/vazio" --ref HEAD 2>&1); rc=$?
+  if [ "${rc}" -eq 0 ] && printf '%s' "${out}" | grep -q '^ctx:pedidos ' && printf '%s' "${out}" | grep -qF 'estado=ausente' \
+     && printf '%s' "${out}" | grep -qF 'recomendacao: gerar'; then
+    echo "  ✅ entrada de pedidos, pasta vazia ⇒ ctx:pedidos ausente ⇒ gerar"
+  else echo "  🛑 entrada de pedidos, pasta vazia: esperado ctx:pedidos/ausente/gerar, veio ${rc}: ${out}"; fails=$((fails + 1)); fi
+  if [ "$(printf '%s\n' "${out}" | grep -c '^ctx:')" -le "${MAX_DOMINIOS}" ]; then echo "  ✅ no máximo ${MAX_DOMINIOS} domínios"
+  else echo "  🛑 mais de ${MAX_DOMINIOS} domínios sugeridos"; fails=$((fails + 1)); fi
+  head_sha=$(git rev-parse HEAD)
+  sed -e "s/^sha: .*/sha: ${head_sha}/" "${FIXTURES}/valido-completo.md" > "${TMP}/dir-ok/pedidos.md"
+  out=$(bash "${SELF}" --dominio "${DX}" --sugerir "${IN2}" --dir "${TMP}/dir-ok" --ref HEAD 2>&1); rc=$?
+  if [ "${rc}" -eq 0 ] && printf '%s' "${out}" | grep -qF 'estado=valido' && printf '%s' "${out}" | grep -qF 'recomendacao: reusar'; then
+    echo "  ✅ entrada de pedidos, CONTEXTO válido (sha=HEAD, ref=HEAD) ⇒ reusar"
+  else echo "  🛑 entrada de pedidos, CONTEXTO válido: esperado valido/reusar, veio ${rc}: ${out}"; fails=$((fails + 1)); fi
+  out=$(bash "${SELF}" --dominio "${DX}" --sugerir "${IN0}" --dir "${TMP}/vazio" --ref HEAD 2>&1); rc=$?
+  if [ "${rc}" -eq 0 ] && printf '%s' "${out}" | grep -qF '0 dominios' && printf '%s' "${out}" | grep -qF 'recomendacao: pular'; then
+    echo "  ✅ entrada sem domínio ⇒ 0 domínios ⇒ pular"
+  else echo "  🛑 entrada sem domínio: esperado 0 dominios/pular, veio ${rc}: ${out}"; fails=$((fails + 1)); fi
+  out=$(bash "${SELF}" --dominio "${TMP}/nao-existe.md" --sugerir "${IN2}" --dir "${TMP}/vazio" --ref HEAD 2>&1); rc=$?
+  if [ "${rc}" -eq 0 ] && printf '%s' "${out}" | grep -qF 'recomendacao: pular (sem '; then
+    echo "  ✅ sem mapa de domínios ⇒ pular, exit 0"
+  else echo "  🛑 sem mapa: esperado pular/exit 0, veio ${rc}: ${out}"; fails=$((fails + 1)); fi
+
+  echo "── USO ──"
+  out=$(bash "${SELF}" 2>&1); rc=$?
+  if [ "${rc}" -eq 64 ] && printf '%s' "${out}" | grep -qi 'uso'; then echo "  ✅ sem argumento ⇒ exit 64 com texto de uso"
+  else echo "  🛑 sem argumento ⇒ ${rc} (esperado 64)"; fails=$((fails + 1)); fi
+  out=$(bash "${SELF}" --flag-que-nao-existe 2>&1); rc=$?
+  if [ "${rc}" -eq 64 ]; then echo "  ✅ flag desconhecida ⇒ exit 64"; else echo "  🛑 flag desconhecida ⇒ ${rc} (esperado 64)"; fails=$((fails + 1)); fi
+  out=$(bash "${SELF}" sdd/contexto-que-nao-existe.md 2>&1); rc=$?
+  if [ "${rc}" -eq 64 ]; then echo "  ✅ arquivo inexistente ⇒ exit 64"; else echo "  🛑 arquivo inexistente ⇒ ${rc} (esperado 64)"; fails=$((fails + 1)); fi
+  out=$(bash "${SELF}" --validade sdd/contexto-que-nao-existe.md 2>&1); rc=$?
+  if [ "${rc}" -eq 64 ]; then echo "  ✅ --validade inexistente ⇒ exit 64"; else echo "  🛑 --validade inexistente ⇒ ${rc} (esperado 64)"; fails=$((fails + 1)); fi
+  # flag sem valor não pode entrar em laço: teto de 5 s
+  local pid i
+  for caso in "--validade ${FIXTURES}/valido-completo.md --ref" "--sugerir ${FIXTURES}/INPUT_FIXTURE_SEM_DOMINIO.md --dir" "--dominio"; do
+    : > "${TMP}/rc-loop.txt"
+    ( set -f; bash "${SELF}" ${caso} >/dev/null 2>&1; echo "$?" > "${TMP}/rc-loop.txt" ) & pid=$!
+    i=0
+    while kill -0 "${pid}" 2>/dev/null && [ "${i}" -lt 50 ]; do sleep 0.1; i=$((i + 1)); done
+    if kill -0 "${pid}" 2>/dev/null; then kill -9 "${pid}" 2>/dev/null; echo "  🛑 '${caso##* }' sem valor TRAVOU (laço; esperado 64)"; fails=$((fails + 1))
+    else rc=$(cat "${TMP}/rc-loop.txt"); if [ "${rc}" = "64" ]; then echo "  ✅ flag sem valor ('${caso##* }') ⇒ exit 64, sem laço"; else echo "  🛑 flag sem valor ⇒ ${rc} (esperado 64)"; fails=$((fails + 1)); fi; fi
+  done
+
+  echo "── VERDES ──"
+  out=$(bash "${SELF}" --dominio "${DX}" --playbook "${PX}" "${FIXTURES}/valido-completo.md" 2>&1); rc=$?
+  if [ "${rc}" -eq 0 ]; then echo "  ✅ fixture válida ⇒ exit 0"; else echo "  🛑 fixture válida ⇒ ${rc}: ${out}"; fails=$((fails + 1)); fi
+  if printf '%s' "${out}" | grep -qF '[superficie-nao-cobre]' && printf '%s' "${out}" | grep -qF 'app/estoque.sql'; then
+    echo "  ✅ código citado fora de superficies: ⇒ aviso [superficie-nao-cobre], exit 0"
+  else echo "  🛑 aviso superficie-nao-cobre ausente: ${out}"; fails=$((fails + 1)); fi
+  out=$(bash "${SELF}" --dominio "${DX}" --playbook "${PX}" "${FIXTURES}/superficies-nao-e-ancora.md" 2>&1); rc=$?
+  if [ "${rc}" -eq 0 ]; then echo "  ✅ glob em superficies: ⇒ exit 0 (pathspec, não âncora)"
+  else echo "  🛑 superficies-nao-e-ancora ⇒ ${rc}: ${out}"; fails=$((fails + 1)); fi
+  mkdir -p "${TMP}/pasta"; cp "${FIXTURES}/valido-completo.md" "${TMP}/pasta/pedidos.md"; echo "# readme" > "${TMP}/pasta/README.md"
+  out=$(bash "${SELF}" --dominio "${DX}" --playbook "${PX}" "${TMP}/pasta" 2>&1); rc=$?
+  if [ "${rc}" -eq 0 ] && printf '%s' "${out}" | grep -qF '1 CONTEXTO(s) OK'; then echo "  ✅ pasta com README ⇒ exit 0, README ignorado"
+  else echo "  🛑 pasta com README ⇒ ${rc}: ${out}"; fails=$((fails + 1)); fi
+
+  if [ "${fails}" -gt 0 ]; then
+    printf '🔴 self-test: %d falha(s) — o lint NÃO está provando o que promete\n' "${fails}"
+    printf 'RESULTADO: VERMELHO\n→ corrija o lint ou a fixture apontada acima.\n'
+    return 2
+  fi
+  echo "✅ self-test: cada classe vermelha acusa a classe certa; validade nos 3 ramos; sugerir na matriz; verdes verdes."
+  printf 'RESULTADO: VERDE\n→ o lint prova o que promete.\n'
+  return 0
+}
+
+# ── despacho ─────────────────────────────────────────────────────────────────
+ORIG="$(pwd -P)"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "não é um repositório git" >&2; exit 64; }
+cd "${REPO_ROOT}" || exit 64
+# caminho dado por quem chamou de uma subpasta: vale relativo a onde ele estava, se existir lá
+de_quem_chamou() { case "$1" in /*) printf '%s' "$1" ;; *) if [ -e "${ORIG}/$1" ]; then printf '%s' "${ORIG}/$1"; else printf '%s' "$1"; fi ;; esac; }
+
+if [ $# -eq 0 ]; then
+  echo "erro de uso: informe <arquivo.md|pasta> (ex.: ${CONTEXTO_DIR_DEFAULT}), --validade <arquivo> [--ref R], --sugerir <entrada> [--dir D] [--ref R] ou --self-test" >&2
+  usage
+fi
+# opções globais antes do modo (shift 2 só com valor presente: sem valor, shift 2 falha e o laço não anda)
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --dominio)  [ $# -ge 2 ] || { echo "--dominio exige valor" >&2; usage; }; DOMINIO="$(de_quem_chamou "$2")"; shift 2 ;;
+    --playbook) [ $# -ge 2 ] || { echo "--playbook exige valor" >&2; usage; }; PLAYBOOK="$(de_quem_chamou "$2")"; shift 2 ;;
+    *) break ;;
+  esac
+done
+[ $# -gt 0 ] || usage
+case "$1" in
+  --self-test) self_test; exit $? ;;
+  --validade)
+    [ $# -ge 2 ] || usage
+    ARQ="$(de_quem_chamou "$2")"; REF=""; shift 2
+    while [ $# -gt 0 ]; do case "$1" in --ref) [ $# -ge 2 ] || { echo "--ref exige valor" >&2; usage; }; REF="$2"; shift 2 ;; *) echo "flag desconhecida: $1" >&2; usage ;; esac; done
+    [ -f "${ARQ}" ] || { echo "arquivo inexistente: ${ARQ}" >&2; exit 64; }
+    [ -n "${REF}" ] || REF="$(ref_padrao)"
+    validade "${ARQ}" "${REF}"; rc=$?
+    case "${rc}" in
+      0) printf 'RESULTADO: VALIDO\n→ reuse o CONTEXTO.\n' ;;
+      1) printf 'RESULTADO: VENCIDO\n→ gere o CONTEXTO de novo (passo 1.5 do sdd-define).\n' ;;
+      *) printf 'RESULTADO: VERMELHO\n→ confira o sha do cabeçalho e a ref (--ref).\n' ;;
+    esac
+    exit "${rc}" ;;
+  --sugerir)
+    [ $# -ge 2 ] || usage
+    INPUT="$(de_quem_chamou "$2")"; DIR="${CONTEXTO_DIR_DEFAULT}"; REF=""; shift 2
+    while [ $# -gt 0 ]; do case "$1" in --dir) [ $# -ge 2 ] || { echo "--dir exige valor" >&2; usage; }; DIR="$(de_quem_chamou "$2")"; shift 2 ;; --ref) [ $# -ge 2 ] || { echo "--ref exige valor" >&2; usage; }; REF="$2"; shift 2 ;; *) echo "flag desconhecida: $1" >&2; usage ;; esac; done
+    [ -f "${INPUT}" ] || { echo "entrada inexistente: ${INPUT}" >&2; exit 64; }
+    [ -n "${REF}" ] || REF="$(ref_padrao)"
+    sugerir "${INPUT}" "${DIR}" "${REF}"; exit $? ;;
+  -h|--help) usage ;;
+  --*) echo "flag desconhecida: $1" >&2; usage ;;
+  *) [ $# -eq 1 ] || { echo "argumento a mais: $2" >&2; usage; }; rodar_lint "$(de_quem_chamou "$1")" ;;
+esac
+#!/usr/bin/env bash
+# governanca-fronteira.sh — fronteira de escrita dos agentes frescos do sdd-define: o cartógrafo (passo
+# 1.5, só pode gravar sdd/contexto/<slug>.md) e o revisor de governança (passo 11, só pode gravar o
+# relatório). Comparar só a linha do `git status` não vê a sobrescrita de um arquivo que já aparecia
+# antes do despacho (o DEFINE recém-salvo é `??`): o snapshot guarda o sha256 de cada caminho.
+#
+# Uso:
+#   governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir…]
+#       grava "<sha256|AUSENTE>\t<caminho absoluto>" para cada caminho de `git status --porcelain -z --untracked-files=all`
+#       mais os IGNORADOS de sdd/ (--ignored=traditional: com --untracked-files=all, arquivo a arquivo). O arquivo do snapshot fica FORA do worktree (dentro ⇒ 64). [incluir…] =
+#       caminhos absolutos que entram SEMPRE (o arquivo permitido): com sha se existem, AUSENTE se não.
+#   governanca-fronteira.sh --comparar <antes> <depois> <permitido>…
+#       para cada caminho novo, sumido ou com sha diferente: "MUDOU: <caminho>" se permitido, "FORA: <caminho>" senão.
+#
+# O snapshot também guarda o HEAD (linha `#HEAD`): um agente que edita um arquivo limpo e COMMITA deixa a
+# árvore limpa de novo, e só o HEAD que andou denuncia — cada arquivo do commit sai como FORA.
+#
+# Exit: 0 só caminhos permitidos mudaram · 1 há FORA · 64 uso, snapshot ausente/ilegível ou enumeração que
+# falhou (fronteira não verificada nunca vale como "nada mudou").
+# Limites declarados: arquivo ignorado FORA de sdd/ (ex.: __pycache__/) não entra no snapshot; escrita FORA do
+# worktree não é vista (a barreira ali são as permissões da sessão).
+# Ordem de bytes sempre (LC_ALL=C): snapshot ordenado num locale e comparado noutro inventaria diferença.
+# porcelain -z: sem -z o git escapa nome não-ASCII em octal e a sobrescrita fica invisível.
+set -uo pipefail
+export LC_ALL=C
+
+uso() {
+  echo "uso: $0 --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir…] | --comparar <antes> <depois> <permitido>…" >&2
+  printf 'RESULTADO: ERRO DE USO\n→ a fronteira NÃO foi verificada; corrija a chamada e rode de novo.\n' >&2
+  exit 64
+}
+
+# $1 raiz · $2 "todos"|"ignorados" · $3 pathspec · $4 arquivo onde acrescentar. rc do git e do python checados.
+paths() {
+  local raw; raw="$(mktemp)"
+  git -C "$1" status --porcelain -z --untracked-files=all ${2:+--ignored=traditional} -- ${3:-.} > "${raw}" || { rm -f "${raw}"; return 1; }
+  python3 -c '
+import sys
+so_ign = sys.argv[1] == "ignorados"
+r = sys.stdin.buffer.read().split(b"\0")
+i = 0
+while i < len(r):
+    e = r[i]; i += 1
+    if len(e) < 4:
+        continue
+    xy, p = e[:2], e[3:]
+    if xy[:1] in (b"R", b"C"):          # renomeado/copiado: o registro seguinte é a origem
+        if b"\n" in p or (i < len(r) and b"\n" in r[i]):
+            sys.stderr.write("caminho com quebra de linha: a fronteira não mede\n"); sys.exit(1)
+        if not so_ign:
+            sys.stdout.buffer.write(p + b"\n")
+            if i < len(r) and r[i]:
+                sys.stdout.buffer.write(r[i] + b"\n")
+        i += 1
+        continue
+    if so_ign and xy != b"!!":
+        continue
+    if b"\n" in p:
+        sys.stderr.write("caminho com quebra de linha: a fronteira não mede: %r\n" % p); sys.exit(1)
+    sys.stdout.buffer.write(p + b"\n")
+' "${2:-todos}" < "${raw}" >> "$4"; local rc=$?
+  rm -f "${raw}"; return "${rc}"
+}
+# caminho absoluto canônico: o ancestral mais próximo que existe passa por `pwd -P` (no macOS /var é link
+# para /private/var; sem isso o permitido não casa com a raiz canonizada e vira FORA ou "fora do worktree")
+canon() { # realpath: resolve link de pasta E de arquivo; o trecho que ainda não existe fica como está
+  python3 -c 'import os, sys; sys.stdout.write(os.path.realpath(sys.argv[1]))' "$1"
+}
+todos_paths() { # $1 raiz · $2 arquivo de saída
+  : > "$2"
+  paths "$1" "" "" "$2" || return 1
+  if [ -d "$1/sdd" ]; then paths "$1" ignorados sdd/ "$2" || return 1; fi
+  return 0
+}
+
+case "${1:-}" in
+  --snapshot)
+    [ "$#" -ge 3 ] || uso
+    [ -d "$2" ] || uso
+    WT="$(cd "$2" && pwd -P)" || uso
+    TOP="$(git -C "${WT}" rev-parse --show-toplevel 2>/dev/null)" || { echo "não é um repositório git: ${WT}" >&2; uso; }
+    # os caminhos do porcelain são relativos à RAIZ: um subdiretório viraria AUSENTE nos dois lados
+    [ "$(cd "${TOP}" && pwd -P)" = "${WT}" ] || { echo "<raiz-do-worktree> tem de ser a raiz do repositório (${TOP}), não ${WT}" >&2; uso; }
+    OUT="$3"; shift 3
+    OUT_DIR="$(cd "$(dirname "${OUT}")" 2>/dev/null && pwd -P)" || { echo "pasta do snapshot inexistente: $(dirname "${OUT}")" >&2; uso; }
+    # fora do worktree, ou dentro do .git dele (o git status nunca lista o .git): é lá que o passo 11 guarda o
+    # snapshot para a retomada depois de uma parada
+    case "${OUT_DIR}/" in
+      "${WT}"/.git/*) ;;
+      "${WT}"/*) echo "o snapshot fica FORA do worktree (senão ele mesmo aparece como ??), ou dentro do .git: ${OUT}" >&2; uso ;;
+    esac
+    # só agora, com o destino validado fora do worktree: um snapshot que falha daqui em diante não deixa o
+    # arquivo de uma tentativa anterior no lugar (antes da validação, o rm apagaria um arquivo do projeto)
+    rm -f "${OUT}"
+    INCL=""; PERM=""
+    for x in "$@"; do
+      case "${x}" in *$'\n'*) echo "incluir com quebra de linha: a fronteira não mede" >&2; uso ;; esac
+      c="$(canon "${x}")"
+      case "${c}" in "${WT}"/*) ;; *) echo "incluir fora do worktree: ${c}" >&2; uso ;; esac
+      INCL="${INCL}${c}
+"
+      # o permitido é resolvido AGORA, antes do despacho, e fica no snapshot: resolver depois deixaria um link
+      # criado pelo agente no caminho permitido autorizar a escrita noutro arquivo
+      PERM="${PERM}#PERMITIDO	${x}	${c}
+"
+    done
+    lista="$(mktemp)"; parcial="${OUT}.parcial.$$"; trap 'rm -f "${lista}" "${parcial}"' EXIT
+    todos_paths "${WT}" "${lista}" || { echo "a enumeração falhou (git status ou caminho com quebra de linha): snapshot não gravado" >&2; uso; }
+    printf '%s' "${INCL}" | while IFS= read -r x; do [ -n "${x}" ] && printf '%s\n' "${x#"${WT}"/}"; done >> "${lista}"
+    # hash e caminho canônico (realpath) num processo só: um link para o arquivo permitido vira o próprio
+    # permitido; o link em si entra com o destino como "hash" (re-apontar o link também é escrita); arquivo
+    # ilegível recusa o snapshot inteiro (nunca vira hash vazio)
+    sort -u "${lista}" | python3 -c '
+import hashlib, os, sys
+wt = sys.argv[1]
+saida = []
+for p in sys.stdin.read().split("\n"):
+    if not p:
+        continue
+    a = os.path.join(wt, p)
+    if os.path.islink(a):
+        saida.append("link:%s\t%s" % (os.readlink(a), a))
+    r = os.path.realpath(a)
+    if os.path.isfile(r):
+        h = hashlib.sha256()
+        try:
+            with open(r, "rb") as f:
+                for bloco in iter(lambda: f.read(1 << 20), b""):
+                    h.update(bloco)
+        except OSError as e:
+            sys.stderr.write("não consegui ler %s: snapshot não gravado (%s)\n" % (a, e)); sys.exit(1)
+        saida.append("%s\t%s" % (h.hexdigest(), r))
+    else:
+        saida.append("AUSENTE\t%s" % r)
+sys.stdout.write("".join(l + "\n" for l in sorted(set(saida))))
+' "${WT}" > "${parcial}" || { echo "não consegui gravar o snapshot" >&2; uso; }
+    head_sha="$(git -C "${WT}" rev-parse -q --verify HEAD 2>/dev/null || echo AUSENTE)"
+    { printf '#HEAD\t%s\t%s\n' "${head_sha}" "${WT}"; printf '%s' "${PERM}"; } >> "${parcial}" && mv "${parcial}" "${OUT}" || { echo "não consegui gravar o snapshot" >&2; uso; }
+    printf 'RESULTADO: SNAPSHOT GRAVADO\n→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.\n'
+    ;;
+  --comparar)
+    [ "$#" -ge 4 ] && [ -f "$2" ] && [ -r "$2" ] && [ -f "$3" ] && [ -r "$3" ] || uso
+    A="$2"; D="$3"; shift 3
+    fora=0
+    tmp="$(mktemp -d)"; trap 'rm -rf "${tmp}"' EXIT; dif="${tmp}/dif"
+    # diferença simétrica por linha (sha + caminho): cobre novo, sumido e sobrescrito. O comm roda FORA
+    # de substituição de processo: lá o rc dele se perde e um snapshot ilegível viraria "nada mudou".
+    # grep -v sai 1 quando o snapshot só tem as linhas # (árvore limpa): isso não é erro de leitura
+    { grep -v '^#' "${A}" || [ $? -eq 1 ]; } | sort > "${tmp}/a" && { grep -v '^#' "${D}" || [ $? -eq 1 ]; } | sort > "${tmp}/d" \
+      || { echo "não consegui ler os snapshots" >&2; uso; }
+    ha="$(grep '^#HEAD' "${A}" | head -1)"; hd="$(grep '^#HEAD' "${D}" | head -1)"
+    [ -n "${ha}" ] && [ -n "${hd}" ] || { echo "snapshot sem a linha #HEAD (gravado por outra versão?): refaça os dois" >&2; uso; }
+    comm -3 "${tmp}/a" "${tmp}/d" > "${dif}" || { echo "não consegui comparar os snapshots" >&2; uso; }
+    sed $'s/^\t//' "${dif}" | cut -f2- > "${tmp}/mudou.0"
+    # caminhos que são (ou passaram a ser) link: o permitido virar link é escrita fora do permitido
+    sed $'s/^\t//' "${dif}" | grep '^link:' | cut -f2- | sort -u > "${tmp}/links" || true
+    # o permitido como foi resolvido no snapshot de ANTES (nunca agora)
+    grep '^#PERMITIDO' "${A}" > "${tmp}/perm" || true
+    if [ "${ha}" != "${hd}" ]; then
+      # o HEAD andou durante o despacho: todo arquivo dos commits novos conta (um commit limpa a árvore)
+      wt="$(printf '%s' "${hd}" | cut -f3)"; sa="$(printf '%s' "${ha}" | cut -f2)"; sd="$(printf '%s' "${hd}" | cut -f2)"
+      echo "FORA: HEAD mudou durante o despacho (${sa} → ${sd}): o agente commitou"; fora=1
+      if [ "${sa}" != AUSENTE ] && [ "${sd}" != AUSENTE ]; then
+        git -C "${wt}" diff --name-only -z "${sa}" "${sd}" 2>/dev/null | tr '\0' '\n' | sed "s|^|${wt}/|" >> "${tmp}/mudou.0"
+      fi
+    fi
+    sort -u "${tmp}/mudou.0" > "${tmp}/mudou"
+    while IFS= read -r p; do
+      [ -z "${p}" ] && continue
+      ok=0
+      for perm in "$@"; do
+        [ "${p}" = "${perm}" ] && ok=1
+        while IFS="$(printf '\t')" read -r _ lit can; do
+          [ "${lit}" = "${perm}" ] && [ "${p}" = "${can}" ] && ok=1
+        done < "${tmp}/perm"
+      done
+      if grep -qxF -- "${p}" "${tmp}/links"; then
+        printf 'FORA: %s (virou ou deixou de ser link durante o despacho)\n' "${p}"; fora=1
+      elif [ "${ok}" = 1 ]; then printf 'MUDOU: %s\n' "${p}"; else printf 'FORA: %s\n' "${p}"; fora=1; fi
+    done < "${tmp}/mudou"
+    if [ "${fora}" = 1 ]; then
+      printf 'RESULTADO: ESCRITA FORA DO PERMITIDO\n→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).\n'
+    else
+      printf 'RESULTADO: SÓ O PERMITIDO MUDOU\n→ siga com o arquivo que o agente gravou.\n'
+    fi
+    exit "${fora}"
+    ;;
+  *) uso ;;
+esac
+
+exec
+/bin/zsh -lc "rg -n 'despachar|AGUARDANDO_HUMANO|brief' sdd/bin/sdd-fluxo.sh
+cat sdd/WORKFLOW_CONTRACTS.yaml sdd/fixtures/contexto/valido-completo.md
+ git status --short" in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+ succeeded in 0ms:
+18:#   sdd-fluxo.sh despachar <papel> <FEATURE> <brief.md>
+19:#       40 AGUARDANDO_HUMANO: brief em sdd/reports/briefs/BRIEF_<papel>_<FEATURE>.md e a parada ⏸️ · 64
+66:# ── despachar (bash puro) ────────────────────────────────────────────────────────────────────────
+67:cmd_despachar() {
+68:  [ $# -eq 3 ] || uso "despachar exige <papel> <FEATURE> <brief>"
+69:  papel="$1"; feat="$2"; brief="$3"
+72:  if [ ! -r "$brief" ] || [ ! -s "$brief" ] || [ -d "$brief" ]; then
+73:    echo "🛑 sdd-fluxo: brief ausente, vazio ou ilegível: $brief" >&2
+74:    printf 'RESULTADO: ERRO DE USO\n→ grave o brief num arquivo e rode de novo; nada foi gravado em sdd/reports/briefs/.\n' >&2
+78:  rel="sdd/reports/briefs/BRIEF_${papel}_${feat}.md"
+79:  mkdir -p "$R/sdd/reports/briefs" || exit 64
+80:  if [ ! "$brief" -ef "$R/$rel" ]; then
+81:    cp "$brief" "$R/$rel" || exit 64
+83:  cmp -s "$brief" "$R/$rel" || { echo "🛑 sdd-fluxo: a cópia do brief não confere: $rel" >&2; exit 64; }
+104:  printf '**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.\n\n'
+106:  printf 'RESULTADO: AGUARDANDO_HUMANO\n→ quando a pessoa colar o retorno, continue do passo que parou.\n'
+744:  # despachar e seguir/estado num repositório temporário (o verify-gate --print precisa de git)
+755:  cenario "despachar AGUARDANDO_HUMANO" 40 "RESULTADO: AGUARDANDO_HUMANO" -- c despachar avaliador X "$FX/brief-avaliador.md"
+756:  if cmp -s "$FX/brief-avaliador.md" "$R/sdd/reports/briefs/BRIEF_avaliador_X.md"; then echo "  ✅ despachar: brief gravado idêntico"
+757:  else echo "  🛑 despachar: brief não gravado ou diferente"; FALHAS=$((FALHAS + 1)); fi
+758:  cenario "despachar com o brief já no destino" 40 "AGUARDANDO_HUMANO" -- c despachar avaliador X sdd/reports/briefs/BRIEF_avaliador_X.md
+759:  cenario "despachar sem brief" 64 "brief ausente" -- c despachar avaliador X nao-existe.md
+787:  despachar)   precisa_python; shift; cmd_despachar "$@" ;;
+# sdd/WORKFLOW_CONTRACTS.yaml — contrato de máquina das peças que passam de uma fase a outra.
+# Formato: só `chave: "texto"`, mapas aninhados por 2 espaços e listas `- "texto"` (lido pela stdlib, sem
+# biblioteca de YAML). tests/test_f12_textos.py confere que todo caminho entre crases existe e que os campos,
+# seções e blocos daqui batem com os briefs, o lint e o passo 11 do sdd-define.
+
+version: "1"
+
+verify_gate:
+  runner: "`sdd/bin/verify-gate.sh`"
+  fragment: "`sdd/templates/fragments/VERIFY_GATE.md`"
+  produced_by: "`.agents/skills/sdd-define/SKILL.md` passo 8: todo DEFINE sai com um bloco ## Verify Gate executável"
+  consumed_by:
+    - "`.agents/skills/sdd-build/SKILL.md`: gate autoritativo e bloqueante; exit 2 aborta o build"
+    - "`.agents/skills/sdd-release/SKILL.md`: gate bloqueante da publicação"
+  exits:
+    ok: "0"
+    vermelho: "2"
+    inconclusivo: "3"
+    assinatura_humana: "4"
+    clarificar: "5"
+    spec_invalida: "64"
+  clarificar_motivos:
+    - "marcador ativo de ambiguidade (colchete + NEEDS CLARIFICATION + dois-pontos) fora de cerca"
+    - "linha Governança ausente ou sem valor final no ## Technical Context"
+  governanca_valores_finais:
+    - "N.A. — <motivo>"
+    - "GOVERNANCA_REVIEW_<F>.md · a aplicadas · r recusadas · d adiadas"
+    - "dispensada — <motivo>"
+
+cartografo:
+  brief: "`.agents/skills/sdd-define/references/cartografo.md`"
+  script: "`sdd/bin/contexto-lint.sh`"
+  fronteira: "`sdd/bin/governanca-fronteira.sh`"
+  activation: "passo 1.5 do sdd-define: contexto-lint.sh --sugerir decide gerar | reusar | pular"
+  campos:
+    - "ctx"
+    - "saida"
+    - "worktree"
+    - "dominio"
+  campo_redespacho: "lint"
+  snapshot: "<git-common-dir>/sdd-fronteira/<F>/cartografo-<slug>/"
+  permitido: "sdd/contexto/<slug>.md"
+  secoes:
+    - "Escopo"
+    - "Dados"
+    - "Operações"
+    - "Interfaces"
+    - "Regras vigentes"
+    - "Landmines"
+    - "Histórico SDD"
+  retorno: "<<<CONTEXTO"
+  redespachos: "1"
+  falha: "o Define segue com CONTEXTO de domínio: nenhum (<motivo>)"
+  max_dominios: "2"
+
+revisor_governanca:
+  brief: "`.agents/skills/sdd-governanca/references/revisor.md`"
+  skill: "`.agents/skills/sdd-governanca/SKILL.md`"
+  fronteira: "`sdd/bin/governanca-fronteira.sh`"
+  activation: "passo 11 do sdd-define, sempre, inclusive com --parar; o marcador é gravado antes do despacho"
+  campos:
+    - "define"
+    - "skill"
+    - "padrao"
+    - "worktree"
+    - "saida"
+  snapshot: "<git-common-dir>/sdd-fronteira/<F>/governanca/"
+  permitido: "sdd/reviews/GOVERNANCA_REVIEW_<F>.md"
+  retorno: "<<<GOVERNANCA"
+  validador: "`sdd/bin/governanca-bloco.py`"
+  resultados:
+    - "NA"
+    - "REVISADO"
+    - "PADRAO_AUSENTE"
+    - "FALHA"
+  redespachos: "1"
+  falha: "o marcador fica no DEFINE e o verify-gate.sh sai 5"
+  prova_script: "gravado em sdd/tests/governanca/ e ligado ao cmd do Verify Gate pelo passo 11 do sdd-define; o Design só lista"
+# CONTEXTO: pedidos
+
+ctx: ctx:pedidos
+gerado_em: 2026-11-03
+sha: 0123456789abcdef0123456789abcdef01234567
+superficies: sdd/fixtures/contexto/app/pedidos.py
+sup: `pedido_item` `checkout`
+
+> Fixture VÁLIDA do self-test de `sdd/bin/contexto-lint.sh`: o `sha:` é só formato (a validade real é
+> provada num repositório temporário). As âncoras apontam para arquivos da fixture.
+
+## Escopo
+
+O pedido do cliente, do carrinho à entrega. Mapa em `sdd/fixtures/contexto/dominio.md:13`. CONTAMINAÇÃO: não.
+
+## Dados
+
+| Dado | Campos-chave | Origem (arquivo:linha) |
+|---|---|---|
+| `pedido_item` | `pedido_id`, `produto_id`, `quantidade` | `sdd/fixtures/contexto/app/pedidos.py:3` |
+
+## Operações
+
+| Operação | O que faz | Origem (arquivo:linha) |
+|---|---|---|
+| `criar_pedido()` | grava um pedido com os itens | `sdd/fixtures/contexto/app/pedidos.py:6` |
+| `cancelar_pedido()` | cancela pedido ainda não entregue | `sdd/fixtures/contexto/app/pedidos.py:13` |
+
+## Interfaces
+
+| Interface | Tipo | Chama |
+|---|---|---|
+| `/pedidos` | rota | `criar_pedido()` (`sdd/fixtures/contexto/app/pedidos.py:6`) |
+
+## Regras vigentes
+
+- Pedido sem item é recusado — `sdd/fixtures/contexto/app/pedidos.py:8`
+- Pedido entregue não se cancela — `sdd/fixtures/contexto/app/pedidos.py:15`
+- O saldo de estoque nunca fica negativo — `sdd/fixtures/contexto/app/estoque.sql:2`
+
+## Landmines
+
+- `checkout` → [LM-001] — fixture ativa
+- `pedido_item` → [LM-001] — fixture ativa
+
+## Histórico SDD
+
+- `sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md`
+
+exec
+/bin/zsh -lc "sed -n '66,109p' sdd/bin/sdd-fluxo.sh
+rg --files --hidden -g AGENTS.md -g '"'!**/.git/**'"'
+sed -n '1,18p' sdd/patterns/dominio.md" in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+ succeeded in 0ms:
+# ── despachar (bash puro) ────────────────────────────────────────────────────────────────────────
+cmd_despachar() {
+  [ $# -eq 3 ] || uso "despachar exige <papel> <FEATURE> <brief>"
+  papel="$1"; feat="$2"; brief="$3"
+  nome_ok "$papel" || uso "papel inválido: '$papel' (letras, números, - e _)"
+  nome_ok "$feat" || uso "FEATURE inválida: '$feat' (letras, números, - e _)"
+  if [ ! -r "$brief" ] || [ ! -s "$brief" ] || [ -d "$brief" ]; then
+    echo "🛑 sdd-fluxo: brief ausente, vazio ou ilegível: $brief" >&2
+    printf 'RESULTADO: ERRO DE USO\n→ grave o brief num arquivo e rode de novo; nada foi gravado em sdd/reports/briefs/.\n' >&2
+    exit 64
+  fi
+  R="$(raiz)"
+  rel="sdd/reports/briefs/BRIEF_${papel}_${feat}.md"
+  mkdir -p "$R/sdd/reports/briefs" || exit 64
+  if [ ! "$brief" -ef "$R/$rel" ]; then
+    cp "$brief" "$R/$rel" || exit 64
+  fi
+  cmp -s "$brief" "$R/$rel" || { echo "🛑 sdd-fluxo: a cópia do brief não confere: $rel" >&2; exit 64; }
+  # texto por papel: o que o agente fresco lê, o bloco que volta e o que ainda não aconteceu
+  le='o DEFINE'; nao_feito='nada foi publicado e o relatório não foi gravado.'
+  case "$papel" in
+    avaliador)          retorno='o bloco inteiro da resposta, de `<<<AVALIACAO` até `>>>` (com a linha `VEREDITO: …`)' ;;
+    cartografo)         le='o código do domínio'
+                        retorno='o bloco que começa com `<<<CONTEXTO` até `>>>`'
+                        nao_feito='nada foi gravado em sdd/contexto/.' ;;
+    revisor-governanca) retorno='o bloco que começa com `<<<GOVERNANCA` até `>>>`'
+                        nao_feito='o relatório de governança não foi gravado; o DEFINE está marcado como pendente (o build não passa até a revisão voltar).' ;;
+    *)                  retorno='o bloco final da resposta (o que começa com <<<)' ;;
+  esac
+  printf '⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: %s).\n\n' "$papel"
+  printf '**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.\n'
+  printf '**Onde:** numa janela nova do seu agente, na pasta %s.\n' "$R"
+  printf '**Passos:**\n'
+  printf '1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.\n'
+  printf '2. Cole o conteúdo de %s → o agente começa a ler %s.\n' "$rel" "$le"
+  printf '3. Quando ele terminar, copie %s e cole aqui → é o que eu preciso para continuar.\n' "$retorno"
+  printf '**O que não foi feito:** %s\n' "$nao_feito"
+  printf '**Brief:** %s\n' "$rel"
+  printf '**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.\n\n'
+  printf 'Quando terminar, me peça de novo, eu continuo daqui.\n'
+  printf 'RESULTADO: AGUARDANDO_HUMANO\n→ quando a pessoa colar o retorno, continue do passo que parou.\n'
+  exit 40
+}
+
+# Pattern: modelo de domínio (fixture)
+
+> Fixture do self-test de `sdd/bin/contexto-lint.sh`: um mapa de domínios fictício (pedidos, estoque).
+
+## Quando se aplica
+
+Toda feature que toca pedidos ou estoque.
+
+## Esqueleto
+
+### ctx:pedidos
+
+**Faz:** o pedido do cliente, do carrinho à entrega.
+**Âncoras:** `pedido` · `pedido_item` · `sdd/fixtures/contexto/app/pedidos.py` · `/pedidos`
+sup: `pedido_item` `checkout`
+
+### ctx:estoque
+
+
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+root = Path.cwd().resolve()
+brief = root / 'sdd/reports/briefs/BRIEF_cartografo_PEDIDOS.md'
+brief.parent.mkdir(parents=True, exist_ok=True)
+fields = f'ctx: ctx:pedidos · saida: sdd/contexto/pedidos.md · worktree: {root} · dominio: sdd/patterns/dominio.md\\n\\n'
+brief.write_text(fields + (root / '.agents/skills/sdd-define/references/cartografo.md').read_text())
+PY" in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a
+ succeeded in 38ms:
+codex
+**Status** — Define: ⏸️ 1 Ler o brainstorm · ⬜ 2 Requisitos · ⬜ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança
+
+Escolhi a recomendação de gerar o mapa de pedidos e gravei o [brief do cartógrafo](sdd/reports/briefs/BRIEF_cartografo_PEDIDOS.md).
+
+**Por que parei:** a pasta `.git` permite apenas leitura nesta sessão. A criação do registro de comparação obrigatório foi recusada; por isso, não executei o despacho.
+
+**Onde:** numa sessão nova do agente, nesta mesma pasta.
+
+1. Disponibilize escrita em `.git/sdd-fronteira/` → será possível registrar o estado anterior ao trabalho.
+2. Retome o passo 1.5 para registrar esse estado e despachar o cartógrafo.
+3. Na sessão indicada pelo despacho, cole o brief → o cartógrafo deverá gerar o mapa.
+4. Traga o bloco inteiro `<<<CONTEXTO … >>>` para continuar.
+
+**O que não foi feito:** nenhum mapa foi gerado e `DEFINE_PEDIDOS.md` não foi criado.
+
+A [skill, passo 1.5](.agents/skills/sdd-define/SKILL.md), exige o snapshot “imediatamente antes do despacho” e determina, sem subagente, “pare no exit 40”. A restrição de escrita impediu chegar a esse despacho.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+tokens used
+49.188
+**Status** — Define: ⏸️ 1 Ler o brainstorm · ⬜ 2 Requisitos · ⬜ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança
+
+Escolhi a recomendação de gerar o mapa de pedidos e gravei o [brief do cartógrafo](sdd/reports/briefs/BRIEF_cartografo_PEDIDOS.md).
+
+**Por que parei:** a pasta `.git` permite apenas leitura nesta sessão. A criação do registro de comparação obrigatório foi recusada; por isso, não executei o despacho.
+
+**Onde:** numa sessão nova do agente, nesta mesma pasta.
+
+1. Disponibilize escrita em `.git/sdd-fronteira/` → será possível registrar o estado anterior ao trabalho.
+2. Retome o passo 1.5 para registrar esse estado e despachar o cartógrafo.
+3. Na sessão indicada pelo despacho, cole o brief → o cartógrafo deverá gerar o mapa.
+4. Traga o bloco inteiro `<<<CONTEXTO … >>>` para continuar.
+
+**O que não foi feito:** nenhum mapa foi gerado e `DEFINE_PEDIDOS.md` não foi criado.
+
+A [skill, passo 1.5](.agents/skills/sdd-define/SKILL.md), exige o snapshot “imediatamente antes do despacho” e determina, sem subagente, “pare no exit 40”. A restrição de escrita impediu chegar a esse despacho.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+[exit=0]
+── conferência do critério (a)
+9
+3
+test -f sdd/reports/briefs/BRIEF_cartografo_PEDIDOS.md → 0
+ctx: ctx:pedidos · saida: sdd/contexto/pedidos.md · worktree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bMec0z29MA/a · dominio: sdd/patterns/dominio.md
+
+# Cartógrafo de domínio — brief do agente fresco do passo 1.5
+
+Você é o cartógrafo: mapeia **um** domínio do projeto **no código** e grava **um** arquivo,
+`sdd/contexto/<slug>.md`, antes de alguém escrever a spec. Você não viu a conversa do Define e não deve
+ver: o mapa vale porque descreve o que o código faz hoje, não o que a feature quer fazer.
+
+Quem despacha este brief é o passo 1.5 do `sdd-define`, pela escada de `sdd-build/references/contexto-fresco.md`:
+subagente em contexto limpo; sem subagente, sessão nova (`sdd-fluxo.sh despachar cartografo …`, exit 40).
+Contrato de máquina: `sdd/WORKFLOW_CONTRACTS.yaml` › `cartografo`. Formato: `sdd/bin/contexto-lint.sh`.
+
+AT-020a: PASS

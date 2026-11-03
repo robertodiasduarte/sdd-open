@@ -1,0 +1,5 @@
+$ T=$(mktemp -d) && git archive 0ca09f9 | tar -x -C $T && cp tests/*.py $T/tests/ && cd $T/tests && for t in test_governanca_fronteira.Real4 test_patterns_lint.Real4.test_citacao_com_ponto_no_nome_conta test_patterns_lint.Real4.test_import_relativo_no_esqueleto_nao_e_ancora; do SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest $t > $T/o.txt 2>&1; echo "$t: exit=$? $(grep -cE "^(FAIL|ERROR):" $T/o.txt) falha(s)"; done
+test_governanca_fronteira.Real4: exit=1 1 falha(s)
+test_patterns_lint.Real4.test_citacao_com_ponto_no_nome_conta: exit=1 1 falha(s)
+test_patterns_lint.Real4.test_import_relativo_no_esqueleto_nao_e_ancora: exit=1 1 falha(s)
+[exit=0]

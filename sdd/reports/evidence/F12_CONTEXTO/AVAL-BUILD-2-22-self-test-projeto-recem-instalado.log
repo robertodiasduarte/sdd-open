@@ -1,0 +1,80 @@
+$ W=$(mktemp -d); R=$W/pacote; mkdir $R; git archive HEAD | tar -x -C $R; P=$W/proj; mkdir $P; cd $P; git init -q; bash $R/bin/sdd-open.sh init --vendors codex --yes >/dev/null 2>&1; echo init=$?; ls sdd/fixtures/contexto/app 2>&1; git status --porcelain | head -5; echo '=== self-test ANTES do 1º commit (fixtures não versionadas)'; /bin/bash sdd/bin/contexto-lint.sh --self-test; echo rc=$?; echo '=== mesmo self-test com o pacote de fb77fa7'; git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto show fb77fa7:sdd/bin/contexto-lint.sh > $W/cl-fb77.sh; cp $W/cl-fb77.sh sdd/bin/contexto-lint.sh; /bin/bash sdd/bin/contexto-lint.sh --self-test >/dev/null 2>&1; echo fb77-rc=$?; cp $R/sdd/bin/contexto-lint.sh sdd/bin/contexto-lint.sh; echo '=== depois do commit'; git add -A; git -c user.email=a@b -c user.name=a -c commit.gpgsign=false commit -qm init; /bin/bash sdd/bin/contexto-lint.sh --self-test >/dev/null 2>&1; echo rc=$?
+init=0
+estoque.sql
+pedidos.py
+?? .agents/
+?? AGENTS.md
+?? sdd/
+=== self-test ANTES do 1º commit (fixtures não versionadas)
+self-test (bash) — fixtures em sdd/fixtures/contexto/
+  ✅ nenhuma fixture casada pelo .gitignore
+── VERMELHOS (cada fixture falha pela SUA classe) ──
+  ✅ sem-cabecalho ⇒ exit 2 [cabecalho-ausente]
+  ✅ sem-secao ⇒ exit 2 [secao-ausente]
+  ✅ secao-fora-de-ordem ⇒ exit 2 [secao-fora-de-ordem]
+  ✅ path-morto ⇒ exit 2 [path-morto]
+  ✅ linha-alem-do-fim ⇒ exit 2 [path-morto]
+  ✅ sup-ausente ⇒ exit 2 [sup-ausente]
+  ✅ ctx-desconhecido ⇒ exit 2 [ctx-desconhecido]
+  ✅ lm-morto ⇒ exit 2 [lm-morto]
+  ✅ cabecalho-fora-de-ordem ⇒ exit 2 [cabecalho-ausente]
+  ✅ superficies-com-crase ⇒ exit 2 [cabecalho-ausente]
+  ✅ superficies-sem-arquivo ⇒ exit 2 [path-morto]
+── VALIDADE (repositório temporário: c1 cria a.md · c2 altera a.md e cria b.md) ──
+  ✅ sha=c1 ⇒ exit 1 CONTEXTO VENCIDO nomeando a.md
+  ✅ sha=0000000 ⇒ exit 2 [sha-inexistente]
+  ✅ sha=c2 ⇒ exit 0 CONTEXTO VALIDO
+  ✅ ref inexistente ⇒ exit 2 [sha-inexistente]
+── SUGERIR (entrada × estado do CONTEXTO) ──
+  ✅ entrada de pedidos, pasta vazia ⇒ ctx:pedidos ausente ⇒ gerar
+  ✅ no máximo 2 domínios
+fatal: ambiguous argument 'HEAD': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+  🛑 entrada de pedidos, CONTEXTO válido: esperado valido/reusar, veio 0: CONTEXTO_SUGERIR entrada=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.BewzBvmNi1/proj/sdd/fixtures/contexto/INPUT_FIXTURE_PEDIDOS.md camadas=0 () dir=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mkTPxuY7El/dir-ok ref=HEAD
+ctx:pedidos termos=3 (checkout, pedido, pedido_item) estado=vencido arquivo=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mkTPxuY7El/dir-ok/pedidos.md
+recomendacao: gerar (ctx:pedidos vencido)
+RESULTADO: GERAR
+→ despache o cartógrafo para ctx:pedidos (passo 1.5 do sdd-define).
+  ✅ entrada sem domínio ⇒ 0 domínios ⇒ pular
+  ✅ sem mapa de domínios ⇒ pular, exit 0
+── USO ──
+  ✅ sem argumento ⇒ exit 64 com texto de uso
+  ✅ flag desconhecida ⇒ exit 64
+  ✅ arquivo inexistente ⇒ exit 64
+  ✅ --validade inexistente ⇒ exit 64
+  ✅ flag sem valor ('--ref') ⇒ exit 64, sem laço
+  ✅ flag sem valor ('--dir') ⇒ exit 64, sem laço
+  ✅ flag sem valor ('--dominio') ⇒ exit 64, sem laço
+── VERDES ──
+  🛑 fixture válida ⇒ 2:   🛑 [path-morto] valido-completo.md: 'superficies:' tem 'sdd/fixtures/contexto/app/pedidos.py', que não casa nenhum arquivo versionado (o --validade não veria mudança nele)
+  🛑 [path-morto] valido-completo.md: a âncora 'pedidos.py:6' não aponta para um arquivo único do repositório
+  ⚠️  valido-completo.md: 'sdd/bin/contexto-lint.sh' é citado mas está fora de 'superficies:' (a validade não vê mudança nele) [superficie-nao-cobre]
+  ⚠️  valido-completo.md: 'sdd/fixtures/contexto/app/estoque.sql' é citado mas está fora de 'superficies:' (a validade não vê mudança nele) [superficie-nao-cobre]
+🛑 contexto-lint: 2 erro(s), 2 aviso(s) em 1 CONTEXTO(s)
+RESULTADO: VERMELHO
+→ cite o caminho atual (o arquivo mudou de lugar ou encolheu) ou tire a linha; ou gere o CONTEXTO de novo.
+  ✅ código citado fora de superficies: ⇒ aviso [superficie-nao-cobre], exit 0
+  🛑 superficies-nao-e-ancora ⇒ 2:   🛑 [path-morto] superficies-nao-e-ancora.md: 'superficies:' tem 'sdd/fixtures/contexto/app/*.py', que não casa nenhum arquivo versionado (o --validade não veria mudança nele)
+  🛑 [path-morto] superficies-nao-e-ancora.md: 'superficies:' tem 'sdd/fixtures/contexto/app/estoque.sql', que não casa nenhum arquivo versionado (o --validade não veria mudança nele)
+  🛑 [path-morto] superficies-nao-e-ancora.md: a âncora 'pedidos.py:6' não aponta para um arquivo único do repositório
+  ⚠️  superficies-nao-e-ancora.md: 'sdd/bin/contexto-lint.sh' é citado mas está fora de 'superficies:' (a validade não vê mudança nele) [superficie-nao-cobre]
+🛑 contexto-lint: 3 erro(s), 1 aviso(s) em 1 CONTEXTO(s)
+RESULTADO: VERMELHO
+→ cite o caminho atual (o arquivo mudou de lugar ou encolheu) ou tire a linha; ou gere o CONTEXTO de novo.
+  🛑 pasta com README ⇒ 2:   🛑 [path-morto] pedidos.md: 'superficies:' tem 'sdd/fixtures/contexto/app/pedidos.py', que não casa nenhum arquivo versionado (o --validade não veria mudança nele)
+  🛑 [path-morto] pedidos.md: a âncora 'pedidos.py:6' não aponta para um arquivo único do repositório
+  ⚠️  pedidos.md: 'sdd/bin/contexto-lint.sh' é citado mas está fora de 'superficies:' (a validade não vê mudança nele) [superficie-nao-cobre]
+  ⚠️  pedidos.md: 'sdd/fixtures/contexto/app/estoque.sql' é citado mas está fora de 'superficies:' (a validade não vê mudança nele) [superficie-nao-cobre]
+🛑 contexto-lint: 2 erro(s), 2 aviso(s) em 1 CONTEXTO(s)
+RESULTADO: VERMELHO
+→ cite o caminho atual (o arquivo mudou de lugar ou encolheu) ou tire a linha; ou gere o CONTEXTO de novo.
+🔴 self-test: 4 falha(s) — o lint NÃO está provando o que promete
+RESULTADO: VERMELHO
+→ corrija o lint ou a fixture apontada acima.
+rc=2
+=== mesmo self-test com o pacote de fb77fa7
+fb77-rc=2
+=== depois do commit
+rc=0
+[exit=0]

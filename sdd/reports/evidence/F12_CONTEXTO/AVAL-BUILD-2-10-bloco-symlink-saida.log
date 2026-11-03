@@ -1,0 +1,7 @@
+$ D=$(mktemp -d); P=$(cd $D && pwd -P); printf '# R\n\n## Lacunas\n\n### G01 — x\n\nt\n\n## Já cobertos\n' > $D/R.md; printf 'MUDOU: %s\nRESULTADO: x\n' $P/R.md > $D/c.txt; printf '<<<GOVERNANCA\nresultado: REVISADO\nmotivo: m\nrelatorio: %s\ncobertura: x\nlacuna: G01 | alta | AT-001\nmuda: m\nporque: p\n>>>\n' $D/R.md > $D/r.txt; echo "saida=$D/R.md  MUDOU=$P/R.md"; /usr/bin/python3 -B sdd/bin/governanca-bloco.py $D/r.txt --saida $D/R.md --comparar $D/c.txt; echo rc=$?
+saida=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.fJuRPddfeA/R.md  MUDOU=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.fJuRPddfeA/R.md
+✅ bloco <<<GOVERNANCA válido: resultado REVISADO, 1 lacuna(s)
+RESULTADO: REVISADO
+→ pergunte uma lacuna por vez (1) e aplique as escolhidas.
+rc=0
+[exit=0]

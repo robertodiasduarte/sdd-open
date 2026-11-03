@@ -1,0 +1,92 @@
+$ git rev-parse HEAD
+363d8bc8b4cd0b8d24033e9667bc37c6cb1abe34
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F12_CONTEXTO
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: codex (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261103-115727
+diff_sha256: c2d05a63e988d457688632801fd6f14dd04383f4b29fa4996583a85dfce2011f
+revisor: claude (claude-opus-5-5) — US$ 2,5900
+2º revisor: codex (-) — incluído na assinatura
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0567
+diversidade: vendor
+achados: 0 graves, 4 médios, 4 leves
+custo total: US$ 2,6467
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261103-115727 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261103-115727/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto
+branch                  : feat/f12-contexto
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 9508ff0f459c6f0004193d071c045d3e4cc4f974
+head                    : 363d8bc8b4cd0b8d24033e9667bc37c6cb1abe34
+paths                   : -
+diff_sha256             : c2d05a63e988d457688632801fd6f14dd04383f4b29fa4996583a85dfce2011f
+diff                    : 295KB (90 arquivo(s))
+contexto                : 95KB (3 doc SDD)
+docs_sdd                : BRAINSTORM_F12_CONTEXTO.md, DEFINE_F12_CONTEXTO.md, DESIGN_F12_CONTEXTO.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 394
+reviewer_achados        : 5
+reviewer_tokens_entrada : 205469
+reviewer_tokens_saida   : 42864
+reviewer_tokens_total   : 248333
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 2.5900
+revisor1_raso           : nao
+gatilho_2o_revisor      : 90 arquivos (limiar 8)
+revisor2_engine         : codex
+revisor2_engine_default : codex
+revisor2_engine_efetivo : codex
+revisor2_fallback_usado : nao
+revisor2_motivo         : -
+revisor2_exit           : 0
+revisor2_segundos       : 244
+revisor2_achados        : 3
+revisor2_tokens_entrada : 152033
+revisor2_tokens_saida   : 7072
+revisor2_tokens_total   : 159105
+revisor2_modelo         : -
+revisor2_custo          : assinatura
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 162
+auditor_vereditos       : 8
+auditor_tokens_entrada  : 138359
+auditor_tokens_saida    : 9687
+auditor_tokens_total    : 148046
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0567
+convergencia_1o_passe   : nao
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 2.6467
+quando                  : 20261103-115727
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261103-115727 --ledger sdd/reports/evidence/F12_CONTEXTO/ledger-review.md --rodada 3
+ESTADO: PRONTO
+rodada: 3 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261103-115727
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261103-115727 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261103-115727 sha256=c2d05a63e988d457688632801fd6f14dd04383f4b29fa4996583a85dfce2011f diversidade=vendor
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[exit=0]

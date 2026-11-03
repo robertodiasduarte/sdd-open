@@ -1,0 +1,13 @@
+$ git rev-parse --short HEAD && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_docs_extract_decisions
+96a97ec
+test_indice_com_ids_sufixo_orfaos_e_conservacao (test_docs_extract_decisions.Extrator) ... ok
+test_links_relativos_a_pasta_do_out (test_docs_extract_decisions.Extrator) ... ok
+test_out_e_projeto_sem_design (test_docs_extract_decisions.Extrator) ... ok
+test_sabotagem_que_perde_um_orfao_viola_a_conservacao (test_docs_extract_decisions.Extrator) ... ok
+test_uso_sai_64 (test_docs_extract_decisions.Extrator) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.322s
+
+OK
+[exit=0]

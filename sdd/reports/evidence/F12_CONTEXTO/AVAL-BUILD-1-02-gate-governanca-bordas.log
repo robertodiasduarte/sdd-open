@@ -1,0 +1,30 @@
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/vg-probe.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3
+bad_fora_da_secao                  exit=5 strict=1 print=0 encontrado: ausente).
+bad_marcador                       exit=5 strict=1 print=0 encontrado: o marcador "governança não rodou" na linha 11).
+bad_negrito_valor                  exit=5 strict=1 print=0 encontrado: **N.A. — sem tema**).
+bad_pendente                       exit=5 strict=1 print=0 encontrado: pendente).
+bad_placeholder_disp               exit=5 strict=1 print=0 encontrado: dispensada — {motivo}).
+bad_placeholder_na                 exit=5 strict=1 print=0 encontrado: N.A. — <motivo>).
+bad_placeholder_rev                exit=5 strict=1 print=0 encontrado: GOVERNANCA_REVIEW_<F>.md · a aplicadas).
+bad_sem_espaco                     exit=5 strict=1 print=0 encontrado: N.A.—sem tema).
+bad_so_em_cerca                    exit=5 strict=1 print=0 encontrado: ausente).
+bad_vazio                          exit=5 strict=1 print=0 encontrado: (vazio)).
+ok_crlf                            exit=2 strict=2 print=0 
+ok_crlf_sem_pipe                   exit=2 strict=2 print=0 
+ok_escaped_pipe                    exit=0 strict=0 print=0 
+ok_espacos_largos                  exit=0 strict=0 print=0 
+ok_hifen                           exit=0 strict=0 print=0 
+ok_indent2                         exit=5 strict=1 print=0 encontrado: ausente).
+ok_marcador_em_cerca               exit=0 strict=0 print=0 
+ok_review                          exit=0 strict=0 print=0 
+ok_sem_pipe_final                  exit=0 strict=0 print=0 
+q_duas_linhas                      exit=5 strict=1 print=0 encontrado: pendente).
+q_endash                           exit=5 strict=1 print=0 encontrado: N.A. – sem tema).
+q_escaped_label                    exit=5 strict=1 print=0 encontrado: x).
+q_heading_minusc                   exit=5 strict=1 print=0 encontrado: ausente).
+q_heading_numerado                 exit=5 strict=1 print=0 encontrado: ausente).
+q_heading_pt                       exit=5 strict=1 print=0 encontrado: ausente).
+q_nbsp                             exit=0 strict=0 print=0 
+q_nfd                              exit=5 strict=1 print=0 encontrado: ausente).
+q_sem_negrito                      exit=5 strict=1 print=0 encontrado: ausente).
+[exit=0]

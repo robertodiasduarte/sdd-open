@@ -1,0 +1,11 @@
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261103-164047 --ledger sdd/reports/evidence/F12_CONTEXTO/ledger-review.md --rodada 5
+ESTADO: BLOQUEADO
+rodada: 5 de 3
+graves_abertos: 0
+aplicadas: 1
+rebatidas: 0
+motivo: grave(s) corrigido(s) — código mudou, exige nova review: R1@codex
+motivo: D4 teto: 3 rodadas de review atingido
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[exit=20]
