@@ -186,6 +186,18 @@ class Real4(Base):
         self.assertEqual(rc, 0, out)
 
 
+class Real5(Base):
+    def test_titulo_dentro_de_cerca_til_nao_conta_como_secao(self):
+        p = self.r / "til"
+        p.mkdir()
+        self.verde(p / "pedidos.md")
+        t = (p / "pedidos.md").read_text(encoding="utf-8").replace("## Landmines\n", "~~~text\n## Landmines\n~~~\n")
+        (p / "pedidos.md").write_text(t, encoding="utf-8")
+        rc, out = self.lint(*PB, "til")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("[secao-ausente]", out)
+
+
 class Sabotagem(Base):
     def test_idade_que_nao_bloqueia_no_design_derruba_o_self_test(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")

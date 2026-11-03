@@ -33,12 +33,15 @@ if [ -z "${root}" ]; then root="$(git rev-parse --show-toplevel 2>/dev/null || p
 root="$(cd "${root}" && pwd)"
 out="${out:-${root}/docs/adr/index.md}"
 
+# os links do índice são relativos à pasta do --out (docs/adr/index.md ⇒ ../../)
+pre="$(python3 -c 'import os, sys; print(os.path.relpath(sys.argv[1], os.path.dirname(os.path.abspath(sys.argv[2]))))' "${root}" "${out}")/"
+[ "${pre}" = "./" ] && pre=""
 lista="$(mktemp)"; body="$(mktemp)"; stats="$(mktemp)"; tmp="$(mktemp)"
 trap 'rm -f "${lista}" "${body}" "${stats}" "${tmp}"' EXIT
 ( cd "${root}" && for f in sdd/features/DESIGN_*.md; do [ -f "${f}" ] && printf '%s\n' "${f}"; done ) | sort > "${lista}" || true
 lidos=$(grep -c . "${lista}" || true)
 
-(cd "${root}" && awk -v stats="${stats}" '
+(cd "${root}" && awk -v stats="${stats}" -v pre="${pre}" '
 function autolink(s,   out, rest, pre, url, ticks) {
   out = ""; rest = s
   while (match(rest, /https?:\/\/[^ <>`)|]+/)) {
@@ -67,7 +70,7 @@ function md_cell(s, max,   cut, ticks) {
   ticks = gsub(/`/, "`", s); if (ticks % 2 == 1) s = s "`"
   return autolink(s)
 }
-function rel(path) { return "../../" path }
+function rel(path) { return pre path }
 function flush_block(   id, st, suf, k) {
   if (!inblk) return
   k = ++seen[bn]
@@ -172,7 +175,7 @@ fi
   if [ "${orfaos}" -gt 0 ]; then
     echo "| DESIGN | Motivo |"
     echo "|--------|--------|"
-    awk -F'\t' '/^@@AVISOS/{exit} /^@@/{next} {printf "| [%s](../../%s) | %s |\n", $2, $3, $4}' "${stats}"
+    awk -F'\t' -v pre="${pre}" '/^@@AVISOS/{exit} /^@@/{next} {printf "| [%s](%s%s) | %s |\n", $2, pre, $3, $4}' "${stats}"
   else
     echo "_Nenhum._"
   fi

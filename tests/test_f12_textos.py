@@ -109,6 +109,9 @@ class Passo11(unittest.TestCase):
     def test_redespacho_do_cartografo_refaz_brief_e_snapshot(self):
         self.assertIn("**refazendo antes** o brief", PASSO_15)
 
+    def test_restauracao_do_define_desfaz_link_antes_do_cp(self):
+        self.assertIn('`rm -f sdd/features/DEFINE_<F>.md && cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md`', PASSO_11)
+
     def test_padrao_ausente_refaz_o_snapshot(self):
         self.assertIn("**refaça o\n   snapshot de antes**", PASSO_11)
 

@@ -75,6 +75,15 @@ class Extrator(Sandbox):
         self.assertIn("lidos=0", out)
         self.assertIn("_Nenhum._", (self.tmp / "i.md").read_text(encoding="utf-8"))
 
+    def test_links_relativos_a_pasta_do_out(self):
+        rc, out = self.roda_extrator("--root", str(self.p), "--out", str(self.p / "index.md"))
+        self.assertEqual(rc, 0, out)
+        idx = (self.p / "index.md").read_text(encoding="utf-8")
+        self.assertIn("](sdd/features/DESIGN_PEDIDOS.md)", idx)
+        self.assertIn("](sdd/features/DESIGN_SEM_BLOCO.md)", idx)
+        rc, out = self.roda_extrator("--root", str(self.p), "--out", str(self.p / "a/b/c/i.md"))
+        self.assertIn("](../../../sdd/features/DESIGN_PEDIDOS.md)", (self.p / "a/b/c/i.md").read_text(encoding="utf-8"))
+
     def test_uso_sai_64(self):
         for args in (("--root",), ("--x",), ("--root", str(self.tmp / "nao-existe"))):
             with self.subTest(args=args):

@@ -238,6 +238,16 @@ class Real3(Base):
                 self.assertIn("[sup-ausente]", out)
 
 
+class Real5(Base):
+    def test_titulo_dentro_de_cerca_til_nao_conta_como_secao(self):
+        v = (self.r / FX / "valido-completo.md").read_text(encoding="utf-8")
+        sem = v.replace("## Interfaces\n", "~~~markdown\n## Interfaces\n~~~\n")
+        self.escreve(self.r, "t.md", sem)
+        rc, out = self.lint(*DOM, "t.md")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("[secao-ausente]", out)
+
+
 class Sabotagem(Base):
     def test_sem_a_checagem_de_landmine_o_self_test_cai(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")

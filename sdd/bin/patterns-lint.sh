@@ -79,7 +79,7 @@ dias_desde() {
 
 checa_secoes() {
   local f="$1" nome="$2" s pos ultima_pos ordem_ok
-  awk '/^```/{b=!b;next} !b && /^## /' "${f}" | sed -E 's/^## //' > "${TMP}/achadas.txt"
+  awk '/^[[:space:]]*(```|~~~)/{b=!b;next} !b && /^## /' "${f}" | sed -E 's/^## //' > "${TMP}/achadas.txt"
   printf '%s\n' "${SECOES}" > "${TMP}/esperadas.txt"
   ultima_pos=0; ordem_ok=1
   while IFS= read -r s; do

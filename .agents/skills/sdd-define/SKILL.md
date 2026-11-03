@@ -275,7 +275,9 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
    lista, `lacuna:` sem os 3 campos ou sem `muda:`/`porque:`, `relatorio:` diferente do `saida:`, Gnn do
    bloco diferente dos títulos `### Gnn — ` de `## Lacunas`, `REVISADO` sem `MUDOU: <saida>`, ou outro
    resultado com o relatório gravado). Tratamento, **nada destrutivo**: DEFINE em `FORA:` ⇒
-   `cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md` e confira com `cmp`; outros `FORA:` ⇒ liste, não
+   `rm -f sdd/features/DEFINE_<F>.md && cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md` e confira com `cmp` (o
+   `rm` antes desfaz um link que o agente tenha posto no lugar do DEFINE: um `cp` sobre o link escreveria no
+   arquivo para onde ele aponta); outros `FORA:` ⇒ liste, não
    apague; o `saida:` que estava `AUSENTE` no antes ⇒ remova.
    Imprima `↻ governança: a 1ª tentativa falhou (<motivo>); tentando de novo em contexto fresco.`,
    refaça o snapshot de antes e **redespache uma vez**, com os mesmos 5 campos (o motivo fica nesta
