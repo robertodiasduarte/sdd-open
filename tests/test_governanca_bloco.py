@@ -74,6 +74,8 @@ class Bloco(Sandbox):
             "gnn não bate com o relatório": revisado(lacunas=("G01 | alta | AT-003\nmuda: m\nporque: p",)),
 "lacuna repetida": revisado(lacunas=("G01 | alta | AT-003\nmuda: m\nporque: p", "G01 | alta | AT-003\nmuda: m\nporque: p",
                                                 "G05 | média | —\nmuda: m\nporque: p")),
+            "bloco vazio": "<<<GOVERNANCA\n>>>\n",
+            "sem resultado": "<<<GOVERNANCA\nmotivo: x\n>>>\n",
             "NA com relatorio preenchido": "<<<GOVERNANCA\nresultado: NA\nmotivo: x\nrelatorio: SAIDA\n>>>",
         }
         for nome, resp in casos.items():

@@ -137,6 +137,21 @@ class Real1(Base):
             os.chmod(str(sujo), 0o644)
 
 
+class Real2(Base):
+    def test_permitido_por_link_de_arquivo_casa_com_o_destino(self):
+        self.escreve(self.w, "sdd/reviews/destino.md", "")
+        link = self.w / "sdd/reviews/REL.md"
+        os.symlink(str(self.w / "sdd/reviews/destino.md"), str(link))
+        rc, out = self.fr("--snapshot", str(self.w), str(self.s / "antes"), str(link))
+        self.assertEqual(rc, 0, out)
+        self.escreve(self.w, "sdd/reviews/destino.md", "relatório\n")
+        rc, out = self.fr("--snapshot", str(self.w), str(self.s / "depois"), str(link))
+        self.assertEqual(rc, 0, out)
+        rc, out = self.fr("--comparar", str(self.s / "antes"), str(self.s / "depois"), str(link))
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("FORA:", out)
+
+
 class Uso(Base):
     def test_fronteira_nao_verificada_sai_64(self):
         self.snap("antes")

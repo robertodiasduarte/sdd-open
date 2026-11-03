@@ -108,6 +108,10 @@ class Gate(Sandbox):
                 rc, out = self.gate(define(linha))
                 self.assertEqual(rc, 0, out)
 
+    def test_real2_linha_em_cerca_til_nao_vale(self):
+        cerca = "## Technical Context\n\n~~~markdown\n| **Governança** | N.A. — sem tema | x |\n~~~\n\n"
+        self.assert_governanca(*self.gate(define(None, extra=cerca)))
+
     def test_print_isento_strict_remapeia_e_ordem(self):
         rc, out = self.gate(define(None), "--print")
         self.assertEqual(rc, 0, out)

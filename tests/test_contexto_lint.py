@@ -193,6 +193,32 @@ class Real1(Base):
         self.assertIn("[path-morto]", out)
 
 
+class Real2(Base):
+    def test_superficie_vazia_ou_binaria_apagada_e_vencida(self):
+        for nome, conteudo in (("vazio.txt", b""), ("bin.dat", b"\x00\x01\x02")):
+            with self.subTest(arquivo=nome):
+                (self.r / "mod").mkdir(exist_ok=True)
+                (self.r / "mod" / nome).write_bytes(conteudo)
+                self.commit(self.r)
+                sha = self.git(self.r, "rev-parse", "HEAD").strip()
+                ctx = (self.r / FX / "validade-template.md").read_text(encoding="utf-8").replace("__SHA__", sha)
+                self.escreve(self.r, "c.md", ctx.replace("superficies: a.md", "superficies: mod/" + nome))
+                (self.r / "mod" / nome).unlink()
+                self.commit(self.r)
+                rc, out = self.lint("--validade", "c.md", "--ref", "HEAD")
+                self.assertEqual(rc, 1, out)
+
+    def test_self_test_sem_fixtures_versionadas_sai_64(self):
+        novo = self.repo("novo")
+        (novo / "sdd/bin").mkdir(parents=True)
+        shutil.copy(str(RAIZ / SCRIPT), str(novo / SCRIPT))
+        self.commit(novo)
+        shutil.copytree(str(RAIZ / FX), str(novo / FX))
+        rc, out, err = self.roda([BASH, SCRIPT, "--self-test"], novo)
+        self.assertEqual(rc, 64, out + err)
+        self.assertIn("fixtures versionadas", out + err)
+
+
 class Sabotagem(Base):
     def test_sem_a_checagem_de_landmine_o_self_test_cai(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")

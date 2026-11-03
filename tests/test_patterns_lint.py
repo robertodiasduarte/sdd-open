@@ -139,6 +139,19 @@ class Real1(Base):
         self.assertIn("[path-morto]", out)
 
 
+class Real2(Base):
+    def test_design_sem_citacao_com_pattern_defeituoso_na_pasta_sai_0(self):
+        p = self.r / "def"
+        p.mkdir()
+        shutil.copy(str(self.r / "sdd/fixtures/patterns/sem-secao.md"), str(p / "estoque.md"))
+        shutil.copy(str(self.r / "sdd/fixtures/patterns/lm-morto.md"), str(p / "outro.md"))
+        rc, out = self.lint(*PB, "--design", "sdd/fixtures/patterns/DESIGN_FIXTURE_SEM_CITACAO.md", "def")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("não citado no DESIGN, não bloqueia", out)
+        rc, out = self.lint(*PB, "def")
+        self.assertEqual(rc, 2, out)
+
+
 class Sabotagem(Base):
     def test_idade_que_nao_bloqueia_no_design_derruba_o_self_test(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")

@@ -109,6 +109,8 @@ def main(argv: list) -> int:
             campos.setdefault(chave, valor)
         k += 1
 
+    if linhas == [] and not erros:
+        erros.append("bloco <<<GOVERNANCA vazio")
     res = campos.get("resultado", "")
     if linhas and res not in RESULTADOS:
         erros.append("resultado fora de NA | REVISADO | PADRAO_AUSENTE | FALHA: '" + res + "'")
@@ -141,13 +143,15 @@ def main(argv: list) -> int:
         if res != "REVISADO" and gravou:
             erros.append(res + ", mas o revisor gravou o relatório (MUDOU: " + saida + ")")
 
-    if erros:
+    if erros or res not in RESULTADOS:
+        if res not in RESULTADOS and not erros:
+            erros.append("resultado ausente")
         for e in erros:
             print("  🛑 " + e)
         print("RESULTADO: BLOCO INVÁLIDO\n→ conte como falha da revisão: 1 redespacho fresco com os mesmos 5 campos.")
         return 2
     acao = {
-        "NA": "escreva a linha Governança: N.A. — <motivo> e tire o marcador de governança.",
+        "NA": "escreva a linha | **Governança** | N.A. — <motivo> | … | e tire o marcador de governança.",
         "REVISADO": "pergunte uma lacuna por vez (" + str(len(trios)) + ") e aplique as escolhidas.",
         "PADRAO_AUSENTE": "pergunte os 5 campos do padrão do projeto, grave-o e despache de novo (não conta como falha).",
         "FALHA": "conte como falha da revisão: 1 redespacho fresco com os mesmos 5 campos.",

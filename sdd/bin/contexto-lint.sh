@@ -282,12 +282,12 @@ validade() {  # $1=arquivo $2=ref ⇒ 0 valido | 1 vencido | 2 sha-inexistente/c
   git cat-file -e "${sha}^{commit}" 2>/dev/null || { erro "sha-inexistente" "${nome}: o sha '${sha}' não existe neste repositório"; return 2; }
   git rev-parse --verify -q "${ref}^{commit}" >/dev/null 2>&1 || { erro "sha-inexistente" "${nome}: a ref '${ref}' não existe neste repositório (use --ref)"; return 2; }
   set -f; set -- ${sups}; set +f
-  # pathspec que não casava nada no sha nem casa hoje: a validade não mediria nada. Arquivo apagado depois do sha
-  # cai no diff abaixo e é VENCIDO, não erro.
-  if [ -z "$(git grep -l -I -e '' "${sha}" -- "$@" 2>/dev/null | head -1)" ] && [ -z "$(git ls-files -- "$@" 2>/dev/null | head -1)" ]; then
-    erro "path-morto" "${nome}: 'superficies:' não casa nenhum arquivo versionado; a validade não mediria nada"; return 2
-  fi
+  # 1º o diff: arquivo apagado (vazio, binário ou não) depois do sha é VENCIDO. Só sem diff, um pathspec que
+  # não casa nada no sha nem no índice é erro: a validade não mediria nada.
   if git diff --quiet "${sha}..${ref}" -- "$@"; then
+    if [ -z "$(git grep -l -e '' "${sha}" -- "$@" 2>/dev/null | head -1)" ] && [ -z "$(git ls-files -- "$@" 2>/dev/null | head -1)" ]; then
+      erro "path-morto" "${nome}: 'superficies:' não casa nenhum arquivo versionado; a validade não mediria nada"; return 2
+    fi
     printf 'CONTEXTO VALIDO (%s..%s, %d pathspec)\n' "$(printf '%s' "${sha}" | cut -c1-7)" "${ref}" "$#"; return 0
   fi
   printf 'CONTEXTO VENCIDO (%s..%s): superfícies alteradas desde o sha:\n' "$(printf '%s' "${sha}" | cut -c1-7)" "${ref}"
@@ -388,6 +388,7 @@ self_test() {
   DX="${FIXTURES}/dominio.md"; PX="${FIXTURES}/playbook.md"
   echo "self-test (bash) — fixtures em ${FIXTURES}/"
   git rev-parse -q --verify HEAD >/dev/null 2>&1 || { echo "🛑 o self-test precisa de um commit (âncoras e superficies: são conferidas contra os arquivos versionados): faça o 1º commit e rode de novo" >&2; return 64; }
+  [ -n "$(git ls-files -- "${FIXTURES}" 2>/dev/null | head -1)" ] || { echo "🛑 o self-test precisa das fixtures versionadas (âncoras e superficies: são conferidas contra os arquivos versionados): commite ${FIXTURES}/ e rode de novo" >&2; return 64; }
   [ -d "${FIXTURES}" ] || { echo "🛑 fixtures ausentes em ${FIXTURES} (o init só as copia na 1ª instalação; copie a pasta do pacote)" >&2; return 64; }
   ign=$(git check-ignore "${FIXTURES}"/*.md "${FIXTURES}"/app/* 2>/dev/null | wc -l | tr -d ' ')
   if [ "${ign}" = "0" ]; then echo "  ✅ nenhuma fixture casada pelo .gitignore"

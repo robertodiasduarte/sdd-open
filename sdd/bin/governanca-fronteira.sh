@@ -63,14 +63,8 @@ while i < len(r):
 }
 # caminho absoluto canônico: o ancestral mais próximo que existe passa por `pwd -P` (no macOS /var é link
 # para /private/var; sem isso o permitido não casa com a raiz canonizada e vira FORA ou "fora do worktree")
-canon() {
-  local p="$1" resto="" base
-  case "${p}" in /*) ;; *) p="$(pwd -P)/${p}" ;; esac
-  while [ ! -d "${p}" ]; do
-    base="$(basename "${p}")"; resto="/${base}${resto}"; p="$(dirname "${p}")"
-    [ "${p}" = "/" ] && break
-  done
-  printf '%s%s' "$(cd "${p}" && pwd -P)" "${resto}"
+canon() { # realpath: resolve link de pasta E de arquivo; o trecho que ainda não existe fica como está
+  python3 -c 'import os, sys; sys.stdout.write(os.path.realpath(sys.argv[1]))' "$1"
 }
 todos_paths() { # $1 raiz · $2 arquivo de saída
   : > "$2"

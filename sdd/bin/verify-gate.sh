@@ -187,7 +187,7 @@ if [ "${PRINT_ONLY}" -eq 0 ]; then
   fi
   # ---- linha Governança: o passo 11 do sdd-define precisa ter fechado (exit 5) ----------
   GOV="$(awk '
-    /^[[:space:]]*```/                  { f=!f; next }
+    /^[[:space:]]*(```|~~~)/            { f=!f; next }
     f                                   { next }
     /^##[[:space:]]+Technical Context/  { sec=1; next }
     sec && /^##[[:space:]]/             { sec=0 }

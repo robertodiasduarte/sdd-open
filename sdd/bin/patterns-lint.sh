@@ -50,7 +50,10 @@ trap 'rm -rf "${TMP}"' EXIT
 erros=0
 avisos=0
 primeira_classe=""
-erro()  { printf '  🛑 [%s] %s\n' "$1" "$2"; erros=$((erros + 1)); [ -n "${primeira_classe}" ] || primeira_classe="$1"; }
+SO_AVISO=0   # 1 enquanto se confere um pattern NÃO citado no regime --design: todo defeito dele só avisa
+erro()  {
+  if [ "${SO_AVISO}" = "1" ]; then printf '  ⚠️  [%s] %s — não citado no DESIGN, não bloqueia\n' "$1" "$2"; avisos=$((avisos + 1)); return; fi
+  printf '  🛑 [%s] %s\n' "$1" "$2"; erros=$((erros + 1)); [ -n "${primeira_classe}" ] || primeira_classe="$1"; }
 aviso() { printf '  ⚠️  %s\n' "$1"; avisos=$((avisos + 1)); }
 
 conserto() {
@@ -174,11 +177,12 @@ lint_arquivo() {
   local f="$1" citado="$2" design="$3" nome bloqueia
   nome=$(basename "${f}")
   # sem --design todo caminho morto bloqueia; com --design, só o do pattern CITADO
-  if [ -z "${design}" ] || [ "${citado}" = "sim" ]; then bloqueia="sim"; else bloqueia="nao"; fi
+  if [ -z "${design}" ] || [ "${citado}" = "sim" ]; then bloqueia="sim"; SO_AVISO=0; else bloqueia="nao"; SO_AVISO=1; fi
   checa_secoes    "${f}" "${nome}"
   checa_paths     "${f}" "${nome}" "${bloqueia}"
   checa_landmines "${f}" "${nome}"
   checa_validado  "${f}" "${nome}" "${citado}"
+  SO_AVISO=0
 }
 
 rodar_lint() {

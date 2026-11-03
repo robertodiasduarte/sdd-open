@@ -113,7 +113,8 @@ com `arquivo:linha` em cada afirmação (brief: `references/cartografo.md`; form
       e `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/contexto/<slug>.md`;
       depois `bash sdd/bin/contexto-lint.sh sdd/contexto/<slug>.md`;
    4. falha = `--comparar` ≠ 0, lint ≠ 0 ou bloco ilegível. `FORA:` ⇒ liste os caminhos, não apague
-      nada. **1 redespacho** fresco, com a saída do lint anexada; 2ª falha ⇒
+      nada. **1 redespacho** fresco, com a saída do lint anexada, **refazendo antes** o brief (sem subagente) e o
+      snapshot de antes (o que ficou da 1ª tentativa não pode condenar a 2ª); 2ª falha ⇒
       `⚠️ contexto: o mapa não ficou válido (<motivo em palavras>); o Define segue sem ele.` e
       `nenhum (<motivo>)`.
 5. **Preencha** a linha `CONTEXTO de domínio` do Technical Context:

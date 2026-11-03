@@ -106,6 +106,9 @@ class Passo11(unittest.TestCase):
         self.assertIn('RESULTADOS = ("NA", "REVISADO", "PADRAO_AUSENTE", "FALHA")', bloco)
         self.assertIn("resultado: NA | REVISADO | PADRAO_AUSENTE | FALHA", REVISOR)
 
+    def test_redespacho_do_cartografo_refaz_brief_e_snapshot(self):
+        self.assertIn("**refazendo antes** o brief", PASSO_15)
+
     def test_padrao_ausente_refaz_o_snapshot(self):
         self.assertIn("**refaça o\n   snapshot de antes**", PASSO_11)
 
