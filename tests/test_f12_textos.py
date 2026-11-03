@@ -106,6 +106,11 @@ class Passo11(unittest.TestCase):
         self.assertIn('RESULTADOS = ("NA", "REVISADO", "PADRAO_AUSENTE", "FALHA")', bloco)
         self.assertIn("resultado: NA | REVISADO | PADRAO_AUSENTE | FALHA", REVISOR)
 
+    def test_briefs_proibem_commit(self):
+        self.assertIn("**Não faz commit**", CARTOGRAFO)
+        self.assertIn("sem crase, e cada um casa ao menos um arquivo versionado", CARTOGRAFO)
+        self.assertIn("Fazer commit ou `git add`", REVISOR)
+
     def test_brief_do_revisor_diz_quem_e_dono_da_prova(self):
         self.assertIn("**Quem grava o `.sql` em\n   `sdd/tests/governanca/` e o liga ao `cmd` do Verify Gate é o passo 11 do Define**", REVISOR)
         self.assertIn("o Design só lista o arquivo no File Manifest", REVISOR)

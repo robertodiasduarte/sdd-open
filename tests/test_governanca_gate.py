@@ -95,6 +95,13 @@ class Gate(Sandbox):
         self.assertIn("responda também as dúvidas abertas", out)
         self.assertIn("o mês fecha quando?", out)
 
+    def test_aval2_duas_duvidas_na_mesma_linha_aparecem(self):
+        linha = ("## Clarifications\n\n- [NEEDS" + " CLARIFICATION: governança não rodou] e [NEEDS"
+                 + " CLARIFICATION: qual teto por minuto?]\n\n")
+        rc, out = self.gate(define("| **Governança** | pendente | y |", extra=linha))
+        self.assert_governanca(rc, out)
+        self.assertIn("qual teto por minuto?", out)
+
     def test_l3_linha_com_recuo_ou_sem_negrito_vale(self):
         for linha in ("  | **Governança** | N.A. — sem tema | x |", "| Governança | N.A. — sem tema | x |"):
             with self.subTest(linha=linha):

@@ -169,7 +169,8 @@ if [ "${PRINT_ONLY}" -eq 0 ]; then
     # o marcador do passo 11: a mensagem é a da governança, com as 2 saídas
     CLARIFICAR_MOTIVO=governanca
     msg_governanca "o marcador \"governança não rodou\" na linha $(printf '%s' "${PENDENTES}" | grep 'governança não rodou' | head -1 | cut -d: -f1)"
-    OUTROS="$(printf '%s\n' "${PENDENTES}" | grep -v 'governança não rodou' || true)"
+    # cada marcador separado (dois na mesma linha não se escondem), menos o de governança
+    OUTROS="$(printf '%s\n' "${PENDENTES}" | grep -o '\[NEEDS CLARIFICATION:[^]]*\]' | grep -v 'governança não rodou' || true)"
     if [ -n "${OUTROS}" ]; then
       # o passo 11 espera as outras dúvidas: mostrá-las aqui evita a volta em vão
       echo "   Antes, responda também as dúvidas abertas (o passo 11 só roda sem elas):" >&2

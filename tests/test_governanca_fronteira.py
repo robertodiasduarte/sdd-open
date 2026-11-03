@@ -103,6 +103,20 @@ class Aval1(Base):
         self.assertEqual(rc, 64, out)
 
 
+class Aval2(Base):
+    def test_arvore_limpa_sem_incluir_compara(self):
+        for nome in ("antes", "depois"):
+            rc, out = self.fr("--snapshot", str(self.w), str(self.s / nome))
+            self.assertEqual(rc, 0, out)
+        rc, out = self.fr("--comparar", str(self.s / "antes"), str(self.s / "depois"), self.rel)
+        self.assertEqual(rc, 0, out)
+        self.escreve(self.w, "b.txt", "b\n")
+        rc, out = self.fr("--snapshot", str(self.w), str(self.s / "depois"))
+        rc, out = self.fr("--comparar", str(self.s / "antes"), str(self.s / "depois"), self.rel)
+        self.assertEqual(rc, 1, out)
+        self.assertRegex(out, r"(?m)^FORA: .*/b\.txt$")
+
+
 class Uso(Base):
     def test_fronteira_nao_verificada_sai_64(self):
         self.snap("antes")

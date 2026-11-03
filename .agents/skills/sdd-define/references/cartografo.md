@@ -62,6 +62,10 @@ Formato de referência: `sdd/fixtures/contexto/valido-completo.md`.
 
 ## Regras
 
+- **Não faz commit** (nem `git add`): quem despacha confere o HEAD antes e depois, e um commit seu conta como
+  escrita fora do permitido.
+- **`superficies:` leva caminhos crus, sem crase, e cada um casa ao menos um arquivo versionado** (o lint
+  recusa o contrário: um pathspec que não casa nada faria o mapa nunca vencer).
 - **Só escreve o arquivo `saida:`.** Nenhum outro arquivo: nem o DEFINE, nem código, nem `sdd/features/`,
   nem relatório. Quem despacha compara o sha256 de cada arquivo do repositório antes e depois
   (`sdd/bin/governanca-fronteira.sh`); qualquer outra escrita invalida o mapa.

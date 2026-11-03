@@ -119,7 +119,9 @@ case "${1:-}" in
     tmp="$(mktemp -d)"; trap 'rm -rf "${tmp}"' EXIT; dif="${tmp}/dif"
     # diferença simétrica por linha (sha + caminho): cobre novo, sumido e sobrescrito. O comm roda FORA
     # de substituição de processo: lá o rc dele se perde e um snapshot ilegível viraria "nada mudou".
-    grep -v '^#HEAD' "${A}" | sort > "${tmp}/a" && grep -v '^#HEAD' "${D}" | sort > "${tmp}/d" || { echo "não consegui ler os snapshots" >&2; uso; }
+    # grep -v sai 1 quando o snapshot só tem a linha #HEAD (árvore limpa): isso não é erro de leitura
+    { grep -v '^#HEAD' "${A}" || [ $? -eq 1 ]; } | sort > "${tmp}/a" && { grep -v '^#HEAD' "${D}" || [ $? -eq 1 ]; } | sort > "${tmp}/d" \
+      || { echo "não consegui ler os snapshots" >&2; uso; }
     ha="$(grep '^#HEAD' "${A}" | head -1)"; hd="$(grep '^#HEAD' "${D}" | head -1)"
     [ -n "${ha}" ] && [ -n "${hd}" ] || { echo "snapshot sem a linha #HEAD (gravado por outra versão?): refaça os dois" >&2; uso; }
     comm -3 "${tmp}/a" "${tmp}/d" > "${dif}" || { echo "não consegui comparar os snapshots" >&2; uso; }

@@ -188,9 +188,9 @@ rodar_lint() {
   if [ -n "${design}" ]; then
     [ -f "${design}" ] || { echo "DESIGN inexistente: ${design}" >&2; exit 64; }
     # CITAÇÃO ≠ MENÇÃO: só a linha **Pattern:** conta (um caminho de fixture no File Manifest não é citação)
-    # só a linha que COMEÇA com **Pattern:**, fora de cerca: o blockquote de orientação do template
-    # (`> **Pattern:** …`) e um exemplo dentro de ``` são menção, não citação
-    awk '/^[[:space:]]*```/{f=!f; next} !f && /^\*\*Pattern:\*\*/' "${design}" \
+    # só a linha que COMEÇA com **Pattern:** (também como item de lista ou com recuo), fora de cerca ``` ou ~~~:
+    # o blockquote de orientação do template (`> **Pattern:** …`) e um exemplo em cerca são menção, não citação
+    awk '/^[[:space:]]*(```|~~~)/{f=!f; next} !f && /^[[:space:]]*([-*+]|[0-9]+\.)?[[:space:]]*\*\*Pattern:?\*\*:?/' "${design}" \
       | grep -oE 'patterns/[A-Za-z0-9_-]+\.md' | sed -E 's#^patterns/##' | sort -u > "${TMP}/citados.txt"
     [ -s "${TMP}/citados.txt" ] || aviso "nenhum pattern citado em $(basename "${design}"): o lint não tem o que exigir"
   fi

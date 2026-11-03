@@ -279,6 +279,8 @@ validade() {  # $1=arquivo $2=ref ⇒ 0 valido | 1 vencido | 2 sha-inexistente/c
   [ -n "${sha}" ] || { erro "cabecalho-ausente" "${nome}: sem linha 'sha:'"; return 2; }
   [ -n "${sups}" ] || { erro "cabecalho-ausente" "${nome}: sem linha 'superficies:'"; return 2; }
   case "${sups}" in *'`'*) erro "cabecalho-ausente" "${nome}: 'superficies:' com crase não é pathspec; a validade não mede nada assim"; return 2 ;; esac
+  set -f; set -- ${sups}; set +f
+  [ -n "$(git ls-files -- "$@" 2>/dev/null | head -1)" ] || { erro "path-morto" "${nome}: 'superficies:' não casa nenhum arquivo versionado; a validade não mediria nada"; return 2; }
   git cat-file -e "${sha}^{commit}" 2>/dev/null || { erro "sha-inexistente" "${nome}: o sha '${sha}' não existe neste repositório"; return 2; }
   git rev-parse --verify -q "${ref}^{commit}" >/dev/null 2>&1 || { erro "sha-inexistente" "${nome}: a ref '${ref}' não existe neste repositório (use --ref)"; return 2; }
   set -f; set -- ${sups}; set +f
@@ -382,6 +384,7 @@ self_test() {
   local fails=0 out rc caso fx classe ign DX PX
   DX="${FIXTURES}/dominio.md"; PX="${FIXTURES}/playbook.md"
   echo "self-test (bash) — fixtures em ${FIXTURES}/"
+  git rev-parse -q --verify HEAD >/dev/null 2>&1 || { echo "🛑 o self-test precisa de um commit (âncoras e superficies: são conferidas contra os arquivos versionados): faça o 1º commit e rode de novo" >&2; return 64; }
   [ -d "${FIXTURES}" ] || { echo "🛑 fixtures ausentes em ${FIXTURES} (o init só as copia na 1ª instalação; copie a pasta do pacote)" >&2; return 64; }
   ign=$(git check-ignore "${FIXTURES}"/*.md "${FIXTURES}"/app/* 2>/dev/null | wc -l | tr -d ' ')
   if [ "${ign}" = "0" ]; then echo "  ✅ nenhuma fixture casada pelo .gitignore"

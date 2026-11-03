@@ -67,6 +67,8 @@ porque: <por que nesta feature, 1 frase>
 - Escrever qualquer arquivo além do `saida:` — inclusive o DEFINE, o padrão, o catálogo e a skill.
   Sobrescrever um arquivo existente é escrita: quem despacha compara o sha256 de cada arquivo antes e
   depois (`sdd/bin/governanca-fronteira.sh`).
+- Fazer commit ou `git add`: quem despacha confere o HEAD antes e depois, e um commit conta como escrita fora
+  do permitido.
 - Perguntar qualquer coisa a alguém.
 - Citar base legal `nao-confirmado`, ou qualquer lei, artigo ou norma fora do `texto_citavel` de uma base
   `confirmado` (o campo `**Base legal:**` tem 3 formas fixas no `PROCEDIMENTO.md`).

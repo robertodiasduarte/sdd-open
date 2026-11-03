@@ -104,6 +104,21 @@ class Aval1(Base):
         self.assertEqual(rc, 0, out)
         self.assertIn("nenhum pattern citado", out)
 
+    def test_aval2_citacao_em_lista_conta_e_cerca_til_nao(self):
+        p = self.r / "venc2"
+        p.mkdir()
+        shutil.copy(str(self.r / "sdd/fixtures/patterns/valido-vencido.md"), str(p / "pedidos.md"))
+        cit = "**Pattern:** `patterns/pedidos.md §Esqueleto` (validado_em 2020-01-01)"
+        for forma in ("- " + cit, "  " + cit, "1. " + cit):
+            with self.subTest(forma=forma):
+                self.escreve(self.r, "D.md", "## Code Patterns\n\n" + forma + "\n")
+                rc, out = self.lint(*PB, "--design", "D.md", "venc2")
+                self.assertEqual(rc, 2, out)
+                self.assertIn("[validado-vencido]", out)
+        self.escreve(self.r, "D.md", "## Code Patterns\n\n~~~markdown\n" + cit + "\n~~~\n")
+        rc, out = self.lint(*PB, "--design", "D.md", "venc2")
+        self.assertEqual(rc, 0, out)
+
     def test_l4_caminho_relativo_de_uma_subpasta(self):
         p = self.r / "sdd/pat"
         p.mkdir()

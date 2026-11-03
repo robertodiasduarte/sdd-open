@@ -154,6 +154,24 @@ class Aval1(Base):
         self.assertEqual(rc, 0, out + err)
 
 
+class Aval2(Base):
+    def test_validade_com_pathspec_que_nao_casa_nada_sai_2(self):
+        sha = self.git(self.r, "rev-parse", "HEAD").strip()
+        ctx = (self.r / FX / "validade-template.md").read_text(encoding="utf-8").replace("__SHA__", sha)
+        self.escreve(self.r, "c.md", ctx.replace("superficies: a.md", "superficies: app/nao-existe/*.py"))
+        rc, out = self.lint("--validade", "c.md", "--ref", "HEAD")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("não casa nenhum arquivo versionado", out)
+
+    def test_self_test_sem_commit_sai_64_e_diz_por_que(self):
+        novo = self.repo("novo")
+        (novo / "sdd/bin").mkdir(parents=True)
+        shutil.copy(str(RAIZ / SCRIPT), str(novo / SCRIPT))
+        rc, out, err = self.roda([BASH, SCRIPT, "--self-test"], novo)
+        self.assertEqual(rc, 64, out + err)
+        self.assertIn("faça o 1º commit", out + err)
+
+
 class Sabotagem(Base):
     def test_sem_a_checagem_de_landmine_o_self_test_cai(self):
         texto = (self.r / SCRIPT).read_text(encoding="utf-8")
