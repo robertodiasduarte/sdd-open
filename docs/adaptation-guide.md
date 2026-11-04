@@ -27,6 +27,8 @@ release:
 
 prompts:
   builder_skill: "sdd-prompt-builder"   # ships filled; replace with your own skill if you have one
+  wrapper_pattern: ""                   # if the project calls the LLM through its own function: the expression
+                                        # of its parameter, e.g. "systemPrompt:" or "callLLM\\("; see docs/llm-in-code.md
 ```
 
 ## The extension point that matters most: landmines

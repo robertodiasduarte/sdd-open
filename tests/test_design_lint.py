@@ -9,6 +9,7 @@ Exit 0 = válido · 1 = violações · 64 = uso.
 """
 from __future__ import annotations
 
+import re
 import unittest
 
 from apoio import PYTHON, RAIZ, Sandbox
@@ -94,6 +95,91 @@ class DesignLint(Sandbox):
     def test_arquivo_ausente_e_64(self):
         rc, out, err = self.roda([PYTHON, "-B", SCRIPT, self.tmp / "nao-existe.md"], self.tmp)
         self.assertEqual(rc, 64, out + err)
+
+
+def preenchido(fragmento: str) -> str:
+    """O fragmento como a fase Design o deixa: da seção em diante, com as chaves trocadas."""
+    secao = fragmento[fragmento.index("## LLM Prompts"):]
+    return re.sub(L + "[^" + L + R + "\n]*" + R, "x", secao)
+
+
+class Prompts(Sandbox):
+    """DEFINE F13 AT-016 a AT-018: o inventário de prompts, só quando a seção existe."""
+
+    def setUp(self):
+        super().setUp()
+        self.base = FIXTURE.read_text(encoding="utf-8")
+        self.secao = preenchido((RAIZ / "sdd/templates/fragments/LLM_PROMPTS_DESIGN.md").read_text(encoding="utf-8"))
+
+    def lint(self, secao: str) -> tuple[int, str]:
+        p = self.escreve(self.tmp, "DESIGN_X.md", self.base + "\n" + secao)
+        rc, out, err = self.roda([PYTHON, "-B", SCRIPT, p], self.tmp)
+        return rc, out + err
+
+    def reprova(self, secao: str, trecho: str):
+        rc, out = self.lint(secao)
+        self.assertEqual(rc, 1, out)
+        self.assertIn(trecho, out)
+        self.assertIn("mudou na v2.5.0", out)
+        self.assertLess(out.index("mudou na v2.5.0"), out.index(trecho))
+        self.assertIn("RESULTADO: VERMELHO", out)
+        self.assertIn("LLM_PROMPTS_DESIGN.md", out.splitlines()[-1])
+        self.assertRegex(out.splitlines()[-1], "^→ ")
+
+    def test_fragmento_preenchido_passa(self):
+        rc, out = self.lint(self.secao)
+        self.assertEqual(rc, 0, out)
+
+    def test_sem_a_secao_nada_muda(self):
+        rc, out, err = self.roda([PYTHON, "-B", SCRIPT, FIXTURE], RAIZ)
+        self.assertEqual(rc, 0, out + err)
+        self.assertNotIn("v2.5.0", out + err)
+
+    def test_secao_so_dentro_de_cerca_nao_conta(self):
+        rc, out = self.lint("```text\n## LLM Prompts\nexemplo\n```\n")
+        self.assertEqual(rc, 0, out)
+
+    def test_cada_coluna_faltando(self):
+        for coluna in ("Tipo", "Versão", "Completeness", "Refator de?"):
+            with self.subTest(coluna=coluna):
+                i = self.secao.index("| # | Nome |")
+                j = self.secao.index("\n", i)
+                cabecalho = self.secao[i:j]
+                self.assertIn("| " + coluna + " |", cabecalho)
+                sem = self.secao[:i] + cabecalho.replace("| " + coluna + " |", "| Outra |") + self.secao[j:]
+                self.reprova(sem, "falta a coluna " + coluna)
+
+    def test_cada_campo_faltando(self):
+        for campo in ("Autônomo?", "Verification interna", "Eval mínimo pré-ship"):
+            with self.subTest(campo=campo):
+                linhas = [ln for ln in self.secao.splitlines() if not ln.startswith("| **" + campo + "**")]
+                self.reprova("\n".join(linhas) + "\n", "Prompt 1 sem o campo " + campo)
+
+    def test_campo_sem_valor(self):
+        linhas = ["| **Autônomo?** |  |" if ln.startswith("| **Autônomo?**") else ln for ln in self.secao.splitlines()]
+        self.reprova("\n".join(linhas) + "\n", "Prompt 1 sem o campo Autônomo?")
+
+    def test_tipo_invalido(self):
+        self.reprova(self.secao.replace("| one-shot | `x` |", "| outro | `x` |", 1), "Tipo 'outro'")
+        self.reprova(self.secao.replace("| one-shot | `x` |", "| one-shot ou loop | `x` |", 1), "Tipo 'one-shot ou loop'")
+
+    def test_tipo_com_crases_e_loop_valem(self):
+        self.assertEqual(self.lint(self.secao.replace("| one-shot | `x` |", "| `loop` | `x` |", 1))[0], 0)
+
+    def test_sem_linha_de_dados(self):
+        linhas = [ln for ln in self.secao.splitlines() if not ln.startswith("| 1 | x |")]
+        self.reprova("\n".join(linhas) + "\n", "nenhuma linha de prompt")
+
+    def test_numero_de_blocos_diferente_do_de_linhas(self):
+        i = self.secao.index("| 1 | x |")
+        j = self.secao.index("\n", i)
+        duas = self.secao[:j + 1] + self.secao[i:j].replace("| 1 |", "| 2 |", 1) + "\n" + self.secao[j + 1:]
+        self.reprova(duas, "2 linha(s) no inventário e 1 bloco(s)")
+
+    def test_formato_antigo_real_reprova_com_a_frase(self):
+        antigo = ("## LLM Prompts\n\n### Inventory\n\n| Nome | Tipo |\n|---|---|\n| a | one-shot |\n\n"
+                  "### Contract\n\n| Campo | Valor |\n|---|---|\n| Tom | x |\n")
+        self.reprova(antigo, "falta o subtítulo ### Inventário")
 
 
 if __name__ == "__main__":

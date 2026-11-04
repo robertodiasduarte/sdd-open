@@ -48,14 +48,14 @@ of yours is overwritten. [Full quickstart →](docs/quickstart.md)
 | **Knowledge base** | what you know about a domain (a process, a regulation, a manual) organized as concepts and recipes the agent can consult; for regulations, the period each rule applies, the source with SHA-256 and the rule → source → test map. The Define cites only domains that exist, checked by `sdd/bin/kb-dominios.py` | skill `sdd-kb` · `sdd/kb/` |
 | **Handoff by feature card** | one file per feature in the repository, with a self-contained resume prompt — no dependency on any agent's memory | skill `sdd-handoff` · `sdd/handoffs/` |
 
-## The 17 skills
+## The 18 skills
 
 | Block | Skills | When |
 |---|---|---|
 | **Prepare** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | once per computer and per project (is everything ready? put it in git, a commit alarm against client data); the new-session for every work front |
 | **Create** | `sdd-kb` (optional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-ux-review` · `sdd-design` · `sdd-build` | once per feature — the SDD flow |
 | **Close** | `sdd-handoff` · `sdd-release` | at the end of each session and of each front |
-| **Cross-cutting** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-auditoria-harness` | when the case calls for it |
+| **Cross-cutting** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-auditoria-harness` | when the case calls for it |
 
 New to git and the terminal? The [student guide](docs/pt-BR/guia-do-aluno.md) (PT) walks the whole
 path, from the first install to the first release.
@@ -97,6 +97,7 @@ Works on macOS, Linux and Windows (Git Bash/WSL): bash 3.2, zero zsh, zero symli
 - [Comparison](docs/comparison.md) ([PT](docs/pt-BR/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
 - [Git hooks](docs/hooks.md) ([PT](docs/pt-BR/hooks.md)) — the pre-commit rules `init` installs, the data-hygiene alarm, the `--no-verify` limit
 - [Chained flow](docs/chained-flow.md) ([PT](docs/pt-BR/chained-flow.md)) — decision classes in every question, `flow.autonomous`, the stop with exit 40 when the agent cannot open a fresh session
+- [LLM in the code](docs/llm-in-code.md) ([PT](docs/pt-BR/llm-in-code.md)) — the process-in-a-loop skill, the prompt router and inventory, the prompt drift scan and the contrast meter.
 - [Context and governance](docs/context-and-governance.md) ([PT](docs/pt-BR/context-and-governance.md)) — the domain map (step 1.5) and the governance review (step 11) of the Define, the exit 5 after upgrading, project patterns
 - [Adversarial review](docs/adversarial-review.md) ([PT](docs/pt-BR/adversarial-review.md)) — one engine reviews the frozen diff, another audits the review; cost per role, privacy, the external review the release requires, the offline gate and `eval-agree`
 - [Roadmap](docs/roadmap.md) ([PT](docs/pt-BR/roadmap.md)) — what is planned and what is under evaluation

@@ -47,7 +47,7 @@
    path → waves separadas.
 2. **Drift detection roda ANTES do despacho**, sobre o manifest, no orquestrador — nunca no worker.
 3. **Exclusões duras (NUNCA vão pro worker barato):**
-   - itens do inventário **LLM Prompts** → orquestrador + skill `sdd-prompt-builder` (qualidade>custo);
+   - itens do inventário **LLM Prompts** → orquestrador + roteador do passo 4 da `sdd-build`: `sdd-prompt-builder` em `one-shot`; `sdd-loop-builder` e depois um prompt por estágio em `loop` (qualidade>custo);
    - itens de **superfície de segurança** (RLS, gates de edge auth, migrations com lógica) →
      orquestrador; migration com lógica mantém a exigência de smoke real.
 4. **Verificação por wave, no orquestrador:** comando incremental + resultado × acceptance

@@ -11,6 +11,10 @@ Regras:
   - `## File Manifest` com ≥1 linha de dados (`| 1 | …`), `**Total Files:** N` igual ao número de
     linhas, e a última coluna (Dependencies) citando só linhas que existem, sem a própria linha e sem
     ciclo (`None`, `—` e vazio = sem dependência). Ciclo deixa o build sem ordem possível.
+  - Com a seção `## LLM Prompts` (só existe quando o DEFINE tem o flag `true`): o subtítulo `### Inventário`
+    com as colunas Tipo, Versão, Completeness e Refator de? e ≥1 linha; Tipo é one-shot ou loop; um bloco
+    `#### Prompt N:` por linha, cada um com Autônomo?, Verification interna e Eval mínimo pré-ship
+    preenchidos. Molde: sdd/templates/fragments/LLM_PROMPTS_DESIGN.md. DESIGN sem a seção não muda.
   - Nenhum placeholder do template fora de código: nome em MAIÚSCULAS entre chaves, ou prosa entre
     chaves (o template só usa chaves; « » é aspa comum em português). Bloco cercado por ``` e trecho
     entre crases não contam.
@@ -27,6 +31,10 @@ PLACEHOLDER = re.compile(r"\{[A-Z][A-Z0-9_]{2,}\}|\{[^{}\n]*\s[^{}\n]*\}")
 DECISAO = re.compile(r"^### Decision (\d+): \S")
 LINHA_MANIFEST = re.compile(r"^\|\s*(\d+)\s*\|")
 TOTAL = re.compile(r"\*\*Total Files:\*\*\s*(\d+)")
+COLUNAS_PROMPT = ("Tipo", "Versão", "Completeness", "Refator de?")
+CAMPOS_PROMPT = ("Autônomo?", "Verification interna", "Eval mínimo pré-ship")
+BLOCO_PROMPT = re.compile(r"^#### Prompt \d+\s*:")
+FRASE_PROMPTS = "a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:"
 
 
 def secao(linhas: list, titulo: str):
@@ -62,9 +70,59 @@ def ciclo(deps: dict):
     return None
 
 
+def celulas(ln: str) -> list:
+    return [c.strip() for c in re.split(r"(?<!\\)\|", ln.strip().strip("|"))]
+
+
+def lint_prompts(linhas: list) -> list:
+    """Faltas do inventário de prompts: [] com a seção certa ou sem a seção."""
+    corpo = secao(linhas, "LLM Prompts")
+    if corpo is None:
+        return []
+    faltas = []
+    i_inv = next((i for i, ln in enumerate(corpo) if ln.startswith("### Inventário")), None)
+    if i_inv is None:
+        faltas.append("falta o subtítulo ### Inventário")
+        return [FRASE_PROMPTS] + ["  " + f for f in faltas]
+    fim = next((j for j in range(i_inv + 1, len(corpo)) if corpo[j].startswith("### ")), len(corpo))
+    tabela = [ln for ln in corpo[i_inv + 1:fim] if ln.lstrip().startswith("|")]
+    n_linhas = 0
+    if not tabela:
+        faltas.append("o inventário não tem tabela")
+    else:
+        cabecalho = celulas(tabela[0])
+        faltas += ["falta a coluna %s no inventário" % c for c in COLUNAS_PROMPT if c not in cabecalho]
+        dados = [ln for ln in tabela[1:] if not re.fullmatch(r"[\s|:-]+", ln)]
+        n_linhas = len(dados)
+        if not dados:
+            faltas.append("o inventário não tem nenhuma linha de prompt")
+        if "Tipo" in cabecalho:
+            coluna = cabecalho.index("Tipo")
+            for n, ln in enumerate(dados, 1):
+                cels = celulas(ln)
+                valor = cels[coluna].strip("`") if coluna < len(cels) else ""
+                if valor not in ("one-shot", "loop"):
+                    faltas.append("linha %d do inventário com Tipo '%s' (esperado one-shot ou loop)" % (n, valor))
+    blocos = [i for i, ln in enumerate(corpo) if BLOCO_PROMPT.match(ln)]
+    for k, i in enumerate(blocos):
+        fim_bloco = next((j for j in range(i + 1, len(corpo)) if corpo[j].startswith(("#### ", "### "))), len(corpo))
+        trecho = corpo[i + 1:fim_bloco]
+        titulo = corpo[i].lstrip("# ").split(":")[0]
+        for campo in CAMPOS_PROMPT:
+            achado = [celulas(ln) for ln in trecho
+                      if ln.lstrip().startswith("|") and celulas(ln)[0].strip("*") == campo]
+            if not achado or len(achado[0]) < 2 or not achado[0][1]:
+                faltas.append("%s sem o campo %s" % (titulo, campo))
+    if tabela and n_linhas and len(blocos) != n_linhas:
+        faltas.append("são %d linha(s) no inventário e %d bloco(s) de contrato" % (n_linhas, len(blocos)))
+    return [FRASE_PROMPTS] + ["  " + f for f in faltas] if faltas else []
+
+
 def lint(texto: str) -> list:
     erros = []
     linhas = CERCA.sub("", texto).splitlines()
+    prompts = lint_prompts(linhas)
+    erros += prompts
 
     decisoes = secao(linhas, "Key Decisions")
     if decisoes is None:
@@ -134,8 +192,12 @@ def main(argv: list) -> int:
         print(f"🛑 {argv[1]}: {e}", file=sys.stderr)
     if erros:
         print("RESULTADO: VERMELHO", file=sys.stderr)
-        print("→ corrija o DESIGN nos pontos acima (molde: sdd/templates/DESIGN_TEMPLATE.md) e rode de novo",
-              file=sys.stderr)
+        if FRASE_PROMPTS in erros:
+            print("→ copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; "
+                  "nada no código precisa mudar", file=sys.stderr)
+        else:
+            print("→ corrija o DESIGN nos pontos acima (molde: sdd/templates/DESIGN_TEMPLATE.md) e rode de novo",
+                  file=sys.stderr)
         return 1
     print(f"✅ {argv[1]}: DESIGN válido")
     return 0

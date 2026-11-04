@@ -29,6 +29,8 @@ release:
 
 prompts:
   builder_skill: "sdd-prompt-builder"   # já vem preenchido; troque pela sua se tiver outra
+  wrapper_pattern: ""                   # se o projeto chama a IA por uma função própria: a expressão do parâmetro
+                                        # dela, ex.: "systemPrompt:" ou "callLLM\\("; veja docs/pt-BR/llm-in-code.md
 ```
 
 ## O ponto de extensão que mais importa: landmines

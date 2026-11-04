@@ -5,15 +5,15 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Independe de stack visual; usa 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.4.0"
-  updated: "2026-10"
+  version: "2.5.0"
+  updated: "2026-11"
   fase: "UX"
 ---
 
 # sdd-ux-review — gate de UX/CX
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-ux-review v2.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-ux-review v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Traduzir requisitos em experiência **antes** que arquitetura e código endureçam. "Interface"
 inclui tela, linha de comando, arquivo gerado, e-mail: qualquer coisa que uma pessoa lê e
@@ -98,7 +98,14 @@ bug?" ou "como faço X?" — essa pergunta **é** o bug; resolve-se na interface
 4. **60/30/10.** Fundo dominante, surfaces secundárias (destaque × operacional ×
    sobreposição) e acento que aponta a próxima ação. Cite os tokens do design system do
    projeto; sem design system, proponha os papéis e registre como candidato. Contraste
-   **medido** nos pares reais (≥4.5:1 texto, ≥3:1 não-texto). Significado nunca só por cor.
+   **medido** nos pares reais com `bash sdd/bin/contraste.sh` (≥4.5:1 texto, ≥3:1 não-texto).
+   Significado nunca só por cor.
+4.5. **WCAG 2.2 AA.** Sem superfície visual: `N.A. — <motivo>` em 1 linha. Com tela, as 7 linhas da tabela de
+   `## Accessibility and Responsiveness` do template, cada uma com evidência: 1.4.3, 1.4.11, 1.4.1, 2.4.7 e 4.1.2
+   com `PASSA`, `REPROVA` ou `N.A.` (com motivo); 2.1.1 e 2.5.8 herdados, que só se provam na tela pronta e vão
+   para as Acceptance notes. Par medido por tema do projeto: `bash sdd/bin/contraste.sh '<fg>' '<bg>' [alpha]
+   [--piso 3]`; a saída é truncada, e 4.49 reprova o piso 4.5. Todo `REPROVA` vira **1 MUST** em UX/CX Findings,
+   com o critério e o par medido.
 5. **Lentes cognitivas (não bloqueiam).** Lente nunca gera MUST, não entra no cálculo do
    status (`Ready for Design`) e nunca rebaixa uma regra: se o achado já viola a regra da última
    coluna, o MUST vem dela, citado à parte. Todo status diferente de `N.A.` exige evidência.
@@ -107,7 +114,7 @@ bug?" ou "como faço X?" — essa pergunta **é** o bug; resolve-se na interface
 
    | Lente | Pergunta | Alerta embutido | Regra que manda |
    |---|---|---|---|
-   | L1 Alcance (Fitts) | Ação principal perto da decisão? Linha/card inteiro clicável? 44 px recomendado | — | acessibilidade do passo 3 (alvo < 24×24 px, WCAG 2.2 AA) |
+   | L1 Alcance (Fitts) | Ação principal perto da decisão? Linha/card inteiro clicável? 44 px recomendado | — | SC 2.5.8 do passo 4.5 (alvo < 24×24 px) |
    | L2 Escolhas por passo (Hick-Hyman) | Quantas opções competem por decisão? Revelação progressiva cabe? | uso diário: densidade é recurso | 60/30/10 (acento aponta a próxima ação) |
    | L3 Retomada (Zeigarnik) | Sair no meio preserva o preenchido? A volta mostra o que falta? | sem lembrete que culpe | princípio 2, "Se tem que explicar, está errado" (estado ambíguo) |
    | L4 Convenção (Jakob) | Padrão fora da convenção de mercado tem justificativa? | não reaprender ação básica | — |
@@ -132,6 +139,7 @@ arquivo ou mensagem que alguém vai ler? Então existe UX.
 ```text
 [ ] Jornada mapeada · riscos explícitos · 7 estados considerados
 [ ] Acessibilidade e responsividade tratadas · contraste com números medidos
+[ ] Tabela WCAG preenchida com evidência, ou N.A. justificado; cada REPROVA virou 1 MUST com o critério e o par
 [ ] 60/30/10 aplicado com papéis claros (ou N.A. justificado para não-visual)
 [ ] Gamificação recomendada ou explicitamente dispensada
 [ ] Premium e Autoexplicativo verificados; teste do estranho e do suporte aplicados
@@ -150,6 +158,8 @@ arquivo ou mensagem que alguém vai ler? Então existe UX.
   sugestão são os primeiros cortados quando o prazo aperta.
 - **Contraste medido, nunca estimado** — o olho de quem desenhou se acostuma com a tela; o número
   (4.5:1, 3:1) não.
+- **Tabela WCAG com o texto da norma** — um REPROVA afirma uma violação; exigir mais que a norma ali cria defeito
+  que não existe. Rigor maior do projeto mora no playbook dele.
 - **Lente cognitiva nunca vira MUST nem muda o status** — as lentes são heurísticas com exceções
   conhecidas; promovê-las a regra bloqueia telas que estão certas.
 - **Entrevista de público só quando o DEFINE não diz quem usa, ou quando o aluno pede** — perguntar o que

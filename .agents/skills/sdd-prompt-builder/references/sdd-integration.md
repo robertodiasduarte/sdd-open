@@ -1,28 +1,33 @@
 # Integração com o fluxo SDD
 
-Consultar este arquivo sempre que a skill for chamada pelas fases Design/Build.
+Consultar este arquivo sempre que a skill for chamada pela fase Build; a fase Design só inventaria, sem chamar skill de prompt.
 
 ## Contrato de entrada da fase Build
 
-O caller deve compilar e fornecer, para cada prompt do inventário `LLM Prompts`:
+O caller deve compilar e fornecer, para cada prompt do inventário `LLM Prompts`
+(`sdd/templates/fragments/LLM_PROMPTS_DESIGN.md`):
 
 1. Linha do inventário:
-   - nome;
-   - arquivo de destino;
-   - versão;
-   - provider/modelo;
-   - input source;
-   - output consumer;
-   - requisito de completude;
-   - referência de refator, quando houver.
+   - Nome;
+   - Arquivo de destino;
+   - Versão;
+   - Provedor/Modelo;
+   - Origem da entrada;
+   - Consumidor da saída;
+   - Material de referência;
+   - Completeness;
+   - Refator de?.
 
 2. Bloco `Contrato por prompt` completo:
-   - tom/audiência;
-   - output type;
-   - fallback aprovado;
-   - execução autônoma ou interativa;
-   - verificação interna;
-   - eval mínimo.
+   - Tom/audiência;
+   - Tipo de saída;
+   - Fallback aprovado;
+   - Autônomo?;
+   - Verification interna;
+   - Eval mínimo pré-ship.
+
+   Estágio LLM de uma LOOP_SPEC não tem linha própria: o contrato dele é o bloco da linha `Tipo=loop` mais a
+   linha do estágio na tabela de estágios.
 
 3. Material de referência literal:
    - conteúdo bruto de schema, regra, trecho de UX ou outro material;
@@ -40,19 +45,19 @@ antes da geração.
 
 ## Drift detection — ancore nos sinais do SEU projeto
 
-Mesmo quando o DEFINE indicar `LLM Prompts: false`, tratar como drift se a fase Build for
-escrever algo que caia em um destes sinais:
+Mesmo quando o DEFINE indicar `LLM Prompts: false`, a fase Build passa por
+`bash sdd/bin/prompt-drift-scan.sh --conteudo <caminho>` o que vai gravar fora do inventário. Sinais do script:
 
 | Categoria | Sinal |
 |---|---|
-| Path | `**/prompts/**` · arquivos de template compartilhados · módulos com `prompt` no nome |
-| Conteúdo | o parâmetro de system prompt do seu wrapper de LLM **recebendo um literal** |
-| Conteúdo | chamada direta ao SDK do provider (`messages.create`, `chat.completions`) |
+| Path | pasta `prompts/` em qualquer profundidade · nome com `prompt` (exceto `.md`) |
+| Conteúdo | o parâmetro do wrapper de LLM do projeto (`prompts.wrapper_pattern`) **recebendo um literal** |
+| Conteúdo | chamada direta ao SDK do provider (`messages.create`, `chat.completions`) · `system:` com literal |
 
 ⛔ **Calibre os sinais pelo código real do projeto, não por uma lista genérica.** Se o seu
-projeto centraliza as chamadas num wrapper (`callLLM`, `askModel`, um client próprio), o sinal
-que importa é **o parâmetro desse wrapper**, e procurar só pelas assinaturas do SDK deixa o
-gate cego. Vale o inverso também: se nada centraliza, as assinaturas do SDK são o sinal.
+projeto centraliza as chamadas num wrapper (`callLLM`, `askModel`, um client próprio), preencha
+`prompts.wrapper_pattern` com a expressão do parâmetro desse wrapper: procurar só pelas assinaturas
+do SDK deixa o gate cego, e o script avisa enquanto o slot estiver vazio.
 
 Duas exclusões evitam que o gate vire lobo e seja ignorado:
 
@@ -73,7 +78,7 @@ A coluna `Tipo` do inventário decide o caminho:
 | Tipo | Quando | Quem constrói |
 |---|---|---|
 | `one-shot` | chamada única: system prompt, classificador, sintetizador, passe único | esta skill, direto |
-| `loop` | processo iterativo que re-prompta o modelo com base na própria saída anterior | primeiro a especificação do loop; depois **um prompt por estágio**, cada um por esta skill |
+| `loop` | processo iterativo que re-prompta o modelo com base na própria saída anterior | primeiro a `sdd-loop-builder` (a LOOP_SPEC); depois **um prompt por estágio LLM**, cada um por esta skill |
 
 Sinal decisivo: *o processo re-prompta o modelo com base na própria saída anterior?* Sim →
 `loop`.
@@ -90,7 +95,7 @@ O caller é responsável por:
 - criar nova versão `v{N+1}/` ao refatorar prompt em produção, sem editar a versão existente
   in-place;
 - registrar no relatório de build: nome, arquivo, versão nova, versão anterior, seções geradas
-  e status de eval.
+  e status de eval; num item `loop`, 1 entrada pela LOOP_SPEC e 1 por estágio.
 
 ### Onde entra o dado da requisição
 

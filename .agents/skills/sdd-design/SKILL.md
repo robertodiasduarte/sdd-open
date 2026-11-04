@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.4.0"
+  version: "2.5.0"
   updated: "2026-11"
   fase: "2"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.4.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Plano + especificação + decisões num documento. O DESIGN diz **como** construir o que o
 DEFINE contratou — e é o último ponto em que mudar de abordagem é barato.
@@ -159,11 +159,12 @@ Sem pattern para a camada, escreva o snippet e registre `candidato a pattern: <c
 
 ### 5.5. LLM Prompts (só se `true`)
 
-Inventário: 1 linha por prompt de produção previsto (arquivo do manifest, tipo `one-shot` ×
-`loop` — o processo re-prompta o modelo com base na própria saída anterior? então `loop`),
-e um contrato por prompt: tom/audiência do DEFINE, formato de saída derivado do consumidor,
-fallback aprovado, material de referência concreto, provedor/modelo já decididos. Não
-escreva o prompt aqui: a fase Build o produz com o contrato em mãos.
+Copie a seção de `sdd/templates/fragments/LLM_PROMPTS_DESIGN.md` para o DESIGN, entre os padrões de código e o fluxo de
+dados, e preencha: 1 linha por prompt de produção previsto (arquivo do manifest, `Tipo` `one-shot` × `loop` — o processo
+re-prompta o modelo com base na própria saída anterior? então `loop`) e um bloco de contrato por linha: tom/audiência do
+DEFINE, formato de saída derivado do consumidor, fallback aprovado, material de referência concreto, provedor/modelo já
+decididos, Autônomo?, Verification interna e Eval mínimo pré-ship. O `design-lint.py` do passo 8 confere as colunas e os
+campos. Não escreva o prompt nem chame skill de prompt aqui: a fase Build faz isso, com o contrato em mãos.
 
 ### 6. Estratégia de testes
 
@@ -180,7 +181,7 @@ Cubra cada AT do DEFINE. O gate composto (se houver) é listado aqui com um bloc
 
 `python3 sdd/bin/design-lint.py sdd/features/DESIGN_{FEATURE}.md` sobre o arquivo gravado: títulos
 `### Decision N: <nome>` em sequência, `**Total Files:**` igual às linhas do manifest, dependências sem
-ciclo, nenhum placeholder. Vermelho ⇒ corrija o DESIGN e rode de novo antes de entregar.
+ciclo, nenhum placeholder e, com a seção de prompts, o inventário completo. Vermelho ⇒ corrija o DESIGN e rode de novo antes de entregar.
 
 ## Review adversarial do DESIGN (recomendado)
 

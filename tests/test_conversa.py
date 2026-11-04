@@ -20,8 +20,9 @@ FRAGMENTO = RAIZ / "sdd/templates/fragments/PERGUNTA_DECISAO.md"
 F4 = ("sdd-auditoria-harness", "sdd-brainstorm", "sdd-build", "sdd-checar-ambiente", "sdd-define",
       "sdd-design", "sdd-governanca", "sdd-handoff", "sdd-iterate", "sdd-new-session", "sdd-playbook",
       "sdd-prompt-builder", "sdd-release", "sdd-ux-review",
-      "sdd-kb")  # as 14 da F4 + a sdd-kb da F5 (DESIGN_F5_CONHECIMENTO, Decision 7)
-# Frases do bloco comum de regras: iguais nas 15 (DESIGN_F4_CONVERSA, Code Pattern 1).
+      "sdd-kb",  # as 14 da F4 + a sdd-kb da F5 (DESIGN_F5_CONHECIMENTO, Decision 7)
+      "sdd-loop-builder")  # F13 (DESIGN_F13_UX_LLM, Decision 8)
+# Frases do bloco comum de regras: iguais nas 16 (DESIGN_F4_CONVERSA, Code Pattern 1).
 FRASES = (
     "sdd/templates/fragments/PERGUNTA_DECISAO.md",
     "**Status** — uma linha que começa pelo nome da fase",
@@ -50,8 +51,8 @@ def todas():
 
 
 class Identificacao(unittest.TestCase):
-    def test_sao_17_e_as_15_da_camada_existem(self):
-        self.assertEqual(len(todas()), 17)
+    def test_sao_18_e_as_16_da_camada_existem(self):
+        self.assertEqual(len(todas()), 18)
         for s in F4:
             with self.subTest(skill=s):
                 self.assertTrue((SKILLS / s / "SKILL.md").is_file())
@@ -83,7 +84,7 @@ class Identificacao(unittest.TestCase):
 
 
 class Camada(unittest.TestCase):
-    def test_bloco_comum_igual_nas_15(self):
+    def test_bloco_comum_igual_nas_16(self):
         for s in F4:
             sec = secao(ler(SKILLS / s / "SKILL.md"))
             for frase in FRASES:

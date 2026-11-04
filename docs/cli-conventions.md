@@ -28,7 +28,8 @@ Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` �
 `ERRO DE USO` (gate-baseline.sh, gate-shell-evidencia.sh, avaliador-guard.sh, test-baseline.sh) ·
 `COMMIT RECUSADO` (sdd/hooks/pre-commit; ver [hooks.md](hooks.md)) · `PRONTO` · `CONTINUAR` · `BLOQUEADO` ·
 `AGUARDANDO_RECIBO` · `AGUARDANDO_HUMANO` · `PARAR` · `MANIFEST ILEGÍVEL` · `ENTRADA ILEGÍVEL` · `SLOT INVÁLIDO`
-(sdd-fluxo.sh; ver [chained-flow.md](chained-flow.md)).
+(sdd-fluxo.sh; ver [chained-flow.md](chained-flow.md)) · `PASSA` · `REPROVA` (contraste.sh) · `LIMPO` · `DRIFT`
+(prompt-drift-scan.sh; ver [llm-in-code.md](llm-in-code.md)).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate
 (inconclusivo, que devolve `0`… sem `--strict`) de parecer verde para quem lê.
@@ -68,6 +69,8 @@ RESULTADO: ERRO
 | `docs-extract-decisions.sh` | `0` índice gravado · `2` conservação violada · `64` uso |
 | `eval-agree.sh` | `0` MEDIDO · `2` SEM DADOS (inclusive sem a pasta padrão) · `64` uso ou pasta passada inexistente |
 | `sdd-decisoes-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, caminho inexistente, tabela de marcas ausente ou nenhuma pergunta |
+| `contraste.sh` | `0` PASSA · `2` REPROVA, ou `--self-test` VERMELHO · `64` uso ([llm-in-code.md](llm-in-code.md)) |
+| `prompt-drift-scan.sh` | `0` LIMPO · `2` DRIFT, ou `--self-test` VERMELHO · `64` uso, caminho que não dá para ler ou slot inválido; nunca conclui LIMPO sem ter lido ([llm-in-code.md](llm-in-code.md)) |
 | `sdd-kb/scripts/gate.sh` | `0` verde · `2` vermelho (caso bom rejeitado, caso ruim aceito ou por outro motivo, âncora ausente, RULE_MAP do exemplo derivado, ou rodado da cópia gerada pelo `sync`) |
 | `sdd-kb/scripts/validate_kb.py` · `kb_normativo.py` | `0` PASS · `2` FAIL · `64` uso |
 

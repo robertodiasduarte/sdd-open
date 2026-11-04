@@ -1,19 +1,19 @@
 ---
 name: sdd-prompt-builder
-description: "Gera, refina e otimiza prompts de produção para LLMs com contrato de saída explícito, critérios de completude, tratamento de contexto ausente e verificação concisa. Usar quando o usuário pedir para criar ou melhorar prompts destinados a runtime, ou quando um fluxo SDD design/build criar ou alterar system prompts, passes de pipeline, classificadores, sintetizadores, prompts em edge/worker/runtime, arquivos **/prompts/**, system prompts inline ou templates em _shared. Não usar para documentação humana, prompts internos de orquestração SDD, emails, notificações ou copy transacional de UI."
+description: "Gera, refina e otimiza prompts de produção para LLMs com contrato de saída explícito, critérios de completude, tratamento de contexto ausente e verificação concisa. Usar quando o usuário pedir para criar ou melhorar prompts destinados a runtime, ou quando a fase Build de um fluxo SDD criar ou alterar system prompts, passes de pipeline, classificadores, sintetizadores, prompts em edge/worker/runtime, arquivos **/prompts/**, system prompts inline ou templates em _shared. Não usar para documentação humana, prompts internos de orquestração SDD, emails, notificações ou copy transacional de UI."
 compatibility: Skill de documento — nao requer ferramenta externa. Consumida pela fase Build quando o DESIGN inventaria prompts de producao.
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.1"
-  updated: "2026-10"
+  version: "2.1.2"
+  updated: "2026-11"
   fase: "3-apoio"
 ---
 
 # Prompt Builder
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-prompt-builder v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-prompt-builder v2.1.2 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Produzir um único prompt operacional pronto para uso em runtime. Priorizar o menor prompt que preserve clareza, controle de saída, recuperabilidade e fidelidade ao contexto fornecido.
 
@@ -61,7 +61,7 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 
 1. Identificar a tarefa real e o artefato que o modelo-alvo deve produzir.
 2. Ler [references/prompt-building-rules.md](references/prompt-building-rules.md) e aplicar somente as seções justificadas pela tarefa.
-3. Se a chamada vier de SDD, ler também [references/sdd-integration.md](references/sdd-integration.md) antes de gerar qualquer prompt.
+3. Se a chamada vier de SDD (a fase Build), ler também [references/sdd-integration.md](references/sdd-integration.md) antes de gerar qualquer prompt.
 4. Usar [references/output-template.md](references/output-template.md) como esqueleto flexível; omitir seções vazias ou desnecessárias.
 5. Retornar somente um TXT BLOCK contendo o prompt final. Não envolver o resultado em código TypeScript, constante exportada ou arquivo de destino.
 

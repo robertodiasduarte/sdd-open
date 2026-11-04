@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.5.1"
+  version: "2.6.0"
   updated: "2026-11"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
 critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
@@ -127,16 +127,34 @@ registre "modo fixado por flag". Detalhes em `references/modos-e-retry.md`.
 Guidelines inegociáveis: suposição vira pergunta · simplicidade · mudança cirúrgica ·
 critério antes do código · **evidência, não declaração**.
 
-1. **Drift de prompt** (sempre): o arquivo cheira a prompt de produção (path `**/prompts/**`,
-   parâmetro de system prompt do seu wrapper de LLM recebendo um **literal**, `messages.create`,
-   `chat.completions`) e não está no inventário do DESIGN? **Pare** e pergunte: iterar o DESIGN,
-   ou confirmar falso positivo e registrar em "Drift detectado". ⛔ Calibre o sinal pelo código
-   real do projeto: se as chamadas passam por um wrapper próprio, procurar só pelas assinaturas
-   do SDK deixa o gate **cego**. Exclua arquivos de teste, ou o gate vira lobo e é ignorado.
-2. **Prompt no inventário:** compile o contrato do DESIGN (tom, saída, fallback, referências) e
-   passe à skill `sdd-prompt-builder` (ou a que estiver em `prompts.builder_skill` do
-   `sdd/config.yaml`); não reabra decisões de provedor/modelo. Sem skill disponível, **bloqueie
-   o item** e peça decisão — nunca improvise o texto que vai para produção.
+1. **Prompt no inventário** (o arquivo está em `LLM Prompts` do DESIGN, ou é estágio de uma LOOP_SPEC gerada):
+   vá direto ao roteador pelo `Tipo` da linha, sem varredura antes, porque o texto ainda não existe.
+   - **`one-shot`:** compile o contrato do DESIGN (tom, saída, fallback, referências) e passe à skill
+     `sdd-prompt-builder` (ou a que estiver em `prompts.builder_skill` do `sdd/config.yaml`); não reabra
+     decisões de provedor/modelo.
+   - **`loop`:** escreva `🔁 item em laço: especificação e <n> prompts (<nome>)`, com o `<n>` da tabela de estágios
+     assim que ela existir. `sdd-loop-builder` recebe o contrato e devolve a LOOP_SPEC e a tabela de estágios;
+     depois, para cada estágio LLM, a skill de prompt recebe o bloco de contrato da linha mais a linha do estágio.
+     A LOOP_SPEC vai para `<pasta do processo>/LOOP_SPEC.md`, e cada prompt para o arquivo da tabela. Esses arquivos
+     contam como inventariados e como previstos no manifest. Estágio de código vira código, nunca prompt.
+   - **Sem `Tipo`** (DESIGN antigo): pergunte a si mesmo "o processo re-prompta o modelo com base na própria saída
+     anterior?". Sim, `loop`; não, `one-shot`; na dúvida, `loop`. Registre a triagem no relatório.
+   - ⛔ **Não encerre o turno ao receber o bloco de texto:** ele é entrada desta fase, não a entrega. Embrulhe na forma
+     que a linguagem pede e grave no destino no mesmo turno, sem pedir "continue".
+   - **Skill ausente** (`sdd-loop-builder`, ou a de prompt): escreva `🛑 não encontrei a skill <nome>; este item ficou de
+     fora e nada foi improvisado.` e pergunte; o resto do manifest segue.
+
+     **Sua decisão** — [D2 · muda o produto] **Como sigo com este item de prompt, sem a skill que o escreve?**
+     - **instalar e continuar** (recomendado) — você roda o `init` do sdd-open de novo, que completa o que falta sem sobrescrever, e eu retomo este item.
+     - **tirar do escopo** — o item sai do manifest, com o motivo no relatório, e o DESIGN é iterado.
+     - **não sei** — explico o que o item faz e o que se perde sem ele.
+   - **Antes de gravar**, o texto gerado passa por `bash sdd/bin/prompt-drift-scan.sh --conteudo <caminho>`, pela
+     entrada padrão: saída 2 aqui é o esperado e grava; 0 também grava; 64 é chamada errada, nunca ignore.
+2. **Arquivo fora do inventário** (sempre, mesmo com `LLM Prompts: false`): antes de gravar, passe o conteúdo por
+   `bash sdd/bin/prompt-drift-scan.sh --conteudo <caminho>`, pela entrada padrão. Arquivo vazio não precisa. Saída 0:
+   grave. Saída 64: chamada errada; corrija, nunca ignore. Saída 2: **pare** e pergunte: iterar o DESIGN, ou confirmar
+   falso positivo e registrar em "Drift detectado". O aviso de `prompts.wrapper_pattern` vazio vai ao aluno uma vez por
+   Build: se o projeto chama a IA por uma função própria, a varredura não a vê até o slot ser preenchido.
 3. **Escrever** seguindo os Code Patterns. 4. **Verificar** (lint, tipos, teste do arquivo).
 5. **Marcar** concluído.
 

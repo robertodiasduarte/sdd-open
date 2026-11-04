@@ -78,6 +78,10 @@
 .agents/skills/sdd-kb/scripts/gate.sh
 .agents/skills/sdd-kb/scripts/kb_normativo.py
 .agents/skills/sdd-kb/scripts/validate_kb.py
+.agents/skills/sdd-loop-builder/SKILL.md
+.agents/skills/sdd-loop-builder/references/como-falar.md
+.agents/skills/sdd-loop-builder/references/exemplo-loop-spec.md
+.agents/skills/sdd-loop-builder/references/loop-spec-rules.md
 .agents/skills/sdd-new-session/SKILL.md
 .agents/skills/sdd-new-session/references/como-falar.md
 .agents/skills/sdd-playbook/SKILL.md
@@ -118,6 +122,7 @@ docs/cli-conventions.md
 docs/comparison.md
 docs/context-and-governance.md
 docs/hooks.md
+docs/llm-in-code.md
 docs/pt-BR/adaptation-guide.md
 docs/pt-BR/adversarial-review.md
 docs/pt-BR/chained-flow.md
@@ -125,6 +130,7 @@ docs/pt-BR/comparison.md
 docs/pt-BR/context-and-governance.md
 docs/pt-BR/guia-do-aluno.md
 docs/pt-BR/hooks.md
+docs/pt-BR/llm-in-code.md
 docs/pt-BR/quickstart.md
 docs/pt-BR/roadmap.md
 docs/pt-BR/verify-gate-contract.md
@@ -144,6 +150,7 @@ sdd/bin/adversarial-review-gate.sh
 sdd/bin/adversarial-review.sh
 sdd/bin/avaliador-guard.sh
 sdd/bin/contexto-lint.sh
+sdd/bin/contraste.sh
 sdd/bin/design-lint.py
 sdd/bin/docs-extract-decisions.sh
 sdd/bin/eval-agree.sh
@@ -155,6 +162,7 @@ sdd/bin/handoff-lint.py
 sdd/bin/kb-dominios.py
 sdd/bin/patterns-lint.sh
 sdd/bin/playbook-lint.sh
+sdd/bin/prompt-drift-scan.sh
 sdd/bin/report-lint.py
 sdd/bin/sdd-decisoes-lint.sh
 sdd/bin/sdd-fluxo.sh
@@ -350,6 +358,7 @@ sdd/templates/fragments/EARS.md
 sdd/templates/fragments/EVIDENCIA.md
 sdd/templates/fragments/FLUXO_ENCADEADO.md
 sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md
+sdd/templates/fragments/LLM_PROMPTS_DESIGN.md
 sdd/templates/fragments/PERGUNTA_DECISAO.md
 sdd/templates/fragments/RESUMO_ETAPA.md
 sdd/templates/fragments/VERIFY_GATE.md
@@ -363,6 +372,7 @@ tests/test_checar.py
 tests/test_check_versions.py
 tests/test_claude_adapter.py
 tests/test_contexto_lint.py
+tests/test_contraste.py
 tests/test_contrato_build_release.py
 tests/test_conversa.py
 tests/test_correcoes_w0.py
@@ -373,6 +383,7 @@ tests/test_docs.py
 tests/test_docs_extract_decisions.py
 tests/test_eval_agree.py
 tests/test_f12_textos.py
+tests/test_f13_textos.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py
@@ -387,6 +398,7 @@ tests/test_matriz_new_session.py
 tests/test_next_version.py
 tests/test_patterns_lint.py
 tests/test_playbook_lint.py
+tests/test_prompt_drift_scan.py
 tests/test_publish_gate_patterns.py
 tests/test_release_workflow.py
 tests/test_report_lint.py

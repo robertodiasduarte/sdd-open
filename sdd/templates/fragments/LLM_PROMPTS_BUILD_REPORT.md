@@ -19,6 +19,11 @@ não construído.
 | # | Prompt (do inventário) | Arquivo | Tipo (one-shot · loop) | Gerado por | Status |
 |---|---|---|---|---|---|
 | 1 | <nome do DESIGN> | `<caminho>` | one-shot | `sdd-prompt-builder` (ou a skill de `prompts.builder_skill`) | criado · refatorado · bloqueado (motivo) |
+| 2 | <nome do DESIGN> | `<pasta>/LOOP_SPEC.md` | loop | `sdd-loop-builder` | criado · refatorado · bloqueado (motivo) |
+| 2.1 | <estágio>, derivado da linha 2 | `<pasta>/<estágio>.<ext>` | loop, estágio LLM | `sdd-prompt-builder` (ou a skill de `prompts.builder_skill`) | criado · refatorado · bloqueado (motivo) |
+
+Item `loop` tem 1 entrada pela LOOP_SPEC e 1 por estágio LLM. Sem ground truth, escreva a lacuna em
+"Evidência": o eval fica para antes da release.
 
 N.A. quando: nunca, com `LLM Prompts: true` — o inventário do DESIGN tem pelo menos um item.
 
@@ -36,8 +41,8 @@ N.A. quando: o item ficou bloqueado — diga por quê na tabela acima.
 
 ## Drift
 
-Prompts de produção encontrados no código e **fora** do inventário (o passo 4 da `sdd-build`
-para o build e pergunta):
+Prompts de produção encontrados no código e **fora** do inventário (`sdd/bin/prompt-drift-scan.sh`
+saiu 2 num arquivo que o inventário não tem; o passo 4 da `sdd-build` para o build e pergunta):
 
 | Arquivo | Sinal | Decisão (iterar o DESIGN · falso positivo, com motivo) |
 |---|---|---|

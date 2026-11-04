@@ -131,7 +131,7 @@ Gamification decision: Not recommended because {reason}.
 [ ] CTA primário é UM só por tela e usa o token de CTA do projeto — nunca uma cor inventada para a feature
 [ ] Telas operacionais (admin, gestão, listas longas) NUNCA usam surface de destaque
 [ ] Status (sucesso/aviso/erro) preservam a semântica universal: rascunho NUNCA verde+✅, erro NUNCA verde
-[ ] Contraste MEDIDO nos pares reais (texto/fundo, acento/fundo): ≥4.5:1 texto, ≥3:1 não-texto — listar os valores
+[ ] Contraste MEDIDO nos pares reais (texto/fundo, acento/fundo) com sdd/bin/contraste.sh: ≥4.5:1 texto, ≥3:1 não-texto — listar os valores
 [ ] Significado nunca depende só de cor (ícone + texto + cor — 3 sinais)
 ```
 
@@ -194,13 +194,31 @@ canônica, consulte-a e registre se a surface é nova ou reuso.
 
 ## Accessibility and Responsiveness
 
+> WCAG 2.2 AA. Sem superfície visual (linha de comando, arquivo gerado, serviço): escreva `N.A. — <motivo>`
+> em 1 linha, no lugar da tabela. Com tela, preencha as 7 linhas. Veredito: `PASSA`, `REPROVA` ou `N.A.`, com
+> motivo. Todo `REPROVA` vira 1 MUST em UX/CX Findings, com o critério e o par medido. Contraste medido com
+> `bash sdd/bin/contraste.sh '<fg>' '<bg>' [alpha] [--piso 3]`, nos pares reais; projeto com 2 temas mede os 2,
+> porque o número de um não transfere ao outro. As 2 linhas herdadas só se provam na tela pronta: vão para as
+> Acceptance notes, sem veredito aqui.
+
+| SC | Nível | Verificação | Evidência | Veredito |
+|----|-------|-------------|-----------|----------|
+| 1.4.3 | AA | Texto ≥4,5:1 (≥3:1 se ≥24 px, ou ≥18,66 px em negrito) | `#rrggbb sobre #rrggbb → N.NN:1`, por par e por tema | PASSA / REPROVA / N.A. |
+| 1.4.11 | AA | Borda de controle, ícone e anel de foco ≥3:1 contra o fundo adjacente | `#rrggbb sobre #rrggbb → N.NN:1` | PASSA / REPROVA / N.A. |
+| 1.4.1 | A | Estado dito também por texto, ícone ou posição, nunca só por cor | sinais listados | PASSA / REPROVA / N.A. |
+| 2.4.7 | AA | Foco visível em todo controle | onde o foco aparece | PASSA / REPROVA / N.A. |
+| 4.1.2 | A | Nome, papel e valor por controle (`aria-*`, `role`, `<label>`) | controle → atributo | PASSA / REPROVA / N.A. |
+| 2.1.1 | A | Tab alcança e aciona todo controle, sem armadilha de foco | herdado → Acceptance notes | — |
+| 2.5.8 | AA | Alvo ≥24×24 px; 44×44 px recomendado no mobile | herdado → Acceptance notes | — |
+
+3.3.7 é nível A e 2.4.13 é AAA: não entram aqui, e nenhum dos 2 é critério AA.
+
+### Responsiveness
+
 | Concern | Requirement |
 |---------|-------------|
-| Keyboard | {Focus order, shortcuts, escape behavior} |
-| Contrast (**medir nos pares reais**, no tema padrão primeiro) | Texto sobre fundo ≥4.5:1 (AA); acento sobre fundo ≥4.5:1 quando é texto/link; badges e bordas ≥3:1 (não-texto). Se o projeto tem 2 temas, cada um é um design system completo: número de um NÃO transfere para o outro. Medir via DevTools/calculadora de contraste — listar os valores na resposta. |
-| Screen Reader | {Labels, roles, announcements} |
 | Mobile | {Layout, touch target, truncation, long content} |
-| Non-color Cues | {Icons, text, shape, position} |
+| Long content | {Texto longo, listas grandes, dados parciais} |
 
 ---
 
@@ -246,6 +264,8 @@ Acceptance notes:
 - [ ] {Gamification acceptance note or explicit skip rationale}
 - [ ] **Premium**: cada estado (loading/empty/error/success/disabled) tem acabamento "shipada", não "MVP a polir"
 - [ ] **Self-Evident**: zero tooltip-muleta, zero helper text óbvio, zero cor conflitando com semântica — teste do estranho e teste do suporte aprovados
+- [ ] 2.1.1 (herdado da tabela WCAG): Tab alcança e aciona todo controle, sem armadilha de foco — provado no relatório do Build
+- [ ] 2.5.8 (herdado da tabela WCAG): alvo ≥24×24 px, 44×44 px recomendado no mobile — medido no relatório do Build
 
 ---
 

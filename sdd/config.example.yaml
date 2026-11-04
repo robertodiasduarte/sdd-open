@@ -89,3 +89,8 @@ worktree_base: ""
 # improvisar o texto que vai para producao.
 prompts:
   builder_skill: "sdd-prompt-builder"
+  # Se o projeto chama a IA por uma função própria, a expressão do parâmetro dela: o script
+  # sdd/bin/prompt-drift-scan.sh procura essa expressão seguida de texto fixo. Exemplos:
+  # "systemPrompt:" ou "callLLM\\(" (entre aspas duplas, a contrabarra vai dobrada). Vazio = a
+  # varredura vê só os sinais genéricos, e avisa disso.
+  wrapper_pattern: ""

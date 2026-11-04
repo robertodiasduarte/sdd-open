@@ -3,13 +3,13 @@
 Lê direto da raiz (sem rede, sem sandbox). Sete grupos:
   Links           — todo link relativo de README*.md, CONTRIBUTING.md e docs/**/*.md aponta para arquivo
                     que existe, e toda #âncora casa com um título pela regra do GitHub;
-  Guia            — docs/pt-BR/guia-do-aluno.md cobre as 17 skills, os 7 agentes e a instalação do open,
+  Guia            — docs/pt-BR/guia-do-aluno.md cobre as 18 skills, os 7 agentes e a instalação do open,
                     sem as premissas do sdd-starter (npx, 15 skills, sdd/ fora do git…);
   Quickstart      — a regra do método, "valide antes de seguir" por fase, a tabela "onde roda" no passo 4
                     e a atualização pelo doctor + init no passo 5;
   Roadmap         — os temas planejados e "Specs como deltas" em avaliação, sem data;
   Comparison      — "Specs como deltas" continua ❌ em avaliação na coluna do SDD Open;
-  ReadmeEAgents   — README e AGENTS.md.tmpl citam as 17 skills, a KB e o OK único;
+  ReadmeEAgents   — README e AGENTS.md.tmpl citam as 18 skills, a KB e o OK único;
   PorQueCadaRegra — as 7 skills de fase e as 2 de terreno guardam o motivo das próprias regras.
 
 As frases fixas ficam nas constantes abaixo: mudar a redação de uma delas é mudar a constante de propósito.
@@ -57,9 +57,9 @@ QUICKSTART = {
 
 ROADMAP = {
     "en": (RAIZ / "docs/roadmap.md", "[Português](pt-BR/roadmap.md)", "planned", "under evaluation",
-           ("sdd-loop-builder", "reconciliation")),
+           ("sdd-drive", "reconciliation")),
     "pt": (RAIZ / "docs/pt-BR/roadmap.md", "[English](../roadmap.md)", "planejado", "em avaliação",
-           ("sdd-loop-builder", "Reconciliação")),
+           ("sdd-drive", "Reconciliação")),
 }
 # Hooks (F8), fluxo encadeado (F9), revisão adversarial (F10 + F11) e contexto e governança (F12) saíram do roadmap e ganharam documento próprio, linkado dos dois READMEs.
 FLUXO_DOCS = {
@@ -230,7 +230,7 @@ class Guia(unittest.TestCase):
     def test_uma_ficha_por_skill(self):
         faltam = [s for s in SKILLS if not re.search(r"(?m)^#### %s\s*$" % re.escape(s), self.texto)]
         self.assertEqual(faltam, [], "skills sem ficha no catálogo")
-        self.assertEqual(len(SKILLS), 17)
+        self.assertEqual(len(SKILLS), 18)
 
     def test_os_sete_agentes(self):
         self.assertEqual([a for a in AGENTES if a not in self.texto], [])
@@ -328,6 +328,25 @@ class Roadmap(unittest.TestCase):
                     self.assertIn(termo, texto)
                 self.assertIn(link, ler(readme))
                 self.assertEqual(links_quebrados(doc), [])
+
+    def test_llm_no_codigo_tem_documento_proprio_linkado_do_readme(self):
+        # F13 (AT-031): a skill saiu do roadmap e o mecanismo vem com o seu documento.
+        casos = {"en": (RAIZ / "docs/llm-in-code.md", RAIZ / "README.md", "docs/llm-in-code.md",
+                        RAIZ / "docs/roadmap.md", "truncated on purpose"),
+                 "pt": (RAIZ / "docs/pt-BR/llm-in-code.md", RAIZ / "README.pt-BR.md", "docs/pt-BR/llm-in-code.md",
+                        RAIZ / "docs/pt-BR/roadmap.md", "truncado de propósito")}
+        for lingua, (doc, readme, link, roadmap, truncado) in casos.items():
+            with self.subTest(lingua=lingua):
+                texto = ler(doc)
+                for termo in ("sdd-loop-builder", "LOOP_SPEC", "LLM_PROMPTS_DESIGN.md", "design-lint.py",
+                              "prompt-drift-scan.sh", "wrapper_pattern", "contraste.sh", "`0`", "`2`", "`64`", "2.5.8",
+                              "3.3.7", "2.4.13", truncado):
+                    self.assertIn(termo, texto)
+                self.assertIn(link, ler(readme))
+                self.assertEqual(links_quebrados(doc), [])
+                linha = [ln for ln in linhas_de_tabela(ler(roadmap)) if "sdd-drive" in ln]
+                self.assertEqual(len(linha), 1)
+                self.assertNotIn("sdd-loop-builder", ler(roadmap))
 
     def test_contexto_e_governanca_tem_documento_proprio_linkado_do_readme(self):
         # F12 (AT-022): passos 1.5 e 11, o exit 5 depois de atualizar, a linha de dispensa, patterns e os scripts.

@@ -48,14 +48,14 @@ seu é sobrescrito. [Quickstart completo →](docs/pt-BR/quickstart.md)
 | **Base de conhecimento** | o que você sabe sobre um domínio (um processo, uma norma, um manual) organizado em conceitos e receitas que o agente consulta; em norma, o período em que cada regra vale, a fonte com SHA-256 e o mapa regra → fonte → teste. O Define só cita domínio que existe, conferido por `sdd/bin/kb-dominios.py` | skill `sdd-kb` · `sdd/kb/` |
 | **Handoff por ficha** | um arquivo por feature no repositório, com prompt de retomada autossuficiente — sem depender da memória de nenhum agente | skill `sdd-handoff` · `sdd/handoffs/` |
 
-## As 17 skills
+## As 18 skills
 
 | Bloco | Skills | Quando |
 |---|---|---|
 | **Preparar** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | uma vez por computador e por projeto (está tudo pronto? pôr no git, alarme de commit contra dado de cliente); a new-session a cada frente de trabalho |
 | **Criar** | `sdd-kb` (opcional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-ux-review` · `sdd-design` · `sdd-build` | uma vez por feature — o fluxo SDD |
 | **Fechar** | `sdd-handoff` · `sdd-release` | no fim de cada sessão e de cada frente |
-| **Transversais** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-auditoria-harness` | quando o caso pedir |
+| **Transversais** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-auditoria-harness` | quando o caso pedir |
 
 Nunca usou git nem terminal? O [guia do aluno](docs/pt-BR/guia-do-aluno.md) mostra o caminho
 inteiro, da primeira instalação à primeira publicação.
@@ -98,6 +98,7 @@ Funciona em macOS, Linux e Windows (Git Bash/WSL): bash 3.2, zero zsh, zero syml
 - [Comparativo](docs/pt-BR/comparison.md) ([EN](docs/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
 - [Hooks de git](docs/pt-BR/hooks.md) ([EN](docs/hooks.md)) — as regras do pre-commit que o `init` instala, o alarme de higiene de dado, o limite do `--no-verify`
 - [Fluxo encadeado](docs/pt-BR/chained-flow.md) ([EN](docs/chained-flow.md)) — a classe da decisão em toda pergunta, o `flow.autonomous`, a parada com exit 40 quando o agente não abre uma sessão nova sozinho
+- [LLM no código](docs/pt-BR/llm-in-code.md) ([EN](docs/llm-in-code.md)) — a skill de processo em laço, o roteador e o inventário de prompts, o fiscal de prompt e o medidor de contraste.
 - [Contexto e governança](docs/pt-BR/context-and-governance.md) ([EN](docs/context-and-governance.md)) — o mapa do domínio (passo 1.5) e a revisão de governança (passo 11) do Define, o exit 5 depois de atualizar, os patterns do projeto
 - [Revisão adversarial](docs/pt-BR/adversarial-review.md) ([EN](docs/adversarial-review.md)) — uma engine revisa o diff congelado, outra audita a revisão; custo por papel, privacidade, o review externo que a release exige, o gate offline e o `eval-agree`
 - [Roadmap](docs/pt-BR/roadmap.md) ([EN](docs/roadmap.md)) — o que está planejado e o que está em avaliação

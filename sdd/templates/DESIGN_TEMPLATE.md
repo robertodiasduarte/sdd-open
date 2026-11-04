@@ -167,6 +167,11 @@
 
 ---
 
+<!-- Só com `LLM Prompts: true` no DEFINE: copie aqui a seção de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md.
+Inventário: # · Nome · Tipo · Arquivo de destino · Versão · Provedor/Modelo · Origem da entrada · Consumidor da saída ·
+Material de referência · Completeness · Refator de?. Contrato por prompt: Tom/audiência · Tipo de saída ·
+Fallback aprovado · Autônomo? · Verification interna · Eval mínimo pré-ship. Com `false`, não há seção. -->
+
 ## Data Flow
 
 ```text
