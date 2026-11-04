@@ -121,7 +121,8 @@ A fase Build, no mesmo turno:
 - **Pedido de LOOP_SPEC para o que é chamada única:** diga, recomende a skill de prompt e pare.
 - **Faltou contexto em execução autônoma:** devolva o item que falta, sem bloco parcial.
 - **Conflito entre decisão fechada e material novo:** preserve a decisão e aponte o conflito no bloco.
-- **Efeito externo sem reversão definida:** a ação sai do `action_space`, ou o perfil é `high-risk` com `NEEDS_APPROVAL`.
+- **Efeito externo sem reversão possível:** perfil `high-risk` com `NEEDS_APPROVAL`; sem quem aprove, a ação sai do
+  `action_space`.
 - **Nunca** apresente número de orçamento, limite ou métrica como se viesse do contrato: marque o valor como proposta, e
   quem chamou o registra no relatório.
 

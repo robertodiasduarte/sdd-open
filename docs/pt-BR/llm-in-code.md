@@ -3,7 +3,8 @@
 # LLM no código e contraste medido
 
 Desde a v2.5.0, o método tem quatro peças para software que chama um modelo de linguagem em produção e uma para
-acessibilidade. Nenhuma se aplica a um projeto sem prompt e sem tela: elas não atrapalham quem não as usa.
+acessibilidade. Um projeto sem prompt e sem tela só encontra o fiscal de prompt, que o Build roda em todo arquivo: ele
+avisa do slot vazio e, raramente, para em algo que não é prompt, o que se registra como falso positivo.
 
 ## Um processo em laço: `sdd-loop-builder`
 

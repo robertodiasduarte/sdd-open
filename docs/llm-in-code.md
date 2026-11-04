@@ -3,7 +3,8 @@
 # LLM in the code, and measured contrast
 
 Since v2.5.0, the method has four pieces for software that calls a language model in production, and one for
-accessibility. None of them applies to a project that has no prompt and no screen: they stay out of the way.
+accessibility. A project with no prompt and no screen only meets the drift scan, which the Build runs on every file: it
+warns about the empty slot and, rarely, stops on something that is not a prompt, which is recorded as a false positive.
 
 ## A process in a loop: `sdd-loop-builder`
 

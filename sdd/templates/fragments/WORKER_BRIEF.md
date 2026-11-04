@@ -45,7 +45,8 @@
 1. **Waves por dependência E por arquivo disjunto** — itens sem dependência mútua e com paths
    distintos vão na mesma wave (paralelo, mesma mensagem, sem isolation extra). Colisão de
    path → waves separadas.
-2. **Drift detection roda ANTES do despacho**, sobre o manifest, no orquestrador — nunca no worker.
+2. **Confronto do manifest com o inventário de prompts roda ANTES do despacho**, no orquestrador — nunca no worker.
+   A varredura do conteúdo vem no item 4, depois que o worker grava: antes disso, não há texto para varrer.
 3. **Exclusões duras (NUNCA vão pro worker barato):**
    - itens do inventário **LLM Prompts** → orquestrador + roteador do passo 4 da `sdd-build`: `sdd-prompt-builder` em `one-shot`; `sdd-loop-builder` e depois um prompt por estágio em `loop` (qualidade>custo);
    - itens de **superfície de segurança** (RLS, gates de edge auth, migrations com lógica) →

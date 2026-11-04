@@ -99,8 +99,9 @@ LLM × código; o Verify Gate, quando há ground truth. Nunca inclua seção vaz
   de relógio, K, W, reserva obrigatória para verificar, compensar e relatar, limite de escalada (prefira `NEEDS_INPUT`
   a um `EXHAUSTED` seco quando o restante não paga um ciclo inteiro).
 - **`safety_and_effects`** — só com ação irreversível ou externa: classifique cada ação (local reversível, local
-  irreversível, externa); ponto de retomada antes do irreversível; reversão definida, ou a ação sai do `action_space`;
-  ação externa exige idempotência ou chave de deduplicação; `high-risk` exige `NEEDS_APPROVAL`; depois de resultado
+  irreversível, externa); ponto de retomada antes do irreversível; reversão definida; sem reversão possível (um e-mail enviado), a ação só fica
+  com `NEEDS_APPROVAL`, e sem quem aprove sai do `action_space`; ação externa exige idempotência ou chave de deduplicação;
+  `high-risk` exige `NEEDS_APPROVAL` em toda ação irreversível; depois de resultado
   ambíguo, confira o estado do mundo antes de repetir ação com efeito.
 - **`observability`** — rastro por ciclo, que alimenta o controle e a auditoria: id do ciclo → hash → proposta →
   validação → ação → observação (assinatura) → veredito → transição → orçamento restante. Também: métrica de progresso

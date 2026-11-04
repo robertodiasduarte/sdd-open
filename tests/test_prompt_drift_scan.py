@@ -83,7 +83,8 @@ class SinaisDeConteudo(Base):
                       '"file_system": "x"\n', 'file_role: "system"\n', 'role: "user"\n', "system = obter()\n",
                       'file system: "ext4"\n', '"operating system": "linux"\n', 'role: "system:admin"\n',
                       "messages.createdAt = agora\n", "messages.create_index(x)\n", "responses.createdAt\n",
-                      "generateContentHash(x)\n", "generate_content_type = 1\n", "messages.streaming = True\n",
+                      "generateContentHash(x)\n", "generate_content_type = 1\n", "regenerateContent(x)\n",
+                      "my_generate_content(x)\n", "submessages.create(x)\n", "messages.streaming = True\n",
                       "generateContentStreamed(x)\n", "generate_content_async_pool(x)\n", 'os.system("ls")\n', "a == 'x'\n"):
             with self.subTest(texto=texto):
                 rc, out = self.com_texto("src/a.yml", texto)
@@ -185,6 +186,12 @@ class Wrapper(Base):
         self.assertEqual(self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n")[0], 2)
         self.slot('prompts:\r\n  wrapper_pattern: "systemPrompt:"\r\n')
         self.assertEqual(self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n")[0], 2)
+
+    def test_ancora_e_tag_no_cabecalho_do_bloco(self):
+        for cabecalho in ("prompts: &llm", "prompts: !!map", "prompts: &llm  # comentário"):
+            with self.subTest(cabecalho=cabecalho):
+                self.slot(cabecalho + '\n  wrapper_pattern: "systemPrompt:"\n')
+                self.assertEqual(self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n")[0], 2)
 
     def test_chaves_entre_aspas(self):
         self.slot('"prompts":\n  "wrapper_pattern": "systemPrompt:"\n')
@@ -321,7 +328,8 @@ class ErroDeUso(Base):
 
     def test_valor_em_forma_que_o_leitor_nao_sustenta_nao_vira_vazio(self):
         for texto in ('prompts: { wrapper_pattern: "x" }\n', "prompts:\n  wrapper_pattern: >-\n    x\n",
-                      'prompts:\n  wrapper_pattern: &a "x"\n', 'prompts:\n  wrapper_pattern: !!str "x"\n'):
+                      'prompts:\n  wrapper_pattern: &a "x"\n', 'prompts:\n  wrapper_pattern: !!str "x"\n',
+                      "prompts: *llm\n"):
             with self.subTest(texto=texto):
                 self.slot(texto)
                 self.conferir(*self.com_texto("src/a.ts", "x\n"), "malformado")
@@ -380,6 +388,23 @@ class ErroDeUso(Base):
 
     def test_opcao_desconhecida(self):
         self.conferir(*self.em_disco("--nada"), "opção desconhecida")
+
+    @unittest.skipIf(os.geteuid() == 0, "root lê qualquer arquivo")
+    def test_pasta_sdd_sem_permissao_nunca_vira_slot_vazio(self):
+        sdd = self.p / "sdd"
+        sdd.chmod(0)
+        try:
+            self.conferir(*self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n"), "não consegui ler sdd/config.yaml")
+        finally:
+            sdd.chmod(stat.S_IRWXU)
+
+    def test_awk_que_falha_nunca_vira_slot_vazio(self):
+        stub = self.tmp / "stubawk"
+        stub.mkdir()
+        (stub / "awk").write_text("#!/bin/sh\nexit 3\n", encoding="utf-8")
+        (stub / "awk").chmod(0o755)
+        env = dict(self.env, PATH="%s:%s" % (stub, self.env["PATH"]))
+        self.conferir(*self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n", env=env), "exit 3")
 
     def test_entrada_lida_pela_metade_nunca_vira_limpo(self):
         # O cat falha depois de gravar um pedaço não vazio: sem conferir a saída dele, o pedaço valeria como varredura.
@@ -462,6 +487,20 @@ class AutoTeste(Sandbox):
         self.assertEqual(rc, 2, err)
         self.assertIn("parâmetro do wrapper", err)
         self.assertIn("RESULTADO: VERMELHO", err)
+
+    def test_nao_quebra_onde_link_e_permissao_nao_tem_efeito(self):
+        # Git Bash: ln -s falha e chmod 000 não tira a leitura. Os casos que dependem disso são pulados, sem vermelho falso.
+        stub = self.tmp / "stubgit"
+        stub.mkdir()
+        (stub / "ln").write_text("#!/bin/sh\nexit 1\n", encoding="utf-8")
+        real = shutil.which("chmod")
+        (stub / "chmod").write_text('#!/bin/sh\n[ "$1" = "000" ] && exit 0\nexec %s "$@"\n' % real, encoding="utf-8")
+        (stub / "mkfifo").write_text("#!/bin/sh\nexit 1\n", encoding="utf-8")
+        for nome in ("ln", "chmod", "mkfifo"):
+            os.chmod(str(stub / nome), 0o755)
+        env = dict(self.env, PATH="%s:%s" % (stub, self.env["PATH"]))
+        rc, out, err = self.roda([BASH, SCRIPT, "--self-test"], self.tmp, env)
+        self.assertEqual(rc, 0, out + err)
 
     def test_vermelho_sem_a_recusa_do_ponto_ponto(self):
         rc, _, err = self.sabotada('*/../*|*/..) erro_uso "caminho com .. numa pasta que não existe: $p" "passe o caminho final, sem .." ;;',

@@ -235,6 +235,7 @@ class Integracao(unittest.TestCase):
         self.assertIn("`sdd-loop-builder`", WORKER)
         self.assertIn("roteador do passo 4", WORKER)
         self.assertIn("bash sdd/bin/prompt-drift-scan.sh <arquivos da wave>", WORKER)
+        self.assertNotIn("Drift detection roda ANTES do despacho", WORKER)
 
 
 class TabelaWcag(unittest.TestCase):

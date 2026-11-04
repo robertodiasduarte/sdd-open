@@ -28,7 +28,7 @@ set -u
 
 ME="$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")"
 LITERAL='[[:space:]]*[fFrRbBuU]{0,2}(`|'"'"'|")'
-SDK='(messages\.(create|stream)|chat\.completions|responses\.(create|stream)|generateContent(Stream)?|generate_content(_stream|_async)?)([^[:alnum:]_]|$)'
+SDK='(^|[^[:alnum:]_])(messages\.(create|stream)|chat\.completions|responses\.(create|stream)|generateContent(Stream)?|generate_content(_stream|_async)?)([^[:alnum:]_]|$)'
 # A chave vale no início da linha, depois de { , ( [ ou de const/let/var: "file system:" e "package-ecosystem:" não.
 INICIO='(^[[:space:]]*|[{,([][[:space:]]*|(const|let|var)[[:space:]]+)'
 SYSTEM="$INICIO"'["'"'"']?system["'"'"']?\]?[[:space:]]*(:=|=>|:|=)'"$LITERAL"
@@ -77,7 +77,8 @@ ler_slot() {  # imprime V<valor> ou M (malformado); nada se a chave não existe
     NR == 1 { sub(/^\357\273\277/, "") }
     { sub(/\r$/, "") }
     /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*\{.*wrapper_pattern/ { print "M"; exit }
-    /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*(#.*)?$/ { dentro = 1; next }
+    /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*\*/ { print "M"; exit }
+    /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*([&!][^[:space:]]+[[:space:]]*)*(#.*)?$/ { dentro = 1; next }
     /^[^[:space:]#]/ { dentro = 0 }
     dentro && /^[[:space:]]+["\047]?wrapper_pattern["\047]?[[:space:]]*:/ {
       v = $0
@@ -301,6 +302,7 @@ auto_teste() {
   conteudo 2 'chamada direta ao SDK' src/b7.py             'model.generate_content_async(x)'
   conteudo 2 'chamada direta ao SDK' src/b8.py             'client.messages.stream(x)'
   conteudo 0 'RESULTADO: LIMPO'      src/b5.py             'messages.createdAt = agora'
+  conteudo 0 'RESULTADO: LIMPO'      src/b9.ts             'function regenerateContent() {}'
   conteudo 2 'system com texto fixo' src/c.ts              'run({ system: "x", input: y })'
   conteudo 2 'system com texto fixo' src/d.json            '{ "system": "x" }'
   conteudo 2 'system com texto fixo' src/d2.py             'ask(system="x")'
@@ -373,9 +375,19 @@ auto_teste() {
   uso_errado 'mapa em linha com o slot' src/r.py
   printf 'prompts: {}\n' > "$proj/sdd/config.yaml"
   disco 0 'wrapper_pattern vazio' src/r.py 'soma = a + b'
+  printf 'prompts: *llm\n' > "$proj/sdd/config.yaml"
+  uso_errado 'bloco por referência' src/r.py
+  printf 'prompts: &llm\n  wrapper_pattern: "systemPrompt:"\n' > "$proj/sdd/config.yaml"
+  conteudo 2 'parâmetro do wrapper' src/u2.ts 'ask({ systemPrompt: `x` })'
+  # Link, FIFO e permissão só valem onde o sistema os tem: no Git Bash, ln -s e chmod 000 não têm efeito.
   rm -f "$proj/sdd/config.yaml"
-  ln -s /nao/existe/config.yaml "$proj/sdd/config.yaml"
-  uso_errado 'sdd/config.yaml é um link quebrado' src/r.py
+  if ln -s /nao/existe/config.yaml "$proj/sdd/config.yaml" 2>/dev/null && [ -L "$proj/sdd/config.yaml" ]; then
+    uso_errado 'sdd/config.yaml é um link quebrado' src/r.py
+  fi
+  rm -f "$proj/sdd/config.yaml"
+  if mkfifo "$proj/sdd/config.yaml" 2>/dev/null; then
+    uso_errado 'sdd/config.yaml é um FIFO' src/r.py
+  fi
   rm -f "$proj/sdd/config.yaml"; mkdir "$proj/sdd/config.yaml"
   uso_errado 'sdd/config.yaml é uma pasta' src/r.py
   rmdir "$proj/sdd/config.yaml"
@@ -415,14 +427,16 @@ auto_teste() {
   if [ "$rc_pasta" -ne 64 ]; then
     printf '🛑 caso de uso (cat que falha no meio): exit %s (esperado 64)\n' "$rc_pasta" >&2; falhas=$((falhas + 1))
   fi
-  if [ "$(id -u)" != "0" ]; then
-    printf 'x\n' > "$proj/src/ilegivel.ts"; chmod 000 "$proj/src/ilegivel.ts"
+  printf 'x\n' > "$proj/src/ilegivel.ts"; chmod 000 "$proj/src/ilegivel.ts"
+  if [ ! -r "$proj/src/ilegivel.ts" ]; then
     uso_errado 'arquivo ilegível' src/ilegivel.ts
-    chmod 600 "$proj/src/ilegivel.ts"
-    chmod 000 "$proj/sdd/config.yaml"
-    uso_errado 'sdd/config.yaml ilegível' src/ilegivel.ts
-    chmod 600 "$proj/sdd/config.yaml"
   fi
+  chmod 600 "$proj/src/ilegivel.ts"
+  chmod 000 "$proj/sdd/config.yaml"
+  if [ ! -r "$proj/sdd/config.yaml" ]; then
+    uso_errado 'sdd/config.yaml ilegível' src/ilegivel.ts
+  fi
+  chmod 600 "$proj/sdd/config.yaml"
 
   if [ "$falhas" -ne 0 ]; then
     printf 'RESULTADO: VERMELHO\n' >&2
