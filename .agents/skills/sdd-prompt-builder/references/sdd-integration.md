@@ -52,7 +52,7 @@ Mesmo quando o DEFINE indicar `LLM Prompts: false`, a fase Build passa por
 |---|---|
 | Path | pasta `prompts/` em qualquer profundidade · nome com `prompt` (exceto `.md`) |
 | Conteúdo | o parâmetro do wrapper de LLM do projeto (`prompts.wrapper_pattern`) **recebendo um literal** |
-| Conteúdo | chamada direta ao SDK do provider (`messages.create`, `chat.completions`, `responses.create`, `generateContent`) · `system` com literal, em `:` ou `=` · `role` de sistema |
+| Conteúdo | chamada direta ao SDK do provider (`messages.create`, `chat.completions`, `responses.create`, `generateContent` e as formas de streaming) · `system` com literal, em `:` ou `=` · `role` de sistema |
 
 ⛔ **Calibre os sinais pelo código real do projeto, não por uma lista genérica.** Se o seu
 projeto centraliza as chamadas num wrapper (`callLLM`, `askModel`, um client próprio), preencha

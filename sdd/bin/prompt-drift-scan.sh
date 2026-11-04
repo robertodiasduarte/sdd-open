@@ -28,7 +28,7 @@ set -u
 
 ME="$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")"
 LITERAL='[[:space:]]*[fFrRbBuU]{0,2}(`|'"'"'|")'
-SDK='(messages\.create|chat\.completions|responses\.create|generateContent|generate_content)([^[:alnum:]_]|$)'
+SDK='(messages\.(create|stream)|chat\.completions|responses\.(create|stream)|generateContent(Stream)?|generate_content(_stream|_async)?)([^[:alnum:]_]|$)'
 # A chave vale no início da linha, depois de { , ( [ ou de const/let/var: "file system:" e "package-ecosystem:" não.
 INICIO='(^[[:space:]]*|[{,([][[:space:]]*|(const|let|var)[[:space:]]+)'
 SYSTEM="$INICIO"'["'"'"']?system["'"'"']?\]?[[:space:]]*(:=|=>|:|=)'"$LITERAL"
@@ -297,6 +297,9 @@ auto_teste() {
   conteudo 2 'chamada direta ao SDK' src/b2.py             'client.responses.create(model=m)'
   conteudo 2 'chamada direta ao SDK' src/b3.js             'model.generateContent(x)'
   conteudo 2 'chamada direta ao SDK' src/b4.py             'model.generate_content(x)'
+  conteudo 2 'chamada direta ao SDK' src/b6.js             'await model.generateContentStream(x)'
+  conteudo 2 'chamada direta ao SDK' src/b7.py             'model.generate_content_async(x)'
+  conteudo 2 'chamada direta ao SDK' src/b8.py             'client.messages.stream(x)'
   conteudo 0 'RESULTADO: LIMPO'      src/b5.py             'messages.createdAt = agora'
   conteudo 2 'system com texto fixo' src/c.ts              'run({ system: "x", input: y })'
   conteudo 2 'system com texto fixo' src/d.json            '{ "system": "x" }'
@@ -398,7 +401,20 @@ auto_teste() {
   if [ "$rc_pasta" -ne 64 ]; then
     printf '🛑 caso de uso (grep com saída 2): exit %s (esperado 64)\n' "$rc_pasta" >&2; falhas=$((falhas + 1))
   fi
-  uso_errado '.. em pasta inexistente' --conteudo nao/existe/../a.ts
+  total=$((total + 1))
+  saida_pasta="$(printf 'x\n' | roda --conteudo nao/existe/../a.ts 2>&1)"; rc_pasta=$?
+  if [ "$rc_pasta" -ne 64 ] || ! printf '%s' "$saida_pasta" | grep -qF 'caminho com ..'; then
+    printf '🛑 caso de uso (.. em pasta inexistente): exit %s (esperado 64, pelo ..)\n' "$rc_pasta" >&2; falhas=$((falhas + 1))
+  fi
+  # Entrada lida pela metade: o cat falha depois de gravar um pedaço, e o pedaço não vale como varredura.
+  mkdir -p "$TMP/stubcat"
+  printf '#!/bin/sh\nprintf "soma = 1\\n"\nexit 1\n' > "$TMP/stubcat/cat"
+  chmod +x "$TMP/stubcat/cat"
+  total=$((total + 1))
+  saida_pasta="$(printf 'x\n' | PATH="$TMP/stubcat:$PATH" roda --conteudo src/z.py 2>&1)"; rc_pasta=$?
+  if [ "$rc_pasta" -ne 64 ]; then
+    printf '🛑 caso de uso (cat que falha no meio): exit %s (esperado 64)\n' "$rc_pasta" >&2; falhas=$((falhas + 1))
+  fi
   if [ "$(id -u)" != "0" ]; then
     printf 'x\n' > "$proj/src/ilegivel.ts"; chmod 000 "$proj/src/ilegivel.ts"
     uso_errado 'arquivo ilegível' src/ilegivel.ts
@@ -440,7 +456,7 @@ case "$1" in
     carregar_slot
     [ ! -t 0 ] || erro_uso "--conteudo espera o texto na entrada padrão, e ela é o terminal" "passe o texto que vai gravar pela entrada padrão"
     TMP="$(mktemp -d)" || erro_uso "não consegui criar a pasta temporária" "confira o espaço em disco e tente de novo"
-    cat > "$TMP/conteudo"
+    cat > "$TMP/conteudo" || erro_uso "não consegui ler a entrada padrão inteira" "confira o espaço na pasta temporária e rode de novo; um pedaço do texto não vale como varredura"
     [ -s "$TMP/conteudo" ] || erro_uso "nada chegou pela entrada padrão" "passe o texto pela entrada padrão; arquivo vazio não precisa de varredura"
     ACHOU=0
     avaliar "$2" "$TMP/conteudo"

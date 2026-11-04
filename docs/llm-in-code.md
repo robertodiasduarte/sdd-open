@@ -58,7 +58,7 @@ bash sdd/bin/prompt-drift-scan.sh --self-test
 ```
 
 It looks for a `prompts/` folder, a file name with `prompt` (except `.md`), a direct SDK call (`messages.create`,
-`chat.completions`, `responses.create`, `generateContent`), `system` with fixed text, a system `role` and, the signal
+`messages.stream`, `chat.completions`, `responses.create`, `generateContent` and their streaming forms), `system` with fixed text, a system `role` and, the signal
 that matters most, **the parameter of your own LLM function**:
 
 ```yaml

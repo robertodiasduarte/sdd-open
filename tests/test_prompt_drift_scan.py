@@ -51,6 +51,11 @@ class SinaisDeConteudo(Base):
                              ("client.responses.create(model=m)\n", "chamada direta ao SDK"),
                              ("model.generateContent(x)\n", "chamada direta ao SDK"),
                              ("model.generate_content(x)\n", "chamada direta ao SDK"),
+                             ("await model.generateContentStream(x)\n", "chamada direta ao SDK"),
+                             ("client.models.generate_content_stream(x)\n", "chamada direta ao SDK"),
+                             ("model.generate_content_async(x)\n", "chamada direta ao SDK"),
+                             ("client.messages.stream(x)\n", "chamada direta ao SDK"),
+                             ("client.responses.stream(x)\n", "chamada direta ao SDK"),
                              ('const system = "You are"\n', "system com texto fixo"),
                              ('system := "x"\n', "system com texto fixo"),
                              ('"system" => "x"\n', "system com texto fixo"),
@@ -78,7 +83,8 @@ class SinaisDeConteudo(Base):
                       '"file_system": "x"\n', 'file_role: "system"\n', 'role: "user"\n', "system = obter()\n",
                       'file system: "ext4"\n', '"operating system": "linux"\n', 'role: "system:admin"\n',
                       "messages.createdAt = agora\n", "messages.create_index(x)\n", "responses.createdAt\n",
-                      "generateContentHash(x)\n", "generate_content_type = 1\n", 'os.system("ls")\n', "a == 'x'\n"):
+                      "generateContentHash(x)\n", "generate_content_type = 1\n", "messages.streaming = True\n",
+                      "generateContentStreamed(x)\n", "generate_content_async_pool(x)\n", 'os.system("ls")\n', "a == 'x'\n"):
             with self.subTest(texto=texto):
                 rc, out = self.com_texto("src/a.yml", texto)
                 self.assertEqual(rc, 0, out)
@@ -375,6 +381,15 @@ class ErroDeUso(Base):
     def test_opcao_desconhecida(self):
         self.conferir(*self.em_disco("--nada"), "opção desconhecida")
 
+    def test_entrada_lida_pela_metade_nunca_vira_limpo(self):
+        # O cat falha depois de gravar um pedaço não vazio: sem conferir a saída dele, o pedaço valeria como varredura.
+        stub = self.tmp / "stubcat"
+        stub.mkdir()
+        (stub / "cat").write_text('#!/bin/sh\nprintf "soma = 1\\n"\nexit 1\n', encoding="utf-8")
+        (stub / "cat").chmod(0o755)
+        env = dict(self.env, PATH="%s:%s" % (stub, self.env["PATH"]))
+        self.conferir(*self.com_texto("src/a.py", "client.messages.create(x)\n", env=env), "entrada padrão inteira")
+
     def test_grep_com_saida_2_nunca_vira_limpo(self):
         # Um grep que falha não é "não achei": com o stub, toda busca de conteúdo sai 2.
         stub = self.tmp / "stub"
@@ -447,6 +462,18 @@ class AutoTeste(Sandbox):
         self.assertEqual(rc, 2, err)
         self.assertIn("parâmetro do wrapper", err)
         self.assertIn("RESULTADO: VERMELHO", err)
+
+    def test_vermelho_sem_a_recusa_do_ponto_ponto(self):
+        rc, _, err = self.sabotada('*/../*|*/..) erro_uso "caminho com .. numa pasta que não existe: $p" "passe o caminho final, sem .." ;;',
+                                   '*/../*|*/..) : ;;')
+        self.assertEqual(rc, 2, err)
+        self.assertIn(".. em pasta inexistente", err)
+
+    def test_vermelho_quando_o_cat_que_falha_e_ignorado(self):
+        rc, _, err = self.sabotada('cat > "$TMP/conteudo" || erro_uso "não consegui ler a entrada padrão inteira" "confira o espaço na pasta temporária e rode de novo; um pedaço do texto não vale como varredura"',
+                                   'cat > "$TMP/conteudo"')
+        self.assertEqual(rc, 2, err)
+        self.assertIn("cat que falha no meio", err)
 
     def test_vermelho_sem_a_exclusao_de_teste(self):
         rc, _, err = self.sabotada("  nome_de_teste && return 0\n", "")

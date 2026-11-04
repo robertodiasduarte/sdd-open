@@ -8,6 +8,7 @@ cópias dos mesmos nomes (fragmento, template, lint, integração) não divergir
 from __future__ import annotations
 
 import re
+import shutil
 import unittest
 
 from apoio import BASH, RAIZ, Sandbox
@@ -355,11 +356,20 @@ class Instalacao(Sandbox):
         (repo / "sdd/bin/contraste.sh").write_text("# meu\n", encoding="utf-8")
         (repo / "sdd/bin/prompt-drift-scan.sh").unlink()
         (repo / "sdd/templates/fragments/LLM_PROMPTS_DESIGN.md").unlink()
+        shutil.rmtree(str(repo / ".agents/skills/sdd-loop-builder"))
+        shutil.rmtree(str(repo / ".claude/skills/sdd-loop-builder"))
         rc, out, err = self.roda([BASH, cli, "init", "--yes", "--vendors", "claude"], repo)
         self.assertEqual(rc, 0, out + err)
         self.assertEqual((repo / "sdd/bin/contraste.sh").read_text(encoding="utf-8"), "# meu\n")
         self.assertTrue((repo / "sdd/bin/prompt-drift-scan.sh").is_file())
         self.assertTrue((repo / "sdd/templates/fragments/LLM_PROMPTS_DESIGN.md").is_file())
+        self.assertTrue((repo / ".agents/skills/sdd-loop-builder/references/loop-spec-rules.md").is_file())
+        self.assertTrue((repo / ".claude/skills/sdd-loop-builder/SKILL.md").is_file())
+        # O sync gera a cópia do adaptador a partir da skill que está em .agents/skills/.
+        shutil.rmtree(str(repo / ".claude/skills/sdd-loop-builder"))
+        rc, out, err = self.roda([BASH, cli, "sync", "--yes", "--vendors", "claude"], repo)
+        self.assertEqual(rc, 0, out + err)
+        self.assertTrue((repo / ".claude/skills/sdd-loop-builder/SKILL.md").is_file())
 
 
 if __name__ == "__main__":

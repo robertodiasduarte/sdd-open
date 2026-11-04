@@ -58,7 +58,7 @@ bash sdd/bin/prompt-drift-scan.sh --self-test
 ```
 
 Ele procura uma pasta `prompts/`, um nome de arquivo com `prompt` (exceto `.md`), uma chamada direta ao SDK
-(`messages.create`, `chat.completions`, `responses.create`, `generateContent`), `system` com texto fixo, um `role` de
+(`messages.create`, `messages.stream`, `chat.completions`, `responses.create`, `generateContent` e as formas de streaming), `system` com texto fixo, um `role` de
 sistema e, o sinal que mais importa, **o parâmetro da sua própria função de IA**:
 
 ```yaml
