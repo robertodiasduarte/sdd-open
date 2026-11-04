@@ -1,26 +1,34 @@
 # Continuar: INCORPORAR_STARTER — sessão 10: F13 UX e LLM no código
 
-Esta sessão começa numa **worktree limpa**. Os artefatos SDD da família (features, handoffs, reports, reviews) vivem na branch `docs/incorporar-starter` do remoto, nunca mesclada em `main`.
+Esta sessão roda **dentro da worktree** `/Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm`, branch `feat/f13-ux-llm`, já criada de `origin/main` = `6b7633c` (tag `v2.4.0`). Os artefatos SDD da família (features, handoffs, reports, reviews) já estão no disco, fora do commit; a fonte deles é a branch `docs/incorporar-starter` do remoto, nunca mesclada em `main`.
 
-## Preparar a worktree (antes de ler qualquer coisa)
+## Conferir a worktree (antes de ler qualquer coisa)
 
-A frente da F13 **ainda não foi aberta**. Crie a worktree a partir de `origin/main` = `6b7633c` (tag `v2.4.0`) e traga os artefatos SDD da branch `docs/` (fora do commit):
+A frente da F13 **já foi aberta**: não rode `git worktree add`. Confira que está tudo no lugar:
+
+```bash
+git rev-parse --show-toplevel                                             # esperado: /Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm
+git branch --show-current                                                 # esperado: feat/f13-ux-llm
+git log --oneline -1                                                      # esperado: 6b7633c ou mais novo
+git rev-parse -q --verify 'v2.4.0^{commit}'                               # base do check-versions; esperado: 6b7633c…
+git status --short | head -4                                              # esperado: só "?? sdd/…"
+ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md
+```
+
+Se a sessão abriu em outra pasta, pare e peça ao Roberto para abrir o agente na pasta da worktree: nenhum `cd` muda a pasta à qual a sessão fica presa. Se a worktree não existir, recrie a partir do clone principal e reabra a sessão nela:
 
 ```bash
 cd /Users/robertoduarte/rdd-public/sdd-open
 GIT_TERMINAL_PROMPT=0 git fetch -q origin
 git worktree add /Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm -b feat/f13-ux-llm origin/main
 cd /Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm
-git log --oneline -1                                                      # esperado: 6b7633c ou mais novo
 GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.4.0                      # base do check-versions
 GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter
 git checkout origin/docs/incorporar-starter -- sdd/features sdd/handoffs sdd/reports sdd/reviews
 git rm -r -q --cached sdd/features sdd/handoffs sdd/reports sdd/reviews   # ficam no disco, fora do commit
-git status --short | head -4                                              # esperado: só "?? sdd/…"
-ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md
 ```
 
-Se `/Users/robertoduarte/rdd-public/sdd-open` não for o clone de `https://github.com/robertodiasduarte/sdd-open.git`, use a worktree da sessão 9 como base (`git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto worktree add …`), se ela ainda existir. Não trabalhe na worktree antiga `sdd-open-f12-contexto` (branch já mesclada). O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
+Não trabalhe na worktree antiga `sdd-open-f12-contexto` (branch já mesclada). O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
 
 Depois, leia nesta ordem:
 - `sdd/features/PLANO_F4_F15_CONSOLIDADO.md`:
