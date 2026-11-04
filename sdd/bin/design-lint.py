@@ -36,7 +36,7 @@ CAMPOS_PROMPT = ("Autônomo?", "Verification interna", "Eval mínimo pré-ship")
 BLOCO_PROMPT = re.compile(r"^#### Prompt \d+\s*:")
 FRASE_PROMPTS = "a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam:"
 # Variações do título contam ("(v1)", ": 1", negrito); outra seção que só começa igual ("LLM Prompt Injection") não.
-TITULO_PROMPTS = re.compile(r"^##\s+(\d+\.\s*)?\*{0,2}LLM\s+prompts?\*{0,2}\s*($|[(:—–-])", re.I)
+TITULO_PROMPTS = re.compile(r"^##\s+(\d+\.\s*)?\*{0,2}LLM\s+prompts?\*{0,2}(\s*$|\s*[(:]|\s+[—–-])", re.I)
 CHAVE = re.compile(r"\{[^{}\n]*\}")
 VAZIO_OU_TRACO = re.compile(r"^[\s`*–—-]*$")
 CAMPOS_LOOP = ("Intenção", "Perfil de risco dos efeitos", "Ground truth disponível")

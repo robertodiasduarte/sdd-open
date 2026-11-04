@@ -196,12 +196,13 @@ class Prompts(Sandbox):
 
     def test_variacoes_do_titulo_nao_desligam_a_conferencia(self):
         for titulo in ("##  LLM Prompts", "## LLM Prompts (v1)", "## LLM Prompts: 1", "## LLM prompts", "## LLM Prompt",
-                       "## 5. LLM Prompts", "## **LLM Prompts**", "## LLM Prompts — inventário"):
+                       "## 5. LLM Prompts", "## **LLM Prompts**", "## LLM Prompts — inventário", "## LLM Prompts - v1"):
             with self.subTest(titulo=titulo):
                 self.reprova(titulo + "\n\nnada\n", "falta o subtítulo ### Inventário")
 
     def test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts(self):
-        for titulo in ("## LLM Prompt Injection", "## LLM Prompts Review", "## LLM Promptness", "### LLM Prompts"):
+        for titulo in ("## LLM Prompt Injection", "## LLM Prompt-Injection", "## LLM Prompts-Review", "## LLM Prompts Review",
+                       "## LLM Promptness", "### LLM Prompts"):
             with self.subTest(titulo=titulo):
                 rc, out = self.lint(titulo + "\n\nriscos\n")
                 self.assertEqual(rc, 0, out)

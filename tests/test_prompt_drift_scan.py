@@ -56,6 +56,7 @@ class SinaisDeConteudo(Base):
                              ("model.generate_content_async(x)\n", "chamada direta ao SDK"),
                              ("client.messages.stream(x)\n", "chamada direta ao SDK"),
                              ("client.responses.stream(x)\n", "chamada direta ao SDK"),
+                             ("client.messages.stream(\n  model=m)\n", "chamada direta ao SDK"),
                              ('const system = "You are"\n', "system com texto fixo"),
                              ('system := "x"\n', "system com texto fixo"),
                              ('"system" => "x"\n', "system com texto fixo"),
@@ -84,6 +85,7 @@ class SinaisDeConteudo(Base):
                       'file system: "ext4"\n', '"operating system": "linux"\n', 'role: "system:admin"\n',
                       "messages.createdAt = agora\n", "messages.create_index(x)\n", "responses.createdAt\n",
                       "generateContentHash(x)\n", "generate_content_type = 1\n", "regenerateContent(x)\n",
+                      "messages.stream().filter(x)\n", "responses.stream().map(x)\n",
                       "my_generate_content(x)\n", "submessages.create(x)\n", "messages.streaming = True\n",
                       "generateContentStreamed(x)\n", "generate_content_async_pool(x)\n", 'os.system("ls")\n', "a == 'x'\n"):
             with self.subTest(texto=texto):

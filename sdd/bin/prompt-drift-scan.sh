@@ -28,7 +28,8 @@ set -u
 
 ME="$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")"
 LITERAL='[[:space:]]*[fFrRbBuU]{0,2}(`|'"'"'|")'
-SDK='(^|[^[:alnum:]_])(messages\.(create|stream)|chat\.completions|responses\.(create|stream)|generateContent(Stream)?|generate_content(_stream|_async)?)([^[:alnum:]_]|$)'
+# .stream só com argumento, ou com a chamada aberta na linha: messages.stream() de coleção Java não é SDK.
+SDK='(^|[^[:alnum:]_])((messages\.create|chat\.completions|responses\.create|generateContent(Stream)?|generate_content(_stream|_async)?)([^[:alnum:]_]|$)|(messages|responses)\.stream\(([^)]|$))'
 # A chave vale no início da linha, depois de { , ( [ ou de const/let/var: "file system:" e "package-ecosystem:" não.
 INICIO='(^[[:space:]]*|[{,([][[:space:]]*|(const|let|var)[[:space:]]+)'
 SYSTEM="$INICIO"'["'"'"']?system["'"'"']?\]?[[:space:]]*(:=|=>|:|=)'"$LITERAL"
@@ -303,6 +304,7 @@ auto_teste() {
   conteudo 2 'chamada direta ao SDK' src/b8.py             'client.messages.stream(x)'
   conteudo 0 'RESULTADO: LIMPO'      src/b5.py             'messages.createdAt = agora'
   conteudo 0 'RESULTADO: LIMPO'      src/b9.ts             'function regenerateContent() {}'
+  conteudo 0 'RESULTADO: LIMPO'      src/b10.java          'messages.stream().filter(x)'
   conteudo 2 'system com texto fixo' src/c.ts              'run({ system: "x", input: y })'
   conteudo 2 'system com texto fixo' src/d.json            '{ "system": "x" }'
   conteudo 2 'system com texto fixo' src/d2.py             'ask(system="x")'
