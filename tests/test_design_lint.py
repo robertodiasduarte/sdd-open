@@ -188,11 +188,15 @@ class Prompts(Sandbox):
         self.assertEqual(self.lint("\n".join(linhas) + "\n")[0], 0)
 
     def test_campo_com_traco_e_vazio(self):
-        linhas = ["| **Autônomo?** | — |" if ln.startswith("| **Autônomo?**") else ln for ln in self.secao.splitlines()]
-        self.reprova("\n".join(linhas) + "\n", "Prompt 1 sem o campo Autônomo?")
+        for valor in ("—", "–", "-", "---", "`—`", "**—**"):
+            with self.subTest(valor=valor):
+                linhas = ["| **Autônomo?** | %s |" % valor if ln.startswith("| **Autônomo?**") else ln
+                          for ln in self.secao.splitlines()]
+                self.reprova("\n".join(linhas) + "\n", "Prompt 1 sem o campo Autônomo?")
 
     def test_variacoes_do_titulo_nao_desligam_a_conferencia(self):
-        for titulo in ("##  LLM Prompts", "## LLM Prompts (v1)", "## LLM Prompts: 1"):
+        for titulo in ("##  LLM Prompts", "## LLM Prompts (v1)", "## LLM Prompts: 1", "## LLM prompts", "## LLM Prompt",
+                       "## 5. LLM Prompts", "## **LLM Prompts**"):
             with self.subTest(titulo=titulo):
                 self.reprova(titulo + "\n\nnada\n", "falta o subtítulo ### Inventário")
 

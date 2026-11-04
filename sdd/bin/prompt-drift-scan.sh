@@ -17,8 +17,8 @@
 # Exclusões: arquivo de teste, nas convenções comuns (a.test.x, a.spec.x, a_test.x, a_spec.x, test_a.x, ATest.x,
 # ATests.x; pastas tests/, test/, spec/, __tests__/); .md fora de prompts/ não tem o conteúdo avaliado. A pasta
 # prompts/ vence a exclusão por nome: prompts/test_a.txt conta, tests/prompts/a.txt não.
-# Limites: compara linha a linha, e texto fixo na linha seguinte ao parâmetro não dispara; SDK fora da lista e texto
-# montado por variável não disparam: para esses, use o slot. Sem git, a raiz é a pasta atual.
+# Limites: a busca é por formas comuns, linha a linha, e não é exaustiva. Texto fixo na linha seguinte ao parâmetro,
+# SDK fora da lista e texto montado por variável não disparam: para esses, use o slot. Sem git, a raiz é a pasta atual.
 #
 # Exit: 0 LIMPO · 2 DRIFT (ou self-test falhou) · 64 uso
 # Compatível com bash 3.2, awk e grep POSIX.
@@ -28,9 +28,11 @@ set -u
 
 ME="$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")"
 LITERAL='[[:space:]]*[fFrRbBuU]{0,2}(`|'"'"'|")'
-SDK='messages\.create|chat\.completions|responses\.create|generateContent|generate_content'
-SYSTEM='(^|[^[:alnum:]_-])["'"'"']?system["'"'"']?[[:space:]]*[:=]'"$LITERAL"
-ROLE='(^|[^[:alnum:]_-])["'"'"']?role["'"'"']?[[:space:]]*[:=][[:space:]]*["'"'"']system["'"'"']'
+SDK='(messages\.create|chat\.completions|responses\.create|generateContent|generate_content)([^[:alnum:]_]|$)'
+# A chave vale no início da linha, depois de { , ( [ ou de const/let/var: "file system:" e "package-ecosystem:" não.
+INICIO='(^[[:space:]]*|[{,([][[:space:]]*|(const|let|var)[[:space:]]+)'
+SYSTEM="$INICIO"'["'"'"']?system["'"'"']?\]?[[:space:]]*(:=|=>|:|=)'"$LITERAL"
+ROLE="$INICIO"'["'"'"']?role["'"'"']?\]?[[:space:]]*(:=|=>|:|=)[[:space:]]*["'"'"']system["'"'"']'
 
 TMP=""
 limpar() { if [ -n "$TMP" ]; then rm -rf "${TMP:?}"; fi; }
@@ -74,12 +76,12 @@ ler_slot() {  # imprime V<valor> ou M (malformado); nada se a chave não existe
   awk '
     NR == 1 { sub(/^\357\273\277/, "") }
     { sub(/\r$/, "") }
-    /^prompts:[[:space:]]*\{/ { print "M"; exit }
-    /^prompts:[[:space:]]*(#.*)?$/ { dentro = 1; next }
+    /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*\{.*wrapper_pattern/ { print "M"; exit }
+    /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*(#.*)?$/ { dentro = 1; next }
     /^[^[:space:]#]/ { dentro = 0 }
-    dentro && /^[[:space:]]+wrapper_pattern:/ {
+    dentro && /^[[:space:]]+["\047]?wrapper_pattern["\047]?[[:space:]]*:/ {
       v = $0
-      sub(/^[[:space:]]+wrapper_pattern:[[:space:]]*/, "", v)
+      sub(/^[[:space:]]+["\047]?wrapper_pattern["\047]?[[:space:]]*:[[:space:]]*/, "", v)
       q = substr(v, 1, 1); saida = ""; resto = ""
       if (q == "\"" || q == "\047") {
         fim = 0; i = 2
@@ -106,7 +108,8 @@ ler_slot() {  # imprime V<valor> ou M (malformado); nada se a chave não existe
         sub(/[[:space:]]+#.*$/, "", saida)
         sub(/[[:space:]]+$/, "", saida)
         if (saida == "null" || saida == "Null" || saida == "NULL" || saida == "~") saida = ""
-        if (substr(saida, 1, 1) == "|" || substr(saida, 1, 1) == ">") { print "M"; exit }
+        c = substr(saida, 1, 1)
+        if (c == "|" || c == ">" || c == "&" || c == "!") { print "M"; exit }
       }
       print "V" saida
       exit
@@ -119,13 +122,17 @@ expressao_invalida() {  # 0 se o grep recusa a expressão
 }
 
 carregar_slot() {
-  local lido
+  local lido cfg="$RAIZ/sdd/config.yaml" rc
   SLOT=""; WRAPPER=""
   # Fora do $( ): um erro_uso dentro da substituição só sairia da subshell, e o slot viraria vazio.
-  if [ -f "$RAIZ/sdd/config.yaml" ] && [ ! -r "$RAIZ/sdd/config.yaml" ]; then
-    erro_uso "não consegui ler sdd/config.yaml" "confira a permissão do arquivo: sem ele, o slot do wrapper não é lido"
+  # Ausente é vazio. Existir e não dar para ler (link quebrado, pasta, FIFO, permissão) nunca é vazio.
+  if [ -L "$cfg" ] || [ -e "$cfg" ] || { [ -d "$RAIZ/sdd" ] && [ ! -x "$RAIZ/sdd" ]; }; then
+    if [ ! -f "$cfg" ] || [ ! -r "$cfg" ]; then
+      erro_uso "não consegui ler sdd/config.yaml" "confira o arquivo e a permissão: sem ele, o slot do wrapper não é lido"
+    fi
   fi
-  lido="$(ler_slot)"
+  lido="$(ler_slot)"; rc=$?
+  [ "$rc" -eq 0 ] || erro_uso "não consegui ler prompts.wrapper_pattern de sdd/config.yaml (exit $rc)" "confira o arquivo e rode de novo"
   case "$lido" in
     M*) erro_uso "prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela" \
                  "corrija o slot; por exemplo: wrapper_pattern: \"systemPrompt:\"" ;;
@@ -289,6 +296,8 @@ auto_teste() {
   conteudo 2 'chamada direta ao SDK' src/b.py              'client.chat.completions.create(model=m)'
   conteudo 2 'chamada direta ao SDK' src/b2.py             'client.responses.create(model=m)'
   conteudo 2 'chamada direta ao SDK' src/b3.js             'model.generateContent(x)'
+  conteudo 2 'chamada direta ao SDK' src/b4.py             'model.generate_content(x)'
+  conteudo 0 'RESULTADO: LIMPO'      src/b5.py             'messages.createdAt = agora'
   conteudo 2 'system com texto fixo' src/c.ts              'run({ system: "x", input: y })'
   conteudo 2 'system com texto fixo' src/d.json            '{ "system": "x" }'
   conteudo 2 'system com texto fixo' src/d2.py             'ask(system="x")'
@@ -312,6 +321,7 @@ auto_teste() {
   conteudo 0 'RESULTADO: LIMPO' spec/l2.rb                 'await callLLM("x")'
   conteudo 0 'RESULTADO: LIMPO' src/a_spec.rb              'await callLLM("x")'
   conteudo 0 'RESULTADO: LIMPO' src/FooTest.java           'await callLLM("x")'
+  conteudo 0 'RESULTADO: LIMPO' src/FooTests.cs            'await callLLM("x")'
   conteudo 0 'RESULTADO: LIMPO' tests/prompts/l3.txt       'qualquer texto'
   conteudo 0 'RESULTADO: LIMPO' docs/m.md                  'use client.messages.create'
   conteudo 0 'RESULTADO: LIMPO' docs/prompt-guia.md        'qualquer texto'
@@ -319,6 +329,8 @@ auto_teste() {
   conteudo 0 'RESULTADO: LIMPO' src/n.yml                  'filesystem: "ext4"'
   conteudo 0 'RESULTADO: LIMPO' src/o.yml                  "operating_system: 'linux'"
   conteudo 0 'RESULTADO: LIMPO' src/o2.yml                 'file_role: "system"'
+  conteudo 0 'RESULTADO: LIMPO' src/o3.yml                 'file system: "ext4"'
+  conteudo 0 'RESULTADO: LIMPO' src/o4.yml                 'role: "system:admin"'
   # Em disco: 2 lados e nomes de todos os achados.
   disco 2 'src/p.ts :: chamada direta' src/p.ts            'client.messages.create(x)'
   disco 2 'pasta prompts/'             src/prompts/q.txt   'qualquer texto'
@@ -343,18 +355,27 @@ auto_teste() {
   conteudo 2 'parâmetro do wrapper' src/w.ts 'ask({ systemPrompt: `x` })'
 
   # Saída 64: nunca conclui LIMPO.
+  # src/r.py existe: a saída 64 só pode vir do slot.
   slot '"("'
-  uso_errado 'expressão inválida (' src/t.ts
+  uso_errado 'expressão inválida (' src/r.py
   slot '"["'
-  uso_errado 'expressão inválida [' src/t.ts
+  uso_errado 'expressão inválida [' src/r.py
   slot '"systemPrompt:'
-  uso_errado 'aspa sem fechar' src/t.ts
+  uso_errado 'aspa sem fechar' src/r.py
   slot '"x" y'
-  uso_errado 'texto depois da aspa' src/t.ts
+  uso_errado 'texto depois da aspa' src/r.py
   slot '>-'
-  uso_errado 'bloco de YAML em vez de 1 linha' src/t.ts
+  uso_errado 'bloco de YAML em vez de 1 linha' src/r.py
   printf 'prompts: { wrapper_pattern: "x" }\n' > "$proj/sdd/config.yaml"
-  uso_errado 'mapa em linha' src/t.ts
+  uso_errado 'mapa em linha com o slot' src/r.py
+  printf 'prompts: {}\n' > "$proj/sdd/config.yaml"
+  disco 0 'wrapper_pattern vazio' src/r.py 'soma = a + b'
+  rm -f "$proj/sdd/config.yaml"
+  ln -s /nao/existe/config.yaml "$proj/sdd/config.yaml"
+  uso_errado 'sdd/config.yaml é um link quebrado' src/r.py
+  rm -f "$proj/sdd/config.yaml"; mkdir "$proj/sdd/config.yaml"
+  uso_errado 'sdd/config.yaml é uma pasta' src/r.py
+  rmdir "$proj/sdd/config.yaml"
   slot_padrao
   uso_errado 'sem argumento'
   uso_errado 'caminho inexistente' src/nao-existe.ts

@@ -78,8 +78,8 @@ projeto que chama o modelo por uma função própria é invisível para quem pro
 
 Arquivo de teste não dispara, nas convenções comuns: `a.test.x`, `a.spec.x`, `a_test.x`, `a_spec.x`, `test_a.x`, `ATest.x`,
 `ATests.x` e as pastas `tests/`, `test/`, `spec/`, `__tests__/`. O conteúdo de um `.md` fora de `prompts/` não é avaliado.
-**Limites:** a comparação é linha a linha, então texto fixo na linha seguinte ao parâmetro não dispara; SDK fora da lista e
-texto montado por variável também não: para esses, use o slot. Sem git, a raiz é a pasta atual. Um `system: "linux"` num
+**Limites:** a busca cobre formas comuns, linha a linha, e não é exaustiva: texto fixo na linha seguinte ao parâmetro, SDK
+fora da lista e texto montado por variável não disparam. Para esses, use o slot. Sem git, a raiz é a pasta atual. Um `system: "linux"` num
 YAML dispara: registre como falso positivo.
 
 ## Contraste medido: `contraste.sh`

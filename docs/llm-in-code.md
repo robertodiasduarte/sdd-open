@@ -78,8 +78,8 @@ a project that calls the model through its own function is invisible to a search
 
 Test files do not fire, in the usual conventions: `a.test.x`, `a.spec.x`, `a_test.x`, `a_spec.x`, `test_a.x`, `ATest.x`,
 `ATests.x` and the folders `tests/`, `test/`, `spec/`, `__tests__/`. The content of a `.md` outside `prompts/` is not
-evaluated. **Limits:** the comparison is line by line, so fixed text on the line after the parameter does not fire; an
-SDK outside the list and text built from a variable do not fire either: for those, use the slot. Without git, the root
+evaluated. **Limits:** the search covers common forms, line by line, and is not exhaustive: fixed text on the line after the
+parameter, an SDK outside the list and text built from a variable do not fire. For those, use the slot. Without git, the root
 is the current folder. A `system: "linux"` in a YAML file does fire: record it as a false positive.
 
 ## Measured contrast: `contraste.sh`

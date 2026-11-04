@@ -130,7 +130,8 @@ class Locale(Base):
 
 class AutoTeste(Base):
     def test_cdpath_nao_quebra(self):
-        rc, _, err = self.medir("--self-test", env=dict(self.env, CDPATH="."))
+        # Só o caminho relativo passa pelo cd "$(dirname "$0")" que o CDPATH desvia.
+        rc, _, err = self.roda([BASH, "sdd/bin/contraste.sh", "--self-test"], RAIZ, dict(self.env, CDPATH="."))
         self.assertEqual(rc, 0, err)
 
     def test_verde_por_caminho_absoluto_e_relativo(self):

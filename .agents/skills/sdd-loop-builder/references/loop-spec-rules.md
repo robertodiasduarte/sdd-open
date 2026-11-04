@@ -58,7 +58,7 @@ quem julga e quantos passos usam o modelo.
 | Perfil | Quando | Seções |
 |---|---|---|
 | `lite` | efeito local e reversível, **1** estágio LLM e verificador só por código de saída (conserto + testes, refatoração, geração de um arquivo) | `intent` (com o escopo negativo), `control_state` mínimo, `observation`, `verifier` por código de saída, `stop_rules`, `budget` |
-| `standard` | efeito local e reversível, com **2 ou mais** estágios LLM, ou com um modelo como juiz ou avaliador | as do `lite` + `cycle_protocol`, `context_assembly`, `action_space`, `recovery_and_convergence_policy`, `observability` |
+| `standard` | efeito local e reversível, em todo outro caso: **2 ou mais** estágios LLM, ou quem julga não é um código de saída (um modelo, uma pessoa) | as do `lite` + `cycle_protocol`, `context_assembly`, `action_space`, `recovery_and_convergence_policy`, `observability` |
 | `high-risk` | efeito externo ou irreversível (deploy, escrita em produção, e-mail, dinheiro) | as do `standard` + `safety_and_effects`, `NEEDS_APPROVAL` em toda ação irreversível e reserva de orçamento para reverter |
 
 Em qualquer perfil, sempre: o modelo de dano (qual erro é pior) e a regra de desempate dele; a tabela de estágios

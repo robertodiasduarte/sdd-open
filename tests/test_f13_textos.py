@@ -125,6 +125,7 @@ class Roteador(unittest.TestCase):
     def test_rotas_da_recusa_da_skill(self):
         self.assertIn("**item faltando**", self.p)
         self.assertIn("**não é laço**", self.p)
+        self.assertIn("o destino para o arquivo do prompt", self.p)
         self.assertIn("nada\n     é gravado neste item", self.p)
 
     def test_o_contrato_do_laco_se_compila_do_design(self):
@@ -135,8 +136,9 @@ class Roteador(unittest.TestCase):
 
     def test_tabela_de_estagios_e_prompts_pendentes_chegam_a_quem_escreve(self):
         self.assertIn("O bloco\n     inteiro vai para", self.p)
-        for texto in (self.p, INTEGRACAO, FRAGMENTO):
+        for texto in (self.p, INTEGRACAO, FRAGMENTO, LOOP):
             self.assertIn("PROMPTS PENDENTES", texto)
+        self.assertIn("grava o bloco inteiro", LOOP)
 
     def test_nome_fixo_sem_slot_da_skill(self):
         for texto in (BUILD, ler("sdd/config.example.yaml"), FRAGMENTO):
@@ -176,6 +178,7 @@ class SkillDoLaco(unittest.TestCase):
         self.assertIn("efeito externo ou irreversível é sempre `high-risk`", REGRAS)
         self.assertIn("**1** estágio LLM", REGRAS)
         self.assertIn("**2 ou mais** estágios LLM", REGRAS)
+        self.assertIn("em todo outro caso", REGRAS)
         self.assertNotIn("avaliação offline", REGRAS)
         estagios_llm = [ln for ln in EXEMPLO.splitlines() if re.match(r"^\| \d+ \|", ln) and "| LLM |" in ln]
         self.assertEqual((len(estagios_llm), 'perfil="standard"' in EXEMPLO), (2, True))

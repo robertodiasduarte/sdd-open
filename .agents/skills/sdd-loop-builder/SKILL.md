@@ -90,7 +90,7 @@ pessoa fornece os mesmos itens:
    preencha por conta própria. Em uso direto, pergunte só o que falta. Orçamento por estágio, tempo máximo, K e W **não**
    são itens do contrato: são desenho desta skill. Sem valor fechado, proponha e marque como proposta, sem parar.
 3. **Modelo de dano:** qual erro é pior, e a regra de desempate que sai dele.
-4. **Perfil pelo risco dos efeitos**, nunca pelo tamanho da tarefa, com a tabela de [references/loop-spec-rules.md](references/loop-spec-rules.md).
+4. **Perfil pelo risco dos efeitos** e, entre os reversíveis, por quem julga, com a tabela de [references/loop-spec-rules.md](references/loop-spec-rules.md).
 5. **Estágios:** tudo que pode ser determinístico vira estágio de código; o modelo propõe e fundamenta, o código decide.
    Cada estágio LLM ganha um arquivo de destino em `<pasta do processo>/<estágio>.<ext>`.
 6. **Controle:** a checagem de fatos vem da referência injetada; orçamento por estágio, antes da ação; métrica de
@@ -108,10 +108,11 @@ Exemplo de forma, de um processo fictício: [references/exemplo-loop-spec.md](re
 
 A fase Build, no mesmo turno:
 
-1. grava a LOOP_SPEC em `<pasta do processo>/LOOP_SPEC.md`, versionada com o código; refator de laço em produção sobe a
-   versão, sem editar no lugar;
-2. para cada estágio LLM, chama a skill de prompt com o bloco de contrato da linha e a linha do estágio, e grava no arquivo
-   indicado;
+1. grava o bloco inteiro (LOOP_SPEC, tabela de estágios, prompts pendentes e Verify Gate) em
+   `<pasta do processo>/LOOP_SPEC.md`, versionado com o código; refator de laço em produção sobe a versão, sem editar no
+   lugar;
+2. para cada estágio LLM, chama a skill de prompt com o bloco de contrato da linha, a linha do estágio e o contrato dele em
+   PROMPTS PENDENTES, e grava no arquivo indicado;
 3. implementa os estágios de código como estão especificados: mover um deles para dentro de um prompt é regressão;
 4. liga o Verify Gate quando há ground truth; sem ele, o relatório do Build declara a lacuna.
 

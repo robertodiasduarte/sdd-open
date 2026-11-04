@@ -140,8 +140,9 @@ critério antes do código · **evidência, não declaração**.
      inteiro vai para `<pasta do processo>/LOOP_SPEC.md`, e cada prompt para o arquivo da tabela. Esses arquivos
      contam como inventariados e como previstos no manifest. Estágio de código vira código, nunca prompt. Valor de
      orçamento marcado como proposta na LOOP_SPEC vai para o relatório. Se a skill devolver **item faltando**, nada
-     é gravado neste item: itere o DESIGN com o item que falta e retome. Se devolver **não é laço**, troque o `Tipo`
-     no DESIGN para `one-shot`, registre no relatório e siga por esse caminho.
+     é gravado neste item: itere o DESIGN com o item que falta e retome. Se devolver **não é laço**, troque no DESIGN o `Tipo`
+     para `one-shot` e o destino para o arquivo do prompt (sem a coluna, acrescente-a), registre no relatório e siga
+     por esse caminho.
    - **Sem `Tipo`** (DESIGN antigo): pergunte a si mesmo "o processo re-prompta o modelo com base na própria saída
      anterior?". Sim, `loop`; não, `one-shot`; na dúvida, `loop`. Registre a triagem no relatório.
    - ⛔ **Não encerre o turno ao receber o bloco de texto:** ele é entrada desta fase, não a entrega. Embrulhe na forma

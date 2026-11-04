@@ -50,6 +50,12 @@ class SinaisDeConteudo(Base):
                              ("client.chat.completions.create(model=m)\n", "chamada direta ao SDK"),
                              ("client.responses.create(model=m)\n", "chamada direta ao SDK"),
                              ("model.generateContent(x)\n", "chamada direta ao SDK"),
+                             ("model.generate_content(x)\n", "chamada direta ao SDK"),
+                             ('const system = "You are"\n', "system com texto fixo"),
+                             ('system := "x"\n', "system com texto fixo"),
+                             ('"system" => "x"\n', "system com texto fixo"),
+                             ("msg['role'] = 'system'\n", "role de sistema"),
+                             ('"role" => "system"\n', "role de sistema"),
                              ('run({ system: "x" })\n', "system com texto fixo"),
                              ('run(system: `x`)\n', "system com texto fixo"),
                              ('{ "system": "x" }\n', "system com texto fixo"),
@@ -69,7 +75,10 @@ class SinaisDeConteudo(Base):
 
     def test_system_no_fim_de_um_nome_maior_nao_dispara(self):
         for texto in ('package-ecosystem: "npm"\n', 'filesystem: "ext4"\n', "operating_system: 'linux'\n",
-                      '"file_system": "x"\n', 'file_role: "system"\n', 'role: "user"\n', "system = obter()\n"):
+                      '"file_system": "x"\n', 'file_role: "system"\n', 'role: "user"\n', "system = obter()\n",
+                      'file system: "ext4"\n', '"operating system": "linux"\n', 'role: "system:admin"\n',
+                      "messages.createdAt = agora\n", "messages.create_index(x)\n", "responses.createdAt\n",
+                      "generateContentHash(x)\n", "generate_content_type = 1\n", 'os.system("ls")\n', "a == 'x'\n"):
             with self.subTest(texto=texto):
                 rc, out = self.com_texto("src/a.yml", texto)
                 self.assertEqual(rc, 0, out)
@@ -171,6 +180,10 @@ class Wrapper(Base):
         self.slot('prompts:\r\n  wrapper_pattern: "systemPrompt:"\r\n')
         self.assertEqual(self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n")[0], 2)
 
+    def test_chaves_entre_aspas(self):
+        self.slot('"prompts":\n  "wrapper_pattern": "systemPrompt:"\n')
+        self.assertEqual(self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n")[0], 2)
+
     def test_chave_de_outro_bloco_nao_conta(self):
         self.slot('outro:\n  wrapper_pattern: "systemPrompt:"\nprompts:\n  builder_skill: "x"\n')
         rc, out = self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n")
@@ -241,6 +254,12 @@ class SlotVazio(Base):
                 self.slot("prompts:\n  wrapper_pattern: %s\n" % valor)
                 self.conferir()
 
+    def test_mapa_em_linha_sem_o_slot_e_vazio(self):
+        for texto in ("prompts: {}\n", "prompts: { builder_skill: x }\n"):
+            with self.subTest(texto=texto):
+                self.slot(texto)
+                self.conferir()
+
     def test_sem_o_config(self):
         (self.p / "sdd/config.yaml").unlink()
         self.conferir()
@@ -295,7 +314,8 @@ class ErroDeUso(Base):
                 self.conferir(*self.com_texto("src/a.ts", "x\n"), "malformado")
 
     def test_valor_em_forma_que_o_leitor_nao_sustenta_nao_vira_vazio(self):
-        for texto in ('prompts: { wrapper_pattern: "x" }\n', "prompts:\n  wrapper_pattern: >-\n    x\n"):
+        for texto in ('prompts: { wrapper_pattern: "x" }\n', "prompts:\n  wrapper_pattern: >-\n    x\n",
+                      'prompts:\n  wrapper_pattern: &a "x"\n', 'prompts:\n  wrapper_pattern: !!str "x"\n'):
             with self.subTest(texto=texto):
                 self.slot(texto)
                 self.conferir(*self.com_texto("src/a.ts", "x\n"), "malformado")
@@ -312,6 +332,18 @@ class ErroDeUso(Base):
             self.conferir(*self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n"), "não consegui ler sdd/config.yaml")
         finally:
             cfg.chmod(stat.S_IRUSR | stat.S_IWUSR)
+
+    def test_config_que_existe_e_nao_se_le_nunca_vira_slot_vazio(self):
+        cfg = self.p / "sdd/config.yaml"
+        cfg.unlink()
+        os.symlink("/nao/existe/config.yaml", str(cfg))
+        self.conferir(*self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n"), "não consegui ler sdd/config.yaml")
+        cfg.unlink()
+        cfg.mkdir()
+        self.conferir(*self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n"), "não consegui ler sdd/config.yaml")
+        cfg.rmdir()
+        os.mkfifo(str(cfg))
+        self.conferir(*self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n"), "não consegui ler sdd/config.yaml")
 
     def test_conteudo_com_pasta_nunca_vira_limpo(self):
         (self.p / "src").mkdir()

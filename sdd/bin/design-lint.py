@@ -35,7 +35,8 @@ COLUNAS_PROMPT = ("Tipo", "Versão", "Completeness", "Refator de?")
 CAMPOS_PROMPT = ("Autônomo?", "Verification interna", "Eval mínimo pré-ship")
 BLOCO_PROMPT = re.compile(r"^#### Prompt \d+\s*:")
 FRASE_PROMPTS = "a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam:"
-TITULO_PROMPTS = re.compile(r"^##\s+LLM Prompts\b")
+TITULO_PROMPTS = re.compile(r"^##\s+(\d+\.\s*)?\*{0,2}LLM\s+prompts?\b", re.I)
+VAZIO_OU_TRACO = re.compile(r"^[\s`*–—-]*$")
 CAMPOS_LOOP = ("Intenção", "Perfil de risco dos efeitos", "Ground truth disponível")
 
 
@@ -118,7 +119,7 @@ def lint_prompts(linhas: list) -> list:
         for campo in campos:
             achado = [celulas(ln) for ln in trecho
                       if ln.lstrip().startswith("|") and celulas(ln)[0].strip("*") == campo]
-            if not achado or len(achado[0]) < 2 or achado[0][1] in ("", "-", "—"):
+            if not achado or len(achado[0]) < 2 or VAZIO_OU_TRACO.match(achado[0][1]):
                 faltas.append("%s sem o campo %s" % (titulo, campo))
     if tabela and n_linhas and len(blocos) != n_linhas:
         faltas.append("são %d linha(s) no inventário e %d bloco(s) de contrato" % (n_linhas, len(blocos)))
