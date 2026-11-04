@@ -1,0 +1,17 @@
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/mut.py /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/arq
+cat sem falha                self-test rc=2  test_prompt_drift_scan rc=1 MORTO
+config: sem -L               self-test rc=2  test_prompt_drift_scan rc=1 MORTO
+config: sem sdd/ sem x       self-test rc=0  test_prompt_drift_scan rc=1 MORTO
+rc do awk ignorado           self-test rc=0  test_prompt_drift_scan rc=1 MORTO
+SDK sem fronteira esquerda   self-test rc=2  test_prompt_drift_scan rc=1 MORTO
+stream sem argumento         self-test rc=2  test_prompt_drift_scan rc=1 MORTO
+INICIO frouxo                self-test rc=2  test_prompt_drift_scan rc=1 MORTO
+sem recusa de ..             self-test rc=2  test_prompt_drift_scan rc=1 MORTO
+prompts: * nao recusa        self-test rc=2  test_prompt_drift_scan rc=1 MORTO
+aviso so no LIMPO            self-test rc=2  test_prompt_drift_scan rc=1 MORTO
+casa ignora 2                self-test rc=2  test_prompt_drift_scan rc=1 MORTO
+titulo sem fim               self-test rc=None  test_design_lint rc=1 MORTO
+todas as tabelas             self-test rc=None  test_design_lint rc=1 MORTO
+sem chave no inventario      self-test rc=None  test_design_lint rc=1 MORTO
+traco aceito                 self-test rc=None  test_design_lint rc=1 MORTO
+[exit=0]

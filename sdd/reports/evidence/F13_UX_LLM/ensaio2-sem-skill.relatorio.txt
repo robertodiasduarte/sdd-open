@@ -1,0 +1,10 @@
+# BUILD_REPORT_NOTAS
+
+- Escopo: somente tarefa 1; modo default fixado pelo usuário.
+- Tarefa 1 BLOQUEADA: inventário classifica notas_de_versao como loop; sdd-loop-builder não foi encontrada nas skills do projeto nem nas skills instaladas pesquisadas.
+- src/notas/LOOP_SPEC.md e prompts dos estágios não foram criados; nenhum conteúdo improvisado.
+- Drift detectado: nenhum; bloqueio por dependência ausente.
+- Verify Gate, revisão de contexto fresco e commit: não executados por instrução do usuário.
+- AT-001: false (sem evidência de execução). Build parcial; avaliador: PENDENTE (execução interrompida antes da avaliação).
+- Próxima decisão: instalar a skill e continuar, ou retirar o item do escopo e iterar o DESIGN.
+- Conferência do relatório antes da gravação: prompt-drift-scan, exit 0; wrapper_pattern vazio limita a busca aos sinais genéricos.

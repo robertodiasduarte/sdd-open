@@ -1,0 +1,23 @@
+$ for e in "(" ")" "[" "a{1" "a{" "*" "*a" "+" "?" "a||b" "a|" "|a" "()" "\\" "callLLM(" "callLLM\\(" "a{2,1}" "[[:foo:]]" "systemPrompt:" "a)" "(a" ; do /usr/bin/grep -E -e "$e" </dev/null >/dev/null 2>/tmp/null_grep_$$; rc=$?; printf "bare %-14s rc=%s" "[$e]" "$rc"; /usr/bin/grep -E -e "($e)[[:space:]]*[\`\x27\"]" </dev/null >/dev/null 2>&1; printf "  composto rc=%s\n" "$?"; done; rm -f /tmp/null_grep_$$
+bare [(]            rc=2  composto rc=2
+bare [)]            rc=1  composto rc=1
+bare [[]            rc=2  composto rc=2
+bare [a{1]          rc=2  composto rc=2
+bare [a{]           rc=1  composto rc=1
+bare [*]            rc=2  composto rc=2
+bare [*a]           rc=2  composto rc=2
+bare [+]            rc=2  composto rc=2
+bare [?]            rc=2  composto rc=1
+bare [a||b]         rc=2  composto rc=2
+bare [a|]           rc=2  composto rc=2
+bare [|a]           rc=2  composto rc=2
+bare [()]           rc=1  composto rc=1
+bare [\]            rc=2  composto rc=2
+bare [callLLM(]     rc=2  composto rc=2
+bare [callLLM\(]    rc=1  composto rc=1
+bare [a{2,1}]       rc=2  composto rc=2
+bare [[[:foo:]]]    rc=2  composto rc=2
+bare [systemPrompt:] rc=1  composto rc=1
+bare [a)]           rc=1  composto rc=1
+bare [(a]           rc=2  composto rc=2
+[exit=0]

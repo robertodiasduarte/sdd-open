@@ -1,0 +1,13 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/sab.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/arq
+🛑 caso: #777777 #ffffff → exit 2, "4.48:1 REPROVA (piso 4.5:1)" (esperado: exit 2, "4.47:1 REPROVA (piso 4.5:1)")
+🛑 caso: #777 #FFF → exit 2, "4.48:1 REPROVA (piso 4.5:1)" (esperado: exit 2, "4.47:1 REPROVA (piso 4.5:1)")
+🛑 caso: #6c7b67 #ffffff → exit 0, "4.50:1 PASSA (piso 4.5:1)" (esperado: exit 2, "4.49:1 REPROVA (piso 4.5:1)")
+🛑 caso: #000 #fff .5 → exit 2, "3.98:1 REPROVA (piso 4.5:1)" (esperado: exit 2, "3.97:1 REPROVA (piso 4.5:1)")
+🛑 caso: #777777 #ffffff --piso 3 → exit 0, "4.48:1 PASSA (piso 3:1)" (esperado: exit 0, "4.47:1 PASSA (piso 3:1)")
+🛑 caso: --piso 3 #777777 #ffffff → exit 0, "4.48:1 PASSA (piso 3:1)" (esperado: exit 0, "4.47:1 PASSA (piso 3:1)")
+🛑 caso: #777777 #ffffff --piso 4.48 → exit 0, "4.48:1 PASSA (piso 4.48:1)" (esperado: exit 2, "4.47:1 REPROVA (piso 4.48:1)")
+RESULTADO: VERMELHO
+→ 7 de 30 caso(s) falharam: corrija o script; nunca o oráculo
+self-test com arredondamento rc=2
+test_contraste rc=1
+[exit=0]

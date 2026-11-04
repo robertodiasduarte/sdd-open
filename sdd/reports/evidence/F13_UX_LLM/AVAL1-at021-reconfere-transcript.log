@@ -1,0 +1,9 @@
+$ E=/Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/reports/evidence/F13_UX_LLM; T=$(mktemp -d); trap "rm -rf $T" EXIT; d=$T/c; mkdir -p $d/src/notas $d/sdd/reports; (cd $d; git init -q .; git -c user.name=a -c user.email=a@b.c commit -q --allow-empty -m b); cp $E/ensaio2-sem-tipo.LOOP_SPEC.txt $d/src/notas/LOOP_SPEC.md; cp $E/ensaio2-sem-tipo.relatorio.txt $d/sdd/reports/BUILD_REPORT_NOTAS.md; printf "x\n" > $d/src/notas/redigir.txt; printf "x\n" > $d/src/notas/corrigir.txt; head -c 200000 $E/ensaio2-sem-tipo.log > $T/log; /usr/bin/python3 -B $E/confere_roteador.py sem-tipo $d $T/log; echo "[rc=$?]"; grep -n "^| *[0-9]" $d/src/notas/LOOP_SPEC.md
+RESULTADO: PASSA
+[rc=0]
+89:| 1 | preparar | código | tags → lista imutável de commits | origem, hashes únicos, entrada disponível | — | nenhuma | — |
+90:| 2 | redigir | LLM | commits → itens e exclusões com motivo | estágio 3 | 4096 (proposta) | correção dirigida | src/notas/redigir.txt |
+91:| 3 | verificar | código | candidato + lista original → erros e p | formato, pertencimento, cobertura, preservação | — | após correção | — |
+92:| 4 | corrigir | LLM | commit + item anterior + erros → um item corrigido ou exclusão motivada | estágio 3 | 512 (proposta) | até K, respeitando 4 ciclos globais | src/notas/corrigir.txt |
+93:| 5 | gravar | código | candidato aprovado → NOTAS.md local | escrita temporária, substituição atômica, leitura de volta | — | nenhuma | — |
+[exit=0]

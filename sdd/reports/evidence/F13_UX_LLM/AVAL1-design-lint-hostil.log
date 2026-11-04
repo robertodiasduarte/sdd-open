@@ -1,0 +1,277 @@
+$ /usr/bin/python3 -B - <<"PY"
+import re,subprocess,tempfile,os,shutil,unicodedata
+root=os.getcwd()
+T=tempfile.mkdtemp()
+frag=open("sdd/templates/fragments/LLM_PROMPTS_DESIGN.md",encoding="utf-8").read()
+tmpl=open("sdd/templates/DESIGN_TEMPLATE.md",encoding="utf-8").read()
+frag=frag[frag.index("## LLM Prompts"):]
+base="""# DESIGN
+
+## Key Decisions
+
+### Decision 1: x
+
+## File Manifest
+
+| # | File | Action | Purpose | Dependencies |
+|---|---|---|---|---|
+| 1 | a.py | Create | a | None |
+
+**Total Files:** 1
+
+"""
+def fill(s):
+    s=re.sub(r"\{[^{}\n]*\}","v",s)
+    return s
+ok=fill(frag)
+def run(name,doc):
+    p=os.path.join(T,"D.md"); open(p,"w",encoding="utf-8").write(doc)
+    r=subprocess.run(["/usr/bin/python3","-B","sdd/bin/design-lint.py",p],capture_output=True,text=True)
+    print("--- %s\n    rc=%d"%(name,r.returncode))
+    out=(r.stdout+r.stderr).replace(p,"D.md").strip().split("\n")
+    for l in out[:9]: print("    "+l)
+run("sem secao",base)
+run("fragmento preenchido",base+ok)
+run("fragmento NAO preenchido",base+frag)
+run("titulo com sufixo: ## LLM Prompts (v1) com inventario antigo",base+"## LLM Prompts (v1)\n\n### Inventory\n\n| a |\n|---|\n| 1 |\n")
+run("titulo ## LLM Prompts: 1",base+"## LLM Prompts: 1\n\n### Inventory\n")
+run("titulo ### LLM Prompts",base+"### LLM Prompts\n\n### Inventory\n")
+run("titulo ## Prompts LLM",base+"## Prompts LLM\n\n### Inventory\n")
+run("titulo com espaco final",base+"## LLM Prompts   \n\n### Inventory\n")
+run("titulo ##  LLM Prompts (2 espacos)",base+"##  LLM Prompts\n\n### Inventory\n")
+run("N/A na secao",base+"## LLM Prompts\n\nN/A\n")
+run("Inventario sem acento",base+ok.replace("### Inventário","### Inventario"))
+run("Inventario NFD",base+unicodedata.normalize("NFD",ok))
+run("Inventario em nivel 4",base+ok.replace("### Inventário","#### Inventário"))
+run("### Inventário antigo (prefixo)",base+ok.replace("### Inventário","### Inventário antigo"))
+run("coluna em negrito",base+ok.replace("| Tipo |","| **Tipo** |",2))
+run("coluna em minuscula",base+ok.replace("| Tipo | Arquivo","| tipo | Arquivo"))
+run("Tipo negrito",base+ok.replace("| one-shot |","| **one-shot** |",1))
+run("Tipo crase",base+ok.replace("| 1 | v | one-shot |","| 1 | v | `loop` |"))
+run("Tipo LOOP",base+ok.replace("| 1 | v | one-shot |","| 1 | v | LOOP |"))
+run("Tipo vazio",base+ok.replace("| 1 | v | one-shot |","| 1 | v |  |"))
+run("linha curta sem coluna Tipo",base+ok.replace("| 1 | v | one-shot | `v` | v | v | v | v | v | v | v |","| 1 | v |"))
+loop=ok.replace("| 1 | v | one-shot |","| 1 | v | loop |")
+run("loop sem Perfil de risco nem Ground truth (fragmento diz 2 linhas a mais)",base+loop)
+run("campo vazio Autonomo",base+ok.replace("| **Autônomo?** | v |","| **Autônomo?** |  |"))
+run("campo so traco",base+ok.replace("| **Autônomo?** | v |","| **Autônomo?** | — |"))
+run("campo sem negrito",base+ok.replace("| **Autônomo?** | v |","| Autônomo? | v |"))
+run("campo em prosa fora da tabela",base+ok.replace("| **Autônomo?** | v |\n","").replace("#### Prompt 1: v\n","#### Prompt 1: v\n\n**Autônomo?** sim\n"))
+run("campo faltando",base+ok.replace("| **Eval mínimo pré-ship** | v |\n",""))
+run("2 linhas 1 bloco",base+ok.replace("| 1 | v | one-shot |","| 2 | w | loop | `w` | v | v | v | v | v | v | v |\n| 1 | v | one-shot |"))
+run("bloco sem dois pontos: #### Prompt 1 v",base+ok.replace("#### Prompt 1: v","#### Prompt 1 v"))
+run("bloco Prompt 1 - v",base+ok.replace("#### Prompt 1: v","#### Prompt 1 - v"))
+run("bloco antes do Inventario",base+"## LLM Prompts\n\n#### Prompt 1: v\n\n| **Autônomo?** | v |\n| **Verification interna** | v |\n| **Eval mínimo pré-ship** | v |\n\n### Inventário\n\n| Tipo | Versão | Completeness | Refator de? |\n|---|---|---|---|\n| loop | v | v | v |\n")
+run("2 secoes: a 2a invalida",base+ok+"\n## LLM Prompts\n\n### Inventory\n")
+run("secao dentro de cerca",base+"```\n## LLM Prompts\n\n### Inventory\n```\n")
+run("secao em comentario HTML",base+"<!--\n## LLM Prompts\n\n### Inventory\n-->\n")
+run("2a tabela em Inventario conta como linhas",base+ok.replace("Em `Tipo=loop`, o arquivo","| z | y |\n|---|---|\n| 1 | 2 |\n\nEm `Tipo=loop`, o arquivo"))
+run("pipe em celula antes de Tipo",base+ok.replace("| 1 | v | one-shot |","| 1 | a\\|b | one-shot |"))
+run("pipe em crase antes de Tipo",base+ok.replace("| 1 | v | one-shot |","| 1 | `a|b` | one-shot |"))
+run("CRLF",base.replace("\n","\r\n")+ok.replace("\n","\r\n"))
+run("tabela indentada",base+ok.replace("| 1 | v | one-shot |","  | 1 | v | one-shot |"))
+run("erro de prompt + erro de manifest: qual o rumo?",base.replace("**Total Files:** 1","**Total Files:** 9")+"## LLM Prompts\n\n### Inventory\n")
+run("Tipo errado num DESIGN novo: mensagem diz formato antigo?",base+ok.replace("| 1 | v | one-shot |","| 1 | v | lop |"))
+shutil.rmtree(T)
+PY
+--- sem secao
+    rc=0
+    ✅ D.md: DESIGN válido
+--- fragmento preenchido
+    rc=0
+    ✅ D.md: DESIGN válido
+--- fragmento NAO preenchido
+    rc=1
+    🛑 D.md: linha 34: placeholder do template sem preencher: {provedor e modelo}
+    🛑 D.md: linha 49: placeholder do template sem preencher: {do DEFINE ou do UX_REVIEW; não invente}
+    🛑 D.md: linha 50: placeholder do template sem preencher: {JSON, Markdown, texto; derivado do consumidor}
+    🛑 D.md: linha 51: placeholder do template sem preencher: {o que devolver sem dado suficiente}
+    🛑 D.md: linha 52: placeholder do template sem preencher: {sim, não pode pedir nada de volta; ou não, pode pedir}
+    🛑 D.md: linha 53: placeholder do template sem preencher: {sim, com os pontos; ou não}
+    🛑 D.md: linha 54: placeholder do template sem preencher: {comando e amostras; por exemplo, 5 de 5 no contrato}
+    🛑 D.md: linha 60: placeholder do template sem preencher: {schema da saída}
+    🛑 D.md: linha 61: placeholder do template sem preencher: {regra do domínio}
+--- titulo com sufixo: ## LLM Prompts (v1) com inventario antigo
+    rc=0
+    ✅ D.md: DESIGN válido
+--- titulo ## LLM Prompts: 1
+    rc=0
+    ✅ D.md: DESIGN válido
+--- titulo ### LLM Prompts
+    rc=0
+    ✅ D.md: DESIGN válido
+--- titulo ## Prompts LLM
+    rc=0
+    ✅ D.md: DESIGN válido
+--- titulo com espaco final
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   falta o subtítulo ### Inventário
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- titulo ##  LLM Prompts (2 espacos)
+    rc=0
+    ✅ D.md: DESIGN válido
+--- N/A na secao
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   falta o subtítulo ### Inventário
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- Inventario sem acento
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   falta o subtítulo ### Inventário
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- Inventario NFD
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   falta o subtítulo ### Inventário
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- Inventario em nivel 4
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   falta o subtítulo ### Inventário
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- ### Inventário antigo (prefixo)
+    rc=0
+    ✅ D.md: DESIGN válido
+--- coluna em negrito
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   falta a coluna Tipo no inventário
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- coluna em minuscula
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   falta a coluna Tipo no inventário
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- Tipo negrito
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   linha 1 do inventário com Tipo '**one-shot**' (esperado one-shot ou loop)
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- Tipo crase
+    rc=0
+    ✅ D.md: DESIGN válido
+--- Tipo LOOP
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   linha 1 do inventário com Tipo 'LOOP' (esperado one-shot ou loop)
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- Tipo vazio
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   linha 1 do inventário com Tipo '' (esperado one-shot ou loop)
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- linha curta sem coluna Tipo
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   linha 1 do inventário com Tipo '' (esperado one-shot ou loop)
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- loop sem Perfil de risco nem Ground truth (fragmento diz 2 linhas a mais)
+    rc=0
+    ✅ D.md: DESIGN válido
+--- campo vazio Autonomo
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   Prompt 1 sem o campo Autônomo?
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- campo so traco
+    rc=0
+    ✅ D.md: DESIGN válido
+--- campo sem negrito
+    rc=0
+    ✅ D.md: DESIGN válido
+--- campo em prosa fora da tabela
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   Prompt 1 sem o campo Autônomo?
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- campo faltando
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   Prompt 1 sem o campo Eval mínimo pré-ship
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- 2 linhas 1 bloco
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   são 2 linha(s) no inventário e 1 bloco(s) de contrato
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- bloco sem dois pontos: #### Prompt 1 v
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   são 1 linha(s) no inventário e 0 bloco(s) de contrato
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- bloco Prompt 1 - v
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   são 1 linha(s) no inventário e 0 bloco(s) de contrato
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- bloco antes do Inventario
+    rc=0
+    ✅ D.md: DESIGN válido
+--- 2 secoes: a 2a invalida
+    rc=0
+    ✅ D.md: DESIGN válido
+--- secao dentro de cerca
+    rc=0
+    ✅ D.md: DESIGN válido
+--- secao em comentario HTML
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   falta o subtítulo ### Inventário
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- 2a tabela em Inventario conta como linhas
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   linha 2 do inventário com Tipo '' (esperado one-shot ou loop)
+    🛑 D.md:   linha 3 do inventário com Tipo '' (esperado one-shot ou loop)
+    🛑 D.md:   são 3 linha(s) no inventário e 1 bloco(s) de contrato
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- pipe em celula antes de Tipo
+    rc=0
+    ✅ D.md: DESIGN válido
+--- pipe em crase antes de Tipo
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   linha 1 do inventário com Tipo 'b' (esperado one-shot ou loop)
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- CRLF
+    rc=0
+    ✅ D.md: DESIGN válido
+--- tabela indentada
+    rc=0
+    ✅ D.md: DESIGN válido
+--- erro de prompt + erro de manifest: qual o rumo?
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   falta o subtítulo ### Inventário
+    🛑 D.md: **Total Files:** 9, mas o manifest tem 1 linhas
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+--- Tipo errado num DESIGN novo: mensagem diz formato antigo?
+    rc=1
+    🛑 D.md: a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:
+    🛑 D.md:   linha 1 do inventário com Tipo 'lop' (esperado one-shot ou loop)
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; nada no código precisa mudar
+[exit=0]

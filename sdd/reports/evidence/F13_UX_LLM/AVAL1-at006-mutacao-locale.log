@@ -1,0 +1,45 @@
+$ T=$(mktemp -d); trap "rm -rf $T" EXIT; git archive HEAD sdd/bin/contraste.sh tests/test_contraste.py | tar -x -C $T; cd $T; /usr/bin/python3 -B -c "
+p=\"sdd/bin/contraste.sh\"; t=open(p,encoding=\"utf-8\").read(); open(p,\"w\",encoding=\"utf-8\").write(t.replace(\"export LC_ALL=C\",\"true\",1))"
+export SDD_TEST_BASH=/bin/bash
+LC_ALL=pt_BR.UTF-8 awk "BEGIN{printf \"%.1f\n\", .5}"
+LC_ALL=pt_BR.UTF-8 awk -v a=.5 -v b=0.5 "BEGIN{print a+0, b+0, .5+0}"
+LC_ALL=pt_BR.UTF-8 bash sdd/bin/contraste.sh "#000" "#fff" .5; echo "[mutante rc=$?]"
+LC_ALL=pt_BR.UTF-8 bash sdd/bin/contraste.sh "#767676" "#ffffff" --piso 4.5; echo "[mutante rc=$?]"
+LC_ALL=pt_BR.UTF-8 bash sdd/bin/contraste.sh "#777777" "#ffffff" --piso 4.48; echo "[mutante rc=$?]"
+/usr/bin/python3 -B -m unittest discover -v -s tests -p "test_contraste.py" 2>&1; echo "[unittest rc=$?]"
+0,5
+0,5 0,5 0,5
+3.97:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+[mutante rc=2]
+4.54:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[mutante rc=0]
+4.47:1 REPROVA (piso 4.48:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.48:1; texto grande, borda e ícone usam --piso 3
+[mutante rc=2]
+test_contraste (unittest.loader._FailedTest) ... ERROR
+
+======================================================================
+ERROR: test_contraste (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_contraste
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8WhaxuBlCz/tests/test_contraste.py", line 10, in <module>
+    from apoio import BASH, RAIZ, Sandbox
+ModuleNotFoundError: No module named 'apoio'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+[unittest rc=1]
+[exit=0]

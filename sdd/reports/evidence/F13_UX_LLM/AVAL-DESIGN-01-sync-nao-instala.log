@@ -1,0 +1,17 @@
+$ R=$PWD; T=$(mktemp -d); export HOME=$T/home GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 GIT_CEILING_DIRECTORIES=$T; mkdir -p $HOME $T/p; cd $T/p; git init -q; PKG=$T/pkg; mkdir $PKG; (cd $R && git archive HEAD) | tar -x -C $PKG; bash $PKG/bin/sdd-open.sh init --vendors codex --yes >/dev/null 2>&1; echo "init rc=$?"; rm -rf .agents/skills/sdd-kb sdd/bin/design-lint.py sdd/templates/fragments/EARS.md; echo "--- simulado: projeto antigo sem skill/script/fragmento novos"; bash $PKG/bin/sdd-open.sh sync --vendors codex --yes 2>&1; echo "sync rc=$?"; ls -d .agents/skills/sdd-kb sdd/bin/design-lint.py sdd/templates/fragments/EARS.md 2>&1; echo "--- init de novo:"; bash $PKG/bin/sdd-open.sh init --vendors codex --yes >/dev/null 2>&1; echo "init2 rc=$?"; ls -d .agents/skills/sdd-kb sdd/bin/design-lint.py sdd/templates/fragments/EARS.md 2>&1; cd /; rm -rf "$T"
+init rc=0
+--- simulado: projeto antigo sem skill/script/fragmento novos
+▶ sync — plano
+0 a criar · 0 a atualizar · 1 já corretos
+RESULTADO: EM DIA
+→ nada a fazer.
+sync rc=0
+ls: .agents/skills/sdd-kb: No such file or directory
+ls: sdd/bin/design-lint.py: No such file or directory
+ls: sdd/templates/fragments/EARS.md: No such file or directory
+--- init de novo:
+init2 rc=0
+.agents/skills/sdd-kb
+sdd/bin/design-lint.py
+sdd/templates/fragments/EARS.md
+[exit=0]

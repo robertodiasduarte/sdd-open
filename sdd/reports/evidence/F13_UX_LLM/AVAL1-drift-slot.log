@@ -1,0 +1,349 @@
+$ S=/Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/bin/prompt-drift-scan.sh; T=$(mktemp -d); trap "chmod -R u+rwx $T; rm -rf $T" EXIT; P=$T/proj; mkdir -p $P/sdd $P/src; cd $P; export GIT_CEILING_DIRECTORIES=$T
+c(){ printf "\n--- config: %q\n    entrada: %s\n" "$1" "$2"; printf "%b" "$1" > sdd/config.yaml; printf "%s\n" "$2" | bash $S --conteudo src/a.ts 2>&1 | head -2; echo "[rc=${PIPESTATUS[1]}]"; }
+L="ask({ systemPrompt: \`x\` })"
+c "prompts:\n  wrapper_pattern: \"systemPrompt:\"\n" "$L"
+c "prompts: { wrapper_pattern: \"systemPrompt:\" }\n" "$L"
+c "\xef\xbb\xbfprompts:\n  wrapper_pattern: \"systemPrompt:\"\n" "$L"
+c "prompts:\n  wrapper_pattern: >-\n    systemPrompt:\n" "$L"
+c "prompts:\n  wrapper_pattern: |\n    systemPrompt:\n" "$L"
+c "prompts:\n  wrapper_pattern: null\n" "$L"
+c "prompts:\n  wrapper_pattern: ~\n" "$L"
+c "prompts:\n  sub:\n    wrapper_pattern: \"systemPrompt:\"\n" "$L"
+c "prompts:\n\n  # c\n  wrapper_pattern: \"systemPrompt:\"\n" "$L"
+c "prompts:\n# coluna 0\n  wrapper_pattern: \"systemPrompt:\"\n" "$L"
+c "prompts:\n  builder_skill: x\nother:\n  wrapper_pattern: \"systemPrompt:\"\n" "$L"
+c "prompts:\n\twrapper_pattern: \"systemPrompt:\"\n" "$L"
+c "prompts:\n  wrapper_pattern:\"systemPrompt:\"\n" "$L"
+c "prompts:\n  wrapper_pattern: \"a)|(b\"\n" "$L"
+c "prompts:\n  wrapper_pattern: \"a)(b\"\n" "$L"
+c "prompts:\n  wrapper_pattern: \"a\\\\\\\\\"\n" "$L"
+c "prompts:\n  wrapper_pattern: \"*\"\n" "$L"
+c "prompts:\n  wrapper_pattern: \"+\"\n" "$L"
+c "prompts:\n  wrapper_pattern: \"()\"\n" "$L"
+c "prompts:\n  wrapper_pattern: \"a{1\"\n" "$L"
+c "prompts:\n  wrapper_pattern: \"[[:foo:]]\"\n" "$L"
+c "prompts:\n  wrapper_pattern: \"systemPrompt:\$\"\n" "$L"
+c "prompts:\n  wrapper_pattern: \".*\"\n" "soma = \"oi\""
+c "prompts:\n  wrapper_pattern: \"|\"\n" "soma = \"oi\""
+c "prompts:\n  wrapper_pattern: -e\n" "soma -e \"oi\""
+c "prompts:\n  wrapper_pattern: \"callLLM\\\\(\"  # c\n" "callLLM(\"x\")"
+c "prompts:\n  wrapper_pattern: \"callLLM\\(\"\n" "callLLM(\"x\")"
+c "prompts:\n  wrapper_pattern: callLLM\\(\n" "callLLM(\"x\")"
+c "prompts:\n  wrapper_pattern: callLLM\\\\(\n" "callLLM(\"x\")"
+c "prompts:\n  wrapper_pattern: \x27callLLM\\(\x27\n" "callLLM(\"x\")"
+c "prompts:\n  wrapper_pattern: \x27callLLM\\\\(\x27\n" "callLLM(\"x\")"
+c "prompts:\n  wrapper_pattern: \x27it\x27\x27s\x27\n" "its"
+c "prompts:\n  wrapper_pattern: \"systemPrompt:\"\r\n" "$L"
+c "prompts:\r\n  wrapper_pattern: \"\"\r\n" "x"
+c "prompts:\n  wrapper_pattern: \"x\"\n  wrapper_pattern: \"systemPrompt:\"\n" "$L"
+echo; echo "=== config ilegivel"
+printf "prompts:\n  wrapper_pattern: \"systemPrompt:\"\n" > sdd/config.yaml; chmod 000 sdd/config.yaml
+printf "%s\n" "$L" | bash $S --conteudo src/a.ts 2>&1; echo "[rc=$?]"
+printf "%s\n" "x" > src/d.ts; bash $S src/d.ts 2>&1; echo "[rc=$?]"
+chmod 600 sdd/config.yaml; rm sdd/config.yaml
+echo "=== config diretorio"
+mkdir sdd/config.yaml; printf "%s\n" "$L" | bash $S --conteudo src/a.ts 2>&1; echo "[rc=$?]"; rmdir sdd/config.yaml
+echo "=== config ausente com drift"
+printf "client.messages.create\n" | bash $S --conteudo src/a.ts 2>&1; echo "[rc=$?]"
+echo "=== wrapper vazio: ha aviso em stdout?"
+printf "prompts:\n  wrapper_pattern: \"\"  # c\n" > sdd/config.yaml; printf x | bash $S --conteudo src/a.ts 2>/dev/null; echo "[rc=$?]"
+echo "=== rodar de subpasta com git"
+printf "prompts:\n  wrapper_pattern: \"systemPrompt:\"\n" > sdd/config.yaml
+git init -q .; cd src; printf "%s\n" "$L" | bash $S --conteudo a.ts 2>&1; echo "[rc=$?] subpasta com git"; cd ..; rm -rf .git
+cd src; printf "%s\n" "$L" | bash $S --conteudo a.ts 2>&1; echo "[rc=$?] subpasta SEM git (raiz=cwd)"; cd ..
+echo "=== GIT_DIR herdado de outro repo"
+mkdir $T/outro; (cd $T/outro; git init -q .; mkdir sdd; printf "prompts:\n  wrapper_pattern: \"naoeste:\"\n" > sdd/config.yaml)
+git init -q .; GIT_DIR=$T/outro/.git GIT_WORK_TREE=$T/outro bash -c "printf \"%s\n\" \"\$0\" | bash $S --conteudo src/a.ts" "$L" 2>&1; echo "[rc=$?] hook"; rm -rf .git
+echo "=== terminal"
+script -q /dev/null bash $S --conteudo src/x.ts 2>&1 </dev/null; echo "[rc=$?]"
+echo "=== grep exit 2 via PATH"
+mkdir $T/shim; printf "#!/bin/bash\nexit 2\n" > $T/shim/grep; chmod +x $T/shim/grep
+printf "prompts:\n  wrapper_pattern: \"\"\n" > sdd/config.yaml; printf "soma\n" | PATH=$T/shim:$PATH bash $S --conteudo src/a.ts 2>&1; echo "[rc=$?]"
+printf "#!/bin/bash\nexit 1\n" > $T/shim/grep; printf "client.messages.create\n" | PATH=$T/shim:$PATH bash $S --conteudo src/a.ts 2>&1; echo "[rc=$?] grep sempre 1"
+echo "=== self-test: TMPDIR dentro de repositorio, caminho com espaco, absoluto, sem HOME"
+mkdir -p "$T/com espaco/repo/tmp"; (cd "$T/com espaco/repo"; git init -q .; mkdir sdd; printf "prompts:\n  wrapper_pattern: \"(\"\n" > sdd/config.yaml; TMPDIR="$PWD/tmp" bash $S --self-test 2>&1; echo "[rc=$?] TMPDIR em repo com slot invalido"; ls -A tmp)
+cp $S "$T/com espaco/scan.sh"; (cd /; env -u HOME bash "$T/com espaco/scan.sh" --self-test 2>&1; echo "[rc=$?] copia em pasta com espaco")
+
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"systemPrompt:\"\\n
+    entrada: ask({ systemPrompt: `x` })
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\ \{\ wrapper_pattern:\ \"systemPrompt:\"\ \}\\n
+    entrada: ask({ systemPrompt: `x` })
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+[rc=0]
+
+--- config: \\xef\\xbb\\xbfprompts:\\n\ \ wrapper_pattern:\ \"systemPrompt:\"\\n
+    entrada: ask({ systemPrompt: `x` })
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+[rc=0]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \>-\\n\ \ \ \ systemPrompt:\\n
+    entrada: ask({ systemPrompt: `x` })
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \|\\n\ \ \ \ systemPrompt:\\n
+    entrada: ask({ systemPrompt: `x` })
+🛑 prompts.wrapper_pattern não é uma expressão válida: |
+RESULTADO: ERRO DE USO
+[rc=64]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ null\\n
+    entrada: ask({ systemPrompt: `x` })
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ ~\\n
+    entrada: ask({ systemPrompt: `x` })
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- config: prompts:\\n\ \ sub:\\n\ \ \ \ wrapper_pattern:\ \"systemPrompt:\"\\n
+    entrada: ask({ systemPrompt: `x` })
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\\n\ \ #\ c\\n\ \ wrapper_pattern:\ \"systemPrompt:\"\\n
+    entrada: ask({ systemPrompt: `x` })
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n#\ coluna\ 0\\n\ \ wrapper_pattern:\ \"systemPrompt:\"\\n
+    entrada: ask({ systemPrompt: `x` })
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ builder_skill:\ x\\nother:\\n\ \ wrapper_pattern:\ \"systemPrompt:\"\\n
+    entrada: ask({ systemPrompt: `x` })
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+[rc=0]
+
+--- config: prompts:\\n\\twrapper_pattern:\ \"systemPrompt:\"\\n
+    entrada: ask({ systemPrompt: `x` })
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\"systemPrompt:\"\\n
+    entrada: ask({ systemPrompt: `x` })
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"a\)\|\(b\"\\n
+    entrada: ask({ systemPrompt: `x` })
+🛑 prompts.wrapper_pattern não é uma expressão válida: a)|(b
+RESULTADO: ERRO DE USO
+[rc=64]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"a\)\(b\"\\n
+    entrada: ask({ systemPrompt: `x` })
+🛑 prompts.wrapper_pattern não é uma expressão válida: a)(b
+RESULTADO: ERRO DE USO
+[rc=64]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"a\\\\\\\\\"\\n
+    entrada: ask({ systemPrompt: `x` })
+🛑 prompts.wrapper_pattern não é uma expressão válida: a\
+RESULTADO: ERRO DE USO
+[rc=64]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"\*\"\\n
+    entrada: ask({ systemPrompt: `x` })
+🛑 prompts.wrapper_pattern não é uma expressão válida: *
+RESULTADO: ERRO DE USO
+[rc=64]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"+\"\\n
+    entrada: ask({ systemPrompt: `x` })
+🛑 prompts.wrapper_pattern não é uma expressão válida: +
+RESULTADO: ERRO DE USO
+[rc=64]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"\(\)\"\\n
+    entrada: ask({ systemPrompt: `x` })
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"a\{1\"\\n
+    entrada: ask({ systemPrompt: `x` })
+🛑 prompts.wrapper_pattern não é uma expressão válida: a{1
+RESULTADO: ERRO DE USO
+[rc=64]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"\[\[:foo:\]\]\"\\n
+    entrada: ask({ systemPrompt: `x` })
+🛑 prompts.wrapper_pattern não é uma expressão válida: [[:foo:]]
+RESULTADO: ERRO DE USO
+[rc=64]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"systemPrompt:\$\"\\n
+    entrada: ask({ systemPrompt: `x` })
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \".\*\"\\n
+    entrada: soma = "oi"
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"\|\"\\n
+    entrada: soma = "oi"
+🛑 prompts.wrapper_pattern não é uma expressão válida: |
+RESULTADO: ERRO DE USO
+[rc=64]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ -e\\n
+    entrada: soma -e "oi"
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"callLLM\\\\\(\"\ \ #\ c\\n
+    entrada: callLLM("x")
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"callLLM\\\(\"\\n
+    entrada: callLLM("x")
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ callLLM\\\(\\n
+    entrada: callLLM("x")
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ callLLM\\\\\(\\n
+    entrada: callLLM("x")
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \\x27callLLM\\\(\\x27\\n
+    entrada: callLLM("x")
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \\x27callLLM\\\\\(\\x27\\n
+    entrada: callLLM("x")
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \\x27it\\x27\\x27s\\x27\\n
+    entrada: its
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"systemPrompt:\"\\r\\n
+    entrada: ask({ systemPrompt: `x` })
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+--- config: prompts:\\r\\n\ \ wrapper_pattern:\ \"\"\\r\\n
+    entrada: x
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+[rc=0]
+
+--- config: prompts:\\n\ \ wrapper_pattern:\ \"x\"\\n\ \ wrapper_pattern:\ \"systemPrompt:\"\\n
+    entrada: ask({ systemPrompt: `x` })
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+[rc=2]
+
+=== config ilegivel
+/Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/bin/prompt-drift-scan.sh: line 104: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ykDLk5psJV/proj/sdd/config.yaml: Permission denied
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+/Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/bin/prompt-drift-scan.sh: line 104: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ykDLk5psJV/proj/sdd/config.yaml: Permission denied
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+=== config diretorio
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+=== config ausente com drift
+src/a.ts :: chamada direta ao SDK
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2]
+=== wrapper vazio: ha aviso em stdout?
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+=== rodar de subpasta com git
+a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2] subpasta com git
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0] subpasta SEM git (raiz=cwd)
+=== GIT_DIR herdado de outro repo
+src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2] hook
+=== terminal
+^D🛑 --conteudo espera o texto na entrada padrão, e ela é o terminal
+RESULTADO: ERRO DE USO
+→ passe o texto que vai gravar pela entrada padrão
+[rc=64]
+=== grep exit 2 via PATH
+🛑 a busca falhou (exit 2) ao avaliar src/a.ts
+RESULTADO: ERRO DE USO
+→ confira a permissão do arquivo e a expressão de prompts.wrapper_pattern
+[rc=64]
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0] grep sempre 1
+=== self-test: TMPDIR dentro de repositorio, caminho com espaco, absoluto, sem HOME
+✅ 48 casos conferidos
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+[rc=0] TMPDIR em repo com slot invalido
+✅ 48 casos conferidos
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+[rc=0] copia em pasta com espaco
+[exit=0]

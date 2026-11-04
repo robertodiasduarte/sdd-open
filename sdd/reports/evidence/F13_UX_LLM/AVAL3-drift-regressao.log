@@ -1,0 +1,39 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/regr.sh
+versoes: v2.4.0 nao tem o script; 08fbb5b = ciclo 2; 32cc42c = conserto L4; 867d6de; HEAD
+- role: "system"                             2 0 0 0
+  - role: "system"                           2 0 0 0
+- role: 'system'                             2 0 0 0
+- role: system                               0 0 0 0
+role: system                                 0 0 0 0
+- system: "x"                                2 0 0 0
+  - "role": "system"                         2 0 0 0
+String system = "x";                         2 0 0 0
+self.system = "x"                            2 0 0 0
+this.system = "x"                            2 0 0 0
+obj.role = "system"                          2 0 0 0
+ask system: "x"                              2 0 0 0
+a = 1; system = "x"                          2 0 0 0
+role: "system"                               2 2 2 2
+{ role: "system" }                           2 2 2 2
+system: "x"                                  2 2 2 2
+function f(system = "x") {                   2 2 2 2
+def f(system="x"):                           2 2 2 2
+export default { system: "x" }               2 2 2 2
+"operating system": "linux"                  2 0 0 0
+file system: "ext4"                          2 0 0 0
+--- slot barra final
+prompts:
+  wrapper_pattern: "a\\"
+🛑 prompts.wrapper_pattern não é uma expressão válida: a\
+RESULTADO: ERRO DE USO
+rc=64
+prompts:
+  wrapper_pattern: a\
+🛑 prompts.wrapper_pattern não é uma expressão válida: a\
+RESULTADO: ERRO DE USO
+rc=64
+grep a) rc=1
+grep (a))x rc=1
+1
+--- sao casos reais de YAML no repo?
+[exit=0]

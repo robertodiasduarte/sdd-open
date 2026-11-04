@@ -1,0 +1,20 @@
+$ T=$(mktemp -d); trap "rm -rf $T" EXIT; D=$T/pacote; mkdir $D; git archive HEAD | tar -x -C $D; P=$T/novo; mkdir $P; cd $P; git init -q .
+bash $D/bin/sdd-open.sh init --yes --vendors claude >$T/o1 2>&1 </dev/null; echo "[init novo rc=$?]"; ls sdd/bin/contraste.sh sdd/bin/prompt-drift-scan.sh sdd/templates/fragments/LLM_PROMPTS_DESIGN.md .agents/skills/sdd-loop-builder/SKILL.md .agents/skills/sdd-loop-builder/references/como-falar.md .claude/skills/sdd-loop-builder/SKILL.md; echo "[ls rc=$?]"
+rm -rf .agents/skills/sdd-loop-builder sdd/bin/prompt-drift-scan.sh sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; printf "# meu\n" > sdd/bin/contraste.sh
+bash $D/bin/sdd-open.sh init --yes --vendors claude >$T/o2 2>&1 </dev/null; echo "[init existente rc=$?]"; cat sdd/bin/contraste.sh; ls sdd/bin/prompt-drift-scan.sh sdd/templates/fragments/LLM_PROMPTS_DESIGN.md .agents/skills/sdd-loop-builder/SKILL.md; echo "[ls rc=$?]"; echo fim
+[init novo rc=0]
+.agents/skills/sdd-loop-builder/SKILL.md
+.agents/skills/sdd-loop-builder/references/como-falar.md
+.claude/skills/sdd-loop-builder/SKILL.md
+sdd/bin/contraste.sh
+sdd/bin/prompt-drift-scan.sh
+sdd/templates/fragments/LLM_PROMPTS_DESIGN.md
+[ls rc=0]
+[init existente rc=0]
+# meu
+.agents/skills/sdd-loop-builder/SKILL.md
+sdd/bin/prompt-drift-scan.sh
+sdd/templates/fragments/LLM_PROMPTS_DESIGN.md
+[ls rc=0]
+fim
+[exit=0]

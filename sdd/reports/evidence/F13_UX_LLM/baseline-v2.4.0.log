@@ -1,0 +1,22 @@
+$ bash sdd/reports/evidence/F13_UX_LLM/baseline.sh
+$ (v2.4.0 + testes novos) unittest test_contraste
+Ran 20 tests in 0.089s
+
+FAILED (failures=20, errors=10)
+[exit=1]
+$ (v2.4.0 + testes novos) unittest test_prompt_drift_scan
+Ran 62 tests in 0.539s
+
+FAILED (failures=164, errors=6)
+[exit=1]
+$ (v2.4.0 + testes novos) unittest test_f13_textos
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+[exit=1]
+$ (v2.4.0 + testes novos) unittest test_design_lint
+Ran 28 tests in 1.299s
+
+FAILED (errors=19)
+[exit=1]
+[exit=0]

@@ -1,0 +1,94 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f13-ux-llm/78ae1e97-e8f5-4e7a-aec5-ff37409eac82/scratchpad/lint.py
+=== títulos: entra na conferência (rc=1) ou escapa (rc=0)
+esp=1 rc=1 '## LLM Prompts'
+esp=1 rc=1 '##  LLM Prompts'
+esp=1 rc=1 '##\tLLM Prompts'
+esp=1 rc=1 '## LLM Prompts (v1)'
+esp=1 rc=1 '## LLM Prompts: 1'
+esp=1 rc=1 '## LLM Prompts — x'
+esp=1 rc=0 '### LLM Prompts' <<<<< DIVERGE
+esp=1 rc=0 '## llm prompts' <<<<< DIVERGE
+esp=1 rc=0 '## LLM prompts' <<<<< DIVERGE
+esp=1 rc=0 '## LLM Prompt' <<<<< DIVERGE
+esp=1 rc=0 '## LLM-Prompts' <<<<< DIVERGE
+esp=1 rc=0 '## Prompts LLM' <<<<< DIVERGE
+esp=1 rc=0 '## **LLM Prompts**' <<<<< DIVERGE
+esp=1 rc=0 '## 5. LLM Prompts' <<<<< DIVERGE
+esp=1 rc=0 '# LLM Prompts' <<<<< DIVERGE
+esp=1 rc=0 '##LLM Prompts' <<<<< DIVERGE
+esp=1 rc=0 ' ## LLM Prompts' <<<<< DIVERGE
+esp=1 rc=0 '## Prompts' <<<<< DIVERGE
+esp=1 rc=0 '## LLM  Prompts' <<<<< DIVERGE
+=== campo: traços e vazios (AT-016 'a dash counting as empty')
+esp=1 rc=1 Autônomo? = ''
+esp=1 rc=1 Autônomo? = '-'
+esp=1 rc=1 Autônomo? = '—'
+esp=1 rc=0 Autônomo? = '–' <<<<< DIVERGE
+esp=1 rc=0 Autônomo? = '--' <<<<< DIVERGE
+esp=1 rc=0 Autônomo? = '---' <<<<< DIVERGE
+esp=1 rc=0 Autônomo? = '——' <<<<< DIVERGE
+esp=1 rc=0 Autônomo? = '`—`' <<<<< DIVERGE
+esp=1 rc=0 Autônomo? = '**—**' <<<<< DIVERGE
+esp=1 rc=0 Autônomo? = '—.' <<<<< DIVERGE
+esp=1 rc=1 Autônomo? = ' — '
+esp=1 rc=0 Autônomo? = '\\-' <<<<< DIVERGE
+esp=1 rc=0 Autônomo? = 'n/a' <<<<< DIVERGE
+esp=1 rc=0 Autônomo? = 'N/A' <<<<< DIVERGE
+esp=1 rc=0 Autônomo? = 'TODO' <<<<< DIVERGE
+esp=1 rc=0 Autônomo? = '?' <<<<< DIVERGE
+esp=0 rc=0 Autônomo? = 'x'
+=== campo em Tipo=loop
+esp=1 rc=1 loop sem Intenção
+esp=1 rc=1 loop Intenção = —
+esp=1 rc=0 loop Intenção = – <<<<< DIVERGE
+esp=1 rc=1 loop sem Perfil de risco dos efeitos
+esp=1 rc=1 loop Perfil de risco dos efeitos = —
+esp=1 rc=0 loop Perfil de risco dos efeitos = – <<<<< DIVERGE
+esp=1 rc=1 loop sem Ground truth disponível
+esp=1 rc=1 loop Ground truth disponível = —
+esp=1 rc=0 loop Ground truth disponível = – <<<<< DIVERGE
+esp=1 rc=1 loop com Intenção em prosa, fora da tabela
+esp=1 rc=1 loop com tipo LOOP maiúsculo
+esp=1 rc=1 loop com tipo **loop**
+=== 2 linhas: 1 one-shot + 1 loop, bloco por posição
+esp=0 rc=0 one-shot + loop, loop com os campos
+esp=1 rc=1 one-shot + loop, loop sem os campos
+esp=1 rc=0 rótulos trocados: bloco 'Prompt 2' (loop) sem campos vem 1º; 'Prompt 1' traz os campos <<<<< DIVERGE
+esp=1 rc=0 rótulos repetidos: 2 blocos 'Prompt 1' <<<<< DIVERGE
+=== tabela: célula com | em crase desloca coluna
+esp=0 rc=1 linha com `a|b` antes do Tipo <<<<< DIVERGE
+esp=0 rc=0 linha com \| antes do Tipo
+=== seção: 2ª seção e blocos
+esp=1 rc=0 2ª seção '## LLM Prompts' quebrada depois de uma válida (rebatida L7) <<<<< DIVERGE
+esp=1 rc=0 seção válida + ### Inventário 2 quebrado <<<<< DIVERGE
+esp=0 rc=1 bloco antes do Inventário <<<<< DIVERGE
+esp=1 rc=1 Prompt 1 sem : no título
+=== frase e rumo
+esp=1 rc=1 só prompt
+    🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmpns6x4rej/D.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam:
+    🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmpns6x4rej/D.md:   falta o subtítulo ### Inventário
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md
+esp=1 rc=1 prompt + manifest
+    🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmpns6x4rej/D.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam:
+    🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmpns6x4rej/D.md:   falta o subtítulo ### Inventário
+    🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmpns6x4rej/D.md: **Total Files:** 4, mas o manifest tem 3 linhas
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; corrija também os outros pontos acima
+esp=1 rc=1 só manifest, sem seção
+    🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmpns6x4rej/D.md: **Total Files:** 4, mas o manifest tem 3 linhas
+    RESULTADO: VERMELHO
+    → corrija o DESIGN nos pontos acima (molde: sdd/templates/DESIGN_TEMPLATE.md) e rode de novo
+esp=1 rc=1 tipo lop, DESIGN novo
+    🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmpns6x4rej/D.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam:
+    🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmpns6x4rej/D.md:   linha 1 do inventário com Tipo 'lop' (esperado one-shot ou loop)
+    RESULTADO: VERMELHO
+    → copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md
+=== DESIGN sem a seção
+esp=0 rc=0 fixture pura
+esp=0 rc=0 menção em crase
+esp=0 rc=0 menção em prosa no meio da linha
+esp=0 rc=1 menção dentro de comentário HTML no começo da linha (entra) <<<<< DIVERGE
+=== amostra e fixture reais
+esp=0 rc=0 amostra feliz (evidência)
+[exit=0]

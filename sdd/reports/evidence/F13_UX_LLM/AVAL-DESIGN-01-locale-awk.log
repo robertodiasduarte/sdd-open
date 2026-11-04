@@ -1,0 +1,13 @@
+$ locale -a | /usr/bin/grep -i "^pt_BR" ; echo "--- awk BWK sob pt_BR, SEM guarda LC_ALL=C (a sabotagem do AT-006):"; LC_ALL=pt_BR.UTF-8 /usr/bin/awk -v a=.5 "BEGIN{printf \"%.2f a+0=%s conta=%.3f\n\", 1/3, a+0, a*3}"; LC_ALL=pt_BR.UTF-8 /bin/bash -c "printf \"%.2f\n\" 0.5"; echo "bash printf rc=$?"; echo "--- bash sob locale inexistente (Ubuntu runner sem pt_BR):"; LC_ALL=xx_YY.UTF-8 /bin/bash -c "echo ok; locale 2>/dev/null | /usr/bin/grep LC_NUMERIC"
+pt_BR.UTF-8
+pt_BR
+pt_BR.ISO8859-1
+--- awk BWK sob pt_BR, SEM guarda LC_ALL=C (a sabotagem do AT-006):
+0,33 a+0=0,5 conta=1,500
+/bin/bash: line 0: printf: 0.5: invalid number
+0,00
+bash printf rc=1
+--- bash sob locale inexistente (Ubuntu runner sem pt_BR):
+ok
+LC_NUMERIC="C"
+[exit=0]

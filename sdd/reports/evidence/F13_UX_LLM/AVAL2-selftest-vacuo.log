@@ -1,0 +1,12 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f13-ux-llm/78ae1e97-e8f5-4e7a-aec5-ff37409eac82/scratchpad/vacuo.py
+selftest rc=0 slot inválido deixa de sair 64
+selftest rc=0 aspa sem fechar deixa de ser M
+selftest rc=0 texto depois da aspa deixa de ser M
+selftest rc=0 bloco >- deixa de ser M
+selftest rc=0 mapa em linha deixa de ser M
+--- a causa: self-test com o slot inválido e arquivo existente x inexistente
+slot VÁLIDO, src/t.ts inexistente: rc=64 🛑 caminho inexistente: src/t.ts
+--- contraste sem unset CDPATH, com CDPATH=.
+mutante com CDPATH=. rc=0
+CDPATH em tests/test_contraste.py: True
+[exit=0]

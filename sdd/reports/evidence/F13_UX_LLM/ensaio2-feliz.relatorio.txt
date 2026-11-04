@@ -1,0 +1,11 @@
+# BUILD_REPORT_NOTAS — parcial
+
+- Escopo: somente tarefa 1; modo default fixado pelo usuário; sem commit.
+- Revisão do DESIGN: dispensável (1 arquivo novo, sem superfície de segurança).
+- Tarefa 1: BLOQUEADA antes de gravar LOOP_SPEC ou prompts. O contrato exige um item por commit visível, mas não define como distinguir commits visíveis de mudanças internas; não foi inventada essa regra.
+- Skills consultadas: sdd-build, sdd-loop-builder e sdd-prompt-builder; falta completar a referência normativa do DESIGN com o critério de visibilidade.
+- Landmines lidas no build: LM-001–LM-004, N.A. nesta tarefa; nenhuma adicional pela superfície notas/LOOP_SPEC/prompt/loop.
+- Contrato de aceite: não revisado nesta execução; avaliador: N.A. (0 camadas configuradas atingidas; revisão de contexto fresco excluída pelo usuário).
+- Drift detectado: nenhum; prompts.wrapper_pattern vazio limita a varredura aos sinais genéricos.
+- Verify Gate: não executado por solicitação; AT-001: false, sem evidência de aceite.
+- Candidatos ao playbook: nenhum candidato. Retomada: definir quais commits são visíveis e executar novamente a tarefa 1.

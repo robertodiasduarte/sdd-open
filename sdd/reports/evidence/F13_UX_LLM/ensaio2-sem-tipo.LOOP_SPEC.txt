@@ -1,0 +1,102 @@
+<LOOP_SPEC v="2" perfil="lite" nome="notas_de_versao">
+<intent>
+Contrato v1, derivado do DESIGN_NOTAS; dono: projeto.
+Produzir NOTAS.md local para quem atualiza o software: uma linha Markdown por
+commit com mudança visível, no formato - <descrição> (<hash>).
+Referência normativa literal: esse formato e a lista imutável de commits entre
+as duas tags, obtida por código. Provedor/modelo: os do projeto, sem troca.
+Commit sem descrição legível fica fora das notas, com motivo registrado.
+Modelo de dano: citar mudança inexistente é pior que deixar uma mudança sem
+resumo. Na insuficiência de evidência, registrar a indisponibilidade, nunca
+inventar fatos nem aprovar silenciosamente.
+Invariantes: hashes pertencem ao intervalo; cada item corresponde ao commit
+citado; itens aprovados permanecem intactos nas correções; exclusões têm motivo.
+Pronto estrutural: todos os commits contabilizados como item ou exclusão,
+nenhum hash estranho, duplicado ou ausente, formato válido e invariantes intactos.
+Limite da prova: código confere formato, cobertura e hashes; não prova a
+fidelidade semântica nem a classificação de visibilidade. Sem ground truth,
+essa qualidade permanece NÃO VERIFICADA até o eval pré-release.
+Escopo negativo: não publicar, não mudar tags, commits, referências, critérios,
+verificador ou fixtures. Esta tarefa entrega a especificação e os prompts;
+a integração executável dos estágios de código não faz parte deste arquivo.
+</intent>
+<control_state>
+Durante a execução, manter em memória: tags, lista imutável de commits e seu
+SHA-256; ciclo global (0..4); respostas por commit; itens aprovados; exclusões
+com motivo; pendências; tentativas por commit; registro (commit, hash do estado,
+SHA-256 da ação, assinatura do erro); tempo inicial, tokens gastos por estágio;
+métrica anterior e ciclos sem progresso. Sem retomada automática após queda.
+Nada substitui NOTAS.md antes da verificação final; a versão anterior permite
+reverter a escrita local. Registrar o estado terminal e seus motivos ao chamador.
+</control_state>
+<observation>
+Código valida a entrada e captura texto, duração e uso de tokens de cada chamada.
+A primeira rodada redige o lote; cada rodada seguinte corrige somente os commits
+reprovados, injetando o texto anterior e os erros do verificador. Itens já
+aprovados são preservados pelo código, sem pedir que o modelo os reproduza.
+Cada rodada completa conta como um ciclo global, inclusive a primeira redação.
+Assinatura normalizada do erro: código do erro + hash do commit; mensagens
+variáveis não entram na assinatura. Comparar estado e ação antes de repetir.
+O rastro de tentativas fica em memória e é devolvido como diagnóstico ao chamador.
+</observation>
+<verifier>
+Estágio exclusivamente de código, separado do modelo. A lista de hashes é
+imutável e não vem da saída gerada. Conferir linhas - <descrição> (<hash>),
+hash exato da lista e correspondência com o commit alvo na correção.
+Exclusões usam comentários Markdown de uma linha <!-- omitido HASH: motivo -->;
+são metadados de contabilização, não itens de mudança. Código extrai esses
+registros e os separa dos itens publicados, preservando o motivo no diagnóstico.
+Rejeitar texto extra, descrição vazia, hash desconhecido, duplicação, alteração
+de item aprovado e commit não contabilizado. Motivo não vazio é obrigatório.
+Códigos previstos do verificador: 0 estrutura aprovada; 2 falha avaliável;
+3 impossível verificar. Nenhum resultado em prosa do modelo substitui esses códigos.
+Métrica p = commits contabilizados sem erro / total de commits; lista vazia
+validada por código tem p = 1 e produz notas vazias, sem chamada ao modelo.
+Aprovação estrutural não constitui aprovação semântica das exclusões ou descrições.
+</verifier>
+<stop_rules>
+DONE: verificador estrutural em 0, p = 1, invariantes intactos e escrita local
+conferida por leitura; devolver também qualidade semântica NÃO VERIFICADA.
+NON_CONVERGENCE: repetir (estado, ação, assinatura do erro), regredir na métrica
+ou passar W ciclos sem progresso. Não publicar candidato parcial como pronto.
+BLOCKED: atingir K tentativas de correção por commit ainda inválido.
+EXHAUSTED: atingir 4 ciclos globais ou qualquer teto antes de conseguir concluir.
+VERIFIER_FAILURE: verificador indisponível, saída 3, coleta impossível ou
+incapacidade de ler de volta o resultado. Nunca transformar isso em DONE.
+SAFETY_STOP: tentativa de alterar referências, verificador ou arquivos fora do destino.
+NEEDS_INPUT: entrada essencial ausente; devolver diagnóstico terminal, sem
+perguntas durante o laço. Falha de provedor encerra com diagnóstico, sem retry oculto.
+Em qualquer falha, preservar NOTAS.md anterior. Não há aprovação automática para release.
+</stop_rules>
+<budget>
+Fechado pelo DESIGN: no máximo 4 ciclos globais (redação + até 3 correções).
+Propostas de engenharia, não valores fornecidos pelo DESIGN:
+- redigir: até 4096 tokens de saída por lote;
+- corrigir: até 512 tokens de saída por item;
+- entrada por chamada: até 12000 tokens; rejeitar excesso, sem truncar commits;
+- tempo total 120 s; tempo de chamada até 30 s, limitado pelo saldo restante;
+- reserva final de 5 s para verificar, restaurar se necessário e relatar;
+- K = 3 correções por commit; W = 2 ciclos sem aumento de p; R = 0 retries de rede.
+Código aplica todos os tetos antes de cada ação. Não iniciar chamada cujo pior
+caso exceda o saldo de tempo ou os tokens alocados. Verificação estrutural usa
+código, sem tokens LLM. Nenhuma proposta altera o teto fechado de 4 ciclos.
+</budget>
+</LOOP_SPEC>
+
+ESTÁGIOS:
+| # | estágio | tipo | entrada → saída | verificador | maxTokens | nova tentativa | arquivo |
+|---|---|---|---|---|---|---|---|
+| 1 | preparar | código | tags → lista imutável de commits | origem, hashes únicos, entrada disponível | — | nenhuma | — |
+| 2 | redigir | LLM | commits → itens e exclusões com motivo | estágio 3 | 4096 (proposta) | correção dirigida | src/notas/redigir.txt |
+| 3 | verificar | código | candidato + lista original → erros e p | formato, pertencimento, cobertura, preservação | — | após correção | — |
+| 4 | corrigir | LLM | commit + item anterior + erros → um item corrigido ou exclusão motivada | estágio 3 | 512 (proposta) | até K, respeitando 4 ciclos globais | src/notas/corrigir.txt |
+| 5 | gravar | código | candidato aprovado → NOTAS.md local | escrita temporária, substituição atômica, leitura de volta | — | nenhuma | — |
+
+PROMPTS PENDENTES (contratos; arquivos entregues junto desta especificação):
+- redigir: Markdown direto para quem atualiza; um item por commit visível,
+  exclusão com motivo se ilegível ou sem mudança visível; sem perguntas.
+- corrigir: apenas um registro para o commit alvo, usando texto anterior e
+  erros; mesmo tom, formato e fallback da redação, sem alterar outros itens.
+
+VERIFY GATE: sem ground truth: definir o eval antes da release.
+O comando do DEFINE não foi executado nesta entrega limitada à tarefa 1.

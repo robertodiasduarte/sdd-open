@@ -1,0 +1,39 @@
+$ echo "== WORKER_BRIEF (fora do manifest) so conhece a skill de prompt:"; /usr/bin/grep -n "sdd-prompt-builder" sdd/templates/fragments/WORKER_BRIEF.md; echo "== sdd-integration exige contrato por prompt e diz que o builder e chamado no Design:"; /usr/bin/grep -n "Consultar este arquivo\|para cada prompt do inventário\|Se qualquer bloco obrigatório\|Bloco .Contrato por prompt" .agents/skills/sdd-prompt-builder/references/sdd-integration.md; echo "== descricao da skill cita design/build (frontmatter, manifest 17 so sobe versao):"; /usr/bin/grep -c "fluxo SDD design/build" .agents/skills/sdd-prompt-builder/SKILL.md; echo "== validador citado na Decision 6 (Inventory, Consumer, Output):"; /usr/bin/grep -rln "Consumer" .agents sdd/bin sdd/templates tests docs scripts; echo "rc=$? (1 = nenhum arquivo)"; echo "== modos de sdd/bin:"; git ls-files -s sdd/bin | /usr/bin/awk "{print \$1, \$4}"
+== WORKER_BRIEF (fora do manifest) so conhece a skill de prompt:
+50:   - itens do inventário **LLM Prompts** → orquestrador + skill `sdd-prompt-builder` (qualidade>custo);
+== sdd-integration exige contrato por prompt e diz que o builder e chamado no Design:
+3:Consultar este arquivo sempre que a skill for chamada pelas fases Design/Build.
+7:O caller deve compilar e fornecer, para cada prompt do inventário `LLM Prompts`:
+19:2. Bloco `Contrato por prompt` completo:
+38:Se qualquer bloco obrigatório estiver ausente, não improvisar. O caller deve atualizar o DESIGN
+== descricao da skill cita design/build (frontmatter, manifest 17 so sobe versao):
+1
+== validador citado na Decision 6 (Inventory, Consumer, Output):
+rc=1 (1 = nenhum arquivo)
+== modos de sdd/bin:
+100644 sdd/bin/adapters/claude.sh
+100644 sdd/bin/adapters/codex.sh
+100644 sdd/bin/adapters/gemini.sh
+100644 sdd/bin/adapters/openrouter.sh
+100644 sdd/bin/adversarial-review-gate.sh
+100644 sdd/bin/adversarial-review.sh
+100644 sdd/bin/avaliador-guard.sh
+100755 sdd/bin/contexto-lint.sh
+100644 sdd/bin/design-lint.py
+100755 sdd/bin/docs-extract-decisions.sh
+100644 sdd/bin/eval-agree.sh
+100644 sdd/bin/gate-baseline.sh
+100644 sdd/bin/gate-shell-evidencia.sh
+100755 sdd/bin/governanca-bloco.py
+100755 sdd/bin/governanca-fronteira.sh
+100644 sdd/bin/handoff-lint.py
+100644 sdd/bin/kb-dominios.py
+100755 sdd/bin/patterns-lint.sh
+100644 sdd/bin/playbook-lint.sh
+100644 sdd/bin/report-lint.py
+100644 sdd/bin/sdd-decisoes-lint.sh
+100644 sdd/bin/sdd-fluxo.sh
+100644 sdd/bin/skill-lint.py
+100644 sdd/bin/test-baseline.sh
+100644 sdd/bin/verify-gate.sh
+[exit=0]

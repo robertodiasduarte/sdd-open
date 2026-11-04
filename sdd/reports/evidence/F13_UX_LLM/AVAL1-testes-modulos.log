@@ -1,0 +1,79 @@
+$ for m in contraste prompt_drift_scan design_lint f13_textos skill_lint conversa decisoes_lint docs agnostico contrato_build_release correcoes_w0; do echo "## $m"; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "test_$m.py" 2>&1; echo "modulo=$m rc=$?"; done
+## contraste
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 1.451s
+
+OK
+modulo=contraste rc=0
+## prompt_drift_scan
+............................................
+----------------------------------------------------------------------
+Ran 44 tests in 13.504s
+
+OK
+modulo=prompt_drift_scan rc=0
+## design_lint
+....................
+----------------------------------------------------------------------
+Ran 20 tests in 2.735s
+
+OK
+modulo=design_lint rc=0
+## f13_textos
+...................................
+----------------------------------------------------------------------
+Ran 35 tests in 15.785s
+
+OK
+modulo=f13_textos rc=0
+## skill_lint
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 2.992s
+
+OK
+modulo=skill_lint rc=0
+## conversa
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.085s
+
+OK
+modulo=conversa rc=0
+## decisoes_lint
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 2.101s
+
+OK
+modulo=decisoes_lint rc=0
+## docs
+....................
+----------------------------------------------------------------------
+Ran 20 tests in 0.041s
+
+OK
+modulo=docs rc=0
+## agnostico
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.079s
+
+OK
+modulo=agnostico rc=0
+## contrato_build_release
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 0.153s
+
+OK
+modulo=contrato_build_release rc=0
+## correcoes_w0
+............
+----------------------------------------------------------------------
+Ran 12 tests in 2.969s
+
+OK
+modulo=correcoes_w0 rc=0
+[exit=0]

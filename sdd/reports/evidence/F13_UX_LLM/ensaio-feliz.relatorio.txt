@@ -1,0 +1,10 @@
+# BUILD_REPORT_NOTAS
+
+- Tarefa 1: BLOQUEADA antes da escrita; contrato roteado para sdd-loop-builder (Tipo=loop).
+- Falta no DESIGN: teto de tokens/custo por estágio e tempo máximo do processo; só há até 4 ciclos. A skill exige completar o contrato, sem inventar limites nem entregar bloco parcial.
+- Seleção de modo: default, fixado pelo usuário. Revisão do DESIGN: dispensável (1 arquivo novo, sem superfície de segurança).
+- Contrato de aceite / avaliador: N.A. (0 camadas configuradas atingidas; revisão de contexto fresco excluída pelo usuário).
+- Landmines lidas no build: LM-001, LM-002, LM-003, LM-004 — N.A. nesta tarefa; busca por notas/loop/prompt sem hits.
+- Drift detectado: nenhum; nenhum artefato de produção gerado. Candidatos ao playbook: nenhum candidato.
+- Verify Gate, checks globais e revisão pós-build: não executados; escopo limitado à tarefa 1. AT-001: false (sem evidência).
+- Sem LOOP_SPEC parcial, prompts, alterações no DESIGN ou commit. Pendente: usuário completar os limites no DESIGN.

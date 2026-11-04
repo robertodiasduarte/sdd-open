@@ -1,0 +1,21 @@
+$ T=$(mktemp -d); cd "$T"; RX="[\"\x27]?system[\"\x27]?[[:space:]]*:[[:space:]]*[\`\x27\"]"; echo "regex (Decision 2): $RX"; printf "%s\n" "package-ecosystem: \"npm\"" "  filesystem: \"ext4\"" "operating_system: \x27linux\x27" "  \"file_system\": \"x\"" "system: \"voce e um assistente\"" "\"system\": \"voce e\"" "system: SYSTEM_X" > a.yml; cat a.yml; echo "--- achados:"; /usr/bin/grep -nE "$RX" a.yml; echo "rc=$?"; R2="(^|[^[:alnum:]_-])[\"\x27]?system[\"\x27]?[[:space:]]*:[[:space:]]*[\`\x27\"]"; echo "--- com ancora a esquerda:"; /usr/bin/grep -nE "$R2" a.yml; cd /; rm -rf "$T"
+regex (Decision 2): ["\x27]?system["\x27]?[[:space:]]*:[[:space:]]*[`\x27"]
+package-ecosystem: "npm"
+  filesystem: "ext4"
+operating_system: \x27linux\x27
+  "file_system": "x"
+system: "voce e um assistente"
+"system": "voce e"
+system: SYSTEM_X
+--- achados:
+1:package-ecosystem: "npm"
+2:  filesystem: "ext4"
+3:operating_system: \x27linux\x27
+4:  "file_system": "x"
+5:system: "voce e um assistente"
+6:"system": "voce e"
+rc=0
+--- com ancora a esquerda:
+5:system: "voce e um assistente"
+6:"system": "voce e"
+[exit=0]

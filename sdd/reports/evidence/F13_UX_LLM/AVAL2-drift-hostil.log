@@ -1,0 +1,229 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f13-ux-llm/78ae1e97-e8f5-4e7a-aec5-ff37409eac82/scratchpad/drift.sh
+=== A. ordem pasta de teste -> prompts -> nome de teste
+esp=2 rc=2 DRIFT         prompts/test_a.txt :: limpo
+esp=2 rc=2 DRIFT         Prompts/test_a.txt :: limpo
+esp=2 rc=2 DRIFT         src/PROMPTS/a.spec.ts :: limpo
+esp=2 rc=2 DRIFT         x/Prompts/v1/a.ts :: limpo
+esp=0 rc=0 LIMPO         tests/prompts/a.txt :: limpo
+esp=0 rc=0 LIMPO         tests/Prompts/a.txt :: limpo
+esp=0 rc=0 LIMPO         spec/prompts/a.txt :: limpo
+esp=0 rc=0 LIMPO         src/__tests__/prompts/a.txt :: limpo
+esp=0 rc=0 LIMPO         prompts/tests/a.txt :: limpo
+esp=0 rc=0 LIMPO         prompts/spec/sistema.txt :: limpo
+esp=0 rc=0 LIMPO         src/test_prompt.py :: limpo
+esp=0 rc=0 LIMPO         src/prompt_test.txt :: limpo
+esp=0 rc=0 LIMPO         src/prompt_spec.txt :: limpo
+esp=0 rc=0 LIMPO         src/PromptTest.ts :: limpo
+esp=2 rc=2 DRIFT         src/test.py :: client.messages.create(x)
+esp=2 rc=2 DRIFT         src/prompt.py :: limpo
+esp=2 rc=2 DRIFT         src/PROMPT.TXT :: limpo
+esp=0 rc=0 LIMPO         src/prompt.MD :: limpo
+esp=2 rc=2 DRIFT         prompts/a.md :: limpo
+esp=2 rc=2 DRIFT         Prompts/a.MD :: limpo
+esp=0 rc=0 LIMPO         src/test_gerador.py :: client.messages.create(x)
+esp=2 rc=2 DRIFT         Tests/a.py :: client.messages.create(x)
+esp=2 rc=2 DRIFT         TEST/a.py :: client.messages.create(x)
+esp=2 rc=2 DRIFT         src/tests.py :: client.messages.create(x)
+esp=0 rc=0 LIMPO         src/prompt/a.txt :: limpo
+esp=0 rc=0 LIMPO         src/prompts_v2/a.txt :: limpo
+esp=2 rc=2 DRIFT         DISCO prompts/test_a.txt :: limpo
+esp=2 rc=2 DRIFT         DISCO src/Prompts/a.ts :: limpo
+esp=0 rc=0 LIMPO         DISCO tests/prompts/b.txt :: limpo
+esp=0 rc=0 LIMPO         DISCO src/test_gerador2.py :: client.messages.create(x)
+--- subpasta e fora da raiz
+esp=2 rc=2 DRIFT         ../src/a.py :: client.messages.create(x)
+esp=2 rc=2 DRIFT         ../prompts/a.txt :: limpo
+esp=0 rc=0 LIMPO         ../tests/a.py :: client.messages.create(x)
+esp=2 rc=2 DRIFT         ../src/a.ts :: ask({ systemPrompt: `x` })
+esp=2 rc=2 DRIFT         /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mLMZz6gckK/git/src/a.py :: client.messages.create(x)
+esp=2 rc=2 DRIFT         a.ts :: ask({ systemPrompt: `x` })
+esp=2 rc=2 DRIFT         ./a.ts :: ask({ systemPrompt: `x` })
+esp=0 rc=0 LIMPO         ../tests/x.ts :: ask({ systemPrompt: `x` })
+esp=2 rc=2 DRIFT         /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mLMZz6gckK/lnk/prompts/a.txt :: limpo
+esp=0 rc=0 LIMPO         /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mLMZz6gckK/lnk/tests/a.py :: client.messages.create(x)
+esp=0 rc=0 LIMPO         /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mLMZz6gckK/lnk/src/ok.py :: x = 1
+esp=2 rc=2 DRIFT         /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mLMZz6gckK/fora/tests/a.py :: client.messages.create(x)
+esp=0 rc=0 LIMPO         /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mLMZz6gckK/fora/tests/b.py :: x = 1
+esp=2 rc=2 DRIFT         /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mLMZz6gckK/fora/prompts/a.py :: limpo
+=== B. sinais novos: system, role, SDK (devem disparar)
+esp=2 rc=2 DRIFT         src/a.py :: ask(system="x")
+esp=2 rc=2 DRIFT         src/a.py :: ask(system = "x")
+esp=2 rc=2 DRIFT         src/a.py :: system: 'x'
+esp=2 rc=2 DRIFT         src/a.py :: system: `x`
+esp=2 rc=2 DRIFT         src/a.py :: "system": "x"
+esp=2 rc=2 DRIFT         src/a.py :: 'system':'x'
+esp=2 rc=2 DRIFT         src/a.py :: ask(system=f"x")
+esp=2 rc=2 DRIFT         src/a.py :: ask(system=rb"x")
+esp=2 rc=2 DRIFT         src/a.py :: self.system = "x"
+esp=2 rc=2 DRIFT         src/a.py :: {system:"x"}
+esp=2 rc=2 DRIFT         src/a.py :: system = """You
+esp=2 rc=2 DRIFT         src/a.py :: role: "system"
+esp=2 rc=2 DRIFT         src/a.py :: 'role': 'system'
+esp=2 rc=2 DRIFT         src/a.py :: "role":"system"
+esp=2 rc=2 DRIFT         src/a.py :: role = "system"
+esp=2 rc=2 DRIFT         src/a.py :: client.responses.create(x)
+esp=2 rc=2 DRIFT         src/a.py :: model.generateContent(x)
+esp=2 rc=2 DRIFT         src/a.py :: model.generate_content(x)
+esp=2 rc=2 DRIFT         src/a.py :: client.chat.completions.create(x)
+--- nao devem disparar (AT-011, comparacao)
+esp=0 rc=0 LIMPO         src/a.py :: package-ecosystem: "npm"
+esp=0 rc=0 LIMPO         src/a.py :: filesystem: "ext4"
+esp=0 rc=0 LIMPO         src/a.py :: operating_system: 'linux'
+esp=0 rc=0 LIMPO         src/a.py :: file_role: "system"
+esp=0 rc=0 LIMPO         src/a.py :: x-role: "system"
+esp=0 rc=0 LIMPO         src/a.py :: if system == "Linux":
+esp=0 rc=0 LIMPO         src/a.py :: if (system === "x")
+esp=0 rc=0 LIMPO         src/a.py :: system != "x"
+esp=0 rc=0 LIMPO         src/a.py :: role == "system"
+esp=0 rc=0 LIMPO         src/a.py :: role === "system"
+esp=0 rc=0 LIMPO         src/a.py :: role != "system"
+esp=0 rc=0 LIMPO         src/a.py :: os.system("ls")
+esp=0 rc=0 LIMPO         src/a.py :: systems: "x"
+esp=0 rc=0 LIMPO         src/a.py :: system_x: "y"
+esp=0 rc=0 LIMPO         src/a.py :: system-ui: "y"
+esp=0 rc=0 LIMPO         src/a.py :: system: SYSTEM_X
+esp=0 rc=0 LIMPO         src/a.py :: system = SYSTEM_X
+esp=0 rc=0 LIMPO         src/a.py :: role: "user"
+esp=0 rc=0 LIMPO         src/a.py :: role: "system:admin"
+esp=0 rc=0 LIMPO         src/a.py :: role: "sistema"
+--- sinais falsos possiveis (observar: DRIFT onde nao ha prompt)
+esp=0 rc=2 DRIFT         src/a.py :: messages.createdAt <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: x = messages.create_index(y) <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: prisma.messages.create({data}) <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: db.responses.create(data) <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: responses.createdAt <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: generateContentHash(x) <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: generate_content_type(x) <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: "operating system": "linux" <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: system = "x86_64-linux"; <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: # system: "x" <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: spring.system: "x" <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: file system: "ext4" <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: system: "" <<<<< DIVERGE
+esp=0 rc=2 DRIFT         src/a.py :: <foo system='bar'> <<<<< DIVERGE
+--- buracos possiveis (observar: LIMPO onde ha prompt literal)
+esp=0 rc=0 LIMPO         src/a.py :: system := "You are"
+esp=0 rc=0 LIMPO         src/a.py :: System: "You are"
+esp=0 rc=0 LIMPO         src/a.py :: SYSTEM = "You are"
+esp=0 rc=0 LIMPO         src/a.py :: SYSTEM_PROMPT = "You are"
+esp=0 rc=0 LIMPO         src/a.py :: system: str = "You are"
+esp=0 rc=0 LIMPO         src/a.py :: builder.system("You are")
+esp=0 rc=0 LIMPO         src/a.py :: system=("You are"
+esp=0 rc=0 LIMPO         src/a.py :: $a = ['system' => 'You are'];
+esp=0 rc=0 LIMPO         src/a.py :: "role" => "system"
+esp=0 rc=0 LIMPO         src/a.py :: msg['role'] = 'system'
+esp=0 rc=0 LIMPO         src/a.py :: role: :system
+esp=0 rc=0 LIMPO         src/a.py :: Role.SYSTEM
+esp=0 rc=0 LIMPO         src/a.py :: role: "developer"
+esp=0 rc=0 LIMPO         src/a.py :: client.messages.stream(x)
+esp=0 rc=0 LIMPO         src/a.py :: client.Messages.Create(x)
+esp=0 rc=0 LIMPO         src/a.py :: client.completions.create(x)
+esp=0 rc=0 LIMPO         src/a.py :: client.messages().create(x)
+=== C. saida 64 com pasta
+esp=64 rc=64 ERRO DE USO   src :: x = 1
+esp=64 rc=64 ERRO DE USO   src/ :: x = 1
+esp=64 rc=64 ERRO DE USO   . :: x = 1
+esp=64 rc=64 ERRO DE USO   .. :: x = 1
+esp=64 rc=64 ERRO DE USO   / :: x = 1
+esp=64 rc=64 ERRO DE USO   ./ :: x = 1
+esp=64 rc=64 ERRO DE USO   src/. :: x = 1
+esp=64 rc=64 ERRO DE USO   src/.. :: x = 1
+esp=64 rc=64 ERRO DE USO   novo/ :: x = 1
+esp=64 rc=64 ERRO DE USO   lnkdir :: x = 1
+esp=64 rc=64 ERRO DE USO   lnkdir/ :: x = 1
+esp=64 rc=64 ERRO DE USO   /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mLMZz6gckK/p/src :: x = 1
+esp=64 rc=64 ERRO DE USO   /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mLMZz6gckK/p/src/ :: x = 1
+esp=64 rc=64 ERRO DE USO   /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.mLMZz6gckK/p :: x = 1
+esp=64 rc=64 ERRO DE USO    :: x = 1
+esp=64 rc=0 LIMPO         --conteudo :: x = 1 <<<<< DIVERGE
+esp=0 rc=0 LIMPO         -x.py :: x = 1
+esp=64 rc=64 ERRO DE USO   nao/existe/../a.ts :: x = 1
+esp=0 rc=0 LIMPO         src/./z.py :: x = 1
+esp=0 rc=0 LIMPO         src//z.py :: x = 1
+esp=0 rc=0 LIMPO         novo3/./z.py :: x = 1
+esp=2 rc=2 DRIFT         novo3/./prompts/z.py :: x = 1
+esp=2 rc=2 DRIFT         novo3//prompts//z.py :: x = 1
+esp=0 rc=0 LIMPO         src/../src/z.py :: x = 1
+esp=2 rc=2 DRIFT         src/../prompts/z.py :: x = 1
+esp=2 rc=2 DRIFT         prompts/../src/z.py :: client.messages.create(x)
+--- disco
+esp=64 rc=64 ERRO DE USO   DISCO args=[src] 
+esp=64 rc=64 ERRO DE USO   DISCO args=[.] 
+esp=64 rc=64 ERRO DE USO   DISCO args=[src/] 
+esp=64 rc=64 ERRO DE USO   DISCO args=[src/ok.py src] 
+esp=64 rc=64 ERRO DE USO   DISCO args=[src/ok.py nao-existe] 
+esp=64 rc=64 ERRO DE USO   DISCO args=[/dev/null] 
+esp=64 rc=64 ERRO DE USO   DISCO args=[--nada] 
+esp=64 rc=64 ERRO DE USO   DISCO args=[src/ok.py --conteudo] 
+esp=64 rc=64 fifo em disco
+esp=64 rc=64 stdin fechado: ERRO DE USO
+esp=64 rc=64 /dev/null: ERRO DE USO
+esp=64 rc=0 TMPDIR ruim: LIMPO
+terminal com script (exit do script)=64: RESULTADO: ERRO DE USO
+=== D. config ilegivel e o slot
+esp=2 rc=2 DRIFT         src/a.ts :: ask({ systemPrompt: `x` })
+esp=64 rc=64 ERRO DE USO   src/a.ts :: ask({ systemPrompt: `x` })
+esp=64 rc=64 ERRO DE USO   src/a.ts :: x = 1
+esp=64 rc=64 disco, config 000: ERRO DE USO
+--- portas vizinhas: pasta sdd sem permissao, link quebrado, pasta no lugar do arquivo
+esp=64 rc=0 LIMPO         src/a.ts :: ask({ systemPrompt: `x` }) <<<<< DIVERGE
+esp=64 rc=0 LIMPO         src/a.ts :: x = 1 <<<<< DIVERGE
+esp=64 rc=0 LIMPO         src/a.ts :: ask({ systemPrompt: `x` }) <<<<< DIVERGE
+esp=64 rc=0 LIMPO         src/a.ts :: ask({ systemPrompt: `x` }) <<<<< DIVERGE
+esp=64 rc=0 LIMPO         src/a.ts :: ask({ systemPrompt: `x` }) <<<<< DIVERGE
+esp=64 rc=64 ERRO DE USO   src/a.ts :: ask({ systemPrompt: `x` })
+--- awk que falha ao ler o config
+esp=64 rc=0 awk com saida 2: LIMPO
+--- formas do slot (W e o texto com systemPrompt: literal)
+esp=2 rc=2 DRIFT         sem-aviso padrao 
+esp=2 rc=2 DRIFT         sem-aviso BOM 
+esp=2 rc=2 DRIFT         sem-aviso BOM+CRLF 
+esp=64 rc=64 ERRO DE USO   sem-aviso mapa em linha 
+esp=0 rc=64 ERRO DE USO   sem-aviso mapa vazio {} <<<<< DIVERGE
+esp=0 rc=64 ERRO DE USO   sem-aviso mapa em linha sem a chave <<<<< DIVERGE
+esp=64 rc=64 ERRO DE USO   sem-aviso bloco >- 
+esp=64 rc=64 ERRO DE USO   sem-aviso bloco | 
+esp=0 rc=0 LIMPO         AVISO     null 
+esp=0 rc=0 LIMPO         AVISO     ~ # c 
+esp=0 rc=0 LIMPO         AVISO     vazio 
+esp=0 rc=0 LIMPO         AVISO     so comentario 
+esp=0 rc=0 LIMPO         AVISO     aspas vazias 
+esp=2 rc=2 DRIFT         sem-aviso tres espacos 
+esp=2 rc=2 DRIFT         sem-aviso tab 
+esp=0 rc=0 LIMPO         AVISO     comentado 
+esp=2 rc=0 LIMPO         AVISO     chave com aspas <<<<< DIVERGE
+esp=2 rc=0 LIMPO         AVISO     prompts com aspas <<<<< DIVERGE
+esp=2 rc=0 LIMPO         AVISO     prompts com espaco antes do : <<<<< DIVERGE
+esp=0 rc=2 DRIFT         sem-aviso wrapper dentro de sub-chave <<<<< DIVERGE
+esp=0 rc=0 LIMPO         AVISO     outra secao 
+esp=2 rc=0 LIMPO         sem-aviso ancora &a <<<<< DIVERGE
+esp=2 rc=0 LIMPO         sem-aviso tag !!str <<<<< DIVERGE
+esp=0 rc=0 LIMPO         sem-aviso dupla com \\t 
+esp=2 rc=64 ERRO DE USO   sem-aviso alternativa vazia a| <<<<< DIVERGE
+esp=0 rc=0 LIMPO         sem-aviso so espacos 
+esp=2 rc=2 DRIFT         sem-aviso ponto-estrela 
+esp=64 rc=2 DRIFT         sem-aviso parenteses vazios <<<<< DIVERGE
+esp=64 rc=64 ERRO DE USO   sem-aviso barra vertical 
+esp=64 rc=0 LIMPO         sem-aviso contrabarra final <<<<< DIVERGE
+esp=64 rc=0 LIMPO         sem-aviso fecha parenteses <<<<< DIVERGE
+esp=0 rc=0 LIMPO         sem-aviso comeca com traco 
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f13-ux-llm/78ae1e97-e8f5-4e7a-aec5-ff37409eac82/scratchpad/drift.sh: line 112: printf: --: invalid option
+printf: usage: printf [-v var] format [arguments]
+esp=2 rc=0 LIMPO         AVISO     documento 2 <<<<< DIVERGE
+--- slot com falso sinal: .* em qualquer literal
+esp=2 rc=2 DRIFT         src/a.py :: x = "a"
+esp=2 rc=64 ERRO DE USO   src/a.py :: x = "a" <<<<< DIVERGE
+=== E. self-test
+✅ 66 casos conferidos
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+rc=0 residuo=       0
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+rc relativo=0
+→ o prompt-drift-scan.sh está pronto para uso
+rc CDPATH=0
+→ o prompt-drift-scan.sh está pronto para uso
+rc TMPDIR hostil=0
+       0
+[exit=0]

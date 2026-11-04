@@ -1,0 +1,3 @@
+$ /usr/bin/python3 -B -c "import ast;ast.parse(open('sdd/bin/design-lint.py',encoding='utf-8').read());print('ok')" && /bin/bash -n sdd/bin/contraste.sh && /bin/bash -n sdd/bin/prompt-drift-scan.sh
+ok
+[exit=0]

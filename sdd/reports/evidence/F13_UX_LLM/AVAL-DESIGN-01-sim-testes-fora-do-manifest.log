@@ -1,0 +1,182 @@
+$ R=$PWD; T=$(mktemp -d); (git archive HEAD) | tar -x -C $T; cd $T; cat > $T/sim.py <<"PY"
+import re,pathlib,shutil
+S=pathlib.Path(".agents/skills")
+shutil.copytree(S/"sdd-prompt-builder",S/"sdd-loop-builder")
+for p in (S/"sdd-loop-builder").rglob("*.md"):
+    p.write_text(p.read_text(encoding="utf-8").replace("sdd-prompt-builder","sdd-loop-builder"),encoding="utf-8")
+def bump(n,old,new):
+    p=S/n/"SKILL.md"; t=p.read_text(encoding="utf-8")
+    assert old in t,(n,old); p.write_text(t.replace(old,new),encoding="utf-8")
+bump("sdd-build","2.5.1","2.6.0"); bump("sdd-design","2.4.0","2.5.0"); bump("sdd-ux-review","2.4.0","2.5.0"); bump("sdd-prompt-builder","2.1.1","2.1.2")
+p=S/"sdd-loop-builder/SKILL.md"; t=p.read_text(encoding="utf-8"); t=t.replace("2.1.1","1.0.0"); p.write_text(t,encoding="utf-8")
+p=S/"sdd-build/SKILL.md"; t=p.read_text(encoding="utf-8")
+a=t.index("1. **Drift de prompt** (sempre)"); b=t.index("3. **Escrever** seguindo")
+t=t[:a]+"1. **Drift de prompt**: rode `sdd/bin/prompt-drift-scan.sh --conteudo <caminho>` antes de gravar.\n2. **Roteador**: `one-shot` vai para `prompts.builder_skill`; `loop` para `sdd-loop-builder`.\n\n"+t[b:]
+p.write_text(t,encoding="utf-8")
+p=S/"sdd-design/SKILL.md"; t=p.read_text(encoding="utf-8")
+a=t.index("### 5.5. LLM Prompts"); b=t.index("### 6. Estrat")
+t=t[:a]+"### 5.5. LLM Prompts (só se `true`)\n\nCopie `sdd/templates/fragments/LLM_PROMPTS_DESIGN.md`; não chame skill de prompt nesta fase.\n\n"+t[b:]
+p.write_text(t,encoding="utf-8")
+p=pathlib.Path("sdd/templates/UX_REVIEW_TEMPLATE.md"); t=p.read_text(encoding="utf-8")
+a=t.index("## Accessibility and Responsiveness"); b=t.index("## Lentes cognitivas")
+t=t[:a]+"## Accessibility and Responsiveness\n\n| SC | Nível | Verificação | Evidência | Veredito |\n|---|---|---|---|---|\n| 1.4.3 | AA | x | y | PASSA |\n\n---\n\n"+t[b:]
+p.write_text(t,encoding="utf-8")
+p=pathlib.Path("sdd/templates/DESIGN_TEMPLATE.md"); t=p.read_text(encoding="utf-8")
+t=t.replace("## Data Flow","<!-- LLM Prompts: copie sdd/templates/fragments/LLM_PROMPTS_DESIGN.md (colunas Tipo, Versão, Completeness, Refator de?) -->\n\n## Data Flow",1); p.write_text(t,encoding="utf-8")
+for f in ("sdd/bin/contraste.sh","sdd/bin/prompt-drift-scan.sh"):
+    q=pathlib.Path(f); q.write_text("#!/usr/bin/env bash\nset -u\nexit 0\n",encoding="utf-8"); q.chmod(0o755)
+pathlib.Path("sdd/templates/fragments/LLM_PROMPTS_DESIGN.md").write_text("# Fragmento\n\n## LLM Prompts\n\n### Inventário (Inventory)\n",encoding="utf-8")
+c=pathlib.Path("sdd/config.example.yaml"); c.write_text(c.read_text(encoding="utf-8")+"  wrapper_pattern: \"\"\n",encoding="utf-8")
+PY
+/usr/bin/python3 -B sim.py || exit 9; rm sim.py; find . -type f -not -name MANIFEST.txt | sed "s,^\./,," | LC_ALL=C sort > MANIFEST.new; diff <(LC_ALL=C sort MANIFEST.txt) MANIFEST.new; mv MANIFEST.new MANIFEST.txt; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "test_[acdfprs]*.py" 2>&1; rc=$?; echo "unittest rc=$rc"; cd /; rm -rf "$T"; exit $rc
+80a81,85
+> .agents/skills/sdd-loop-builder/SKILL.md
+> .agents/skills/sdd-loop-builder/references/como-falar.md
+> .agents/skills/sdd-loop-builder/references/output-template.md
+> .agents/skills/sdd-loop-builder/references/prompt-building-rules.md
+> .agents/skills/sdd-loop-builder/references/sdd-integration.md
+103c108
+< MANIFEST.txt
+---
+> MANIFEST.new
+146a152
+> sdd/bin/contraste.sh
+157a164
+> sdd/bin/prompt-drift-scan.sh
+352a360
+> sdd/templates/fragments/LLM_PROMPTS_DESIGN.md
+..................................................................................................................................................................F......F...................................F.....F........E..F....................................................F............................................................................................................................................................................................................................................................................................................................................................................................................................................................................FF...........................
+======================================================================
+ERROR: test_grep_da_w0_sem_achado (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_correcoes_w0.py", line 117, in test_grep_da_w0_sem_achado
+    texto = ler(RAIZ / rel)
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_correcoes_w0.py", line 36, in ler
+    return p.read_text(encoding="utf-8")
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1256, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/MANIFEST.new'
+
+======================================================================
+FAIL: test_design_revisor_depois_auditor (test_contrato_build_release.RevisaoAdversarial)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_contrato_build_release.py", line 268, in test_design_revisor_depois_auditor
+    self.assertEqual(versao(DESIGN), "2.4.0")
+AssertionError: '2.5.0' != '2.4.0'
+- 2.5.0
+?   ^
++ 2.4.0
+?   ^
+
+
+======================================================================
+FAIL: test_versao (test_contrato_build_release.SddBuild)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_contrato_build_release.py", line 75, in test_versao
+    self.assertEqual(versao(BUILD), "2.5.1")
+AssertionError: '2.6.0' != '2.5.1'
+- 2.6.0
++ 2.5.1
+
+
+======================================================================
+FAIL: test_sao_17_e_as_15_da_camada_existem (test_conversa.Identificacao)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_conversa.py", line 54, in test_sao_17_e_as_15_da_camada_existem
+    self.assertEqual(len(todas()), 17)
+AssertionError: 18 != 17
+
+======================================================================
+FAIL: test_versao_do_build (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_correcoes_w0.py", line 145, in test_versao_do_build
+    self.assertEqual(versao(SKILLS / "sdd-build/SKILL.md"), "2.5.1")
+AssertionError: '2.6.0' != '2.5.1'
+- 2.6.0
++ 2.5.1
+
+
+======================================================================
+FAIL: test_skills_do_pacote_18_perguntas (test_decisoes_lint.AlvosReais)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_decisoes_lint.py", line 36, in test_skills_do_pacote_18_perguntas
+    self.assertIn("18 pergunta(s) em 18 arquivo(s)", out)
+AssertionError: '18 pergunta(s) em 18 arquivo(s)' not found in '🟢 sdd-decisoes-lint --sites: 19 pergunta(s) em 19 arquivo(s), cada uma com a marca de classe e no formato.\n'
+
+======================================================================
+FAIL: test_uma_ficha_por_skill (test_docs.Guia)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_docs.py", line 232, in test_uma_ficha_por_skill
+    self.assertEqual(faltam, [], "skills sem ficha no catálogo")
+AssertionError: Lists differ: ['sdd-loop-builder'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'sdd-loop-builder'
+
+- ['sdd-loop-builder']
++ [] : skills sem ficha no catálogo
+
+======================================================================
+FAIL: test_readme_cita_as_skills_a_kb_e_o_ok (test_docs.ReadmeEAgents) (lingua='en')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_docs.py", line 388, in test_readme_cita_as_skills_a_kb_e_o_ok
+    self.assertEqual([s for s in SKILLS if s not in texto], [])
+AssertionError: Lists differ: ['sdd-loop-builder'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'sdd-loop-builder'
+
+- ['sdd-loop-builder']
++ []
+
+======================================================================
+FAIL: test_readme_cita_as_skills_a_kb_e_o_ok (test_docs.ReadmeEAgents) (lingua='pt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_docs.py", line 388, in test_readme_cita_as_skills_a_kb_e_o_ok
+    self.assertEqual([s for s in SKILLS if s not in texto], [])
+AssertionError: Lists differ: ['sdd-loop-builder'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'sdd-loop-builder'
+
+- ['sdd-loop-builder']
++ []
+
+======================================================================
+FAIL: test_as_17_skills_reais_passam (test_skill_lint.SkillLint)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_skill_lint.py", line 44, in test_as_17_skills_reais_passam
+    self.assertEqual(len(skills), 17, [s.parent.name for s in skills])
+AssertionError: 18 != 17 : ['sdd-auditoria-harness', 'sdd-brainstorm', 'sdd-build', 'sdd-checar-ambiente', 'sdd-define', 'sdd-design', 'sdd-governanca', 'sdd-handoff', 'sdd-higiene-dado', 'sdd-iniciar-repo', 'sdd-iterate', 'sdd-kb', 'sdd-loop-builder', 'sdd-new-session', 'sdd-playbook', 'sdd-prompt-builder', 'sdd-release', 'sdd-ux-review']
+
+======================================================================
+FAIL: test_as_17_skills_reais_passam_com_conversa (test_skill_lint.SkillLint)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.rMXRZ2i1Qg/tests/test_skill_lint.py", line 75, in test_as_17_skills_reais_passam_com_conversa
+    self.assertEqual(len(skills), 17)
+AssertionError: 18 != 17
+
+----------------------------------------------------------------------
+Ran 767 tests in 878.255s
+
+FAILED (failures=10, errors=1)
+unittest rc=1
+[exit=1]

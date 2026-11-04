@@ -1,0 +1,27 @@
+$ R=/Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm; T=$(mktemp -d); trap "rm -rf $T" EXIT; git archive HEAD | tar -x -C $T; cd $T; export SDD_TEST_BASH=/bin/bash
+m(){ # nome arquivo python-replace-old new modulo
+ cp "$2" "$T/.bak"; /usr/bin/python3 -B - "$2" "$3" "$4" <<"P"
+import sys
+p,a,b=sys.argv[1:4]; t=open(p,encoding="utf-8").read(); assert a in t, "padrao ausente: "+a; open(p,"w",encoding="utf-8").write(t.replace(a,b,1))
+P
+ r=$(/usr/bin/python3 -B -m unittest discover -s tests -p "test_$5.py" 2>&1); rc=$?; s=$(bash "$2" --self-test 2>&1); src=$?; echo "$1 :: unittest rc=$rc ($(echo "$r" | grep -E "^(OK|FAILED)")) · self-test rc=$src"; cp "$T/.bak" "$2"; }
+C=sdd/bin/contraste.sh; D=sdd/bin/prompt-drift-scan.sh
+m "contraste: arredonda em vez de truncar" $C "* 100 + 1e-9)" "* 100 + 0.5)" contraste
+m "contraste: compoe com alfa invertido" $C "alfa * f[i] + (1 - alfa) * b[i]" "(1 - alfa) * f[i] + alfa * b[i]" contraste
+m "contraste: sem LC_ALL=C" $C "export LC_ALL=C" "true" contraste
+m "contraste: rgba sem dica" $C "rgb*) erro_uso" "xrgb*) erro_uso" contraste
+m "drift: sem o sinal SDK" $D "if casa \"\$SDK\" \"\$2\"; then" "if false; then" prompt_drift_scan
+m "drift: sem checar terminal" $D "[ ! -t 0 ] || erro_uso" "true || erro_uso" prompt_drift_scan
+m "drift: grep 2 vira nao achei" $D "erro_uso \"a busca falhou (exit \$rc)" "return 1; erro_uso \"a busca falhou (exit \$rc)" prompt_drift_scan
+m "drift: sem aviso do slot vazio em DRIFT" $D "if [ -z \"\$SLOT\" ]; then" "if [ -z \"\$SLOT\" ] && [ \"\$ACHOU\" -eq 0 ]; then" prompt_drift_scan
+echo fim
+contraste: arredonda em vez de truncar :: unittest rc=1 (FAILED (failures=7)) · self-test rc=2
+contraste: compoe com alfa invertido :: unittest rc=1 (FAILED (failures=10)) · self-test rc=2
+contraste: sem LC_ALL=C :: unittest rc=0 (OK) · self-test rc=0
+contraste: rgba sem dica :: unittest rc=1 (FAILED (failures=1)) · self-test rc=0
+drift: sem o sinal SDK :: unittest rc=1 (FAILED (failures=10)) · self-test rc=2
+drift: sem checar terminal :: unittest rc=1 (FAILED (errors=1)) · self-test rc=0
+drift: grep 2 vira nao achei :: unittest rc=1 (FAILED (failures=1)) · self-test rc=0
+drift: sem aviso do slot vazio em DRIFT :: unittest rc=1 (FAILED (failures=6)) · self-test rc=2
+fim
+[exit=0]

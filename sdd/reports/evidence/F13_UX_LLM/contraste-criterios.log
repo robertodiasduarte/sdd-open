@@ -1,0 +1,11 @@
+$ bash sdd/bin/contraste.sh '#767676' '#ffffff'; bash sdd/bin/contraste.sh '#777777' '#ffffff'; bash sdd/bin/contraste.sh '#000' '#fff' .5
+4.54:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+4.47:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+3.97:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+[exit=2]

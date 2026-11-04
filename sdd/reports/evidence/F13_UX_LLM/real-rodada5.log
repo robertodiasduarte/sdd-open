@@ -1,0 +1,78 @@
+$ git rev-parse HEAD
+5ddc4333ac4d543eb958c5de37a1a50c473d6536
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F13_UX_LLM --no-revisor2
+▶ revisor: claude (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103
+diff_sha256: 9edfc752e542a295b9299d0bb78130ae4a5d210bdf0d2d6d0cffd4cac5b0eaf0
+revisor: claude (claude-opus-5-5) — US$ 2,3068
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0447
+diversidade: vendor
+achados: 0 graves, 0 médios, 3 leves
+custo total: US$ 2,3515
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm
+branch                  : feat/f13-ux-llm
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 6b7633cd90c93ecb7892eb430a0091820ec2fff2
+head                    : 5ddc4333ac4d543eb958c5de37a1a50c473d6536
+paths                   : -
+diff_sha256             : 9edfc752e542a295b9299d0bb78130ae4a5d210bdf0d2d6d0cffd4cac5b0eaf0
+diff                    : 207KB (40 arquivo(s))
+contexto                : 89KB (3 doc SDD)
+docs_sdd                : BRAINSTORM_F13_UX_LLM.md, DEFINE_F13_UX_LLM.md, DESIGN_F13_UX_LLM.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 498
+reviewer_achados        : 3
+reviewer_tokens_entrada : 151227
+reviewer_tokens_saida   : 52004
+reviewer_tokens_total   : 203231
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 2.3068
+revisor1_raso           : nao
+gatilho_2o_revisor      : 40 arquivos (limiar 8) — dispensado por --no-revisor2
+revisor2_engine         : -
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 165
+auditor_vereditos       : 3
+auditor_tokens_entrada  : 99859
+auditor_tokens_saida    : 9982
+auditor_tokens_total    : 109841
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0447
+convergencia_1o_passe   : sim
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 2.3515
+quando                  : 20261104-164103
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103 --ledger sdd/reports/evidence/F13_UX_LLM/ledger-review.md --rodada 5 (teto ${TETO:-3})
+ESTADO: PRONTO
+rodada: 5 de 5
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103 sha256=9edfc752e542a295b9299d0bb78130ae4a5d210bdf0d2d6d0cffd4cac5b0eaf0 diversidade=vendor revisor2=dispensado — sem créditos na conta do Codex; decisão D4 do Roberto, 2026-11-04
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[exit=0]

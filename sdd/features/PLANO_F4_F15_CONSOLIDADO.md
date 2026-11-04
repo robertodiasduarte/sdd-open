@@ -320,12 +320,12 @@ Eixo diferente, não de agente: o `deploy-espera-testes.py` só lê GitHub Actio
 | | |
 |---|---|
 | **Itens** | U1–U3, L1–L4 (PORTE §5.6) |
-| **Entrega** | tabela WCAG 2.2 AA com veredito no `UX_REVIEW_TEMPLATE.md` e no `sdd-ux-review` (U1; 3.3.7 é nível A e 2.4.13 é AAA, PORTE §9) · `sdd/bin/contraste.sh` (U2) · smoke visual antes × depois, só projeto web, slots `smoke.*` (U3) · **skill nova** `.agents/skills/sdd-loop-builder/` (L1) · roteador loop × prompt no `sdd-build` 5.5 (L2) · fragmento `LLM_PROMPTS_DESIGN.md` + colunas no `DESIGN_TEMPLATE.md` (L3) · `sdd/bin/prompt-drift-scan.sh` com `prompts.wrapper_pattern` (L4) |
-| **Decidir** | D11 (`smoke.urls_cmd`, `smoke.a11y_cmd`, `prompts.loop_builder_skill`, `prompts.wrapper_pattern`) · se U3 entra (é só para projeto web) |
+| **Entrega** | tabela WCAG 2.2 AA com veredito no `UX_REVIEW_TEMPLATE.md` e no `sdd-ux-review` (U1; 3.3.7 é nível A e 2.4.13 é AAA, PORTE §9) · `sdd/bin/contraste.sh` (U2) · ~~smoke visual antes × depois, slots `smoke.*` (U3)~~ fora, por decisão do Roberto no brainstorm da F13 (2026-11-04): vai para a F15 · **skill nova** `.agents/skills/sdd-loop-builder/` (L1) · roteador loop × prompt no `sdd-build` 5.5 (L2) · fragmento `LLM_PROMPTS_DESIGN.md` + colunas no `DESIGN_TEMPLATE.md` (L3) · `sdd/bin/prompt-drift-scan.sh` com `prompts.wrapper_pattern` (L4) |
+| **Decidir** | Decidido em 2026-11-04 (`BRAINSTORM_F13_UX_LLM.md`): só `prompts.wrapper_pattern`; `smoke.*` e `prompts.loop_builder_skill` caem; a U3 fica fora; Release `v2.5.0` por tag |
 | **Depende de** | F5 (a entrevista do `ux-review-builder` já mexeu na entrada da `sdd-ux-review`), F7 |
 | **Atenção** | REVIEW, pergunta 5: o `contraste.sh` tem de tratar cor com alpha sobre o fundo (composição antes da razão) e truncar, nunca arredondar (4,49 reprova o piso 4,5:1); fixtures dos dois lados. `test_skill_lint.py` 17 → 18 |
 | **Esforço (PORTE)** | ~3 dias |
-| **Pronto quando** | `contraste.sh '#767676' '#ffffff'` → 4.54 PASSA e `'#777777'` → 4.48 REPROVA, com caso RGBA; `skill-lint.py .agents/skills/sdd-loop-builder/SKILL.md` → 0; `prompt-drift-scan.sh --self-test` → 0 |
+| **Pronto quando** | `contraste.sh '#767676' '#ffffff'` → 4.54 PASSA e `'#777777'` → 4.47 REPROVA (corrigido em 2026-11-04: o valor exato é 4,478 e a regra é truncar), com caso de transparência; `skill-lint.py .agents/skills/sdd-loop-builder/SKILL.md` → 0; `prompt-drift-scan.sh --self-test` → 0 |
 
 ### F14 Playbook, orquestração e sessão (W5 do PORTE, parte P + O + N)
 
@@ -439,13 +439,11 @@ Eixo diferente, não de agente: o `deploy-espera-testes.py` só lê GitHub Actio
 | F10 | `review.context_max_kb` | `180` | teto do contexto SDD injetado |
 | F10 | `review.diff_max_mb` | `8` | teto do diff congelado |
 | F10 | `review.output_dir` | `sdd/reports/reviews` | deve estar no `.gitignore` ou `.git/info/exclude` |
-| F13 | `prompts.loop_builder_skill` | `sdd-loop-builder` | — |
 | F13 | `prompts.wrapper_pattern` | `""` | regex do wrapper de LLM (ex.: `callLLM\\(`) |
-| F13 | `smoke.urls_cmd`, `smoke.a11y_cmd` | `""` | só projeto web; candidatos a cair |
 | F14 | `drive.max_rounds` | `3` | — |
 | F14 | `drive.max_tokens` | `0` | 0 = sem teto; candidato a cair |
 
-`layers:` já existe e passa a ser lido por `report-lint` (F7, já parcialmente na F3) e `sdd-fluxo.sh` (F9). Candidatos a cair, segundo o PORTE: `second_reviewer_*` (podem ser constantes no script), `smoke.*`, `drive.max_tokens`; `schema.check_cmd` caiu na F12.
+`layers:` já existe e passa a ser lido por `report-lint` (F7, já parcialmente na F3) e `sdd-fluxo.sh` (F9). Candidatos a cair, segundo o PORTE: `second_reviewer_*` (podem ser constantes no script), `drive.max_tokens`; `schema.check_cmd` caiu na F12; `smoke.*` e `prompts.loop_builder_skill` caíram na F13.
 
 ### 8.3 Fontes no privado e o que generalizar (PORTE §8.2, §8.3, Anexo A)
 
@@ -477,7 +475,7 @@ Receita por arquivo (PORTE §8.1): `grep -niE 'supabase|deno|wordpress|wp-conten
 | **Entrega** | (1) `bash bin/sdd-open.sh init --vendors claude` no privado, com `sdd/config.yaml` preenchido: `test_cmd` (deno), `deploy.cmd` (rsync Hostinger), `drift_check_cmd`, `landmines_cmd`, `layers` (edge/sql/wp-content), `review.*`, `release.landmines_cmd` (inclui o gate de schema por migration, hoje `audita-schema-gate.sh`) · (2) o que é específico da RDD vai para onde o Open prevê: landmines LM-nnn → `sdd/playbook.md` do privado; 46 KBs → `sdd/kb/` (F5); patterns → `sdd/patterns/` (F12); invariantes → `sdd/invariants.md` (F12); buckets WARM/COOL e lentes por público → `sdd/contexto/` ou slot de UX a decidir · (3) remoção: `.claude/commands/workflow/*`, `.claude/agents/*` do SDD, `scripts/` do SDD (os 26 do Anexo A), `.githooks/` (substituído por `sdd/hooks/`), `sdd-public/`, `port-to-public.sh`, `sdd-public-allowlist.tsv`, `gate-sdd-open-s1.sh`, `gate-sdd-prompt-builder.sh` · (4) `CLAUDE.md` do privado aponta para `AGENTS.md` gerado · (5) as cópias `~/.claude/skills/sdd-*` e `anthropic-skills:sdd-*` regeneradas do Open (D6) |
 | **Decidir** | o que do Anexo C do PORTE vira slot, KB ou simplesmente some (ex.: `model:` por fase, `/fewer-permission-prompts`, memória do Roberto); se a migração é de uma vez ou por fase (ex.: `/define` do Open primeiro, `/release` por último, porque o deploy é o passo de maior risco); destino do espelho travado e dos 4 arquivos (D7) |
 | **Depende de** | F7–F14 (sem eles o Open não tem o que o privado tem: evidência fail-closed, hooks, review adversarial, contexto, curator, drive) |
-| **Atenção** | É a única frente que roda **no repositório privado**, não nesta worktree; o fluxo SDD dela pode ser o próprio Open já instalado lá. O caminho inverso §11 do PORTE (I1–I11) deixa de existir: não há mais privado para absorver nada. Mantém-se a regra "específico da RDD não viaja para o Open": o privado passa a ser um **usuário** do Open, com seus slots, KB e playbook |
+| **Atenção** | **Herdado da F13 (2026-11-04):** o smoke visual (U3) ficou fora do Open; o `sdd-release` precisa de um ponto de extensão para o privado continuar chamando `scripts/a11y/` (passos 6b, 7b e 10b do `/release` de hoje), decidido aqui com o site real. Quem chama o `contraste.sh` no privado precisa tratar a saída 2 do REPROVA. É a única frente que roda **no repositório privado**, não nesta worktree; o fluxo SDD dela pode ser o próprio Open já instalado lá. O caminho inverso §11 do PORTE (I1–I11) deixa de existir: não há mais privado para absorver nada. Mantém-se a regra "específico da RDD não viaja para o Open": o privado passa a ser um **usuário** do Open, com seus slots, KB e playbook |
 | **Esforço** | não estimado pelo PORTE; a estimar no brainstorm da F15 |
 | **Pronto quando** | no privado: `doctor` ✅ sem ⚠️; uma feature real do RDD percorre brainstorm → define → design → build → release pelo Open, com Verify Gate, report-lint, review adversarial e deploy verificado pelo SHA; `git ls-files .claude/commands/workflow .claude/agents scripts/sdd-fluxo.sh sdd-public` vazio; `publish-gate.sh` do Open continua verde (nada da RDD vazou) |
 

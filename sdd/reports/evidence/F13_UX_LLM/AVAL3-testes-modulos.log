@@ -1,0 +1,15 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/mods.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/arq
+== test_contraste rc=0 :: Ran 20 tests in 2.190s OK 
+== test_prompt_drift_scan rc=0 :: Ran 62 tests in 43.879s OK 
+== test_design_lint rc=0 :: Ran 28 tests in 4.588s OK 
+== test_f13_textos rc=0 :: Ran 40 tests in 19.397s OK 
+== test_skill_lint rc=0 :: Ran 29 tests in 2.601s OK 
+== test_conversa rc=0 :: Ran 19 tests in 0.079s OK 
+== test_decisoes_lint rc=0 :: Ran 11 tests in 1.483s OK 
+== test_docs rc=0 :: Ran 20 tests in 0.039s OK 
+== test_agnostico rc=0 :: Ran 7 tests in 0.071s OK 
+== test_bash32 rc=0 :: Ran 3 tests in 0.040s OK 
+== test_check_versions rc=0 :: Ran 16 tests in 3.009s OK 
+== test_publish_gate_patterns rc=0 :: Ran 5 tests in 0.580s OK 
+== test_sdd_open rc=0 :: Ran 34 tests in 410.340s OK 
+[exit=0]

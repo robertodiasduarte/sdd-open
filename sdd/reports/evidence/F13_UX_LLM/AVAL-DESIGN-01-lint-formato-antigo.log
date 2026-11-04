@@ -1,0 +1,21 @@
+$ echo "== unico DESIGN real com a secao hoje:"; /usr/bin/grep -nE "^(## LLM Prompts|### Invent|### Contrato|#### Prompt)" sdd/features/DESIGN_F10_REVISAO.md; echo "== passa hoje:"; /usr/bin/python3 -B sdd/bin/design-lint.py sdd/features/DESIGN_F10_REVISAO.md; echo "rc=$?"; echo "== regra da Decision 5 (acha ### Inventário) sobre ele:"; /usr/bin/python3 -B -c "
+import re
+t=open(\"sdd/features/DESIGN_F10_REVISAO.md\",encoding=\"utf-8\").read().splitlines()
+print(\"### Inventário encontrado:\",any(l.startswith(\"### Inventário\") for l in t))
+print(\"### Inventory encontrado:\",any(l.startswith(\"### Inventory\") for l in t))
+print(\"titulo pedido pelo DESIGN:\",\"o título que o fragmento dá a ela (nao nomeado)\")
+"; echo "== quem le o titulo hoje:"; /usr/bin/grep -n "seção .LLM Prompts" .agents/skills/sdd-build/SKILL.md
+== unico DESIGN real com a secao hoje:
+515:## LLM Prompts
+517:### Inventory
+527:### Contrato por prompt
+== passa hoje:
+✅ sdd/features/DESIGN_F10_REVISAO.md: DESIGN válido
+rc=0
+== regra da Decision 5 (acha ### Inventário) sobre ele:
+### Inventário encontrado: False
+### Inventory encontrado: True
+titulo pedido pelo DESIGN: o título que o fragmento dá a ela (nao nomeado)
+== quem le o titulo hoje:
+85:Confira a flag `LLM Prompts` do DEFINE contra o DESIGN: `true` sem a seção `LLM Prompts` no DESIGN,
+[exit=0]

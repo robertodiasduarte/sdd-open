@@ -1,0 +1,10 @@
+# BUILD_REPORT_NOTAS
+
+- Execução parcial: somente tarefa 1; bloqueada. Modo default escolhido pelo usuário.
+- Tarefa 1: inventário classifica `notas_de_versao` como `loop`; `sdd-loop-builder` ausente no projeto e nas skills instaladas. Nada improvisado; `src/notas/LOOP_SPEC.md` e prompts não criados.
+- Revisão do DESIGN: dispensável (1 arquivo novo, sem superfície de segurança no manifest).
+- Camadas: 0 mapeadas (globs vazios). Contrato de aceite/contexto fresco: não executados, conforme escopo solicitado; avaliador: PENDENTE (tarefa bloqueada; revisão dispensada nesta execução pelo usuário).
+- Landmines lidas no build: LM-001, LM-002, LM-003, LM-004 — N.A. nesta tarefa; busca por notas/loop/prompt sem hits. Candidatos ao playbook: nenhum candidato.
+- Drift detectado: nenhum; flags e inventário coerentes. Varredura do relatório antes de gravar: exit 0; wrapper_pattern vazio limita a detecção aos sinais genéricos.
+- Verify Gate não executado por instrução do usuário; AT-001: false (sem evidência). Sem commit.
+- Pendência: decidir entre instalar a skill e continuar ou retirar o item do escopo com iteração do DESIGN.

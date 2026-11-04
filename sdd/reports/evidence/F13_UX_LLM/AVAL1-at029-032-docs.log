@@ -1,0 +1,94 @@
+$ /usr/bin/python3 -B - <<"PY"
+import re,os,glob
+r=lambda p:open(p,encoding="utf-8").read()
+ok=lambda n,c:print(("ok   " if c else "FALHA ")+n)
+for p in ["docs/roadmap.md","docs/pt-BR/roadmap.md"]:
+    t=r(p); rows=[l for l in t.splitlines() if re.match(r"\|\s*\*\*",l)]
+    ok(p+" 3 linhas",len(rows)==3); ok(p+" so sdd-drive",("sdd-drive" in rows[0]) and "loop-builder" not in t)
+for p in ["README.md","README.pt-BR.md"]:
+    t=r(p); ok(p+" lista skill","sdd-loop-builder" in t); ok(p+" 18",re.search(r"18 skills",t) is not None)
+    for l in re.findall(r"\]\((docs/llm-in-code[^)]*|docs/pt-BR/llm-in-code[^)]*)\)",t): ok(p+" link "+l,os.path.exists(l))
+for p in ["docs/llm-in-code.md","docs/pt-BR/llm-in-code.md"]:
+    t=r(p); [ok(p+" cita "+k,k in t) for k in ["sdd-loop-builder","prompt-drift-scan.sh","contraste.sh","wrapper_pattern","LLM_PROMPTS_DESIGN"]]
+    for l in re.findall(r"\]\(([^)#h][^)]*)\)",t): ok(p+" link "+l,os.path.exists(os.path.join(os.path.dirname(p),l)))
+c=r("sdd/config.example.yaml"); ok("config slot vazio",re.search(r"^  wrapper_pattern: \"\"$",c,re.M) is not None)
+for p in ["sdd/config.example.yaml","docs/adaptation-guide.md","docs/pt-BR/adaptation-guide.md"]:
+    t=r(p); ok(p+" sem smoke./loop_builder_skill","smoke." not in t and "loop_builder_skill" not in t); ok(p+" tem slot","wrapper_pattern" in t)
+    print("     callLLM em",p,[l.strip()[:70] for l in t.splitlines() if "callLLM" in l])
+novos=["sdd/bin/contraste.sh","sdd/bin/prompt-drift-scan.sh","sdd/templates/fragments/LLM_PROMPTS_DESIGN.md","docs/llm-in-code.md","docs/pt-BR/llm-in-code.md"]+glob.glob(".agents/skills/sdd-loop-builder/**/*.md",recursive=True)
+for k in ["mapfile","declare -A","WARM","COOL","LBI","fp-eval","LM-0","Claude Code","AskUserQuestion","rdd-"]:
+    h=[p for p in novos if k in r(p)]; print("     termo",k,h)
+u=r("sdd/templates/UX_REVIEW_TEMPLATE.md")
+for k in ["1.4.3 | AA","1.4.11 | AA","1.4.1 | A","2.4.7 | AA","4.1.2 | A","2.1.1 | A","2.5.8 | AA","3.3.7 é nível A e 2.4.13 é AAA"]: ok("UX template "+k,k in u)
+ex=r(".agents/skills/sdd-loop-builder/references/exemplo-loop-spec.md")
+for k in ["intent","control_state","cycle_protocol","context_assembly","action_space","observation","verifier","recovery_and_convergence_policy","stop_rules","budget","observability"]: ok("exemplo standard <%s>"%k,"<%s>"%k in ex and "</%s>"%k in ex)
+ok("exemplo LLM e codigo","| LLM |" in ex and "| código |" in ex)
+PY
+echo "--- piso bash"; grep -nE "mapfile|declare -A|\$\{[a-zA-Z_]+\^\^" sdd/bin/contraste.sh sdd/bin/prompt-drift-scan.sh; echo "[grep rc=$? (1=sem achado)]"
+ok   docs/roadmap.md 3 linhas
+ok   docs/roadmap.md so sdd-drive
+ok   docs/pt-BR/roadmap.md 3 linhas
+ok   docs/pt-BR/roadmap.md so sdd-drive
+ok   README.md lista skill
+ok   README.md 18
+ok   README.md link docs/llm-in-code.md
+ok   README.md link docs/pt-BR/llm-in-code.md
+ok   README.pt-BR.md lista skill
+ok   README.pt-BR.md 18
+ok   README.pt-BR.md link docs/pt-BR/llm-in-code.md
+ok   README.pt-BR.md link docs/llm-in-code.md
+ok   docs/llm-in-code.md cita sdd-loop-builder
+ok   docs/llm-in-code.md cita prompt-drift-scan.sh
+ok   docs/llm-in-code.md cita contraste.sh
+ok   docs/llm-in-code.md cita wrapper_pattern
+ok   docs/llm-in-code.md cita LLM_PROMPTS_DESIGN
+ok   docs/llm-in-code.md link pt-BR/llm-in-code.md
+ok   docs/pt-BR/llm-in-code.md cita sdd-loop-builder
+ok   docs/pt-BR/llm-in-code.md cita prompt-drift-scan.sh
+ok   docs/pt-BR/llm-in-code.md cita contraste.sh
+ok   docs/pt-BR/llm-in-code.md cita wrapper_pattern
+ok   docs/pt-BR/llm-in-code.md cita LLM_PROMPTS_DESIGN
+ok   docs/pt-BR/llm-in-code.md link ../llm-in-code.md
+ok   config slot vazio
+ok   sdd/config.example.yaml sem smoke./loop_builder_skill
+ok   sdd/config.example.yaml tem slot
+     callLLM em sdd/config.example.yaml ['# "systemPrompt:" ou "callLLM\\\\(" (entre aspas duplas, a contrabarra v']
+ok   docs/adaptation-guide.md sem smoke./loop_builder_skill
+ok   docs/adaptation-guide.md tem slot
+     callLLM em docs/adaptation-guide.md ['# of its parameter, e.g. "systemPrompt:" or "callLLM\\\\("; see docs/llm']
+ok   docs/pt-BR/adaptation-guide.md sem smoke./loop_builder_skill
+ok   docs/pt-BR/adaptation-guide.md tem slot
+     callLLM em docs/pt-BR/adaptation-guide.md ['# dela, ex.: "systemPrompt:" ou "callLLM\\\\("; veja docs/pt-BR/llm-in-c']
+     termo mapfile []
+     termo declare -A []
+     termo WARM []
+     termo COOL []
+     termo LBI []
+     termo fp-eval []
+     termo LM-0 []
+     termo Claude Code []
+     termo AskUserQuestion []
+     termo rdd- []
+ok   UX template 1.4.3 | AA
+ok   UX template 1.4.11 | AA
+ok   UX template 1.4.1 | A
+ok   UX template 2.4.7 | AA
+ok   UX template 4.1.2 | A
+ok   UX template 2.1.1 | A
+ok   UX template 2.5.8 | AA
+ok   UX template 3.3.7 é nível A e 2.4.13 é AAA
+ok   exemplo standard <intent>
+ok   exemplo standard <control_state>
+ok   exemplo standard <cycle_protocol>
+ok   exemplo standard <context_assembly>
+ok   exemplo standard <action_space>
+ok   exemplo standard <observation>
+ok   exemplo standard <verifier>
+ok   exemplo standard <recovery_and_convergence_policy>
+ok   exemplo standard <stop_rules>
+ok   exemplo standard <budget>
+ok   exemplo standard <observability>
+ok   exemplo LLM e codigo
+--- piso bash
+[grep rc=1 (1=sem achado)]
+[exit=0]

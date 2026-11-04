@@ -1,0 +1,19 @@
+$ HOME=<temporário> CODEX_HOME=<temporário, só auth.json> codex exec --ignore-user-config --ephemeral -s workspace-write -C <cópia> "<prompt abaixo>"   # HEAD=08fbb5b
+codex: stub
+prompt: Você é a fase Build deste projeto. Siga .agents/skills/sdd-build/SKILL.md. Os artefatos são sdd/features/DEFINE_NOTAS.md e sdd/features/DESIGN_NOTAS.md. O modo é default: não pergunte. Sem revisão de contexto fresco nesta execução. Execute só a tarefa 1 do File Manifest, conforme o passo 4 da skill, e pare depois dela, sem Verify Gate. Registre o que fez em sdd/reports/BUILD_REPORT_NOTAS.md, em poucas linhas. Sem commit. Se algo impedir a tarefa, faça a pergunta que a skill manda fazer, na sua mensagem final, e pare.
+
+sem-tipo
+HOME/CODEX_HOME: auth.json
+32:| # | Nome | Arquivo de destino | Versão | Provedor/Model
+34:| 1 | notas_de_versao | `src/notas/LOOP_SPEC.md` | v1 | p
+3
+./.agents/skills/sdd-loop-builder
+[exit=0]
+
+$ python3 -B confere_roteador.py sem-tipo <cópia> AVAL2-stub-sem-tipo.log
+🛑 falta src/notas/LOOP_SPEC.md com <LOOP_SPEC v="2"
+🛑 o transcript não mostra a leitura de sdd-loop-builder/SKILL.md como comando
+🛑 o transcript não mostra a leitura de sdd-prompt-builder como comando
+🛑 o relatório não registra a triagem com o resultado loop
+RESULTADO: REPROVA
+[exit=1]

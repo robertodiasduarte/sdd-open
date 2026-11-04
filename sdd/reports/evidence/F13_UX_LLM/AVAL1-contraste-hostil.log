@@ -1,0 +1,421 @@
+$ S=sdd/bin/contraste.sh; t(){ printf "\n--- %q" "$@"; printf "\n"; "$@"; echo "[rc=$?]"; }
+t bash $S
+t bash $S "#000" "#fff" "" 
+t bash $S "" ""
+t bash $S $'#000\n#fff' "#fff"
+t bash $S "#000" $'#fff\n'
+t bash $S "#000" "#fff" $'.5\n'
+t bash $S "#000" "#fff" 1.5
+t bash $S "#000" "#fff" 1.
+t bash $S "#000" "#fff" 0.
+t bash $S "#000" "#fff" .
+t bash $S "#000" "#fff" -.5
+t bash $S "#000" "#fff" 1e0
+t bash $S "#000" "#fff" 0,5
+t bash $S "#000" "#fff" 50%
+t bash $S "#000" "#fff" --piso 3 --piso 7
+t bash $S "#000" "#fff" --piso=3
+t bash $S "#000" "#fff" --piso 03
+t bash $S "#000" "#fff" --piso .5
+t bash $S "#000" "#fff" --piso 3.
+t bash $S "#000" "#fff" --piso -3
+t bash $S "#000" "#fff" --piso 00.00
+t bash $S "#000" "#fff" --piso 0.01
+t bash $S "#000" "#fff" --piso 21
+t bash $S "#000" "#fff" --piso 21.01
+t bash $S "#000" "#fff" --piso 99999999999999999999
+t bash $S "#000" "#fff" --piso "#fff"
+t bash $S --piso 3
+t bash $S --piso
+t bash $S "RGBA(0,0,0,.5)" "#fff"
+t bash $S "rgb(0,0,0)" "#fff"
+t bash $S "#00000080" "#fff"
+t bash $S "#FfF" "#000"
+t bash $S -- "#000" "#fff"
+t bash $S "#000" "#fff" -h
+t bash $S --self-test x
+t bash $S "#000" --self-test
+t bash $S "#000" "#fff" .5 .5 .5
+
+
+--- bash
+--- sdd/bin/contraste.sh
+🛑 faltam as 2 cores. Sem aspas, o # começa um comentário no shell, e as cores não chegam ao comando.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- ''
+🛑 transparência fora de 0 a 1: 
+RESULTADO: ERRO DE USO
+→ use um valor como .5 ou 0.5
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- ''
+--- ''
+🛑 cor não reconhecida: . Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- $'#000\n#fff'
+--- \#fff
+🛑 cor não reconhecida: #000
+#fff. Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- $'#fff\n'
+🛑 cor não reconhecida: #fff
+. Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- $'.5\n'
+🛑 transparência fora de 0 a 1: .5
+
+RESULTADO: ERRO DE USO
+→ use um valor como .5 ou 0.5
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- 1.5
+🛑 transparência fora de 0 a 1: 1.5
+RESULTADO: ERRO DE USO
+→ use um valor como .5 ou 0.5
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- 1.
+21.00:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- 0.
+1.00:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+[rc=2]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- .
+🛑 transparência fora de 0 a 1: .
+RESULTADO: ERRO DE USO
+→ use um valor como .5 ou 0.5
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- -.5
+🛑 opção desconhecida: -.5
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- 1e0
+🛑 transparência fora de 0 a 1: 1e0
+RESULTADO: ERRO DE USO
+→ use um valor como .5 ou 0.5
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- 0\,5
+🛑 transparência fora de 0 a 1: 0,5
+RESULTADO: ERRO DE USO
+→ use um valor como .5 ou 0.5
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- 50%
+🛑 transparência fora de 0 a 1: 50%
+RESULTADO: ERRO DE USO
+→ use um valor como .5 ou 0.5
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- 3
+--- --piso
+--- 7
+21.00:1 PASSA (piso 7:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso=3
+🛑 opção desconhecida: --piso=3
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- 03
+21.00:1 PASSA (piso 03:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- .5
+21.00:1 PASSA (piso .5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- 3.
+🛑 piso inválido: 3.. Aceito número com até 2 casas.
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- -3
+🛑 piso inválido: -3. Aceito número com até 2 casas.
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- 00.00
+🛑 piso inválido: 00.00. Precisa ser maior que zero.
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- 0.01
+21.00:1 PASSA (piso 0.01:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- 21
+21.00:1 PASSA (piso 21:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- 21.01
+21.00:1 REPROVA (piso 21.01:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 21.01:1; texto grande, borda e ícone usam --piso 3
+[rc=2]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- 99999999999999999999
+21.00:1 REPROVA (piso 99999999999999999999:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 99999999999999999999:1; texto grande, borda e ícone usam --piso 3
+[rc=2]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- --piso
+--- \#fff
+🛑 piso inválido: #fff. Aceito número com até 2 casas.
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- --piso
+--- 3
+🛑 faltam cores: são 2, o primeiro plano e o fundo, cada uma entre aspas
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- --piso
+🛑 --piso sem valor
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- RGBA\(0\,0\,0\,.5\)
+--- \#fff
+🛑 cor não reconhecida: RGBA(0,0,0,.5). Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- rgb\(0\,0\,0\)
+--- \#fff
+🛑 cor não reconhecida: rgb(0,0,0). Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ a transparência vai como 3º valor: bash sdd/bin/contraste.sh '#000000' '#ffffff' .5
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#00000080
+--- \#fff
+🛑 cor não reconhecida: #00000080. Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#FfF
+--- \#000
+21.00:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- --
+--- \#000
+--- \#fff
+🛑 opção desconhecida: --
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- -h
+contraste.sh — razão de contraste WCAG entre 2 cores, com veredito.
+
+  bash sdd/bin/contraste.sh '#767676' '#ffffff'            texto comum (piso 4.5:1)
+  bash sdd/bin/contraste.sh '#767676' '#ffffff' --piso 3   texto grande, borda, ícone
+  bash sdd/bin/contraste.sh '#000000' '#ffffff' .5         primeiro plano com transparência
+
+A cor vai entre aspas: sem aspas, o # começa um comentário no shell.
+O resultado é truncado de propósito: calculadoras costumam arredondar, e 4,496
+arredondado apareceria como 4.50 e passaria.
+
+Saídas: 0 PASSA · 2 REPROVA · 64 uso.
+[rc=0]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- --self-test
+--- x
+🛑 --self-test não aceita outros valores
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh --self-test
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- --self-test
+🛑 --self-test não aceita outros valores
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh --self-test
+[rc=64]
+
+--- bash
+--- sdd/bin/contraste.sh
+--- \#000
+--- \#fff
+--- .5
+--- .5
+--- .5
+🛑 valores demais: são 2 cores e, se houver, 1 transparência
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+[exit=0]

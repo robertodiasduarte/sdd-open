@@ -1,0 +1,259 @@
+$ SDD_TEST_BASH=/bin/bash /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/drift.sh
+=== AT-008
+OK rc=2 esp=2 src/nao/existe.py <<client.messages.create(x)>> :: src/nao/existe.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<client.chat.completions.create(x)>> :: src/nao/existe.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<client.responses.create(x)>> :: src/nao/existe.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<model.generateContent(x)>> :: src/nao/existe.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<ask(system="x")>> :: src/nao/existe.py :: system com texto fixo RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<ask(system = "x")>> :: src/nao/existe.py :: system com texto fixo RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<run({ system: "x" })>> :: src/nao/existe.py :: system com texto fixo RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<run({ system: 'x' })>> :: src/nao/existe.py :: system com texto fixo RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<run({ system: `x` })>> :: src/nao/existe.py :: system com texto fixo RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<system = "x">> :: src/nao/existe.py :: system com texto fixo RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<system: "x">> :: src/nao/existe.py :: system com texto fixo RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<{ "system": "x" }>> :: src/nao/existe.py :: system com texto fixo RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<{ role: "system", content: x }>> :: src/nao/existe.py :: role de sistema RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<{"role":"system","content":x}>> :: src/nao/existe.py :: role de sistema RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<{'role': 'system'}>> :: src/nao/existe.py :: role de sistema RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<role="system">> :: src/nao/existe.py :: role de sistema RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<Message(role="system", content=x)>> :: src/nao/existe.py :: role de sistema RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<  "role": "system",>> :: src/nao/existe.py :: role de sistema RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<msgs = [{"role": "system", "content": x}]>> :: src/nao/existe.py :: role de sistema RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<msg["role"] = "system">> :: src/nao/existe.py :: role de sistema RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<"role" => "system">> :: src/nao/existe.py :: role de sistema RESULTADO: DRIFT 
+OK rc=2 esp=2 src/nao/existe.py <<const system = "x">> :: src/nao/existe.py :: system com texto fixo RESULTADO: DRIFT 
+=== AT-008 formas de lista YAML e outras (sondas)
+XX rc=0 esp=2 src/agente.yaml <<- role: "system">> :: RESULTADO: LIMPO 
+XX rc=0 esp=2 src/agente.yaml <<  - role: "system">> :: RESULTADO: LIMPO 
+XX rc=0 esp=2 src/agente.yaml <<- role: 'system'>> :: RESULTADO: LIMPO 
+XX rc=0 esp=2 src/agente.yaml <<- role: system>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/agente.yaml <<- {role: "system"}>> :: src/agente.yaml :: role de sistema RESULTADO: DRIFT 
+XX rc=0 esp=2 src/agente.yaml <<- system: "x">> :: RESULTADO: LIMPO 
+XX rc=0 esp=2 src/agente.yaml <<-  "role": "system">> :: RESULTADO: LIMPO 
+SONDA XX rc=0 esp=2 src/s.py <<Role: "system">> :: RESULTADO: LIMPO 
+SONDA XX rc=0 esp=2 src/s.py <<self.system = "x">> :: RESULTADO: LIMPO 
+SONDA XX rc=0 esp=2 src/s.py <<this.system = "x">> :: RESULTADO: LIMPO 
+SONDA XX rc=0 esp=2 src/s.py <<obj.role = "system">> :: RESULTADO: LIMPO 
+SONDA XX rc=0 esp=2 src/s.py <<String system = "x";>> :: RESULTADO: LIMPO 
+SONDA XX rc=0 esp=2 src/s.py <<ask system: "x">> :: RESULTADO: LIMPO 
+SONDA OK rc=2 esp=2 src/s.py <<return {role: "system"}>> :: src/s.py :: role de sistema RESULTADO: DRIFT 
+SONDA OK rc=2 esp=2 src/s.py <<x = dict(role="system")>> :: src/s.py :: role de sistema RESULTADO: DRIFT 
+SONDA XX rc=0 esp=2 src/s.py <<a = 1; system = "x">> :: RESULTADO: LIMPO 
+SONDA OK rc=2 esp=2 src/s.py <<yield {"role": "system"}>> :: src/s.py :: role de sistema RESULTADO: DRIFT 
+SONDA XX rc=0 esp=2 src/s.py <<<system>x</system>>> :: RESULTADO: LIMPO 
+=== AT-009
+OK rc=2 esp=2 prompts/a.txt <<soma = 1>> :: prompts/a.txt :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 x/Prompts/v1/a.ts <<soma = 1>> :: x/Prompts/v1/a.ts :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 prompts/test_a.txt <<soma = 1>> :: prompts/test_a.txt :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 PROMPTS/b.py <<soma = 1>> :: PROMPTS/b.py :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 src/prompts/c.md <<soma = 1>> :: src/prompts/c.md :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 src/MyPrompt.py <<soma = 1>> :: src/MyPrompt.py :: nome com prompt RESULTADO: DRIFT 
+OK rc=2 esp=2 src/PROMPT.txt <<soma = 1>> :: src/PROMPT.txt :: nome com prompt RESULTADO: DRIFT 
+OK rc=2 esp=2 src/prompt <<soma = 1>> :: src/prompt :: nome com prompt RESULTADO: DRIFT 
+OK rc=2 esp=2 src/system_prompt.yaml <<soma = 1>> :: src/system_prompt.yaml :: nome com prompt RESULTADO: DRIFT 
+OK rc=2 esp=2 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/proj/prompts/abs.txt <<soma = 1>> :: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/proj/prompts/abs.txt :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/proj/x/Prompts/v1/abs.ts <<soma = 1>> :: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/proj/x/Prompts/v1/abs.ts :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/lnk/prompts/lk.txt <<soma = 1>> :: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/lnk/prompts/lk.txt :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=0 esp=0 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/lnk/src/lk.txt <<soma = 1>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/lnk/tests/prompts/lk.txt <<soma = 1>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 disco prompts/a.txt :: prompts/a.txt :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 disco x/Prompts/v1/a.ts :: x/Prompts/v1/a.ts :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 disco prompts/test_a.txt :: prompts/test_a.txt :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 disco src/MyPrompt.py :: src/MyPrompt.py :: nome com prompt RESULTADO: DRIFT 
+OK rc=2 esp=2 disco /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/proj/prompts/a.txt :: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/proj/prompts/a.txt :: pasta prompts/ RESULTADO: DRIFT 
+OK rc=2 esp=2 disco /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/lnk/prompts/a.txt :: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/lnk/prompts/a.txt :: pasta prompts/ RESULTADO: DRIFT 
+de subpasta rc=2 :: ../prompts/a.txt :: pasta prompts/
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+=== AT-010
+OK rc=2 esp=2 src/a.ts <<ask({ systemPrompt: `x` })>> :: src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.ts <<ask({ systemPrompt: 'x' })>> :: src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.ts <<ask({ systemPrompt: "x" })>> :: src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.ts <<ask({ systemPrompt: SYSTEM_X })>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.ts <<callLLM("x")>> :: src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.ts <<callLLM(SYSTEM_X)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.ts <<callLLM (x)>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.ts <<foo "x">> :: src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.ts <<bar: "x">> :: src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.ts <<bar: x>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.ts <<foo x>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.ts <<ask({ systemPrompt: `x` })>> :: src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.ts <<ask({ systemPrompt: X })>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.ts <<callLLM("x")>> :: src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.ts <<ask({ systemPrompt: `x` })>> :: src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.ts <<ask({ systemPrompt: `x` })>> :: src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT 
+=== AT-011
+OK rc=0 esp=0 src/a.test.ts <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.spec.js <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a_test.go <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a_spec.rb <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/test_a.py <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/FooTest.java <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/FooTests.cs <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 tests/a.py <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 test/a.py <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 spec/a.rb <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 __tests__/a.js <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/tests/prompts/a.txt <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 tests/prompts/a.txt <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 x/__tests__/prompts/b.txt <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 docs/a.md <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 docs/a.MD <<client.messages.create(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 .github/dependabot.yml <<package-ecosystem: "npm">> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.yml <<filesystem: "ext4">> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.yml <<operating_system: 'linux'>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.yml <<  operating-system: "linux">> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.yml <<file system: "ext4">> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.yml <<"operating system": "linux">> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<if system == "x": pass>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<if (system=="x") {>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<os.system("ls")>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.ts <<role: "system:admin">> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.ts <<ask({ systemPrompt: SYSTEM_X })>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.ts <<callLLM(SYSTEM_X)>> :: RESULTADO: LIMPO 
+=== SDK fronteiras
+OK rc=0 esp=0 src/a.py <<messages.createdAt = 1>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<messages.create_index()>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<responses.createdAt>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<generateContentHash()>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<generate_content_type>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<regenerateContent()>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<my_generate_content()>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<submessages.create()>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<messages.stream().filter(x)>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<generateContentStreamed()>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<generate_content_async_pool()>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.py <<client.messages.stream(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<client.messages.stream(>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<with client.messages.stream(model=m) as s:>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<client.responses.stream(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<model.generateContentStream(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<model.generate_content_stream(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<model.generate_content_async(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<client.beta.messages.create(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<await anthropic.messages.create({>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<openai.chat.completions.create(>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<generateContent>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=2 esp=2 src/a.py <<chat.completions>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+=== AT-012
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.py <<client.messages.create(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.py <<client.messages.create(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.py <<client.messages.create(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.py <<client.messages.create(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.py <<client.messages.create(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.py <<client.messages.create(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.py <<client.messages.create(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.py <<client.messages.create(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+OK rc=2 esp=2 src/a.py <<client.messages.create(x)>> :: src/a.py :: chamada direta ao SDK RESULTADO: DRIFT 
+stdout-apenas: 1
+OK rc=0 esp=0 src/a.py <<soma=1>> :: RESULTADO: LIMPO 
+=== AT-013
+OK rc=64 esp=64 disco  :: 🛑 falta dizer o que avaliar RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/nao-existe.ts :: 🛑 caminho inexistente: src/nao-existe.ts RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src :: 🛑 não é um arquivo: src RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/ :: 🛑 não é um arquivo: src/ RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco . :: 🛑 não é um arquivo: . RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco --nada :: 🛑 opção desconhecida: --nada RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/r.py src/nao-existe.ts :: 🛑 caminho inexistente: src/nao-existe.ts RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/r.py :: 🛑 não consegui ler: src/r.py RESULTADO: ERRO DE USO 
+OK --conteudo src rc=64 RESULTADO: ERRO DE USO
+OK --conteudo src/ rc=64 RESULTADO: ERRO DE USO
+OK --conteudo . rc=64 RESULTADO: ERRO DE USO
+OK --conteudo .. rc=64 RESULTADO: ERRO DE USO
+OK --conteudo ./ rc=64 RESULTADO: ERRO DE USO
+OK --conteudo ../ rc=64 RESULTADO: ERRO DE USO
+OK --conteudo src/. rc=64 RESULTADO: ERRO DE USO
+OK --conteudo src/.. rc=64 RESULTADO: ERRO DE USO
+OK --conteudo / rc=64 RESULTADO: ERRO DE USO
+OK --conteudo /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/proj/src rc=64 RESULTADO: ERRO DE USO
+OK --conteudo /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/proj/src/ rc=64 RESULTADO: ERRO DE USO
+OK --conteudo src/pasta rc=64 RESULTADO: ERRO DE USO
+OK --conteudo src/pasta/ rc=64 RESULTADO: ERRO DE USO
+OK --conteudo novo/ rc=64 RESULTADO: ERRO DE USO
+conteudo sem caminho rc=64
+conteudo 2 caminhos rc=64
+conteudo sem entrada (/dev/null) rc=64 0
+conteudo entrada vazia rc=64
+conteudo stdin fechado rc=64 :: 🛑 não consegui ler a entrada padrão inteira RESULTADO: ERRO DE USO 
+^D🛑 --conteudo espera o texto na entrada padrão, e ela é o terminal
+RESULTADO: ERRO DE USO
+→ passe o texto que vai gravar pela entrada padrão
+terminal rc=64
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern não é uma expressão válida: ( RESULTADO: ERRO DE USO 
+   conteudo slot ["("] rc=64 🛑 prompts.wrapper_pattern não é uma expressão válida: (
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern não é uma expressão válida: [ RESULTADO: ERRO DE USO 
+   conteudo slot ["["] rc=64 🛑 prompts.wrapper_pattern não é uma expressão válida: [
+XX rc=0 esp=64 disco src/r.py :: RESULTADO: LIMPO 
+   conteudo slot ["a)"] rc=0 
+XX rc=0 esp=64 disco src/r.py :: RESULTADO: LIMPO 
+   conteudo slot ["a\\\\"] rc=0 
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern não é uma expressão válida: * RESULTADO: ERRO DE USO 
+   conteudo slot ["*"] rc=64 🛑 prompts.wrapper_pattern não é uma expressão válida: *
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern não é uma expressão válida: a{2 RESULTADO: ERRO DE USO 
+   conteudo slot ["a{2"] rc=64 🛑 prompts.wrapper_pattern não é uma expressão válida: a{2
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela RESULTADO: ERRO DE USO 
+   conteudo slot ["systemPrompt:] rc=64 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela RESULTADO: ERRO DE USO 
+   conteudo slot ["x" y] rc=64 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela RESULTADO: ERRO DE USO 
+   conteudo slot [>-] rc=64 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela RESULTADO: ERRO DE USO 
+   conteudo slot [|] rc=64 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela RESULTADO: ERRO DE USO 
+   conteudo slot [&a "x"] rc=64 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela RESULTADO: ERRO DE USO 
+   conteudo slot [!!str "x"] rc=64 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/r.py :: 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/r.py :: 🛑 não consegui ler sdd/config.yaml RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/r.py :: 🛑 não consegui ler sdd/config.yaml RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/r.py :: 🛑 não consegui ler sdd/config.yaml RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/r.py :: 🛑 não consegui ler sdd/config.yaml RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/r.py :: 🛑 não consegui ler sdd/config.yaml RESULTADO: ERRO DE USO 
+OK rc=64 esp=64 disco src/r.py :: 🛑 não consegui ler sdd/config.yaml RESULTADO: ERRO DE USO 
+N1 repro rc=64 :: RESULTADO: ERRO DE USO
+grep 2 conteudo rc=64 LIMPO=0
+grep 2 disco rc=64 LIMPO=0
+cat falha rc=64 LIMPO=0
+awk falha rc=64 LIMPO=0
+=== AT-014
+OK rc=2 esp=2 disco src/f1.py src/f2.py src/f3.ts :: src/f1.py :: chamada direta ao SDK src/f3.ts :: role de sistema RESULTADO: DRIFT 
+src/f1.py :: chamada direta ao SDK
+src/f3.ts :: role de sistema
+OK rc=0 esp=0 disco src/f2.py :: RESULTADO: LIMPO 
+OK rc=0 esp=0 disco src/vazio2.py :: RESULTADO: LIMPO 
+=== AT-015
+✅ 83 casos conferidos
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+abs rc=0
+/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/tmpd:
+
+/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/vazia:
+✅ 83 casos conferidos
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+rel rc=0
+/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/tmpd:
+
+/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bP2wCiqJNT/vazia:
+s.sh
+✅ 83 casos conferidos
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+cdpath rc=0
+falhas=16 de 193
+[exit=0]

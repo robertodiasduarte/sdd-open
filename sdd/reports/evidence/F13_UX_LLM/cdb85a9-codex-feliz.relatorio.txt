@@ -1,0 +1,10 @@
+# BUILD_REPORT_NOTAS
+
+- Execução parcial: tarefa 1 bloqueada; modo default fixado pelo usuário, sem commit.
+- Revisão do DESIGN: dispensável (1 arquivo novo, sem superfície de segurança no manifest).
+- Contrato conferido via sdd-loop-builder: falta identificar provedor/modelo; o DESIGN diz apenas “provedor e modelo do projeto”, sem configuração correspondente. Nenhuma LOOP_SPEC ou prompt foi gravado; DESIGN preservado.
+- Landmines lidas no build: LM-001, LM-002, LM-003, LM-004 (seção Sempre); nenhuma correspondência na superfície notas/loop/prompt. Nenhum candidato ao playbook.
+- Drift detectado: nenhum; varredura do relatório antes da gravação. prompts.wrapper_pattern vazio: chamadas por wrapper próprio não são cobertas.
+- Verify Gate e revisão de contexto fresco: não executados, por escopo explícito. AT-001: false, sem evidência de aceite.
+- avaliador: N.A. (0 camadas configuradas correspondem ao manifest; limite 2).
+- Pendência: completar provedor/modelo no DESIGN e retomar a tarefa 1.

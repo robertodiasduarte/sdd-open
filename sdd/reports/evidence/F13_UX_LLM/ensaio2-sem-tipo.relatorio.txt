@@ -1,0 +1,25 @@
+# BUILD_REPORT_NOTAS — parcial, tarefa 1/1 — 2026-11-04
+
+- Seleção de modo: default fixado pelo usuário; somente tarefa 1, sem commit, Verify Gate ou revisão em contexto fresco.
+- Revisão do DESIGN: dispensável (1 arquivo novo, sem superfície de segurança); contrato de aceite: N.A.; camadas configuradas atingidas: 0; avaliador: N.A. (0 camadas, abaixo do limite 2; também dispensado nesta execução).
+- Triagem do inventário antigo sem Tipo: loop, pois a reprovação leva à reescrita do próprio texto anterior. Criados LOOP_SPEC v2 lite e 2 prompts derivados; estágios determinísticos especificados como código, integração executável fora desta tarefa documental.
+- Verificação incremental: scanner antes de cada gravação e conferência estrutural local dos 3 artefatos; sem chamada real ao modelo. AT-001: false, sem evidência executável. Verify Gate: não executado por instrução; fase completa não atestada.
+
+## LLM Prompts
+| Item | Arquivo | Tipo / gerado por | Versão anterior → nova | Status |
+|---|---|---|---|---|
+| notas_de_versao | src/notas/LOOP_SPEC.md | loop / sdd-loop-builder | nova → v1 (schema v2) | criado |
+| redigir | src/notas/redigir.txt | estágio LLM / sdd-prompt-builder | nova → v1 | criado |
+| corrigir | src/notas/corrigir.txt | estágio LLM / sdd-prompt-builder | nova → v1 | criado |
+
+Contrato aplicado: tom direto, Markdown com hash, exclusão motivada, autonomia, entrada por mensagem do usuário e conferência interna; modelo/provedor do projeto preservados. Evidência de eval: indisponível, sem ground truth; definir antes da release. Rollback: arquivos novos, ainda sem integração em runtime.
+Propostas da LOOP_SPEC: 4096/512 tokens de saída; entrada 12000; total 120 s, chamada 30 s, reserva 5 s; K=3, W=2, R=0. Teto fechado de 4 ciclos preservado.
+
+## Landmines lidas no build
+LM-001, LM-002: N.A. — gate não alterado/executado; LM-003: N.A. — sem revisão externa; LM-004: N.A. — sem migration. Busca por superfície notas/LOOP_SPEC/prompt/loop: nenhum hit.
+
+## Drift detectado
+Nenhum; prompts derivados da LOOP_SPEC são previstos pelo passo 4. Scanner em stdin antes da escrita: exit 0 nos 4 arquivos. Aviso: wrapper_pattern vazio limita detecção a sinais genéricos.
+
+## Candidatos ao playbook
+Nenhum candidato.

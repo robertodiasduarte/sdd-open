@@ -1,0 +1,11 @@
+# BUILD_REPORT_NOTAS — 2026-11-04
+- Status: BLOQUEADO na tarefa 1/1; src/notas/LOOP_SPEC.md e prompts não criados.
+- Seleção de modo: default, fixado pelo usuário; somente tarefa 1, sem commit.
+- Item notas_de_versao: Tipo loop; sdd-loop-builder ausente no projeto e nos diretórios de skills disponíveis; nada improvisado.
+- Revisão do DESIGN: dispensável (1 arquivo novo, sem superfície de segurança no manifest).
+- Contrato de aceite: não revisado; contexto fresco dispensado pelo usuário.
+- Landmines lidas no build: LM-001, LM-002, LM-003, LM-004 — N.A. nesta tarefa bloqueada; varredura notas|loop|prompt sem hits.
+- Candidatos ao playbook: nenhum candidato. Drift detectado: nenhum; inventário coerente com DEFINE.
+- Verify Gate: não executado por solicitação; AT-001: false (sem evidência).
+- Veredito do avaliador: avaliador: N.A. (0 camadas mapeadas; slots de layers vazios; revisão dispensada pelo usuário).
+- Retomada: aguarda decisão entre instalar e continuar, tirar do escopo ou não sei.

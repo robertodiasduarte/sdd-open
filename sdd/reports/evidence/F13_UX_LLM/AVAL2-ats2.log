@@ -1,0 +1,63 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f13-ux-llm/78ae1e97-e8f5-4e7a-aec5-ff37409eac82/scratchpad/ats2.sh
+=== AT-010
+rc=2 src/a.ts :: x({ systemPrompt: `x` }) -> src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT → se é prompt de produção, inventarie n
+rc=0 src/a.ts :: x({ systemPrompt: SYSTEM_X }) -> RESULTADO: LIMPO → nenhum sinal de prompt de produção; siga
+rc=2 src/a.ts :: callLLM("x") -> src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT → se é prompt de produção, inventarie n
+rc=2 src/a.ts :: callLLM('x') -> src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT → se é prompt de produção, inventarie n
+rc=0 src/a.ts :: callLLM(SYSTEM_X) -> RESULTADO: LIMPO → nenhum sinal de prompt de produção; siga
+rc=2 src/a.ts :: callLLM( "x") -> src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT → se é prompt de produção, inventarie n
+rc=2 src/a.ts :: foo "x" -> src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT → se é prompt de produção, inventarie n
+rc=2 src/a.ts :: bar: "x" -> src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT → se é prompt de produção, inventarie n
+rc=0 src/a.ts :: foo x -> RESULTADO: LIMPO → nenhum sinal de prompt de produção; siga
+rc=2 src/a.ts :: x({ systemPrompt: `x` }) -> src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT → se é prompt de produção, inventarie n
+rc=2 src/a.ts :: x({ systemPrompt: `x` }) -> src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT → se é prompt de produção, inventarie n
+=== AT-012: aviso em stdout nos 2 resultados
+rc=0 src/a.ts :: x = 1 -> ⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura 
+rc=2 src/a.ts :: client.messages.create(x) -> src/a.ts :: chamada direta ao SDK ⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por u
+rc=0 src/a.ts :: x = 1 -> ⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura 
+rc=2 src/a.ts :: client.messages.create(x) -> src/a.ts :: chamada direta ao SDK ⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por u
+rc=0 src/a.ts :: x = 1 -> ⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura 
+rc=2 src/a.ts :: client.messages.create(x) -> src/a.ts :: chamada direta ao SDK ⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por u
+=== AT-013 slot e grep
+rc=64 src/a.ts :: x -> 
+rc=64 src/a.ts :: x -> 
+rc=2 src/a.ts :: x({ systemPrompt: `x` }) -> src/a.ts :: parâmetro do wrapper com texto fixo (prompts.wrapper_pattern) RESULTADO: DRIFT → se é prompt de produção, inventarie n
+=== AT-014
+src/a.py :: chamada direta ao SDK
+src/c.py :: system com texto fixo
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma f
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+rc=2
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma f
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+rc=0
+=== L5 rebatido: link de arquivo em disco
+RESULTADO: LIMPO
+=== forma real do transcript (ensaio2-feliz:2190): scan dentro de python, código impresso, comando fecha 0
+RESULTADO: PASSA
+conferidor rc=0 (esperado 1: os 2 scans saíram 64)
+--- forma real do patch do Codex (ensaio2-sem-skill:922)
+ succeeded in 0ms:
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta 
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+
+apply patch
+patch: completed
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.kMLcwLXRpT/sem-skill/sdd/reports/BUILD_REPORT_NOTAS.md
+diff --git a/sdd/reports/BUILD_REPORT_NOTAS.md b/sdd/reports/BUILD_REPORT_NOTAS.md
+RESULTADO: PASSA
+conferidor rc=0 (esperado 1: gravou por patch e varreu depois)
+=== o próprio repositório, em disco, com o config de exemplo: o que dispara
+sdd/bin/prompt-drift-scan.sh :: nome com prompt
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função próp
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+rc=1
+[exit=0]

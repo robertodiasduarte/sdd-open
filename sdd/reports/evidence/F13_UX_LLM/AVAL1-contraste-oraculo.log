@@ -1,0 +1,32 @@
+$ /usr/bin/python3 -B -c "
+import random,subprocess,math
+from decimal import Decimal as D, getcontext
+getcontext().prec=50
+def lin(v):
+    v=v/D(255)
+    return v/D(\"12.92\") if v<=D(\"0.04045\") else ((v+D(\"0.055\"))/D(\"1.055\"))**D(\"2.4\")
+def L(c): return D(\"0.2126\")*lin(c[0])+D(\"0.7152\")*lin(c[1])+D(\"0.0722\")*lin(c[2])
+random.seed(13)
+bad=0;n=0
+for i in range(1500):
+    f=[random.randrange(256) for _ in range(3)];b=[random.randrange(256) for _ in range(3)]
+    if i%3==0: f=[random.randrange(100,140)]*3;b=[255]*3
+    a=random.choice([None,\"0\",\".25\",\"0.5\",\"0.73\",\"1\",\"1.0\",\"0.\"])
+    args=[\"/bin/bash\",\"sdd/bin/contraste.sh\",\"#%02x%02x%02x\"%tuple(f),\"#%02X%02X%02X\"%tuple(b)]
+    al=D(1)
+    if a is not None: args.append(a); al=D(a if a!=\"0.\" else \"0\")
+    comp=[al*D(x)+(1-al)*D(y) for x,y in zip(f,b)]
+    l1,l2=L(comp),L([D(x) for x in b])
+    if l1<l2:l1,l2=l2,l1
+    r=(l1+D(\"0.05\"))/(l2+D(\"0.05\"))
+    t=int(r*100)
+    want=\"%d.%02d:1 %s (piso 4.5:1)\"%(t//100,t%100,\"PASSA\" if t>=450 else \"REPROVA\")
+    p=subprocess.run(args,capture_output=True,text=True)
+    got=p.stdout.split(chr(10))[0]; n+=1
+    wantrc=0 if t>=450 else 2
+    if got!=want or p.returncode!=wantrc:
+        bad+=1; print(\"DIVERGE\",args[2:],got,p.returncode,\"oraculo\",want,r)
+print(\"casos\",n,\"divergencias\",bad)
+"
+casos 1500 divergencias 0
+[exit=0]

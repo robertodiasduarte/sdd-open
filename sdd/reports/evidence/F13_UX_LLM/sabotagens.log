@@ -1,0 +1,52 @@
+$ bash sdd/reports/evidence/F13_UX_LLM/sabotagem.sh
+$ sabotagem contraste-arredonda (sdd/bin/contraste.sh) → test_contraste
+FAIL: test_cdpath_nao_quebra (test_contraste.AutoTeste)
+FAIL: test_verde_por_caminho_absoluto_e_relativo (test_contraste.AutoTeste)
+FAIL: test_virgula_decimal_no_sistema_nao_muda_nada (test_contraste.Locale)
+FAIL: test_forma_curta_e_maiusculas (test_contraste.Veredito)
+FAIL: test_piso_em_qualquer_posicao (test_contraste.Veredito)
+FAIL: test_piso_padrao (test_contraste.Veredito)
+FAIL: test_transparencia_composta_sobre_o_fundo (test_contraste.Veredito)
+FAIL: test_truncado_nunca_arredondado (test_contraste.Veredito)
+[exit=1]
+
+$ sabotagem contraste-sem-LC_ALL (sdd/bin/contraste.sh) → test_contraste
+OK
+[exit=0]
+
+$ sabotagem contraste-com-%f-sem-LC_ALL → test_contraste
+FAIL: test_virgula_decimal_no_sistema_nao_muda_nada (test_contraste.Locale)
+FAILED (failures=1)
+[exit=1]
+
+$ sabotagem scan-sem-wrapper (sdd/bin/prompt-drift-scan.sh) → test_prompt_drift_scan
+FAIL: test_cdpath_nao_quebra (test_prompt_drift_scan.AutoTeste)
+FAIL: test_chamada_por_caminho_relativo (test_prompt_drift_scan.AutoTeste)
+FAIL: test_nao_quebra_onde_link_e_permissao_nao_tem_efeito (test_prompt_drift_scan.AutoTeste)
+FAIL: test_verde_numa_pasta_sem_fixtures_sem_config_e_sem_residuo (test_prompt_drift_scan.AutoTeste)
+FAIL: test_vermelho_sem_o_sinal_do_wrapper (test_prompt_drift_scan.AutoTeste)
+FAIL: test_todos_os_achados_nomeados (test_prompt_drift_scan.EmDisco)
+FAIL: test_bom_no_inicio_do_config (test_prompt_drift_scan.ErroDeUso)
+FAIL: test_alternativa_vale_inteira (test_prompt_drift_scan.Wrapper)
+[exit=1]
+
+$ sabotagem scan-grep2-vira-nao-achei (sdd/bin/prompt-drift-scan.sh) → test_prompt_drift_scan
+FAIL: test_cdpath_nao_quebra (test_prompt_drift_scan.AutoTeste)
+FAIL: test_chamada_por_caminho_relativo (test_prompt_drift_scan.AutoTeste)
+FAIL: test_nao_quebra_onde_link_e_permissao_nao_tem_efeito (test_prompt_drift_scan.AutoTeste)
+FAIL: test_verde_numa_pasta_sem_fixtures_sem_config_e_sem_residuo (test_prompt_drift_scan.AutoTeste)
+FAIL: test_vermelho_quando_grep_2_vira_nao_achei (test_prompt_drift_scan.AutoTeste)
+FAIL: test_grep_com_saida_2_nunca_vira_limpo (test_prompt_drift_scan.ErroDeUso)
+FAILED (failures=6)
+[exit=1]
+
+$ sabotagem scan-caminho-sem-normalizar (sdd/bin/prompt-drift-scan.sh) → test_prompt_drift_scan
+FAIL: test_absoluto_por_link_simbolico_para_o_projeto_nao_vira_limpo (test_prompt_drift_scan.SinaisDeCaminho)
+FAILED (failures=1)
+[exit=1]
+
+$ sabotagem lint-sem-tipo (sdd/bin/design-lint.py) → test_design_lint
+FAIL: test_tipo_invalido (test_design_lint.Prompts)
+FAILED (failures=1)
+[exit=1]
+[exit=0]

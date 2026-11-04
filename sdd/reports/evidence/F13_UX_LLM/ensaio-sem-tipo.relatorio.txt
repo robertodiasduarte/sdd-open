@@ -1,0 +1,11 @@
+# BUILD_REPORT_NOTAS
+
+- Estado: BLOQUEADO na tarefa 1/1; modo default fixado pelo usuário; sem contexto fresco nesta execução.
+- Triagem: inventário sem Tipo; reescrita baseada na saída anterior caracteriza loop; aplicada sdd-loop-builder.
+- Impedimento: DESIGN fixa 4 ciclos, mas faltam tetos de tokens/custo por estágio e tempo máximo do laço. A skill exige contrato completo e impede preencher valores por conta própria; nenhuma LOOP_SPEC parcial ou prompt foi criado.
+- Revisão do DESIGN: dispensável (1 arquivo novo, sem superfície de segurança no manifest; review-design exit 1).
+- Camadas configuradas atingidas: 0 (globs vazios); avaliador: N.A. (abaixo do limite 2).
+- Landmines lidas no build: LM-001, LM-002, LM-003, LM-004 (Sempre); N.A. nesta tarefa interrompida. Busca por notas/prompt/loop/LOOP_SPEC: nenhum hit.
+- Contrato de aceite: N.A.; candidatos ao playbook: nenhum candidato; drift detectado: nenhum.
+- Verify Gate: não executado por solicitação; AT-001: false (sem evidência). Sem commit.
+- Verificação incremental: não aplicável, tarefa não gravada; report-lint não executado (relatório parcial solicitado).

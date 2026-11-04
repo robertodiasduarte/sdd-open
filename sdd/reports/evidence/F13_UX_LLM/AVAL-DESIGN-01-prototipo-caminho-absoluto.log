@@ -1,0 +1,13 @@
+$ T=$(mktemp -d); echo "mktemp: $T"; cd "$T"; mkdir -p proj/prompts proj/tests; cd proj; git init -q; touch prompts/a.txt; raiz="$( (unset GIT_DIR GIT_WORK_TREE; git rev-parse --show-toplevel) 2>/dev/null )"; echo "raiz (Pattern 4): $raiz"; echo "PWD logico: $PWD"; echo "pwd -P: $(pwd -P)"; p="$PWD/prompts/a.txt"; echo "caminho absoluto que o agente recebe do cwd: $p"; case "$p" in "$raiz"/*) rel="${p#"$raiz"/}"; ramo=dentro-da-raiz;; /*) rel="$(basename "$p")"; ramo=fora-da-raiz-so-nome;; esac; echo "regra da Decision 2: ramo=$ramo rel=$rel"; case "/$rel" in */prompts/*) echo "sinal de pasta: DRIFT";; *) echo "sinal de pasta: nada -> LIMPO (falso)";; esac; echo "--- via symlink explicito do projeto"; ln -s "$T/proj" "$T/atalho"; cd "$T/atalho"; p="$PWD/prompts/a.txt"; echo "PWD=$PWD p=$p"; raiz="$( (unset GIT_DIR GIT_WORK_TREE; git rev-parse --show-toplevel) 2>/dev/null )"; echo "raiz=$raiz"; case "$p" in "$raiz"/*) echo dentro;; /*) echo "fora: so o nome $(basename "$p") -> LIMPO (falso)";; esac; cd /; rm -rf "$T"
+mktemp: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.QHaM4U6aZe
+raiz (Pattern 4): /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.QHaM4U6aZe/proj
+PWD logico: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.QHaM4U6aZe/proj
+pwd -P: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.QHaM4U6aZe/proj
+caminho absoluto que o agente recebe do cwd: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.QHaM4U6aZe/proj/prompts/a.txt
+regra da Decision 2: ramo=fora-da-raiz-so-nome rel=a.txt
+sinal de pasta: nada -> LIMPO (falso)
+--- via symlink explicito do projeto
+PWD=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.QHaM4U6aZe/atalho p=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.QHaM4U6aZe/atalho/prompts/a.txt
+raiz=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.QHaM4U6aZe/proj
+fora: so o nome a.txt -> LIMPO (falso)
+[exit=0]
