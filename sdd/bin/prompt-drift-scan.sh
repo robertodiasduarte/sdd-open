@@ -9,23 +9,28 @@
 #   bash sdd/bin/prompt-drift-scan.sh <caminho>...           # avalia arquivos em disco
 #   bash sdd/bin/prompt-drift-scan.sh --self-test
 #
-# Sinais: pasta prompts/ · nome com "prompt" (exceto .md) · chamada direta ao SDK · system: com texto
-# fixo · o parâmetro do wrapper de LLM do projeto (prompts.wrapper_pattern de sdd/config.yaml) com texto
+# Sinais: pasta prompts/ · nome com "prompt" (exceto .md) · chamada direta ao SDK · system com texto
+# fixo, em : ou =, ou role de sistema · o parâmetro do wrapper de LLM do projeto (prompts.wrapper_pattern de sdd/config.yaml) com texto
 # fixo. O slot guarda a expressão do parâmetro (systemPrompt: ou callLLM\(); o script acrescenta
 # "seguida de texto fixo". Parâmetro que recebe um nome importado não dispara: o prompt mora no arquivo
 # importado, que o sinal de caminho pega.
-# Exclusões: arquivo de teste, de qualquer linguagem; .md fora de prompts/ não tem o conteúdo avaliado.
-# Limite: compara linha a linha; texto fixo na linha seguinte ao parâmetro não dispara.
+# Exclusões: arquivo de teste, nas convenções comuns (a.test.x, a.spec.x, a_test.x, a_spec.x, test_a.x, ATest.x,
+# ATests.x; pastas tests/, test/, spec/, __tests__/); .md fora de prompts/ não tem o conteúdo avaliado. A pasta
+# prompts/ vence a exclusão por nome: prompts/test_a.txt conta, tests/prompts/a.txt não.
+# Limites: compara linha a linha, e texto fixo na linha seguinte ao parâmetro não dispara; SDK fora da lista e texto
+# montado por variável não disparam: para esses, use o slot. Sem git, a raiz é a pasta atual.
 #
 # Exit: 0 LIMPO · 2 DRIFT (ou self-test falhou) · 64 uso
 # Compatível com bash 3.2, awk e grep POSIX.
 export LC_ALL=C
+unset CDPATH
 set -u
 
 ME="$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")"
-LITERAL='[[:space:]]*(`|'"'"'|")'
-SDK='messages\.create|chat\.completions'
-SYSTEM='(^|[^[:alnum:]_-])["'"'"']?system["'"'"']?:'"$LITERAL"
+LITERAL='[[:space:]]*[fFrRbBuU]{0,2}(`|'"'"'|")'
+SDK='messages\.create|chat\.completions|responses\.create|generateContent|generate_content'
+SYSTEM='(^|[^[:alnum:]_-])["'"'"']?system["'"'"']?[[:space:]]*[:=]'"$LITERAL"
+ROLE='(^|[^[:alnum:]_-])["'"'"']?role["'"'"']?[[:space:]]*[:=][[:space:]]*["'"'"']system["'"'"']'
 
 TMP=""
 limpar() { if [ -n "$TMP" ]; then rm -rf "${TMP:?}"; fi; }
@@ -67,7 +72,9 @@ raiz_do_projeto() {
 ler_slot() {  # imprime V<valor> ou M (malformado); nada se a chave não existe
   [ -f "$RAIZ/sdd/config.yaml" ] || return 0
   awk '
+    NR == 1 { sub(/^\357\273\277/, "") }
     { sub(/\r$/, "") }
+    /^prompts:[[:space:]]*\{/ { print "M"; exit }
     /^prompts:[[:space:]]*(#.*)?$/ { dentro = 1; next }
     /^[^[:space:]#]/ { dentro = 0 }
     dentro && /^[[:space:]]+wrapper_pattern:/ {
@@ -98,6 +105,8 @@ ler_slot() {  # imprime V<valor> ou M (malformado); nada se a chave não existe
         if (substr(saida, 1, 1) == "#") saida = ""
         sub(/[[:space:]]+#.*$/, "", saida)
         sub(/[[:space:]]+$/, "", saida)
+        if (saida == "null" || saida == "Null" || saida == "NULL" || saida == "~") saida = ""
+        if (substr(saida, 1, 1) == "|" || substr(saida, 1, 1) == ">") { print "M"; exit }
       }
       print "V" saida
       exit
@@ -112,9 +121,13 @@ expressao_invalida() {  # 0 se o grep recusa a expressão
 carregar_slot() {
   local lido
   SLOT=""; WRAPPER=""
+  # Fora do $( ): um erro_uso dentro da substituição só sairia da subshell, e o slot viraria vazio.
+  if [ -f "$RAIZ/sdd/config.yaml" ] && [ ! -r "$RAIZ/sdd/config.yaml" ]; then
+    erro_uso "não consegui ler sdd/config.yaml" "confira a permissão do arquivo: sem ele, o slot do wrapper não é lido"
+  fi
   lido="$(ler_slot)"
   case "$lido" in
-    M*) erro_uso "prompts.wrapper_pattern malformado em sdd/config.yaml: falta fechar a aspa, ou há texto depois dela" \
+    M*) erro_uso "prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela" \
                  "corrija o slot; por exemplo: wrapper_pattern: \"systemPrompt:\"" ;;
     V*) SLOT="${lido#V}" ;;
   esac
@@ -152,15 +165,18 @@ normalizar() {  # $1 → REL, DENTRO
   esac
 }
 
-e_teste() {  # usa REL e DENTRO
-  local base="${REL##*/}"
-  case "$base" in
-    *.test.*|*.spec.*|*_test.*|test_*) return 0 ;;
-  esac
-  # Fora da raiz, uma pasta acima do projeto chamada tests não decide nada: só o nome do arquivo vale.
+pasta_de_teste() {  # usa REL e DENTRO
+  # Fora da raiz, uma pasta acima do projeto chamada tests não decide nada.
   [ "$DENTRO" -eq 1 ] || return 1
   case "/$REL" in
-    */tests/*|*/test/*|*/__tests__/*) return 0 ;;
+    */tests/*|*/test/*|*/spec/*|*/__tests__/*) return 0 ;;
+  esac
+  return 1
+}
+
+nome_de_teste() {  # usa REL
+  case "${REL##*/}" in
+    *.test.*|*.spec.*|*_test.*|*_spec.*|test_*|*Test.*|*Tests.*) return 0 ;;
   esac
   return 1
 }
@@ -183,11 +199,12 @@ avaliar() {  # $1 caminho · $2 arquivo com o conteúdo
   local base minusculo
   CAMINHO="$1"
   normalizar "$1"
-  e_teste && return 0
+  pasta_de_teste && return 0
 
-  case "/$REL" in
+  case "$(printf '/%s' "$REL" | tr 'A-Z' 'a-z')" in
     */prompts/*) achou "pasta prompts/"; return 0 ;;
   esac
+  nome_de_teste && return 0
   base="${REL##*/}"
   minusculo="$(printf '%s' "$base" | tr 'A-Z' 'a-z')"
   case "$minusculo" in
@@ -196,7 +213,8 @@ avaliar() {  # $1 caminho · $2 arquivo com o conteúdo
   esac
 
   if casa "$SDK" "$2"; then achou "chamada direta ao SDK"; return 0; fi
-  if casa "$SYSTEM" "$2"; then achou "system: com texto fixo"; return 0; fi
+  if casa "$SYSTEM" "$2"; then achou "system com texto fixo"; return 0; fi
+  if casa "$ROLE" "$2"; then achou "role de sistema"; return 0; fi
   if [ -n "$WRAPPER" ] && casa "$WRAPPER" "$2"; then
     achou "parâmetro do wrapper com texto fixo (prompts.wrapper_pattern)"
   fi
@@ -269,8 +287,15 @@ auto_teste() {
   conteudo 2 'nome com prompt' src/Agent_Prompt.py         'x = 1'
   conteudo 2 'chamada direta ao SDK' src/a.py              'client.messages.create(model=m)'
   conteudo 2 'chamada direta ao SDK' src/b.py              'client.chat.completions.create(model=m)'
-  conteudo 2 'system: com texto fixo' src/c.ts             'run({ system: "x", input: y })'
-  conteudo 2 'system: com texto fixo' src/d.json           '{ "system": "x" }'
+  conteudo 2 'chamada direta ao SDK' src/b2.py             'client.responses.create(model=m)'
+  conteudo 2 'chamada direta ao SDK' src/b3.js             'model.generateContent(x)'
+  conteudo 2 'system com texto fixo' src/c.ts              'run({ system: "x", input: y })'
+  conteudo 2 'system com texto fixo' src/d.json            '{ "system": "x" }'
+  conteudo 2 'system com texto fixo' src/d2.py             'ask(system="x")'
+  conteudo 2 'system com texto fixo' src/d3.py             'ask(system=f"x")'
+  conteudo 2 'role de sistema' src/d4.ts                   '{ role: "system", content: x }'
+  conteudo 2 'pasta prompts/' src/Prompts/d5.txt           'qualquer texto'
+  conteudo 2 'pasta prompts/' prompts/test_d6.txt          'qualquer texto'
   conteudo 2 'parâmetro do wrapper' src/e.ts               'await ask({ systemPrompt: `x` })'
   conteudo 2 'parâmetro do wrapper' src/f.ts               'await callLLM("x")'
   conteudo 2 'parâmetro do wrapper' src/g.ts               "await callLLM('x')"
@@ -284,11 +309,16 @@ auto_teste() {
   conteudo 0 'RESULTADO: LIMPO' tests/j.py                 'await callLLM("x")'
   conteudo 0 'RESULTADO: LIMPO' src/test/k.py              'await callLLM("x")'
   conteudo 0 'RESULTADO: LIMPO' src/__tests__/l.js         'await callLLM("x")'
+  conteudo 0 'RESULTADO: LIMPO' spec/l2.rb                 'await callLLM("x")'
+  conteudo 0 'RESULTADO: LIMPO' src/a_spec.rb              'await callLLM("x")'
+  conteudo 0 'RESULTADO: LIMPO' src/FooTest.java           'await callLLM("x")'
+  conteudo 0 'RESULTADO: LIMPO' tests/prompts/l3.txt       'qualquer texto'
   conteudo 0 'RESULTADO: LIMPO' docs/m.md                  'use client.messages.create'
   conteudo 0 'RESULTADO: LIMPO' docs/prompt-guia.md        'qualquer texto'
   conteudo 0 'RESULTADO: LIMPO' .github/dependabot.yml     'package-ecosystem: "npm"'
   conteudo 0 'RESULTADO: LIMPO' src/n.yml                  'filesystem: "ext4"'
   conteudo 0 'RESULTADO: LIMPO' src/o.yml                  "operating_system: 'linux'"
+  conteudo 0 'RESULTADO: LIMPO' src/o2.yml                 'file_role: "system"'
   # Em disco: 2 lados e nomes de todos os achados.
   disco 2 'src/p.ts :: chamada direta' src/p.ts            'client.messages.create(x)'
   disco 2 'pasta prompts/'             src/prompts/q.txt   'qualquer texto'
@@ -305,6 +335,8 @@ auto_teste() {
   conteudo 0 'wrapper_pattern vazio' src/t.ts 'soma = a + b'
   printf 'prompts:\r\n  wrapper_pattern: "systemPrompt:"\r\n' > "$proj/sdd/config.yaml"
   conteudo 2 'parâmetro do wrapper' src/u.ts 'ask({ systemPrompt: `x` })'
+  slot 'null'
+  conteudo 0 'wrapper_pattern vazio' src/t.ts 'soma = a + b'
   slot "'callLLM\\('"
   conteudo 2 'parâmetro do wrapper' src/v.ts 'callLLM("x")'
   slot 'systemPrompt:  # sem aspas'
@@ -319,6 +351,10 @@ auto_teste() {
   uso_errado 'aspa sem fechar' src/t.ts
   slot '"x" y'
   uso_errado 'texto depois da aspa' src/t.ts
+  slot '>-'
+  uso_errado 'bloco de YAML em vez de 1 linha' src/t.ts
+  printf 'prompts: { wrapper_pattern: "x" }\n' > "$proj/sdd/config.yaml"
+  uso_errado 'mapa em linha' src/t.ts
   slot_padrao
   uso_errado 'sem argumento'
   uso_errado 'caminho inexistente' src/nao-existe.ts
@@ -327,11 +363,28 @@ auto_teste() {
   uso_errado '--conteudo sem caminho' --conteudo
   uso_errado '--conteudo com 2 caminhos' --conteudo a b
   uso_errado '--conteudo sem nada na entrada' --conteudo src/x.ts
+  total=$((total + 1))
+  saida_pasta="$(printf 'x\n' | roda --conteudo src 2>&1)"; rc_pasta=$?
+  if [ "$rc_pasta" -ne 64 ]; then
+    printf '🛑 caso de uso (--conteudo com pasta): exit %s (esperado 64)\n' "$rc_pasta" >&2; falhas=$((falhas + 1))
+  fi
+  # Busca que falha (exit 2 num grep de conteúdo): com o stub, nunca vira "não achei".
+  mkdir -p "$TMP/stub"
+  printf '#!/bin/sh\ncase " $* " in *" -- "*) exit 2 ;; esac\nexec %s "$@"\n' "$(command -v grep)" > "$TMP/stub/grep"
+  chmod +x "$TMP/stub/grep"
+  total=$((total + 1))
+  saida_pasta="$(printf 'x = 1\n' | PATH="$TMP/stub:$PATH" roda --conteudo src/y.py 2>&1)"; rc_pasta=$?
+  if [ "$rc_pasta" -ne 64 ]; then
+    printf '🛑 caso de uso (grep com saída 2): exit %s (esperado 64)\n' "$rc_pasta" >&2; falhas=$((falhas + 1))
+  fi
   uso_errado '.. em pasta inexistente' --conteudo nao/existe/../a.ts
   if [ "$(id -u)" != "0" ]; then
     printf 'x\n' > "$proj/src/ilegivel.ts"; chmod 000 "$proj/src/ilegivel.ts"
     uso_errado 'arquivo ilegível' src/ilegivel.ts
     chmod 600 "$proj/src/ilegivel.ts"
+    chmod 000 "$proj/sdd/config.yaml"
+    uso_errado 'sdd/config.yaml ilegível' src/ilegivel.ts
+    chmod 600 "$proj/sdd/config.yaml"
   fi
 
   if [ "$falhas" -ne 0 ]; then
@@ -358,6 +411,10 @@ case "$1" in
     ;;
   --conteudo)
     [ "$#" -eq 2 ] && [ -n "$2" ] || erro_uso "--conteudo precisa de exatamente 1 caminho" "$USO"
+    case "$2" in
+      */|.|..|*/.|*/..) erro_uso "--conteudo precisa do caminho de um arquivo: $2" "$USO" ;;
+    esac
+    [ ! -d "$2" ] || erro_uso "--conteudo precisa do caminho de um arquivo: $2 é uma pasta" "$USO"
     RAIZ="$(raiz_do_projeto)"
     carregar_slot
     [ ! -t 0 ] || erro_uso "--conteudo espera o texto na entrada padrão, e ela é o terminal" "passe o texto que vai gravar pela entrada padrão"

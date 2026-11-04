@@ -133,11 +133,15 @@ critério antes do código · **evidência, não declaração**.
      `sdd-prompt-builder` (ou a que estiver em `prompts.builder_skill` do `sdd/config.yaml`); não reabra
      decisões de provedor/modelo.
    - **`loop`:** escreva `🔁 item em laço: especificação e <n> prompts (<nome>)`, com o `<n>` da tabela de estágios
-     assim que ela existir. `sdd-loop-builder` recebe o contrato e devolve a LOOP_SPEC e a tabela de estágios;
-     depois, para cada estágio LLM, a skill de prompt recebe o bloco de contrato da linha mais a linha do estágio.
-     A LOOP_SPEC vai para `<pasta do processo>/LOOP_SPEC.md`, e cada prompt para o arquivo da tabela. Esses arquivos
+     assim que ela existir. Compile o contrato do DESIGN (Intenção, Perfil de risco dos efeitos, material de referência
+     literal, decisões já fechadas, Ground truth disponível) e passe à `sdd-loop-builder`, que devolve um bloco com a
+     LOOP_SPEC, a tabela de estágios, os prompts pendentes e o Verify Gate; depois, para cada estágio LLM, a skill de
+     prompt recebe o bloco de contrato da linha, a linha do estágio e o contrato dele em PROMPTS PENDENTES. O bloco
+     inteiro vai para `<pasta do processo>/LOOP_SPEC.md`, e cada prompt para o arquivo da tabela. Esses arquivos
      contam como inventariados e como previstos no manifest. Estágio de código vira código, nunca prompt. Valor de
-     orçamento marcado como proposta na LOOP_SPEC vai para o relatório.
+     orçamento marcado como proposta na LOOP_SPEC vai para o relatório. Se a skill devolver **item faltando**, nada
+     é gravado neste item: itere o DESIGN com o item que falta e retome. Se devolver **não é laço**, troque o `Tipo`
+     no DESIGN para `one-shot`, registre no relatório e siga por esse caminho.
    - **Sem `Tipo`** (DESIGN antigo): pergunte a si mesmo "o processo re-prompta o modelo com base na própria saída
      anterior?". Sim, `loop`; não, `one-shot`; na dúvida, `loop`. Registre a triagem no relatório.
    - ⛔ **Não encerre o turno ao receber o bloco de texto:** ele é entrada desta fase, não a entrega. Embrulhe na forma

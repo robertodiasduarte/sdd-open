@@ -15,7 +15,7 @@ A skill `sdd-loop-builder` escreve a ficha do processo, uma **LOOP_SPEC v2**, an
 
 | O que ela fixa | Por quê |
 |---|---|
-| **Perfil por risco** (`lite`, `standard`, `high-risk`), escolhido pelo estrago que um erro pode causar, não pelo tamanho da tarefa | Um laço local e reversível não precisa da ficha inteira; um que envia e-mail, sim |
+| **Perfil por risco** (`lite`, `standard`, `high-risk`): efeito externo ou irreversível é `high-risk`; entre os reversíveis, `lite` é 1 estágio LLM conferido por código de saída | Um laço local e simples não precisa da ficha inteira; um que envia e-mail, sim |
 | **Estado de controle** | Toda regra de nova tentativa, orçamento e parada lê dele |
 | **Verificador independente** | Quem gerou o texto não o julga |
 | **Regras de parada**, inclusive a falha do próprio verificador | Verificador quebrado nunca é "pronto" |
@@ -57,8 +57,9 @@ bash sdd/bin/prompt-drift-scan.sh src/agente/roda.ts     # arquivos já em disco
 bash sdd/bin/prompt-drift-scan.sh --self-test
 ```
 
-Ele procura uma pasta `prompts/`, um nome de arquivo com `prompt` (exceto `.md`), uma chamada direta ao SDK, `system:` com
-texto fixo e, o sinal que mais importa, **o parâmetro da sua própria função de IA**:
+Ele procura uma pasta `prompts/`, um nome de arquivo com `prompt` (exceto `.md`), uma chamada direta ao SDK
+(`messages.create`, `chat.completions`, `responses.create`, `generateContent`), `system` com texto fixo, um `role` de
+sistema e, o sinal que mais importa, **o parâmetro da sua própria função de IA**:
 
 ```yaml
 prompts:
@@ -75,9 +76,11 @@ projeto que chama o modelo por uma função própria é invisível para quem pro
 | `2` | `DRIFT` | no inventário, é o esperado e o arquivo é gravado; fora dele, o Build para: itere o Design, ou registre o falso positivo |
 | `64` | `ERRO DE USO` | chamada errada, caminho que não dá para ler ou slot inválido; nunca é tratado como limpo |
 
-Arquivo de teste, em qualquer linguagem, não dispara. O conteúdo de um `.md` fora de `prompts/` não é avaliado. A
-comparação é linha a linha: texto fixo na linha seguinte ao parâmetro não dispara. Um `system: "linux"` num YAML dispara:
-registre como falso positivo.
+Arquivo de teste não dispara, nas convenções comuns: `a.test.x`, `a.spec.x`, `a_test.x`, `a_spec.x`, `test_a.x`, `ATest.x`,
+`ATests.x` e as pastas `tests/`, `test/`, `spec/`, `__tests__/`. O conteúdo de um `.md` fora de `prompts/` não é avaliado.
+**Limites:** a comparação é linha a linha, então texto fixo na linha seguinte ao parâmetro não dispara; SDK fora da lista e
+texto montado por variável também não: para esses, use o slot. Sem git, a raiz é a pasta atual. Um `system: "linux"` num
+YAML dispara: registre como falso positivo.
 
 ## Contraste medido: `contraste.sh`
 

@@ -176,6 +176,33 @@ class Prompts(Sandbox):
         duas = self.secao[:j + 1] + self.secao[i:j].replace("| 1 |", "| 2 |", 1) + "\n" + self.secao[j + 1:]
         self.reprova(duas, "2 linha(s) no inventário e 1 bloco(s)")
 
+    def test_campos_que_a_skill_do_laco_exige_em_tipo_loop(self):
+        loop = self.secao.replace("| one-shot | `x` |", "| loop | `x` |", 1)
+        self.assertEqual(self.lint(loop)[0], 0, "o fragmento já traz as 3 linhas")
+        for campo in ("Intenção", "Perfil de risco dos efeitos", "Ground truth disponível"):
+            with self.subTest(campo=campo):
+                linhas = [ln for ln in loop.splitlines() if not ln.startswith("| **" + campo + "**")]
+                self.reprova("\n".join(linhas) + "\n", "Prompt 1 sem o campo " + campo)
+        # one-shot não precisa delas.
+        linhas = [ln for ln in self.secao.splitlines() if not ln.startswith("| **Intenção**")]
+        self.assertEqual(self.lint("\n".join(linhas) + "\n")[0], 0)
+
+    def test_campo_com_traco_e_vazio(self):
+        linhas = ["| **Autônomo?** | — |" if ln.startswith("| **Autônomo?**") else ln for ln in self.secao.splitlines()]
+        self.reprova("\n".join(linhas) + "\n", "Prompt 1 sem o campo Autônomo?")
+
+    def test_variacoes_do_titulo_nao_desligam_a_conferencia(self):
+        for titulo in ("##  LLM Prompts", "## LLM Prompts (v1)", "## LLM Prompts: 1"):
+            with self.subTest(titulo=titulo):
+                self.reprova(titulo + "\n\nnada\n", "falta o subtítulo ### Inventário")
+
+    def test_erro_de_prompt_e_de_manifest_juntos(self):
+        p = self.escreve(self.tmp, "DESIGN_Y.md", self.base.replace("**Total Files:** 3", "**Total Files:** 4", 1)
+                         + "\n## LLM Prompts\n\nnada\n")
+        rc, out, err = self.roda([PYTHON, "-B", SCRIPT, p], self.tmp)
+        self.assertEqual(rc, 1)
+        self.assertIn("corrija também os outros pontos", (out + err).splitlines()[-1])
+
     def test_formato_antigo_real_reprova_com_a_frase(self):
         antigo = ("## LLM Prompts\n\n### Inventory\n\n| Nome | Tipo |\n|---|---|\n| a | one-shot |\n\n"
                   "### Contract\n\n| Campo | Valor |\n|---|---|\n| Tom | x |\n")

@@ -122,6 +122,22 @@ class Roteador(unittest.TestCase):
         self.assertIn("[D2 · muda o produto]", self.p)
         self.assertIn("nada foi improvisado", self.p)
 
+    def test_rotas_da_recusa_da_skill(self):
+        self.assertIn("**item faltando**", self.p)
+        self.assertIn("**não é laço**", self.p)
+        self.assertIn("nada\n     é gravado neste item", self.p)
+
+    def test_o_contrato_do_laco_se_compila_do_design(self):
+        for campo in ("Intenção", "Perfil de risco dos efeitos", "Ground truth disponível"):
+            with self.subTest(campo=campo):
+                self.assertIn(campo, self.p.replace("\n     ", " "))
+                self.assertIn("**%s**" % campo, FRAGMENTO)
+
+    def test_tabela_de_estagios_e_prompts_pendentes_chegam_a_quem_escreve(self):
+        self.assertIn("O bloco\n     inteiro vai para", self.p)
+        for texto in (self.p, INTEGRACAO, FRAGMENTO):
+            self.assertIn("PROMPTS PENDENTES", texto)
+
     def test_nome_fixo_sem_slot_da_skill(self):
         for texto in (BUILD, ler("sdd/config.example.yaml"), FRAGMENTO):
             self.assertNotIn("loop_builder_skill", texto)
@@ -155,6 +171,14 @@ class SkillDoLaco(unittest.TestCase):
                       "`tipo` é `LLM` ou `código`", "por estágio", "Código antes do modelo"):
             with self.subTest(frase=frase):
                 self.assertIn(frase, REGRAS)
+
+    def test_perfil_se_decide_sem_ambiguidade(self):
+        self.assertIn("efeito externo ou irreversível é sempre `high-risk`", REGRAS)
+        self.assertIn("**1** estágio LLM", REGRAS)
+        self.assertIn("**2 ou mais** estágios LLM", REGRAS)
+        self.assertNotIn("avaliação offline", REGRAS)
+        estagios_llm = [ln for ln in EXEMPLO.splitlines() if re.match(r"^\| \d+ \|", ln) and "| LLM |" in ln]
+        self.assertEqual((len(estagios_llm), 'perfil="standard"' in EXEMPLO), (2, True))
 
     def test_exemplo_cumpre_o_proprio_perfil(self):
         m = re.search(r'<LOOP_SPEC v="2" perfil="([a-z-]+)" nome="', EXEMPLO)
@@ -206,6 +230,7 @@ class Integracao(unittest.TestCase):
     def test_modo_briefs_nao_ignora_o_roteador(self):
         self.assertIn("`sdd-loop-builder`", WORKER)
         self.assertIn("roteador do passo 4", WORKER)
+        self.assertIn("bash sdd/bin/prompt-drift-scan.sh <arquivos da wave>", WORKER)
 
 
 class TabelaWcag(unittest.TestCase):

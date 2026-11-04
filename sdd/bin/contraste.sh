@@ -15,6 +15,7 @@
 # Exit: 0 PASSA · 2 REPROVA (ou self-test falhou) · 64 uso
 # Compatível com bash 3.2 e awk POSIX.
 export LC_ALL=C
+unset CDPATH
 set -u
 
 ME="$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")"
@@ -107,6 +108,8 @@ auto_teste() {
   caso 64 '' '#zzz' '#fff'
   caso 64 '' '#12345' '#fff'
   caso 64 '' 'rgba(0,0,0,.5)' '#fff'
+  caso 64 '' 'RGBA(0,0,0,.5)' '#fff'
+  caso 64 '' '#00000080' '#fff'
   caso 64 '' '#000'
   caso 64 '' '#000' '#fff' .5 .5
   caso 64 '' '#000' '#fff' 2
@@ -165,7 +168,7 @@ done
 for cor in "$fg" "$bg"; do
   if ! [[ "$cor" =~ $COR ]]; then
     case "$cor" in
-      rgb*) erro_uso "cor não reconhecida: $cor. Aceito #rgb ou #rrggbb." "a transparência vai como 3º valor: bash sdd/bin/contraste.sh '#000000' '#ffffff' .5" ;;
+      [rR][gG][bB]*|\#????????) erro_uso "cor não reconhecida: $cor. Aceito #rgb ou #rrggbb." "a transparência vai como 3º valor: bash sdd/bin/contraste.sh '#000000' '#ffffff' .5" ;;
       *)    erro_uso "cor não reconhecida: $cor. Aceito #rgb ou #rrggbb." "$EXEMPLO" ;;
     esac
   fi

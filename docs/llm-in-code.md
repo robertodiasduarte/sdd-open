@@ -15,7 +15,7 @@ The `sdd-loop-builder` skill writes the process card, a **LOOP_SPEC v2**, before
 
 | What it fixes | Why |
 |---|---|
-| **Profile by risk** (`lite`, `standard`, `high-risk`), chosen by the damage a mistake can cause, not by task size | A local, reversible loop does not need the full card; one that sends an email does |
+| **Profile by risk** (`lite`, `standard`, `high-risk`): external or irreversible effects are `high-risk`; among reversible ones, `lite` is one LLM stage checked by an exit code | A local, simple loop does not need the full card; one that sends an email does |
 | **Control state** | Every retry, budget and stop rule reads from it |
 | **Independent verifier** | Whoever generated the text does not judge it |
 | **Stop rules**, including the failure of the verifier itself | A broken verifier is never "done" |
@@ -57,8 +57,9 @@ bash sdd/bin/prompt-drift-scan.sh src/agent/run.ts     # files already on disk
 bash sdd/bin/prompt-drift-scan.sh --self-test
 ```
 
-It looks for a `prompts/` folder, a file name with `prompt` (except `.md`), a direct SDK call, `system:` with fixed
-text and, the signal that matters most, **the parameter of your own LLM function**:
+It looks for a `prompts/` folder, a file name with `prompt` (except `.md`), a direct SDK call (`messages.create`,
+`chat.completions`, `responses.create`, `generateContent`), `system` with fixed text, a system `role` and, the signal
+that matters most, **the parameter of your own LLM function**:
 
 ```yaml
 prompts:
@@ -75,9 +76,11 @@ a project that calls the model through its own function is invisible to a search
 | `2` | `DRIFT` | in the inventory, this is expected and the file is written; outside it, the Build stops: iterate the Design, or record a false positive |
 | `64` | `ERRO DE USO` | a wrong call, a path that cannot be read or an invalid slot; never treated as clean |
 
-Test files, in any language, do not fire. The content of a `.md` outside `prompts/` is not evaluated. The comparison
-is line by line: fixed text on the line after the parameter does not fire. A `system: "linux"` in a YAML file does:
-record it as a false positive.
+Test files do not fire, in the usual conventions: `a.test.x`, `a.spec.x`, `a_test.x`, `a_spec.x`, `test_a.x`, `ATest.x`,
+`ATests.x` and the folders `tests/`, `test/`, `spec/`, `__tests__/`. The content of a `.md` outside `prompts/` is not
+evaluated. **Limits:** the comparison is line by line, so fixed text on the line after the parameter does not fire; an
+SDK outside the list and text built from a variable do not fire either: for those, use the slot. Without git, the root
+is the current folder. A `system: "linux"` in a YAML file does fire: record it as a false positive.
 
 ## Measured contrast: `contraste.sh`
 

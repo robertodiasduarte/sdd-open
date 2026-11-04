@@ -48,10 +48,17 @@ class SinaisDeConteudo(Base):
     def test_antes_de_gravar_o_arquivo_nao_existe(self):
         for texto, sinal in (("client.messages.create(model=m)\n", "chamada direta ao SDK"),
                              ("client.chat.completions.create(model=m)\n", "chamada direta ao SDK"),
-                             ('run({ system: "x" })\n', "system: com texto fixo"),
-                             ('run(system: `x`)\n', "system: com texto fixo"),
-                             ('{ "system": "x" }\n', "system: com texto fixo"),
-                             ("system: 'x'\n", "system: com texto fixo")):
+                             ("client.responses.create(model=m)\n", "chamada direta ao SDK"),
+                             ("model.generateContent(x)\n", "chamada direta ao SDK"),
+                             ('run({ system: "x" })\n', "system com texto fixo"),
+                             ('run(system: `x`)\n', "system com texto fixo"),
+                             ('{ "system": "x" }\n', "system com texto fixo"),
+                             ('{ "system" : "x" }\n', "system com texto fixo"),
+                             ("system: 'x'\n", "system com texto fixo"),
+                             ('ask(system="You are")\n', "system com texto fixo"),
+                             ('ask(system=f"You are {x}")\n', "system com texto fixo"),
+                             ('{ role: "system", content: x }\n', "role de sistema"),
+                             ('{"role": "system"}\n', "role de sistema")):
             with self.subTest(texto=texto):
                 rc, out = self.com_texto("src/novo.ts", texto)
                 self.assertEqual(rc, 2, out)
@@ -62,7 +69,7 @@ class SinaisDeConteudo(Base):
 
     def test_system_no_fim_de_um_nome_maior_nao_dispara(self):
         for texto in ('package-ecosystem: "npm"\n', 'filesystem: "ext4"\n', "operating_system: 'linux'\n",
-                      '"file_system": "x"\n'):
+                      '"file_system": "x"\n', 'file_role: "system"\n', 'role: "user"\n', "system = obter()\n"):
             with self.subTest(texto=texto):
                 rc, out = self.com_texto("src/a.yml", texto)
                 self.assertEqual(rc, 0, out)
@@ -71,7 +78,7 @@ class SinaisDeConteudo(Base):
 
 class SinaisDeCaminho(Base):
     def test_pasta_prompts_em_qualquer_profundidade(self):
-        for caminho in ("prompts/a.txt", "x/prompts/v1/a.ts", "./x/prompts/a.ts"):
+        for caminho in ("prompts/a.txt", "x/prompts/v1/a.ts", "./x/prompts/a.ts", "x/Prompts/a.txt", "PROMPTS/a.txt"):
             with self.subTest(caminho=caminho):
                 rc, out = self.com_texto(caminho, "qualquer texto\n")
                 self.assertEqual(rc, 2, out)
@@ -85,6 +92,12 @@ class SinaisDeCaminho(Base):
                 self.assertIn("nome com prompt", out)
         self.assertEqual(self.com_texto("docs/prompt-guia.md", "x\n")[0], 0)
         self.assertEqual(self.com_texto("docs/prompts/guia.md", "x\n")[0], 2, "template em prompts/ conta")
+
+    def test_pasta_prompts_vence_a_exclusao_por_nome_e_a_pasta_de_teste_vence_prompts(self):
+        for caminho in ("src/prompts/test_plan.txt", "prompts/a.spec.txt"):
+            with self.subTest(caminho=caminho):
+                self.assertEqual(self.com_texto(caminho, "x\n")[0], 2)
+        self.assertEqual(self.com_texto("tests/prompts/a.txt", "x\n")[0], 0)
 
     def test_arquivo_chamado_prompts_sem_ser_pasta_nao_e_sinal_de_pasta(self):
         rc, out = self.com_texto("src/prompts", "x = 1\n")
@@ -178,8 +191,8 @@ class Wrapper(Base):
 
 class Exclusoes(Base):
     def test_arquivo_de_teste_de_qualquer_linguagem(self):
-        for caminho in ("src/a.test.ts", "src/a.spec.js", "src/a_test.go", "src/test_a.py", "tests/a.py", "test/a.rb",
-                        "src/__tests__/a.js", "tests/prompts/a.txt"):
+        for caminho in ("src/a.test.ts", "src/a.spec.js", "src/a_test.go", "src/a_spec.rb", "src/test_a.py", "src/FooTest.java",
+                        "src/FooTests.cs", "tests/a.py", "test/a.rb", "spec/a.rb", "src/__tests__/a.js", "tests/prompts/a.txt"):
             with self.subTest(caminho=caminho):
                 rc, out = self.com_texto(caminho, 'client.messages.create(x)\nsystemPrompt: `x`\n')
                 self.assertEqual(rc, 0, out)
@@ -221,6 +234,12 @@ class SlotVazio(Base):
     def test_sem_a_chave(self):
         self.slot('prompts:\n  builder_skill: "x"\n')
         self.conferir()
+
+    def test_null_e_til_sao_vazios(self):
+        for valor in ("null", "~"):
+            with self.subTest(valor=valor):
+                self.slot("prompts:\n  wrapper_pattern: %s\n" % valor)
+                self.conferir()
 
     def test_sem_o_config(self):
         (self.p / "sdd/config.yaml").unlink()
@@ -274,6 +293,31 @@ class ErroDeUso(Base):
             with self.subTest(slot=valor):
                 self.slot("prompts:\n  wrapper_pattern: %s\n" % valor)
                 self.conferir(*self.com_texto("src/a.ts", "x\n"), "malformado")
+
+    def test_valor_em_forma_que_o_leitor_nao_sustenta_nao_vira_vazio(self):
+        for texto in ('prompts: { wrapper_pattern: "x" }\n', "prompts:\n  wrapper_pattern: >-\n    x\n"):
+            with self.subTest(texto=texto):
+                self.slot(texto)
+                self.conferir(*self.com_texto("src/a.ts", "x\n"), "malformado")
+
+    def test_bom_no_inicio_do_config(self):
+        self.slot('\ufeffprompts:\n  wrapper_pattern: "systemPrompt:"\n')
+        self.assertEqual(self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n")[0], 2)
+
+    @unittest.skipIf(os.geteuid() == 0, "root lê qualquer arquivo")
+    def test_config_ilegivel_nao_vira_slot_vazio(self):
+        cfg = self.p / "sdd/config.yaml"
+        cfg.chmod(0)
+        try:
+            self.conferir(*self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n"), "não consegui ler sdd/config.yaml")
+        finally:
+            cfg.chmod(stat.S_IRUSR | stat.S_IWUSR)
+
+    def test_conteudo_com_pasta_nunca_vira_limpo(self):
+        (self.p / "src").mkdir()
+        for caminho in ("src", "src/", ".", "/", "novo/", "src/.", "x/.."):
+            with self.subTest(caminho=caminho):
+                self.conferir(*self.com_texto(caminho, "soma = 1\n"), "--conteudo precisa do caminho de um arquivo")
 
     def test_conteudo_sem_nada_na_entrada(self):
         self.conferir(*self.com_texto("src/a.ts", ""), "nada chegou")
@@ -330,6 +374,16 @@ class EmDisco(Base):
 
 
 class AutoTeste(Sandbox):
+    def test_cdpath_nao_quebra(self):
+        rc, _, err = self.roda([BASH, SCRIPT, "--self-test"], self.tmp, dict(self.env, CDPATH="."))
+        self.assertEqual(rc, 0, err)
+
+    def test_vermelho_quando_grep_2_vira_nao_achei(self):
+        linha = '  erro_uso "a busca falhou (exit $rc) ao avaliar $CAMINHO" "confira a permissão do arquivo e a expressão de prompts.wrapper_pattern"'
+        rc, _, err = self.sabotada(linha, "  return 1")
+        self.assertEqual(rc, 2, err)
+        self.assertIn("grep com saída 2", err)
+
     def test_verde_numa_pasta_sem_fixtures_sem_config_e_sem_residuo(self):
         vazia = self.tmp / "vazia"
         vazia.mkdir()
@@ -363,7 +417,7 @@ class AutoTeste(Sandbox):
         self.assertIn("RESULTADO: VERMELHO", err)
 
     def test_vermelho_sem_a_exclusao_de_teste(self):
-        rc, _, err = self.sabotada("  e_teste && return 0\n", "")
+        rc, _, err = self.sabotada("  nome_de_teste && return 0\n", "")
         self.assertEqual(rc, 2, err)
 
 

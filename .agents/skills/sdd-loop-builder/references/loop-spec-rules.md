@@ -46,16 +46,19 @@ decidir a próxima; senão, é uma chamada única e vai para a skill de prompt.
 9. **Orçamento antes da ação, por estágio.** Negue a ação cujo custo estimado impede verificar, compensar e
    relatar depois. Os tetos de tokens e de saída são por estágio (extrair não é pontuar); um teto único trunca ou
    desperdiça.
-10. **Anatomia adaptativa.** O perfil é escolhido pelo **risco dos efeitos**, não pelo tamanho da tarefa. Não
-    force a especificação inteira num laço local e reversível; não omita segurança quando há efeito externo ou
-    irreversível.
+10. **Anatomia adaptativa.** O perfil é escolhido pelo **risco dos efeitos** e, entre os reversíveis, por quem julga, não
+    pelo tamanho da tarefa. Não force a especificação inteira num laço local e simples; não omita segurança quando há
+    efeito externo ou irreversível.
 
 ## Escolher o perfil pelo risco dos efeitos
 
+Primeiro o risco: efeito externo ou irreversível é sempre `high-risk`. Entre os 2 perfis de efeito reversível, decide
+quem julga e quantos passos usam o modelo.
+
 | Perfil | Quando | Seções |
 |---|---|---|
-| `lite` | local, curto, determinístico, 100% reversível (conserto + testes, refatoração, geração de arquivo, avaliação offline) | `intent` (com o escopo negativo), `control_state` mínimo, `observation`, `verifier` por código de saída, `stop_rules`, `budget` |
-| `standard` | vários arquivos, efeitos reversíveis, laços com juiz ou avaliador | as do `lite` + `cycle_protocol`, `context_assembly`, `action_space`, `recovery_and_convergence_policy`, `observability` |
+| `lite` | efeito local e reversível, **1** estágio LLM e verificador só por código de saída (conserto + testes, refatoração, geração de um arquivo) | `intent` (com o escopo negativo), `control_state` mínimo, `observation`, `verifier` por código de saída, `stop_rules`, `budget` |
+| `standard` | efeito local e reversível, com **2 ou mais** estágios LLM, ou com um modelo como juiz ou avaliador | as do `lite` + `cycle_protocol`, `context_assembly`, `action_space`, `recovery_and_convergence_policy`, `observability` |
 | `high-risk` | efeito externo ou irreversível (deploy, escrita em produção, e-mail, dinheiro) | as do `standard` + `safety_and_effects`, `NEEDS_APPROVAL` em toda ação irreversível e reserva de orçamento para reverter |
 
 Em qualquer perfil, sempre: o modelo de dano (qual erro é pior) e a regra de desempate dele; a tabela de estágios

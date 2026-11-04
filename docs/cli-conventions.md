@@ -70,7 +70,7 @@ RESULTADO: ERRO
 | `eval-agree.sh` | `0` MEDIDO · `2` SEM DADOS (inclusive sem a pasta padrão) · `64` uso ou pasta passada inexistente |
 | `sdd-decisoes-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, caminho inexistente, tabela de marcas ausente ou nenhuma pergunta |
 | `contraste.sh` | `0` PASSA · `2` REPROVA, ou `--self-test` VERMELHO · `64` uso ([llm-in-code.md](llm-in-code.md)) |
-| `prompt-drift-scan.sh` | `0` LIMPO · `2` DRIFT, ou `--self-test` VERMELHO · `64` uso, caminho que não dá para ler ou slot inválido; nunca conclui LIMPO sem ter lido ([llm-in-code.md](llm-in-code.md)) |
+| `prompt-drift-scan.sh` | `0` LIMPO · `2` DRIFT, ou `--self-test` VERMELHO · `64` uso, caminho que não dá para ler, config ilegível ou slot inválido; nunca conclui LIMPO sem ter lido ([llm-in-code.md](llm-in-code.md)) |
 | `sdd-kb/scripts/gate.sh` | `0` verde · `2` vermelho (caso bom rejeitado, caso ruim aceito ou por outro motivo, âncora ausente, RULE_MAP do exemplo derivado, ou rodado da cópia gerada pelo `sync`) |
 | `sdd-kb/scripts/validate_kb.py` · `kb_normativo.py` | `0` PASS · `2` FAIL · `64` uso |
 

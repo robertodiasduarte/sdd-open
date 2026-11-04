@@ -5,6 +5,7 @@ Os oráculos foram calculados fora do script, em Python. Exit 0 PASSA · 2 REPRO
 from __future__ import annotations
 
 import subprocess
+import sys
 import unittest
 
 from apoio import BASH, RAIZ, Sandbox
@@ -82,7 +83,9 @@ class ErroDeUso(Base):
         self.conferir("#ffffff", "#zzz", trecho="cor não reconhecida")
 
     def test_rgba_ensina_o_terceiro_valor(self):
-        self.conferir("rgba(0,0,0,.5)", "#fff", trecho="3º valor")
+        for cor in ("rgba(0,0,0,.5)", "RGBA(0,0,0,.5)", "#00000080"):
+            with self.subTest(cor=cor):
+                self.conferir(cor, "#fff", trecho="3º valor")
 
     def test_quantidade_de_valores(self):
         self.conferir("#000", trecho="faltam cores")
@@ -116,6 +119,8 @@ class Locale(Base):
         env = dict(self.env, LC_ALL="pt_BR.UTF-8")
         sonda = subprocess.run(["awk", "BEGIN{printf \"%.1f\", .5}"], env=env, capture_output=True, text=True)
         if sonda.stdout != "0,5":
+            # No macOS, o piso que este teste existe para cobrir, pular seria perder o teste em silêncio.
+            self.assertNotEqual(sys.platform, "darwin", "macOS sem pt_BR com vírgula no awk")
             self.skipTest("este sistema não tem pt_BR com vírgula no awk (saída: %r)" % sonda.stdout)
         rc, out, _ = self.medir("#000", "#fff", ".5", env=env)
         self.assertEqual((rc, out.splitlines()[0]), (2, "3.97:1 REPROVA (piso 4.5:1)"))
@@ -124,6 +129,10 @@ class Locale(Base):
 
 
 class AutoTeste(Base):
+    def test_cdpath_nao_quebra(self):
+        rc, _, err = self.medir("--self-test", env=dict(self.env, CDPATH="."))
+        self.assertEqual(rc, 0, err)
+
     def test_verde_por_caminho_absoluto_e_relativo(self):
         rc, out, err = self.medir("--self-test")
         self.assertEqual(rc, 0, err)

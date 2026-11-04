@@ -27,7 +27,7 @@ O caller deve compilar e fornecer, para cada prompt do inventário `LLM Prompts`
    - Eval mínimo pré-ship.
 
    Estágio LLM de uma LOOP_SPEC não tem linha própria: o contrato dele é o bloco da linha `Tipo=loop` mais a
-   linha do estágio na tabela de estágios.
+   linha do estágio na tabela de estágios e o contrato de saída dele em PROMPTS PENDENTES.
 
 3. Material de referência literal:
    - conteúdo bruto de schema, regra, trecho de UX ou outro material;
@@ -52,7 +52,7 @@ Mesmo quando o DEFINE indicar `LLM Prompts: false`, a fase Build passa por
 |---|---|
 | Path | pasta `prompts/` em qualquer profundidade · nome com `prompt` (exceto `.md`) |
 | Conteúdo | o parâmetro do wrapper de LLM do projeto (`prompts.wrapper_pattern`) **recebendo um literal** |
-| Conteúdo | chamada direta ao SDK do provider (`messages.create`, `chat.completions`) · `system:` com literal |
+| Conteúdo | chamada direta ao SDK do provider (`messages.create`, `chat.completions`, `responses.create`, `generateContent`) · `system` com literal, em `:` ou `=` · `role` de sistema |
 
 ⛔ **Calibre os sinais pelo código real do projeto, não por uma lista genérica.** Se o seu
 projeto centraliza as chamadas num wrapper (`callLLM`, `askModel`, um client próprio), preencha

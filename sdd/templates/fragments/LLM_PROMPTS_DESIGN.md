@@ -48,8 +48,13 @@ prompt não deve inferir nada.
 | **Verification interna** | {sim, com os pontos; ou não} |
 | **Eval mínimo pré-ship** | {comando e amostras; por exemplo, 5 de 5 no contrato} |
 
-Só em `Tipo=loop`, 2 linhas a mais: **Perfil de risco dos efeitos** (locais e reversíveis, locais e
-irreversíveis, ou externos) e **Ground truth disponível** (onde estão os dados, ou "nenhum").
+Só em `Tipo=loop`, 3 linhas a mais na tabela, porque a `sdd-loop-builder` para sem elas:
+
+| Atributo | Valor |
+|---|---|
+| **Intenção** | {o que o processo produz, para quem, e o que "pronto" significa de forma verificável} |
+| **Perfil de risco dos efeitos** | {locais e reversíveis, locais e irreversíveis, ou externos} |
+| **Ground truth disponível** | {onde estão os dados, ou nenhum} |
 
 **Material de referência a injetar** (cópia literal; não só o ponteiro):
 - {schema da saída}
@@ -71,8 +76,9 @@ irreversíveis, ou externos) e **Ground truth disponível** (onde estão os dado
   Num arquivo deste inventário, a saída 2 é o esperado e o arquivo é gravado.
 - **`one-shot`:** a skill de `prompts.builder_skill` recebe a linha, o bloco do contrato e o material de
   referência literal; o texto devolvido é gravado no destino no mesmo turno.
-- **`loop`:** `sdd-loop-builder` recebe o contrato e devolve a LOOP_SPEC e a tabela de estágios. Para cada
-  estágio LLM, a skill de `prompts.builder_skill` recebe o bloco da linha mais a linha do estágio. A LOOP_SPEC
-  e cada prompt são gravados no mesmo turno; os estágios de código viram código, nunca prompt.
+- **`loop`:** `sdd-loop-builder` recebe o contrato e devolve o bloco com a LOOP_SPEC, a tabela de estágios, os
+  prompts pendentes e o Verify Gate. Para cada estágio LLM, a skill de `prompts.builder_skill` recebe o bloco da
+  linha, a linha do estágio e o contrato dele em PROMPTS PENDENTES. O bloco inteiro e cada prompt são gravados no
+  mesmo turno; os estágios de código viram código, nunca prompt.
 - **Relatório:** 1 entrada por prompt em `sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md`; em `loop`, 1
   pela LOOP_SPEC e 1 por estágio, marcadas como derivadas da linha.

@@ -34,7 +34,9 @@ TOTAL = re.compile(r"\*\*Total Files:\*\*\s*(\d+)")
 COLUNAS_PROMPT = ("Tipo", "Versão", "Completeness", "Refator de?")
 CAMPOS_PROMPT = ("Autônomo?", "Verification interna", "Eval mínimo pré-ship")
 BLOCO_PROMPT = re.compile(r"^#### Prompt \d+\s*:")
-FRASE_PROMPTS = "a seção de prompts mudou na v2.5.0 e este inventário está no formato antigo; faltam:"
+FRASE_PROMPTS = "a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam:"
+TITULO_PROMPTS = re.compile(r"^##\s+LLM Prompts\b")
+CAMPOS_LOOP = ("Intenção", "Perfil de risco dos efeitos", "Ground truth disponível")
 
 
 def secao(linhas: list, titulo: str):
@@ -76,9 +78,11 @@ def celulas(ln: str) -> list:
 
 def lint_prompts(linhas: list) -> list:
     """Faltas do inventário de prompts: [] com a seção certa ou sem a seção."""
-    corpo = secao(linhas, "LLM Prompts")
-    if corpo is None:
+    inicio = next((i for i, ln in enumerate(linhas) if TITULO_PROMPTS.match(ln)), None)
+    if inicio is None:
         return []
+    fim_secao = next((j for j in range(inicio + 1, len(linhas)) if linhas[j].startswith("## ")), len(linhas))
+    corpo = linhas[inicio + 1:fim_secao]
     faltas = []
     i_inv = next((i for i, ln in enumerate(corpo) if ln.startswith("### Inventário")), None)
     if i_inv is None:
@@ -87,6 +91,7 @@ def lint_prompts(linhas: list) -> list:
     fim = next((j for j in range(i_inv + 1, len(corpo)) if corpo[j].startswith("### ")), len(corpo))
     tabela = [ln for ln in corpo[i_inv + 1:fim] if ln.lstrip().startswith("|")]
     n_linhas = 0
+    tipos = []
     if not tabela:
         faltas.append("o inventário não tem tabela")
     else:
@@ -101,6 +106,7 @@ def lint_prompts(linhas: list) -> list:
             for n, ln in enumerate(dados, 1):
                 cels = celulas(ln)
                 valor = cels[coluna].strip("`") if coluna < len(cels) else ""
+                tipos.append(valor)
                 if valor not in ("one-shot", "loop"):
                     faltas.append("linha %d do inventário com Tipo '%s' (esperado one-shot ou loop)" % (n, valor))
     blocos = [i for i, ln in enumerate(corpo) if BLOCO_PROMPT.match(ln)]
@@ -108,10 +114,11 @@ def lint_prompts(linhas: list) -> list:
         fim_bloco = next((j for j in range(i + 1, len(corpo)) if corpo[j].startswith(("#### ", "### "))), len(corpo))
         trecho = corpo[i + 1:fim_bloco]
         titulo = corpo[i].lstrip("# ").split(":")[0]
-        for campo in CAMPOS_PROMPT:
+        campos = CAMPOS_PROMPT + (CAMPOS_LOOP if k < len(tipos) and tipos[k] == "loop" else ())
+        for campo in campos:
             achado = [celulas(ln) for ln in trecho
                       if ln.lstrip().startswith("|") and celulas(ln)[0].strip("*") == campo]
-            if not achado or len(achado[0]) < 2 or not achado[0][1]:
+            if not achado or len(achado[0]) < 2 or achado[0][1] in ("", "-", "—"):
                 faltas.append("%s sem o campo %s" % (titulo, campo))
     if tabela and n_linhas and len(blocos) != n_linhas:
         faltas.append("são %d linha(s) no inventário e %d bloco(s) de contrato" % (n_linhas, len(blocos)))
@@ -193,8 +200,9 @@ def main(argv: list) -> int:
     if erros:
         print("RESULTADO: VERMELHO", file=sys.stderr)
         if FRASE_PROMPTS in erros:
-            print("→ copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; "
-                  "nada no código precisa mudar", file=sys.stderr)
+            outros = [e for e in erros if e != FRASE_PROMPTS and not e.startswith("  ")]
+            print("→ copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md"
+                  + ("; corrija também os outros pontos acima" if outros else ""), file=sys.stderr)
         else:
             print("→ corrija o DESIGN nos pontos acima (molde: sdd/templates/DESIGN_TEMPLATE.md) e rode de novo",
                   file=sys.stderr)

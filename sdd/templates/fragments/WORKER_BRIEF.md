@@ -50,8 +50,9 @@
    - itens do inventário **LLM Prompts** → orquestrador + roteador do passo 4 da `sdd-build`: `sdd-prompt-builder` em `one-shot`; `sdd-loop-builder` e depois um prompt por estágio em `loop` (qualidade>custo);
    - itens de **superfície de segurança** (RLS, gates de edge auth, migrations com lógica) →
      orquestrador; migration com lógica mantém a exigência de smoke real.
-4. **Verificação por wave, no orquestrador:** comando incremental + resultado × acceptance
-   criteria → **PASS / FIX / ESCALATE**. FIX segue a escada de retry do `build.md`
+4. **Verificação por wave, no orquestrador:** `bash sdd/bin/prompt-drift-scan.sh <arquivos da wave>` em disco (o
+   worker grava, então a varredura do conteúdo vem aqui; saída 2 fora do inventário para e pergunta) + comando
+   incremental + resultado × acceptance criteria → **PASS / FIX / ESCALATE**. FIX segue a escada de retry do `build.md`
    (FIX-brief fresco, critério + erro verbatim). Só então libera a próxima wave.
 5. **`INPUT GAP` no retorno** = defeito de compilação do brief, não do worker: o orquestrador
    completa o INPUT e redespacha (não conta como FAIL da escada).
