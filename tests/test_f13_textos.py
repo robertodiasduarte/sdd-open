@@ -118,6 +118,7 @@ class Roteador(unittest.TestCase):
         self.assertIn("na dúvida, `loop`", self.p)
         self.assertIn("Registre a triagem no relatório", self.p)
         self.assertIn("🛑 não encontrei a skill", self.p)
+        self.assertIn("faça esta pergunta à letra, com a marca", self.p)
         self.assertIn("[D2 · muda o produto]", self.p)
         self.assertIn("nada foi improvisado", self.p)
 
@@ -137,6 +138,11 @@ class SkillDoLaco(unittest.TestCase):
     def test_saidas_de_excecao(self):
         self.assertIn("recomende a skill de prompt e", LOOP)
         self.assertIn("Nunca\n   preencha por conta própria", LOOP)
+
+    def test_orcamento_por_estagio_e_desenho_da_skill_nao_item_do_contrato(self):
+        # Prova real no Codex: sem esta frase, o agente parava pedindo os tetos ao DESIGN.
+        self.assertIn("**não**\n   são itens do contrato", LOOP)
+        self.assertIn("proponha e marque como proposta, sem parar", LOOP)
 
     def test_regras_tem_o_contrato_inteiro(self):
         self.assertIn('<LOOP_SPEC v="2" perfil="lite|standard|high-risk"', REGRAS)

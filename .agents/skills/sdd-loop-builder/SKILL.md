@@ -78,7 +78,8 @@ pessoa fornece os mesmos itens:
 2. **Risco dos efeitos:** as ações são locais e reversíveis, locais e irreversíveis, ou externas (deploy, e-mail, escrita
    em produção, dinheiro)?
 3. **Referência normativa literal:** schemas, catálogos, fórmulas, comandos de verificação; o conteúdo, não só o ponteiro.
-4. **Decisões já fechadas:** modelo, provedor, orçamento máximo, onde roda, pasta do processo. Não se reabrem.
+4. **Decisões já fechadas:** modelo, provedor, onde roda, pasta do processo e, se já houver, o orçamento máximo. Não se
+   reabrem.
 5. **Ground truth disponível:** dados reais para medir o laço, ou "nenhum".
 
 ## Procedimento
@@ -86,7 +87,8 @@ pessoa fornece os mesmos itens:
 1. **É um laço?** Se nenhuma saída do modelo decide um passo seguinte, é uma chamada única: recomende a skill de prompt e
    pare, sem escrever LOOP_SPEC.
 2. **O contrato está completo?** Item faltando ⇒ peça a quem chamou que complete o DESIGN, dizendo qual item falta. Nunca
-   preencha por conta própria. Em uso direto, pergunte só o que falta.
+   preencha por conta própria. Em uso direto, pergunte só o que falta. Orçamento por estágio, tempo máximo, K e W **não**
+   são itens do contrato: são desenho desta skill. Sem valor fechado, proponha e marque como proposta, sem parar.
 3. **Modelo de dano:** qual erro é pior, e a regra de desempate que sai dele.
 4. **Perfil pelo risco dos efeitos**, nunca pelo tamanho da tarefa, conforme [references/loop-spec-rules.md](references/loop-spec-rules.md).
 5. **Estágios:** tudo que pode ser determinístico vira estágio de código; o modelo propõe e fundamenta, o código decide.
@@ -119,7 +121,8 @@ A fase Build, no mesmo turno:
 - **Faltou contexto em execução autônoma:** devolva o item que falta, sem bloco parcial.
 - **Conflito entre decisão fechada e material novo:** preserve a decisão e aponte o conflito no bloco.
 - **Efeito externo sem reversão definida:** a ação sai do `action_space`, ou o perfil é `high-risk` com `NEEDS_APPROVAL`.
-- **Nunca** invente número de orçamento, limite ou métrica como se viesse do contrato: marque o valor como proposta.
+- **Nunca** apresente número de orçamento, limite ou métrica como se viesse do contrato: marque o valor como proposta, e
+  quem chamou o registra no relatório.
 
 ---
 

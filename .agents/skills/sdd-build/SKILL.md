@@ -136,13 +136,14 @@ critério antes do código · **evidência, não declaração**.
      assim que ela existir. `sdd-loop-builder` recebe o contrato e devolve a LOOP_SPEC e a tabela de estágios;
      depois, para cada estágio LLM, a skill de prompt recebe o bloco de contrato da linha mais a linha do estágio.
      A LOOP_SPEC vai para `<pasta do processo>/LOOP_SPEC.md`, e cada prompt para o arquivo da tabela. Esses arquivos
-     contam como inventariados e como previstos no manifest. Estágio de código vira código, nunca prompt.
+     contam como inventariados e como previstos no manifest. Estágio de código vira código, nunca prompt. Valor de
+     orçamento marcado como proposta na LOOP_SPEC vai para o relatório.
    - **Sem `Tipo`** (DESIGN antigo): pergunte a si mesmo "o processo re-prompta o modelo com base na própria saída
      anterior?". Sim, `loop`; não, `one-shot`; na dúvida, `loop`. Registre a triagem no relatório.
    - ⛔ **Não encerre o turno ao receber o bloco de texto:** ele é entrada desta fase, não a entrega. Embrulhe na forma
      que a linguagem pede e grave no destino no mesmo turno, sem pedir "continue".
    - **Skill ausente** (`sdd-loop-builder`, ou a de prompt): escreva `🛑 não encontrei a skill <nome>; este item ficou de
-     fora e nada foi improvisado.` e pergunte; o resto do manifest segue.
+     fora e nada foi improvisado.` e faça esta pergunta à letra, com a marca; o resto do manifest segue.
 
      **Sua decisão** — [D2 · muda o produto] **Como sigo com este item de prompt, sem a skill que o escreve?**
      - **instalar e continuar** (recomendado) — você roda o `init` do sdd-open de novo, que completa o que falta sem sobrescrever, e eu retomo este item.
