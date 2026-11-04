@@ -114,7 +114,7 @@ bug?" ou "como faço X?" — essa pergunta **é** o bug; resolve-se na interface
 
    | Lente | Pergunta | Alerta embutido | Regra que manda |
    |---|---|---|---|
-   | L1 Alcance (Fitts) | Ação principal perto da decisão? Linha/card inteiro clicável? 44 px recomendado | — | SC 2.5.8 do passo 4.5 (alvo < 24×24 px) |
+   | L1 Alcance (Fitts) | Ação principal perto da decisão? Linha/card inteiro clicável? 44 px recomendado | — | SC 2.5.8 do passo 4.5 (alvo < 24×24 px, fora das exceções da norma) |
    | L2 Escolhas por passo (Hick-Hyman) | Quantas opções competem por decisão? Revelação progressiva cabe? | uso diário: densidade é recurso | 60/30/10 (acento aponta a próxima ação) |
    | L3 Retomada (Zeigarnik) | Sair no meio preserva o preenchido? A volta mostra o que falta? | sem lembrete que culpe | princípio 2, "Se tem que explicar, está errado" (estado ambíguo) |
    | L4 Convenção (Jakob) | Padrão fora da convenção de mercado tem justificativa? | não reaprender ação básica | — |

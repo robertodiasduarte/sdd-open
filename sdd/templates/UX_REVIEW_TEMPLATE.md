@@ -209,7 +209,7 @@ canônica, consulte-a e registre se a surface é nova ou reuso.
 | 2.4.7 | AA | Foco visível em todo controle | onde o foco aparece | PASSA / REPROVA / N.A. |
 | 4.1.2 | A | Nome, papel e valor por controle (`aria-*`, `role`, `<label>`) | controle → atributo | PASSA / REPROVA / N.A. |
 | 2.1.1 | A | Tab alcança e aciona todo controle, sem armadilha de foco | herdado → Acceptance notes | — |
-| 2.5.8 | AA | Alvo ≥24×24 px; 44×44 px recomendado no mobile | herdado → Acceptance notes | — |
+| 2.5.8 | AA | Alvo ≥24×24 px, salvo as exceções da norma (espaçamento, alvo equivalente, texto corrido, controle do navegador, essencial); 44×44 px recomendado no mobile | herdado → Acceptance notes | — |
 
 3.3.7 é nível A e 2.4.13 é AAA: não entram aqui, e nenhum dos 2 é critério AA.
 
@@ -265,7 +265,7 @@ Acceptance notes:
 - [ ] **Premium**: cada estado (loading/empty/error/success/disabled) tem acabamento "shipada", não "MVP a polir"
 - [ ] **Self-Evident**: zero tooltip-muleta, zero helper text óbvio, zero cor conflitando com semântica — teste do estranho e teste do suporte aprovados
 - [ ] 2.1.1 (herdado da tabela WCAG): Tab alcança e aciona todo controle, sem armadilha de foco — provado no relatório do Build
-- [ ] 2.5.8 (herdado da tabela WCAG): alvo ≥24×24 px, 44×44 px recomendado no mobile — medido no relatório do Build
+- [ ] 2.5.8 (herdado da tabela WCAG): alvo ≥24×24 px, salvo as exceções da norma; 44×44 px recomendado no mobile — medido no relatório do Build
 
 ---
 

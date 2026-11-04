@@ -35,7 +35,9 @@ COLUNAS_PROMPT = ("Tipo", "Versão", "Completeness", "Refator de?")
 CAMPOS_PROMPT = ("Autônomo?", "Verification interna", "Eval mínimo pré-ship")
 BLOCO_PROMPT = re.compile(r"^#### Prompt \d+\s*:")
 FRASE_PROMPTS = "a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam:"
-TITULO_PROMPTS = re.compile(r"^##\s+(\d+\.\s*)?\*{0,2}LLM\s+prompts?\b", re.I)
+# Variações do título contam ("(v1)", ": 1", negrito); outra seção que só começa igual ("LLM Prompt Injection") não.
+TITULO_PROMPTS = re.compile(r"^##\s+(\d+\.\s*)?\*{0,2}LLM\s+prompts?\*{0,2}\s*($|[(:—–-])", re.I)
+CHAVE = re.compile(r"\{[^{}\n]*\}")
 VAZIO_OU_TRACO = re.compile(r"^[\s`*–—-]*$")
 CAMPOS_LOOP = ("Intenção", "Perfil de risco dos efeitos", "Ground truth disponível")
 
@@ -90,7 +92,13 @@ def lint_prompts(linhas: list) -> list:
         faltas.append("falta o subtítulo ### Inventário")
         return [FRASE_PROMPTS] + ["  " + f for f in faltas]
     fim = next((j for j in range(i_inv + 1, len(corpo)) if corpo[j].startswith("### ")), len(corpo))
-    tabela = [ln for ln in corpo[i_inv + 1:fim] if ln.lstrip().startswith("|")]
+    # Só a 1ª tabela: linhas seguidas, a partir da primeira.
+    tabela = []
+    for ln in corpo[i_inv + 1:fim]:
+        if ln.lstrip().startswith("|"):
+            tabela.append(ln)
+        elif tabela:
+            break
     n_linhas = 0
     tipos = []
     if not tabela:
@@ -107,6 +115,8 @@ def lint_prompts(linhas: list) -> list:
             for n, ln in enumerate(dados, 1):
                 cels = celulas(ln)
                 valor = cels[coluna].strip("`") if coluna < len(cels) else ""
+                if any(CHAVE.search(c) for c in cels):
+                    faltas.append("linha %d do inventário com o que está entre chaves sem preencher" % n)
                 tipos.append(valor)
                 if valor not in ("one-shot", "loop"):
                     faltas.append("linha %d do inventário com Tipo '%s' (esperado one-shot ou loop)" % (n, valor))
@@ -119,7 +129,9 @@ def lint_prompts(linhas: list) -> list:
         for campo in campos:
             achado = [celulas(ln) for ln in trecho
                       if ln.lstrip().startswith("|") and celulas(ln)[0].strip("*") == campo]
-            if not achado or len(achado[0]) < 2 or VAZIO_OU_TRACO.match(achado[0][1]):
+            if achado and len(achado[0]) >= 2 and CHAVE.search(achado[0][1]):
+                faltas.append("%s com %s sem preencher" % (titulo, campo))
+            elif not achado or len(achado[0]) < 2 or VAZIO_OU_TRACO.match(achado[0][1]):
                 faltas.append("%s sem o campo %s" % (titulo, campo))
     if tabela and n_linhas and len(blocos) != n_linhas:
         faltas.append("são %d linha(s) no inventário e %d bloco(s) de contrato" % (n_linhas, len(blocos)))

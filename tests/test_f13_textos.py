@@ -267,6 +267,14 @@ class TabelaWcag(unittest.TestCase):
         linha_1411 = next(ln for ln in self.secao.splitlines() if ln.startswith("| 1.4.11"))
         self.assertIn("anel de foco", linha_1411)
 
+    def test_alvo_com_as_excecoes_da_norma(self):
+        linha = next(ln for ln in self.secao.splitlines() if ln.startswith("| 2.5.8"))
+        for trecho in ("≥24×24 px", "exceções da norma", "espaçamento", "alvo equivalente", "texto corrido",
+                       "controle do navegador", "essencial", "44×44 px recomendado"):
+            with self.subTest(trecho=trecho):
+                self.assertIn(trecho, linha)
+        self.assertIn("salvo as exceções da norma", TEMPLATE_UX)
+
     def test_acceptance_notes_tem_os_herdados(self):
         self.assertIn("- [ ] 2.1.1 (herdado da tabela WCAG)", TEMPLATE_UX)
         self.assertIn("- [ ] 2.5.8 (herdado da tabela WCAG)", TEMPLATE_UX)

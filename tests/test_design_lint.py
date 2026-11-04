@@ -196,9 +196,39 @@ class Prompts(Sandbox):
 
     def test_variacoes_do_titulo_nao_desligam_a_conferencia(self):
         for titulo in ("##  LLM Prompts", "## LLM Prompts (v1)", "## LLM Prompts: 1", "## LLM prompts", "## LLM Prompt",
-                       "## 5. LLM Prompts", "## **LLM Prompts**"):
+                       "## 5. LLM Prompts", "## **LLM Prompts**", "## LLM Prompts — inventário"):
             with self.subTest(titulo=titulo):
                 self.reprova(titulo + "\n\nnada\n", "falta o subtítulo ### Inventário")
+
+    def test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts(self):
+        for titulo in ("## LLM Prompt Injection", "## LLM Prompts Review", "## LLM Promptness", "### LLM Prompts"):
+            with self.subTest(titulo=titulo):
+                rc, out = self.lint(titulo + "\n\nriscos\n")
+                self.assertEqual(rc, 0, out)
+
+    def test_so_a_primeira_tabela_do_inventario_conta(self):
+        i = self.secao.index("### Contrato por prompt")
+        com_outra = self.secao[:i] + "Legenda:\n\n| Sigla | Sentido |\n|---|---|\n| v1 | versão 1 |\n\n" + self.secao[i:]
+        rc, out = self.lint(com_outra)
+        self.assertEqual(rc, 0, out)
+
+    def test_tabela_sem_as_colunas_seguida_da_certa_reprova(self):
+        i = self.secao.index("| # | Nome |")
+        com_outra = self.secao[:i] + "| Sigla | Sentido |\n|---|---|\n| v1 | versão 1 |\n\n" + self.secao[i:]
+        self.reprova(com_outra, "falta a coluna Tipo")
+
+    def test_o_que_esta_entre_chaves_nunca_passa(self):
+        # O lint geral ignora o que está entre crases, e chave sem espaço nem maiúscula: aqui, em nenhum dos 2 casos.
+        fragmento = (RAIZ / "sdd/templates/fragments/LLM_PROMPTS_DESIGN.md").read_text(encoding="utf-8")
+        cru = fragmento[fragmento.index("## LLM Prompts"):]
+        rc, out = self.lint(cru)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("linha 1 do inventário com o que está entre chaves", out)
+        self.assertIn("Prompt 1 com Autônomo? sem preencher", out)
+        for de, para in (("`x`", "`" + L + "caminho do arquivo" + R + "`"), ("| x |", "| " + L + "nome" + R + " |")):
+            with self.subTest(de=de):
+                linhas = [ln.replace(de, para, 1) if ln.startswith("| 1 | x |") else ln for ln in self.secao.splitlines()]
+                self.reprova("\n".join(linhas) + "\n", "entre chaves sem preencher")
 
     def test_erro_de_prompt_e_de_manifest_juntos(self):
         p = self.escreve(self.tmp, "DESIGN_Y.md", self.base.replace("**Total Files:** 3", "**Total Files:** 4", 1)
