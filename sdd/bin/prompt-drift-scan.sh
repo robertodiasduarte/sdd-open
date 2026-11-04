@@ -30,10 +30,12 @@ ME="$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")"
 LITERAL='[[:space:]]*[fFrRbBuU]{0,2}(`|'"'"'|")'
 # .stream só com argumento, ou com a chamada aberta na linha: messages.stream() de coleção Java não é SDK.
 SDK='(^|[^[:alnum:]_])((messages\.create|chat\.completions|responses\.create|generateContent(Stream)?|generate_content(_stream|_async)?)([^[:alnum:]_]|$)|(messages|responses)\.stream\(([^)]|$))'
-# A chave vale no início da linha, depois de { , ( [ ou de const/let/var: "file system:" e "package-ecosystem:" não.
-INICIO='(^[[:space:]]*|[{,([][[:space:]]*|(const|let|var)[[:space:]]+)'
+# A chave vale no início da linha (também como item de lista YAML), depois de { , ( [ . ou de const/let/var:
+# "file system:" e "package-ecosystem:" não.
+INICIO='(^[[:space:]]*(-[[:space:]]+)?|[.{,([][[:space:]]*|(const|let|var)[[:space:]]+)'
 SYSTEM="$INICIO"'["'"'"']?system["'"'"']?\]?[[:space:]]*(:=|=>|:|=)'"$LITERAL"
-ROLE="$INICIO"'["'"'"']?role["'"'"']?\]?[[:space:]]*(:=|=>|:|=)[[:space:]]*["'"'"']system["'"'"']'
+# Sem aspas, só depois de ":" (YAML): "role = system" é uma variável, e "role: system:admin" é outro valor.
+ROLE="$INICIO"'["'"'"']?role["'"'"']?\]?[[:space:]]*((:=|=>|:|=)[[:space:]]*["'"'"']system["'"'"']|:[[:space:]]+system([[:space:]#,}]|$))'
 
 TMP=""
 limpar() { if [ -n "$TMP" ]; then rm -rf "${TMP:?}"; fi; }
@@ -310,6 +312,10 @@ auto_teste() {
   conteudo 2 'system com texto fixo' src/d2.py             'ask(system="x")'
   conteudo 2 'system com texto fixo' src/d3.py             'ask(system=f"x")'
   conteudo 2 'role de sistema' src/d4.ts                   '{ role: "system", content: x }'
+  conteudo 2 'role de sistema' config/d7.yaml              '  - role: "system"'
+  conteudo 2 'role de sistema' config/d8.yaml              '  - role: system'
+  conteudo 2 'system com texto fixo' config/d9.yaml        '- system: "x"'
+  conteudo 2 'system com texto fixo' src/d10.py            'self.system = "x"'
   conteudo 2 'pasta prompts/' src/Prompts/d5.txt           'qualquer texto'
   conteudo 2 'pasta prompts/' prompts/test_d6.txt          'qualquer texto'
   conteudo 2 'parâmetro do wrapper' src/e.ts               'await ask({ systemPrompt: `x` })'
@@ -338,6 +344,9 @@ auto_teste() {
   conteudo 0 'RESULTADO: LIMPO' src/o2.yml                 'file_role: "system"'
   conteudo 0 'RESULTADO: LIMPO' src/o3.yml                 'file system: "ext4"'
   conteudo 0 'RESULTADO: LIMPO' src/o4.yml                 'role: "system:admin"'
+  conteudo 0 'RESULTADO: LIMPO' src/o5.yml                 'role: system:admin'
+  conteudo 0 'RESULTADO: LIMPO' src/o6.py                  'role = system'
+  conteudo 0 'RESULTADO: LIMPO' src/o7.yml                 '- file system: "ext4"'
   # Em disco: 2 lados e nomes de todos os achados.
   disco 2 'src/p.ts :: chamada direta' src/p.ts            'client.messages.create(x)'
   disco 2 'pasta prompts/'             src/prompts/q.txt   'qualquer texto'
