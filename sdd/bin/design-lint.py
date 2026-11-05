@@ -42,6 +42,7 @@ TITULO_PROMPTS = re.compile(r"^##\s+(\d+(?:\.\d+)*\.?\s*)?\*{0,2}LLM\s+prompts?\
 # reprova quando o corpo tem cara de inventário (ver parece_inventario).
 TITULO_PROMPTS_QUASE = re.compile(r"^##\s+(\d+(?:\.\d+)*\.?\s*)?\*{0,2}LLM\s+prompts\b", re.I)
 CHAVE = re.compile(r"\{[^{}\n]*\}")
+CHAVE_MOLDE = re.compile(r"\{[^{}\n\"':]*\}")
 VAZIO_OU_TRACO = re.compile(r"^[\s`*–—-]*$")
 CAMPOS_LOOP = ("Intenção", "Perfil de risco dos efeitos", "Ground truth disponível")
 
@@ -158,7 +159,8 @@ def lint_prompts(linhas: list) -> list:
                 continue
             cels = celulas(ln)
             nome = cels[0].strip("*") if cels else ""
-            if len(cels) >= 2 and nome not in campos and nome and CHAVE.search(cels[1]):
+            # Só o molde conta: `{"nota": 0}`, um JSON preenchido, é valor legítimo.
+            if len(cels) >= 2 and nome not in campos and nome and CHAVE_MOLDE.search(cels[1]):
                 faltas.append("%s com %s sem preencher" % (titulo, nome))
     if tabela and n_linhas and len(blocos) != n_linhas:
         faltas.append("são %d linha(s) no inventário e %d bloco(s) de contrato" % (n_linhas, len(blocos)))

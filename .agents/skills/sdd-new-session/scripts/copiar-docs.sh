@@ -75,7 +75,9 @@ uma_pasta() {  # $1 = sdd/features | sdd/reviews
     printf 'IGNORADO %s (a pasta é um link no checkout principal)\n' "${dir}"; ignorados=$((ignorados + 1)); return 0
   fi
   # --others: o que o git não tem salvo, ignorado ou não. -z: nome com espaço ou acento chega inteiro.
-  git -C "${PRINCIPAL}" ls-files --others -z -- "${dir}" > "${lista}.z" 2>/dev/null \
+  # --others + o que só está no índice: git add sem commit também é "não salvo": a frente não recebe por commit.
+  { git -C "${PRINCIPAL}" ls-files --others -z -- "${dir}" \
+    && git -C "${PRINCIPAL}" diff --cached --name-only --diff-filter=A -z -- "${dir}"; } > "${lista}.z" 2>/dev/null \
     || { echo "🛑 copiar-docs: o git não listou ${dir} em ${PRINCIPAL}" >&2; falhas=$((falhas + 1)); return 0; }
   while IFS= read -r -d '' rel; do
     [ -n "${rel}" ] || continue
@@ -107,7 +109,7 @@ uma_pasta() {  # $1 = sdd/features | sdd/reviews
     fi
   done < "${lista}.z"
   # salvo no git do principal e ausente na frente: o commit ainda não chegou à branch de onde a frente nasceu
-  git -C "${PRINCIPAL}" ls-files -z -- "${dir}" > "${lista}.z" 2>/dev/null || return 0
+  git -C "${PRINCIPAL}" ls-tree -r -z --name-only HEAD -- "${dir}" > "${lista}.z" 2>/dev/null || return 0
   while IFS= read -r -d '' rel; do
     [ -n "${rel}" ] || continue
     fk="$(feature_de "${rel#${dir}/}")"
@@ -133,12 +135,12 @@ else
 fi
 if [ "${nao_copiados}" -gt 0 ]; then
   printf '→ %d documento(s) desta frente estão em um commit do checkout principal que ainda não foi enviado: envie esse commit e atualize a frente, ou copie à mão para %s/.\n' "${nao_copiados}" "${FRENTE}"
+elif [ "${ignorados}" -gt 0 ]; then
+  printf '→ %d item(ns) com link não foram copiados: confira as linhas IGNORADO e copie à mão o que for desta frente.\n' "${ignorados}"
 elif [ "${parecidos}" -gt 0 ]; then
   printf '→ se algum PARECIDO for desta frente, copie à mão para %s/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão.\n' "${FRENTE}"
 elif [ "${copiados}" -gt 0 ]; then
   printf '→ os documentos da feature já estão na frente; os originais continuam no checkout principal.\n'
-elif [ "${ignorados}" -gt 0 ]; then
-  printf '→ %d item(ns) com link não foram copiados: confira as linhas IGNORADO e copie à mão o que for desta frente.\n' "${ignorados}"
 else
   printf '→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.\n'
 fi

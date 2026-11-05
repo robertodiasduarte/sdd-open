@@ -674,6 +674,15 @@ class Aplicar(Base):
         self.assertEqual(rc, 0)
         self.assertRegex(out, r"(?m)^- \[LM-003\].*O campo promovido_para: — nao vigia\. \*\*Do instead:\*\* ação\. · promovido_para: sdd/x$")
 
+    def test_refine_com_regra_que_cita_o_campo_nao_guarda_o_texto_velho(self):
+        # R3@claude da rodada 3
+        texto = PLAYBOOK.replace("`termo3` :: regra. **Do instead:** ação. · promovido_para: —", "`termo3` :: O campo promovido_para: — nao vigia. **Do instead:** velha. · promovido_para: sdd/hooks/z")
+        pb = self.escreve(self.tmp, "r3.md", texto)
+        rc, out, _ = self.cur("--aplicar", self.escreve(self.tmp, "d.txt", "REFINE LM-003 :: Novo. **Do instead:** k.\n"), pb)
+        self.assertEqual(rc, 0)
+        linha = next(l for l in out.split("\n") if l.startswith("- [LM-003]"))
+        self.assertTrue(linha.endswith(":: Novo. **Do instead:** k. · promovido_para: sdd/hooks/z"), linha)
+
     def test_delta_so_com_comentario_preserva_os_bytes(self):
         pb = self.tmp / "crlf.md"
         bruto = PLAYBOOK.replace("\n", "\r\n").encode("utf-8") + b"\xff\r\n"

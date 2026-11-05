@@ -96,11 +96,17 @@ def absoluto(p):
     p = p.decode("utf-8", "surrogateescape").strip()
     return p if os.path.isabs(p) else os.path.join(wt, p)
 comum, gd = absoluto(comum), absoluto(gd)
-alvos = [os.path.join(comum, "config"), os.path.join(comum, "info", "exclude"), os.path.join(gd, "config.worktree")]
+alvos = [os.path.join(comum, "info", "exclude"), os.path.join(gd, "config.worktree")]
 hooks = os.path.join(comum, "hooks")
 if os.path.isdir(hooks):
     alvos += [os.path.join(hooks, n) for n in sorted(os.listdir(hooks))]
 h = hashlib.sha256()
+# O config é comum a todas as worktrees: abrir outra frente ou dar push grava branch.* ali, e isso não é o agente.
+# O resto (core.hooksPath, por exemplo) conta.
+rc3, cfg = git("config", "--file", os.path.join(comum, "config"), "--list", "-z")
+if rc3 != 0 and os.path.exists(os.path.join(comum, "config")):
+    sys.exit(1)
+h.update(b"\0".join(sorted(e for e in cfg.split(b"\0") if e and not e.lower().startswith(b"branch."))))
 for a in alvos:
     h.update(os.path.relpath(a, comum).encode("utf-8", "surrogateescape") + b"\0")
     if os.path.islink(a):

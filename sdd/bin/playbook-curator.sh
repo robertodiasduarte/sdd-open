@@ -869,8 +869,8 @@ def aplicar(args):
                     if ficha and "ficha:" not in novo_texto:
                         novo_texto = novo_texto.rstrip() + " " + ficha.group(0).rstrip()
                     if "promovido_para:" not in novo_texto and not por_id[lm]["promo_cont"]:
-                        pp = re.search(r"promovido_para: .*$", velho)
-                        novo_texto = novo_texto.rstrip() + " · " + (pp.group(0) if pp else "promovido_para: —")
+                        k_pp = velho.rfind("promovido_para: ")  # a última, como o parser: a regra pode citar o nome do campo
+                        novo_texto = novo_texto.rstrip() + " · " + (velho[k_pp:] if k_pp >= 0 else "promovido_para: —")
                     ln = (ln[:k + 4] if k >= 0 else ln + " :: ") + novo_texto
                     tocado = True
                 if lm in promo:
@@ -1105,6 +1105,10 @@ def validar_inv(args):
         if i["id"] in vistos:
             defeitos.append("%s aparece 2 vezes — renumere a mais nova (ID nunca se reusa)" % i["id"])
         vistos.add(i["id"])
+        if re.search(r"· (tarefa|motivo):\s*($|·)", i["resto"]) and not (
+                (i["estado"] == "auto" and not re.search(r"· tarefa:\s*[^\s·]", i["resto"]))
+                or (i["estado"] == "humano" and not re.search(r"· motivo:\s*[^\s·]", i["resto"]))):
+            defeitos.append("%s tem '· tarefa:' ou '· motivo:' vazio — preencha ou tire o campo" % i["id"])
         if i["estado"] == "auto" and not re.search(r"· tarefa:\s*[^\s·]", i["resto"]):
             defeitos.append("%s é estado=auto sem '· tarefa:' — diga o comando ou o alvo que a automatiza" % i["id"])
         if i["estado"] == "humano" and not re.search(r"· motivo:\s*[^\s·]", i["resto"]):

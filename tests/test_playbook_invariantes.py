@@ -105,6 +105,17 @@ class Trava(Base_):
                 self.assertEqual(rc, 2, err)
                 self.assertIn(trecho, err)
 
+    def test_campo_vazio_em_qualquer_estado_reprova(self):
+        # R4@claude da rodada 3
+        for linha in ("- [INV-003] estado=ok origem=seed check=sdd/bin/report-lint.py :: R · por quê: p · motivo: \n",
+                      "- [INV-003] estado=auto origem=seed :: R · por quê: p · tarefa: t · motivo: \n"):
+            with self.subTest(linha=linha):
+                rc, _, err = self.trava(BASE + linha)
+                self.assertEqual(rc, 2, err)
+                self.assertIn("vazio", err)
+        rc, out, err = self.trava(BASE + "- [INV-003] estado=auto origem=seed :: R · por quê: p · tarefa: t · motivo: m\n")
+        self.assertEqual(rc, 0, out + err)
+
     def test_check_em_pasta_com_ponto_e_legitimo(self):
         # N3-M1 do avaliador, ciclo 3: o conserto do N-L6 recusava .github/ e .agents/.
         self.escreve(self.tmp, ".github/workflows/x.yml", "x\n")

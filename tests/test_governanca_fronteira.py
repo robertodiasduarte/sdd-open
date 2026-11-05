@@ -295,6 +295,22 @@ class EstadoDoGit(Base):
         rc, out = self.despacho(lambda: None)
         self.assertEqual(rc, 0, out)
 
+    def test_outra_frente_abrindo_branch_nao_e_o_agente(self):
+        # R1@claude da rodada 3: o config é comum às worktrees, e branch.* muda sem o agente.
+        def outra_frente():
+            self.git(self.w, "config", "branch.outra.remote", "origin")
+            self.git(self.w, "config", "branch.outra.merge", "refs/heads/outra")
+            self.git(self.w, "worktree", "add", "-q", str(self.tmp / "frente2"), "-b", "frente2")
+        rc, out = self.despacho(outra_frente)
+        self.assertEqual(rc, 0, out)
+
+    def test_o_resto_do_config_continua_contando(self):
+        for chave in ("core.hooksPath", "core.fsmonitor", "alias.x"):
+            with self.subTest(chave=chave):
+                rc, out = self.despacho(lambda: self.git(self.w, "config", chave, "valor"))
+                self.assertEqual(rc, 1, out)
+                self.git(self.w, "config", "--unset", chave)
+
     def test_leitura_pelo_git_nao_e_escrita(self):
         def leitura():
             self.git(self.w, "status")

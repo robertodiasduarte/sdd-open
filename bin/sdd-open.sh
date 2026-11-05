@@ -652,7 +652,7 @@ aplicar() {
         if [ "${rel}" = "config.yaml" ]; then
           # vendors: é um placeholder no example; init o PREENCHE (a única diferença entre os 2 arquivos).
           cp "${PKG}/sdd/config.example.yaml" "${ROOT}/sdd/config.yaml" || exit 1
-        elif [ "${rel}" = "invariants.md" ] && ! printf '%s\n' "${faltantes}" | grep -qx 'playbook.md'; then
+        elif [ "${rel}" = "invariants.md" ] && ! printf '%s\n' "${faltantes}" | grep -x 'playbook.md' >/dev/null; then
           # O registro do pacote classifica as landmines do playbook DO PACOTE. Num projeto que já tem o seu
           # playbook (o init nunca o sobrescreve), ele apontaria para uma landmine que pode não existir ou ser
           # outra: entra só o esqueleto, sem nenhuma linha de invariante, e a 1ª curadoria classifica as do projeto.

@@ -241,6 +241,15 @@ class Prompts(Sandbox):
                     self.assertEqual(rc, 1, out)
                     self.assertIn("com %s sem preencher" % campo, out)
 
+    def test_json_preenchido_nao_e_chave_sem_preencher(self):
+        # R2@claude da rodada 3
+        import re as _re
+        texto = _re.sub(r"(?m)^(#### Prompt 1:.*\n(?:.*\n)*?)(\| \*\*Autônomo\?\*\*)",
+                        lambda m: m.group(1) + '| **Tipo de saída** | JSON `{"nota": 0}` |\n' + m.group(2), self.secao, count=1)
+        self.assertNotEqual(texto, self.secao)
+        rc, out = self.lint(texto)
+        self.assertEqual(rc, 0, out)
+
     def test_so_a_primeira_tabela_do_inventario_conta(self):
         i = self.secao.index("### Contrato por prompt")
         com_outra = self.secao[:i] + "Legenda:\n\n| Sigla | Sentido |\n|---|---|\n| v1 | versão 1 |\n\n" + self.secao[i:]

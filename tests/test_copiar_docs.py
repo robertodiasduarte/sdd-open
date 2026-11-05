@@ -179,6 +179,26 @@ class NaoCopia(Base_):
         self.assertIn("ainda não foi enviado", out)
         self.assertFalse((self.f / "sdd/features/DEFINE_RELATORIO_MENSAL.md").exists())
 
+    def test_so_no_indice_e_copiado_nao_e_commit_nao_enviado(self):
+        # R5@claude da rodada 3
+        self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md")
+        self.git(self.p, "add", "sdd/features/DEFINE_RELATORIO_MENSAL.md")
+        rc, out, _ = self.copia()
+        self.assertEqual(rc, 0)
+        self.assertIn("COPIADO sdd/features/DEFINE_RELATORIO_MENSAL.md", out)
+        self.assertNotIn("NAO_COPIADO", out)
+
+    def test_link_ignorado_aparece_na_seta_mesmo_com_copia(self):
+        # R6@claude da rodada 3
+        self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md")
+        fora = self.escreve(self.tmp, "fora.md", "x\n")
+        os.symlink(str(fora), str(self.p / "sdd/features/DESIGN_RELATORIO_MENSAL.md"))
+        _, out, _ = self.copia()
+        self.assertIn("COPIADO", out)
+        self.assertIn("IGNORADO sdd/features/DESIGN_RELATORIO_MENSAL.md", out)
+        self.assertIn("com link não foram copiados", out)
+        self.assertNotIn("já estão na frente", out)
+
     def test_commitado_que_ja_esta_na_frente_nao_e_dito(self):
         self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md")
         self.commit(self.p)
