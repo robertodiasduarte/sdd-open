@@ -142,6 +142,11 @@ class Recusas(Base):
         self.assertIn("HEAD destacado", res[1])
         self.assertSemEstado()
 
+    def test_master_sem_slot_nem_remoto_tambem_e_padrao(self):
+        # L7 do ciclo 1
+        self.git(self.r, "branch", "-m", "frente", "master")
+        self.assertParada(self.drive("iniciar", D), "branch-padrao")
+
     def test_outra_branch_com_slot_passa(self):
         # o outro lado: o slot de exemplo main não barra a frente
         self.escreve(self.r, "sdd/config.yaml", "project:\n  default_branch: main\n")
@@ -268,6 +273,7 @@ class Proxima(Base):
         rc, out, err = self.drive("proximo", D)
         self.assertEqual(rc, 2, out + err)
         self.assertNotIn("ACAO: DESIGN", out)
+        self.assertNotIn("Traceback", err)
 
     def test_tarefa_i_de_n_e_verificar_quando_acaba(self):
         self.drive("iniciar", D)
@@ -287,6 +293,15 @@ class Proxima(Base):
         self.assertAcao(res, "RODADA")
         self.assertIn("tarefa: 3 de 3 — c", res[1])
         self.assertEqual((self.r / PROGRESS).read_text(encoding="utf-8").count("- [ ]"), 1, "linha já feita não volta")
+
+    def test_linha_nova_com_nome_que_e_prefixo_de_outra_ainda_entra(self):
+        # L6 do ciclo 1: `x` existe no manifest, e `x y.md` já está no PROGRESS
+        self.drive("iniciar", D)
+        self.escreve(self.r, PROGRESS, "- [x] x y.md\n- [x] a — feito\n")
+        self.escreve(self.r, "sdd/features/DESIGN_F.md", design(("x", "a")))
+        res = self.drive("proximo", D)
+        self.assertAcao(res, "RODADA")
+        self.assertIn("tarefa: 3 de 3 — x", res[1])
 
     def test_progress_ou_manifest_sem_linhas(self):
         self.escreve(self.r, "sdd/features/DESIGN_F.md", design(()).replace("**Total Files:** 0", "**Total Files:** 0"))
@@ -365,6 +380,26 @@ class Verificar(Base):
                 self.git(self.r, "add", rel)
                 self.git(self.r, "commit", "-q", "-m", "c")
 
+    def test_rename_de_codigo_para_pasta_de_documento_vira_commitar(self):
+        # M2 do ciclo 1: tirar código do lugar é mudança de código, mesmo com o nome novo em sdd/reports/
+        self.novo_commit()
+        self.pronto()
+        self.git(self.r, "mv", "codigo.txt", "sdd/reports/codigo.txt")
+        res = self.drive("verificar", D)
+        self.assertAcao(res, "COMMITAR")
+        self.assertIn("   - codigo.txt", res[1])
+        self.assertEqual(self.chamadas(), 0)
+
+    def test_rename_entre_pastas_de_documento_nao_trava(self):
+        # o outro lado
+        self.escreve(self.r, "sdd/reports/x.md", "doc\n")
+        self.commit(self.r)
+        self.pronto()
+        (self.r / "sdd/reviews").mkdir()
+        self.git(self.r, "mv", "sdd/reports/x.md", "sdd/reviews/x.md")
+        self.assertAcao(self.drive("verificar", D), "CORRIGIR")
+        self.assertEqual(self.chamadas(), 1)
+
     def test_documento_nao_rastreado_nao_trava(self):
         self.pronto()
         self.escreve(self.r, "sdd/reviews/X.md", "x\n")
@@ -392,6 +427,15 @@ class Verificar(Base):
         self.assertNotIn(2, [g["exit"] for g in st["gates"]])
         self.assertEqual(len(list((self.r / "sdd/reports/evidence/F").glob("DRIVE-gate-r*.log"))), 6, "nenhum log sobrescrito")
 
+    def test_parada_de_conferencia_nao_fica_presa_depois_de_resolver(self):
+        # L2 do ciclo 1: só o que veio do teste final espera o --resume
+        self.drive("iniciar", D)
+        self.feito()
+        self.escreve(self.r, D, define(corpo=MARCADOR))
+        self.assertParada(self.drive("proximo", D), "clarificacao-pendente")
+        self.escreve(self.r, D, define())
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
     def test_parada_do_gate_aparece_no_proximo_ate_o_resume(self):
         self.stub_gate()
         self.pronto()
@@ -416,6 +460,75 @@ class Verificar(Base):
         self.verde()
         self.assertAcao(self.drive("--resume", D, "--max", "3"), "VERIFICAR")
         self.assertAcao(self.drive("verificar", D), "AVALIAR_E_RELATAR")
+
+
+class CommitDuranteOGate(Base):
+    """H1 e M1 do ciclo 1: o gate prova o que existia quando começou."""
+
+    def setUp(self):
+        super().setUp()
+        self.escreve(self.r, D, define(cmd="echo x >> gate.calls; sleep 2; test -f .verde"))
+        self.commit(self.r)
+        self.drive("iniciar", D)
+        self.feito()
+        self.verde()
+
+    def espera_acabar(self):
+        for _ in range(100):
+            if not self.existe("sdd/reports/progress/DRIVE_F.lock"):
+                return
+            time.sleep(0.1)
+        self.fail("o teste final do fundo não terminou")
+
+    def gate_comecou(self):
+        for _ in range(100):
+            if self.chamadas():
+                return
+            time.sleep(0.05)
+        self.fail("o gate não começou")
+
+    def test_commit_de_codigo_no_meio_nao_ganha_o_verde(self):
+        testado = self.git(self.r, "rev-parse", "HEAD").strip()
+        self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+        self.gate_comecou()
+        self.novo_commit()
+        self.espera_acabar()
+        self.assertEqual(self.estado()["gates"][-1]["commit"], testado)
+        self.escreve(self.r, "sdd/reports/BUILD_REPORT_F.md", "x\n")
+        self.assertAcao(self.drive("concluir", D), "VERIFICAR")
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+        self.assertAcao(self.drive("verificar", D), "AVALIAR_E_RELATAR")
+        self.assertEqual(self.chamadas(), 2)
+
+    def test_commit_so_de_documento_no_meio_mantem_o_verde(self):
+        # o outro lado
+        self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+        self.gate_comecou()
+        self.escreve(self.r, "sdd/reports/BUILD_REPORT_F.md", "x\n")
+        self.git(self.r, "add", "sdd/reports/BUILD_REPORT_F.md")
+        self.git(self.r, "commit", "-q", "-m", "relatório")
+        self.espera_acabar()
+        self.assertParada(self.drive("concluir", D), "gate-verde", 0)
+
+    def test_troca_de_comando_aceita_no_meio_nao_vale_o_gate_que_nao_rodou(self):
+        self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+        self.gate_comecou()
+        self.escreve(self.r, D, define(cmd="false"))
+        self.drive("--resume", D, "--aceitar-gate-novo")
+        self.espera_acabar()
+        self.escreve(self.r, "sdd/reports/BUILD_REPORT_F.md", "x\n")
+        self.assertAcao(self.drive("concluir", D), "VERIFICAR")
+
+    def test_a_variavel_do_fundo_nao_chega_ao_gate(self):
+        # M3 do ciclo 1: a suíte de um projeto pode exercitar este script
+        self.escreve(self.r, D, define(cmd="echo x >> gate.calls; test -z $SDD_DRIVE_TRAVA_HERDADA && test -f .verde"))
+        self.commit(self.r)
+        (self.r / ESTADO).unlink()
+        self.drive("iniciar", D)
+        self.feito()
+        self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+        self.espera_acabar()
+        self.assertEqual(self.estado()["gates"][-1]["exit"], 0, (self.r / "sdd/reports/evidence/F/DRIVE-gate-r1.log").read_text(encoding="utf-8"))
 
 
 class SegundoPlano(Base):
@@ -494,6 +607,23 @@ class ImpressaoDigital(Base):
         self.escreve(self.r, D, define(corpo="uma nota nova"))
         self.assertAcao(self.drive("proximo", D), "RODADA")
 
+    def test_outro_campo_do_bloco_diz_qual_mudou(self):
+        # L5 do ciclo 1: o comando igual não pode ser dito como comando mudado
+        self.drive("iniciar", D)
+        self.escreve(self.r, D, define().replace('threshold: "—"', 'threshold: "0.9"'))
+        res = self.drive("proximo", D)
+        self.assertParada(res, "gate-alterado")
+        self.assertIn("O comando é igual; mudou outro campo do bloco", res[1])
+        self.assertIn("threshold:  0.9", res[1])
+
+    def test_troca_aceita_entra_no_relatorio_na_hora(self):
+        # L4 do ciclo 1
+        self.drive("iniciar", D)
+        self.escreve(self.r, D, define(cmd="true"))
+        self.drive("--resume", D, "--aceitar-gate-novo")
+        texto = (self.r / RELATORIO).read_text(encoding="utf-8")
+        self.assertIn("para `true`", texto)
+
     def test_aceitar_invalida_o_verde_antigo(self):
         self.drive("iniciar", D)
         self.feito()
@@ -555,6 +685,30 @@ class Retomada(Base):
         self.assertParada(res, "estado-invalido")
         self.assertIn("outro DEFINE", res[1])
 
+    def test_forma_errada_e_estado_invalido_nunca_traceback(self):
+        # M4 do ciclo 1
+        self.drive("iniciar", D)
+        base = self.estado()
+        for campo, valor in (("gates", [dict()]), ("gates", [1]), ("gates", [dict(n=1, rodada=1, commit="x", exit="2", log="l", impressao="i")]), ("repeticao", 3),
+                             ("recibos", 3), ("trocas_gate", 3), ("gate_cmd", None), ("inicio", None), ("maximo", True)):
+            with self.subTest(campo=campo, valor=valor):
+                st = dict(base)
+                st[campo] = valor
+                self.escreve(self.r, ESTADO, json.dumps(st))
+                for args in (("proximo", D), ("recibo", D, "x"), ("--resume", D)):
+                    res = self.drive(*args)
+                    self.assertParada(res, "estado-invalido")
+                    self.assertNotIn("Traceback", res[2])
+
+    def test_o_estado_que_o_proprio_script_grava_passa_na_forma(self):
+        # o outro lado de M4
+        self.drive("iniciar", D)
+        self.feito()
+        self.drive("verificar", D)
+        self.drive("recibo", D, "r")
+        self.novo_commit()
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
     def test_iniciar_com_estado_recusa_e_aponta_a_saida(self):
         self.drive("iniciar", D)
         res = self.drive("iniciar", D)
@@ -569,6 +723,29 @@ class Concluir(Base):
         self.feito()
         self.verde()
         self.assertAcao(self.drive("verificar", D), "AVALIAR_E_RELATAR")
+
+    def test_concluir_responde_o_mesmo_que_proximo(self):
+        # M9 do ciclo 1: tarefa reaberta, linha nova do manifest e DESIGN sumido não viram verde
+        self.verde_ate_avaliar()
+        self.escreve(self.r, "sdd/reports/BUILD_REPORT_F.md", "x\n")
+        self.escreve(self.r, PROGRESS, "- [ ] a\n- [x] b\n")
+        self.assertAcao(self.drive("concluir", D), "RODADA")
+        self.feito()
+        self.escreve(self.r, "sdd/features/DESIGN_F.md", design(("a", "b", "c")))
+        self.assertAcao(self.drive("concluir", D), "RODADA")
+        self.feito()
+        self.escreve(self.r, PROGRESS, "- [x] a\n- [x] b\n- [x] c\n")
+        (self.r / "sdd/features/DESIGN_F.md").unlink()
+        self.git(self.r, "add", "-A", "sdd/features")
+        self.git(self.r, "commit", "-q", "-m", "c")
+        self.assertAcao(self.drive("concluir", D), "DESIGN")
+
+    def test_sujo_sem_verde_vira_commitar(self):
+        # L1 do ciclo 1
+        self.drive("iniciar", D)
+        self.feito()
+        self.escreve(self.r, "src/a.py", "x\n")
+        self.assertAcao(self.drive("concluir", D), "COMMITAR")
 
     def test_sem_gate_nao_conclui(self):
         self.drive("iniciar", D)
@@ -629,6 +806,15 @@ class Relatorio(Base):
         texto = (self.r / RELATORIO).read_text(encoding="utf-8")
         self.assertIn("| Motivo | bloqueio-humano |", texto)
         self.assertIn("falta a chave do banco", texto)
+
+    def test_recibo_nao_apaga_o_motivo_do_bloqueio(self):
+        # L3 do ciclo 1
+        self.drive("iniciar", D)
+        self.drive("bloqueio", D, "falta a chave do banco")
+        self.drive("recibo", D, "decidi x")
+        texto = (self.r / RELATORIO).read_text(encoding="utf-8")
+        self.assertIn("falta a chave do banco", texto)
+        self.assertIn("- decidi x", texto)
 
     def test_commits_desde_o_inicio(self):
         self.drive("iniciar", D)
@@ -713,6 +899,23 @@ class Barreira(Base):
 
 
 class SelfTest(Sandbox):
+    def test_fica_vermelho_num_script_quebrado_e_diz_o_caso(self):
+        copia = self.tmp / "copia/sdd/bin"
+        shutil.copytree(str(RAIZ / "sdd/bin"), str(copia))
+        s = copia / "sdd-drive.sh"
+        s.write_text(s.read_text(encoding="utf-8").replace('def barra_orcamento(p, st):\n    if vermelhos(st) >= st["maximo"]:', 'def barra_orcamento(p, st):\n    if False:'), encoding="utf-8")
+        rc, out, err = self.roda([BASH, s, "--self-test"], self.tmp)
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("o limite segue valendo", out.split("self-test:")[1])
+        self.assertIn("RESULTADO: FALHA", out)
+
+    def test_nao_depende_da_configuracao_global_do_git(self):
+        # L9 do ciclo 1: commit assinado na máquina de quem roda não pode reprovar o script
+        cfg = self.tmp / "cfg"
+        cfg.write_text("[commit]\n\tgpgsign = true\n", encoding="utf-8")
+        rc, out, err = self.roda([BASH, RAIZ / "sdd/bin/sdd-drive.sh", "--self-test"], self.tmp, dict(self.env, GIT_CONFIG_GLOBAL=str(cfg)))
+        self.assertEqual(rc, 0, out + err)
+
     def test_verde_sem_git_e_sem_deixar_nada(self):
         temp = self.tmp / "temp"
         temp.mkdir()

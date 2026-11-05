@@ -2,6 +2,8 @@
 pela ficha. Repositório na sandbox, com datas de commit fixas e --hoje fixo."""
 from __future__ import annotations
 
+import os
+
 from apoio import PYTHON, RAIZ, Sandbox
 
 SCRIPT = RAIZ / "sdd/bin/sdd-archive.py"
@@ -79,8 +81,40 @@ class Simulacao(Base):
         self.assertIn("sdd/features/DEFINE_A_V2.md  →  sdd/archive/A_V2/DEFINE_A_V2.md", out, "sufixo maiúsculo é nome")
         self.assertIn("sdd/reports/relatório antigo.md  →  sdd/archive/_REPORTS_2026-01/", out)
 
+    def test_edicao_sem_commit_conta_como_atividade(self):
+        # L15 do ciclo 1: rastreado sujo e não rastreado recente não são "quietos"
+        self.doc("sdd/features/DEFINE_A.md")
+        self.escreve(self.r, "sdd/features/DEFINE_A.md", "editado\n")
+        self.escreve(self.r, "sdd/reports/novo.md", "x\n")
+        import time
+        agora = time.mktime((2026, 11, 4, 12, 0, 0, 0, 0, -1))
+        os.utime(str(self.r / "sdd/features/DEFINE_A.md"), (agora, agora))
+        os.utime(str(self.r / "sdd/reports/novo.md"), (agora, agora))
+        _, out, _ = self.arquivo()
+        self.assertIn("sem-ledger=0 · soltos=0", out)
+        self.assertNotIn("_REPORTS_0000-00", out)
+
+    def test_nao_rastreado_antigo_vai_para_o_mes_da_edicao(self):
+        # o outro lado
+        self.escreve(self.r, "sdd/reports/antigo.md", "x\n")
+        import time
+        velho = time.mktime((2026, 2, 3, 12, 0, 0, 0, 0, -1))
+        os.utime(str(self.r / "sdd/reports/antigo.md"), (velho, velho))
+        _, out, _ = self.arquivo()
+        self.assertIn("sdd/reports/antigo.md  →  sdd/archive/_REPORTS_2026-02/antigo.md  ⚠️ não rastreado: pulo", out)
+
+    def test_saida_em_utf8_mesmo_com_cp1252(self):
+        # L14 do ciclo 1
+        self.doc("sdd/features/DEFINE_A.md")
+        rc, out, err = self.roda([PYTHON, "-B", SCRIPT, "--hoje", HOJE], self.r, dict(self.env, PYTHONIOENCODING="cp1252"))
+        self.assertEqual(rc, 0, out + err)
+        self.assertNotIn("Traceback", err)
+
     def test_nao_rastreado_aparece_e_e_pulado(self):
         self.escreve(self.r, "sdd/features/DEFINE_N.md", "x\n")
+        import time
+        velho = time.mktime((2026, 2, 3, 12, 0, 0, 0, 0, -1))
+        os.utime(str(self.r / "sdd/features/DEFINE_N.md"), (velho, velho))
         _, out, _ = self.arquivo()
         self.assertIn("sdd/features/DEFINE_N.md  →  sdd/archive/N/DEFINE_N.md  ⚠️ não rastreado: pulo", out)
         rc, out, _ = self.arquivo("--lote", "sem-ledger", "--aplicar")
@@ -127,6 +161,46 @@ class Protecao(Base):
         self.escreve(self.r, "sdd/handoffs/HANDOFF_OUTRA.md", "| **Status** | ✅ fechada |\n\nversa sobre F1\n")
         _, out, _ = self.arquivo()
         self.assertIn("sdd/features/DEFINE_F1.md  →", out)
+
+    def test_prefixo_longo_e_o_nome_da_feature(self):
+        # M5 do ciclo 1: FIX_REPORT_F1 é da F1, não da feature REPORT_F1
+        self.ficha("F1", "🔨 em andamento")
+        self.doc("sdd/reports/FIX_REPORT_F1.md")
+        _, out, _ = self.arquivo()
+        self.assertIn("F1 (2 documento(s)): ficha aberta", out)
+        self.assertNotIn("FIX_REPORT_F1.md  →", out)
+
+    def test_feature_com_minuscula_ou_hifen_e_protegida(self):
+        # M6 do ciclo 1
+        self.ficha("minha-frente", "aberta")
+        self.doc("sdd/reports/BUILD_REPORT_minha-frente.md")
+        self.doc("sdd/reports/AVALIACAO_minha-frente.md")
+        _, out, _ = self.arquivo()
+        self.assertIn("minha-frente (2 documento(s)): ficha aberta", out)
+        self.assertNotIn("BUILD_REPORT_minha-frente.md  →", out)
+
+    def test_ficha_aberta_de_slice_protege_a_feature(self):
+        # M7 do ciclo 1
+        self.ficha("G_s2", "aberta")
+        self.doc("sdd/features/DEFINE_G_s2.md")
+        self.doc("sdd/features/DESIGN_G.md")
+        self.doc("sdd/releases/G/s1.yaml")
+        _, out, _ = self.arquivo()
+        self.assertNotIn("DEFINE_G_s2.md  →", out)
+        self.assertNotIn("DESIGN_G.md  →", out)
+        self.assertIn("G (2 documento(s)): ficha aberta", out)
+
+    def test_documento_solto_citado_em_ficha_aberta_fica(self):
+        # M8 do ciclo 1
+        self.doc("sdd/reports/NOTAS_DA_FRENTE.md")
+        self.doc("sdd/reports/parecer.txt")
+        self.doc("sdd/reports/outro.txt")
+        self.escreve(self.r, "sdd/handoffs/HANDOFF_OUTRA.md", "| **Status** | aberta |\n\nver sdd/reports/NOTAS_DA_FRENTE.md e parecer.txt\n")
+        _, out, _ = self.arquivo()
+        self.assertNotIn("NOTAS_DA_FRENTE.md  →", out)
+        self.assertNotIn("parecer.txt  →", out)
+        self.assertIn("NOTAS_DA_FRENTE.md (1 documento(s)): documento citado", out)
+        self.assertIn("sdd/reports/outro.txt  →", out, "o que não foi citado segue")
 
     def test_pastas_que_nunca_saem(self):
         self.doc("sdd/reports/evidence/F1/DEFINE_F1.md")

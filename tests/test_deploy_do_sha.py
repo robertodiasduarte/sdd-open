@@ -27,12 +27,18 @@ if a[:2] == ["run", "list"]:
     if "--commit" in a:
         open(pos, "w").write(str(i + 1))
         p = passos[min(i, len(passos) - 1)]
-        print(json.dumps([r for r in p["runs"] if r["headSha"] == a[a.index("--commit") + 1]]))
+        print(json.dumps([r for r in p["runs"] if r.get("headSha") == a[a.index("--commit") + 1]]))
     else:
         p = passos[min(max(i - 1, 0), len(passos) - 1)]
         print(json.dumps(p["runs"]))
 elif a[:2] == ["run", "view"]:
-    print(json.dumps(dict(jobs=[dict(steps=[dict(name=c.get("passo", "x"), conclusion="failure")])])))
+    if c.get("view_lista"):
+        print("[1]")
+    else:
+        jobs = [dict(steps=[dict(name=c.get("passo", "x"), conclusion="failure")])]
+        if c.get("passo2"):
+            jobs.append(dict(steps=[dict(name=c["passo2"], conclusion="failure")]))
+        print(json.dumps(dict(jobs=jobs)))
 elif a[:2] == ["workflow", "run"]:
     if c.get("dispatch_recusado"):
         sys.stderr.write("HTTP 422: Workflow does not have workflow_dispatch trigger\\n")
@@ -238,6 +244,39 @@ class Redisparo(Base):
         self.assertEqual(rc, 2, out + err)
         self.assertIn("o teto de 0 min já passou", out)
         self.assertNotIn("workflow run", self.log())
+
+
+class RespostasEstranhas(Base):
+    """L11 a L13 do ciclo 1."""
+
+    def test_passageiro_e_real_juntos_nao_repete(self):
+        self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", passo2="Compilar")
+        res = self.sha("--transitorios", "Verify SSH")
+        self.assertSai(res, 2, "Compilar", "não está em deploy.transient_steps")
+        self.assertNotIn("workflow run", self.log())
+
+    def test_run_sem_sha_nao_quebra_nem_decide(self):
+        r = run(2, None, criado="2026-01-01T00:01:00Z")
+        self.cenario([run(1, self.x, conclusion="cancelled"), r])
+        self.assertSai(self.sha(), 2, "🔴 não está no ar")
+
+    def test_view_com_forma_inesperada_nao_quebra(self):
+        self.cenario([run(1, self.x, conclusion="failure")], view_lista=True)
+        res = self.sha("--transitorios", "Verify SSH")
+        self.assertSai(res, 2, "🔴 falhou — run 1")
+        self.assertNotIn("Traceback", res[2])
+
+    def test_workflow_com_nome_errado_sai_64_na_hora(self):
+        self.cenario([], erro="could not find any workflows named deploy.yml")
+        rc, out, err = self.sha()
+        self.assertEqual(rc, 64, out + err)
+        self.assertIn("não conhece o workflow", err)
+
+    def test_consulta_falhando_nao_repete_a_linha_a_cada_volta(self):
+        self.cenario([], erro="HTTP 500: deu ruim")
+        rc, out, err = self.sha()
+        self.assertEqual(rc, 4, out + err)
+        self.assertEqual(err.count("consulta falhou"), 1, err[:400])
 
 
 class AindaNaoSei(Base):

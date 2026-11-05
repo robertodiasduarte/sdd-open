@@ -71,9 +71,9 @@ MOTIVOS = {
     "manual-ux": ("O teste final precisa da conferência de uma pessoa. Nada foi publicado.", 20, "PARADA",
                   "percorra o checklist do manual_fallback, assine no BUILD_REPORT e, para publicar, chame a sdd-release."),
     "clarificacao-pendente": ("O DEFINE ainda tem dúvida aberta ou a revisão de governança pendente.", 20, "PARADA",
-                              "volte ao Define, resolva e rode de novo; nada foi construído por cima da dúvida."),
+                              "volte ao Define, resolva e use --resume (ou iniciar, se a execução ainda não começou); nada foi construído por cima da dúvida."),
     "define-invalido": ("O DEFINE não tem um teste final válido.", 20, "PARADA",
-                        "corrija o bloco do Verify Gate pelo Define e rode de novo."),
+                        "corrija o bloco do Verify Gate pelo Define e use --resume (ou iniciar, se a execução ainda não começou)."),
     "gate-inconclusivo": ("O teste final não chegou ao fim: isso não é vermelho e não gastou rodada.", 20, "PARADA",
                           "instale o que faltou (veja o log) ou rode onde a ferramenta exista, e use --resume."),
     "gate-alterado": ("O comando do teste final mudou desde o início desta execução.", 20, "PARADA",
@@ -227,12 +227,17 @@ def confere_vizinhos():
 
 def impressao_digital(p):
     """(rc, sha, cmd) a partir do mesmo parser do gate: as linhas que o --print mostra."""
+    rc, sha, cmd, _linhas = bloco_do_gate(p)
+    return rc, sha, cmd
+
+
+def bloco_do_gate(p):
     r = roda([BASH, script_gate(p), "--print", p.define], p.raiz)
     if r.returncode != 0:
-        return r.returncode, "", ""
+        return r.returncode, "", "", []
     linhas = [ln for ln in r.stdout.split("\n") if re.match(r"^(kind|cmd|pass_when|threshold|manual_fallback):", ln)]
     cmd = next((ln.split(":", 1)[1].strip() for ln in linhas if ln.startswith("cmd:")), "")
-    return 0, hashlib.sha256("\n".join(linhas).encode("utf-8")).hexdigest(), cmd
+    return 0, hashlib.sha256("\n".join(linhas).encode("utf-8")).hexdigest(), cmd, linhas
 
 
 def checar(p):
@@ -253,6 +258,31 @@ def limite(p, valor_flag):
 
 
 # ── estado ───────────────────────────────────────────────────────────────────────────────────────
+def inteiro(v):
+    return isinstance(v, int) and not isinstance(v, bool)
+
+
+def forma_ok(st):
+    """A forma inteira: estado que abre mas não fecha viraria traceback ou rodada contada errado adiante."""
+    if not isinstance(st, dict) or any(k not in st for k in CAMPOS_ESTADO):
+        return False
+    if not all(isinstance(st[k], str) for k in ("feature", "define", "gate_sha", "gate_cmd", "inicio")) or not inteiro(st["maximo"]):
+        return False
+    if not (isinstance(st["gates"], list) and isinstance(st["trocas_gate"], list) and isinstance(st["recibos"], list)):
+        return False
+    for g in st["gates"]:
+        if not isinstance(g, dict) or not all(inteiro(g.get(k)) for k in ("n", "rodada", "exit")) \
+                or not all(isinstance(g.get(k), str) for k in ("commit", "log", "impressao")):
+            return False
+    for t in st["trocas_gate"]:
+        if not isinstance(t, dict) or not all(isinstance(t.get(k), str) for k in ("de", "para", "data")):
+            return False
+    if not all(isinstance(r, str) for r in st["recibos"]):
+        return False
+    rep = st.get("repeticao", dict(chave="", n=0))
+    return isinstance(rep, dict) and isinstance(rep.get("chave"), str) and inteiro(rep.get("n"))
+
+
 def le_estado(p):
     """(estado, defeito). estado None quando não dá para confiar no arquivo."""
     caminho = p.p(p.estado)
@@ -262,8 +292,7 @@ def le_estado(p):
         st = json.loads(ler(caminho))
     except ValueError as e:
         return None, "%s não é um JSON legível: %s" % (p.estado, e)
-    if not isinstance(st, dict) or any(k not in st for k in CAMPOS_ESTADO) or not isinstance(st["gates"], list) \
-            or not isinstance(st["maximo"], int):
+    if not forma_ok(st):
         return None, "%s não tem os campos esperados" % p.estado
     if st["define"] != p.define:
         return None, "%s é de outro DEFINE (%s)" % (p.estado, st["define"])
@@ -302,6 +331,7 @@ def relatorio(p, st, motivo, extra=""):
            "| DEFINE | `%s` |" % st["define"],
            "| Commit inicial | `%s` |" % st["inicio"][:12],
            "| Teste final | `%s` |" % st["gate_cmd"].replace("|", "\\|")]
+    extra = extra or st.get("detalhe") or ""
     if extra:
         lin += ["", extra]
     lin += ["", "## Testes finais", "", "| # | Rodada | Commit | Exit | Log |", "|---|---|---|---|---|"]
@@ -322,7 +352,7 @@ def relatorio(p, st, motivo, extra=""):
 
 def parada(p, st, motivo, extra=""):
     if st is not None:
-        st["motivo"] = motivo
+        st["motivo"], st["detalhe"] = motivo, extra
         grava_estado(p, st)
         relatorio(p, st, motivo, extra)
     print("motivo: " + motivo)
@@ -350,11 +380,15 @@ def carrega(p):
 
 
 def confere_gate(p, st):
-    rc, sha, cmd = impressao_digital(p)
+    rc, sha, cmd, linhas = bloco_do_gate(p)
     if rc != 0:
         parada(p, st, "define-invalido", "verify-gate.sh --print saiu %d." % rc)
     if sha != st["gate_sha"]:
-        parada(p, st, "gate-alterado", "antes: %s\nagora: %s" % (st["gate_cmd"], cmd))
+        extra = "antes: %s\nagora: %s" % (st["gate_cmd"], cmd)
+        if cmd == st["gate_cmd"]:  # o comando é o mesmo: o que mudou foi outro campo do bloco
+            antes = st.get("gate_linhas") or []
+            extra += "\nO comando é igual; mudou outro campo do bloco:\n" + "\n".join("   " + ln for ln in linhas if ln not in antes)
+        parada(p, st, "gate-alterado", extra)
     rc = checar(p)
     if rc == 5:
         parada(p, st, "clarificacao-pendente")
@@ -400,7 +434,7 @@ def tarefas(p, st):
         # linha nova do manifest (o DESIGN cresceu num CORRIGIR) vira tarefa pendente
         texto = ler(caminho)
         ja = re.findall(r"(?m)^- \[(?: |x|X)\] (.+)$", texto)
-        novos = [i for i in linhas_do_manifest(p) if not any(j == i or j.startswith(i + " ") for j in ja)]
+        novos = [i for i in linhas_do_manifest(p) if not any(re.match(re.escape(i) + r"(\s+[·—(-]|\s*$)", j) for j in ja)]
         if ja and novos:
             gravar_atomico(caminho, texto.rstrip("\n") + "\n" + "".join("- [ ] %s\n" % i for i in novos))
     pend, total = [], 0
@@ -453,6 +487,10 @@ def gate_rodando(p):
         return 0
 
 
+def msg_rodando(p, pid):
+    return "O teste final está rodando (processo %d). Se não há teste nenhum rodando, apague %s." % (pid, os.path.relpath(trava(p), p.raiz))
+
+
 def pega_trava(p):
     try:
         os.makedirs(os.path.dirname(trava(p)), exist_ok=True)
@@ -484,7 +522,9 @@ def fora_dos_documentos(p):
         k += 1
         if len(reg) < 4:
             continue
-        if reg[0] in "RC":  # rename: o nome antigo vem no campo seguinte
+        if reg[0] in "RC":  # rename: o nome antigo vem no campo seguinte, e tirar código do lugar também é mudança de código
+            if k < len(itens) and not itens[k].startswith(SO_DOCUMENTOS):
+                saida.append(itens[k])
             k += 1
         if not reg[3:].startswith(SO_DOCUMENTOS):
             saida.append(reg[3:])
@@ -494,12 +534,10 @@ def fora_dos_documentos(p):
 def proxima(p, st):
     pid = gate_rodando(p)
     if pid:
-        return "ESPERAR", "O teste final está rodando (processo %d)." % pid
+        return "ESPERAR", msg_rodando(p, pid)
     if not tem_design(p):
         return "DESIGN", ""
     rc, parou, revisao, motivo = seguir_design(p)
-    if rc == 64:
-        falha("sdd-fluxo.sh seguir saiu 64: " + motivo)
     if rc != 0 and not parou:
         falha("sdd-fluxo.sh seguir saiu %d sem dizer o motivo: %s" % (rc, motivo))
     if rc != 0:
@@ -544,7 +582,7 @@ def precondicoes(p):
     rc, remoto = git(p.raiz, "symbolic-ref", "--quiet", "refs/remotes/origin/HEAD")
     if rc == 0 and remoto.strip():
         padroes.add(remoto.strip().replace("refs/remotes/origin/", "", 1))
-    if atual.strip() in (padroes or {"main"}):
+    if atual.strip() in (padroes or {"main", "master"}):
         parada(p, None, "branch-padrao", "Branch atual: %s." % atual.strip())
     if not os.path.isfile(p.abs):
         parada(p, None, "define-invalido", "Arquivo não encontrado: %s." % p.define)
@@ -588,14 +626,14 @@ def cmd_iniciar(args):
     precondicoes(p)
     if os.path.exists(p.p(p.estado)):
         parada(p, None, "estado-invalido", "Já existe uma execução em %s: use --resume, ou apague o arquivo para recomeçar." % p.estado)
-    rc, sha, cmd = impressao_digital(p)
+    rc, sha, cmd, linhas = bloco_do_gate(p)
     if rc != 0:
         parada(p, None, "define-invalido", "verify-gate.sh --print saiu %d." % rc)
     head = p.head()
     if not head:
         falha("o repositório ainda não tem commit", "faça o 1º commit e rode de novo.")
-    st = dict(versao=2, feature=p.feature, define=p.define, gate_sha=sha, gate_cmd=cmd, inicio=head, maximo=maximo,
-              gates=[], trocas_gate=[], recibos=[], repeticao=dict(chave="", n=0), motivo="", avisou_paradas=False)
+    st = dict(versao=2, feature=p.feature, define=p.define, gate_sha=sha, gate_cmd=cmd, inicio=head, maximo=maximo, gate_linhas=linhas,
+              gates=[], trocas_gate=[], recibos=[], repeticao=dict(chave="", n=0), motivo="", detalhe="", parada_gate="", avisou_paradas=False)
     grava_estado(p, st)
     nome, detalhe = proxima(p, st)
     acao(p, st, nome, detalhe)
@@ -613,13 +651,15 @@ def cmd_resume(args):
     if novo_max is not None:
         st["maximo"] = novo_max
     if aceitar:
-        rc, sha, cmd = impressao_digital(p)
+        rc, sha, cmd, linhas = bloco_do_gate(p)
         if rc == 0 and sha != st["gate_sha"]:
             st["trocas_gate"].append(dict(de=st["gate_cmd"], para=cmd, data=datetime.date.today().isoformat()))
-            st["gate_sha"], st["gate_cmd"] = sha, cmd
+            st["gate_sha"], st["gate_cmd"], st["gate_linhas"] = sha, cmd, linhas
+            grava_estado(p, st)
+            relatorio(p, st, st.get("motivo") or "")
     confere_gate(p, st)
     st["repeticao"] = dict(chave="", n=0)
-    st["motivo"] = ""
+    st["motivo"], st["detalhe"], st["parada_gate"] = "", "", ""
     grava_estado(p, st)
     if vermelhos(st) >= st["maximo"]:
         parada(p, st, "orcamento-rodadas", "Rodadas vermelhas: %d de %d. Sem subir o limite (--max), não há o que retomar." % (vermelhos(st), st["maximo"]))
@@ -650,10 +690,10 @@ def cmd_proximo(args):
     st = carrega(p)
     pid = gate_rodando(p)
     if pid:
-        acao(p, st, "ESPERAR", "O teste final está rodando (processo %d)." % pid)
-    if st.get("motivo") in PARADAS_DO_GATE:
+        acao(p, st, "ESPERAR", msg_rodando(p, pid))
+    if st.get("parada_gate") in PARADAS_DO_GATE:
         ult = st["gates"][-1] if st["gates"] else None
-        parada(p, st, st["motivo"], "log: " + ult["log"] if ult else "")
+        parada(p, st, st["parada_gate"], "log: " + ult["log"] if ult else "")
     confere_gate(p, st)
     barra_orcamento(p, st)
     nome, detalhe = proxima(p, st)
@@ -679,7 +719,7 @@ def cmd_verificar(args):
     herdada = os.environ.get("SDD_DRIVE_TRAVA_HERDADA") == "1"
     pid = gate_rodando(p)
     if pid and not herdada:
-        acao(p, st, "ESPERAR", "O teste final está rodando (processo %d)." % pid)
+        acao(p, st, "ESPERAR", msg_rodando(p, pid))
     confere_gate(p, st)
     barra_orcamento(p, st)
     sujos = fora_dos_documentos(p)
@@ -706,6 +746,10 @@ def cmd_verificar(args):
     while os.path.exists(p.p(log)):  # log cortado de uma execução morta não é sobrescrito
         n += 1
         log = "sdd/reports/evidence/%s/DRIVE-gate-r%d.log" % (p.feature, n)
+    # O que o gate prova é o que existia quando ele começou: um commit ou uma troca de comando no meio não ganham esse verde.
+    commit_testado, impressao_testada = p.head(), st["gate_sha"]
+    env_gate = dict(os.environ)
+    env_gate.pop("SDD_DRIVE_TRAVA_HERDADA", None)  # a suíte de um projeto pode exercitar este mesmo script
     try:
         os.makedirs(os.path.dirname(p.p(log)), exist_ok=True)
         print("▶ rodando o teste final; isso pode levar alguns minutos.", file=sys.stderr)
@@ -714,7 +758,7 @@ def cmd_verificar(args):
             f.write("$ verify-gate.sh %s\n" % p.define)
             f.flush()
             r = subprocess.run([BASH, script_gate(p), p.define], cwd=p.raiz, stdout=f, stderr=subprocess.STDOUT,
-                               stdin=subprocess.DEVNULL)
+                               stdin=subprocess.DEVNULL, env=env_gate)
             f.write("[exit=%d]\n" % r.returncode)
     except OSError as e:
         solta_trava(p)
@@ -722,13 +766,17 @@ def cmd_verificar(args):
     rc = r.returncode
     st = carrega(p)  # um recibo ou uma retomada pode ter gravado enquanto o gate rodava
     rodada = rodada_atual(st)
-    st["gates"].append(dict(n=n, rodada=rodada, commit=p.head(), exit=rc, log=log, impressao=st["gate_sha"]))
+    st["gates"].append(dict(n=n, rodada=rodada, commit=commit_testado, exit=rc, log=log, impressao=impressao_testada))
     st["repeticao"] = dict(chave="", n=0)
-    st["motivo"] = ""
+    st["motivo"], st["detalhe"], st["parada_gate"] = "", "", ""
+    if rc in (3, 4, 5, 64) or rc not in (0, 2):
+        st["parada_gate"] = {4: "manual-ux", 5: "clarificacao-pendente", 64: "define-invalido"}.get(rc, "gate-inconclusivo")
     grava_estado(p, st)
     solta_trava(p)
     if rc == 0:
-        acao(p, st, "AVALIAR_E_RELATAR", "O teste final passou (log: %s). Ainda não publiquei nada." % log)
+        nome, detalhe = proxima(p, st)
+        acao(p, st, nome, "O teste final passou (log: %s). Ainda não publiquei nada." % log if nome == "AVALIAR_E_RELATAR"
+             else "O teste final passou, mas há código novo depois de quando ele começou (log: %s)." % log)
     if rc == 2:
         if vermelhos(st) >= st["maximo"]:
             parada(p, st, "orcamento-rodadas", "Rodadas vermelhas: %d de %d · log: %s" % (vermelhos(st), st["maximo"], log))
@@ -748,16 +796,16 @@ def cmd_concluir(args):
     st = carrega(p)
     confere_gate(p, st)
     barra_orcamento(p, st)
-    ult = ultimo_valido(st)
-    if not ult or ult["exit"] != 0:
-        nome, detalhe = proxima(p, st)
-        acao(p, st, nome, detalhe)
     sujos = fora_dos_documentos(p)
     if sujos:
         acao(p, st, "COMMITAR", lista_sujos(sujos))
-    head = p.head()
-    if ult["commit"] != head and not so_documentos(p, ult["commit"], head):
-        acao(p, st, "VERIFICAR", "Há código novo depois do último teste final verde (%s)." % ult["commit"][:12])
+    # concluir e proximo respondem a mesma coisa: tarefa reaberta, DESIGN sumido ou código novo não viram verde.
+    nome, detalhe = proxima(p, st)
+    if nome != "AVALIAR_E_RELATAR":
+        ult = ultimo_valido(st)
+        if nome == "VERIFICAR" and ult and ult["exit"] == 0:
+            detalhe = "Há código novo depois do último teste final verde (%s)." % ult["commit"][:12]
+        acao(p, st, nome, detalhe)
     if not os.path.isfile(p.p(p.build_report)):
         acao(p, st, "AVALIAR_E_RELATAR", "Falta %s." % p.build_report)
     lint = os.path.join(BIN, "report-lint.py")
@@ -867,7 +915,8 @@ def cmd_self_test(args):
     tmp = tempfile.mkdtemp(prefix="sdd-drive-")
     falhas = []
     env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@example.com", GIT_COMMITTER_NAME="t",
-               GIT_COMMITTER_EMAIL="t@example.com", GIT_CONFIG_NOSYSTEM="1", GIT_CEILING_DIRECTORIES=tmp, SDD_TRACE="off")
+               GIT_COMMITTER_EMAIL="t@example.com", GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_CEILING_DIRECTORIES=tmp,
+               SDD_TRACE="off")
     for chave in ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "SDD_DRIVE_TRAVA_HERDADA"):
         env.pop(chave, None)
 
@@ -1018,4 +1067,6 @@ except subprocess.TimeoutExpired as e:
     falha("um comando passou do tempo: %s" % (e.cmd,))
 except OSError as e:
     falha("erro de sistema: %s" % e)
+except Exception as e:  # nunca um traceback, nunca exit 1: a quem lê, isso não diria o que fazer
+    falha("erro inesperado: %s: %s" % (type(e).__name__, e))
 PY

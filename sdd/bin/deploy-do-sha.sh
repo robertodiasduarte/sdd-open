@@ -127,6 +127,8 @@ class Deploy:
             raise ConsultaFalhou(str(e))
         if r.returncode != 0:
             texto = (r.stderr or r.stdout).strip()
+            if re.search(r"could not find any workflows|workflow .*not found", texto, re.I):
+                uso("o GitHub não conhece o workflow '%s': %s" % (self.workflow, texto.split("\n")[0]))
             if re.search(r"auth login|not logged|HTTP 401", texto):
                 fim(3, "⚠️ inconclusivo — o gh não está logado (%s)." % texto.split("\n")[0], "INCONCLUSIVO",
                     "rode gh auth login e repita; não concluí nada sobre o deploy.")
@@ -145,16 +147,18 @@ class Deploy:
         return [r for r in runs if isinstance(r, dict) and r.get("headBranch") == self.branch
                 and r.get("event") in ("push", "workflow_dispatch")]
 
-    def passo_falho(self, run_id):
+    def passos_falhos(self, run_id):
+        """Todos os passos que falharam: um passageiro no job 1 não esconde um real no job 2. [] se não deu para ler."""
         try:
-            dados = json.loads(self.gh("run", "view", str(run_id), "--json", "jobs") or "dict()")
+            dados = json.loads(self.gh("run", "view", str(run_id), "--json", "jobs") or "[]")
         except (ValueError, ConsultaFalhou):
-            return None
-        for job in dados.get("jobs") or []:
-            for passo in job.get("steps") or []:
-                if passo.get("conclusion") == "failure":
-                    return passo.get("name")
-        return None
+            return []
+        saida = []
+        for job in (dados.get("jobs") or []) if isinstance(dados, dict) else []:
+            for passo in (job.get("steps") or []) if isinstance(job, dict) else []:
+                if isinstance(passo, dict) and passo.get("conclusion") == "failure":
+                    saida.append(passo.get("name"))
+        return saida
 
     def git(self, *args):
         try:
@@ -294,7 +298,7 @@ def main():
                 else:
                     if not ja_redisparou and any(r.get("event") == "workflow_dispatch" for r in meus):
                         ja_redisparou, origem = True, "workflow_dispatch"
-                    novos = [r for r in (da_branch or []) if r.get("headSha") != x and mais_novo_que(r, proprio)]
+                    novos = [r for r in (da_branch or []) if isinstance(r.get("headSha"), str) and r.get("headSha") != x and mais_novo_que(r, proprio)]
                     descendentes, incertos = [], []
                     for r in novos:
                         c = d.contem(r.get("headSha"))
@@ -333,7 +337,9 @@ def main():
                             motivo = "o run %s saiu %s, e nenhum deploy mais novo contém %s" % (alvo_run, conc, curto(x))
                         fim(2, "🔴 não está no ar — " + motivo, "NAO ESTA NO AR", "abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.")
                     else:
-                        passo = d.passo_falho(alvo_run)
+                        passos = d.passos_falhos(alvo_run)
+                        real = [q for q in passos if q not in transitorios]
+                        passo = (real or passos or [None])[0]
                         trecho = "🔴 falhou — run %s%s" % (alvo_run, ' ("%s")' % passo if passo else "")
                         seta = "abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun."
                         if novos:
@@ -344,7 +350,7 @@ def main():
                             fim(2, "%s; não repeti: este commit já foi repetido 1 vez (%s)." % (trecho, origem), "FALHOU", seta)
                         if not transitorios:
                             fim(2, "%s; não repeti: deploy.transient_steps está vazio, e aí eu nunca repito sozinho." % trecho, "FALHOU", seta)
-                        if passo not in transitorios:
+                        if not passos or real:
                             fim(2, "%s; não repeti: este passo não está em deploy.transient_steps." % trecho, "FALHOU", seta)
                         ponta = d.ponta()
                         if not ponta:
@@ -364,7 +370,7 @@ def main():
             ultimo_erro = ""
         except ConsultaFalhou as e:
             ultimo_erro = str(e)
-            print("⏳ consulta falhou (%s): tentando de novo." % e, file=sys.stderr)
+            espera("consulta falhou (%s), tentando de novo" % e, alvo_run)
         if time.time() - inicio >= teto:
             fim(4, "⏳ ainda não sei — o deploy não terminou em %d min (run %s); isso não é falha.%s" % (
                 int(teto / 60), alvo_run, " Último erro de consulta: %s." % ultimo_erro if ultimo_erro else ""), "AINDA NAO SEI",
@@ -377,5 +383,9 @@ try:
 except subprocess.TimeoutExpired as e:
     print("🛑 deploy-do-sha: um comando passou do tempo: %s" % (e.cmd,), file=sys.stderr)
     print("RESULTADO: AINDA NAO SEI\n→ rode de novo; não concluí nada sobre o deploy.")
+    sys.exit(4)
+except Exception as e:  # resposta inesperada do gh nunca vira verde nem traceback
+    print("🛑 deploy-do-sha: resposta inesperada: %s: %s" % (type(e).__name__, e), file=sys.stderr)
+    print("RESULTADO: AINDA NAO SEI\n→ abra o run no GitHub e confira à mão; não concluí nada sobre o deploy.")
     sys.exit(4)
 PY

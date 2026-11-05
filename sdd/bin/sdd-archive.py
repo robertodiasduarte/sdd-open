@@ -29,12 +29,14 @@ import subprocess
 import sys
 
 PASTAS = ("features", "reports", "reviews")
-PREFIXOS = ("BRAINSTORM|DEFINE|DESIGN|UX_REVIEW|GOVERNANCA_REVIEW|BUILD_REPORT|DRIVE_REPORT|AVALIACAO|REVISAO_DESIGN|"
-            "REVISAO|RUNBOOK|PLANO|SPEC|EVIDENCIA|RELEASE|CHECKLIST|ANALISE|AUDITORIA|PROPOSTA|BUILD_PLAN|FIX|FIX_REPORT|SMOKE")
+# O mais longo primeiro: com FIX antes de FIX_REPORT, FIX_REPORT_F14 viraria a feature REPORT_F14 e escaparia da ficha aberta.
+PREFIXOS = "|".join(sorted(("BRAINSTORM", "DEFINE", "DESIGN", "UX_REVIEW", "GOVERNANCA_REVIEW", "BUILD_REPORT", "DRIVE_REPORT", "AVALIACAO",
+                            "REVISAO_DESIGN", "REVISAO", "RUNBOOK", "PLANO", "SPEC", "EVIDENCIA", "RELEASE", "CHECKLIST", "ANALISE", "AUDITORIA",
+                            "PROPOSTA", "BUILD_PLAN", "FIX", "FIX_REPORT", "SMOKE"), key=len, reverse=True))
 SUFIXOS = r"(?:_FIX\d*|_AUDITORIA.*|_\d{4}-\d{2}-\d{2}.*|_\d{8}.*)?"
 # Só o slice minúsculo (_s2, _s3b) sai do nome; _V2 e _S4 maiúsculos são nome de feature.
-RX = re.compile(r"^(?:" + PREFIXOS + r")_([A-Z0-9][A-Z0-9_]*?)(?:_s\d+[a-z]?)?" + SUFIXOS + r"\.md$")
-RX_INTEIRO = re.compile(r"^(?:" + PREFIXOS + r")_([A-Z0-9][A-Z0-9_]*?)" + SUFIXOS + r"\.md$")
+RX = re.compile(r"^(?:" + PREFIXOS + r")_([A-Za-z0-9][A-Za-z0-9_-]*?)(?:_s\d+[a-z]?)?" + SUFIXOS + r"\.md$")
+RX_INTEIRO = re.compile(r"^(?:" + PREFIXOS + r")_([A-Za-z0-9][A-Za-z0-9_-]*?)" + SUFIXOS + r"\.md$")
 LOTES = ("com-ledger", "sem-ledger", "soltos")
 
 
@@ -94,10 +96,17 @@ def fichas():
         if s and s.group(1).strip().startswith("✅"):  # a mesma regra do handoff-lint.py
             continue
         abertas[m.group(1)] = corpo
+        # ficha de um slice (HANDOFF_G_s2) protege a feature inteira
+        abertas.setdefault(re.sub(r"_s\d+[a-z]?$", "", m.group(1)), corpo)
     return abertas
 
 
 def main():
+    for canal in (sys.stdout, sys.stderr):
+        try:
+            canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+        except Exception:
+            pass
     ap = Parser(description="Faxina retroativa dos documentos do SDD; simulação por padrão.")
     ap.add_argument("--lote", choices=LOTES)
     ap.add_argument("--aplicar", action="store_true")
@@ -136,9 +145,25 @@ def main():
     r = git("ls-files", "-z", "--", "sdd/features", "sdd/reports", "sdd/reviews")
     rastreados = set(p for p in texto(r.stdout).split("\0") if p)
 
+    r = git("status", "--porcelain", "-z", "--untracked-files=all", "--", "sdd/features", "sdd/reports", "sdd/reviews")
+    sujos = set(reg[3:] for reg in texto(r.stdout).split("\0") if len(reg) > 3)
+
+    def data_real(p):
+        """Arquivo sujo ou que o git não conhece: vale a última edição, não o último commit."""
+        if p in rastreados and p not in sujos:
+            return data_de(ultimo.get(p) or "")
+        try:
+            return datetime.date.fromtimestamp(os.path.getmtime(p))
+        except OSError:
+            return data_de(ultimo.get(p) or "")
+
     def idade(p):
-        d = data_de(ultimo.get(p) or "")
+        d = data_real(p)
         return (hoje - d).days if d else 10 ** 6
+
+    def mes_de(p):
+        d = data_real(p)
+        return d.isoformat()[:7] if d else "0000-00"
 
     abertas = fichas()
     citado = "\n".join(abertas.values())
@@ -196,14 +221,14 @@ def main():
                 recentes.append((g, len(arquivos), q, a.dias_b))
         elif q >= a.dias_b:
             for p in arquivos:
-                mes = (ultimo.get(p) or "0000-00")[:7]
-                lotes["soltos"].append((p, "sdd/archive/_REPORTS_%s/%s" % (mes, os.path.basename(p))))
+                lotes["soltos"].append((p, "sdd/archive/_REPORTS_%s/%s" % (mes_de(p), os.path.basename(p))))
         else:
             recentes.append((g, len(arquivos), q, a.dias_b))
     for p in sem_grupo:
-        if "/features/" not in p and idade(p) >= a.dias_b:
-            mes = (ultimo.get(p) or "0000-00")[:7]
-            lotes["soltos"].append((p, "sdd/archive/_REPORTS_%s/%s" % (mes, os.path.basename(p))))
+        if os.path.basename(p) in citado or p in citado:
+            protegidos.append((os.path.basename(p), 1, "documento citado numa ficha aberta"))
+        elif "/features/" not in p and idade(p) >= a.dias_b:
+            lotes["soltos"].append((p, "sdd/archive/_REPORTS_%s/%s" % (mes_de(p), os.path.basename(p))))
         else:
             nao_class.append(p)
 
