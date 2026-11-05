@@ -201,6 +201,38 @@ class Recusas(Base):
         rc, _o, e = self.roda([BASH, self.r / "sdd/bin/sdd-drive.sh", "iniciar", D], fora)
         self.assertEqual(rc, 64, e)
 
+    def test_link_que_sai_do_repositorio_e_recusado(self):
+        # R2 da rodada 2
+        fora = self.tmp / "fora"
+        fora.mkdir()
+        import os as _os
+        _os.symlink(str(fora), str(self.r / "sdd/reports"))
+        rc, out, err = self.drive("iniciar", D)
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("aponta para fora do repositório", err)
+        self.assertEqual(list(fora.iterdir()), [])
+
+    def test_link_dentro_do_repositorio_passa(self):
+        # o outro lado de R2
+        (self.r / "outra").mkdir()
+        import os as _os
+        _os.symlink(str(self.r / "outra"), str(self.r / "sdd/reports"))
+        self.escreve(self.r, ".gitignore", ".verde\ngate.calls\n.lint-rc\n.rc\nbrief.md\nsdd/reports\noutra/\n")
+        self.commit(self.r)
+        self.assertAcao(self.drive("iniciar", D), "RODADA")
+        self.assertTrue((self.r / "outra/progress/DRIVE_F.json").is_file())
+
+    def test_define_em_latin1_e_invalido(self):
+        # R6 da rodada 2
+        (self.r / D).write_bytes(define().encode("utf-8") + b"\nnota\xe7\n")
+        self.assertParada(self.drive("iniciar", D), "define-invalido")
+        self.assertFalse(self.existe(ESTADO))
+
+    def test_define_em_utf8_com_acento_passa(self):
+        # o outro lado de R6
+        self.escreve(self.r, D, define(corpo="ação válida"))
+        self.assertAcao(self.drive("iniciar", D), "RODADA")
+
     def test_nao_consegue_gravar_sai_2(self):
         self.escreve(self.r, "sdd/reports", "arquivo no lugar da pasta\n")
         rc, out, err = self.drive("iniciar", D)
@@ -360,6 +392,25 @@ class Proxima(Base):
         self.escreve(self.r, "sdd/reports/briefs/BRIEF_executor-drive_F.md", "x\n")
         res = self.drive("aguardar", D, "executor-drive", "sdd/reports/briefs/BRIEF_executor-drive_F.md")
         self.assertParada(res, "aguardando-sessao", 40)
+
+    def test_anotacao_nova_nao_zera_a_repeticao(self):
+        # R1 da rodada 2: o executor anota um erro diferente a cada volta, sem que nada ande
+        self.drive("iniciar", D)
+        self.escreve(self.r, PROGRESS, "- [ ] a — falhou X\n- [ ] b\n")
+        self.assertAcao(self.drive("proximo", D), "RODADA")
+        self.escreve(self.r, PROGRESS, "- [ ] a — falhou Y\n- [ ] b\n")
+        self.assertAcao(self.drive("proximo", D), "RODADA")
+        self.escreve(self.r, PROGRESS, "- [ ] a — falhou Z\n- [ ] b\n")
+        self.assertParada(self.drive("proximo", D), "bloqueio-humano")
+
+    def test_tarefa_que_anda_zera_a_repeticao_mesmo_sem_commit(self):
+        # o outro lado de R1: marcar [x] muda a posição
+        self.drive("iniciar", D)
+        self.assertAcao(self.drive("proximo", D), "RODADA")
+        self.assertAcao(self.drive("proximo", D), "RODADA")
+        self.escreve(self.r, PROGRESS, "- [x] a\n- [ ] b\n")
+        self.assertAcao(self.drive("proximo", D), "RODADA")
+        self.assertAcao(self.drive("proximo", D), "RODADA")
 
     def test_anotacao_de_erro_no_progress_nao_cria_tarefa(self):
         # R8 da rodada 1
@@ -679,14 +730,29 @@ class CommitDuranteOGate(Base):
         self.espera_acabar()
         self.assertParada(self.drive("concluir", D), "gate-verde", 0)
 
-    def test_troca_de_comando_aceita_no_meio_nao_vale_o_gate_que_nao_rodou(self):
+    def test_troca_de_comando_no_meio_nao_vale_o_gate_que_nao_rodou(self):
         self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
         self.gate_comecou()
         self.escreve(self.r, D, define(cmd="false"))
-        self.drive("--resume", D, "--aceitar-gate-novo")
+        # R5 da rodada 2: com o gate rodando, o --resume não grava nada, nem o aceite
+        self.assertAcao(self.drive("--resume", D, "--aceitar-gate-novo"), "ESPERAR")
         self.espera_acabar()
         self.escreve(self.r, "sdd/reports/BUILD_REPORT_F.md", "x\n")
+        self.assertParada(self.drive("concluir", D), "gate-alterado")
+        self.assertAcao(self.drive("--resume", D, "--aceitar-gate-novo"), "VERIFICAR")
         self.assertAcao(self.drive("concluir", D), "VERIFICAR")
+
+    def test_verde_com_arquivo_novo_lista_o_arquivo(self):
+        # R4 da rodada 2: a frase fixa perdia a lista que a ação pede
+        self.escreve(self.r, D, define(cmd="echo x >> gate.calls; echo y > coverage.xml"))
+        self.commit(self.r)
+        (self.r / ESTADO).unlink()
+        self.drive("iniciar", D)
+        self.feito()
+        res = self.drive("verificar", D)
+        self.assertAcao(res, "COMMITAR")
+        self.assertIn("   - coverage.xml", res[1])
+        self.assertIn("O teste final passou", res[1])
 
     def test_a_variavel_no_ambiente_de_quem_chama_nao_abre_a_trava(self):
         # L11 do ciclo 2: só o filho do --fundo herda

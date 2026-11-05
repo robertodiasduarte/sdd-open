@@ -224,7 +224,8 @@ removido.
    para produção tem commit correspondente — deploy sem source commitado é proibido.
 10. **Verificar — pelo commit publicado, não pelo último run.** `{{DRIFT_CHECK_CMD}}` exit 0; smoke da rota principal; e, se
     a publicação roda num workflow:
-    `bash sdd/bin/deploy-do-sha.sh --commit <SHA publicado> --workflow <arquivo> --branch {default_branch}`. O `--workflow` vem do
+    `bash sdd/bin/deploy-do-sha.sh --commit <SHA publicado> --workflow <arquivo> --branch {default_branch}`, na pasta da frente, a que
+    tem o `sdd/config.yaml` (o worktree temporário do passo 5 pode não ter os passos passageiros). O `--workflow` vem do
     slot `deploy.workflow`; vazio, passe o arquivo que a linha ✅ do `deploy-espera-testes.py` citou no item 7. No caminho do PR, o
     SHA publicado é o do merge. O script espera até 40 minutos: rode em segundo plano, onde o agente permite; onde não, chame com
     `--teto 300` e repita enquanto sair 4, o que é seguro (nada é repetido por causa disso).

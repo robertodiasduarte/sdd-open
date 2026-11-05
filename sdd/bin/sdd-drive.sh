@@ -190,6 +190,7 @@ class Projeto:
         self.estado = "sdd/reports/progress/DRIVE_%s.json" % self.feature
         self.relatorio = "sdd/reports/DRIVE_REPORT_%s.md" % self.feature
         self.build_report = "sdd/reports/BUILD_REPORT_%s.md" % self.feature
+        confere_dentro(self)
 
     def p(self, rel):
         return os.path.join(self.raiz, rel)
@@ -295,6 +296,14 @@ def forma_ok(st):
         return False
     rep = st.get("repeticao", dict(chave="", n=0))
     return isinstance(rep, dict) and isinstance(rep.get("chave"), str) and inteiro(rep.get("n"))
+
+
+def confere_dentro(p):
+    """Link que sai do repositório levaria estado, relatório e log para fora: recusa antes de gravar qualquer coisa."""
+    for rel in ("sdd/reports", "sdd/reports/progress", "sdd/reports/evidence", "sdd/reports/evidence/" + p.feature):
+        alvo = os.path.realpath(p.p(rel))
+        if not (alvo + os.sep).startswith(p.raiz + os.sep):
+            falha("%s aponta para fora do repositório (%s)." % (rel, alvo), "troque o link por uma pasta do projeto e rode de novo.")
 
 
 def le_estado(p):
@@ -417,10 +426,21 @@ def branch_proibida(p):
     return ""
 
 
+def define_em_utf8(p):
+    try:
+        with open(p.abs, "rb") as f:
+            f.read().decode("utf-8")
+    except (OSError, UnicodeDecodeError):
+        return False
+    return True
+
+
 def confere_gate(p, st):
     motivo = branch_proibida(p)
     if motivo:
         parada(p, st, "branch-padrao", motivo)
+    if not define_em_utf8(p):
+        parada(p, st, "define-invalido", "%s não está em UTF-8, ou não pôde ser lido." % p.define)
     rc, sha, cmd, linhas = bloco_do_gate(p)
     if rc != 0:
         parada(p, st, "define-invalido", "verify-gate.sh --print saiu %d." % rc)
@@ -662,6 +682,8 @@ def precondicoes(p):
         parada(p, None, "branch-padrao", motivo)
     if not os.path.isfile(p.abs):
         parada(p, None, "define-invalido", "Arquivo não encontrado: %s." % p.define)
+    if not define_em_utf8(p):
+        parada(p, None, "define-invalido", "%s não está em UTF-8." % p.define)
     rc = checar(p)
     if rc == 5:
         parada(p, None, "clarificacao-pendente")
@@ -724,6 +746,9 @@ def cmd_resume(args):
     p = Projeto(resto[0])
     novo_max = limite(p, flag) if flag is not None else None
     st = carrega(p)
+    pid = gate_rodando(p)
+    if pid:  # nada se grava com o gate rodando: o fim dele traria um estado que esta escrita apagaria
+        acao(p, st, "ESPERAR", msg_rodando(p, pid))
     if novo_max is not None:
         st["maximo"] = novo_max
     if aceitar:
@@ -770,7 +795,9 @@ def conta_repeticao(p, st, nome, detalhe):
     if nome == "ESPERAR":
         return
     sha_design = hashlib.sha256(ler(p.p(p.design)).encode("utf-8")).hexdigest() if tem_design(p) else ""
-    chave = "|".join((nome, detalhe, p.head(), sha_design))
+    # Na tarefa, conta a posição e não o texto: a anotação de erro muda a cada volta sem que nada tenha andado.
+    identidade = re.sub(r" — .*$", "", detalhe, flags=re.S) if nome == "RODADA" else detalhe
+    chave = "|".join((nome, identidade, p.head(), sha_design))
     rep = st.get("repeticao") or dict(chave="", n=0)
     rep = dict(chave=chave, n=rep["n"] + 1 if rep.get("chave") == chave else 1)
     st["repeticao"] = rep
@@ -838,7 +865,7 @@ def cmd_verificar(args):
         acao(p, st, "ESPERAR", "O teste final foi para o fundo (processo %d); a saída do script fica em %s." % (filho.pid, registro))
     n = len(st["gates"]) + 1
     log = "sdd/reports/evidence/%s/DRIVE-gate-r%d.log" % (p.feature, n)
-    while os.path.exists(p.p(log)):  # log cortado de uma execução morta não é sobrescrito
+    while os.path.lexists(p.p(log)):  # log cortado de uma execução morta não é sobrescrito; link também não é seguido
         n += 1
         log = "sdd/reports/evidence/%s/DRIVE-gate-r%d.log" % (p.feature, n)
     # O que o gate prova é o que existia quando ele começou: um commit ou uma troca de comando no meio não ganham esse verde.
@@ -878,14 +905,16 @@ def cmd_verificar(args):
         parada(p, st, "bloqueio-humano", st.get("detalhe") or "")
     if rc == 0:
         nome, detalhe = proxima(p, st)
-        acao(p, st, nome, "O teste final passou (log: %s). Ainda não publiquei nada." % log if nome == "AVALIAR_E_RELATAR"
-             else "O teste final passou, mas há código novo depois de quando ele começou (log: %s)." % log)
+        frase = ("O teste final passou (log: %s). Ainda não publiquei nada." % log if nome == "AVALIAR_E_RELATAR"
+                 else "O teste final passou, mas há código novo depois de quando ele começou (log: %s)." % log)
+        acao(p, st, nome, frase + ("\n" + detalhe if detalhe else ""))
     if rc == 2:
         if vermelhos(st) >= st["maximo"]:
             parada(p, st, "orcamento-rodadas", "Rodadas vermelhas: %d de %d · log: %s" % (vermelhos(st), st["maximo"], log))
         nome, detalhe = proxima(p, st)
         if nome != "CORRIGIR":
-            detalhe = "O teste final ficou vermelho e gastou 1 rodada (log: %s); há commit novo depois de quando ele começou." % log
+            detalhe = ("O teste final ficou vermelho e gastou 1 rodada (log: %s); há commit novo depois de quando ele começou." % log
+                       + ("\n" + detalhe if detalhe else ""))
         acao(p, st, nome, detalhe)
     if rc == 4:
         parada(p, st, "manual-ux", "log: " + log)
