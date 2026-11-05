@@ -712,7 +712,7 @@ class SegundoPlano(Base):
 
     def test_trava_com_numero_enorme_se_libera(self):
         # L8 do ciclo 3
-        self.escreve(self.r, "sdd/reports/progress/DRIVE_F.lock", "99999999999999999999")
+        self.escreve(self.r, "sdd/reports/progress/DRIVE_F.lock", "9" * 20)  # montado aqui: o publish-gate reprova 11+ dígitos em arquivo
         self.assertAcao(self.drive("proximo", D), "VERIFICAR")
 
     def test_trava_de_processo_morto_se_libera(self):
