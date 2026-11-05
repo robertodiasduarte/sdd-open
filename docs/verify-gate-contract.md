@@ -71,6 +71,13 @@ gate block. See [context-and-governance.md](context-and-governance.md).
 | `5` | clarification pending (marker, or no final `Governança` row) | **stop**, return to `/sdd-define` (or run only its step 11); never iterate the design |
 | `64` | invalid or missing block | the spec is not valid |
 
+## Checking without running
+
+`--print` shows the block and is exempt from the checks: it serves the person writing the DEFINE. `--checar` does the
+opposite: it runs every check the gate would run before the command (marker, `Governança` line, block, `kind`, executable
+`cmd`), never runs the command, writes no trace, and exits `0`, `5` or `64`; a `manual-ux` gate exits `0`. `sdd-drive` uses it
+to refuse a DEFINE before spending anything.
+
 ## The ambiguity marker
 
 Active canonical form — the only one the scanner detects, and only outside code fences:
