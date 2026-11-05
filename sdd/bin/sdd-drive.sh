@@ -288,7 +288,8 @@ def forma_ok(st):
                 or not re.match(r"^[0-9a-f]{7,64}$", g["commit"]):
             return False
     for t in st["trocas_gate"]:
-        if not isinstance(t, dict) or not all(isinstance(t.get(k), str) for k in ("de", "para", "data")):
+        if not isinstance(t, dict) or not all(isinstance(t.get(k), str) for k in ("de", "para", "data")) \
+                or not isinstance(t.get("campos", []), list) or not all(isinstance(c, str) for c in t.get("campos", [])):
             return False
     if not all(isinstance(r, str) for r in st["recibos"]):
         return False
@@ -362,7 +363,8 @@ def relatorio(p, st, motivo, extra=""):
     lin += ["", "## Commits desde o início", ""]
     lin += ["- " + c for c in out.splitlines()] if rc == 0 and out.strip() else ["Nenhum."]
     lin += ["", "## Teste final alterado", ""]
-    lin += ["- de `%s` para `%s`, aceito em %s" % (t["de"], t["para"], t["data"]) for t in st["trocas_gate"]] or ["Nenhuma troca."]
+    lin += ["- de `%s` para `%s`, aceito em %s; agora: %s" % (t["de"], t["para"], t["data"], " · ".join(" ".join(c.split()) for c in t.get("campos") or []))
+            for t in st["trocas_gate"]] or ["Nenhuma troca."]
     lin += ["", "## Decidi sozinho", ""]
     lin += ["- " + t for t in st["recibos"]] or ["Nada."]
     lin += ["", "Nada foi publicado: publicar é decisão da pessoa, pela sdd-release.", ""]
@@ -477,7 +479,7 @@ def tarefas(p, st):
         texto = ler(caminho)
         ja = re.findall(r"(?m)^- \[(?: |x|X)\] (.+)$", texto)
         ja = [j.replace("`", "") for j in ja]
-        novos = [i for i in linhas_do_manifest(p) if not any(re.match(re.escape(i) + r"(\s+[·—(-]|\s*$)", j) for j in ja)]
+        novos = [i for i in linhas_do_manifest(p) if not any(re.match(re.escape(i) + r"(\s+[·—(-]|[:;,]\s|\s*$)", j) for j in ja)]
         if ja and novos:
             gravar_atomico(caminho, texto.rstrip("\n") + "\n" + "".join("- [ ] %s\n" % i for i in novos))
     pend, total = [], 0
@@ -527,6 +529,10 @@ def gate_rodando(p):
         pid = int(ler(trava(p)).strip())
         if pid <= 0:
             raise ValueError("pid inválido")
+        if os.name == "nt":  # no Python nativo do Windows, o sinal 0 é CTRL_C_EVENT: interromperia o gate
+            if str(pid) not in roda(["tasklist", "/FI", "PID eq %d" % pid, "/NH"], p.raiz, 60).stdout:
+                raise ValueError("processo morto")
+            return pid
         os.kill(pid, 0)
         return pid
     except PermissionError:
@@ -544,15 +550,22 @@ def msg_rodando(p, pid):
 
 
 def pega_trava(p):
+    # Atômica, já com o pid: entre criar vazia e preencher, outro processo a tomaria por trava morta e a apagaria.
+    tmp = "%s.%d" % (trava(p), os.getpid())
     try:
         os.makedirs(os.path.dirname(trava(p)), exist_ok=True)
-        fd = os.open(trava(p), os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+        with open(tmp, "w", encoding="utf-8") as f:
+            f.write(str(os.getpid()))
+        os.link(tmp, trava(p))
     except FileExistsError:
         return False
     except OSError as e:
         falha("não consegui gravar %s: %s" % (trava(p), e))
-    with os.fdopen(fd, "w") as f:
-        f.write(str(os.getpid()))
+    finally:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
     return True
 
 
@@ -614,6 +627,9 @@ def proxima(p, st):
     pend, total = tarefas(p, st)
     if pend:
         return "RODADA", "tarefa: %d de %d — %s" % (total - len(pend) + 1, total, pend[0])
+    sujos = fora_dos_documentos(p)
+    if sujos:  # o verde e o vermelho falam de um commit: código sem commit não está em nenhum dos 2
+        return "COMMITAR", lista_sujos(sujos)
     head = p.head()
     ult = ultimo_valido(p, st)
     if ult and (ult["commit"] == head or so_documentos(p, ult["commit"], head)):
@@ -713,12 +729,16 @@ def cmd_resume(args):
     if aceitar:
         rc, sha, cmd, linhas = bloco_do_gate(p)
         if rc == 0 and sha != st["gate_sha"]:
-            st["trocas_gate"].append(dict(de=st["gate_cmd"], para=cmd, data=datetime.date.today().isoformat()))
+            mudou = [ln for ln in linhas if ln not in (st.get("gate_linhas") or [])]
+            st["trocas_gate"].append(dict(de=st["gate_cmd"], para=cmd, data=datetime.date.today().isoformat(), campos=mudou))
             st["gate_sha"], st["gate_cmd"], st["gate_linhas"] = sha, cmd, linhas
             grava_estado(p, st)
             relatorio(p, st, st.get("motivo") or "")
     confere_gate(p, st)
-    st["repeticao"] = dict(chave="", n=0)
+    # Só a pessoa que resolveu um bloqueio zera a conta: sem subagente, toda volta passa por aqui, e a tarefa que não
+    # anda precisa chegar à 3ª repetição do mesmo jeito.
+    if st.get("motivo") == "bloqueio-humano":
+        st["repeticao"] = dict(chave="", n=0)
     st["motivo"], st["detalhe"], st["parada_gate"] = "", "", ""
     grava_estado(p, st)
     if vermelhos(st) >= st["maximo"]:
@@ -731,6 +751,7 @@ def cmd_resume(args):
     print("retomando: rodada %d/%d · %s tarefas prontas · último teste final: %s · não gastei rodada"
           % (rodada_atual(st), st["maximo"], pronto or "0 de 0", ultimo))
     nome, detalhe = proxima(p, st)
+    conta_repeticao(p, st, nome, detalhe)
     acao(p, st, nome, detalhe)
 
 
@@ -743,6 +764,19 @@ def um_define(verbo, args):
 def barra_orcamento(p, st):
     if vermelhos(st) >= st["maximo"]:
         parada(p, st, "orcamento-rodadas", "Rodadas vermelhas: %d de %d." % (vermelhos(st), st["maximo"]))
+
+
+def conta_repeticao(p, st, nome, detalhe):
+    if nome == "ESPERAR":
+        return
+    sha_design = hashlib.sha256(ler(p.p(p.design)).encode("utf-8")).hexdigest() if tem_design(p) else ""
+    chave = "|".join((nome, detalhe, p.head(), sha_design))
+    rep = st.get("repeticao") or dict(chave="", n=0)
+    rep = dict(chave=chave, n=rep["n"] + 1 if rep.get("chave") == chave else 1)
+    st["repeticao"] = rep
+    grava_estado(p, st)
+    if rep["n"] >= REPETICOES:
+        parada(p, st, "bloqueio-humano", "A ação %s não avançou em %d tentativas. %s" % (nome, REPETICOES, detalhe))
 
 
 def parada_guardada(p, st):
@@ -763,14 +797,7 @@ def cmd_proximo(args):
     confere_gate(p, st)
     barra_orcamento(p, st)
     nome, detalhe = proxima(p, st)
-    sha_design = hashlib.sha256(ler(p.p(p.design)).encode("utf-8")).hexdigest() if tem_design(p) else ""
-    chave = "|".join((nome, detalhe, p.head(), sha_design))
-    rep = st.get("repeticao") or dict(chave="", n=0)
-    rep = dict(chave=chave, n=rep["n"] + 1 if rep.get("chave") == chave else 1)
-    st["repeticao"] = rep
-    grava_estado(p, st)
-    if rep["n"] >= REPETICOES:
-        parada(p, st, "bloqueio-humano", "A ação %s não avançou em %d tentativas. %s" % (nome, REPETICOES, detalhe))
+    conta_repeticao(p, st, nome, detalhe)
     acao(p, st, nome, detalhe)
 
 
@@ -839,11 +866,16 @@ def cmd_verificar(args):
     rodada = rodada_atual(st)
     st["gates"].append(dict(n=n, rodada=rodada, commit=commit_testado, exit=rc, log=log, impressao=impressao_testada))
     st["repeticao"] = dict(chave="", n=0)
-    st["motivo"], st["detalhe"], st["parada_gate"] = "", "", ""
+    bloqueado = st.get("motivo") == "bloqueio-humano"  # gravado enquanto o gate rodava: a saída continua sendo o --resume
+    st["parada_gate"] = ""
+    if not bloqueado:
+        st["motivo"], st["detalhe"] = "", ""
     if rc in (3, 4, 5, 64) or rc not in (0, 2):
         st["parada_gate"] = {4: "manual-ux", 5: "clarificacao-pendente", 64: "define-invalido"}.get(rc, "gate-inconclusivo")
     grava_estado(p, st)
     solta_trava(p)
+    if bloqueado:
+        parada(p, st, "bloqueio-humano", st.get("detalhe") or "")
     if rc == 0:
         nome, detalhe = proxima(p, st)
         acao(p, st, nome, "O teste final passou (log: %s). Ainda não publiquei nada." % log if nome == "AVALIAR_E_RELATAR"

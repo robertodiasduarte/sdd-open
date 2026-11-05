@@ -362,6 +362,27 @@ class Ausentes(Base):
         self.assertIn("inconclusivo", out)
 
 
+class MergeDeOutroClone(Base):
+    """R6 da rodada 1: o merge de um PR nasce no remoto."""
+
+    def test_sha_que_so_o_remoto_conhece_e_buscado(self):
+        outro = self.tmp / "outro"
+        self.roda(["git", "clone", "-q", self.bare, outro], self.tmp)
+        self.git(outro, "symbolic-ref", "HEAD", "refs/heads/main")
+        self.git(outro, "reset", "-q", "--hard", "origin/main")
+        self.escreve(outro, "m.txt", "x\n")
+        self.commit(outro)
+        self.git(outro, "push", "-q", "origin", "main")
+        y = self.git(outro, "rev-parse", "HEAD").strip()
+        self.cenario([run(1, y)])
+        self.assertSai(self.sha(commit=y), 0, "✅ no ar — run 1")
+
+    def test_sha_que_ninguem_conhece_segue_saindo_64(self):
+        rc, out, err = self.sha(commit="f" * 40)
+        self.assertEqual(rc, 64, out + err)
+        self.assertIn("nem depois de git fetch", err)
+
+
 class Uso(Base):
     def test_sai_64(self):
         self.cenario([])

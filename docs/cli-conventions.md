@@ -36,7 +36,7 @@ Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` �
 `SIMULACAO` · `MOVIDO` (sdd-archive.py).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate
-(inconclusivo, que devolve `0`… sem `--strict`) de parecer verde para quem lê.
+(inconclusivo: não é vermelho, e sem `--strict` não vira `1`) de parecer verde para quem lê.
 
 ## Erros: causa e conserto, sempre
 

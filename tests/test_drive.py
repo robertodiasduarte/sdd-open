@@ -334,6 +334,40 @@ class Proxima(Base):
         self.assertParada(res, "estado-invalido")
         self.assertIn(PROGRESS, res[1])
 
+    def test_sem_subagente_a_retomada_tambem_conta_a_repeticao(self):
+        # R2 da rodada 1: aguardar, sessão nova, --resume, a mesma tarefa, para sempre
+        self.drive("iniciar", D)
+        self.escreve(self.r, "brief.md", "x\n")
+        self.assertEqual(self.drive("aguardar", D, "executor-drive", "brief.md")[0], 40)
+        self.assertAcao(self.drive("--resume", D), "RODADA")
+        self.assertEqual(self.drive("aguardar", D, "executor-drive", "brief.md")[0], 40)
+        self.assertAcao(self.drive("--resume", D), "RODADA")
+        self.assertEqual(self.drive("aguardar", D, "executor-drive", "brief.md")[0], 40)
+        self.assertParada(self.drive("--resume", D), "bloqueio-humano")
+
+    def test_retomada_depois_do_bloqueio_recomeca_a_conta(self):
+        # o outro lado de R2: quem resolveu o bloqueio não fica preso
+        self.drive("iniciar", D)
+        self.drive("proximo", D)
+        self.drive("proximo", D)
+        self.assertParada(self.drive("proximo", D), "bloqueio-humano")
+        self.assertAcao(self.drive("--resume", D), "RODADA")
+        self.assertAcao(self.drive("proximo", D), "RODADA")
+
+    def test_brief_ja_no_destino_para_em_40(self):
+        # R5 da rodada 1, rebatido: o caminho que a skill usa
+        self.drive("iniciar", D)
+        self.escreve(self.r, "sdd/reports/briefs/BRIEF_executor-drive_F.md", "x\n")
+        res = self.drive("aguardar", D, "executor-drive", "sdd/reports/briefs/BRIEF_executor-drive_F.md")
+        self.assertParada(res, "aguardando-sessao", 40)
+
+    def test_anotacao_de_erro_no_progress_nao_cria_tarefa(self):
+        # R8 da rodada 1
+        self.drive("iniciar", D)
+        self.escreve(self.r, PROGRESS, "- [ ] a: falhou o teste X\n- [x] b — feito\n")
+        res = self.drive("proximo", D)
+        self.assertIn("tarefa: 2 de 2 — a: falhou o teste X", res[1])
+
     def test_3a_repeticao_para_e_mudanca_de_head_zera(self):
         self.drive("iniciar", D)
         self.assertAcao(self.drive("proximo", D), "RODADA")
@@ -513,6 +547,27 @@ class Verificar(Base):
         self.git(self.r, "mv", "sdd/reports/x.md", "sdd/reviews/x.md")
         self.assertAcao(self.drive("verificar", D), "CORRIGIR")
         self.assertEqual(self.chamadas(), 1)
+
+    def test_proximo_ve_codigo_sem_commit_depois_do_verde_e_do_vermelho(self):
+        # R3 da rodada 1
+        self.pronto()
+        self.drive("verificar", D)
+        self.escreve(self.r, "src/conserto.py", "x\n")
+        self.assertAcao(self.drive("proximo", D), "COMMITAR")
+        (self.r / "src/conserto.py").unlink()
+        self.verde()
+        self.novo_commit()
+        self.assertAcao(self.drive("verificar", D), "AVALIAR_E_RELATAR")
+        self.escreve(self.r, "src/a.py", "x\n")
+        self.assertAcao(self.drive("proximo", D), "COMMITAR")
+
+    def test_proximo_nao_liga_para_documento_sujo(self):
+        # o outro lado de R3
+        self.pronto()
+        self.verde()
+        self.drive("verificar", D)
+        self.escreve(self.r, "sdd/reviews/X.md", "x\n")
+        self.assertAcao(self.drive("proximo", D), "AVALIAR_E_RELATAR")
 
     def test_documento_nao_rastreado_nao_trava(self):
         self.pronto()
@@ -720,6 +775,33 @@ class SegundoPlano(Base):
         self.assertAcao(self.drive("proximo", D), "VERIFICAR")
         self.assertFalse(self.existe("sdd/reports/progress/DRIVE_F.lock"))
 
+    def test_bloqueio_gravado_durante_o_gate_segura(self):
+        # R9 da rodada 1
+        self.verde()
+        self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+        self.assertParada(self.drive("bloqueio", D, "falta a chave"), "bloqueio-humano")
+        self.espera_acabar()
+        self.assertEqual(self.estado()["motivo"], "bloqueio-humano")
+        self.assertParada(self.drive("proximo", D), "bloqueio-humano")
+        self.assertEqual(len(self.estado()["gates"]), 1, "o resultado do gate não se perde")
+        self.assertAcao(self.drive("--resume", D), "AVALIAR_E_RELATAR")
+
+    def test_trava_nasce_com_o_pid_sem_janela_vazia(self):
+        # R10 da rodada 1: o arquivo só aparece já preenchido
+        import subprocess
+        p = subprocess.Popen([BASH, "sdd/bin/sdd-drive.sh", "verificar", D], cwd=str(self.r), env=self.env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                             stdin=subprocess.DEVNULL)
+        vistos = set()
+        trava = self.r / "sdd/reports/progress/DRIVE_F.lock"
+        while p.poll() is None:
+            try:
+                vistos.add(trava.read_text(encoding="utf-8"))
+            except OSError:
+                pass
+        self.assertNotIn("", vistos)
+        self.assertTrue(vistos, "a trava precisa ter existido")
+        self.assertEqual(list((self.r / "sdd/reports/progress").glob("DRIVE_F.lock.*")), [], "nada sobra")
+
     def test_recibo_gravado_durante_o_gate_nao_se_perde(self):
         self.verde()
         self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
@@ -763,6 +845,13 @@ class ImpressaoDigital(Base):
         self.assertParada(res, "gate-alterado")
         self.assertIn("O comando é igual; mudou outro campo do bloco", res[1])
         self.assertIn("threshold:  0.9", res[1])
+
+    def test_troca_aceita_de_outro_campo_diz_qual(self):
+        # R4 da rodada 1
+        self.drive("iniciar", D)
+        self.escreve(self.r, D, define().replace('threshold: "—"', 'threshold: "0.1"'))
+        self.drive("--resume", D, "--aceitar-gate-novo")
+        self.assertIn("threshold: 0.1", (self.r / RELATORIO).read_text(encoding="utf-8"))
 
     def test_troca_aceita_entra_no_relatorio_na_hora(self):
         # L4 do ciclo 1
@@ -879,6 +968,15 @@ class Retomada(Base):
         st["motivo"] = []
         self.escreve(self.r, ESTADO, json.dumps(st))
         self.assertParada(self.drive("recibo", D, "x"), "estado-invalido")
+
+    def test_gate_real_sem_a_ferramenta_para_em_inconclusivo(self):
+        # R1 da rodada 1, rebatido por medição: sem stub, o gate sem --strict sai 3 e não vira verde
+        self.escreve(self.r, D, define(cmd="ferramenta-que-nao-existe --testa"))
+        self.commit(self.r)
+        self.drive("iniciar", D)
+        self.feito()
+        self.assertParada(self.drive("verificar", D), "gate-inconclusivo")
+        self.assertEqual(self.estado()["gates"][-1]["exit"], 3)
 
     def test_outros_campos_com_forma_errada(self):
         # M4 do ciclo 2

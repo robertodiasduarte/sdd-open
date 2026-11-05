@@ -107,6 +107,9 @@ class Skill(unittest.TestCase):
         self.assertIn("sdd/reports/briefs/BRIEF_executor-drive_{F}.md", SKILL)
         self.assertIn("sdd-drive.sh aguardar <DEFINE> executor-drive", SKILL)
 
+    def test_formato_da_anotacao_de_erro(self):
+        self.assertIn("` — `", EXECUTOR)
+
     def test_executor_nao_roda_o_gate_nem_publica(self):
         self.assertIn("**Não rode o Verify Gate do DEFINE**", EXECUTOR)
         self.assertIn("**Nunca publique:**", EXECUTOR)

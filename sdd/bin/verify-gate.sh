@@ -33,8 +33,8 @@
 #        ou não tem a linha `Governança` final no Technical Context (passo 11 do sdd-define não rodou)
 #   64 = erro de uso / bloco ausente ou malformado → DEFINE sem gate válido
 #
-# Toda saída termina em `RESULTADO: <PALAVRA>` + `→ <o que fazer>`. Sem --strict, um `&&`
-# encadeado trata 3/4/5 como sucesso — por isso o quickstart e os exemplos de CI usam --strict.
+# Toda saída termina em `RESULTADO: <PALAVRA>` + `→ <o que fazer>`. --strict remapeia 3/4/5 para 1, o que
+# pipelines entendem como falha sem conhecer o contrato: por isso o quickstart e os exemplos de CI o usam.
 #
 # Linha Governança (desde a v2.4.0): na seção `## Technical Context`, fora de cercas, a linha da tabela
 # `| **Governança** | <valor> | … |` com valor final — `N.A. — <motivo>`, `GOVERNANCA_REVIEW_…` ou

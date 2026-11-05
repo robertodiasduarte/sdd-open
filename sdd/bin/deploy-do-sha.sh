@@ -246,8 +246,11 @@ def main():
         uso("%s não é um repositório git" % base)
     repo = r.stdout.strip()
     r = roda(["git", "-C", repo, "rev-parse", "--verify", a["commit"] + "^{commit}"], repo)
+    if r.returncode != 0:  # o merge de um PR nasce no remoto: o clone pode ainda não conhecer
+        roda(["git", "-C", repo, "fetch", "-q", "origin"], repo)
+        r = roda(["git", "-C", repo, "rev-parse", "--verify", a["commit"] + "^{commit}"], repo)
     if r.returncode != 0:
-        uso("commit não encontrado: %s" % a["commit"])
+        uso("commit não encontrado, nem depois de git fetch: %s" % a["commit"])
     x = r.stdout.strip()
     workflow = a.get("workflow") or slot(repo, "deploy", "workflow")
     if not workflow:

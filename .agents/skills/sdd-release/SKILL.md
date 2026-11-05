@@ -235,7 +235,7 @@ removido.
     | `2` | não está no ar: a frase traz o run, o passo e por que não repetiu; para repetir, um push novo ou `gh workflow run` na ponta, **nunca `gh run rerun` de um run antigo** (com fila, ele publica código velho por cima do novo) |
     | `3` | "publicado, sem verificação automática disponível" — nunca ✅ sem ter olhado |
     | `4` | "ainda não sei": não é falha; repita ou abra o run citado, nunca "nada a verificar" |
-    | `64` | chamada errada ou `sdd/bin/` antigo: rode o `doctor` e, para o que ele apontar, apague e rode o `init` |
+    | `64` | chamada errada, SHA que o remoto também não conhece, ou `sdd/bin/` antigo: confira o SHA; o script antigo se resolve com o `doctor` e, para o que ele apontar, apagando e rodando o `init` |
 
     Verde não prova teste: step de teste com `continue-on-error`, `|| true` ou `exit 0` fixo ⇒ "o deploy terminou, mas o
     workflow não roda testes antes de publicar" (o `deploy-espera-testes.py` do item 7 já disse isso no bloco do OK).

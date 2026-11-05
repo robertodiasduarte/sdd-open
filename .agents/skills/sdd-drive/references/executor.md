@@ -17,8 +17,8 @@ escreva `CONTAMINAÇÃO: sim — <o que veio>` no bloco e trabalhe **pelos arqui
 
 1. Leia o DEFINE, o DESIGN e o `PROGRESS` desta sessão: você não tem memória da anterior.
 2. Faça **só a tarefa do campo `tarefa:`**: o arquivo daquela linha do File Manifest, mais o teste dela. Nada adjacente.
-3. Verifique a tarefa com o teste mais específico que existir. Vermelho ⇒ não marque; anote na linha do `PROGRESS` o erro,
-   para a próxima sessão.
+3. Verifique a tarefa com o teste mais específico que existir. Vermelho ⇒ não marque; anote o erro na linha do `PROGRESS`, depois do
+   nome do arquivo e de ` — `, para a próxima sessão.
 4. Verde ⇒ `git add` por nome (nunca `-A`) e 1 commit só desta tarefa; depois troque `- [ ]` por `- [x]` na linha, mantendo
    o nome do arquivo primeiro. Não use `--amend` para citar o próprio commit.
 5. **Não rode o Verify Gate do DEFINE**: quem roda é o script. Não mexa no bloco `## Verify Gate`.
