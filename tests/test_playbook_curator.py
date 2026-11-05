@@ -317,6 +317,38 @@ class LinhasQueNaoSaoAchado(Base):
         self.assertIn("DELTA LM-001 ajudou+1", out)
         self.assertNotIn("LM-001 mordeu", out)
 
+    def test_veredito_longo_de_mordeu_continua_mordeu(self):
+        # N-H1 do avaliador, ciclo 2: o teto de tamanho perdia a contagem ou a trocava por ajudou.
+        longo = "mordeu: o gate ficou verde sem a asserção na primeira rodada do build"
+        for depois in ("✔ corrigido com baseline vermelho", "x", "**mordeu** de novo"):
+            with self.subTest(depois=depois):
+                self.doc("BUILD_REPORT_F.md", "## Landmines lidas no build\n\n| `LM-001` | gate | %s | %s |\n" % (longo, depois))
+                rc, out, _ = self.colhe()
+                self.assertEqual(rc, 0, out)
+                self.assertIn("DELTA LM-001 mordeu+1", out)
+                self.assertNotIn("LM-001 ajudou", out)
+
+    def test_veredito_longo_de_ajudou_continua_ajudou(self):
+        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| `LM-001` | ✔ tratado: o cabeçalho vai literal, em toda chamada do agendador, sem depender do ambiente | x |\n")
+        self.assertIn("DELTA LM-001 ajudou+1", self.colhe()[1])
+
+    def test_na_longo_continua_nao_contando(self):
+        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| `LM-001` | N.A.: a rota não é chamada pelo navegador, então a regra não se aplica | ✔ x |\n")
+        self.assertNotIn("DELTA LM-001", self.colhe()[1])
+
+    def test_palavra_que_so_comeca_com_mordeu_nao_e_veredito(self):
+        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| `LM-001` | mordeuzinho | ✔ tratado |\n")
+        out = self.colhe()[1]
+        self.assertIn("DELTA LM-001 ajudou+1", out)
+        self.assertNotIn("LM-001 mordeu", out)
+
+    def test_veredito_antes_da_coluna_do_id(self):
+        # N-L1b
+        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| ✔ tratado | `LM-001` | regra |\n")
+        self.assertIn("DELTA LM-001 ajudou+1", self.colhe()[1])
+        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| **mordeu** | `LM-001` | regra |\n")
+        self.assertIn("DELTA LM-001 mordeu+1", self.colhe()[1])
+
 
 class Desde(Base):
     """AT-008"""
@@ -685,6 +717,32 @@ class Preparar(Sandbox):
         self.assertEqual(rc, 1)
         self.assertIn("RESULTADO: NADA A RETOMAR", out)
 
+    def test_avaliacao_de_feature_que_comeca_igual_nao_entra(self):
+        # N-M2 do avaliador, ciclo 2: F1_2_2026… não é da feature F1.
+        self.escreve(self.r, "sdd/features/DESIGN_F1.md", "x\n")
+        for nome in ("AVALIACAO_F1_2_20261105.md", "AVALIACAO_F1_20261105-ciclo1.md"):
+            self.escreve(self.r, "sdd/reviews/" + nome, "x\n")
+        s = self.staging(self.prep("F1")[1])
+        self.assertTrue((s / "AVALIACAO_F1_20261105-ciclo1.md").is_file())
+        self.assertFalse((s / "AVALIACAO_F1_2_20261105.md").exists())
+
+    def test_avaliacao_do_archive_entra_e_o_registro_vem_de_releases(self):
+        self.escreve(self.r, "sdd/archive/F_A/DESIGN_F_A.md", "x\n")
+        self.escreve(self.r, "sdd/archive/F_A/AVALIACAO_F_A_20261105.md", "x\n")
+        self.escreve(self.r, "sdd/releases/F_A/CURATOR-colhidos.txt", "DELTA x · fp=aaaaaaaaaa\n")
+        s = self.staging(self.prep("F_A")[1])
+        self.assertTrue((s / "AVALIACAO_F_A_20261105.md").is_file())
+        self.assertTrue((s / "CURATOR-colhidos.txt").is_file())
+
+    def test_seta_da_retomada_nao_manda_refazer_a_linha_de_base(self):
+        # N-M1: quem refaz o selo e o snapshot toma por base o que o curador escreveu.
+        self.povoa()
+        s = self.staging(self.prep("F_A")[1])
+        (s / "colheita.txt").write_text("x\n", encoding="utf-8")
+        _, out, _ = self.prep("F_A", "--retomar")
+        self.assertIn("não refaça o selo nem o snapshot de antes", out)
+        self.assertNotIn("continue do despacho", out)
+
     def test_o_de_sdd_vence_o_do_archive(self):
         self.escreve(self.r, "sdd/features/DESIGN_F_A.md", "vivo\n")
         self.escreve(self.r, "sdd/archive/F_A/DESIGN_F_A.md", "arquivado\n")
@@ -763,6 +821,20 @@ class SelfTest(Sandbox):
 
 class SelfTestSemGit(Sandbox):
     """H1 do avaliador: o Verify Gate roda numa cópia sem .git, e só ali o self-test falhava."""
+
+    def test_sem_git_no_path_diz_o_que_falta_sem_traceback(self):
+        # N-L5: sem o git, o self-test para dizendo o motivo.
+        pasta = self.tmp / "bin"
+        pasta.mkdir()
+        for nome in ("python3", "bash", "sh", "mktemp", "rm", "dirname", "sed", "awk", "grep", "cat", "tr", "cut", "sort", "uname", "env"):
+            alvo = shutil.which(nome)
+            if alvo:
+                os.symlink(alvo, str(pasta / nome))
+        env = dict(self.env, PATH=str(pasta))
+        rc, out, err = self.roda([BASH, CURATOR, "--self-test"], self.tmp, env)
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("RESULTADO: SELF-TEST FALHOU", out)
+        self.assertNotIn("Traceback", out + err)
 
     def test_roda_numa_copia_sem_repositorio(self):
         copia = self.tmp / "copia"

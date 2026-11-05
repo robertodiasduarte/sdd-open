@@ -33,7 +33,7 @@ feature's handoff. It also looks in `sdd/archive/<FEATURE>/`. Then `--colher <st
 | `PROMOVER? LM-nnn` | an active landmine with `mordeu` at 2 or more and no mechanism yet |
 
 Every line to judge carries a fingerprint (`fp=`). After a curation, those lines go to
-`sdd/reports/evidence/<FEATURE>/CURATOR-colhidos.txt`; the next release of the same feature shows them as
+`sdd/releases/<FEATURE>/CURATOR-colhidos.txt`, next to the ledger; the next release of the same feature shows them as
 `JA_JULGADO` and does not count them again.
 
 With `--inv`, a landmine that already bit and was never classified also shows up, as `INV_PENDENTE`. Exit `0` means there is something to judge or report, `1` means nothing at all, and any other exit is a

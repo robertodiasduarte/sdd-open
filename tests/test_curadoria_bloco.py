@@ -170,6 +170,40 @@ class Reprova(Base_):
             with self.subTest(simples=vazia):
                 self.reprova(BLOCO.replace("| O aviso sobre o agendador sem o segredo foi seguido no desenho e evitou o erro. |", "| %s |" % vazia), "'Em linguagem simples' está vazia")
 
+    def test_arquivo_com_espaco_no_nome_passa_e_conta_igual(self):
+        # N-L1 do avaliador, ciclo 2
+        d = self.tmp / "st"
+        d.mkdir()
+        self.escreve(d, "AVAL-a b.log", "❌ por LM-020\n")
+        _, col, _ = self.cur("--colher", d, BASE)
+        c = self.escreve(d, "colheita.txt", col)
+        _, selo, _ = self.cur("--selar", d)
+        s = self.escreve(self.tmp, "s2.txt", selo)
+        cab = "<<<CURADORIA\n| # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recomendação |\n|---|---|---|---|---|---|---|\n"
+        fim = "| 2 | promover | LM-004 | LM-004 promovido_para=sdd/hooks/pre-commit | x | y. | PERGUNTA OBRIGATÓRIA |\nREJEITADOS: nenhum\nNAO_JULGADO: nenhum\nIGNORADOS/JA_COLHIDOS: nenhum\nCONTAMINAÇÃO: não\n>>>\n"
+        for evid, rc_esperado in (("AVAL-a b.log:1", 0), ("AVAL-a b.log:2", 2), ("AVAL-a b.log:11", 2)):
+            with self.subTest(evidencia=evid):
+                b = self.escreve(self.tmp, "b.txt", cab + "| 1 | contador | LM-020 | LM-020 mordeu+1 | %s | x. | AUTO |\n" % evid + fim)
+                rc, out, err = self.cur("--conferir-bloco", c, b, BASE, s, self.comparar)
+                self.assertEqual(rc, rc_esperado, out + err)
+
+    def test_mais_detalhes_que_passavam(self):
+        # N-L7 do avaliador, ciclo 2
+        self.escreve(self.tmp, "x", "")
+        self.reprova(BLOCO.replace("| BUILD_REPORT_FIXTURE.md:13 |", "| colheita.rc:1 |"), "a colheita não é evidência de si mesma")
+        self.reprova(BLOCO.replace("| DESCARTAR (a causa do achado não é a regra do aviso) |", "| DESCARTAR () |"), "DESCARTAR pede o motivo")
+        self.reprova(BLOCO.replace("CONTAMINAÇÃO: não", "CONTAMINAÇÃO: nãosei"), "precisa dizer 'não' ou 'sim")
+
+    def test_contador_e_aposentadoria_da_mesma_licao_param_aqui(self):
+        # N-L2: passavam 1 a 1 e travavam no --cruzar, sem instrução.
+        linha = "| 7 | tombstone | LM-020 | TOMBSTONE LM-020 :: saiu | DESIGN_FIXTURE.md:16 | A regra saiu. | ACEITAR |\nREJEITADOS:"
+        self.reprova(BLOCO.replace("REJEITADOS:", linha, 1), "o conjunto do bloco não vale junto")
+
+    def test_aposentadoria_de_outra_licao_passa(self):
+        linha = "| 7 | tombstone | LM-021 | TOMBSTONE LM-021 :: saiu | DESIGN_FIXTURE.md:16 | A regra saiu. | ACEITAR |\nREJEITADOS:"
+        rc, out, err = self.confere(BLOCO.replace("REJEITADOS:", linha, 1))
+        self.assertEqual(rc, 0, out + err)
+
     def test_remover_e_valido_na_linha_inv(self):
         linha = "| 7 | inv | LM-021 | REMOVER LM-021 | --cruzar: INV_AFETADA descarte LM-021 | Tira o descarte junto. | ACEITAR |\nREJEITADOS:"
         rc, out, err = self.confere(BLOCO.replace("REJEITADOS:", linha, 1))

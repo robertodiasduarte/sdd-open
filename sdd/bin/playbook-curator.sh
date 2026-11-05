@@ -232,7 +232,13 @@ def promovido(b):
 
 def check_vivo(b):
     """O promovido_para aponta um arquivo que existe? Texto livre, ou arquivo que saiu, não vigia nada."""
-    return promovido(b) and os.path.exists(b["promo"])
+    return promovido(b) and arquivo_do_projeto(b["promo"])
+
+
+def arquivo_do_projeto(caminho):
+    """Um arquivo que existe, com caminho relativo que não sai da raiz: `.`, `/`, `..` e uma pasta não vigiam nada."""
+    return (not os.path.isabs(caminho) and not os.path.normpath(caminho).startswith("..")
+            and os.path.isfile(caminho))
 
 
 def proximo_id(bullets):
@@ -366,8 +372,8 @@ def preparar(args):
         diz("RETOMADA: " + ("colheita anterior encontrada em " + os.path.join(stg, "colheita.txt") if tem
                             else "não há colheita nesta pasta; rode sem --retomar"))
         fim("RETOMADA" if tem else "NADA A RETOMAR",
-            "continue do despacho do curador com a colheita que está na pasta." if tem
-            else "rode --preparar %s sem --retomar e colha de novo." % feature)
+            "recalcule as pastas e vá direto para a volta do curador; não refaça o selo nem o snapshot de antes." if tem
+            else "a pasta temporária se perdeu: recomece a curadoria do início, com --preparar %s; nada foi aplicado." % feature)
         return 0 if tem else 1
     # sdd/archive/<F>/: a release que fechou o DoD já moveu os documentos para lá (passo 15b) antes da curadoria.
     arq = os.path.join("sdd", "archive", feature)
@@ -375,8 +381,8 @@ def preparar(args):
         os.path.join("sdd", "features", "DESIGN_%s.md" % feature), os.path.join(arq, "DESIGN_%s.md" % feature),
         os.path.join("sdd", "reports", "BUILD_REPORT_%s.md" % feature), os.path.join(arq, "BUILD_REPORT_%s.md" % feature),
         os.path.join("sdd", "reports", "evidence", feature, "AVAL*-*.log"),
-        os.path.join("sdd", "reports", "evidence", feature, REGISTRO),
         os.path.join("sdd", "reviews", "AVALIACAO_%s_[0-9]*.md" % feature), os.path.join(arq, "AVALIACAO_%s_[0-9]*.md" % feature),
+        os.path.join("sdd", "releases", feature, REGISTRO),
         os.path.join("sdd", "releases", feature, "*.yaml"),
         os.path.join("sdd", "handoffs", "HANDOFF_%s.md" % feature),
     ]
@@ -385,6 +391,8 @@ def preparar(args):
         base, nome = os.path.split(padrao)
         for origem in sorted(glob.glob(os.path.join(glob.escape(os.path.join(raiz, base)), nome))):
             rel = os.path.relpath(origem, raiz)
+            if nome.startswith("AVALIACAO_") and not re.match(r"^AVALIACAO_%s_\d{8}" % re.escape(feature), os.path.basename(origem)):
+                continue  # F1_2_2026… não é da feature F1
             destino = os.path.join(stg, os.path.basename(origem))
             if os.path.realpath(origem) != os.path.join(raiz, rel) or not os.path.isfile(origem):
                 diz("ignorado (link ou não é arquivo): " + rel)
@@ -467,22 +475,26 @@ class Colheita:
             if not (dentro and ln.startswith("|") and RE_LM.search(ln)):
                 continue
             # Casa pelo CONTEÚDO da célula, nunca pela posição da coluna: a tabela aparece com 3 e com 4 colunas.
-            veredito, posicao, cels = "", 0, ln.split("|")[1:-1]
-            for k, cel in enumerate(cels):
-                c = re.sub(r"[ \t*]", "", cel)
+            cels = ln.split("|")[1:-1]
+            com_id = next((k for k, cel in enumerate(cels) if RE_LM.search(cel)), None)
+            if com_id is None:
+                continue
+            # O veredito é a 1ª célula DEPOIS da que cita a lição (a coluna de antes pode ser uma frase de regra que
+            # começa com "mordeu"); sem nenhuma, a 1ª até ela. Nunca pelo tamanho: "mordeu: <frase>" é veredito.
+            veredito = ""
+            for cel in cels[com_id + 1:] + cels[:com_id + 1]:
+                c = cel.strip(" \t*`")
                 if c.startswith("✔"):
                     veredito = "ajudou"
-                elif re.match(r"^mordeu(\W|$)", c) and len(c) <= 24:
-                    veredito = "mordeu"  # curta: uma frase de regra que começa com a palavra não é veredito
+                elif re.match(r"^mordeu(\W|$)", c):
+                    veredito = "mordeu"
                 elif re.match(r"^(N\.A\.|N/A)", c):
                     veredito = "na"
                 if veredito:
-                    posicao = k
                     break
             if veredito in ("ajudou", "mordeu"):
-                # A lição é a citada antes do veredito; a nota depois dele pode citar outra de passagem.
-                ids = RE_LM.findall("|".join(cels[:posicao])) or RE_LM.findall(cels[posicao])
-                for lm in sorted(set(ids)):
+                # A lição é a da 1ª célula que cita alguma; uma nota depois do veredito pode citar outra de passagem.
+                for lm in sorted(set(RE_LM.findall(cels[com_id]))):
                     self.delta(veredito, lm, base, n, ln)
 
     def achados(self, caminho, base):
@@ -1066,11 +1078,12 @@ def validar_inv(args):
         if i["id"] in vistos:
             defeitos.append("%s aparece 2 vezes — renumere a mais nova (ID nunca se reusa)" % i["id"])
         vistos.add(i["id"])
-        if i["estado"] == "auto" and not re.search(r"· tarefa:\s*\S", i["resto"]):
+        if i["estado"] == "auto" and not re.search(r"· tarefa:\s*[^\s·]", i["resto"]):
             defeitos.append("%s é estado=auto sem '· tarefa:' — diga o comando ou o alvo que a automatiza" % i["id"])
-        if i["estado"] == "humano" and not re.search(r"· motivo:\s*\S", i["resto"]):
+        if i["estado"] == "humano" and not re.search(r"· motivo:\s*[^\s·]", i["resto"]):
             defeitos.append("%s é estado=humano sem '· motivo:' — diga por que máquina não pega" % i["id"])
-        if i["check"] and (os.path.isabs(i["check"]) or os.path.normpath(i["check"]) == "."):
+        if i["check"] and (os.path.isabs(i["check"]) or os.path.normpath(i["check"]).startswith(".")
+                           or os.path.isdir(i["check"])):
             defeitos.append("%s tem check=%s: use o caminho de um arquivo, relativo à raiz do projeto" % (i["id"], i["check"]))
         elif i["check"] and not os.path.exists(i["check"]):
             defeitos.append("%s tem check=%s, que não existe a partir desta pasta — corrija o caminho ou mude o estado"
@@ -1136,12 +1149,16 @@ def aplicar_inv(args):
     erros, trocas, remover, novas_inv, novos_desc = [], {}, set(), [], []
     ids_inv = {i["id"] for i in atual["invs"]}
     regra_por_id = {i["id"]: i["regra"] for i in atual["invs"]}
+    vistas_nas_linhas = set()
     ids_desc = {d["id"] for d in atual["descs"]}
     if not atual["tem_secao"]:
         erros.append((0, "%s não tem a seção '## Invariantes'" % caminho_inv))
     for n, ln in linhas_de_delta(ler(caminho_linhas)):
         m = RE_INV.match(ln)
         if m:
+            if m.group(1) in vistas_nas_linhas:
+                erros.append((n, "%s aparece 2 vezes nas linhas aprovadas: cada ID entra uma vez" % m.group(1)))
+            vistas_nas_linhas.add(m.group(1))
             if m.group(1) in regra_por_id and regra_por_id[m.group(1)] != m.group(5):
                 erros.append((n, "%s já existe em %s com outra regra: isto é uma invariante nova com ID repetido; "
                                  "renumere a nova, nunca a que já estava lá" % (m.group(1), caminho_inv)))
@@ -1365,7 +1382,7 @@ def conferir_bloco(args):
     for f in FINAIS:
         if corpo and f not in finais:
             defeitos.append("falta a linha %s" % f)
-    if corpo and "CONTAMINAÇÃO:" in finais and not re.match(r"^(não|sim\b)", finais["CONTAMINAÇÃO:"].lower()):
+    if corpo and "CONTAMINAÇÃO:" in finais and not re.match(r"^(não|sim)\b", finais["CONTAMINAÇÃO:"].lower()):
         defeitos.append("a linha CONTAMINAÇÃO: precisa dizer 'não' ou 'sim — <o que veio>'")
 
     autos, perguntas, contagem = [], [], {"DESCARTAR": 0, "NAO_JULGADO": 0}
@@ -1399,7 +1416,7 @@ def conferir_bloco(args):
             ids_lm, ids_delta = RE_LM.findall(r["lm"]), RE_LM.findall(delta)[:1]
             if len(ids_lm) != 1 or (ids_delta and ids_lm != ids_delta):
                 defeitos.append("%s: a coluna LM ('%s') tem de ser 1 ID, o mesmo do delta ('%s')" % (rotulo, r["lm"], delta))
-        if rec == "DESCARTAR" and "(" not in r["rec"]:
+        if rec == "DESCARTAR" and not re.search(r"\(\s*[^)\s]", r["rec"]):
             defeitos.append("%s: DESCARTAR pede o motivo: DESCARTAR (motivo)" % rotulo)
         if rec in ("DESCARTAR", "NAO_JULGADO"):
             contagem[rec] += 1
@@ -1412,13 +1429,13 @@ def conferir_bloco(args):
             erros = validar_delta([(0, delta)], bullets, pb, texto_pb)
             for _n, msg in erros:
                 defeitos.append("%s: Delta fora da gramática — %s" % (rotulo, msg))
-            if rec in ("AUTO", "ACEITAR"):
+            if rec == "ACEITAR":
                 m = re.match(r"^`?([^\s:`|]+):(\d+)", r["evid"].strip())
                 if not m:
-                    defeitos.append("%s: %s exige a Evidência começando por arquivo:linha" % (rotulo, rec))
+                    defeitos.append("%s: ACEITAR exige a Evidência começando por arquivo:linha" % rotulo)
                 else:
                     alvo = os.path.join(staging, os.path.basename(m.group(1)))
-                    if os.path.basename(m.group(1)) == os.path.basename(colheita):
+                    if os.path.basename(m.group(1)) in (os.path.basename(colheita), "colheita.rc"):
                         defeitos.append("%s: a colheita não é evidência de si mesma: cite o documento de onde a linha veio" % rotulo)
                     elif not os.path.isfile(alvo):
                         defeitos.append("%s: a evidência %s não existe na pasta da colheita" % (rotulo, m.group(1)))
@@ -1448,6 +1465,12 @@ def conferir_bloco(args):
                 autos.append(r)
         else:
             perguntas.append(r)
+
+    # O conjunto que pode entrar precisa valer junto: as linhas passam 1 a 1 e travariam no --cruzar do item 5.
+    conjunto = [(0, r["delta_n"]) for r in rows if r.get("rec_n") in ("AUTO", "ACEITAR", "PERGUNTA OBRIGATÓRIA") and r["tipo"] != "inv"]
+    for _n, msg in validar_delta(conjunto, bullets, pb, texto_pb):
+        if "aposentado" in msg:
+            defeitos.append("o conjunto do bloco não vale junto — %s" % msg)
 
     # cobertura, 1 para 1: toda linha da colheita aparece no bloco, e é o delta que diz de quem é a linha
     def delta_de(r):
@@ -1578,7 +1601,11 @@ def self_test():
         repo_lint = os.path.join(tmp, "repo-lint")
         os.makedirs(repo_lint)
         amb_lint = {k: v for k, v in os.environ.items() if k not in ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE")}
-        if subprocess.run(["git", "init", "-q"], cwd=repo_lint, env=amb_lint, capture_output=True).returncode != 0:
+        try:
+            git_ok = subprocess.run(["git", "init", "-q"], cwd=repo_lint, env=amb_lint, capture_output=True).returncode == 0
+        except OSError:
+            git_ok = False
+        if not git_ok:
             erro("🔴 self-test: não consegui criar o repositório temporário do lint (git init)")
             fim("SELF-TEST FALHOU", "confira se o git está instalado e rode de novo.")
             return 2

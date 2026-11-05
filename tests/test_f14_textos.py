@@ -37,7 +37,7 @@ class Passo17b(unittest.TestCase):
                  "sdd-fluxo.sh despachar curador", "governanca-fronteira.sh --comparar", "--conferir-bloco",
                  "--cruzar -", "--aplicar \"$STG/delta.txt\"", "playbook-lint.sh \"$STG/novo.md\"", "--anti-collapse",
                  "--aplicar-inv", "--validar-inv", "cp \"$STG/novo.md\" sdd/playbook.md", "CURATOR-colheita.log",
-                 "CURATOR-delta.log", "CURATOR-colhidos.txt", "git add sdd/playbook.md", "[D1 · não se desfaz]")
+                 "CURATOR-delta.log", "sdd/releases/{F}/CURATOR-colhidos.txt", "git add sdd/playbook.md", "[D1 · não se desfaz]")
         pos = -1
         for trecho in ordem:
             with self.subTest(trecho=trecho):
@@ -55,7 +55,7 @@ class Passo17b(unittest.TestCase):
 
     def test_so_o_conferidor_separa_contagem_de_regra(self):
         self.assertIn("Nunca separe contagem de regra à mão", PASSO)
-        self.assertIn("linhas `AUTO <delta>`", PASSO)
+        self.assertIn("linhas `AUTO <delta>`", " ".join(PASSO.split()))
         self.assertIn("`PERGUNTA <n> <tipo> <delta>`", PASSO)
         self.assertIn("**1 vez**", PASSO)
         self.assertIn("`Curadoria: FALHOU (bloco inválido)`", PASSO)
@@ -96,7 +96,8 @@ class Passo17b(unittest.TestCase):
 
     def test_nada_aceito_tem_caminho_e_evidencia_nao_versionada_tambem(self):
         t = " ".join(PASSO.split())
-        for trecho in ("`Curadoria: nada aplicado`", "git check-ignore -q", "git ls-files sdd/reports/evidence", "colheita.rc"):
+        for trecho in ("`Curadoria: nada aplicado`", "git check-ignore -q", "git ls-files sdd/reports/evidence", "colheita.rc",
+                       ': > "$STG/delta.txt"', "mkdir -p sdd/reports/briefs", "a pasta temporária se perdeu", "`git cherry-pick --abort`"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, t)
 

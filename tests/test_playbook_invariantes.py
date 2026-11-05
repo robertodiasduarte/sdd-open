@@ -103,6 +103,22 @@ class Trava(Base_):
                 self.assertEqual(rc, 2, err)
                 self.assertIn(trecho, err)
 
+    def test_check_e_promovido_que_nao_sao_arquivo_do_projeto(self):
+        # N-L6 do avaliador, ciclo 2
+        for caminho in (".", "/", "..", "/etc/hosts", "sdd"):
+            with self.subTest(promovido=caminho):
+                pb = self.escreve(self.tmp, "p4.md", PLAYBOOK.replace("promovido_para: sdd/bin/report-lint.py", "promovido_para: " + caminho))
+                rc, _, err = self.trava(BASE, pb=pb)
+                self.assertEqual(rc, 2, err)
+                self.assertIn("INV-001 é estado=ok sem check=", err)
+            with self.subTest(check=caminho):
+                rc, _, err = self.trava(BASE + "- [INV-003] estado=ok origem=seed check=%s :: R · por quê: p\n" % caminho)
+                self.assertEqual(rc, 2, err)
+                self.assertIn("relativo à raiz", err)
+        rc, _, err = self.trava(BASE + "- [INV-003] estado=auto origem=seed :: R · por quê: p · tarefa: · motivo: m\n")
+        self.assertEqual(rc, 2, err)
+        self.assertIn("sem '· tarefa:'", err)
+
     def test_ok_com_origem_promovida_para_arquivo_que_saiu_reprova(self):
         pb = self.escreve(self.tmp, "p2.md", PLAYBOOK.replace("promovido_para: sdd/bin/report-lint.py", "promovido_para: sdd/bin/saiu.py"))
         rc, _, err = self.trava(BASE, pb=pb)
@@ -310,6 +326,14 @@ class AplicarInv(Base_):
         rc, out, err = self.aplica("- [INV-002] estado=humano origem=seed :: Regra de outra frente · por quê: p · motivo: m\n")
         self.assertEqual((rc, out), (2, ""))
         self.assertIn("renumere a nova", err)
+
+    def test_2_novas_com_o_mesmo_id_nao_somem_em_silencio(self):
+        # N-L8
+        for a, b in (("Uma", "Outra"), ("Uma", "Uma")):
+            with self.subTest(a=a, b=b):
+                rc, out, err = self.aplica("- [INV-009] estado=auto origem=seed :: %s · por quê: p · tarefa: t\n- [INV-009] estado=auto origem=seed :: %s · por quê: p · tarefa: t\n" % (a, b))
+                self.assertEqual((rc, out), (2, ""))
+                self.assertIn("aparece 2 vezes", err)
 
     def test_mesma_regra_com_origem_ajustada_troca(self):
         rc, out, err = self.aplica("- [INV-002] estado=humano origem=seed :: Regra · por quê: p · motivo: m\n")

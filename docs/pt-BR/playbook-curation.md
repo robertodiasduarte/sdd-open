@@ -33,7 +33,7 @@ feature. Procura também em `sdd/archive/<FEATURE>/`. Depois, `--colher <staging
 | `PROMOVER? LM-nnn` | landmine ativa com `mordeu` de 2 para cima e ainda sem mecanismo |
 
 Toda linha a julgar leva uma impressão digital (`fp=`). Depois de uma curadoria, essas linhas vão para
-`sdd/reports/evidence/<FEATURE>/CURATOR-colhidos.txt`; a próxima release da mesma feature as mostra como
+`sdd/releases/<FEATURE>/CURATOR-colhidos.txt`, ao lado do ledger; a próxima release da mesma feature as mostra como
 `JA_JULGADO` e não conta de novo.
 
 Com `--inv`, uma landmine que já mordeu e nunca foi classificada também aparece, como `INV_PENDENTE`. Exit `0` quer dizer que há o que julgar ou relatar, `1` que não há nada, e qualquer outro exit é **falha**,

@@ -271,7 +271,9 @@ removido.
        formal, registre `Curadoria: 0 deltas (sem documentos)` e encerre o 17b; senão é falha (confira o
        nome da feature). **Sessão nova depois da parada do curador:** rode com `--retomar`, que não copia
        nem limpa, recalcule `STG` e `T` e vá direto para a parte "Na volta" do item 3: refazer o selo ou o
-       snapshot de antes agora tomaria por linha de base o que o curador já escreveu.
+       snapshot de antes agora tomaria por linha de base o que o curador já escreveu. `--retomar` com exit 1, ou
+       `"$T/antes"` ausente = a pasta temporária se perdeu: recomece deste item, sem `--retomar`; nada foi
+       aplicado.
     2. **Colher, lendo o exit.**
        `bash sdd/bin/playbook-curator.sh --colher "$STG" sdd/playbook.md [--inv sdd/invariants.md] > "$STG/colheita.txt"; rc=$?; echo "$rc" > "$STG/colheita.rc"`
        — `--inv` só quando `sdd/invariants.md` existe; sem o arquivo, diga "invariantes: arquivo ausente,
@@ -285,7 +287,8 @@ removido.
     3. **Despachar o curador em contexto fresco**, pela escada de
        `sdd-build/references/contexto-fresco.md`, com **só** os 5 campos:
        `feature: {F} · staging: $STG · colheita: $STG/colheita.txt · playbook: <raiz>/sdd/playbook.md · worktree: <raiz>`.
-       Antes do despacho, nesta ordem: grave o brief (os 5 campos e "leia e siga
+       Antes do despacho, nesta ordem: `mkdir -p sdd/reports/briefs sdd/reports/evidence/{F} sdd/releases/{F}`;
+       grave o brief (os 5 campos e "leia e siga
        `.agents/skills/sdd-playbook/references/curator.md`") em `sdd/reports/briefs/BRIEF_curador_{F}.md`;
        `T="${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/{F}/curador"; mkdir -p "$T"`;
        `bash sdd/bin/playbook-curator.sh --selar "$STG" > "$T/selo.txt"` (o selo do staging fica **fora** dele);
@@ -311,8 +314,8 @@ removido.
        reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)`, diga que a curadoria fica para a próxima
        publicação e encerre: **nada é aplicado**. Nunca separe contagem de regra à mão: quem decide é o
        conferidor.
-    5. **Contagem entra, regra pergunta.** As linhas `AUTO <delta>` de `conferido.txt` vão para
-       `"$STG/delta.txt"` sem pergunta. As linhas `PERGUNTA <n> <tipo> <delta>` (lição nova, aposentadoria,
+    5. **Contagem entra, regra pergunta.** Comece `: > "$STG/delta.txt"; : > "$STG/inv-linhas.txt"`. As linhas
+       `AUTO <delta>` de `conferido.txt` vão para `"$STG/delta.txt"` sem pergunta. As linhas `PERGUNTA <n> <tipo> <delta>` (lição nova, aposentadoria,
        refino, promoção, invariante, sugestão que o curador confirmou e contagem que põe uma lição entre
        as invariantes) viram perguntas `[D3 · muda a regra do método]`, uma por item, numeradas, no formato
        de `references/como-falar.md`: a frase da linha `simples:`, o ID só no fim como `(ref: …)`, as
@@ -330,7 +333,7 @@ removido.
        ficha; as linhas de invariante aceitas (a `inv` do curador, o `ajuste:`, ou
        `REMOVER INV-nnn` / `REMOVER LM-nnn`), em `"$STG/inv-linhas.txt"`. Sem linha `PERGUNTA`, não há
        pergunta de regra.
-    6. **Aplicar numa cópia e conferir 3 vezes.** Com `delta.txt` e `inv-linhas.txt` vazios ou ausentes (nada
+    6. **Aplicar numa cópia e conferir 3 vezes.** Com `delta.txt` e `inv-linhas.txt` vazios (nada
        contado, nada aceito), pule este item, o commit e o envio, faça o item 7 e registre
        `Curadoria: nada aplicado`.
        `bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" sdd/playbook.md > "$STG/novo.md"`
@@ -348,19 +351,20 @@ removido.
     7. **Evidência** em `sdd/reports/evidence/{F}/`, no formato `$ comando`, a saída e `[exit=N]` com o
        exit real do comando: `CURATOR-colheita.log` (o comando do item 2, `colheita.txt` e o exit guardado em
        `colheita.rc`) e `CURATOR-delta.log` (o comando do item 6, o `delta.txt` e o exit dele). E o registro do que já foi julgado, para a próxima publicação desta feature não contar
-       de novo: `grep ' · fp=' "$STG/colheita.txt" >> sdd/reports/evidence/{F}/CURATOR-colhidos.txt`.
-    8. **Commit à parte:** `git add sdd/playbook.md` (e `sdd/invariants.md`, se mudou) e os 3 arquivos
-       `CURATOR-*` do item 7 (sem o registro, a próxima publicação desta feature conta tudo de novo). Se o
-       projeto não versiona evidência (`git check-ignore -q sdd/reports/evidence/{F}/CURATOR-colhidos.txt`
-       sai 0, ou `git ls-files sdd/reports/evidence` vem vazio), não adicione os `CURATOR-*` e diga que o
-       registro fica só nesta pasta. `git diff --cached --name-only` só pode listar esses arquivos; commit
+       de novo, ao lado do ledger: `grep ' · fp=' "$STG/colheita.txt" >> sdd/releases/{F}/CURATOR-colhidos.txt`.
+    8. **Commit à parte:** `git add sdd/playbook.md` (e `sdd/invariants.md`, se mudou) e
+       `sdd/releases/{F}/CURATOR-colhidos.txt` (sem o registro, a próxima publicação desta feature conta tudo
+       de novo); os 2 logs `CURATOR-*.log` entram só se o projeto versiona evidência (`git check-ignore -q`
+       neles sai 1 e `git ls-files sdd/reports/evidence` não vem vazio). Se o projeto não versiona nem
+       `sdd/releases/`, diga que o registro fica só nesta pasta e que uma frente nova da mesma feature pode
+       contar de novo. `git diff --cached --name-only` só pode listar esses arquivos; commit
        `chore(playbook): curadoria {F} — <n> delta(s)`. Nunca `--no-verify`: o pre-commit vigia o playbook.
     9. **Recibo e envio.** Mostre o recibo **Decidi sozinho**: 1 linha por contagem aplicada, em palavras
        simples, e como desfazer (`git revert <sha do commit da curadoria>`). Depois, a pergunta
        `[D1 · não se desfaz]` **Posso enviar o commit da curadoria para a branch padrão?**, dizendo se
        esse push publica sozinho (a resposta do item 7 da FASE 1). **sim** ⇒ aterrisse como no passo 5
        (worktree temporário de `origin/{default_branch}` + cherry-pick; em conflito, não resolva à mão:
-       reaplique o `"$STG/delta.txt"` sobre o playbook da base com `--aplicar`, que recalcula os IDs dos
+       `git cherry-pick --abort`, e reaplique o `"$STG/delta.txt"` sobre o playbook da base com `--aplicar`, que recalcula os IDs dos
        `ADD`, e o `"$STG/inv-linhas.txt"` sobre as invariantes da base com `--aplicar-inv`), rode ali de novo o `playbook-lint.sh` e, com invariantes, o `--validar-inv` (ID repetido
        com a base ⇒ renumere o novo, nunca o da base) e faça o push como no passo 8. **deixar para a
        próxima publicação** ⇒ o commit fica na branch da frente; registre na ficha

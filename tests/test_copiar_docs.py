@@ -61,6 +61,14 @@ class Copia(Base_):
         self.assertIn("RESULTADO: 1 COPIADO(S)", out)
         self.assertTrue((self.f / "sdd/features/DEFINE_RELATÓRIO_MENSAL.md").is_file())
 
+    def test_cada_vogal_acentuada_e_o_cedilha(self):
+        for nome, slug in (("AÇÃO_É", "acao-e"), ("ÍNDICE_Ó", "indice-o"), ("MÊS_ÚTIL", "mes-util"), ("PÃO", "pao"), ("LÁ", "la")):
+            with self.subTest(nome=nome):
+                d = self.doc("sdd/features/DEFINE_%s.md" % nome)
+                _, out, _ = self.copia(slug)
+                self.assertIn("COPIADO sdd/features/DEFINE_%s.md" % nome, out)
+                d.unlink()
+
     def test_arquivo_ignorado_pelo_git_tambem_vem(self):
         self.escreve(self.p, ".gitignore", "sdd/features/\n")
         self.commit(self.p)

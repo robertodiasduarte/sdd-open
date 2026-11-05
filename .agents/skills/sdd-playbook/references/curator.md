@@ -42,7 +42,7 @@ reprovou no seu bloco anterior, não é contaminação: conserte exatamente o qu
 ## Processo
 
 1. Leia a `colheita:` inteira. Leia a seção `## Sempre` do `playbook:` e, para cada `LM-nnn` da colheita,
-   o bullet inteiro (`bash sdd/bin/playbook-lint.sh --grep-all "LM-nnn" sdd/playbook.md`, de dentro do
+   o bullet inteiro, com as linhas de continuação (`grep -n -A3 "\[LM-nnn\]" sdd/playbook.md`, de dentro do
    `worktree:`).
 2. Por linha da colheita:
    - `DELTA … ajudou+1` ou `mordeu+1`: abra o `evidencia=arquivo:linha` na pasta `staging:` e confira
