@@ -83,12 +83,20 @@ exit 64 é chamada errada.
   decide. Verde do comando antigo nunca vale depois de aceitar um novo. Isso não protege de teste enfraquecido por dentro do comando:
   esse é o papel do avaliador de contexto fresco e da revisão.
 - **Commit ou nada.** Mudança fora das pastas de documento (`sdd/features/`, `sdd/reports/`, `sdd/reviews/`, `sdd/handoffs/`,
-  `sdd/traces/`) segura o teste final com `ACAO: COMMITAR`, para o verde ser de um commit.
+  `sdd/traces/`), ou arquivo lá com extensão que não é de documento, como `.sh`, segura o teste final com `ACAO: COMMITAR`, para o verde ser de um commit.
 - **As decisões continuam suas.** Chamar o drive liga o encadeamento só naquela execução: `[auto · de rotina]` segue a recomendada e vai
   para a seção `Decidi sozinho` do relatório; D1 a D5 são sempre perguntadas.
 
 O que fica: `sdd/reports/DRIVE_REPORT_<F>.md`, `sdd/reports/progress/DRIVE_<F>.json` e
 `sdd/reports/evidence/<F>/DRIVE-gate-r<k>.log`. Para recomeçar, apague o arquivo de estado.
+
+## Limites conhecidos
+
+- **Estado editado à mão.** Uma linha de gate sem o log dela não vale, mas uma forja deliberada do estado e do log não é algo que um script no seu próprio repositório consiga barrar: a prova contra isso é o avaliador e a revisão.
+- **Arquivo ignorado e `skip-worktree`.** A conferência vê o que o git vê: arquivo no `.gitignore`, ou marcado `skip-worktree`/`assume-unchanged`, fica de fora. Um gate que roda sobre `git archive HEAD` não depende deles.
+- **O teste dentro do comando.** A impressão digital protege o comando, e não o teste que ele roda.
+- **Processo do gate morto.** Se o agente matar o script, a trava se libera, e um gate órfão pode seguir rodando enquanto o próximo começa.
+- **`DRIVE_REPORT` e `BUILD_REPORT` são lidos, não refeitos.** Depois de um verde novo, um `BUILD_REPORT` antigo que passa no lint continua passando.
 
 ## Também nesta entrega
 

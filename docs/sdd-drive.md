@@ -84,12 +84,20 @@ outdated), exit 64 is a wrong call.
   `gate-alterado` and you decide. A green from the old command never counts after you accept a new one. This does not protect
   against a test weakened inside the command: that is the job of the fresh-context evaluator and of the review.
 - **Commit or nothing.** A change outside the document folders (`sdd/features/`, `sdd/reports/`, `sdd/reviews/`, `sdd/handoffs/`,
-  `sdd/traces/`) stops the final test with `ACAO: COMMITAR`, so the green belongs to a commit.
+  `sdd/traces/`), or a file there with a non-document extension such as `.sh`, stops the final test with `ACAO: COMMITAR`, so the green belongs to a commit.
 - **Decisions stay yours.** Calling the drive turns chaining on for that run only: `[auto · de rotina]` follows the recommended
   option and lands in the `Decidi sozinho` section of the report; D1 to D5 are always asked.
 
 What it leaves behind: `sdd/reports/DRIVE_REPORT_<F>.md`, `sdd/reports/progress/DRIVE_<F>.json` and
 `sdd/reports/evidence/<F>/DRIVE-gate-r<k>.log`. To start over, delete the state file.
+
+## Known limits
+
+- **A hand-edited state file.** A gate line without its log does not count, but a deliberate forgery of the state and the log is not something a script in your own repository can stop: the proof against that is the evaluator and the review.
+- **Ignored files and `skip-worktree`.** The check sees what git sees: a file ignored by `.gitignore`, or marked `skip-worktree`/`assume-unchanged`, is out of it. A gate that runs on `git archive HEAD` does not depend on them.
+- **The test inside the command.** The fingerprint protects the command, not the test the command runs.
+- **A killed gate process.** If the agent kills the script, the lock frees itself, and a gate left orphaned may still be running while the next one starts.
+- **`DRIVE_REPORT` and `BUILD_REPORT` are read, not rewritten.** After a new green, an older `BUILD_REPORT` that passes the lint still passes.
 
 ## Also in this delivery
 

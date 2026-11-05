@@ -27,7 +27,7 @@ if a[:2] == ["run", "list"]:
     if "--commit" in a:
         open(pos, "w").write(str(i + 1))
         p = passos[min(i, len(passos) - 1)]
-        print(json.dumps([r for r in p["runs"] if r.get("headSha") == a[a.index("--commit") + 1]]))
+        print(json.dumps([r for r in p["runs"] if r.get("headSha") in (a[a.index("--commit") + 1], None)]))
     else:
         p = passos[min(max(i - 1, 0), len(passos) - 1)]
         print(json.dumps(p["runs"]))
@@ -42,7 +42,8 @@ elif a[:2] == ["run", "view"]:
         if c.get("passo2"):
             jobs.append(dict(steps=[dict(name=c["passo2"], conclusion="failure")]))
         if c.get("job_sem_passo"):
-            jobs.append(dict(name="deploy", conclusion="failure", steps=[dict(name="y", conclusion="cancelled")]))
+            jobs.append(dict(name="deploy", conclusion=c["job_sem_passo"] if isinstance(c["job_sem_passo"], str) else "failure",
+                             steps=[dict(name="y", conclusion="cancelled")]))
         print(json.dumps(dict(jobs=jobs)))
 elif a[:2] == ["workflow", "run"]:
     if c.get("dispatch_recusado"):
@@ -279,6 +280,23 @@ class RespostasEstranhas(Base):
         self.assertEqual(rc, 4, out + err)
         self.assertIn("HTTP 502", out)
         self.assertNotIn("workflow run", self.log())
+
+    def test_passageiro_com_job_em_timeout_nao_repete(self):
+        # L13 do ciclo 3
+        self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", job_sem_passo="timed_out")
+        self.assertSai(self.sha("--transitorios", "Verify SSH"), 2, "job deploy")
+        self.assertNotIn("workflow run", self.log())
+
+    def test_run_verde_sem_sha_nao_e_no_ar(self):
+        # L13 do ciclo 3: a resposta precisa dizer de qual commit é
+        self.cenario([dict(run(1, self.x), headSha=None)])
+        rc, out, err = self.sha()
+        self.assertEqual(rc, 4, out + err)
+
+    def test_503_com_a_palavra_workflow_nao_e_erro_de_uso(self):
+        self.cenario([], erro="HTTP 503: workflow service not found upstream")
+        rc, out, err = self.sha()
+        self.assertEqual(rc, 4, out + err)
 
     def test_run_sem_sha_nao_quebra_nem_decide(self):
         r = run(2, None, criado="2026-01-01T00:01:00Z")

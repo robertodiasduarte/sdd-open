@@ -98,7 +98,10 @@ def fichas():
             continue
         with open(os.path.join(pasta, nome), encoding="utf-8", errors="replace") as f:
             corpo = f.read()
-        s = re.search(r"^\|\s*\*{0,2}Status\*{0,2}\s*\|\s*([^|\n]*)\|", corpo, re.M)
+        # a mesma leitura do handoff-lint.py: o Status da Ficha, fora de bloco cercado
+        sem_cerca = re.sub(r"(?ms)^(```|~~~).*?^\1[^\n]*$", "", corpo)
+        k = sem_cerca.find("## Ficha")
+        s = re.search(r"^\|\s*\*{0,2}Status\*{0,2}\s*\|\s*([^|\n]*)\|", sem_cerca[k:] if k >= 0 else sem_cerca, re.M)
         if s and s.group(1).strip().startswith("✅"):  # a mesma regra do handoff-lint.py
             continue
         abertas[m.group(1)] = corpo
@@ -175,7 +178,7 @@ def main():
         return d.isoformat()[:7] if d else "0000-00"
 
     abertas = fichas()
-    citado = "\n".join(abertas.values())
+    citado = nfc("\n".join(abertas.values())).casefold()  # citação vale em qualquer caixa e forma do nome
     ledger = set(d for d in os.listdir("sdd/releases") if os.path.isdir(os.path.join("sdd/releases", d))) if os.path.isdir("sdd/releases") else set()
 
     grupos, nomes, sem_grupo, subpastas = collections.defaultdict(list), collections.defaultdict(set), [], []
@@ -205,16 +208,20 @@ def main():
                 return n
         return ""
 
+    def sem_prefixo(nome):
+        # HANDOFF_DESIGN aberta não protege todo DESIGN_*: o prefixo não faz parte do nome da feature
+        return re.sub(r"^(?:" + PREFIXOS + r")_", "", os.path.splitext(nome)[0])
+
     def protecao(g, arquivos):
         for p in arquivos:
-            n = ficha_do_nome(os.path.splitext(os.path.basename(p))[0])
+            n = ficha_do_nome(sem_prefixo(os.path.basename(p)))
             if n:
                 return "ficha aberta em HANDOFF_%s.md" % n
         for n in sorted(nomes[g]):
-            if re.search(r"(?<![A-Z0-9_])" + re.escape(n) + r"(?![A-Z0-9_])", citado):
+            if re.search(r"(?<![^\W_])" + re.escape(nfc(n).casefold()) + r"(?![^\W_])", citado):
                 return "citada numa ficha aberta"
         for p in arquivos:
-            if os.path.basename(p) in citado:
+            if nfc(os.path.basename(p)).casefold() in citado:
                 return "documento citado numa ficha aberta"
         return ""
 
@@ -243,10 +250,10 @@ def main():
         else:
             recentes.append((g, len(arquivos), q, a.dias_b))
     for p in sem_grupo:
-        n = ficha_do_nome(os.path.splitext(os.path.basename(p))[0])
+        n = ficha_do_nome(sem_prefixo(os.path.basename(p)))
         if n:
             protegidos.append((os.path.basename(p), 1, "ficha aberta em HANDOFF_%s.md" % n))
-        elif os.path.basename(p) in citado or p in citado:
+        elif nfc(os.path.basename(p)).casefold() in citado:
             protegidos.append((os.path.basename(p), 1, "documento citado numa ficha aberta"))
         elif "/features/" not in p and idade(p) >= a.dias_b:
             lotes["soltos"].append((p, "sdd/archive/_REPORTS_%s/%s" % (mes_de(p), os.path.basename(p))))

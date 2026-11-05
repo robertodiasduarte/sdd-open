@@ -101,6 +101,7 @@ ACOES = {
 # Lista explícita, sem faixa: no bash e no Python com locale, [A-Za-z] não pega acento, mas a regra é a mesma do despachar.
 LETRAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
 SO_DOCUMENTOS = ("sdd/features/", "sdd/reports/", "sdd/reviews/", "sdd/handoffs/", "sdd/traces/")
+EXT_DOCUMENTO = (".md", ".log", ".txt", ".json", ".jsonl", ".yaml", ".yml", ".csv", ".lock")
 CAMPOS_ESTADO = ("versao", "feature", "define", "gate_sha", "gate_cmd", "inicio", "maximo", "gates", "trocas_gate", "recibos")
 REPETICOES = 3
 # A parada que veio do teste final vale até o --resume: com --fundo, quem a mostra é o proximo.
@@ -270,6 +271,8 @@ def forma_ok(st):
     if st["versao"] != 2 or not all(isinstance(st[k], str) for k in ("feature", "define", "gate_sha", "gate_cmd", "inicio")) \
             or not inteiro(st["maximo"]) or st["maximo"] < 1:
         return False
+    if not isinstance(st.get("motivo", ""), str) or not isinstance(st.get("parada_gate", ""), str):
+        return False
     if st.get("motivo", "") not in MOTIVOS and st.get("motivo", "") != "":
         return False
     if st.get("parada_gate", "") not in PARADAS_DO_GATE and st.get("parada_gate", "") != "":
@@ -281,7 +284,8 @@ def forma_ok(st):
         return False
     for g in st["gates"]:
         if not isinstance(g, dict) or not all(inteiro(g.get(k)) for k in ("n", "rodada", "exit")) \
-                or not all(isinstance(g.get(k), str) for k in ("commit", "log", "impressao")):
+                or not all(isinstance(g.get(k), str) for k in ("commit", "log", "impressao")) \
+                or not re.match(r"^[0-9a-f]{7,64}$", g["commit"]):
             return False
     for t in st["trocas_gate"]:
         if not isinstance(t, dict) or not all(isinstance(t.get(k), str) for k in ("de", "para", "data")):
@@ -316,11 +320,17 @@ def vermelhos(st):
     return sum(1 for g in st["gates"] if g["exit"] == 2)
 
 
-def ultimo_valido(st):
-    """O último gate, se foi rodado com a impressão digital atual; gate de outro comando não prova nada."""
-    if st["gates"] and st["gates"][-1].get("impressao") == st["gate_sha"]:
-        return st["gates"][-1]
-    return None
+def ultimo_valido(p, st):
+    """O último gate, se foi rodado com a impressão digital atual e o log confirma o exit: gate de outro comando, ou
+    linha de estado sem o log dela, não prova nada. Isso barra edição descuidada; forja deliberada é limite declarado."""
+    if not st["gates"] or st["gates"][-1].get("impressao") != st["gate_sha"]:
+        return None
+    g = st["gates"][-1]
+    try:
+        confirma = ler(p.p(g["log"])).rstrip("\n").split("\n")[-1] == "[exit=%d]" % g["exit"]
+    except OSError:
+        return None
+    return g if confirma else None
 
 
 def rodada_atual(st):
@@ -388,7 +398,27 @@ def carrega(p):
     return st
 
 
+def branch_proibida(p):
+    """O motivo de não rodar nesta branch, ou "". Vale no início e em toda volta: a frente pode mudar no meio."""
+    rc, atual = git(p.raiz, "symbolic-ref", "--quiet", "--short", "HEAD")
+    if rc != 0:
+        return "O repositório está com HEAD destacado, fora de qualquer branch."
+    padroes = set()
+    slot = p.slot("project", "default_branch")
+    if slot:
+        padroes.add(slot)
+    rc, remoto = git(p.raiz, "symbolic-ref", "--quiet", "refs/remotes/origin/HEAD")
+    if rc == 0 and remoto.strip():
+        padroes.add(remoto.strip().replace("refs/remotes/origin/", "", 1))
+    if atual.strip() in (padroes or {"main", "master"}):
+        return "Branch atual: %s." % atual.strip()
+    return ""
+
+
 def confere_gate(p, st):
+    motivo = branch_proibida(p)
+    if motivo:
+        parada(p, st, "branch-padrao", motivo)
     rc, sha, cmd, linhas = bloco_do_gate(p)
     if rc != 0:
         parada(p, st, "define-invalido", "verify-gate.sh --print saiu %d." % rc)
@@ -473,12 +503,18 @@ def seguir_design(p):
     return r.returncode, m is not None, revisao, (m.group(1) if m else (r.stdout + r.stderr).strip()[:300])
 
 
+def e_documento(caminho):
+    """Pasta de documento E extensão de documento: um .sh em sdd/reports/ pode ser o gate, e aí conta como código."""
+    return caminho.startswith(SO_DOCUMENTOS) and caminho.lower().endswith(EXT_DOCUMENTO)
+
+
 def so_documentos(p, de, ate):
     # --no-renames: um rename mostra os 2 nomes, e tirar código do lugar não é "só documento"
-    rc, out = git(p.raiz, "diff", "--name-only", "--no-renames", "-z", de, ate)
+    # --ignore-submodules=none: o ignore do .gitmodules viaja com o repositório, e o ponteiro novo é código novo
+    rc, out = git(p.raiz, "diff", "--name-only", "--no-renames", "--ignore-submodules=none", "-z", de, ate)
     if rc != 0:
         return False
-    return all(a.startswith(SO_DOCUMENTOS) for a in out.split("\0") if a)
+    return all(e_documento(a) for a in out.split("\0") if a)
 
 
 def trava(p):
@@ -495,7 +531,7 @@ def gate_rodando(p):
         return pid
     except PermissionError:
         return pid
-    except (OSError, ValueError):
+    except (OSError, ValueError, OverflowError):
         try:
             os.remove(trava(p))
         except OSError:
@@ -536,15 +572,17 @@ def trava_herdada(p):
 
 
 def solta_trava(p):
+    """Só a trava de quem está soltando: se a nossa se perdeu e outro gate pegou, a dele fica."""
     try:
-        os.remove(trava(p))
+        if ler(trava(p)).strip() in (str(os.getpid()), str(os.getppid())):
+            os.remove(trava(p))
     except OSError:
         pass
 
 
 def fora_dos_documentos(p):
     """O que o verde não provaria: mudança rastreada, ou arquivo novo não ignorado, fora das pastas de documento."""
-    rc, out = git(p.raiz, "status", "--porcelain", "--untracked-files=all", "-z")
+    rc, out = git(p.raiz, "status", "--porcelain", "--untracked-files=all", "--ignore-submodules=none", "-z")
     if rc != 0:
         falha("git status falhou em " + p.raiz)
     saida, itens, k = [], out.split("\0"), 0
@@ -554,10 +592,10 @@ def fora_dos_documentos(p):
         if len(reg) < 4:
             continue
         if reg[0] in "RC" or reg[1] in "RC":  # rename: o nome antigo vem no campo seguinte, e tirar código do lugar também é mudança de código
-            if k < len(itens) and not itens[k].startswith(SO_DOCUMENTOS):
+            if k < len(itens) and not e_documento(itens[k]):
                 saida.append(itens[k])
             k += 1
-        if not reg[3:].startswith(SO_DOCUMENTOS):
+        if not e_documento(reg[3:]):
             saida.append(reg[3:])
     return saida
 
@@ -577,7 +615,7 @@ def proxima(p, st):
     if pend:
         return "RODADA", "tarefa: %d de %d — %s" % (total - len(pend) + 1, total, pend[0])
     head = p.head()
-    ult = ultimo_valido(st)
+    ult = ultimo_valido(p, st)
     if ult and (ult["commit"] == head or so_documentos(p, ult["commit"], head)):
         if ult["exit"] == 2:
             r = st["maximo"] - vermelhos(st)
@@ -603,18 +641,9 @@ def separa_max(args):
 
 
 def precondicoes(p):
-    rc, atual = git(p.raiz, "symbolic-ref", "--quiet", "--short", "HEAD")
-    if rc != 0:
-        parada(p, None, "branch-padrao", "O repositório está com HEAD destacado, fora de qualquer branch.")
-    padroes = set()
-    slot = p.slot("project", "default_branch")
-    if slot:
-        padroes.add(slot)
-    rc, remoto = git(p.raiz, "symbolic-ref", "--quiet", "refs/remotes/origin/HEAD")
-    if rc == 0 and remoto.strip():
-        padroes.add(remoto.strip().replace("refs/remotes/origin/", "", 1))
-    if atual.strip() in (padroes or {"main", "master"}):
-        parada(p, None, "branch-padrao", "Branch atual: %s." % atual.strip())
+    motivo = branch_proibida(p)
+    if motivo:
+        parada(p, None, "branch-padrao", motivo)
     if not os.path.isfile(p.abs):
         parada(p, None, "define-invalido", "Arquivo não encontrado: %s." % p.define)
     rc = checar(p)
@@ -720,6 +749,8 @@ def parada_guardada(p, st):
     if st.get("parada_gate") in PARADAS_DO_GATE:
         ult = st["gates"][-1] if st["gates"] else None
         parada(p, st, st["parada_gate"], "log: " + ult["log"] if ult else "")
+    if st.get("motivo") == "bloqueio-humano":  # a saída é o --resume, depois de resolver
+        parada(p, st, "bloqueio-humano", st.get("detalhe") or "")
 
 
 def cmd_proximo(args):
@@ -755,6 +786,8 @@ def cmd_verificar(args):
     pid = gate_rodando(p)
     if pid and not herdada:
         acao(p, st, "ESPERAR", msg_rodando(p, pid))
+    if not herdada:
+        parada_guardada(p, st)
     confere_gate(p, st)
     barra_orcamento(p, st)
     sujos = fora_dos_documentos(p)
@@ -798,6 +831,9 @@ def cmd_verificar(args):
     except OSError as e:
         solta_trava(p)
         falha("não consegui rodar o teste final: %s" % e)
+    except KeyboardInterrupt:
+        solta_trava(p)
+        falha("o teste final foi interrompido; nenhuma rodada foi gasta.", "chame verificar de novo.")
     rc = r.returncode
     st = carrega(p)  # um recibo ou uma retomada pode ter gravado enquanto o gate rodava
     rodada = rodada_atual(st)
@@ -840,7 +876,7 @@ def cmd_concluir(args):
     # concluir e proximo respondem a mesma coisa: tarefa reaberta, DESIGN sumido ou código novo não viram verde.
     nome, detalhe = proxima(p, st)
     if nome != "AVALIAR_E_RELATAR":
-        ult = ultimo_valido(st)
+        ult = ultimo_valido(p, st)
         if nome == "VERIFICAR" and ult and ult["exit"] == 0:
             detalhe = "Há código novo depois do último teste final verde (%s)." % ult["commit"][:12]
         acao(p, st, nome, detalhe)

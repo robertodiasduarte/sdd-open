@@ -171,7 +171,7 @@ class Protecao(Base):
     def test_citada_em_ficha_aberta(self):
         self.escreve(self.r, "sdd/handoffs/HANDOFF_OUTRA.md", "| **Status** | aberta |\n\nversa sobre DEFINE_F14.md e nada mais\n")
         _, out, _ = self.arquivo()
-        self.assertIn("documento citado numa ficha aberta", out)
+        self.assertIn("citada numa ficha aberta", out)
         self.assertNotIn("sdd/features/DEFINE_F14.md  →", out)
         self.assertIn("sdd/features/DEFINE_F1.md  →", out)
 
@@ -253,6 +253,33 @@ class Protecao(Base):
         _, out, _ = self.arquivo()
         self.assertNotIn("BUILD_REPORT_F14.md  →", out)
         self.assertNotIn("BUILD_REPORT_ação.md  →", out)
+
+    def test_citacao_em_outra_caixa_e_acento(self):
+        # M4 do ciclo 3
+        self.doc("sdd/features/DEFINE_F14_FOO.md")
+        self.doc("sdd/reports/NOTAS_B.md")
+        self.doc("sdd/reports/BUILD_REPORT_ação.md")
+        self.escreve(self.r, "sdd/handoffs/HANDOFF_OUTRA.md", "| **Status** | aberta |\n\nver f14_foo, sdd/reports/notas_b.md e ação\n")
+        _, out, _ = self.arquivo()
+        for nome in ("DEFINE_F14_FOO.md  →", "NOTAS_B.md  →"):
+            self.assertNotIn(nome, out)
+        self.assertIn("sdd/features/DEFINE_F1.md  →", out, "o que não foi citado segue")
+
+    def test_status_de_fora_da_ficha_nao_fecha(self):
+        # L11 do ciclo 3
+        self.escreve(self.r, "sdd/handoffs/HANDOFF_F1.md", "| Status | ✅ velho |\n\n## Ficha da feature\n\n| Campo | Valor |\n|---|---|\n| **Status** | 🔨 aberta |\n")
+        _, out, _ = self.arquivo()
+        self.assertNotIn("sdd/features/DEFINE_F1.md  →", out)
+        self.escreve(self.r, "sdd/handoffs/HANDOFF_F1.md", "```\n| **Status** | ✅ exemplo |\n```\n\n| **Status** | 🔨 aberta |\n")
+        _, out, _ = self.arquivo()
+        self.assertNotIn("sdd/features/DEFINE_F1.md  →", out)
+
+    def test_ficha_com_nome_de_prefixo_nao_protege_todos(self):
+        # L12 do ciclo 3
+        self.ficha("DESIGN", "aberta")
+        self.doc("sdd/features/DESIGN_FECHADA.md")
+        _, out, _ = self.arquivo()
+        self.assertIn("sdd/features/DESIGN_FECHADA.md  →", out)
 
     def test_pastas_que_nunca_saem(self):
         self.doc("sdd/reports/evidence/F1/DEFINE_F1.md")

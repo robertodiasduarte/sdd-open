@@ -137,7 +137,7 @@ class Deploy:
         try:
             saida = self.gh("run", "list", "--workflow", self.workflow, "--branch", self.branch, "--limit", "50", "--json", CAMPOS, *filtro)
         except ConsultaFalhou as e:
-            if re.search(r"could not find any workflows|workflow .*not found", str(e), re.I):
+            if re.search(r"could not find any workflows|^HTTP 404", str(e), re.I):
                 uso("o GitHub não conhece o workflow '%s': %s" % (self.workflow, e))
             raise
         try:
@@ -162,7 +162,7 @@ class Deploy:
             if not isinstance(job, dict):
                 continue
             achados = [q.get("name") for q in (job.get("steps") or []) if isinstance(q, dict) and q.get("conclusion") == "failure"]
-            if not achados and job.get("conclusion") == "failure":
+            if not achados and job.get("conclusion") in ("failure", "timed_out", "cancelled"):
                 achados = ["job %s" % job.get("name")]  # job falho sem passo falho nunca é passageiro
             saida += achados
         return saida
@@ -282,7 +282,7 @@ def main():
     while True:
         tempo = time.time() - inicio
         try:
-            meus = [r for r in d.lista("--commit", x) if not r.get("headSha") or r.get("headSha") == x]
+            meus = [r for r in d.lista("--commit", x) if r.get("headSha") == x]
             da_branch = None
             if not meus or (o_mais_novo(meus).get("status") == "completed" and o_mais_novo(meus).get("conclusion") != "success"):
                 da_branch = d.lista()

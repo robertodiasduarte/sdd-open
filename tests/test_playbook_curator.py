@@ -391,7 +391,10 @@ class LogDeSonda(Base):
             "❌ delta linha 2: LM-001 é aposentado e alterado no mesmo delta\n"
             "❌ invariantes linha 3: LM-001 é outra coisa\n"
             "🔴 trava INV: INV-001 tem origem=LM-001, que está aposentada ❌\n"
-            "/tmp/x.md:0: ❌ ID duplicado: LM-001\n", encoding="utf-8")
+            "/tmp/x.md:0: ❌ ID duplicado: LM-001\n"
+            "   │ ❌ delta linha 3: LM-001\n"
+            "+ grep FAIL LM-001\n"
+            "  $ grep FAIL LM-001\n", encoding="utf-8")
         rc, out, _ = self.colhe()
         self.assertNotIn("DELTA LM-001 mordeu+1", out)
         self.assertEqual(rc, 0, out)

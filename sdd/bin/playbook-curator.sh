@@ -97,7 +97,7 @@ COLUNAS_VEREDITO = ("veredito", "tratamento")
 TITULO_LANDMINES = re.compile(r"^## Landmines (aplicáveis|lidas no build)")
 RE_LM = re.compile(r"(?<![A-Za-z0-9_-])LM-\d{3}(?!\d)")
 # Eco de comando e diagnóstico dos próprios scripts num log de sonda não são achado: dizem de um delta ou playbook de teste.
-NAO_E_ACHADO = re.compile(r"^(\$ |❌ (delta|invariantes) linha \d+:|🔴 trava INV:|\S+\.md:\d+: ❌ )")
+NAO_E_ACHADO = re.compile(r"^\s*(?:│\s*)*(\$ |\+ |❌ (delta|invariantes) linha \d+:|🔴 trava INV:|\S+\.md:\d+: ❌ )")
 RE_BULLET = re.compile(r"^- \[(LM-\d{3})\]")
 RE_DATA = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 RE_FEATURE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")

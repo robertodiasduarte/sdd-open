@@ -467,6 +467,43 @@ class Verificar(Base):
         self.assertAcao(res, "COMMITAR")
         self.assertEqual(self.chamadas(), 0)
 
+    def test_script_em_pasta_de_documento_conta_como_codigo(self):
+        # M2 do ciclo 3: o gate pode estar lá; .md segue sendo documento
+        self.escreve(self.r, "sdd/reports/gate.sh", "exit 0\n")
+        self.commit(self.r)
+        self.pronto()
+        self.verde()
+        self.drive("verificar", D)
+        self.escreve(self.r, "sdd/reports/gate.sh", "exit 1\n")
+        res = self.drive("verificar", D)
+        self.assertAcao(res, "COMMITAR")
+        self.assertIn("sdd/reports/gate.sh", res[1])
+        self.git(self.r, "add", "sdd/reports/gate.sh")
+        self.git(self.r, "commit", "-q", "-m", "muda o gate")
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
+    def test_ponteiro_de_submodule_com_ignore_all_nao_passa(self):
+        # M1 do ciclo 3: o .gitmodules viaja com o repositório
+        lib = self.repo("lib")
+        self.escreve(lib, "l.txt", "1\n")
+        self.commit(lib)
+        v1 = self.git(lib, "rev-parse", "HEAD").strip()
+        self.escreve(lib, "l.txt", "2\n")
+        self.commit(lib)
+        self.git(self.r, "-c", "protocol.file.allow=always", "submodule", "--quiet", "add", str(lib), "sub")
+        self.git(self.r / "sub", "checkout", "-q", v1)
+        self.git(self.r, "add", "sub")
+        self.git(self.r, "config", "-f", ".gitmodules", "submodule.sub.ignore", "all")
+        self.commit(self.r)
+        self.pronto()
+        self.verde()
+        self.drive("verificar", D)
+        self.git(self.r / "sub", "checkout", "-q", "master" if self.git(lib, "symbolic-ref", "--short", "HEAD").strip() == "master" else "main")
+        self.assertAcao(self.drive("verificar", D), "COMMITAR")
+        self.git(self.r, "add", "-f", "sub")
+        self.git(self.r, "commit", "-q", "-m", "ponteiro")
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
     def test_rename_entre_pastas_de_documento_nao_trava(self):
         # o outro lado
         self.escreve(self.r, "sdd/reports/x.md", "doc\n")
@@ -673,6 +710,11 @@ class SegundoPlano(Base):
         self.assertAcao(res, "ESPERAR")
         self.assertIn("DRIVE_F.lock", res[1])
 
+    def test_trava_com_numero_enorme_se_libera(self):
+        # L8 do ciclo 3
+        self.escreve(self.r, "sdd/reports/progress/DRIVE_F.lock", "99999999999999999999")
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
     def test_trava_de_processo_morto_se_libera(self):
         self.escreve(self.r, "sdd/reports/progress/DRIVE_F.lock", "999999")
         self.assertAcao(self.drive("proximo", D), "VERIFICAR")
@@ -806,6 +848,38 @@ class Retomada(Base):
                     self.assertParada(res, "estado-invalido")
                     self.assertNotIn("Traceback", res[2])
 
+    def test_gate_no_estado_sem_o_log_nao_prova_nada(self):
+        # M3 do ciclo 3
+        self.drive("iniciar", D)
+        self.feito()
+        st = self.estado()
+        head = self.git(self.r, "rev-parse", "HEAD").strip()
+        st["gates"] = [dict(n=1, rodada=1, commit=head, exit=0, log="nao/existe.log", impressao=st["gate_sha"])]
+        self.escreve(self.r, ESTADO, json.dumps(st))
+        self.escreve(self.r, "sdd/reports/BUILD_REPORT_F.md", "x\n")
+        self.assertAcao(self.drive("concluir", D), "VERIFICAR")
+        st["gates"][0]["commit"] = "HEAD"
+        self.escreve(self.r, ESTADO, json.dumps(st))
+        self.assertParada(self.drive("concluir", D), "estado-invalido")
+
+    def test_log_que_diz_outro_exit_nao_prova(self):
+        # o outro lado de M3: o log existe, e o exit dele manda
+        self.drive("iniciar", D)
+        self.feito()
+        self.verde()
+        self.drive("verificar", D)
+        self.escreve(self.r, "sdd/reports/BUILD_REPORT_F.md", "x\n")
+        self.escreve(self.r, "sdd/reports/evidence/F/DRIVE-gate-r1.log", "$ x\n[exit=1]\n")
+        self.assertAcao(self.drive("concluir", D), "VERIFICAR")
+
+    def test_motivo_com_tipo_errado(self):
+        # L10 do ciclo 3
+        self.drive("iniciar", D)
+        st = self.estado()
+        st["motivo"] = []
+        self.escreve(self.r, ESTADO, json.dumps(st))
+        self.assertParada(self.drive("recibo", D, "x"), "estado-invalido")
+
     def test_outros_campos_com_forma_errada(self):
         # M4 do ciclo 2
         self.drive("iniciar", D)
@@ -857,6 +931,26 @@ class Concluir(Base):
         self.git(self.r, "add", "-A", "sdd/features")
         self.git(self.r, "commit", "-q", "-m", "c")
         self.assertAcao(self.drive("concluir", D), "DESIGN")
+
+    def test_bloqueio_segura_ate_o_resume(self):
+        # L4 do ciclo 3
+        self.verde_ate_avaliar()
+        self.escreve(self.r, "sdd/reports/BUILD_REPORT_F.md", "x\n")
+        self.drive("bloqueio", D, "falta a chave")
+        for verbo in ("concluir", "proximo", "verificar"):
+            with self.subTest(verbo=verbo):
+                res = self.drive(verbo, D)
+                self.assertParada(res, "bloqueio-humano")
+                self.assertIn("falta a chave", res[1])
+        self.assertAcao(self.drive("--resume", D), "AVALIAR_E_RELATAR")
+        self.assertParada(self.drive("concluir", D), "gate-verde", 0)
+
+    def test_branch_padrao_no_meio_para(self):
+        # L5 do ciclo 3
+        self.verde_ate_avaliar()
+        self.git(self.r, "checkout", "-q", "-b", "main")
+        self.assertParada(self.drive("concluir", D), "branch-padrao")
+        self.assertParada(self.drive("verificar", D), "branch-padrao")
 
     def test_parada_guardada_vale_tambem_no_concluir(self):
         # L1 do ciclo 2
