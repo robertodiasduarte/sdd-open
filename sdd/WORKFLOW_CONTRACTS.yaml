@@ -139,7 +139,6 @@ sdd_drive:
   script: "`sdd/bin/sdd-drive.sh`"
   skill: "`.agents/skills/sdd-drive/SKILL.md`"
   brief: "`.agents/skills/sdd-drive/references/executor.md`"
-  doc: "`docs/drive.md`"
   campos:
     - "define"
     - "design"
