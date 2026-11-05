@@ -35,18 +35,21 @@ reprovou no seu bloco anterior, não é contaminação: conserte exatamente o qu
   pasta `staging:`. "Por raciocínio" não é evidência.
 - **Toda linha da colheita aparece no bloco.** Descartar em silêncio é o modo de falha que este papel
   existe para impedir.
-- **Não invente contagem**: linha `contador` só para `DELTA` que está na colheita.
+- **Não invente contagem**: linha `contador` só para `DELTA` que está na colheita. Contagem e aposentadoria
+  da mesma lição não valem juntas: se você recomendar aposentar, a linha `contador` dela é
+  `DESCARTAR (a lição vai ser aposentada)`.
 - **Não conserte candidato rejeitado** inventando evidência; só relate.
 - **Não reescreva, comprima nem renumere** o playbook: só deltas da gramática abaixo.
 
 ## Processo
 
 1. Leia a `colheita:` inteira. Leia a seção `## Sempre` do `playbook:` e, para cada `LM-nnn` da colheita,
-   o bullet inteiro, com as linhas de continuação (`grep -n -A3 "\[LM-nnn\]" sdd/playbook.md`, de dentro do
+   o bullet inteiro, com as linhas de continuação (`grep -n -A11 "\[LM-nnn\]" sdd/playbook.md`, de dentro do
    `worktree:`).
 2. Por linha da colheita:
    - `DELTA … ajudou+1` ou `mordeu+1`: abra o `evidencia=arquivo:linha` na pasta `staging:` e confira
-     que a linha diz o que a colheita diz (tabela com ✔; achado que cita a landmine). Confere ⇒ linha
+     que a linha diz o que a colheita diz e que aquela lição é o assunto da linha (tabela com ✔ na coluna do veredito;
+     achado cuja causa é a landmine, não só a cita de passagem). Confere ⇒ linha
      `contador` com `AUTO`. Não confere ⇒ `DESCARTAR (motivo)`.
    - `SUGESTAO mordeu? LM-nnn`: leia o achado inteiro e o bullet. A causa do achado é a regra do
      bullet? Sim ⇒ linha `sugestao` com o delta `LM-nnn mordeu+1`, a evidência e `ACEITAR` (o script não

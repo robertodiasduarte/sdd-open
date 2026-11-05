@@ -23,8 +23,9 @@
 #   regular, nunca link; procura também em sdd/archive/<FEATURE>/. Limpa o que sobrou da release anterior;
 #   --retomar não copia nem limpa: só diz se há colheita na pasta (sessão nova depois da parada do curador).
 # --colher lê só o nível de cima de <dir>:
-#   DESIGN_*.md / BUILD_REPORT_*.md → seções "Landmines aplicáveis" / "Landmines lidas no build": linha de
-#     tabela com LM-nnn cuja 1ª célula de veredito começa com ✔ ⇒ ajudou+1; com "mordeu" ⇒ mordeu+1
+#   DESIGN_*.md / BUILD_REPORT_*.md → seções "Landmines aplicáveis" / "Landmines lidas no build": a tabela é lida
+#     pelo cabeçalho: o ID vem da coluna Fonte, LM-nnn ou ID, e o veredito da coluna Veredito ou Tratamento (começa
+#     com ✔ ⇒ ajudou+1; com "mordeu" ⇒ mordeu+1). Sem esse cabeçalho, não conta nada: TABELA_SEM_CABECALHO.
 #   AVAL*-*.log · AVALIACAO_*.md · *.yaml · BUILD_REPORT_*.md · HANDOFF_*.md → linha de achado (❌,
 #     NEEDS_WORK, FAIL como palavra, WAIVED, mordeu_antes:) sem ✅: com LM-nnn ⇒ mordeu+1; sem LM e com
 #     um termo de sup: (6+ caracteres, não só dígitos) ⇒ SUGESTAO (nunca delta)
@@ -91,6 +92,8 @@ for _canal in (sys.stdout, sys.stderr):
 SECOES_DEFAULT = "Sempre|Dados|Backend|Frontend|Infra / deploy|Reviews / harness|Domínio|Tombstones"
 SUG_MIN = 6
 ACHADO = re.compile(r"❌|mordeu_antes:|(^|[^A-Za-z0-9_-])(NEEDS_WORK|FAIL(ED|URES?)?|WAIVED)([^A-Za-z0-9_-]|$)")
+COLUNAS_LICAO = ("fonte", "lm-nnn", "id")
+COLUNAS_VEREDITO = ("veredito", "tratamento")
 TITULO_LANDMINES = re.compile(r"^## Landmines (aplicáveis|lidas no build)")
 RE_LM = re.compile(r"(?<![A-Za-z0-9_-])LM-\d{3}(?!\d)")
 RE_BULLET = re.compile(r"^- \[(LM-\d{3})\]")
@@ -237,8 +240,13 @@ def check_vivo(b):
 
 def arquivo_do_projeto(caminho):
     """Um arquivo que existe, com caminho relativo que não sai da raiz: `.`, `/`, `..` e uma pasta não vigiam nada."""
-    return (not os.path.isabs(caminho) and not os.path.normpath(caminho).startswith("..")
-            and os.path.isfile(caminho))
+    return caminho_dentro(caminho) and os.path.isfile(caminho)
+
+
+def caminho_dentro(caminho):
+    """Relativo e sem sair da raiz: `.github/x` é legítimo; `/x`, `..` e `../x` não."""
+    n = os.path.normpath(caminho)
+    return not os.path.isabs(caminho) and n != ".." and not n.startswith("../")
 
 
 def proximo_id(bullets):
@@ -465,36 +473,46 @@ class Colheita:
         self.saida.append("DELTA %s %s+1 · conf=%s · evidencia=%s:%d · fp=%s" % (lm, tipo, self.hoje, arquivo, linha, fp))
 
     def tabela(self, caminho, base):
-        dentro = False
-        for n, ln in enumerate(ler(caminho).split("\n"), 1):
+        """Lê as 2 colunas que o cabeçalho nomeia. Nunca adivinha pelo conteúdo: 2 tentativas de adivinhar qual célula
+        é o veredito deram contagem errada a outra lição. Sem o cabeçalho, não conta e relata."""
+        linhas = ler(caminho).split("\n")
+        dentro, col_id, col_ver, cabecalho, avisou = False, None, None, False, False
+        for k, ln in enumerate(linhas):
+            n = k + 1
             if TITULO_LANDMINES.match(ln):
-                dentro = True
+                dentro, cabecalho, avisou = True, False, False
                 continue
             if ln.startswith("## "):
                 dentro = False
-            if not (dentro and ln.startswith("|") and RE_LM.search(ln)):
+            if not dentro:
                 continue
-            # Casa pelo CONTEÚDO da célula, nunca pela posição da coluna: a tabela aparece com 3 e com 4 colunas.
-            cels = ln.split("|")[1:-1]
-            com_id = next((k for k, cel in enumerate(cels) if RE_LM.search(cel)), None)
-            if com_id is None:
+            if not ln.lstrip().startswith("|"):
+                cabecalho = False
                 continue
-            # O veredito é a 1ª célula DEPOIS da que cita a lição (a coluna de antes pode ser uma frase de regra que
-            # começa com "mordeu"); sem nenhuma, a 1ª até ela. Nunca pelo tamanho: "mordeu: <frase>" é veredito.
-            veredito = ""
-            for cel in cels[com_id + 1:] + cels[:com_id + 1]:
-                c = cel.strip(" \t*`")
-                if c.startswith("✔"):
-                    veredito = "ajudou"
-                elif re.match(r"^mordeu(\W|$)", c):
-                    veredito = "mordeu"
-                elif re.match(r"^(N\.A\.|N/A)", c):
-                    veredito = "na"
-                if veredito:
-                    break
-            if veredito in ("ajudou", "mordeu"):
-                # A lição é a da 1ª célula que cita alguma; uma nota depois do veredito pode citar outra de passagem.
-                for lm in sorted(set(RE_LM.findall(cels[com_id]))):
+            cels = celulas(ln)
+            if all(re.fullmatch(r":?-{2,}:?", c or "-") for c in cels):
+                continue
+            proxima = linhas[k + 1] if k + 1 < len(linhas) else ""
+            if re.fullmatch(r"\s*\|[\s|:-]+\|?\s*", proxima):
+                nomes = [c.strip(" *`").lower() for c in cels]
+                col_id = next((nomes.index(x) for x in COLUNAS_LICAO if x in nomes), None)
+                col_ver = next((nomes.index(x) for x in COLUNAS_VEREDITO if x in nomes), None)
+                cabecalho = True
+                continue
+            if not RE_LM.search(ln):
+                continue
+            if not cabecalho or col_id is None or col_ver is None:
+                if not avisou:
+                    avisou = True
+                    self.saida.append("TABELA_SEM_CABECALHO %s:%d (a tabela precisa das colunas %s e %s: não contei nada dela)"
+                                      % (base, n, " ou ".join(COLUNAS_LICAO), " ou ".join(COLUNAS_VEREDITO)))
+                continue
+            if max(col_id, col_ver) >= len(cels):
+                continue
+            c = cels[col_ver].strip(" \t*`")
+            veredito = "ajudou" if c.startswith("✔") else "mordeu" if re.match(r"^mordeu(\W|$)", c) else ""
+            if veredito:
+                for lm in sorted(set(RE_LM.findall(cels[col_id]))):
                     self.delta(veredito, lm, base, n, ln)
 
     def achados(self, caminho, base):
@@ -721,7 +739,7 @@ def colher(args):
     c.saida.append("resumo: deltas=%d (ajudou=%d mordeu=%d) candidatos=%d rejeitados=%d promocoes=%d sugestoes=%d"
                    % (n["a"] + n["m"], n["a"], n["m"], n["c"], n["r"], n["p"], n["s"]))
     # 0 = há pelo menos 1 linha que alguém precisa julgar ou relatar; 1 = nada, de nenhum tipo.
-    relatar = sum(1 for ln in c.saida if ln.startswith(("IGNORADO ", "JA_COLHIDO ", "INV_PENDENTE ")))
+    relatar = sum(1 for ln in c.saida if ln.startswith(("IGNORADO ", "JA_COLHIDO ", "INV_PENDENTE ", "TABELA_SEM_CABECALHO ")))
     rc = 0 if sum(n.values()) + relatar > 0 else 1
     diz("\n".join(c.saida))
     grava_trace(pasta, rc, n)
@@ -1082,8 +1100,7 @@ def validar_inv(args):
             defeitos.append("%s é estado=auto sem '· tarefa:' — diga o comando ou o alvo que a automatiza" % i["id"])
         if i["estado"] == "humano" and not re.search(r"· motivo:\s*[^\s·]", i["resto"]):
             defeitos.append("%s é estado=humano sem '· motivo:' — diga por que máquina não pega" % i["id"])
-        if i["check"] and (os.path.isabs(i["check"]) or os.path.normpath(i["check"]).startswith(".")
-                           or os.path.isdir(i["check"])):
+        if i["check"] and (not caminho_dentro(i["check"]) or os.path.isdir(i["check"])):
             defeitos.append("%s tem check=%s: use o caminho de um arquivo, relativo à raiz do projeto" % (i["id"], i["check"]))
         elif i["check"] and not os.path.exists(i["check"]):
             defeitos.append("%s tem check=%s, que não existe a partir desta pasta — corrija o caminho ou mude o estado"
@@ -1333,7 +1350,7 @@ def conferir_bloco(args):
             continue
         for chave, padrao in (("sug", r"^SUGESTAO mordeu\? (LM-\d{3})"), ("rej", r"^REJEITADO candidato em (.+?:\d+) — "),
                               ("promo", r"^PROMOVER\? (LM-\d{3})"), ("ign", r"^IGNORADO (LM-\d{3})"),
-                              ("ja", r"^JA_COLHIDO (\S+)"), ("pend", r"^INV_PENDENTE (LM-\d{3})")):
+                              ("ja", r"^JA_COLHIDO (\S+)"), ("ja", r"^TABELA_SEM_CABECALHO (.+?:\d+) "), ("pend", r"^INV_PENDENTE (LM-\d{3})")):
             m = re.match(padrao, ln)
             if m:
                 col[chave].append(m.group(1))
@@ -1430,7 +1447,7 @@ def conferir_bloco(args):
             for _n, msg in erros:
                 defeitos.append("%s: Delta fora da gramática — %s" % (rotulo, msg))
             if rec == "ACEITAR":
-                m = re.match(r"^`?([^\s:`|]+):(\d+)", r["evid"].strip())
+                m = re.match(r"^`?([^:`|]+?):(\d+)", r["evid"].strip())
                 if not m:
                     defeitos.append("%s: ACEITAR exige a Evidência começando por arquivo:linha" % rotulo)
                 else:

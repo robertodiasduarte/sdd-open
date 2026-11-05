@@ -103,6 +103,27 @@ class Trava(Base_):
                 self.assertEqual(rc, 2, err)
                 self.assertIn(trecho, err)
 
+    def test_check_em_pasta_com_ponto_e_legitimo(self):
+        # N3-M1 do avaliador, ciclo 3: o conserto do N-L6 recusava .github/ e .agents/.
+        self.escreve(self.tmp, ".github/workflows/x.yml", "x\n")
+        rc, out, err = self.trava(BASE + "- [INV-003] estado=ok origem=seed check=.github/workflows/x.yml :: R · por quê: p\n")
+        self.assertEqual(rc, 0, out + err)
+        pb = self.escreve(self.tmp, "p5.md", PLAYBOOK.replace("promovido_para: sdd/bin/report-lint.py", "promovido_para: .github/workflows/x.yml"))
+        rc, out, err = self.trava(BASE, pb=pb)
+        self.assertEqual(rc, 0, out + err)
+
+    def test_check_e_promovido_que_saem_da_raiz(self):
+        self.escreve(self.tmp.parent, "fora-%s.txt" % self.tmp.name, "x\n")
+        fora = "../fora-%s.txt" % self.tmp.name
+        self.addCleanup(lambda: (self.tmp.parent / ("fora-%s.txt" % self.tmp.name)).unlink())
+        rc, _, err = self.trava(BASE + "- [INV-003] estado=ok origem=seed check=%s :: R · por quê: p\n" % fora)
+        self.assertEqual(rc, 2, err)
+        self.assertIn("relativo à raiz", err)
+        pb = self.escreve(self.tmp, "p6.md", PLAYBOOK.replace("promovido_para: sdd/bin/report-lint.py", "promovido_para: " + fora))
+        rc, _, err = self.trava(BASE, pb=pb)
+        self.assertEqual(rc, 2, err)
+        self.assertIn("INV-001 é estado=ok sem check=", err)
+
     def test_check_e_promovido_que_nao_sao_arquivo_do_projeto(self):
         # N-L6 do avaliador, ciclo 2
         for caminho in (".", "/", "..", "/etc/hosts", "sdd"):
@@ -219,6 +240,15 @@ class Cruzar(Sandbox):
         self.assertEqual(rc, 3)
         self.assertIn("origem=seed check=sdd/bin/playbook-lint.sh ::", out)
         self.assertNotIn("check=Verify", out)
+
+    def test_check_curado_e_trocado_pelo_do_bullet_promovido(self):
+        # Mutante vivo nos ciclos 2 e 3: a troca do check= virava no-op sem nenhum teste notar.
+        pb = self.escreve(self.tmp, "p.md", "# P\n\n## Sempre\n\n- [LM-040] ajudou=0 mordeu=1 · conf=2026-01-01 · sup: `a` :: r. **Do instead:** x. · promovido_para: sdd/bin/report-lint.py\n\n## Tombstones\n")
+        inv = self.escreve(self.tmp, "i.md", CABECA + "- [INV-001] estado=ok origem=LM-040 check=sdd/bin/playbook-lint.sh :: R · por quê: p\n")
+        rc, out, _ = self.cruza("TOMBSTONE LM-040 :: t\n", pb, inv)
+        self.assertEqual(rc, 3)
+        self.assertIn("origem=seed check=sdd/bin/report-lint.py ::", out)
+        self.assertNotIn("check=sdd/bin/playbook-lint.sh", out.split("ajuste:")[1])
 
     def test_licao_ja_no_universo_nao_e_entrada_nova(self):
         rc, out, _ = self.cruza("LM-030 mordeu+1\n")

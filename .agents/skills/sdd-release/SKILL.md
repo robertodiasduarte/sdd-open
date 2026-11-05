@@ -354,10 +354,10 @@ removido.
        de novo, ao lado do ledger: `grep ' · fp=' "$STG/colheita.txt" >> sdd/releases/{F}/CURATOR-colhidos.txt`.
     8. **Commit à parte:** `git add sdd/playbook.md` (e `sdd/invariants.md`, se mudou) e
        `sdd/releases/{F}/CURATOR-colhidos.txt` (sem o registro, a próxima publicação desta feature conta tudo
-       de novo); os 2 logs `CURATOR-*.log` entram só se o projeto versiona evidência (`git check-ignore -q`
-       neles sai 1 e `git ls-files sdd/reports/evidence` não vem vazio). Se o projeto não versiona nem
-       `sdd/releases/`, diga que o registro fica só nesta pasta e que uma frente nova da mesma feature pode
-       contar de novo. `git diff --cached --name-only` só pode listar esses arquivos; commit
+       de novo), só se o projeto versiona os ledgers (`git ls-files sdd/releases` não vem vazio); senão, não
+       adicione e diga que o registro fica só nesta pasta e que uma frente nova da mesma feature pode contar
+       de novo. Os 2 logs `CURATOR-*.log` entram só se o projeto versiona evidência (`git check-ignore -q`
+       neles sai 1 e `git ls-files sdd/reports/evidence` não vem vazio). `git diff --cached --name-only` só pode listar esses arquivos; commit
        `chore(playbook): curadoria {F} — <n> delta(s)`. Nunca `--no-verify`: o pre-commit vigia o playbook.
     9. **Recibo e envio.** Mostre o recibo **Decidi sozinho**: 1 linha por contagem aplicada, em palavras
        simples, e como desfazer (`git revert <sha do commit da curadoria>`). Depois, a pergunta
@@ -365,7 +365,9 @@ removido.
        esse push publica sozinho (a resposta do item 7 da FASE 1). **sim** ⇒ aterrisse como no passo 5
        (worktree temporário de `origin/{default_branch}` + cherry-pick; em conflito, não resolva à mão:
        `git cherry-pick --abort`, e reaplique o `"$STG/delta.txt"` sobre o playbook da base com `--aplicar`, que recalcula os IDs dos
-       `ADD`, e o `"$STG/inv-linhas.txt"` sobre as invariantes da base com `--aplicar-inv`), rode ali de novo o `playbook-lint.sh` e, com invariantes, o `--validar-inv` (ID repetido
+       `ADD`, o `"$STG/inv-linhas.txt"` sobre as invariantes da base com `--aplicar-inv`, e traga o registro e os
+       logs do item 8 da frente, com `git checkout <sha do commit da curadoria> -- <cada arquivo>`, senão a
+       próxima publicação conta de novo), rode ali de novo o `playbook-lint.sh` e, com invariantes, o `--validar-inv` (ID repetido
        com a base ⇒ renumere o novo, nunca o da base) e faça o push como no passo 8. **deixar para a
        próxima publicação** ⇒ o commit fica na branch da frente; registre na ficha
        `Curadoria: commit <sha> não enviado` e o comando de envio. Com mudança de regra e envio na mesma

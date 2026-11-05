@@ -57,10 +57,10 @@ class TabelasDeLandmines(Base):
 
     def tabela(self, celula, titulo="## Landmines aplicáveis", colunas=4):
         if colunas == 4:
-            linha = "| aviso | `LM-001` | %s | como |" % celula
+            cab, linha = "| Landmine | Fonte | Veredito | Como |\n|---|---|---|---|", "| aviso | `LM-001` | %s | como |" % celula
         else:
-            linha = "| `LM-001` | %s | como |" % celula
-        return "# D\n\n%s\n\n| a | b | c |\n|---|---|---|\n%s\n\n## Outra\n" % (titulo, linha)
+            cab, linha = "| ID | Veredito | Como |\n|---|---|---|", "| `LM-001` | %s | como |" % celula
+        return "# D\n\n%s\n\n%s\n%s\n\n## Outra\n" % (titulo, cab, linha)
 
     def test_veredito_decide_em_3_e_4_colunas_e_nas_2_secoes(self):
         for titulo in ("## Landmines aplicáveis", "## Landmines lidas no build"):
@@ -82,7 +82,7 @@ class TabelasDeLandmines(Base):
                 self.doc("DESIGN_F.md", self.tabela(celula))
                 _, out, _ = self.colhe()
                 self.assertNotIn("DELTA LM-001", out)
-        self.doc("DESIGN_F.md", "# D\n\n## Outra seção\n\n| `LM-001` | ✔ tratado | x |\n")
+        self.doc("DESIGN_F.md", "# D\n\n## Outra seção\n\n| ID | Veredito | Como |\n|---|---|---|\n| `LM-001` | ✔ tratado | x |\n")
         _, out, _ = self.colhe()
         self.assertNotIn("DELTA", out)
 
@@ -117,7 +117,7 @@ class Achados(Base):
         self.assertEqual(rc, 0, "LM-003 ainda pede promoção")
 
     def test_linha_de_tabela_de_landmines_nao_conta_como_achado(self):
-        self.doc("BUILD_REPORT_F.md", "# B\n\n## Landmines lidas no build\n\n| `LM-001` | ✔ tratado | FAIL antes do conserto |\n")
+        self.doc("BUILD_REPORT_F.md", "# B\n\n## Landmines lidas no build\n\n| ID | Veredito | Como |\n|---|---|---|\n| `LM-001` | ✔ tratado | FAIL antes do conserto |\n")
         _, out, _ = self.colhe()
         self.assertIn("DELTA LM-001 ajudou+1", out)
         self.assertNotIn("LM-001 mordeu", out)
@@ -301,61 +301,92 @@ class LinhasQueNaoSaoAchado(Base):
         self.doc("AVAL-1.log", "FAIL-FAST ligado para LM-001\n")
         self.assertNotIn("DELTA LM-001", self.colhe()[1])
 
-    def test_nota_depois_do_veredito_nao_recebe_contagem(self):
-        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| `LM-001` | ✔ tratado | vizinha da LM-002 |\n")
-        out = self.colhe()[1]
+    TAB4 = "## Landmines aplicáveis\n\n| Landmine | Fonte | Veredito | Como |\n|---|---|---|---|\n%s\n"
+    TAB3 = "## Landmines aplicáveis\n\n| LM-nnn | Superfície | Tratamento |\n|---|---|---|\n%s\n"
+    BUILD = "## Landmines lidas no build\n\n| Superfície | LM-nnn | Veredito | Como / onde |\n|---|---|---|---|\n%s\n"
+
+    def linha(self, modelo, texto):
+        for f in self.dir.iterdir():
+            f.unlink()
+        self.doc("DESIGN_F.md", modelo % texto)
+        return self.colhe()[1]
+
+    def test_os_3_formatos_reais(self):
+        self.assertIn("DELTA LM-001 ajudou+1", self.linha(self.TAB4, "| aviso | `LM-001` | ✔ tratado | x |"))
+        self.assertIn("DELTA LM-001 ajudou+1", self.linha(self.TAB3, "| LM-001 | `verify-gate.sh` | ✔ cada regra roda com fixture |"))
+        self.assertIn("DELTA LM-001 ajudou+1", self.linha(self.BUILD, "| `x.sh` | LM-001 | ✔ tratado | y |"))
+
+    def test_nota_que_cita_outra_licao_nao_recebe_contagem(self):
+        # N3-H1 do avaliador, ciclo 3: com a fonte sendo uma ficha, só a nota citava uma lição, e ela levava a contagem.
+        for texto in ("| Regra x | handoff, etapa M1 | ✔ tratado | mesma causa da LM-001 |",
+                      "| Regra x | tests/apoio.py | mordeu: travou no CI | a LM-001 ja avisava |"):
+            with self.subTest(texto=texto):
+                self.assertNotIn("DELTA", self.linha(self.TAB4, texto))
+
+    def test_resumo_que_cita_outra_licao_nao_troca_a_contagem(self):
+        out = self.linha(self.TAB4, "| Repete a LM-002 no cron | LM-001 | ✔ tratado | como |")
         self.assertIn("DELTA LM-001 ajudou+1", out)
         self.assertNotIn("DELTA LM-002", out)
 
-    def test_id_na_propria_celula_do_veredito_vale_quando_nao_ha_outro(self):
-        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| ✔ tratado LM-001 | x |\n")
-        self.assertIn("DELTA LM-001 ajudou+1", self.colhe()[1])
-
-    def test_frase_de_regra_que_comeca_com_mordeu_nao_e_veredito(self):
-        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| mordeu quando o agendador caiu de madrugada | `LM-001` | ✔ tratado |\n")
-        out = self.colhe()[1]
+    def test_id_na_nota_de_tabela_de_3_colunas_nao_conta(self):
+        out = self.linha(self.TAB3, "| LM-001 | x | ✔ vizinha da LM-002 |")
         self.assertIn("DELTA LM-001 ajudou+1", out)
-        self.assertNotIn("LM-001 mordeu", out)
+        self.assertNotIn("DELTA LM-002", out)
 
     def test_veredito_longo_de_mordeu_continua_mordeu(self):
         # N-H1 do avaliador, ciclo 2: o teto de tamanho perdia a contagem ou a trocava por ajudou.
-        longo = "mordeu: o gate ficou verde sem a asserção na primeira rodada do build"
-        for depois in ("✔ corrigido com baseline vermelho", "x", "**mordeu** de novo"):
-            with self.subTest(depois=depois):
-                self.doc("BUILD_REPORT_F.md", "## Landmines lidas no build\n\n| `LM-001` | gate | %s | %s |\n" % (longo, depois))
-                rc, out, _ = self.colhe()
-                self.assertEqual(rc, 0, out)
-                self.assertIn("DELTA LM-001 mordeu+1", out)
-                self.assertNotIn("LM-001 ajudou", out)
+        out = self.linha(self.BUILD, "| gate | LM-001 | mordeu: o gate ficou verde sem a asserção na primeira rodada do build | ✔ corrigido com baseline vermelho |")
+        self.assertIn("DELTA LM-001 mordeu+1", out)
+        self.assertNotIn("LM-001 ajudou", out)
 
     def test_veredito_longo_de_ajudou_continua_ajudou(self):
-        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| `LM-001` | ✔ tratado: o cabeçalho vai literal, em toda chamada do agendador, sem depender do ambiente | x |\n")
-        self.assertIn("DELTA LM-001 ajudou+1", self.colhe()[1])
+        self.assertIn("DELTA LM-001 ajudou+1", self.linha(self.TAB3, "| LM-001 | x | ✔ tratado: o cabeçalho vai literal, em toda chamada do agendador, sem depender do ambiente |"))
 
-    def test_na_longo_continua_nao_contando(self):
-        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| `LM-001` | N.A.: a rota não é chamada pelo navegador, então a regra não se aplica | ✔ x |\n")
-        self.assertNotIn("DELTA LM-001", self.colhe()[1])
+    def test_na_em_qualquer_grafia_nao_conta_mesmo_com_marca_depois(self):
+        for cel in ("N.A.: a rota não é chamada", "N/A", "N. A.", "pendente"):
+            with self.subTest(celula=cel):
+                self.assertNotIn("DELTA", self.linha(self.TAB4, "| x | `LM-001` | %s | ✔ em outra frente |" % cel))
+
+    def test_frase_em_outra_coluna_nao_e_veredito(self):
+        # N3-L2 e o caso que abriu os 3 ciclos: quem decide é a coluna, não o começo da célula.
+        for texto, verbo in (("| mordeu quando o agendador caiu | `LM-001` | ✔ tratado | x |", "ajudou"),
+                             ("| ✔ isto não é veredito | `LM-001` | mordeu | x |", "mordeu")):
+            with self.subTest(texto=texto):
+                self.assertIn("DELTA LM-001 %s+1" % verbo, self.linha(self.TAB4, texto))
+        self.assertNotIn("DELTA", self.linha(self.TAB4, "| mordeu quando o cron caiu | `LM-001` | pendente | nota |"))
 
     def test_palavra_que_so_comeca_com_mordeu_nao_e_veredito(self):
-        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| `LM-001` | mordeuzinho | ✔ tratado |\n")
-        out = self.colhe()[1]
-        self.assertIn("DELTA LM-001 ajudou+1", out)
-        self.assertNotIn("LM-001 mordeu", out)
+        self.assertNotIn("DELTA", self.linha(self.TAB4, "| x | `LM-001` | mordeuzinho | y |"))
 
-    def test_veredito_antes_da_coluna_do_id(self):
-        # N-L1b
-        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| ✔ tratado | `LM-001` | regra |\n")
-        self.assertIn("DELTA LM-001 ajudou+1", self.colhe()[1])
-        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| **mordeu** | `LM-001` | regra |\n")
-        self.assertIn("DELTA LM-001 mordeu+1", self.colhe()[1])
+    def test_barra_escapada_nao_parte_a_celula(self):
+        self.assertIn("DELTA LM-001 ajudou+1", self.linha(self.TAB4, "| `cmd \\| tail` | `LM-001` | ✔ tratado | x |"))
+
+    def test_tabela_sem_as_colunas_nao_conta_e_e_relatada(self):
+        # Sem cabeçalho, nunca adivinhar: 2 ciclos seguidos de contagem errada vieram de adivinhar.
+        for corpo in ("| `LM-001` | ✔ tratado | x |\n", "| A | B |\n|---|---|\n| `LM-001` | ✔ tratado |\n"):
+            with self.subTest(corpo=corpo):
+                self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n" + corpo)
+                rc, out, _ = self.colhe()
+                self.assertEqual(rc, 0, "precisa chegar à pessoa")
+                self.assertRegex(out, r"(?m)^TABELA_SEM_CABECALHO DESIGN_F\.md:\d+ ")
+                self.assertNotIn("DELTA", out)
+
+    def test_molde_preenchido_do_pacote_e_lido(self):
+        for rel, secao in (("sdd/templates/DESIGN_TEMPLATE.md", "Landmines aplicáveis"), ("sdd/templates/BUILD_REPORT_TEMPLATE.md", "Landmines lidas no build")):
+            texto = (RAIZ / rel).read_text(encoding="utf-8")
+            cab = next(l for l in texto[texto.index("## " + secao):].split("\n") if l.startswith("|"))
+            nomes = [c.strip().lower() for c in cab.strip("|").split("|")]
+            with self.subTest(molde=rel):
+                self.assertTrue({"fonte", "lm-nnn", "id"} & set(nomes), cab)
+                self.assertTrue({"veredito", "tratamento"} & set(nomes), cab)
 
 
 class Desde(Base):
     """AT-008"""
 
     def test_documento_anterior_vira_ja_colhido(self):
-        self.doc("BUILD_REPORT_F.md", "| **Date** | 2026-09-02 |\n\n## Landmines lidas no build\n\n| `LM-001` | ✔ x | y |\n")
-        self.doc("DESIGN_F.md", "| **Date** | 2026-09-02 |\n\n## Landmines aplicáveis\n\n| `LM-002` | ✔ x | y |\n")
+        self.doc("BUILD_REPORT_F.md", "| **Date** | 2026-09-02 |\n\n## Landmines lidas no build\n\n| ID | Veredito | Como |\n|---|---|---|\n| `LM-001` | ✔ x | y |\n")
+        self.doc("DESIGN_F.md", "| **Date** | 2026-09-02 |\n\n## Landmines aplicáveis\n\n| ID | Veredito | Como |\n|---|---|---|\n| `LM-002` | ✔ x | y |\n")
         _, out, _ = self.colhe("--desde", "2026-09-03")
         self.assertIn("JA_COLHIDO BUILD_REPORT_F.md", out)
         self.assertIn("JA_COLHIDO DESIGN_F.md", out)
@@ -394,7 +425,7 @@ class JaJulgado(Base):
 
     def test_2_linhas_da_mesma_licao_nao_contam_em_2_releases(self):
         # H3 do avaliador: DESIGN e BUILD_REPORT citando a mesma lição é o caso normal.
-        tab = "## Landmines aplicáveis\n\n| `LM-001` | ✔ %s | x |\n"
+        tab = "## Landmines aplicáveis\n\n| ID | Veredito | Como |\n|---|---|---|\n| `LM-001` | ✔ %s | x |\n"
         self.doc("DESIGN_F.md", tab % "no desenho")
         self.doc("BUILD_REPORT_F.md", tab.replace("aplicáveis", "lidas no build") % "no build")
         primeira = self.colhe()[1]

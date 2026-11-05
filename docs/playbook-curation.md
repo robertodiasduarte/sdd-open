@@ -26,7 +26,8 @@ feature's handoff. It also looks in `sdd/archive/<FEATURE>/`. Then `--colher <st
 
 | Line | Where it comes from |
 |---|---|
-| `DELTA LM-nnn ajudou+1` | a row of the landmines table (DESIGN or BUILD_REPORT) whose verdict cell starts with ✔ |
+| `DELTA LM-nnn ajudou+1` | a row of the landmines table (DESIGN or BUILD_REPORT) whose `Veredito` or `Tratamento` column starts with ✔; the ID comes from the `Fonte`, `LM-nnn` or `ID` column |
+| `TABELA_SEM_CABECALHO` | a landmines table without those columns: nothing is counted from it, and it is reported |
 | `DELTA LM-nnn mordeu+1` | a row whose verdict starts with `mordeu`, or a finding line (❌, `NEEDS_WORK`, `FAIL`, `WAIVED`, `mordeu_antes:`) that cites the landmine |
 | `SUGESTAO mordeu? LM-nnn` | a finding line with no ID that contains a `sup:` term of an active landmine; never a count by itself |
 | `CANDIDATO #n → LM-xxx` / `REJEITADO` | a candidate block of the BUILD_REPORT or of the handoff; without `evidencia:` it is rejected |

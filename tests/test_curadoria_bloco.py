@@ -199,6 +199,27 @@ class Reprova(Base_):
         linha = "| 7 | tombstone | LM-020 | TOMBSTONE LM-020 :: saiu | DESIGN_FIXTURE.md:16 | A regra saiu. | ACEITAR |\nREJEITADOS:"
         self.reprova(BLOCO.replace("REJEITADOS:", linha, 1), "o conjunto do bloco não vale junto")
 
+    def test_promocao_e_aposentadoria_da_mesma_licao_param_aqui(self):
+        # Mutante vivo no ciclo 3: o conjunto ignorava a PERGUNTA OBRIGATÓRIA.
+        linha = "| 7 | tombstone | LM-004 | TOMBSTONE LM-004 :: saiu | DESIGN_FIXTURE.md:16 | A regra saiu. | ACEITAR |\nREJEITADOS:"
+        self.reprova(BLOCO.replace("REJEITADOS:", linha, 1), "o conjunto do bloco não vale junto")
+
+    def test_aceitar_com_evidencia_em_arquivo_com_espaco(self):
+        # N3-L1
+        shutil.copyfile(str(FX / "AVAL-AT-002.log"), str(self.stg / "AVAL a b.log"))
+        selo = self.sela()
+        rc, out, err = self.confere(BLOCO.replace("| BUILD_REPORT_FIXTURE.md:13 |", "| AVAL a b.log:1 |"), selo=selo)
+        self.assertEqual(rc, 0, out + err)
+
+    def test_tabela_sem_cabecalho_precisa_ser_relatada(self):
+        self.escreve(self.stg, "DESIGN_Y.md", "## Landmines aplicáveis\n\n| `LM-021` | ✔ x | y |\n")
+        _, col, _ = self.cur("--colher", self.stg, BASE)
+        c = self.escreve(self.stg, "colheita.txt", col)
+        selo = self.sela()
+        self.reprova(BLOCO, "IGNORADO/JA_COLHIDO DESIGN_Y.md:3", selo=selo, colheita=c)
+        rc, out, err = self.confere(BLOCO.replace("IGNORADOS/JA_COLHIDOS: nenhum", "IGNORADOS/JA_COLHIDOS: DESIGN_Y.md:3 — sem cabeçalho"), selo=selo, colheita=c)
+        self.assertEqual(rc, 0, out + err)
+
     def test_aposentadoria_de_outra_licao_passa(self):
         linha = "| 7 | tombstone | LM-021 | TOMBSTONE LM-021 :: saiu | DESIGN_FIXTURE.md:16 | A regra saiu. | ACEITAR |\nREJEITADOS:"
         rc, out, err = self.confere(BLOCO.replace("REJEITADOS:", linha, 1))

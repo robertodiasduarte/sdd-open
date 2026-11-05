@@ -97,7 +97,8 @@ class Passo17b(unittest.TestCase):
     def test_nada_aceito_tem_caminho_e_evidencia_nao_versionada_tambem(self):
         t = " ".join(PASSO.split())
         for trecho in ("`Curadoria: nada aplicado`", "git check-ignore -q", "git ls-files sdd/reports/evidence", "colheita.rc",
-                       ': > "$STG/delta.txt"', "mkdir -p sdd/reports/briefs", "a pasta temporária se perdeu", "`git cherry-pick --abort`"):
+                       ': > "$STG/delta.txt"', "mkdir -p sdd/reports/briefs sdd/reports/evidence/{F} sdd/releases/{F}", "git ls-files sdd/releases",
+                       "traga o registro e os logs do item 8 da frente", "a pasta temporária se perdeu", "`git cherry-pick --abort`"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, t)
 

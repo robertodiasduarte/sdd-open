@@ -26,7 +26,8 @@ feature. Procura também em `sdd/archive/<FEATURE>/`. Depois, `--colher <staging
 
 | Linha | De onde vem |
 |---|---|
-| `DELTA LM-nnn ajudou+1` | linha da tabela de landmines (DESIGN ou BUILD_REPORT) cuja célula de veredito começa com ✔ |
+| `DELTA LM-nnn ajudou+1` | linha da tabela de landmines (DESIGN ou BUILD_REPORT) cuja coluna `Veredito` ou `Tratamento` começa com ✔; o ID vem da coluna `Fonte`, `LM-nnn` ou `ID` |
+| `TABELA_SEM_CABECALHO` | tabela de landmines sem essas colunas: nada é contado dela, e ela é relatada |
 | `DELTA LM-nnn mordeu+1` | linha cujo veredito começa com `mordeu`, ou linha de achado (❌, `NEEDS_WORK`, `FAIL`, `WAIVED`, `mordeu_antes:`) que cita a landmine |
 | `SUGESTAO mordeu? LM-nnn` | linha de achado sem ID que contém um termo de `sup:` de uma landmine ativa; nunca é contagem sozinha |
 | `CANDIDATO #n → LM-xxx` / `REJEITADO` | bloco de candidato do BUILD_REPORT ou da ficha; sem `evidencia:` é rejeitado |

@@ -123,6 +123,13 @@ curador:
   campo_redespacho: "conferencia"
   selo: "playbook-curator.sh --selar <staging>, gravado na pasta do snapshot antes do despacho"
   auto: "só contador com AUTO igual a uma linha DELTA da colheita (ID, verbo, +1 e arquivo:linha); sugestao vai para pergunta"
+  cabecalho_licao:
+    - "fonte"
+    - "lm-nnn"
+    - "id"
+  cabecalho_veredito:
+    - "veredito"
+    - "tratamento"
   registro: "sdd/releases/<F>/CURATOR-colhidos.txt (linhas com fp= já julgadas; não contam de novo)"
   redespachos: "1"
   falha: "a ficha registra Curadoria: FALHOU e nada é aplicado; a publicação não é afetada"
