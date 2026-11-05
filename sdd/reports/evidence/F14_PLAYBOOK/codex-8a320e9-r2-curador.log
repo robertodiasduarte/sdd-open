@@ -1,0 +1,359 @@
+$ HOME=<temporário> CODEX_HOME=<temporário, config.toml da OpenRouter, sem a chave> codex exec  --ephemeral -s workspace-write -C <cópia> "<prompt abaixo>"   # HEAD 8a320e9
+codex: codex-cli 0.163.0 · modelo: deepseek/deepseek-v4-pro
+prompt: feature: DEMO · staging: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/tmp/sdd-curadoria-ee8c9c19c339/DEMO · colheita: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/tmp/sdd-curadoria-ee8c9c19c339/DEMO/colheita.txt · playbook: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador/sdd/playbook.md · worktree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+Leia e siga .agents/skills/sdd-playbook/references/curator.md.
+
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+model: deepseek/deepseek-v4-pro
+provider: openrouter
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: none
+session id: 01a1acba-47ef-7141-8f73-c337f0565cfd
+--------
+user
+feature: DEMO · staging: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/tmp/sdd-curadoria-ee8c9c19c339/DEMO · colheita: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/tmp/sdd-curadoria-ee8c9c19c339/DEMO/colheita.txt · playbook: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador/sdd/playbook.md · worktree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+Leia e siga .agents/skills/sdd-playbook/references/curator.md.
+warning: Model metadata for `deepseek/deepseek-v4-pro` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+exec
+/bin/zsh -lc 'cat /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador/.agents/skills/sdd-playbook/references/curator.md' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+ succeeded in 0ms:
+# Curador do playbook — brief do agente fresco do passo 17b da `sdd-release`
+
+Você é o curador: **julga** o que o script colheu e devolve uma tabela. Você não é quem citou as
+landmines no DESIGN nem quem conduziu a release. Você **não decide** (a pessoa decide o que muda a regra
+do método) e **não escreve** (quem aplica é a `sdd-release`, depois do OK). E você escreve para alguém
+que vai decidir **sem abrir o playbook**.
+
+Quem despacha este brief é o passo 17b (curadoria) da `sdd-release`, pela escada de
+`sdd-build/references/contexto-fresco.md`: subagente em contexto limpo; sem subagente, sessão nova
+(`sdd-fluxo.sh despachar curador …`, exit 40). Contrato de máquina: `sdd/WORKFLOW_CONTRACTS.yaml` ›
+`curador`. Quem confere o seu retorno é `sdd/bin/playbook-curator.sh --conferir-bloco`.
+
+## Entrada (só isto chega — 5 campos)
+
+```text
+feature: <F> · staging: <pasta> · colheita: <pasta>/colheita.txt · playbook: <abs>/sdd/playbook.md · worktree: <abs>
+```
+
+Se vier qualquer coisa além desses 5 campos (a conversa da release, o diff, "o que foi feito", uma
+hipótese), escreva `CONTAMINAÇÃO: sim — <o que veio>` no bloco e julgue **só pelos arquivos** mesmo assim.
+A única exceção é o redespacho: um 6º campo `conferencia:`, com as linhas `🔴 bloco:` que o conferidor
+reprovou no seu bloco anterior, não é contaminação: conserte exatamente o que elas dizem.
+
+## Proibições
+
+- **Nunca escrever**: nem o playbook, nem as invariantes, nem a pasta de staging, nem evidência. Os
+  comandos que você roda são de leitura (`cat`, `grep`, `sed -n`, `awk`, `playbook-lint.sh --grep`,
+  `playbook-curator.sh --cruzar -`). **Não rode** `playbook-curator.sh --colher`, `--preparar` nem
+  `--self-test`: eles gravam (o trace, a pasta de staging). A sua única entrega é o bloco, na resposta. A
+  release compara o projeto e a pasta de staging antes e depois do seu trabalho; um arquivo mexido, criado
+  ou apagado descarta o bloco.
+- **`AUTO` só em linha `contador`**, e com a evidência **igual** à da colheita (o mesmo `arquivo:linha`
+  da linha `DELTA`). Nada mais entra sem pergunta.
+- **`ACEITAR` e `AUTO` exigem `arquivo:linha`** que outra pessoa consegue abrir, com o arquivo dentro da
+  pasta `staging:`. "Por raciocínio" não é evidência.
+- **Toda linha da colheita aparece no bloco.** Descartar em silêncio é o modo de falha que este papel
+  existe para impedir.
+- **Não invente contagem**: linha `contador` só para `DELTA` que está na colheita. Contagem e aposentadoria
+  da mesma lição não valem juntas: se você recomendar aposentar, a linha `contador` dela é
+  `DESCARTAR (a lição vai ser aposentada)`.
+- **Não conserte candidato rejeitado** inventando evidência; só relate.
+- **Não reescreva, comprima nem renumere** o playbook: só deltas da gramática abaixo.
+
+## Processo
+
+1. Leia a `colheita:` inteira. Leia a seção `## Sempre` do `playbook:` e, para cada `LM-nnn` da colheita,
+   o bullet inteiro, com as linhas de continuação (`grep -n -A11 "\[LM-nnn\]" sdd/playbook.md`, de dentro do
+   `worktree:`).
+2. Por linha da colheita:
+   - `DELTA … ajudou+1` ou `mordeu+1`: abra o `evidencia=arquivo:linha` na pasta `staging:` e confira
+     que a linha diz o que a colheita diz e que aquela lição é o assunto da linha (tabela com ✔ na coluna do veredito;
+     achado cuja causa é a landmine, não só a cita de passagem). Confere ⇒ linha
+     `contador` com `AUTO`. Não confere ⇒ `DESCARTAR (motivo)`.
+   - `SUGESTAO mordeu? LM-nnn`: leia o achado inteiro e o bullet. A causa do achado é a regra do
+     bullet? Sim ⇒ linha `sugestao` com o delta `LM-nnn mordeu+1`, a evidência e `ACEITAR` (o script não
+     colheu essa contagem: ela vira pergunta, nunca entra sozinha). Não ⇒ `DESCARTAR (motivo)`. Na
+     dúvida ⇒ `NAO_JULGADO`.
+   - `CANDIDATO #n → LM-xxx`: releia o bloco do candidato na fonte e confira que a `evidencia:` existe
+     de verdade. Redija o bullet final: regra em até 3 linhas, `**Do instead:**` concreto, `→ ficha:`
+     e `promovido_para: —`. A linha `delta: ADD …` da colheita é o ponto de partida, não o resultado.
+     Linha `add` com `ACEITAR`. Duplica um bullet que já existe? Proponha `refine` do existente, com a evidência
+     começando por `arquivo:linha` e citando `candidato #n` depois dele, ou `DESCARTAR (motivo)`.
+   - `REJEITADO`: relate na linha `REJEITADOS:`, com o `arquivo:linha` e o motivo.
+   - `PROMOVER? LM-nnn`: é pergunta obrigatória. Transforme a sugestão genérica numa proposta concreta:
+     o arquivo do mecanismo (um hook de `sdd/hooks/`, o comando de `release.landmines_cmd`, uma
+     asserção no Verify Gate), o que ele confere em 1 frase e o caso que falha antes dele. Linha
+     `promover` com `PERGUNTA OBRIGATÓRIA`, nunca `ACEITAR`: promover é uma correção própria, e o
+     delta `promovido_para=` só entra de verdade quando o mecanismo já existe na branch padrão.
+   - `IGNORADO`, `JA_COLHIDO` e `TABELA_SEM_CABECALHO`: relate na linha `IGNORADOS/JA_COLHIDOS:`, citando o
+     ID, o arquivo ou o `arquivo:linha` que a colheita traz.
+   - `INV_PENDENTE LM-nnn`: a landmine entrou no universo das invariantes sem classificação, agora ou numa
+     release antiga (`já no universo`). Leia o
+     bullet e proponha **uma** linha completa, na gramática de `sdd/invariants.md`: a invariante
+     (`estado=`, a regra, `· por quê:`, e `· tarefa:` se `auto` ou `· motivo:` se `humano`; `estado=ok`
+     só com um check que existe) ou o descarte (`- [LM-nnn] descartado :: <motivo>`). Linha `inv`.
+3. **Cruzamento com as invariantes.** Se `<worktree>/sdd/invariants.md` existe e o seu bloco propõe
+   `TOMBSTONE`, `promovido_para=` ou `mordeu+1`, rode, de dentro do `worktree:`:
+   `bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md <<'FIM_DOS_DELTAS'`, as linhas da coluna Delta, uma por linha, e `FIM_DOS_DELTAS` (com o delimitador entre aspas, o shell não executa nada do texto)
+   (só leitura; exit 3 = há aviso). Cada `INV_AFETADA` vira uma linha `inv` logo abaixo do delta que a
+   causa, com o que vem depois de `ajuste: ` na coluna Delta (a linha inteira da invariante, ou
+   `REMOVER LM-nnn` quando a lição aposentada estava em `## Descartados`) e, na linguagem simples, que os dois
+   andam juntos. Nessa entrada, nunca passe as linhas de tipo `inv`: elas não são delta. `INV_AFETADA` sem ajuste aceitável ⇒ recomende `DESCARTAR` a aposentadoria.
+4. **Em linguagem simples (toda linha).** Até 2 frases que a pessoa decide sem abrir o playbook: **o que
+   aconteceu** nesta feature e **o que muda se aceitar** (em `AUTO`, o que foi contado). Termo técnico
+   do produto vale; código do método não: nada de `LM-nnn`, `INV-nnn`, "delta", "ajudou/mordeu",
+   "tombstone" nem `sup:` nessa coluna.
+5. **Sanidade do conjunto:** nenhum `ADD` em `Sempre` sem dizer por que a lição não tem superfície que
+   se procure; IDs de `ADD` em sequência a partir do que a colheita propôs; barra vertical dentro de uma
+   célula vai como `\|`.
+
+## Gramática do delta (coluna Delta)
+
+```text
+LM-020 ajudou+1
+LM-016 mordeu+1
+LM-004 promovido_para=<caminho do mecanismo>
+ADD <seção> :: sup: `termo1` `termo2` :: regra. **Do instead:** ação. → ficha: — · promovido_para: —
+TOMBSTONE LM-nnn :: motivo
+REFINE LM-nnn :: novo texto. **Do instead:** ação.
+```
+
+## Retorno (a última coisa da resposta, verbatim)
+
+Tipos de linha: `contador` · `sugestao` · `add` · `refine` · `tombstone` · `promover` · `inv`.
+Recomendações: `AUTO` · `ACEITAR` · `DESCARTAR (motivo)` · `NAO_JULGADO` · `PERGUNTA OBRIGATÓRIA`.
+
+```text
+<<<CURADORIA
+FEATURE: <F> · colheita: <n> deltas / <c> candidatos / <r> rejeitados / <p> promoções / <s> sugestões · staging: <pasta>
+| # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recomendação |
+|---|------|----|-------|-----------|----------------------|--------------|
+| 1 | contador | LM-020 | LM-020 ajudou+1 | DESIGN_<F>.md:57 (✔ tratado) | O aviso sobre <tema> foi seguido no desenho e evitou o erro. | AUTO |
+| 2 | contador | LM-016 | LM-016 mordeu+1 | AVAL-AT-002.log:3 (❌ com a causa citada) | O erro de <tema> aconteceu de novo nesta feature, mesmo com o aviso. | AUTO |
+| 3 | sugestao | LM-030 | LM-030 mordeu+1 | AVAL-AT-005.log:12 — causa confirmada: <1 linha> | <o que aconteceu, em 1 frase>. Contar isso registra que o aviso não bastou. | ACEITAR |
+| 4 | add | LM-045 | ADD Reviews / harness :: sup: `termo` :: regra. **Do instead:** ação. → ficha: — · promovido_para: — | BUILD_REPORT_<F>.md:231 | <o que aconteceu>. Guardar a lição avisa toda sessão que mexer nessa área. | ACEITAR |
+| 5 | promover | LM-004 | LM-004 promovido_para=sdd/hooks/pre-commit | mordeu=2 · mecanismo: <arquivo e o que confere> · caso que falha antes: <nome> | O mesmo erro já aconteceu 2 vezes. Virar trava automática impede a 3ª, ao custo de uma correção própria. | PERGUNTA OBRIGATÓRIA |
+| 6 | inv | INV-011 | - [INV-011] estado=ok origem=seed check=<caminho> :: <regra> · por quê: <texto> | --cruzar: INV_AFETADA INV-011 (linha 7) | Aposentar o aviso antigo pede ajustar a regra permanente que dependia dele, no mesmo passo. | ACEITAR |
+REJEITADOS: <arquivo:linha — motivo> | nenhum
+NAO_JULGADO: <o que não deu para confirmar e por quê> | nenhum
+IGNORADOS/JA_COLHIDOS: <lista> | nenhum
+CONTAMINAÇÃO: não | sim — <o que veio além dos 5 campos>
+>>>
+```
+
+O bloco é conferido por programa: linha da colheita ausente, `AUTO` fora de `contador` ou diferente da
+colheita (ID, verbo, `+1` e `arquivo:linha`), `ACEITAR` sem `arquivo:linha` que exista no `staging:`,
+promoção sem `PERGUNTA OBRIGATÓRIA`, célula de linguagem simples vazia, delta fora da gramática, arquivo
+do projeto ou do `staging:` mexido: qualquer um faz a release descartar o bloco e despachar de novo.
+
+codex
+Sou o curador do playbook. Vou começar lendo a colheita e o playbook para montar o bloco de curadoria.
+
+
+exec
+/bin/zsh -lc 'cat "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/tmp/sdd-curadoria-ee8c9c19c339/DEMO/colheita.txt"' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+ succeeded in 0ms:
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_DEMO.md:12 · fp=a6ddbf2d7b
+CANDIDATO #1 → LM-005 · secao=Backend · sup=`conferir.sh` `nota_cancelada` · evidencia=AVAL-01.log:2 · fp=5b5b0f7865
+   delta: ADD Backend :: sup: `conferir.sh` `nota_cancelada` :: A conferência somava nota cancelada no total do mês. **Do instead:** filtrar a situação antes de somar. → ficha: — · promovido_para: —
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-01.log:3 · fp=95d69510f2
+INV_PENDENTE LM-002 (mordeu 0→1) · delta: LM-002 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-002 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-002] descartado :: <motivo>
+resumo: deltas=2 (ajudou=1 mordeu=1) candidatos=1 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+
+exec
+/bin/zsh -lc 'cd /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador && cat sdd/playbook.md' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+ succeeded in 0ms:
+# Playbook de landmines — formato ACE-lite
+
+Cada bullet tem ID estável (`LM-nnn`, nunca reusado), contadores `ajudou`/`mordeu`, `conf=` (última
+confirmação) e `sup:` (superfícies greppáveis: nome de arquivo, comando, conceito). Regras completas na
+skill `sdd-playbook`; formato validado por `sdd/bin/playbook-lint.sh`.
+
+Como usar: a seção `## Sempre` é lida no início de toda sessão. O resto entra por superfície:
+`sdd/bin/playbook-lint.sh --grep <termo> sdd/playbook.md` (fase Design e fase Build).
+Nunca reescrever em massa, nunca renumerar, nunca apagar: aposentar = mover para `## Tombstones`
+como `- [LM-nnn] ☠ data :: motivo`. Uma sessão só PROPÕE candidatos; quem aplica é a fase Release.
+
+## Sempre
+
+- [LM-001] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `grep -q` `verify-gate` `if (true)` `asserção` :: Um gate que só confere FIAÇÃO (o `grep` acha a chamada, a regra CSS existe) fica verde com `if (true)` — ele prova que o texto está lá, não que o comportamento acontece. **Do instead:** o gate EXECUTA o código com fixtures dos dois lados (caso que passa E caso que falha) e valida-se com um mutante que derruba uma asserção nomeada. · promovido_para: —
+- [LM-002] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `exit 0` `baseline` `sed -n` `grep -c` :: Uma asserção que NÃO AVALIA NADA sai `exit 0`: quoting corrompido faz o `grep` nem rodar, âncora de `sed` casa o bloco errado e a contagem dá zero antes e depois. **Do instead:** toda asserção precisa de baseline VERMELHO — rode-a contra a árvore ANTES da mudança; se já passa, ela não prova a mudança. · promovido_para: —
+- [LM-003] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `git status` `--uncommitted` `review` `untracked` :: Trabalho commitado com arquivos untracked ao lado faz um review de "não commitado" revisar o VAZIO — e um review que passou sobre diff nenhum é pior que review nenhum. **Do instead:** commitar antes de qualquer review externo; conferir que o diff revisado tem os arquivos que você mudou (`git diff --stat` bate com a lista do review). · promovido_para: —
+- [LM-004] ajudou=0 mordeu=0 · conf=2026-10-29 · sup: `exit 0` `migration` `db push` `apply_migration` `Migrations aplicadas` :: Migration "aplicada" porque o comando saiu `exit 0` pode não estar no banco: a CLI ligada a outro projeto, `declined` do servidor, SQL sem efeito — e o código vai para produção chamando a coluna que não existe. **Do instead:** prova é ler de volta — `migration list` mostra a versão no remoto e um `select` acha o efeito (ou a ausência esperada); registre em `## Migrations aplicadas` com o log em `evidence/`. · promovido_para: `sdd/bin/report-lint.py`
+
+## Tombstones
+
+codex
+Agora vou conferir as evidências nos arquivos da staging.
+
+
+exec
+/bin/zsh -lc "STAGING=\"/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/tmp/sdd-curadoria-ee8c9c19c339/DEMO\"
+echo \"=== DESIGN_DEMO.md:12 ===\" && sed -n '12p' \""'$STAGING/DESIGN_DEMO.md" 2>/dev/null || echo "ARQUIVO NÃO ENCONTRADO"
+echo "=== AVAL-01.log ===" && cat "$STAGING/AVAL-01.log" 2>/dev/null || echo "ARQUIVO NÃO ENCONTRADO"' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+ succeeded in 0ms:
+=== DESIGN_DEMO.md:12 ===
+| LM-001 | `conferir.sh` | ✔ o gate roda com fixture dos 2 lados, e um mutante derruba a asserção |
+=== AVAL-01.log ===
+$ bash conferir.sh
+AT-002 ❌ FAIL — o total do mês veio 2 notas acima do esperado (nota_cancelada somada)
+AT-003 ❌ FAIL — o gate ficou verde com if (true); causa: LM-002
+[exit=1]
+
+codex
+Agora vou ler os bullets completos de LM-001 e LM-002, e verificar se existe invariants.md.
+
+
+exec
+/bin/zsh -lc "cd /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador && grep -n -A11 \"\\[LM-001\\]\" sdd/playbook.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+ succeeded in 0ms:
+14:- [LM-001] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `grep -q` `verify-gate` `if (true)` `asserção` :: Um gate que só confere FIAÇÃO (o `grep` acha a chamada, a regra CSS existe) fica verde com `if (true)` — ele prova que o texto está lá, não que o comportamento acontece. **Do instead:** o gate EXECUTA o código com fixtures dos dois lados (caso que passa E caso que falha) e valida-se com um mutante que derruba uma asserção nomeada. · promovido_para: —
+15-- [LM-002] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `exit 0` `baseline` `sed -n` `grep -c` :: Uma asserção que NÃO AVALIA NADA sai `exit 0`: quoting corrompido faz o `grep` nem rodar, âncora de `sed` casa o bloco errado e a contagem dá zero antes e depois. **Do instead:** toda asserção precisa de baseline VERMELHO — rode-a contra a árvore ANTES da mudança; se já passa, ela não prova a mudança. · promovido_para: —
+16-- [LM-003] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `git status` `--uncommitted` `review` `untracked` :: Trabalho commitado com arquivos untracked ao lado faz um review de "não commitado" revisar o VAZIO — e um review que passou sobre diff nenhum é pior que review nenhum. **Do instead:** commitar antes de qualquer review externo; conferir que o diff revisado tem os arquivos que você mudou (`git diff --stat` bate com a lista do review). · promovido_para: —
+17-- [LM-004] ajudou=0 mordeu=0 · conf=2026-10-29 · sup: `exit 0` `migration` `db push` `apply_migration` `Migrations aplicadas` :: Migration "aplicada" porque o comando saiu `exit 0` pode não estar no banco: a CLI ligada a outro projeto, `declined` do servidor, SQL sem efeito — e o código vai para produção chamando a coluna que não existe. **Do instead:** prova é ler de volta — `migration list` mostra a versão no remoto e um `select` acha o efeito (ou a ausência esperada); registre em `## Migrations aplicadas` com o log em `evidence/`. · promovido_para: `sdd/bin/report-lint.py`
+18-
+19-## Tombstones
+
+exec
+/bin/zsh -lc "cd /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador && grep -n -A11 \"\\[LM-002\\]\" sdd/playbook.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+ succeeded in 0ms:
+15:- [LM-002] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `exit 0` `baseline` `sed -n` `grep -c` :: Uma asserção que NÃO AVALIA NADA sai `exit 0`: quoting corrompido faz o `grep` nem rodar, âncora de `sed` casa o bloco errado e a contagem dá zero antes e depois. **Do instead:** toda asserção precisa de baseline VERMELHO — rode-a contra a árvore ANTES da mudança; se já passa, ela não prova a mudança. · promovido_para: —
+16-- [LM-003] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `git status` `--uncommitted` `review` `untracked` :: Trabalho commitado com arquivos untracked ao lado faz um review de "não commitado" revisar o VAZIO — e um review que passou sobre diff nenhum é pior que review nenhum. **Do instead:** commitar antes de qualquer review externo; conferir que o diff revisado tem os arquivos que você mudou (`git diff --stat` bate com a lista do review). · promovido_para: —
+17-- [LM-004] ajudou=0 mordeu=0 · conf=2026-10-29 · sup: `exit 0` `migration` `db push` `apply_migration` `Migrations aplicadas` :: Migration "aplicada" porque o comando saiu `exit 0` pode não estar no banco: a CLI ligada a outro projeto, `declined` do servidor, SQL sem efeito — e o código vai para produção chamando a coluna que não existe. **Do instead:** prova é ler de volta — `migration list` mostra a versão no remoto e um `select` acha o efeito (ou a ausência esperada); registre em `## Migrations aplicadas` com o log em `evidence/`. · promovido_para: `sdd/bin/report-lint.py`
+18-
+19-## Tombstones
+
+exec
+/bin/zsh -lc 'cat /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador/sdd/invariants.md 2>/dev/null || echo "INVARIANTS.md NÃO EXISTE"' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+ succeeded in 0ms:
+# Invariantes — regras que nunca podem ser quebradas
+
+Invariante não é landmine: a landmine do `sdd/playbook.md` diz "isto me mordeu"; a invariante diz "isto
+nunca pode ser violado, e aqui está o que vigia". Quem escreve neste arquivo é a curadoria da fase Release
+(passo 17b da `sdd-release`), com o seu OK por item; a trava é
+`bash sdd/bin/playbook-curator.sh --validar-inv sdd/playbook.md sdd/invariants.md`. Explicação longa:
+`docs/playbook-curation.md` do pacote.
+
+Toda landmine ativa com `mordeu` de 1 para cima, ou com `promovido_para` preenchido, precisa estar
+classificada aqui: como origem de uma invariante, ou em `## Descartados` com o motivo.
+
+Gramática (1 linha por invariante; abaixo da primeira, linha fora dela é erro):
+
+    - [INV-NNN] estado=ok|auto|humano origem=seed|LM-nnn[,LM-mmm] [check=<caminho>] :: <regra> · por quê: <texto> [· tarefa: <…> | · motivo: <…>]
+
+- `ok`: o check roda sem alguém lembrar (hook, CI ou passo obrigatório com script). Com origem numa
+  landmine promovida, o check é o `promovido_para` dela; senão, `check=` aponta um arquivo que existe.
+- `auto`: dá para automatizar e ainda não foi; exige `· tarefa:` com o comando ou o alvo.
+- `humano`: exige julgamento; exige `· motivo:` dizendo por que máquina não pega.
+- `origem=seed`: regra que não veio de uma landmine.
+- IDs estáveis: nunca renumerar nem reusar.
+- `## Descartados`: landmine que não é regra do sistema (defeito de ferramenta, por exemplo):
+  `- [LM-nnn] descartado :: <motivo>`.
+
+## Invariantes
+
+- [INV-001] estado=ok origem=LM-004 :: Migration só conta como aplicada com prova por leitura registrada em `## Migrations aplicadas` do BUILD_REPORT · por quê: o comando de aplicar pode sair 0 com a migration fora do banco (outro projeto ligado, recusa do servidor, SQL sem efeito), e o código vai para produção chamando o que não existe
+
+## Descartados
+
+codex
+Agora vou cruzar os deltas com as invariantes — LM-002 mordeu+1 é o caso que pode afetar
+exec
+/bin/zsh -lc "cd /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador && bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md <<'FIM_DOS_DELTAS'
+LM-002 mordeu+1
+FIM_DOS_DELTAS" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+ exited 3 in 95ms:
+INV_PENDENTE LM-002 (mordeu 0→1) · delta: LM-002 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-002 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-002] descartado :: <motivo>
+resumo-inv: afetadas=0 pendentes=1
+RESULTADO: HÁ AVISO DE INVARIANTE
+→ cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vai na mesma opção da contagem que a causa.
+
+codex
+Agora vou compor a invariant para LM-002 e montar o bloco. Verifiquei as evidências — todas batem.
+
+
+exec
+/bin/zsh -lc "STAGING=\"/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/tmp/sdd-curadoria-ee8c9c19c339/DEMO\"
+echo \"=== AVAL-01.log:2 (candidato) ===\" && sed -n '2p' \""'$STAGING/AVAL-01.log"
+echo "=== AVAL-01.log:3 (LM-002 mordeu) ===" && sed -n '"'3p' \""'$STAGING/AVAL-01.log"
+echo "=== DESIGN_DEMO.md:12 (LM-001 ajudou) ===" && sed -n '"'12p' \""'$STAGING/DESIGN_DEMO.md"' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/curador
+ succeeded in 0ms:
+=== AVAL-01.log:2 (candidato) ===
+AT-002 ❌ FAIL — o total do mês veio 2 notas acima do esperado (nota_cancelada somada)
+=== AVAL-01.log:3 (LM-002 mordeu) ===
+AT-003 ❌ FAIL — o gate ficou verde com if (true); causa: LM-002
+=== DESIGN_DEMO.md:12 (LM-001 ajudou) ===
+| LM-001 | `conferir.sh` | ✔ o gate roda com fixture dos 2 lados, e um mutante derruba a asserção |
+
+codex
+Agora tenho tudo que preciso. Vou compor o bloco de curadoria.
+
+Análise:
+- **LM-001 ajudou+1**: evidência DESIGN_DEMO.md:12 confirma ✔ — o gate segue o Do instead (fixture dos 2 lados + mutante). → `contador AUTO`
+- **LM-002 mordeu+1**: evidência AVAL-01.log:3 confirma ✔ — gate verde com `if(true)`, causa explicitamente LM-002. → `contador AUTO` + linha `inv` para classificar a invariante
+- **CANDIDATO #1 → LM-005**: evidência AVAL-01.log:2 existe e bate — nota cancelada foi somada no total. → `add ACEITAR`
+
+<<<CURADORIA
+FEATURE: DEMO · colheita: 2 deltas / 1 candidatos / 0 rejeitados / 0 promoções / 0 sugestões · staging: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/tmp/sdd-curadoria-ee8c9c19c339/DEMO
+| # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recomendação |
+|---|------|----|-------|-----------|----------------------|--------------|
+| 1 | contador | LM-001 | LM-001 ajudou+1 | DESIGN_DEMO.md:12 (✔ tratado) | O aviso sobre gate que só confere fiação foi seguido no desenho: o `conferir.sh` roda com fixture dos dois lados e um mutante derruba a asserção. | AUTO |
+| 2 | add | LM-005 | ADD Backend :: sup: `conferir.sh` `nota_cancelada` :: A conferência somava nota cancelada no total do mês. **Do instead:** filtrar a situação antes de somar. → ficha: — · promovido_para: — | AVAL-01.log:2 | A conferência de totais incluiu nota cancelada, inflando o resultado em 2 notas. Guardar a lição avisa quem mexer em `conferir.sh` ou somatório. | ACEITAR |
+| 3 | contador | LM-002 | LM-002 mordeu+1 | AVAL-01.log:3 (❌ com a causa citada) | O gate da asserção ficou verde com `if (true)`, sem avaliar nada — a mesma armadilha de asserção que não prova o comportamento. | AUTO |
+| 4 | inv | INV-002 | - [INV-002] estado=auto origem=LM-002 :: Toda asserção de verificação precisa de baseline VERMELHO — roda contra a árvore ANTES da mudança; se já passa, ela não prova a mudança · por quê: asserção que não avalia nada sai `exit 0` por quoting corrompido, âncora de `sed` errada ou `if (true)`, e o gate passa sem testar o comportamento · tarefa: criar check em `sdd/hooks/` que exige baseline documentado para cada asserção nova | --cruzar: INV_PENDENTE LM-002 (mordeu 0→1) | A armadilha mordeu pela 1ª vez. Registrar a invariante exige que toda asserção nova tenha baseline vermelho documentado, automático no futuro. | ACEITAR |
+REJEITADOS: nenhum
+NAO_JULGADO: nenhum
+IGNORADOS/JA_COLHIDOS: nenhum
+CONTAMINAÇÃO: não
+>>>
+tokens used
+24.559
+Agora tenho tudo que preciso. Vou compor o bloco de curadoria.
+
+Análise:
+- **LM-001 ajudou+1**: evidência DESIGN_DEMO.md:12 confirma ✔ — o gate segue o Do instead (fixture dos 2 lados + mutante). → `contador AUTO`
+- **LM-002 mordeu+1**: evidência AVAL-01.log:3 confirma ✔ — gate verde com `if(true)`, causa explicitamente LM-002. → `contador AUTO` + linha `inv` para classificar a invariante
+- **CANDIDATO #1 → LM-005**: evidência AVAL-01.log:2 existe e bate — nota cancelada foi somada no total. → `add ACEITAR`
+
+<<<CURADORIA
+FEATURE: DEMO · colheita: 2 deltas / 1 candidatos / 0 rejeitados / 0 promoções / 0 sugestões · staging: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ez0N0N9xyA/tmp/sdd-curadoria-ee8c9c19c339/DEMO
+| # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recomendação |
+|---|------|----|-------|-----------|----------------------|--------------|
+| 1 | contador | LM-001 | LM-001 ajudou+1 | DESIGN_DEMO.md:12 (✔ tratado) | O aviso sobre gate que só confere fiação foi seguido no desenho: o `conferir.sh` roda com fixture dos dois lados e um mutante derruba a asserção. | AUTO |
+| 2 | add | LM-005 | ADD Backend :: sup: `conferir.sh` `nota_cancelada` :: A conferência somava nota cancelada no total do mês. **Do instead:** filtrar a situação antes de somar. → ficha: — · promovido_para: — | AVAL-01.log:2 | A conferência de totais incluiu nota cancelada, inflando o resultado em 2 notas. Guardar a lição avisa quem mexer em `conferir.sh` ou somatório. | ACEITAR |
+| 3 | contador | LM-002 | LM-002 mordeu+1 | AVAL-01.log:3 (❌ com a causa citada) | O gate da asserção ficou verde com `if (true)`, sem avaliar nada — a mesma armadilha de asserção que não prova o comportamento. | AUTO |
+| 4 | inv | INV-002 | - [INV-002] estado=auto origem=LM-002 :: Toda asserção de verificação precisa de baseline VERMELHO — roda contra a árvore ANTES da mudança; se já passa, ela não prova a mudança · por quê: asserção que não avalia nada sai `exit 0` por quoting corrompido, âncora de `sed` errada ou `if (true)`, e o gate passa sem testar o comportamento · tarefa: criar check em `sdd/hooks/` que exige baseline documentado para cada asserção nova | --cruzar: INV_PENDENTE LM-002 (mordeu 0→1) | A armadilha mordeu pela 1ª vez. Registrar a invariante exige que toda asserção nova tenha baseline vermelho documentado, automático no futuro. | ACEITAR |
+REJEITADOS: nenhum
+NAO_JULGADO: nenhum
+IGNORADOS/JA_COLHIDOS: nenhum
+CONTAMINAÇÃO: não
+>>>
+[exit=0]
+$ governanca-fronteira.sh --comparar (na cópia)
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[exit=0]
+$ playbook-curator.sh --conferir-bloco (na cópia)
+AUTO LM-001 ajudou+1
+   simples: O aviso sobre gate que só confere fiação foi seguido no desenho: o `conferir.sh` roda com fixture dos dois lados e um mutante derruba a asserção.
+PERGUNTA 2 add ADD Backend :: sup: `conferir.sh` `nota_cancelada` :: A conferência somava nota cancelada no total do mês. **Do instead:** filtrar a situação antes de somar. → ficha: — · promovido_para: —
+   simples: A conferência de totais incluiu nota cancelada, inflando o resultado em 2 notas. Guardar a lição avisa quem mexer em `conferir.sh` ou somatório.
+PERGUNTA 3 contador LM-002 mordeu+1
+   simples: O gate da asserção ficou verde com `if (true)`, sem avaliar nada — a mesma armadilha de asserção que não prova o comportamento.
+PERGUNTA 4 inv - [INV-002] estado=auto origem=LM-002 :: Toda asserção de verificação precisa de baseline VERMELHO — roda contra a árvore ANTES da mudança; se já passa, ela não prova a mudança · por quê: asserção que não avalia nada sai `exit 0` por quoting corrompido, âncora de `sed` errada ou `if (true)`, e o gate passa sem testar o comportamento · tarefa: criar check em `sdd/hooks/` que exige baseline documentado para cada asserção nova
+   simples: A armadilha mordeu pela 1ª vez. Registrar a invariante exige que toda asserção nova tenha baseline vermelho documentado, automático no futuro.
+resumo-bloco: auto=1 pergunta=3 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+[exit=0]

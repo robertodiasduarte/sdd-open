@@ -1,0 +1,109 @@
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda3.py </dev/null
+DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:9 · fp=318f438e58
+DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:10 · fp=467485a850
+SUGESTAO mordeu? LM-021 — termo `termo_vinte_um` em BUILD_REPORT_X.md:14 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=efc39f7fa1
+CANDIDATO #1 → LM-031 · secao=Backend · sup=`k1` · evidencia=x:1 · fp=bc5487552e
+   delta: ADD Backend :: sup: `k1` :: Regra um. **Do instead:** faça. → ficha: — · promovido_para: —
+REJEITADO candidato em BUILD_REPORT_X.md:23 — regra: sem 'Do instead:' · fp=02d4112915
+IGNORADO LM-099 (não existe como bullet ativo em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/out/pb.md)
+PROMOVER? LM-021 mordeu=2 promovido_para=— :: promover a mecanismo? sugestão: hook em sdd/hooks/, comando de release.landmines_cmd ou asserção no Verify Gate, com um caso que falha antes (seção Sempre)
+INV_PENDENTE LM-016 (mordeu 0→1) · delta: LM-016 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-016 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-016] descartado :: <motivo>
+resumo: deltas=2 (ajudou=1 mordeu=1) candidatos=1 rejeitados=1 promocoes=1 sugestoes=1
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+
+--- controle: 0 AUTO LM-020 ajudou+1
+   simples: O aviso foi seguido.
+PERGUNTA 2 contador LM-016 mordeu+1
+   simples: O erro voltou.
+PERGUNTA 3 inv - [LM-016] descartado :: ferramenta
+   simples: Não vira regra.
+PERGUNTA 4 sugestao LM-021 mordeu+1
+   simples: O erro dessa regra voltou.
+PERGUNTA 5 add ADD Backend :: sup: `k1` :: Regra um. **Do instead:** faça. → ficha: — · promovido_para: —
+   simples: Lição nova sobre a área.
+PERGUNTA 6 promover LM-021 promovido_para=sdd/hooks/x
+   simples: Virar trava automática.
+resumo-bloco: auto=1 pergunta=5 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+ 
+AT-021 | PASS | bloco válido | exit 0, AUTO, PERGUNTA, resumo | AUTO LM-020 ajudou+1 ⏎    simples: O aviso foi seguido. ⏎ PERGUNTA 2 contador LM-016 mordeu+1 ⏎    simples: O erro voltou. ⏎ PERGUNTA 3 inv - [LM-016] descartado :: ferramenta ⏎    simples: Não vira regra. ⏎ PERG
+AT-020 | PASS | sem abertura | exit 2 com '<<<CURADORIA' | rc=2 🔴 bloco: o bloco precisa de exatamente 1 linha <<<CURADORIA (achei 0) ⏎ 🔴 bloco: a colheita tem DELTA LM-020 ajudou+1 e o bloco não 
+AT-020 | PASS | sem fecho | exit 2 com '>>>' | rc=2 🔴 bloco: o bloco não tem a linha >>> de fechamento ⏎ 🔴 bloco: a colheita tem DELTA LM-020 ajudou+1 e o bloco não tem a linha contado
+AT-020 | PASS | 2 aberturas | exit 2 com 'exatamente 1' | rc=2 🔴 bloco: o bloco precisa de exatamente 1 linha <<<CURADORIA (achei 2) ⏎ 🔴 bloco: a colheita tem DELTA LM-020 ajudou+1 e o bloco não 
+AT-020 | PASS | sem cabeçalho | exit 2 com 'cabeçalho' | rc=2 🔴 bloco: a tabela não tem o cabeçalho: | # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recomendação | ⏎ 
+AT-020 | PASS | cabeçalho trocado | exit 2 com 'cabeçalho' | rc=2 🔴 bloco: cabeçalho da tabela diferente de: | # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recomendação | ⏎ 
+AT-020 | PASS | omite contador | exit 2 com 'não tem a linha contador' | rc=2 🔴 bloco: a colheita tem DELTA LM-020 ajudou+1 e o bloco não tem a linha contador dele ⏎ 
+AT-020 | PASS | omite sugestao | exit 2 com 'SUGESTAO' | rc=2 🔴 bloco: a colheita tem SUGESTAO para LM-021 e o bloco não tem a linha sugestao dele ⏎ 
+AT-020 | PASS | omite candidato | exit 2 com 'CANDIDATO' | rc=2 🔴 bloco: a colheita tem CANDIDATO #1 → LM-031 e o bloco não tem linha add com esse ID nem refine que cite 'candidato #1' ⏎ 
+AT-020 | PASS | omite promover | exit 2 com 'PROMOVER' | rc=2 🔴 bloco: a colheita tem PROMOVER? LM-021 e o bloco não tem a linha promover dele ⏎ 
+AT-020 | PASS | omite REJEITADO | exit 2 com 'REJEITADO' | rc=2 🔴 bloco: a colheita tem REJEITADO em BUILD_REPORT_X.md:23 e a linha REJEITADOS: não o cita ⏎ 
+AT-020 | PASS | omite IGNORADO | exit 2 com 'IGNORADO' | rc=2 🔴 bloco: a colheita tem IGNORADO/JA_COLHIDO LM-099 e a linha IGNORADOS/JA_COLHIDOS: não o cita ⏎ 
+AT-020 | PASS | omite INV_PENDENTE | exit 2 com 'INV_PENDENTE' | rc=2 🔴 bloco: a colheita tem INV_PENDENTE LM-016 e o bloco não tem a linha inv dele ⏎ 
+AT-020 | PASS | cobre DELTA só pela coluna LM | exit 2 com 'não tem a linha contador' | rc=2 🔴 bloco: linha 1: o contador 'LM-020 mordeu+1' não está na colheita — contagem que o script não colheu não entra sozinha ⏎ 🔴 bloco: 
+AT-020 | PASS | contador repetido | exit 2 com 'aparece em 2' | rc=2 🔴 bloco: o contador LM-020 ajudou+1 aparece em 2 linhas (1, 7): cada um entra uma vez ⏎ 
+AT-020 | PASS | número repetido | exit 2 com 'mais de uma linha' | rc=2 🔴 bloco: o número 1 aparece em mais de uma linha da tabela ⏎ 
+AT-020 | PASS | LM ≠ delta | exit 2 com 'coluna LM' | rc=2 🔴 bloco: linha 1: a coluna LM ('LM-016') tem de ser 1 ID, o mesmo do delta ('LM-020 ajudou+1') ⏎ 
+AT-020 | PASS | 2 IDs na coluna LM | exit 2 com 'coluna LM' | rc=2 🔴 bloco: linha 1: a coluna LM ('LM-020 LM-016') tem de ser 1 ID, o mesmo do delta ('LM-020 ajudou+1') ⏎ 
+AT-020 | PASS | LM vazia | exit 2 com 'coluna LM' | rc=2 🔴 bloco: linha 1: a coluna LM ('') tem de ser 1 ID, o mesmo do delta ('LM-020 ajudou+1') ⏎ 
+AT-020 | PASS | AUTO fora de contador | exit 2 com 'AUTO só vale' | rc=2 🔴 bloco: linha 4: AUTO só vale para contador que a colheita trouxe; 'sugestao' vai para pergunta (use ACEITAR) ⏎ 
+AT-020 | PASS | AUTO +5 | exit 2 com '+1' | rc=2 🔴 bloco: linha 1: AUTO pede um delta de contador com +1 (LM-nnn ajudou+1 ou LM-nnn mordeu+1) ⏎ 
+AT-020 | PASS | AUTO inventado | exit 2 com 'não está na colheita' | rc=2 🔴 bloco: linha 7: o contador 'LM-021 ajudou+1' não está na colheita — contagem que o script não colheu não entra sozinha ⏎ 
+AT-020 | PASS | AUTO evidência outra linha | exit 2 com 'tem de ser a da colheita' | rc=2 🔴 bloco: linha 1: a evidência do contador 'LM-020 ajudou+1' tem de ser a da colheita (BUILD_REPORT_X.md:9), não outra linha ⏎ 
+AT-020 | PASS | AUTO evidência sufixo de dígito | exit 2 | rc=2 🔴 bloco: linha 1: a evidência BUILD_REPORT_X.md:99 aponta para uma linha que o arquivo não tem ⏎ 🔴 bloco: linha 1: a evidência do co
+AT-020 | PASS | AUTO evidência outro arquivo | exit 2 com 'tem de ser a da colheita' | rc=2 🔴 bloco: linha 1: a evidência do contador 'LM-020 ajudou+1' tem de ser a da colheita (BUILD_REPORT_X.md:9), não outra linha ⏎ 
+AT-020 | PASS | ACEITAR sem arquivo:linha | exit 2 com 'arquivo:linha' | rc=2 🔴 bloco: linha 5: ACEITAR exige a Evidência começando por arquivo:linha ⏎ 
+AT-020 | PASS | ACEITAR arquivo que não existe | exit 2 com 'não existe' | rc=2 🔴 bloco: linha 5: a evidência NAO.md não existe na pasta da colheita ⏎ 
+AT-020 | PASS | ACEITAR linha além do fim | exit 2 com 'não tem' | rc=2 🔴 bloco: linha 5: a evidência BUILD_REPORT_X.md:9999 aponta para uma linha que o arquivo não tem ⏎ 
+AT-020 | PASS | ACEITAR colheita como evidência | exit 2 com 'evidência de si' | rc=2 🔴 bloco: linha 5: a colheita não é evidência de si mesma: cite o documento de onde a linha veio ⏎ 
+AT-020 | PASS | ACEITAR caminho fora do staging | exit 2 com 'não existe' | rc=2 🔴 bloco: linha 5: a evidência ../../etc/passwd não existe na pasta da colheita ⏎ 
+AT-020 | PASS | promover com ACEITAR | exit 2 com 'não usa ACEITAR' | rc=2 🔴 bloco: linha 6: 'promover' não usa ACEITAR (contador: AUTO; promover: PERGUNTA OBRIGATÓRIA) ⏎ 🔴 bloco: linha 6: promoção só com a 
+AT-020 | PASS | promover com AUTO | exit 2 com 'AUTO só vale' | rc=2 🔴 bloco: linha 6: AUTO só vale para contador que a colheita trouxe; 'promover' vai para pergunta (use ACEITAR) ⏎ 
+AT-020 | PASS | linguagem simples vazia | exit 2 com 'vazia' | rc=2 🔴 bloco: linha 1: a célula 'Em linguagem simples' está vazia ⏎ 
+AT-020 | PASS | linguagem simples só traço | exit 2 com 'vazia' | rc=2 🔴 bloco: linha 1: a célula 'Em linguagem simples' está vazia ⏎ 
+AT-020 | PASS | DESCARTAR sem motivo | exit 2 com 'motivo' | rc=2 🔴 bloco: linha 1: DESCARTAR pede o motivo: DESCARTAR (motivo) ⏎ 
+AT-020 | PASS | sem CONTAMINAÇÃO | exit 2 com 'CONTAMINAÇÃO' | rc=2 🔴 bloco: falta a linha CONTAMINAÇÃO: ⏎ 
+AT-020 | PASS | CONTAMINAÇÃO vazia | exit 2 com 'CONTAMINAÇÃO' | rc=2 🔴 bloco: a linha CONTAMINAÇÃO: precisa dizer 'não' ou 'sim — <o que veio>' ⏎ 
+AT-020 | PASS | CONTAMINAÇÃO talvez | exit 2 com 'CONTAMINAÇÃO' | rc=2 🔴 bloco: a linha CONTAMINAÇÃO: precisa dizer 'não' ou 'sim — <o que veio>' ⏎ 
+AT-020 | PASS | delta fora da gramática | exit 2 com 'gramática' | rc=2 🔴 bloco: linha 5: Delta fora da gramática — linha fora da gramática: 'ADD Backend sem nada' ⏎ 
+AT-020 | PASS | delta ADD em Tombstones | exit 2 com 'Tombstones' | rc=2 🔴 bloco: linha 5: Delta fora da gramática — ADD em Tombstones não existe (aposentar = TOMBSTONE LM-nnn :: motivo) ⏎ 
+AT-020 | PASS | linha inv fora da gramática | exit 2 com 'inv' | rc=2 🔴 bloco: linha 3: a célula Delta de uma linha inv é a linha completa da invariante ou do descarte, ou REMOVER <id> ⏎ 
+AT-020 | PASS | tipo fora da lista | exit 2 com 'fora da lista' | rc=2 🔴 bloco: linha 1: Tipo 'contagem' fora da lista (contador, sugestao, add, refine, tombstone, promover, inv) ⏎ 🔴 bloco: a colheita te
+AT-020 | PASS | recomendação fora da lista | exit 2 com 'fora da lista' | rc=2 🔴 bloco: linha 1: Recomendação 'SIM' fora da lista (AUTO, ACEITAR, DESCARTAR, NAO_JULGADO, PERGUNTA OBRIGATÓRIA) ⏎ 
+AT-020 | PASS | sugestão com verbo errado | exit 2 com 'sugestão' | rc=2 🔴 bloco: linha 4: a sugestão 'LM-021 ajudou+1' não está na colheita como SUGESTAO desse ID (o delta é LM-nnn mordeu+1) ⏎ 
+AT-020 | PASS | sugestão +3 | exit 2 com 'sugestão' | rc=2 🔴 bloco: linha 4: a sugestão 'LM-021 mordeu+3' não está na colheita como SUGESTAO desse ID (o delta é LM-nnn mordeu+1) ⏎ 
+AT-020 | PASS | PERGUNTA OBRIGATÓRIA em contador | exit 2 com 'só vale' | rc=2 🔴 bloco: linha 1: PERGUNTA OBRIGATÓRIA só vale para promover e inv ⏎ 
+AT-020 | PASS | 7 células | exit 2 com 'células' | rc=2 🔴 bloco: linha da tabela com 8 células (esperado 7; barra dentro da célula vai como \|): | 1 | contador | LM-020 | LM-020 ajudou+1
+AT-021 | PASS | legítimo: delta em crase | exit 0 com 'AUTO LM-020 ajudou+1' | rc=0  
+AT-021 | PASS | legítimo: evidência em crase | exit 0 com 'AUTO LM-020' | rc=0  
+AT-021 | PASS | legítimo: DESCARTAR contador com motivo | exit 0 com 'descartar=1' | rc=0  
+AT-021 | PASS | legítimo: NAO_JULGADO em contador | exit 0 com 'nao_julgado=1' | rc=0  
+AT-021 | PASS | legítimo: barra escapada em célula | exit 0 com 'a | b' | rc=0  
+AT-021 | PASS | legítimo: CONTAMINAÇÃO sim | exit 0 com 'AVISO contaminação' | rc=0  
+AT-021 | PASS | legítimo: recomendação em negrito | exit 0 com 'AUTO LM-020' | rc=0  
+AT-021 | PASS | legítimo: texto antes e depois do bloco | exit 0 com 'BLOCO VÁLIDO' | rc=0  
+AT-021 | PASS | legítimo: sugestão descartada | exit 0 com 'descartar=1' | rc=0  
+AT-021 | PASS | legítimo: candidato coberto por refine que cita candidato #1 | exit 0 com 'PERGUNTA 5 refine' | rc=0  
+AT-021 | PASS | legítimo: candidato descartado | exit 0 com 'descartar=1' | rc=0  
+AT-021 | PASS | legítimo: linha tombstone com inv | exit 0 com 'PERGUNTA 7 tombstone' | rc=0  
+AT-021 | PASS | legítimo: REMOVER LM em inv | exit 0 com 'PERGUNTA 7 inv' | rc=0  
+AT-021 | PASS | legítimo: promover sem contador do mesmo ID | exit 0 com 'PERGUNTA 6 promover' | rc=0  
+AT-020 | PASS | FORA: com a linha verde junto | exit 2 | 2
+AT-020 | PASS | fronteira vazia | exit 2 | 2
+AT-020 | PASS | linha verde como substring | exit 2 | 2
+AT-020 | PASS | selo vazio | exit 2 | 2
+AT-020/M4 | PASS | staging: derivado plantado delta.txt | exit 2 staging mudou | rc=2
+AT-020/M4 | PASS | staging: selo*.txt | exit 2 staging mudou | rc=2
+AT-020/M4 | PASS | staging: subpasta | exit 2 staging mudou | rc=2
+AT-020/M4 | PASS | staging: link | exit 2 staging mudou | rc=2
+AT-020/M4 | PASS | staging: colheita editada | exit 2 staging mudou | rc=2
+AT-020/M4 | PASS | controle: staging restaurado | exit 0 | 
+AT-020/L4 | REPROVA | ACEITAR citando colheita.rc:1 (derivado do próprio script) | exit 2 (não é documento da feature) | rc=0
+AT-020/L4 | REPROVA | DESCARTAR () | exit 2 (sem o motivo) | rc=0
+AT-020/L4 | REPROVA | CONTAMINAÇÃO: nãosei | exit 2 | rc=0
+AT-021 | PASS | add cujo delta é um contador +9 | exit 2 (delta do tipo errado) ou pelo menos nunca AUTO | rc=0 AUTO LM-020 ajudou+1 ⏎    simples: O aviso foi seguido. ⏎ PERGUNTA 2 contador LM-016 mordeu+1 ⏎    simples: O erro voltou. ⏎ PERGUNTA 3 inv - [LM-01
+TOTAL 75 casos, 3 reprovados: AT-020/L4, AT-020/L4, AT-020/L4
+[exit=0]

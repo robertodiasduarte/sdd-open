@@ -1,0 +1,18 @@
+$ /bin/bash sdd/reports/evidence/F14_PLAYBOOK/codex-curadoria.sh controles
+── controles sem agente ──
+  ✅ colheita da DEMO sai 0
+  ✅ colheita traz a contagem da tabela
+  ✅ colheita traz a contagem do achado
+  ✅ colheita traz o candidato
+  ✅ colheita traz a sugestão do termo
+  ✅ controle: bloco fiel ao brief passa no conferidor
+  ✅ controle: fronteira limpa sem agente
+  ✅ controle: a contagem pura sai AUTO
+  ✅ controle: a contagem com pendência sai PERGUNTA
+  ✅ controle: contagem inventada reprova
+  ✅ controle: escrita no playbook reprova na fronteira
+  ✅ controle: e reprova o bloco
+  ✅ controle: o conferidor do despacho exige a linha do exit
+controles: 0 falha(s)
+RESULTADO: 0 falha(s)
+[exit=0]

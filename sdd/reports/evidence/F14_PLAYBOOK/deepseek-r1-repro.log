@@ -1,0 +1,19 @@
+$ bash sdd/reports/evidence/F14_PLAYBOOK/deepseek-r1-repro.sh
+$ git check-ignore -v sdd/features/DEFINE_RELATORIO_MENSAL.md
+.gitignore:1:sdd/features/	sdd/features/DEFINE_RELATORIO_MENSAL.md
+[exit=0]
+$ git ls-files --others -- sdd/features
+sdd/features/DEFINE_RELATORIO_MENSAL.md
+[exit=0]
+$ git ls-files --others --ignored -- sdd/features   # a correção proposta
+fatal: ls-files --ignored needs some exclude pattern
+[exit=128]
+$ copiar-docs.sh <principal> <frente> relatorio-mensal
+COPIADO sdd/features/DEFINE_RELATORIO_MENSAL.md
+RESULTADO: 1 COPIADO(S)
+→ os documentos da feature já estão na frente; os originais continuam no checkout principal.
+[exit=0]
+$ ls <frente>/sdd/features
+DEFINE_RELATORIO_MENSAL.md
+[exit=0]
+[exit=0]

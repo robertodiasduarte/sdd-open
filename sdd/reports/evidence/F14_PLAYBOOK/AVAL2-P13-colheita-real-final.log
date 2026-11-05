@@ -1,0 +1,18 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/final.sh
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:510 · fp=312d848fbf
+DELTA LM-002 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:511 · fp=e5efe377bf
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:512 · fp=6a45837f24
+IGNORADO LM-999 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-005 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-016 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-030 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-020 (não existe como bullet ativo em sdd/playbook.md)
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL2-V2-aposentar-e-bordas.log:40 · fp=8ea1f11743
+INV_PENDENTE LM-001 (mordeu 0→1) · delta: LM-001 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-001 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-001] descartado :: <motivo>
+resumo: deltas=4 (ajudou=3 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[colher exit=0]
+[exit=0]

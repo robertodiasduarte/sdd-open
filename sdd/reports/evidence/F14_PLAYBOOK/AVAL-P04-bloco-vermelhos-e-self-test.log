@@ -1,0 +1,104 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p4.sh
+
+=== B10 AT-020 vermelhos do DEFINE, 1 a 1 (bloco de exemplo alterado em 1 defeito)
+rc=0 :: controle sem mudanca :: 
+rc=2 :: sem <<<CURADORIA :: 🔴 bloco: o bloco precisa de exatamente 1 linha <<<CURADORIA (achei 0)
+rc=2 :: sem >>> :: 🔴 bloco: o bloco não tem a linha >>> de fechamento
+rc=2 :: sem cabecalho :: 🔴 bloco: a tabela não tem o cabeçalho: | # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recomendaç
+rc=2 :: cabecalho com coluna trocada :: 🔴 bloco: cabeçalho da tabela diferente de: | # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recome
+rc=2 :: AUTO em add :: 🔴 bloco: linha 4: AUTO só vale para contador que a colheita trouxe; 'add' vai para pergunta (use ACEITAR)
+rc=2 :: AUTO +5 :: 🔴 bloco: linha 1: AUTO pede um delta de contador com +1 (LM-nnn ajudou+1 ou LM-nnn mordeu+1)
+rc=2 :: AUTO verbo trocado :: 🔴 bloco: linha 1: o contador 'LM-020 mordeu+1' não está na colheita — contagem que o script não colheu não ent
+rc=2 :: AUTO ID nao colhido :: 🔴 bloco: linha 1: o contador 'LM-021 ajudou+1' não está na colheita — contagem que o script não colheu não ent
+rc=2 :: AUTO evidencia outra linha :: 🔴 bloco: linha 1: a evidência do contador 'LM-020 ajudou+1' tem de ser a da colheita (DESIGN_FIXTURE.md:16), n
+rc=2 :: ACEITAR sem arquivo:linha :: 🔴 bloco: linha 4: ACEITAR exige a Evidência começando por arquivo:linha
+rc=2 :: ACEITAR arquivo inexistente :: 🔴 bloco: linha 4: a evidência OUTRO.md não existe na pasta da colheita
+rc=2 :: ACEITAR linha alem do fim :: 🔴 bloco: linha 4: a evidência BUILD_REPORT_FIXTURE.md:9999 aponta para uma linha que o arquivo não tem
+rc=2 :: promover ACEITAR :: 🔴 bloco: linha 6: 'promover' não usa ACEITAR (contador: AUTO; promover: PERGUNTA OBRIGATÓRIA)
+rc=2 :: promover DESCARTAR :: 🔴 bloco: linha 6: promoção só com a recomendação PERGUNTA OBRIGATÓRIA (veio DESCARTAR)
+rc=2 :: simples vazia :: 🔴 bloco: linha 1: a célula 'Em linguagem simples' está vazia
+rc=2 :: simples so traco :: 🔴 bloco: linha 1: a célula 'Em linguagem simples' está vazia
+rc=2 :: sem CONTAMINACAO :: 🔴 bloco: falta a linha CONTAMINAÇÃO:
+rc=2 :: delta fora gramatica em add :: 🔴 bloco: linha 5: Delta fora da gramática — ADD em seção fora da lista: 'Inventada' (lista: Sempre · Dados · B
+rc=2 :: omite DELTA :: 🔴 bloco: a colheita tem DELTA LM-016 mordeu+1 e o bloco não tem a linha contador dele
+rc=2 :: omite SUGESTAO :: 🔴 bloco: a colheita tem SUGESTAO para LM-020 e o bloco não tem a linha sugestao dele
+rc=2 :: omite CANDIDATO :: 🔴 bloco: a colheita tem CANDIDATO #2 → LM-024 e o bloco não tem linha add com esse ID nem refine que cite 'can
+rc=2 :: omite REJEITADO :: 🔴 bloco: a colheita tem REJEITADO em BUILD_REPORT_FIXTURE.md:24 e a linha REJEITADOS: não o cita
+rc=2 :: omite PROMOVER :: 🔴 bloco: a colheita tem PROMOVER? LM-004 e o bloco não tem a linha promover dele
+rc=2 :: 2 blocos :: 🔴 bloco: o bloco precisa de exatamente 1 linha <<<CURADORIA (achei 2)
+rc=2 :: FORA com RESULTADO verde :: 🔴 bloco: a fronteira acusou escrita fora do permitido — FORA: /x
+rc=2 :: sem RESULTADO :: 🔴 bloco: a saída do --comparar não tem a linha 'RESULTADO: SÓ O PERMITIDO MUDOU': fronteira não verificada nun
+rc=2 :: comparar vazio :: 🔴 bloco: a saída do --comparar não tem a linha 'RESULTADO: SÓ O PERMITIDO MUDOU': fronteira não verificada nun
+rc=2 :: selo vazio :: 🔴 bloco: o selo não cobre a colheita.txt: sele a pasta com --selar depois de colher e antes de despachar
+rc=2 :: selo adulterado :: 🔴 bloco: o staging mudou depois do selo: AVAL-AT-002.log mudou
+
+=== B2b mesmo verbo, delta de outro ID: LM-016 coberto por linha que soma em LM-020
+DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_Z
+DELTA LM-016 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_Z
+PROMOVER? LM-004 mordeu=2 promovido_para=— :: promover a mec
+AUTO LM-020 ajudou+1
+   simples: x
+AUTO LM-020 ajudou+1
+   simples: y
+PERGUNTA 3 promover LM-004 promovido_para=sdd/hooks/x
+   simples: z
+resumo-bloco: auto=2 pergunta=1 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+[rc=0]
+
+=== B2c uma linha cobre 2 DELTAs: coluna LM com 2 IDs
+AUTO LM-020 ajudou+1
+   simples: x
+PERGUNTA 3 promover LM-004 promovido_para=sdd/hooks/x
+   simples: z
+resumo-bloco: auto=1 pergunta=1 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+[rc=0]
+
+=== B11 AT-021: mordeu com INV_PENDENTE vira PERGUNTA; CONTAMINACAO sim vira AVISO; sugestao ACEITAR vira PERGUNTA
+rc=0 :: contaminacao sim :: 
+AVISO contaminação declarada pelo curador: sim — veio o diff
+resumo-bloco: auto=2 pergunta=3 descartar=1 nao_julgado=0 contaminacao=sim
+rc=0 :: sugestao ACEITAR :: 
+PERGUNTA 3 sugestao LM-020 mordeu+1
+resumo-bloco: auto=2 pergunta=4 descartar=0 nao_julgado=0 contaminacao=nao
+rc=2 :: PERGUNTA OBRIGATORIA em add :: 🔴 bloco: linha 4: PERGUNTA OBRIGATÓRIA só vale para promover e inv
+
+=== AT-022 self-test: vermelhos antes dos verdes, sem residuo
+[rc=0]
+2:— VERMELHOS (se algum passar, o curator não avalia nada) —
+32:— VERDES —
+43:  ✅ stdout do --aplicar é só o playbook (sem RESULTADO:)
+69:🟢 self-test: todos os vermelhos e os verdes confirmados
+70:RESULTADO: SELF-TEST OK
+?? sdd/features/
+?? sdd/handoffs/
+?? sdd/reports/
+?? sdd/reviews/
+ls: /Users/robertoduarte/rdd-worktrees/sdd-open-f14-playbook/sdd/traces: No such file or directory
+
+=== AT-040 fim de cada modo: ultima linha do stdout ou do stderr
+[--validar-inv sdd/playbook.md sdd/invariants.md rc=0]
+stdout fim: RESULTADO: PAR VÁLIDO~→ copie os 2 arquivos por cima dos originais.~
+stderr fim: 
+[--selar /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p4.fies/st rc=0]
+stdout fim: 6fa631a84948e89010ebe54e70695846486213c1cfcd174e036f9e9b0850~89c592b1b588904782a0dca06db8c16e7db4469352a27df6af117c48393f~
+stderr fim: RESULTADO: SELO IMPRESSO (4 arquivo(s))~→ guarde o stdout FORA da pasta de staging (na pasta do snap~
+[--preparar F14_NADA --retomar rc=1]
+stdout fim: RESULTADO: NADA A RETOMAR~→ rode --preparar F14_NADA sem --retomar e colha de novo.~
+stderr fim: 
+[cruzar rc=0] fim: RESULTADO: SEM AVISO~→ o delta não mexe em nenhuma invariante.~
+[uso rc=64] stdout=0 stderr fim: RESULTADO: ERRO DE USO~→ corrija a chamada e rode de novo; nada~
+[playbook ausente rc=2] stdout=0 stderr fim: RESULTADO: FALHA~→ isto não é "0 deltas": confira o camin~
+[conferir sem arquivos rc=2] stdout=0 stderr fim: RESULTADO: FALHA~→ confira o caminho e rode de novo; nada~
+
+=== AT-014/Success: pacote
+🟢 trava INV: par válido (1 invariante(s), 0 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+[rc=0]
+[colher fixtures rc=0]
+1
+[exit=0]

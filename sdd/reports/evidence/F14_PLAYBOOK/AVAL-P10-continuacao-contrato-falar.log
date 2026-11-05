@@ -1,0 +1,112 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p10.sh </dev/null
+
+=== K1 formato documentado: playbook-valido.md e o exemplo da skill quebram o bullet antes de promovido_para
+- [LM-014] ajudou=1 mordeu=0 · conf=2026-09-02 · sup: `pedido` `status_pagamento` :: regra em 1–3 linhas. **Do instead:** ação con
+- [LM-007] ☠ 2026-09-02 :: motivo da aposentadoria                      (só sob ## Tombstones)
+```
+- [LM-005] ajudou=0 mordeu=0 · conf=2026-09-01 · sup: `sta
+  **Do instead:** rejeitar `arquivado` explicitamente no filtro do relatório. · promovido_para: —
+🟢 /private/tmp/claude-501/-Users-roberto
+PROMOVER? LM-002 mordeu=2 promovido_para=— :: promover a mecanismo? su
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promoco
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+--- universo: LM-001 tem promovido_para preenchido e nao esta classificada; trava deveria reprovar
+🟢 trava INV: par válido (1 invariante(s), 0 descartado(s), pendentes=0)
+[rc=0]
+--- --aplicar promovido_para= cria 2o campo
+- [LM-001] ajudou=0 mordeu=0 · conf=2026-02-02 · sup: `a` :: Regra · promovido_para: sdd/x.sh
+  longa. **Do instead:** a. → ficha: — · promovido_para: `sdd/hooks/pre-commit`
+
+=== K2 AT-023 tipos, recomendacoes e campos iguais nos 3 lugares
+tipos contador brief True yaml True
+tipos sugestao brief True yaml True
+tipos add brief True yaml True
+tipos refine brief True yaml True
+tipos tombstone brief True yaml True
+tipos promover brief True yaml True
+tipos inv brief True yaml True
+recom AUTO brief True yaml True
+recom ACEITAR brief True yaml True
+recom DESCARTAR brief True yaml True
+recom NAO_JULGADO brief True yaml True
+recom PERGUNTA OBRIGATÓRIA brief True yaml True
+campos feature brief True yaml True
+campos staging brief True yaml True
+campos colheita brief True yaml True
+campos playbook brief True yaml True
+campos worktree brief True yaml True
+['curador:', '  brief: "`.agents/skills/sdd-playbook/references/curator.md`"', '  script: "`sdd/bin/playbook-curator.sh`"', '  fronteira: "`sdd/bin/governanca-fronteira.sh`"', '  activation: "passo 17b da sdd-release, depois do push, quando a colheita sai 0 ou traz PROMOVER?"', '  campos:', '    - "feature"', '    - "staging"', '    - "colheita"', '    - "playbook"', '    - "worktree"', '  staging: "<pasta temporária>/sdd-curadoria-<hash da raiz>/<F>/"']
+
+=== K3 fronteira: raiz com & e | lista o caminho exato
+[rc=1]
+FORA: HEAD mudou durante o despacho (a987dfa35fdfb4de7eb835e6a3c85a3bde3bc9f8 → 99052d79636ff9ea80f3d37fe3e4733f9e27b56f
+FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcado para o git não olhar)
+FORA: /p10.OQpl/ra&iz|x/f
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 re
+
+=== K4 governanca-bloco com FORA / sem RESULTADO / verde
+Uso:
+    python3 sdd/bin/governanca-bloco.py <resposta.txt> --saida <caminho do relatório> [--comparar <saída.txt>]
+      <resposta.txt>   a resposta do revisor (o último bloco <<<GOVERNANCA … >>> é o que vale)
+      --saida          o `saida:` mandado ao revisor (caminho do relatório)
+      --comparar       a saída de `governanca-fronteira.sh --comparar` (linhas MUDOU:/FORA:); com ela, o bloco
+[c1 rc=2]   🛑 resultado fora de NA | REVISADO | PADRAO_AUSENTE | FALHA: ''
+[c2 rc=2]   🛑 resultado fora de NA | REVISADO | PADRAO_AUSENTE | FALHA: ''
+[c3 rc=2]   🛑 resultado fora de NA | REVISADO | PADRAO_AUSENTE | FALHA: ''
+
+=== K5 AT-025 exemplo de pergunta
+## Exemplo — a curadoria, depois de publicar (etapa 4 — Publicar)
+
+Situação: a publicação terminou. A colheita trouxe 2 contagens com prova, 1 lição nova e 1 lição que já
+mordeu 2 vezes. Toda mensagem daqui para a frente diz que a publicação já terminou: uma parada depois do
+push, sem isso, parece deploy travado.
+
+**Status** — `Release: ✅ 1 Onde estou · ✅ 2 Verificar · ✅ 3 Sua decisão · ▶️ 4 Publicar`
+
+**O que foi feito** — A publicação terminou e está no ar; o que vem agora não mexe nela. Conferi o que
+esta feature ensinou para as próximas (a curadoria: as lições do caderno de armadilhas do projeto).
+
+**Decidi sozinho** (contagem com prova não muda regra; para desfazer, reverta o commit da curadoria):
+- o aviso sobre o envio sem o segredo foi seguido no desenho e evitou o erro: contei +1;
+- o erro do preflight aconteceu de novo, mesmo com o aviso: contei +1.
+
+**Agora: etapa 4 — Publicar** — Duas mudanças nas regras do projeto dependem de você. Responda pelos
+números, por exemplo "1 aceitar, 2 recusar".
+
+**Sua decisão** — 1. [D3 · muda a regra do método] **Guardo a lição nova sobre o relatório que saiu sem as notas canceladas?**
+- **aceitar** (recomendado) — entra no caderno e avisa toda sessão que mexer no relatório; a prova está
+  no relatório do build (ref: LM-023).
+- **recusar** — a lição não entra; o que aconteceu fica só no histórico desta feature.
+- **não sei** — mostro o trecho do relatório do build em que isso aconteceu.
+
+**Sua decisão** — 2. [D3 · muda a regra do método] **Transformo em trava automática o aviso que já falhou 2 vezes?**
+- **aceitar** (recomendado) — registro que ele vira uma conferência automática; isso pede uma correção
+  própria, com teste, numa próxima tarefa (ref: LM-004).
+- **recusar** — o aviso continua só escrito, e esta pergunta volta na próxima publicação.
+- **não sei** — mostro as 2 vezes em que o erro aconteceu, com o arquivo de cada uma.
+
+**Próximo passo** — Aplico só o que você aceitar, confiro o caderno e pergunto se envio essa mudança.
+
+Aposentar uma lição da qual uma regra permanente depende é **uma opção só**, nunca duas: "aposentar o
+aviso sobre o envio e ajustar a regra permanente que dependia dele, no mesmo passo".
+
+Depois de aplicar, o envio é outra decisão, porque o push pode publicar:
+
+**Sua decisão** — [D1 · não se desfaz] **Posso enviar o commit da curadoria para a branch padrão?**
+- **sim** (recomendado) — envio só o caderno de armadilhas (1 arquivo); neste projeto, esse push não
+  publica nada, porque o workflow só roda quando o código muda.
+- **deixar para a próxima publicação** — a mudança fica salva nesta pasta e sobe junto com a próxima.
+- **não sei** — explico o que este envio muda e o que acontece se ele ficar para depois.
+
+Quando a colheita falha, diga a causa, o conserto e que nada do que foi publicado mudou: "Não consegui
+
+=== K6 AT-028 new-session
+244:   `bash .agents/skills/sdd-new-session/scripts/copiar-docs.sh <checkout principal> <pasta das frentes>/<slug> <slug>`.
+
+=== K7 AT-035 links e roadmap
+README.md:102:- [Playbook curation and invariants](docs/playbook-curation.md) ([PT](docs/pt-BR/playbook-curation.md)) — 
+README.pt-BR.md:103:- [Curadoria do playbook e invariantes](docs/pt-BR/playbook-curation.md) ([EN](docs/playbook-curatio
+docs/pt-BR/guia-do-aluno.md:407:| **Depois de publicar** | Ela confere o que a frente ensinou ao projeto (a **curadoria*
+[exit=0]

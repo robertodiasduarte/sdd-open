@@ -1,0 +1,58 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/e.sh
+=== sem subagente: despachar
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: curador).
+
+**Por que parei:** A publicação já terminou e não depende deste passo; a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/toy/e/proj.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_curador_DEMO.md → o agente começa a ler a colheita do playbook.
+3. Quando ele terminar, copie o bloco que começa com `<<<CURADORIA` até `>>>` e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** a curadoria do playbook ainda não foi aplicada; nada foi despublicado.
+**Brief:** sdd/reports/briefs/BRIEF_curador_DEMO.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+[despachar exit=40]
+?? sdd/reports/briefs/
+?? sdd/traces/
+=== sessão nova: nenhuma variável; só a pasta
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-f1180fe3f0c3/DEMO
+RETOMADA: colheita anterior encontrada em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-f1180fe3f0c3/DEMO/colheita.txt
+RESULTADO: RETOMADA
+→ continue do despacho do curador com a colheita que está na pasta.
+[retomar exit=0]
+RESULTADO: SNAPSHOT GRAVADO
+[snapshot exit=0]
+[comparar exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+[conferir rc=0]
+AUTO LM-001 ajudou+1
+AUTO LM-003 ajudou+1
+PERGUNTA 3 contador LM-002 mordeu+1
+PERGUNTA 4 inv - [LM-002] descartado :: defeito de ferramenta
+PERGUNTA 5 add ADD Backend :: sup: `fila_de_envio` `idempotencia` :: Fila sem chave de idempotência duplica o envio. **Do instead:** grave a chave antes de enviar. → ficha: — · promovido_para: —
+RESULTADO: BLOCO VÁLIDO
+=== o staging não foi limpo pela retomada
+AVAL-01-teste.log
+BUILD_REPORT_DEMO.md
+DESIGN_DEMO.md
+colheita.rc
+colheita.txt
+=== sessão nova com outra pasta temporária (TMPDIR de outra sessão do agente)
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp2/sdd-curadoria-f1180fe3f0c3/DEMO
+RETOMADA: não há colheita nesta pasta; rode sem --retomar
+RESULTADO: NADA A RETOMAR
+→ rode --preparar DEMO sem --retomar e colha de novo.
+[retomar exit=1]
+ls: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp2/sdd-fronteira-9a08750ae30c/DEMO/curador: No such file or directory
+=== e4: a seta da retomada obedecida: curador escreveu, sessão nova segue a seta e refaz selo e snapshot
+RESULTADO: RETOMADA
+→ continue do despacho do curador com a colheita que está na pasta.
+RESULTADO: SNAPSHOT GRAVADO
+RESULTADO: SÓ O PERMITIDO MUDOU
+[conferir rc=0]
+RESULTADO: BLOCO VÁLIDO
+[exit=0]

@@ -1,0 +1,59 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda7.sh
+=== AT-031
+controle → exit=0 · ✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_controle.md: DESIGN válido 
+plural_extra_com_inventario → exit=1 · 🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_plural_extra_com_inventario.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar
+plural_extra_com_contrato → exit=1 · 🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_plural_extra_com_contrato.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; 
+plural_extra_coluna → exit=1 · 🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_plural_extra_coluna.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam
+revisao_sem_inventario → exit=0 · ✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_revisao_sem_inventario.md: DESIGN válido 
+secao_exata_vazia → exit=1 · 🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_secao_exata_vazia.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam: 
+prefixo_55 → exit=1 · 🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_prefixo_55.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam: 🛑 /var/
+prefixo_55b → exit=1 · 🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_prefixo_55b.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam: 🛑 /var
+prefixo_extra → exit=0 · ✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_prefixo_extra.md: DESIGN válido 
+prefixo_extra_inventario → exit=1 · 🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_prefixo_extra_inventario.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; f
+minusculo_extra_inventario → exit=1 · 🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/dl/DESIGN_minusculo_extra_inventario.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar;
+
+=== AT-032
+[prompts:~  wrapper_pattern: ["a", "b"]~] exit=64 · 🛑 prompts.wrapper_pattern começa com [, { ou * sem aspas: o YAML lê isso como lista, mapa ou referência, que esta varredura não lê RESULTADO: ERRO DE USO 
+[prompts: {wrapper_pattern: "x"}~] exit=64 · 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela RESULTADO: ERRO DE USO 
+[prompts:~  wrapper_pattern: "callLLM\\("~] exit=0 · RESULTADO: LIMPO 
+[prompts:~  wrapper_pattern:~    - a~] exit=0 · RESULTADO: LIMPO 
+[prompts:~  wrapper_pattern: []~] exit=64 · 🛑 prompts.wrapper_pattern começa com [, { ou * sem aspas: o YAML lê isso como lista, mapa ou referência, que esta varredura não lê RESULTADO: ERRO DE USO 
+[prompts: {}~] exit=0 · RESULTADO: LIMPO 
+[prompts:~  wrapper_pattern: ""~] exit=0 · RESULTADO: LIMPO 
+
+=== AT-045
+git status → RESULTADO: SÓ O PERMITIDO MUDOU; [exit=0]
+git diff → RESULTADO: SÓ O PERMITIDO MUDOU; [exit=0]
+git log → RESULTADO: SÓ O PERMITIDO MUDOU; [exit=0]
+touch+git status (índice recalculado) → RESULTADO: SÓ O PERMITIDO MUDOU; [exit=0]
+git stash list → RESULTADO: SÓ O PERMITIDO MUDOU; [exit=0]
+permitido grava → RESULTADO: SÓ O PERMITIDO MUDOU; [exit=0]
+git add → FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcado para o git não olhar);FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/fr/r/a.txt;RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+assume-unchanged → FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcado para o git não olhar);RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+skip-worktree → FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcado para o git não olhar);RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+assume-unchanged + edição → FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcado para o git não olhar);RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+config local → FORA: a configuração, o exclude ou os hooks de .git mudaram durante o despacho;RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+info/exclude → FORA: a configuração, o exclude ou os hooks de .git mudaram durante o despacho;RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+hook novo → FORA: a configuração, o exclude ou os hooks de .git mudaram durante o despacho;RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+troca de branch → FORA: a branch mudou durante o despacho (refs/heads/main → refs/heads/nova);RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+commit → FORA: HEAD mudou durante o despacho (c6bd94f6eda924ffc78e70cbc79358d0271face6 → 0ac3012d661dcae02182cd61144f5a;FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcado para o git não olhar);FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/fr/r/a.txt;RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+branch nova sem trocar → RESULTADO: SÓ O PERMITIDO MUDOU; [exit=0]
+tag nova → RESULTADO: SÓ O PERMITIDO MUDOU; [exit=0]
+stash push -u + pop → FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/fr/r/a.txt;RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+sobrescrita de ignorado em sdd/ → FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/fr/r/sdd/ign.txt;RESULTADO: ESCRITA FORA DO PERMITIDO;→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como f; [exit=1]
+RESULTADO: ERRO DE USO → a fronteira NÃO foi verificada; corrija a chamada e rode de novo. [snapshot pasta ilegível exit=64]
+FORA: /privateSB/p/fr/r&a|b/novo.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[raiz com & e | exit=1]
+
+=== governanca-bloco --comparar
+48:    def test_validos(self):
+62:    def test_falha_sai_1(self):
+67:    def test_invalidos_saem_2(self):
+87:    def test_bloco_incoerente_com_a_fronteira_sai_2(self):
+95:    def test_fronteira_vermelha_ou_nao_verificada_invalida_qualquer_bloco(self):
+110:    def test_fronteira_verde_continua_valendo(self):
+116:    def test_vale_o_ultimo_bloco(self):
+120:    def test_uso_sai_64(self):
+[exit=0]

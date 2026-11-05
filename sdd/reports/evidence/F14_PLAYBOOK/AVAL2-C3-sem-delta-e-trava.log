@@ -1,0 +1,16 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/c2.sh
+--- item 6 à letra: delta.txt ausente (nada contado, candidato recusado), inv-linhas.txt com 2 linhas
+🛑 playbook-curator: delta não encontrado: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-c651e9907566/DEMO/delta.txt
+RESULTADO: FALHA
+→ confira o caminho do delta e rode de novo; nada foi aplicado.
+[aplicar sem delta.txt exit=2]
+--- recusa total sem resposta: a trava com contagem pendente
+RESULTADO: DELTA APLICADO (1 linha(s))
+→ o stdout é o playbook novo: rode o playbook-lint.sh nele antes de copiar por cima.
+o registro de invariantes é novo na v2.6.0: 2 lição(ões) do playbook ainda não foram classificadas.
+🔴 trava INV: LM-010 entra no universo sem classificação — aprove a proposta A (virar invariante) ou a B (descartar com motivo), ou retire o delta
+🔴 trava INV: LM-011 entra no universo sem classificação — aprove a proposta A (virar invariante) ou a B (descartar com motivo), ou retire o delta
+RESULTADO: TRAVA
+→ nada foi copiado; resolva cada linha acima com a pessoa e rode de novo.
+[validar-inv sem classificar exit=2]
+[exit=0]

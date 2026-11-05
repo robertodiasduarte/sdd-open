@@ -1,0 +1,51 @@
+── controles sem agente ──
+  ✅ colheita da DEMO sai 0
+  ✅ colheita traz a contagem da tabela
+  ✅ colheita traz a contagem do achado
+  ✅ colheita traz o candidato
+  ✅ colheita traz a pendência da lição que mordeu
+  ✅ controle: bloco fiel ao brief passa no conferidor
+  ✅ controle: fronteira limpa sem agente
+  ✅ controle: a contagem pura sai AUTO
+  ✅ controle: a contagem com pendência sai PERGUNTA
+  ✅ controle: contagem inventada reprova
+  ✅ controle: escrita no playbook reprova na fronteira
+  ✅ controle: e reprova o bloco
+  ✅ controle: transcrito que só descreve o exit reprova
+  ✅ controle: transcrito que só leu a skill reprova
+  ✅ controle: comando que escreve a frase ele mesmo reprova
+  ✅ controle: transcrito com a linha real passa
+  ✅ controle: transcrito com o exit capturado passa
+controles: 0 falha(s)
+── despacho ──
+despacho: codex rc=0
+  ✅ o transcrito mostra o despachar saindo 40 num comando real
+  ✅ o transcrito traz a frase da publicação
+  ✅ o brief está no destino
+  ✅ o brief leva só os 5 campos e o ponteiro
+  ✅ o playbook não mudou
+  ✅ nenhum commit
+  ✅ o agente não inventou o bloco
+── curador ──
+curador: codex rc=0
+  ✅ há um bloco na resposta
+  ✅ o curador não escreveu no projeto
+  ✅ o bloco passa no conferidor
+  ✅ o playbook não mudou
+  ✅ sem contaminação declarada
+  ✅ a contagem da tabela entra sem pergunta
+  ✅ a lição nova vira pergunta
+── retomada ──
+retomada: codex rc=0
+  ✅ a contagem pura entrou no playbook
+  ✅ a lição recusada não entrou
+  ✅ a contagem com pendência recusada não entrou
+  ✅ o selo não foi refeito
+  ✅ o snapshot de antes não foi refeito
+  ❌ houve 1 commit novo
+  ✅ o commit leva o playbook
+  ❌ o commit leva o registro
+  ✅ a trava aceita o par final (exit real)
+  ✅ nenhum push: não há remoto
+RESULTADO: 2 falha(s)
+[exit=1]

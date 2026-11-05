@@ -1,0 +1,3 @@
+$ git cat-file -e v2.5.0:tests/test_playbook_curator.py
+fatal: path 'tests/test_playbook_curator.py' does not exist in 'v2.5.0'
+[exit=128]

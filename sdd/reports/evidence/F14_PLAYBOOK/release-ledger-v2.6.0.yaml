@@ -1,0 +1,7 @@
+feature_id: F14_PLAYBOOK
+slice_id: playbook-e-sessao
+versao: v2.6.0
+estado: shipado
+dod: Verify Gate verde em 8a320e9 (1411 testes no piso); CI verde em Ubuntu e macOS; revisão real em 4 rodadas (loop PRONTO, CONFERE); prova do AT-038 no Codex CLI com deepseek/deepseek-v4-pro pela OpenRouter, sem ver o commit do 17b rodar, porque o sandbox protege .git; último veredito do avaliador em NEEDS_WORK (ciclo 3), corrigido, sem 4º ciclo por decisão D4; R1 a R5 da rodada 4 publicados como pendência, por decisão D4
+descricao: curadoria do playbook no passo 17b (playbook-curator.sh, brief do curador, conferidor), sdd/invariants.md e trava, copiar-docs.sh na sdd-new-session, molde do handoff com 6 seções, fronteira de escrita com índice, branch e .git, restauração do DEFINE
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 sha256=5a73f1893155458b8b3cb880086ad3335fbcd61ac9cc4543682749348d617a84 diversidade=vendor

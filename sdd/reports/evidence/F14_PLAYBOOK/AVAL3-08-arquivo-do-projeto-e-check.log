@@ -1,0 +1,52 @@
+$ S=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/s08.sh </dev/null
+--- check= em invariante estado=ok origem=seed
+sdd/bin/report-lint.py                   arquivo comum                      esperado=0 novo=0 velho=0 ok
+.github/workflows/publish-gate.yml       pasta com ponto (CI real do pacote) esperado=0 novo=2 velho=0 ERRADO REGRIDE
+.agents/skills/sdd-release/SKILL.md      pasta com ponto (skill real)       esperado=0 novo=2 velho=0 ERRADO REGRIDE
+.gitattributes                           arquivo com ponto                  esperado=0 novo=2 velho=0 ERRADO REGRIDE
+.husky/pre-commit                        hook com ponto                     esperado=0 novo=2 velho=0 ERRADO REGRIDE
+./sdd/bin/report-lint.py                 ./ na frente                       esperado=0 novo=0 velho=0 ok
+com-ponto.sh                             raiz                               esperado=0 novo=0 velho=0 ok
+..estranha/x.sh                          pasta cujo nome comeca por 2 pontos esperado=0 novo=2 velho=0 ERRADO REGRIDE
+.                                        ataque                             esperado=2 novo=2 velho=2 ok
+..                                       ataque                             esperado=2 novo=2 velho=0 ok
+/                                        ataque                             esperado=2 novo=2 velho=2 ok
+/etc/hosts                               ataque                             esperado=2 novo=2 velho=2 ok
+../fora.sh                               sai da raiz                        esperado=2 novo=2 velho=0 ok
+sdd/../../fora.sh                        sai da raiz                        esperado=2 novo=2 velho=0 ok
+sdd                                      pasta                              esperado=2 novo=2 velho=0 ok
+sdd/                                     pasta                              esperado=2 novo=2 velho=0 ok
+linkfora                                 link para fora                     esperado=2 novo=0 velho=0 ERRADO velho tambem
+--- promovido_para de origem de estado=ok, sem check=
+sdd/bin/report-lint.py                   arquivo comum                      esperado=0 novo=0 velho=0 ok
+.github/workflows/publish-gate.yml       pasta com ponto (CI real do pacote) esperado=0 novo=0 velho=0 ok
+.agents/skills/sdd-release/SKILL.md      pasta com ponto (skill real)       esperado=0 novo=0 velho=0 ok
+.gitattributes                           arquivo com ponto                  esperado=0 novo=0 velho=0 ok
+.husky/pre-commit                        hook com ponto                     esperado=0 novo=0 velho=0 ok
+./sdd/bin/report-lint.py                 ./ na frente                       esperado=0 novo=0 velho=0 ok
+com-ponto.sh                             raiz                               esperado=0 novo=0 velho=0 ok
+..estranha/x.sh                          pasta cujo nome comeca por 2 pontos esperado=0 novo=2 velho=0 ERRADO REGRIDE
+.                                        ataque                             esperado=2 novo=2 velho=0 ok
+..                                       ataque                             esperado=2 novo=2 velho=0 ok
+/                                        ataque                             esperado=2 novo=2 velho=0 ok
+/etc/hosts                               ataque                             esperado=2 novo=2 velho=0 ok
+../fora.sh                               sai da raiz                        esperado=2 novo=2 velho=0 ok
+sdd/../../fora.sh                        sai da raiz                        esperado=2 novo=2 velho=0 ok
+sdd                                      pasta                              esperado=2 novo=2 velho=0 ok
+sdd/                                     pasta                              esperado=2 novo=2 velho=0 ok
+linkfora                                 link para fora                     esperado=2 novo=0 velho=0 ERRADO velho tambem
+--- AT-018: aposentar licao promovida para .github/...; o ajuste do --cruzar, aplicado, passa no --validar-inv?
+sdd/bin/report-lint.py cruzar rc=3 ajuste=- [INV-009] estado=ok origem=seed check=sdd/bin/report-lint.py :: Regr
+  validar-inv rc=0 []
+.github/workflows/publish-gate.yml cruzar rc=3 ajuste=- [INV-009] estado=ok origem=seed check=.github/workflows/publish-gate
+  validar-inv rc=2 ['🔴 trava INV: INV-009 tem check=.github/workflows/publish-gate.yml: use o caminho de um arquivo, relativo à raiz do proje']
+--- tarefa e motivo
+- [INV-009] estado=auto origem=seed :: R · por quê: p · tarefa: · motivo: m      esperado=2 novo=2 ok
+- [INV-009] estado=humano origem=seed :: R · por quê: p · motivo: · tarefa: t    esperado=2 novo=2 ok
+- [INV-009] estado=auto origem=seed :: R · por quê: p · tarefa: rodar x          esperado=0 novo=0 ok
+- [INV-009] estado=humano origem=seed :: R · por quê: p · motivo: julgamento     esperado=0 novo=0 ok
+- [INV-009] estado=auto origem=seed :: R · por quê: p · tarefa: `make x` · motivo: m esperado=0 novo=0 ok
+--- arquivo real do pacote: par shipped
+par do pacote novo=0
+errados=8
+[exit=0]

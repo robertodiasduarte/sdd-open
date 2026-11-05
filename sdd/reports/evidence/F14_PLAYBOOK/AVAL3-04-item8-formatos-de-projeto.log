@@ -1,0 +1,40 @@
+$ S=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/s04.sh </dev/null
+=== A. formato do sdd-open: sdd/releases nem versionada nem ignorada
+git ls-files sdd/releases: []
+check-ignore rc=1
+git add rc=0
+git diff --cached --name-only:
+sdd/playbook.md
+sdd/releases/FX/CURATOR-colhidos.txt
+commit rc=0
+regra G3 de scripts/publish-gate.sh (so ela; o gate inteiro chama o verify-gate) sobre a arvore commitada:
+undeclared file: sdd/releases/FX/CURATOR-colhidos.txt
+G3 arquivos nao declarados=1
+
+=== A2. controle: a mesma arvore sem o registro
+G3 arquivos nao declarados=0
+
+=== B. projeto que ignora sdd/releases
+The following paths are ignored by one of your .gitignore files:
+sdd/releases
+hint: Use -f if you really want to add them.
+hint: Disable this message with "git config set advice.addIgnoredFile false"
+git add rc=1
+git diff --cached --name-only:
+sdd/playbook.md
+
+=== C. projeto normal: ledger versionado
+git ls-files sdd/releases: [sdd/releases/FX/s1.yaml]
+git add rc=0
+sdd/playbook.md
+sdd/releases/FX/CURATOR-colhidos.txt
+
+o texto do item 8 da algum comando para saber se o projeto versiona sdd/releases?
+    8. **Commit à parte:** `git add sdd/playbook.md` (e `sdd/invariants.md`, se mudou) e
+       `sdd/releases/{F}/CURATOR-colhidos.txt` (sem o registro, a próxima publicação desta feature conta tudo
+       de novo); os 2 logs `CURATOR-*.log` entram só se o projeto versiona evidência (`git check-ignore -q`
+       neles sai 1 e `git ls-files sdd/reports/evidence` não vem vazio). Se o projeto não versiona nem
+       `sdd/releases/`, diga que o registro fica só nesta pasta e que uma frente nova da mesma feature pode
+       contar de novo. `git diff --cached --name-only` só pode listar esses arquivos; commit
+       `chore(playbook): curadoria {F} — <n> delta(s)`. Nunca `--no-verify`: o pre-commit vigia o playbook.
+[exit=0]

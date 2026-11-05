@@ -1,0 +1,17 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/desp && bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/sdd/bin/sdd-fluxo.sh despachar curador F14_PLAYBOOK brief.md
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: curador).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/desp.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_curador_F14_PLAYBOOK.md → o agente começa a ler o DEFINE.
+3. Quando ele terminar, copie o bloco final da resposta (o que começa com <<<) e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** nada foi publicado e o relatório não foi gravado.
+**Brief:** sdd/reports/briefs/BRIEF_curador_F14_PLAYBOOK.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+[exit=40]

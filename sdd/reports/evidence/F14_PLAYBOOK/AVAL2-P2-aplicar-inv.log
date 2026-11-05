@@ -1,0 +1,91 @@
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda2.py </dev/null
+AT-012 | PASS | delta que aposenta e altera o mesmo bullet | exit 2 e stdout vazio | 2
+AT-011 | PASS | delta composto | contadores, conf, promo, ADD no fim da seção criada com IDs 31 e 32, tombstone, refine; stdout só o playbook; RESULTADO e → no stderr | RESULTADO: DELTA APLICADO (6 linha(s)) ⏎ → o stdout é o playbook novo: rode o playbook-lint.sh nele antes de copiar por ci
+AT-011 | PASS | a saída passa no lint | exit 0 | 🟢 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/ap/novo.md: formato OK — 4 ativos, 2 tombstones, Sempre=2 bullets/45 palavras, 0 a
+AT-011 | PASS | delta só de comentário | byte a byte | 0
+AT-011/L2 | PASS | delta só de comentário sobre CRLF | bytes iguais | 0
+AT-011/L2 | PASS | delta só de comentário com byte inválido | bytes iguais | 0
+AT-011/L2 | PASS | conf impossível | exit 64 | 64
+AT-011/M1 | PASS | promovido_para na continuação | troca lá; 1 campo só | [LM-020] ajudou=1 mordeu=0 · conf=2026-11-05 · sup: `fila_de_envio` `abc` `123456` :: Regra vinte. **Do instead:** faça. → ficha: — ⏎   continuação do vinte · promovido_para: sdd/y ⏎ - [LM-016] ajudou=0 mordeu=0 · conf=2026-01-01 · su
+AT-011/M1 | PASS | saída passa no lint | exit 0 | 🟢 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/ap4/n.md: formato OK — 3 ativos, 1 tombstones, Sempr
+AT-011/M1 | PASS | REFINE com promovido_para na continuação | 1 campo só e continuação mantida | [LM-020] ajudou=0 mordeu=0 · conf=2026-11-05 · sup: `fila_de_envio` `abc` `123456` :: novo. **Do instead:** z. → ficha: — ⏎   continuação do vinte · promovido_para: — ⏎ - [LM-016] ajud
+AT-011 | PASS | TOMBSTONE leva a continuação junto | sem continuação | 0
+AT-012 | PASS | ID inexistente | exit 2, stdout vazio, erro com linha | ❌ delta linha 1: LM-999 não existe como bullet ativo em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/
+AT-012 | PASS | tombstone | exit 2, stdout vazio, erro com linha | ❌ delta linha 1: LM-030 não existe como bullet ativo em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/
+AT-012 | PASS | fora da gramática | exit 2, stdout vazio, erro com linha | ❌ delta linha 1: linha fora da gramática: 'LM-020 ajudou++' ⏎ 🔴 delta inválido: 1 erro(s) — nada aplicado ⏎ RESULTADO: DELTA
+AT-012 | PASS | seção fora da lista | exit 2, stdout vazio, erro com linha | ❌ delta linha 1: ADD em seção fora da lista: 'Nada' (lista: Sempre · Dados · Backend · Frontend · Infra / deploy · Revie
+AT-012 | PASS | ADD em Tombstones | exit 2, stdout vazio, erro com linha | ❌ delta linha 1: ADD em Tombstones não existe (aposentar = TOMBSTONE LM-nnn :: motivo) ⏎ 🔴 delta inválido: 1 erro(s) — nad
+AT-012 | PASS | ADD sem Do instead | exit 2, stdout vazio, erro com linha | ❌ delta linha 1: ADD sem 'Do instead:' ⏎ 🔴 delta inválido: 1 erro(s) — nada aplicado ⏎ RESULTADO: DELTA INVÁLIDO ⏎ → corrija a
+AT-012 | PASS | REFINE sem Do instead | exit 2, stdout vazio, erro com linha | ❌ delta linha 1: REFINE sem 'Do instead:' no novo texto ⏎ 🔴 delta inválido: 1 erro(s) — nada aplicado ⏎ RESULTADO: DELTA INV
+AT-012 | PASS | 2ª linha inválida | exit 2, stdout vazio, erro com linha | ❌ delta linha 2: LM-999 não existe como bullet ativo em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/
+AT-012 | PASS | promovido_para vazio | exit 2, stdout vazio, erro com linha | ❌ delta linha 1: linha fora da gramática: 'LM-020 promovido_para=' ⏎ 🔴 delta inválido: 1 erro(s) — nada aplicado ⏎ RESULTADO
+AT-013 | PASS | só contadores | 0 alterados | anti-collapse OK: 4 IDs em HEAD, 0 sumiram, 0 (0%) alterados (limite 20%) ⏎ 
+AT-042 | PASS | 1 alterado de 3 (33%) | passa | rc=0 anti-collapse OK: 3 IDs em HEAD, 0 sumiram, 1 (33%) alterados (limite 20%) ⏎ 
+AT-042 | PASS | 1 tombstone de 3 | passa | rc=0 anti-collapse OK: 3 IDs em HEAD, 0 sumiram, 1 (33%) alterados (limite 20%) ⏎ 
+AT-042 | PASS | 2 alterados de 3 (66%) | bloqueia | rc=1 ⛔ anti-collapse: 2/3 bullets (66%) com conteúdo/seção reescritos num só commit (limite 20%). ⏎    Delta only: re
+AT-042 | PASS | 3 alterados de 10 (30%) | bloqueia | rc=1 ⛔ anti-collapse: 3/10 bullets (30%) com conteúdo/seção reescritos num só commit (limite 20%). ⏎    Delta only: r
+AT-042 | PASS | 2 de 10 (20%) | passa | rc=0 anti-collapse OK: 10 IDs em HEAD, 0 sumiram, 2 (20%) alterados (limite 20%) ⏎ 
+AT-042 | PASS | bullet sumiu | bloqueia | rc=1 ⛔ anti-collapse: 1 ID(s) de HEAD DESAPARECERAM do staged: LM-001 ⏎    IDs nunca somem: aposentar = mover para "#
+AT-014 | PASS | par do pacote | exit 0 | 🟢 trava INV: par válido (1 invariante(s), 0 descartado(s), pendentes=0) ⏎ RESULTADO: PAR VÁL
+AT-015 | PASS | origem tombstone | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 tem origem=LM-030, que está aposentada — aprove o ajuste proposto pelo --cruzar (origem=seed ou a lista sem LM-030) ou retire o T
+AT-015 | PASS | origem inexistente | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 tem origem=LM-099, que não existe no playbook — corrija a origem ⏎ 
+AT-015 | PASS | universo sem classificação | exit 2 + 🔴 trava INV | rc=2 o registro de invariantes é novo na v2.6.0: 1 lição(ões) do playbook ainda não foram classificadas. ⏎ 🔴 trava INV: LM-021 entra no universo sem classifi
+AT-015 | PASS | INV repetido | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-001 aparece 2 vezes — renumere a mais nova (ID nunca se reusa) ⏎ 
+AT-015 | PASS | descarte repetido | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: LM-020 aparece 2 vezes em ## Descartados — deixe uma linha só ⏎ 
+AT-015 | PASS | linha fora da gramática | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: linha 6 fora da gramática: - [INV-002] estado=talvez origem=seed :: r · por quê: p — veja a gramática no cabeçalho de sdd/bin/playbook-cu
+AT-015 | PASS | texto solto abaixo | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: linha 6 fora da gramática: texto solto — veja a gramática no cabeçalho de sdd/bin/playbook-curator.sh ⏎ 
+AT-015 | PASS | auto sem tarefa | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 é estado=auto sem '· tarefa:' — diga o comando ou o alvo que a automatiza ⏎ 
+AT-015 | PASS | humano sem motivo | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 é estado=humano sem '· motivo:' — diga por que máquina não pega ⏎ 
+AT-015 | PASS | ok sem check nem promovido | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 é estado=ok sem check= e sem origem promovida para um arquivo que existe — aponte o check ou mude o estado ⏎ 
+AT-015 | PASS | check inexistente | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 tem check=sdd/nao, que não existe a partir desta pasta — corrija o caminho ou mude o estado ⏎ 
+AT-015 | PASS | check absoluto | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 tem check=/etc/passwd: use o caminho de um arquivo, relativo à raiz do projeto ⏎ 
+AT-015 | PASS | check . | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 tem check=.: use o caminho de um arquivo, relativo à raiz do projeto ⏎ 
+AT-015 | PASS | check ./ | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 tem check=./: use o caminho de um arquivo, relativo à raiz do projeto ⏎ 
+AT-015 | PASS | tarefa vazia | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 é estado=auto sem '· tarefa:' — diga o comando ou o alvo que a automatiza ⏎ 
+AT-015 | PASS | motivo vazio | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: INV-002 é estado=humano sem '· motivo:' — diga por que máquina não pega ⏎ 
+AT-015 | PASS | descarte de tombstone | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: LM-030 está em ## Descartados e foi aposentada — remova a linha do descarte ou retire o TOMBSTONE LM-030 ⏎ 
+AT-015 | PASS | descarte inexistente | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: LM-099 está em ## Descartados e não existe no playbook — remova a linha ⏎ 
+AT-015 | PASS | origem e descarte | exit 2 + 🔴 trava INV | rc=2 🔴 trava INV: LM-021 é origem de uma invariante e também está em ## Descartados — escolha um dos dois ⏎ 
+AT-015 | REPROVA | check= que é uma pasta (legítimo? msg diz 'arquivo') | exit 2 (a mensagem pede 'um arquivo') | rc=0
+AT-015/L3 | REPROVA | check=.. (fora do projeto) | exit 2 | rc=0
+AT-015/L3 | REPROVA | tarefa vazia seguida de motivo | exit 2 | rc=0
+AT-015 | PASS | só pendência | 1ª linha diz v2.6.0 e quantas | o registro de invariantes é novo na v2.6.0: 1 lição(ões) do playbook ainda não foram class
+AT-015 | PASS | par mínimo válido | exit 0 | 
+AT-015 | PASS | ok com check que existe | exit 0 | 
+AT-015 | PASS | descarte de bullet fora do universo | exit 0 | 
+AT-015/M3 | PASS | ok com origem promovida a arquivo vivo | exit 0 | 
+AT-015/M3 | PASS | ok com origem promovida a arquivo que saiu | exit 2 | rc=2
+AT-015/M3 | PASS | ok com promovido_para em texto livre | exit 2 | rc=2
+AT-015/M3 | REPROVA | ok com origem promovida a '.' (não é arquivo do projeto) | exit 2 (mesma regra do check=) | rc=0
+AT-015/M3 | REPROVA | ok com origem promovida a '/' (não é arquivo do projeto) | exit 2 (mesma regra do check=) | rc=0
+AT-015/M3 | REPROVA | ok com origem promovida a '/etc/passwd' (não é arquivo do projeto) | exit 2 (mesma regra do check=) | rc=0
+AT-015/M3 | REPROVA | ok com origem promovida a 'sdd' (não é arquivo do projeto) | exit 2 (mesma regra do check=) | rc=0
+AT-015/M3 | REPROVA | ok com origem promovida a '..' (não é arquivo do projeto) | exit 2 (mesma regra do check=) | rc=0
+AT-015 | PASS | promovido relativo, rodado de subpasta | exit 2 (declarado: a partir desta pasta) | rc=2
+AT-015 | PASS | arquivo ausente | exit 2 | 
+AT-016 | PASS | origem única promovida | ajuste origem=seed check=<promovido>, ou:, exit 3 | INV_AFETADA INV-001 origem=LM-030 · delta: TOMBSTONE LM-030 ⏎    ajuste: - [INV-001] estado=ok origem=seed check=sdd/bin/playbook-curator.sh :: Um · por quê: p ⏎    ou: retirar o TOMBSTONE LM-030 ⏎ resumo-i
+AT-016 | REPROVA | 2 origens da mesma invariante (stdin) | 1 ajuste | INV_AFETADA INV-002 origem=LM-031,LM-032 · delta: TOMBSTONE LM-031,LM-032 ⏎    ajuste: - [INV-002] estado=humano origem=seed :: Dois · por quê: p · motivo: m ⏎    o
+AT-016 | PASS | 1 de 2 origens | origem restante | INV_AFETADA INV-002 origem=LM-031,LM-032 · delta: TOMBSTONE LM-031 ⏎    ajuste: - [INV-002] estado=humano origem=LM-032 :: Dois · por quê: p · motivo: m ⏎    ou: re
+AT-016 | PASS | descarte aposentado | INV_AFETADA descarte + REMOVER | INV_AFETADA descarte LM-035 · delta: TOMBSTONE LM-035 ⏎    ajuste: REMOVER LM-035 ⏎    ou: retirar o TOMBSTONE LM-035 ⏎ resumo-inv: afetadas=1 pendentes=0 ⏎ RESULTADO: 
+AT-016 | PASS | 2 pendentes | INV-005 e INV-006 | INV_PENDENTE LM-036 (mordeu 0→1) · delta: LM-036 mordeu+1 ⏎    proposta A: - [INV-005] estado=<ok|auto|humano> origem=LM-036 :: <regra> · por quê: <…> · tarefa|motivo: <…> ⏎    proposta B: - [LM-036] desc
+AT-016 | PASS | sem aviso | exit 0 | resumo-inv: afetadas=0 pendentes=0 ⏎ RESULTADO: SEM AVISO ⏎ → o delta não mexe em nenhuma inva
+AT-017 | PASS | delta inválido | exit 2 stdout vazio | 2
+AT-017 | PASS | sem seção | exit 2 stdout vazio | 2
+AT-017 | PASS | origem única sem promovido, ok sem check | diz que seed não é saída, sem ajuste | INV_AFETADA INV-001 origem=LM-030 · delta: TOMBSTONE LM-030 ⏎    (origem=seed deixaria INV-001 estado=ok sem check: não é saída válida) ⏎    ou: retirar o TOMBSTONE
+AT-016/M3 | PASS | promovido em texto livre | sem check= morto; sem ajuste | INV_AFETADA INV-001 origem=LM-030 · delta: TOMBSTONE LM-030 ⏎    (origem=seed deixaria INV-001 estado=ok sem check: não é saída válida) ⏎    ou: retirar o TOMBSTONE
+AT-016/M3 | PASS | check= curado + promovido em texto livre | mantém o check curado | INV_AFETADA INV-004 origem=LM-034 · delta: TOMBSTONE LM-034 ⏎    ajuste: - [INV-004] estado=ok origem=seed check=sdd/bin/playbook-lint.sh :: Quatro · por quê: p ⏎    ou: reti
+AT-016 | PASS | check curado mantido | mantém | INV_AFETADA INV-003 origem=LM-033 · delta: TOMBSTONE LM-033 ⏎    ajuste: - [INV-003] estado=ok origem=seed check=sdd/bin/playbook-lint.sh :: Tres · por quê: p ⏎    ou: retira
+AT-016 | PASS | sai a origem promovida, resta origem não promovida com estado=ok | ajuste leva o check | INV_AFETADA INV-001 origem=LM-030,LM-031 · delta: TOMBSTONE LM-030 ⏎    ajuste: - [INV-001] estado=ok origem=LM-031 check=sdd/bin/playbook-curator.sh :: Um · por quê: p ⏎    
+AT-018 | PASS | TOMBSTONE sem ajuste | exit 2 nomeando INV-001 e LM-030 | 🔴 trava INV: INV-001 tem origem=LM-030, que está aposentada — aprove o ajuste proposto pelo --cruzar (origem=seed ou a l
+AT-018 | PASS | TOMBSTONE com o ajuste | exit 0 | 🟢 trava INV: par válido (4 invariante(s), 1 descartado(s), pendentes=0) ⏎ RESULTADO: PAR VÁLIDO ⏎ → copie os 2 arquivos por 
+AT-018/M7 | PASS | aposentar descartada + REMOVER | exit 0 | 🟢 trava INV: par válido (4 invariante(s), 0 descartado(s), pendentes=0) ⏎ RESULTADO: PAR VÁLIDO ⏎ → copie os 2 arquivos por 
+AT-019 | PASS | harvest mordeu 0→1 + antigos sem classificação | LM-036 (0→1), LM-031, LM-032 (já no universo), LM-037 nunca, IDs seguidos | DELTA LM-036 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1-x.log:1 · fp=9ec199d0eb ⏎ INV_PENDENTE LM-036 (mordeu 0→1) · delta: LM-036 mordeu+1 ⏎    proposta A: - [INV-005] estado=<ok|auto|humano> origem=LM-036 :: <regra> · por quê: <…> · tarefa|motivo: <…> ⏎    proposta B: - [LM-036] descartado :: <
+AT-019 | PASS | mordeu de bullet já classificado | sem INV_PENDENTE | DELTA LM-030 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1-x.log:1 · fp=0d80f83bca ⏎ resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 su
+AT-043 | PASS | troca, novo, descarte novo, remove 2 | stdout é o arquivo, RESULTADO no stderr | RESULTADO: INVARIANTES APLICADAS ⏎ → o stdout é o arquivo novo: rode --validar-inv com o pla
+AT-043 | PASS | fora da gramática | exit 2 stdout vazio | rc=2 ❌ invariantes linha 1: linha fora da gramática das invariantes: '- [INV-1] x' ⏎ RESULTADO: LINHAS INVÁ
+AT-043 | PASS | REMOVER ausente | exit 2 stdout vazio | rc=2 ❌ invariantes linha 1: INV-099 não está em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZ
+AT-043 | PASS | ID existente com outra regra | exit 2 stdout vazio | rc=2 ❌ invariantes linha 1: INV-001 já existe em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyA
+AT-043 | REPROVA | 2 invariantes NOVAS com o mesmo ID nas linhas (a 2ª some?) | exit 2 stdout vazio (ID repetido com outra regra) | rc=0 conta=1
+AT-043 | PASS | descarte com ID igual e motivo novo | troca (legítimo) | 0
+TOTAL 88 casos, 10 reprovados: AT-015, AT-015/L3, AT-015/L3, AT-015/M3, AT-015/M3, AT-015/M3, AT-015/M3, AT-015/M3, AT-016, AT-043
+[exit=0]

@@ -1,0 +1,29 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/p02.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu </dev/null
+A 4col legitima                               esperado=['LM-901 ajudou'] novo=['LM-901 ajudou'] velho=['LM-901 ajudou'] ok 
+B 4col N.A.                                   esperado=[] novo=[] velho=[] ok 
+C 3col legitima                               esperado=['LM-901 ajudou'] novo=['LM-901 ajudou'] velho=['LM-901 ajudou'] ok 
+D 3col N.A.                                   esperado=[] novo=[] velho=[] ok 
+E 3col sem veredito (formato F7)              esperado=[] novo=[] velho=[] ok 
+F 4col mordeu longo                           esperado=['LM-901 mordeu'] novo=['LM-901 mordeu'] velho=[] ok 
+G 3col mordeu negrito                         esperado=['LM-901 mordeu'] novo=['LM-901 mordeu'] velho=['LM-901 mordeu'] ok 
+H 4col frase mordeu antes                     esperado=['LM-901 ajudou'] novo=['LM-901 ajudou'] velho=['LM-901 ajudou'] ok 
+I 4col 2 IDs na fonte                         esperado=['LM-901 ajudou', 'LM-902 ajudou'] novo=['LM-901 ajudou', 'LM-902 ajudou'] velho=['LM-901 ajudou', 'LM-902 ajudou'] ok 
+J 4col nota cita outra                        esperado=['LM-901 ajudou'] novo=['LM-901 ajudou'] velho=['LM-901 ajudou'] ok 
+K 4col fonte=ficha, nota cita lição, ✔        esperado=[] novo=['LM-901 ajudou'] velho=[] ERRADO REGRIDE
+L 4col fonte=ficha, nota cita lição, mordeu   esperado=[] novo=['LM-901 mordeu'] velho=[] ERRADO REGRIDE
+M 4col fonte=ficha, nota cita lição, N.A.     esperado=[] novo=[] velho=[] ok 
+N 4col resumo cita outra lição                esperado=['LM-901 ajudou'] novo=['LM-902 ajudou'] velho=['LM-901 ajudou', 'LM-902 ajudou'] ERRADO outro erro no velho
+O 4col frase mordeu antes, sem veredito       esperado=[] novo=['LM-901 mordeu'] velho=[] ERRADO REGRIDE
+P 4col frase ✔ antes, sem veredito            esperado=[] novo=['LM-901 ajudou'] velho=[] ERRADO REGRIDE
+Q 3col superficie frase mordeu                esperado=['LM-901 ajudou'] novo=['LM-901 mordeu'] velho=['LM-901 ajudou'] ERRADO REGRIDE
+R 3col superficie N/A                         esperado=['LM-901 ajudou'] novo=[] velho=[] ERRADO velho tambem
+S veredito na propria celula do ID            esperado=['LM-901 ajudou'] novo=['LM-901 ajudou'] velho=['LM-901 ajudou'] ok 
+T veredito antes do ID                        esperado=['LM-901 ajudou'] novo=['LM-901 ajudou'] velho=[] ok 
+U veredito antes do ID, nota mordeu           esperado=['LM-901 ajudou'] novo=['LM-901 mordeu'] velho=[] ERRADO outro erro no velho
+V barra escapada na superficie                esperado=['LM-901 mordeu'] novo=['LM-901 ajudou'] velho=['LM-901 ajudou'] ERRADO velho tambem
+W sem pipe final                              esperado=['LM-901 ajudou'] novo=[] velho=[] ERRADO velho tambem
+X crase no veredito                           esperado=['LM-901 ajudou'] novo=['LM-901 ajudou'] velho=[] ok 
+Y N. A. com espaco                            esperado=[] novo=['LM-901 ajudou'] velho=[] ERRADO REGRIDE
+Z mordeuzinho e ✔                             esperado=['LM-901 ajudou'] novo=['LM-901 ajudou'] velho=['LM-901 ajudou'] ok 
+casos=26 errados=11
+[exit=0]

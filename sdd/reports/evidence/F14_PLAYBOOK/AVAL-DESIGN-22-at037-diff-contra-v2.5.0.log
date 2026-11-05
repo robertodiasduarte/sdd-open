@@ -1,0 +1,3 @@
+$ git diff --name-only v2.5.0 HEAD -- sdd/bin/verify-gate.sh sdd/bin/report-lint.py sdd/bin/adversarial-review.sh sdd/hooks
+
+[exit=0]

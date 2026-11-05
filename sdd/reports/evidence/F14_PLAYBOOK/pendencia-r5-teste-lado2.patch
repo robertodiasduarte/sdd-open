@@ -1,0 +1,21 @@
+diff --git a/tests/test_copiar_docs.py b/tests/test_copiar_docs.py
+index f591439..2dd93b1 100644
+--- a/tests/test_copiar_docs.py
++++ b/tests/test_copiar_docs.py
+@@ -188,6 +188,16 @@ class NaoCopia(Base_):
+         self.assertIn("COPIADO sdd/features/DEFINE_RELATORIO_MENSAL.md", out)
+         self.assertNotIn("NAO_COPIADO", out)
+ 
++    def test_link_so_no_indice_nao_e_dito_como_salvo(self):
++        # o outro lado do R5: a lista de salvos vem do commit; o índice não é "salvo no git" para a frente
++        fora = self.escreve(self.tmp, "fora.md", "x\n")
++        (self.p / "sdd/features").mkdir(parents=True, exist_ok=True)
++        os.symlink(str(fora), str(self.p / "sdd/features/DEFINE_RELATORIO_MENSAL.md"))
++        self.git(self.p, "add", "sdd/features/DEFINE_RELATORIO_MENSAL.md")
++        _, out, _ = self.copia()
++        self.assertIn("IGNORADO sdd/features/DEFINE_RELATORIO_MENSAL.md", out)
++        self.assertNotIn("NAO_COPIADO", out)
++
+     def test_link_ignorado_aparece_na_seta_mesmo_com_copia(self):
+         # R6@claude da rodada 3
+         self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md")

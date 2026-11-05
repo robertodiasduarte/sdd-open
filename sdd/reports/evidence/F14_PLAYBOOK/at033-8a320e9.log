@@ -1,0 +1,19 @@
+$ test -s sdd/reviews/REVISAO_FRONTEIRA_F14_PLAYBOOK_20261105.md && sed -n 1,8p sdd/reviews/REVISAO_FRONTEIRA_F14_PLAYBOOK_20261105.md && grep -nE '^\| *F[0-9]+ ' sdd/features/DESIGN_F14_PLAYBOOK.md
+# REVISAO FRONTEIRA: F14_PLAYBOOK
+
+- **Data:** 2026-11-05
+- **Commit lido:** `b1348bd` (branch `feat/f14-playbook`; os 4 arquivos lidos estavam sem diff contra o HEAD)
+- **Quem revisou:** agente de contexto fresco, despachado pela Decision 12 do DESIGN; não viu a conversa do build
+- **Ambiente:** macOS, `/bin/bash` 3.2, git 2.54.0. O 1º lote de sondas (controles, F3, F4, F5, F6) foi repetido com `/usr/bin/python3` 3.9.6, com o mesmo resultado.
+- **Logs:** `sdd/reports/evidence/F14_PLAYBOOK/AVAL-FRONTEIRA-01` a `-12-*.log`, gravados com `ev.sh`. Cada log traz o roteiro inteiro, a saída e os exits.
+- **Projeto:** nada editado, nenhum commit, add, checkout ou stash; só os 12 logs foram gravados.
+727:| F1 | Bloco dá ✅ com `FORA:` | MEDIUM | APLICADA | Decision 12; AT-045 |
+728:| F2 | Restauração apaga o DEFINE | MEDIUM | APLICADA | Decision 12; AT-045 |
+729:| F3 | Índice, branch e `.git` fora do snapshot | MEDIUM | APLICADA | Decision 12; AT-045 |
+730:| F4 | Pasta ilegível vira verde | LOW | APLICADA | Decision 12; AT-045 |
+731:| F5 | Repositório aninhado que já existia | LOW | REBATIDA_ESCOPO: pendência no handoff; pede percorrer pasta, com custo de tempo em repositório grande | Decision 12 |
+732:| F6 | Só permissão em arquivo já sujo | LOW | REBATIDA_ESCOPO: pendência no handoff | Decision 12 |
+733:| F7 | Grafia do permitido | LOW | REBATIDA_ESCOPO: as 3 skills passam a mesma string nos 2 snapshots; pendência no handoff | Decision 12 |
+734:| F8 | Raiz com `&` | LOW | APLICADA | Decision 12; AT-045 |
+735:| F9 | Retomada lava a escrita | LOW | APLICADA no texto; a guarda por arquivo fica como pendência | Decision 12; AT-045 |
+[exit=0]

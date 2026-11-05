@@ -1,0 +1,19 @@
+$ bash sdd/bin/adversarial-review.sh --conferir && bash sdd/bin/adversarial-review.sh --ledger sdd/reports/evidence/F14_PLAYBOOK/release-ledger-v2.6.0.yaml && python3 -B sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F14_PLAYBOOK.md && python3 -B sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_F14_PLAYBOOK.md && bash sdd/bin/playbook-lint.sh sdd/playbook.md && bash sdd/bin/gate-shell-evidencia.sh sdd/reports/evidence/F14_PLAYBOOK
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 sha256=5a73f1893155458b8b3cb880086ad3335fbcd61ac9cc4543682749348d617a84 diversidade=vendor
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+✅ review_externo: a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 está registrada com o sha256 do META.
+RESULTADO: LEDGER OK
+→ siga para o passo seguinte da release.
+✅ sdd/reports/BUILD_REPORT_F14_PLAYBOOK.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+✅ nenhuma avaliação PENDENTE em 1 relatório(s)
+RESULTADO: VERDE
+→ siga para o próximo passo.
+🟢 sdd/playbook.md: formato OK — 4 ativos, 0 tombstones, Sempre=4 bullets/322 palavras, 0 aviso(s)
+✅ 181 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]

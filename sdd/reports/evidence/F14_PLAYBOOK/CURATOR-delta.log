@@ -1,0 +1,7 @@
+$ bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" sdd/playbook.md > "$STG/novo.md"
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+ADD Reviews / harness :: sup: `heurística` `regressão` `conserto` :: Conserto que estreita uma heurística sobre texto livre abre o caso vizinho: na F14, cada ajuste da regra que adivinhava a célula de veredito criou o defeito seguinte, em 3 ciclos seguidos do avaliador. **Do instead:** na 2ª regressão da mesma regra, pare de ajustar: troque a heurística por uma fonte estruturada (o cabeçalho da tabela, por exemplo) e recuse o que não tiver essa fonte. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `verify-gate` `git archive` `self-test` :: Script que só roda dentro de um repositório git passa no teste local e falha no gate, que roda numa cópia sem `.git`; e uma asserção de "bloqueou" que aceita qualquer exit diferente de 0 fica verde quando a ferramenta nem rodou. **Do instead:** rode o self-test novo numa cópia sem `.git` (extraída com `git archive`) antes do gate, e confira o exit exato do que deve reprovar. → ficha: — · promovido_para: —
+[exit=0]

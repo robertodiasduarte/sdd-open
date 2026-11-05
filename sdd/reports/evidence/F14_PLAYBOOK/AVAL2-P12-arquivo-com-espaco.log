@@ -1,0 +1,9 @@
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda11.py </dev/null
+DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-a b.log:1 · fp=e25713ffa2
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+
+AT-021/L4 | REPROVA | DELTA de arquivo com espaço, bloco igual à colheita | AUTO aceito (a evidência é exatamente a da colheita) | rc=2 🔴 bloco: linha 1: AUTO exige a Evidência começando por arquivo:linha ⏎ 
+TOTAL 1 casos, 1 reprovados: AT-021/L4
+[exit=0]

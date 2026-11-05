@@ -1,0 +1,7 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/nogit/tests && TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp SDD_TRACE=off SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_copiar_docs </dev/null
+..................
+----------------------------------------------------------------------
+Ran 18 tests in 2.108s
+
+OK
+[exit=0]

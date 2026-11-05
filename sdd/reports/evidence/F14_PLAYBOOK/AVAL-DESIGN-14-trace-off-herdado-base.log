@@ -1,0 +1,92 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests && SDD_TRACE=off SDD_TEST_BASH=/bin/bash TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/tmp /usr/bin/python3 -B -m unittest test_verify_gate_trace test_governanca_gate
+EE..FE.E...F.F.FF............
+======================================================================
+ERROR: test_grava_release_no_define_e_sai_0 (test_verify_gate_trace.SemDefine)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_verify_gate_trace.py", line 136, in test_grava_release_no_define_e_sai_0
+    linha = json.loads((self.r / "sdd/traces/HOTFIX_X.jsonl").read_text(encoding="utf-8"))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1256, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/tmp/sdd-open-juomjc3c/repo/sdd/traces/HOTFIX_X.jsonl'
+
+======================================================================
+ERROR: test_nome_vira_nome_de_arquivo_seguro (test_verify_gate_trace.SemDefine)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_verify_gate_trace.py", line 147, in test_nome_vira_nome_de_arquivo_seguro
+    self.assertEqual(os.listdir(str(self.r / "sdd/traces")), ["a_b__c_.jsonl"])
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/tmp/sdd-open-5njdrk8p/repo/sdd/traces'
+
+======================================================================
+ERROR: test_de_subpasta_com_caminho_relativo (test_verify_gate_trace.Trace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_verify_gate_trace.py", line 117, in test_de_subpasta_com_caminho_relativo
+    self.assertEqual(self.linhas("FIXTURE_CONTROLE")[-1]["define"], "sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md")
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_grava_o_exit_original_mesmo_com_strict (test_verify_gate_trace.Trace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_verify_gate_trace.py", line 47, in test_grava_o_exit_original_mesmo_com_strict
+    self.assertEqual(self.linhas("FIXTURE_NEEDS_CLARIFICATION")[-1]["exit"], 5)
+IndexError: list index out of range
+
+======================================================================
+FAIL: test_sem_permissao_diz_que_nao_gravou (test_verify_gate_trace.SemDefine)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_verify_gate_trace.py", line 158, in test_sem_permissao_diz_que_nao_gravou
+    self.assertIn("NÃO gravado (sem permissão", out)
+AssertionError: 'NÃO gravado (sem permissão' not found in 'ℹ️  X: release sem DEFINE — trace NÃO gravado (SDD_TRACE=off)\nRESULTADO: VERDE\n→ siga para o próximo passo.\n'
+
+======================================================================
+FAIL: test_sdd_trace_dir_troca_a_pasta (test_verify_gate_trace.Trace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_verify_gate_trace.py", line 73, in test_sdd_trace_dir_troca_a_pasta
+    self.assertEqual(len(self.linhas("FIXTURE_CONTROLE", "outra/pasta")), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_trace_flag_e_aceita (test_verify_gate_trace.Trace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_verify_gate_trace.py", line 112, in test_trace_flag_e_aceita
+    self.assertEqual(len(self.linhas("FIXTURE_CONTROLE")), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_uma_linha_por_execucao_com_os_campos (test_verify_gate_trace.Trace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_verify_gate_trace.py", line 38, in test_uma_linha_por_execucao_com_os_campos
+    self.assertEqual(len(ls), 2)
+AssertionError: 0 != 2
+
+======================================================================
+FAIL: test_vermelho_conta_no_trace (test_verify_gate_trace.Trace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_verify_gate_trace.py", line 59, in test_vermelho_conta_no_trace
+    self.assertEqual([l["exit"] for l in self.linhas("X")], [2, 2, 2])
+AssertionError: Lists differ: [] != [2, 2, 2]
+
+Second list contains 3 additional elements.
+First extra element 0:
+2
+
+- []
++ [2, 2, 2]
+
+----------------------------------------------------------------------
+Ran 29 tests in 7.022s
+
+FAILED (failures=5, errors=4)
+[exit=1]

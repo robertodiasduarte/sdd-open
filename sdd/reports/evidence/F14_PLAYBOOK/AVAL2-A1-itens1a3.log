@@ -1,0 +1,34 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/passo-1a3.sh a
+--- item 1
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO
+copiado: sdd/features/DESIGN_DEMO.md
+copiado: sdd/reports/BUILD_REPORT_DEMO.md
+copiado: sdd/reports/evidence/DEMO/AVAL-01-teste.log
+RESULTADO: STAGING PRONTO (3 arquivo(s))
+→ os originais não foram tocados; rode --colher "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO" sdd/playbook.md e guarde a saída em colheita.txt nessa pasta.
+[exit=0]
+STG=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO
+--- item 2
+[rc=0]
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_DEMO.md:11 · fp=d4dfefbc70
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_DEMO.md:9 · fp=b77850323a
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_DEMO.md:10 · fp=40784e3285
+CANDIDATO #1 → LM-005 · secao=Backend · sup=`fila_de_envio` `idempotencia` · evidencia=BUILD_REPORT_DEMO.md:9 · fp=321cf1cc56
+   delta: ADD Backend :: sup: `fila_de_envio` `idempotencia` :: Fila sem chave de idempotência duplica o envio no reprocessamento. **Do instead:** grave a chave antes de enviar e confira antes de reenviar. → ficha: — · promovido_para: —
+INV_PENDENTE LM-002 (mordeu 0→1) · delta: LM-002 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-002 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-002] descartado :: <motivo>
+resumo: deltas=3 (ajudou=2 mordeu=1) candidatos=1 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+--- item 3 (antes do despacho)
+T=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-fronteira-98c8f680bb12/DEMO/curador
+RESULTADO: SELO IMPRESSO (5 arquivo(s))
+→ guarde o stdout FORA da pasta de staging (na pasta do snapshot) e passe ao --conferir-bloco.
+[selar exit=0]
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+[snapshot exit=0]
+?? sdd/reports/briefs/
+?? sdd/traces/
+[exit=0]

@@ -1,0 +1,25 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/item9.sh a
+[fetch exit=0]
+[worktree exit=0]
+[detached HEAD fc99944] chore(playbook): curadoria DEMO — 3 delta(s)
+ Date: Thu Nov 5 11:05:30 2026 -0300
+ 5 files changed, 31 insertions(+), 3 deletions(-)
+ create mode 100644 sdd/reports/evidence/DEMO/CURATOR-colheita.log
+ create mode 100644 sdd/reports/evidence/DEMO/CURATOR-colhidos.txt
+ create mode 100644 sdd/reports/evidence/DEMO/CURATOR-delta.log
+[cherry-pick exit=0]
+🟢 sdd/playbook.md: formato OK — 5 ativos, 0 tombstones, Sempre=4 bullets/322 palavras, 0 aviso(s)
+[lint exit=0]
+🟢 trava INV: par válido (2 invariante(s), 0 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+[validar-inv exit=0]
+[base exit=0]
+To /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/toy/a/bare.git
+   ac64d07..fc99944  HEAD -> main
+[push exit=0]
+[remove exit=0]
+fc99944 chore(playbook): curadoria DEMO — 3 delta(s)
+ac64d07 feat: demo
+8bef54e chore: sdd-open
+[exit=0]

@@ -1,0 +1,60 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/v7.sh
+[rc=0]
+[conferir rc=0]
+resumo-bloco: auto=2 pergunta=4 descartar=0 nao_julgado=0 contaminacao=nao
+--- item 5: --cruzar pede o ajuste na mesma opção
+INV_PENDENTE LM-002 (mordeu 0→1) · delta: LM-002 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-002 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-002] descartado :: <motivo>
+INV_AFETADA INV-001 origem=LM-004 · delta: TOMBSTONE LM-004
+   ajuste: - [INV-001] estado=ok origem=seed check=sdd/bin/report-lint.py :: Migration só conta como aplicada com prova por leitura registrada em `## Migrations aplicadas` do BUILD_REPORT · por quê: o
+   ou: retirar o TOMBSTONE LM-004
+resumo-inv: afetadas=1 pendentes=1
+RESULTADO: HÁ AVISO DE INVARIANTE
+→ cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vai na mesma opção da contagem que a causa.
+[cruzar exit=0]
+[cruzar exit=3]
+[aplicar exit=0]
+[lint exit=0]
+anti-collapse OK: 4 IDs em HEAD, 0 sumiram, 1 (25%) alterados (limite 20%)
+[anti-collapse exit=0]
+[aplicar-inv exit=0]
+[validar-inv exit=0]
+[log1 exit=0]
+[log2 exit=0]
+[registro exit=0]
+[check-ignore exit=1]
+[add exit=0]
+[commit exit=0]
+74ca23d chore(playbook): curadoria DEMO — 3 delta(s)
+[fetch exit=0] [worktree exit=0] [cherry-pick exit=0] [lint exit=0] [validar-inv exit=0] [base exit=0] [push exit=0] [remove exit=0] 
+- [INV-001] estado=ok origem=seed check=sdd/bin/report-lint.py :: Migration só conta como aplicada com prova p
+- [LM-002] descartado :: defeito de ferramenta
+## Sempre
+## Tombstones
+- [LM-004] ☠ 2026-11-05 :: o projeto não tem banco
+=== v8: bloco com contador e aposentadoria do mesmo bullet: passa no conferidor e para no --cruzar
+[rc=0]
+[conferir rc=0]
+resumo-bloco: auto=2 pergunta=4 descartar=0 nao_julgado=0 contaminacao=nao
+❌ delta linha 2: LM-001 é aposentado e alterado no mesmo delta: escolha um dos dois
+🔴 delta inválido: 1 erro(s) — nada aplicado
+RESULTADO: DELTA INVÁLIDO
+→ corrija as linhas acima e rode de novo; nada foi cruzado.
+[cruzar exit=0]
+=== v9: ADD com promovido_para já preenchido: o --cruzar não avisa; a trava para no item 6
+resumo-inv: afetadas=0 pendentes=0
+🔴 trava INV: LM-005 entra no universo sem classificação — aprove a proposta A (virar invariante) ou a B (descartar com motivo), ou retire o delta
+[validar exit=2]
+=== v10: colher falha (rc=2) à letra
+🛑 playbook-curator: sdd/playbook.md não tem nenhum bullet [LM-nnn]: não é um playbook
+RESULTADO: FALHA
+→ isto não é "0 deltas": confira o arquivo (molde: sdd/playbook.md do pacote) e rode de novo.
+[rc=2]
+=== v11: sem documentos
+⚠️ não achei DESIGN nem BUILD_REPORT de NADA em sdd/features, sdd/reports nem sdd/archive/NADA.
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-d88f402e7865/NADA
+RESULTADO: STAGING SEM DOCUMENTOS
+→ se esta release é um conserto sem DESIGN nem BUILD_REPORT, registre "Curadoria: 0 deltas (sem documentos)"; senão confira o nome da feature: isto não é "0 deltas".
+[exit=1]
+[exit=0]

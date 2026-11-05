@@ -1,0 +1,5 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base && bash sdd/bin/sdd-decisoes-lint.sh --sites /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/pergunta-por-item.md
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/pergunta-por-item.md:3 — 2 opções (recomendado); deve haver exatamente 1
+RESULTADO: VERMELHO
+→ corrija as perguntas acima (formato e marcas: sdd/templates/fragments/PERGUNTA_DECISAO.md, item 9).
+[exit=2]

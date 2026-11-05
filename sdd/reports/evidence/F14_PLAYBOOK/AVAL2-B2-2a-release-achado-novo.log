@@ -1,0 +1,30 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/b2.sh
+--- item 1
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO
+copiado: sdd/features/DESIGN_DEMO.md
+copiado: sdd/reports/BUILD_REPORT_DEMO.md
+copiado: sdd/reports/evidence/DEMO/AVAL-01-teste.log
+copiado: sdd/reports/evidence/DEMO/CURATOR-colhidos.txt
+RESULTADO: STAGING PRONTO (4 arquivo(s))
+→ os originais não foram tocados; rode --colher "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO" sdd/playbook.md e guarde a saída em colheita.txt nessa pasta.
+[exit=0]
+STG=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO
+--- item 2
+[rc=0]
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_DEMO.md:23 · fp=3573352138
+JA_JULGADO 4 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+--- item 3 (antes do despacho)
+T=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-fronteira-98c8f680bb12/DEMO/curador
+RESULTADO: SELO IMPRESSO (6 arquivo(s))
+→ guarde o stdout FORA da pasta de staging (na pasta do snapshot) e passe ao --conferir-bloco.
+[selar exit=0]
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+[snapshot exit=0]
+ M sdd/reports/BUILD_REPORT_DEMO.md
+?? sdd/reports/briefs/
+?? sdd/traces/
+[exit=0]

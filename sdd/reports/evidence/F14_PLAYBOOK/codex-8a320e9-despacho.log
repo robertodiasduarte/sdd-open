@@ -1,0 +1,1914 @@
+$ HOME=<temporário> CODEX_HOME=<temporário, config.toml da OpenRouter, sem a chave> codex exec  --ephemeral -s workspace-write -C <cópia> "<prompt abaixo>"   # HEAD 8a320e9
+codex: codex-cli 0.163.0 · modelo: deepseek/deepseek-v4-pro
+prompt: A publicação da feature DEMO já terminou (o push foi feito e conferido). Execute agora só o passo 17b de .agents/skills/sdd-release/SKILL.md, em ordem, a partir do item 1. Neste ambiente você não tem subagente nem colaborador: não abra nenhum. Não invente o bloco do curador nem faça o papel dele.
+
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+model: deepseek/deepseek-v4-pro
+provider: openrouter
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: none
+session id: 01a1ac99-1016-7121-91ae-0324d932dcd8
+--------
+user
+A publicação da feature DEMO já terminou (o push foi feito e conferido). Execute agora só o passo 17b de .agents/skills/sdd-release/SKILL.md, em ordem, a partir do item 1. Neste ambiente você não tem subagente nem colaborador: não abra nenhum. Não invente o bloco do curador nem faça o papel dele.
+warning: Model metadata for `deepseek/deepseek-v4-pro` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+exec
+/bin/zsh -lc "sed -n '1,240p' .agents/skills/sdd-release/SKILL.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+---
+name: sdd-release
+description: >-
+  Fase 4 do SDD Open — pipeline de publicação protegido em 4 fases: gate determinístico (lint, landmines, drift, Verify Gate), passadas de regressão e segurança, commit atômico com ledger em sdd/releases/, UMA aprovação humana antes do push/deploy, higiene do git e atualização da ficha da feature com curadoria do playbook. Use quando o usuário disser /sdd-release, "publica", "sobe pra produção" ou "faz o deploy".
+compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos slots de sdd/config.yaml; slot vazio é pulado e declarado.
+license: MIT
+metadata:
+  author: Roberto Dias Duarte
+  version: "2.7.0"
+  updated: "2026-11"
+  fase: "4"
+---
+
+# sdd-release — Fase 4
+
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
+`sdd-release v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+
+Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
+do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
+irreversível na prática.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Onde estou | Entrada e slots |
+| 2 | Verificar | FASE 0 e FASE 1, itens 1 a 6 |
+| 3 | Sua decisão | FASE 1, item 7 (o bloco do OK) |
+| 4 | Publicar | FASES 2 a 4 |
+
+Na etapa 3, a "Sua decisão" é o próprio bloco do OK, com a pergunta única no fim: os rótulos e a
+ordem do bloco não mudam.
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Release: ✅ 1 Onde estou · ✅ 2 Verificar · ▶️ 3 Sua decisão · ⬜ 4 Publicar`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
+
+## Regra de todo comando que fala com o remoto
+
+`fetch`, `push`, `pull`, `ls-remote` e `remote show` rodam **sem pedir senha**: `GIT_TERMINAL_PROMPT=0 git …`
+no bash/zsh; no PowerShell, `$env:GIT_TERMINAL_PROMPT=0; git …`. Sem isso, um remoto que exige login faz o
+git pedir a senha no terminal do agente — com o OK já dado, ninguém vê e a publicação fica pela metade.
+Se um desses comandos ficar parado, olhe se o editor (VS Code, Cursor) abriu uma janela de login do
+GitHub — ela é um jeito legítimo de logar e não é desligada.
+
+## Entrada
+
+`/sdd-release <descrição do que liberar>` — a descrição vira a base do commit e do changelog.
+
+## Slots do config (`sdd/config.yaml`)
+
+`project.lint_cmd` · `project.test_cmd` · `project.default_branch` · `deploy.cmd` ·
+`deploy.drift_check_cmd` · `release.landmines_cmd` · `release.changelog_hook`.
+**Slot vazio = passo pulado e declarado** ("lint pulado — slot vazio"), nunca adivinhado.
+
+## FASE 0 — Gate pré-release
+
+**Filosofia:** o que um script pega, um script faz (segundos, determinístico). O caro (modelo)
+só vai para o que script não pega: regressão de contrato e regra de negócio em código que já
+funcionava. Passada que não se aplica ao diff é **pulada**, não "revisada sem achados".
+
+**0. Pré-voo.** Confirme a branch (`git rev-parse --abbrev-ref HEAD` ≠ `default_branch`) e o
+diff-base (`git merge-base origin/{default_branch} HEAD`).
+
+**0a. Determinístico**, sobre `origin/{default_branch}...HEAD`, em paralelo:
+
+1. **Landmines:** `{{LANDMINES_CMD}}` — exit 2 → **abortar**; exit 1 → avisos para o OK.
+2. **Drift:** `{{DRIFT_CHECK_CMD}}` — o que chegou em produção sem commit? exit ≠0 → **abortar**.
+3. **Lint:** `{{LINT_CMD}}` nos arquivos tocados — erro → **abortar**.
+4. **Verify Gate do DEFINE (bloqueante quando há DEFINE):**
+   ```bash
+   sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_{F}.md
+   ```
+   | Situação / exit | Ação |
+   |---|---|
+   | DEFINE com gate, `0` | verde — seguir |
+   | `2` | **abortar**; voltar ao build |
+   | `3` | resolver antes (rodar onde a ferramenta exista); com evidência alternativa equivalente é **waivable** (0d) |
+   | `4` | exigir o **recibo humano** no BUILD_REPORT; sem recibo, não publicar |
+   | `5` | **abortar** e voltar ao Define — spec ambígua não se dispensa |
+   | DEFINE sem bloco (`64`) | não abortar: registrar **Aviso** "DEFINE anterior ao gate" |
+   | sem DEFINE (fix pequeno) | rodar `bash sdd/bin/verify-gate.sh --sem-define <F>` (registra no trace que nenhum gate rodou) e declarar "sem DEFINE — SDD formal dispensado" |
+5. **Relatório:** `python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{F}.md` — `true`
+   sem evidência, ou migration listada sem a linha provada em `## Migrations aplicadas`, abre
+   **abortar**. Depois, `python3 sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_{F}.md`:
+   exit ≠ 0 ⇒ **abortar**, citando o exit e o `arquivo:linha` (avaliação `PENDENTE` não vai para
+   produção). Exit 64 ou 127 ⇒ acrescente "atualize `sdd/bin/`: rode o `doctor` e, para o que ele
+   apontar, apague e rode o `init`" — um `report-lint.py` antigo não conhece `--pendente`.
+6. **Playbook:** `sdd/bin/playbook-lint.sh sdd/playbook.md` — exit 2 → abortar.
+7. **Exit dos logs:** `bash sdd/bin/gate-shell-evidencia.sh` (os logs de `sdd/reports/evidence/`
+   do diff) — exit ≠ 0 ⇒ **abortar**, citando cada `arquivo:linha`: um `[exit=N]` que é o exit do
+   `tail` não prova o comando. Exit 64 ou 127 ⇒ a mesma frase de atualizar `sdd/bin/` do item 5.
+8. **Review externo (obrigatório, com dispensa registrada):** `bash sdd/bin/adversarial-review.sh --conferir`
+   — confere se a revisão mais nova de `review.output_dir` é **desta** versão do código (mesmo
+   `diff_sha256`) e completou. Exit 0 ⇒ guarde a linha `review_externo: …` que ele imprimiu para o
+   ledger. Exit 2 ⇒ antes do bloco do OK, faça a pergunta própria `[D3 · muda a regra do método]` de
+   `references/como-falar.md`: **rodar agora** (o script sem `--conferir`, com `--feature {F}`, e o
+   `--conferir` de novo) ou **publicar sem revisão** (o motivo da pessoa vira
+   `review_externo: dispensado — <motivo>`). 2º revisor acionado e sem resultado ⇒ rode de novo com
+   outra engine ou registre a dispensa dele com `--aceitar-sem-revisor2 "<motivo>"`. O OK continua
+   sendo uma pergunta só: a dispensa é decidida antes dele.
+
+Se 0a abortou, **nem inicie** as passadas de modelo.
+
+**0b. Raio de impacto / regressão (modelo).** Para cada contrato alterado (assinatura, shape
+de retorno, coluna, rota, permissão): quem consome e **não foi modificado**? Invariante de
+negócio violado? Teste ao lado do módulo tocado ficou vermelho? Consumidor não modificado
+quebrado = **crítico**.
+
+**0c. Segurança (modelo — só se o diff toca auth, dados, permissões, rota pública).**
+Credencial hardcoded, permissão frouxa, dado pessoal em log ou resposta, gate de acesso
+removido.
+
+**0d. Síntese — um veredito.**
+
+| Classe | Achados | Efeito |
+|---|---|---|
+| **NON_WAIVABLE** | segurança crítica · drift · lint · consumidor quebrado · invariante violado · Verify Gate `2` ou `5` | **abortar aqui** com `arquivo:linha` |
+| **WAIVABLE** (lista fechada) | Verify Gate `3` com evidência alternativa · teste vermelho comprovadamente pré-existente · recibo manual-ux pendente quando o deploy não altera superfície visual | vira **FAIL-candidato** para a decisão humana no OK |
+
+| Veredito | Quando |
+|---|---|
+| 🟢 PASS | zero achado |
+| 🟡 CONCERNS | zero crítico, ≥1 aviso → cada aviso vira pendência na ficha |
+| 🔴 FAIL | ≥1 NON_WAIVABLE, ou FAIL-candidato que o humano mandou corrigir |
+| ⚪ WAIVED | só FAIL-candidato dispensado **pelo humano** no OK, com registro `WAIVED · classe= · finding= · motivo= · por= · data=` |
+
+**O agente nunca emite WAIVED.** Reporte também o que foi **pulado**.
+
+## FASE 1 — Autônoma (só aborta se um gate falhar)
+
+1. **Escopo.** Liste os arquivos desta release. Ignore WIP de outras frentes.
+2. **Versão** (se o projeto versiona): bump a partir da versão em `origin/{default_branch}`,
+   não da branch local. Colisão → próxima livre.
+3. **Ledger** (dentro do commit atômico): `sdd/releases/{F}/{slice}_{versão-ou-data}.yaml` com
+   `feature_id`, `slice_id`, `versao`, `estado` (shipado | parcial | pausa), `dod`, `descricao` e a
+   linha `review_externo:` da 0a item 8 (a que o `--conferir` imprimiu, ou a dispensa com motivo).
+   Sem SHA (deriva do git). Arquivo novo a cada release: append-only. Ver `references/ledger.md`.
+4. **Commit atômico.** `git add <arquivos específicos>` — **nunca `-A`**. Confira
+   `git diff --cached --name-only`. Logo depois, **nesta pasta** (a da frente) e antes do passo 5:
+   `bash sdd/bin/adversarial-review.sh --ledger sdd/releases/{F}/<arquivo>.yaml` — exit ≠ 0 ⇒
+   **abortar**: sem `review_externo` válido não se publica. Roda aqui porque a pasta da revisão é
+   ignorada pelo git e não existe no worktree temporário do passo 5.
+5. **Landar na branch padrão** via worktree temporário fresco de `origin/{default_branch}` +
+   cherry-pick. Conflito → tentar aplicar só o incremento por patch (`git apply --check`); só
+   abortar se os hunks se sobrepõem de verdade.
+6. **Gates pré-push:** diff contra `origin/{default_branch}` tem só os arquivos esperados;
+   nenhuma deleção de algo que está publicado; classificar se o diff deploya ou é no-op.
+7. **PARAR e mostrar (o 1 OK) — um bloco só.** Antes, rode
+   `python3 .agents/skills/sdd-release/scripts/deploy-espera-testes.py .` (só lê
+   `.github/workflows/`). No **Agora**, duas frases: os campos já foram conferidos por você; a pessoa
+   só responde à última linha — **sim** publica exatamente o descrito, **não** encerra sem publicar.
+   Depois, **um bloco**, nesta ordem, preenchido (não acrescente perguntas):
+
+   ```markdown
+   **O que sobe:** <quantos arquivos e quais, pelo nome, em palavras — do diff contra a base,
+   novos marcados como novos; até 10 nomes, "e mais N"; nunca o --stat colado>
+   **O que muda em produção:** <uma frase em português — "muda o cálculo do relatório mensal", não
+   "altera handler.js">
+   **O push publica sozinho?** <sim, o workflow X publica ao receber o push na {default_branch} |
+   não: <por quê>>
+   **O deploy espera os testes?** <a frase da linha → do script, traduzida>
+   **Banco:** <migration `<arquivo>` em `<projeto nome · ref>` em <data>, provada por leitura — de
+   `## Migrations aplicadas` do BUILD_REPORT | sem migração nesta frente>
+   **Verificações:** Verify Gate <exit> · report-lint <ok> · lint <ok | pulado — slot vazio> ·
+   landmines <ok | N avisos> · drift <ok | pulado — slot vazio>
+   **Veredito:** <🟢 PASS | 🟡 CONCERNS com a lista | FAIL-candidatos, cada um: corrigir ou WAIVED
+   com `motivo=` seu> · achados que não abortaram
+   **Ledger:** `feature_id` <id> · `estado` <shipado | parcial>
+
+   **Posso finalizar (push + deploy + verificar)?**
+   ```
+
+   - **"O deploy espera os testes?"** é afirmação, não pergunta: vem do `RESULTADO:` do script.
+     `SIM` ⇒ "sim — …"; `NAO` ⇒ "não — … um teste vermelho não impede a publicação"; `NAO_SE_APLICA`
+     ⇒ "não se aplica: o push não publica"; `NAO_SEI` ⇒ leia os workflows citados e escreva **"não
+     consegui afirmar: <motivo>"** — nunca "sim". Sem o script (pacote antigo), leia os workflows:
+     teste com `continue-on-error`, `|| true` ou `exit 0` fixo **não** segura nada.
+   - **"Banco:"** é afirmação: vem de `## Migrations aplicadas`. Migration no diff sem a linha ⇒ o
+     report-lint já abortou na 0a.5.
+   - **Verificação ausente dita como ausente** é informação; em silêncio, é falsa segurança.
+   - **Uma pergunta só**, a última linha. Os rótulos com `?` são preenchidos por você. Ambiguidade
+     (qual arquivo pertence à frente) vai **dentro** do bloco, antes da última linha — nunca pare
+     duas vezes. Sem o OK, termine aqui: nada de push nem deploy.
+
+## FASE 2 — Após o "go"
+
+8. **Push.** Re-check de base: `GIT_TERMINAL_PROMPT=0 git fetch` + `git merge-base --is-ancestor origin/{default_branch} HEAD`
+   (falhou → base moveu; re-landar). **Nunca `--force`.** `GIT_TERMINAL_PROMPT=0 git push origin HEAD:{default_branch}`.
+   Recusado por permissão (`403`, `Permission denied`, `could not read Username`) ou por branch protegida
+   (`protected branch`, `GH006`)? Pare e diga o que conferir, nesta ordem: `gh auth status` (logado, com a
+   conta certa?); o papel no repositório (publicar exige escrita); e se a branch padrão é protegida — aí o
+   caminho é push da branch + PR (`gh pr create`, ou o link que o próprio push imprime), não insistir.
+9. **Deploy:** `{{DEPLOY_CMD}}` (vazio → declarar "deploy pulado — slot vazio"). Tudo que sobe
+   para produção tem commit correspondente — deploy sem source commitado é proibido.
+10. **Verificar — pelo commit publicado, não pelo último run.** `{{DRIFT_CHECK_CMD}}` exit 0; smoke da rota
+    principal; e, se a publicação roda num workflow:
+    - `gh run list --commit <SHA publicado> --branch {default_branch} --json databaseId,status,conclusion,workflowName,event`
+      — o run **do workflow que publica**, na branch padrão (`event` = `push`, ou `workflow_dispatch` quando foi
+      o redisparo manual do item abaixo). Com dois pushes seguidos,
+      "o último run" é de outro commit; um run do mesmo SHA em outra branch ou de PR pode ter pulado o deploy.
+    - `completed` + `success` ⇒ no ar (cite o run). `queued`/`in_progress` ⇒ esperar.
+    - Lista vazia ⇒ o GitHub ainda não registrou o run: esperar alguns segundos e consultar de novo; vazia
+      depois de ~2 min ⇒ dizer que não achou o run do commit — nunca concluir "nada a verificar". No caminho
+      do PR, o SHA que chega à branch padrão é o do merge: consulte por ele.
+    - `cancelled` ⇒ um push mais novo pode ter substituído o seu: `GIT_TERMINAL_PROMPT=0 git fetch origin
+      {default_branch}`, depois `gh run list --workflow <arquivo> --branch {default_branch} --limit 20 --json databaseId,headSha,status,conclusion,createdAt`;
+      só vale run `success` criado depois do seu **e** de um commit que contém o seu
+      (`git merge-base --is-ancestor <seu SHA> <SHA dele>` sai 0). Sai 1 = aquele run **não** contém o seu
+      commit (procure outro ou espere); qualquer outro código (commit não encontrado) = "não consegui
+      confirmar", nunca "não incluído".
+    - `failure` ⇒ para repetir, **nunca `gh run rerun` de um run antigo** (com fila, ele publica código
+      velho por cima do novo): redisparar na ponta — `gh workflow run <arquivo> --ref {default_branch}` só se
+      o workflow tiver `workflow_dispatch` no `on:`; sem ele (o GitHub responde 422), um push novo.
+    - Verde não prova teste: step de teste com `continue-on-error`, `|| true` ou `exit 0` fixo ⇒ "o deploy
+
+exec
+/bin/zsh -lc "grep -n \"17b\\|17\\.\\|Curador\\|curador\\|FASE 4\\|FASE 3\" .agents/skills/sdd-release/SKILL.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+4:  Fase 4 do SDD Open — pipeline de publicação protegido em 4 fases: gate determinístico (lint, landmines, drift, Verify Gate), passadas de regressão e segurança, commit atômico com ledger em sdd/releases/, UMA aprovação humana antes do push/deploy, higiene do git e atualização da ficha da feature com curadoria do playbook. Use quando o usuário disser /sdd-release, "publica", "sobe pra produção" ou "faz o deploy".
+248:## FASE 3 — Higiene do git
+257:## FASE 4 — Ficha da feature e playbook
+259:17. **Atualizar a ficha** (`/sdd-handoff`, incondicional): `sdd/handoffs/HANDOFF_{F}.md` — o
+263:17b. **Curadoria do playbook (incondicional; roda depois do push e nunca desfaz a publicação).** Um
+266:    esta feature ensinou para as próximas. Brief do curador:
+271:       formal, registre `Curadoria: 0 deltas (sem documentos)` e encerre o 17b; senão é falha (confira o
+272:       nome da feature). Qualquer outro exit: pare o 17b e registre `Curadoria: FALHOU (rc=N)`. **Sessão nova depois da parada do curador:** rode com `--retomar`, que não copia
+274:       snapshot de antes agora tomaria por linha de base o que o curador já escreveu. `--retomar` com exit 1, ou
+280:       cruzamento pulado" e siga só com o playbook. O que uma curadoria anterior desta feature já julgou
+285:       | `1` com `RESULTADO: NADA A COLHER` em `colheita.txt` | nada, de nenhum tipo: registre `Curadoria: 0 deltas` na ficha, diga que esta feature não trouxe lição nova nem contagem e encerre o 17b |
+286:       | qualquer outro, inclusive `1` sem aquela linha (o redirecionamento falhou) (`2`, `64`, `126`, `127`…) | **não é "0 deltas"**: pare o 17b, registre `Curadoria: FALHOU (rc=N)` e diga à pessoa a causa que o script imprimiu, o conserto e que a publicação não foi afetada |
+287:    3. **Despachar o curador em contexto fresco**, pela escada de
+292:       `.agents/skills/sdd-playbook/references/curator.md`") em `sdd/reports/briefs/BRIEF_curador_{F}.md`;
+293:       `T="${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/{F}/curador"; mkdir -p "$T"`;
+295:       `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md`;
+296:       imprima `🧹 curadoria: julgando em contexto novo (alguns minutos); você não precisa responder`.
+297:       Sem subagente: `bash sdd/bin/sdd-fluxo.sh despachar curador {F} sdd/reports/briefs/BRIEF_curador_{F}.md`
+300:       chamada para a outra): salve o bloco em `"$T/curadoria.txt"`;
+301:       `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md`;
+302:       `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md > "$T/comparar.txt"`.
+305:       `bash sdd/bin/playbook-curator.sh --conferir-bloco "$STG/colheita.txt" "$T/curadoria.txt" sdd/playbook.md "$T/selo.txt" "$T/comparar.txt" > "$T/conferido.txt"; rc=$?`.
+306:       Ele reprova (exit 2) quando o curador escreveu no projeto (`FORA:`) ou a fronteira não foi verificada,
+312:       registre `Curadoria: FALHOU (curador escreveu no playbook)`; nos outros casos, refaça os itens 1 e 2,
+314:       reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)`, diga que a curadoria fica para a próxima
+319:       refino, promoção, invariante, sugestão que o curador confirmou e contagem que põe uma lição entre
+328:       linha `inv` do curador, descartar com motivo, ou não aplicar a contagem). Lição antiga que já mordeu e
+330:       resposta, a trava do item 6 segura tudo, e aí registre `Curadoria: FALHOU (invariantes sem
+333:       ficha; as linhas de invariante aceitas (a `inv` do curador, o `ajuste:`, ou
+338:       `Curadoria: nada aplicado`.
+361:       `chore(playbook): curadoria {F} — <n> delta(s)`. Nunca `--no-verify`: o pre-commit vigia o playbook.
+363:       simples, e como desfazer (`git revert <sha do commit da curadoria>`). Depois, a pergunta
+364:       `[D1 · não se desfaz]` **Posso enviar o commit da curadoria para a branch padrão?**, dizendo se
+369:       logs do item 8 da frente, com `git checkout <sha do commit da curadoria> -- <cada arquivo>`, senão a
+373:       `Curadoria: commit <sha> não enviado` e o comando de envio. Com mudança de regra e envio na mesma
+375:    A ficha (18) ganha `Curadoria: <n> propostos / <m> aplicados / <p> promoções`. Promoção aceita ⇒ o
+429:- **O curador é conferido pela fronteira de escrita** — "não escreva" num brief é só texto; o snapshot de
+431:- **O commit da curadoria não sai da máquina sem um sim** — em muitos projetos, um push na branch padrão
+
+exec
+/bin/zsh -lc "sed -n '240,380p' .agents/skills/sdd-release/SKILL.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+    - Verde não prova teste: step de teste com `continue-on-error`, `|| true` ou `exit 0` fixo ⇒ "o deploy
+      terminou, mas o workflow não roda testes antes de publicar" (o `deploy-espera-testes.py` do
+      item 7 já disse isso no bloco do OK).
+    Sem `gh`: "publicado, sem verificação automática disponível" — nunca ✅ sem ter olhado.
+11. **Changelog:** `{{CHANGELOG_HOOK}}` ou entrada curta (≤600 caracteres) no topo do
+    `CHANGELOG.md`. O detalhe vive no ledger e no BUILD_REPORT.
+12. **Limpeza** do worktree temporário.
+
+## FASE 3 — Higiene do git
+
+13. `GIT_TERMINAL_PROMPT=0 git fetch` · `git worktree prune`. 14. Branches já mergeadas: oferecer deletar.
+15. Worktree/branch da feature: se a feature fechou, oferecer o comando de remoção (rodado
+    fora dele). **15b.** Se esta release **fechou o DoD**, mover os artefatos SDD da família
+    para `sdd/archive/{F}/` com `git mv` — um a um, nunca glob que arraste features de nome
+    parecido. Feature aberta → pular (slices seguintes ainda leem os arquivos).
+16. **Report final:** versão, SHAs, deploy, drift, o que foi para produção, arquivamento.
+
+## FASE 4 — Ficha da feature e playbook
+
+17. **Atualizar a ficha** (`/sdd-handoff`, incondicional): `sdd/handoffs/HANDOFF_{F}.md` — o
+    que foi publicado, veredito 0d (WAIVED com registro completo), pendências separadas em
+    🐛 bug fix e ✨ melhoria, avisos da Fase 0 que não abortaram, próximos passos com comandos,
+    alertas. Ficha curta de "publicado, sem pendências" ainda documenta.
+17b. **Curadoria do playbook (incondicional; roda depois do push e nunca desfaz a publicação).** Um
+    script colhe, um agente sem esta conversa julga, e um conferidor separa a contagem da mudança de
+    regra. Antes de começar, diga em 1 frase que a publicação já terminou e que agora você confere o que
+    esta feature ensinou para as próximas. Brief do curador:
+    `.agents/skills/sdd-playbook/references/curator.md`; palavras e exemplos: `references/como-falar.md`.
+    1. **Staging por cópia.** `bash sdd/bin/playbook-curator.sh --preparar {F}` copia (nunca move) os
+       documentos da feature, de `sdd/` ou de `sdd/archive/{F}/`, para a pasta que ele imprime em
+       `staging:`; guarde-a como `STG`. Exit 1 = não achou DESIGN nem BUILD_REPORT: num conserto sem SDD
+       formal, registre `Curadoria: 0 deltas (sem documentos)` e encerre o 17b; senão é falha (confira o
+       nome da feature). Qualquer outro exit: pare o 17b e registre `Curadoria: FALHOU (rc=N)`. **Sessão nova depois da parada do curador:** rode com `--retomar`, que não copia
+       nem limpa, recalcule `STG` e `T` e vá direto para a parte "Na volta" do item 3: refazer o selo ou o
+       snapshot de antes agora tomaria por linha de base o que o curador já escreveu. `--retomar` com exit 1, ou
+       `"$T/antes"` ausente = a pasta temporária se perdeu: recomece deste item, sem `--retomar`; nada foi
+       aplicado.
+    2. **Colher, lendo o exit.**
+       `bash sdd/bin/playbook-curator.sh --colher "$STG" sdd/playbook.md [--inv sdd/invariants.md] > "$STG/colheita.txt"; rc=$?; echo "$rc" > "$STG/colheita.rc"`
+       — `--inv` só quando `sdd/invariants.md` existe; sem o arquivo, diga "invariantes: arquivo ausente,
+       cruzamento pulado" e siga só com o playbook. O que uma curadoria anterior desta feature já julgou
+       (`CURATOR-colhidos.txt`, item 7) não conta de novo: aparece como `JA_JULGADO`.
+       | `rc` | Ação |
+       |---|---|
+       | `0` | há o que julgar ou relatar: seguir |
+       | `1` com `RESULTADO: NADA A COLHER` em `colheita.txt` | nada, de nenhum tipo: registre `Curadoria: 0 deltas` na ficha, diga que esta feature não trouxe lição nova nem contagem e encerre o 17b |
+       | qualquer outro, inclusive `1` sem aquela linha (o redirecionamento falhou) (`2`, `64`, `126`, `127`…) | **não é "0 deltas"**: pare o 17b, registre `Curadoria: FALHOU (rc=N)` e diga à pessoa a causa que o script imprimiu, o conserto e que a publicação não foi afetada |
+    3. **Despachar o curador em contexto fresco**, pela escada de
+       `sdd-build/references/contexto-fresco.md`, com **só** os 5 campos:
+       `feature: {F} · staging: $STG · colheita: $STG/colheita.txt · playbook: <raiz>/sdd/playbook.md · worktree: <raiz>`.
+       Antes do despacho, nesta ordem: `mkdir -p sdd/reports/briefs sdd/reports/evidence/{F} sdd/releases/{F}`;
+       grave o brief (os 5 campos e "leia e siga
+       `.agents/skills/sdd-playbook/references/curator.md`") em `sdd/reports/briefs/BRIEF_curador_{F}.md`;
+       `T="${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/{F}/curador"; mkdir -p "$T"`;
+       `bash sdd/bin/playbook-curator.sh --selar "$STG" > "$T/selo.txt"` (o selo do staging fica **fora** dele);
+       `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md`;
+       imprima `🧹 curadoria: julgando em contexto novo (alguns minutos); você não precisa responder`.
+       Sem subagente: `bash sdd/bin/sdd-fluxo.sh despachar curador {F} sdd/reports/briefs/BRIEF_curador_{F}.md`
+       e pare no exit 40, repassando a parada que ele imprime.
+       Na volta, **sem editar nada no meio** e recalculando `STG` e `T` (variável de shell não passa de uma
+       chamada para a outra): salve o bloco em `"$T/curadoria.txt"`;
+       `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md`;
+       `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md > "$T/comparar.txt"`.
+       Não repasse a linha `→` da fronteira (ela fala do DEFINE): quem lê o `comparar.txt` é o item 4.
+    4. **Conferir o bloco antes de qualquer pergunta.**
+       `bash sdd/bin/playbook-curator.sh --conferir-bloco "$STG/colheita.txt" "$T/curadoria.txt" sdd/playbook.md "$T/selo.txt" "$T/comparar.txt" > "$T/conferido.txt"; rc=$?`.
+       Ele reprova (exit 2) quando o curador escreveu no projeto (`FORA:`) ou a fronteira não foi verificada,
+       quando o staging mudou depois do selo, quando falta uma linha da colheita e quando uma contagem não
+       é igual à que o script colheu. Exit 2 ⇒ despache de novo **1 vez**, com os 5 campos mais o campo
+       `conferencia:` (as linhas `🔴 bloco:`). Se o motivo foi só o bloco, sem `FORA:` nem staging mexido,
+       redespache com o mesmo selo e o mesmo snapshot. Se houve `FORA:` ou staging mexido: liste à pessoa o
+       que saiu (não apague nada); com `sdd/playbook.md` ou `sdd/invariants.md` na lista, **não redespache**:
+       registre `Curadoria: FALHOU (curador escreveu no playbook)`; nos outros casos, refaça os itens 1 e 2,
+       o selo e o snapshot de antes (o que a pessoa já viu vira linha de base) e só então redespache. 2ª
+       reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)`, diga que a curadoria fica para a próxima
+       publicação e encerre: **nada é aplicado**. Nunca separe contagem de regra à mão: quem decide é o
+       conferidor.
+    5. **Contagem entra, regra pergunta.** Comece `: > "$STG/delta.txt"; : > "$STG/inv-linhas.txt"`. As linhas
+       `AUTO <delta>` de `conferido.txt` vão para `"$STG/delta.txt"` sem pergunta. As linhas `PERGUNTA <n> <tipo> <delta>` (lição nova, aposentadoria,
+       refino, promoção, invariante, sugestão que o curador confirmou e contagem que põe uma lição entre
+       as invariantes) viram perguntas `[D3 · muda a regra do método]`, uma por item, numeradas, no formato
+       de `references/como-falar.md`: a frase da linha `simples:`, o ID só no fim como `(ref: …)`, as
+       respostas **aceitar**, **recusar** e **não sei**; até 5 por vez (acima disso, em lotes). Diga também,
+       em palavras, cada linha `REJEITADO` da colheita: o candidato que não entrou e por quê. Com
+       `sdd/invariants.md`, antes de perguntar:
+       `bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md <<'FIM_DOS_DELTAS'`, os deltas AUTO e PERGUNTA, sem as linhas de tipo inv, um por linha, e `FIM_DOS_DELTAS` (com o delimitador entre aspas, o shell não executa nada do texto da lição)
+       — `INV_AFETADA` ⇒ o item daquela aposentadoria leva o `ajuste:` junto, como **uma opção só**;
+       `INV_PENDENTE` ⇒ a contagem e a classificação vão na mesma opção (virar regra permanente com a
+       linha `inv` do curador, descartar com motivo, ou não aplicar a contagem). Lição antiga que já mordeu e
+       nunca foi classificada aparece na colheita como `INV_PENDENTE` e pede o mesmo item, uma vez: sem a
+       resposta, a trava do item 6 segura tudo, e aí registre `Curadoria: FALHOU (invariantes sem
+       classificação)`. Os itens aceitos entram no `delta.txt`, menos a promoção: o delta `promovido_para=`
+       só entra quando o mecanismo já está na branch padrão, então a promoção aceita vira pendência na
+       ficha; as linhas de invariante aceitas (a `inv` do curador, o `ajuste:`, ou
+       `REMOVER INV-nnn` / `REMOVER LM-nnn`), em `"$STG/inv-linhas.txt"`. Sem linha `PERGUNTA`, não há
+       pergunta de regra.
+    6. **Aplicar numa cópia e conferir 3 vezes.** Com `delta.txt` e `inv-linhas.txt` vazios (nada
+       contado, nada aceito), pule este item, o commit e o envio, faça o item 7 e registre
+       `Curadoria: nada aplicado`.
+       `bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" sdd/playbook.md > "$STG/novo.md"`
+       (exit 2 ⇒ nada foi impresso: corrija o delta) →
+       `bash sdd/bin/playbook-lint.sh "$STG/novo.md"` (exit 0 obrigatório) →
+       `bash sdd/bin/playbook-lint.sh --anti-collapse sdd/playbook.md "$STG/novo.md"` (bloqueou pelo
+       tamanho ⇒ aplique em 2 ou mais commits: contadores e `ADD` primeiro, depois uma mudança de
+       conteúdo por vez) → com invariantes,
+       `bash sdd/bin/playbook-curator.sh --aplicar-inv "$STG/inv-linhas.txt" sdd/invariants.md > "$STG/inv.md"`
+       (sem linha aprovada, `cp sdd/invariants.md "$STG/inv.md"`) e
+       `bash sdd/bin/playbook-curator.sh --validar-inv "$STG/novo.md" "$STG/inv.md"` (exit 0
+       obrigatório; `🔴 trava INV:` diz a regra, a lição e as saídas: volte à pessoa, nunca copie; nunca
+       edite as invariantes à mão).
+       Só então `cp "$STG/novo.md" sdd/playbook.md` e, se mudou, `cp "$STG/inv.md" sdd/invariants.md`.
+    7. **Evidência** em `sdd/reports/evidence/{F}/`, no formato `$ comando`, a saída e `[exit=N]` com o
+       exit real do comando: `CURATOR-colheita.log` (o comando do item 2, `colheita.txt` e o exit guardado em
+       `colheita.rc`) e `CURATOR-delta.log` (o comando do item 6, o `delta.txt` e o exit dele). E o registro do que já foi julgado, para a próxima publicação desta feature não contar
+       de novo, ao lado do ledger: `grep ' · fp=' "$STG/colheita.txt" >> sdd/releases/{F}/CURATOR-colhidos.txt`.
+    8. **Commit à parte:** `git add sdd/playbook.md` (e `sdd/invariants.md`, se mudou) e
+       `sdd/releases/{F}/CURATOR-colhidos.txt` (sem o registro, a próxima publicação desta feature conta tudo
+       de novo), só se o projeto versiona os ledgers (`git ls-files sdd/releases` não vem vazio); senão, não
+       adicione e diga que o registro fica só nesta pasta e que uma frente nova da mesma feature pode contar
+       de novo. Os 2 logs `CURATOR-*.log` entram só se o projeto versiona evidência (`git check-ignore -q`
+       neles sai 1 e `git ls-files sdd/reports/evidence` não vem vazio). `git diff --cached --name-only` só pode listar esses arquivos; commit
+       `chore(playbook): curadoria {F} — <n> delta(s)`. Nunca `--no-verify`: o pre-commit vigia o playbook.
+    9. **Recibo e envio.** Mostre o recibo **Decidi sozinho**: 1 linha por contagem aplicada, em palavras
+       simples, e como desfazer (`git revert <sha do commit da curadoria>`). Depois, a pergunta
+       `[D1 · não se desfaz]` **Posso enviar o commit da curadoria para a branch padrão?**, dizendo se
+       esse push publica sozinho (a resposta do item 7 da FASE 1). **sim** ⇒ aterrisse como no passo 5
+       (worktree temporário de `origin/{default_branch}` + cherry-pick; em conflito, não resolva à mão:
+       `git cherry-pick --abort`, e reaplique o `"$STG/delta.txt"` sobre o playbook da base com `--aplicar`, que recalcula os IDs dos
+       `ADD`, o `"$STG/inv-linhas.txt"` sobre as invariantes da base com `--aplicar-inv`, e traga o registro e os
+       logs do item 8 da frente, com `git checkout <sha do commit da curadoria> -- <cada arquivo>`, senão a
+       próxima publicação conta de novo), rode ali de novo o `playbook-lint.sh` e, com invariantes, o `--validar-inv` (ID repetido
+       com a base ⇒ renumere o novo, nunca o da base) e faça o push como no passo 8. **deixar para a
+       próxima publicação** ⇒ o commit fica na branch da frente; registre na ficha
+       `Curadoria: commit <sha> não enviado` e o comando de envio. Com mudança de regra e envio na mesma
+       resposta, as 2 perguntas vão numeradas.
+    A ficha (18) ganha `Curadoria: <n> propostos / <m> aplicados / <p> promoções`. Promoção aceita ⇒ o
+    mecanismo é uma correção própria, com um caso que falha antes dele; o delta `promovido_para=` só
+    entra quando o mecanismo já está na branch padrão. Detalhes do formato na skill `sdd-playbook`.
+18. **Imprimir a ficha** como último bloco do relatório.
+19. **DoD fechado?** Oferecer arquivar (15b) e marcar a ficha como ✅ — com 1 OK.
+20. **Prompt da próxima sessão** (o único opcional): se "Falta" não está vazio, oferecer.
+
+exec
+/bin/zsh -lc "nl -ba .agents/skills/sdd-release/SKILL.md | sed -n '260,345p'" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+   260	    que foi publicado, veredito 0d (WAIVED com registro completo), pendências separadas em
+   261	    🐛 bug fix e ✨ melhoria, avisos da Fase 0 que não abortaram, próximos passos com comandos,
+   262	    alertas. Ficha curta de "publicado, sem pendências" ainda documenta.
+   263	17b. **Curadoria do playbook (incondicional; roda depois do push e nunca desfaz a publicação).** Um
+   264	    script colhe, um agente sem esta conversa julga, e um conferidor separa a contagem da mudança de
+   265	    regra. Antes de começar, diga em 1 frase que a publicação já terminou e que agora você confere o que
+   266	    esta feature ensinou para as próximas. Brief do curador:
+   267	    `.agents/skills/sdd-playbook/references/curator.md`; palavras e exemplos: `references/como-falar.md`.
+   268	    1. **Staging por cópia.** `bash sdd/bin/playbook-curator.sh --preparar {F}` copia (nunca move) os
+   269	       documentos da feature, de `sdd/` ou de `sdd/archive/{F}/`, para a pasta que ele imprime em
+   270	       `staging:`; guarde-a como `STG`. Exit 1 = não achou DESIGN nem BUILD_REPORT: num conserto sem SDD
+   271	       formal, registre `Curadoria: 0 deltas (sem documentos)` e encerre o 17b; senão é falha (confira o
+   272	       nome da feature). Qualquer outro exit: pare o 17b e registre `Curadoria: FALHOU (rc=N)`. **Sessão nova depois da parada do curador:** rode com `--retomar`, que não copia
+   273	       nem limpa, recalcule `STG` e `T` e vá direto para a parte "Na volta" do item 3: refazer o selo ou o
+   274	       snapshot de antes agora tomaria por linha de base o que o curador já escreveu. `--retomar` com exit 1, ou
+   275	       `"$T/antes"` ausente = a pasta temporária se perdeu: recomece deste item, sem `--retomar`; nada foi
+   276	       aplicado.
+   277	    2. **Colher, lendo o exit.**
+   278	       `bash sdd/bin/playbook-curator.sh --colher "$STG" sdd/playbook.md [--inv sdd/invariants.md] > "$STG/colheita.txt"; rc=$?; echo "$rc" > "$STG/colheita.rc"`
+   279	       — `--inv` só quando `sdd/invariants.md` existe; sem o arquivo, diga "invariantes: arquivo ausente,
+   280	       cruzamento pulado" e siga só com o playbook. O que uma curadoria anterior desta feature já julgou
+   281	       (`CURATOR-colhidos.txt`, item 7) não conta de novo: aparece como `JA_JULGADO`.
+   282	       | `rc` | Ação |
+   283	       |---|---|
+   284	       | `0` | há o que julgar ou relatar: seguir |
+   285	       | `1` com `RESULTADO: NADA A COLHER` em `colheita.txt` | nada, de nenhum tipo: registre `Curadoria: 0 deltas` na ficha, diga que esta feature não trouxe lição nova nem contagem e encerre o 17b |
+   286	       | qualquer outro, inclusive `1` sem aquela linha (o redirecionamento falhou) (`2`, `64`, `126`, `127`…) | **não é "0 deltas"**: pare o 17b, registre `Curadoria: FALHOU (rc=N)` e diga à pessoa a causa que o script imprimiu, o conserto e que a publicação não foi afetada |
+   287	    3. **Despachar o curador em contexto fresco**, pela escada de
+   288	       `sdd-build/references/contexto-fresco.md`, com **só** os 5 campos:
+   289	       `feature: {F} · staging: $STG · colheita: $STG/colheita.txt · playbook: <raiz>/sdd/playbook.md · worktree: <raiz>`.
+   290	       Antes do despacho, nesta ordem: `mkdir -p sdd/reports/briefs sdd/reports/evidence/{F} sdd/releases/{F}`;
+   291	       grave o brief (os 5 campos e "leia e siga
+   292	       `.agents/skills/sdd-playbook/references/curator.md`") em `sdd/reports/briefs/BRIEF_curador_{F}.md`;
+   293	       `T="${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/{F}/curador"; mkdir -p "$T"`;
+   294	       `bash sdd/bin/playbook-curator.sh --selar "$STG" > "$T/selo.txt"` (o selo do staging fica **fora** dele);
+   295	       `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md`;
+   296	       imprima `🧹 curadoria: julgando em contexto novo (alguns minutos); você não precisa responder`.
+   297	       Sem subagente: `bash sdd/bin/sdd-fluxo.sh despachar curador {F} sdd/reports/briefs/BRIEF_curador_{F}.md`
+   298	       e pare no exit 40, repassando a parada que ele imprime.
+   299	       Na volta, **sem editar nada no meio** e recalculando `STG` e `T` (variável de shell não passa de uma
+   300	       chamada para a outra): salve o bloco em `"$T/curadoria.txt"`;
+   301	       `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md`;
+   302	       `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md > "$T/comparar.txt"`.
+   303	       Não repasse a linha `→` da fronteira (ela fala do DEFINE): quem lê o `comparar.txt` é o item 4.
+   304	    4. **Conferir o bloco antes de qualquer pergunta.**
+   305	       `bash sdd/bin/playbook-curator.sh --conferir-bloco "$STG/colheita.txt" "$T/curadoria.txt" sdd/playbook.md "$T/selo.txt" "$T/comparar.txt" > "$T/conferido.txt"; rc=$?`.
+   306	       Ele reprova (exit 2) quando o curador escreveu no projeto (`FORA:`) ou a fronteira não foi verificada,
+   307	       quando o staging mudou depois do selo, quando falta uma linha da colheita e quando uma contagem não
+   308	       é igual à que o script colheu. Exit 2 ⇒ despache de novo **1 vez**, com os 5 campos mais o campo
+   309	       `conferencia:` (as linhas `🔴 bloco:`). Se o motivo foi só o bloco, sem `FORA:` nem staging mexido,
+   310	       redespache com o mesmo selo e o mesmo snapshot. Se houve `FORA:` ou staging mexido: liste à pessoa o
+   311	       que saiu (não apague nada); com `sdd/playbook.md` ou `sdd/invariants.md` na lista, **não redespache**:
+   312	       registre `Curadoria: FALHOU (curador escreveu no playbook)`; nos outros casos, refaça os itens 1 e 2,
+   313	       o selo e o snapshot de antes (o que a pessoa já viu vira linha de base) e só então redespache. 2ª
+   314	       reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)`, diga que a curadoria fica para a próxima
+   315	       publicação e encerre: **nada é aplicado**. Nunca separe contagem de regra à mão: quem decide é o
+   316	       conferidor.
+   317	    5. **Contagem entra, regra pergunta.** Comece `: > "$STG/delta.txt"; : > "$STG/inv-linhas.txt"`. As linhas
+   318	       `AUTO <delta>` de `conferido.txt` vão para `"$STG/delta.txt"` sem pergunta. As linhas `PERGUNTA <n> <tipo> <delta>` (lição nova, aposentadoria,
+   319	       refino, promoção, invariante, sugestão que o curador confirmou e contagem que põe uma lição entre
+   320	       as invariantes) viram perguntas `[D3 · muda a regra do método]`, uma por item, numeradas, no formato
+   321	       de `references/como-falar.md`: a frase da linha `simples:`, o ID só no fim como `(ref: …)`, as
+   322	       respostas **aceitar**, **recusar** e **não sei**; até 5 por vez (acima disso, em lotes). Diga também,
+   323	       em palavras, cada linha `REJEITADO` da colheita: o candidato que não entrou e por quê. Com
+   324	       `sdd/invariants.md`, antes de perguntar:
+   325	       `bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md <<'FIM_DOS_DELTAS'`, os deltas AUTO e PERGUNTA, sem as linhas de tipo inv, um por linha, e `FIM_DOS_DELTAS` (com o delimitador entre aspas, o shell não executa nada do texto da lição)
+   326	       — `INV_AFETADA` ⇒ o item daquela aposentadoria leva o `ajuste:` junto, como **uma opção só**;
+   327	       `INV_PENDENTE` ⇒ a contagem e a classificação vão na mesma opção (virar regra permanente com a
+   328	       linha `inv` do curador, descartar com motivo, ou não aplicar a contagem). Lição antiga que já mordeu e
+   329	       nunca foi classificada aparece na colheita como `INV_PENDENTE` e pede o mesmo item, uma vez: sem a
+   330	       resposta, a trava do item 6 segura tudo, e aí registre `Curadoria: FALHOU (invariantes sem
+   331	       classificação)`. Os itens aceitos entram no `delta.txt`, menos a promoção: o delta `promovido_para=`
+   332	       só entra quando o mecanismo já está na branch padrão, então a promoção aceita vira pendência na
+   333	       ficha; as linhas de invariante aceitas (a `inv` do curador, o `ajuste:`, ou
+   334	       `REMOVER INV-nnn` / `REMOVER LM-nnn`), em `"$STG/inv-linhas.txt"`. Sem linha `PERGUNTA`, não há
+   335	       pergunta de regra.
+   336	    6. **Aplicar numa cópia e conferir 3 vezes.** Com `delta.txt` e `inv-linhas.txt` vazios (nada
+   337	       contado, nada aceito), pule este item, o commit e o envio, faça o item 7 e registre
+   338	       `Curadoria: nada aplicado`.
+   339	       `bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" sdd/playbook.md > "$STG/novo.md"`
+   340	       (exit 2 ⇒ nada foi impresso: corrija o delta) →
+   341	       `bash sdd/bin/playbook-lint.sh "$STG/novo.md"` (exit 0 obrigatório) →
+   342	       `bash sdd/bin/playbook-lint.sh --anti-collapse sdd/playbook.md "$STG/novo.md"` (bloqueou pelo
+   343	       tamanho ⇒ aplique em 2 ou mais commits: contadores e `ADD` primeiro, depois uma mudança de
+   344	       conteúdo por vez) → com invariantes,
+   345	       `bash sdd/bin/playbook-curator.sh --aplicar-inv "$STG/inv-linhas.txt" sdd/invariants.md > "$STG/inv.md"`
+
+exec
+/bin/zsh -lc "nl -ba .agents/skills/sdd-release/SKILL.md | sed -n '345,380p'" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+   345	       `bash sdd/bin/playbook-curator.sh --aplicar-inv "$STG/inv-linhas.txt" sdd/invariants.md > "$STG/inv.md"`
+   346	       (sem linha aprovada, `cp sdd/invariants.md "$STG/inv.md"`) e
+   347	       `bash sdd/bin/playbook-curator.sh --validar-inv "$STG/novo.md" "$STG/inv.md"` (exit 0
+   348	       obrigatório; `🔴 trava INV:` diz a regra, a lição e as saídas: volte à pessoa, nunca copie; nunca
+   349	       edite as invariantes à mão).
+   350	       Só então `cp "$STG/novo.md" sdd/playbook.md` e, se mudou, `cp "$STG/inv.md" sdd/invariants.md`.
+   351	    7. **Evidência** em `sdd/reports/evidence/{F}/`, no formato `$ comando`, a saída e `[exit=N]` com o
+   352	       exit real do comando: `CURATOR-colheita.log` (o comando do item 2, `colheita.txt` e o exit guardado em
+   353	       `colheita.rc`) e `CURATOR-delta.log` (o comando do item 6, o `delta.txt` e o exit dele). E o registro do que já foi julgado, para a próxima publicação desta feature não contar
+   354	       de novo, ao lado do ledger: `grep ' · fp=' "$STG/colheita.txt" >> sdd/releases/{F}/CURATOR-colhidos.txt`.
+   355	    8. **Commit à parte:** `git add sdd/playbook.md` (e `sdd/invariants.md`, se mudou) e
+   356	       `sdd/releases/{F}/CURATOR-colhidos.txt` (sem o registro, a próxima publicação desta feature conta tudo
+   357	       de novo), só se o projeto versiona os ledgers (`git ls-files sdd/releases` não vem vazio); senão, não
+   358	       adicione e diga que o registro fica só nesta pasta e que uma frente nova da mesma feature pode contar
+   359	       de novo. Os 2 logs `CURATOR-*.log` entram só se o projeto versiona evidência (`git check-ignore -q`
+   360	       neles sai 1 e `git ls-files sdd/reports/evidence` não vem vazio). `git diff --cached --name-only` só pode listar esses arquivos; commit
+   361	       `chore(playbook): curadoria {F} — <n> delta(s)`. Nunca `--no-verify`: o pre-commit vigia o playbook.
+   362	    9. **Recibo e envio.** Mostre o recibo **Decidi sozinho**: 1 linha por contagem aplicada, em palavras
+   363	       simples, e como desfazer (`git revert <sha do commit da curadoria>`). Depois, a pergunta
+   364	       `[D1 · não se desfaz]` **Posso enviar o commit da curadoria para a branch padrão?**, dizendo se
+   365	       esse push publica sozinho (a resposta do item 7 da FASE 1). **sim** ⇒ aterrisse como no passo 5
+   366	       (worktree temporário de `origin/{default_branch}` + cherry-pick; em conflito, não resolva à mão:
+   367	       `git cherry-pick --abort`, e reaplique o `"$STG/delta.txt"` sobre o playbook da base com `--aplicar`, que recalcula os IDs dos
+   368	       `ADD`, o `"$STG/inv-linhas.txt"` sobre as invariantes da base com `--aplicar-inv`, e traga o registro e os
+   369	       logs do item 8 da frente, com `git checkout <sha do commit da curadoria> -- <cada arquivo>`, senão a
+   370	       próxima publicação conta de novo), rode ali de novo o `playbook-lint.sh` e, com invariantes, o `--validar-inv` (ID repetido
+   371	       com a base ⇒ renumere o novo, nunca o da base) e faça o push como no passo 8. **deixar para a
+   372	       próxima publicação** ⇒ o commit fica na branch da frente; registre na ficha
+   373	       `Curadoria: commit <sha> não enviado` e o comando de envio. Com mudança de regra e envio na mesma
+   374	       resposta, as 2 perguntas vão numeradas.
+   375	    A ficha (18) ganha `Curadoria: <n> propostos / <m> aplicados / <p> promoções`. Promoção aceita ⇒ o
+   376	    mecanismo é uma correção própria, com um caso que falha antes dele; o delta `promovido_para=` só
+   377	    entra quando o mecanismo já está na branch padrão. Detalhes do formato na skill `sdd-playbook`.
+   378	18. **Imprimir a ficha** como último bloco do relatório.
+   379	19. **DoD fechado?** Oferecer arquivar (15b) e marcar a ficha como ✅ — com 1 OK.
+   380	20. **Prompt da próxima sessão** (o único opcional): se "Falta" não está vazio, oferecer.
+
+codex
+Vou executar só o 17b da skill, começando pelo item 1, usando os scripts existentes e sem abrir subagente.
+exec
+/bin/zsh -lc 'pwd && git status --short && git branch --show-current && ls sdd && ls sdd/bin | head -80' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+main
+WORKFLOW_CONTRACTS.yaml
+bin
+config.example.yaml
+config.yaml
+features
+fixtures
+handoffs
+hooks
+invariants.md
+patterns
+playbook.md
+releases
+reports
+review
+reviews
+templates
+adapters
+adversarial-review-gate.sh
+adversarial-review.sh
+avaliador-guard.sh
+contexto-lint.sh
+contraste.sh
+design-lint.py
+docs-extract-decisions.sh
+eval-agree.sh
+gate-baseline.sh
+gate-shell-evidencia.sh
+governanca-bloco.py
+governanca-fronteira.sh
+handoff-lint.py
+kb-dominios.py
+patterns-lint.sh
+playbook-curator.sh
+playbook-lint.sh
+prompt-drift-scan.sh
+report-lint.py
+sdd-decisoes-lint.sh
+sdd-fluxo.sh
+skill-lint.py
+test-baseline.sh
+verify-gate.sh
+
+exec
+/bin/zsh -lc 'ls sdd/features && ls sdd/features/DEMO 2>/dev/null || true; ls sdd/archive/DEMO 2>/dev/null || true; ls sdd/releases/DEMO 2>/dev/null || true; ls sdd/handoffs | grep -i demo || true; ls sdd/reports/evidence 2>/dev/null | grep -i demo || true' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+DESIGN_DEMO.md
+s1.yaml
+DEMO
+
+exec
+/bin/zsh -lc 'cat sdd/config.yaml' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+# sdd/config.yaml — copiado de config.example.yaml pelo `init`. Preencha para o seu projeto.
+#
+# As skills consultam estes slots ({{TEST_CMD}}, {{DEPLOY_CMD}}, …) em vez de fixar comandos.
+# Slot VAZIO significa "pule este passo e diga que pulou" — nunca "adivinhe um comando".
+# Parser: chaves simples `chave: valor` e mapas de 1 nível; sem âncoras, sem listas complexas.
+
+project:
+  name: meu-projeto
+  # Comando de teste, usado por gates `kind: test`.
+  test_cmd: ""
+  # Checagem de tipos/compilação, usada por gates `kind: typecheck`.
+  typecheck_cmd: ""
+  # Checagem de sintaxe por tipo de arquivo (fase Release, passo 0a).
+  lint_cmd: ""
+  # Branch de onde nascem as features. Nunca se trabalha nela diretamente (o pre-commit de sdd/hooks
+  # recusa commit direto nela quando ela já tem remoto).
+  default_branch: main
+  # Teto, em KB, do arquivo de contexto do agente (AGENTS.md, CLAUDE.md, GEMINI.md, .cursorrules) num
+  # commit: ele entra inteiro em toda sessão do agente. Acima disso o pre-commit recusa. Vazio = 100.
+  context_file_max_kb: 100
+
+# Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho
+# do avaliador de contexto fresco. `sql` também diz o que conta como migration (report-lint.py).
+# Exemplos: sql: "db/migrations/**" · api: "src/api/**" · ui: "src/ui/**" · infra: "deploy/**"
+layers:
+  api: ""
+  ui: ""
+  sql: ""
+
+# Evidência do build (report-lint.py): a partir de quantas camadas de `layers:` tocadas pelo File
+# Manifest do DESIGN a avaliação em contexto fresco é obrigatória. Abaixo disso, a linha
+# `avaliador: N.A. (<motivo>)` no BUILD_REPORT vale. 1 = avaliador sempre. Inteiro >= 1.
+evidence:
+  require_avaliacao_layers: 2
+
+deploy:
+  # Roda na fase Release, depois da única aprovação humana.
+  cmd: ""
+  # Detecta o que chegou em produção sem commit correspondente (função publicada pelo console,
+  # migration aplicada pelo painel). Vazio = você só deploya via git e esse drift não existe.
+  drift_check_cmd: ""
+
+release:
+  # Bloqueadores próprios do projeto: começa com regras genéricas, cresce a cada incidente.
+  landmines_cmd: ""
+  # Opcional, pós-deploy (changelog, comunicado, ledger).
+  changelog_hook: ""
+
+review:
+  # Revisão adversarial (sdd/bin/adversarial-review.sh; docs/adversarial-review.md): uma engine revisa o
+  # diff, OUTRA audita a revisão. As engines moram no registry (1 linha por engine; engine nova = 1 linha).
+  registry: sdd/review/registry.tsv
+  # Quem revisa e quem audita: ids do registry (claude, codex, gemini, openrouter ou openrouter:<modelo>).
+  # Uma lista separada por vírgula é a cadeia: a 1ª é a padrão, as outras entram se a anterior ficar sem
+  # cota. Vazio = a skill pergunta. O auditor precisa ser outra engine (igual = exit 67; com uma engine
+  # só, rode com --um-engine e a revisão registra "diversidade: nenhuma").
+  revisor1: ""
+  auditor: ""
+  # Pasta das revisões (diff, respostas, META.txt). Precisa estar ignorada pelo git (.gitignore ou
+  # .git/info/exclude): o script recusa gravar o diff numa pasta que iria para o repositório.
+  output_dir: sdd/reports/reviews
+  # Teto, em KB, do contexto SDD (BRAINSTORM, DEFINE, DESIGN, BUILD_REPORT) enviado junto do diff.
+  # Acima disso o BRAINSTORM sai primeiro. Inteiro > 0.
+  context_max_kb: 180
+  # Superfície de segurança do projeto, em globs separados por vírgula (ex.: "auth/**,api/public/**").
+  # Uma linha do File Manifest que casa um destes globs torna a revisão do DESIGN obrigatória
+  # (sdd/bin/sdd-fluxo.sh review-design) e, num diff que toca um caminho destes, aciona o 2º revisor da
+  # revisão adversarial (uma chamada de engine a mais, que pode ser paga). Vazio = só os termos fixos do script (auth, login, token,
+  # senha, password, jwt, GRANT, rota pública) e os globs de layers.sql.
+  security_globs: ""
+
+# Fluxo encadeado (sdd/templates/fragments/FLUXO_ENCADEADO.md). false = cada fase termina e mostra o
+# Próximo passo, como sempre. true = com o gate da fase verde, a fase seguinte começa na mesma sessão,
+# as perguntas [auto · de rotina] seguem a opção recomendada e vão para o recibo "Decidi sozinho"; as
+# marcadas D1 a D5 continuam perguntadas e a release nunca começa sozinha. Não liga nem desliga o jeito
+# de conversar das skills.
+flow:
+  autonomous: false
+
+# Preenchido pelo sdd-open (`init`): agentes para os quais os adaptadores são gerados.
+vendors: ""
+# Editor e pasta de worktrees são usados pela skill de nova sessão (sdd-new-session).
+editor: ""
+worktree_base: ""
+
+# Skill de engenharia de prompt usada pela fase Build quando o DESIGN inventaria prompts de
+# producao. Vem preenchida com a skill que acompanha o pacote; troque pelo nome da sua se
+# tiver outra. Vazio = a fase Build bloqueia o item de prompt e pede decisao, em vez de
+# improvisar o texto que vai para producao.
+prompts:
+  builder_skill: "sdd-prompt-builder"
+  # Se o projeto chama a IA por uma função própria, a expressão do parâmetro dela: o script
+  # sdd/bin/prompt-drift-scan.sh procura essa expressão seguida de texto fixo. Exemplos:
+  # "systemPrompt:" ou "callLLM\\(" (entre aspas duplas, a contrabarra vai dobrada). Vazio = a
+  # varredura vê só os sinais genéricos, e avisa disso.
+  wrapper_pattern: ""
+
+exec
+/bin/zsh -lc "sed -n '1,240p' .agents/skills/sdd-playbook/references/curator.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+# Curador do playbook — brief do agente fresco do passo 17b da `sdd-release`
+
+Você é o curador: **julga** o que o script colheu e devolve uma tabela. Você não é quem citou as
+landmines no DESIGN nem quem conduziu a release. Você **não decide** (a pessoa decide o que muda a regra
+do método) e **não escreve** (quem aplica é a `sdd-release`, depois do OK). E você escreve para alguém
+que vai decidir **sem abrir o playbook**.
+
+Quem despacha este brief é o passo 17b (curadoria) da `sdd-release`, pela escada de
+`sdd-build/references/contexto-fresco.md`: subagente em contexto limpo; sem subagente, sessão nova
+(`sdd-fluxo.sh despachar curador …`, exit 40). Contrato de máquina: `sdd/WORKFLOW_CONTRACTS.yaml` ›
+`curador`. Quem confere o seu retorno é `sdd/bin/playbook-curator.sh --conferir-bloco`.
+
+## Entrada (só isto chega — 5 campos)
+
+```text
+feature: <F> · staging: <pasta> · colheita: <pasta>/colheita.txt · playbook: <abs>/sdd/playbook.md · worktree: <abs>
+```
+
+Se vier qualquer coisa além desses 5 campos (a conversa da release, o diff, "o que foi feito", uma
+hipótese), escreva `CONTAMINAÇÃO: sim — <o que veio>` no bloco e julgue **só pelos arquivos** mesmo assim.
+A única exceção é o redespacho: um 6º campo `conferencia:`, com as linhas `🔴 bloco:` que o conferidor
+reprovou no seu bloco anterior, não é contaminação: conserte exatamente o que elas dizem.
+
+## Proibições
+
+- **Nunca escrever**: nem o playbook, nem as invariantes, nem a pasta de staging, nem evidência. Os
+  comandos que você roda são de leitura (`cat`, `grep`, `sed -n`, `awk`, `playbook-lint.sh --grep`,
+  `playbook-curator.sh --cruzar -`). **Não rode** `playbook-curator.sh --colher`, `--preparar` nem
+  `--self-test`: eles gravam (o trace, a pasta de staging). A sua única entrega é o bloco, na resposta. A
+  release compara o projeto e a pasta de staging antes e depois do seu trabalho; um arquivo mexido, criado
+  ou apagado descarta o bloco.
+- **`AUTO` só em linha `contador`**, e com a evidência **igual** à da colheita (o mesmo `arquivo:linha`
+  da linha `DELTA`). Nada mais entra sem pergunta.
+- **`ACEITAR` e `AUTO` exigem `arquivo:linha`** que outra pessoa consegue abrir, com o arquivo dentro da
+  pasta `staging:`. "Por raciocínio" não é evidência.
+- **Toda linha da colheita aparece no bloco.** Descartar em silêncio é o modo de falha que este papel
+  existe para impedir.
+- **Não invente contagem**: linha `contador` só para `DELTA` que está na colheita. Contagem e aposentadoria
+  da mesma lição não valem juntas: se você recomendar aposentar, a linha `contador` dela é
+  `DESCARTAR (a lição vai ser aposentada)`.
+- **Não conserte candidato rejeitado** inventando evidência; só relate.
+- **Não reescreva, comprima nem renumere** o playbook: só deltas da gramática abaixo.
+
+## Processo
+
+1. Leia a `colheita:` inteira. Leia a seção `## Sempre` do `playbook:` e, para cada `LM-nnn` da colheita,
+   o bullet inteiro, com as linhas de continuação (`grep -n -A11 "\[LM-nnn\]" sdd/playbook.md`, de dentro do
+   `worktree:`).
+2. Por linha da colheita:
+   - `DELTA … ajudou+1` ou `mordeu+1`: abra o `evidencia=arquivo:linha` na pasta `staging:` e confira
+     que a linha diz o que a colheita diz e que aquela lição é o assunto da linha (tabela com ✔ na coluna do veredito;
+     achado cuja causa é a landmine, não só a cita de passagem). Confere ⇒ linha
+     `contador` com `AUTO`. Não confere ⇒ `DESCARTAR (motivo)`.
+   - `SUGESTAO mordeu? LM-nnn`: leia o achado inteiro e o bullet. A causa do achado é a regra do
+     bullet? Sim ⇒ linha `sugestao` com o delta `LM-nnn mordeu+1`, a evidência e `ACEITAR` (o script não
+     colheu essa contagem: ela vira pergunta, nunca entra sozinha). Não ⇒ `DESCARTAR (motivo)`. Na
+     dúvida ⇒ `NAO_JULGADO`.
+   - `CANDIDATO #n → LM-xxx`: releia o bloco do candidato na fonte e confira que a `evidencia:` existe
+     de verdade. Redija o bullet final: regra em até 3 linhas, `**Do instead:**` concreto, `→ ficha:`
+     e `promovido_para: —`. A linha `delta: ADD …` da colheita é o ponto de partida, não o resultado.
+     Linha `add` com `ACEITAR`. Duplica um bullet que já existe? Proponha `refine` do existente, com a evidência
+     começando por `arquivo:linha` e citando `candidato #n` depois dele, ou `DESCARTAR (motivo)`.
+   - `REJEITADO`: relate na linha `REJEITADOS:`, com o `arquivo:linha` e o motivo.
+   - `PROMOVER? LM-nnn`: é pergunta obrigatória. Transforme a sugestão genérica numa proposta concreta:
+     o arquivo do mecanismo (um hook de `sdd/hooks/`, o comando de `release.landmines_cmd`, uma
+     asserção no Verify Gate), o que ele confere em 1 frase e o caso que falha antes dele. Linha
+     `promover` com `PERGUNTA OBRIGATÓRIA`, nunca `ACEITAR`: promover é uma correção própria, e o
+     delta `promovido_para=` só entra de verdade quando o mecanismo já existe na branch padrão.
+   - `IGNORADO`, `JA_COLHIDO` e `TABELA_SEM_CABECALHO`: relate na linha `IGNORADOS/JA_COLHIDOS:`, citando o
+     ID, o arquivo ou o `arquivo:linha` que a colheita traz.
+   - `INV_PENDENTE LM-nnn`: a landmine entrou no universo das invariantes sem classificação, agora ou numa
+     release antiga (`já no universo`). Leia o
+     bullet e proponha **uma** linha completa, na gramática de `sdd/invariants.md`: a invariante
+     (`estado=`, a regra, `· por quê:`, e `· tarefa:` se `auto` ou `· motivo:` se `humano`; `estado=ok`
+     só com um check que existe) ou o descarte (`- [LM-nnn] descartado :: <motivo>`). Linha `inv`.
+3. **Cruzamento com as invariantes.** Se `<worktree>/sdd/invariants.md` existe e o seu bloco propõe
+   `TOMBSTONE`, `promovido_para=` ou `mordeu+1`, rode, de dentro do `worktree:`:
+   `bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md <<'FIM_DOS_DELTAS'`, as linhas da coluna Delta, uma por linha, e `FIM_DOS_DELTAS` (com o delimitador entre aspas, o shell não executa nada do texto)
+   (só leitura; exit 3 = há aviso). Cada `INV_AFETADA` vira uma linha `inv` logo abaixo do delta que a
+   causa, com o que vem depois de `ajuste: ` na coluna Delta (a linha inteira da invariante, ou
+   `REMOVER LM-nnn` quando a lição aposentada estava em `## Descartados`) e, na linguagem simples, que os dois
+   andam juntos. Nessa entrada, nunca passe as linhas de tipo `inv`: elas não são delta. `INV_AFETADA` sem ajuste aceitável ⇒ recomende `DESCARTAR` a aposentadoria.
+4. **Em linguagem simples (toda linha).** Até 2 frases que a pessoa decide sem abrir o playbook: **o que
+   aconteceu** nesta feature e **o que muda se aceitar** (em `AUTO`, o que foi contado). Termo técnico
+   do produto vale; código do método não: nada de `LM-nnn`, `INV-nnn`, "delta", "ajudou/mordeu",
+   "tombstone" nem `sup:` nessa coluna.
+5. **Sanidade do conjunto:** nenhum `ADD` em `Sempre` sem dizer por que a lição não tem superfície que
+   se procure; IDs de `ADD` em sequência a partir do que a colheita propôs; barra vertical dentro de uma
+   célula vai como `\|`.
+
+## Gramática do delta (coluna Delta)
+
+```text
+LM-020 ajudou+1
+LM-016 mordeu+1
+LM-004 promovido_para=<caminho do mecanismo>
+ADD <seção> :: sup: `termo1` `termo2` :: regra. **Do instead:** ação. → ficha: — · promovido_para: —
+TOMBSTONE LM-nnn :: motivo
+REFINE LM-nnn :: novo texto. **Do instead:** ação.
+```
+
+## Retorno (a última coisa da resposta, verbatim)
+
+Tipos de linha: `contador` · `sugestao` · `add` · `refine` · `tombstone` · `promover` · `inv`.
+Recomendações: `AUTO` · `ACEITAR` · `DESCARTAR (motivo)` · `NAO_JULGADO` · `PERGUNTA OBRIGATÓRIA`.
+
+```text
+<<<CURADORIA
+FEATURE: <F> · colheita: <n> deltas / <c> candidatos / <r> rejeitados / <p> promoções / <s> sugestões · staging: <pasta>
+| # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recomendação |
+|---|------|----|-------|-----------|----------------------|--------------|
+| 1 | contador | LM-020 | LM-020 ajudou+1 | DESIGN_<F>.md:57 (✔ tratado) | O aviso sobre <tema> foi seguido no desenho e evitou o erro. | AUTO |
+| 2 | contador | LM-016 | LM-016 mordeu+1 | AVAL-AT-002.log:3 (❌ com a causa citada) | O erro de <tema> aconteceu de novo nesta feature, mesmo com o aviso. | AUTO |
+| 3 | sugestao | LM-030 | LM-030 mordeu+1 | AVAL-AT-005.log:12 — causa confirmada: <1 linha> | <o que aconteceu, em 1 frase>. Contar isso registra que o aviso não bastou. | ACEITAR |
+| 4 | add | LM-045 | ADD Reviews / harness :: sup: `termo` :: regra. **Do instead:** ação. → ficha: — · promovido_para: — | BUILD_REPORT_<F>.md:231 | <o que aconteceu>. Guardar a lição avisa toda sessão que mexer nessa área. | ACEITAR |
+| 5 | promover | LM-004 | LM-004 promovido_para=sdd/hooks/pre-commit | mordeu=2 · mecanismo: <arquivo e o que confere> · caso que falha antes: <nome> | O mesmo erro já aconteceu 2 vezes. Virar trava automática impede a 3ª, ao custo de uma correção própria. | PERGUNTA OBRIGATÓRIA |
+| 6 | inv | INV-011 | - [INV-011] estado=ok origem=seed check=<caminho> :: <regra> · por quê: <texto> | --cruzar: INV_AFETADA INV-011 (linha 7) | Aposentar o aviso antigo pede ajustar a regra permanente que dependia dele, no mesmo passo. | ACEITAR |
+REJEITADOS: <arquivo:linha — motivo> | nenhum
+NAO_JULGADO: <o que não deu para confirmar e por quê> | nenhum
+IGNORADOS/JA_COLHIDOS: <lista> | nenhum
+CONTAMINAÇÃO: não | sim — <o que veio além dos 5 campos>
+>>>
+```
+
+O bloco é conferido por programa: linha da colheita ausente, `AUTO` fora de `contador` ou diferente da
+colheita (ID, verbo, `+1` e `arquivo:linha`), `ACEITAR` sem `arquivo:linha` que exista no `staging:`,
+promoção sem `PERGUNTA OBRIGATÓRIA`, célula de linguagem simples vazia, delta fora da gramática, arquivo
+do projeto ou do `staging:` mexido: qualquer um faz a release descartar o bloco e despachar de novo.
+
+exec
+/bin/zsh -lc "find sdd -maxdepth 4 -iname '*DEMO*' -o -iname '*demo*' | sort" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+sdd/features/DESIGN_DEMO.md
+sdd/releases/DEMO
+sdd/reports/BUILD_REPORT_DEMO.md
+sdd/reports/evidence/DEMO
+
+exec
+/bin/zsh -lc "ls -la sdd/releases && echo '---evidence---' && ls -la sdd/reports/evidence 2>/dev/null && echo '---handoffs---' && ls -la sdd/handoffs && echo '---archive---' && ls -la sdd/archive 2>/dev/null" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ exited 1 in 0ms:
+total 0
+drwxr-xr-x@  3 robertoduarte  staff   96 Nov  5 13:44 .
+drwxr-xr-x@ 18 robertoduarte  staff  576 Nov  5 13:44 ..
+drwxr-xr-x@  3 robertoduarte  staff   96 Nov  5 13:44 DEMO
+---evidence---
+total 0
+drwxr-xr-x@ 3 robertoduarte  staff   96 Nov  5 13:44 .
+drwxr-xr-x@ 4 robertoduarte  staff  128 Nov  5 13:44 ..
+drwxr-xr-x@ 3 robertoduarte  staff   96 Nov  5 13:44 DEMO
+---handoffs---
+total 0
+drwxr-xr-x@  2 robertoduarte  staff   64 Nov  5 13:44 .
+drwxr-xr-x@ 18 robertoduarte  staff  576 Nov  5 13:44 ..
+---archive---
+
+exec
+/bin/zsh -lc "sed -n '1,260p' sdd/features/DESIGN_DEMO.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+# DESIGN: DEMO
+
+| Attribute | Value |
+|---|---|
+| **Feature** | DEMO |
+| **Date** | 2026-11-05 |
+
+## Landmines aplicáveis
+
+| LM-nnn | Superfície | Tratamento |
+|---|---|---|
+| LM-001 | `conferir.sh` | ✔ o gate roda com fixture dos 2 lados, e um mutante derruba a asserção |
+
+exec
+/bin/zsh -lc "cat sdd/reports/BUILD_REPORT_DEMO.md; echo '--- release DEMO ---'; find sdd/releases/DEMO -maxdepth 2 -type f -print -exec cat {} \\;" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+# BUILD REPORT: DEMO
+
+| Attribute | Value |
+|---|---|
+| **Feature** | DEMO |
+| **Date** | 2026-11-05 |
+
+## Candidatos ao playbook
+
+```text
+<<<CANDIDATO_PLAYBOOK
+secao: Backend
+sup: `conferir.sh` `nota_cancelada`
+regra: A conferência somava nota cancelada no total do mês. **Do instead:** filtrar a situação antes de somar.
+evidencia: AVAL-01.log:2
+ficha: —
+mordeu_antes: —
+>>>
+```
+--- release DEMO ---
+sdd/releases/DEMO/s1.yaml
+feature_id: DEMO
+estado: shipado
+
+codex
+A publicação do DEMO já terminou; agora vou conferir o que essa feature ensinou para as próximas. Começando o item 1, staging por cópia.
+exec
+/bin/zsh -lc 'bash sdd/bin/playbook-curator.sh --preparar DEMO; rc=$?; echo "EXIT=$rc"' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 108ms:
+staging: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/tmp/sdd-curadoria-569be40a3639/DEMO
+copiado: sdd/features/DESIGN_DEMO.md
+copiado: sdd/reports/BUILD_REPORT_DEMO.md
+copiado: sdd/reports/evidence/DEMO/AVAL-01.log
+copiado: sdd/releases/DEMO/s1.yaml
+RESULTADO: STAGING PRONTO (4 arquivo(s))
+→ os originais não foram tocados; rode --colher "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/tmp/sdd-curadoria-569be40a3639/DEMO" sdd/playbook.md e guarde a saída em colheita.txt nessa pasta.
+EXIT=0
+
+codex
+Item 1 concluído: staging criado com 4 arquivos. Agora item 2, colhendo do playbook e das invariantes.
+exec
+/bin/zsh -lc 'STG="/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/tmp/sdd-curadoria-569be40a3639/DEMO"
+bash sdd/bin/playbook-curator.sh --colher "$STG" sdd/playbook.md --inv sdd/invariants.md > "$STG/colheita.txt"; rc=$?; echo "$rc" > "$STG/colheita.rc"; echo "RC=$rc"; echo '"'---colheita.txt---'; cat \""'$STG/colheita.txt"; echo '"'---rc file---'; cat \""'$STG/colheita.rc"' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 51ms:
+RC=0
+---colheita.txt---
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_DEMO.md:12 · fp=a6ddbf2d7b
+CANDIDATO #1 → LM-005 · secao=Backend · sup=`conferir.sh` `nota_cancelada` · evidencia=AVAL-01.log:2 · fp=5b5b0f7865
+   delta: ADD Backend :: sup: `conferir.sh` `nota_cancelada` :: A conferência somava nota cancelada no total do mês. **Do instead:** filtrar a situação antes de somar. → ficha: — · promovido_para: —
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-01.log:3 · fp=95d69510f2
+INV_PENDENTE LM-002 (mordeu 0→1) · delta: LM-002 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-002 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-002] descartado :: <motivo>
+resumo: deltas=2 (ajudou=1 mordeu=1) candidatos=1 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+---rc file---
+0
+
+exec
+/bin/zsh -lc "sed -n '1,240p' sdd/bin/sdd-fluxo.sh" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+#!/usr/bin/env bash
+# sdd-fluxo.sh — decisores mecânicos do fluxo encadeado do SDD Open. Contrato de uso em
+# sdd/templates/fragments/FLUXO_ENCADEADO.md.
+#
+# Por que existe: "este DESIGN precisa de revisão?", "o loop de review convergiu?" e "a fase seguinte
+# pode começar sem perguntar?" eram decididos por leitura de prosa. Aqui viram exit code.
+#
+# USO-INICIO
+#   sdd-fluxo.sh review-design <DESIGN.md>
+#       0 EXIGIDO (≥ 3 arquivos novos no File Manifest, ou superfície de segurança: termo fixo,
+#         glob de review.security_globs ou de layers.sql) · 1 DISPENSAVEL · 64 manifest ilegível
+#         (quem chama RODA a revisão — default seguro — e registra o motivo)
+#   sdd-fluxo.sh loop --review <dir> --ledger <arquivo> --rodada N[a] [--teto 3]
+#                     [--avaliacao <AVALIACAO.md> --ciclo-avaliador K] [--recibo "nome AAAA-MM-DD"]
+#                     [--log <arquivo>]
+#       0 PRONTO · 10 CONTINUAR · 20 BLOQUEADO (D4 teto, D4 ciclos, D5 impasse de evidência)
+#       30 AGUARDANDO_RECIBO · 64 entrada ausente ou ilegível — nunca PRONTO por omissão
+#   sdd-fluxo.sh despachar <papel> <FEATURE> <brief.md>
+#       40 AGUARDANDO_HUMANO: brief em sdd/reports/briefs/BRIEF_<papel>_<FEATURE>.md e a parada ⏸️ · 64
+#   sdd-fluxo.sh seguir <fase> <DEFINE.md> <próxima> [--parar]
+#       0 SEGUIR (linha de transição) · 1 PARAR (o motivo) · 64 uso ou flow.autonomous inválido
+#   sdd-fluxo.sh estado
+#       0 encadeamento ligado · 1 desligado · 64 flow.autonomous inválido
+#   sdd-fluxo.sh --self-test
+#       um cenário por exit sobre sdd/fixtures/fluxo/ e o do `| tee`; 0 quando todos batem
+# USO-FIM
+#
+# Ledger do loop: 1 linha por achado, lida por CÉLULA — `| R1 | HIGH | APLICADA | rodada=2 | arquivo:linha |`.
+# Toda saída que não é sucesso termina em `RESULTADO: <PALAVRA>` + `→ <o que fazer>`.
+# ⚠️ bash 3.2 (o /bin/bash do macOS: nada além do que ele tem) · o núcleo de dados é Python 3.9 stdlib.
+
+set -u
+
+BIN="$(cd "$(dirname "$0")" && pwd)"
+export SDD_FLUXO_BIN="$BIN"
+
+uso() {
+  [ -n "${1:-}" ] && echo "🛑 sdd-fluxo: ${1}" >&2
+  sed -n '/^# USO-INICIO$/,/^# USO-FIM$/p' "$0" | sed '1d;$d;s/^# \{0,1\}//' >&2
+  printf 'RESULTADO: ERRO DE USO\n→ rode com um dos verbos acima.\n' >&2
+  exit 64
+}
+
+precisa_python() { # [$@ do loop]: com --log, o log também diz o 64 (nunca fica um log antigo no lugar)
+  command -v python3 >/dev/null 2>&1 && return 0
+  msg='🛑 sdd-fluxo: python3 não encontrado no PATH.'
+  seta='→ instale o Python 3 (3.9 ou mais novo) e rode de novo.'
+  echo "$msg" >&2
+  printf 'RESULTADO: ERRO DE USO\n%s\n' "$seta" >&2
+  log=""; tudo="$*"
+  while [ $# -gt 0 ]; do [ "$1" = "--log" ] && [ $# -ge 2 ] && log="$2"; shift; done
+  if [ -n "$log" ]; then
+    mkdir -p "$(dirname "$log")" 2>/dev/null
+    printf '$ sdd-fluxo.sh loop %s\n%s\nRESULTADO: ERRO DE USO\n%s\n[exit=64]\n' "$tudo" "$msg" "$seta" > "$log" 2>/dev/null
+  fi
+  exit 64
+}
+
+raiz() { git rev-parse --show-toplevel 2>/dev/null || pwd; }
+
+# Lista explícita, sem faixa: no bash 3.2 com locale UTF-8, [A-Za-z] segue a ordenação do locale e aceita
+# letra acentuada (avaliação, INTEGRAÇÃO).
+LETRAS='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'
+nome_ok() { case "$1" in ''|*[!"$LETRAS"]*) return 1 ;; esac; return 0; }
+
+# ── despachar (bash puro) ────────────────────────────────────────────────────────────────────────
+cmd_despachar() {
+  [ $# -eq 3 ] || uso "despachar exige <papel> <FEATURE> <brief>"
+  papel="$1"; feat="$2"; brief="$3"
+  nome_ok "$papel" || uso "papel inválido: '$papel' (letras, números, - e _)"
+  nome_ok "$feat" || uso "FEATURE inválida: '$feat' (letras, números, - e _)"
+  if [ ! -r "$brief" ] || [ ! -s "$brief" ] || [ -d "$brief" ]; then
+    echo "🛑 sdd-fluxo: brief ausente, vazio ou ilegível: $brief" >&2
+    printf 'RESULTADO: ERRO DE USO\n→ grave o brief num arquivo e rode de novo; nada foi gravado em sdd/reports/briefs/.\n' >&2
+    exit 64
+  fi
+  R="$(raiz)"
+  rel="sdd/reports/briefs/BRIEF_${papel}_${feat}.md"
+  mkdir -p "$R/sdd/reports/briefs" || exit 64
+  if [ ! "$brief" -ef "$R/$rel" ]; then
+    cp "$brief" "$R/$rel" || exit 64
+  fi
+  cmp -s "$brief" "$R/$rel" || { echo "🛑 sdd-fluxo: a cópia do brief não confere: $rel" >&2; exit 64; }
+  # texto por papel: o que o agente fresco lê, o bloco que volta e o que ainda não aconteceu
+  le='o DEFINE'; antes=''; nao_feito='nada foi publicado e o relatório não foi gravado.'
+  case "$papel" in
+    avaliador)          retorno='o bloco inteiro da resposta, de `<<<AVALIACAO` até `>>>` (com a linha `VEREDITO: …`)' ;;
+    cartografo)         le='o código do domínio'
+                        retorno='o bloco que começa com `<<<CONTEXTO` até `>>>`'
+                        nao_feito='nada foi gravado em sdd/contexto/.' ;;
+    revisor-governanca) retorno='o bloco que começa com `<<<GOVERNANCA` até `>>>`'
+                        nao_feito='o relatório de governança não foi gravado; o DEFINE está marcado como pendente (o build não passa até a revisão voltar).' ;;
+    curador)            le='a colheita do playbook'
+                        antes='A publicação já terminou e não depende deste passo; '
+                        retorno='o bloco que começa com `<<<CURADORIA` até `>>>`'
+                        nao_feito='a curadoria do playbook ainda não foi aplicada; nada foi despublicado.' ;;
+    *)                  retorno='o bloco final da resposta (o que começa com <<<)' ;;
+  esac
+  printf '⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: %s).\n\n' "$papel"
+  printf '**Por que parei:** %sa conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.\n' "$antes"
+  printf '**Onde:** numa janela nova do seu agente, na pasta %s.\n' "$R"
+  printf '**Passos:**\n'
+  printf '1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.\n'
+  printf '2. Cole o conteúdo de %s → o agente começa a ler %s.\n' "$rel" "$le"
+  printf '3. Quando ele terminar, copie %s e cole aqui → é o que eu preciso para continuar.\n' "$retorno"
+  printf '**O que não foi feito:** %s\n' "$nao_feito"
+  printf '**Brief:** %s\n' "$rel"
+  printf '**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.\n\n'
+  printf 'Quando terminar, me peça de novo, eu continuo daqui.\n'
+  printf 'RESULTADO: AGUARDANDO_HUMANO\n→ quando a pessoa colar o retorno, continue do passo que parou.\n'
+  exit 40
+}
+
+# ── núcleo de dados (Python 3.9 stdlib): review-design, loop, seguir, estado ─────────────────────
+nucleo() {
+  python3 -B - "$@" <<'PY'
+import fnmatch, os, re, shlex, subprocess, sys
+
+BIN = os.environ["SDD_FLUXO_BIN"]
+verbo, args = sys.argv[1], sys.argv[2:]
+
+
+def ler(caminho):
+    try:
+        with open(caminho, encoding="utf-8") as h:
+            return h.read()
+    except (OSError, UnicodeDecodeError):
+        return None
+
+
+def raiz_de(pasta):
+    try:
+        r = subprocess.run(["git", "-C", pasta, "rev-parse", "--show-toplevel"],
+                           capture_output=True, text=True)
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout.strip()
+    except OSError:
+        pass
+    return os.getcwd()
+
+
+def slot(caminho, bloco, chave):
+    """Valor de bloco.chave num YAML de 1 nível; None se o arquivo ou a chave não existem."""
+    texto = ler(caminho)
+    if texto is None:
+        return None
+    dentro = False
+    for ln in texto.splitlines():
+        if ln and not ln[0].isspace() and not ln.startswith("#"):
+            dentro = ln.split("#", 1)[0].strip() == bloco + ":"
+            continue
+        m = re.match(r"^\s+" + re.escape(chave) + r":\s*(.*)$", ln) if dentro else None
+        if m:
+            return m.group(1).split(" #", 1)[0].strip().strip('"').strip("'")
+    return None
+
+
+def erro_uso(msg, seta="rode `sdd-fluxo.sh` sem argumentos para ver o uso."):
+    print("🛑 sdd-fluxo: " + msg, file=sys.stderr)
+    print("RESULTADO: ERRO DE USO\n→ " + seta, file=sys.stderr)
+    sys.exit(64)
+
+
+# ── estado ───────────────────────────────────────────────────────────────────────────────────────
+def estado(raiz):
+    """(rc, linha): 0 ligado · 1 desligado · 64 valor inválido."""
+    v = slot(os.path.join(raiz, "sdd/config.yaml"), "flow", "autonomous")
+    if v == "true":
+        return 0, "encadeamento: ligado"
+    if v in (None, "", "false"):
+        return 1, "encadeamento: desligado"
+    return 64, ('⚠️ sdd-open: flow.autonomous = "%s" em sdd/config.yaml não é true nem false — '
+                "encadeamento desligado.\n→ troque por true (liga) ou false (desliga)" % v)
+
+
+def cmd_estado():
+    if args:
+        erro_uso("estado não recebe argumentos")
+    rc, linha = estado(raiz_de(os.getcwd()))
+    print(linha)
+    if rc == 64:
+        print("RESULTADO: SLOT INVÁLIDO")
+    sys.exit(rc)
+
+
+# ── review-design ────────────────────────────────────────────────────────────────────────────────
+TERMOS = re.compile(r"\bauth|\blogin\b|\btokens?\b|\bsenhas?\b|password|\bjwt\b|\bGRANT\b|rota p(?:ú|u)blica",
+                    re.I)
+
+
+def review_design(design):
+    """(rc, linhas): 0 EXIGIDO · 1 DISPENSAVEL · 64 manifest ilegível."""
+    texto = ler(design)
+
+    def ilegivel(msg):
+        return 64, ["🛑 sdd-fluxo: " + msg, "RESULTADO: MANIFEST ILEGÍVEL",
+                    "→ rode a revisão do DESIGN mesmo assim (default seguro) e registre o motivo no Advisor Ledger."]
+
+    if texto is None:
+        return ilegivel("DESIGN ausente ou ilegível: " + design)
+    # um File Manifest de exemplo dentro de bloco cercado não é o manifest do DESIGN
+    texto = re.sub(r"^(```|~~~).*?^\1[^\n]*$", lambda c: "\n" * c.group(0).count("\n"), texto, flags=re.M | re.S)
+    m = re.search(r"^##[ \t]+(?:\d+(?:\.\d+)*\.?[ \t]+)?File Manifest\b[^\n]*\n(.*?)(?=^## |\Z)",
+                  texto, re.M | re.S | re.I)
+    if not m:
+        return ilegivel("DESIGN sem ## File Manifest: " + design)
+    linhas = [ln for ln in m.group(1).split("\n") if re.match(r"^\|\s*\d+\s*\|", ln)]
+    if not linhas:
+        return ilegivel("## File Manifest sem linhas numeradas (| 1 | arquivo | Ação | …): " + design)
+
+    def acao(ln):
+        cel = ln.split("|")
+        a = re.sub(r"[*`_]", "", cel[3] if len(cel) > 3 else "").lower()
+        return re.match(r"^\s*(?:create|criar|novo|nova|new)\b", a) is not None
+
+    novos = sum(1 for ln in linhas if acao(ln))
+    raiz = raiz_de(os.path.dirname(os.path.abspath(design)))
+    cfg = os.path.join(raiz, "sdd/config.yaml")
+    globs = [g.strip() for g in (slot(cfg, "review", "security_globs") or "").split(",") if g.strip()]
+    sql = (slot(cfg, "layers", "sql") or "").strip()
+    if sql:
+        globs.append(sql)
+
+    seg, porque = 0, []
+    for ln in linhas:
+        cel = ln.split("|")
+        caminhos = re.findall(r"`([^`]+)`", cel[2] if len(cel) > 2 else "")
+        t = TERMOS.search(ln)
+        g = next((g for g in globs for c in caminhos if fnmatch.fnmatch(c, g)), None)
+        if t or g:
+            seg += 1
+            p = "termo " + t.group(0) if t else "glob " + g
+            if p not in porque:
+                porque.append(p)
+    sinais = []
+    if novos >= 3:
+        sinais.append("%d arquivo(s) novo(s) (limiar 3)" % novos)
+    if seg:
+        sinais.append("%d linha(s) do manifest em superfície de segurança (%s)" % (seg, ", ".join(porque[:5])))
+    if sinais:
+
+exec
+/bin/zsh -lc "sed -n '1,240p' sdd/bin/playbook-curator.sh" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+#!/usr/bin/env bash
+# playbook-curator.sh — curadoria do sdd/playbook.md (papel Curator do ACE): colhe dos documentos da
+# feature o que ajudou e o que mordeu, aplica um delta APROVADO, cruza o delta com sdd/invariants.md,
+# trava o par playbook + invariantes e confere o bloco que o curador (agente de contexto fresco)
+# devolveu. Este script nunca decide: quem julga é o curador (brief em
+# .agents/skills/sdd-playbook/references/curator.md) e quem decide a mudança de regra é a pessoa, no
+# passo 17b da sdd-release. Explicação longa: docs/playbook-curation.md.
+#
+# Uso:
+#   playbook-curator.sh --preparar <FEATURE> [--retomar]                      # exit 0 | 1 (sem documentos) | 2 | 64
+#   playbook-curator.sh --colher <dir> <playbook> [--desde AAAA-MM-DD] [--inv <invariantes>]
+#                                                                             # exit 0 | 1 (nada) | 2 | 64
+#   playbook-curator.sh --aplicar <delta> <playbook> [conf=AAAA-MM-DD]        # stdout = playbook novo; 0 | 2 | 64
+#   playbook-curator.sh --cruzar <delta|-> <playbook> <invariantes>           # 0 nada · 3 avisos · 2 inválido
+#   playbook-curator.sh --validar-inv <playbook> <invariantes>                # a trava; 0 | 2
+#   playbook-curator.sh --aplicar-inv <linhas> <invariantes>                  # stdout = invariantes novas; 0 | 2
+#   playbook-curator.sh --selar <staging>                                     # stdout = selo (sha256 por arquivo)
+#   playbook-curator.sh --conferir-bloco <colheita> <bloco> <playbook> <selo> <comparar>   # 0 | 2
+#   playbook-curator.sh --self-test                                           # vermelhos antes dos verdes; 0 | 2
+#
+# --preparar copia (nunca move) para <temp>/sdd-curadoria-<hash da raiz>/<FEATURE>/ os documentos da
+#   feature: DESIGN, BUILD_REPORT, AVAL*-*.log da evidência, AVALIACAO, ledger e HANDOFF. Só arquivo
+#   regular, nunca link; procura também em sdd/archive/<FEATURE>/. Limpa o que sobrou da release anterior;
+#   --retomar não copia nem limpa: só diz se há colheita na pasta (sessão nova depois da parada do curador).
+# --colher lê só o nível de cima de <dir>:
+#   DESIGN_*.md / BUILD_REPORT_*.md → seções "Landmines aplicáveis" / "Landmines lidas no build": a tabela é lida
+#     pelo cabeçalho: o ID vem da coluna Fonte, LM-nnn ou ID, e o veredito da coluna Veredito ou Tratamento (começa
+#     com ✔ ⇒ ajudou+1; com "mordeu" ⇒ mordeu+1). Sem esse cabeçalho, não conta nada: TABELA_SEM_CABECALHO.
+#   AVAL*-*.log · AVALIACAO_*.md · *.yaml · BUILD_REPORT_*.md · HANDOFF_*.md → linha de achado (❌,
+#     NEEDS_WORK, FAIL como palavra, WAIVED, mordeu_antes:) sem ✅: com LM-nnn ⇒ mordeu+1; sem LM e com
+#     um termo de sup: (6+ caracteres, não só dígitos) ⇒ SUGESTAO (nunca delta)
+#   BUILD_REPORT_*.md · HANDOFF_*.md → blocos de candidato ⇒ CANDIDATO (próximo ID) ou REJEITADO
+#   <playbook> → ativo com mordeu >= 2 e promovido_para: — ⇒ PROMOVER? (pergunta obrigatória)
+#   Cada linha julgável leva `fp=<10 hex>` (impressão do arquivo, do ID e do texto da linha). O que estiver
+#   em <dir>/CURATOR-colhidos.txt (as colheitas já julgadas desta feature) não conta de novo: JA_JULGADO.
+#   Exit 0 = há pelo menos 1 linha para julgar ou relatar; 1 = nada, de nenhum tipo.
+#   Trace: 1 linha JSONL por feature em ${SDD_TRACE_DIR:-sdd/traces}/<FEATURE>.jsonl, com ts, feature, src,
+#   kind, exit e os 7 contadores; SDD_TRACE=off desliga.
+# --conferir-bloco reprova o bloco quando a fronteira de escrita não saiu verde (<comparar> é o stdout do
+#   governanca-fronteira.sh --comparar), quando o staging mudou depois do --selar, quando falta linha da
+#   colheita, e quando um AUTO não é igual (ID, verbo, +1 e arquivo:linha) a uma linha DELTA da colheita.
+# Gramática do delta (1 verbo por linha; # comenta; tudo é validado antes de qualquer edição):
+#   LM-020 ajudou+1 · LM-016 mordeu+1 · LM-004 promovido_para=<caminho>
+#   ADD <seção> :: sup: `t1` `t2` :: regra. **Do instead:** ação. → ficha: x · promovido_para: —
+#   TOMBSTONE LM-nnn :: motivo · REFINE LM-nnn :: novo texto depois de ::
+# Gramática das invariantes (sdd/invariants.md, 1 linha por regra, sob "## Invariantes"):
+#   - [INV-NNN] estado=ok|auto|humano origem=seed|LM-nnn[,LM-mmm] [check=<caminho>] :: <regra> · por quê: <texto> [· tarefa: … | · motivo: …]
+#   e, sob "## Descartados":  - [LM-nnn] descartado :: <motivo>
+#
+# Exit: 0 ok · 1 nada a colher · 2 arquivo, delta, par ou bloco inválido (ou self-test falhou) ·
+#       3 --cruzar com aviso · 64 uso. O programa Python chega pelo stdin: `--cruzar -` guarda o delta num
+#       arquivo temporário antes.
+# Compat: bash 3.2 + python3 >= 3.9, só stdlib. Não exige repositório git (o --self-test cria um temporário
+# para chamar o playbook-lint.sh, que exige). Seções: PLAYBOOK_SECTIONS, com o mesmo default do playbook-lint.sh.
+set -uo pipefail
+
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "🛑 playbook-curator: python3 não encontrado no PATH." >&2
+  printf 'RESULTADO: ERRO DE USO\n→ instale o Python 3.9 ou mais novo e rode de novo; nada foi lido nem gravado.\n' >&2
+  exit 64
+fi
+
+# O programa Python chega pelo stdin; por isso o delta de `--cruzar -` é guardado antes num arquivo.
+TMPIN=""
+if [ "${1:-}" = "--cruzar" ] && [ "${2:-}" = "-" ]; then
+  TMPIN="$(mktemp 2>/dev/null || mktemp -t pbcur)" || exit 64
+  cat > "${TMPIN}"
+  shift 2
+  set -- --cruzar "${TMPIN}" ${1+"$@"}
+fi
+
+SDD_CURATOR_SELF="$0" SDD_CURATOR_BASH="${BASH:-bash}" python3 -B - ${1+"$@"} <<'PY'
+from __future__ import annotations
+
+import datetime
+import glob
+import hashlib
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+
+for _canal in (sys.stdout, sys.stderr):
+    try:
+        _canal.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
+SECOES_DEFAULT = "Sempre|Dados|Backend|Frontend|Infra / deploy|Reviews / harness|Domínio|Tombstones"
+SUG_MIN = 6
+ACHADO = re.compile(r"❌|mordeu_antes:|(^|[^A-Za-z0-9_-])(NEEDS_WORK|FAIL(ED|URES?)?|WAIVED)([^A-Za-z0-9_-]|$)")
+COLUNAS_LICAO = ("fonte", "lm-nnn", "id")
+COLUNAS_VEREDITO = ("veredito", "tratamento")
+TITULO_LANDMINES = re.compile(r"^## Landmines (aplicáveis|lidas no build)")
+RE_LM = re.compile(r"(?<![A-Za-z0-9_-])LM-\d{3}(?!\d)")
+RE_BULLET = re.compile(r"^- \[(LM-\d{3})\]")
+RE_DATA = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+RE_FEATURE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
+MECANISMO = ("hook em sdd/hooks/, comando de release.landmines_cmd ou asserção no Verify Gate, "
+             "com um caso que falha antes")
+RE_INV = re.compile(r"^- \[(INV-\d{3,})\] estado=(ok|auto|humano) origem=(seed|LM-\d{3}(?:,LM-\d{3})*)"
+                    r"(?: check=(\S+))? :: (.+?) · por quê: (.+)$")
+RE_DESC = re.compile(r"^- \[(LM-\d{3})\] descartado :: (.+)$")
+TIPOS = ("contador", "sugestao", "add", "refine", "tombstone", "promover", "inv")
+RECOMENDACOES = ("AUTO", "ACEITAR", "DESCARTAR", "NAO_JULGADO", "PERGUNTA OBRIGATÓRIA")
+COLUNAS = ("#", "Tipo", "LM", "Delta", "Evidência", "Em linguagem simples", "Recomendação")
+FINAIS = ("REJEITADOS:", "NAO_JULGADO:", "IGNORADOS/JA_COLHIDOS:", "CONTAMINAÇÃO:")
+USO = """uso:
+  playbook-curator.sh --preparar <FEATURE> [--retomar]
+  playbook-curator.sh --colher <dir> <playbook> [--desde AAAA-MM-DD] [--inv <invariantes>]
+  playbook-curator.sh --aplicar <delta> <playbook> [conf=AAAA-MM-DD]
+  playbook-curator.sh --cruzar <delta|-> <playbook> <invariantes>
+  playbook-curator.sh --validar-inv <playbook> <invariantes>
+  playbook-curator.sh --aplicar-inv <linhas> <invariantes>
+  playbook-curator.sh --selar <staging>
+  playbook-curator.sh --conferir-bloco <colheita> <bloco> <playbook> <selo> <comparar>
+  playbook-curator.sh --self-test"""
+
+
+def data_ok(texto):
+    if not RE_DATA.match(texto):
+        return False
+    try:
+        datetime.date.fromisoformat(texto)
+    except ValueError:
+        return False
+    return True
+
+
+def diz(texto=""):
+    print(texto)
+
+
+def erro(texto=""):
+    print(texto, file=sys.stderr)
+
+
+def fim(resultado, seta, canal=None):
+    canal = canal or sys.stdout
+    print("RESULTADO: " + resultado, file=canal)
+    print("→ " + seta, file=canal)
+
+
+def uso(motivo):
+    erro("🛑 playbook-curator: " + motivo)
+    erro(USO)
+    fim("ERRO DE USO", "corrija a chamada e rode de novo; nada foi lido nem gravado.", sys.stderr)
+    sys.exit(64)
+
+
+def falha(motivo, seta, codigo=2):
+    erro("🛑 playbook-curator: " + motivo)
+    fim("FALHA", seta, sys.stderr)
+    sys.exit(codigo)
+
+
+def ler(caminho):
+    with open(caminho, encoding="utf-8", errors="replace") as f:
+        return f.read()
+
+
+def secoes():
+    return [s for s in (os.environ.get("PLAYBOOK_SECTIONS") or SECOES_DEFAULT).split("|") if s]
+
+
+def raiz_do_projeto():
+    try:
+        r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True,
+                           stdin=subprocess.DEVNULL)
+        if r.returncode == 0 and r.stdout.strip():
+            return os.path.realpath(r.stdout.strip())
+    except OSError:
+        pass
+    return os.path.realpath(os.getcwd())
+
+
+# ── playbook ────────────────────────────────────────────────────────────────────────────────────
+def parse_playbook(caminho):
+    """Um dict por bullet: id, tipo (ativo|tomb), sec, ln, aj, mo, promo (1º token), sups, linha."""
+    bullets, sec, atual = [], "", None
+    for n, ln in enumerate(ler(caminho).split("\n"), 1):
+        if ln.startswith("## "):
+            sec, atual = ln[3:].strip(), None
+            continue
+        m = RE_BULLET.match(ln)
+        if not m:
+            # O lint aceita o campo na linha de continuação: quem não o lê ali erra a promoção e a trava.
+            if atual is not None and ln.startswith("  ") and "promovido_para: " in ln and not atual["promo_lido"]:
+                resto = ln.split("promovido_para: ")[-1].split()
+                if resto:
+                    atual["promo"] = resto[0].strip("`") or "—"
+                atual["promo_lido"] = atual["promo_cont"] = True
+            elif not ln.startswith("  "):
+                atual = None
+            continue
+        b = {"id": m.group(1), "sec": sec, "ln": n, "aj": 0, "mo": 0, "promo": "—", "sups": [], "linha": ln, "promo_lido": False, "promo_cont": False,
+             "tipo": "tomb" if re.match(r"^- \[LM-\d{3}\] ☠ ", ln) else "ativo"}
+        if b["tipo"] == "ativo":
+            a = re.search(r"ajudou=(\d+)", ln)
+            o = re.search(r"mordeu=(\d+)", ln)
+            b["aj"] = int(a.group(1)) if a else 0
+            b["mo"] = int(o.group(1)) if o else 0
+            if "promovido_para: " in ln:
+                resto = ln.split("promovido_para: ")[-1].split()
+                if resto:
+                    b["promo"] = resto[0].strip("`") or "—"
+                b["promo_lido"] = True
+            if "sup: " in ln:
+                trecho = ln.split("sup: ", 1)[1].split(" :: ", 1)[0]
+                b["sups"] = re.findall(r"`([^`]+)`", trecho)
+            atual = b
+        else:
+            atual = None
+        bullets.append(b)
+    return bullets
+
+
+def carrega_playbook(caminho):
+    if not os.path.isfile(caminho):
+        falha("playbook não encontrado: " + caminho,
+              "isto não é \"0 deltas\": confira o caminho do playbook e rode de novo.")
+    bullets = parse_playbook(caminho)
+    if not bullets:
+        falha(caminho + " não tem nenhum bullet [LM-nnn]: não é um playbook",
+              "isto não é \"0 deltas\": confira o arquivo (molde: sdd/playbook.md do pacote) e rode de novo.")
+    return bullets
+
+
+def promovido(b):
+    return not b["promo"].startswith("—")
+
+
+def check_vivo(b):
+    """O promovido_para aponta um arquivo que existe? Texto livre, ou arquivo que saiu, não vigia nada."""
+    return promovido(b) and arquivo_do_projeto(b["promo"])
+
+
+
+exec
+/bin/zsh -lc "sed -n '1,200p' .agents/skills/sdd-release/references/como-falar.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+# Como falar com o aluno — sdd-release
+
+Quem chega à Release vai autorizar algo que não se desfaz: depois do push, a versão está publicada. A
+seção "Como falar com o aluno" do `SKILL.md` dá o formato, e o item 7 da FASE 1 dá o bloco do OK; este
+arquivo dá as palavras e um exemplo inteiro.
+
+## Glossário (explique na primeira vez em que o termo aparecer)
+
+- release — "a fase em que o que foi construído é publicado, com um único OK seu";
+- push — "o envio das versões salvas para o GitHub; aqui, é o que publica";
+- deploy — "a instalação da versão nova no lugar onde as pessoas usam o sistema";
+- workflow — "a lista de passos que o GitHub roda sozinho quando recebe um push";
+- Verify Gate — "a conferência final combinada no DEFINE: um comando que diz passou ou não passou";
+- landmine — "uma armadilha conhecida do projeto, registrada no playbook com um número";
+- drift — "uma mudança que chegou em produção sem estar salva no histórico";
+- veredito — "o resumo das conferências: PASS (tudo certo), CONCERNS (passou com ressalvas) ou FAIL";
+- waiver — "a sua decisão registrada de publicar mesmo com um achado, com o motivo";
+- ledger — "o registro, gravado junto com a versão, do que foi publicado e quando";
+- migration — "um arquivo que muda a estrutura do banco de dados";
+- curadoria — "conferir, depois de publicar, o que esta feature ensinou para as próximas";
+- delta — "uma mudança de uma linha no playbook";
+- aposentar (tombstone) — "tirar uma lição de uso, guardando o motivo";
+- promover — "transformar a lição numa trava automática";
+- invariante — "uma regra que nunca pode ser quebrada, com o teste que a vigia".
+
+Não fale em merge, fast-forward, tag ou `--stat` sem traduzir: "juntar na linha principal", "sem
+reescrever nada", "o nome da versão", "a lista dos arquivos que mudaram".
+
+## Status desta skill, preenchido
+
+`Release: ✅ 1 Onde estou · ✅ 2 Verificar · ▶️ 3 Sua decisão · ⬜ 4 Publicar`
+
+## Exemplo — resposta completa, com decisão (etapa 3 — Sua decisão)
+
+Situação: a conferência de notas está pronta; todas as conferências passaram e o workflow do projeto só
+publica depois que os testes passam.
+
+**Status** — `Release: ✅ 1 Onde estou · ✅ 2 Verificar · ▶️ 3 Sua decisão · ⬜ 4 Publicar`
+(no Status: "Verificar" são as conferências antes de publicar; "Publicar" é o envio e a instalação.)
+
+**O que foi feito** — Juntei as 4 versões salvas desta tarefa numa só e conferi: a conferência final, o
+relatório, o lint e o playbook passaram. Nada foi enviado ao GitHub ainda.
+
+**Agora: etapa 3 — Sua decisão** — Os campos abaixo já foram conferidos por mim; você só responde à
+última linha. **sim** publica exatamente o descrito; **não** encerra sem publicar.
+
+**O que sobe:** 5 arquivos — 3 novos (`conferir.py`, `exemplo.xml`, `tests/test_conferir.py`) e 2 alterados
+(`README.md`, `sdd/playbook.md`).
+**O que muda em produção:** a planilha de pagamentos passa a vir marcada com as notas recebidas.
+**O push publica sozinho?** sim, o workflow `deploy.yml` publica ao receber o push na `main`.
+**O deploy espera os testes?** sim — o job que publica só roda depois do job de testes.
+**Banco:** sem migração nesta frente.
+**Verificações:** Verify Gate 0 · report-lint ok · lint ok · landmines ok · drift pulado — slot vazio
+**Veredito:** 🟢 PASS
+**Ledger:** `feature_id` conferencia-notas · `estado` shipado
+
+**Posso finalizar (push + deploy + verificar)?**
+- **sim** (recomendado) — publico os 5 arquivos acima: as 5 conferências passaram e o veredito é PASS.
+- **não** — encerro sem publicar; tudo fica salvo nesta pasta.
+- **não sei** — explico cada campo do bloco com o que ele quer dizer neste caso.
+
+**Próximo passo** — Com o seu sim, publico e confiro o deploy; com o não, encerro aqui.
+
+## Exemplo — antes do bloco, quando falta a revisão por outra engine (etapa 2 — Verificar)
+
+Situação: o `adversarial-review.sh --conferir` saiu 2 — esta versão do código não tem revisão por outra
+engine. A pergunta vem **antes** do bloco do OK, como uma pergunta própria; o bloco continua com uma só.
+
+**Sua decisão** — [D3 · muda a regra do método] **Esta versão não tem revisão por outra engine. Como seguimos?**
+- **rodar agora** (recomendado) — rodo o revisor e o auditor sobre o diff desta frente; leva em geral de 2 a
+  15 minutos e mostro o custo no fim.
+- **publicar sem revisão** — peço o motivo em uma frase; ele fica no registro da release.
+- **não sei** — explico o que a revisão confere, com o último achado dela nesta frente, se houver.
+
+As opções vêm logo depois da última linha do bloco: continua sendo uma pergunta só. Formato completo de
+pergunta e de parada: `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+
+## Exemplo — a curadoria, depois de publicar (etapa 4 — Publicar)
+
+Situação: a publicação terminou. A colheita trouxe 2 contagens com prova, 1 lição nova e 1 lição que já
+mordeu 2 vezes. Toda mensagem daqui para a frente diz que a publicação já terminou: uma parada depois do
+push, sem isso, parece deploy travado.
+
+**Status** — `Release: ✅ 1 Onde estou · ✅ 2 Verificar · ✅ 3 Sua decisão · ▶️ 4 Publicar`
+
+**O que foi feito** — A publicação terminou e está no ar; o que vem agora não mexe nela. Conferi o que
+esta feature ensinou para as próximas (a curadoria: as lições do caderno de armadilhas do projeto).
+
+**Decidi sozinho** (contagem com prova não muda regra; para desfazer, reverta o commit da curadoria):
+- o aviso sobre o envio sem o segredo foi seguido no desenho e evitou o erro: contei +1;
+- o erro do preflight aconteceu de novo, mesmo com o aviso: contei +1.
+
+**Agora: etapa 4 — Publicar** — Duas mudanças nas regras do projeto dependem de você. Responda pelos
+números, por exemplo "1 aceitar, 2 recusar".
+
+**Sua decisão** — 1. [D3 · muda a regra do método] **Guardo a lição nova sobre o relatório que saiu sem as notas canceladas?**
+- **aceitar** (recomendado) — entra no caderno e avisa toda sessão que mexer no relatório; a prova está
+  no relatório do build (ref: LM-023).
+- **recusar** — a lição não entra; o que aconteceu fica só no histórico desta feature.
+- **não sei** — mostro o trecho do relatório do build em que isso aconteceu.
+
+**Sua decisão** — 2. [D3 · muda a regra do método] **Transformo em trava automática o aviso que já falhou 2 vezes?**
+- **aceitar** (recomendado) — registro que ele vira uma conferência automática; isso pede uma correção
+  própria, com teste, numa próxima tarefa (ref: LM-004).
+- **recusar** — o aviso continua só escrito, e esta pergunta volta na próxima publicação.
+- **não sei** — mostro as 2 vezes em que o erro aconteceu, com o arquivo de cada uma.
+
+**Próximo passo** — Aplico só o que você aceitar, confiro o caderno e pergunto se envio essa mudança.
+
+Aposentar uma lição da qual uma regra permanente depende é **uma opção só**, nunca duas: "aposentar o
+aviso sobre o envio e ajustar a regra permanente que dependia dele, no mesmo passo".
+
+Depois de aplicar, o envio é outra decisão, porque o push pode publicar:
+
+**Sua decisão** — [D1 · não se desfaz] **Posso enviar o commit da curadoria para a branch padrão?**
+- **sim** (recomendado) — envio só o caderno de armadilhas e os registros desta conferência; neste projeto,
+  esse push não publica nada, porque o workflow só roda quando o código muda.
+- **deixar para a próxima publicação** — a mudança fica salva nesta pasta e sobe junto com a próxima.
+- **não sei** — explico o que este envio muda e o que acontece se ele ficar para depois.
+
+Quando a colheita falha, diga a causa, o conserto e que nada do que foi publicado mudou: "Não consegui
+ler o caderno de armadilhas para a curadoria (o arquivo `sdd/playbook.md` não tem nenhuma lição no
+formato esperado). A publicação não foi afetada. Corrija o arquivo e me peça a curadoria de novo." Quando
+não há o que colher: "esta feature não trouxe lição nova nem contagem".
+
+exec
+/bin/zsh -lc "grep -n \"cmd_despachar\\|curador\\|AGUARDANDO_HUMANO\\|exit 40\\|RETORNO\\|retorno\" sdd/bin/sdd-fluxo.sh | head -50" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+19:#       40 AGUARDANDO_HUMANO: brief em sdd/reports/briefs/BRIEF_<papel>_<FEATURE>.md e a parada ⏸️ · 64
+67:cmd_despachar() {
+87:    avaliador)          retorno='o bloco inteiro da resposta, de `<<<AVALIACAO` até `>>>` (com a linha `VEREDITO: …`)' ;;
+89:                        retorno='o bloco que começa com `<<<CONTEXTO` até `>>>`'
+91:    revisor-governanca) retorno='o bloco que começa com `<<<GOVERNANCA` até `>>>`'
+93:    curador)            le='a colheita do playbook'
+95:                        retorno='o bloco que começa com `<<<CURADORIA` até `>>>`'
+96:                        nao_feito='a curadoria do playbook ainda não foi aplicada; nada foi despublicado.' ;;
+97:    *)                  retorno='o bloco final da resposta (o que começa com <<<)' ;;
+105:  printf '3. Quando ele terminar, copie %s e cole aqui → é o que eu preciso para continuar.\n' "$retorno"
+110:  printf 'RESULTADO: AGUARDANDO_HUMANO\n→ quando a pessoa colar o retorno, continue do passo que parou.\n'
+111:  exit 40
+759:  cenario "despachar AGUARDANDO_HUMANO" 40 "RESULTADO: AGUARDANDO_HUMANO" -- c despachar avaliador X "$FX/brief-avaliador.md"
+762:  cenario "despachar com o brief já no destino" 40 "AGUARDANDO_HUMANO" -- c despachar avaliador X sdd/reports/briefs/BRIEF_avaliador_X.md
+791:  despachar)   precisa_python; shift; cmd_despachar "$@" ;;
+
+exec
+/bin/zsh -lc "nl -ba sdd/bin/sdd-fluxo.sh | sed -n '67,115p'" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+    67	cmd_despachar() {
+    68	  [ $# -eq 3 ] || uso "despachar exige <papel> <FEATURE> <brief>"
+    69	  papel="$1"; feat="$2"; brief="$3"
+    70	  nome_ok "$papel" || uso "papel inválido: '$papel' (letras, números, - e _)"
+    71	  nome_ok "$feat" || uso "FEATURE inválida: '$feat' (letras, números, - e _)"
+    72	  if [ ! -r "$brief" ] || [ ! -s "$brief" ] || [ -d "$brief" ]; then
+    73	    echo "🛑 sdd-fluxo: brief ausente, vazio ou ilegível: $brief" >&2
+    74	    printf 'RESULTADO: ERRO DE USO\n→ grave o brief num arquivo e rode de novo; nada foi gravado em sdd/reports/briefs/.\n' >&2
+    75	    exit 64
+    76	  fi
+    77	  R="$(raiz)"
+    78	  rel="sdd/reports/briefs/BRIEF_${papel}_${feat}.md"
+    79	  mkdir -p "$R/sdd/reports/briefs" || exit 64
+    80	  if [ ! "$brief" -ef "$R/$rel" ]; then
+    81	    cp "$brief" "$R/$rel" || exit 64
+    82	  fi
+    83	  cmp -s "$brief" "$R/$rel" || { echo "🛑 sdd-fluxo: a cópia do brief não confere: $rel" >&2; exit 64; }
+    84	  # texto por papel: o que o agente fresco lê, o bloco que volta e o que ainda não aconteceu
+    85	  le='o DEFINE'; antes=''; nao_feito='nada foi publicado e o relatório não foi gravado.'
+    86	  case "$papel" in
+    87	    avaliador)          retorno='o bloco inteiro da resposta, de `<<<AVALIACAO` até `>>>` (com a linha `VEREDITO: …`)' ;;
+    88	    cartografo)         le='o código do domínio'
+    89	                        retorno='o bloco que começa com `<<<CONTEXTO` até `>>>`'
+    90	                        nao_feito='nada foi gravado em sdd/contexto/.' ;;
+    91	    revisor-governanca) retorno='o bloco que começa com `<<<GOVERNANCA` até `>>>`'
+    92	                        nao_feito='o relatório de governança não foi gravado; o DEFINE está marcado como pendente (o build não passa até a revisão voltar).' ;;
+    93	    curador)            le='a colheita do playbook'
+    94	                        antes='A publicação já terminou e não depende deste passo; '
+    95	                        retorno='o bloco que começa com `<<<CURADORIA` até `>>>`'
+    96	                        nao_feito='a curadoria do playbook ainda não foi aplicada; nada foi despublicado.' ;;
+    97	    *)                  retorno='o bloco final da resposta (o que começa com <<<)' ;;
+    98	  esac
+    99	  printf '⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: %s).\n\n' "$papel"
+   100	  printf '**Por que parei:** %sa conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.\n' "$antes"
+   101	  printf '**Onde:** numa janela nova do seu agente, na pasta %s.\n' "$R"
+   102	  printf '**Passos:**\n'
+   103	  printf '1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.\n'
+   104	  printf '2. Cole o conteúdo de %s → o agente começa a ler %s.\n' "$rel" "$le"
+   105	  printf '3. Quando ele terminar, copie %s e cole aqui → é o que eu preciso para continuar.\n' "$retorno"
+   106	  printf '**O que não foi feito:** %s\n' "$nao_feito"
+   107	  printf '**Brief:** %s\n' "$rel"
+   108	  printf '**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.\n\n'
+   109	  printf 'Quando terminar, me peça de novo, eu continuo daqui.\n'
+   110	  printf 'RESULTADO: AGUARDANDO_HUMANO\n→ quando a pessoa colar o retorno, continue do passo que parou.\n'
+   111	  exit 40
+   112	}
+   113	
+   114	# ── núcleo de dados (Python 3.9 stdlib): review-design, loop, seguir, estado ─────────────────────
+   115	nucleo() {
+
+exec
+/bin/zsh -lc "sed -n '1,160p' sdd/bin/governanca-fronteira.sh" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 0ms:
+#!/usr/bin/env bash
+# governanca-fronteira.sh — fronteira de escrita dos agentes frescos do sdd-define: o cartógrafo (passo
+# 1.5, só pode gravar sdd/contexto/<slug>.md) e o revisor de governança (passo 11, só pode gravar o
+# relatório). Comparar só a linha do `git status` não vê a sobrescrita de um arquivo que já aparecia
+# antes do despacho (o DEFINE recém-salvo é `??`): o snapshot guarda o sha256 de cada caminho.
+#
+# Uso:
+#   governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir…]
+#       grava "<sha256|AUSENTE>\t<caminho absoluto>" para cada caminho de `git status --porcelain -z --untracked-files=all`
+#       mais os IGNORADOS de sdd/ (--ignored=traditional: com --untracked-files=all, arquivo a arquivo). O arquivo do snapshot fica FORA do worktree (dentro ⇒ 64). [incluir…] =
+#       caminhos absolutos que entram SEMPRE (o arquivo permitido): com sha se existem, AUSENTE se não.
+#   governanca-fronteira.sh --comparar <antes> <depois> <permitido>…
+#       para cada caminho novo, sumido ou com sha diferente: "MUDOU: <caminho>" se permitido, "FORA: <caminho>" senão.
+#
+# O snapshot também guarda o HEAD (linha `#HEAD`): um agente que edita um arquivo limpo e COMMITA deixa a
+# árvore limpa de novo, e só o HEAD que andou denuncia — cada arquivo do commit sai como FORA.
+#
+# Além dos arquivos, o snapshot guarda 3 estados do git que não aparecem no `git status` (linhas `#REF`,
+# `#INDICE`, `#GIT`): a branch, o índice (um `git add`, ou a marca que esconde um arquivo editado:
+# --assume-unchanged e --skip-worktree) e a configuração local, o `info/exclude` e os hooks de `.git`.
+# Qualquer um que mude durante o despacho sai como FORA.
+#
+# Exit: 0 só caminhos permitidos mudaram · 1 há FORA · 64 uso, snapshot ausente/ilegível ou enumeração que
+# falhou (fronteira não verificada nunca vale como "nada mudou").
+# Limites declarados: arquivo ignorado FORA de sdd/ (ex.: __pycache__/) não entra no snapshot; escrita FORA do
+# worktree não é vista (a barreira ali são as permissões da sessão).
+# Ordem de bytes sempre (LC_ALL=C): snapshot ordenado num locale e comparado noutro inventaria diferença.
+# porcelain -z: sem -z o git escapa nome não-ASCII em octal e a sobrescrita fica invisível.
+set -uo pipefail
+export LC_ALL=C
+
+uso() {
+  echo "uso: $0 --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir…] | --comparar <antes> <depois> <permitido>…" >&2
+  printf 'RESULTADO: ERRO DE USO\n→ a fronteira NÃO foi verificada; corrija a chamada e rode de novo.\n' >&2
+  exit 64
+}
+
+# $1 raiz · $2 "todos"|"ignorados" · $3 pathspec · $4 arquivo onde acrescentar. rc do git e do python checados.
+paths() {
+  local raw; raw="$(mktemp)"
+  git -C "$1" status --porcelain -z --untracked-files=all ${2:+--ignored=traditional} -- ${3:-.} > "${raw}" 2> "${raw}.err" || { rm -f "${raw}" "${raw}.err"; return 1; }
+  # pasta sem permissão: o git avisa no stderr e sai 0, com a pasta fora da lista: enumeração parcial não é enumeração
+  if grep -q 'could not open directory' "${raw}.err"; then
+    cat "${raw}.err" >&2; echo "há pasta que o git não conseguiu abrir: a fronteira não mede" >&2
+    rm -f "${raw}" "${raw}.err"; return 1
+  fi
+  rm -f "${raw}.err"
+  python3 -c '
+import sys
+so_ign = sys.argv[1] == "ignorados"
+r = sys.stdin.buffer.read().split(b"\0")
+i = 0
+while i < len(r):
+    e = r[i]; i += 1
+    if len(e) < 4:
+        continue
+    xy, p = e[:2], e[3:]
+    if xy[:1] in (b"R", b"C"):          # renomeado/copiado: o registro seguinte é a origem
+        if b"\n" in p or (i < len(r) and b"\n" in r[i]):
+            sys.stderr.write("caminho com quebra de linha: a fronteira não mede\n"); sys.exit(1)
+        if not so_ign:
+            sys.stdout.buffer.write(p + b"\n")
+            if i < len(r) and r[i]:
+                sys.stdout.buffer.write(r[i] + b"\n")
+        i += 1
+        continue
+    if so_ign and xy != b"!!":
+        continue
+    if b"\n" in p:
+        sys.stderr.write("caminho com quebra de linha: a fronteira não mede: %r\n" % p); sys.exit(1)
+    sys.stdout.buffer.write(p + b"\n")
+' "${2:-todos}" < "${raw}" >> "$4"; local rc=$?
+  rm -f "${raw}"; return "${rc}"
+}
+# caminho absoluto canônico: o ancestral mais próximo que existe passa por `pwd -P` (no macOS /var é link
+# para /private/var; sem isso o permitido não casa com a raiz canonizada e vira FORA ou "fora do worktree")
+canon() { # realpath: resolve link de pasta E de arquivo; o trecho que ainda não existe fica como está
+  python3 -c 'import os, sys; sys.stdout.write(os.path.realpath(sys.argv[1]))' "$1"
+}
+# 3 linhas com o estado do git que o `git status` não mostra: branch, índice e o que mora em .git
+estado_git() { # $1 raiz
+  python3 -c '
+import hashlib, os, subprocess, sys
+wt = sys.argv[1]
+def git(*a):
+    r = subprocess.run(["git", "-C", wt] + list(a), capture_output=True)
+    return r.returncode, r.stdout
+rc, ref = git("symbolic-ref", "-q", "HEAD")
+ref = ref.decode("utf-8", "replace").strip() if rc == 0 and ref.strip() else "DETACHED"
+rc, idx = git("ls-files", "-s", "-v", "-z")
+rc1, comum = git("rev-parse", "--git-common-dir")
+rc2, gd = git("rev-parse", "--git-dir")
+if rc != 0 or rc1 != 0 or rc2 != 0:
+    sys.exit(1)
+def absoluto(p):
+    p = p.decode("utf-8", "surrogateescape").strip()
+    return p if os.path.isabs(p) else os.path.join(wt, p)
+comum, gd = absoluto(comum), absoluto(gd)
+alvos = [os.path.join(comum, "info", "exclude"), os.path.join(gd, "config.worktree")]
+hooks = os.path.join(comum, "hooks")
+if os.path.isdir(hooks):
+    alvos += [os.path.join(hooks, n) for n in sorted(os.listdir(hooks))]
+h = hashlib.sha256()
+# O config é comum a todas as worktrees: abrir outra frente ou dar push grava branch.* ali, e isso não é o agente.
+# O resto (core.hooksPath, por exemplo) conta.
+rc3, cfg = git("config", "--file", os.path.join(comum, "config"), "--list", "-z")
+if rc3 != 0 and os.path.exists(os.path.join(comum, "config")):
+    sys.exit(1)
+h.update(b"\0".join(sorted(e for e in cfg.split(b"\0") if e and not e.lower().startswith(b"branch."))))
+for a in alvos:
+    h.update(os.path.relpath(a, comum).encode("utf-8", "surrogateescape") + b"\0")
+    if os.path.islink(a):
+        h.update(b"link:" + os.readlink(a).encode("utf-8", "surrogateescape"))
+    # um hook que é link executa o arquivo de destino: o que vale é o conteúdo dele, não só para onde aponta
+    if os.path.isfile(a):
+        try:
+            with open(a, "rb") as f:
+                h.update(hashlib.sha256(f.read()).digest())
+            h.update(b"x" if os.access(a, os.X_OK) else b"-")
+        except OSError:
+            h.update(b"ilegivel")
+    elif not os.path.islink(a):
+        h.update(b"ausente")
+print("#REF\t" + ref)
+print("#INDICE\t" + hashlib.sha256(idx).hexdigest())
+print("#GIT\t" + h.hexdigest())
+' "$1"
+}
+todos_paths() { # $1 raiz · $2 arquivo de saída
+  : > "$2"
+  paths "$1" "" "" "$2" || return 1
+  if [ -d "$1/sdd" ]; then paths "$1" ignorados sdd/ "$2" || return 1; fi
+  return 0
+}
+
+case "${1:-}" in
+  --snapshot)
+    [ "$#" -ge 3 ] || uso
+    [ -d "$2" ] || uso
+    WT="$(cd "$2" && pwd -P)" || uso
+    TOP="$(git -C "${WT}" rev-parse --show-toplevel 2>/dev/null)" || { echo "não é um repositório git: ${WT}" >&2; uso; }
+    # os caminhos do porcelain são relativos à RAIZ: um subdiretório viraria AUSENTE nos dois lados
+    [ "$(cd "${TOP}" && pwd -P)" = "${WT}" ] || { echo "<raiz-do-worktree> tem de ser a raiz do repositório (${TOP}), não ${WT}" >&2; uso; }
+    OUT="$3"; shift 3
+    OUT_DIR="$(cd "$(dirname "${OUT}")" 2>/dev/null && pwd -P)" || { echo "pasta do snapshot inexistente: $(dirname "${OUT}")" >&2; uso; }
+    case "${OUT_DIR}/" in "${WT}"/*) echo "o snapshot fica FORA do worktree (senão ele mesmo aparece como ??): ${OUT}" >&2; uso ;; esac
+    # só agora, com o destino validado fora do worktree: um snapshot que falha daqui em diante não deixa o
+    # arquivo de uma tentativa anterior no lugar (antes da validação, o rm apagaria um arquivo do projeto)
+    rm -f "${OUT}"
+    INCL=""; PERM=""
+    for x in "$@"; do
+      case "${x}" in *$'\n'*) echo "incluir com quebra de linha: a fronteira não mede" >&2; uso ;; esac
+      c="$(canon "${x}")"
+      case "${c}" in "${WT}"/*) ;; *) echo "incluir fora do worktree: ${c}" >&2; uso ;; esac
+      INCL="${INCL}${c}
+"
+      # o permitido é resolvido AGORA, antes do despacho, e fica no snapshot: resolver depois deixaria um link
+      # criado pelo agente no caminho permitido autorizar a escrita noutro arquivo
+      PERM="${PERM}#PERMITIDO	${x}	${c}
+"
+
+codex
+Item 2 voltou `rc=0` (há o que julgar). Agora item 3: preparo o brief, o selo e o snapshot da fronteira e, sem subagente, aciono o despacho que deve parar em `exit 40`.
+exec
+/bin/zsh -lc 'set -u
+RAIZ="$(git rev-parse --show-toplevel)"
+STG="/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/tmp/sdd-curadoria-569be40a3639/DEMO"
+mkdir -p sdd/reports/briefs sdd/reports/evidence/DEMO sdd/releases/DEMO
+BRIEF="$RAIZ/sdd/reports/briefs/BRIEF_curador_DEMO.md"
+printf '"'%s\\n' \"feature: DEMO · staging: "'$STG · colheita: $STG/colheita.txt · playbook: $RAIZ/sdd/playbook.md · worktree: $RAIZ" > "$BRIEF"
+printf '"'%s\\n' 'leia e siga "'`.agents/skills/sdd-playbook/references/curator.md`'"' >> \""'$BRIEF"
+T="${TMPDIR:-/tmp}/sdd-fronteira-$(printf '"'%s' \""'$RAIZ" | git hash-object --stdin | cut -c1-12)/DEMO/curador"
+mkdir -p "$T"
+echo "RAIZ=$RAIZ"; echo "STG=$STG"; echo "BRIEF=$BRIEF"; echo "T=$T"
+echo '"'---brief---'; cat \""'$BRIEF"
+bash sdd/bin/playbook-curator.sh --selar "$STG" > "$T/selo.txt"; rc_selo=$?; echo "SELO_RC=$rc_selo"; cat "$T/selo.txt"
+bash sdd/bin/governanca-fronteira.sh --snapshot "$RAIZ" "$T/antes" "$BRIEF"; rc_snap=$?; echo "SNAPSHOT_RC=$rc_snap"; echo '"'---antes---'; cat \""'$T/antes" | sed -n '"'1,40p'
+echo '---despacho---'
+bash sdd/bin/sdd-fluxo.sh despachar curador DEMO \""'$BRIEF"; rc_desp=$?; echo "DESPACHO_RC=$rc_desp"' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+ succeeded in 467ms:
+RAIZ=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+STG=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/tmp/sdd-curadoria-569be40a3639/DEMO
+BRIEF=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho/sdd/reports/briefs/BRIEF_curador_DEMO.md
+T=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/tmp/sdd-fronteira-f6e67e9a96cc/DEMO/curador
+---brief---
+feature: DEMO · staging: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/tmp/sdd-curadoria-569be40a3639/DEMO · colheita: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/tmp/sdd-curadoria-569be40a3639/DEMO/colheita.txt · playbook: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho/sdd/playbook.md · worktree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+leia e siga `.agents/skills/sdd-playbook/references/curator.md`
+RESULTADO: SELO IMPRESSO (6 arquivo(s))
+→ guarde o stdout FORA da pasta de staging (na pasta do snapshot) e passe ao --conferir-bloco.
+SELO_RC=0
+77b7ee51741dc02450498668e6d227fb89c0feab02b8b5906b0188390ec89aad  AVAL-01.log
+8ec93dbec45a35c72aaa02acf38b17f66a951763b83096b8b100b38d7503c421  BUILD_REPORT_DEMO.md
+e20980cb6a9c95a4e4583a327d7a3b2f999afc673a5fdf4148fc2ddd2d4e299b  DESIGN_DEMO.md
+9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa  colheita.rc
+613dd286926979e421c7875db06744f5e3605d092055bedc47b2dd0129633176  colheita.txt
+60a635c09a5aa8870f977fea29c285050124a235e6e7e8abc245d6b40ff7f682  s1.yaml
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+SNAPSHOT_RC=0
+---antes---
+54c94ded3177193e7a9ab2dd18b4f9f91f23c84132c903f256b5511fab573baa	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho/sdd/traces/DEMO.jsonl
+8c4d5b028d1b2d6fa667022b8ce2ae7bccb44d1446b2e6a900f5c6263127b32b	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho/sdd/reports/briefs/BRIEF_curador_DEMO.md
+#HEAD	bae5def077ddf30c15d6ab7a090cdbc0e03a78ee	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho
+#REF	refs/heads/main
+#INDICE	f142aa0cf554518c6146d5e11aa1ac8094c8142448045c2a262642789b824b16
+#GIT	55241ba8f8c718115f27ed73fcef25007acf271aa18b1b1b4ec18e444c017096
+#PERMITIDO	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho/sdd/reports/briefs/BRIEF_curador_DEMO.md	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho/sdd/reports/briefs/BRIEF_curador_DEMO.md
+---despacho---
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: curador).
+
+**Por que parei:** A publicação já terminou e não depende deste passo; a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/despacho.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_curador_DEMO.md → o agente começa a ler a colheita do playbook.
+3. Quando ele terminar, copie o bloco que começa com `<<<CURADORIA` até `>>>` e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** a curadoria do playbook ainda não foi aplicada; nada foi despublicado.
+**Brief:** sdd/reports/briefs/BRIEF_curador_DEMO.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+DESPACHO_RC=40
+
+codex
+Parei exatamente no ponto previsto: o despacho do curador pede sessão nova e saiu com `exit 40` (`AGUARDANDO_HUMANO`). Não abri subagente, não inventei o bloco e não apliquei nada; a publicação já feita não foi tocada.
+
+**Executado**
+- Item 1: `--preparar DEMO` → `exit 0`, staging com 4 arquivos em `/private/.../tmp/sdd-curadoria-569be40a3639/DEMO`.
+- Item 2: `--colher` → `exit 0`, resultado `HÁ O QUE JULGAR`: 2 deltas, 1 candidato, 1 `INV_PENDENTE`.
+- Item 3: brief criado, selo do staging gravado e snapshot da fronteira tirado; `sdd-fluxo.sh despachar curador` parou com `exit 40`.
+
+**Aguardando você**
+- Abra uma sessão nova do agente na pasta do projeto.
+- Cole o conteúdo de `sdd/reports/briefs/BRIEF_curador_DEMO.md`.
+- Traga de volta o bloco `<<<CURADORIA ... >>>` para eu continuar do item 4.
+tokens used
+54.409
+Parei exatamente no ponto previsto: o despacho do curador pede sessão nova e saiu com `exit 40` (`AGUARDANDO_HUMANO`). Não abri subagente, não inventei o bloco e não apliquei nada; a publicação já feita não foi tocada.
+
+**Executado**
+- Item 1: `--preparar DEMO` → `exit 0`, staging com 4 arquivos em `/private/.../tmp/sdd-curadoria-569be40a3639/DEMO`.
+- Item 2: `--colher` → `exit 0`, resultado `HÁ O QUE JULGAR`: 2 deltas, 1 candidato, 1 `INV_PENDENTE`.
+- Item 3: brief criado, selo do staging gravado e snapshot da fronteira tirado; `sdd-fluxo.sh despachar curador` parou com `exit 40`.
+
+**Aguardando você**
+- Abra uma sessão nova do agente na pasta do projeto.
+- Cole o conteúdo de `sdd/reports/briefs/BRIEF_curador_DEMO.md`.
+- Traga de volta o bloco `<<<CURADORIA ... >>>` para eu continuar do item 4.
+[exit=0]

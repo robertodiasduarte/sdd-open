@@ -1,0 +1,114 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p2.sh
+
+=== A0 lint do playbook base
+🟢 pb.md: formato OK — 6 ativos, 1 tombstones, Sempre=6 bullets/114 palavras, 0 aviso(s)
+[rc=0]
+
+=== A1 promovido_para na CONTINUACAO: o lint aceita; o curador le?
+- [LM-002] ajudou=2 mordeu=1 · conf=2026-02-02 · sup: `beta_term` :: Regra dois,
+  continua na linha dois. **Do instead:** b. · promovido_para: `sdd/bin/x.sh`
+- [LM-003] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: `gama_term` :: Regra tres.
+--- PROMOVER/universo: LM-002 mordeu=1 com promovido_para na continuacao, sem classificacao
+o registro de invariantes é novo na v2.6.0: 1 lição(ões) do playbook ainda não foram classificadas.
+🔴 trava INV: LM-002 entra no universo sem classificação — aprove a proposta A (virar invariante) ou a B (descartar com motivo), ou retire o delta
+RESULTADO: TRAVA
+→ nada foi copiado; resolva cada linha acima com a pessoa e rode de novo.
+[rc=2]
+--- --aplicar LM-002 promovido_para=outro (continuacao mantem o antigo?)
+  continua na linha dois. **Do instead:** b. · promovido_para: `sdd/bin/x.sh`
+- [LM-003] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: `gama_term` :: Regra tres.
+🟢 p.md: formato OK — 6 ativos, 1 tombstones, Sempre=6 bullets/117 palavras, 0 aviso(s)
+[lint rc=0]
+  continua na linha dois. **Do instead:** b. · promovido_para: `sdd/bin/x.sh`
+- [LM-003] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: `gama_term` :: Regra tres.
+--- PROMOVER? com promovido_para preenchido na continuacao
+PROMOVER? LM-002 mordeu=2 promovido_para=— :: promover a mecanismo? sugestão: hook em sdd/hooks/, comando de release.landmines_cmd ou asserção no Verify Gate, com um caso que falha antes (seção Sempre)
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=1 sugestoes=0
+
+=== A2 AT-011 ADD, TOMBSTONE, REFINE, contadores
+[rc=0]
+# pb
+
+## Sempre
+
+- [LM-001] ajudou=2 mordeu=0 · conf=2026-02-02 · sup: `alpha_term` :: Regra um. **Do instead:** a. · promovido_para: —
+- [LM-002] ajudou=1 mordeu=1 · conf=2026-01-01 · sup: `beta_term` :: Regra dois,
+  continua na linha dois. **Do instead:** b. · promovido_para: `sdd/bin/x.sh`
+- [LM-004] ajudou=0 mordeu=0 · conf=2026-02-02 · sup: `delta_term` :: Texto novo. **Do instead:** novo. · promovido_para: —
+- [LM-005] ajudou=0 mordeu=0 · conf=2026-02-02 · sup: `epsi_term` :: Regra cinco. **Do instead:** e. · promovido_para: sdd/bin/z.sh
+- [LM-006] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: `zeta_term` :: Regra seis. **Do instead:** f. · promovido_para: —
+- [LM-011] ajudou=0 mordeu=0 · conf=2026-02-02 · sup: `outro_novo` :: Regra nova 2. **Do instead:** nova2. · promovido_para: —
+
+## Backend
+
+- [LM-010] ajudou=0 mordeu=0 · conf=2026-02-02 · sup: `novo_termo` :: Regra nova. **Do instead:** nova. · promovido_para: —
+
+## Tombstones
+
+- [LM-009] ☠ 2026-01-01 :: fora
+- [LM-003] ☠ 2026-02-02 :: aposentada
+RESULTADO: DELTA APLICADO (6 linha(s))
+→ o stdout é o playbook novo: rode o playbook-lint.sh nele antes de copiar por cima.
+🟢 p.md: formato OK — 7 ativos, 2 tombstones, Sempre=6 bullets/113 palavras, 0 aviso(s)
+[lint rc=0]
+⛔ anti-collapse: 3/7 bullets (42%) com conteúdo/seção reescritos num só commit (limite 20%).
+   Delta only: reescrita grande = 2+ commits; contadores/conf não contam.
+[anti rc=1]
+
+=== A3 AT-012 invalidos, stdout vazio
+rc=2 stdout_bytes=0 :: LM-999 ajudou+1
+rc=2 stdout_bytes=0 :: LM-009 ajudou+1
+rc=2 stdout_bytes=0 :: ADD Tombstones :: sup: `x` :: r. **Do instead:** y.
+rc=2 stdout_bytes=0 :: ADD Nada :: sup: `x` :: r. **Do instead:** y.
+rc=2 stdout_bytes=0 :: ADD Backend :: sup: `x` :: r sem
+rc=2 stdout_bytes=0 :: REFINE LM-001 :: sem
+rc=2 stdout_bytes=0 :: TOMBSTONE LM-001
+rc=2 stdout_bytes=0 :: LM-001 ajudou+
+rc=2 stdout_bytes=0 :: LM-001 ajudou-1
+rc=2 stdout_bytes=0 :: ADD Backend :: sup: semcrase :: r. **Do instead:** y.
+rc=2 stdout_bytes=0 :: LM-001 promovido_para=a b
+rc=2 stdout_bytes=0 :: lixo
+❌ delta linha 1: linha fora da gramática: 'lixo'
+❌ delta linha 3: LM-999 não existe como bullet ativo em pb.md (tombstone não se edita; ID nunca se reusa)
+🔴 delta inválido: 2 erro(s) — nada aplicado
+RESULTADO: DELTA INVÁLIDO
+→ corrija as linhas acima e rode de novo; nada foi impresso nem aplicado.
+[rc=2]
+
+=== A4 vizinhos permissivos: +0, promovido_para=—, Do instead sem acao
+- [LM-001] ajudou=0 mordeu=0 · conf=2026-02-02 · sup: `alpha_term` :: Regra um. **Do instead:** a. · promovido_para: —
+  continua na linha dois. **Do instead:** b. · promovido_para: `sdd/bin/x.sh`
+- [LM-003] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: `gama_term` :: Regra tres.
+- [LM-001] ajudou=0 mordeu=0 · conf=2026-02-02 · sup: `alpha_term` :: x. **Do instead:** · promovido_para: —
+[rc=0]
+
+=== A5 conf impossivel e lixo
+[rc=0]
+- [LM-001] ajudou=1 mordeu=0 · conf=2026-99-99 · sup: `alpha_term` :: Regra um. **Do instead:** a. · promovido_para: —
+🟢 p.md: formato OK — 6 ativos, 1 tombstones, Sempre=6 bullets/114 palavras, 0 aviso(s)
+[lint rc=0]
+[lixo rc=64]
+
+=== A6 AT-011 delta so de comentario: saida identica (LF, CRLF, sem quebra no fim, bytes invalidos)
+[LF cmp rc=0]
+stdin crlf.md differ: char 5, line 1
+[CRLF cmp rc=1]
+[sem quebra cmp rc=0]
+stdin bin.md differ: char 895, line 19
+[bytes invalidos cmp rc=1]
+
+=== A7 AT-042 anti-collapse: 1 alterado passa em qualquer tamanho; 2+ acima de 20% bloqueia
+anti-collapse OK: 7 IDs em HEAD, 0 sumiram, 1 (14%) alterados (limite 20%)
+[1 alterado rc=0]
+anti-collapse OK: 7 IDs em HEAD, 0 sumiram, 1 (14%) alterados (limite 20%)
+[1 tombstone rc=0]
+⛔ anti-collapse: 2/7 bullets (28%) com conteúdo/seção reescritos num só commit (limite 20%).
+   Delta only: reescrita grande = 2+ commits; contadores/conf não contam.
+[2 alterados rc=1]
+anti-collapse OK: 1 IDs em HEAD, 0 sumiram, 1 (100%) alterados (limite 20%)
+[playbook de 1 bullet rc=0]
+
+=== A8 AT-013 so contadores 0 alterados
+anti-collapse OK: 7 IDs em HEAD, 0 sumiram, 0 (0%) alterados (limite 20%)
+[rc=0]
+[exit=0]

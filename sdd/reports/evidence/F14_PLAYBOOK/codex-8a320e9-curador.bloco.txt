@@ -1,0 +1,13 @@
+<<<CURADORIA
+FEATURE: DEMO · colheita: 2 deltas / 1 candidatos / 0 rejeitados / 0 promoções / 0 sugestões · staging: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cuYD6NmaLH/tmp/sdd-curadoria-6f68e8f122df/DEMO
+| # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recomendação |
+|---|------|----|-------|-----------|----------------------|--------------|
+| 1 | contador | LM-001 | LM-001 ajudou+1 | DESIGN_DEMO.md:12 (✔ tratado) | O aviso sobre gates que só conferem fiação foi seguido no DESIGN: o gate da feature roda com fixture dos dois lados e um mutante derruba a asserção. | AUTO |
+| 2 | add | LM-005 | ADD Backend :: sup: \`conferir.sh\` \`nota_cancelada\` :: A conferência somava nota cancelada no total do mês. **Do instead:** filtrar a situação antes de somar. → ficha: — · promovido_para: — | AVAL-01.log:2 — AT-002 ❌ FAIL: total do mês veio 2 notas acima do esperado (nota_cancelada somada) | A conferência de notas do mês somava nota cancelada no total, inflando o resultado. Guardar a lição avisa toda sessão que mexer em conferir.sh. | ACEITAR |
+| 3 | contador | LM-002 | LM-002 mordeu+1 | AVAL-01.log:3 (❌ com a causa citada: LM-002) | O erro de asserção que não avalia nada aconteceu de novo: o gate ficou verde com if (true) e a falha real passou despercebida. Contar isso registra que o aviso não bastou. | AUTO |
+| 4 | inv | INV-002 | - [INV-002] estado=auto origem=LM-002 :: Toda asserção de verificação precisa de baseline VERMELHO comprovado — executada contra a árvore antes da mudança, deve falhar; se já passa sem a mudança, a asserção não prova nada · por quê: asserção quebrada (quoting corrompido, âncora errada, if true) sai exit 0 e o gate passa sem avaliar · tarefa: criar check em sdd/hooks/ que exige baseline vermelho registrado no relatório | --cruzar: INV_PENDENTE LM-002 (mordeu 0→1) | A landmine sobre asserção que não avalia nada foi mordida pela primeira vez e agora entra no regime das invariantes. Se aceitar, toda asserção passa a exigir baseline vermelho comprovado — uma correção própria que impede o gate de passar em branco. | ACEITAR |
+REJEITADOS: nenhum
+NAO_JULGADO: nenhum
+IGNORADOS/JA_COLHIDOS: nenhum
+CONTAMINAÇÃO: não
+>>>

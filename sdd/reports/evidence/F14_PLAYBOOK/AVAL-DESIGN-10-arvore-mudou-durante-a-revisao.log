@@ -1,0 +1,15 @@
+$ git describe --tags && git status --porcelain && git diff --stat
+v2.5.0
+ M sdd/bin/playbook-lint.sh
+?? .agents/skills/sdd-new-session/scripts/
+?? sdd/bin/playbook-curator.sh
+?? sdd/features/
+?? sdd/fixtures/playbook/curadoria/
+?? sdd/handoffs/
+?? sdd/invariants.md
+?? sdd/reports/
+?? sdd/reviews/
+?? sdd/traces/
+ sdd/bin/playbook-lint.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+[exit=0]

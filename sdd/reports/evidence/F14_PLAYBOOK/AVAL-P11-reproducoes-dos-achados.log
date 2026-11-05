@@ -1,0 +1,46 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p11.sh </dev/null
+=== R2 AUTO repetido e DELTA omitido
+AUTO LM-001 ajudou+1
+   simples: x
+AUTO LM-001 ajudou+1
+   simples: y
+resumo-bloco: auto=2 pergunta=0 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+[rc=0]
+AUTO LM-001 ajudou+1
+   simples: x
+resumo-bloco: auto=1 pergunta=0 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+[rc=0]
+=== R3 dobra entre releases
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:2 · fp=4a93a26cae
+JA_JULGADO 1 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+=== R4 ADD em secao da lista que o playbook nao tem
+CANDIDATO #1 → LM-003 · secao=Backend · sup=`novo` · evidencia=x.log:1 · fp=f2451acdc1
+   delta: ADD Backend :: sup: `novo` :: R. **Do instead:** A. → ficha: — · promovido_para: —
+❌ delta linha 1: a seção 'Backend' não existe em pb.md: crie o título antes do ADD
+🔴 delta inválido: 1 erro(s) — nada aplicado
+RESULTADO: DELTA INVÁLIDO
+→ corrija as linhas acima e rode de novo; nada foi impresso nem aplicado.
+[aplicar rc=2]
+=== R5 so IGNORADO
+0 deltas colhidos em st (1 arquivo(s) elegíveis) — ausência é informação, não verde
+IGNORADO LM-777 (não existe como bullet ativo em pb.md)
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: NADA A COLHER
+→ registre "Curadoria: 0 deltas": esta feature não trouxe lição, contagem nem promoção pendente.
+[rc=1]
+=== R8 derivado plantado depois do selo
+RESULTADO: BLOCO VÁLIDO
+[rc=0]
+=== R9 aplicar-inv pisa ID da base
+- [INV-001] estado=humano origem=seed :: Regra da frente · por quê: y · motivo: m
+[rc=0]
+=== R11 ajuste que nao destrava
+   ajuste: - [INV-001] estado=ok origem=seed check=Verify :: R · por quê: y
+🔴 trava INV: INV-001 tem check=Verify, que não existe a partir desta pasta — corrija o caminho ou mude o estado
+RESULTADO: TRAVA
+[rc=2]
+[exit=0]

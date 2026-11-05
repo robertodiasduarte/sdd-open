@@ -1,0 +1,189 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda5.sh
+AT-026: nome com acento, 5 prefixos, parecidos em 2 sentidos, nível de cima
+COPIADO sdd/features/BRAINSTORM_RELATORIO_MENSAL.md
+PARECIDO sdd/features/DEFINE_RELATORIO.md (feature 'relatorio' ≈ frente 'relatorio-mensal'): não copiei, porque o nome não é idêntico.
+PARECIDO sdd/features/DEFINE_RELATORIO_MENSAL_V2.md (feature 'relatorio-mensal-v2' ≈ frente 'relatorio-mensal'): não copiei, porque o nome não é idêntico.
+COPIADO sdd/features/DEFINE_RELATÓRIO_MENSAL.md
+COPIADO sdd/features/DESIGN_RELATORIO_MENSAL.md
+COPIADO sdd/reviews/GOVERNANCA_REVIEW_RELATORIO_MENSAL.md
+COPIADO sdd/reviews/UX_REVIEW_RELATORIO_MENSAL.md
+RESULTADO: 5 COPIADO(S)
+→ se algum PARECIDO for desta frente, copie à mão para /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/frente/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão.
+[exit=0]
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/frente/sdd/features/BRAINSTORM_RELATORIO_MENSAL.md
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/frente/sdd/features/DEFINE_RELATÓRIO_MENSAL.md
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/frente/sdd/features/DESIGN_RELATORIO_MENSAL.md
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/frente/sdd/reviews/GOVERNANCA_REVIEW_RELATORIO_MENSAL.md
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/frente/sdd/reviews/UX_REVIEW_RELATORIO_MENSAL.md
+AT-027: destino existe
+JA_EXISTE sdd/features/BRAINSTORM_RELATORIO_MENSAL.md (a frente já tem este arquivo: mantive o dela)
+JA_EXISTE sdd/features/DEFINE_RELATÓRIO_MENSAL.md (a frente já tem este arquivo: mantive o dela)
+JA_EXISTE sdd/features/DESIGN_RELATORIO_MENSAL.md (a frente já tem este arquivo: mantive o dela)
+JA_EXISTE sdd/reviews/GOVERNANCA_REVIEW_RELATORIO_MENSAL.md (a frente já tem este arquivo: mantive o dela)
+JA_EXISTE sdd/reviews/UX_REVIEW_RELATORIO_MENSAL.md (a frente já tem este arquivo: mantive o dela)
+RESULTADO: NADA A COPIAR
+mio
+AT-027: slug sem documento
+PARECIDO sdd/features/DEFINE_OUTRA.md (feature 'outra' ≈ frente 'outra-coisa'): não copiei, porque o nome não é idêntico.
+RESULTADO: NADA A COPIAR
+→ se algum PARECIDO for desta frente, copie à mão para /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/f2/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão.
+[exit=0]
+AT-027: PARECIDO só
+PARECIDO sdd/reviews/GOVERNANCA_REVIEW_RELATORIO_MENSAL.md (feature 'relatorio-mensal' ≈ frente 'relatorio'): não copiei, porque o nome não é idêntico.
+PARECIDO sdd/reviews/UX_REVIEW_RELATORIO_MENSAL.md (feature 'relatorio-mensal' ≈ frente 'relatorio'): não copiei, porque o nome não é idêntico.
+RESULTADO: 1 COPIADO(S)
+→ se algum PARECIDO for desta frente, copie à mão para /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/f3/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão.
+PARECIDO sdd/reviews/UX_REVIEW_RELATORIO_MENSAL.md (feature 'relatorio-mensal' ≈ frente 'relatorio-mensal-v2-extra'): não copiei, porque o nome não é idêntico.
+RESULTADO: NADA A COPIAR
+→ se algum PARECIDO for desta frente, copie à mão para /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/f3/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão.
+AT-027: pasta de destino é link
+IGNORADO sdd/features/BRAINSTORM_RELATORIO_MENSAL.md (a pasta de destino é um link: não copio)
+PARECIDO sdd/features/DEFINE_RELATORIO.md (feature 'relatorio' ≈ frente 'relatorio-mensal'): não copiei, porque o nome não é idêntico.
+PARECIDO sdd/features/DEFINE_RELATORIO_MENSAL_V2.md (feature 'relatorio-mensal-v2' ≈ frente 'relatorio-mensal'): não copiei, porque o nome não é idêntico.
+IGNORADO sdd/features/DEFINE_RELATÓRIO_MENSAL.md (a pasta de destino é um link: não copio)
+IGNORADO sdd/features/DESIGN_RELATORIO_MENSAL.md (a pasta de destino é um link: não copio)
+IGNORADO sdd/reviews/GOVERNANCA_REVIEW_RELATORIO_MENSAL.md (a pasta de destino é um link: não copio)
+IGNORADO sdd/reviews/UX_REVIEW_RELATORIO_MENSAL.md (a pasta de destino é um link: não copio)
+RESULTADO: NADA A COPIAR
+→ se algum PARECIDO for desta frente, copie à mão para /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/f4/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão.
+[exit=0]
+AT-027: sdd/features de destino é link
+PARECIDO sdd/features/DEFINE_RELATORIO.md (feature 'relatorio' ≈ frente 'relatorio-mensal'): não copiei, porque o nome não é idêntico.
+PARECIDO sdd/features/DEFINE_RELATORIO_MENSAL_V2.md (feature 'relatorio-mensal-v2' ≈ frente 'relatorio-mensal'): não copiei, porque o nome não é idêntico.
+IGNORADO sdd/features/DEFINE_RELATÓRIO_MENSAL.md (a pasta de destino é um link: não copio)
+IGNORADO sdd/features/DESIGN_RELATORIO_MENSAL.md (a pasta de destino é um link: não copio)
+COPIADO sdd/reviews/GOVERNANCA_REVIEW_RELATORIO_MENSAL.md
+COPIADO sdd/reviews/UX_REVIEW_RELATORIO_MENSAL.md
+RESULTADO: 2 COPIADO(S)
+→ se algum PARECIDO for desta frente, copie à mão para /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/f5/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão.
+AT-027: fonte é link
+IGNORADO sdd/features (a pasta é um link no checkout principal)
+RESULTADO: NADA A COPIAR
+→ 1 item(ns) com link não foram copiados: confira as linhas IGNORADO e copie à mão o que for desta frente.
+[exit=0]
+RESULTADO: NADA A COPIAR
+→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.
+[exit com principal/sdd link=0]
+AT-027: documento é link
+IGNORADO sdd/features/DEFINE_LINKADO.md (é um link ou não é arquivo: não copio)
+RESULTADO: NADA A COPIAR
+→ 1 item(ns) com link não foram copiados: confira as linhas IGNORADO e copie à mão o que for desta frente.
+AT-027: salvo no git e ausente
+NAO_COPIADO sdd/features/DEFINE_OUTRA.md (está salvo no git do checkout principal, mas não na branch de onde a frente nasceu)
+RESULTADO: NADA A COPIAR
+→ 1 documento(s) desta frente estão em um commit do checkout principal que ainda não foi enviado: envie esse commit e atualize a frente, ou copie à mão para /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/cd/f2/.
+[exit=0]
+AT-027: uso
+🛑 copiar-docs: checkout principal não encontrado: /nao
+uso: copiar-docs.sh <checkout-principal> <pasta-da-frente> <slug-da-frente>
+RESULTADO: ERRO DE USO
+→ corrija a chamada e rode de novo; nada foi copiado.
+[exit=64]
+[exit=64]
+[exit=64]
+[exit=64]
+[fora de git exit=64]
+gitignored também copia
+COPIADO sdd/features/DEFINE_IGN.md
+RESULTADO: 1 COPIADO(S)
+
+=== AT-022: self-test sem .git, listando a árvore antes e depois
+2:— VERMELHOS (se algum passar, o curator não avalia nada) —
+32:— VERDES —
+43:  ✅ stdout do --aplicar é só o playbook (sem RESULTADO:)
+69:🟢 self-test: todos os vermelhos e os verdes confirmados
+70:RESULTADO: SELF-TEST OK
+[exit=0]
+árvore igual
+tmp igual
+self-test num projeto de brinquedo
+RESULTADO: SELF-TEST OK
+→ o curator prova o que promete nesta máquina.
+?? sdd/reports/briefs/
+?? sdd/traces/
+self-test com fixture ausente
+[exit=2]
+self-test sem git no PATH
+Traceback (most recent call last):
+  File "<stdin>", line 1778, in <module>
+  File "<stdin>", line 1773, in main
+  File "<stdin>", line 1510, in self_test
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'git'
+self-test — fixtures em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/nogit/sdd/fixtures/playbook/curadoria
+[exit=1]
+
+=== AT-030: SDD_TRACE=off e SDD_TRACE_DIR herdados
+Ran 17 tests in 3.111s
+
+OK
+[exit=0]
+Ran 12 tests in 2.602s
+
+OK
+[exit=0]
+ls: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/trdir: No such file or directory
+
+=== AT-023: despachar
+[curador exit=40]
+tem: A publicação já terminou e não depende deste passo
+tem: <<<CURADORIA
+tem: a curadoria do playbook ainda não foi aplicada
+sem: nada foi publicado
+sem: começa a ler o DEFINE
+[avaliador exit=40]
+sem frase em avaliador
+[cartografo exit=40]
+sem frase em cartografo
+[revisor-governanca exit=40]
+sem frase em revisor-governanca
+?? sdd/reports/briefs/
+?? sdd/traces/
+[despachar a.b exit=64]
+
+=== AT-034
+[init próprio exit=0]
+0
+1
+🟢 trava INV: par válido (0 invariante(s), 0 descartado(s), pendentes=0)
+[init limpo exit=0]
+igual ao do pacote
+🟢 trava INV: par válido (1 invariante(s), 0 descartado(s), pendentes=0)
+[init com arquivo exit=0]
+1
+39:      - 'sdd/invariants.md'
+39:      - 'sdd/invariants.md'
+
+=== AT-029
+1
+1
+1
+1
+1
+1
+HANDOFF_COMPLETO.md
+HANDOFF_VALIDO.md
+sdd/fixtures/handoff/HANDOFF_COMPLETO.md
+✅ sdd/fixtures/handoff/HANDOFF_COMPLETO.md: HANDOFF válido
+[lint exit=0]
+1
+1
+1
+1
+1
+1
+[exit=0]

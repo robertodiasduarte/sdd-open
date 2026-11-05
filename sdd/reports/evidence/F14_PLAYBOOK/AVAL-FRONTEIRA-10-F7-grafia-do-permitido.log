@@ -1,0 +1,53 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/10.sh
+# F7: o agente gravou SÓ o relatório; o snapshot recebeu o caminho absoluto canônico
+novo f7; antes
+cd "$d/w" && pwd -P
+--- cenário f7 (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f7/w) ---
+[--snapshot antes exit=0]
+printf 'relatorio\n' > "$REL"
+depois
+[--snapshot depois exit=0]
+comparar "$REL"
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f7/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[--comparar exit=0]
+comparar "$W//sdd/reviews/GOVERNANCA_REVIEW_F.md"
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f7/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+comparar "$W/sdd/./reviews/GOVERNANCA_REVIEW_F.md"
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f7/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+comparar "sdd/reviews/GOVERNANCA_REVIEW_F.md"
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f7/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+comparar "${REL#/private}"
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f7/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+# F7b: permitido relativo à raiz, chamada feita de uma subpasta: o snapshot aceita (exit 0) e resolve contra o cwd
+novo f7b; cd "$W/src"
+cd "$d/w" && pwd -P
+--- cenário f7b (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f7b/w) ---
+/bin/bash "$FR" --snapshot "$W" "$T/antes" sdd/reviews/GOVERNANCA_REVIEW_F.md; echo "[exit=$?]"
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+[exit=0]
+printf 'relatorio\n' > "$REL"
+/bin/bash "$FR" --snapshot "$W" "$T/depois" sdd/reviews/GOVERNANCA_REVIEW_F.md >/dev/null; echo "[exit=$?]"
+[exit=0]
+/bin/bash "$FR" --comparar "$T/antes" "$T/depois" sdd/reviews/GOVERNANCA_REVIEW_F.md; echo "[exit=$?]"
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f7b/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[exit=1]
+grep PERMITIDO "$T/antes"
+#PERMITIDO	sdd/reviews/GOVERNANCA_REVIEW_F.md	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f7b/w/src/sdd/reviews/GOVERNANCA_REVIEW_F.md
+[exit=0]

@@ -1,0 +1,94 @@
+$ git rev-parse HEAD
+0028ea4cb008b8f2ba8cc6d243be16a7b4aeb1e6
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F14_PLAYBOOK --revisor2 codex
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: codex (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+⚠️ o 2º revisor (codex) falhou (codex falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261105-130247
+diff_sha256: 1bf324627665fbd2551b757bbc07b3b9eaaae05bf6be94ad8e3bd8c72d10a456
+revisor: claude (claude-opus-5-5) — US$ 3,5641
+2º revisor: falhou (exit 67) — última engine tentada: codex
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0867
+diversidade: vendor
+achados: 0 graves, 1 médio, 6 leves
+custo total: US$ 3,6508 (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261105-130247 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261105-130247/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f14-playbook
+branch                  : feat/f14-playbook
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : b1348bd28a3bc774fd6b9b3f323093ec5ca92c40
+head                    : 0028ea4cb008b8f2ba8cc6d243be16a7b4aeb1e6
+paths                   : -
+diff_sha256             : 1bf324627665fbd2551b757bbc07b3b9eaaae05bf6be94ad8e3bd8c72d10a456
+diff                    : 382KB (61 arquivo(s))
+contexto                : 130KB (4 doc SDD)
+docs_sdd                : BRAINSTORM_F14_PLAYBOOK.md, DEFINE_F14_PLAYBOOK.md, DESIGN_F14_PLAYBOOK.md, BUILD_REPORT_F14_PLAYBOOK.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 658
+reviewer_achados        : 7
+reviewer_tokens_entrada : 257639
+reviewer_tokens_saida   : 69642
+reviewer_tokens_total   : 327281
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 3.5641
+revisor1_raso           : nao
+gatilho_2o_revisor      : 61 arquivos (limiar 8)
+revisor2_engine         : codex
+revisor2_engine_default : codex
+revisor2_engine_efetivo : codex
+revisor2_fallback_usado : nao
+revisor2_motivo         : codex falhou (cota, cobrança ou erro)
+revisor2_exit           : 67
+revisor2_segundos       : 7
+revisor2_achados        : 0
+revisor2_tokens_entrada : n/d
+revisor2_tokens_saida   : n/d
+revisor2_tokens_total   : n/d
+revisor2_modelo         : n/d
+revisor2_custo          : $?
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 397
+auditor_vereditos       : 7
+auditor_tokens_entrada  : 174141
+auditor_tokens_saida    : 24200
+auditor_tokens_total    : 198341
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0867
+convergencia_1o_passe   : nao
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 3.6508 (+ 1 papel(is) com custo $?)
+quando                  : 20261105-130247
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261105-130247 --ledger sdd/reports/evidence/F14_PLAYBOOK/ledger-review.md --rodada 3 (teto ${TETO:-3})
+ESTADO: BLOQUEADO
+rodada: 3 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: 2º revisor acionado e falhou (codex, exit 67) — refazer a review
+motivo: D4 teto: 3 rodadas de review atingido
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[exit=20]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261105-130247
+🛑 adversarial-review: o 2º revisor foi acionado e não deu resultado (revisor2_exit=67)
+RESULTADO: NÃO CONFERE
+→ rode de novo com outra engine (--revisor2) ou registre a dispensa com --aceitar-sem-revisor2 "<motivo>".
+[exit=2]

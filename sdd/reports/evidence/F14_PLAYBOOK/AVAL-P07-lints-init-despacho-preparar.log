@@ -1,0 +1,106 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p7.sh
+
+=== AT-032 prompt-drift-scan: forma que nao le = 64; vizinhos legitimos passam
+rc=64 :: prompts:\\n\ \ wrapper_pattern:\ \[a\,\ b\]\\n :: 🛑 prompts.wrapper_pattern começa com [, { ou * sem aspas: o YAML lê isso como lista, mapa 
+rc=64 :: prompts:\\n\ \ wrapper_pattern:\ \[a\,\ b\]\ #\ c\\n :: 🛑 prompts.wrapper_pattern começa com [, { ou * sem aspas: o YAML lê isso como lista, mapa 
+rc=64 :: prompts:\ \{\\n\ \ wrapper_pattern:\ \"x\"\\n\}\\n :: 🛑 a chave prompts de sdd/config.yaml abre um mapa entre chaves em várias linhas, forma que
+rc=64 :: prompts:\ \{\ wrapper_pattern:\ \"x\"\ \}\\n :: 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fech
+rc=64 :: \"prompts\":\ \{\\n\}\\n :: 🛑 a chave prompts de sdd/config.yaml abre um mapa entre chaves em várias linhas, forma que
+rc=0 :: prompts:\ \{\}\\n :: 
+rc=0 :: prompts:\\n\ \ wrapper_pattern:\ \"\[a\]\"\\n :: 
+rc=0 :: prompts:\\n\ \ wrapper_pattern:\ \"systemPrompt:\"\\n :: 
+rc=0 :: prompts:\\n\ \ wrapper_pattern:\\n\ \ \ \ -\ a\\n\ \ \ \ -\ b\\n :: 
+rc=0 :: prompts:\\n\ \ wrapper_pattern:\\n :: 
+rc=0 :: prompts:\ \{other:\ 1\}\\n :: 
+rc=0 :: \#\ prompts:\ \{\\nprompts:\\n\ \ wrapper_pattern:\ x\\n :: 
+[self-test rc=0]
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+
+=== AT-031 design-lint
+cut: stdin: Illegal byte sequence
+rc=1 :: $'# DESIGN: Contador de linhas\n\n> Fixture do `sdd/bin/design-lint.py :: 🛑 DESIGN_X.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nad
+cut: stdin: Illegal byte sequence
+rc=0 :: $'# DESIGN: Contador de linhas\n\n> Fixture do `sdd/bin/design-lint.py :: 
+cut: stdin: Illegal byte sequence
+rc=1 :: $'# DESIGN: Contador de linhas\n\n> Fixture do `sdd/bin/design-lint.py :: 🛑 DESIGN_X.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nad
+cut: stdin: Illegal byte sequence
+rc=1 :: $'# DESIGN: Contador de linhas\n\n> Fixture do `sdd/bin/design-lint.py :: 🛑 DESIGN_X.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nad
+cut: stdin: Illegal byte sequence
+rc=1 :: $'# DESIGN: Contador de linhas\n\n> Fixture do `sdd/bin/design-lint.py :: 🛑 DESIGN_X.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nad
+cut: stdin: Illegal byte sequence
+rc=1 :: $'# DESIGN: Contador de linhas\n\n> Fixture do `sdd/bin/design-lint.py :: 🛑 DESIGN_X.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nad
+cut: stdin: Illegal byte sequence
+rc=0 :: $'# DESIGN: Contador de linhas\n\n> Fixture do `sdd/bin/design-lint.py :: 
+cut: stdin: Illegal byte sequence
+rc=0 :: $'# DESIGN: Contador de linhas\n\n> Fixture do `sdd/bin/design-lint.py :: 
+cut: stdin: Illegal byte sequence
+rc=0 :: $'# DESIGN: Contador de linhas\n\n> Fixture do `sdd/bin/design-lint.py :: 
+
+=== AT-034 init
+[init pacote rc=0]
+[igual ao pacote rc=0]
+🟢 trava INV: par válido (1 invariante(s), 0 descartado(s), pendentes=0)
+[init playbook proprio rc=0]
+0
+🟢 trava INV: par válido (0 invariante(s), 0 descartado(s), pendentes=0)
+[init com arquivo rc=0]
+meu
+39:      - 'sdd/invariants.md'
+
+=== AT-023 despachar: curador x outros papeis
+[curador rc=40]
+1
+1
+1
+0
+0
+[avaliador rc=40 frase=0]
+[cartografo rc=40 frase=0]
+[revisor-governanca rc=40 frase=0]
+[outro rc=40 frase=0]
+[feature com ponto rc=64]
+
+=== AT-041 --preparar
+staging: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sd
+copiado: sdd/features/DESIGN_FOO.md
+copiado: sdd/reports/BUILD_REPORT_FOO.md
+copiado: sdd/reports/evidence/FOO/AVAL-1.log
+copiado: sdd/reports/evidence/FOO/CURATOR-colhidos.txt
+copiado: sdd/reviews/AVALIACAO_FOO_20260101-1010.md
+copiado: sdd/releases/FOO/s1_v1.yaml
+copiado: sdd/handoffs/HANDOFF_FOO.md
+RESULTADO: STAGING PRONTO (7 arquivo(s))
+→ os originais não foram tocados; rode --colher "/private/tmp/claude-5
+[rc=0]
+AVAL-1.log
+AVALIACAO_FOO_20260101-1010.md
+BUILD_REPORT_FOO.md
+CURATOR-colhidos.txt
+DESIGN_FOO.md
+HANDOFF_FOO.md
+s1_v1.yaml
+RETOMADA: não há colheita nesta pasta; rode sem --retomar
+RESULTADO: NADA A RETOMAR
+→ rode --preparar FOO sem --retomar e colha de novo.
+1
+0
+staging: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sd
+copiado: sdd/archive/BAR/DESIGN_BAR.md
+RESULTADO: STAGING PRONTO (1 arquivo(s))
+→ os originais não foram tocados; rode --colher "/private/tmp/claude-5
+[arquivado rc=0]
+[sem docs rc=1]
+[nome rc=64]
+[nome rc=64]
+[sem arg rc=64]
+--- link no lugar do documento
+staging: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sd
+copiado: sdd/features/DESIGN_LK.md
+ignorado (link ou não é arquivo): sdd/reports/BUILD_REPORT_LK.md
+RESULTADO: STAGING PRONTO (1 arquivo(s))
+→ os originais não foram tocados; rode --colher "/private/tmp/claude-5
+--- pasta de evidencia que e link (arquivos regulares do outro lado)
+ignorado (link ou não é arquivo): sdd/reports/BUILD_REPORT_LK.md
+copiado: sdd/reports/evidence/LK/AVAL-9.log
+[exit=0]
