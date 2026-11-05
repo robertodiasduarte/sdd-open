@@ -396,6 +396,12 @@ class LogDeSonda(Base):
         self.assertNotIn("DELTA LM-001 mordeu+1", out)
         self.assertEqual(rc, 0, out)
 
+    def test_achado_com_arquivo_e_linha_de_codigo_conta(self):
+        # L14 do ciclo 2: só o diagnóstico do lint, que aponta para o playbook .md, fica de fora
+        (self.dir / "AVAL-x.log").write_text("src/app.py:12: ❌ repetiu o erro de LM-002\n", encoding="utf-8")
+        _, out, _ = self.colhe()
+        self.assertIn("DELTA LM-002 mordeu+1", out)
+
     def test_achado_real_no_mesmo_log_conta(self):
         (self.dir / "AVAL-x.log").write_text(
             "$ rode isto\n"

@@ -177,6 +177,12 @@ class Pacote(unittest.TestCase):
                 self.assertTrue((RAIZ / rel).is_file())
                 self.assertIn(rel, manifest)
 
+    def test_agents_tmpl_cita_as_19_skills(self):
+        # L15 do ciclo 2
+        tmpl = ler("AGENTS.md.tmpl")
+        faltam = [p.name for p in sorted((RAIZ / ".agents/skills").iterdir()) if (p / "SKILL.md").is_file() and p.name not in tmpl]
+        self.assertEqual(faltam, [])
+
     def test_versoes(self):
         self.assertIn('version: "1.0.0"', SKILL)
         self.assertIn("`sdd-drive v1.0.0 · nov/2026", SKILL)

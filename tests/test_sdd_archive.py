@@ -94,6 +94,30 @@ class Simulacao(Base):
         self.assertIn("sem-ledger=0 · soltos=0", out)
         self.assertNotIn("_REPORTS_0000-00", out)
 
+    def test_sujo_com_mtime_velho_tambem_e_atividade(self):
+        # L7 do ciclo 2
+        self.doc("sdd/features/DEFINE_A.md")
+        self.escreve(self.r, "sdd/features/DEFINE_A.md", "editado\n")
+        import time
+        velho = time.mktime((2020, 1, 1, 12, 0, 0, 0, 0, -1))
+        os.utime(str(self.r / "sdd/features/DEFINE_A.md"), (velho, velho))
+        _, out, _ = self.arquivo()
+        self.assertIn("sem-ledger=0", out)
+
+    def test_documento_que_so_existe_no_merge_usa_a_edicao(self):
+        # L8 do ciclo 2
+        self.git(self.r, "checkout", "-q", "-b", "lado")
+        self.doc("sdd/reports/a.md", "2026-11-04T12:00:00")
+        principal = self.git(self.r, "rev-parse", "--abbrev-ref", "HEAD@{1}") if False else None
+        self.git(self.r, "checkout", "-q", "-")
+        self.doc("sdd/reports/b.md", "2026-11-04T12:00:00")
+        self.git(self.r, "merge", "-q", "--no-commit", "--no-ff", "lado")
+        self.escreve(self.r, "sdd/reports/feito_no_merge.md", "x\n")
+        self.git(self.r, "add", "sdd/reports/feito_no_merge.md")
+        self.git(self.r, "commit", "-q", "-m", "merge")
+        _, out, _ = self.arquivo("--hoje", HOJE) if False else self.arquivo()
+        self.assertNotIn("_REPORTS_0000-00", out)
+
     def test_nao_rastreado_antigo_vai_para_o_mes_da_edicao(self):
         # o outro lado
         self.escreve(self.r, "sdd/reports/antigo.md", "x\n")
@@ -201,6 +225,34 @@ class Protecao(Base):
         self.assertNotIn("parecer.txt  →", out)
         self.assertIn("NOTAS_DA_FRENTE.md (1 documento(s)): documento citado", out)
         self.assertIn("sdd/reports/outro.txt  →", out, "o que não foi citado segue")
+
+    def test_nome_com_outras_palavras_e_da_ficha_aberta(self):
+        # M2 do ciclo 2
+        self.ficha("F14_DRIVE", "aberta")
+        for rel in ("sdd/reviews/REVISAO_FRONTEIRA_F14_DRIVE_20261105.md", "sdd/reviews/AVALIACAO_F14_DRIVE-ciclo2.md", "sdd/reports/BUILD_REPORT_F14_DRIVE.md"):
+            self.doc(rel)
+        _, out, _ = self.arquivo()
+        self.assertNotIn("F14_DRIVE-ciclo2.md  →", out)
+        self.assertNotIn("REVISAO_FRONTEIRA_F14_DRIVE_20261105.md  →", out)
+
+    def test_palavra_inteira_nao_protege_vizinho(self):
+        # o outro lado de M2
+        self.ficha("F14_DRIVE", "aberta")
+        self.doc("sdd/reports/BUILD_REPORT_F14_DRIVEX.md")
+        self.doc("sdd/reports/BUILD_REPORT_XF14_DRIVE.md")
+        _, out, _ = self.arquivo()
+        self.assertIn("BUILD_REPORT_F14_DRIVEX.md  →", out)
+        self.assertIn("BUILD_REPORT_XF14_DRIVE.md  →", out)
+
+    def test_outra_caixa_e_acento_protegem(self):
+        # M3 do ciclo 2
+        self.ficha("f14", "aberta")
+        self.ficha("ação", "aberta")
+        self.doc("sdd/reports/BUILD_REPORT_F14.md")
+        self.doc("sdd/reports/BUILD_REPORT_ação.md")
+        _, out, _ = self.arquivo()
+        self.assertNotIn("BUILD_REPORT_F14.md  →", out)
+        self.assertNotIn("BUILD_REPORT_ação.md  →", out)
 
     def test_pastas_que_nunca_saem(self):
         self.doc("sdd/reports/evidence/F1/DEFINE_F1.md")

@@ -257,6 +257,21 @@ class Proxima(Base):
         self.assertAcao(res, "DESIGN")
         self.assertIn("design-lint", res[1])
 
+    def test_so_a_1a_tabela_do_manifest_vira_tarefa(self):
+        # M1 do ciclo 2: nos DESIGNs reais, a tabela de responsáveis fica dentro da seção
+        texto = design(("a", "b.py")).replace("| 2 | `b.py` |", "| 2 | `b.py` (novo) |")
+        texto += "\n### Agent Assignment Rationale\n\n| Agent / Owner | Files Assigned | Why |\n|---|---|---|\n| (general) | todos | x |\n"
+        texto += "\n| File | x |\n|---|---|\n| fantasma.py | y |\n"
+        self.escreve(self.r, "sdd/features/DESIGN_F.md", texto)
+        self.assertAcao(self.drive("iniciar", D), "RODADA")
+        self.assertEqual(re.findall(r"(?m)^- \[ \] (.+)$", (self.r / PROGRESS).read_text(encoding="utf-8")), ["a", "b.py"])
+
+    def test_nome_com_crase_no_progress_nao_reabre_a_tarefa(self):
+        # L10 do ciclo 2
+        self.drive("iniciar", D)
+        self.escreve(self.r, PROGRESS, "- [x] `a`\n- [x] b\n")
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
     def test_revisao_exigida_sem_registro_e_com_high_aberto(self):
         self.escreve(self.r, "sdd/features/DESIGN_F.md", design(("a", "b", "c"), "Create"))
         res = self.drive("iniciar", D)
@@ -266,6 +281,13 @@ class Proxima(Base):
         self.assertAcao(self.drive("proximo", D), "REVISAO_DESIGN")
         self.escreve(self.r, "sdd/features/DESIGN_F.md", design(("a", "b", "c"), "Create", led % "APLICADA"))
         self.assertAcao(self.drive("proximo", D), "RODADA")
+
+    def test_saida_64_com_linha_parar_nao_vira_design(self):
+        # L2 do ciclo 2
+        self.drive("iniciar", D)
+        self.escreve(self.r, "sdd/bin/sdd-fluxo.sh", "#!/bin/bash\n# --drive\necho 'PARAR: x'\nexit 64\n")
+        rc, out, err = self.drive("proximo", D)
+        self.assertEqual(rc, 2, out + err)
 
     def test_saida_64_do_seguir_nao_vira_design(self):
         self.drive("iniciar", D)
@@ -388,6 +410,61 @@ class Verificar(Base):
         res = self.drive("verificar", D)
         self.assertAcao(res, "COMMITAR")
         self.assertIn("   - codigo.txt", res[1])
+        self.assertEqual(self.chamadas(), 0)
+
+    def test_rename_commitado_para_documento_nao_conta_como_so_documento(self):
+        # H1 do ciclo 2, regressão do conserto de M2: o commit que a própria ação pede apagava o sinal
+        self.novo_commit()
+        self.pronto()
+        self.verde()
+        self.assertAcao(self.drive("verificar", D), "AVALIAR_E_RELATAR")
+        self.git(self.r, "mv", "codigo.txt", "sdd/reports/codigo.txt")
+        self.assertAcao(self.drive("verificar", D), "COMMITAR")
+        self.git(self.r, "commit", "-q", "-m", "tira o código do lugar")
+        self.escreve(self.r, "sdd/reports/BUILD_REPORT_F.md", "x\n")
+        self.assertAcao(self.drive("concluir", D), "VERIFICAR")
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
+    def test_rename_commitado_depois_do_vermelho_roda_o_gate(self):
+        self.novo_commit()
+        self.pronto()
+        self.drive("verificar", D)
+        self.git(self.r, "mv", "codigo.txt", "sdd/reports/codigo.txt")
+        self.git(self.r, "commit", "-q", "-m", "tira o código do lugar")
+        self.assertAcao(self.drive("verificar", D), "CORRIGIR")
+        self.assertEqual(self.chamadas(), 2)
+
+    def test_rename_commitado_de_documento_para_codigo_roda_o_gate(self):
+        self.escreve(self.r, "sdd/reports/x.py", "x\n")
+        self.commit(self.r)
+        self.pronto()
+        self.verde()
+        self.drive("verificar", D)
+        self.git(self.r, "mv", "sdd/reports/x.py", "x.py")
+        self.git(self.r, "commit", "-q", "-m", "vira código")
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
+    def test_rename_commitado_so_entre_documentos_mantem_o_verde(self):
+        # o outro lado
+        self.escreve(self.r, "sdd/reports/x.md", "x\n")
+        self.commit(self.r)
+        self.pronto()
+        self.verde()
+        self.drive("verificar", D)
+        (self.r / "sdd/reviews").mkdir()
+        self.git(self.r, "mv", "sdd/reports/x.md", "sdd/reviews/x.md")
+        self.git(self.r, "commit", "-q", "-m", "documento")
+        self.assertAcao(self.drive("proximo", D), "AVALIAR_E_RELATAR")
+
+    def test_rename_na_2a_coluna_acusa_o_nome_inteiro(self):
+        # L3 do ciclo 2: git add -N deixa o rename na coluna da árvore
+        self.novo_commit("a.p")
+        self.pronto()
+        self.git(self.r, "rm", "-q", "--cached", "a.p")
+        (self.r / "a.p").rename(self.r / "b.p")
+        self.git(self.r, "add", "-N", "b.p")
+        res = self.drive("verificar", D)
+        self.assertAcao(res, "COMMITAR")
         self.assertEqual(self.chamadas(), 0)
 
     def test_rename_entre_pastas_de_documento_nao_trava(self):
@@ -519,6 +596,23 @@ class CommitDuranteOGate(Base):
         self.escreve(self.r, "sdd/reports/BUILD_REPORT_F.md", "x\n")
         self.assertAcao(self.drive("concluir", D), "VERIFICAR")
 
+    def test_a_variavel_no_ambiente_de_quem_chama_nao_abre_a_trava(self):
+        # L11 do ciclo 2: só o filho do --fundo herda
+        self.git(self.r, "rev-parse", "HEAD")
+        self.escreve(self.r, PROGRESS, "- [ ] a\n- [x] b\n")
+        self.assertAcao(self.drive("verificar", D, env=dict(self.env, SDD_DRIVE_TRAVA_HERDADA="1")), "RODADA")
+        self.assertEqual(self.chamadas(), 0)
+
+    def test_vermelho_com_commit_no_meio_diz_o_log_e_a_rodada(self):
+        # L13 do ciclo 2
+        (self.r / ".verde").unlink()
+        self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+        self.gate_comecou()
+        self.novo_commit()
+        self.espera_acabar()
+        self.assertEqual(self.estado()["gates"][-1]["exit"], 2)
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
     def test_a_variavel_do_fundo_nao_chega_ao_gate(self):
         # M3 do ciclo 1: a suíte de um projeto pode exercitar este script
         self.escreve(self.r, D, define(cmd="echo x >> gate.calls; test -z $SDD_DRIVE_TRAVA_HERDADA && test -f .verde"))
@@ -566,6 +660,18 @@ class SegundoPlano(Base):
         self.assertEqual(self.chamadas(), 1, saidas)
         self.assertTrue(any("ACAO: ESPERAR" in s for s in saidas), saidas)
         self.assertEqual(len(self.estado()["gates"]), 1)
+
+    def test_trava_com_pid_invalido_se_libera(self):
+        # L16 do ciclo 2
+        self.escreve(self.r, "sdd/reports/progress/DRIVE_F.lock", "-1")
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
+    def test_trava_viva_cita_o_arquivo(self):
+        import os as _os
+        self.escreve(self.r, "sdd/reports/progress/DRIVE_F.lock", str(_os.getpid()))
+        res = self.drive("proximo", D)
+        self.assertAcao(res, "ESPERAR")
+        self.assertIn("DRIVE_F.lock", res[1])
 
     def test_trava_de_processo_morto_se_libera(self):
         self.escreve(self.r, "sdd/reports/progress/DRIVE_F.lock", "999999")
@@ -700,6 +806,18 @@ class Retomada(Base):
                     self.assertParada(res, "estado-invalido")
                     self.assertNotIn("Traceback", res[2])
 
+    def test_outros_campos_com_forma_errada(self):
+        # M4 do ciclo 2
+        self.drive("iniciar", D)
+        base = self.estado()
+        for campo, valor in (("motivo", "xyz"), ("motivo", 3), ("detalhe", 3), ("gate_linhas", 3), ("maximo", 0), ("maximo", -1), ("versao", 99), ("feature", "OUTRA"), ("parada_gate", "xyz")):
+            with self.subTest(campo=campo, valor=valor):
+                st = dict(base)
+                st[campo] = valor
+                self.escreve(self.r, ESTADO, json.dumps(st))
+                for args in (("proximo", D), ("recibo", D, "x")):
+                    self.assertParada(self.drive(*args), "estado-invalido")
+
     def test_o_estado_que_o_proprio_script_grava_passa_na_forma(self):
         # o outro lado de M4
         self.drive("iniciar", D)
@@ -739,6 +857,15 @@ class Concluir(Base):
         self.git(self.r, "add", "-A", "sdd/features")
         self.git(self.r, "commit", "-q", "-m", "c")
         self.assertAcao(self.drive("concluir", D), "DESIGN")
+
+    def test_parada_guardada_vale_tambem_no_concluir(self):
+        # L1 do ciclo 2
+        self.escreve(self.r, D, define(cmd="N/A (manual-ux)", kind="manual-ux"))
+        self.commit(self.r)
+        self.drive("iniciar", D)
+        self.feito()
+        self.assertParada(self.drive("verificar", D), "manual-ux")
+        self.assertParada(self.drive("concluir", D), "manual-ux")
 
     def test_sujo_sem_verde_vira_commitar(self):
         # L1 do ciclo 1

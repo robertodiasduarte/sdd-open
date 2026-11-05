@@ -127,8 +127,6 @@ class Deploy:
             raise ConsultaFalhou(str(e))
         if r.returncode != 0:
             texto = (r.stderr or r.stdout).strip()
-            if re.search(r"could not find any workflows|workflow .*not found", texto, re.I):
-                uso("o GitHub não conhece o workflow '%s': %s" % (self.workflow, texto.split("\n")[0]))
             if re.search(r"auth login|not logged|HTTP 401", texto):
                 fim(3, "⚠️ inconclusivo — o gh não está logado (%s)." % texto.split("\n")[0], "INCONCLUSIVO",
                     "rode gh auth login e repita; não concluí nada sobre o deploy.")
@@ -136,7 +134,12 @@ class Deploy:
         return r.stdout
 
     def lista(self, *filtro):
-        saida = self.gh("run", "list", "--workflow", self.workflow, "--branch", self.branch, "--limit", "50", "--json", CAMPOS, *filtro)
+        try:
+            saida = self.gh("run", "list", "--workflow", self.workflow, "--branch", self.branch, "--limit", "50", "--json", CAMPOS, *filtro)
+        except ConsultaFalhou as e:
+            if re.search(r"could not find any workflows|workflow .*not found", str(e), re.I):
+                uso("o GitHub não conhece o workflow '%s': %s" % (self.workflow, e))
+            raise
         try:
             runs = json.loads(saida or "[]")
         except ValueError as e:
@@ -148,16 +151,20 @@ class Deploy:
                 and r.get("event") in ("push", "workflow_dispatch")]
 
     def passos_falhos(self, run_id):
-        """Todos os passos que falharam: um passageiro no job 1 não esconde um real no job 2. [] se não deu para ler."""
+        """Todos os passos que falharam: um passageiro no job 1 não esconde um real no job 2. [] se a resposta não diz.
+        Consulta que falha sobe como ConsultaFalhou: quem chama tenta de novo, em vez de concluir sem saber."""
         try:
             dados = json.loads(self.gh("run", "view", str(run_id), "--json", "jobs") or "[]")
-        except (ValueError, ConsultaFalhou):
+        except ValueError:
             return []
         saida = []
         for job in (dados.get("jobs") or []) if isinstance(dados, dict) else []:
-            for passo in (job.get("steps") or []) if isinstance(job, dict) else []:
-                if isinstance(passo, dict) and passo.get("conclusion") == "failure":
-                    saida.append(passo.get("name"))
+            if not isinstance(job, dict):
+                continue
+            achados = [q.get("name") for q in (job.get("steps") or []) if isinstance(q, dict) and q.get("conclusion") == "failure"]
+            if not achados and job.get("conclusion") == "failure":
+                achados = ["job %s" % job.get("name")]  # job falho sem passo falho nunca é passageiro
+            saida += achados
         return saida
 
     def git(self, *args):
@@ -350,7 +357,9 @@ def main():
                             fim(2, "%s; não repeti: este commit já foi repetido 1 vez (%s)." % (trecho, origem), "FALHOU", seta)
                         if not transitorios:
                             fim(2, "%s; não repeti: deploy.transient_steps está vazio, e aí eu nunca repito sozinho." % trecho, "FALHOU", seta)
-                        if not passos or real:
+                        if not passos:
+                            fim(2, "%s; não repeti: a resposta do GitHub não diz qual passo falhou." % trecho, "FALHOU", seta)
+                        if real:
                             fim(2, "%s; não repeti: este passo não está em deploy.transient_steps." % trecho, "FALHOU", seta)
                         ponta = d.ponta()
                         if not ponta:

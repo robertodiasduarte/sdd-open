@@ -35,13 +35,19 @@ elif a[:2] == ["run", "view"]:
     if c.get("view_lista"):
         print("[1]")
     else:
+        if c.get("view_erro"):
+            sys.stderr.write("HTTP 502: bad gateway\\n")
+            sys.exit(1)
         jobs = [dict(steps=[dict(name=c.get("passo", "x"), conclusion="failure")])]
         if c.get("passo2"):
             jobs.append(dict(steps=[dict(name=c["passo2"], conclusion="failure")]))
+        if c.get("job_sem_passo"):
+            jobs.append(dict(name="deploy", conclusion="failure", steps=[dict(name="y", conclusion="cancelled")]))
         print(json.dumps(dict(jobs=jobs)))
 elif a[:2] == ["workflow", "run"]:
     if c.get("dispatch_recusado"):
-        sys.stderr.write("HTTP 422: Workflow does not have workflow_dispatch trigger\\n")
+        texto = c["dispatch_recusado"] if isinstance(c["dispatch_recusado"], str) else "HTTP 422: Workflow does not have workflow_dispatch trigger"
+        sys.stderr.write(texto + "\\n")
         sys.exit(1)
     open(pos, "w").write(str(i + 1))
 else:
@@ -253,6 +259,25 @@ class RespostasEstranhas(Base):
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", passo2="Compilar")
         res = self.sha("--transitorios", "Verify SSH")
         self.assertSai(res, 2, "Compilar", "não está em deploy.transient_steps")
+        self.assertNotIn("workflow run", self.log())
+
+    def test_job_falho_sem_passo_falho_nao_repete(self):
+        # L4 do ciclo 2
+        self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", job_sem_passo=True)
+        self.assertSai(self.sha("--transitorios", "Verify SSH"), 2, "job deploy")
+        self.assertNotIn("workflow run", self.log())
+
+    def test_dispatch_com_404_sai_2_e_nao_64(self):
+        # L5 do ciclo 2: a consulta do run já provou que o workflow existe
+        self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", dispatch_recusado="HTTP 404: workflow deploy.yml not found")
+        self.assertSai(self.sha("--transitorios", "Verify SSH"), 2, "o GitHub recusou")
+
+    def test_view_que_falha_tenta_de_novo_e_nao_conclui(self):
+        # L6 do ciclo 2
+        self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", view_erro=True)
+        rc, out, err = self.sha("--transitorios", "Verify SSH")
+        self.assertEqual(rc, 4, out + err)
+        self.assertIn("HTTP 502", out)
         self.assertNotIn("workflow run", self.log())
 
     def test_run_sem_sha_nao_quebra_nem_decide(self):

@@ -27,6 +27,7 @@ import os
 import re
 import subprocess
 import sys
+import unicodedata
 
 PASTAS = ("features", "reports", "reviews")
 # O mais longo primeiro: com FIX antes de FIX_REPORT, FIX_REPORT_F14 viraria a feature REPORT_F14 e escaparia da ficha aberta.
@@ -46,6 +47,11 @@ def git(*args):
 
 def texto(b):
     return b.decode("utf-8", "surrogateescape")
+
+
+def nfc(s):
+    """macOS pode devolver o nome decomposto; o git, composto: comparar sempre na mesma forma."""
+    return unicodedata.normalize("NFC", s)
 
 
 def fim(resultado, seta):
@@ -140,22 +146,25 @@ def main():
                 continue
             if data_de(ln):
                 atual = ln
-            elif ln not in ultimo:
-                ultimo[ln] = atual
+            elif nfc(ln) not in ultimo:
+                ultimo[nfc(ln)] = atual
     r = git("ls-files", "-z", "--", "sdd/features", "sdd/reports", "sdd/reviews")
-    rastreados = set(p for p in texto(r.stdout).split("\0") if p)
+    rastreados = set(nfc(p) for p in texto(r.stdout).split("\0") if p)
 
     r = git("status", "--porcelain", "-z", "--untracked-files=all", "--", "sdd/features", "sdd/reports", "sdd/reviews")
-    sujos = set(reg[3:] for reg in texto(r.stdout).split("\0") if len(reg) > 3)
+    sujos = set(nfc(reg[3:]) for reg in texto(r.stdout).split("\0") if len(reg) > 3 and not reg.startswith("??"))
 
     def data_real(p):
-        """Arquivo sujo ou que o git não conhece: vale a última edição, não o último commit."""
-        if p in rastreados and p not in sujos:
-            return data_de(ultimo.get(p) or "")
+        """Sujo é atividade de agora, qualquer que seja o mtime. Sem commit com data (não rastreado, ou só num merge), vale a edição."""
+        if nfc(p) in sujos:
+            return hoje
+        d = data_de(ultimo.get(nfc(p)) or "")
+        if d:
+            return d
         try:
             return datetime.date.fromtimestamp(os.path.getmtime(p))
         except OSError:
-            return data_de(ultimo.get(p) or "")
+            return None
 
     def idade(p):
         d = data_real(p)
@@ -188,9 +197,18 @@ def main():
             else:
                 sem_grupo.append(p)
 
+    def ficha_do_nome(nome):
+        """A ficha aberta cujo nome aparece no nome do arquivo, como palavra inteira, em qualquer caixa: `F1` não casa `F14`,
+        e REVISAO_FRONTEIRA_F14_DRIVE_20261105.md é da F14_DRIVE. Proteger demais é o lado seguro."""
+        for n in sorted(abertas):
+            if re.search(r"(?<![^\W_])" + re.escape(nfc(n)) + r"(?![^\W_])", nfc(nome), re.I):
+                return n
+        return ""
+
     def protecao(g, arquivos):
-        for n in sorted(nomes[g]):
-            if n in abertas:
+        for p in arquivos:
+            n = ficha_do_nome(os.path.splitext(os.path.basename(p))[0])
+            if n:
                 return "ficha aberta em HANDOFF_%s.md" % n
         for n in sorted(nomes[g]):
             if re.search(r"(?<![A-Z0-9_])" + re.escape(n) + r"(?![A-Z0-9_])", citado):
@@ -225,7 +243,10 @@ def main():
         else:
             recentes.append((g, len(arquivos), q, a.dias_b))
     for p in sem_grupo:
-        if os.path.basename(p) in citado or p in citado:
+        n = ficha_do_nome(os.path.splitext(os.path.basename(p))[0])
+        if n:
+            protegidos.append((os.path.basename(p), 1, "ficha aberta em HANDOFF_%s.md" % n))
+        elif os.path.basename(p) in citado or p in citado:
             protegidos.append((os.path.basename(p), 1, "documento citado numa ficha aberta"))
         elif "/features/" not in p and idade(p) >= a.dias_b:
             lotes["soltos"].append((p, "sdd/archive/_REPORTS_%s/%s" % (mes_de(p), os.path.basename(p))))
@@ -235,7 +256,7 @@ def main():
     for L in ([a.lote] if a.lote else LOTES):
         print("\n== Lote %s: %d arquivo(s) ==" % (L, len(lotes[L])))
         for src, dst in lotes[L]:
-            print("  %s  →  %s%s" % (src, dst, "" if src in rastreados else "  ⚠️ não rastreado: pulo"))
+            print("  %s  →  %s%s" % (src, dst, "" if nfc(src) in rastreados else "  ⚠️ não rastreado: pulo"))
     if not a.lote:
         print("\n== Protegidos: %d grupo(s) ==" % len(protegidos))
         for g, n, pq in protegidos:
@@ -258,7 +279,7 @@ def main():
 
     movidos = 0
     for src, dst in lotes[a.lote]:
-        if src not in rastreados:
+        if nfc(src) not in rastreados:
             continue
         if os.path.exists(dst):
             print("⚠️ destino já existe, pulei: %s" % dst, file=sys.stderr)

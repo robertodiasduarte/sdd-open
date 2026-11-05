@@ -48,6 +48,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 for _canal in (sys.stdout, sys.stderr):
     try:
@@ -266,7 +267,15 @@ def forma_ok(st):
     """A forma inteira: estado que abre mas não fecha viraria traceback ou rodada contada errado adiante."""
     if not isinstance(st, dict) or any(k not in st for k in CAMPOS_ESTADO):
         return False
-    if not all(isinstance(st[k], str) for k in ("feature", "define", "gate_sha", "gate_cmd", "inicio")) or not inteiro(st["maximo"]):
+    if st["versao"] != 2 or not all(isinstance(st[k], str) for k in ("feature", "define", "gate_sha", "gate_cmd", "inicio")) \
+            or not inteiro(st["maximo"]) or st["maximo"] < 1:
+        return False
+    if st.get("motivo", "") not in MOTIVOS and st.get("motivo", "") != "":
+        return False
+    if st.get("parada_gate", "") not in PARADAS_DO_GATE and st.get("parada_gate", "") != "":
+        return False
+    linhas = st.get("gate_linhas", [])
+    if not isinstance(st.get("detalhe", ""), str) or not isinstance(linhas, list) or not all(isinstance(x, str) for x in linhas):
         return False
     if not (isinstance(st["gates"], list) and isinstance(st["trocas_gate"], list) and isinstance(st["recibos"], list)):
         return False
@@ -294,7 +303,7 @@ def le_estado(p):
         return None, "%s não é um JSON legível: %s" % (p.estado, e)
     if not forma_ok(st):
         return None, "%s não tem os campos esperados" % p.estado
-    if st["define"] != p.define:
+    if st["define"] != p.define or st["feature"] != p.feature:
         return None, "%s é de outro DEFINE (%s)" % (p.estado, st["define"])
     return st, ""
 
@@ -407,6 +416,8 @@ def linhas_do_manifest(p):
     col, saida = None, []
     for ln in m.group(1).split("\n"):
         if not ln.strip().startswith("|"):
+            if col is not None:
+                break  # só a 1ª tabela é o manifest: as de baixo (Agent Assignment…) não são tarefa
             continue
         c = [x.strip() for x in ln.strip().strip("|").split("|")]
         if col is None:
@@ -416,7 +427,8 @@ def linhas_do_manifest(p):
             continue
         if all(re.match(r"^:?-+:?$", x) for x in c if x) or col >= len(c):
             continue
-        nome = c[col].strip("`")
+        crase = re.search(r"`([^`]+)`", c[col])
+        nome = crase.group(1) if crase else c[col]
         if nome:
             saida.append(nome)
     return saida
@@ -434,6 +446,7 @@ def tarefas(p, st):
         # linha nova do manifest (o DESIGN cresceu num CORRIGIR) vira tarefa pendente
         texto = ler(caminho)
         ja = re.findall(r"(?m)^- \[(?: |x|X)\] (.+)$", texto)
+        ja = [j.replace("`", "") for j in ja]
         novos = [i for i in linhas_do_manifest(p) if not any(re.match(re.escape(i) + r"(\s+[·—(-]|\s*$)", j) for j in ja)]
         if ja and novos:
             gravar_atomico(caminho, texto.rstrip("\n") + "\n" + "".join("- [ ] %s\n" % i for i in novos))
@@ -461,7 +474,8 @@ def seguir_design(p):
 
 
 def so_documentos(p, de, ate):
-    rc, out = git(p.raiz, "diff", "--name-only", "-z", de, ate)
+    # --no-renames: um rename mostra os 2 nomes, e tirar código do lugar não é "só documento"
+    rc, out = git(p.raiz, "diff", "--name-only", "--no-renames", "-z", de, ate)
     if rc != 0:
         return False
     return all(a.startswith(SO_DOCUMENTOS) for a in out.split("\0") if a)
@@ -475,6 +489,8 @@ def gate_rodando(p):
     """pid vivo na trava; trava de processo morto se libera (o agente pode ter sido cortado no meio do gate)."""
     try:
         pid = int(ler(trava(p)).strip())
+        if pid <= 0:
+            raise ValueError("pid inválido")
         os.kill(pid, 0)
         return pid
     except PermissionError:
@@ -504,6 +520,21 @@ def pega_trava(p):
     return True
 
 
+def trava_herdada(p):
+    """Só o filho do --fundo herda a trava: a variável sozinha, no ambiente de quem chama, não abre nada."""
+    if os.environ.get("SDD_DRIVE_TRAVA_HERDADA") != "1":
+        return False
+    for _ in range(40):  # o pai grava o pid do filho logo depois de abri-lo
+        try:
+            # o pid do filho é o do bash que roda este script; o Python é filho dele
+            if ler(trava(p)).strip() in (str(os.getpid()), str(os.getppid())):
+                return True
+        except OSError:
+            return False
+        time.sleep(0.05)
+    return False
+
+
 def solta_trava(p):
     try:
         os.remove(trava(p))
@@ -522,7 +553,7 @@ def fora_dos_documentos(p):
         k += 1
         if len(reg) < 4:
             continue
-        if reg[0] in "RC":  # rename: o nome antigo vem no campo seguinte, e tirar código do lugar também é mudança de código
+        if reg[0] in "RC" or reg[1] in "RC":  # rename: o nome antigo vem no campo seguinte, e tirar código do lugar também é mudança de código
             if k < len(itens) and not itens[k].startswith(SO_DOCUMENTOS):
                 saida.append(itens[k])
             k += 1
@@ -538,8 +569,8 @@ def proxima(p, st):
     if not tem_design(p):
         return "DESIGN", ""
     rc, parou, revisao, motivo = seguir_design(p)
-    if rc != 0 and not parou:
-        falha("sdd-fluxo.sh seguir saiu %d sem dizer o motivo: %s" % (rc, motivo))
+    if rc not in (0, 1) or (rc == 1 and not parou):
+        falha("sdd-fluxo.sh seguir saiu %d: %s" % (rc, motivo))
     if rc != 0:
         return ("REVISAO_DESIGN" if revisao else "DESIGN"), motivo
     pend, total = tarefas(p, st)
@@ -685,15 +716,19 @@ def barra_orcamento(p, st):
         parada(p, st, "orcamento-rodadas", "Rodadas vermelhas: %d de %d." % (vermelhos(st), st["maximo"]))
 
 
+def parada_guardada(p, st):
+    if st.get("parada_gate") in PARADAS_DO_GATE:
+        ult = st["gates"][-1] if st["gates"] else None
+        parada(p, st, st["parada_gate"], "log: " + ult["log"] if ult else "")
+
+
 def cmd_proximo(args):
     p = um_define("proximo", args)
     st = carrega(p)
     pid = gate_rodando(p)
     if pid:
         acao(p, st, "ESPERAR", msg_rodando(p, pid))
-    if st.get("parada_gate") in PARADAS_DO_GATE:
-        ult = st["gates"][-1] if st["gates"] else None
-        parada(p, st, st["parada_gate"], "log: " + ult["log"] if ult else "")
+    parada_guardada(p, st)
     confere_gate(p, st)
     barra_orcamento(p, st)
     nome, detalhe = proxima(p, st)
@@ -716,7 +751,7 @@ def cmd_verificar(args):
     fundo = "--fundo" in args
     p = um_define("verificar", [a for a in args if a != "--fundo"])
     st = carrega(p)
-    herdada = os.environ.get("SDD_DRIVE_TRAVA_HERDADA") == "1"
+    herdada = trava_herdada(p)
     pid = gate_rodando(p)
     if pid and not herdada:
         acao(p, st, "ESPERAR", msg_rodando(p, pid))
@@ -781,6 +816,8 @@ def cmd_verificar(args):
         if vermelhos(st) >= st["maximo"]:
             parada(p, st, "orcamento-rodadas", "Rodadas vermelhas: %d de %d · log: %s" % (vermelhos(st), st["maximo"], log))
         nome, detalhe = proxima(p, st)
+        if nome != "CORRIGIR":
+            detalhe = "O teste final ficou vermelho e gastou 1 rodada (log: %s); há commit novo depois de quando ele começou." % log
         acao(p, st, nome, detalhe)
     if rc == 4:
         parada(p, st, "manual-ux", "log: " + log)
@@ -794,6 +831,7 @@ def cmd_verificar(args):
 def cmd_concluir(args):
     p = um_define("concluir", args)
     st = carrega(p)
+    parada_guardada(p, st)
     confere_gate(p, st)
     barra_orcamento(p, st)
     sujos = fora_dos_documentos(p)
