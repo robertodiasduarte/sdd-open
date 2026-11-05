@@ -107,6 +107,7 @@
 - 2026-11-05 — Rodada 4: 1 HIGH falso do DeepSeek, rebatido por medição, e 5 achados de Claude. Consertar exigiria 5ª rodada: D4 do Roberto, "A — Publicar como está", com os 5 como primeira tarefa da `F14_DRIVE`.
 - 2026-11-05 — Roberto: "release previamente autorizado quando tudo ok", sem o nome do repositório, não valeu; "release autorizado sdd-open". Push `b1348bd..8a320e9` + tag `v2.6.0`; publicou `v2.6.0`.
 - 2026-11-05 — Curadoria real: Roberto aceitou as 2 lições e deixou o envio para a próxima publicação; commit `252d351` fica na branch da frente.
+- 2026-11-05 — Roberto: "encerre e limpe aqui". Revisões, trace e registro arquivados em `/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F14_PLAYBOOK-revisoes-traces.tar.gz`; 3 arquivos da rodada 4 copiados para a evidência; worktree `sdd-open-f14-playbook` removida; branch local `feat/f14-playbook` mantida, por causa do `252d351`.
 
 ---
 
@@ -129,7 +130,7 @@
 
 - **Piso:** 1.411 OK em `8a320e9` (`sdd/reports/evidence/F14_PLAYBOOK/verify-gate-8a320e9.log`); base `b1348bd` tinha 1.134.
 - **CI:** no PR, Ubuntu 17m41s e macOS 29m22s (tetos 25 e 45).
-- **Revisão real:** 4 rodadas, US$ 14,87 (`real-rodada1` a `real-rodada4.log`, na pasta de evidência). A última, `sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615`, é sobre `8a320e9`: `loop` PRONTO e `--conferir` CONFERE (`real-rodada4-fechamento.log`). As pastas `EXTERNAL_REVIEW_*` são ignoradas pelo git e ficam só nesta worktree: arquive antes de removê-la, como na F13.
+- **Revisão real:** 4 rodadas, US$ 14,87 (`real-rodada1` a `real-rodada4.log`, na pasta de evidência). A última, `sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615`, é sobre `8a320e9`: `loop` PRONTO e `--conferir` CONFERE (`real-rodada4-fechamento.log`). A worktree da F14 foi removida; as 4 pastas `EXTERNAL_REVIEW_*`, o trace e o registro ficam em `/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F14_PLAYBOOK-revisoes-traces.tar.gz`, só nesta máquina.
 - **Prova do AT-038:** Codex CLI 0.163 com `deepseek/deepseek-v4-pro` pela OpenRouter, **não o modelo da OpenAI** (conta sem créditos). `codex-8a320e9-*`: bloco reprovado por crases escapadas; na retomada, o agente redespachou sozinho e o bloco novo passou. `codex-8a320e9-r2-*`: as 3 cláusulas passam, com o bloco aprovado na 1ª tentativa. O resumo da r2 sai `exit=1` só pela verificação de commit.
 - **Sabotagens:** 27 em `8a320e9` (`sabotagens-8a320e9-r2.log`), 26 derrubam teste; 1 viva conhecida, a lista de salvos do `copiar-docs.sh`. O teste que a derruba está em `pendencia-r5-teste-lado2.patch`, conferido contra o mutante.
 - **Não verificado:** o commit do item 8 do 17b nunca rodou fora do Claude (o sandbox do Codex deixa `.git` só leitura); nenhum avaliador rodou depois de `eada1e2`; R1 da rodada 4 (Windows) não foi medido; nada rodou em Windows.
@@ -138,7 +139,7 @@
 
 **🐛 Bug fix** — o que ficou quebrado, parcial ou com comportamento errado conhecido:
 
-- **Os 5 achados de Claude da rodada 4, primeira tarefa da `F14_DRIVE`** (`sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615/reviewer.md`; decisão D4):
+- **Os 5 achados de Claude da rodada 4, primeira tarefa da `F14_DRIVE`** (`sdd/reports/evidence/F14_PLAYBOOK/rodada4-reviewer.md`; decisão D4):
   - R1 MED PLAUSIBLE, `sdd/bin/playbook-curator.sh:88`: sem `newline="\n"` no stdout, Python nativo do Windows grava `--aplicar` e `--aplicar-inv` em CRLF. Conserto: `_canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")`. O auditor discordou.
   - R2 LOW CONFIRMED, `playbook-curator.sh:161`: `ler()` com `errors="replace"` faz o `--aplicar` com delta real trocar byte inválido por U+FFFD sem aviso. Conserto: recusar com exit 2, em delta real; delta vazio segue preservando os bytes.
   - R3 LOW CONFIRMED, `copiar-docs.sh:138`: com `IGNORADO` e `PARECIDO` juntos, a seta omite para onde copiar à mão (AT-027). Veio do conserto de R6 da rodada 3. Conserto: seta única que junta os casos, sem cadeia de `elif`.
@@ -174,7 +175,7 @@
 ### Onde está o trabalho
 
 - Remoto `https://github.com/robertodiasduarte/sdd-open.git`, `main` = `8a320e9` = tag `v2.6.0`.
-- Worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f14-playbook`, branch `feat/f14-playbook` em `252d351`: mesclada até `8a320e9`; **o `252d351` só existe nessa branch local**. Não apague a branch antes de levar o commit.
+- Worktree `sdd-open-f14-playbook` removida a pedido do Roberto (2026-11-05). A branch local `feat/f14-playbook` fica em `252d351`, mesclada até `8a320e9`: **o `252d351` só existe nessa branch local**. Não apague a branch antes de levar o commit.
 - Worktree da próxima sessão: `/Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive`, branch `feat/f14-drive`.
 - Os artefatos SDD estão na branch `docs/incorporar-starter`.
 

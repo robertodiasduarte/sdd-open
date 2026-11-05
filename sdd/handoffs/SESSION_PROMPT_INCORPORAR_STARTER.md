@@ -29,7 +29,7 @@ git checkout origin/docs/incorporar-starter -- sdd/features sdd/handoffs sdd/rep
 git rm -r -q --cached sdd/features sdd/handoffs sdd/reports sdd/reviews   # ficam no disco, fora do commit
 ```
 
-Não trabalhe nas worktrees antigas. **Não remova `sdd-open-f14-playbook` nem a branch `feat/f14-playbook` antes de levar o `252d351`:** ele só existe ali. As pastas `sdd/reports/reviews/EXTERNAL_REVIEW_*` da F14 também só existem lá, porque são ignoradas pelo git. O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
+Não trabalhe nas worktrees antigas. A worktree `sdd-open-f14-playbook` já foi removida. **Não apague a branch local `feat/f14-playbook` antes de levar o `252d351`:** ele só existe nela. As pastas `EXTERNAL_REVIEW_*` da F14 estão em `/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F14_PLAYBOOK-revisoes-traces.tar.gz`, só nesta máquina. O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
 
 Depois, leia nesta ordem:
 - `sdd/features/BRAINSTORM_F14_PLAYBOOK.md`: decisões da F14 e o que ficou para a 2ª entrega (linhas 49, 50, 119, 120, 184).
@@ -39,7 +39,7 @@ Depois, leia nesta ordem:
   - **8.1** (O1–O4), **8.2** (slot `drive.*`) e **8.3** (fontes no privado);
   - seção 10 (uma frente por sessão).
 - `sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md`: a Ficha, `## Eventos` e a etapa "F14 Playbook", que é a do topo.
-- `sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615/reviewer.md`, na worktree `sdd-open-f14-playbook`: os 5 achados.
+- `sdd/reports/evidence/F14_PLAYBOOK/rodada4-reviewer.md`: os 5 achados (ao lado, `rodada4-reviewer2.md` e `rodada4-auditor.md`).
 - `.agents/skills/sdd-release/SKILL.md` (onde entram O2 e o item 10), `.agents/skills/sdd-build/references/modos-e-retry.md` (o modo ralph que o `sdd-drive` reaproveita) e `docs/roadmap.md` (a linha `sdd-drive`).
 
 ## Onde paramos
