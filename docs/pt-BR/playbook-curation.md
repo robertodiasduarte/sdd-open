@@ -36,12 +36,12 @@ Toda linha a julgar leva uma impressão digital (`fp=`). Depois de uma curadoria
 `sdd/reports/evidence/<FEATURE>/CURATOR-colhidos.txt`; a próxima release da mesma feature as mostra como
 `JA_JULGADO` e não conta de novo.
 
-Exit `0` quer dizer que há o que julgar ou relatar, `1` que não há nada, e qualquer outro exit é **falha**,
+Com `--inv`, uma landmine que já mordeu e nunca foi classificada também aparece, como `INV_PENDENTE`. Exit `0` quer dizer que há o que julgar ou relatar, `1` que não há nada, e qualquer outro exit é **falha**,
 nunca "nada a colher".
 
 ## O que entra sem pergunta, e o que não entra
 
-O `--conferir-bloco` é o juiz da tabela do curador. Ele reprova a tabela quando falta uma linha da colheita,
+O `--conferir-bloco` é o juiz da tabela do curador, uma linha para cada linha da colheita. Ele reprova a tabela quando falta uma linha da colheita,
 quando o curador escreveu alguma coisa no projeto ou na pasta de staging (o staging é selado com `--selar`
 antes do despacho, e o projeto é comparado pelo `governanca-fronteira.sh`), e quando uma contagem automática
 não é **igual** a uma linha que o script colheu: a mesma landmine, o mesmo verbo, `+1`, o mesmo
@@ -54,7 +54,7 @@ não é **igual** a uma linha que o script colheu: a mesma landmine, o mesmo ver
 
 As linhas aprovadas são aplicadas numa **cópia** (`--aplicar`); a cópia passa pelo lint do playbook, pela
 conferência anti-collapse e pela trava das invariantes, e só então substitui o `sdd/playbook.md`. A mudança
-vai num commit só dela. Enviar esse commit para a branch padrão é outra pergunta, marcada
+vai num commit só dela (com os logs da curadoria, quando o projeto versiona a pasta de evidência). Enviar esse commit para a branch padrão é outra pergunta, marcada
 `[D1 · não se desfaz]`: em muitos projetos, um push publica.
 
 ## A gramática do delta
@@ -90,8 +90,8 @@ isto que vigia":
   linha ajustada da invariante, e as duas vão na mesma opção. O `--aplicar-inv` grava as linhas aprovadas;
   ninguém edita o arquivo à mão.
 
-Um projeto instalado antes da v2.6.0 recebe um `sdd/invariants.md` vazio. A primeira curadoria diz quantas
-lições antigas ainda não foram classificadas e pergunta sobre cada uma, uma vez. Sem o arquivo, a curadoria
+Um projeto instalado antes da v2.6.0 recebe um `sdd/invariants.md` vazio. A primeira curadoria mostra cada lição
+antiga ainda não classificada e pergunta sobre ela, uma vez; sem resposta, a trava segura e nada é aplicado. Sem o arquivo, a curadoria
 pula o cruzamento e diz que pulou.
 
 ## O que ela não faz
@@ -100,7 +100,7 @@ pula o cruzamento e diz que pulou.
 - Não lê a conversa da sessão, só os arquivos.
 - Não julga a qualidade de uma lição: isso é do curador, e seu.
 - Não publica um catálogo de invariantes; o arquivo-fonte é o catálogo.
-- Uma promoção aceita aqui só registra a decisão. O mecanismo é uma correção própria, com um caso que falha
+- Uma promoção aceita aqui só registra a decisão, como pendência. O mecanismo é uma correção própria, com um caso que falha
   sem ele.
 
 Saídas e palavras de cada modo: [cli-conventions.md](../cli-conventions.md).

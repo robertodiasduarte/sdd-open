@@ -73,6 +73,33 @@ class Passo17b(unittest.TestCase):
         self.assertIn("pare no exit 40", PASSO)
         self.assertIn("--retomar", PASSO)
 
+    def test_retomada_nao_refaz_a_linha_de_base(self):
+        t = " ".join(PASSO.split())
+        self.assertIn('vá direto para a parte "Na volta" do item 3', t)
+        self.assertIn("refazer o selo ou o snapshot de antes agora tomaria por linha de base", t)
+
+    def test_redespacho_depois_de_escrita_refaz_a_linha_de_base_ou_para(self):
+        t = " ".join(PASSO.split())
+        for trecho in ("sem `FORA:` nem staging mexido, redespache com o mesmo selo", "**não redespache**",
+                       "`Curadoria: FALHOU (curador escreveu no playbook)`", "refaça os itens 1 e 2, o selo e o snapshot de antes"):
+            with self.subTest(trecho=trecho):
+                self.assertIn(trecho, t)
+
+    def test_cruzar_sem_as_linhas_inv_e_licao_antiga(self):
+        t = " ".join(PASSO.split())
+        self.assertIn("sem as linhas de tipo inv", t)
+        self.assertIn("`Curadoria: FALHOU (invariantes sem classificação)`", t)
+
+    def test_promocao_nao_entra_no_delta_agora(self):
+        t = " ".join(PASSO.split())
+        self.assertIn("a promoção aceita vira pendência na ficha", t)
+
+    def test_nada_aceito_tem_caminho_e_evidencia_nao_versionada_tambem(self):
+        t = " ".join(PASSO.split())
+        for trecho in ("`Curadoria: nada aplicado`", "git check-ignore -q", "git ls-files sdd/reports/evidence", "colheita.rc"):
+            with self.subTest(trecho=trecho):
+                self.assertIn(trecho, t)
+
     def test_o_commit_nao_sai_sem_um_sim_e_reconfere_na_base(self):
         i = PASSO.index("**Recibo e envio.**")
         envio = PASSO[i:]

@@ -123,6 +123,36 @@ class NaoCopia(Base_):
         self.assertIn("IGNORADO", out)
         self.assertEqual(list(fora.iterdir()), [])
 
+    def test_frente_sdd_que_e_link_nao_recebe(self):
+        fora = self.tmp / "fora"
+        fora.mkdir()
+        self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md")
+        os.symlink(str(fora), str(self.f / "sdd"))
+        rc, out, _ = self.copia()
+        self.assertEqual(rc, 0)
+        self.assertIn("IGNORADO", out)
+        self.assertIn("com link não foram copiados", out)
+        self.assertEqual(list(fora.iterdir()), [])
+
+    def test_destino_que_e_link_quebrado_nao_recebe(self):
+        self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md", "novo\n")
+        (self.f / "sdd/features").mkdir(parents=True)
+        alvo = self.tmp / "alvo.md"
+        os.symlink(str(alvo), str(self.f / "sdd/features/DEFINE_RELATORIO_MENSAL.md"))
+        rc, out, _ = self.copia()
+        self.assertEqual(rc, 0)
+        self.assertIn("JA_EXISTE", out)
+        self.assertFalse(alvo.exists())
+
+    def test_sdd_do_principal_que_e_link_e_dito(self):
+        fora = self.tmp / "sdd-fora"
+        self.escreve(fora, "features/DEFINE_RELATORIO_MENSAL.md", "x\n")
+        os.symlink(str(fora), str(self.p / "sdd"))
+        rc, out, _ = self.copia()
+        self.assertEqual(rc, 0)
+        self.assertIn("IGNORADO sdd/features", out)
+        self.assertFalse((self.f / "sdd").exists())
+
     def test_documento_commitado_e_nao_enviado_e_dito(self):
         self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md")
         self.commit(self.p)

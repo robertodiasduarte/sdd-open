@@ -270,9 +270,10 @@ removido.
        `staging:`; guarde-a como `STG`. Exit 1 = não achou DESIGN nem BUILD_REPORT: num conserto sem SDD
        formal, registre `Curadoria: 0 deltas (sem documentos)` e encerre o 17b; senão é falha (confira o
        nome da feature). **Sessão nova depois da parada do curador:** rode com `--retomar`, que não copia
-       nem limpa, e continue do item 3 com a colheita e o selo que já existem.
+       nem limpa, recalcule `STG` e `T` e vá direto para a parte "Na volta" do item 3: refazer o selo ou o
+       snapshot de antes agora tomaria por linha de base o que o curador já escreveu.
     2. **Colher, lendo o exit.**
-       `bash sdd/bin/playbook-curator.sh --colher "$STG" sdd/playbook.md [--inv sdd/invariants.md] > "$STG/colheita.txt"; rc=$?`
+       `bash sdd/bin/playbook-curator.sh --colher "$STG" sdd/playbook.md [--inv sdd/invariants.md] > "$STG/colheita.txt"; rc=$?; echo "$rc" > "$STG/colheita.rc"`
        — `--inv` só quando `sdd/invariants.md` existe; sem o arquivo, diga "invariantes: arquivo ausente,
        cruzamento pulado" e siga só com o playbook. O que uma curadoria anterior desta feature já julgou
        (`CURATOR-colhidos.txt`, item 7) não conta de novo: aparece como `JA_JULGADO`.
@@ -301,8 +302,12 @@ removido.
        `bash sdd/bin/playbook-curator.sh --conferir-bloco "$STG/colheita.txt" "$T/curadoria.txt" sdd/playbook.md "$T/selo.txt" "$T/comparar.txt" > "$T/conferido.txt"; rc=$?`.
        Ele reprova (exit 2) quando o curador escreveu no projeto (`FORA:`) ou a fronteira não foi verificada,
        quando o staging mudou depois do selo, quando falta uma linha da colheita e quando uma contagem não
-       é igual à que o script colheu. Exit 2 ⇒ liste à pessoa o que saiu como `FORA:` (não apague nada) e
-       despache de novo **1 vez**, com os 5 campos mais o campo `conferencia:` (as linhas `🔴 bloco:`). 2ª
+       é igual à que o script colheu. Exit 2 ⇒ despache de novo **1 vez**, com os 5 campos mais o campo
+       `conferencia:` (as linhas `🔴 bloco:`). Se o motivo foi só o bloco, sem `FORA:` nem staging mexido,
+       redespache com o mesmo selo e o mesmo snapshot. Se houve `FORA:` ou staging mexido: liste à pessoa o
+       que saiu (não apague nada); com `sdd/playbook.md` ou `sdd/invariants.md` na lista, **não redespache**:
+       registre `Curadoria: FALHOU (curador escreveu no playbook)`; nos outros casos, refaça os itens 1 e 2,
+       o selo e o snapshot de antes (o que a pessoa já viu vira linha de base) e só então redespache. 2ª
        reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)`, diga que a curadoria fica para a próxima
        publicação e encerre: **nada é aplicado**. Nunca separe contagem de regra à mão: quem decide é o
        conferidor.
@@ -314,14 +319,20 @@ removido.
        respostas **aceitar**, **recusar** e **não sei**; até 5 por vez (acima disso, em lotes). Diga também,
        em palavras, cada linha `REJEITADO` da colheita: o candidato que não entrou e por quê. Com
        `sdd/invariants.md`, antes de perguntar:
-       `printf '%s\n' <os deltas AUTO e PERGUNTA> | bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md`
+       `printf '%s\n' <os deltas AUTO e PERGUNTA, sem as linhas de tipo inv> | bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md`
        — `INV_AFETADA` ⇒ o item daquela aposentadoria leva o `ajuste:` junto, como **uma opção só**;
        `INV_PENDENTE` ⇒ a contagem e a classificação vão na mesma opção (virar regra permanente com a
-       linha `inv` do curador, descartar com motivo, ou não aplicar a contagem). Os itens aceitos entram
-       no `delta.txt`; as linhas de invariante aceitas (a `inv` do curador, o `ajuste:`, ou
+       linha `inv` do curador, descartar com motivo, ou não aplicar a contagem). Lição antiga que já mordeu e
+       nunca foi classificada aparece na colheita como `INV_PENDENTE` e pede o mesmo item, uma vez: sem a
+       resposta, a trava do item 6 segura tudo, e aí registre `Curadoria: FALHOU (invariantes sem
+       classificação)`. Os itens aceitos entram no `delta.txt`, menos a promoção: o delta `promovido_para=`
+       só entra quando o mecanismo já está na branch padrão, então a promoção aceita vira pendência na
+       ficha; as linhas de invariante aceitas (a `inv` do curador, o `ajuste:`, ou
        `REMOVER INV-nnn` / `REMOVER LM-nnn`), em `"$STG/inv-linhas.txt"`. Sem linha `PERGUNTA`, não há
        pergunta de regra.
-    6. **Aplicar numa cópia e conferir 3 vezes.**
+    6. **Aplicar numa cópia e conferir 3 vezes.** Com `delta.txt` e `inv-linhas.txt` vazios ou ausentes (nada
+       contado, nada aceito), pule este item, o commit e o envio, faça o item 7 e registre
+       `Curadoria: nada aplicado`.
        `bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" sdd/playbook.md > "$STG/novo.md"`
        (exit 2 ⇒ nada foi impresso: corrija o delta) →
        `bash sdd/bin/playbook-lint.sh "$STG/novo.md"` (exit 0 obrigatório) →
@@ -335,12 +346,14 @@ removido.
        edite as invariantes à mão).
        Só então `cp "$STG/novo.md" sdd/playbook.md` e, se mudou, `cp "$STG/inv.md" sdd/invariants.md`.
     7. **Evidência** em `sdd/reports/evidence/{F}/`, no formato `$ comando`, a saída e `[exit=N]` com o
-       exit real do comando: `CURATOR-colheita.log` (a colheita) e `CURATOR-delta.log` (o `delta.txt`
-       aplicado). E o registro do que já foi julgado, para a próxima publicação desta feature não contar
+       exit real do comando: `CURATOR-colheita.log` (o comando do item 2, `colheita.txt` e o exit guardado em
+       `colheita.rc`) e `CURATOR-delta.log` (o comando do item 6, o `delta.txt` e o exit dele). E o registro do que já foi julgado, para a próxima publicação desta feature não contar
        de novo: `grep ' · fp=' "$STG/colheita.txt" >> sdd/reports/evidence/{F}/CURATOR-colhidos.txt`.
     8. **Commit à parte:** `git add sdd/playbook.md` (e `sdd/invariants.md`, se mudou) e os 3 arquivos
-       `CURATOR-*` do item 7 (sem o registro, a próxima publicação desta feature conta tudo de novo);
-       `git diff --cached --name-only` só pode listar esses arquivos; commit
+       `CURATOR-*` do item 7 (sem o registro, a próxima publicação desta feature conta tudo de novo). Se o
+       projeto não versiona evidência (`git check-ignore -q sdd/reports/evidence/{F}/CURATOR-colhidos.txt`
+       sai 0, ou `git ls-files sdd/reports/evidence` vem vazio), não adicione os `CURATOR-*` e diga que o
+       registro fica só nesta pasta. `git diff --cached --name-only` só pode listar esses arquivos; commit
        `chore(playbook): curadoria {F} — <n> delta(s)`. Nunca `--no-verify`: o pre-commit vigia o playbook.
     9. **Recibo e envio.** Mostre o recibo **Decidi sozinho**: 1 linha por contagem aplicada, em palavras
        simples, e como desfazer (`git revert <sha do commit da curadoria>`). Depois, a pergunta

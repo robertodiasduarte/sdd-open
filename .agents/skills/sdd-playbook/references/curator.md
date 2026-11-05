@@ -64,7 +64,8 @@ reprovou no seu bloco anterior, não é contaminação: conserte exatamente o qu
      `promover` com `PERGUNTA OBRIGATÓRIA`, nunca `ACEITAR`: promover é uma correção própria, e o
      delta `promovido_para=` só entra de verdade quando o mecanismo já existe na branch padrão.
    - `IGNORADO` e `JA_COLHIDO`: relate na linha `IGNORADOS/JA_COLHIDOS:`.
-   - `INV_PENDENTE LM-nnn`: a landmine entrou no universo das invariantes sem classificação. Leia o
+   - `INV_PENDENTE LM-nnn`: a landmine entrou no universo das invariantes sem classificação, agora ou numa
+     release antiga (`já no universo`). Leia o
      bullet e proponha **uma** linha completa, na gramática de `sdd/invariants.md`: a invariante
      (`estado=`, a regra, `· por quê:`, e `· tarefa:` se `auto` ou `· motivo:` se `humano`; `estado=ok`
      só com um check que existe) ou o descarte (`- [LM-nnn] descartado :: <motivo>`). Linha `inv`.
@@ -72,8 +73,9 @@ reprovou no seu bloco anterior, não é contaminação: conserte exatamente o qu
    `TOMBSTONE`, `promovido_para=` ou `mordeu+1`, rode, de dentro do `worktree:`:
    `printf '%s\n' <as linhas da coluna Delta> | bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md`
    (só leitura; exit 3 = há aviso). Cada `INV_AFETADA` vira uma linha `inv` logo abaixo do delta que a
-   causa, com a linha `ajuste:` inteira na coluna Delta e, na linguagem simples, que os dois andam
-   juntos. `INV_AFETADA` sem ajuste aceitável ⇒ recomende `DESCARTAR` a aposentadoria.
+   causa, com o que vem depois de `ajuste: ` na coluna Delta (a linha inteira da invariante, ou
+   `REMOVER LM-nnn` quando a lição aposentada estava em `## Descartados`) e, na linguagem simples, que os dois
+   andam juntos. Nesse `printf`, nunca passe as linhas de tipo `inv`: elas não são delta. `INV_AFETADA` sem ajuste aceitável ⇒ recomende `DESCARTAR` a aposentadoria.
 4. **Em linguagem simples (toda linha).** Até 2 frases que a pessoa decide sem abrir o playbook: **o que
    aconteceu** nesta feature e **o que muda se aceitar** (em `AUTO`, o que foi contado). Termo técnico
    do produto vale; código do método não: nada de `LM-nnn`, `INV-nnn`, "delta", "ajudou/mordeu",

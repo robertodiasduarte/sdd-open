@@ -36,12 +36,12 @@ Every line to judge carries a fingerprint (`fp=`). After a curation, those lines
 `sdd/reports/evidence/<FEATURE>/CURATOR-colhidos.txt`; the next release of the same feature shows them as
 `JA_JULGADO` and does not count them again.
 
-Exit `0` means there is something to judge or report, `1` means nothing at all, and any other exit is a
+With `--inv`, a landmine that already bit and was never classified also shows up, as `INV_PENDENTE`. Exit `0` means there is something to judge or report, `1` means nothing at all, and any other exit is a
 **failure**, never "nothing to harvest".
 
 ## What enters without a question, and what does not
 
-`--conferir-bloco` is the judge of the curator's table. It rejects the table when a harvest line is missing,
+`--conferir-bloco` is the judge of the curator's table, one row per harvest line. It rejects the table when a harvest line is missing,
 when the curator wrote anything in the project or in the staging folder (the staging is sealed with
 `--selar` before the dispatch, and the project is compared with `governanca-fronteira.sh`), and when an
 automatic count is not **equal** to a line the script harvested: same landmine, same verb, `+1`, same
@@ -54,7 +54,7 @@ automatic count is not **equal** to a line the script harvested: same landmine, 
 
 The approved lines are applied to a **copy** (`--aplicar`), the copy passes the playbook lint, the
 anti-collapse check and the invariants lock, and only then replaces `sdd/playbook.md`. The change goes in a
-commit of its own. Sending that commit to the default branch is another question, marked
+commit of its own (with the curation logs, when the project versions its evidence folder). Sending that commit to the default branch is another question, marked
 `[D1 · não se desfaz]`: in many projects a push publishes.
 
 ## The delta grammar
@@ -90,8 +90,8 @@ this is what watches it":
   adjusted invariant line, and both go in the same option. `--aplicar-inv` writes the approved lines; nobody
   edits the file by hand.
 
-A project installed before v2.6.0 receives an empty `sdd/invariants.md`. The first curation then says how many
-old lessons are not classified yet and asks about each one, once. Without the file, the curation skips the
+A project installed before v2.6.0 receives an empty `sdd/invariants.md`. The first curation then shows each old
+lesson that is not classified yet and asks about it, once; without an answer, the lock holds and nothing is applied. Without the file, the curation skips the
 crossing and says so.
 
 ## What it does not do
@@ -100,7 +100,7 @@ crossing and says so.
 - It does not read the transcript of the session, only the files.
 - It does not judge the quality of a lesson: that is the curator's job, and yours.
 - It does not publish a catalog of invariants; the source file is the catalog.
-- A promotion accepted here only registers the decision. The mechanism is a fix of its own, with a case that
+- A promotion accepted here only registers the decision, as a pending item. The mechanism is a fix of its own, with a case that
   fails without it.
 
 Exit codes and the words each mode prints: [cli-conventions.md](cli-conventions.md).

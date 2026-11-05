@@ -40,7 +40,7 @@ git -C "${PRINCIPAL}" rev-parse --show-toplevel >/dev/null 2>&1 || uso "${PRINCI
 TMP="$(mktemp -d 2>/dev/null || mktemp -d -t copiardocs)" || uso "não consegui criar a pasta temporária"
 trap 'rm -rf "${TMP}"' EXIT
 
-copiados=0; parecidos=0; falhas=0; nao_copiados=0
+copiados=0; parecidos=0; falhas=0; nao_copiados=0; ignorados=0
 
 # sem acento (RELATÓRIO = relatorio, como o slug da frente); minúsculas; o que não é letra nem número vira
 # hífen; sem hífen nas pontas. As letras acentuadas entram por alternação: em LC_ALL=C cada uma são 2 bytes.
@@ -71,8 +71,8 @@ feature_de() {
 uma_pasta() {  # $1 = sdd/features | sdd/reviews
   local dir="$1" rel base fk dest lista="${TMP}/lista"
   [ -d "${PRINCIPAL}/${dir}" ] || return 0
-  if [ -L "${PRINCIPAL}/${dir}" ]; then
-    printf 'IGNORADO %s (a pasta é um link no checkout principal)\n' "${dir}"; return 0
+  if [ -L "${PRINCIPAL}/sdd" ] || [ -L "${PRINCIPAL}/${dir}" ]; then
+    printf 'IGNORADO %s (a pasta é um link no checkout principal)\n' "${dir}"; ignorados=$((ignorados + 1)); return 0
   fi
   # --others: o que o git não tem salvo, ignorado ou não. -z: nome com espaço ou acento chega inteiro.
   git -C "${PRINCIPAL}" ls-files --others -z -- "${dir}" > "${lista}.z" 2>/dev/null \
@@ -85,14 +85,14 @@ uma_pasta() {  # $1 = sdd/features | sdd/reviews
     [ -n "${fk}" ] || continue
     if [ "${fk}" = "${SLUG}" ]; then
       if [ -L "${PRINCIPAL}/${rel}" ] || [ ! -f "${PRINCIPAL}/${rel}" ]; then
-        printf 'IGNORADO %s (é um link ou não é arquivo: não copio)\n' "${rel}"; continue
+        printf 'IGNORADO %s (é um link ou não é arquivo: não copio)\n' "${rel}"; ignorados=$((ignorados + 1)); continue
       fi
       dest="${FRENTE}/${rel}"
       if [ -e "${dest}" ] || [ -L "${dest}" ]; then
         printf 'JA_EXISTE %s (a frente já tem este arquivo: mantive o dela)\n' "${rel}"; continue
       fi
       if [ -L "${FRENTE}/sdd" ] || [ -L "${FRENTE}/${dir}" ]; then
-        printf 'IGNORADO %s (a pasta de destino é um link: não copio)\n' "${rel}"; continue
+        printf 'IGNORADO %s (a pasta de destino é um link: não copio)\n' "${rel}"; ignorados=$((ignorados + 1)); continue
       fi
       if mkdir -p "${FRENTE}/${dir}" && cp "${PRINCIPAL}/${rel}" "${dest}"; then
         printf 'COPIADO %s\n' "${rel}"; copiados=$((copiados + 1))
@@ -139,6 +139,8 @@ elif [ "${parecidos}" -gt 0 ]; then
   printf '→ se algum PARECIDO for desta frente, copie à mão para %s/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão.\n' "${FRENTE}"
 elif [ "${copiados}" -gt 0 ]; then
   printf '→ os documentos da feature já estão na frente; os originais continuam no checkout principal.\n'
+elif [ "${ignorados}" -gt 0 ]; then
+  printf '→ %d item(ns) com link não foram copiados: confira as linhas IGNORADO e copie à mão o que for desta frente.\n' "${ignorados}"
 else
   printf '→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.\n'
 fi

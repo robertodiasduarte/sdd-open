@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
 from pathlib import Path
 
 from apoio import BASH, RAIZ, Sandbox
@@ -236,6 +237,7 @@ class Saidas(Base):
         casos = {
             "AVAL-1.log": "❌ filas_de_envio\n",                                    # só sugestão
             "BUILD_REPORT_F.md": "<<<CANDIDATO_PLAYBOOK\nsecao: Backend\n>>>\n",    # só rejeitado
+            "AVAL-2.log": "❌ LM-777\n",                                             # só ignorado
         }
         for nome, texto in casos.items():
             with self.subTest(arquivo=nome):
@@ -286,6 +288,36 @@ class Saidas(Base):
         self.assertEqual(out.count("IGNORADO LM-009"), 1, "tombstone não recebe contagem")
 
 
+class LinhasQueNaoSaoAchado(Base):
+    """L1 do avaliador, ciclo 1"""
+
+    def test_id_dentro_de_outra_palavra_nao_conta(self):
+        for linha in ("❌ FILM-001", "❌ HELM-001", "❌ LM-0019", "❌ X_LM-001"):
+            with self.subTest(linha=linha):
+                self.doc("AVAL-1.log", linha + "\n")
+                self.assertNotIn("LM-001", self.colhe()[1].replace("PROMOVER? LM-003", ""))
+
+    def test_fail_composto_nao_e_achado(self):
+        self.doc("AVAL-1.log", "FAIL-FAST ligado para LM-001\n")
+        self.assertNotIn("DELTA LM-001", self.colhe()[1])
+
+    def test_nota_depois_do_veredito_nao_recebe_contagem(self):
+        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| `LM-001` | ✔ tratado | vizinha da LM-002 |\n")
+        out = self.colhe()[1]
+        self.assertIn("DELTA LM-001 ajudou+1", out)
+        self.assertNotIn("DELTA LM-002", out)
+
+    def test_id_na_propria_celula_do_veredito_vale_quando_nao_ha_outro(self):
+        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| ✔ tratado LM-001 | x |\n")
+        self.assertIn("DELTA LM-001 ajudou+1", self.colhe()[1])
+
+    def test_frase_de_regra_que_comeca_com_mordeu_nao_e_veredito(self):
+        self.doc("DESIGN_F.md", "## Landmines aplicáveis\n\n| mordeu quando o agendador caiu de madrugada | `LM-001` | ✔ tratado |\n")
+        out = self.colhe()[1]
+        self.assertIn("DELTA LM-001 ajudou+1", out)
+        self.assertNotIn("LM-001 mordeu", out)
+
+
 class Desde(Base):
     """AT-008"""
 
@@ -325,6 +357,43 @@ class JaJulgado(Base):
         self.doc("r1.yaml", "WAIVED por LM-001, com motivo novo\n")
         self.assertIn("DELTA LM-001 mordeu+1", self.colhe()[1])
 
+    def registra(self, saida):
+        self.doc("CURATOR-colhidos.txt", "\n".join(ln for ln in saida.split("\n") if " · fp=" in ln) + "\n")
+
+    def test_2_linhas_da_mesma_licao_nao_contam_em_2_releases(self):
+        # H3 do avaliador: DESIGN e BUILD_REPORT citando a mesma lição é o caso normal.
+        tab = "## Landmines aplicáveis\n\n| `LM-001` | ✔ %s | x |\n"
+        self.doc("DESIGN_F.md", tab % "no desenho")
+        self.doc("BUILD_REPORT_F.md", tab.replace("aplicáveis", "lidas no build") % "no build")
+        primeira = self.colhe()[1]
+        self.assertEqual(primeira.count("DELTA LM-001 ajudou+1"), 1)
+        self.assertRegex(primeira, r"fp=[0-9a-f]{10},[0-9a-f]{10}")
+        self.registra(primeira)
+        segunda = self.colhe()[1]
+        self.assertNotIn("DELTA LM-001", segunda)
+        self.assertRegex(segunda, r"(?m)^JA_JULGADO 2 linha")
+
+    def test_sugestao_ja_julgada_nao_volta_e_achado_novo_volta(self):
+        self.doc("AVAL-1.log", "❌ a filas_de_envio parou\n❌ de novo filas_de_envio\n")
+        primeira = self.colhe()[1]
+        self.assertIn("SUGESTAO mordeu? LM-001", primeira)
+        self.registra(primeira)
+        self.assertNotIn("SUGESTAO", self.colhe()[1])
+        self.doc("AVAL-2.log", "❌ outra filas_de_envio\n")
+        self.assertIn("SUGESTAO mordeu? LM-001", self.colhe()[1])
+
+    def test_candidato_ja_julgado_nao_volta(self):
+        ok = "<<<CANDIDATO_PLAYBOOK\nsecao: Backend\nsup: `a`\nregra: r. **Do instead:** x.\nevidencia: e\n>>>\n"
+        ruim = "<<<CANDIDATO_PLAYBOOK\nsecao: Backend\n>>>\n"
+        self.doc("BUILD_REPORT_F.md", ok + ruim)
+        primeira = self.colhe()[1]
+        self.assertIn("CANDIDATO #1", primeira)
+        self.assertIn("REJEITADO", primeira)
+        self.registra(primeira)
+        segunda = self.colhe()[1]
+        self.assertNotIn("CANDIDATO #", segunda)
+        self.assertNotIn("REJEITADO", segunda)
+
     def test_sem_registro_nada_muda(self):
         self.doc("r1.yaml", "WAIVED por LM-001\n")
         out = self.colhe()[1]
@@ -360,6 +429,11 @@ class Trace(Base):
         self.doc('DESIGN_qu"o te.md', "x\n")
         self.colhe()
         json.loads((self.traces / "qu_o_te.jsonl").read_text(encoding="utf-8"))
+
+    def test_nome_com_ponto_no_inicio_nao_vira_arquivo_oculto(self):
+        self.doc("DESIGN_.x.md", "x\n")
+        self.colhe()
+        self.assertEqual([p.name for p in self.traces.iterdir()], ["_.x.jsonl"])
 
     def test_trace_que_nao_grava_nao_muda_o_exit(self):
         self.doc("AVAL-1.log", "❌ LM-001\n")
@@ -437,17 +511,52 @@ class Aplicar(Base):
         self.assertEqual(out, PLAYBOOK)
         self.assertIn("RESULTADO: NADA A APLICAR", err)
 
+    def test_secao_da_lista_que_falta_nasce_no_lugar_certo(self):
+        # H4: o playbook do pacote só tem Sempre e Tombstones, e a colheita aceita as outras seções da lista.
+        rc, out, err = self.aplica("ADD Dados :: sup: `d` :: R. **Do instead:** a.\nADD Domínio :: sup: `e` :: R. **Do instead:** b.\n")
+        self.assertEqual(rc, 0, err)
+        posicoes = [out.index(t) for t in ("## Sempre", "## Dados", "[LM-010]", "## Backend", "## Domínio", "[LM-011]", "## Tombstones")]
+        self.assertEqual(posicoes, sorted(posicoes))
+        saida = self.escreve(self.tmp, "novo.md", out)
+        rc, o, e = self.roda([BASH, LINT, saida], self.repo("lint"))
+        self.assertEqual(rc, 0, o + e)
+
+    def test_promovido_na_continuacao_e_lido_e_trocado_la(self):
+        # M1: o lint aceita o campo na linha de continuação.
+        texto = PLAYBOOK.replace("`termo3` :: regra. **Do instead:** ação. · promovido_para: —\n",
+                                 "`termo3` :: regra longa\n  e continua. **Do instead:** ação. · promovido_para: `sdd/hooks/a`\n")
+        pb = self.escreve(self.tmp, "c.md", texto)
+        self.assertNotIn("PROMOVER? LM-003", self.cur("--colher", self.dir, pb)[1])
+        rc, out, _ = self.cur("--aplicar", self.escreve(self.tmp, "d.txt", "LM-003 promovido_para=sdd/hooks/b\n"), pb)
+        self.assertEqual(rc, 0)
+        self.assertEqual(out.count("promovido_para: sdd/hooks/b"), 1)
+        self.assertNotIn("sdd/hooks/a", out)
+        linha = next(l for l in out.split("\n") if l.startswith("- [LM-003]"))
+        self.assertNotIn("promovido_para", linha)
+
+    def test_delta_so_com_comentario_preserva_os_bytes(self):
+        pb = self.tmp / "crlf.md"
+        bruto = PLAYBOOK.replace("\n", "\r\n").encode("utf-8") + b"\xff\r\n"
+        pb.write_bytes(bruto)
+        d = self.escreve(self.tmp, "d.txt", "# nada\n")
+        import subprocess
+        r = subprocess.run([BASH, str(CURATOR), "--aplicar", str(d), str(pb)], cwd=str(self.tmp), env=self.env, capture_output=True)
+        self.assertEqual(r.returncode, 0)
+        self.assertEqual(r.stdout, bruto)
+
+    def test_data_impossivel_sai_64(self):
+        self.assertEqual(self.aplica("LM-001 ajudou+1\n", "conf=2026-99-99")[0], 64)
+        self.assertEqual(self.colhe("--desde", "2026-13-45")[0], 64)
+
     def test_invalido_sai_2_com_stdout_vazio_e_todos_os_erros_com_a_linha(self):
         rc, out, err = self.aplica("LM-001 ajudou+1\nLM-999 ajudou+1\n# c\nLM-009 ajudou+1\n"
                                    "ADD Inventada :: sup: `x` :: r. **Do instead:** y.\nADD Tombstones :: sup: `x` :: r. **Do instead:** y.\n"
-                                   "ADD Backend :: sup: `x` :: sem a ação\nREFINE LM-001 :: sem a ação\nLM-001 ajudou++\n"
-                                   "ADD Dados :: sup: `x` :: r. **Do instead:** y.\n")
+                                   "ADD Backend :: sup: `x` :: sem a ação\nREFINE LM-001 :: sem a ação\nLM-001 ajudou++\n")
         self.assertEqual(rc, 2)
         self.assertEqual(out, "", "nada a copiar")
         for trecho in ("delta linha 2: LM-999", "delta linha 4: LM-009", "delta linha 5: ADD em seção fora da lista",
                        "delta linha 6: ADD em Tombstones", "delta linha 7: ADD sem 'Do instead:'",
-                       "delta linha 8: REFINE sem 'Do instead:'", "delta linha 9: linha fora da gramática",
-                       "delta linha 10: a seção 'Dados' não existe"):
+                       "delta linha 8: REFINE sem 'Do instead:'", "delta linha 9: linha fora da gramática"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, err)
         self.assertIn("RESULTADO: DELTA INVÁLIDO", err)
@@ -483,7 +592,10 @@ class PisoDoAntiCollapse(Base):
         return rc, o + e
 
     def test_um_alterado_passa_em_playbook_pequeno(self):
-        rc, out = self.compara(PLAYBOOK.replace("`curto` :: regra.", "`curto` :: regra nova."))
+        # 3 bullets: 1 alterado são 33%, acima do limite de 20%. Com 5, os 20% passariam com ou sem o piso.
+        pequeno = re.sub(r"- \[LM-00[34]\].*\n", "", PLAYBOOK)
+        self.pb = self.escreve(self.tmp, "pequeno.md", pequeno)
+        rc, out = self.compara(pequeno.replace("`curto` :: regra.", "`curto` :: regra nova."))
         self.assertEqual(rc, 0, out)
 
     def test_dois_alterados_acima_do_limite_bloqueiam(self):
@@ -573,6 +685,46 @@ class Preparar(Sandbox):
         self.assertEqual(rc, 1)
         self.assertIn("RESULTADO: NADA A RETOMAR", out)
 
+    def test_o_de_sdd_vence_o_do_archive(self):
+        self.escreve(self.r, "sdd/features/DESIGN_F_A.md", "vivo\n")
+        self.escreve(self.r, "sdd/archive/F_A/DESIGN_F_A.md", "arquivado\n")
+        s = self.staging(self.prep("F_A")[1])
+        self.assertEqual((s / "DESIGN_F_A.md").read_text(encoding="utf-8"), "vivo\n")
+
+    def test_pasta_de_evidencia_que_e_link_nao_e_seguida(self):
+        self.povoa()
+        fora = self.tmp / "fora"
+        fora.mkdir()
+        self.escreve(fora, "AVAL-plantado.log", "x\n")
+        e = self.r / "sdd/reports/evidence/F_A"
+        for f in e.iterdir():
+            f.unlink()
+        e.rmdir()
+        os.symlink(str(fora), str(e))
+        _, out, _ = self.prep("F_A")
+        self.assertIn("ignorado (link", out)
+        self.assertFalse((self.staging(out) / "AVAL-plantado.log").exists())
+
+    def test_staging_ou_pasta_pai_que_e_link_recusa(self):
+        self.povoa()
+        s = self.staging(self.prep("F_A")[1])
+        alvo = self.tmp / "alvo"
+        alvo.mkdir()
+        shutil.rmtree(str(s))
+        os.symlink(str(alvo), str(s))
+        rc, out, err = self.prep("F_A")
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("é um link", err)
+        self.assertEqual(list(alvo.iterdir()), [])
+
+    def test_limpa_subpasta_da_release_anterior(self):
+        self.povoa()
+        s = self.staging(self.prep("F_A")[1])
+        (s / "sobra").mkdir()
+        self.escreve(s, "sobra/x.txt", "x\n")
+        self.prep("F_A")
+        self.assertFalse((s / "sobra").exists())
+
     def test_nome_invalido_sai_64(self):
         for nome in ("../x", "a/b", ".x", "v2.6", "á", ""):
             with self.subTest(nome=nome):
@@ -607,6 +759,22 @@ class SelfTest(Sandbox):
         self.assertEqual(rc, 2)
         self.assertIn("fixture ausente", err)
         self.assertIn("RESULTADO: SELF-TEST FALHOU", out)
+
+
+class SelfTestSemGit(Sandbox):
+    """H1 do avaliador: o Verify Gate roda numa cópia sem .git, e só ali o self-test falhava."""
+
+    def test_roda_numa_copia_sem_repositorio(self):
+        copia = self.tmp / "copia"
+        for rel in ("sdd/bin/playbook-curator.sh", "sdd/bin/playbook-lint.sh", "sdd/fixtures/playbook/curadoria"):
+            self.copia(rel, copia)
+        rc, out, err = self.roda([BASH, copia / "sdd/bin/playbook-curator.sh", "--self-test"], copia)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("RESULTADO: SELF-TEST OK", out)
+
+    def test_o_bloqueio_do_anti_collapse_nao_aceita_outro_erro_do_lint(self):
+        # Antes, qualquer exit ≠ 0 do lint (até "não é um repo git") contava como "bloqueou".
+        self.assertIn('rc == 1 and "reescritos" in saida', CURATOR.read_text(encoding="utf-8"))
 
 
 class Fixtures(Base):

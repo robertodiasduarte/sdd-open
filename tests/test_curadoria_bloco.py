@@ -2,6 +2,7 @@
 contagem de mudança de regra é um programa que confere a colheita, não quem conduz a release nem o curador."""
 from __future__ import annotations
 
+import os
 import shutil
 
 from apoio import BASH, RAIZ, Sandbox
@@ -137,6 +138,44 @@ class Reprova(Base_):
     def test_promocao_so_com_pergunta_obrigatoria(self):
         self.reprova(BLOCO.replace("| PERGUNTA OBRIGATÓRIA |", "| ACEITAR |"), "não usa ACEITAR")
 
+    def test_contador_repetido_ou_com_outro_id_nao_soma(self):
+        # H2: 2 linhas AUTO iguais somavam +2 e sumiam com a contagem do outro bullet.
+        l2 = next(l for l in BLOCO.split("\n") if "| contador | LM-016 |" in l)
+        self.reprova(BLOCO.replace(l2, "| 2 | contador | LM-016 | LM-020 ajudou+1 | DESIGN_FIXTURE.md:16 | x. | AUTO |"), "a coluna LM")
+        self.reprova(BLOCO.replace(l2, "| 2 | contador | LM-020 | LM-020 ajudou+1 | DESIGN_FIXTURE.md:16 | x. | AUTO |"), "aparece em 2 linhas")
+
+    def test_uma_linha_nao_cobre_2_da_colheita(self):
+        l2 = next(l for l in BLOCO.split("\n") if "| contador | LM-016 |" in l)
+        sem = BLOCO.replace(l2 + "\n", "").replace("| 1 | contador | LM-020 |", "| 1 | contador | LM-020 LM-016 |")
+        self.reprova(sem, "a coluna LM")
+
+    def test_cobertura_le_o_delta_nao_a_coluna_lm(self):
+        l1 = next(l for l in BLOCO.split("\n") if "| contador | LM-020 |" in l)
+        self.reprova(BLOCO.replace(l1, "| 1 | contador | LM-020 | LM-020 mordeu+1 | DESIGN_FIXTURE.md:16 | x. | DESCARTAR (x) |"),
+                     "a colheita tem DELTA LM-020 ajudou+1")
+
+    def test_contador_descartado_cobre_a_linha(self):
+        l1 = next(l for l in BLOCO.split("\n") if "| contador | LM-020 |" in l)
+        rc, out, err = self.confere(BLOCO.replace(l1, "| 1 | contador | LM-020 | LM-020 ajudou+1 | DESIGN_FIXTURE.md:16 | A evidência não bate. | DESCARTAR (a linha não diz isso) |"))
+        self.assertEqual(rc, 0, out + err)
+        self.assertNotIn("AUTO LM-020", out)
+
+    def test_detalhes_que_passavam(self):
+        # L4 do avaliador, ciclo 1
+        self.reprova(BLOCO.replace("| BUILD_REPORT_FIXTURE.md:13 |", "| colheita.txt:1 |"), "a colheita não é evidência de si mesma")
+        self.reprova(BLOCO.replace("| DESCARTAR (a causa do achado não é a regra do aviso) |", "| DESCARTAR |"), "DESCARTAR pede o motivo")
+        self.reprova(BLOCO.replace("CONTAMINAÇÃO: não", "CONTAMINAÇÃO:"), "precisa dizer 'não' ou 'sim")
+        self.reprova(BLOCO.replace("| 2 | contador |", "| 1 | contador |"), "o número 1 aparece em mais de uma linha")
+        for vazia in ("—", "-", "`—`"):
+            with self.subTest(simples=vazia):
+                self.reprova(BLOCO.replace("| O aviso sobre o agendador sem o segredo foi seguido no desenho e evitou o erro. |", "| %s |" % vazia), "'Em linguagem simples' está vazia")
+
+    def test_remover_e_valido_na_linha_inv(self):
+        linha = "| 7 | inv | LM-021 | REMOVER LM-021 | --cruzar: INV_AFETADA descarte LM-021 | Tira o descarte junto. | ACEITAR |\nREJEITADOS:"
+        rc, out, err = self.confere(BLOCO.replace("REJEITADOS:", linha, 1))
+        self.assertEqual(rc, 0, out + err)
+        self.assertRegex(out, r"(?m)^PERGUNTA 7 inv REMOVER LM-021$")
+
     def test_linguagem_simples_vazia(self):
         self.reprova(BLOCO.replace("| O aviso sobre o agendador sem o segredo foi seguido no desenho e evitou o erro. |", "|  |"), "'Em linguagem simples' está vazia")
 
@@ -192,9 +231,17 @@ class Fronteira(Base_):
         (self.stg / "AVAL-AT-002.log").unlink()
         self.reprova(BLOCO, "AVAL-AT-002.log sumiu")
 
-    def test_derivado_gravado_pela_release_depois_do_selo_nao_conta(self):
-        self.escreve(self.stg, "delta.txt", "LM-020 ajudou+1\n")
-        self.assertEqual(self.confere()[0], 0)
+    def test_derivado_plantado_depois_do_selo_reprova(self):
+        # M4: a release só grava delta.txt depois de conferir; antes disso, quem gravou foi o curador.
+        for rel in ("delta.txt", "inv-linhas.txt", "novo.md", "selo-falso.txt", "sub/x.txt"):
+            with self.subTest(arquivo=rel):
+                self.escreve(self.stg, rel, "LM-020 mordeu+99\n")
+                self.reprova(BLOCO, "o staging mudou depois do selo")
+                (self.stg / rel).unlink()
+
+    def test_link_plantado_no_staging_reprova(self):
+        os.symlink(str(self.stg / "AVAL-AT-002.log"), str(self.stg / "plantado.log"))
+        self.reprova(BLOCO, "plantado.log apareceu")
 
     def test_selo_sem_a_colheita(self):
         self.reprova(BLOCO, "o selo não cobre a colheita.txt", selo=self.escreve(self.tmp, "s.txt", "# vazio\n"))

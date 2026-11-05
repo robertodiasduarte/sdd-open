@@ -49,8 +49,8 @@
 # Exit: 0 ok · 1 nada a colher · 2 arquivo, delta, par ou bloco inválido (ou self-test falhou) ·
 #       3 --cruzar com aviso · 64 uso. O programa Python chega pelo stdin: `--cruzar -` guarda o delta num
 #       arquivo temporário antes.
-# Compat: bash 3.2 + python3 >= 3.9, só stdlib. Não exige repositório git (o --self-test exige, porque
-# chama o playbook-lint.sh). Seções: PLAYBOOK_SECTIONS, com o mesmo default do playbook-lint.sh.
+# Compat: bash 3.2 + python3 >= 3.9, só stdlib. Não exige repositório git (o --self-test cria um temporário
+# para chamar o playbook-lint.sh, que exige). Seções: PLAYBOOK_SECTIONS, com o mesmo default do playbook-lint.sh.
 set -uo pipefail
 
 if ! command -v python3 >/dev/null 2>&1; then
@@ -90,9 +90,9 @@ for _canal in (sys.stdout, sys.stderr):
 
 SECOES_DEFAULT = "Sempre|Dados|Backend|Frontend|Infra / deploy|Reviews / harness|Domínio|Tombstones"
 SUG_MIN = 6
-ACHADO = re.compile(r"❌|mordeu_antes:|(^|[^A-Za-z0-9_])(NEEDS_WORK|FAIL(ED|URES?)?|WAIVED)([^A-Za-z0-9_]|$)")
+ACHADO = re.compile(r"❌|mordeu_antes:|(^|[^A-Za-z0-9_-])(NEEDS_WORK|FAIL(ED|URES?)?|WAIVED)([^A-Za-z0-9_-]|$)")
 TITULO_LANDMINES = re.compile(r"^## Landmines (aplicáveis|lidas no build)")
-RE_LM = re.compile(r"LM-\d{3}")
+RE_LM = re.compile(r"(?<![A-Za-z0-9_-])LM-\d{3}(?!\d)")
 RE_BULLET = re.compile(r"^- \[(LM-\d{3})\]")
 RE_DATA = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 RE_FEATURE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
@@ -115,6 +115,16 @@ USO = """uso:
   playbook-curator.sh --selar <staging>
   playbook-curator.sh --conferir-bloco <colheita> <bloco> <playbook> <selo> <comparar>
   playbook-curator.sh --self-test"""
+
+
+def data_ok(texto):
+    if not RE_DATA.match(texto):
+        return False
+    try:
+        datetime.date.fromisoformat(texto)
+    except ValueError:
+        return False
+    return True
 
 
 def diz(texto=""):
@@ -167,15 +177,23 @@ def raiz_do_projeto():
 # ── playbook ────────────────────────────────────────────────────────────────────────────────────
 def parse_playbook(caminho):
     """Um dict por bullet: id, tipo (ativo|tomb), sec, ln, aj, mo, promo (1º token), sups, linha."""
-    bullets, sec = [], ""
+    bullets, sec, atual = [], "", None
     for n, ln in enumerate(ler(caminho).split("\n"), 1):
         if ln.startswith("## "):
-            sec = ln[3:].strip()
+            sec, atual = ln[3:].strip(), None
             continue
         m = RE_BULLET.match(ln)
         if not m:
+            # O lint aceita o campo na linha de continuação: quem não o lê ali erra a promoção e a trava.
+            if atual is not None and ln.startswith("  ") and "promovido_para: " in ln and not atual["promo_lido"]:
+                resto = ln.split("promovido_para: ")[-1].split()
+                if resto:
+                    atual["promo"] = resto[0].strip("`") or "—"
+                atual["promo_lido"] = atual["promo_cont"] = True
+            elif not ln.startswith("  "):
+                atual = None
             continue
-        b = {"id": m.group(1), "sec": sec, "ln": n, "aj": 0, "mo": 0, "promo": "—", "sups": [], "linha": ln,
+        b = {"id": m.group(1), "sec": sec, "ln": n, "aj": 0, "mo": 0, "promo": "—", "sups": [], "linha": ln, "promo_lido": False, "promo_cont": False,
              "tipo": "tomb" if re.match(r"^- \[LM-\d{3}\] ☠ ", ln) else "ativo"}
         if b["tipo"] == "ativo":
             a = re.search(r"ajudou=(\d+)", ln)
@@ -186,9 +204,13 @@ def parse_playbook(caminho):
                 resto = ln.split("promovido_para: ")[-1].split()
                 if resto:
                     b["promo"] = resto[0].strip("`") or "—"
+                b["promo_lido"] = True
             if "sup: " in ln:
                 trecho = ln.split("sup: ", 1)[1].split(" :: ", 1)[0]
                 b["sups"] = re.findall(r"`([^`]+)`", trecho)
+            atual = b
+        else:
+            atual = None
         bullets.append(b)
     return bullets
 
@@ -206,6 +228,11 @@ def carrega_playbook(caminho):
 
 def promovido(b):
     return not b["promo"].startswith("—")
+
+
+def check_vivo(b):
+    """O promovido_para aponta um arquivo que existe? Texto livre, ou arquivo que saiu, não vigia nada."""
+    return promovido(b) and os.path.exists(b["promo"])
 
 
 def proximo_id(bullets):
@@ -280,8 +307,6 @@ def validar_delta(linhas, bullets, caminho_pb, texto_pb=None):
                 erros.append((n, "ADD em Tombstones não existe (aposentar = TOMBSTONE LM-nnn :: motivo)"))
             elif sec not in lista:
                 erros.append((n, "ADD em seção fora da lista: '%s' (lista: %s)" % (sec, " · ".join(lista[:-1]))))
-            elif titulos is not None and sec not in titulos:
-                erros.append((n, "a seção '%s' não existe em %s: crie o título antes do ADD" % (sec, caminho_pb)))
             if "Do instead:" not in m.group(3):
                 erros.append((n, "ADD sem 'Do instead:'"))
             continue
@@ -328,7 +353,9 @@ def preparar(args):
             # A pasta é a mesma em toda release da feature: o que sobrou da anterior não entra nesta.
             for nome in os.listdir(stg):
                 alvo = os.path.join(stg, nome)
-                if os.path.islink(alvo) or os.path.isfile(alvo):
+                if os.path.isdir(alvo) and not os.path.islink(alvo):
+                    shutil.rmtree(alvo)
+                else:
                     os.remove(alvo)
     except OSError as e:
         falha("não consegui preparar a pasta de staging %s: %s" % (stg, e),
@@ -359,7 +386,7 @@ def preparar(args):
         for origem in sorted(glob.glob(os.path.join(glob.escape(os.path.join(raiz, base)), nome))):
             rel = os.path.relpath(origem, raiz)
             destino = os.path.join(stg, os.path.basename(origem))
-            if os.path.islink(origem) or not os.path.isfile(origem):
+            if os.path.realpath(origem) != os.path.join(raiz, rel) or not os.path.isfile(origem):
                 diz("ignorado (link ou não é arquivo): " + rel)
                 continue
             if os.path.exists(destino):
@@ -396,6 +423,7 @@ class Colheita:
         self.candidatos = 0
         self.julgados = set()      # impressões digitais de curadorias anteriores (CURATOR-colhidos.txt)
         self.ja_julgados = 0
+        self.linha_do = {}         # (tipo, LM) → índice da linha em saida: recebe as impressões seguintes
 
     @staticmethod
     def digital(*partes):
@@ -414,12 +442,18 @@ class Colheita:
                 self.ignorados.add(lm)
                 self.saida.append("IGNORADO %s (não existe como bullet ativo em %s)" % (lm, self.nome_pb))
             return
-        if (tipo, lm) in self.vistos:
-            return
         fp = self.digital(arquivo, tipo, lm, texto)
         if self.ja_julgado(fp):
             return  # contado numa curadoria anterior desta feature: não conta de novo
+        if (tipo, lm) in self.vistos:
+            # Outra linha da mesma lição nesta colheita: não conta agora, e também não pode contar na próxima
+            # release. A impressão dela vai junto, para entrar no registro (CURATOR-colhidos.txt).
+            k = self.linha_do[(tipo, lm)]
+            if fp not in self.saida[k]:
+                self.saida[k] += "," + fp
+            return
         self.vistos.add((tipo, lm))
+        self.linha_do[(tipo, lm)] = len(self.saida)
         self.saida.append("DELTA %s %s+1 · conf=%s · evidencia=%s:%d · fp=%s" % (lm, tipo, self.hoje, arquivo, linha, fp))
 
     def tabela(self, caminho, base):
@@ -433,19 +467,22 @@ class Colheita:
             if not (dentro and ln.startswith("|") and RE_LM.search(ln)):
                 continue
             # Casa pelo CONTEÚDO da célula, nunca pela posição da coluna: a tabela aparece com 3 e com 4 colunas.
-            veredito = ""
-            for cel in ln.split("|")[1:-1]:
+            veredito, posicao, cels = "", 0, ln.split("|")[1:-1]
+            for k, cel in enumerate(cels):
                 c = re.sub(r"[ \t*]", "", cel)
                 if c.startswith("✔"):
                     veredito = "ajudou"
-                elif c.startswith("mordeu"):
-                    veredito = "mordeu"
+                elif re.match(r"^mordeu(\W|$)", c) and len(c) <= 24:
+                    veredito = "mordeu"  # curta: uma frase de regra que começa com a palavra não é veredito
                 elif re.match(r"^(N\.A\.|N/A)", c):
                     veredito = "na"
                 if veredito:
+                    posicao = k
                     break
             if veredito in ("ajudou", "mordeu"):
-                for lm in sorted(set(RE_LM.findall(ln))):
+                # A lição é a citada antes do veredito; a nota depois dele pode citar outra de passagem.
+                ids = RE_LM.findall("|".join(cels[:posicao])) or RE_LM.findall(cels[posicao])
+                for lm in sorted(set(ids)):
                     self.delta(veredito, lm, base, n, ln)
 
     def achados(self, caminho, base):
@@ -473,16 +510,15 @@ class Colheita:
             for termo in b["sups"]:
                 if len(termo) < SUG_MIN or termo.isdigit():
                     continue
-                hit = next(((n, ln) for n, ln in sem_lm
-                            if termo in ln and self.digital(base, "sug", lm, ln) not in self.julgados), None)
-                if hit is None:
+                novos = [(n, ln) for n, ln in sem_lm if termo in ln and self.digital(base, "sug", lm, ln) not in self.julgados]
+                if not novos:
                     if any(termo in ln for _n, ln in sem_lm):
                         self.ja_julgados += 1
                     continue
                 self.vistos.add(("sug", lm))
+                fps = ",".join(self.digital(base, "sug", lm, ln) for _n, ln in novos)
                 self.saida.append("SUGESTAO mordeu? %s — termo `%s` em %s:%d (achado sem LM explícito; "
-                                  "confirmar a causa antes de virar delta) · fp=%s"
-                                  % (lm, termo, base, hit[0], self.digital(base, "sug", lm, hit[1])))
+                                  "confirmar a causa antes de virar delta) · fp=%s" % (lm, termo, base, novos[0][0], fps))
                 break
 
     def blocos_de_candidato(self, caminho, base):
@@ -610,7 +646,7 @@ def colher(args):
     while resto:
         if resto[0] == "--desde" and len(resto) >= 2:
             desde = resto[1]
-            if not RE_DATA.match(desde):
+            if not data_ok(desde):
                 uso("--desde exige uma data AAAA-MM-DD: '%s'" % desde)
         elif resto[0] == "--inv" and len(resto) >= 2 and resto[1]:
             inv = resto[1]
@@ -627,7 +663,7 @@ def colher(args):
     c = Colheita(bullets, pb)
     registro = os.path.join(pasta, REGISTRO)
     if os.path.isfile(registro):
-        c.julgados = set(re.findall(r"\bfp=([0-9a-f]{10})\b", ler(registro)))
+        c.julgados = set(re.findall(r"[0-9a-f]{10}", " ".join(re.findall(r"\bfp=([0-9a-f,]+)", ler(registro)))))
     lista = lambda padrao: sorted(f for f in glob.glob(os.path.join(glob.escape(pasta), padrao))
                                   if os.path.isfile(f))
     elegiveis = set()
@@ -664,16 +700,17 @@ def colher(args):
     if inv:
         mordidos = [(0, "%s mordeu+1" % ln.split()[1]) for ln in c.saida
                     if ln.startswith("DELTA ") and " mordeu+1" in ln]
-        if mordidos:
-            avisos, _rc = cruzamento(mordidos, bullets, inv)
-            c.saida.extend(avisos)
+        avisos, _rc = cruzamento(mordidos, bullets, inv) if mordidos else ([], 0)
+        c.saida.extend(ln for ln in avisos if not ln.startswith("resumo-inv:"))
+        c.saida.extend(pendentes_antigos(bullets, inv, c.saida))
     if c.ja_julgados:
         c.saida.append("JA_JULGADO %d linha(s) já julgada(s) numa curadoria anterior desta feature (%s): não contam de novo"
                        % (c.ja_julgados, REGISTRO))
     c.saida.append("resumo: deltas=%d (ajudou=%d mordeu=%d) candidatos=%d rejeitados=%d promocoes=%d sugestoes=%d"
                    % (n["a"] + n["m"], n["a"], n["m"], n["c"], n["r"], n["p"], n["s"]))
     # 0 = há pelo menos 1 linha que alguém precisa julgar ou relatar; 1 = nada, de nenhum tipo.
-    rc = 0 if sum(n.values()) > 0 else 1
+    relatar = sum(1 for ln in c.saida if ln.startswith(("IGNORADO ", "JA_COLHIDO ", "INV_PENDENTE ")))
+    rc = 0 if sum(n.values()) + relatar > 0 else 1
     diz("\n".join(c.saida))
     grava_trace(pasta, rc, n)
     if rc == 1:
@@ -693,7 +730,7 @@ def aplicar(args):
     if conf.startswith("conf="):
         conf = conf[5:]
     conf = conf or datetime.date.today().isoformat()
-    if not RE_DATA.match(conf):
+    if not data_ok(conf):
         uso("conf inválida: '%s' (AAAA-MM-DD ou conf=AAAA-MM-DD)" % conf)
     if not os.path.isfile(delta):
         falha("delta não encontrado: " + delta, "confira o caminho do delta e rode de novo; nada foi aplicado.")
@@ -706,7 +743,11 @@ def aplicar(args):
         fim("DELTA INVÁLIDO", "corrija as linhas acima e rode de novo; nada foi impresso nem aplicado.", sys.stderr)
         return 2
     if not linhas:
-        sys.stdout.write(texto)
+        # Byte a byte: sem nada a aplicar, nem o fim de linha nem um byte inválido podem mudar.
+        sys.stdout.flush()
+        with open(pb, "rb") as f:
+            sys.stdout.buffer.write(f.read())
+        sys.stdout.buffer.flush()
         erro("⚠️ delta vazio: a saída é igual à entrada.")
         fim("NADA A APLICAR", "nenhuma linha de delta fora de comentário; o playbook não muda.", sys.stderr)
         return 0
@@ -750,13 +791,26 @@ def aplicar(args):
         else:
             blocos[-1][1].append(ln)
     aposentadas = []
+    # Seção da lista que falta no playbook nasce no lugar certo: o lint só exige Sempre e Tombstones.
+    ordem = secoes()
+    titulos = [b[0][3:].strip() for b in blocos if b[0]]
+    for sec, _linha in adds:
+        if sec in titulos:
+            continue
+        depois = [k for k, b in enumerate(blocos) if b[0] and b[0][3:].strip() in ordem
+                  and ordem.index(b[0][3:].strip()) > ordem.index(sec)]
+        pos = depois[0] if depois else len(blocos)
+        blocos.insert(pos, ["## " + sec, [""]])
+        titulos.append(sec)
+    por_id = {b["id"]: b for b in bullets}
     for bloco in blocos:
-        novo, pulando = [], False
+        novo, pulando, lm_atual = [], False, None
         for ln in bloco[1]:
             m = RE_BULLET.match(ln)
             if m:
                 pulando = False
                 lm = m.group(1)
+                lm_atual = lm
                 if lm in tomb:
                     aposentadas.append("- [%s] ☠ %s :: %s" % (lm, conf, tomb[lm]))
                     pulando = True
@@ -776,7 +830,7 @@ def aplicar(args):
                     ficha = re.search(r"→ ficha: [^·]*", velho)
                     if ficha and "ficha:" not in novo_texto:
                         novo_texto = novo_texto.rstrip() + " " + ficha.group(0).rstrip()
-                    if "promovido_para:" not in novo_texto:
+                    if "promovido_para:" not in novo_texto and not por_id[lm]["promo_cont"]:
                         pp = re.search(r"promovido_para: .*$", velho)
                         novo_texto = novo_texto.rstrip() + " · " + (pp.group(0) if pp else "promovido_para: —")
                     ln = (ln[:k + 4] if k >= 0 else ln + " :: ") + novo_texto
@@ -784,7 +838,7 @@ def aplicar(args):
                 if lm in promo:
                     if "promovido_para: " in ln:
                         ln = ln[:ln.index("promovido_para: ")] + "promovido_para: " + promo[lm]
-                    else:
+                    elif not por_id[lm]["promo_cont"]:  # na continuação, a troca é lá embaixo
                         ln = ln.rstrip() + " · promovido_para: " + promo[lm]
                     tocado = True
                 if tocado:
@@ -793,6 +847,8 @@ def aplicar(args):
                 continue
             if pulando and ln.startswith("  ") and ln.strip():
                 continue  # continuação do bullet aposentado
+            if ln.startswith("  ") and lm_atual in promo and por_id[lm_atual]["promo_cont"] and "promovido_para: " in ln:
+                ln = ln[:ln.index("promovido_para: ")] + "promovido_para: " + promo[lm_atual]
             pulando = False
             novo.append(ln)
         bloco[1] = novo
@@ -848,7 +904,7 @@ def parse_invariantes(caminho):
             if m:
                 vistos[sec] = True
                 r["invs"].append({"id": m.group(1), "estado": m.group(2), "origem": m.group(3),
-                                  "check": m.group(4) or "", "resto": m.group(6), "linha": ln, "ln": n})
+                                  "check": m.group(4) or "", "regra": m.group(5), "resto": m.group(6), "linha": ln, "ln": n})
             elif vistos[sec] or ln.startswith("- ["):
                 r["fora"].append((n, ln))
         else:
@@ -863,6 +919,26 @@ def parse_invariantes(caminho):
 
 def origens(inv):
     return [o for o in inv["origem"].split(",") if o.startswith("LM-")]
+
+
+def pendentes_antigos(bullets, caminho_inv, ja_na_saida):
+    """Lições que JÁ estão no universo e não têm classificação: sem esta pergunta, a trava para e ninguém pergunta."""
+    inv = parse_invariantes(caminho_inv)
+    classificados = {d["id"] for d in inv["descs"]}
+    for i in inv["invs"]:
+        classificados.update(origens(i))
+    ja = set(re.findall(r"INV_PENDENTE (LM-\d{3})", "\n".join(ja_na_saida)))
+    proximo = max([int(i["id"][4:]) for i in inv["invs"]] or [0]) + len(ja)
+    saida = []
+    for b in bullets:
+        if b["tipo"] != "ativo" or b["id"] in classificados or b["id"] in ja or not (b["mo"] >= 1 or promovido(b)):
+            continue
+        proximo += 1
+        saida.append("INV_PENDENTE %s (já no universo, sem classificação)" % b["id"])
+        saida.append("   proposta A: - [INV-%03d] estado=<ok|auto|humano> origem=%s :: <regra> · por quê: <…> · tarefa|motivo: <…>"
+                     % (proximo, b["id"]))
+        saida.append("   proposta B: - [%s] descartado :: <motivo>" % b["id"])
+    return saida
 
 
 def cruzamento(linhas, bullets, caminho_inv):
@@ -910,13 +986,13 @@ def cruzamento(linhas, bullets, caminho_inv):
         if not tirados:
             continue
         resto = [o for o in todas if o not in aposentar]
-        promo_tirado = next((por_id[o]["promo"] for o in tirados if o in por_id and promovido(por_id[o])), "")
+        promo_tirado = next((por_id[o]["promo"] for o in tirados if o in por_id and check_vivo(por_id[o])), "")
         afetadas += 1
         saida.append("INV_AFETADA %s origem=%s · delta: TOMBSTONE %s" % (i["id"], i["origem"], ",".join(tirados)))
         velho = " origem=%s " % i["origem"]
         if resto:
             novo = i["linha"].replace(velho, " origem=%s " % ",".join(resto), 1)
-            outro = any(o in por_id and promovido(por_id[o]) for o in resto)
+            outro = any(o in por_id and check_vivo(por_id[o]) for o in resto)
             if promo_tirado and not outro and not i["check"]:
                 novo = novo.replace(" origem=%s " % ",".join(resto),
                                     " origem=%s check=%s " % (",".join(resto), promo_tirado), 1)
@@ -938,7 +1014,7 @@ def cruzamento(linhas, bullets, caminho_inv):
         if lm in desc:
             afetadas += 1
             saida.append("INV_AFETADA descarte %s · delta: TOMBSTONE %s" % (lm, lm))
-            saida.append("   ajuste: remover a linha: " + desc[lm])
+            saida.append("   ajuste: REMOVER " + lm)
             saida.append("   ou: retirar o TOMBSTONE " + lm)
     saida.append("resumo-inv: afetadas=%d pendentes=%d" % (afetadas, pendentes))
     return saida, (3 if afetadas + pendentes else 0)
@@ -963,7 +1039,7 @@ def cruzar(args):
     avisos, rc = cruzamento(linhas, bullets, inv)
     diz("\n".join(avisos))
     if rc:
-        fim("HÁ AVISO DE INVARIANTE", "cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vira uma pergunta própria.")
+        fim("HÁ AVISO DE INVARIANTE", "cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vai na mesma opção da contagem que a causa.")
     else:
         fim("SEM AVISO", "o delta não mexe em nenhuma invariante.")
     return rc
@@ -990,11 +1066,13 @@ def validar_inv(args):
         if i["id"] in vistos:
             defeitos.append("%s aparece 2 vezes — renumere a mais nova (ID nunca se reusa)" % i["id"])
         vistos.add(i["id"])
-        if i["estado"] == "auto" and "· tarefa:" not in i["resto"]:
+        if i["estado"] == "auto" and not re.search(r"· tarefa:\s*\S", i["resto"]):
             defeitos.append("%s é estado=auto sem '· tarefa:' — diga o comando ou o alvo que a automatiza" % i["id"])
-        if i["estado"] == "humano" and "· motivo:" not in i["resto"]:
+        if i["estado"] == "humano" and not re.search(r"· motivo:\s*\S", i["resto"]):
             defeitos.append("%s é estado=humano sem '· motivo:' — diga por que máquina não pega" % i["id"])
-        if i["check"] and not os.path.exists(i["check"]):
+        if i["check"] and (os.path.isabs(i["check"]) or os.path.normpath(i["check"]) == "."):
+            defeitos.append("%s tem check=%s: use o caminho de um arquivo, relativo à raiz do projeto" % (i["id"], i["check"]))
+        elif i["check"] and not os.path.exists(i["check"]):
             defeitos.append("%s tem check=%s, que não existe a partir desta pasta — corrija o caminho ou mude o estado"
                             % (i["id"], i["check"]))
         tem_promovido = False
@@ -1005,10 +1083,10 @@ def validar_inv(args):
             elif b["tipo"] == "tomb":
                 defeitos.append("%s tem origem=%s, que está aposentada — aprove o ajuste proposto pelo --cruzar "
                                 "(origem=seed ou a lista sem %s) ou retire o TOMBSTONE %s" % (i["id"], o, o, o))
-            elif promovido(b):
+            elif check_vivo(b):
                 tem_promovido = True
         if i["estado"] == "ok" and not i["check"] and not tem_promovido:
-            defeitos.append("%s é estado=ok sem check= e sem origem promovida — aponte o check ou mude o estado" % i["id"])
+            defeitos.append("%s é estado=ok sem check= e sem origem promovida para um arquivo que existe — aponte o check ou mude o estado" % i["id"])
     classificados = set()
     for i in inv["invs"]:
         classificados.update(origens(i))
@@ -1057,13 +1135,17 @@ def aplicar_inv(args):
     atual = parse_invariantes(caminho_inv)
     erros, trocas, remover, novas_inv, novos_desc = [], {}, set(), [], []
     ids_inv = {i["id"] for i in atual["invs"]}
+    regra_por_id = {i["id"]: i["regra"] for i in atual["invs"]}
     ids_desc = {d["id"] for d in atual["descs"]}
     if not atual["tem_secao"]:
         erros.append((0, "%s não tem a seção '## Invariantes'" % caminho_inv))
     for n, ln in linhas_de_delta(ler(caminho_linhas)):
         m = RE_INV.match(ln)
         if m:
-            if m.group(1) in ids_inv:
+            if m.group(1) in regra_por_id and regra_por_id[m.group(1)] != m.group(5):
+                erros.append((n, "%s já existe em %s com outra regra: isto é uma invariante nova com ID repetido; "
+                                 "renumere a nova, nunca a que já estava lá" % (m.group(1), caminho_inv)))
+            elif m.group(1) in ids_inv:
                 trocas[m.group(1)] = ln
             else:
                 novas_inv.append(ln)
@@ -1143,18 +1225,18 @@ def sha_do_arquivo(caminho):
     return h.hexdigest()
 
 
-def selo_da_pasta(pasta, com_colheita=True):
-    """{nome: sha256} dos arquivos regulares do nível de cima, fora os derivados que a release grava depois."""
-    fora = set(DERIVADOS) - ({"colheita.txt"} if com_colheita else set())
+def selo_da_pasta(pasta):
+    """{caminho relativo: sha256} de tudo na pasta: entre o selo e a conferência, ninguém legítimo grava ali."""
     selo = {}
-    for nome in sorted(os.listdir(pasta)):
-        alvo = os.path.join(pasta, nome)
-        if nome in fora or nome.startswith("selo"):
-            continue
-        if os.path.islink(alvo):
-            selo[nome] = "LINK"
-        elif os.path.isfile(alvo):
-            selo[nome] = sha_do_arquivo(alvo)
+    for atual, pastas, arquivos in os.walk(pasta):
+        pastas.sort()
+        for nome in sorted(arquivos + [p for p in pastas if os.path.islink(os.path.join(atual, p))]):
+            alvo = os.path.join(atual, nome)
+            rel = os.path.relpath(alvo, pasta)
+            if os.path.islink(alvo):
+                selo[rel] = "LINK"
+            elif os.path.isfile(alvo):
+                selo[rel] = sha_do_arquivo(alvo)
     return selo
 
 
@@ -1227,12 +1309,12 @@ def conferir_bloco(args):
     col = {"delta": [], "sug": [], "cand": [], "rej": [], "promo": [], "ign": [], "ja": [], "pend": []}
     evid_da_colheita = {}
     for ln in ler(colheita).split("\n"):
-        m = re.match(r"^DELTA (LM-\d{3}) (ajudou|mordeu)\+1\b.*?evidencia=(\S+:\d+)", ln)
+        m = re.match(r"^DELTA (LM-\d{3}) (ajudou|mordeu)\+1\b.*?evidencia=(.+?:\d+)(?: · fp=|$)", ln)
         if m:
             col["delta"].append((m.group(1), m.group(2)))
             evid_da_colheita[(m.group(1), m.group(2))] = m.group(3)
             continue
-        for chave, padrao in (("sug", r"^SUGESTAO mordeu\? (LM-\d{3})"), ("rej", r"^REJEITADO candidato em (\S+:\d+)"),
+        for chave, padrao in (("sug", r"^SUGESTAO mordeu\? (LM-\d{3})"), ("rej", r"^REJEITADO candidato em (.+?:\d+) — "),
                               ("promo", r"^PROMOVER\? (LM-\d{3})"), ("ign", r"^IGNORADO (LM-\d{3})"),
                               ("ja", r"^JA_COLHIDO (\S+)"), ("pend", r"^INV_PENDENTE (LM-\d{3})")):
             m = re.match(padrao, ln)
@@ -1271,6 +1353,8 @@ def conferir_bloco(args):
                 defeitos.append("linha da tabela com %d células (esperado 7; barra dentro da célula vai como \\|): %s"
                                 % (len(cs), ln.strip()[:80]))
                 continue
+            if any(r["n"] == cs[0] for r in rows):
+                defeitos.append("o número %s aparece em mais de uma linha da tabela" % cs[0])
             rows.append(dict(zip(("n", "tipo", "lm", "delta", "evid", "simples", "rec"), cs)))
             continue
         for f in FINAIS:
@@ -1281,6 +1365,8 @@ def conferir_bloco(args):
     for f in FINAIS:
         if corpo and f not in finais:
             defeitos.append("falta a linha %s" % f)
+    if corpo and "CONTAMINAÇÃO:" in finais and not re.match(r"^(não|sim\b)", finais["CONTAMINAÇÃO:"].lower()):
+        defeitos.append("a linha CONTAMINAÇÃO: precisa dizer 'não' ou 'sim — <o que veio>'")
 
     autos, perguntas, contagem = [], [], {"DESCARTAR": 0, "NAO_JULGADO": 0}
     for r in rows:
@@ -1297,7 +1383,7 @@ def conferir_bloco(args):
         if not rec:
             defeitos.append("%s: Recomendação '%s' fora da lista (%s)" % (rotulo, r["rec"], ", ".join(RECOMENDACOES)))
             continue
-        if not r["simples"].strip("—-` *"):
+        if not r["simples"].strip("—–-` *."):
             defeitos.append("%s: a célula 'Em linguagem simples' está vazia" % rotulo)
         if rec == "AUTO" and tipo != "contador":
             defeitos.append("%s: AUTO só vale para contador que a colheita trouxe; '%s' vai para pergunta (use ACEITAR)" % (rotulo, tipo))
@@ -1308,13 +1394,20 @@ def conferir_bloco(args):
             defeitos.append("%s: PERGUNTA OBRIGATÓRIA só vale para promover e inv" % rotulo)
         if tipo == "promover" and rec not in ("PERGUNTA OBRIGATÓRIA",):
             defeitos.append("%s: promoção só com a recomendação PERGUNTA OBRIGATÓRIA (veio %s)" % (rotulo, rec))
+        # A coluna LM diz de quem é a linha: 1 ID, o mesmo do delta. Sem isso, 1 linha cobre 2 da colheita.
+        if tipo in ("contador", "sugestao", "promover", "tombstone", "refine"):
+            ids_lm, ids_delta = RE_LM.findall(r["lm"]), RE_LM.findall(delta)[:1]
+            if len(ids_lm) != 1 or (ids_delta and ids_lm != ids_delta):
+                defeitos.append("%s: a coluna LM ('%s') tem de ser 1 ID, o mesmo do delta ('%s')" % (rotulo, r["lm"], delta))
+        if rec == "DESCARTAR" and "(" not in r["rec"]:
+            defeitos.append("%s: DESCARTAR pede o motivo: DESCARTAR (motivo)" % rotulo)
         if rec in ("DESCARTAR", "NAO_JULGADO"):
             contagem[rec] += 1
             continue
         # daqui para baixo: linha que entra (AUTO) ou vai para pergunta (ACEITAR, PERGUNTA OBRIGATÓRIA)
         if tipo == "inv":
-            if not (RE_INV.match(delta) or RE_DESC.match(delta)):
-                defeitos.append("%s: a célula Delta de uma linha inv é a linha completa da invariante ou do descarte" % rotulo)
+            if not (RE_INV.match(delta) or RE_DESC.match(delta) or re.match(r"^REMOVER (INV-\d{3,}|LM-\d{3})$", delta)):
+                defeitos.append("%s: a célula Delta de uma linha inv é a linha completa da invariante ou do descarte, ou REMOVER <id>" % rotulo)
         else:
             erros = validar_delta([(0, delta)], bullets, pb, texto_pb)
             for _n, msg in erros:
@@ -1325,7 +1418,9 @@ def conferir_bloco(args):
                     defeitos.append("%s: %s exige a Evidência começando por arquivo:linha" % (rotulo, rec))
                 else:
                     alvo = os.path.join(staging, os.path.basename(m.group(1)))
-                    if not os.path.isfile(alvo):
+                    if os.path.basename(m.group(1)) == os.path.basename(colheita):
+                        defeitos.append("%s: a colheita não é evidência de si mesma: cite o documento de onde a linha veio" % rotulo)
+                    elif not os.path.isfile(alvo):
                         defeitos.append("%s: a evidência %s não existe na pasta da colheita" % (rotulo, m.group(1)))
                     elif not 1 <= int(m.group(2)) <= len(ler(alvo).split("\n")):
                         defeitos.append("%s: a evidência %s:%s aponta para uma linha que o arquivo não tem"
@@ -1339,13 +1434,13 @@ def conferir_bloco(args):
             m = RE_CONTADOR.match(delta)
             chave = (m.group(1), m.group(2)) if m else None
             esperada = evid_da_colheita.get(chave, "")
-            ev = re.match(r"^`?([^\s`|]+:\d+)", r["evid"].strip())
+            ev_txt = r["evid"].strip().strip("`")
             if not m or m.group(3) != "1":
                 defeitos.append("%s: AUTO pede um delta de contador com +1 (LM-nnn ajudou+1 ou LM-nnn mordeu+1)" % rotulo)
             elif chave not in col["delta"]:
                 defeitos.append("%s: o contador '%s' não está na colheita — contagem que o script não colheu não entra sozinha"
                                 % (rotulo, delta))
-            elif not ev or ev.group(1) != esperada:
+            elif not re.match(re.escape(esperada) + r"(\D|$)", ev_txt):
                 defeitos.append("%s: a evidência do contador '%s' tem de ser a da colheita (%s), não outra linha" % (rotulo, delta, esperada))
             elif m.group(2) == "mordeu" and m.group(1) in col["pend"]:
                 perguntas.append(r)  # põe a lição no universo das invariantes: decide junto com a classificação
@@ -1354,13 +1449,26 @@ def conferir_bloco(args):
         else:
             perguntas.append(r)
 
-    # cobertura: toda linha da colheita aparece no bloco
-    def tem(tipo, lm, extra=None):
-        return any(r["tipo"] == tipo and lm in r["lm"] and (extra is None or extra(r)) for r in rows)
+    # cobertura, 1 para 1: toda linha da colheita aparece no bloco, e é o delta que diz de quem é a linha
+    def delta_de(r):
+        return RE_CONTADOR.match(r.get("delta_n", ""))
 
+    contadores = {}
+    for r in rows:
+        m = delta_de(r)
+        if r["tipo"] == "contador" and m:
+            contadores.setdefault((m.group(1), m.group(2)), []).append(r["n"])
+    for chave, numeros in sorted(contadores.items()):
+        if len(numeros) > 1:
+            defeitos.append("o contador %s %s+1 aparece em %d linhas (%s): cada um entra uma vez"
+                            % (chave[0], chave[1], len(numeros), ", ".join(numeros)))
     for lm, verbo in col["delta"]:
-        if not tem("contador", lm, lambda r: (verbo + "+") in r["delta"]):
+        if (lm, verbo) not in contadores:
             defeitos.append("a colheita tem DELTA %s %s+1 e o bloco não tem a linha contador dele" % (lm, verbo))
+
+    def tem(tipo, lm):
+        return any(r["tipo"] == tipo and RE_LM.findall(r["lm"]) == [lm] for r in rows)
+
     for lm in col["sug"]:
         if not tem("sugestao", lm):
             defeitos.append("a colheita tem SUGESTAO para %s e o bloco não tem a linha sugestao dele" % lm)
@@ -1466,9 +1574,18 @@ def self_test():
                 f.write(texto)
             return p
 
+        # O lint exige um repositório git, e a cópia em que o Verify Gate roda não tem: o self-test leva o dele.
+        repo_lint = os.path.join(tmp, "repo-lint")
+        os.makedirs(repo_lint)
+        amb_lint = {k: v for k, v in os.environ.items() if k not in ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE")}
+        if subprocess.run(["git", "init", "-q"], cwd=repo_lint, env=amb_lint, capture_output=True).returncode != 0:
+            erro("🔴 self-test: não consegui criar o repositório temporário do lint (git init)")
+            fim("SELF-TEST FALHOU", "confira se o git está instalado e rode de novo.")
+            return 2
+
         def lint_ok(args):
-            r = subprocess.run([sh, lint] + args, capture_output=True, encoding="utf-8", errors="replace", cwd=pacote,
-                               stdin=subprocess.DEVNULL)
+            r = subprocess.run([sh, lint] + args, capture_output=True, encoding="utf-8", errors="replace", cwd=repo_lint,
+                               env=amb_lint, stdin=subprocess.DEVNULL)
             return r.returncode, r.stdout + r.stderr
 
         base = os.path.join(fx, "playbook-base.md")
@@ -1597,7 +1714,7 @@ def self_test():
         rc, saida = lint_ok(["--anti-collapse", base, cont])
         confere("delta só de contadores atravessa o --anti-collapse com 0 alterados", rc == 0 and "0 (0%)" in saida)
         rc, saida = lint_ok(["--anti-collapse", base, comp])
-        confere("o --anti-collapse bloqueia o composto (3 de 6 reescritos)", rc != 0)
+        confere("o --anti-collapse bloqueia o composto (3 de 6 reescritos)", rc == 1 and "reescritos" in saida)
         d = grava("d-nada.txt", "# só comentário\n")
         confere("delta vazio ⇒ saída idêntica à entrada", roda(["--aplicar", d, base])[1] == ler(base))
         d = grava("c-nada.txt", "LM-031 mordeu+1\nLM-030 ajudou+1\n")
@@ -1694,7 +1811,7 @@ def self_test():
         shutil.rmtree(tmp, ignore_errors=True)
     if falhas:
         erro("🔴 self-test: %d falha(s) — o curator NÃO está provando o que promete" % len(falhas))
-        fim("SELF-TEST FALHOU", "o 1º caso com ❌ acima diz a regra que quebrou; fora de um repositório git, o playbook-lint.sh não roda.")
+        fim("SELF-TEST FALHOU", "o 1º caso com ❌ acima diz a regra que quebrou.")
         return 2
     diz("🟢 self-test: todos os vermelhos e os verdes confirmados")
     fim("SELF-TEST OK", "o curator prova o que promete nesta máquina.")

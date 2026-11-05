@@ -113,8 +113,8 @@ aviso sobre o envio e ajustar a regra permanente que dependia dele, no mesmo pas
 Depois de aplicar, o envio é outra decisão, porque o push pode publicar:
 
 **Sua decisão** — [D1 · não se desfaz] **Posso enviar o commit da curadoria para a branch padrão?**
-- **sim** (recomendado) — envio só o caderno de armadilhas (1 arquivo); neste projeto, esse push não
-  publica nada, porque o workflow só roda quando o código muda.
+- **sim** (recomendado) — envio só o caderno de armadilhas e os registros desta conferência; neste projeto,
+  esse push não publica nada, porque o workflow só roda quando o código muda.
 - **deixar para a próxima publicação** — a mudança fica salva nesta pasta e sobe junto com a próxima.
 - **não sei** — explico o que este envio muda e o que acontece se ele ficar para depois.
 

@@ -92,6 +92,29 @@ class Trava(Base_):
                 self.assertIn(trecho, err)
                 self.assertIn("RESULTADO: TRAVA", out)
 
+    def test_campo_vazio_e_check_que_nao_e_arquivo(self):
+        casos = {"tarefa vazia": ("- [INV-003] estado=auto origem=seed :: R · por quê: p · tarefa: \n", "sem '· tarefa:'"),
+                 "motivo vazio": ("- [INV-003] estado=humano origem=seed :: R · por quê: p · motivo:  \n", "sem '· motivo:'"),
+                 "check pasta atual": ("- [INV-003] estado=ok origem=seed check=. :: R · por quê: p\n", "relativo à raiz"),
+                 "check absoluto": ("- [INV-003] estado=ok origem=seed check=/etc/hosts :: R · por quê: p\n", "relativo à raiz")}
+        for nome, (linha, trecho) in casos.items():
+            with self.subTest(caso=nome):
+                rc, _, err = self.trava(BASE + linha)
+                self.assertEqual(rc, 2, err)
+                self.assertIn(trecho, err)
+
+    def test_ok_com_origem_promovida_para_arquivo_que_saiu_reprova(self):
+        pb = self.escreve(self.tmp, "p2.md", PLAYBOOK.replace("promovido_para: sdd/bin/report-lint.py", "promovido_para: sdd/bin/saiu.py"))
+        rc, _, err = self.trava(BASE, pb=pb)
+        self.assertEqual(rc, 2, err)
+        self.assertIn("INV-001 é estado=ok sem check= e sem origem promovida para um arquivo que existe", err)
+
+    def test_promovido_na_continuacao_entra_no_universo(self):
+        texto = PLAYBOOK.replace("`c` :: r. **Do instead:** x. · promovido_para: —\n", "`c` :: r\n  longa. **Do instead:** x. · promovido_para: `sdd/bin/report-lint.py`\n")
+        rc, _, err = self.trava(BASE, pb=self.escreve(self.tmp, "p3.md", texto))
+        self.assertEqual(rc, 2, err)
+        self.assertIn("LM-003 entra no universo", err)
+
     def test_ok_com_origem_promovida_nao_precisa_de_check(self):
         rc, out, err = self.trava("- [INV-001] estado=ok origem=LM-001 :: R · por quê: p\n- [INV-002] estado=humano origem=LM-002 :: R · por quê: p · motivo: m\n")
         self.assertEqual(rc, 0, out + err)
@@ -161,7 +184,7 @@ class Cruzar(Sandbox):
         rc, out, _ = self.cruza("TOMBSTONE LM-035 :: t\n")
         self.assertEqual(rc, 3)
         self.assertIn("INV_AFETADA descarte LM-035", out)
-        self.assertIn("   ajuste: remover a linha: - [LM-035] descartado", out)
+        self.assertIn("   ajuste: REMOVER LM-035", out)
 
     def test_licao_nova_no_universo_propoe_a_e_b_em_sequencia(self):
         rc, out, _ = self.cruza("LM-036 mordeu+1\nLM-037 promovido_para=sdd/bin/x.sh\n")
@@ -171,6 +194,20 @@ class Cruzar(Sandbox):
         self.assertIn("proposta A: - [INV-006] estado=<ok|auto|humano> origem=LM-036", out)
         self.assertIn("proposta A: - [INV-007] estado=<ok|auto|humano> origem=LM-037", out)
         self.assertIn("proposta B: - [LM-036] descartado :: <motivo>", out)
+
+    def test_promovido_para_que_nao_e_arquivo_nao_vira_check(self):
+        # M3: texto livre não vigia nada; o ajuste não pode propor check=Verify nem trocar um check bom.
+        pb = self.escreve(self.tmp, "p.md", "# P\n\n## Sempre\n\n- [LM-040] ajudou=0 mordeu=1 · conf=2026-01-01 · sup: `a` :: r. **Do instead:** x. · promovido_para: Verify Gate\n\n## Tombstones\n")
+        inv = self.escreve(self.tmp, "i.md", CABECA + "- [INV-001] estado=ok origem=LM-040 check=sdd/bin/playbook-lint.sh :: R · por quê: p\n")
+        rc, out, _ = self.cruza("TOMBSTONE LM-040 :: t\n", pb, inv)
+        self.assertEqual(rc, 3)
+        self.assertIn("origem=seed check=sdd/bin/playbook-lint.sh ::", out)
+        self.assertNotIn("check=Verify", out)
+
+    def test_licao_ja_no_universo_nao_e_entrada_nova(self):
+        rc, out, _ = self.cruza("LM-030 mordeu+1\n")
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("INV_PENDENTE", out)
 
     def test_sem_aviso_sai_0(self):
         rc, out, _ = self.cruza("LM-031 mordeu+1\nLM-030 ajudou+1\n")
@@ -217,6 +254,20 @@ class Cruzar(Sandbox):
         rc, out, err = self.roda([BASH, CURATOR, "--validar-inv", novo_pb, novo_inv], RAIZ)
         self.assertEqual(rc, 0, out + err)
 
+    def test_licao_antiga_sem_classificacao_entra_na_colheita(self):
+        # M7: sem isto, a trava para no item 6 e ninguém pergunta.
+        pb = self.escreve(self.tmp, "p.md", "# P\n\n## Sempre\n\n- [LM-040] ajudou=0 mordeu=1 · conf=2026-01-01 · sup: `a` :: r. **Do instead:** x. · promovido_para: —\n- [LM-041] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: `b` :: r. **Do instead:** x. · promovido_para: —\n\n## Tombstones\n")
+        inv = self.escreve(self.tmp, "i.md", CABECA + "- [INV-005] estado=auto origem=seed :: R · por quê: p · tarefa: t\n")
+        vazia = self.tmp / "vazia"
+        vazia.mkdir()
+        rc, out, _ = self.roda([BASH, CURATOR, "--colher", vazia, pb, "--inv", inv], self.tmp)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("INV_PENDENTE LM-040 (já no universo, sem classificação)", out)
+        self.assertIn("proposta A: - [INV-006]", out)
+        self.assertNotIn("LM-041", out)
+        rc, out, _ = self.roda([BASH, CURATOR, "--colher", vazia, pb], self.tmp)
+        self.assertNotIn("INV_PENDENTE", out)
+
     def test_colher_com_inv_anexa_a_pendencia_sem_mudar_o_exit(self):
         rp = FX / "replay"
         args = [BASH, CURATOR, "--colher", rp, rp / "playbook-replay.md"]
@@ -235,13 +286,13 @@ class AplicarInv(Base_):
         return self.cur("--aplicar-inv", self.escreve(self.tmp, "l.txt", linhas), i)
 
     def test_troca_acrescenta_descarta_e_remove(self):
-        rc, out, err = self.aplica("- [INV-002] estado=humano origem=seed :: Nova · por quê: p · motivo: m\n"
+        rc, out, err = self.aplica("- [INV-002] estado=humano origem=seed :: Regra · por quê: p · motivo: nova\n"
                                    "- [INV-003] estado=auto origem=seed :: Outra · por quê: p · tarefa: t\n"
                                    "- [LM-003] descartado :: ferramenta\nREMOVER INV-001\n")
         self.assertEqual(rc, 0, err)
         self.assertNotIn("INV-001", out)
         self.assertEqual(out.count("[INV-002]"), 1)
-        self.assertIn("origem=seed :: Nova", out)
+        self.assertIn("origem=seed :: Regra · por quê: p · motivo: nova", out)
         self.assertLess(out.index("[INV-003]"), out.index("## Descartados"))
         self.assertGreater(out.index("[LM-003] descartado"), out.index("## Descartados"))
         self.assertNotIn("RESULTADO:", out)
@@ -253,6 +304,18 @@ class AplicarInv(Base_):
                 rc, out, err = self.aplica(linha)
                 self.assertEqual((rc, out), (2, ""))
                 self.assertIn(trecho, err)
+
+    def test_id_igual_com_outra_regra_nao_pisa_a_da_base(self):
+        # M6: no pouso com conflito, uma invariante nova com o mesmo ID apagaria a da outra frente.
+        rc, out, err = self.aplica("- [INV-002] estado=humano origem=seed :: Regra de outra frente · por quê: p · motivo: m\n")
+        self.assertEqual((rc, out), (2, ""))
+        self.assertIn("renumere a nova", err)
+
+    def test_mesma_regra_com_origem_ajustada_troca(self):
+        rc, out, err = self.aplica("- [INV-002] estado=humano origem=seed :: Regra · por quê: p · motivo: m\n")
+        self.assertEqual(rc, 0, err)
+        self.assertIn("[INV-002] estado=humano origem=seed", out)
+        self.assertEqual(out.count("[INV-002]"), 1)
 
     def test_sem_a_secao_de_descartados_ela_nasce(self):
         i = self.escreve(self.tmp, "i.md", CABECA + BASE)
