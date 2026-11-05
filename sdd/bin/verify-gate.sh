@@ -15,6 +15,7 @@
 #   sdd/bin/verify-gate.sh <DEFINE.md>            # roda o gate do DEFINE
 #   sdd/bin/verify-gate.sh --print <DEFINE.md>    # só extrai/mostra o bloco (não roda)
 #   sdd/bin/verify-gate.sh --strict <DEFINE.md>   # 3/4/5 saem ≠0 (para CI e pipelines com &&)
+#   sdd/bin/verify-gate.sh --checar <DEFINE.md>   # confere marcador, Governança e bloco sem rodar o cmd: 0, 5 ou 64
 #   sdd/bin/verify-gate.sh --sem-define <FEATURE> # release sem DEFINE: só registra no trace e sai 0
 #
 # Trace (ligado por default; `--trace` é aceito e não muda nada): toda execução que não é --print,
@@ -45,11 +46,13 @@
 set -uo pipefail
 
 PRINT_ONLY=0
+CHECAR=0
 STRICT=0
 SEM_DEFINE=0
 while [ $# -gt 0 ]; do
   case "${1}" in
     --print)  PRINT_ONLY=1; shift ;;
+    --checar) CHECAR=1; shift ;;
     --strict) STRICT=1; shift ;;
     --trace)  shift ;;
     --sem-define) SEM_DEFINE=1; shift ;;
@@ -74,6 +77,7 @@ trace_gravar() {
   rc="$?"
   [ -n "${TRACE_RC}" ] && rc="${TRACE_RC}"
   [ "${PRINT_ONLY}" = "1" ] && return 0
+  [ "${CHECAR}" = "1" ] && return 0
   [ "${SDD_TRACE_VAL}" = "off" ] && return 0
   [ -n "${TRACE_FEATURE}" ] || return 0
   mkdir -p "${SDD_TRACE_DIR_VAL}" 2>/dev/null || return 0
@@ -237,6 +241,7 @@ if [ "${PRINT_ONLY}" -eq 1 ]; then
   echo "cmd:        ${CMD:-<vazio>}"
   echo "pass_when:  ${PASS_WHEN:-<vazio>}"
   echo "threshold:  ${THRESHOLD:-—}"
+  echo "manual_fallback: $(field manual_fallback)"
   exit 0
 fi
 
@@ -249,6 +254,16 @@ case "${KIND}" in
   test|smoke|eval|typecheck|manual-ux) ;;
   *) echo "🛑 kind inválido: '${KIND}' (use test|smoke|eval|typecheck|manual-ux)" >&2; finalizar 64 ;;
 esac
+
+# ---- --checar: tudo o que o gate confere antes de rodar, sem rodar nem gravar trace ---
+if [ "${CHECAR}" = "1" ]; then
+  if [ "${KIND}" != "manual-ux" ] && { [ -z "${CMD}" ] || [ "${CMD#N/A}" != "${CMD}" ]; }; then
+    echo "🛑 kind=${KIND} exige 'cmd' executável (recebido: '${CMD:-<vazio>}')." >&2
+    finalizar 64
+  fi
+  echo "✅ DEFINE em condição de rodar o gate; o comando não foi executado."
+  finalizar 0
+fi
 
 # ---- manual-ux: NÃO auto-passa; é gate humano explícito ----------------------------
 if [ "${KIND}" = "manual-ux" ]; then

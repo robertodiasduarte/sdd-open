@@ -8,8 +8,10 @@
 # Uso:
 #   sdd/bin/avaliador-guard.sh [--root <dir>] [--permitir <prefixo>]…
 # Sempre permitidos: sdd/reports/evidence/ (a evidência do próprio avaliador) e sdd/traces/ (o trace
-# que o Verify Gate grava antes). --permitir acrescenta prefixos (ex.: um repositório que mantém as
-# specs fora do git); nunca use um prefixo que contenha código do build.
+# que o Verify Gate grava antes). Documento NÃO rastreado em sdd/features/, sdd/handoffs/, sdd/reports/ ou
+# sdd/reviews/ também não trava (há projetos que mantêm as specs fora do git; a saída diz que ele não volta
+# se a pasta for limpa); rastreado e modificado, trava. --permitir acrescenta prefixos, inteiros; nunca use um
+# prefixo que contenha código do build.
 #
 # Exit: 0 limpo · 1 sujo (lista cada caminho e o comando de commit) · 2 não conferido (git falhou)
 #       · 64 uso. SDD_AVALIADOR_GUARD=off → 0 com aviso (bypass humano, declarado no BUILD_REPORT).
@@ -64,6 +66,7 @@ EOF
 }
 
 SUJOS=""
+DOCS=0
 while IFS= read -r linha; do
   [ "${#linha}" -ge 4 ] || continue
   st="$(printf '%s' "${linha}" | cut -c1-2)"
@@ -77,6 +80,11 @@ while IFS= read -r linha; do
     p="$(printf '%s' "${p}" | sed 's/^"//; s/"$//')"
     [ -n "${p}" ] || continue
     permitido "${p}" && continue
+    if [ "${st}" = "??" ]; then
+      case "${p}" in
+        sdd/features/*|sdd/handoffs/*|sdd/reports/*|sdd/reviews/*) DOCS=$((DOCS + 1)); continue ;;
+      esac
+    fi
     SUJOS="${SUJOS}${p}
 "
   done <<EOF
@@ -86,6 +94,9 @@ done <<EOF
 ${STATUS}
 EOF
 
+if [ "${DOCS}" -gt 0 ]; then
+  echo "ℹ️  ${DOCS} documento(s) de sdd/ não rastreado(s) ficam fora do commit: eles não voltam se a pasta for limpa."
+fi
 if [ -z "${SUJOS}" ]; then
   echo "✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos)."
   printf 'RESULTADO: VERDE\n→ o avaliador pode ser despachado.\n'

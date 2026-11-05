@@ -83,6 +83,32 @@ class AvaliadorGuard(Sandbox):
         self.assertEqual(self.git(self.r, "show", "--name-status", "--format=", "HEAD").split(), ["D", "src/app.py"])
         self.assertIn("?? sdd/features/", self.git(self.r, "status", "--porcelain"))
 
+    def test_documento_nao_rastreado_nao_trava_e_avisa(self):
+        for rel in ("sdd/features/DEFINE_X.md", "sdd/handoffs/HANDOFF_X.md", "sdd/reports/BUILD_REPORT_X.md", "sdd/reviews/UX_REVIEW_X.md"):
+            self.escreve(self.r, rel, "# x\n")
+        rc, out = self.guard()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("4 documento(s) de sdd/ não rastreado(s) ficam fora do commit", out)
+        self.assertIn("não voltam se a pasta for limpa", out)
+
+    def test_documento_rastreado_modificado_continua_travando(self):
+        self.escreve(self.r, "sdd/features/DEFINE_X.md", "# x\n")
+        self.commit(self.r)
+        self.escreve(self.r, "sdd/features/DEFINE_X.md", "# y\n")
+        rc, out = self.guard()
+        self.assertEqual(rc, 1, out)
+        self.assertIn("   - sdd/features/DEFINE_X.md", out)
+
+    def test_nao_rastreado_fora_das_pastas_continua_travando(self):
+        for rel in ("src/novo.py", "sdd/bin/novo.sh", "sdd/featuresx/a.md"):
+            with self.subTest(rel=rel):
+                self.escreve(self.r, rel, "x\n")
+                rc, out = self.guard()
+                self.assertEqual(rc, 1, out)
+                self.assertIn("   - " + rel, out)
+                self.git(self.r, "add", rel)
+                self.git(self.r, "commit", "-q", "-m", "c")
+
     def test_quatro_prefixos_nao_liberam_sdd_bin(self):
         self.escreve(self.r, "sdd/features/DEFINE_X.md", "# x\n")
         self.escreve(self.r, "sdd/bin/x.sh", "echo x\n")

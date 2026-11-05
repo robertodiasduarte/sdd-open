@@ -30,10 +30,10 @@ class Base(Sandbox):
 
 
 class AlvosReais(Base):
-    def test_skills_do_pacote_23_perguntas(self):
+    def test_skills_do_pacote_25_perguntas(self):
         rc, out = self.lint("--sites", RAIZ / ".agents/skills")
         self.assertEqual(rc, 0, out)
-        self.assertIn("23 pergunta(s) em 20 arquivo(s)", out)
+        self.assertIn("25 pergunta(s) em 21 arquivo(s)", out)
 
     def test_fragmentos_2_perguntas(self):
         rc, out = self.lint("--sites", RAIZ / "sdd/templates/fragments")

@@ -48,14 +48,14 @@ seu é sobrescrito. [Quickstart completo →](docs/pt-BR/quickstart.md)
 | **Base de conhecimento** | o que você sabe sobre um domínio (um processo, uma norma, um manual) organizado em conceitos e receitas que o agente consulta; em norma, o período em que cada regra vale, a fonte com SHA-256 e o mapa regra → fonte → teste. O Define só cita domínio que existe, conferido por `sdd/bin/kb-dominios.py` | skill `sdd-kb` · `sdd/kb/` |
 | **Handoff por ficha** | um arquivo por feature no repositório, com prompt de retomada autossuficiente — sem depender da memória de nenhum agente | skill `sdd-handoff` · `sdd/handoffs/` |
 
-## As 18 skills
+## As 19 skills
 
 | Bloco | Skills | Quando |
 |---|---|---|
 | **Preparar** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | uma vez por computador e por projeto (está tudo pronto? pôr no git, alarme de commit contra dado de cliente); a new-session a cada frente de trabalho |
 | **Criar** | `sdd-kb` (opcional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-ux-review` · `sdd-design` · `sdd-build` | uma vez por feature — o fluxo SDD |
 | **Fechar** | `sdd-handoff` · `sdd-release` | no fim de cada sessão e de cada frente |
-| **Transversais** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-auditoria-harness` | quando o caso pedir |
+| **Transversais** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-drive` · `sdd-auditoria-harness` | quando o caso pedir |
 
 Nunca usou git nem terminal? O [guia do aluno](docs/pt-BR/guia-do-aluno.md) mostra o caminho
 inteiro, da primeira instalação à primeira publicação.
@@ -101,6 +101,7 @@ Funciona em macOS, Linux e Windows (Git Bash/WSL): bash 3.2, zero zsh, zero syml
 - [LLM no código](docs/pt-BR/llm-in-code.md) ([EN](docs/llm-in-code.md)) — a skill de processo em laço, o roteador e o inventário de prompts, o fiscal de prompt e o medidor de contraste.
 - [Contexto e governança](docs/pt-BR/context-and-governance.md) ([EN](docs/context-and-governance.md)) — o mapa do domínio (passo 1.5) e a revisão de governança (passo 11) do Define, o exit 5 depois de atualizar, os patterns do projeto
 - [Curadoria do playbook e invariantes](docs/pt-BR/playbook-curation.md) ([EN](docs/playbook-curation.md)) — o que a release colhe da feature, o que entra sem pergunta, o arquivo de invariantes e a trava dele.
+- [Pilotar uma feature](docs/pt-BR/drive.md) ([EN](docs/drive.md)) — a `sdd-drive` leva um DEFINE até "pronto para publicar" com limite de rodadas, retomada e 12 motivos de parada, e nunca publica; também o `deploy-do-sha.sh` e o `sdd-archive.py`.
 - [Revisão adversarial](docs/pt-BR/adversarial-review.md) ([EN](docs/adversarial-review.md)) — uma engine revisa o diff congelado, outra audita a revisão; custo por papel, privacidade, o review externo que a release exige, o gate offline e o `eval-agree`
 - [Roadmap](docs/pt-BR/roadmap.md) ([EN](docs/roadmap.md)) — o que está planejado e o que está em avaliação
 - [Guia do aluno](docs/pt-BR/guia-do-aluno.md) — passo a passo para quem nunca usou git nem terminal

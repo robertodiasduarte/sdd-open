@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.7.1"
+  version: "2.8.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.7.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.8.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -127,10 +127,14 @@ diff-base (`git merge-base origin/{default_branch} HEAD`).
 
 Se 0a abortou, **nem inicie** as passadas de modelo.
 
-**0b. Raio de impacto / regressão (modelo).** Para cada contrato alterado (assinatura, shape
-de retorno, coluna, rota, permissão): quem consome e **não foi modificado**? Invariante de
-negócio violado? Teste ao lado do módulo tocado ficou vermelho? Consumidor não modificado
-quebrado = **crítico**.
+**0b. Raio de impacto por superfície (modelo).** O bug que passa está no código não modificado que depende do que
+mudou. Liste, do diff, as superfícies com contrato: assinatura ou forma de retorno, coluna, rota, permissão, comando,
+slot de configuração. Para cada uma, um agente fresco com o brief `references/raio-de-impacto.md` e só os 5 campos dele:
+em paralelo quando o agente tem subagente; sem subagente, na própria sessão, uma superfície de cada vez, sem parada. O
+brief pede os consumidores **não modificados**, as invariantes de `sdd/invariants.md` que tocam o módulo e o
+`arquivo:linha` de cada um. Projeto sem `sdd/invariants.md`: passe `invariantes: ausente` e diga que essa parte foi pulada.
+Teste ao lado do módulo tocado ficou vermelho? Consumidor quebrado ou invariante violada = **crítico** (0d). Diff sem
+nenhuma superfície: declare a passada pulada, não "revisada sem achados".
 
 **0c. Segurança (modelo — só se o diff toca auth, dados, permissões, rota pública).**
 Credencial hardcoded, permissão frouxa, dado pessoal em log ou resposta, gate de acesso
@@ -168,7 +172,7 @@ removido.
    ignorada pelo git e não existe no worktree temporário do passo 5.
 5. **Landar na branch padrão** via worktree temporário fresco de `origin/{default_branch}` +
    cherry-pick. Conflito → tentar aplicar só o incremento por patch (`git apply --check`); só
-   abortar se os hunks se sobrepõem de verdade.
+   abortar se os hunks se sobrepõem de verdade. Conflito só no `CHANGELOG.md`: a regra do passo 11.
 6. **Gates pré-push:** diff contra `origin/{default_branch}` tem só os arquivos esperados;
    nenhuma deleção de algo que está publicado; classificar se o diff deploya ou é no-op.
 7. **PARAR e mostrar (o 1 OK) — um bloco só.** Antes, rode
@@ -218,31 +222,27 @@ removido.
    caminho é push da branch + PR (`gh pr create`, ou o link que o próprio push imprime), não insistir.
 9. **Deploy:** `{{DEPLOY_CMD}}` (vazio → declarar "deploy pulado — slot vazio"). Tudo que sobe
    para produção tem commit correspondente — deploy sem source commitado é proibido.
-10. **Verificar — pelo commit publicado, não pelo último run.** `{{DRIFT_CHECK_CMD}}` exit 0; smoke da rota
-    principal; e, se a publicação roda num workflow:
-    - `gh run list --commit <SHA publicado> --branch {default_branch} --json databaseId,status,conclusion,workflowName,event`
-      — o run **do workflow que publica**, na branch padrão (`event` = `push`, ou `workflow_dispatch` quando foi
-      o redisparo manual do item abaixo). Com dois pushes seguidos,
-      "o último run" é de outro commit; um run do mesmo SHA em outra branch ou de PR pode ter pulado o deploy.
-    - `completed` + `success` ⇒ no ar (cite o run). `queued`/`in_progress` ⇒ esperar.
-    - Lista vazia ⇒ o GitHub ainda não registrou o run: esperar alguns segundos e consultar de novo; vazia
-      depois de ~2 min ⇒ dizer que não achou o run do commit — nunca concluir "nada a verificar". No caminho
-      do PR, o SHA que chega à branch padrão é o do merge: consulte por ele.
-    - `cancelled` ⇒ um push mais novo pode ter substituído o seu: `GIT_TERMINAL_PROMPT=0 git fetch origin
-      {default_branch}`, depois `gh run list --workflow <arquivo> --branch {default_branch} --limit 20 --json databaseId,headSha,status,conclusion,createdAt`;
-      só vale run `success` criado depois do seu **e** de um commit que contém o seu
-      (`git merge-base --is-ancestor <seu SHA> <SHA dele>` sai 0). Sai 1 = aquele run **não** contém o seu
-      commit (procure outro ou espere); qualquer outro código (commit não encontrado) = "não consegui
-      confirmar", nunca "não incluído".
-    - `failure` ⇒ para repetir, **nunca `gh run rerun` de um run antigo** (com fila, ele publica código
-      velho por cima do novo): redisparar na ponta — `gh workflow run <arquivo> --ref {default_branch}` só se
-      o workflow tiver `workflow_dispatch` no `on:`; sem ele (o GitHub responde 422), um push novo.
-    - Verde não prova teste: step de teste com `continue-on-error`, `|| true` ou `exit 0` fixo ⇒ "o deploy
-      terminou, mas o workflow não roda testes antes de publicar" (o `deploy-espera-testes.py` do
-      item 7 já disse isso no bloco do OK).
-    Sem `gh`: "publicado, sem verificação automática disponível" — nunca ✅ sem ter olhado.
+10. **Verificar — pelo commit publicado, não pelo último run.** `{{DRIFT_CHECK_CMD}}` exit 0; smoke da rota principal; e, se
+    a publicação roda num workflow:
+    `bash sdd/bin/deploy-do-sha.sh --commit <SHA publicado> --workflow <arquivo> --branch {default_branch}`. O `--workflow` vem do
+    slot `deploy.workflow`; vazio, passe o arquivo que a linha ✅ do `deploy-espera-testes.py` citou no item 7. No caminho do PR, o
+    SHA publicado é o do merge. O script espera até 40 minutos: rode em segundo plano, onde o agente permite; onde não, chame com
+    `--teto 300` e repita enquanto sair 4, o que é seguro (nada é repetido por causa disso).
+
+    | Exit | O que dizer |
+    |---|---|
+    | `0` | no ar, citando o run (a frase do script, com o substituto quando houver) |
+    | `2` | não está no ar: a frase traz o run, o passo e por que não repetiu; para repetir, um push novo ou `gh workflow run` na ponta, **nunca `gh run rerun` de um run antigo** (com fila, ele publica código velho por cima do novo) |
+    | `3` | "publicado, sem verificação automática disponível" — nunca ✅ sem ter olhado |
+    | `4` | "ainda não sei": não é falha; repita ou abra o run citado, nunca "nada a verificar" |
+    | `64` | chamada errada ou `sdd/bin/` antigo: rode o `doctor` e, para o que ele apontar, apague e rode o `init` |
+
+    Verde não prova teste: step de teste com `continue-on-error`, `|| true` ou `exit 0` fixo ⇒ "o deploy terminou, mas o
+    workflow não roda testes antes de publicar" (o `deploy-espera-testes.py` do item 7 já disse isso no bloco do OK).
 11. **Changelog:** `{{CHANGELOG_HOOK}}` ou entrada curta (≤600 caracteres) no topo do
-    `CHANGELOG.md`. O detalhe vive no ledger e no BUILD_REPORT.
+    `CHANGELOG.md`. O detalhe vive no ledger e no BUILD_REPORT. Conflito de changelog (a base moveu): pegue o da branch
+    padrão, com as entradas das outras frentes, e ponha a sua no topo:
+    `git show origin/{default_branch}:CHANGELOG.md > CHANGELOG.md`, sem depender de qual lado é "ours" na operação.
 12. **Limpeza** do worktree temporário.
 
 ## FASE 3 — Higiene do git
@@ -251,7 +251,9 @@ removido.
 15. Worktree/branch da feature: se a feature fechou, oferecer o comando de remoção (rodado
     fora dele). **15b.** Se esta release **fechou o DoD**, mover os artefatos SDD da família
     para `sdd/archive/{F}/` com `git mv` — um a um, nunca glob que arraste features de nome
-    parecido. Feature aberta → pular (slices seguintes ainda leem os arquivos).
+    parecido. Feature aberta → pular (slices seguintes ainda leem os arquivos). A faxina retroativa do
+    passivo é outra operação, deliberada: `python3 sdd/bin/sdd-archive.py` (simulação por padrão; depois,
+    `--lote <nome> --aplicar`, um lote por commit).
 16. **Report final:** versão, SHAs, deploy, drift, o que foi para produção, arquivamento.
 
 ## FASE 4 — Ficha da feature e playbook

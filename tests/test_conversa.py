@@ -21,7 +21,8 @@ F4 = ("sdd-auditoria-harness", "sdd-brainstorm", "sdd-build", "sdd-checar-ambien
       "sdd-design", "sdd-governanca", "sdd-handoff", "sdd-iterate", "sdd-new-session", "sdd-playbook",
       "sdd-prompt-builder", "sdd-release", "sdd-ux-review",
       "sdd-kb",  # as 14 da F4 + a sdd-kb da F5 (DESIGN_F5_CONHECIMENTO, Decision 7)
-      "sdd-loop-builder")  # F13 (DESIGN_F13_UX_LLM, Decision 8)
+      "sdd-loop-builder",  # F13 (DESIGN_F13_UX_LLM, Decision 8)
+      "sdd-drive")  # F14_DRIVE
 # Frases do bloco comum de regras: iguais nas 16 (DESIGN_F4_CONVERSA, Code Pattern 1).
 FRASES = (
     "sdd/templates/fragments/PERGUNTA_DECISAO.md",
@@ -52,7 +53,7 @@ def todas():
 
 class Identificacao(unittest.TestCase):
     def test_sao_18_e_as_16_da_camada_existem(self):
-        self.assertEqual(len(todas()), 18)
+        self.assertEqual(len(todas()), 19)
         for s in F4:
             with self.subTest(skill=s):
                 self.assertTrue((SKILLS / s / "SKILL.md").is_file())

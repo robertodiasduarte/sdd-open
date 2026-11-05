@@ -38,6 +38,30 @@ class VerifyGate(Sandbox):
         rc, out, err = self.roda([BASH, SCRIPT, *flags, "sdd/features/DEFINE_EXEMPLO.md"], self.r)
         return rc, out + err
 
+    # ── --checar: tudo o que o gate confere antes de rodar, sem rodar (F14_DRIVE) ──
+    def test_checar_nao_roda_o_comando_e_nao_grava_trace(self):
+        rc, out = self.gate(define(cmd="touch rodou"), "--checar")
+        self.assertEqual(rc, 0, out)
+        self.assertFalse((self.r / "rodou").exists())
+        self.assertFalse((self.r / "sdd/traces").exists())
+
+    def test_checar_reprova_o_que_o_gate_reprovaria(self):
+        for texto, esperado in ((define(corpo=MARCADOR), 5), (define().replace("N.A. — ", "pendente "), 5), ("# DEFINE\n\n" + GOVERNANCA, 64),
+                                (define(kind="xyz"), 64), (define(cmd="N/A (x)"), 64)):
+            with self.subTest(esperado=esperado, texto=texto[:60]):
+                rc, out = self.gate(texto, "--checar")
+                self.assertEqual(rc, esperado, out)
+
+    def test_checar_aceita_manual_ux(self):
+        rc, out = self.gate(define(kind="manual-ux", cmd="N/A (manual-ux)"), "--checar")
+        self.assertEqual(rc, 0, out)
+
+    def test_print_mostra_o_checklist_do_manual(self):
+        texto = define(kind="manual-ux", cmd="N/A (manual-ux)").replace('manual_fallback: "—"', 'manual_fallback: "Eu abri A"')
+        rc, out = self.gate(texto, "--print")
+        self.assertEqual(rc, 0, out)
+        self.assertRegex(out, r"(?m)^manual_fallback: Eu abri A$")
+
     # ── os seis estados ──────────────────────────────────────────────────────
     def test_0_verde_quando_cmd_passa(self):
         rc, out = self.gate(define(cmd="true"))

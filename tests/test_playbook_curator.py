@@ -382,6 +382,32 @@ class LinhasQueNaoSaoAchado(Base):
                 self.assertTrue({"veredito", "tratamento"} & set(nomes), cab)
 
 
+class LogDeSonda(Base):
+    """L10: eco de comando e diagnóstico dos próprios scripts não são achado; achado real no mesmo log, sim (F14_DRIVE AT-034)."""
+
+    def test_nao_conta_eco_nem_diagnostico(self):
+        (self.dir / "AVAL-x.log").write_text(
+            "$ grep -n '❌ LM-001' arquivo\n"
+            "❌ delta linha 2: LM-001 é aposentado e alterado no mesmo delta\n"
+            "❌ invariantes linha 3: LM-001 é outra coisa\n"
+            "🔴 trava INV: INV-001 tem origem=LM-001, que está aposentada ❌\n"
+            "/tmp/x.md:0: ❌ ID duplicado: LM-001\n", encoding="utf-8")
+        rc, out, _ = self.colhe()
+        self.assertNotIn("DELTA LM-001 mordeu+1", out)
+        self.assertEqual(rc, 0, out)
+
+    def test_achado_real_no_mesmo_log_conta(self):
+        (self.dir / "AVAL-x.log").write_text(
+            "$ rode isto\n"
+            "❌ delta linha 2: LM-001 é aposentado\n"
+            "❌ o relatório mensal repetiu o erro de LM-002\n"
+            "FAIL LM-001 na conferência\n", encoding="utf-8")
+        _, out, _ = self.colhe()
+        self.assertIn("DELTA LM-002 mordeu+1", out)
+        self.assertIn("DELTA LM-001 mordeu+1", out)
+        self.assertIn("evidencia=AVAL-x.log:4", out)
+
+
 class Desde(Base):
     """AT-008"""
 

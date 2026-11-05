@@ -3,13 +3,13 @@
 Lê direto da raiz (sem rede, sem sandbox). Sete grupos:
   Links           — todo link relativo de README*.md, CONTRIBUTING.md e docs/**/*.md aponta para arquivo
                     que existe, e toda #âncora casa com um título pela regra do GitHub;
-  Guia            — docs/pt-BR/guia-do-aluno.md cobre as 18 skills, os 7 agentes e a instalação do open,
+  Guia            — docs/pt-BR/guia-do-aluno.md cobre as 19 skills, os 7 agentes e a instalação do open,
                     sem as premissas do sdd-starter (npx, 15 skills, sdd/ fora do git…);
   Quickstart      — a regra do método, "valide antes de seguir" por fase, a tabela "onde roda" no passo 4
                     e a atualização pelo doctor + init no passo 5;
   Roadmap         — os temas planejados e "Specs como deltas" em avaliação, sem data;
   Comparison      — "Specs como deltas" continua ❌ em avaliação na coluna do SDD Open;
-  ReadmeEAgents   — README e AGENTS.md.tmpl citam as 18 skills, a KB e o OK único;
+  ReadmeEAgents   — README e AGENTS.md.tmpl citam as 19 skills, a KB e o OK único;
   PorQueCadaRegra — as 7 skills de fase e as 2 de terreno guardam o motivo das próprias regras.
 
 As frases fixas ficam nas constantes abaixo: mudar a redação de uma delas é mudar a constante de propósito.
@@ -57,9 +57,9 @@ QUICKSTART = {
 
 ROADMAP = {
     "en": (RAIZ / "docs/roadmap.md", "[Português](pt-BR/roadmap.md)", "planned", "under evaluation",
-           ("sdd-drive", "reconciliation")),
+           ("reconciliation",)),
     "pt": (RAIZ / "docs/pt-BR/roadmap.md", "[English](../roadmap.md)", "planejado", "em avaliação",
-           ("sdd-drive", "Reconciliação")),
+           ("Reconciliação",)),
 }
 # Hooks (F8), fluxo encadeado (F9), revisão adversarial (F10 + F11) e contexto e governança (F12) saíram do roadmap e ganharam documento próprio, linkado dos dois READMEs.
 FLUXO_DOCS = {
@@ -230,7 +230,7 @@ class Guia(unittest.TestCase):
     def test_uma_ficha_por_skill(self):
         faltam = [s for s in SKILLS if not re.search(r"(?m)^#### %s\s*$" % re.escape(s), self.texto)]
         self.assertEqual(faltam, [], "skills sem ficha no catálogo")
-        self.assertEqual(len(SKILLS), 18)
+        self.assertEqual(len(SKILLS), 19)
 
     def test_os_sete_agentes(self):
         self.assertEqual([a for a in AGENTES if a not in self.texto], [])
@@ -317,7 +317,8 @@ class Roadmap(unittest.TestCase):
                 # F8 entregou os hooks, a F9 o fluxo encadeado, a F10 + F11 a revisão adversarial e a F12 contexto e
                 # governança: as linhas saíram do roadmap (3 temas) e viraram docs/hooks.md, docs/chained-flow.md,
                 # docs/adversarial-review.md e docs/context-and-governance.md.
-                self.assertEqual(len([ln for ln in linhas if not ln.startswith("| Tema") and not ln.startswith("| Theme")]), 3)
+                self.assertEqual(len([ln for ln in linhas if not ln.startswith("| Tema") and not ln.startswith("| Theme")]), 2)
+                self.assertFalse([ln for ln in linhas if "sdd-drive" in ln], "o sdd-drive saiu com a F14_DRIVE")
                 self.assertFalse([ln for ln in linhas if "overnan" in ln], "contexto e governança saiu com a F12")
                 self.assertFalse([ln for ln in linhas if "dversari" in ln], "a revisão adversarial já foi entregue")
                 self.assertFalse([ln for ln in linhas if "**Hooks**" in ln], "a linha Hooks saiu com a F8")
@@ -363,9 +364,19 @@ class Roadmap(unittest.TestCase):
                     self.assertIn(termo, texto)
                 self.assertIn(link, ler(readme))
                 self.assertEqual(links_quebrados(doc), [])
-                linha = [ln for ln in linhas_de_tabela(ler(roadmap)) if "sdd-drive" in ln]
-                self.assertEqual(len(linha), 1)
                 self.assertNotIn("sdd-loop-builder", ler(roadmap))
+
+    def test_drive_tem_documento_proprio_linkado_do_readme(self):
+        # F14_DRIVE (AT-036): saiu do roadmap e o mecanismo vem com o seu documento.
+        casos = {"en": (RAIZ / "docs/drive.md", RAIZ / "README.md", "docs/drive.md", RAIZ / "docs/roadmap.md"),
+                 "pt": (RAIZ / "docs/pt-BR/drive.md", RAIZ / "README.pt-BR.md", "docs/pt-BR/drive.md", RAIZ / "docs/pt-BR/roadmap.md")}
+        for lingua, (doc, readme, link, roadmap) in casos.items():
+            with self.subTest(lingua=lingua):
+                for termo in ("sdd-drive.sh", "drive.max_rounds", "deploy-do-sha.sh", "sdd-archive.py", "--fundo", "gate-alterado"):
+                    self.assertIn(termo, ler(doc))
+                self.assertIn(link, ler(readme))
+                self.assertEqual(links_quebrados(doc), [])
+                self.assertNotIn("sdd-drive", ler(roadmap))
 
     def test_contexto_e_governanca_tem_documento_proprio_linkado_do_readme(self):
         # F12 (AT-022): passos 1.5 e 11, o exit 5 depois de atualizar, a linha de dispensa, patterns e os scripts.

@@ -765,3 +765,57 @@ class LoopF10(Base):
                 led = self.escreve(self.tmp, "l.md", linha)
                 rc, out = self.loop("review-r2-indisponivel", "--ledger", led)
                 self.assertEqual(rc, 20, out)
+
+
+class Base_Drive(Sandbox):
+    DESIGN = ("# DESIGN: X\n\n## Metadata\n\n| Attribute | Value |\n|---|---|\n| **Status** | Ready for Build |\n\n## Key Decisions\n\n### Decision 1: x\n\nx\n\n"
+              "## File Manifest\n\n| # | File | Action | Purpose | Agent / Owner | Dependencies |\n|---:|---|---|---|---|---|\n"
+              "| 1 | `a` | Modify | x | (general) | None |\n\n**Total Files:** 1\n")
+
+    def setUp(self):
+        super().setUp()
+        self.r = self.repo()
+        for s in ("sdd/bin/sdd-fluxo.sh", "sdd/bin/verify-gate.sh", "sdd/bin/design-lint.py"):
+            self.copia(s, self.r)
+        self.escreve(self.r, "sdd/features/DEFINE_X.md", "# DEFINE\n\n## Verify Gate\n\n```yaml\nverify_gate:\n  kind: test\n  cmd: \"true\"\n  pass_when: \"exit 0\"\n  threshold: \"—\"\n  manual_fallback: \"—\"\n```\n")
+        self.escreve(self.r, "sdd/features/DESIGN_X.md", self.DESIGN)
+
+    def fluxo(self, *args, cwd):
+        rc, out, err = self.roda([BASH, "sdd/bin/sdd-fluxo.sh", *args], cwd)
+        return rc, out + err
+
+
+class SeguirDoDrive(Base_Drive):
+    """F14_DRIVE: --drive faz o seguir valer com o encadeamento desligado, sem ler nem mudar o slot."""
+
+    def test_liga_so_nesta_chamada_e_diz_de_quem_e(self):
+        rc, out = self.fluxo("seguir", "design", "sdd/features/DEFINE_X.md", "build", "--drive", cwd=self.r)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("(execução do sdd-drive)", out)
+        self.assertNotIn("encadeamento ligado em sdd/config.yaml", out)
+        rc, out = self.fluxo("seguir", "design", "sdd/features/DEFINE_X.md", "build", cwd=self.r)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("encadeamento desligado", out)
+
+    def test_slot_invalido_nao_atrapalha(self):
+        self.escreve(self.r, "sdd/config.yaml", "flow:\n  autonomous: sim\n")
+        rc, out = self.fluxo("seguir", "design", "sdd/features/DEFINE_X.md", "build", "--drive", cwd=self.r)
+        self.assertEqual(rc, 0, out)
+
+    def test_publicar_continua_parando(self):
+        rc, out = self.fluxo("seguir", "build", "sdd/features/DEFINE_X.md", "release", "--drive", cwd=self.r)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("publicar não se desfaz", out)
+        self.assertNotIn("DRIVE_ACAO", out)
+
+    def test_token_estavel_so_nos_motivos_de_revisao(self):
+        muitos = "".join("| %d | `n%d` | Create | x | (general) | None |\n" % (k, k) for k in range(1, 4))
+        self.escreve(self.r, "sdd/features/DESIGN_X.md", self.DESIGN.replace("| 1 | `a` | Modify | x | (general) | None |\n", muitos).replace("**Total Files:** 1", "**Total Files:** 3"))
+        rc, out = self.fluxo("seguir", "design", "sdd/features/DEFINE_X.md", "build", "--drive", cwd=self.r)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("DRIVE_ACAO: REVISAO_DESIGN", out)
+        self.escreve(self.r, "sdd/features/DESIGN_X.md", "# sem Status\n")
+        rc, out = self.fluxo("seguir", "design", "sdd/features/DEFINE_X.md", "build", "--drive", cwd=self.r)
+        self.assertEqual(rc, 1, out)
+        self.assertNotIn("DRIVE_ACAO", out)
+

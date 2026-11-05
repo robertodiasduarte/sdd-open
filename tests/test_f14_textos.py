@@ -322,7 +322,7 @@ class Pacote(unittest.TestCase):
                 self.assertTrue((RAIZ / "tests" / ("test_%s.py" % nome)).is_file())
 
     def test_versoes_e_linha_de_identificacao(self):
-        for skill, versao in (("sdd-playbook", "2.2.0"), ("sdd-release", "2.7.1"), ("sdd-new-session", "1.4.1"),
+        for skill, versao in (("sdd-playbook", "2.2.0"), ("sdd-release", "2.8.0"), ("sdd-new-session", "1.4.1"),
                               ("sdd-handoff", "2.1.2"), ("sdd-define", "2.5.1")):
             texto = ler(".agents/skills/%s/SKILL.md" % skill)
             with self.subTest(skill=skill):

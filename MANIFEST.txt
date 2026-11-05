@@ -18,6 +18,9 @@
 .agents/skills/sdd-define/references/como-falar.md
 .agents/skills/sdd-design/SKILL.md
 .agents/skills/sdd-design/references/como-falar.md
+.agents/skills/sdd-drive/SKILL.md
+.agents/skills/sdd-drive/references/como-falar.md
+.agents/skills/sdd-drive/references/executor.md
 .agents/skills/sdd-governanca/SKILL.md
 .agents/skills/sdd-governanca/assets/GOVERNANCA_PADRAO_TEMPLATE.md
 .agents/skills/sdd-governanca/assets/GOVERNANCA_REVIEW_TEMPLATE.md
@@ -96,6 +99,7 @@
 .agents/skills/sdd-release/SKILL.md
 .agents/skills/sdd-release/references/como-falar.md
 .agents/skills/sdd-release/references/ledger.md
+.agents/skills/sdd-release/references/raio-de-impacto.md
 .agents/skills/sdd-release/scripts/deploy-espera-testes.py
 .agents/skills/sdd-ux-review/SKILL.md
 .agents/skills/sdd-ux-review/references/como-falar.md
@@ -123,6 +127,7 @@ docs/chained-flow.md
 docs/cli-conventions.md
 docs/comparison.md
 docs/context-and-governance.md
+docs/drive.md
 docs/hooks.md
 docs/llm-in-code.md
 docs/playbook-curation.md
@@ -131,6 +136,7 @@ docs/pt-BR/adversarial-review.md
 docs/pt-BR/chained-flow.md
 docs/pt-BR/comparison.md
 docs/pt-BR/context-and-governance.md
+docs/pt-BR/drive.md
 docs/pt-BR/guia-do-aluno.md
 docs/pt-BR/hooks.md
 docs/pt-BR/llm-in-code.md
@@ -155,6 +161,7 @@ sdd/bin/adversarial-review.sh
 sdd/bin/avaliador-guard.sh
 sdd/bin/contexto-lint.sh
 sdd/bin/contraste.sh
+sdd/bin/deploy-do-sha.sh
 sdd/bin/design-lint.py
 sdd/bin/docs-extract-decisions.sh
 sdd/bin/eval-agree.sh
@@ -169,7 +176,9 @@ sdd/bin/playbook-curator.sh
 sdd/bin/playbook-lint.sh
 sdd/bin/prompt-drift-scan.sh
 sdd/bin/report-lint.py
+sdd/bin/sdd-archive.py
 sdd/bin/sdd-decisoes-lint.sh
+sdd/bin/sdd-drive.sh
 sdd/bin/sdd-fluxo.sh
 sdd/bin/skill-lint.py
 sdd/bin/test-baseline.sh
@@ -398,13 +407,16 @@ tests/test_copiar_docs.py
 tests/test_correcoes_w0.py
 tests/test_curadoria_bloco.py
 tests/test_decisoes_lint.py
+tests/test_deploy_do_sha.py
 tests/test_deploy_espera_testes.py
 tests/test_design_lint.py
 tests/test_docs.py
 tests/test_docs_extract_decisions.py
+tests/test_drive.py
 tests/test_eval_agree.py
 tests/test_f12_textos.py
 tests/test_f13_textos.py
+tests/test_f14_drive_textos.py
 tests/test_f14_textos.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
@@ -430,6 +442,7 @@ tests/test_report_lint_evidencia.py
 tests/test_revisao.py
 tests/test_revisao_adapters.py
 tests/test_revisao_gate.py
+tests/test_sdd_archive.py
 tests/test_sdd_kb.py
 tests/test_sdd_kb_normativo.py
 tests/test_sdd_open.py

@@ -39,6 +39,12 @@ deploy:
   # Detecta o que chegou em produção sem commit correspondente (função publicada pelo console,
   # migration aplicada pelo painel). Vazio = você só deploya via git e esse drift não existe.
   drift_check_cmd: ""
+  # Arquivo do workflow que publica (ex.: deploy.yml), usado por sdd/bin/deploy-do-sha.sh para saber se o commit
+  # está no ar. Vazio = a sdd-release passa o nome que leu em .github/workflows/.
+  workflow: ""
+  # Nomes de passos desse workflow em que repetir é seguro, separados por vírgula (ex.: "Verify SSH connection").
+  # Falha em um deles, com o commit na ponta da branch, repete o deploy 1 vez. Vazio = nunca repete sozinho.
+  transient_steps: ""
 
 release:
   # Bloqueadores próprios do projeto: começa com regras genéricas, cresce a cada incidente.
@@ -76,6 +82,11 @@ review:
 # de conversar das skills.
 flow:
   autonomous: false
+
+# O piloto (skill sdd-drive; docs/drive.md). Quantas rodadas ele tem para ficar verde, por execução: 1 rodada é
+# construir o que falta e rodar o teste final. Inteiro >= 1; --max sobrepõe. Vazio = 3.
+drive:
+  max_rounds: 3
 
 # Preenchido pelo sdd-open (`init`): agentes para os quais os adaptadores são gerados.
 vendors: ""

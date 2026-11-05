@@ -12,7 +12,6 @@ mecanismo chega com o próprio documento.
 
 | Tema | O que traz | Status |
 |---|---|---|
-| **`sdd-drive`** | uma skill que conduz várias fases seguidas com as mesmas paradas humanas | *planejado* |
 | **Reconciliação spec ↔ código** | conferir que o manifest de arquivos cobriu todo requisito, não só que o aceite passou | *planejado* |
 | **Specs como deltas** | spec escrita como diferença contra um conjunto canônico de capacidades, no lugar de um documento de vida longa | *em avaliação* |
 

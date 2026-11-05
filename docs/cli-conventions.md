@@ -31,7 +31,9 @@ Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` �
 (sdd-fluxo.sh; ver [chained-flow.md](chained-flow.md)) · `PASSA` · `REPROVA` (contraste.sh) · `LIMPO` · `DRIFT`
 (prompt-drift-scan.sh; ver [llm-in-code.md](llm-in-code.md)) · `HÁ O QUE JULGAR` · `NADA A COLHER` · `BLOCO VÁLIDO` ·
 `BLOCO INVÁLIDO` · `PAR VÁLIDO` · `TRAVA` (playbook-curator.sh; ver [playbook-curation.md](playbook-curation.md)) ·
-`NADA A COPIAR` (copiar-docs.sh da `sdd-new-session`).
+`NADA A COPIAR` (copiar-docs.sh da `sdd-new-session`) · `CONCLUIDO` · `CONTINUAR` · `PARADA` · `FALHA` · `RECIBO GRAVADO`
+(sdd-drive.sh; ver [drive.md](drive.md)) · `NO AR` · `NAO ESTA NO AR` · `FALHOU` · `AINDA NAO SEI` (deploy-do-sha.sh) ·
+`SIMULACAO` · `MOVIDO` (sdd-archive.py).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate
 (inconclusivo, que devolve `0`… sem `--strict`) de parecer verde para quem lê.
@@ -51,7 +53,7 @@ RESULTADO: ERRO
 
 | Script | Códigos |
 |---|---|
-| `verify-gate.sh` | `0` verde · `2` vermelho · `3` inconclusivo · `4` assinatura humana · `5` clarificar (marcador ativo, ou linha `Governança` sem valor final — GOVERNANÇA NÃO REVISADA) · `64` spec inválida — `--strict` remapeia 3/4/5 → `1` |
+| `verify-gate.sh` (`--checar`: só `0`, `5` e `64`, sem rodar o `cmd`) | `0` verde · `2` vermelho · `3` inconclusivo · `4` assinatura humana · `5` clarificar (marcador ativo, ou linha `Governança` sem valor final — GOVERNANÇA NÃO REVISADA) · `64` spec inválida — `--strict` remapeia 3/4/5 → `1` |
 | `sdd-open.sh` | `0` ok/ajuda/cancelado/dry-run · `1` divergente ou sem permissão · `64` uso/pré-condição · `65` marcadores do AGENTS.md · `66` JSON inválido |
 | `playbook-lint.sh` | `0` ok · `1` zero hits / colapso · `2` formato inválido · `64` uso |
 | `skill-lint.py` · `report-lint.py` · `design-lint.py` · `handoff-lint.py` · `kb-dominios.py` | `0` ok · `1` violações · `64` uso (no `skill-lint.py`, também opção desconhecida; `--conversa` liga a conferência da camada de conversa; no `report-lint.py`, `--pendente` sai `1` quando acha `avaliador: PENDENTE`) |
@@ -69,6 +71,9 @@ RESULTADO: ERRO
 | `governanca-fronteira.sh` | `0` SÓ O PERMITIDO MUDOU · `1` ESCRITA FORA DO PERMITIDO (`FORA:`) · `64` fronteira não verificada |
 | `governanca-bloco.py` | `0` bloco válido (NA · REVISADO · PADRAO_AUSENTE) · `1` `resultado: FALHA` · `2` BLOCO INVÁLIDO · `64` uso |
 | `docs-extract-decisions.sh` | `0` índice gravado · `2` conservação violada · `64` uso |
+| `sdd-drive.sh` | `0` CONCLUIDO (`gate-verde`, `simulacao`) · `10` CONTINUAR (`ACAO:`) · `20` PARADA (`motivo:` tabelado) · `40` AGUARDANDO_HUMANO · `2` FALHA do próprio script · `64` uso |
+| `deploy-do-sha.sh` | `0` NO AR · `2` fora do ar · `3` INCONCLUSIVO (sem `gh` ou `git`, ou sem login) · `4` AINDA NAO SEI · `64` uso |
+| `sdd-archive.py` | `0` SIMULACAO ou MOVIDO · `2` FALHA · `64` uso |
 | `eval-agree.sh` | `0` MEDIDO · `2` SEM DADOS (inclusive sem a pasta padrão) · `64` uso ou pasta passada inexistente |
 | `sdd-decisoes-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, caminho inexistente, tabela de marcas ausente ou nenhuma pergunta |
 | `contraste.sh` | `0` PASSA · `2` REPROVA, ou `--self-test` VERMELHO · `64` uso ([llm-in-code.md](llm-in-code.md)) |

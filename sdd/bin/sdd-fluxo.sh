@@ -17,8 +17,9 @@
 #       30 AGUARDANDO_RECIBO · 64 entrada ausente ou ilegível — nunca PRONTO por omissão
 #   sdd-fluxo.sh despachar <papel> <FEATURE> <brief.md>
 #       40 AGUARDANDO_HUMANO: brief em sdd/reports/briefs/BRIEF_<papel>_<FEATURE>.md e a parada ⏸️ · 64
-#   sdd-fluxo.sh seguir <fase> <DEFINE.md> <próxima> [--parar]
+#   sdd-fluxo.sh seguir <fase> <DEFINE.md> <próxima> [--parar] [--drive]
 #       0 SEGUIR (linha de transição) · 1 PARAR (o motivo) · 64 uso ou flow.autonomous inválido
+#       --drive: a chamada é de uma execução do sdd-drive: não lê flow.autonomous; `release` continua parando (D1)
 #   sdd-fluxo.sh estado
 #       0 encadeamento ligado · 1 desligado · 64 flow.autonomous inválido
 #   sdd-fluxo.sh --self-test
@@ -90,6 +91,9 @@ cmd_despachar() {
                         nao_feito='nada foi gravado em sdd/contexto/.' ;;
     revisor-governanca) retorno='o bloco que começa com `<<<GOVERNANCA` até `>>>`'
                         nao_feito='o relatório de governança não foi gravado; o DEFINE está marcado como pendente (o build não passa até a revisão voltar).' ;;
+    executor-drive)     le='a próxima tarefa de sdd/reports/progress/PROGRESS_'"$feat"'.md'
+                        retorno='o bloco que começa com `<<<RODADA` até `>>>`'
+                        nao_feito='a tarefa ainda não foi feita e nada foi publicado.' ;;
     curador)            le='a colheita do playbook'
                         antes='A publicação já terminou e não depende deste passo; '
                         retorno='o bloco que começa com `<<<CURADORIA` até `>>>`'
@@ -612,9 +616,10 @@ def ledger(texto):
 
 def cmd_seguir():
     parar = "--parar" in args
-    pos = [a for a in args if a != "--parar"]
+    drive = "--drive" in args
+    pos = [a for a in args if a not in ("--parar", "--drive")]
     if len(pos) != 3 or any(a.startswith("--") for a in pos):
-        erro_uso("seguir exige <fase> <DEFINE.md> <próxima> [--parar]",
+        erro_uso("seguir exige <fase> <DEFINE.md> <próxima> [--parar] [--drive]",
                  "trate o encadeamento como desligado e mostre o Próximo passo.")
     fase, define, prox = pos
     if fase not in PARES or (prox != "release" and prox not in PARES[fase]):
@@ -630,13 +635,15 @@ def cmd_seguir():
     if prox == "build":
         alvo = os.path.join(os.path.dirname(define), "DESIGN_%s.md" % feat)
 
-    def para(motivo):
+    def para(motivo, revisao=False):
         print("PARAR: " + motivo)
+        if drive and revisao:
+            print("DRIVE_ACAO: REVISAO_DESIGN")
         print("RESULTADO: PARAR")
         print("→ Próximo passo: /sdd-%s %s" % (prox, alvo))
         sys.exit(1)
 
-    rc, linha = estado(raiz)
+    rc, linha = (0, "") if drive else estado(raiz)
     if rc == 64:
         print(linha)
         print("RESULTADO: SLOT INVÁLIDO")
@@ -681,16 +688,16 @@ def cmd_seguir():
         if review_design(design)[0] in (0, 64):
             linhas = ledger(ler(design))
             if not linhas:
-                para("revisão do DESIGN exigida e não registrada no Advisor Ledger")
+                para("revisão do DESIGN exigida e não registrada no Advisor Ledger", True)
             if any(sev is None for _, sev, _ in linhas):
-                para("Advisor Ledger sem coluna de severidade (Severidade ou Severity): não dá para conferir HIGH aberto")
+                para("Advisor Ledger sem coluna de severidade (Severidade ou Severity): não dá para conferir HIGH aberto", True)
             abertos = [n for n, sev, ver in linhas if re.search(r"\bHIGH\b", re.sub(r"[*`_]", "", sev or "").upper())
                        and not re.match(r"^\W*(APLICADA|REBATIDA_|APPLIED|REBUTTED)", ver, re.I)]
             if abertos:
-                para("HIGH aberto no Advisor Ledger: " + ", ".join(abertos))
+                para("HIGH aberto no Advisor Ledger: " + ", ".join(abertos), True)
     de, para_doc = DOC[fase], DOC[prox]
-    print("✅ %s %s → seguindo para %s %s (encadeamento ligado em sdd/config.yaml)"
-          % (de[0], de[2], para_doc[1], para_doc[0]))
+    print("✅ %s %s → seguindo para %s %s (%s)"
+          % (de[0], de[2], para_doc[1], para_doc[0], "execução do sdd-drive" if drive else "encadeamento ligado em sdd/config.yaml"))
     print("→ /sdd-%s %s" % (prox, alvo))
     sys.exit(0)
 

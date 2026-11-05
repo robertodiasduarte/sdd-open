@@ -96,6 +96,8 @@ COLUNAS_LICAO = ("fonte", "lm-nnn", "id")
 COLUNAS_VEREDITO = ("veredito", "tratamento")
 TITULO_LANDMINES = re.compile(r"^## Landmines (aplicáveis|lidas no build)")
 RE_LM = re.compile(r"(?<![A-Za-z0-9_-])LM-\d{3}(?!\d)")
+# Eco de comando e diagnóstico dos próprios scripts num log de sonda não são achado: dizem de um delta ou playbook de teste.
+NAO_E_ACHADO = re.compile(r"^(\$ |❌ (delta|invariantes) linha \d+:|🔴 trava INV:|\S+:\d+: ❌ )")
 RE_BULLET = re.compile(r"^- \[(LM-\d{3})\]")
 RE_DATA = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 RE_FEATURE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
@@ -551,7 +553,7 @@ class Colheita:
                 tabela = False
             if tabela:
                 continue  # quem julga essas linhas é tabela()
-            if ACHADO.search(ln) and "✅" not in ln:
+            if ACHADO.search(ln) and "✅" not in ln and not NAO_E_ACHADO.match(ln):
                 linhas.append((n, ln))
         for n, ln in linhas:
             for lm in sorted(set(RE_LM.findall(ln))):

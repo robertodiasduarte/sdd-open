@@ -3,7 +3,7 @@
 > Para quem nunca usou git, terminal ou programou. Se você já conhece essas coisas, o
 > [Quickstart](quickstart.md) é mais direto.
 
-O SDD Open é um conjunto de 18 **skills** — roteiros que a IA segue para trabalhar com método — mais
+O SDD Open é um conjunto de 19 **skills** — roteiros que a IA segue para trabalhar com método — mais
 alguns conferidores que rodam no seu computador. Cada skill faz uma coisa só, conversa com você em
 etapas e **não faz nada que não se desfaz sem você escolher**. Este guia mostra o caminho inteiro:
 preparar o computador, criar o primeiro projeto e publicá-lo.
@@ -206,7 +206,7 @@ o Build e a Release rodam. Ele devolve um número, e a skill traduz:
 
 ## 4. O mapa do caminho
 
-As 18 skills se dividem em quatro blocos, na ordem em que você vai usá-las.
+As 19 skills se dividem em quatro blocos, na ordem em que você vai usá-las.
 
 ```text
 PREPARAR (uma vez por computador e por projeto; a new-session, a cada frente)
@@ -225,7 +225,7 @@ FECHAR (no fim de cada sessão e de cada frente)
    "passar o bastão"  "publicar"
 
 TRANSVERSAIS (quando o caso pedir)
-   sdd-iterate · sdd-playbook · sdd-prompt-builder · sdd-loop-builder · sdd-auditoria-harness
+   sdd-iterate · sdd-playbook · sdd-prompt-builder · sdd-loop-builder · sdd-drive · sdd-auditoria-harness
 ```
 
 **A regra de ouro do método:** cada fase lê o documento que a anterior gravou. Não pule fases e
@@ -451,6 +451,17 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **Como pedir** | Em geral o Build chama sozinho; para usar à mão: *"use a skill sdd-loop-builder para o conferidor de extratos"* |
 | **O que produz** | A ficha do processo, a lista do que é IA e do que é código e os prompts que faltam escrever. |
 | **O que vai perguntar** | O que o processo produz, que estrago um erro causa e se há exemplos com a resposta certa para medir. |
+
+#### sdd-drive
+
+| | |
+|---|---|
+| **Para que serve** | É o **piloto**: leva um DEFINE aprovado até "pronto para publicar" sozinho, construindo uma tarefa por sessão nova e rodando o teste final, até o limite de rodadas. Para antes de publicar. |
+| **Quando usar** | Com o DEFINE pronto e uma frente de trabalho aberta, quando você quer voltar só para decidir. Também para retomar uma execução que caiu. |
+| **Quando não usar** | Com dúvida aberta no DEFINE, ou na primeira feature de um projeto, quando vale ver cada fase de perto. Para publicar: use a `sdd-release`. |
+| **Como pedir** | *"use a skill sdd-drive no DEFINE de relatórios"* |
+| **O que produz** | O código em commits, o relatório do build e o `DRIVE_REPORT`, com o que aconteceu em cada rodada. |
+| **O que vai perguntar** | Só o que é seu: o que fazer se o limite de rodadas acabar, ou se o comando do teste final mudar no meio. |
 
 #### sdd-auditoria-harness
 
