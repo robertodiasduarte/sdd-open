@@ -241,13 +241,14 @@ a evidência — ela vai para o Passo 2, item 6.
 4. Na pasta nova: a preparação, se houver; os arquivos locais (`.env`), copiados do checkout principal; e
    os **documentos SDD da feature** que ainda não foram salvos no git (o BRAINSTORM, o DEFINE e o DESIGN
    escritos no checkout principal não vêm com a worktree):
-   `bash .agents/skills/sdd-new-session/scripts/copiar-docs.sh <checkout principal> <pasta das frentes>/<slug> <slug>`.
+   `bash <pasta das skills>/sdd-new-session/scripts/copiar-docs.sh <checkout principal> <pasta das frentes>/<slug> <slug>`,
+   rodado do checkout principal, porque o script pode ainda não existir na branch de onde a frente nasceu.
    Ele só copia quando o nome é **idêntico** ao da frente (`DEFINE_RELATORIO_MENSAL.md` ↔
    `relatorio-mensal`), nunca sobrescreve o que a frente já tem e nunca segue link. Repasse em palavras:
    quantos copiou e quais; cada `PARECIDO`, com o motivo ("o nome é parecido, não idêntico: não copiei")
    e onde copiar à mão se for desta frente; cada `NAO_COPIADO` (o documento está num commit do checkout
    principal que ainda não foi enviado: enviar o commit e atualizar a frente, ou copiar à mão);
-   `NADA A COPIAR` não é erro. Exit 2 ou 64 ⇒ diga a causa
+   `NADA A COPIAR` não é erro. Qualquer outro exit ⇒ diga a causa
    que ele imprimiu; a frente já existe e continua válida.
 5. Abra no editor. **Sem editor, não aborte**: a frente já está pronta; mostre o caminho.
 6. **Grave os slots descobertos no `sdd/config.yaml da frente`** (`<pasta das frentes>/<slug>/sdd/config.yaml`),

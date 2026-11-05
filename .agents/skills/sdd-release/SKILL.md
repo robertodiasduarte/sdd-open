@@ -322,7 +322,7 @@ removido.
        respostas **aceitar**, **recusar** e **não sei**; até 5 por vez (acima disso, em lotes). Diga também,
        em palavras, cada linha `REJEITADO` da colheita: o candidato que não entrou e por quê. Com
        `sdd/invariants.md`, antes de perguntar:
-       `printf '%s\n' <os deltas AUTO e PERGUNTA, sem as linhas de tipo inv> | bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md`
+       `bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md <<'FIM_DOS_DELTAS'`, os deltas AUTO e PERGUNTA, sem as linhas de tipo inv, um por linha, e `FIM_DOS_DELTAS` (com o delimitador entre aspas, o shell não executa nada do texto da lição)
        — `INV_AFETADA` ⇒ o item daquela aposentadoria leva o `ajuste:` junto, como **uma opção só**;
        `INV_PENDENTE` ⇒ a contagem e a classificação vão na mesma opção (virar regra permanente com a
        linha `inv` do curador, descartar com motivo, ou não aplicar a contagem). Lição antiga que já mordeu e

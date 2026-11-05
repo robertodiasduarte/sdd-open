@@ -666,6 +666,14 @@ class Aplicar(Base):
         linha = next(l for l in out.split("\n") if l.startswith("- [LM-003]"))
         self.assertNotIn("promovido_para", linha)
 
+    def test_regra_que_cita_o_nome_do_campo_nao_e_cortada(self):
+        # R1@claude da rodada 2
+        texto = PLAYBOOK.replace("`termo3` :: regra. **Do instead:** ação. · promovido_para: —", "`termo3` :: O campo promovido_para: — nao vigia. **Do instead:** ação. · promovido_para: —")
+        pb = self.escreve(self.tmp, "r2.md", texto)
+        rc, out, _ = self.cur("--aplicar", self.escreve(self.tmp, "d.txt", "LM-003 promovido_para=sdd/x\n"), pb)
+        self.assertEqual(rc, 0)
+        self.assertRegex(out, r"(?m)^- \[LM-003\].*O campo promovido_para: — nao vigia\. \*\*Do instead:\*\* ação\. · promovido_para: sdd/x$")
+
     def test_delta_so_com_comentario_preserva_os_bytes(self):
         pb = self.tmp / "crlf.md"
         bruto = PLAYBOOK.replace("\n", "\r\n").encode("utf-8") + b"\xff\r\n"

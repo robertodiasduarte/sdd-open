@@ -354,7 +354,8 @@ class ErroDeUso(Base):
         casos = {'prompts:\n  wrapper_pattern: [a, b]\n': "lista, mapa ou referência",
                  'prompts:\n  wrapper_pattern: {a: b}\n': "lista, mapa ou referência",
                  'prompts:\n  wrapper_pattern: *pat\n': "lista, mapa ou referência",
-                 'prompts: {\n  wrapper_pattern: "x"\n}\n': "mapa entre chaves em várias linhas"}
+                 'prompts: {\n  wrapper_pattern: "x"\n}\n': "mapa entre chaves em várias linhas",
+                 'prompts: { outro: {},\n  wrapper_pattern: "x"\n}\n': "mapa entre chaves em várias linhas"}
         for config, trecho in casos.items():
             with self.subTest(config=config):
                 self.slot(config)

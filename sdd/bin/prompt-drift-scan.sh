@@ -82,7 +82,10 @@ ler_slot() {  # imprime V<valor>, M (malformado), F (mapa de fluxo aberto) ou L 
     /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*\{.*wrapper_pattern/ { print "M"; exit }
     /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*\*/ { print "M"; exit }
     # `prompts: {` que não fecha na mesma linha: o slot pode estar nas linhas seguintes, e ler como vazio seria falso.
-    /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*\{[^}]*$/ { print "F"; exit }
+    /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*\{/ {
+      t = $0; abre = gsub(/\{/, "{", t); fecha = gsub(/\}/, "}", t)
+      if (abre > fecha) { print "F"; exit }
+    }
     /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*([&!][^[:space:]]+[[:space:]]*)*(#.*)?$/ { dentro = 1; next }
     /^[^[:space:]#]/ { dentro = 0 }
     dentro && /^[[:space:]]+["\047]?wrapper_pattern["\047]?[[:space:]]*:/ {
@@ -394,6 +397,8 @@ auto_teste() {
   uso_errado 'mapa em linha com o slot' src/r.py
   printf 'prompts: {\n  wrapper_pattern: "x"\n}\n' > "$proj/sdd/config.yaml"
   uso_errado 'mapa entre chaves em várias linhas' src/r.py
+  printf 'prompts: { outro: {},\n  wrapper_pattern: "x"\n}\n' > "$proj/sdd/config.yaml"
+  uso_errado 'mapa em várias linhas com chave interna fechada' src/r.py
   slot '[a, b]'
   uso_errado 'lista de fluxo no slot' src/r.py
   slot '*pat'

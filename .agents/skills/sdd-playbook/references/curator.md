@@ -75,11 +75,11 @@ reprovou no seu bloco anterior, não é contaminação: conserte exatamente o qu
      só com um check que existe) ou o descarte (`- [LM-nnn] descartado :: <motivo>`). Linha `inv`.
 3. **Cruzamento com as invariantes.** Se `<worktree>/sdd/invariants.md` existe e o seu bloco propõe
    `TOMBSTONE`, `promovido_para=` ou `mordeu+1`, rode, de dentro do `worktree:`:
-   `printf '%s\n' <as linhas da coluna Delta> | bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md`
+   `bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md <<'FIM_DOS_DELTAS'`, as linhas da coluna Delta, uma por linha, e `FIM_DOS_DELTAS` (com o delimitador entre aspas, o shell não executa nada do texto)
    (só leitura; exit 3 = há aviso). Cada `INV_AFETADA` vira uma linha `inv` logo abaixo do delta que a
    causa, com o que vem depois de `ajuste: ` na coluna Delta (a linha inteira da invariante, ou
    `REMOVER LM-nnn` quando a lição aposentada estava em `## Descartados`) e, na linguagem simples, que os dois
-   andam juntos. Nesse `printf`, nunca passe as linhas de tipo `inv`: elas não são delta. `INV_AFETADA` sem ajuste aceitável ⇒ recomende `DESCARTAR` a aposentadoria.
+   andam juntos. Nessa entrada, nunca passe as linhas de tipo `inv`: elas não são delta. `INV_AFETADA` sem ajuste aceitável ⇒ recomende `DESCARTAR` a aposentadoria.
 4. **Em linguagem simples (toda linha).** Até 2 frases que a pessoa decide sem abrir o playbook: **o que
    aconteceu** nesta feature e **o que muda se aceitar** (em `AUTO`, o que foi contado). Termo técnico
    do produto vale; código do método não: nada de `LM-nnn`, `INV-nnn`, "delta", "ajudou/mordeu",

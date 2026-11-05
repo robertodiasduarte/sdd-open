@@ -105,14 +105,15 @@ for a in alvos:
     h.update(os.path.relpath(a, comum).encode("utf-8", "surrogateescape") + b"\0")
     if os.path.islink(a):
         h.update(b"link:" + os.readlink(a).encode("utf-8", "surrogateescape"))
-    elif os.path.isfile(a):
+    # um hook que é link executa o arquivo de destino: o que vale é o conteúdo dele, não só para onde aponta
+    if os.path.isfile(a):
         try:
             with open(a, "rb") as f:
                 h.update(hashlib.sha256(f.read()).digest())
             h.update(b"x" if os.access(a, os.X_OK) else b"-")
         except OSError:
             h.update(b"ilegivel")
-    else:
+    elif not os.path.islink(a):
         h.update(b"ausente")
 print("#REF\t" + ref)
 print("#INDICE\t" + hashlib.sha256(idx).hexdigest())

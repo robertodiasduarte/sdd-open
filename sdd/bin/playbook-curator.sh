@@ -875,7 +875,8 @@ def aplicar(args):
                     tocado = True
                 if lm in promo:
                     if "promovido_para: " in ln:
-                        ln = ln[:ln.index("promovido_para: ")] + "promovido_para: " + promo[lm]
+                        # a última ocorrência, como o parser lê: o texto da regra pode citar o nome do campo
+                        ln = ln[:ln.rindex("promovido_para: ")] + "promovido_para: " + promo[lm]
                     elif not por_id[lm]["promo_cont"]:  # na continuação, a troca é lá embaixo
                         ln = ln.rstrip() + " · promovido_para: " + promo[lm]
                     tocado = True
@@ -886,7 +887,7 @@ def aplicar(args):
             if pulando and ln.startswith("  ") and ln.strip():
                 continue  # continuação do bullet aposentado
             if ln.startswith("  ") and lm_atual in promo and por_id[lm_atual]["promo_cont"] and "promovido_para: " in ln:
-                ln = ln[:ln.index("promovido_para: ")] + "promovido_para: " + promo[lm_atual]
+                ln = ln[:ln.rindex("promovido_para: ")] + "promovido_para: " + promo[lm_atual]
             pulando = False
             novo.append(ln)
         bloco[1] = novo
@@ -1518,12 +1519,26 @@ def conferir_bloco(args):
         if len(numeros) > 1:
             defeitos.append("o contador %s %s+1 aparece em %d linhas (%s): cada um entra uma vez"
                             % (chave[0], chave[1], len(numeros), ", ".join(numeros)))
+    # O que pode entrar, de qualquer tipo, soma 1 vez: 2 linhas sugestao somariam +2 para 1 achado.
+    entrando = {}
+    for r in rows:
+        m = delta_de(r)
+        if m and r.get("rec_n") in ("AUTO", "ACEITAR"):
+            entrando.setdefault((m.group(1), m.group(2)), []).append(r["n"])
+    for chave, numeros in sorted(entrando.items()):
+        if len(numeros) > 1 and chave not in [k for k, v in contadores.items() if len(v) > 1]:
+            defeitos.append("a contagem %s %s+1 aparece em %d linhas (%s): cada uma entra uma vez"
+                            % (chave[0], chave[1], len(numeros), ", ".join(numeros)))
     for lm, verbo in col["delta"]:
         if (lm, verbo) not in contadores:
             defeitos.append("a colheita tem DELTA %s %s+1 e o bloco não tem a linha contador dele" % (lm, verbo))
 
     def tem(tipo, lm):
         return any(r["tipo"] == tipo and RE_LM.findall(r["lm"]) == [lm] for r in rows)
+
+    def cita(ref, texto):
+        # `arquivo:13` não é citado por `arquivo:131`, nem `x.md` por `ax.md`
+        return re.search(r"(?<![\w.-])" + re.escape(ref) + r"(?![\w])", texto) is not None
 
     for lm in col["sug"]:
         if not tem("sugestao", lm):
@@ -1535,13 +1550,13 @@ def conferir_bloco(args):
             defeitos.append("a colheita tem CANDIDATO #%s → %s e o bloco não tem linha add com esse ID nem refine que cite 'candidato #%s'"
                             % (num, lm, num))
     for ref in col["rej"]:
-        if ref not in finais.get("REJEITADOS:", ""):
+        if not cita(ref, finais.get("REJEITADOS:", "")):
             defeitos.append("a colheita tem REJEITADO em %s e a linha REJEITADOS: não o cita" % ref)
     for lm in col["promo"]:
         if not tem("promover", lm):
             defeitos.append("a colheita tem PROMOVER? %s e o bloco não tem a linha promover dele" % lm)
     for ref in col["ign"] + col["ja"]:
-        if ref not in finais.get("IGNORADOS/JA_COLHIDOS:", ""):
+        if not cita(ref, finais.get("IGNORADOS/JA_COLHIDOS:", "")):
             defeitos.append("a colheita tem IGNORADO/JA_COLHIDO %s e a linha IGNORADOS/JA_COLHIDOS: não o cita" % ref)
     for lm in col["pend"]:
         if not any(r["tipo"] == "inv" and lm in (r["lm"] + " " + r["delta"]) for r in rows):

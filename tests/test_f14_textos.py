@@ -88,6 +88,12 @@ class Passo17b(unittest.TestCase):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, t)
 
+    def test_entrada_do_cruzar_nao_passa_pelo_shell(self):
+        # R5@claude da rodada 2: crase no texto da lição, dentro de aspas duplas, é executada.
+        for texto in (" ".join(PASSO.split()), " ".join(CURATOR_MD.split())):
+            self.assertIn("<<'FIM_DOS_DELTAS'", texto)
+            self.assertNotIn("printf '%s\\n' <", texto)
+
     def test_cruzar_sem_as_linhas_inv_e_licao_antiga(self):
         t = " ".join(PASSO.split())
         self.assertIn("sem as linhas de tipo inv", t)
@@ -194,6 +200,7 @@ class BriefDoCurador(unittest.TestCase):
 
     def test_a_skill_aponta_o_brief_e_as_invariantes(self):
         skill = ler(".agents/skills/sdd-playbook/SKILL.md")
+        self.assertNotIn("com OK humano por delta", skill)
         for trecho in ("references/curator.md", "`sdd/invariants.md`", "--validar-inv", "--cruzar", "--conferir-bloco"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, skill)
@@ -257,7 +264,9 @@ class NovaSessao(unittest.TestCase):
         i = skill.index("4. Na pasta nova: a preparação")
         item = skill[i:skill.index("5. Abra no editor.")]
         self.assertLess(skill.index("git worktree add <pasta das frentes>"), i)
-        for trecho in ("scripts/copiar-docs.sh", "**idêntico**", "`PARECIDO`", "`NAO_COPIADO`", "`NADA A COPIAR`", "Exit 2 ou 64"):
+        self.assertIn("<pasta das skills>/sdd-new-session/scripts/copiar-docs.sh", item)
+        self.assertIn("rodado do checkout principal", item)
+        for trecho in ("scripts/copiar-docs.sh", "**idêntico**", "`PARECIDO`", "`NAO_COPIADO`", "`NADA A COPIAR`", "Qualquer outro exit"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, item)
 

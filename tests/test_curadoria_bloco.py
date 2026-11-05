@@ -225,6 +225,29 @@ class Reprova(Base_):
         rc, out, err = self.confere(BLOCO.replace("REJEITADOS:", linha, 1))
         self.assertEqual(rc, 0, out + err)
 
+    def test_sugestao_repetida_nao_soma_2(self):
+        # R2@codex da rodada 2
+        l3 = next(l for l in BLOCO.split("\n") if "| sugestao |" in l)
+        um = "| 3 | sugestao | LM-020 | LM-020 mordeu+1 | AVAL-AT-002.log:4 | A falha repetiu. | ACEITAR |"
+        dois = "| 8 | sugestao | LM-020 | LM-020 mordeu+1 | AVAL-AT-002.log:4 | A falha repetiu. | ACEITAR |"
+        self.reprova(BLOCO.replace(l3, um + "\n" + dois), "a contagem LM-020 mordeu+1 aparece em 2 linhas")
+        rc, out, err = self.confere(BLOCO.replace(l3, um))
+        self.assertEqual(rc, 0, out + err)
+
+    def test_sugestao_descartada_repetida_nao_conta_como_entrando(self):
+        l3 = next(l for l in BLOCO.split("\n") if "| sugestao |" in l)
+        dois = l3.replace("| 3 |", "| 8 |")
+        self.assertEqual(self.confere(BLOCO.replace(l3, l3 + "\n" + dois))[0], 0)
+
+    def test_referencia_precisa_ser_a_exata(self):
+        # R2@claude da rodada 2: `arquivo:13` não é citado por `arquivo:131`.
+        col = self.colheita.read_text(encoding="utf-8") + "REJEITADO candidato em BUILD_REPORT_FIXTURE.md:2 — x · fp=aaaaaaaaaa\n"
+        c = self.escreve(self.tmp, "c-ref.txt", col)
+        b = self.escreve(self.tmp, "b-ref.txt", BLOCO)
+        rc, _, err = self.cur("--conferir-bloco", c, b, BASE, self.selo, self.comparar)
+        self.assertEqual(rc, 2, err)
+        self.assertIn("a colheita tem REJEITADO em BUILD_REPORT_FIXTURE.md:2 ", err)
+
     def test_verbo_do_delta_combina_com_o_tipo(self):
         # R5 da rodada 1: uma linha add levava uma contagem inventada à pergunta, com a frase de "guardar a lição".
         self.reprova(BLOCO.replace("| 4 | add | LM-023 | ADD Reviews / harness :: sup: `termo_candidato_a` `outro_termo` :: Regra sintética com evidência. **Do instead:** ação sintética. → ficha: — · promovido_para: — |",
