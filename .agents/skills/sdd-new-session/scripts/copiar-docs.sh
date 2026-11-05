@@ -133,15 +133,18 @@ if [ "${copiados}" -gt 0 ]; then
 else
   printf 'RESULTADO: NADA A COPIAR\n'
 fi
-if [ "${nao_copiados}" -gt 0 ]; then
-  printf '→ %d documento(s) desta frente estão em um commit do checkout principal que ainda não foi enviado: envie esse commit e atualize a frente, ou copie à mão para %s/.\n' "${nao_copiados}" "${FRENTE}"
-elif [ "${ignorados}" -gt 0 ]; then
-  printf '→ %d item(ns) com link não foram copiados: confira as linhas IGNORADO e copie à mão o que for desta frente.\n' "${ignorados}"
-elif [ "${parecidos}" -gt 0 ]; then
-  printf '→ se algum PARECIDO for desta frente, copie à mão para %s/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão.\n' "${FRENTE}"
-elif [ "${copiados}" -gt 0 ]; then
-  printf '→ os documentos da feature já estão na frente; os originais continuam no checkout principal.\n'
-else
-  printf '→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.\n'
+# Uma seta só, que junta todos os casos: cadeia de elif esconde a orientação de quem perde a precedência.
+seta=""
+junta() { seta="${seta}${seta:+ }$1"; }
+[ "${nao_copiados}" -eq 0 ] || junta "${nao_copiados} documento(s) desta frente estão em um commit do checkout principal que ainda não foi enviado: envie esse commit e atualize a frente, ou copie à mão para ${FRENTE}/."
+[ "${ignorados}" -eq 0 ] || junta "${ignorados} item(ns) com link não foram copiados: confira as linhas IGNORADO e copie à mão o que for desta frente."
+[ "${parecidos}" -eq 0 ] || junta "Se algum PARECIDO for desta frente, copie à mão para ${FRENTE}/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão."
+if [ -z "${seta}" ]; then
+  if [ "${copiados}" -gt 0 ]; then
+    seta="os documentos da feature já estão na frente; os originais continuam no checkout principal."
+  else
+    seta="nenhum documento com o nome desta frente estava fora do git; siga normalmente."
+  fi
 fi
+printf '→ %s\n' "${seta}"
 exit 0

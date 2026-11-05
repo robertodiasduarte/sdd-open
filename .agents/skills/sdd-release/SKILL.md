@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.7.0"
+  version: "2.7.1"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.7.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -312,7 +312,9 @@ removido.
        registre `Curadoria: FALHOU (curador escreveu no playbook)`; nos outros casos, refaça os itens 1 e 2,
        o selo e o snapshot de antes (o que a pessoa já viu vira linha de base) e só então redespache. 2ª
        reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)`, diga que a curadoria fica para a próxima
-       publicação e encerre: **nada é aplicado**. Nunca separe contagem de regra à mão: quem decide é o
+       publicação e encerre: **nada é aplicado**. Sem subagente, cada tentativa volta numa sessão nova, sem
+       memória da anterior: leia `sdd/reports/briefs/BRIEF_curador_{F}.md`; se ele já tem o campo
+       `conferencia:`, esta é a 2ª tentativa, e nova reprovação encerra aqui, sem redespachar. Nunca separe contagem de regra à mão: quem decide é o
        conferidor.
     5. **Contagem entra, regra pergunta.** Comece `: > "$STG/delta.txt"; : > "$STG/inv-linhas.txt"`. As linhas
        `AUTO <delta>` de `conferido.txt` vão para `"$STG/delta.txt"` sem pergunta. As linhas `PERGUNTA <n> <tipo> <delta>` (lição nova, aposentadoria,

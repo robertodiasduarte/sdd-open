@@ -693,6 +693,55 @@ class Aplicar(Base):
         self.assertEqual(r.returncode, 0)
         self.assertEqual(r.stdout, bruto)
 
+    def test_delta_real_com_byte_invalido_sai_2_sem_imprimir(self):
+        # R2 da rodada 4: o texto de outro bullet era corrompido em silêncio, com exit 0
+        pb = self.tmp / "latin1.md"
+        pb.write_bytes(PLAYBOOK.encode("utf-8") + b"- [LM-007] a\xe7ao\n")
+        d = self.escreve(self.tmp, "d.txt", "LM-001 ajudou+1\n")
+        rc, out, err = self.cur("--aplicar", d, pb)
+        self.assertEqual(rc, 2, out + err)
+        self.assertEqual(out, "")
+        self.assertIn("não são UTF-8", err)
+        self.assertIn("RESULTADO: FALHA", err)
+
+    def test_delta_real_em_utf8_com_acento_segue_sem_trocar_nada(self):
+        # o outro lado: a recusa é pelo byte inválido, não pelo acento
+        pb = self.escreve(self.tmp, "acento.md", PLAYBOOK.replace("regra.", "ação válida."))
+        d = self.escreve(self.tmp, "d.txt", "LM-001 ajudou+1\n")
+        rc, out, err = self.cur("--aplicar", d, pb)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("ação válida.", out)
+        self.assertNotIn("\ufffd", out)
+
+    def test_stdout_em_lf_mesmo_com_padrao_de_crlf(self):
+        # R1 da rodada 4: Python nativo do Windows traduz \\n em CRLF no stdout de texto. O driver dá ao
+        # script um stdout com esse padrão; o controle mostra que o simulador traduz de verdade.
+        import subprocess
+        import sys
+        fonte = CURATOR.read_text(encoding="utf-8")
+        py = fonte.split("<<'PY'\n", 1)[1].rsplit("\nPY\n", 1)[0]
+        nucleo = self.escreve(self.tmp, "nucleo.py", py)
+        pb = self.escreve(self.tmp, "lf.md", PLAYBOOK)
+        d = self.escreve(self.tmp, "d.txt", "LM-001 ajudou+1\n")
+        driver = (
+            "import io, runpy, sys\n"
+            "sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', newline='\\r\\n')\n"
+            "if sys.argv[1] == 'controle':\n"
+            "    print('a')\n"
+            "    sys.stdout.flush()\n"
+            "    sys.exit(0)\n"
+            "sys.argv = sys.argv[1:]\n"
+            "runpy.run_path(sys.argv[0], run_name='__main__')\n")
+        arq = self.escreve(self.tmp, "driver.py", driver)
+        env = dict(self.env, SDD_CURATOR_SELF=str(CURATOR), SDD_CURATOR_BASH=BASH)
+        controle = subprocess.run([sys.executable, "-B", str(arq), "controle"], cwd=str(self.tmp), env=env, capture_output=True)
+        self.assertEqual(controle.stdout, b"a\r\n", "o simulador precisa traduzir, senão o teste não prova nada")
+        r = subprocess.run([sys.executable, "-B", str(arq), str(nucleo), "--aplicar", str(d), str(pb)], cwd=str(self.tmp), env=env,
+                           capture_output=True)
+        self.assertEqual(r.returncode, 0, r.stderr.decode("utf-8", "replace"))
+        self.assertIn(b"ajudou=1", r.stdout)
+        self.assertNotIn(b"\r", r.stdout)
+
     def test_data_impossivel_sai_64(self):
         self.assertEqual(self.aplica("LM-001 ajudou+1\n", "conf=2026-99-99")[0], 64)
         self.assertEqual(self.colhe("--desde", "2026-13-45")[0], 64)
@@ -793,6 +842,35 @@ class Preparar(Sandbox):
         self.assertTrue((self.r / "sdd/features/DESIGN_F_A.md").is_file())
         self.assertIn("RESULTADO: STAGING PRONTO (7 arquivo(s))", out)
         self.assertTrue(str(s).startswith(str(self.temp.resolve())) or str(s).startswith(str(self.temp)))
+
+    def test_pasta_previsivel_aberta_a_outros_e_recusada(self):
+        # R5 da rodada 4: evidência plantada antes do selo. Vale para a pasta da feature e para a de cima.
+        self.povoa()
+        s = self.staging(self.prep("F_A")[1])
+        for pasta in (s, s.parent):
+            with self.subTest(pasta=pasta.name):
+                (s / "AVAL-plantado.log").write_text("❌ LM-004\n", encoding="utf-8")
+                pasta.chmod(0o777)
+                rc, out, err = self.prep("F_A")
+                self.assertEqual(rc, 2, out + err)
+                self.assertIn("não é exclusiva", err)
+                self.assertNotIn("STAGING PRONTO", out)
+                self.assertTrue((s / "AVAL-plantado.log").is_file(), "recusar não pode apagar a prova do que foi plantado")
+                rc2, out2, err2 = self.prep("F_A", "--retomar")
+                self.assertEqual(rc2, 2, out2 + err2)
+                pasta.chmod(0o700)
+
+    def test_pasta_exclusiva_segue_valendo_para_preparar_e_retomar(self):
+        # o outro lado: a pasta que o próprio script criou não é recusada
+        self.povoa()
+        s = self.staging(self.prep("F_A")[1])
+        self.assertEqual(s.stat().st_mode & 0o777, 0o700)
+        self.assertEqual(s.parent.stat().st_mode & 0o777, 0o700)
+        self.assertEqual(self.prep("F_A")[0], 0)
+        (s / "colheita.txt").write_text("x\n", encoding="utf-8")
+        rc, out, _ = self.prep("F_A", "--retomar")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("RETOMADA", out)
 
     def test_o_nome_da_pasta_se_refaz_igual_e_depende_da_raiz(self):
         self.povoa()

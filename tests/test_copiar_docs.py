@@ -188,6 +188,16 @@ class NaoCopia(Base_):
         self.assertIn("COPIADO sdd/features/DEFINE_RELATORIO_MENSAL.md", out)
         self.assertNotIn("NAO_COPIADO", out)
 
+    def test_link_so_no_indice_nao_e_dito_como_salvo(self):
+        # o outro lado do R5: a lista de salvos vem do commit; o índice não é "salvo no git" para a frente
+        fora = self.escreve(self.tmp, "fora.md", "x\n")
+        (self.p / "sdd/features").mkdir(parents=True, exist_ok=True)
+        os.symlink(str(fora), str(self.p / "sdd/features/DEFINE_RELATORIO_MENSAL.md"))
+        self.git(self.p, "add", "sdd/features/DEFINE_RELATORIO_MENSAL.md")
+        _, out, _ = self.copia()
+        self.assertIn("IGNORADO sdd/features/DEFINE_RELATORIO_MENSAL.md", out)
+        self.assertNotIn("NAO_COPIADO", out)
+
     def test_link_ignorado_aparece_na_seta_mesmo_com_copia(self):
         # R6@claude da rodada 3
         self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md")
@@ -197,6 +207,39 @@ class NaoCopia(Base_):
         self.assertIn("COPIADO", out)
         self.assertIn("IGNORADO sdd/features/DESIGN_RELATORIO_MENSAL.md", out)
         self.assertIn("com link não foram copiados", out)
+        self.assertNotIn("já estão na frente", out)
+
+    def test_seta_com_ignorado_e_parecido_diz_os_dois(self):
+        # R3 da rodada 4: a precedência escondia para onde copiar o PARECIDO
+        self.doc("sdd/features/DEFINE_RELATORIO_MENSAL_V2.md")
+        fora = self.escreve(self.tmp, "fora.md", "x\n")
+        (self.p / "sdd/features").mkdir(parents=True, exist_ok=True)
+        os.symlink(str(fora), str(self.p / "sdd/features/DESIGN_RELATORIO_MENSAL.md"))
+        _, out, _ = self.copia()
+        seta = [l for l in out.split("\n") if l.startswith("→ ")]
+        self.assertEqual(len(seta), 1, out)
+        self.assertIn("com link não foram copiados", seta[0])
+        self.assertIn("copie à mão para %s/sdd/features/" % self.f, seta[0])
+
+    def test_seta_com_os_3_casos_junta_os_3(self):
+        self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md")
+        self.commit(self.p)
+        self.doc("sdd/features/DEFINE_RELATORIO_MENSAL_V2.md")
+        fora = self.escreve(self.tmp, "fora.md", "x\n")
+        os.symlink(str(fora), str(self.p / "sdd/features/DESIGN_RELATORIO_MENSAL.md"))
+        _, out, _ = self.copia()
+        seta = [l for l in out.split("\n") if l.startswith("→ ")]
+        self.assertEqual(len(seta), 1, out)
+        for frase in ("ainda não foi enviado", "com link não foram copiados", "Se algum PARECIDO"):
+            self.assertIn(frase, seta[0])
+
+    def test_so_parecido_nao_fala_de_link_nem_de_commit(self):
+        # o outro lado: cada frase só aparece com o caso dela
+        self.doc("sdd/features/DEFINE_RELATORIO_MENSAL_V2.md")
+        _, out, _ = self.copia()
+        self.assertIn("Se algum PARECIDO", out)
+        self.assertNotIn("com link não foram copiados", out)
+        self.assertNotIn("ainda não foi enviado", out)
         self.assertNotIn("já estão na frente", out)
 
     def test_commitado_que_ja_esta_na_frente_nao_e_dito(self):

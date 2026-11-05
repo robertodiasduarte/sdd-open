@@ -85,7 +85,7 @@ import tempfile
 
 for _canal in (sys.stdout, sys.stderr):
     try:
-        _canal.reconfigure(encoding="utf-8", errors="replace")
+        _canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
     except Exception:
         pass
 
@@ -160,6 +160,17 @@ def falha(motivo, seta, codigo=2):
 def ler(caminho):
     with open(caminho, encoding="utf-8", errors="replace") as f:
         return f.read()
+
+
+def exige_utf8(caminho, oque):
+    """Quem reescreve o arquivo não pode trocar um byte inválido por U+FFFD sem avisar: recusa antes de imprimir."""
+    with open(caminho, "rb") as f:
+        bruto = f.read()
+    try:
+        bruto.decode("utf-8")
+    except UnicodeDecodeError as e:
+        falha("%s tem bytes que não são UTF-8 (posição %d): gravar agora corromperia o texto." % (caminho, e.start),
+              "converta %s para UTF-8 e rode de novo; nada foi impresso nem aplicado." % oque)
 
 
 def secoes():
@@ -350,6 +361,17 @@ DERIVADOS = ("colheita.txt", "curadoria.txt", "conferido.txt", "delta.txt", "nov
 REGISTRO = "CURATOR-colhidos.txt"
 
 
+def confere_pasta_exclusiva(pasta):
+    """O nome da pasta é previsível: numa máquina compartilhada, outro usuário pode criá-la antes e plantar evidência."""
+    if not hasattr(os, "getuid"):  # Windows: sem dono nem modo no sentido POSIX
+        return
+    st = os.lstat(pasta)
+    if st.st_uid != os.getuid():
+        raise OSError("%s é de outro usuário" % pasta)
+    if st.st_mode & 0o077:
+        raise OSError("%s não é exclusiva: outros usuários podem escrever ou ler nela (modo %o)" % (pasta, st.st_mode & 0o777))
+
+
 def preparar(args):
     retomar = "--retomar" in args
     args = [a for a in args if a != "--retomar"]
@@ -366,6 +388,7 @@ def preparar(args):
             if os.path.islink(p):
                 raise OSError("%s é um link" % p)
             os.makedirs(p, mode=0o700, exist_ok=True)
+            confere_pasta_exclusiva(p)
         if not retomar:
             # A pasta é a mesma em toda release da feature: o que sobrou da anterior não entra nesta.
             for nome in os.listdir(stg):
@@ -376,7 +399,7 @@ def preparar(args):
                     os.remove(alvo)
     except OSError as e:
         falha("não consegui preparar a pasta de staging %s: %s" % (stg, e),
-              "confira a pasta temporária do sistema e rode de novo; nada foi copiado.")
+              "apague essa pasta, ou aponte TMPDIR para uma pasta só sua, e rode de novo; nada foi copiado.")
     diz("staging: " + stg)
     if retomar:
         tem = os.path.isfile(os.path.join(stg, "colheita.txt"))
@@ -789,6 +812,7 @@ def aplicar(args):
         erro("⚠️ delta vazio: a saída é igual à entrada.")
         fim("NADA A APLICAR", "nenhuma linha de delta fora de comentário; o playbook não muda.", sys.stderr)
         return 0
+    exige_utf8(pb, "o playbook")
 
     aj, mo, promo, refine, tomb, adds = {}, {}, {}, {}, {}, []
     nid = proximo_id(bullets)
@@ -1218,6 +1242,7 @@ def aplicar_inv(args):
             erro("❌ invariantes linha %d: %s" % (n, msg))
         fim("LINHAS INVÁLIDAS", "corrija as linhas acima e rode de novo; nada foi impresso nem aplicado.", sys.stderr)
         return 2
+    exige_utf8(caminho_inv, "o arquivo de invariantes")
     final_com_quebra = texto.endswith("\n")
     brutas = texto.split("\n")
     if final_com_quebra:

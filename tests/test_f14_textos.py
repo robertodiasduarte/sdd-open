@@ -148,6 +148,19 @@ class Passo17b(unittest.TestCase):
                 self.assertIn(trecho, por_que)
 
 
+class LimiteDoRedespacho(unittest.TestCase):
+    """R4 da rodada 4: sem subagente, a 2ª tentativa volta numa sessão sem memória da 1ª."""
+
+    def test_o_brief_com_conferencia_marca_a_2a_tentativa(self):
+        corrido = " ".join(PASSO.split())
+        self.assertIn("se ele já tem o campo `conferencia:`, esta é a 2ª tentativa, e nova reprovação encerra aqui, sem redespachar", corrido)
+
+    def test_a_1a_reprovacao_continua_redespachando(self):
+        # o outro lado: a leitura do brief não pode tirar o redespacho da 1ª reprovação
+        corrido = " ".join(PASSO.split())
+        self.assertIn("Exit 2 ⇒ despache de novo **1 vez**, com os 5 campos mais o campo `conferencia:`", corrido)
+
+
 class BriefDoCurador(unittest.TestCase):
     def test_campos_iguais_no_brief_no_passo_e_no_yaml(self):
         campos = lista_yaml("campos")
@@ -309,7 +322,7 @@ class Pacote(unittest.TestCase):
                 self.assertTrue((RAIZ / "tests" / ("test_%s.py" % nome)).is_file())
 
     def test_versoes_e_linha_de_identificacao(self):
-        for skill, versao in (("sdd-playbook", "2.2.0"), ("sdd-release", "2.7.0"), ("sdd-new-session", "1.4.0"),
+        for skill, versao in (("sdd-playbook", "2.2.0"), ("sdd-release", "2.7.1"), ("sdd-new-session", "1.4.1"),
                               ("sdd-handoff", "2.1.2"), ("sdd-define", "2.5.1")):
             texto = ler(".agents/skills/%s/SKILL.md" % skill)
             with self.subTest(skill=skill):
