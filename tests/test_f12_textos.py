@@ -110,7 +110,10 @@ class Passo11(unittest.TestCase):
         self.assertIn("**refazendo antes** o brief", PASSO_15)
 
     def test_restauracao_do_define_desfaz_link_antes_do_cp(self):
-        self.assertIn('`rm -f sdd/features/DEFINE_<F>.md && cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md`', PASSO_11)
+        # A cópia vem antes do rm (F2 da revisão da fronteira, F14): com a cópia inalcançável, o DEFINE fica.
+        self.assertIn('`cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md.restaurando && rm -f sdd/features/DEFINE_<F>.md && '
+                      'mv sdd/features/DEFINE_<F>.md.restaurando sdd/features/DEFINE_<F>.md && cmp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md`', PASSO_11)
+        self.assertNotIn('rm -f sdd/features/DEFINE_<F>.md && cp "$T/DEFINE.antes"', PASSO_11)
 
     def test_padrao_ausente_refaz_o_snapshot(self):
         self.assertIn("**refaça o\n   snapshot de antes**", PASSO_11)

@@ -15,10 +15,15 @@ aluno" do `SKILL.md` dá o formato; este arquivo dá as palavras e um exemplo in
 - promoção — "trocar uma regra escrita que não bastou por um mecanismo que barra sozinho (uma conferência
   automática, um teste)";
 - tombstone — "a marca de uma regra aposentada, que fica registrada para ninguém reescrevê-la";
-- lint — "a conferência automática do formato do playbook".
+- lint — "a conferência automática do formato do playbook";
+- curadoria — "conferir, no fim de uma publicação, o que esta feature ensinou para as próximas";
+- delta — "uma mudança de uma linha no playbook";
+- aposentar — "tirar uma lição de uso, guardando o motivo" (é o tombstone);
+- invariante — "uma regra que nunca pode ser quebrada, com o teste que a vigia".
 
 Não fale em delta, curator, generator ou reflector sem traduzir: "a alteração proposta", "quem decide o
-que entra", "quem usa o playbook", "quem aponta o que mordeu".
+que entra", "quem usa o playbook", "quem aponta o que mordeu". "0 deltas" para o aluno é "esta feature
+não trouxe lição nova nem contagem".
 
 ## Status desta skill, preenchido
 

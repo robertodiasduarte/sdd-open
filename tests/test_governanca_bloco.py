@@ -37,8 +37,8 @@ class Bloco(Sandbox):
     def setUp(self):
         super().setUp()
         self.saida = self.escreve(self.tmp, "sdd/reviews/GOVERNANCA_REVIEW_X.md", RELATORIO)
-        self.mudou = self.escreve(self.tmp, "comparar-mudou.txt", "MUDOU: " + str(self.saida) + "\nRESULTADO: x\n")
-        self.nada = self.escreve(self.tmp, "comparar-nada.txt", "RESULTADO: x\n")
+        self.mudou = self.escreve(self.tmp, "comparar-mudou.txt", "MUDOU: " + str(self.saida) + "\nRESULTADO: SÓ O PERMITIDO MUDOU\n")
+        self.nada = self.escreve(self.tmp, "comparar-nada.txt", "RESULTADO: SÓ O PERMITIDO MUDOU\n")
 
     def bloco(self, resposta: str, *extra: str) -> tuple[int, str]:
         r = self.escreve(self.tmp, "resp.txt", resposta.replace("SAIDA", str(self.saida)))
@@ -91,6 +91,27 @@ class Bloco(Sandbox):
         rc, out = self.bloco("<<<GOVERNANCA\nresultado: NA\nmotivo: x\nrelatorio: —\n>>>", "--comparar", str(self.mudou))
         self.assertEqual(rc, 2, out)
         self.assertIn("gravou o relatório", out)
+
+    def test_fronteira_vermelha_ou_nao_verificada_invalida_qualquer_bloco(self):
+        # F1 da revisão da fronteira (F14): o ✅ do bloco escondia o FORA: do comando anterior.
+        na = "<<<GOVERNANCA\nresultado: NA\nmotivo: x\nrelatorio: —\n>>>"
+        casos = {"FORA": ("FORA: /x/DEFINE.md\nRESULTADO: ESCRITA FORA DO PERMITIDO\n", "escrita fora do permitido"),
+                 "vazio (saiu 64)": ("", "fronteira não verificada"),
+                 "sem veredito": ("RESULTADO: x\n", "fronteira não verificada")}
+        for nome, (texto, trecho) in casos.items():
+            with self.subTest(caso=nome):
+                c = self.escreve(self.tmp, "c.txt", texto)
+                rc, out = self.bloco(na, "--comparar", str(c))
+                self.assertEqual(rc, 2, out)
+                self.assertIn(trecho, out)
+                rc, out = self.bloco(revisado(), "--comparar", str(c))
+                self.assertEqual(rc, 2, out)
+
+    def test_fronteira_verde_continua_valendo(self):
+        rc, out = self.bloco("<<<GOVERNANCA\nresultado: NA\nmotivo: x\nrelatorio: —\n>>>", "--comparar", str(self.nada))
+        self.assertEqual(rc, 0, out)
+        rc, out = self.bloco(revisado(), "--comparar", str(self.mudou))
+        self.assertEqual(rc, 0, out)
 
     def test_vale_o_ultimo_bloco(self):
         rc, out = self.bloco("<<<GOVERNANCA\nresultado: OK\n>>>\nrevi de novo\n" + revisado(), "--comparar", str(self.mudou))

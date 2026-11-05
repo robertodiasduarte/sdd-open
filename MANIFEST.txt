@@ -84,8 +84,10 @@
 .agents/skills/sdd-loop-builder/references/loop-spec-rules.md
 .agents/skills/sdd-new-session/SKILL.md
 .agents/skills/sdd-new-session/references/como-falar.md
+.agents/skills/sdd-new-session/scripts/copiar-docs.sh
 .agents/skills/sdd-playbook/SKILL.md
 .agents/skills/sdd-playbook/references/como-falar.md
+.agents/skills/sdd-playbook/references/curator.md
 .agents/skills/sdd-prompt-builder/SKILL.md
 .agents/skills/sdd-prompt-builder/references/como-falar.md
 .agents/skills/sdd-prompt-builder/references/output-template.md
@@ -123,6 +125,7 @@ docs/comparison.md
 docs/context-and-governance.md
 docs/hooks.md
 docs/llm-in-code.md
+docs/playbook-curation.md
 docs/pt-BR/adaptation-guide.md
 docs/pt-BR/adversarial-review.md
 docs/pt-BR/chained-flow.md
@@ -131,6 +134,7 @@ docs/pt-BR/context-and-governance.md
 docs/pt-BR/guia-do-aluno.md
 docs/pt-BR/hooks.md
 docs/pt-BR/llm-in-code.md
+docs/pt-BR/playbook-curation.md
 docs/pt-BR/quickstart.md
 docs/pt-BR/roadmap.md
 docs/pt-BR/verify-gate-contract.md
@@ -161,6 +165,7 @@ sdd/bin/governanca-fronteira.sh
 sdd/bin/handoff-lint.py
 sdd/bin/kb-dominios.py
 sdd/bin/patterns-lint.sh
+sdd/bin/playbook-curator.sh
 sdd/bin/playbook-lint.sh
 sdd/bin/prompt-drift-scan.sh
 sdd/bin/report-lint.py
@@ -274,6 +279,7 @@ sdd/fixtures/fluxo/review-r2-indisponivel/reviewer.verdicts.jsonl
 sdd/fixtures/fluxo/review-rasa/META.txt
 sdd/fixtures/fluxo/review-rasa/auditor.verdicts.jsonl
 sdd/fixtures/fluxo/review-rasa/reviewer.verdicts.jsonl
+sdd/fixtures/handoff/HANDOFF_COMPLETO.md
 sdd/fixtures/handoff/HANDOFF_VALIDO.md
 sdd/fixtures/hooks/config-placeholder.json
 sdd/fixtures/hooks/payload-agent-veredito.json
@@ -291,6 +297,17 @@ sdd/fixtures/patterns/secao-fora-de-ordem.md
 sdd/fixtures/patterns/sem-secao.md
 sdd/fixtures/patterns/valido-completo.md
 sdd/fixtures/patterns/valido-vencido.md
+sdd/fixtures/playbook/curadoria/AVAL-AT-002.log
+sdd/fixtures/playbook/curadoria/BUILD_REPORT_FIXTURE.md
+sdd/fixtures/playbook/curadoria/DESIGN_FIXTURE.md
+sdd/fixtures/playbook/curadoria/bloco-ok.txt
+sdd/fixtures/playbook/curadoria/delta-lm020.txt
+sdd/fixtures/playbook/curadoria/invariants-inv.md
+sdd/fixtures/playbook/curadoria/playbook-base.md
+sdd/fixtures/playbook/curadoria/playbook-inv.md
+sdd/fixtures/playbook/curadoria/playbook-mordeu2.md
+sdd/fixtures/playbook/curadoria/replay/BUILD_REPORT_REPLAY.md
+sdd/fixtures/playbook/curadoria/replay/playbook-replay.md
 sdd/fixtures/playbook/playbook-colapso.md
 sdd/fixtures/playbook/playbook-delta-ok.md
 sdd/fixtures/playbook/playbook-invalido.md
@@ -329,6 +346,7 @@ sdd/fixtures/revisao/saidas/gemini.json
 sdd/fixtures/revisao/saidas/openrouter.json
 sdd/hooks/pre-commit
 sdd/hooks/pre-push
+sdd/invariants.md
 sdd/patterns/README.md
 sdd/playbook.md
 sdd/review/precos.tsv
@@ -366,6 +384,7 @@ sdd/templates/fragments/WORKER_BRIEF.md
 tests/apoio.py
 tests/test_agnostico.py
 tests/test_alarme.py
+tests/test_apoio_ambiente.py
 tests/test_avaliador_guard.py
 tests/test_bash32.py
 tests/test_checar.py
@@ -375,7 +394,9 @@ tests/test_contexto_lint.py
 tests/test_contraste.py
 tests/test_contrato_build_release.py
 tests/test_conversa.py
+tests/test_copiar_docs.py
 tests/test_correcoes_w0.py
+tests/test_curadoria_bloco.py
 tests/test_decisoes_lint.py
 tests/test_deploy_espera_testes.py
 tests/test_design_lint.py
@@ -384,6 +405,7 @@ tests/test_docs_extract_decisions.py
 tests/test_eval_agree.py
 tests/test_f12_textos.py
 tests/test_f13_textos.py
+tests/test_f14_textos.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py
@@ -397,6 +419,8 @@ tests/test_kb_dominios.py
 tests/test_matriz_new_session.py
 tests/test_next_version.py
 tests/test_patterns_lint.py
+tests/test_playbook_curator.py
+tests/test_playbook_invariantes.py
 tests/test_playbook_lint.py
 tests/test_prompt_drift_scan.py
 tests/test_publish_gate_patterns.py

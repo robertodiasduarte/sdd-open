@@ -36,7 +36,11 @@ CAMPOS_PROMPT = ("Autônomo?", "Verification interna", "Eval mínimo pré-ship")
 BLOCO_PROMPT = re.compile(r"^#### Prompt \d+\s*:")
 FRASE_PROMPTS = "a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam:"
 # Variações do título contam ("(v1)", ": 1", negrito); outra seção que só começa igual ("LLM Prompt Injection") não.
-TITULO_PROMPTS = re.compile(r"^##\s+(\d+\.\s*)?\*{0,2}LLM\s+prompts?\*{0,2}(\s*$|\s*[(:]|\s+[—–-])", re.I)
+TITULO_PROMPTS = re.compile(r"^##\s+(\d+(?:\.\d+)*\.?\s*)?\*{0,2}LLM\s+prompts?\*{0,2}(\s*$|\s*[(:]|\s+[—–-])", re.I)
+# Começa como a seção (no plural) e traz palavras a mais ("LLM Prompts v2", "LLM prompts de produção"): antes o
+# lint pulava a conferência em silêncio. O título sozinho não decide: "LLM Prompts Review" é outro assunto. Só
+# reprova quando o corpo tem cara de inventário (ver parece_inventario).
+TITULO_PROMPTS_QUASE = re.compile(r"^##\s+(\d+(?:\.\d+)*\.?\s*)?\*{0,2}LLM\s+prompts\b", re.I)
 CHAVE = re.compile(r"\{[^{}\n]*\}")
 VAZIO_OU_TRACO = re.compile(r"^[\s`*–—-]*$")
 CAMPOS_LOOP = ("Intenção", "Perfil de risco dos efeitos", "Ground truth disponível")
@@ -79,10 +83,25 @@ def celulas(ln: str) -> list:
     return [c.strip() for c in re.split(r"(?<!\\)\|", ln.strip().strip("|"))]
 
 
+def parece_inventario(linhas: list, inicio: int) -> bool:
+    """A seção que começa em `inicio` tem o subtítulo, um bloco de contrato ou a coluna do inventário?"""
+    fim = next((j for j in range(inicio + 1, len(linhas)) if linhas[j].startswith("## ")), len(linhas))
+    for ln in linhas[inicio + 1:fim]:
+        if ln.startswith("### Inventário") or BLOCO_PROMPT.match(ln):
+            return True
+        if ln.lstrip().startswith("|") and any(c in celulas(ln) for c in ("Completeness", "Refator de?")):
+            return True
+    return False
+
+
 def lint_prompts(linhas: list) -> list:
     """Faltas do inventário de prompts: [] com a seção certa ou sem a seção."""
     inicio = next((i for i, ln in enumerate(linhas) if TITULO_PROMPTS.match(ln)), None)
     if inicio is None:
+        for i, ln in enumerate(linhas):
+            if TITULO_PROMPTS_QUASE.match(ln) and parece_inventario(linhas, i):
+                return [FRASE_PROMPTS, "  o título '%s' tem palavras a mais e a seção traz um inventário de prompts: "
+                        "use só '## LLM Prompts' para ela ser conferida" % ln.strip()]
         return []
     fim_secao = next((j for j in range(inicio + 1, len(linhas)) if linhas[j].startswith("## ")), len(linhas))
     corpo = linhas[inicio + 1:fim_secao]
@@ -133,6 +152,14 @@ def lint_prompts(linhas: list) -> list:
                 faltas.append("%s com %s sem preencher" % (titulo, campo))
             elif not achado or len(achado[0]) < 2 or VAZIO_OU_TRACO.match(achado[0][1]):
                 faltas.append("%s sem o campo %s" % (titulo, campo))
+        # Qualquer outra linha do contrato com chaves no valor (também entre crases) é molde sem preencher.
+        for ln in trecho:
+            if not ln.lstrip().startswith("|"):
+                continue
+            cels = celulas(ln)
+            nome = cels[0].strip("*") if cels else ""
+            if len(cels) >= 2 and nome not in campos and nome and CHAVE.search(cels[1]):
+                faltas.append("%s com %s sem preencher" % (titulo, nome))
     if tabela and n_linhas and len(blocos) != n_linhas:
         faltas.append("são %d linha(s) no inventário e %d bloco(s) de contrato" % (n_linhas, len(blocos)))
     return [FRASE_PROMPTS] + ["  " + f for f in faltas] if faltas else []

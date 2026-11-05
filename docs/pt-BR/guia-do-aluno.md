@@ -404,6 +404,7 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **Como pedir** | *"use a skill sdd-release para publicar esta frente"* |
 | **O que produz** | A versão integrada em produção e conferida, o registro em `sdd/releases/` e a ficha da feature atualizada. |
 | **O que vai perguntar** | Uma pergunta só, no fim de um bloco que diz o que sobe (em palavras), o que muda em produção, se o envio publica sozinho e se a publicação espera os testes — **sim** publica, **não** encerra sem publicar (a versão preparada fica só no seu computador). |
+| **Depois de publicar** | Ela confere o que a frente ensinou ao projeto (a **curadoria** do caderno de armadilhas): o que é só contagem entra sozinho e aparece num recibo; o que muda uma regra (lição nova, aposentar, virar trava automática) vira pergunta, um item por vez; e enviar essa mudança é outra pergunta. Nada disso desfaz a publicação. Detalhes em [Curadoria do playbook e invariantes](playbook-curation.md). |
 
 ### Bloco 4 — Transversais (quando o caso pedir)
 

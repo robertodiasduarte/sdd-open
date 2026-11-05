@@ -6,7 +6,8 @@ Uso:
     python3 sdd/bin/governanca-bloco.py <resposta.txt> --saida <caminho do relatório> [--comparar <saída.txt>]
       <resposta.txt>   a resposta do revisor (o último bloco <<<GOVERNANCA … >>> é o que vale)
       --saida          o `saida:` mandado ao revisor (caminho do relatório)
-      --comparar       a saída de `governanca-fronteira.sh --comparar` (linhas MUDOU:/FORA:)
+      --comparar       a saída de `governanca-fronteira.sh --comparar` (linhas MUDOU:/FORA:); com ela, o bloco
+                       só é válido se não houver FORA: e houver a linha RESULTADO: SÓ O PERMITIDO MUDOU
 
 Confere: o par <<<GOVERNANCA / >>>; `resultado:` em NA | REVISADO | PADRAO_AUSENTE | FALHA; `motivo:` não vazio;
 `relatorio:` igual ao --saida quando REVISADO e `—` nos outros; cada `lacuna:` com os 3 campos fixos
@@ -135,6 +136,16 @@ def main(argv: list) -> int:
             erros.append(res + " com relatorio: preenchido ('" + rel + "'); esperado —")
         if trios:
             erros.append(res + " com linhas lacuna:")
+    if comparar is not None:
+        # A fronteira decide antes do bloco: com FORA: ou sem o veredito verde (arquivo vazio = o --comparar saiu
+        # 64), nenhum bloco é válido, por mais bem formado que esteja.
+        linhas_cmp = [l.strip() for l in ler(comparar).splitlines()]
+        for l in linhas_cmp:
+            if l.startswith("FORA:"):
+                erros.append("a fronteira acusou escrita fora do permitido — " + l)
+        if "RESULTADO: SÓ O PERMITIDO MUDOU" not in linhas_cmp:
+            erros.append("a saída do --comparar não tem 'RESULTADO: SÓ O PERMITIDO MUDOU': fronteira não verificada "
+                         "nunca vale como 'nada mudou'")
     if comparar is not None and res in RESULTADOS:
         mudou = [l[len("MUDOU: "):].strip() for l in ler(comparar).splitlines() if l.startswith("MUDOU: ")]
         gravou = any(mesmo(m, saida) for m in mudou)

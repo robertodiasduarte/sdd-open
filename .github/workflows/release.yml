@@ -36,6 +36,7 @@ on:
       - 'sdd/patterns/**'
       - 'sdd/WORKFLOW_CONTRACTS.yaml'
       - 'sdd/playbook.md'
+      - 'sdd/invariants.md'
       - 'sdd/config.example.yaml'
       - 'AGENTS.md.tmpl'
     tags: ['v[0-9]+.[0-9]+.[0-9]+']

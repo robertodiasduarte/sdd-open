@@ -224,3 +224,111 @@ class Sabotagem(Base):
         self.snap("depois")
         rc, out = self.comparar()
         self.assertEqual(rc, 1, out)  # o real vê
+
+
+class EstadoDoGit(Base):
+    """F3, F4 e F8 da revisão da fronteira (F14): o que o `git status` não mostra."""
+
+    def despacho(self, acao) -> tuple[int, str]:
+        self.escreve(self.w, "sujo.txt", "sujo\n")
+        self.snap("antes")
+        acao()
+        self.snap("depois")
+        return self.comparar()
+
+    def test_marca_que_esconde_arquivo_editado(self):
+        for flag in ("--assume-unchanged", "--skip-worktree"):
+            with self.subTest(flag=flag):
+                def acao():
+                    self.escreve(self.w, "a.txt", "adulterado\n")
+                    self.git(self.w, "update-index", flag, "a.txt")
+                rc, out = self.despacho(acao)
+                self.assertEqual(rc, 1, out)
+                self.assertIn("FORA: o índice do git mudou", out)
+                self.git(self.w, "update-index", flag.replace("--", "--no-").replace("no-assume-unchanged", "no-assume-unchanged"), "a.txt")
+                self.git(self.w, "checkout", "--", "a.txt")
+
+    def test_git_add_conta(self):
+        rc, out = self.despacho(lambda: self.git(self.w, "add", "-A"))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("FORA: o índice do git mudou", out)
+
+    def test_troca_de_branch_e_head_solto(self):
+        rc, out = self.despacho(lambda: self.git(self.w, "checkout", "-q", "-b", "agente"))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("FORA: a branch mudou", out)
+        self.assertIn("refs/heads/agente", out)
+        rc, out = self.despacho(lambda: self.git(self.w, "checkout", "-q", "--detach"))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("DETACHED", out)
+
+    def test_hook_exclude_e_config_contam(self):
+        def hook():
+            h = self.w / ".git/hooks/pre-commit"
+            h.write_text("#!/bin/sh\n", encoding="utf-8")
+        def exclude():
+            with open(str(self.w / ".git/info/exclude"), "a", encoding="utf-8") as f:
+                f.write("payload.txt\n")
+            self.escreve(self.w, "payload.txt", "p\n")
+        def config():
+            self.git(self.w, "config", "core.hooksPath", "outra")
+        for nome, acao in (("hook", hook), ("exclude", exclude), ("config", config)):
+            with self.subTest(caso=nome):
+                rc, out = self.despacho(acao)
+                self.assertEqual(rc, 1, out)
+                self.assertIn("FORA: a configuração, o exclude ou os hooks de .git mudaram", out)
+
+    def test_leitura_pelo_git_nao_e_escrita(self):
+        def leitura():
+            self.git(self.w, "status")
+            self.git(self.w, "diff")
+            self.git(self.w, "log", "-1")
+            self.roda([BASH, RAIZ / "sdd/bin/playbook-lint.sh", "--stats", RAIZ / "sdd/playbook.md"], self.w)
+        rc, out = self.despacho(leitura)
+        self.assertEqual(rc, 0, out)
+
+    def test_arquivo_gravado_nao_mexe_no_indice(self):
+        def relatorio():
+            self.escreve(self.w, "sdd/reviews/REL.md", "r\n")
+        rc, out = self.despacho(relatorio)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("MUDOU: ", out)
+
+    def test_snapshot_de_versao_antiga_sai_64(self):
+        self.snap("antes")
+        self.snap("depois")
+        velho = "".join(l for l in (self.s / "antes").read_text(encoding="utf-8").splitlines(True) if not l.startswith("#INDICE"))
+        (self.s / "antes").write_text(velho, encoding="utf-8")
+        rc, out = self.comparar()
+        self.assertEqual(rc, 64, out)
+        self.assertIn("sem a linha #INDICE", out)
+
+    def test_pasta_sem_permissao_nao_e_verde(self):
+        p = self.w / "oculto"
+        p.mkdir()
+        self.escreve(self.w, "oculto/p.txt", "x\n")
+        os.chmod(str(p), 0)
+        self.addCleanup(os.chmod, str(p), 0o755)
+        if os.access(str(p), os.R_OK):
+            self.skipTest("o usuário lê pasta 000 (root)")
+        rc, out = self.fr("--snapshot", str(self.w), str(self.s / "x"), self.rel)
+        self.assertEqual(rc, 64, out)
+        self.assertIn("não conseguiu abrir", out)
+        self.assertFalse((self.s / "x").exists())
+
+    def test_raiz_com_e_comercial_lista_o_caminho_certo(self):
+        for nome in ("P&D fiscal", "a|b"):
+            with self.subTest(raiz=nome):
+                w = self.tmp / nome
+                w.mkdir()
+                self.git(w, "init", "-q")
+                self.escreve(w, "a.txt", "a\n")
+                self.commit(w)
+                ra = self.roda([BASH, self.script, "--snapshot", str(w), str(self.s / "a")], w)
+                self.assertEqual(ra[0], 0, ra[1] + ra[2])
+                self.escreve(w, "a.txt", "b\n")
+                self.commit(w, "agente")
+                self.roda([BASH, self.script, "--snapshot", str(w), str(self.s / "b")], w)
+                rc, out, err = self.roda([BASH, self.script, "--comparar", str(self.s / "a"), str(self.s / "b"), str(w / "x")], w)
+                self.assertEqual(rc, 1, out + err)
+                self.assertIn("FORA: " + str(w.resolve()) + "/a.txt", out)

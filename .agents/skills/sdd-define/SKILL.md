@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.5.0"
+  version: "2.5.1"
   updated: "2026-11"
   fase: "1"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-define — Fase 1
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-define v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-define v2.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
 depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
@@ -254,6 +254,9 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
    temporária, fora do projeto e gravável mesmo em agente com sandbox; o nome vem da raiz do projeto, então uma
    sessão nova que retoma depois da parada (exit 40) o refaz igual e acha o snapshot e a cópia do DEFINE. Se a
    pasta temporária tiver sido limpa, o `--comparar` sai 64 e isso conta como falha: refaça e redespache;
+   **Sessão que retoma depois da parada** (o `"$T/antes"` já existe e a volta do revisor ainda não foi
+   conferida): recalcule só o `T` e vá para o item 4; refazer a cópia e o snapshot de antes agora tomaria por
+   linha de base o que o revisor já escreveu.
    `cp sdd/features/DEFINE_<F>.md "$T/DEFINE.antes"` (o snapshot só guarda o sha: é esta cópia que
    permite restaurar o DEFINE se o revisor o mexer);
    `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reviews/GOVERNANCA_REVIEW_<F>.md`
@@ -276,7 +279,10 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
    lista, `lacuna:` sem os 3 campos ou sem `muda:`/`porque:`, `relatorio:` diferente do `saida:`, Gnn do
    bloco diferente dos títulos `### Gnn — ` de `## Lacunas`, `REVISADO` sem `MUDOU: <saida>`, ou outro
    resultado com o relatório gravado). Tratamento, **nada destrutivo**: DEFINE em `FORA:` ⇒
-   `rm -f sdd/features/DEFINE_<F>.md && cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md` e confira com `cmp` (o
+   `cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md.restaurando && rm -f sdd/features/DEFINE_<F>.md && mv sdd/features/DEFINE_<F>.md.restaurando sdd/features/DEFINE_<F>.md && cmp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md`,
+   recalculando o `T` pela fórmula do item 2 na mesma chamada (variável de shell não passa de uma chamada para
+   a outra; com o `T` vazio, a cópia falha primeiro e o DEFINE fica onde está). A cópia vem **antes** do `rm`: se
+   ela não for alcançada, nada é apagado; o `cmp` no fim confere o resultado. DEFINE trocado por uma pasta ⇒ não apague: mostre à pessoa. (o
    `rm` antes desfaz um link que o agente tenha posto no lugar do DEFINE: um `cp` sobre o link escreveria no
    arquivo para onde ele aponta); outros `FORA:` ⇒ liste, não
    apague; o `saida:` que estava `AUSENTE` no antes ⇒ remova.

@@ -15,6 +15,11 @@
 # O snapshot também guarda o HEAD (linha `#HEAD`): um agente que edita um arquivo limpo e COMMITA deixa a
 # árvore limpa de novo, e só o HEAD que andou denuncia — cada arquivo do commit sai como FORA.
 #
+# Além dos arquivos, o snapshot guarda 3 estados do git que não aparecem no `git status` (linhas `#REF`,
+# `#INDICE`, `#GIT`): a branch, o índice (um `git add`, ou a marca que esconde um arquivo editado:
+# --assume-unchanged e --skip-worktree) e a configuração local, o `info/exclude` e os hooks de `.git`.
+# Qualquer um que mude durante o despacho sai como FORA.
+#
 # Exit: 0 só caminhos permitidos mudaram · 1 há FORA · 64 uso, snapshot ausente/ilegível ou enumeração que
 # falhou (fronteira não verificada nunca vale como "nada mudou").
 # Limites declarados: arquivo ignorado FORA de sdd/ (ex.: __pycache__/) não entra no snapshot; escrita FORA do
@@ -33,7 +38,13 @@ uso() {
 # $1 raiz · $2 "todos"|"ignorados" · $3 pathspec · $4 arquivo onde acrescentar. rc do git e do python checados.
 paths() {
   local raw; raw="$(mktemp)"
-  git -C "$1" status --porcelain -z --untracked-files=all ${2:+--ignored=traditional} -- ${3:-.} > "${raw}" || { rm -f "${raw}"; return 1; }
+  git -C "$1" status --porcelain -z --untracked-files=all ${2:+--ignored=traditional} -- ${3:-.} > "${raw}" 2> "${raw}.err" || { rm -f "${raw}" "${raw}.err"; return 1; }
+  # pasta sem permissão: o git avisa no stderr e sai 0, com a pasta fora da lista: enumeração parcial não é enumeração
+  if grep -q 'could not open directory' "${raw}.err"; then
+    cat "${raw}.err" >&2; echo "há pasta que o git não conseguiu abrir: a fronteira não mede" >&2
+    rm -f "${raw}" "${raw}.err"; return 1
+  fi
+  rm -f "${raw}.err"
   python3 -c '
 import sys
 so_ign = sys.argv[1] == "ignorados"
@@ -65,6 +76,48 @@ while i < len(r):
 # para /private/var; sem isso o permitido não casa com a raiz canonizada e vira FORA ou "fora do worktree")
 canon() { # realpath: resolve link de pasta E de arquivo; o trecho que ainda não existe fica como está
   python3 -c 'import os, sys; sys.stdout.write(os.path.realpath(sys.argv[1]))' "$1"
+}
+# 3 linhas com o estado do git que o `git status` não mostra: branch, índice e o que mora em .git
+estado_git() { # $1 raiz
+  python3 -c '
+import hashlib, os, subprocess, sys
+wt = sys.argv[1]
+def git(*a):
+    r = subprocess.run(["git", "-C", wt] + list(a), capture_output=True)
+    return r.returncode, r.stdout
+rc, ref = git("symbolic-ref", "-q", "HEAD")
+ref = ref.decode("utf-8", "replace").strip() if rc == 0 and ref.strip() else "DETACHED"
+rc, idx = git("ls-files", "-s", "-v", "-z")
+rc1, comum = git("rev-parse", "--git-common-dir")
+rc2, gd = git("rev-parse", "--git-dir")
+if rc != 0 or rc1 != 0 or rc2 != 0:
+    sys.exit(1)
+def absoluto(p):
+    p = p.decode("utf-8", "surrogateescape").strip()
+    return p if os.path.isabs(p) else os.path.join(wt, p)
+comum, gd = absoluto(comum), absoluto(gd)
+alvos = [os.path.join(comum, "config"), os.path.join(comum, "info", "exclude"), os.path.join(gd, "config.worktree")]
+hooks = os.path.join(comum, "hooks")
+if os.path.isdir(hooks):
+    alvos += [os.path.join(hooks, n) for n in sorted(os.listdir(hooks))]
+h = hashlib.sha256()
+for a in alvos:
+    h.update(os.path.relpath(a, comum).encode("utf-8", "surrogateescape") + b"\0")
+    if os.path.islink(a):
+        h.update(b"link:" + os.readlink(a).encode("utf-8", "surrogateescape"))
+    elif os.path.isfile(a):
+        try:
+            with open(a, "rb") as f:
+                h.update(hashlib.sha256(f.read()).digest())
+            h.update(b"x" if os.access(a, os.X_OK) else b"-")
+        except OSError:
+            h.update(b"ilegivel")
+    else:
+        h.update(b"ausente")
+print("#REF\t" + ref)
+print("#INDICE\t" + hashlib.sha256(idx).hexdigest())
+print("#GIT\t" + h.hexdigest())
+' "$1"
 }
 todos_paths() { # $1 raiz · $2 arquivo de saída
   : > "$2"
@@ -130,7 +183,8 @@ for p in sys.stdin.read().split("\n"):
 sys.stdout.write("".join(l + "\n" for l in sorted(set(saida))))
 ' "${WT}" > "${parcial}" || { echo "não consegui gravar o snapshot" >&2; uso; }
     head_sha="$(git -C "${WT}" rev-parse -q --verify HEAD 2>/dev/null || echo AUSENTE)"
-    { printf '#HEAD\t%s\t%s\n' "${head_sha}" "${WT}"; printf '%s' "${PERM}"; } >> "${parcial}" && mv "${parcial}" "${OUT}" || { echo "não consegui gravar o snapshot" >&2; uso; }
+    eg="$(estado_git "${WT}")" || { echo "não consegui ler o estado do git (branch, índice, .git): snapshot não gravado" >&2; uso; }
+    { printf '#HEAD\t%s\t%s\n' "${head_sha}" "${WT}"; printf '%s\n' "${eg}"; printf '%s' "${PERM}"; } >> "${parcial}" && mv "${parcial}" "${OUT}" || { echo "não consegui gravar o snapshot" >&2; uso; }
     printf 'RESULTADO: SNAPSHOT GRAVADO\n→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.\n'
     ;;
   --comparar)
@@ -156,9 +210,24 @@ sys.stdout.write("".join(l + "\n" for l in sorted(set(saida))))
       wt="$(printf '%s' "${hd}" | cut -f3)"; sa="$(printf '%s' "${ha}" | cut -f2)"; sd="$(printf '%s' "${hd}" | cut -f2)"
       echo "FORA: HEAD mudou durante o despacho (${sa} → ${sd}): o agente commitou"; fora=1
       if [ "${sa}" != AUSENTE ] && [ "${sd}" != AUSENTE ]; then
-        git -C "${wt}" diff --name-only -z "${sa}" "${sd}" 2>/dev/null | tr '\0' '\n' | sed "s|^|${wt}/|" >> "${tmp}/mudou.0"
+        # sem sed: a raiz entra como texto, e um & ou uma barra vertical no nome da pasta quebraria a troca
+        git -C "${wt}" diff --name-only -z "${sa}" "${sd}" 2>/dev/null | tr '\0' '\n' \
+          | while IFS= read -r f; do [ -n "${f}" ] && printf '%s/%s\n' "${wt}" "${f}"; done >> "${tmp}/mudou.0"
       fi
     fi
+    # estado do git que o status não mostra: mudou durante o despacho ⇒ FORA
+    for chave in REF INDICE GIT; do
+      va="$(grep "^#${chave}	" "${A}" | head -1 | cut -f2-)"; vd="$(grep "^#${chave}	" "${D}" | head -1 | cut -f2-)"
+      [ -n "${va}" ] && [ -n "${vd}" ] || { echo "snapshot sem a linha #${chave} (gravado por outra versão?): refaça os dois" >&2; uso; }
+      if [ "${va}" != "${vd}" ]; then
+        case "${chave}" in
+          REF)    echo "FORA: a branch mudou durante o despacho (${va} → ${vd})" ;;
+          INDICE) echo "FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcado para o git não olhar)" ;;
+          GIT)    echo "FORA: a configuração, o exclude ou os hooks de .git mudaram durante o despacho" ;;
+        esac
+        fora=1
+      fi
+    done
     sort -u "${tmp}/mudou.0" > "${tmp}/mudou"
     while IFS= read -r p; do
       [ -z "${p}" ] && continue

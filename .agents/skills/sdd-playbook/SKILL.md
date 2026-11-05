@@ -2,19 +2,19 @@
 name: sdd-playbook
 description: >-
   Playbook de landmines do projeto em sdd/playbook.md, formato ACE-lite — bullets com ID estável (LM-nnn), contadores ajudou/mordeu, superfícies greppáveis e atualização só por delta. Ativa em toda sessão: lê apenas a seção "## Sempre" no início; o resto entra por superfície via sdd/bin/playbook-lint.sh --grep. Nunca reescreve, comprime ou apaga bullets — uma sessão só PROPÕE candidatos; quem aplica é a fase Release, com OK humano por delta. Use quando alguém disser "isso já mordeu antes?", "registra essa armadilha", /sdd-playbook, ou ao tocar qualquer superfície durante Design e Build.
-compatibility: Requer bash >= 3.2 e git >= 2.20 (sdd/bin/playbook-lint.sh).
+compatibility: Requer bash >= 3.2 e git >= 2.20 (sdd/bin/playbook-lint.sh); a curadoria (sdd/bin/playbook-curator.sh) também pede python3 >= 3.9.
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.1"
-  updated: "2026-10"
+  version: "2.2.0"
+  updated: "2026-11"
   fase: "transversal"
 ---
 
 # sdd-playbook — landmines com ID, contadores e delta updates
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-playbook v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-playbook v2.2.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Fonte: ACE (Agentic Context Engineering, arXiv 2510.04618). O que portamos: **delta updates
 itemizados** (sem eles o ganho do paper cai de +12,5 para +3,6) e um **papel que julga separado
@@ -102,10 +102,23 @@ repete e registra só os IDs em `## Landmines lidas no build`. É esse `✔ trat
 |---|---|---|
 | Generator | você, em qualquer sessão | cita `LM-nnn` em `## Landmines aplicáveis` (`✔ tratado` vira `ajudou`); pode **propor** candidato |
 | Reflector | artefatos existentes | achados do avaliador fresco, Advisor Ledger, incidentes, gate vermelho, `WAIVED` — achado cuja causa **já tinha bullet** ⇒ `mordeu+1` |
-| Curator | passo 17b da fase Release, com o humano decidindo por delta | propõe `ajudou`/`mordeu` · `ADD` · `TOMBSTONE` · `REFINE` · `promovido_para=` com evidência `arquivo:linha`; aplica **só o aprovado** (lint verde, `--anti-collapse` verde, commit só do playbook); `mordeu ≥ 2` ⇒ pergunta de promoção obrigatória |
+| Curator | passo 17b da fase Release: um script colhe, um agente sem a conversa julga, a pessoa decide | `sdd/bin/playbook-curator.sh --colher` lê `ajudou`/`mordeu` das tabelas, `mordeu` dos achados, candidatos e promoções; o curador (`references/curator.md`) confere cada linha contra o `arquivo:linha` e devolve o bloco de curadoria, sem escrever nada; `--conferir-bloco` reprova bloco incompleto e separa a contagem com evidência (entra sem pergunta, vai para o recibo) da mudança de regra — `ADD`, `TOMBSTONE`, `REFINE`, `promovido_para=`, invariante —, que só entra com o seu OK; `mordeu ≥ 2` ⇒ pergunta de promoção obrigatória |
 
 A escrita legítima no playbook é a fase Release (delta aprovado) — ou, fora dela, um commit
-revisado com lint verde e OK humano. Nunca "no meio do trabalho".
+revisado com lint verde e OK humano. Nunca "no meio do trabalho". Quem aplica é sempre
+`sdd/bin/playbook-curator.sh --aplicar <delta> sdd/playbook.md`, que valida o delta inteiro antes de
+editar e imprime o playbook novo; o resultado passa pelo lint antes de ser copiado por cima.
+
+Gramática do delta (1 verbo por linha):
+
+```text
+LM-020 ajudou+1
+LM-016 mordeu+1
+LM-004 promovido_para=<caminho do mecanismo>
+ADD <seção> :: sup: `termo1` `termo2` :: regra. **Do instead:** ação. → ficha: — · promovido_para: —
+TOMBSTONE LM-nnn :: motivo
+REFINE LM-nnn :: novo texto. **Do instead:** ação.
+```
 
 ## Proibições (o lint aplica)
 
@@ -113,6 +126,7 @@ revisado com lint verde e OK humano. Nunca "no meio do trabalho".
   <depois>` bloqueia quando um `LM-` desaparece ou >20% dos bullets mudam de conteúdo/seção
   (contadores e `conf` não contam). Reescrita grande = 2+ commits.
 - **Não apagar.** Aposentar = mover para `## Tombstones` como `- [LM-nnn] ☠ data :: motivo`.
+  Uma mudança de conteúdo por commit sempre passa; de 2 para cima vale o limite de 20%.
 - **Não escrever a partir da fase Design** (a varredura é read-only).
 - **Não inflar `## Sempre`**: só landmine de sessão sem superfície greppável.
 
@@ -139,6 +153,21 @@ Sem `evidencia:` o candidato não é candidato (lição sem verificação piora 
 check no gate, script), e o bullet ganha `promovido_para:`; cai para `## Tombstones` só quando
 o mecanismo tiver caso de teste que **falha** sem ele. `sdd/bin/playbook-lint.sh --stats`
 conta por `mordeu`.
+
+## Invariantes — a regra que nunca pode ser quebrada
+
+A landmine diz "isto me mordeu". A invariante, em `sdd/invariants.md`, diz "isto nunca pode ser violado,
+e aqui está o que vigia": uma linha por regra, com a landmine de origem e o estado (`ok` = um check roda
+sozinho; `auto` = dá para automatizar, com a tarefa; `humano` = exige julgamento, com o motivo). Toda
+landmine ativa que já mordeu, ou que foi promovida, precisa estar classificada lá: como origem de uma
+invariante, ou em `## Descartados` com o motivo.
+
+- **Só a curadoria escreve** em `sdd/invariants.md`, com o seu OK por item.
+- **A trava:** `bash sdd/bin/playbook-curator.sh --validar-inv sdd/playbook.md sdd/invariants.md` reprova
+  invariante com origem aposentada, landmine do universo sem classificação, ID repetido e `check=` que
+  não existe. Aposentar uma landmine que é origem de uma invariante só passa junto com o ajuste que o
+  `--cruzar` propõe: é uma decisão só, não duas.
+- Projeto sem `sdd/invariants.md`: a curadoria diz que pulou o cruzamento e segue só com o playbook.
 
 ---
 

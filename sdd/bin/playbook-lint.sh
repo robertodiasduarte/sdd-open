@@ -215,7 +215,9 @@ anti_collapse() {
     printf '   IDs nunca somem: aposentar = mover para "## Tombstones" como "- [LM-nnn] ☠ data :: motivo".\n' >&2
     return 1
   fi
-  if [ $((mudou * 100)) -gt $((total * COLLAPSE_PCT)) ]; then
+  # Piso: 1 bullet alterado sempre passa. Sem ele, num playbook de até 4 bullets (1 de 4 = 25%) nenhuma
+  # promoção, aposentadoria ou refino entraria; o limite percentual vale de 2 alterados para cima.
+  if [ "${mudou}" -gt 1 ] && [ $((mudou * 100)) -gt $((total * COLLAPSE_PCT)) ]; then
     printf '⛔ anti-collapse: %d/%d bullets (%d%%) com conteúdo/seção reescritos num só commit (limite %d%%).\n' "${mudou}" "${total}" "${pct}" "${COLLAPSE_PCT}" >&2
     printf '   Delta only: reescrita grande = 2+ commits; contadores/conf não contam.\n' >&2
     return 1

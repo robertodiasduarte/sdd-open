@@ -82,7 +82,7 @@ cmd_despachar() {
   fi
   cmp -s "$brief" "$R/$rel" || { echo "🛑 sdd-fluxo: a cópia do brief não confere: $rel" >&2; exit 64; }
   # texto por papel: o que o agente fresco lê, o bloco que volta e o que ainda não aconteceu
-  le='o DEFINE'; nao_feito='nada foi publicado e o relatório não foi gravado.'
+  le='o DEFINE'; antes=''; nao_feito='nada foi publicado e o relatório não foi gravado.'
   case "$papel" in
     avaliador)          retorno='o bloco inteiro da resposta, de `<<<AVALIACAO` até `>>>` (com a linha `VEREDITO: …`)' ;;
     cartografo)         le='o código do domínio'
@@ -90,10 +90,14 @@ cmd_despachar() {
                         nao_feito='nada foi gravado em sdd/contexto/.' ;;
     revisor-governanca) retorno='o bloco que começa com `<<<GOVERNANCA` até `>>>`'
                         nao_feito='o relatório de governança não foi gravado; o DEFINE está marcado como pendente (o build não passa até a revisão voltar).' ;;
+    curador)            le='a colheita do playbook'
+                        antes='A publicação já terminou e não depende deste passo; '
+                        retorno='o bloco que começa com `<<<CURADORIA` até `>>>`'
+                        nao_feito='a curadoria do playbook ainda não foi aplicada; nada foi despublicado.' ;;
     *)                  retorno='o bloco final da resposta (o que começa com <<<)' ;;
   esac
   printf '⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: %s).\n\n' "$papel"
-  printf '**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.\n'
+  printf '**Por que parei:** %sa conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.\n' "$antes"
   printf '**Onde:** numa janela nova do seu agente, na pasta %s.\n' "$R"
   printf '**Passos:**\n'
   printf '1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.\n'

@@ -100,6 +100,7 @@ Funciona em macOS, Linux e Windows (Git Bash/WSL): bash 3.2, zero zsh, zero syml
 - [Fluxo encadeado](docs/pt-BR/chained-flow.md) ([EN](docs/chained-flow.md)) — a classe da decisão em toda pergunta, o `flow.autonomous`, a parada com exit 40 quando o agente não abre uma sessão nova sozinho
 - [LLM no código](docs/pt-BR/llm-in-code.md) ([EN](docs/llm-in-code.md)) — a skill de processo em laço, o roteador e o inventário de prompts, o fiscal de prompt e o medidor de contraste.
 - [Contexto e governança](docs/pt-BR/context-and-governance.md) ([EN](docs/context-and-governance.md)) — o mapa do domínio (passo 1.5) e a revisão de governança (passo 11) do Define, o exit 5 depois de atualizar, os patterns do projeto
+- [Curadoria do playbook e invariantes](docs/pt-BR/playbook-curation.md) ([EN](docs/playbook-curation.md)) — o que a release colhe da feature, o que entra sem pergunta, o arquivo de invariantes e a trava dele.
 - [Revisão adversarial](docs/pt-BR/adversarial-review.md) ([EN](docs/adversarial-review.md)) — uma engine revisa o diff congelado, outra audita a revisão; custo por papel, privacidade, o review externo que a release exige, o gate offline e o `eval-agree`
 - [Roadmap](docs/pt-BR/roadmap.md) ([EN](docs/roadmap.md)) — o que está planejado e o que está em avaliação
 - [Guia do aluno](docs/pt-BR/guia-do-aluno.md) — passo a passo para quem nunca usou git nem terminal

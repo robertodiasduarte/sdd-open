@@ -550,7 +550,7 @@ LINHA_ACRESCENTAR='bash sdd/hooks/pre-commit || exit 1'
 # do projeto — relativos a sdd/. Vazio = árvore completa. Fixtures ficam fora (exemplos, apagáveis).
 sdd_faltantes() {
   local rel
-  ( cd "${PKG}/sdd" && find templates bin hooks review patterns playbook.md WORKFLOW_CONTRACTS.yaml -type f 2>/dev/null | sort ) | while IFS= read -r rel; do
+  ( cd "${PKG}/sdd" && find templates bin hooks review patterns playbook.md invariants.md WORKFLOW_CONTRACTS.yaml -type f 2>/dev/null | sort ) | while IFS= read -r rel; do
     [ -e "${ROOT}/sdd/${rel}" ] || printf '%s\n' "${rel}"
   done
   [ -f "${ROOT}/sdd/config.yaml" ] || printf 'config.yaml\n'
@@ -652,6 +652,11 @@ aplicar() {
         if [ "${rel}" = "config.yaml" ]; then
           # vendors: é um placeholder no example; init o PREENCHE (a única diferença entre os 2 arquivos).
           cp "${PKG}/sdd/config.example.yaml" "${ROOT}/sdd/config.yaml" || exit 1
+        elif [ "${rel}" = "invariants.md" ] && ! printf '%s\n' "${faltantes}" | grep -qx 'playbook.md'; then
+          # O registro do pacote classifica as landmines do playbook DO PACOTE. Num projeto que já tem o seu
+          # playbook (o init nunca o sobrescreve), ele apontaria para uma landmine que pode não existir ou ser
+          # outra: entra só o esqueleto, sem nenhuma linha de invariante, e a 1ª curadoria classifica as do projeto.
+          grep -v '^- \[' "${PKG}/sdd/invariants.md" > "${ROOT}/sdd/invariants.md" || exit 1
         else
           mkdir -p "$(dirname "${ROOT}/sdd/${rel}")" && cp "${PKG}/sdd/${rel}" "${ROOT}/sdd/${rel}" || exit 1
         fi

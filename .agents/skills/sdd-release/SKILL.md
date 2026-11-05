@@ -6,15 +6,15 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.6.0"
-  updated: "2026-10"
+  version: "2.7.0"
+  updated: "2026-11"
   fase: "4"
 ---
 
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.6.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -260,14 +260,102 @@ removido.
     que foi publicado, veredito 0d (WAIVED com registro completo), pendências separadas em
     🐛 bug fix e ✨ melhoria, avisos da Fase 0 que não abortaram, próximos passos com comandos,
     alertas. Ficha curta de "publicado, sem pendências" ainda documenta.
-17b. **Curadoria do playbook (propõe; aplica só com OK por delta).** Colha do DESIGN
-    (`✔ tratado` ⇒ `ajudou+1`), do BUILD_REPORT (`<<<CANDIDATO_PLAYBOOK` com `evidencia:` ⇒
-    candidato `ADD`; sem evidência ⇒ rejeitado) e dos achados do avaliador/review cuja causa
-    **já tinha bullet** (⇒ `mordeu+1`). Apresente cada delta como opção (múltipla escolha);
-    aplique **só o aprovado**, rode `sdd/bin/playbook-lint.sh sdd/playbook.md` (exit 0
-    obrigatório) e `--anti-collapse <antes> <depois>`, commite **só o playbook**. `mordeu ≥ 2`
-    ⇒ pergunta obrigatória: promover a mecanismo (hook, check, script)? Detalhes na skill
-    `sdd-playbook`.
+17b. **Curadoria do playbook (incondicional; roda depois do push e nunca desfaz a publicação).** Um
+    script colhe, um agente sem esta conversa julga, e um conferidor separa a contagem da mudança de
+    regra. Antes de começar, diga em 1 frase que a publicação já terminou e que agora você confere o que
+    esta feature ensinou para as próximas. Brief do curador:
+    `.agents/skills/sdd-playbook/references/curator.md`; palavras e exemplos: `references/como-falar.md`.
+    1. **Staging por cópia.** `bash sdd/bin/playbook-curator.sh --preparar {F}` copia (nunca move) os
+       documentos da feature, de `sdd/` ou de `sdd/archive/{F}/`, para a pasta que ele imprime em
+       `staging:`; guarde-a como `STG`. Exit 1 = não achou DESIGN nem BUILD_REPORT: num conserto sem SDD
+       formal, registre `Curadoria: 0 deltas (sem documentos)` e encerre o 17b; senão é falha (confira o
+       nome da feature). **Sessão nova depois da parada do curador:** rode com `--retomar`, que não copia
+       nem limpa, e continue do item 3 com a colheita e o selo que já existem.
+    2. **Colher, lendo o exit.**
+       `bash sdd/bin/playbook-curator.sh --colher "$STG" sdd/playbook.md [--inv sdd/invariants.md] > "$STG/colheita.txt"; rc=$?`
+       — `--inv` só quando `sdd/invariants.md` existe; sem o arquivo, diga "invariantes: arquivo ausente,
+       cruzamento pulado" e siga só com o playbook. O que uma curadoria anterior desta feature já julgou
+       (`CURATOR-colhidos.txt`, item 7) não conta de novo: aparece como `JA_JULGADO`.
+       | `rc` | Ação |
+       |---|---|
+       | `0` | há o que julgar ou relatar: seguir |
+       | `1` | nada, de nenhum tipo: registre `Curadoria: 0 deltas` na ficha, diga que esta feature não trouxe lição nova nem contagem e encerre o 17b |
+       | qualquer outro (`2`, `64`, `126`, `127`…) | **não é "0 deltas"**: pare o 17b, registre `Curadoria: FALHOU (rc=N)` e diga à pessoa a causa que o script imprimiu, o conserto e que a publicação não foi afetada |
+    3. **Despachar o curador em contexto fresco**, pela escada de
+       `sdd-build/references/contexto-fresco.md`, com **só** os 5 campos:
+       `feature: {F} · staging: $STG · colheita: $STG/colheita.txt · playbook: <raiz>/sdd/playbook.md · worktree: <raiz>`.
+       Antes do despacho, nesta ordem: grave o brief (os 5 campos e "leia e siga
+       `.agents/skills/sdd-playbook/references/curator.md`") em `sdd/reports/briefs/BRIEF_curador_{F}.md`;
+       `T="${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/{F}/curador"; mkdir -p "$T"`;
+       `bash sdd/bin/playbook-curator.sh --selar "$STG" > "$T/selo.txt"` (o selo do staging fica **fora** dele);
+       `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md`;
+       imprima `🧹 curadoria: julgando em contexto novo (alguns minutos); você não precisa responder`.
+       Sem subagente: `bash sdd/bin/sdd-fluxo.sh despachar curador {F} sdd/reports/briefs/BRIEF_curador_{F}.md`
+       e pare no exit 40, repassando a parada que ele imprime.
+       Na volta, **sem editar nada no meio** e recalculando `STG` e `T` (variável de shell não passa de uma
+       chamada para a outra): salve o bloco em `"$T/curadoria.txt"`;
+       `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md`;
+       `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md > "$T/comparar.txt"`.
+       Não repasse a linha `→` da fronteira (ela fala do DEFINE): quem lê o `comparar.txt` é o item 4.
+    4. **Conferir o bloco antes de qualquer pergunta.**
+       `bash sdd/bin/playbook-curator.sh --conferir-bloco "$STG/colheita.txt" "$T/curadoria.txt" sdd/playbook.md "$T/selo.txt" "$T/comparar.txt" > "$T/conferido.txt"; rc=$?`.
+       Ele reprova (exit 2) quando o curador escreveu no projeto (`FORA:`) ou a fronteira não foi verificada,
+       quando o staging mudou depois do selo, quando falta uma linha da colheita e quando uma contagem não
+       é igual à que o script colheu. Exit 2 ⇒ liste à pessoa o que saiu como `FORA:` (não apague nada) e
+       despache de novo **1 vez**, com os 5 campos mais o campo `conferencia:` (as linhas `🔴 bloco:`). 2ª
+       reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)`, diga que a curadoria fica para a próxima
+       publicação e encerre: **nada é aplicado**. Nunca separe contagem de regra à mão: quem decide é o
+       conferidor.
+    5. **Contagem entra, regra pergunta.** As linhas `AUTO <delta>` de `conferido.txt` vão para
+       `"$STG/delta.txt"` sem pergunta. As linhas `PERGUNTA <n> <tipo> <delta>` (lição nova, aposentadoria,
+       refino, promoção, invariante, sugestão que o curador confirmou e contagem que põe uma lição entre
+       as invariantes) viram perguntas `[D3 · muda a regra do método]`, uma por item, numeradas, no formato
+       de `references/como-falar.md`: a frase da linha `simples:`, o ID só no fim como `(ref: …)`, as
+       respostas **aceitar**, **recusar** e **não sei**; até 5 por vez (acima disso, em lotes). Diga também,
+       em palavras, cada linha `REJEITADO` da colheita: o candidato que não entrou e por quê. Com
+       `sdd/invariants.md`, antes de perguntar:
+       `printf '%s\n' <os deltas AUTO e PERGUNTA> | bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md`
+       — `INV_AFETADA` ⇒ o item daquela aposentadoria leva o `ajuste:` junto, como **uma opção só**;
+       `INV_PENDENTE` ⇒ a contagem e a classificação vão na mesma opção (virar regra permanente com a
+       linha `inv` do curador, descartar com motivo, ou não aplicar a contagem). Os itens aceitos entram
+       no `delta.txt`; as linhas de invariante aceitas (a `inv` do curador, o `ajuste:`, ou
+       `REMOVER INV-nnn` / `REMOVER LM-nnn`), em `"$STG/inv-linhas.txt"`. Sem linha `PERGUNTA`, não há
+       pergunta de regra.
+    6. **Aplicar numa cópia e conferir 3 vezes.**
+       `bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" sdd/playbook.md > "$STG/novo.md"`
+       (exit 2 ⇒ nada foi impresso: corrija o delta) →
+       `bash sdd/bin/playbook-lint.sh "$STG/novo.md"` (exit 0 obrigatório) →
+       `bash sdd/bin/playbook-lint.sh --anti-collapse sdd/playbook.md "$STG/novo.md"` (bloqueou pelo
+       tamanho ⇒ aplique em 2 ou mais commits: contadores e `ADD` primeiro, depois uma mudança de
+       conteúdo por vez) → com invariantes,
+       `bash sdd/bin/playbook-curator.sh --aplicar-inv "$STG/inv-linhas.txt" sdd/invariants.md > "$STG/inv.md"`
+       (sem linha aprovada, `cp sdd/invariants.md "$STG/inv.md"`) e
+       `bash sdd/bin/playbook-curator.sh --validar-inv "$STG/novo.md" "$STG/inv.md"` (exit 0
+       obrigatório; `🔴 trava INV:` diz a regra, a lição e as saídas: volte à pessoa, nunca copie; nunca
+       edite as invariantes à mão).
+       Só então `cp "$STG/novo.md" sdd/playbook.md` e, se mudou, `cp "$STG/inv.md" sdd/invariants.md`.
+    7. **Evidência** em `sdd/reports/evidence/{F}/`, no formato `$ comando`, a saída e `[exit=N]` com o
+       exit real do comando: `CURATOR-colheita.log` (a colheita) e `CURATOR-delta.log` (o `delta.txt`
+       aplicado). E o registro do que já foi julgado, para a próxima publicação desta feature não contar
+       de novo: `grep ' · fp=' "$STG/colheita.txt" >> sdd/reports/evidence/{F}/CURATOR-colhidos.txt`.
+    8. **Commit à parte:** `git add sdd/playbook.md` (e `sdd/invariants.md`, se mudou) e os 3 arquivos
+       `CURATOR-*` do item 7 (sem o registro, a próxima publicação desta feature conta tudo de novo);
+       `git diff --cached --name-only` só pode listar esses arquivos; commit
+       `chore(playbook): curadoria {F} — <n> delta(s)`. Nunca `--no-verify`: o pre-commit vigia o playbook.
+    9. **Recibo e envio.** Mostre o recibo **Decidi sozinho**: 1 linha por contagem aplicada, em palavras
+       simples, e como desfazer (`git revert <sha do commit da curadoria>`). Depois, a pergunta
+       `[D1 · não se desfaz]` **Posso enviar o commit da curadoria para a branch padrão?**, dizendo se
+       esse push publica sozinho (a resposta do item 7 da FASE 1). **sim** ⇒ aterrisse como no passo 5
+       (worktree temporário de `origin/{default_branch}` + cherry-pick; em conflito, não resolva à mão:
+       reaplique o `"$STG/delta.txt"` sobre o playbook da base com `--aplicar`, que recalcula os IDs dos
+       `ADD`, e o `"$STG/inv-linhas.txt"` sobre as invariantes da base com `--aplicar-inv`), rode ali de novo o `playbook-lint.sh` e, com invariantes, o `--validar-inv` (ID repetido
+       com a base ⇒ renumere o novo, nunca o da base) e faça o push como no passo 8. **deixar para a
+       próxima publicação** ⇒ o commit fica na branch da frente; registre na ficha
+       `Curadoria: commit <sha> não enviado` e o comando de envio. Com mudança de regra e envio na mesma
+       resposta, as 2 perguntas vão numeradas.
+    A ficha (18) ganha `Curadoria: <n> propostos / <m> aplicados / <p> promoções`. Promoção aceita ⇒ o
+    mecanismo é uma correção própria, com um caso que falha antes dele; o delta `promovido_para=` só
+    entra quando o mecanismo já está na branch padrão. Detalhes do formato na skill `sdd-playbook`.
 18. **Imprimir a ficha** como último bloco do relatório.
 19. **DoD fechado?** Oferecer arquivar (15b) e marcar a ficha como ✅ — com 1 OK.
 20. **Prompt da próxima sessão** (o único opcional): se "Falta" não está vazio, oferecer.
@@ -314,6 +402,15 @@ vale **sempre**.
 - **Review externo obrigatório, com dispensa registrada** — quando era opcional, no projeto de origem só
   13 de 84 features tiveram review; a dispensa continua possível, mas com motivo escrito no ledger. O
   `sha256` liga a revisão a esta versão do código: uma revisão antiga não vale para um código novo.
+
+- **A falha da colheita nunca vale como "nada a colher"** — o script sai 1 quando leu tudo e não achou
+  nada, e 2 ou 64 quando não conseguiu ler; tratar os dois igual apagaria lições em silêncio.
+- **Quem separa contagem de regra é o conferidor, não quem conduz a release** — uma contagem só entra
+  sem pergunta se o script a colheu e a evidência abre; assim ninguém inventa um `+1`.
+- **O curador é conferido pela fronteira de escrita** — "não escreva" num brief é só texto; o snapshot de
+  antes e de depois prova que ele só leu.
+- **O commit da curadoria não sai da máquina sem um sim** — em muitos projetos, um push na branch padrão
+  publica; a contagem entra no arquivo sem pergunta, o envio não.
 
 ## Encerramento (obrigatório)
 

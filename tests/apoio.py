@@ -34,8 +34,11 @@ class Sandbox(unittest.TestCase):
         self.home.mkdir()
         vazio = self.tmp / "gitconfig-vazio"
         vazio.write_text("", encoding="utf-8")
+        # SDD_TRACE e SDD_TRACE_DIR de quem roda a suíte não entram: com SDD_TRACE=off no ambiente, os testes
+        # de trace cairiam sem o código ter mudado (🐛 da F12). Quem precisa de um dos dois passa no próprio teste.
+        base = {k: v for k, v in os.environ.items() if k not in ("SDD_TRACE", "SDD_TRACE_DIR")}
         self.env = dict(
-            os.environ,
+            base,
             HOME=str(self.home),
             GIT_CONFIG_GLOBAL=str(vazio),
             GIT_CONFIG_NOSYSTEM="1",

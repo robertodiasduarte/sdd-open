@@ -84,6 +84,34 @@ class Projeto(Sandbox):
         self.assertEqual(meu.read_text(encoding="utf-8"), "# meus patterns\n")
         self.assertTrue((self.p / "sdd/WORKFLOW_CONTRACTS.yaml").is_file())
 
+    def test_init_instala_as_invariantes_junto_com_o_playbook_do_pacote(self):
+        # F14 AT-034: playbook e invariantes do pacote vieram juntos, e o par é válido.
+        inv = (self.p / "sdd/invariants.md").read_text(encoding="utf-8")
+        self.assertIn("[INV-001]", inv)
+        rc, out, err = self.roda([BASH, self.p / "sdd/bin/playbook-curator.sh", "--validar-inv", "sdd/playbook.md", "sdd/invariants.md"], self.p)
+        self.assertEqual(rc, 0, out + err)
+
+    def test_projeto_com_playbook_proprio_recebe_so_o_esqueleto(self):
+        # A invariante do pacote aponta para a LM-004 do pacote: num playbook que já existia, ela pode não existir.
+        (self.p / "sdd/invariants.md").unlink()
+        self.escreve(self.p, "sdd/playbook.md", "# Meu\n\n## Sempre\n\n- [LM-001] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: `a` :: r. **Do instead:** x. · promovido_para: —\n\n## Tombstones\n")
+        rc, out = self.cli("init", "--yes", "--vendors", "claude,codex")
+        self.assertEqual(rc, 0, out)
+        inv = (self.p / "sdd/invariants.md").read_text(encoding="utf-8")
+        self.assertNotIn("[INV-001]", inv)
+        for secao in ("## Invariantes", "## Descartados", "estado=ok|auto|humano"):
+            with self.subTest(secao=secao):
+                self.assertIn(secao, inv)
+        self.assertIn("Meu", (self.p / "sdd/playbook.md").read_text(encoding="utf-8"))
+        rc, o, e = self.roda([BASH, self.p / "sdd/bin/playbook-curator.sh", "--validar-inv", "sdd/playbook.md", "sdd/invariants.md"], self.p)
+        self.assertEqual(rc, 0, o + e)
+
+    def test_init_nunca_sobrescreve_as_invariantes_do_projeto(self):
+        self.escreve(self.p, "sdd/invariants.md", "# minhas\n\n## Invariantes\n")
+        rc, out = self.cli("init", "--yes", "--vendors", "claude,codex")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual((self.p / "sdd/invariants.md").read_text(encoding="utf-8"), "# minhas\n\n## Invariantes\n")
+
     def test_init_copia_fixtures_de_exemplo_mas_nunca_os_testes(self):
         # fixtures são exemplo na 1ª instalação (aplicar(), bin/sdd-open.sh); tests/ é do pacote.
         self.assertTrue((self.p / "sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md").is_file())

@@ -1,0 +1,4 @@
+$ bash sondas/fixture.sh (sintético: self-test do playbook-curator.sh)
+AT-001 ✅ PASS — POST autenticado → 200 (LM-020 citado numa linha verde: não conta)
+AT-002 ❌ FAIL — OPTIONS → 401 (esperado 204) · causa: LM-016 (o preflight caiu)
+AT-003 ❌ FAIL — o job consta como concluído, mas a fila_de_envio ficou com 401 (sem LM explícito: só SUGESTAO)

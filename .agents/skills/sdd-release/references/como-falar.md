@@ -16,7 +16,12 @@ arquivo dá as palavras e um exemplo inteiro.
 - veredito — "o resumo das conferências: PASS (tudo certo), CONCERNS (passou com ressalvas) ou FAIL";
 - waiver — "a sua decisão registrada de publicar mesmo com um achado, com o motivo";
 - ledger — "o registro, gravado junto com a versão, do que foi publicado e quando";
-- migration — "um arquivo que muda a estrutura do banco de dados".
+- migration — "um arquivo que muda a estrutura do banco de dados";
+- curadoria — "conferir, depois de publicar, o que esta feature ensinou para as próximas";
+- delta — "uma mudança de uma linha no playbook";
+- aposentar (tombstone) — "tirar uma lição de uso, guardando o motivo";
+- promover — "transformar a lição numa trava automática";
+- invariante — "uma regra que nunca pode ser quebrada, com o teste que a vigia".
 
 Não fale em merge, fast-forward, tag ou `--stat` sem traduzir: "juntar na linha principal", "sem
 reescrever nada", "o nome da versão", "a lista dos arquivos que mudaram".
@@ -69,3 +74,51 @@ engine. A pergunta vem **antes** do bloco do OK, como uma pergunta própria; o b
 
 As opções vêm logo depois da última linha do bloco: continua sendo uma pergunta só. Formato completo de
 pergunta e de parada: `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+
+## Exemplo — a curadoria, depois de publicar (etapa 4 — Publicar)
+
+Situação: a publicação terminou. A colheita trouxe 2 contagens com prova, 1 lição nova e 1 lição que já
+mordeu 2 vezes. Toda mensagem daqui para a frente diz que a publicação já terminou: uma parada depois do
+push, sem isso, parece deploy travado.
+
+**Status** — `Release: ✅ 1 Onde estou · ✅ 2 Verificar · ✅ 3 Sua decisão · ▶️ 4 Publicar`
+
+**O que foi feito** — A publicação terminou e está no ar; o que vem agora não mexe nela. Conferi o que
+esta feature ensinou para as próximas (a curadoria: as lições do caderno de armadilhas do projeto).
+
+**Decidi sozinho** (contagem com prova não muda regra; para desfazer, reverta o commit da curadoria):
+- o aviso sobre o envio sem o segredo foi seguido no desenho e evitou o erro: contei +1;
+- o erro do preflight aconteceu de novo, mesmo com o aviso: contei +1.
+
+**Agora: etapa 4 — Publicar** — Duas mudanças nas regras do projeto dependem de você. Responda pelos
+números, por exemplo "1 aceitar, 2 recusar".
+
+**Sua decisão** — 1. [D3 · muda a regra do método] **Guardo a lição nova sobre o relatório que saiu sem as notas canceladas?**
+- **aceitar** (recomendado) — entra no caderno e avisa toda sessão que mexer no relatório; a prova está
+  no relatório do build (ref: LM-023).
+- **recusar** — a lição não entra; o que aconteceu fica só no histórico desta feature.
+- **não sei** — mostro o trecho do relatório do build em que isso aconteceu.
+
+**Sua decisão** — 2. [D3 · muda a regra do método] **Transformo em trava automática o aviso que já falhou 2 vezes?**
+- **aceitar** (recomendado) — registro que ele vira uma conferência automática; isso pede uma correção
+  própria, com teste, numa próxima tarefa (ref: LM-004).
+- **recusar** — o aviso continua só escrito, e esta pergunta volta na próxima publicação.
+- **não sei** — mostro as 2 vezes em que o erro aconteceu, com o arquivo de cada uma.
+
+**Próximo passo** — Aplico só o que você aceitar, confiro o caderno e pergunto se envio essa mudança.
+
+Aposentar uma lição da qual uma regra permanente depende é **uma opção só**, nunca duas: "aposentar o
+aviso sobre o envio e ajustar a regra permanente que dependia dele, no mesmo passo".
+
+Depois de aplicar, o envio é outra decisão, porque o push pode publicar:
+
+**Sua decisão** — [D1 · não se desfaz] **Posso enviar o commit da curadoria para a branch padrão?**
+- **sim** (recomendado) — envio só o caderno de armadilhas (1 arquivo); neste projeto, esse push não
+  publica nada, porque o workflow só roda quando o código muda.
+- **deixar para a próxima publicação** — a mudança fica salva nesta pasta e sobe junto com a próxima.
+- **não sei** — explico o que este envio muda e o que acontece se ele ficar para depois.
+
+Quando a colheita falha, diga a causa, o conserto e que nada do que foi publicado mudou: "Não consegui
+ler o caderno de armadilhas para a curadoria (o arquivo `sdd/playbook.md` não tem nenhuma lição no
+formato esperado). A publicação não foi afetada. Corrija o arquivo e me peça a curadoria de novo." Quando
+não há o que colher: "esta feature não trouxe lição nova nem contagem".

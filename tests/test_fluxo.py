@@ -285,6 +285,27 @@ class Despachar(Base):
         self.assertIn("o bloco final da resposta (o que começa com <<<)", out)
         self.assertNotIn("VEREDITO: …", out)
 
+    def test_curador_para_dizendo_que_a_publicacao_ja_terminou(self):
+        # F14 AT-023 (UX U2): a curadoria roda depois do push; o texto geral ("nada foi publicado") seria falso.
+        r = self.repo("curador")
+        rc, out = self.fluxo("despachar", "curador", "X", FX / "brief-avaliador.md", cwd=r)
+        self.assertEqual(rc, 40, out)
+        for trecho in ("A publicação já terminou e não depende deste passo", "`<<<CURADORIA` até `>>>`",
+                       "a curadoria do playbook ainda não foi aplicada; nada foi despublicado.",
+                       "o agente começa a ler a colheita do playbook."):
+            with self.subTest(trecho=trecho):
+                self.assertIn(trecho, out)
+        for falso in ("nada foi publicado", "começa a ler o DEFINE"):
+            with self.subTest(falso=falso):
+                self.assertNotIn(falso, out)
+        self.assertTrue((r / "sdd/reports/briefs/BRIEF_curador_X.md").is_file())
+
+    def test_outro_papel_nao_ganha_a_frase_da_publicacao(self):
+        r = self.repo("outro")
+        rc, out = self.fluxo("despachar", "avaliador", "X", FX / "brief-avaliador.md", cwd=r)
+        self.assertEqual(rc, 40, out)
+        self.assertNotIn("A publicação já terminou", out)
+
     def test_cartografo_e_revisor_de_governanca_tem_texto_proprio(self):
         # F12 AT-007 (UX U2): o que o agente fresco lê, o bloco que volta e o que ainda não aconteceu.
         casos = {"cartografo": ("o código do domínio", "`<<<CONTEXTO` até `>>>`", "nada foi gravado em sdd/contexto/."),

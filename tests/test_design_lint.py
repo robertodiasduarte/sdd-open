@@ -207,6 +207,40 @@ class Prompts(Sandbox):
                 rc, out = self.lint(titulo + "\n\nriscos\n")
                 self.assertEqual(rc, 0, out)
 
+    def test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova(self):
+        # AT-031: antes, o lint pulava a conferência em silêncio; com a seção de verdade, ele diz o título.
+        for titulo in ("## LLM Prompts v2", "## LLM Prompts do sistema", "## LLM prompts de produção"):
+            for corpo in ("### Inventário\n\n| # | Nome |\n", "#### Prompt 1: x\n", "| Tipo | Completeness |\n|---|---|\n"):
+                with self.subTest(titulo=titulo, corpo=corpo):
+                    rc, out = self.lint(titulo + "\n\n" + corpo)
+                    self.assertEqual(rc, 1, out)
+                    self.assertIn("tem palavras a mais", out)
+                    self.assertIn(titulo, out)
+
+    def test_titulo_com_palavras_a_mais_e_outro_assunto_passa(self):
+        for titulo in ("## LLM Prompts Review", "## LLM Prompts v2", "## LLM prompts de produção"):
+            with self.subTest(titulo=titulo):
+                rc, out = self.lint(titulo + "\n\nriscos, sem nenhuma tabela\n")
+                self.assertEqual(rc, 0, out)
+
+    def test_prefixo_numerado_de_varios_niveis_e_conferido(self):
+        for titulo in ("## 5.5. LLM Prompts", "## 5.5 LLM Prompts", "## 5. LLM Prompts"):
+            with self.subTest(titulo=titulo):
+                rc, out = self.lint(titulo + "\n\nsem inventário\n")
+                self.assertEqual(rc, 1, out)
+                self.assertIn("falta o subtítulo ### Inventário", out)
+
+    def test_chave_sem_preencher_nos_3_campos_do_contrato(self):
+        for campo in ("Tom/audiência", "Tipo de saída", "Fallback aprovado"):
+            for valor in ("{tom}", "`{tom}`"):
+                with self.subTest(campo=campo, valor=valor):
+                    texto = re.sub(r"(?m)^(#### Prompt 1:.*\n(?:.*\n)*?)(\| \*\*Autônomo\?\*\*)",
+                                   lambda m: m.group(1) + "| **%s** | %s |\n" % (campo, valor) + m.group(2), self.secao, count=1)
+                    self.assertNotEqual(texto, self.secao)
+                    rc, out = self.lint(texto)
+                    self.assertEqual(rc, 1, out)
+                    self.assertIn("com %s sem preencher" % campo, out)
+
     def test_so_a_primeira_tabela_do_inventario_conta(self):
         i = self.secao.index("### Contrato por prompt")
         com_outra = self.secao[:i] + "Legenda:\n\n| Sigla | Sentido |\n|---|---|\n| v1 | versão 1 |\n\n" + self.secao[i:]

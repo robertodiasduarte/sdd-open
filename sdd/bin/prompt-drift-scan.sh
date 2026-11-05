@@ -74,13 +74,15 @@ raiz_do_projeto() {
   (cd "$r" && pwd -P)
 }
 
-ler_slot() {  # imprime V<valor> ou M (malformado); nada se a chave não existe
+ler_slot() {  # imprime V<valor>, M (malformado), F (mapa de fluxo aberto) ou L (lista, mapa ou referência no valor); nada se a chave não existe
   [ -f "$RAIZ/sdd/config.yaml" ] || return 0
   awk '
     NR == 1 { sub(/^\357\273\277/, "") }
     { sub(/\r$/, "") }
     /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*\{.*wrapper_pattern/ { print "M"; exit }
     /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*\*/ { print "M"; exit }
+    # `prompts: {` que não fecha na mesma linha: o slot pode estar nas linhas seguintes, e ler como vazio seria falso.
+    /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*\{[^}]*$/ { print "F"; exit }
     /^["\047]?prompts["\047]?[[:space:]]*:[[:space:]]*([&!][^[:space:]]+[[:space:]]*)*(#.*)?$/ { dentro = 1; next }
     /^[^[:space:]#]/ { dentro = 0 }
     dentro && /^[[:space:]]+["\047]?wrapper_pattern["\047]?[[:space:]]*:/ {
@@ -114,6 +116,8 @@ ler_slot() {  # imprime V<valor> ou M (malformado); nada se a chave não existe
         if (saida == "null" || saida == "Null" || saida == "NULL" || saida == "~") saida = ""
         c = substr(saida, 1, 1)
         if (c == "|" || c == ">" || c == "&" || c == "!") { print "M"; exit }
+        # sem aspas, o YAML lê [ como lista, { como mapa e * como referência: não é a expressão que a pessoa escreveu
+        if (c == "[" || c == "{" || c == "*") { print "L"; exit }
       }
       print "V" saida
       exit
@@ -140,6 +144,10 @@ carregar_slot() {
   case "$lido" in
     M*) erro_uso "prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela" \
                  "corrija o slot; por exemplo: wrapper_pattern: \"systemPrompt:\"" ;;
+    F*) erro_uso "a chave prompts de sdd/config.yaml abre um mapa entre chaves em várias linhas, forma que esta varredura não lê" \
+                 "escreva em bloco: prompts: numa linha e, recuado na linha de baixo, wrapper_pattern: \"systemPrompt:\"" ;;
+    L*) erro_uso "prompts.wrapper_pattern começa com [, { ou * sem aspas: o YAML lê isso como lista, mapa ou referência, que esta varredura não lê" \
+                 "ponha a expressão entre aspas; por exemplo: wrapper_pattern: \"[sS]ystemPrompt:\"" ;;
     V*) SLOT="${lido#V}" ;;
   esac
   [ -n "$SLOT" ] || return 0
@@ -384,6 +392,14 @@ auto_teste() {
   uso_errado 'bloco de YAML em vez de 1 linha' src/r.py
   printf 'prompts: { wrapper_pattern: "x" }\n' > "$proj/sdd/config.yaml"
   uso_errado 'mapa em linha com o slot' src/r.py
+  printf 'prompts: {\n  wrapper_pattern: "x"\n}\n' > "$proj/sdd/config.yaml"
+  uso_errado 'mapa entre chaves em várias linhas' src/r.py
+  slot '[a, b]'
+  uso_errado 'lista de fluxo no slot' src/r.py
+  slot '*pat'
+  uso_errado 'referência sem aspas no slot' src/r.py
+  slot '"[sS]ystemPrompt:"'
+  conteudo 2 'parâmetro do wrapper' src/u3.ts 'ask({ SystemPrompt: `x` })'
   printf 'prompts: {}\n' > "$proj/sdd/config.yaml"
   disco 0 'wrapper_pattern vazio' src/r.py 'soma = a + b'
   printf 'prompts: *llm\n' > "$proj/sdd/config.yaml"
@@ -402,6 +418,21 @@ auto_teste() {
   rm -f "$proj/sdd/config.yaml"; mkdir "$proj/sdd/config.yaml"
   uso_errado 'sdd/config.yaml é uma pasta' src/r.py
   rmdir "$proj/sdd/config.yaml"
+  # Os 2 motivos de saída 64 que só o tests/ cobria: a pasta sdd/ sem permissão e o leitor do slot que falha.
+  slot_padrao
+  chmod 000 "$proj/sdd"
+  if [ ! -x "$proj/sdd" ]; then
+    uso_errado 'pasta sdd/ sem permissão' src/r.py
+  fi
+  chmod 755 "$proj/sdd"
+  mkdir -p "$TMP/stubawk"
+  printf '#!/bin/sh\nexit 3\n' > "$TMP/stubawk/awk"
+  chmod +x "$TMP/stubawk/awk"
+  total=$((total + 1))
+  saida_pasta="$(PATH="$TMP/stubawk:$PATH" roda src/r.py 2>&1 </dev/null)"; rc_pasta=$?
+  if [ "$rc_pasta" -ne 64 ]; then
+    printf '🛑 caso de uso (leitor do slot que falha): exit %s (esperado 64)\n' "$rc_pasta" >&2; falhas=$((falhas + 1))
+  fi
   slot_padrao
   uso_errado 'sem argumento'
   uso_errado 'caminho inexistente' src/nao-existe.ts

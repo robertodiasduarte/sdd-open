@@ -349,6 +349,28 @@ class ErroDeUso(Base):
                 self.slot(texto)
                 self.conferir(*self.com_texto("src/a.ts", "x\n"), "malformado")
 
+    def test_formas_do_slot_que_a_varredura_nao_le_saem_64(self):
+        # AT-032 (F14): lista, referência e mapa em várias linhas viravam expressão ou slot vazio, sem aviso.
+        casos = {'prompts:\n  wrapper_pattern: [a, b]\n': "lista, mapa ou referência",
+                 'prompts:\n  wrapper_pattern: {a: b}\n': "lista, mapa ou referência",
+                 'prompts:\n  wrapper_pattern: *pat\n': "lista, mapa ou referência",
+                 'prompts: {\n  wrapper_pattern: "x"\n}\n': "mapa entre chaves em várias linhas"}
+        for config, trecho in casos.items():
+            with self.subTest(config=config):
+                self.slot(config)
+                rc, out = self.com_texto("src/a.py", "soma = 1\n")
+                self.assertEqual(rc, 64, out)
+                self.assertIn(trecho, out)
+                self.assertNotIn("RESULTADO: LIMPO", out)
+
+    def test_as_mesmas_formas_entre_aspas_continuam_valendo(self):
+        self.slot('prompts:\n  wrapper_pattern: "[sS]ystemPrompt:"\n')
+        rc, out = self.com_texto("src/a.ts", "ask({ SystemPrompt: `x` })\n")
+        self.assertEqual(rc, 2, out)
+        self.slot("prompts: {}\n")
+        rc, out = self.com_texto("src/a.py", "soma = 1\n")
+        self.assertEqual(rc, 0, out)
+
     def test_bom_no_inicio_do_config(self):
         self.slot('\ufeffprompts:\n  wrapper_pattern: "systemPrompt:"\n')
         self.assertEqual(self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n")[0], 2)

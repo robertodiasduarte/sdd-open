@@ -29,7 +29,9 @@ Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` �
 `COMMIT RECUSADO` (sdd/hooks/pre-commit; ver [hooks.md](hooks.md)) · `PRONTO` · `CONTINUAR` · `BLOQUEADO` ·
 `AGUARDANDO_RECIBO` · `AGUARDANDO_HUMANO` · `PARAR` · `MANIFEST ILEGÍVEL` · `ENTRADA ILEGÍVEL` · `SLOT INVÁLIDO`
 (sdd-fluxo.sh; ver [chained-flow.md](chained-flow.md)) · `PASSA` · `REPROVA` (contraste.sh) · `LIMPO` · `DRIFT`
-(prompt-drift-scan.sh; ver [llm-in-code.md](llm-in-code.md)).
+(prompt-drift-scan.sh; ver [llm-in-code.md](llm-in-code.md)) · `HÁ O QUE JULGAR` · `NADA A COLHER` · `BLOCO VÁLIDO` ·
+`BLOCO INVÁLIDO` · `PAR VÁLIDO` · `TRAVA` (playbook-curator.sh; ver [playbook-curation.md](playbook-curation.md)) ·
+`NADA A COPIAR` (copiar-docs.sh da `sdd-new-session`).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate
 (inconclusivo, que devolve `0`… sem `--strict`) de parecer verde para quem lê.
@@ -71,6 +73,8 @@ RESULTADO: ERRO
 | `sdd-decisoes-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, caminho inexistente, tabela de marcas ausente ou nenhuma pergunta |
 | `contraste.sh` | `0` PASSA · `2` REPROVA, ou `--self-test` VERMELHO · `64` uso ([llm-in-code.md](llm-in-code.md)) |
 | `prompt-drift-scan.sh` | `0` LIMPO · `2` DRIFT, ou `--self-test` VERMELHO · `64` uso, caminho que não dá para ler, config ilegível ou slot inválido; nunca conclui LIMPO sem ter lido ([llm-in-code.md](llm-in-code.md)) |
+| `playbook-curator.sh` | `0` ok (há o que julgar, delta aplicado, par válido, bloco válido) · `1` NADA A COLHER, ou `--preparar` sem documentos · `2` playbook, delta, par ou bloco inválido, TRAVA, ou `--self-test` falhou · `3` `--cruzar` com aviso de invariante · `64` uso; no `--aplicar` e no `--aplicar-inv` o stdout é só o arquivo novo, e o `RESULTADO:` vai para stderr ([playbook-curation.md](playbook-curation.md)) |
+| `copiar-docs.sh` (em `.agents/skills/sdd-new-session/scripts/`) | `0` N COPIADO(S) ou NADA A COPIAR · `2` uma cópia falhou · `64` uso, pasta inexistente ou checkout principal fora de um repositório git |
 | `sdd-kb/scripts/gate.sh` | `0` verde · `2` vermelho (caso bom rejeitado, caso ruim aceito ou por outro motivo, âncora ausente, RULE_MAP do exemplo derivado, ou rodado da cópia gerada pelo `sync`) |
 | `sdd-kb/scripts/validate_kb.py` · `kb_normativo.py` | `0` PASS · `2` FAIL · `64` uso |
 

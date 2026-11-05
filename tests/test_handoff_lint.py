@@ -40,6 +40,16 @@ class HandoffLint(Sandbox):
         rc, out, err = self.roda([PYTHON, "-B", SCRIPT, p], self.tmp)
         return rc, out + err
 
+    def test_fixture_completa_com_as_6_secoes_passa(self):
+        # F14 AT-029: o lint aceita seção a mais; quem confere as 6 é tests/test_f14_textos.py.
+        rc, out = self.lint((RAIZ / "sdd/fixtures/handoff/HANDOFF_COMPLETO.md").read_text(encoding="utf-8"))
+        self.assertEqual(rc, 0, out)
+
+    def test_secao_nova_com_o_texto_do_molde_reprova(self):
+        texto = (RAIZ / "sdd/fixtures/handoff/HANDOFF_COMPLETO.md").read_text(encoding="utf-8")
+        rc, out = self.lint(texto.replace("- Fazer o caso do arquivo ausente antes", "- {recomendação, com o motivo em 1 frase}\n- Fazer o caso do arquivo ausente antes"))
+        self.assertEqual(rc, 1, out)
+
     def test_fixture_valida_passa(self):
         rc, out, err = self.roda([PYTHON, "-B", SCRIPT, FIXTURE], RAIZ)
         self.assertEqual(rc, 0, out + err)

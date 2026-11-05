@@ -37,6 +37,48 @@
 
 - {caso não coberto · teste que falha · smoke pendente}
 
+## Eventos
+
+> Toda mudança de escopo, pausa ou replanejamento entra aqui como **linha nova**, com a data. Nunca
+> reescreva "Falta" sem registrar o porquê aqui: senão a decisão desaparece.
+
+- {YYYY-MM-DD} — {o que mudou e quem decidiu}
+
+## Recomendações
+
+> O que você faria diferente, ou primeiro, se continuasse agora. Opinião de quem acabou de fazer; a
+> decisão é de quem retoma.
+
+- {recomendação, com o motivo em 1 frase}
+
+## Veredito
+
+> O veredito da última release desta feature. `WAIVED` exige o registro completo.
+
+- {🟢 PASS · 🟡 CONCERNS com a lista · ⚪ WAIVED · classe= · finding= · motivo= · por= · data=}
+
+## Setup
+
+> Como deixar a pasta pronta para retomar: de onde a branch nasce, se precisa atualizar a base, o que
+> instalar. Quem lê não viu a sessão anterior.
+
+1. {comando para abrir ou atualizar a frente, com o resultado esperado}
+2. {comando de preparação: dependências, arquivos locais}
+
+## Tarefas
+
+> Numeradas, em ordem, cada uma com o critério de pronto.
+
+1. **{tarefa, começando por verbo}** — Pronto quando: {critério verificável, com o comando}
+2. **{tarefa}** — Pronto quando: {critério}
+
+## Ship
+
+> O que publicar e o que limpar depois: a frente só fecha quando os dois estão feitos.
+
+- **Publicar:** {o que sobe e por qual comando ou skill}
+- **Limpar:** {worktree e branch a remover, artefatos a arquivar, com o comando}
+
 ---
 
 ## Prompt de retomada

@@ -278,6 +278,25 @@ class Quickstart(unittest.TestCase):
                 self.assertNotIn("Lovable", texto)
 
 
+class CuradoriaDoPlaybook(unittest.TestCase):
+    """F14 AT-035: o mecanismo vem com o seu documento; o roadmap não muda."""
+
+    def test_doc_nos_2_idiomas_com_o_que_a_pessoa_precisa(self):
+        casos = {"en": (RAIZ / "docs/playbook-curation.md", "after** the push", "Decidi sozinho"),
+                 "pt": (RAIZ / "docs/pt-BR/playbook-curation.md", "depois** do push", "Decidi sozinho")}
+        for lingua, (doc, depois, recibo) in casos.items():
+            texto = ler(doc)
+            for trecho in (depois, recibo, "--colher", "--aplicar", "--conferir-bloco", "--validar-inv", "--cruzar", "--aplicar-inv",
+                           "--selar", "--preparar", "[D3 · muda a regra do método]", "[D1 · não se desfaz]", "sdd/invariants.md",
+                           "JA_JULGADO", "estado=ok|auto|humano"):
+                with self.subTest(lingua=lingua, trecho=trecho):
+                    self.assertIn(trecho, texto)
+
+    def test_o_piso_do_anti_collapse_esta_nos_2_docs_de_hooks(self):
+        self.assertIn("a single changed bullet always passes", ler(RAIZ / "docs/hooks.md"))
+        self.assertIn("1 bullet alterado sempre passa", ler(RAIZ / "docs/pt-BR/hooks.md"))
+
+
 class Roadmap(unittest.TestCase):
     def test_temas_status_e_sem_data(self):
         for lingua, (p, cabecalho, planejado, avaliacao, temas) in ROADMAP.items():
