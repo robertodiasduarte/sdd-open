@@ -225,6 +225,19 @@ class Reprova(Base_):
         rc, out, err = self.confere(BLOCO.replace("REJEITADOS:", linha, 1))
         self.assertEqual(rc, 0, out + err)
 
+    def test_verbo_do_delta_combina_com_o_tipo(self):
+        # R5 da rodada 1: uma linha add levava uma contagem inventada à pergunta, com a frase de "guardar a lição".
+        self.reprova(BLOCO.replace("| 4 | add | LM-023 | ADD Reviews / harness :: sup: `termo_candidato_a` `outro_termo` :: Regra sintética com evidência. **Do instead:** ação sintética. → ficha: — · promovido_para: — |",
+                                   "| 4 | add | LM-023 | LM-016 mordeu+5 |"), "não é da forma de uma linha 'add'")
+        self.reprova(BLOCO.replace("| LM-004 promovido_para=sdd/hooks/pre-commit |", "| LM-004 mordeu+1 |"), "não é da forma de uma linha 'promover'")
+
+    def test_refine_com_evidencia_e_candidato_passa(self):
+        l5 = next(l for l in BLOCO.split("\n") if "| add | LM-024 |" in l)
+        novo = "| 5 | refine | LM-016 | REFINE LM-016 :: Texto novo. **Do instead:** k. | BUILD_REPORT_FIXTURE.md:35, candidato #2 | Duplica o aviso do preflight. | ACEITAR |"
+        rc, out, err = self.confere(BLOCO.replace(l5, novo))
+        self.assertEqual(rc, 0, out + err)
+        self.assertRegex(out, r"(?m)^PERGUNTA 5 refine REFINE LM-016")
+
     def test_remover_e_valido_na_linha_inv(self):
         linha = "| 7 | inv | LM-021 | REMOVER LM-021 | --cruzar: INV_AFETADA descarte LM-021 | Tira o descarte junto. | ACEITAR |\nREJEITADOS:"
         rc, out, err = self.confere(BLOCO.replace("REJEITADOS:", linha, 1))
@@ -238,7 +251,8 @@ class Reprova(Base_):
         self.reprova(BLOCO.replace("CONTAMINAÇÃO: não\n", ""), "falta a linha CONTAMINAÇÃO:")
 
     def test_delta_fora_da_gramatica(self):
-        self.reprova(BLOCO.replace("| LM-004 promovido_para=sdd/hooks/pre-commit |", "| promover LM-004 |"), "Delta fora da gramática")
+        self.reprova(BLOCO.replace("| LM-004 promovido_para=sdd/hooks/pre-commit |", "| promover LM-004 |"), "não é da forma de uma linha 'promover'")
+        self.reprova(BLOCO.replace("| 6 | promover | LM-004 | LM-004 promovido_para=sdd/hooks/pre-commit |", "| 6 | promover | LM-999 | LM-999 promovido_para=sdd/hooks/pre-commit |"), "Delta fora da gramática")
 
     def test_linha_inv_fora_da_gramatica(self):
         linha = "| 7 | inv | INV-009 | isto não é uma invariante | x | Regra nova. | ACEITAR |\nREJEITADOS:"

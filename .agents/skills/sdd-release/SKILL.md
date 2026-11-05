@@ -269,7 +269,7 @@ removido.
        documentos da feature, de `sdd/` ou de `sdd/archive/{F}/`, para a pasta que ele imprime em
        `staging:`; guarde-a como `STG`. Exit 1 = não achou DESIGN nem BUILD_REPORT: num conserto sem SDD
        formal, registre `Curadoria: 0 deltas (sem documentos)` e encerre o 17b; senão é falha (confira o
-       nome da feature). **Sessão nova depois da parada do curador:** rode com `--retomar`, que não copia
+       nome da feature). Qualquer outro exit: pare o 17b e registre `Curadoria: FALHOU (rc=N)`. **Sessão nova depois da parada do curador:** rode com `--retomar`, que não copia
        nem limpa, recalcule `STG` e `T` e vá direto para a parte "Na volta" do item 3: refazer o selo ou o
        snapshot de antes agora tomaria por linha de base o que o curador já escreveu. `--retomar` com exit 1, ou
        `"$T/antes"` ausente = a pasta temporária se perdeu: recomece deste item, sem `--retomar`; nada foi
@@ -282,8 +282,8 @@ removido.
        | `rc` | Ação |
        |---|---|
        | `0` | há o que julgar ou relatar: seguir |
-       | `1` | nada, de nenhum tipo: registre `Curadoria: 0 deltas` na ficha, diga que esta feature não trouxe lição nova nem contagem e encerre o 17b |
-       | qualquer outro (`2`, `64`, `126`, `127`…) | **não é "0 deltas"**: pare o 17b, registre `Curadoria: FALHOU (rc=N)` e diga à pessoa a causa que o script imprimiu, o conserto e que a publicação não foi afetada |
+       | `1` com `RESULTADO: NADA A COLHER` em `colheita.txt` | nada, de nenhum tipo: registre `Curadoria: 0 deltas` na ficha, diga que esta feature não trouxe lição nova nem contagem e encerre o 17b |
+       | qualquer outro, inclusive `1` sem aquela linha (o redirecionamento falhou) (`2`, `64`, `126`, `127`…) | **não é "0 deltas"**: pare o 17b, registre `Curadoria: FALHOU (rc=N)` e diga à pessoa a causa que o script imprimiu, o conserto e que a publicação não foi afetada |
     3. **Despachar o curador em contexto fresco**, pela escada de
        `sdd-build/references/contexto-fresco.md`, com **só** os 5 campos:
        `feature: {F} · staging: $STG · colheita: $STG/colheita.txt · playbook: <raiz>/sdd/playbook.md · worktree: <raiz>`.

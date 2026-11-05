@@ -75,6 +75,15 @@ class Copia(Base_):
         self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md")
         self.assertIn("COPIADO sdd/features/DEFINE_RELATORIO_MENSAL.md", self.copia()[1])
 
+    def test_nome_com_quebra_de_linha_nao_vira_2_caminhos(self):
+        # N1 do auditor, rodada 1
+        self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md\nlixo", "x\n")
+        self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md", "certo\n")
+        rc, out, err = self.copia()
+        self.assertEqual(rc, 0, out + err)
+        self.assertEqual(out.count("COPIADO sdd/features/DEFINE_RELATORIO_MENSAL.md\n"), 1)
+        self.assertEqual((self.f / "sdd/features/DEFINE_RELATORIO_MENSAL.md").read_text(encoding="utf-8"), "certo\n")
+
     def test_nome_com_espaco_chega_inteiro(self):
         self.doc("sdd/features/DEFINE_RELATORIO MENSAL.md")
         self.assertTrue(self.copia()[0] == 0 and (self.f / "sdd/features/DEFINE_RELATORIO MENSAL.md").is_file())

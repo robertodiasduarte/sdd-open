@@ -6,6 +6,7 @@ import json
 import os
 import re
 import shutil
+import unittest
 from pathlib import Path
 
 from apoio import BASH, RAIZ, Sandbox
@@ -396,6 +397,47 @@ class Desde(Base):
         self.assertIn("DELTA LM-002 ajudou+1", out)
 
 
+class FalhaNuncaENada(Base):
+    """R1@claude e R2@codex da rodada 1: exceção não tratada saía 1, o código de "leu tudo e não achou nada"."""
+
+    @unittest.skipIf(os.geteuid() == 0, "root lê qualquer arquivo")
+    def test_playbook_sem_permissao_sai_2_sem_traceback(self):
+        os.chmod(str(self.pb), 0)
+        for args in (["--colher", self.dir, self.pb], ["--aplicar", self.escreve(self.tmp, "d.txt", "LM-001 ajudou+1\n"), self.pb]):
+            with self.subTest(modo=args[0]):
+                rc, out, err = self.cur(*args)
+                self.assertEqual(rc, 2, out + err)
+                self.assertNotIn("Traceback", err)
+                self.assertIn("RESULTADO: FALHA", err)
+                self.assertIn('não é \"0 deltas\"'.replace('\\', ''), err)
+                self.assertNotIn("NADA A COLHER", out)
+
+    @unittest.skipIf(os.geteuid() == 0, "root lê qualquer arquivo")
+    def test_documento_sem_permissao_tambem(self):
+        d = self.doc("AVAL-1.log", "❌ LM-001\n")
+        os.chmod(str(d), 0)
+        rc, out, err = self.colhe()
+        self.assertEqual(rc, 2, out + err)
+
+    def test_nome_de_arquivo_em_bytes_nao_utf8_nao_derruba(self):
+        self.doc("AVAL-1.log", "❌ LM-001\n")
+        nome = os.fsencode(str(self.dir)) + b"/AVAL-\xff.log"
+        try:
+            with open(nome, "wb") as f:
+                f.write("❌ LM-002\n".encode("utf-8"))
+        except OSError:
+            self.skipTest("este sistema de arquivos recusa nome que não é UTF-8")
+        rc, out, err = self.colhe()
+        self.assertIn(rc, (0, 2), out + err)
+        self.assertNotIn("Traceback", err)
+
+    def test_nada_a_colher_continua_saindo_1(self):
+        calmo = self.escreve(self.tmp, "calmo.md", PLAYBOOK.replace("mordeu=2", "mordeu=1"))
+        rc, out, _ = self.cur("--colher", self.dir, calmo)
+        self.assertEqual(rc, 1)
+        self.assertIn("RESULTADO: NADA A COLHER", out)
+
+
 class JaJulgado(Base):
     """Decisão da revisão do DESIGN (D4): a mesma linha não conta 2 vezes em 2 releases da mesma feature."""
 
@@ -444,6 +486,33 @@ class JaJulgado(Base):
         self.assertNotIn("SUGESTAO", self.colhe()[1])
         self.doc("AVAL-2.log", "❌ outra filas_de_envio\n")
         self.assertIn("SUGESTAO mordeu? LM-001", self.colhe()[1])
+
+    def test_sugestao_em_2_arquivos_nao_volta_na_release_seguinte(self):
+        # R3 da rodada 1: só as linhas do 1º arquivo entravam no registro.
+        self.doc("AVAL-1.log", "❌ a filas_de_envio parou\n")
+        self.doc("AVAL-2.log", "❌ de novo filas_de_envio\n")
+        primeira = self.colhe()[1]
+        self.assertEqual(primeira.count("SUGESTAO mordeu? LM-001"), 1)
+        self.assertRegex(primeira, r"SUGESTAO mordeu\? LM-001 .*fp=[0-9a-f]{10},[0-9a-f]{10}")
+        self.registra(primeira)
+        self.assertNotIn("SUGESTAO", self.colhe()[1])
+
+    def test_linha_que_casa_o_2o_termo_tambem_entra(self):
+        pb = self.escreve(self.tmp, "t.md", PLAYBOOK.replace("`filas_de_envio`", "`filas_de_envio` `outro_termo`"))
+        self.doc("AVAL-1.log", "❌ a filas_de_envio parou\n❌ o outro_termo tambem\n")
+        primeira = self.cur("--colher", self.dir, pb)[1]
+        self.registra(primeira)
+        self.assertNotIn("SUGESTAO", self.cur("--colher", self.dir, pb)[1])
+
+    def test_sugestao_da_licao_que_ja_contou_nao_volta(self):
+        self.doc("AVAL-1.log", "❌ por LM-001\n❌ a filas_de_envio parou\n")
+        primeira = self.colhe()[1]
+        self.assertIn("DELTA LM-001 mordeu+1", primeira)
+        self.assertNotIn("SUGESTAO", primeira)
+        self.registra(primeira)
+        segunda = self.colhe()[1]
+        self.assertNotIn("SUGESTAO", segunda)
+        self.assertNotIn("DELTA LM-001", segunda)
 
     def test_candidato_ja_julgado_nao_volta(self):
         ok = "<<<CANDIDATO_PLAYBOOK\nsecao: Backend\nsup: `a`\nregra: r. **Do instead:** x.\nevidencia: e\n>>>\n"

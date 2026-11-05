@@ -58,15 +58,16 @@ reprovou no seu bloco anterior, não é contaminação: conserte exatamente o qu
    - `CANDIDATO #n → LM-xxx`: releia o bloco do candidato na fonte e confira que a `evidencia:` existe
      de verdade. Redija o bullet final: regra em até 3 linhas, `**Do instead:**` concreto, `→ ficha:`
      e `promovido_para: —`. A linha `delta: ADD …` da colheita é o ponto de partida, não o resultado.
-     Linha `add` com `ACEITAR`. Duplica um bullet que já existe? Proponha `refine` do existente, citando
-     `candidato #n` na evidência, ou `DESCARTAR (motivo)`.
+     Linha `add` com `ACEITAR`. Duplica um bullet que já existe? Proponha `refine` do existente, com a evidência
+     começando por `arquivo:linha` e citando `candidato #n` depois dele, ou `DESCARTAR (motivo)`.
    - `REJEITADO`: relate na linha `REJEITADOS:`, com o `arquivo:linha` e o motivo.
    - `PROMOVER? LM-nnn`: é pergunta obrigatória. Transforme a sugestão genérica numa proposta concreta:
      o arquivo do mecanismo (um hook de `sdd/hooks/`, o comando de `release.landmines_cmd`, uma
      asserção no Verify Gate), o que ele confere em 1 frase e o caso que falha antes dele. Linha
      `promover` com `PERGUNTA OBRIGATÓRIA`, nunca `ACEITAR`: promover é uma correção própria, e o
      delta `promovido_para=` só entra de verdade quando o mecanismo já existe na branch padrão.
-   - `IGNORADO` e `JA_COLHIDO`: relate na linha `IGNORADOS/JA_COLHIDOS:`.
+   - `IGNORADO`, `JA_COLHIDO` e `TABELA_SEM_CABECALHO`: relate na linha `IGNORADOS/JA_COLHIDOS:`, citando o
+     ID, o arquivo ou o `arquivo:linha` que a colheita traz.
    - `INV_PENDENTE LM-nnn`: a landmine entrou no universo das invariantes sem classificação, agora ou numa
      release antiga (`já no universo`). Leia o
      bullet e proponha **uma** linha completa, na gramática de `sdd/invariants.md`: a invariante

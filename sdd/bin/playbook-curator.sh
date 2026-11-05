@@ -246,7 +246,10 @@ def arquivo_do_projeto(caminho):
 def caminho_dentro(caminho):
     """Relativo e sem sair da raiz: `.github/x` é legítimo; `/x`, `..` e `../x` não."""
     n = os.path.normpath(caminho)
-    return not os.path.isabs(caminho) and n != ".." and not n.startswith("../")
+    if os.path.isabs(caminho) or n == ".." or n.startswith("../"):
+        return False
+    raiz = os.path.realpath(os.getcwd())
+    return (os.path.realpath(caminho) + os.sep).startswith(raiz + os.sep)  # um link não pode levar para fora
 
 
 def proximo_id(bullets):
@@ -444,7 +447,7 @@ class Colheita:
     @staticmethod
     def digital(*partes):
         """Mesma linha, no mesmo arquivo, para a mesma landmine = mesma impressão: o número da linha pode mudar."""
-        return hashlib.sha1("\x1f".join(p.strip() for p in partes).encode("utf-8")).hexdigest()[:10]
+        return hashlib.sha1("\x1f".join(p.strip() for p in partes).encode("utf-8", "replace")).hexdigest()[:10]
 
     def ja_julgado(self, fp):
         if fp in self.julgados:
@@ -535,21 +538,26 @@ class Colheita:
             return
         for b in self.bullets:
             lm = b["id"]
-            if b["tipo"] != "ativo" or ("mordeu", lm) in self.vistos or ("sug", lm) in self.vistos:
+            if b["tipo"] != "ativo":
                 continue
-            for termo in b["sups"]:
-                if len(termo) < SUG_MIN or termo.isdigit():
-                    continue
-                novos = [(n, ln) for n, ln in sem_lm if termo in ln and self.digital(base, "sug", lm, ln) not in self.julgados]
-                if not novos:
-                    if any(termo in ln for _n, ln in sem_lm):
-                        self.ja_julgados += 1
-                    continue
-                self.vistos.add(("sug", lm))
-                fps = ",".join(self.digital(base, "sug", lm, ln) for _n, ln in novos)
-                self.saida.append("SUGESTAO mordeu? %s — termo `%s` em %s:%d (achado sem LM explícito; "
-                                  "confirmar a causa antes de virar delta) · fp=%s" % (lm, termo, base, novos[0][0], fps))
-                break
+            termos = [t for t in b["sups"] if len(t) >= SUG_MIN and not t.isdigit()]
+            casam = [(n, ln) for n, ln in sem_lm if any(t in ln for t in termos)]
+            if not casam:
+                continue
+            novos = [(n, ln) for n, ln in casam if self.digital(base, "sug", lm, ln) not in self.julgados]
+            if not novos:
+                self.ja_julgados += 1
+                continue
+            fps = ",".join(self.digital(base, "sug", lm, ln) for _n, ln in novos)
+            # Toda linha entra no registro: a que não sair agora voltaria como sugestão nova na próxima release.
+            ja = self.linha_do.get(("sug", lm), self.linha_do.get(("mordeu", lm)))
+            if ja is not None:
+                self.saida[ja] += "," + fps
+                continue
+            termo = next(t for t in termos if t in novos[0][1])
+            self.linha_do[("sug", lm)] = len(self.saida)
+            self.saida.append("SUGESTAO mordeu? %s — termo `%s` em %s:%d (achado sem LM explícito; "
+                              "confirmar a causa antes de virar delta) · fp=%s" % (lm, termo, base, novos[0][0], fps))
 
     def blocos_de_candidato(self, caminho, base):
         lista = secoes()
@@ -1439,6 +1447,14 @@ def conferir_bloco(args):
             contagem[rec] += 1
             continue
         # daqui para baixo: linha que entra (AUTO) ou vai para pergunta (ACEITAR, PERGUNTA OBRIGATÓRIA)
+        forma = {"contador": RE_CONTADOR, "sugestao": RE_CONTADOR, "add": RE_ADD, "refine": RE_REFINE,
+                 "tombstone": RE_TOMB, "promover": RE_PROMO}.get(tipo)
+        if forma is not None and not forma.match(delta):
+            defeitos.append("%s: o delta '%s' não é da forma de uma linha '%s': a frase da pessoa falaria de uma coisa, e entraria outra"
+                            % (rotulo, delta[:40], tipo))
+            continue
+        if tipo == "add" and not RE_LM.search(r["lm"]):
+            defeitos.append("%s: a linha add leva na coluna LM o ID proposto pela colheita" % rotulo)
         if tipo == "inv":
             if not (RE_INV.match(delta) or RE_DESC.match(delta) or re.match(r"^REMOVER (INV-\d{3,}|LM-\d{3})$", delta)):
                 defeitos.append("%s: a célula Delta de uma linha inv é a linha completa da invariante ou do descarte, ou REMOVER <id>" % rotulo)
@@ -1893,6 +1909,11 @@ try:
     sys.exit(main(sys.argv[1:]))
 except BrokenPipeError:
     sys.exit(0)
+except Exception as e:
+    # Sem isto, o Python sai 1, o código de "leu tudo e não achou nada", e uma falha de leitura vira "0 deltas".
+    erro("🛑 playbook-curator: não consegui terminar: %s: %s" % (type(e).__name__, e))
+    fim("FALHA", "isto não é \"0 deltas\": confira a permissão dos arquivos citados e rode de novo; nada foi aplicado.", sys.stderr)
+    sys.exit(2)
 PY
 rc=$?
 [ -z "${TMPIN}" ] || rm -f "${TMPIN}"

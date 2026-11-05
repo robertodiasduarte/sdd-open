@@ -6,10 +6,11 @@ ordem, com os nomes que os scripts usam, e que as cópias desses nomes (brief, s
 """
 from __future__ import annotations
 
+import os
 import re
 import unittest
 
-from apoio import RAIZ
+from apoio import BASH, RAIZ, Sandbox
 
 
 def ler(rel: str) -> str:
@@ -51,7 +52,9 @@ class Passo17b(unittest.TestCase):
         self.assertIn('**não é "0 deltas"**', PASSO)
         self.assertIn("`Curadoria: FALHOU (rc=N)`", PASSO)
         self.assertIn("a publicação não foi afetada", PASSO)
-        self.assertRegex(PASSO, r"qualquer outro \(`2`, `64`, `126`, `127`")
+        self.assertIn("`1` com `RESULTADO: NADA A COLHER` em `colheita.txt`", PASSO)
+        self.assertIn("inclusive `1` sem aquela linha", PASSO)
+        self.assertRegex(PASSO, r"\(`2`, `64`, `126`, `127`")
 
     def test_so_o_conferidor_separa_contagem_de_regra(self):
         self.assertIn("Nunca separe contagem de regra à mão", PASSO)
@@ -194,6 +197,58 @@ class BriefDoCurador(unittest.TestCase):
         for trecho in ("references/curator.md", "`sdd/invariants.md`", "--validar-inv", "--cruzar", "--conferir-bloco"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, skill)
+
+
+class RestauracaoDoDefine(Sandbox):
+    """R1@codex da rodada 1: a sequência escrita no passo 11, executada, com um link no nome intermediário."""
+
+    def sequencia(self):
+        passo = ler(".agents/skills/sdd-define/SKILL.md")
+        m = re.search(r"`(rm -f sdd/features/DEFINE_<F>\.md\.restaurando && .*?)`", passo)
+        self.assertIsNotNone(m)
+        return m.group(1).replace("<F>", "X")
+
+    def monta(self):
+        p = self.tmp / "p"
+        (p / "sdd/features").mkdir(parents=True)
+        self.escreve(p, "sdd/features/DEFINE_X.md", "mexido\n")
+        self.t = self.escreve(self.tmp, "t/DEFINE.antes", "original\n").parent
+        return p
+
+    def roda_seq(self, p, t=None):
+        env = dict(self.env, T=str(t if t is not None else self.t))
+        return self.roda([BASH, "-c", self.sequencia()], p, env)
+
+    def test_restaura(self):
+        p = self.monta()
+        rc, out, err = self.roda_seq(p)
+        self.assertEqual(rc, 0, out + err)
+        self.assertEqual((p / "sdd/features/DEFINE_X.md").read_text(encoding="utf-8"), "original\n")
+
+    def test_link_no_intermediario_nao_escreve_no_alvo(self):
+        p = self.monta()
+        vitima = self.escreve(p, "vitima.txt", "vitima\n")
+        os.symlink(str(vitima), str(p / "sdd/features/DEFINE_X.md.restaurando"))
+        rc, out, err = self.roda_seq(p)
+        self.assertEqual(rc, 0, out + err)
+        self.assertEqual(vitima.read_text(encoding="utf-8"), "vitima\n")
+        self.assertFalse(os.path.islink(str(p / "sdd/features/DEFINE_X.md")))
+        self.assertEqual((p / "sdd/features/DEFINE_X.md").read_text(encoding="utf-8"), "original\n")
+
+    def test_link_no_lugar_do_define_nao_escreve_no_alvo(self):
+        p = self.monta()
+        vitima = self.escreve(p, "vitima.txt", "vitima\n")
+        (p / "sdd/features/DEFINE_X.md").unlink()
+        os.symlink(str(vitima), str(p / "sdd/features/DEFINE_X.md"))
+        self.assertEqual(self.roda_seq(p)[0], 0)
+        self.assertEqual(vitima.read_text(encoding="utf-8"), "vitima\n")
+        self.assertFalse(os.path.islink(str(p / "sdd/features/DEFINE_X.md")))
+
+    def test_copia_inalcancavel_nao_apaga_o_define(self):
+        p = self.monta()
+        rc, _, _ = self.roda_seq(p, self.tmp / "nao-existe")
+        self.assertNotEqual(rc, 0)
+        self.assertEqual((p / "sdd/features/DEFINE_X.md").read_text(encoding="utf-8"), "mexido\n")
 
 
 class NovaSessao(unittest.TestCase):

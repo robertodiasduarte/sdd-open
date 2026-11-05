@@ -2,6 +2,8 @@
 do sdd/bin/playbook-curator.sh (DEFINE F14 AT-014 a AT-019)."""
 from __future__ import annotations
 
+import os
+
 from apoio import BASH, RAIZ, Sandbox
 
 CURATOR = RAIZ / "sdd/bin/playbook-curator.sh"
@@ -123,6 +125,18 @@ class Trava(Base_):
         rc, _, err = self.trava(BASE, pb=pb)
         self.assertEqual(rc, 2, err)
         self.assertIn("INV-001 é estado=ok sem check=", err)
+
+    def test_check_por_link_que_sai_da_raiz_reprova_e_link_interno_passa(self):
+        # R4@codex da rodada 1
+        fora = self.escreve(self.tmp.parent, "alvo-%s.sh" % self.tmp.name, "x\n")
+        self.addCleanup(fora.unlink)
+        os.symlink(str(fora), str(self.tmp / "sdd/check-fora.sh"))
+        rc, _, err = self.trava(BASE + "- [INV-003] estado=ok origem=seed check=sdd/check-fora.sh :: R · por quê: p\n")
+        self.assertEqual(rc, 2, err)
+        self.assertIn("relativo à raiz", err)
+        os.symlink("bin/report-lint.py", str(self.tmp / "sdd/check-dentro.py"))
+        rc, out, err = self.trava(BASE + "- [INV-003] estado=ok origem=seed check=sdd/check-dentro.py :: R · por quê: p\n")
+        self.assertEqual(rc, 0, out + err)
 
     def test_check_e_promovido_que_nao_sao_arquivo_do_projeto(self):
         # N-L6 do avaliador, ciclo 2

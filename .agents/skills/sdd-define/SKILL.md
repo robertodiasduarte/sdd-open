@@ -279,10 +279,11 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
    lista, `lacuna:` sem os 3 campos ou sem `muda:`/`porque:`, `relatorio:` diferente do `saida:`, Gnn do
    bloco diferente dos títulos `### Gnn — ` de `## Lacunas`, `REVISADO` sem `MUDOU: <saida>`, ou outro
    resultado com o relatório gravado). Tratamento, **nada destrutivo**: DEFINE em `FORA:` ⇒
-   `cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md.restaurando && rm -f sdd/features/DEFINE_<F>.md && mv sdd/features/DEFINE_<F>.md.restaurando sdd/features/DEFINE_<F>.md && cmp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md`,
+   `rm -f sdd/features/DEFINE_<F>.md.restaurando && cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md.restaurando && rm -f sdd/features/DEFINE_<F>.md && mv sdd/features/DEFINE_<F>.md.restaurando sdd/features/DEFINE_<F>.md && cmp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md`,
    recalculando o `T` pela fórmula do item 2 na mesma chamada (variável de shell não passa de uma chamada para
-   a outra; com o `T` vazio, a cópia falha primeiro e o DEFINE fica onde está). A cópia vem **antes** do `rm`: se
-   ela não for alcançada, nada é apagado; o `cmp` no fim confere o resultado. DEFINE trocado por uma pasta ⇒ não apague: mostre à pessoa. (o
+   a outra; com o `T` vazio, a cópia falha primeiro e o DEFINE fica onde está). A cópia vem **antes** do `rm` do DEFINE: se
+   ela não for alcançada, nada é apagado. O 1º `rm` tira um link que o agente tenha posto no nome intermediário:
+   um `cp` sobre ele escreveria no arquivo para onde ele aponta. O `cmp` no fim confere o resultado. DEFINE trocado por uma pasta ⇒ não apague: mostre à pessoa. (o
    `rm` antes desfaz um link que o agente tenha posto no lugar do DEFINE: um `cp` sobre o link escreveria no
    arquivo para onde ele aponta); outros `FORA:` ⇒ liste, não
    apague; o `saida:` que estava `AUSENTE` no antes ⇒ remova.

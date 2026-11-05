@@ -77,8 +77,7 @@ uma_pasta() {  # $1 = sdd/features | sdd/reviews
   # --others: o que o git não tem salvo, ignorado ou não. -z: nome com espaço ou acento chega inteiro.
   git -C "${PRINCIPAL}" ls-files --others -z -- "${dir}" > "${lista}.z" 2>/dev/null \
     || { echo "🛑 copiar-docs: o git não listou ${dir} em ${PRINCIPAL}" >&2; falhas=$((falhas + 1)); return 0; }
-  tr '\0' '\n' < "${lista}.z" > "${lista}"
-  while IFS= read -r rel; do
+  while IFS= read -r -d '' rel; do
     [ -n "${rel}" ] || continue
     base="${rel#${dir}/}"
     fk="$(feature_de "${base}")"       # só o nível de cima e só os 5 prefixos
@@ -106,11 +105,10 @@ uma_pasta() {  # $1 = sdd/features | sdd/reviews
         parecidos=$((parecidos + 1))
       fi
     fi
-  done < "${lista}"
+  done < "${lista}.z"
   # salvo no git do principal e ausente na frente: o commit ainda não chegou à branch de onde a frente nasceu
   git -C "${PRINCIPAL}" ls-files -z -- "${dir}" > "${lista}.z" 2>/dev/null || return 0
-  tr '\0' '\n' < "${lista}.z" > "${lista}"
-  while IFS= read -r rel; do
+  while IFS= read -r -d '' rel; do
     [ -n "${rel}" ] || continue
     fk="$(feature_de "${rel#${dir}/}")"
     [ "${fk}" = "${SLUG}" ] || continue
@@ -118,7 +116,7 @@ uma_pasta() {  # $1 = sdd/features | sdd/reviews
       printf 'NAO_COPIADO %s (está salvo no git do checkout principal, mas não na branch de onde a frente nasceu)\n' "${rel}"
       nao_copiados=$((nao_copiados + 1))
     fi
-  done < "${lista}"
+  done < "${lista}.z"
 }
 
 uma_pasta sdd/features
