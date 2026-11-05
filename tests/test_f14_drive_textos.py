@@ -20,7 +20,7 @@ SCRIPT = ler("sdd/bin/sdd-drive.sh")
 CONTRATOS = ler("sdd/WORKFLOW_CONTRACTS.yaml")
 RELEASE = ler(".agents/skills/sdd-release/SKILL.md")
 RAIO = ler(".agents/skills/sdd-release/references/raio-de-impacto.md")
-DOCS = (ler("docs/drive.md"), ler("docs/pt-BR/drive.md"))
+DOCS = (ler("docs/sdd-drive.md"), ler("docs/pt-BR/sdd-drive.md"))
 ITEM10 = RELEASE[RELEASE.index("10. **Verificar — pelo commit publicado"):RELEASE.index("11. **Changelog:**")]
 PASSO0B = RELEASE[RELEASE.index("**0b. Raio de impacto"):RELEASE.index("**0c. Segurança")]
 ACOES = ("ESPERAR", "DESIGN", "REVISAO_DESIGN", "RODADA", "CORRIGIR", "COMMITAR", "VERIFICAR", "AVALIAR_E_RELATAR")
@@ -167,7 +167,7 @@ class Config(unittest.TestCase):
 class Pacote(unittest.TestCase):
     NOVOS = ("sdd/bin/sdd-drive.sh", "sdd/bin/deploy-do-sha.sh", "sdd/bin/sdd-archive.py", ".agents/skills/sdd-drive/SKILL.md",
              ".agents/skills/sdd-drive/references/como-falar.md", ".agents/skills/sdd-drive/references/executor.md",
-             ".agents/skills/sdd-release/references/raio-de-impacto.md", "docs/drive.md", "docs/pt-BR/drive.md",
+             ".agents/skills/sdd-release/references/raio-de-impacto.md", "docs/sdd-drive.md", "docs/pt-BR/sdd-drive.md",
              "tests/test_drive.py", "tests/test_deploy_do_sha.py", "tests/test_sdd_archive.py", "tests/test_f14_drive_textos.py")
 
     def test_arquivos_novos_no_manifest(self):

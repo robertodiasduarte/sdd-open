@@ -32,7 +32,7 @@ Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` �
 (prompt-drift-scan.sh; ver [llm-in-code.md](llm-in-code.md)) · `HÁ O QUE JULGAR` · `NADA A COLHER` · `BLOCO VÁLIDO` ·
 `BLOCO INVÁLIDO` · `PAR VÁLIDO` · `TRAVA` (playbook-curator.sh; ver [playbook-curation.md](playbook-curation.md)) ·
 `NADA A COPIAR` (copiar-docs.sh da `sdd-new-session`) · `CONCLUIDO` · `CONTINUAR` · `PARADA` · `FALHA` · `RECIBO GRAVADO`
-(sdd-drive.sh; ver [drive.md](drive.md)) · `NO AR` · `NAO ESTA NO AR` · `FALHOU` · `AINDA NAO SEI` (deploy-do-sha.sh) ·
+(sdd-drive.sh; ver [sdd-drive.md](sdd-drive.md)) · `NO AR` · `NAO ESTA NO AR` · `FALHOU` · `AINDA NAO SEI` (deploy-do-sha.sh) ·
 `SIMULACAO` · `MOVIDO` (sdd-archive.py).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate

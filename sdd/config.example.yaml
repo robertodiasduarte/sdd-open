@@ -83,7 +83,7 @@ review:
 flow:
   autonomous: false
 
-# O piloto (skill sdd-drive; docs/drive.md). Quantas rodadas ele tem para ficar verde, por execução: 1 rodada é
+# O piloto (skill sdd-drive; docs/sdd-drive.md). Quantas rodadas ele tem para ficar verde, por execução: 1 rodada é
 # construir o que falta e rodar o teste final. Inteiro >= 1; --max sobrepõe. Vazio = 3.
 drive:
   max_rounds: 3

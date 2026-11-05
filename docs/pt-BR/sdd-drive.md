@@ -1,4 +1,4 @@
-<!-- Idioma: **Português** · [English](../drive.md) -->
+<!-- Idioma: **Português** · [English](../sdd-drive.md) -->
 
 # Pilotar uma feature: `sdd-drive`
 

@@ -100,7 +100,7 @@ Works on macOS, Linux and Windows (Git Bash/WSL): bash 3.2, zero zsh, zero symli
 - [LLM in the code](docs/llm-in-code.md) ([PT](docs/pt-BR/llm-in-code.md)) — the process-in-a-loop skill, the prompt router and inventory, the prompt drift scan and the contrast meter.
 - [Context and governance](docs/context-and-governance.md) ([PT](docs/pt-BR/context-and-governance.md)) — the domain map (step 1.5) and the governance review (step 11) of the Define, the exit 5 after upgrading, project patterns
 - [Playbook curation and invariants](docs/playbook-curation.md) ([PT](docs/pt-BR/playbook-curation.md)) — what a release harvests from the feature, what enters without a question, the invariants file and its lock.
-- [Driving a feature](docs/drive.md) ([PT](docs/pt-BR/drive.md)) — `sdd-drive` takes one DEFINE to "ready to publish" with a round limit, resume and 12 stop reasons, and never publishes; also `deploy-do-sha.sh` and `sdd-archive.py`.
+- [Driving a feature](docs/sdd-drive.md) ([PT](docs/pt-BR/sdd-drive.md)) — `sdd-drive` takes one DEFINE to "ready to publish" with a round limit, resume and 12 stop reasons, and never publishes; also `deploy-do-sha.sh` and `sdd-archive.py`.
 - [Adversarial review](docs/adversarial-review.md) ([PT](docs/pt-BR/adversarial-review.md)) — one engine reviews the frozen diff, another audits the review; cost per role, privacy, the external review the release requires, the offline gate and `eval-agree`
 - [Roadmap](docs/roadmap.md) ([PT](docs/pt-BR/roadmap.md)) — what is planned and what is under evaluation
 - [Student guide](docs/pt-BR/guia-do-aluno.md) (PT) — step by step for someone who never used git or a terminal

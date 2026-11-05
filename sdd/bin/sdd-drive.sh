@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # sdd-drive.sh — leva um DEFINE até "pronto para publicar" e para na barreira. O script decide; quem executa
-# cada ação é o agente (skill sdd-drive). Contrato em docs/drive.md e em sdd/WORKFLOW_CONTRACTS.yaml › sdd_drive.
+# cada ação é o agente (skill sdd-drive). Contrato em docs/sdd-drive.md e em sdd/WORKFLOW_CONTRACTS.yaml › sdd_drive.
 #
 # USO-INICIO
 #   sdd-drive.sh iniciar <DEFINE.md> [--max N]        confere, grava o estado e diz a 1ª ação
@@ -60,7 +60,7 @@ SELF = os.environ.get("SDD_DRIVE_SELF", "sdd-drive.sh")
 BASH = os.environ.get("SDD_DRIVE_BASH") or "bash"
 
 # nome → (frase para a pessoa, exit, RESULTADO, seta). A tabela é contrato: test_f14_drive_textos a compara com a
-# skill, o WORKFLOW_CONTRACTS e o docs/drive.md.
+# skill, o WORKFLOW_CONTRACTS e o docs/sdd-drive.md.
 MOTIVOS = {
     "gate-verde": ("O teste final passou e os relatórios estão prontos. Nada foi publicado.", 0, "CONCLUIDO",
                    "revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica."),

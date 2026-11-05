@@ -368,8 +368,8 @@ class Roadmap(unittest.TestCase):
 
     def test_drive_tem_documento_proprio_linkado_do_readme(self):
         # F14_DRIVE (AT-036): saiu do roadmap e o mecanismo vem com o seu documento.
-        casos = {"en": (RAIZ / "docs/drive.md", RAIZ / "README.md", "docs/drive.md", RAIZ / "docs/roadmap.md"),
-                 "pt": (RAIZ / "docs/pt-BR/drive.md", RAIZ / "README.pt-BR.md", "docs/pt-BR/drive.md", RAIZ / "docs/pt-BR/roadmap.md")}
+        casos = {"en": (RAIZ / "docs/sdd-drive.md", RAIZ / "README.md", "docs/sdd-drive.md", RAIZ / "docs/roadmap.md"),
+                 "pt": (RAIZ / "docs/pt-BR/sdd-drive.md", RAIZ / "README.pt-BR.md", "docs/pt-BR/sdd-drive.md", RAIZ / "docs/pt-BR/roadmap.md")}
         for lingua, (doc, readme, link, roadmap) in casos.items():
             with self.subTest(lingua=lingua):
                 for termo in ("sdd-drive.sh", "drive.max_rounds", "deploy-do-sha.sh", "sdd-archive.py", "--fundo", "gate-alterado"):

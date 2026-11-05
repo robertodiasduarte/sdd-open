@@ -127,7 +127,6 @@ docs/chained-flow.md
 docs/cli-conventions.md
 docs/comparison.md
 docs/context-and-governance.md
-docs/drive.md
 docs/hooks.md
 docs/llm-in-code.md
 docs/playbook-curation.md
@@ -136,16 +135,17 @@ docs/pt-BR/adversarial-review.md
 docs/pt-BR/chained-flow.md
 docs/pt-BR/comparison.md
 docs/pt-BR/context-and-governance.md
-docs/pt-BR/drive.md
 docs/pt-BR/guia-do-aluno.md
 docs/pt-BR/hooks.md
 docs/pt-BR/llm-in-code.md
 docs/pt-BR/playbook-curation.md
 docs/pt-BR/quickstart.md
 docs/pt-BR/roadmap.md
+docs/pt-BR/sdd-drive.md
 docs/pt-BR/verify-gate-contract.md
 docs/quickstart.md
 docs/roadmap.md
+docs/sdd-drive.md
 docs/verify-gate-contract.md
 scripts/check-versions.py
 scripts/next-version.sh
