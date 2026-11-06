@@ -1,0 +1,62 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/copia && export TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/tmp; rc=0; for m in test_verify_gate test_fluxo test_contrato_build_release test_playbook_curator test_skill_lint test_conversa test_docs test_decisoes_lint test_bash32 test_playbook_invariantes; do echo "=== $m"; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p $m.py 2>&1 || rc=1; done; exit $rc
+=== test_verify_gate
+...........................
+----------------------------------------------------------------------
+Ran 27 tests in 2.338s
+
+OK
+=== test_fluxo
+...................................................................
+----------------------------------------------------------------------
+Ran 67 tests in 11.029s
+
+OK
+=== test_contrato_build_release
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 0.116s
+
+OK
+=== test_playbook_curator
+...................................s....................................................................
+----------------------------------------------------------------------
+Ran 104 tests in 21.546s
+
+OK (skipped=1)
+=== test_skill_lint
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 2.452s
+
+OK
+=== test_conversa
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.076s
+
+OK
+=== test_docs
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 0.043s
+
+OK
+=== test_decisoes_lint
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 1.419s
+
+OK
+=== test_bash32
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.058s
+
+OK
+=== test_playbook_invariantes
+........................................
+----------------------------------------------------------------------
+Ran 40 tests in 4.469s
+
+OK
+[exit=0]

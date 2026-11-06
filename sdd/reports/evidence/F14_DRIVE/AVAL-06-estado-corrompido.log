@@ -1,0 +1,95 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo $V/x "false"; drv iniciar $D; S=sdd/reports/progress/DRIVE_F.json; cp $S $V/bom.json
+muda() { python3 - "$1" <<PY
+import json,sys
+s=json.load(open("$V/bom.json")); s.update(json.loads(sys.argv[1])); json.dump(s,open("$S","w"))
+PY
+}
+for c in "{\"gates\":[{}]}" "{\"gates\":[1]}" "{\"repeticao\":{\"chave\":\"x\"}}" "{\"repeticao\":3}" "{\"recibos\":3}" "{\"trocas_gate\":3}" "{\"maximo\":0}" "{\"maximo\":-1}" "{\"maximo\":true}" "{\"gate_cmd\":null}" "{\"inicio\":null}" "{\"gates\":[{\"exit\":\"2\"}]}"; do
+  echo "=== estado com $c"; muda "$c"
+  for v in proximo concluir "--resume"; do /bin/bash sdd/bin/sdd-drive.sh $v $D > $V/o.txt 2>&1; rc=$?; echo "$v rc=$rc: $(grep -E "^(motivo|ACAO)|Error" $V/o.txt | head -n 2 | tr "\n" " ")"; done
+  /bin/bash sdd/bin/sdd-drive.sh recibo $D texto > $V/o.txt 2>&1; rc=$?; echo "recibo rc=$rc: $(grep -E "^(motivo|ACAO)|Error" $V/o.txt | head -n 1)"
+done
+printf "nao e json" > $S; drv proximo $D
+printf "[]" > $S; drv proximo $D
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+=== estado com {"gates":[{}]}
+proximo rc=1: KeyError: 'exit' 
+concluir rc=1: KeyError: 'exit' 
+--resume rc=1: KeyError: 'exit' 
+recibo rc=1: KeyError: 'exit'
+=== estado com {"gates":[1]}
+proximo rc=1: TypeError: 'int' object is not subscriptable 
+concluir rc=1: TypeError: 'int' object is not subscriptable 
+--resume rc=1: TypeError: 'int' object is not subscriptable 
+recibo rc=1: TypeError: 'int' object is not subscriptable
+=== estado com {"repeticao":{"chave":"x"}}
+proximo rc=10: ACAO: RODADA 
+concluir rc=10: ACAO: RODADA 
+--resume rc=10: ACAO: RODADA 
+recibo rc=0: 
+=== estado com {"repeticao":3}
+proximo rc=1: AttributeError: 'int' object has no attribute 'get' 
+concluir rc=10: ACAO: RODADA 
+--resume rc=10: ACAO: RODADA 
+recibo rc=0: 
+=== estado com {"recibos":3}
+proximo rc=10: ACAO: RODADA 
+concluir rc=10: ACAO: RODADA 
+--resume rc=10: ACAO: RODADA 
+recibo rc=1: AttributeError: 'int' object has no attribute 'append'
+=== estado com {"trocas_gate":3}
+proximo rc=10: ACAO: RODADA 
+concluir rc=10: ACAO: RODADA 
+--resume rc=10: ACAO: RODADA 
+recibo rc=1: TypeError: 'int' object is not iterable
+=== estado com {"maximo":0}
+proximo rc=20: motivo: orcamento-rodadas 
+concluir rc=20: motivo: orcamento-rodadas 
+--resume rc=20: motivo: orcamento-rodadas 
+recibo rc=0: 
+=== estado com {"maximo":-1}
+proximo rc=20: motivo: orcamento-rodadas 
+concluir rc=20: motivo: orcamento-rodadas 
+--resume rc=20: motivo: orcamento-rodadas 
+recibo rc=0: 
+=== estado com {"maximo":true}
+proximo rc=10: ACAO: RODADA 
+concluir rc=10: ACAO: RODADA 
+--resume rc=10: ACAO: RODADA 
+recibo rc=0: 
+=== estado com {"gate_cmd":null}
+proximo rc=10: ACAO: RODADA 
+concluir rc=10: ACAO: RODADA 
+--resume rc=10: ACAO: RODADA 
+recibo rc=1: AttributeError: 'NoneType' object has no attribute 'replace'
+=== estado com {"inicio":null}
+proximo rc=10: ACAO: RODADA 
+concluir rc=10: ACAO: RODADA 
+--resume rc=10: ACAO: RODADA 
+recibo rc=1: TypeError: 'NoneType' object is not subscriptable
+=== estado com {"gates":[{"exit":"2"}]}
+proximo rc=10: ACAO: RODADA 
+concluir rc=10: ACAO: RODADA 
+--resume rc=10: ACAO: RODADA 
+recibo rc=1: KeyError: 'n'
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: estado-invalido
+Não consegui ler onde a execução parou, e não vou adivinhar.
+sdd/reports/progress/DRIVE_F.json não é um JSON legível: Expecting value: line 1 column 1 (char 0)
+RESULTADO: PARADA
+→ confira o arquivo citado acima: use --resume se ele for desta execução, ou apague-o e rode iniciar.
+[rc=20]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: estado-invalido
+Não consegui ler onde a execução parou, e não vou adivinhar.
+sdd/reports/progress/DRIVE_F.json não tem os campos esperados
+RESULTADO: PARADA
+→ confira o arquivo citado acima: use --resume se ele for desta execução, ou apague-o e rode iniciar.
+[rc=20]
+[exit=0]

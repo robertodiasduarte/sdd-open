@@ -1,0 +1,72 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/cen.py /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/ghshim/gh
+# lab.sh: monta repositorio de sonda (mesma forma do self-test) e copia os scripts reais do projeto.
+PROJ=/Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
+LAB=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz
+export TMPDIR=$LAB/tmp PATH=/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin
+export GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@example.com GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@example.com GIT_TERMINAL_PROMPT=0 SDD_TRACE=off
+export GIT_CONFIG_NOSYSTEM=1
+D=sdd/features/DEFINE_F.md
+define() { # define <cmd> [kind]
+  printf "# DEFINE: F\n\n## Technical Context\n\n| Aspect | Value | Notes |\n|---|---|---|\n| **Governança** | N.A. — sonda | t |\n\n## Verify Gate\n\n\`\`\`yaml\nverify_gate:\n  kind: %s\n  cmd: \"%s\"\n  pass_when: \"exit 0\"\n  threshold: \"—\"\n  manual_fallback: \"—\"\n\`\`\`\n" "${2:-test}" "$1"
+}
+design() { # design <arq>...
+  printf "# DESIGN: F\n\n## Metadata\n\n| Attribute | Value |\n|---|---|\n| **Status** | Ready for Build |\n\n## Key Decisions\n\n### Decision 1: x\n\nx\n\n## File Manifest\n\n| # | File | Action | Purpose | Agent / Owner | Dependencies |\n|---:|---|---|---|---|---|\n"
+  k=0; for a in "$@"; do k=$((k+1)); printf "| %d | \`%s\` | Modify | x | (general) | None |\n" $k "$a"; done
+  printf "\n**Total Files:** %d\n" $k
+}
+mkrepo() { # mkrepo <pasta> [cmd do gate]  -> cd para a pasta, branch frente, 1 commit
+  R="$1"; mkdir -p "$R/sdd/bin" "$R/sdd/features"; cd "$R" || exit 9
+  for s in sdd-drive.sh verify-gate.sh sdd-fluxo.sh design-lint.py report-lint.py; do cp "$PROJ/sdd/bin/$s" sdd/bin/; done
+  define "${2:-echo x >> gate.calls; test -f .verde}" > $D
+  design a b > sdd/features/DESIGN_F.md
+  printf ".verde\ngate.calls\n.go\n" > .gitignore
+  git init -q; git symbolic-ref HEAD refs/heads/frente; git add -A; git commit -q -m base
+}
+drv() { echo "--- sdd-drive $*"; /bin/bash sdd/bin/sdd-drive.sh "$@"; echo "[rc=$?]"; }
+feito() { mkdir -p sdd/reports/progress; printf -- "- [x] a\n- [x] b\n" > sdd/reports/progress/PROGRESS_F.md; }
+novo() { mktemp -d "$LAB/r.XXXXXX"; }
+# --- deploy: mkdep <pasta> cria remoto nu + clone em main com 1 commit; X=sha; dep roda o script real (bash 3.2) com gh de mentira
+mkdep() { R="$1"; mkdir -p "$R"; git init -q --bare "$R/remoto.git"; mkdir -p "$R/clone"; cd "$R/clone" || exit 9; git init -q; git symbolic-ref HEAD refs/heads/main; echo 1 > a.txt; git add -A; git commit -q -m 1; git remote add origin "$R/remoto.git"; git push -q origin main; X=$(git rev-parse HEAD); GH_DIR="$R/gh"; mkdir -p "$GH_DIR"; export GH_DIR; export PATH="$LAB/ghshim:$PATH"; }
+novoc() { echo $RANDOM >> a.txt; git add -A; git commit -q -m c; git push -q origin main; git rev-parse HEAD; }
+cen() { python3 -B "$LAB/cen.py" "$GH_DIR" "$1" "$X" "${Y:-}" "${Z:-}"; }
+limpa() { : > "$GH_DIR/gh.log"; echo 0 > "$GH_DIR/pos"; }
+dep() { echo "--- deploy-do-sha $*"; /bin/bash "$PROJ/sdd/bin/deploy-do-sha.sh" "$@" 2>&1 | cut -c1-190; echo "[rc=${PIPESTATUS[0]}]"; }
+d1() { dep --commit "$X" --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0 "$@"; }
+# --- archive: mkarq <pasta> cria repo com data de commit antiga; arq = script real em Python 3.9
+mkarq() { R="$1"; mkdir -p "$R/sdd/features" "$R/sdd/reports" "$R/sdd/reviews" "$R/sdd/handoffs"; cd "$R" || exit 9; git init -q; git symbolic-ref HEAD refs/heads/frente; }
+velho() { git add -A; GIT_COMMITTER_DATE="2020-01-01T00:00:00" GIT_AUTHOR_DATE="2020-01-01T00:00:00" git commit -q -m velho; }
+arq() { echo "--- sdd-archive $*"; /usr/bin/python3 -B "$PROJ/sdd/bin/sdd-archive.py" "$@" 2>&1 | cut -c1-170; echo "[rc=${PIPESTATUS[0]}]"; }
+# cen.py <dir> <python-expr>: grava cenario.json; R(id, sha, ...) monta um run
+import json, sys
+def R(i, s, st="completed", c="success", t="2026-01-01T00:00:00Z", b="main", e="push"):
+    return dict(databaseId=i, headSha=s, headBranch=b, status=st, conclusion=c, createdAt=t, workflowName="deploy", event=e)
+d, expr = sys.argv[1], sys.argv[2]
+X, Y, Z = (sys.argv[3:] + [""]*3)[:3]
+v = eval(expr)
+json.dump(v, open(d + "/cenario.json", "w"))
+#!/usr/bin/python3 -B
+# gh de mentira: mesma mecanica do tests/test_deploy_do_sha.py; passos em $GH_DIR/cenario.json, argv em $GH_DIR/gh.log
+import json, os, sys
+a = sys.argv[1:]; d = os.environ["GH_DIR"]
+open(os.path.join(d, "gh.log"), "a").write(" ".join(a) + "\n")
+c = json.load(open(os.path.join(d, "cenario.json")))
+if c.get("erro"):
+    sys.stderr.write(c["erro"] + "\n"); sys.exit(1)
+pos = os.path.join(d, "pos"); i = int(open(pos).read()) if os.path.exists(pos) else 0
+passos = c["passos"]
+if a[:2] == ["run", "list"]:
+    if "--commit" in a:
+        open(pos, "w").write(str(i + 1)); p = passos[min(i, len(passos) - 1)]
+        print(json.dumps([r for r in p["runs"] if r.get("headSha") == a[a.index("--commit") + 1]]))
+    else:
+        p = passos[min(max(i - 1, 0), len(passos) - 1)]; print(json.dumps(p["runs"]))
+elif a[:2] == ["run", "view"]:
+    if "view_bruto" in c: print(c["view_bruto"])
+    else: print(json.dumps(dict(jobs=c.get("jobs") or [dict(steps=[dict(name=c.get("passo", "x"), conclusion="failure")])])))
+elif a[:2] == ["workflow", "run"]:
+    if c.get("dispatch_erro"):
+        sys.stderr.write(c["dispatch_erro"] + "\n"); sys.exit(1)
+    open(pos, "w").write(str(i + 1))
+else:
+    sys.exit(9)
+[exit=0]

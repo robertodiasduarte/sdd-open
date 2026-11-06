@@ -1,0 +1,404 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p03.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p03.sh
+. $(dirname "$0")/lab.sh
+caso() { echo; echo "=== $1"; ( shift; "$@" ) 2>&1; }
+ct() { [ -f gate.calls ] && echo "gate.calls=$(wc -l < gate.calls | tr -d " ")" || echo "gate.calls=0"; }
+base() { mkrepo "$(novo)"; echo print > codigo.py; git add -A; git commit -qm cod; verde >/dev/null 2>&1; ct; }
+ed() { /usr/bin/python3 -I -B -c "import json;p=\"sdd/reports/progress/DRIVE_F.json\";d=json.load(open(p));$1;json.dump(d,open(p,\"w\"))"; }
+# HEAD que recua ou some
+h_recua() { base; echo novo > codigo.py; git add codigo.py; git commit -qm c2; touch .verde; drv verificar $D; git reset -q --hard HEAD~1; gates; git log --format=%h -1; drv concluir $D; ct; }
+h_some() { base; echo c2 > codigo.py; git add codigo.py; git commit -qm c2; drv verificar $D; gates; git reset -q --hard HEAD~1; git reflog expire --expire=now --all; git gc -q --prune=now; git cat-file -t $(st "print(d[\"gates\"][-1][\"commit\"])") ; drv concluir $D; ct; }
+h_amend_cod() { base; echo c2 >> codigo.py; git add codigo.py; git commit -q --amend -m am; drv concluir $D; ct; }
+h_amend_same() { base; git commit -q --amend -m "so a mensagem"; drv concluir $D; ct; }
+h_amend_doc() { base; mkdir -p sdd/reports; echo d > sdd/reports/n.md; git add -f sdd/reports/n.md; git commit -q --amend -m am; drv concluir $D; ct; }
+h_soft() { base; git reset -q --soft HEAD~1; drv concluir $D; ct; git commit -qm mesmo; drv concluir $D; ct; }
+h_rebase_vazio() { base; A=$(git rev-parse HEAD); git checkout -q -b outra; echo y > y.txt; git add y.txt; git commit -qm y; git checkout -q frente; git merge -q --no-edit outra; drv concluir $D; ct; }
+h_inicio_some() { base; git checkout -q --orphan nova; git commit -qm raiz; git branch -q -D frente; git reflog expire --expire=now --all; git gc -q --prune=now; drv concluir $D; ct; drv proximo $D; }
+h_branch() { base; git checkout -q -b main; git status --porcelain | grep -v "^??"; git branch --show-current; drv proximo $D; drv concluir $D; }
+h_detached() { base; git checkout -q --detach; drv concluir $D; }
+h_verif_main() { mkrepo "$(novo)"; touch .verde; drv iniciar $D > /dev/null; feito; rel; git checkout -q -b main; drv verificar $D; ct; }
+# concluir repetido
+c_rep() { base; drv concluir $D; drv concluir $D; drv concluir $D; ct; echo x >> codigo.py; git add codigo.py; git commit -qm c; drv concluir $D; ct; }
+# bloqueio e concluir
+c_bloq() { base; drv bloqueio $D "preciso do responsavel"; drv concluir $D; st "print(d[\"motivo\"])"; }
+c_bloq3() { base; drv proximo $D; drv proximo $D; drv proximo $D; drv concluir $D; }
+c_rel() { base; echo x >> codigo.py; git add codigo.py; git commit -qm c; drv verificar $D; ct; echo "BUILD_REPORT e o velho, de antes do codigo novo"; drv concluir $D; }
+# gate trocado e voltado
+g_ida_volta() { base; define "true" > $D; drv proximo $D; drv --resume $D --aceitar-gate-novo; drv concluir $D; define "echo x >> gate.calls; test -f .verde" > $D; drv --resume $D --aceitar-gate-novo; drv concluir $D; ct; }
+g_ida_vermelho() { base; define "false" > $D; drv --resume $D --aceitar-gate-novo; drv verificar $D; gates; define "echo x >> gate.calls; test -f .verde" > $D; drv --resume $D --aceitar-gate-novo; drv concluir $D; ct; }
+# estado editado
+e_forja() { mkrepo "$(novo)" "false"; drv iniciar $D > /dev/null; feito; rel; H=$(git rev-parse HEAD); S=$(st "print(d[\"gate_sha\"])"); ed "d[\"gates\"].append(dict(n=1,rodada=1,commit=\"$H\",exit=0,log=\"nao/existe.log\",impressao=\"$S\"))"; drv concluir $D; }
+e_forja_head() { mkrepo "$(novo)" "false"; drv iniciar $D > /dev/null; feito; rel; S=$(st "print(d[\"gate_sha\"])"); ed "d[\"gates\"].append(dict(n=1,rodada=1,commit=\"HEAD\",exit=0,log=\"x\",impressao=\"$S\"))"; echo novo > c.txt; git add c.txt; git commit -qm c; drv concluir $D; }
+e_troca_sha() { base; define "false" > $D; S=$(/bin/bash sdd/bin/verify-gate.sh --print $D | /usr/bin/python3 -I -B -c "import sys,re,hashlib;print(hashlib.sha256(chr(10).join(l for l in sys.stdin.read().split(chr(10)) if re.match(\"^(kind|cmd|pass_when|threshold|manual_fallback):\",l)).encode()).hexdigest())"); ed "d[\"gate_sha\"]=\"$S\"; d[\"gates\"][-1][\"impressao\"]=\"$S\""; drv concluir $D; }
+e_opcao() { mkrepo "$(novo)" "false"; drv iniciar $D > /dev/null; feito; rel; S=$(st "print(d[\"gate_sha\"])"); ed "d[\"gates\"].append(dict(n=1,rodada=1,commit=\"--output=INJETADO\",exit=0,log=\"x\",impressao=\"$S\"))"; drv concluir $D; ls INJETADO; }
+for c in h_recua h_some h_amend_cod h_amend_same h_amend_doc h_soft h_rebase_vazio h_inicio_some h_branch h_detached h_verif_main c_rep c_bloq c_bloq3 c_rel g_ida_volta g_ida_vermelho e_forja e_forja_head e_troca_sha e_opcao; do caso $c $c; done
+
+=== h_recua
+gate.calls=1
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r2.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+gates: [(1, 'b309e48', 0), (2, '3371f07', 0)]
+b309e48
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (3371f0767b12).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=2
+
+=== h_some
+gate.calls=1
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r2.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+gates: [(1, 'fabf77e', 0), (2, '660c05e', 0)]
+fatal: git cat-file: could not get object info
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (660c05e1feb5).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=2
+
+=== h_amend_cod
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (8c149c780b72).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== h_amend_same
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== h_amend_doc
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== h_soft
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - codigo.py
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== h_rebase_vazio
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (ebd95b12d907).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== h_inicio_some
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (b51138f9c7e2).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== h_branch
+gate.calls=1
+main
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+
+=== h_detached
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+
+=== h_verif_main
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+gate.calls=1
+
+=== c_rep
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (fbd9c2e296cd).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== c_bloq
+gate.calls=1
+--- sdd-drive bloqueio sdd/features/DEFINE_F.md preciso do responsavel
+motivo: bloqueio-humano
+A construção parou e precisa de você. Nada foi publicado.
+preciso do responsavel
+RESULTADO: PARADA
+→ resolva o que está descrito acima e use --resume; o que já ficou pronto continua nos commits.
+[rc=20]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate-verde
+
+=== c_bloq3
+gate.calls=1
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: bloqueio-humano
+A construção parou e precisa de você. Nada foi publicado.
+A ação AVALIAR_E_RELATAR não avançou em 3 tentativas. 
+RESULTADO: PARADA
+→ resolva o que está descrito acima e use --resume; o que já ficou pronto continua nos commits.
+[rc=20]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+
+=== c_rel
+gate.calls=1
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r2.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+gate.calls=2
+BUILD_REPORT e o velho, de antes do codigo novo
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+
+=== g_ida_volta
+gate.calls=1
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: gate-alterado
+O comando do teste final mudou desde o início desta execução.
+antes: echo x >> gate.calls; test -f .verde
+agora: true
+RESULTADO: PARADA
+→ volte o comando antigo ou, se a mudança é certa, aceite com --resume --aceitar-gate-novo; fica escrito no relatório.
+[rc=20]
+--- sdd-drive --resume sdd/features/DEFINE_F.md --aceitar-gate-novo
+retomando: rodada 1/3 · 2 de 2 tarefas prontas · último teste final: 0 · não gastei rodada
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive --resume sdd/features/DEFINE_F.md --aceitar-gate-novo
+retomando: rodada 1/3 · 2 de 2 tarefas prontas · último teste final: 0 · não gastei rodada
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== g_ida_vermelho
+gate.calls=1
+--- sdd-drive --resume sdd/features/DEFINE_F.md --aceitar-gate-novo
+retomando: rodada 1/3 · 2 de 2 tarefas prontas · último teste final: 0 · não gastei rodada
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r2.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+gates: [(1, '7e3a2b2', 0), (2, '7e3a2b2', 2)]
+--- sdd-drive --resume sdd/features/DEFINE_F.md --aceitar-gate-novo
+retomando: rodada 2/3 · 2 de 2 tarefas prontas · último teste final: 2 · não gastei rodada
+ACAO: VERIFICAR
+rodada: 2/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 2/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== e_forja
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+
+=== e_forja_head
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+
+=== e_troca_sha
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+
+=== e_opcao
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+INJETADO
+[exit=0]

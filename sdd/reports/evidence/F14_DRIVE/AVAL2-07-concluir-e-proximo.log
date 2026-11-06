@@ -1,0 +1,209 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p07.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p07.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+echo "=== A. proximo x concluir com parada de gate guardada (exit 3)"
+mkrepo "$(novo)" 'exit 7'; printf 'import sys\nsys.exit(0)\n' > /dev/null; drv iniciar $D >/dev/null; feito; rel
+sed -n 1p sdd/reports/evidence 2>/dev/null
+cp sdd/bin/verify-gate.sh $LAB/vg.sh
+drv verificar $D; cat sdd/reports/evidence/F/DRIVE-gate-r1.log | sed -n '1p;$p'; drv proximo $D; drv concluir $D; drv verificar $D
+echo "=== B. proximo x concluir: gate manual-ux"
+mkrepo "$(novo)" 'N/A (manual-ux)'; sed -i '' 's/kind: test/kind: manual-ux/' $D; git add -A; git commit -qm m; drv iniciar $D > /dev/null; feito; rel; drv verificar $D; drv proximo $D; drv concluir $D
+echo "=== C. concluir igual a proximo: repeticao de 3 AVALIAR"
+mkrepo "$(novo)"; touch .verde; drv iniciar $D >/dev/null; feito; drv verificar $D 2>/dev/null; drv proximo $D; drv proximo $D; drv proximo $D; rel; drv concluir $D; drv proximo $D
+echo "=== D. concluir com tarefa reaberta, DESIGN sumido, linha nova, HIGH na revisao"
+mkrepo "$(novo)"; touch .verde; drv iniciar $D >/dev/null; feito; rel; drv verificar $D 2>/dev/null >/dev/null
+printf -- "- [ ] a\n- [x] b\n" > sdd/reports/progress/PROGRESS_F.md; drv concluir $D; feito
+mv sdd/features/DESIGN_F.md $LAB/d.md; drv concluir $D; mv $LAB/d.md sdd/features/DESIGN_F.md
+design a b c > sdd/features/DESIGN_F.md; drv concluir $D; cat sdd/reports/progress/PROGRESS_F.md
+echo "=== E. concluir sem verde + arquivo sujo => COMMITAR (L1)"
+mkrepo "$(novo)"; drv iniciar $D >/dev/null; feito; echo 1 > z.txt; drv concluir $D
+echo "=== F. commit doc so, depois do verde (HEAD muda so em docs)"
+mkrepo "$(novo)"; touch .verde; drv iniciar $D >/dev/null; feito; drv verificar $D >/dev/null 2>&1; rel; mkdir -p sdd/reviews; echo r > sdd/reviews/R.md; git add sdd/reviews; git commit -qm doc; drv concluir $D
+echo "=== G. verde; commit misto (doc + codigo)"
+mkrepo "$(novo)"; touch .verde; drv iniciar $D >/dev/null; feito; drv verificar $D >/dev/null 2>&1; rel; mkdir -p sdd/reviews; echo r > sdd/reviews/R.md; echo c > c.py; git add sdd/reviews c.py; git commit -qm mix; drv concluir $D; drv proximo $D
+echo "=== H. diretorio irmao: sdd/reportsX e sdd/features2 nao sao documentos"
+mkrepo "$(novo)"; touch .verde; drv iniciar $D >/dev/null; feito; drv verificar $D >/dev/null 2>&1; rel; mkdir -p sdd/reportsX; echo c > sdd/reportsX/c.py; git add sdd/reportsX; git commit -qm x; drv concluir $D
+echo "=== I. gate-alterado em cada campo"
+for campo in 'kind: test|kind: smoke' 'pass_when: "exit 0"|pass_when: "exit 2"' 'threshold: "—"|threshold: "x"' 'manual_fallback: "—"|manual_fallback: "y"'; do mkrepo "$(novo)"; drv iniciar $D >/dev/null; A="${campo%%|*}"; B="${campo##*|}"; /usr/bin/python3 -I -B -c "import sys;p=sys.argv[1];t=open(p,encoding='utf-8').read();open(p,'w',encoding='utf-8').write(t.replace(sys.argv[2],sys.argv[3]))" $D "$A" "$B"; drv proximo $D | sed -n '2p;5,8p;$p'; done
+=== A. proximo x concluir com parada de gate guardada (exit 3)
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+$ verify-gate.sh sdd/features/DEFINE_F.md
+[exit=2]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+=== B. proximo x concluir: gate manual-ux
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+motivo: manual-ux
+O teste final precisa da conferência de uma pessoa. Nada foi publicado.
+log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: PARADA
+→ percorra o checklist do manual_fallback, assine no BUILD_REPORT e, para publicar, chame a sdd-release.
+[rc=20]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: manual-ux
+O teste final precisa da conferência de uma pessoa. Nada foi publicado.
+log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: PARADA
+→ percorra o checklist do manual_fallback, assine no BUILD_REPORT e, para publicar, chame a sdd-release.
+[rc=20]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+=== C. concluir igual a proximo: repeticao de 3 AVALIAR
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: bloqueio-humano
+A construção parou e precisa de você. Nada foi publicado.
+A ação AVALIAR_E_RELATAR não avançou em 3 tentativas. 
+RESULTADO: PARADA
+→ resolva o que está descrito acima e use --resume; o que já ficou pronto continua nos commits.
+[rc=20]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: bloqueio-humano
+A construção parou e precisa de você. Nada foi publicado.
+A ação AVALIAR_E_RELATAR não avançou em 3 tentativas. 
+RESULTADO: PARADA
+→ resolva o que está descrito acima e use --resume; o que já ficou pronto continua nos commits.
+[rc=20]
+=== D. concluir com tarefa reaberta, DESIGN sumido, linha nova, HIGH na revisao
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 2 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: DESIGN
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode a fase Design sobre este DEFINE e chame proximo de novo.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 3 de 3 — c
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+- [x] a
+- [x] b
+- [ ] c
+=== E. concluir sem verde + arquivo sujo => COMMITAR (L1)
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - z.txt
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+=== F. commit doc so, depois do verde (HEAD muda so em docs)
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+=== G. verde; commit misto (doc + codigo)
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (ddd874399732).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+=== H. diretorio irmao: sdd/reportsX e sdd/features2 nao sao documentos
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (c7607ea39b12).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+=== I. gate-alterado em cada campo
+motivo: gate-alterado
+agora: echo x >> gate.calls; test -f .verde
+O comando é igual; mudou outro campo do bloco:
+   kind:       smoke
+RESULTADO: PARADA
+[rc=20]
+motivo: gate-alterado
+agora: echo x >> gate.calls; test -f .verde
+O comando é igual; mudou outro campo do bloco:
+   pass_when:  exit 2
+RESULTADO: PARADA
+[rc=20]
+motivo: gate-alterado
+agora: echo x >> gate.calls; test -f .verde
+O comando é igual; mudou outro campo do bloco:
+   threshold:  x
+RESULTADO: PARADA
+[rc=20]
+motivo: gate-alterado
+agora: echo x >> gate.calls; test -f .verde
+O comando é igual; mudou outro campo do bloco:
+   manual_fallback: y
+RESULTADO: PARADA
+[rc=20]
+[exit=0]

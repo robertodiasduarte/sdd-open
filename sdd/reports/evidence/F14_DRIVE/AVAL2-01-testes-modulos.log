@@ -1,0 +1,50 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/copia && export TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/tmp; rc=0; for m in test_drive test_deploy_do_sha test_deploy_espera_testes test_sdd_archive test_f14_drive_textos test_avaliador_guard test_curadoria_bloco test_f14_textos; do echo "=== $m"; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p $m.py 2>&1 || rc=1; done; exit $rc
+=== test_drive
+.............................................................................
+----------------------------------------------------------------------
+Ran 77 tests in 109.723s
+
+OK
+=== test_deploy_do_sha
+................................
+----------------------------------------------------------------------
+Ran 32 tests in 19.027s
+
+OK
+=== test_deploy_espera_testes
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 2.249s
+
+OK
+=== test_sdd_archive
+........................
+----------------------------------------------------------------------
+Ran 24 tests in 7.574s
+
+OK
+=== test_f14_drive_textos
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.044s
+
+OK
+=== test_avaliador_guard
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 5.118s
+
+OK
+=== test_curadoria_bloco
+.................................................
+----------------------------------------------------------------------
+Ran 49 tests in 10.725s
+
+OK
+=== test_f14_textos
+......................................
+----------------------------------------------------------------------
+Ran 38 tests in 0.062s
+
+OK
+[exit=0]

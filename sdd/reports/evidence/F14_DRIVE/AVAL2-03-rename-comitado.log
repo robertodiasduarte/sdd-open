@@ -1,0 +1,94 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh; mkrepo "$(novo)"; echo print > codigo.py; git add -A; git commit -qm cod; touch .verde; drv iniciar $D; feito; rel; drv verificar $D; git mv codigo.py sdd/reports/codigo.py; drv verificar $D; git commit -qm 'tira codigo do lugar'; git diff --name-only HEAD~1 HEAD; git diff --name-only --no-renames HEAD~1 HEAD; drv proximo $D; drv concluir $D; echo === vermelho; mkrepo "$(novo)"; echo print > codigo.py; git add -A; git commit -qm cod; drv iniciar $D; feito; drv verificar $D; git mv codigo.py sdd/reports/codigo.py; git commit -qm 'conserto: move'; drv proximo $D; drv verificar $D; cat gate.calls; echo === documento-para-codigo; mkrepo "$(novo)"; mkdir -p sdd/reports; echo x > sdd/reports/n.py; git add -A; git commit -qm doc; touch .verde; drv iniciar $D; feito; rel; drv verificar $D; git mv sdd/reports/n.py n.py; git commit -qm move; drv concluir $D
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - codigo.py
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+sdd/reports/codigo.py
+codigo.py
+sdd/reports/codigo.py
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+=== vermelho
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+x
+=== documento-para-codigo
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (409394f68552).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+[exit=0]

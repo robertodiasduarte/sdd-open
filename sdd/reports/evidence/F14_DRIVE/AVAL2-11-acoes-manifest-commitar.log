@@ -1,0 +1,310 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p11.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p11.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+acao() { grep -E '^(---|ACAO:|motivo:|retomando|\[rc|rodada:|RESULTADO: (FALHA|ERRO)|🛑|tarefa:|antes:|agora:)' ; }
+stubfluxo() { /usr/bin/python3 -I -B - "$1" "$2" <<'PY'
+import sys
+o=open('sdd/bin/sdd-fluxo.sh',encoding='utf-8').read()
+stub='#!/bin/bash\n# --drive --checar\nif [ "$1" = seguir ]; then printf "%s\\n"; exit %s; fi\nexit 0\n' % (sys.argv[2],sys.argv[1])
+open('sdd/bin/sdd-fluxo.sh','w',encoding='utf-8').write(stub)
+PY
+}
+echo "=== AT-005 ordem e seguir"
+mkrepo "$(novo)"; rm sdd/features/DESIGN_F.md; git add -A; git commit -qm x; drv iniciar $D | acao
+for c in '64|' '64|PARAR: x' '1|' '1|PARAR: y' '127|' '3|PARAR: z'; do mkrepo "$(novo)"; drv iniciar $D >/dev/null; stubfluxo "${c%%|*}" "${c##*|}"; echo "seguir sai ${c%%|*} com '${c##*|}'"; drv proximo $D 2>&1 | acao; done
+echo "=== AT-005 DESIGN com HIGH aberto / revisao exigida (real)"
+mkrepo "$(novo)"; drv iniciar $D > /dev/null; design a b > sdd/features/DESIGN_F.md; printf '| **Status** | Draft |\n' >> sdd/features/DESIGN_F.md; drv proximo $D | acao; sed -i '' 's/\*\*Status\*\* | Ready for Build/**Status** | Rascunho/' sdd/features/DESIGN_F.md; drv proximo $D 2>&1| acao; 
+echo "=== AT-006 manifest: 2 tabelas, coluna Arquivo, nota no nome, ordem, linha nova, backtick no PROGRESS, sem linhas"
+mkrepo "$(novo)"; cat > sdd/features/DESIGN_F.md <<'X'
+# DESIGN: F
+
+## Metadata
+
+| Attribute | Value |
+|---|---|
+| **Status** | Ready for Build |
+
+## Key Decisions
+
+### Decision 1: x
+
+x
+
+## File Manifest
+
+### Parte 1
+
+| # | File | Action | Purpose | Agent / Owner | Dependencies |
+|---:|---|---|---|---|---|
+| 1 | `a` | Modify | x | (general) | None |
+| 2 | `b.py` (novo) | Modify | x | (general) | None |
+
+### Parte 2
+
+| # | File | Action | Purpose | Agent / Owner | Dependencies |
+|---:|---|---|---|---|---|
+| 3 | `c` | Modify | x | (general) | None |
+
+**Total Files:** 3
+X
+git add -A; git commit -qm d; drv iniciar $D | acao; cat sdd/reports/progress/PROGRESS_F.md
+echo "--- PROGRESS com backtick (como o executor pode escrever)"
+mkrepo "$(novo)"; drv iniciar $D >/dev/null; printf -- '- [x] `a`\n- [x] `b`\n' > sdd/reports/progress/PROGRESS_F.md; drv proximo $D | acao; cat sdd/reports/progress/PROGRESS_F.md
+echo "--- PROGRESS sem linhas; manifest vazio; manifest ausente"
+mkrepo "$(novo)"; drv iniciar $D >/dev/null; echo oi > sdd/reports/progress/PROGRESS_F.md; drv proximo $D | acao
+mkrepo "$(novo)"; design > sdd/features/DESIGN_F.md; git add -A; git commit -qm d; drv iniciar $D | acao; ls sdd/reports/progress
+echo "--- com arquivo x e 'x y.md' (L6), 'x (nota)'"
+mkrepo "$(novo)"; drv iniciar $D >/dev/null; printf -- '- [x] a y.md\n- [x] b (nota)\n' > sdd/reports/progress/PROGRESS_F.md; drv proximo $D | acao; cat sdd/reports/progress/PROGRESS_F.md
+echo "=== AT-007 mesma tarefa 3x, novo commit zera, resume; numeracao tarefa"
+mkrepo "$(novo)"; drv iniciar $D > /dev/null; drv proximo $D | acao; drv proximo $D | acao; drv proximo $D | acao; st "print(d['motivo'],d['repeticao']['n'])"; grep -c bloqueio sdd/reports/DRIVE_REPORT_F.md; drv --resume $D | acao; drv proximo $D | acao; git commit -q --allow-empty -m e; drv proximo $D | acao; drv proximo $D | acao;
+echo "=== AT-010 COMMITAR em cada forma; verificar nao gasta; doc so nao gasta"
+for f in 'echo 1 > n.txt' 'echo 1 >> sdd/bin/report-lint.py' 'git rm -q --cached .gitignore' 'mkdir -p sdd/traces2; echo 1 > sdd/traces2/x' 'echo 1 > "espaço ã.txt"' 'git mv sdd/bin/report-lint.py sdd/reviews.py' 'mkdir -p sdd/reviews; git mv sdd/bin/report-lint.py sdd/reviews/rl.py' 'mkdir -p sdd/reports; git mv sdd/bin/report-lint.py sdd/reports/r.py; echo 2 >> sdd/reports/r.py'; do mkrepo "$(novo)"; drv iniciar $D > /dev/null; feito; eval "$f"; echo "forma: $f"; drv verificar $D 2>&1 | sed -n '2p;4,5p'; drv concluir $D 2>&1 | sed -n '2p'; st "print('gates',len(d['gates']))"; done
+echo "--- rename com intent-to-add (XY= R): nome antigo de codigo curto"
+mkrepo "$(novo)"; echo 1 > a.p; git add a.p; git commit -qm a; drv iniciar $D > /dev/null; feito; mkdir -p sdd/reports; mv a.p sdd/reports/a.p; git add -N sdd/reports/a.p; git status --porcelain=v1 --untracked-files=no; drv verificar $D 2>&1 | sed -n '2p;4,5p'; st "print('gates',len(d['gates']))"
+echo "--- symlink: sdd/reports aponta para codigo"
+echo "=== AT-012 retomada e orcamento"
+mkrepo "$(novo)" 'false'; drv iniciar $D --max 1 >/dev/null; feito; drv verificar $D 2>&1| acao; for v in proximo verificar concluir --resume; do drv $v $D 2>&1| acao; done; ls sdd/reports/evidence/F; drv --resume $D --max 1 | acao; drv --resume $D --max 0 2>&1| acao; drv --resume $D --max 2 | acao; st "print(d['maximo'])"; drv proximo $D | acao
+echo "=== AT-013 sem estado / iniciar com estado / outro DEFINE"
+mkrepo "$(novo)"; for v in --resume proximo verificar concluir; do drv $v $D | acao; done; drv bloqueio $D x | acao; drv recibo $D x | acao; drv aguardar $D executor-drive b.md | acao
+drv iniciar $D > /dev/null; drv iniciar $D | sed -n 1,3p; st "print(d['define'])"; mkdir -p outra/sdd; cp $D outra/DEFINE_F.md; git add -A; git commit -qm o; drv proximo outra/DEFINE_F.md | acao | head -3
+=== AT-005 ordem e seguir
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: DESIGN
+rodada: 1/3
+[rc=10]
+seguir sai 64 com ''
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+🛑 sdd-drive: sdd-fluxo.sh seguir saiu 64 sem dizer o motivo: 
+RESULTADO: FALHA
+[rc=2]
+seguir sai 64 com 'PARAR: x'
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: DESIGN
+rodada: 1/3
+[rc=10]
+seguir sai 1 com ''
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+🛑 sdd-drive: sdd-fluxo.sh seguir saiu 1 sem dizer o motivo: 
+RESULTADO: FALHA
+[rc=2]
+seguir sai 1 com 'PARAR: y'
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: DESIGN
+rodada: 1/3
+[rc=10]
+seguir sai 127 com ''
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+🛑 sdd-drive: sdd-fluxo.sh seguir saiu 127 sem dizer o motivo: 
+RESULTADO: FALHA
+[rc=2]
+seguir sai 3 com 'PARAR: z'
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: DESIGN
+rodada: 1/3
+[rc=10]
+=== AT-005 DESIGN com HIGH aberto / revisao exigida (real)
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 3 — a
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: DESIGN
+rodada: 1/3
+[rc=10]
+=== AT-006 manifest: 2 tabelas, coluna Arquivo, nota no nome, ordem, linha nova, backtick no PROGRESS, sem linhas
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 4 — a
+[rc=10]
+# PROGRESS: F
+
+- [ ] a
+- [ ] b.py` (novo)
+- [ ] File
+- [ ] c
+--- PROGRESS com backtick (como o executor pode escrever)
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 3 de 4 — a
+[rc=10]
+- [x] `a`
+- [x] `b`
+- [ ] a
+- [ ] b
+--- PROGRESS sem linhas; manifest vazio; manifest ausente
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: estado-invalido
+[rc=20]
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: DESIGN
+rodada: 1/3
+[rc=10]
+DRIVE_F.json
+--- com arquivo x e 'x y.md' (L6), 'x (nota)'
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 3 de 3 — a
+[rc=10]
+- [x] a y.md
+- [x] b (nota)
+- [ ] a
+=== AT-007 mesma tarefa 3x, novo commit zera, resume; numeracao tarefa
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: bloqueio-humano
+[rc=20]
+bloqueio-humano 3
+1
+--- sdd-drive --resume sdd/features/DEFINE_F.md
+retomando: rodada 1/3 · 0 de 2 tarefas prontas · último teste final: nenhum · não gastei rodada
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+=== AT-010 COMMITAR em cada forma; verificar nao gasta; doc so nao gasta
+forma: echo 1 > n.txt
+ACAO: COMMITAR
+   - n.txt
+RESULTADO: CONTINUAR
+ACAO: COMMITAR
+gates 0
+forma: echo 1 >> sdd/bin/report-lint.py
+ACAO: COMMITAR
+   - sdd/bin/report-lint.py
+RESULTADO: CONTINUAR
+ACAO: COMMITAR
+gates 0
+forma: git rm -q --cached .gitignore
+ACAO: COMMITAR
+   - .gitignore
+   - .gitignore
+ACAO: COMMITAR
+gates 0
+forma: mkdir -p sdd/traces2; echo 1 > sdd/traces2/x
+ACAO: COMMITAR
+   - sdd/traces2/x
+RESULTADO: CONTINUAR
+ACAO: COMMITAR
+gates 0
+forma: echo 1 > "espaço ã.txt"
+ACAO: COMMITAR
+   - espaço ã.txt
+RESULTADO: CONTINUAR
+ACAO: COMMITAR
+gates 0
+forma: git mv sdd/bin/report-lint.py sdd/reviews.py
+ACAO: COMMITAR
+   - sdd/bin/report-lint.py
+   - sdd/reviews.py
+ACAO: COMMITAR
+gates 0
+forma: mkdir -p sdd/reviews; git mv sdd/bin/report-lint.py sdd/reviews/rl.py
+ACAO: COMMITAR
+   - sdd/bin/report-lint.py
+RESULTADO: CONTINUAR
+ACAO: COMMITAR
+gates 0
+forma: mkdir -p sdd/reports; git mv sdd/bin/report-lint.py sdd/reports/r.py; echo 2 >> sdd/reports/r.py
+ACAO: COMMITAR
+   - sdd/bin/report-lint.py
+RESULTADO: CONTINUAR
+ACAO: COMMITAR
+gates 0
+--- rename com intent-to-add (XY= R): nome antigo de codigo curto
+ R a.p -> sdd/reports/a.p
+▶ rodando o teste final; isso pode levar alguns minutos.
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+gates 1
+--- symlink: sdd/reports aponta para codigo
+=== AT-012 retomada e orcamento
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: orcamento-rodadas
+[rc=20]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: orcamento-rodadas
+[rc=20]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: orcamento-rodadas
+[rc=20]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: orcamento-rodadas
+[rc=20]
+--- sdd-drive --resume sdd/features/DEFINE_F.md
+motivo: orcamento-rodadas
+[rc=20]
+DRIVE-gate-r1.log
+--- sdd-drive --resume sdd/features/DEFINE_F.md --max 1
+motivo: orcamento-rodadas
+[rc=20]
+--- sdd-drive --resume sdd/features/DEFINE_F.md --max 0
+🛑 sdd-drive: --max precisa ser um inteiro a partir de 1: '0'
+RESULTADO: ERRO DE USO
+[rc=64]
+--- sdd-drive --resume sdd/features/DEFINE_F.md --max 2
+retomando: rodada 2/2 · 2 de 2 tarefas prontas · último teste final: 2 · não gastei rodada
+ACAO: CORRIGIR
+rodada: 2/2
+[rc=10]
+2
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: CORRIGIR
+rodada: 2/2
+[rc=10]
+=== AT-013 sem estado / iniciar com estado / outro DEFINE
+--- sdd-drive --resume sdd/features/DEFINE_F.md
+motivo: estado-invalido
+[rc=20]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: estado-invalido
+[rc=20]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: estado-invalido
+[rc=20]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: estado-invalido
+[rc=20]
+--- sdd-drive bloqueio sdd/features/DEFINE_F.md x
+motivo: estado-invalido
+[rc=20]
+--- sdd-drive recibo sdd/features/DEFINE_F.md x
+motivo: estado-invalido
+[rc=20]
+--- sdd-drive aguardar sdd/features/DEFINE_F.md executor-drive b.md
+motivo: estado-invalido
+[rc=20]
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: estado-invalido
+Não consegui ler onde a execução parou, e não vou adivinhar.
+sdd/features/DEFINE_F.md
+--- sdd-drive proximo outra/DEFINE_F.md
+motivo: estado-invalido
+[rc=20]
+[exit=0]

@@ -1,0 +1,19 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); s() { /bin/bash sdd/bin/sdd-drive.sh "$@" > $V/o 2>&1; rc=$?; echo "[$*] rc=$rc $(grep -E "^(motivo|ACAO|tarefa)" $V/o | head -n 2 | cut -c1-100 | tr "\n" ";")"; }
+mkrepo $V/x "sleep 3; test -f .verde"; mv sdd/features/DESIGN_F.md $V/d.md; git add -A; git commit -qm sem-design
+s iniciar $D
+sed "s/Total Files:\*\* 2/Total Files:** 9/" $V/d.md > sdd/features/DESIGN_F.md; s proximo $D
+design a b c | sed "s/| Modify/| Create/" > sdd/features/DESIGN_F.md; s proximo $D; printf "\n## Advisor Ledger\n\n| # | Nota | Severidade | Veredito |\n|---|---|---|---|\n| H1 | x | HIGH | aberta |\n" >> sdd/features/DESIGN_F.md; s proximo $D; sed -i "" "s/| aberta |/| APLICADA |/" sdd/features/DESIGN_F.md; s proximo $D; printf -- "- [x] a\n- [ ] b\n- [x] c\n" > sdd/reports/progress/PROGRESS_F.md; s proximo $D; printf -- "- [x] a\n- [x] b\n- [x] c\n" > sdd/reports/progress/PROGRESS_F.md; s proximo $D; git add sdd/features; git commit -qm design; s verificar $D --fundo; s proximo $D; sleep 4; s proximo $D; echo c>c; git add c; git commit -qm c; s proximo $D; touch .verde; s verificar $D; s proximo $D
+[iniciar sdd/features/DEFINE_F.md] rc=10 ACAO: DESIGN;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: DESIGN;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: REVISAO_DESIGN;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: REVISAO_DESIGN;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;tarefa: 1 de 3 — a;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;tarefa: 3 de 3 — b;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: VERIFICAR;
+[verificar sdd/features/DEFINE_F.md --fundo] rc=10 ACAO: ESPERAR;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: ESPERAR;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: CORRIGIR;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: VERIFICAR;
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: AVALIAR_E_RELATAR;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: AVALIAR_E_RELATAR;
+[exit=0]

@@ -1,0 +1,21 @@
+$ R=/Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive; T=$(mktemp -d); cd $T; git init -q -b trabalho; bash $R/bin/sdd-open.sh init --vendors codex --yes </dev/null >/dev/null 2>&1; echo "init 1 exit=$?"; ls sdd/bin/verify-gate.sh sdd/fixtures/fluxo/DEFINE_pronto.md; echo "# versao velha" >> sdd/bin/verify-gate.sh; rm sdd/bin/contraste.sh; rm -rf sdd/fixtures/fluxo; rm -rf .agents/skills/sdd-kb; bash $R/bin/sdd-open.sh init --vendors codex --yes </dev/null >/dev/null 2>&1; echo "init 2 exit=$?"; echo "--- script NOVO (simulado por contraste.sh apagado) voltou?"; ls sdd/bin/contraste.sh; echo "--- script EXISTENTE foi sobrescrito? (0 = nao, manteve a linha velha)"; /usr/bin/awk "/# versao velha/{n=1} END{print (n?0:1)}" sdd/bin/verify-gate.sh; echo "--- skill nova (simulada por sdd-kb apagada) voltou?"; ls .agents/skills/sdd-kb/SKILL.md; echo "--- fixture em pasta nova voltou?"; ls sdd/fixtures/fluxo/DEFINE_pronto.md; echo "fixture_exit=$?"; echo "--- verify-gate atual (pre-F14) com --checar, como o sdd-drive novo o chamaria"; cp $R/sdd/features/DEFINE_F14_DRIVE.md D.md; bash sdd/bin/verify-gate.sh --checar D.md; echo "checar exit=$?"; cd /; rm -rf $T
+init 1 exit=0
+sdd/bin/verify-gate.sh
+sdd/fixtures/fluxo/DEFINE_pronto.md
+init 2 exit=0
+--- script NOVO (simulado por contraste.sh apagado) voltou?
+sdd/bin/contraste.sh
+--- script EXISTENTE foi sobrescrito? (0 = nao, manteve a linha velha)
+0
+--- skill nova (simulada por sdd-kb apagada) voltou?
+.agents/skills/sdd-kb/SKILL.md
+--- fixture em pasta nova voltou?
+ls: sdd/fixtures/fluxo/DEFINE_pronto.md: No such file or directory
+fixture_exit=1
+--- verify-gate atual (pre-F14) com --checar, como o sdd-drive novo o chamaria
+🛑 uso: sdd/bin/verify-gate.sh [--print] [--strict] <DEFINE.md> | --sem-define <FEATURE>
+   (arquivo não encontrado: '--checar')
+RESULTADO: SPEC INVÁLIDA
+→ o arquivo não existe, não está num repositório git, ou não tem um bloco Verify Gate válido (ver sdd/templates/fragments/VERIFY_GATE.md).
+checar exit=64
+[exit=0]

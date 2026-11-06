@@ -1,0 +1,17 @@
+AUTO LM-001 ajudou+1
+   simples: O aviso de que achar um texto no código não prova o comportamento foi seguido no desenho: cada motivo roda com um caso que passa e outro que falha. Conta 1 vez que o aviso foi útil.
+AUTO LM-002 ajudou+1
+   simples: O aviso de exigir que a verificação nova falhe antes do conserto foi seguido, com medição na versão anterior. Conta 1 vez que o aviso foi útil.
+AUTO LM-003 ajudou+1
+   simples: O aviso de não revisar trabalho sem commit foi seguido: a revisão real roda com tudo commitado. Conta 1 vez que o aviso foi útil.
+AUTO LM-005 ajudou+1
+   simples: O aviso sobre regras que adivinham texto livre foi seguido no desenho do filtro da colheita, com teste do caso vizinho. Conta só que o aviso foi seguido; o filtro ainda deu os alarmes falsos descartados nas linhas 10 a 13.
+AUTO LM-006 ajudou+1
+   simples: O aviso de testar numa cópia sem a pasta do git foi seguido: o teste embutido monta um repositório próprio e roda nessa cópia. Conta 1 vez que o aviso foi útil.
+PERGUNTA 7 add ADD Reviews / harness :: sup: `git diff --name-only` `--no-renames` `rename` :: `git diff --name-only` mostra só o nome novo de um rename: uma conferência de "só documento mudou" aceita código movido para a pasta de documento, e o commit que a própria ação pede apaga o sinal. **Do instead:** nessa conferência, passar `--no-renames`, com teste do rename sujo e do commitado, nos 2 sentidos. → ficha: — · promovido_para: —
+   simples: Código movido para a pasta de documento, depois de commitado, passou como se só documento tivesse mudado e dispensou a verificação. Guardar a lição avisa quem for escrever uma conferência parecida.
+PERGUNTA 8 add ADD Reviews / harness :: sup: `HTTP 402` `limit_remaining` `/credits` :: O `limit_remaining` de uma chave da OpenRouter é o limite da chave, não o saldo da conta: um revisor caiu com HTTP 402, com "US$ 220 restantes", a queda foi lida como passageira e se repetiu na rodada paga seguinte. **Do instead:** antes de uma rodada paga, ler o saldo em `/api/v1/credits`; revisor que cai pede a mensagem do provedor antes de qualquer conclusão. → ficha: — · promovido_para: —
+   simples: O 2º revisor caiu por falta de saldo, mas o valor consultado era o limite da chave, e a queda foi tratada como passageira em mais uma rodada paga. Guardar a lição evita pagar por revisão incompleta quando o saldo acabar.
+resumo-bloco: auto=5 pergunta=2 descartar=10 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.

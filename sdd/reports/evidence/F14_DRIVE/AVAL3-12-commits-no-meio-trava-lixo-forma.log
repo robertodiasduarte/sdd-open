@@ -1,0 +1,217 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p11.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p11.sh
+. $(dirname "$0")/lab.sh
+caso() { echo; echo "=== $1"; ( shift; "$@" ) 2>&1; }
+G="echo \$\$ >> gate.calls; while [ ! -f .go ]; do sleep 0.1; done; test -f .verde"
+L=sdd/reports/progress/DRIVE_F.lock
+esp() { i=0; while [ $i -lt 100 ]; do [ -f gate.calls ] && [ "$(wc -l < gate.calls | tr -d " ")" -ge "$1" ] && return 0; sleep 0.1; i=$((i+1)); done; echo "TIMEOUT"; return 1; }
+espl() { i=0; while [ $i -lt 100 ]; do [ ! -f $L ] && return 0; sleep 0.1; i=$((i+1)); done; echo "TIMEOUT trava"; return 1; }
+prep() { mkrepo "$(novo)" "$G"; echo print > codigo.py; git add -A; git commit -qm c; touch .verde; drv iniciar $D >/dev/null; feito; rel; }
+ed() { /usr/bin/python3 -I -B -c "import json;p=\"sdd/reports/progress/DRIVE_F.json\";d=json.load(open(p));$1;json.dump(d,open(p,\"w\"))"; }
+m1() { prep; /bin/bash sdd/bin/sdd-drive.sh verificar $D --fundo >/dev/null; esp 1; git mv codigo.py sdd/reports/codigo.py; git commit -qm mv; touch .go; espl; gates; drv concluir $D; }
+m2() { prep; /bin/bash sdd/bin/sdd-drive.sh verificar $D --fundo >/dev/null; esp 1; mv codigo.py ../fora-$$; git add -u codigo.py; git commit -qm del; touch .go; espl; drv concluir $D; }
+m3() { prep; /bin/bash sdd/bin/sdd-drive.sh verificar $D --fundo >/dev/null; esp 1; echo x >> codigo.py; git add codigo.py; git commit -q --amend -m am; touch .go; espl; drv concluir $D; }
+m4() { prep; /bin/bash sdd/bin/sdd-drive.sh verificar $D --fundo >/dev/null; esp 1; git reset -q --hard HEAD~1; touch .go; espl; drv concluir $D; }
+m5() { prep; A=$(git rev-parse HEAD); /bin/bash sdd/bin/sdd-drive.sh verificar $D --fundo >/dev/null; esp 1; define "false" > $D; git add $D; git commit -qm troca; drv --resume $D --aceitar-gate-novo; touch .go; espl; gates; drv concluir $D; }
+m6() { mkrepo "$(novo)" "false"; echo print > codigo.py; git add -A; git commit -qm c; drv iniciar $D > /dev/null; feito; rel; drv verificar $D; git mv codigo.py sdd/reports/codigo.py; git commit -qm mv; drv proximo $D; drv concluir $D; }
+m7() { mkrepo "$(novo)"; verde > /dev/null 2>&1; mv .verde ../fora-$$; drv concluir $D; echo "o gate agora:"; test -f .verde; echo "rc=$?"; }
+m8() { prep; touch .go; /bin/bash sdd/bin/sdd-drive.sh verificar $D > /dev/null; gates; /bin/bash sdd/bin/sdd-drive.sh verificar $D; echo "[rc=$?]"; gates; }
+# trava com lixo
+t_lixo() { for v in -1 0 abc "" 99999999999999999999 " 12 " 1; do mkrepo "$(novo)" "true"; drv iniciar $D > /dev/null; feito; rel; printf "%s" "$v" > $L; echo "--- trava=[$v]"; /bin/bash sdd/bin/sdd-drive.sh proximo $D 2>&1 | grep -E "^ACAO|🛑|motivo:"; echo "[rc=${PIPESTATUS[0]}]"; done; }
+# forma do estado
+e_forma() { for ex in "d[\"motivo\"]=\"xyz\"" "d[\"motivo\"]=3" "d[\"motivo\"]=[]" "d[\"motivo\"]={}" "d[\"parada_gate\"]=[]" "d[\"parada_gate\"]=\"xyz\"" "d[\"detalhe\"]=3" "d[\"gate_linhas\"]=3" "d[\"gate_linhas\"]=[3]" "d[\"maximo\"]=0" "d[\"maximo\"]=-1" "d[\"maximo\"]=True" "d[\"versao\"]=99" "d[\"versao\"]=1" "d[\"feature\"]=\"OUTRA\"" "d[\"gates\"]=[dict(n=1,rodada=1,commit=\"a\",log=\"l\",impressao=\"i\",exit=True)]" "d[\"gates\"]=[dict(n=1.5,rodada=1,commit=\"a\",log=\"l\",impressao=\"i\",exit=0)]" "d[\"repeticao\"]=3" "d[\"repeticao\"]=dict(chave=\"\")" "d[\"recibos\"]=[1]" "d[\"trocas_gate\"]=[1]" "d[\"inicio\"]=\"\"" "d[\"avisou_paradas\"]=[]" "d[\"repeticao\"]=dict(chave=\"\",n=-5)"; do mkrepo "$(novo)" "true"; drv iniciar $D > /dev/null; ed "$ex"; for v in proximo concluir; do out=$(/bin/bash sdd/bin/sdd-drive.sh $v $D 2>&1); rc=$?; echo "$ex | $v | rc=$rc | $(echo "$out" | grep -E "^motivo:|^ACAO:|🛑" | head -1 | cut -c1-90)"; done; out=$(/bin/bash sdd/bin/sdd-drive.sh recibo $D r 2>&1); echo "$ex | recibo | rc=$? | $(echo "$out" | grep -E "^motivo:|🛑|anotado" | head -1 | cut -c1-70)"; done; }
+for c in m1 m2 m3 m4 m5 m6 m7 m8 t_lixo e_forma; do caso $c $c; done
+
+=== m1
+gates: [(1, '34393d7', 0)]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (34393d779810).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== m2
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (cc19b7d87a58).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== m3
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (483283f4fd59).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== m4
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (71da52e92af9).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== m5
+--- sdd-drive --resume sdd/features/DEFINE_F.md --aceitar-gate-novo
+retomando: rodada 1/3 · 2 de 2 tarefas prontas · último teste final: nenhum · não gastei rodada
+ACAO: ESPERAR
+rodada: 1/3
+O teste final está rodando (processo 77999). Se não há teste nenhum rodando, apague sdd/reports/progress/DRIVE_F.lock.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+gates: [(1, 'b67b404', 0)]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== m6
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 2/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 2/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== m7
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+o gate agora:
+rc=1
+
+=== m8
+▶ rodando o teste final; isso pode levar alguns minutos.
+gates: [(1, '5792c3c', 0)]
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+gates: [(1, '5792c3c', 0)]
+
+=== t_lixo
+--- trava=[-1]
+ACAO: VERIFICAR
+[rc=10]
+--- trava=[0]
+ACAO: VERIFICAR
+[rc=10]
+--- trava=[abc]
+ACAO: VERIFICAR
+[rc=10]
+--- trava=[]
+ACAO: VERIFICAR
+[rc=10]
+--- trava=[99999999999999999999]
+🛑 sdd-drive: erro inesperado: OverflowError: Python int too large to convert to C long
+[rc=2]
+--- trava=[ 12 ]
+ACAO: VERIFICAR
+[rc=10]
+--- trava=[1]
+ACAO: ESPERAR
+[rc=10]
+
+=== e_forma
+d["motivo"]="xyz" | proximo | rc=20 | motivo: estado-invalido
+d["motivo"]="xyz" | concluir | rc=20 | motivo: estado-invalido
+d["motivo"]="xyz" | recibo | rc=20 | motivo: estado-invalido
+d["motivo"]=3 | proximo | rc=20 | motivo: estado-invalido
+d["motivo"]=3 | concluir | rc=20 | motivo: estado-invalido
+d["motivo"]=3 | recibo | rc=20 | motivo: estado-invalido
+d["motivo"]=[] | proximo | rc=2 | 🛑 sdd-drive: erro inesperado: TypeError: unhashable type: 'list'
+d["motivo"]=[] | concluir | rc=2 | 🛑 sdd-drive: erro inesperado: TypeError: unhashable type: 'list'
+d["motivo"]=[] | recibo | rc=2 | 🛑 sdd-drive: erro inesperado: TypeError: unhashable type: 'list'
+d["motivo"]={} | proximo | rc=2 | 🛑 sdd-drive: erro inesperado: TypeError: unhashable type: 'dict'
+d["motivo"]={} | concluir | rc=2 | 🛑 sdd-drive: erro inesperado: TypeError: unhashable type: 'dict'
+d["motivo"]={} | recibo | rc=2 | 🛑 sdd-drive: erro inesperado: TypeError: unhashable type: 'dict'
+d["parada_gate"]=[] | proximo | rc=20 | motivo: estado-invalido
+d["parada_gate"]=[] | concluir | rc=20 | motivo: estado-invalido
+d["parada_gate"]=[] | recibo | rc=20 | motivo: estado-invalido
+d["parada_gate"]="xyz" | proximo | rc=20 | motivo: estado-invalido
+d["parada_gate"]="xyz" | concluir | rc=20 | motivo: estado-invalido
+d["parada_gate"]="xyz" | recibo | rc=20 | motivo: estado-invalido
+d["detalhe"]=3 | proximo | rc=20 | motivo: estado-invalido
+d["detalhe"]=3 | concluir | rc=20 | motivo: estado-invalido
+d["detalhe"]=3 | recibo | rc=20 | motivo: estado-invalido
+d["gate_linhas"]=3 | proximo | rc=20 | motivo: estado-invalido
+d["gate_linhas"]=3 | concluir | rc=20 | motivo: estado-invalido
+d["gate_linhas"]=3 | recibo | rc=20 | motivo: estado-invalido
+d["gate_linhas"]=[3] | proximo | rc=20 | motivo: estado-invalido
+d["gate_linhas"]=[3] | concluir | rc=20 | motivo: estado-invalido
+d["gate_linhas"]=[3] | recibo | rc=20 | motivo: estado-invalido
+d["maximo"]=0 | proximo | rc=20 | motivo: estado-invalido
+d["maximo"]=0 | concluir | rc=20 | motivo: estado-invalido
+d["maximo"]=0 | recibo | rc=20 | motivo: estado-invalido
+d["maximo"]=-1 | proximo | rc=20 | motivo: estado-invalido
+d["maximo"]=-1 | concluir | rc=20 | motivo: estado-invalido
+d["maximo"]=-1 | recibo | rc=20 | motivo: estado-invalido
+d["maximo"]=True | proximo | rc=20 | motivo: estado-invalido
+d["maximo"]=True | concluir | rc=20 | motivo: estado-invalido
+d["maximo"]=True | recibo | rc=20 | motivo: estado-invalido
+d["versao"]=99 | proximo | rc=20 | motivo: estado-invalido
+d["versao"]=99 | concluir | rc=20 | motivo: estado-invalido
+d["versao"]=99 | recibo | rc=20 | motivo: estado-invalido
+d["versao"]=1 | proximo | rc=20 | motivo: estado-invalido
+d["versao"]=1 | concluir | rc=20 | motivo: estado-invalido
+d["versao"]=1 | recibo | rc=20 | motivo: estado-invalido
+d["feature"]="OUTRA" | proximo | rc=20 | motivo: estado-invalido
+d["feature"]="OUTRA" | concluir | rc=20 | motivo: estado-invalido
+d["feature"]="OUTRA" | recibo | rc=20 | motivo: estado-invalido
+d["gates"]=[dict(n=1,rodada=1,commit="a",log="l",impressao="i",exit=True)] | proximo | rc=20 | motivo: estado-invalido
+d["gates"]=[dict(n=1,rodada=1,commit="a",log="l",impressao="i",exit=True)] | concluir | rc=20 | motivo: estado-invalido
+d["gates"]=[dict(n=1,rodada=1,commit="a",log="l",impressao="i",exit=True)] | recibo | rc=20 | motivo: estado-invalido
+d["gates"]=[dict(n=1.5,rodada=1,commit="a",log="l",impressao="i",exit=0)] | proximo | rc=20 | motivo: estado-invalido
+d["gates"]=[dict(n=1.5,rodada=1,commit="a",log="l",impressao="i",exit=0)] | concluir | rc=20 | motivo: estado-invalido
+d["gates"]=[dict(n=1.5,rodada=1,commit="a",log="l",impressao="i",exit=0)] | recibo | rc=20 | motivo: estado-invalido
+d["repeticao"]=3 | proximo | rc=20 | motivo: estado-invalido
+d["repeticao"]=3 | concluir | rc=20 | motivo: estado-invalido
+d["repeticao"]=3 | recibo | rc=20 | motivo: estado-invalido
+d["repeticao"]=dict(chave="") | proximo | rc=20 | motivo: estado-invalido
+d["repeticao"]=dict(chave="") | concluir | rc=20 | motivo: estado-invalido
+d["repeticao"]=dict(chave="") | recibo | rc=20 | motivo: estado-invalido
+d["recibos"]=[1] | proximo | rc=20 | motivo: estado-invalido
+d["recibos"]=[1] | concluir | rc=20 | motivo: estado-invalido
+d["recibos"]=[1] | recibo | rc=20 | motivo: estado-invalido
+d["trocas_gate"]=[1] | proximo | rc=20 | motivo: estado-invalido
+d["trocas_gate"]=[1] | concluir | rc=20 | motivo: estado-invalido
+d["trocas_gate"]=[1] | recibo | rc=20 | motivo: estado-invalido
+d["inicio"]="" | proximo | rc=10 | ACAO: RODADA
+d["inicio"]="" | concluir | rc=10 | ACAO: RODADA
+d["inicio"]="" | recibo | rc=0 | ✅ anotado em sdd/reports/DRIVE_REPORT_F.md (Decidi sozinho).
+d["avisou_paradas"]=[] | proximo | rc=10 | ACAO: RODADA
+d["avisou_paradas"]=[] | concluir | rc=10 | ACAO: RODADA
+d["avisou_paradas"]=[] | recibo | rc=0 | ✅ anotado em sdd/reports/DRIVE_REPORT_F.md (Decidi sozinho).
+d["repeticao"]=dict(chave="",n=-5) | proximo | rc=10 | ACAO: RODADA
+d["repeticao"]=dict(chave="",n=-5) | concluir | rc=10 | ACAO: RODADA
+d["repeticao"]=dict(chave="",n=-5) | recibo | rc=0 | ✅ anotado em sdd/reports/DRIVE_REPORT_F.md (Decidi sozinho).
+[exit=0]

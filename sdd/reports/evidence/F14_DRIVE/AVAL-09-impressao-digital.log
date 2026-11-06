@@ -1,0 +1,68 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo $V/x "true"; drv iniciar $D > /dev/null; O=$V/orig; cp $D $O
+for s in "s/kind: test/kind: lint/" "s/cmd: .*/cmd: \"false\"/" "s/pass_when: .*/pass_when: \"exit 7\"/" "s/threshold: .*/threshold: \"9\"/" "s/manual_fallback: .*/manual_fallback: \"x\"/" "s/^  cmd: \"true\"/  cmd: \"true\" # comentario/" "s/^  cmd: \"true\"/  cmd: true/" "s/^  cmd: \"true\"/  cmd: \"true \"/"; do
+  cp $O $D; sed -i "" "$s" $D; /bin/bash sdd/bin/sdd-drive.sh proximo $D > $V/o.txt 2>&1; echo "$s => rc=$? $(grep -E "^(motivo|ACAO|antes|agora)" $V/o.txt | tr "\n" ";")"
+done; cp $O $D
+echo == fora do bloco muda: nao para; printf "\nnovo paragrafo\n" >> $D; /bin/bash sdd/bin/sdd-drive.sh proximo $D | head -n 1; cp $O $D
+echo == segundo bloco yaml depois do primeiro; printf "\n\`\`\`yaml\nverify_gate:\n  kind: test\n  cmd: \"false\"\n\`\`\`\n" >> $D; /bin/bash sdd/bin/verify-gate.sh --print $D; echo print-rc=$?; /bin/bash sdd/bin/sdd-drive.sh proximo $D | head -n 3; cp $O $D
+echo == bloco removido no meio; python3 - <<PY
+import re,os
+t=open(os.environ.get("D","sdd/features/DEFINE_F.md")).read().split("## Verify Gate")[0]
+open("sdd/features/DEFINE_F.md","w").write(t)
+PY
+drv proximo $D; cp $O $D
+echo == DEFINE sumiu no meio; mv $D $V/guardado; drv proximo $D; drv verificar $D; drv --resume $D; mv $V/guardado $D
+echo == gate muda e reverte: sem parada; sed -i "" "s/cmd: .*/cmd: \"false\"/" $D; /bin/bash sdd/bin/sdd-drive.sh proximo $D | head -n 1; cp $O $D; /bin/bash sdd/bin/sdd-drive.sh proximo $D | head -n 1
+s/kind: test/kind: lint/ => rc=20 motivo: gate-alterado;antes: true;agora: true;
+s/cmd: .*/cmd: "false"/ => rc=20 motivo: gate-alterado;antes: true;agora: false;
+s/pass_when: .*/pass_when: "exit 7"/ => rc=20 motivo: gate-alterado;antes: true;agora: true;
+s/threshold: .*/threshold: "9"/ => rc=20 motivo: gate-alterado;antes: true;agora: true;
+s/manual_fallback: .*/manual_fallback: "x"/ => rc=20 motivo: gate-alterado;antes: true;agora: true;
+s/^  cmd: "true"/  cmd: "true" # comentario/ => rc=20 motivo: gate-alterado;antes: true;agora: true" # comentario;
+s/^  cmd: "true"/  cmd: true/ => rc=10 ACAO: RODADA;
+s/^  cmd: "true"/  cmd: "true "/ => rc=10 ACAO: RODADA;
+== fora do bloco muda: nao para
+motivo: bloqueio-humano
+== segundo bloco yaml depois do primeiro
+── Verify Gate de sdd/features/DEFINE_F.md ──
+kind:       test
+cmd:        true
+pass_when:  exit 0
+threshold:  —
+manual_fallback: —
+print-rc=0
+motivo: bloqueio-humano
+A construção parou e precisa de você. Nada foi publicado.
+A ação RODADA não avançou em 3 tentativas. tarefa: 1 de 2 — a
+== bloco removido no meio
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: define-invalido
+O DEFINE não tem um teste final válido.
+verify-gate.sh --print saiu 64.
+RESULTADO: PARADA
+→ corrija o bloco do Verify Gate pelo Define e rode de novo.
+[rc=20]
+== DEFINE sumiu no meio
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: define-invalido
+O DEFINE não tem um teste final válido.
+RESULTADO: PARADA
+→ corrija o bloco do Verify Gate pelo Define e rode de novo.
+[rc=20]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: define-invalido
+O DEFINE não tem um teste final válido.
+verify-gate.sh --print saiu 64.
+RESULTADO: PARADA
+→ corrija o bloco do Verify Gate pelo Define e rode de novo.
+[rc=20]
+--- sdd-drive --resume sdd/features/DEFINE_F.md
+motivo: define-invalido
+O DEFINE não tem um teste final válido.
+verify-gate.sh --print saiu 64.
+RESULTADO: PARADA
+→ corrija o bloco do Verify Gate pelo Define e rode de novo.
+[rc=20]
+== gate muda e reverte: sem parada
+motivo: define-invalido
+motivo: define-invalido
+[exit=0]

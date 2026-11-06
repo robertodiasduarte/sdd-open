@@ -1,0 +1,94 @@
+$ git rev-parse HEAD
+52f08304272f869d229b98efbdba76f591a8cf1e
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F14_DRIVE --revisor2 openrouter:deepseek/deepseek-v4-pro
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: openrouter:deepseek/deepseek-v4-pro (deepseek/deepseek-v4-pro) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+⚠️ o 2º revisor (openrouter:deepseek/deepseek-v4-pro) falhou (openrouter:deepseek/deepseek-v4-pro falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261105-205244
+diff_sha256: a4940499311b41861cdd3c479b96307dd349197e2be527cdea1317ff8804e0a5
+revisor: claude (claude-opus-5-5) — US$ 3,1955
+2º revisor: falhou (exit 67) — última engine tentada: openrouter:deepseek/deepseek-v4-pro
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0605
+diversidade: vendor
+achados: 0 graves, 2 médios, 1 leve
+custo total: US$ 3,2560 (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261105-205244 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261105-205244/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
+branch                  : feat/f14-drive
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 8a320e9d27d4471f5352e3861a277865ded2d1ed
+head                    : 52f08304272f869d229b98efbdba76f591a8cf1e
+paths                   : -
+diff_sha256             : a4940499311b41861cdd3c479b96307dd349197e2be527cdea1317ff8804e0a5
+diff                    : 314KB (44 arquivo(s))
+contexto                : 100KB (4 doc SDD)
+docs_sdd                : BRAINSTORM_F14_DRIVE.md, DEFINE_F14_DRIVE.md, DESIGN_F14_DRIVE.md, BUILD_REPORT_F14_DRIVE.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 691
+reviewer_achados        : 3
+reviewer_tokens_entrada : 206757
+reviewer_tokens_saida   : 72836
+reviewer_tokens_total   : 279593
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 3.1955
+revisor1_raso           : nao
+gatilho_2o_revisor      : 44 arquivos (limiar 8)
+revisor2_engine         : openrouter:deepseek/deepseek-v4-pro
+revisor2_engine_default : openrouter:deepseek/deepseek-v4-pro
+revisor2_engine_efetivo : openrouter:deepseek/deepseek-v4-pro
+revisor2_fallback_usado : nao
+revisor2_motivo         : openrouter:deepseek/deepseek-v4-pro falhou (cota, cobrança ou erro)
+revisor2_exit           : 67
+revisor2_segundos       : 1
+revisor2_achados        : 0
+revisor2_tokens_entrada : n/d
+revisor2_tokens_saida   : n/d
+revisor2_tokens_total   : n/d
+revisor2_modelo         : n/d
+revisor2_custo          : $?
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 226
+auditor_vereditos       : 3
+auditor_tokens_entrada  : 138835
+auditor_tokens_saida    : 12536
+auditor_tokens_total    : 151371
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0605
+convergencia_1o_passe   : sim
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 3.2560 (+ 1 papel(is) com custo $?)
+quando                  : 20261105-205244
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261105-205244 --ledger sdd/reports/evidence/F14_DRIVE/ledger-review.md --rodada 3 (teto ${TETO:-3})
+ESTADO: BLOQUEADO
+rodada: 3 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: 2º revisor acionado e falhou (openrouter:deepseek/deepseek-v4-pro, exit 67) — refazer a review
+motivo: D4 teto: 3 rodadas de review atingido
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[exit=20]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261105-205244
+🛑 adversarial-review: o 2º revisor foi acionado e não deu resultado (revisor2_exit=67)
+RESULTADO: NÃO CONFERE
+→ rode de novo com outra engine (--revisor2) ou registre a dispensa com --aceitar-sem-revisor2 "<motivo>".
+[exit=2]

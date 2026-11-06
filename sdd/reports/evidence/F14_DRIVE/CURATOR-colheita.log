@@ -1,0 +1,33 @@
+$ bash sdd/bin/playbook-curator.sh --colher /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-379cc7ebce5f/F14_DRIVE sdd/playbook.md --inv sdd/invariants.md
+DELTA LM-001 ajudou+1 · conf=2026-11-06 · evidencia=DESIGN_F14_DRIVE.md:415 · fp=412fdded52,13bc952ccd
+DELTA LM-002 ajudou+1 · conf=2026-11-06 · evidencia=DESIGN_F14_DRIVE.md:416 · fp=6f2193bf02,e2475cb9ef
+DELTA LM-003 ajudou+1 · conf=2026-11-06 · evidencia=DESIGN_F14_DRIVE.md:417 · fp=9b2eb417d8,33213f1785
+DELTA LM-005 ajudou+1 · conf=2026-11-06 · evidencia=DESIGN_F14_DRIVE.md:418 · fp=9ae1c3562d,ca791122c9
+DELTA LM-006 ajudou+1 · conf=2026-11-06 · evidencia=DESIGN_F14_DRIVE.md:419 · fp=ee91d3df24,61e91a4452
+SUGESTAO mordeu? LM-003 — termo `review` em BUILD_REPORT_F14_DRIVE.md:35 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=5eb9939424,601bf90792
+CANDIDATO #1 → LM-007 · secao=Reviews / harness · sup=`git diff --name-only` `--no-renames` `rename` · evidencia=sdd/reviews/AVALIACAO_F14_DRIVE_20261105-ciclo2.md · fp=f69659d93f
+   delta: ADD Reviews / harness :: sup: `git diff --name-only` `--no-renames` `rename` :: `git diff --name-only` mostra só o nome novo de um rename: uma conferência de "só documento mudou" aceita código movido para a pasta de documento, e o commit que a própria ação pede apaga o sinal. **Do instead:** nessa conferência, passar `--no-renames`, com teste do rename sujo e do commitado, nos 2 sentidos. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-008 · secao=Reviews / harness · sup=`HTTP 402` `limit_remaining` `/credits` · evidencia=sdd/reports/evidence/F14_DRIVE/real-rodada3.log · fp=0ba267ac9b
+   delta: ADD Reviews / harness :: sup: `HTTP 402` `limit_remaining` `/credits` :: O `limit_remaining` de uma chave da OpenRouter é o limite da chave, não o saldo da conta: um revisor caiu com HTTP 402 em 1 segundo, com "US$ 220 restantes", e a queda foi lida como passageira por 2 rodadas pagas. **Do instead:** antes de uma rodada, ler o saldo em `/api/v1/credits`; revisor que cai em segundos pede a mensagem do provedor antes de qualquer conclusão. → ficha: — · promovido_para: —
+SUGESTAO mordeu? LM-006 — termo `git archive` em AVAL-12-env-herdada-no-gate.log:2 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=300d460a53
+DELTA LM-001 mordeu+1 · conf=2026-11-06 · evidencia=AVAL-24-guarda-curador-encoding.log:7 · fp=72923b0b73,6a9a3c7913,4abc5d2a80,3a51b59272,f4dc32a3a3,dacef54c01,3910088334,f9fb7f69d4,bfae1e16b7,d7bcf0108a,a8532f9dbb,46d5d57739,28757ba47f,2d6f6abaff,09c4683140,abf483dca9,78261ec4e8,2a43b72ca5,9f078dd657,381491ad10,b3955b78e2,29b3608ccb,5401dcfcfb,c890fc6d3f
+DELTA LM-002 mordeu+1 · conf=2026-11-06 · evidencia=AVAL-24-guarda-curador-encoding.log:7 · fp=9be07e1c1c,b7121c6a74,646cc7b05b,66cf1b2b20,aee5405a8f,699b9d7bf1,19e9f500fa,362f18cd4f,e70b56170c
+IGNORADO LM-009 (não existe como bullet ativo em sdd/playbook.md)
+DELTA LM-005 mordeu+1 · conf=2026-11-06 · evidencia=AVAL-DESIGN-11-colheita-real-com-filtro-do-design.log:46 · fp=fe0a7ef9fb,0d5a41617b
+DELTA LM-003 mordeu+1 · conf=2026-11-06 · evidencia=AVAL3-11-curador-filtro.log:23 · fp=df28cbb90c,4f4e0a0146,139485acc8,2e12e195d5,164e57d320,a5576a6047,6158af3348
+INV_PENDENTE LM-001 (mordeu 0→1) · delta: LM-001 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-001 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-001] descartado :: <motivo>
+INV_PENDENTE LM-002 (mordeu 0→1) · delta: LM-002 mordeu+1
+   proposta A: - [INV-003] estado=<ok|auto|humano> origem=LM-002 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-002] descartado :: <motivo>
+INV_PENDENTE LM-005 (mordeu 0→1) · delta: LM-005 mordeu+1
+   proposta A: - [INV-004] estado=<ok|auto|humano> origem=LM-005 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-005] descartado :: <motivo>
+INV_PENDENTE LM-003 (mordeu 0→1) · delta: LM-003 mordeu+1
+   proposta A: - [INV-005] estado=<ok|auto|humano> origem=LM-003 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-003] descartado :: <motivo>
+resumo: deltas=9 (ajudou=5 mordeu=4) candidatos=2 rejeitados=0 promocoes=0 sugestoes=2
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[exit=0]

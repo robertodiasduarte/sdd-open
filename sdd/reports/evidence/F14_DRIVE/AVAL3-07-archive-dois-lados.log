@@ -1,0 +1,153 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p07.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p07.sh
+. $(dirname "$0")/lab.sh
+H="--hoje 2026-11-05"
+sim() { $ARQ $H 2>&1 | grep -E "^TOTAIS|→  |\((1|2|3|4) documento" | cut -c1-150; }
+ap() { $ARQ --lote "$1" --aplicar $H 2>&1 | grep -E "movi|falhou|⚠️" | cut -c1-150; git status --short | grep -E "^R" | cut -c1-110; }
+caso() { echo; echo "=== $1"; ( cd "$(novo)"; mkarq "$PWD"; velho; "$2" ) 2>&1; }
+NFD=$(/usr/bin/python3 -I -B -c "import unicodedata;print(unicodedata.normalize(\"NFD\",\"ação\"))")
+NFC=$(/usr/bin/python3 -I -B -c "import unicodedata;print(unicodedata.normalize(\"NFC\",\"ação\"))")
+UP=$(/usr/bin/python3 -I -B -c "import unicodedata;print(unicodedata.normalize(\"NFC\",\"AÇÃO\"))")
+# ---- lado 1: documento de ficha aberta
+p_caixa() { ficha f14 aberta; git add -A; git commit -qm f; doc sdd/reports/BUILD_REPORT_F14.md; doc sdd/features/DEFINE_F14.md; doc sdd/reviews/REVISAO_FRONTEIRA_F14_2026.md; sim; }
+p_goX() { ficha GO_X aberta; doc sdd/reports/BUILD_REPORT_go_x.md; doc sdd/reports/build_report_GO_x.md; sim; }
+p_acento() { ficha "$NFC" aberta; doc "sdd/reports/BUILD_REPORT_$NFC.md"; doc "sdd/reports/DRIVE_REPORT_$UP.md"; doc "sdd/reviews/AVALIACAO_${NFC}_ciclo1.md"; sim; }
+p_nfd_arq() { ficha "$NFC" aberta; doc "sdd/reports/BUILD_REPORT_$NFD.md"; ls sdd/reports | /usr/bin/python3 -I -B -c "import sys,unicodedata;[print(ascii(l.strip()),unicodedata.is_normalized(\"NFC\",l.strip())) for l in sys.stdin]"; git ls-files sdd/reports | /usr/bin/python3 -I -B -c "import sys;[print(l.strip()) for l in sys.stdin]"; sim; }
+p_nfd_ficha() { ficha "$NFD" aberta; doc "sdd/reports/BUILD_REPORT_$NFC.md"; sim; }
+p_slice() { ficha G_s2 aberta; doc sdd/features/DEFINE_G.md; doc sdd/features/DEFINE_G_s3.md; doc sdd/reports/BUILD_REPORT_G_s2.md; mkdir -p sdd/releases/G; sim; }
+p_slice2() { ficha G aberta; doc sdd/features/DEFINE_G_s2.md; doc sdd/reports/FIX_REPORT_G_s2b.md; mkdir -p sdd/releases/G_s2; sim; }
+p_sufixos() { ficha F14_DRIVE aberta; doc sdd/reviews/REVISAO_FRONTEIRA_F14_DRIVE_20261105.md; doc sdd/reviews/AVALIACAO_F14_DRIVE-ciclo2.md; doc sdd/reports/NOTAS_F14_DRIVE.md; doc sdd/reports/relatorio-f14_drive.txt; doc sdd/reports/F14_DRIVE.json; sim; }
+p_status_antes() { printf "# H\n\n| Campo | Valor |\n|---|---|\n| Status | ✅ versao anterior fechada |\n\n## Ficha\n\n| Campo | Valor |\n|---|---|\n| **Status** | aberta, em andamento |\n" > sdd/handoffs/HANDOFF_F14.md; doc sdd/reports/BUILD_REPORT_F14.md; doc sdd/features/DEFINE_F14.md; sim; }
+p_status_fence() { printf "# H\n\n\`\`\`\n| Status | ✅ exemplo no molde |\n\`\`\`\n\n## Ficha\n\n| **Status** | aberta |\n" > sdd/handoffs/HANDOFF_F14.md; doc sdd/reports/BUILD_REPORT_F14.md; sim; }
+p_cit_nfd() { printf "# H\n\n| **Status** | aberta |\n\nVer sdd/reports/NOTAS_$NFC.md\n" > sdd/handoffs/HANDOFF_OUTRA.md; doc "sdd/reports/NOTAS_$NFD.md"; sim; }
+p_cit_caixa() { printf "# H\n\n| **Status** | aberta |\n\nDepende de f14_foo e de sdd/reports/notas_b.md\n" > sdd/handoffs/HANDOFF_OUTRA.md; doc sdd/features/DEFINE_F14_FOO.md; doc sdd/reports/NOTAS_B.md; sim; }
+p_cit_acento() { printf "# H\n\n| **Status** | aberta |\n\nDepende da frente $NFC.\n" > sdd/handoffs/HANDOFF_OUTRA.md; doc "sdd/reports/BUILD_REPORT_$NFC.md"; sim; }
+p_ficha_data() { ficha F14_20261105 aberta; doc sdd/reports/BUILD_REPORT_F14.md; sim; }
+p_ficha_nome_arq() { ficha "F14_v2" aberta; doc sdd/reports/BUILD_REPORT_F14.md; sim; }
+# ---- lado 2: proteção demais
+o_prefixo() { ficha REPORT aberta; doc sdd/reports/BUILD_REPORT_FECHADA.md; doc sdd/reports/DRIVE_REPORT_OUTRA.md; ficha DESIGN aberta; doc sdd/features/DESIGN_FECHADA.md; sim; }
+o_curta() { ficha F aberta; doc sdd/features/DEFINE_F_X.md; doc sdd/reports/BUILD_REPORT_F_Y.md; sim; }
+o_vizinho() { ficha F1 aberta; doc sdd/reports/BUILD_REPORT_F14.md; doc sdd/reports/BUILD_REPORT_F1_2.md; doc sdd/reports/BUILD_REPORT_F1-2.md; sim; ap soltos; }
+o_cit_prosa() { printf "# H\n\n| **Status** | aberta |\n\nA API fica rapido e o XY.\n" > sdd/handoffs/HANDOFF_OUTRA.md; doc sdd/features/DEFINE_API.md; doc sdd/features/DEFINE_api.md; doc sdd/features/DEFINE_XY.md; sim; }
+o_fechada() { ficha F14 "✅ fechada"; ficha G "✅ DoD fechado"; doc sdd/features/DEFINE_F14.md; doc sdd/reports/BUILD_REPORT_F14.md; doc sdd/reports/NOTAS.md; mkdir -p sdd/releases/G; doc sdd/features/DEFINE_G.md; sim; ap sem-ledger; git commit -qm l; ap com-ledger; git commit -qm l; ap soltos; }
+for c in p_caixa p_goX p_acento p_nfd_arq p_nfd_ficha p_slice p_slice2 p_sufixos p_status_antes p_status_fence p_cit_nfd p_cit_caixa p_cit_acento p_ficha_data p_ficha_nome_arq o_prefixo o_curta o_vizinho o_cit_prosa o_fechada; do caso $c $c; done
+echo; echo "=== handoff-lint no caso p_status_antes"
+cd "$(novo)"; mkarq "$PWD"; printf "# H\n\n| Campo | Valor |\n|---|---|\n| Status | ✅ versao anterior fechada |\n\n## Ficha\n\n| Campo | Valor |\n|---|---|\n| **Objetivo** | x |\n| **Status** | aberta, em andamento |\n| **Verify Gate** | y |\n" > sdd/handoffs/HANDOFF_F14.md; /usr/bin/python3 -I -B $PROJ/sdd/bin/handoff-lint.py sdd/handoffs/HANDOFF_F14.md 2>&1 | cut -c1-150; echo "[rc=$?]"
+
+=== p_caixa
+  F14 (2 documento(s)): ficha aberta em HANDOFF_f14.md
+  FRONTEIRA_F14_2026 (1 documento(s)): ficha aberta em HANDOFF_f14.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=2 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_goX
+error: pathspec 'sdd/reports/build_report_GO_x.md' did not match any file(s) known to git
+  go_x (1 documento(s)): ficha aberta em HANDOFF_GO_X.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_acento
+  BUILD_REPORT_ação.md (1 documento(s)): ficha aberta em HANDOFF_ação.md
+  DRIVE_REPORT_AÇÃO.md (1 documento(s)): ficha aberta em HANDOFF_ação.md
+  AVALIACAO_ação_ciclo1.md (1 documento(s)): ficha aberta em HANDOFF_ação.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=3 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_nfd_arq
+'BUILD_REPORT_ac\u0327a\u0303o.md' False
+"sdd/reports/BUILD_REPORT_a\303\247\303\243o.md"
+  BUILD_REPORT_ação.md (1 documento(s)): ficha aberta em HANDOFF_ação.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_nfd_ficha
+  BUILD_REPORT_ação.md (1 documento(s)): ficha aberta em HANDOFF_ação.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_slice
+  G (3 documento(s)): ficha aberta em HANDOFF_G.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_slice2
+  G (2 documento(s)): ficha aberta em HANDOFF_G.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_sufixos
+  F14_DRIVE-ciclo2 (1 documento(s)): ficha aberta em HANDOFF_F14_DRIVE.md
+  FRONTEIRA_F14_DRIVE (1 documento(s)): ficha aberta em HANDOFF_F14_DRIVE.md
+  F14_DRIVE.json (1 documento(s)): ficha aberta em HANDOFF_F14_DRIVE.md
+  NOTAS_F14_DRIVE.md (1 documento(s)): ficha aberta em HANDOFF_F14_DRIVE.md
+  relatorio-f14_drive.txt (1 documento(s)): ficha aberta em HANDOFF_F14_DRIVE.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=5 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_status_antes
+  sdd/features/DEFINE_F14.md  →  sdd/archive/F14/DEFINE_F14.md
+  sdd/reports/BUILD_REPORT_F14.md  →  sdd/archive/F14/BUILD_REPORT_F14.md
+TOTAIS: com-ledger=0 · sem-ledger=2 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_status_fence
+  sdd/reports/BUILD_REPORT_F14.md  →  sdd/archive/_REPORTS_2020-01/BUILD_REPORT_F14.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_cit_nfd
+  sdd/reports/NOTAS_ação.md  →  sdd/archive/_REPORTS_2020-01/NOTAS_ação.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_cit_caixa
+  sdd/features/DEFINE_F14_FOO.md  →  sdd/archive/F14_FOO/DEFINE_F14_FOO.md
+  sdd/reports/NOTAS_B.md  →  sdd/archive/_REPORTS_2020-01/NOTAS_B.md
+TOTAIS: com-ledger=0 · sem-ledger=1 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_cit_acento
+  sdd/reports/BUILD_REPORT_ação.md  →  sdd/archive/_REPORTS_2020-01/BUILD_REPORT_ação.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_ficha_data
+  sdd/reports/BUILD_REPORT_F14.md  →  sdd/archive/_REPORTS_2020-01/BUILD_REPORT_F14.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== p_ficha_nome_arq
+  sdd/reports/BUILD_REPORT_F14.md  →  sdd/archive/_REPORTS_2020-01/BUILD_REPORT_F14.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== o_prefixo
+  FECHADA (2 documento(s)): ficha aberta em HANDOFF_DESIGN.md
+  OUTRA (1 documento(s)): ficha aberta em HANDOFF_REPORT.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=2 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== o_curta
+  F_X (1 documento(s)): ficha aberta em HANDOFF_F.md
+  F_Y (1 documento(s)): ficha aberta em HANDOFF_F.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=2 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== o_vizinho
+  sdd/reports/BUILD_REPORT_F14.md  →  sdd/archive/_REPORTS_2020-01/BUILD_REPORT_F14.md
+  F1-2 (1 documento(s)): ficha aberta em HANDOFF_F1.md
+  F1_2 (1 documento(s)): ficha aberta em HANDOFF_F1.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=2 · recentes=0 · sem classificação=0 · subpastas=0
+✅ movi 1 arquivo(s) com git mv; nada foi apagado.
+R  sdd/reports/BUILD_REPORT_F14.md -> sdd/archive/_REPORTS_2020-01/BUILD_REPORT_F14.md
+
+=== o_cit_prosa
+error: pathspec 'sdd/features/DEFINE_api.md' did not match any file(s) known to git
+  API (1 documento(s)): citada numa ficha aberta
+  XY (1 documento(s)): citada numa ficha aberta
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=2 · recentes=0 · sem classificação=0 · subpastas=0
+
+=== o_fechada
+  sdd/features/DEFINE_G.md  →  sdd/archive/G/DEFINE_G.md
+  sdd/features/DEFINE_F14.md  →  sdd/archive/F14/DEFINE_F14.md
+  sdd/reports/BUILD_REPORT_F14.md  →  sdd/archive/F14/BUILD_REPORT_F14.md
+  sdd/reports/NOTAS.md  →  sdd/archive/_REPORTS_2020-01/NOTAS.md
+TOTAIS: com-ledger=1 · sem-ledger=2 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+✅ movi 2 arquivo(s) com git mv; nada foi apagado.
+R  sdd/reports/BUILD_REPORT_F14.md -> sdd/archive/F14/BUILD_REPORT_F14.md
+R  sdd/features/DEFINE_F14.md -> sdd/archive/F14/DEFINE_F14.md
+✅ movi 1 arquivo(s) com git mv; nada foi apagado.
+R  sdd/features/DEFINE_G.md -> sdd/archive/G/DEFINE_G.md
+✅ movi 1 arquivo(s) com git mv; nada foi apagado.
+R  sdd/reports/NOTAS.md -> sdd/archive/_REPORTS_2020-01/NOTAS.md
+
+=== handoff-lint no caso p_status_antes
+🛑 sdd/handoffs/HANDOFF_F14.md: o 1º título não é '# HANDOFF: <feature>'
+🛑 sdd/handoffs/HANDOFF_F14.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova (só a ficha com Status ✅ dispensa o p
+🛑 sdd/handoffs/HANDOFF_F14.md: ## Histórico de slices sem nenhum '### <slice> — AAAA-MM-DD'
+RESULTADO: VERMELHO
+→ corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo
+[rc=0]
+[exit=0]

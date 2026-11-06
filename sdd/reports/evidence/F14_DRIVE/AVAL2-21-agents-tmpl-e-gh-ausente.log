@@ -1,0 +1,10 @@
+$ P=/Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive; T=$(mktemp -d); cd $P; grep -oE "\`sdd-[a-z-]+\`" AGENTS.md.tmpl | sort -u > $T/t.txt; wc -l < $T/t.txt; ls .agents/skills | grep -E "^sdd-" | sed "s/.*/\`&\`/" | sort > $T/s.txt; diff $T/s.txt $T/t.txt; echo "[diff rc=$?]"; mkdir $T/b; ln -s /usr/bin/git $T/b/git; ln -s /usr/bin/python3 $T/b/python3; mkdir $T/r; cd $T/r; git init -q; git -c user.name=t -c user.email=t@e.com commit -q --allow-empty -m x; X=$(git rev-parse HEAD); PATH=$T/b /bin/bash $P/sdd/bin/deploy-do-sha.sh --commit $X --workflow w; echo "[rc=$?]"; cd /; rm -rf $T
+      18
+1d0
+< `sdd-auditoria-harness`
+[diff rc=1]
+⚠️ inconclusivo — gh não está instalado.
+RESULTADO: INCONCLUSIVO
+→ publicado, sem verificação automática: confira o deploy à mão; não concluí nada sobre ele.
+[rc=3]
+[exit=0]

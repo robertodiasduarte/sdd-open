@@ -1,0 +1,9 @@
+$ bash sdd/bin/playbook-curator.sh --aplicar /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-379cc7ebce5f/F14_DRIVE/delta.txt sdd/playbook.md
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-005 ajudou+1
+LM-006 ajudou+1
+ADD Reviews / harness :: sup: `git diff --name-only` `--no-renames` `rename` :: `git diff --name-only` mostra só o nome novo de um rename: uma conferência de "só documento mudou" aceita código movido para a pasta de documento, e o commit que a própria ação pede apaga o sinal. **Do instead:** nessa conferência, passar `--no-renames`, com teste do rename sujo e do commitado, nos 2 sentidos. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `HTTP 402` `limit_remaining` `/credits` :: O `limit_remaining` de uma chave da OpenRouter é o limite da chave, não o saldo da conta: um revisor caiu com HTTP 402, com "US$ 220 restantes", a queda foi lida como passageira e se repetiu na rodada paga seguinte. **Do instead:** antes de uma rodada paga, ler o saldo em `/api/v1/credits`; revisor que cai pede a mensagem do provedor antes de qualquer conclusão. → ficha: — · promovido_para: —
+[exit=0]

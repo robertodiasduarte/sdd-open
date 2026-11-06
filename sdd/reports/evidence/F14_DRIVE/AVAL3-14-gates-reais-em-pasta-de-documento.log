@@ -1,0 +1,49 @@
+$ grep -hE "^ *cmd:" sdd/features/DEFINE_*.md; echo ---; grep -lE "^ *cmd:.*sdd/(features|reports|reviews|handoffs|traces)/" sdd/features/DEFINE_*.md; echo ---; sed -n 1,30p sdd/templates/HANDOFF_TEMPLATE.md; true
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+---
+---
+# HANDOFF: {Feature Name}
+
+> Ficha da feature — **1 arquivo por feature**, slices como subseções (mais recente no topo).
+> Vive no repositório (`sdd/handoffs/HANDOFF_{FEATURE}.md`), não na memória de nenhum agente:
+> viaja com o projeto e qualquer agente, em qualquer máquina, retoma daqui.
+
+## Ficha
+
+| Attribute | Value |
+|-----------|-------|
+| **Feature** | {FEATURE_NAME} |
+| **Objetivo** | {1 frase: o que muda para quem usa} |
+| **Status** | {🔨 em andamento · 🚢 publicado · ✅ DoD fechado · ⏸ pausado} |
+| **Última sessão** | {YYYY-MM-DD} |
+| **Branch / pasta** | `{branch}` · `{caminho}` |
+| **Artefatos** | `sdd/features/DEFINE_{F}.md` · `sdd/features/DESIGN_{F}.md` · `sdd/reports/BUILD_REPORT_{F}.md` |
+| **Verify Gate** | {🟢 0 · 🔴 2 · inconclusivo 3 · assinatura 4 · clarificar 5} — `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md` |
+
+## Feito
+
+- {o que está pronto, com o comando ou arquivo que PROVA — nunca "acho que funciona"}
+
+## Falta
+
+- {o que falta, em ordem, cada item começando por verbo}
+
+## Definition of Done
+
+- [ ] {critério verificável 1}
+- [ ] {critério verificável 2}
+[exit=0]

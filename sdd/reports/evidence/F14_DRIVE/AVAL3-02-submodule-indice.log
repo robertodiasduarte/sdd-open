@@ -1,0 +1,148 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p02.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p02.sh
+. $(dirname "$0")/lab.sh
+caso() { echo; echo "=== $1"; ( shift; "$@" ) 2>&1; }
+ct() { [ -f gate.calls ] && echo "gate.calls=$(wc -l < gate.calls | tr -d " ")" || echo "gate.calls=0"; }
+base() { mkrepo "$(novo)"; echo print > codigo.py; chmod 644 codigo.py; git add -A; git commit -qm cod; verde >/dev/null 2>&1; ct; }
+# submodule: repo lib com 2 commits; o principal aponta para o 1o
+sub_add() { # sub_add <ignore|->
+  L="$(novo)"; ( cd "$L"; git init -q; echo v1 > lib.txt; git add -A; git commit -qm v1; echo v2 > lib.txt; git add -A; git commit -qm v2 )
+  V1=$(git -C "$L" rev-parse HEAD~1); V2=$(git -C "$L" rev-parse HEAD)
+  mkrepo "$(novo)"; git -c protocol.file.allow=always submodule --quiet add "$L" sub; git -C sub checkout -q "$V1"; git add sub
+  [ "$1" != "-" ] && git config -f .gitmodules submodule.sub.ignore "$1"
+  git add -A; git commit -qm sub; verde >/dev/null 2>&1; ct; gates
+}
+s_normal() { sub_add -; git -C sub checkout -q "$V2"; git status --porcelain | grep -v "^??"; drv concluir $D; git add sub; git commit -qm ponteiro; git diff --name-only --no-renames HEAD~1 HEAD; drv concluir $D; ct; }
+s_all() { sub_add all; git -C sub checkout -q "$V2"; echo "status:"; git status --porcelain | grep -v "^??"; echo "concluir com o submodulo noutra versao, sem commit:"; drv concluir $D; git add -f sub; git commit -qm ponteiro; echo "ls-tree:"; git ls-tree HEAD sub; echo "name-only:"; git diff --name-only --no-renames HEAD~1 HEAD; drv concluir $D; ct; }
+s_cfg() { sub_add -; git config diff.ignoreSubmodules all; git -C sub checkout -q "$V2"; git update-index --add --cacheinfo 160000,$V2,sub; git commit -qm ponteiro; git ls-tree HEAD sub; drv concluir $D; ct; }
+s_dirty() { sub_add dirty; echo sujo > sub/lib.txt; git status --porcelain | grep -v "^??"; drv concluir $D; ct; }
+s_doc() { sub_add -; mkdir -p sdd/reports; echo; git -C sub checkout -q "$V2"; drv concluir $D; ct; }
+# indice mentiroso
+i_skip() { base; git update-index --skip-worktree codigo.py; echo conserto-so-local > codigo.py; git status --porcelain | grep -v "^??"; drv concluir $D; ct; }
+i_skip2() { mkrepo "$(novo)" "echo x >> gate.calls; grep -q conserto codigo.py"; echo print > codigo.py; git add -A; git commit -qm cod; git update-index --skip-worktree codigo.py; echo conserto-so-local > codigo.py; drv iniciar $D > /dev/null; feito; rel; drv verificar $D; drv concluir $D; ct; echo "o commit testado:"; git show HEAD:codigo.py; }
+i_assume() { base; git update-index --assume-unchanged codigo.py; echo mudou > codigo.py; git status --porcelain | grep -v "^??"; drv concluir $D; ct; }
+i_mode() { base; git config core.fileMode false; chmod +x codigo.py; git status --porcelain | grep -v "^??"; drv concluir $D; ct; }
+for c in s_normal s_all s_cfg s_dirty i_skip i_skip2 i_assume i_mode; do caso $c $c; done
+
+=== s_normal
+gate.calls=1
+gates: [(1, 'e3f7df5', 0)]
+ M sub
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - sub
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+sub
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (e3f7df5fae10).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== s_all
+gate.calls=1
+gates: [(1, 'cfdc4e0', 0)]
+status:
+concluir com o submodulo noutra versao, sem commit:
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+ls-tree:
+160000 commit b32068b5e08efafe89a04328192be6642565d2d9	sub
+name-only:
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== s_cfg
+gate.calls=1
+gates: [(1, 'b56f6ac', 0)]
+160000 commit 8507779301189c41a2c82d8022aed52544723e3a	sub
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== s_dirty
+gate.calls=1
+gates: [(1, 'ebc068c', 0)]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== i_skip
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== i_skip2
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+o commit testado:
+print
+
+=== i_assume
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== i_mode
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+[exit=0]

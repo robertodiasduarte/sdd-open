@@ -1,0 +1,354 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p04.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p04.sh
+. $(dirname "$0")/lab.sh
+caso() { echo; echo "=== $1"; ( shift; "$@" ) 2>&1; }
+ct() { [ -f gate.calls ] && echo "gate.calls=$(wc -l < gate.calls | tr -d " ")" || echo "gate.calls=0"; }
+G="echo \$\$ >> gate.calls; while [ ! -f .go ]; do sleep 0.1; done; test -f .verde"
+L=sdd/reports/progress/DRIVE_F.lock
+esp() { i=0; while [ $i -lt 100 ]; do [ -f gate.calls ] && [ "$(wc -l < gate.calls | tr -d " ")" -ge "$1" ] && return 0; sleep 0.1; i=$((i+1)); done; echo "TIMEOUT esperando $1 gates"; return 1; }
+espl() { i=0; while [ $i -lt 100 ]; do [ ! -f $L ] && return 0; sleep 0.1; i=$((i+1)); done; echo "TIMEOUT: trava continua"; return 1; }
+prep() { mkrepo "$(novo)" "$G"; touch .verde; drv iniciar $D >/dev/null; feito; rel; }
+filhos() { /bin/ps -axo pid,ppid,command | grep -E "sdd-drive|verify-gate|gate.calls" | grep -v grep | grep "$PWD\|sdd/bin\|gate.calls" | cut -c1-90; }
+# a: mata o bash do filho do --fundo no meio do gate
+f_kill_bash() { prep; drv verificar $D --fundo; esp 1; P=$(cat $L); echo "trava=$P"; kill -9 $P; sleep 0.3; echo "bash morto; python e gate seguem:"; filhos | wc -l | tr -d " "; drv proximo $D; drv verificar $D --fundo; esp 2; ct; P2=$(cat $L); echo "trava2=$P2"; touch .go; sleep 2; ct; gates; ls $L 2>/dev/null; drv proximo $D; }
+# b: mata o python do filho
+f_kill_py() { prep; drv verificar $D --fundo; esp 1; P=$(cat $L); PY=$(/usr/bin/pgrep -P $P | head -1); echo "bash=$P python=$PY"; kill -9 $PY; sleep 0.3; ls $L; drv proximo $D; gates; touch .go; sleep 0.5; gates; }
+# c: mata o verify-gate
+f_kill_vg() { prep; drv verificar $D --fundo; esp 1; P=$(cat $L); PY=$(/usr/bin/pgrep -P $P | head -1); VG=$(/usr/bin/pgrep -P $PY | head -1); echo "vg=$VG"; kill -9 $VG; espl; gates; drv proximo $D; drv --resume $D; touch .go; }
+# d: mata o comando do gate
+f_kill_cmd() { prep; drv verificar $D --fundo; esp 1; CMD=$(head -1 gate.calls); echo "cmd=$CMD"; kill -9 $CMD; espl; gates; tail -4 sdd/reports/evidence/F/DRIVE-gate-r1.log; drv proximo $D; }
+f_kill_contains() { mkrepo "$(novo)" "echo \$\$ >> gate.calls; echo OK-PARCIAL; while [ ! -f .go ]; do sleep 0.1; done; echo FIM; false" "contains: OK-PARCIAL"; touch .verde; drv iniciar $D >/dev/null; feito; rel; drv verificar $D --fundo; esp 1; kill -9 $(head -1 gate.calls); espl; gates; drv concluir $D; }
+# e: variavel de quem chama
+v_sem_trava() { mkrepo "$(novo)"; drv iniciar $D >/dev/null; export SDD_DRIVE_TRAVA_HERDADA=1; drv verificar $D; ct; }
+v_trava_morta() { prep; touch .go; /bin/bash -c "exit 0"; echo 99999 > $L; export SDD_DRIVE_TRAVA_HERDADA=1; time drv verificar $D; ct; ls $L 2>/dev/null; }
+v_trava_viva() { prep; /bin/sleep 20 & V=$!; echo $V > $L; export SDD_DRIVE_TRAVA_HERDADA=1; drv verificar $D; ct; kill $V; }
+v_forja() { mkrepo "$(novo)"; drv iniciar $D >/dev/null; /bin/bash -c "echo \$\$ > $L; exec env SDD_DRIVE_TRAVA_HERDADA=1 /bin/bash sdd/bin/sdd-drive.sh verificar $D"; echo "[rc=$?] tarefas pendentes, mas o gate:"; ct; gates; }
+v_gate_nao_herda() { mkrepo "$(novo)" "echo VAR=[\${SDD_DRIVE_TRAVA_HERDADA:-}] ; test -f .verde"; touch .verde; drv iniciar $D > /dev/null; feito; rel; drv verificar $D --fundo; espl; grep VAR= sdd/reports/evidence/F/DRIVE-gate-r1.log; }
+# g: estado muda durante o gate
+m_apaga() { prep; drv verificar $D --fundo; esp 1; mv sdd/reports/progress/DRIVE_F.json ../fora-$$; touch .go; sleep 1.5; cat sdd/reports/progress/DRIVE_F.fundo.log | grep -E "motivo|Traceback"; ls $L 2>/dev/null; drv proximo $D; }
+m_corrompe() { prep; drv verificar $D --fundo; esp 1; echo "{" > sdd/reports/progress/DRIVE_F.json; touch .go; sleep 1.5; grep -E "motivo|Traceback" sdd/reports/progress/DRIVE_F.fundo.log; ls $L 2>/dev/null; }
+m_iniciar() { prep; drv verificar $D --fundo; esp 1; mv sdd/reports/progress/DRIVE_F.json ../fora-$$; drv iniciar $D; touch .go; espl; gates; drv concluir $D; }
+m_recibo() { prep; drv verificar $D --fundo; esp 1; drv recibo $D "durante"; touch .go; espl; st "print(d[\"recibos\"],len(d[\"gates\"]))"; }
+m_resume_max() { mkrepo "$(novo)" "echo x >> gate.calls; while [ ! -f .go ]; do sleep 0.1; done; false"; drv iniciar $D >/dev/null; feito; rel; drv verificar $D --fundo; esp 1; drv --resume $D --max 1; touch .go; espl; gates; grep -E "motivo" sdd/reports/progress/DRIVE_F.fundo.log; drv proximo $D; }
+m_doc_commit() { prep; drv verificar $D --fundo; esp 1; echo d > sdd/reports/nota.md; git add -f sdd/reports/nota.md; git commit -qm doc; touch .go; espl; drv concluir $D; }
+m_cod_commit() { prep; drv verificar $D --fundo; esp 1; echo d > c.py; git add c.py; git commit -qm cod; touch .go; espl; drv concluir $D; }
+m_edit_volta() { mkrepo "$(novo)" "echo x >> gate.calls; while [ ! -f .go ]; do sleep 0.1; done; test -f fix.py"; drv iniciar $D > /dev/null; feito; rel; drv verificar $D --fundo; esp 1; echo x > fix.py; touch .go; espl; mv fix.py ../fora-$$; git status --porcelain | grep -v "^??"; gates; drv concluir $D; }
+for c in f_kill_bash f_kill_py f_kill_vg f_kill_cmd f_kill_contains v_sem_trava v_trava_morta v_trava_viva v_forja v_gate_nao_herda m_apaga m_corrompe m_iniciar m_recibo m_resume_max m_doc_commit m_cod_commit m_edit_volta; do caso $c $c; done
+
+=== f_kill_bash
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 54754); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+trava=54754
+bash morto; python e gate seguem:
+4
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 55950); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+gate.calls=2
+trava2=55950
+gate.calls=2
+gates: [(2, '9e17417', 0), (1, '9e17417', 0)]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+
+=== f_kill_py
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 58493); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+bash=58493 python=58498
+sdd/reports/progress/DRIVE_F.lock
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gates: []
+gates: []
+
+=== f_kill_vg
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 60124); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+vg=60359
+gates: [(1, '199fdc4', -9)]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: gate-inconclusivo
+O teste final não chegou ao fim: isso não é vermelho e não gastou rodada.
+log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: PARADA
+→ instale o que faltou (veja o log) ou rode onde a ferramenta exista, e use --resume.
+[rc=20]
+--- sdd-drive --resume sdd/features/DEFINE_F.md
+retomando: rodada 1/3 · 2 de 2 tarefas prontas · último teste final: -9 · não gastei rodada
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== f_kill_cmd
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 61713); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+cmd=61917
+gates: [(1, 'e5cf93d', 2)]
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=137).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+[exit=2]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+
+=== f_kill_contains
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 63232); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+gates: [(1, '92140e3', 0)]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+
+=== v_sem_trava
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+gate.calls=0
+
+=== v_trava_morta
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+
+real	0m2.817s
+user	0m0.341s
+sys	0m0.252s
+gate.calls=1
+
+=== v_trava_viva
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: ESPERAR
+rodada: 1/3
+O teste final está rodando (processo 67539). Se não há teste nenhum rodando, apague sdd/reports/progress/DRIVE_F.lock.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+gate.calls=0
+
+=== v_forja
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: RODADA
+rodada: 2/3
+O teste final ficou vermelho e gastou 1 rodada (log: sdd/reports/evidence/F/DRIVE-gate-r1.log); há commit novo depois de quando ele começou.
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10] tarefas pendentes, mas o gate:
+gate.calls=1
+gates: [(1, '421baa3', 2)]
+
+=== v_gate_nao_herda
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 70396); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+▶ Verify Gate [test]: echo VAR=[${SDD_DRIVE_TRAVA_HERDADA:-}] ; test -f .verde
+   │ VAR=[]
+
+=== m_apaga
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 71469); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+motivo: estado-invalido
+sdd/reports/progress/DRIVE_F.lock
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: estado-invalido
+Não consegui ler onde a execução parou, e não vou adivinhar.
+não há estado em sdd/reports/progress/DRIVE_F.json
+RESULTADO: PARADA
+→ confira o arquivo citado acima: use --resume se ele for desta execução, ou apague-o e rode iniciar.
+[rc=20]
+
+=== m_corrompe
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 73472); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+motivo: estado-invalido
+sdd/reports/progress/DRIVE_F.lock
+
+=== m_iniciar
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 75568); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: ESPERAR
+rodada: 1/3
+O teste final está rodando (processo 75568). Se não há teste nenhum rodando, apague sdd/reports/progress/DRIVE_F.lock.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+gates: [(1, '461e232', 0)]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+
+=== m_recibo
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 76814); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+--- sdd-drive recibo sdd/features/DEFINE_F.md durante
+✅ anotado em sdd/reports/DRIVE_REPORT_F.md (Decidi sozinho).
+RESULTADO: RECIBO GRAVADO
+→ siga a próxima ação.
+[rc=0]
+['durante'] 1
+
+=== m_resume_max
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 78188); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+--- sdd-drive --resume sdd/features/DEFINE_F.md --max 1
+retomando: rodada 1/1 · 2 de 2 tarefas prontas · último teste final: nenhum · não gastei rodada
+ACAO: ESPERAR
+rodada: 1/1
+O teste final está rodando (processo 78188). Se não há teste nenhum rodando, apague sdd/reports/progress/DRIVE_F.lock.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+gates: [(1, '1f36db6', 2)]
+motivo: orcamento-rodadas
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: orcamento-rodadas
+O teste final continuou vermelho nas rodadas permitidas. Nada foi publicado.
+Rodadas vermelhas: 1 de 1.
+RESULTADO: PARADA
+→ decida: corrigir o DESIGN e seguir, dar mais rodadas (--resume --max N) ou parar; publicar é só pela sdd-release.
+[rc=20]
+
+=== m_doc_commit
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 79818); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+
+=== m_cod_commit
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 81527); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (a940ad6254c7).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== m_edit_volta
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 82887); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+gates: [(1, '91e2330', 0)]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+[exit=0]

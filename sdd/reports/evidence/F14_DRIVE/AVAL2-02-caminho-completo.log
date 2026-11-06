@@ -1,0 +1,139 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh; mkrepo "$(novo)/a b/ção"; drv --dry-run $D; ls sdd/reports 2>&1; drv iniciar $D --max 2; cat sdd/reports/progress/DRIVE_F.json; drv proximo $D; cat sdd/reports/progress/PROGRESS_F.md; feito; drv verificar $D; head -1 sdd/reports/evidence/F/DRIVE-gate-r1.log; tail -1 sdd/reports/evidence/F/DRIVE-gate-r1.log; echo 1 > c.txt; drv verificar $D; git add c.txt; git commit -qm c; touch .verde; drv verificar $D; drv proximo $D; drv concluir $D; rel; drv concluir $D; cat sdd/reports/DRIVE_REPORT_F.md
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+Simulação de sdd/features/DEFINE_F.md, com até 3 rodada(s). Eu faria, nesta ordem:
+  1. reaproveitar sdd/features/DESIGN_F.md, com a revisão se ela for exigida;
+  2. construir o que falta, uma tarefa por sessão nova, com 1 commit por tarefa;
+  3. rodar o teste final (Verify Gate) e, se vermelho, corrigir e voltar ao passo 2;
+  4. com o verde, avaliador e relatórios; e parar antes de publicar.
+kind: test
+cmd: echo x >> gate.calls; test -f .verde
+motivo: simulacao
+Simulação: nada foi executado nem gravado.
+RESULTADO: CONCLUIDO
+→ para executar de verdade, rode sdd-drive.sh iniciar com este DEFINE.
+[rc=0]
+ls: sdd/reports: No such file or directory
+--- sdd-drive iniciar sdd/features/DEFINE_F.md --max 2
+ACAO: RODADA
+rodada: 1/2
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+{
+ "versao": 2,
+ "feature": "F",
+ "define": "sdd/features/DEFINE_F.md",
+ "gate_sha": "1574a0e696a885c4f36adca069c978b553c31dc245f952094d41ac5f12a69c12",
+ "gate_cmd": "echo x >> gate.calls; test -f .verde",
+ "inicio": "7d6c9fe2f08f595a7b7627ae5bfed96b508be67f",
+ "maximo": 2,
+ "gate_linhas": [
+  "kind:       test",
+  "cmd:        echo x >> gate.calls; test -f .verde",
+  "pass_when:  exit 0",
+  "threshold:  —",
+  "manual_fallback: —"
+ ],
+ "gates": [],
+ "trocas_gate": [],
+ "recibos": [],
+ "repeticao": {
+  "chave": "",
+  "n": 0
+ },
+ "motivo": "",
+ "detalhe": "",
+ "parada_gate": "",
+ "avisou_paradas": false
+}
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/2
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+# PROGRESS: F
+
+- [ ] a
+- [ ] b
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: CORRIGIR
+rodada: 2/2
+o teste final ficou vermelho (normal nesta etapa): restam 1 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+$ verify-gate.sh sdd/features/DEFINE_F.md
+[exit=2]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 2/2
+   - c.txt
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 2/2
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r2.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 2/2
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 2/2
+Falta sdd/reports/BUILD_REPORT_F.md.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 1 de 2.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+# DRIVE_REPORT: F
+
+O teste final passou e os relatórios estão prontos. Nada foi publicado. Rodadas vermelhas: 1 de 2.
+
+| Campo | Valor |
+|---|---|
+| Motivo | gate-verde |
+| DEFINE | `sdd/features/DEFINE_F.md` |
+| Commit inicial | `7d6c9fe2f08f` |
+| Teste final | `echo x >> gate.calls; test -f .verde` |
+
+Rodadas vermelhas: 1 de 2.
+
+## Testes finais
+
+| # | Rodada | Commit | Exit | Log |
+|---|---|---|---|---|
+| 1 | 1 | `7d6c9fe2f08f` | 2 | `sdd/reports/evidence/F/DRIVE-gate-r1.log` |
+| 2 | 2 | `bf36953400d4` | 0 | `sdd/reports/evidence/F/DRIVE-gate-r2.log` |
+
+## Commits desde o início
+
+- bf36953 c
+
+## Teste final alterado
+
+Nenhuma troca.
+
+## Decidi sozinho
+
+Nada.
+
+Nada foi publicado: publicar é decisão da pessoa, pela sdd-release.
+[exit=0]

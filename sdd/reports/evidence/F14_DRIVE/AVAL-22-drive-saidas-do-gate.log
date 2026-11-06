@@ -1,0 +1,98 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); s() { /bin/bash sdd/bin/sdd-drive.sh "$@" > $V/o 2>&1; rc=$?; echo "[$*] rc=$rc $(grep -E "^(motivo|ACAO|rodada|retomando)" $V/o | head -n 3 | cut -c1-100 | tr "\n" ";")"; }
+echo == R1 cada saida do verify-gate \(real\) e o que o drive faz, sem SDD_TRACE=off; unset SDD_TRACE; mkrepo $V/x "exit \$(cat .rc)"; printf ".rc\n" >> .gitignore; git add -A; git commit -qm i; echo 0 > .rc; s iniciar $D; feito; for c in 1 3 4 5 64 126 127 137 2; do echo $c > .rc; echo x$c >> c.txt; git add c.txt; git commit -qm c$c; s --resume $D >/dev/null; s verificar $D; tail -n 1 "sdd/reports/evidence/F/$(ls -t sdd/reports/evidence/F | head -n 1)"; done; python3 -c "import json;print([(g[\"n\"],g[\"rodada\"],g[\"exit\"]) for g in json.load(open(\"sdd/reports/progress/DRIVE_F.json\"))[\"gates\"]])"; git status --porcelain; ls sdd
+echo == R2 verify-gate morto por sinal; cp sdd/bin/verify-gate.sh $V/vg; python3 - <<PY
+t=open("sdd/bin/verify-gate.sh").read().replace("set -u","set -u\n[ \"\$#\" = 1 ] && [ \"\${1#-}\" = \"\$1\" ] && kill -9 \$\$",1)
+open("sdd/bin/verify-gate.sh","w").write(t)
+PY
+git add -A; git commit -qm vg; s --resume $D; s verificar $D; tail -n 1 "sdd/reports/evidence/F/$(ls -t sdd/reports/evidence/F | head -n 1)"; cp $V/vg sdd/bin/verify-gate.sh; git add -A; git commit -qm vg2
+echo == R3 limite: sobe, baixa, sobe; V2=$(novo); mkrepo $V2/x "false"; s iniciar $D --max 1; feito; s verificar $D; s proximo $D; s verificar $D; s concluir $D; s --resume $D; s --resume $D --max 1; s --resume $D --max 2; s proximo $D; echo c > c; git add c; git commit -qm c; s verificar $D; s --resume $D --max 1; s proximo $D; s --resume $D --max 5; s proximo $D
+echo == R4 gate muda e reverte sem resume; V3=$(novo); mkrepo $V3/x "false"; s iniciar $D; cp $D $V3/o; sed -i "" "s/cmd: .*/cmd: \"true\"/" $D; s proximo $D; s verificar $D; s concluir $D; s --resume $D; cp $V3/o $D; s proximo $D; ls sdd/reports/evidence 2>&1 | head -n 1
+echo == R5 aceitar gate novo invalida o verde, roda no mesmo HEAD, troca fica no relatorio; V4=$(novo); mkrepo $V4/x "true"; printf "import sys\nsys.exit(0)\n" > sdd/bin/report-lint.py; git add -A; git commit -qm stub; s iniciar $D; feito; s verificar $D; echo x > sdd/reports/BUILD_REPORT_F.md; sed -i "" "s/cmd: .*/cmd: \"echo novo\"/" $D; s concluir $D; s --resume $D --aceitar-gate-novo; s proximo $D; s concluir $D; grep -n -A2 "Teste final alterado" sdd/reports/DRIVE_REPORT_F.md; s verificar $D; s concluir $D; git status --short | cut -c1-60
+echo == R6 DEFINE fora de sdd/features; V5=$(novo); mkrepo $V5/x true; mkdir -p docs/spec; git mv $D docs/spec/DEFINE_F.md; git mv sdd/features/DESIGN_F.md docs/spec/DESIGN_F.md; git commit -qm mv; s iniciar docs/spec/DEFINE_F.md; s proximo docs/spec/DEFINE_F.md; git status --short | cut -c1-60
+echo == R7 manifesto: prefixo e cabecalho; V6=$(novo); mkrepo $V6/x true; design "x y.md" "z" > sdd/features/DESIGN_F.md; git add -A; git commit -qm d; s iniciar $D; cat sdd/reports/progress/PROGRESS_F.md; design "x y.md" "z" "x" > sdd/features/DESIGN_F.md; s proximo $D; echo == depois da linha nova x; cat sdd/reports/progress/PROGRESS_F.md
+== R1 cada saida do verify-gate (real) e o que o drive faz, sem SDD_TRACE=off
+[iniciar sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: CORRIGIR;rodada: 2/3;
+[exit=2]
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: CORRIGIR;rodada: 3/3;
+[exit=2]
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[exit=2]
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[exit=2]
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[exit=2]
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[exit=2]
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[exit=2]
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[exit=2]
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[exit=2]
+[(1, 1, 2), (2, 2, 2), (3, 3, 2)]
+?? sdd/reports/
+?? sdd/traces/
+bin
+features
+reports
+traces
+== R2 verify-gate morto por sinal
+[--resume sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[exit=2]
+== R3 limite: sobe, baixa, sobe
+[iniciar sdd/features/DEFINE_F.md --max 1] rc=10 ACAO: RODADA;rodada: 1/1;
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[proximo sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[concluir sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[--resume sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[--resume sdd/features/DEFINE_F.md --max 1] rc=20 motivo: orcamento-rodadas;
+[--resume sdd/features/DEFINE_F.md --max 2] rc=10 retomando: rodada 2/2 · 2 de 2 tarefas prontas · último teste final: 2 · não gastei rodada;ACAO: CORRIGIR;rodada: 2/2;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: CORRIGIR;rodada: 2/2;
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[--resume sdd/features/DEFINE_F.md --max 1] rc=20 motivo: orcamento-rodadas;
+[proximo sdd/features/DEFINE_F.md] rc=20 motivo: orcamento-rodadas;
+[--resume sdd/features/DEFINE_F.md --max 5] rc=10 retomando: rodada 3/5 · 2 de 2 tarefas prontas · último teste final: 2 · não gastei rodada;ACAO: CORRIGIR;rodada: 3/5;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: CORRIGIR;rodada: 3/5;
+== R4 gate muda e reverte sem resume
+[iniciar sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;
+[proximo sdd/features/DEFINE_F.md] rc=20 motivo: gate-alterado;
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: gate-alterado;
+[concluir sdd/features/DEFINE_F.md] rc=20 motivo: gate-alterado;
+[--resume sdd/features/DEFINE_F.md] rc=20 motivo: gate-alterado;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;
+ls: sdd/reports/evidence: No such file or directory
+== R5 aceitar gate novo invalida o verde, roda no mesmo HEAD, troca fica no relatorio
+[iniciar sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: AVALIAR_E_RELATAR;rodada: 1/3;
+[concluir sdd/features/DEFINE_F.md] rc=20 motivo: gate-alterado;
+[--resume sdd/features/DEFINE_F.md --aceitar-gate-novo] rc=10 retomando: rodada 1/3 · 2 de 2 tarefas prontas · último teste final: 0 · não gastei rodada;ACAO: VERIFICAR;rodada: 1/3;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: VERIFICAR;rodada: 1/3;
+[concluir sdd/features/DEFINE_F.md] rc=10 ACAO: VERIFICAR;rodada: 1/3;
+25:## Teste final alterado
+26-
+27-Nenhuma troca.
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: AVALIAR_E_RELATAR;rodada: 1/3;
+[concluir sdd/features/DEFINE_F.md] rc=0 motivo: gate-verde;
+ M sdd/features/DEFINE_F.md
+?? sdd/reports/
+?? sdd/traces/
+== R6 DEFINE fora de sdd/features
+[iniciar docs/spec/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;
+[proximo docs/spec/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;
+?? sdd/reports/
+== R7 manifesto: prefixo e cabecalho
+[iniciar sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;
+# PROGRESS: F
+
+- [ ] x y.md
+- [ ] z
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;
+== depois da linha nova x
+# PROGRESS: F
+
+- [ ] x y.md
+- [ ] z
+[exit=0]

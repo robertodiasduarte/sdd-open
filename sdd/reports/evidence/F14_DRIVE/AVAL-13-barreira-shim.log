@@ -1,0 +1,35 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo $V/x "test -f .verde"; printf "import sys\nsys.exit(0)\n" > sdd/bin/report-lint.py; git add -A; git commit -qm stub; mkdir -p $V/shim; RG=$(command -v git); LOG=$V/argv.log; printf "#!/bin/bash\necho git \"\$*\" >> $LOG\nexec $RG \"\$@\"\n" > $V/shim/git; printf "#!/bin/bash\necho gh \"\$*\" >> $LOG\nexit 0\n" > $V/shim/gh; chmod +x $V/shim/*; export PATH=$V/shim:$PATH
+git remote add origin https://example.invalid/x.git; drv --dry-run $D >/dev/null; drv iniciar $D > /dev/null; drv proximo $D > /dev/null; feito; drv recibo $D r > /dev/null; drv verificar $D > /dev/null; echo y > y; git add y; git commit -qm y; touch .verde; drv verificar $D --fundo >/dev/null; sleep 2; echo x > sdd/reports/BUILD_REPORT_F.md; drv concluir $D | head -n 3; drv --resume $D >/dev/null;  drv bloqueio $D b > /dev/null; echo b > b.md; drv aguardar $D executor-drive b.md | head -n 12; /bin/bash sdd/bin/sdd-drive.sh --self-test > /dev/null; echo self=$?
+wc -l < $LOG; echo == subcomandos distintos; awk "{print \$1,\$2,\$3,\$4}" $LOG | grep -vE "git -C /" | sort -u | head -n 40; echo == proibidos; grep -cE "push|gh release|gh workflow run|gh run rerun" $LOG; grep -E "push|gh " $LOG | head
+▶ rodando o teste final; isso pode levar alguns minutos.
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+--- sdd-drive aguardar sdd/features/DEFINE_F.md executor-drive b.md
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: executor-drive).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/r.usqaBG/x.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_executor-drive_F.md → o agente começa a ler a próxima tarefa de sdd/reports/progress/PROGRESS_F.md.
+3. Quando ele terminar, copie o bloco que começa com `<<<RODADA` até `>>>` e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** a tarefa ainda não foi feita e nada foi publicado.
+**Brief:** sdd/reports/briefs/BRIEF_executor-drive_F.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+self=0
+     359
+== subcomandos distintos
+git add -A 
+git add codigo.txt 
+git add y 
+git commit -q -m
+git commit -qm y
+git init -q 
+git remote add origin
+git rev-parse --show-toplevel 
+git symbolic-ref HEAD refs/heads/frente
+git symbolic-ref HEAD refs/heads/main
+== proibidos
+0
+[exit=0]

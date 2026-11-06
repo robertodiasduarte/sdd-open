@@ -1,0 +1,133 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; cd $PROJ; B=$(git status --porcelain | wc -l); /bin/bash sdd/bin/sdd-drive.sh --self-test; echo self-test=$?; echo porcelain-antes=$B depois=$(git status --porcelain | wc -l); ls sdd/fixtures/drive 2>&1
+echo == self-test em copia sabotada: motivo muda; V=$(novo); mkdir -p "$V/com espaço/sdd/bin"; cp sdd/bin/sdd-drive.sh sdd/bin/verify-gate.sh sdd/bin/sdd-fluxo.sh sdd/bin/design-lint.py "$V/com espaço/sdd/bin/"; (cd "$V/com espaço"; /bin/bash sdd/bin/sdd-drive.sh --self-test | tail -n 2; sed -i "" "s/parada(p, st, \"gate-alterado\"/parada(p, st, \"bloqueio-humano\"/" sdd/bin/sdd-drive.sh; /bin/bash sdd/bin/sdd-drive.sh --self-test | grep -E "🛑|RESULTADO" | cut -c1-140; echo sabotado=${PIPESTATUS[0]})
+echo == gitconfig global hostil: commit.gpgsign; H=$V/home; mkdir -p $H; printf "[commit]\n  gpgsign = true\n[gpg]\n  program = /usr/bin/false\n" > $H/.gitconfig; HOME=$H /bin/bash sdd/bin/sdd-drive.sh --self-test | grep -E "🛑|RESULTADO" | cut -c1-200; echo gpg-self-test=${PIPESTATUS[0]}
+echo == scripts novos: construcoes fora do piso; grep -nE "mapfile|declare -A|\$\{[a-zA-Z_]+\^\^" sdd/bin/sdd-drive.sh sdd/bin/deploy-do-sha.sh sdd/bin/sdd-archive.py; echo grep-rc=$?; for s in sdd/bin/sdd-drive.sh sdd/bin/deploy-do-sha.sh; do /bin/bash -n $s; echo bash-n=$?; done; /usr/bin/python3 -c "import ast,sys;[ast.parse(open(f).read()) for f in [\"sdd/bin/sdd-archive.py\"]];print(\"ast ok\")"
+echo == verify-gate --checar AT-037; G=$V/g; mkdir -p $G/sdd/bin; cp sdd/bin/verify-gate.sh $G/sdd/bin/; cd $G; git init -q; define "touch RODOU" > DEFINE_F.md; /bin/bash sdd/bin/verify-gate.sh --checar DEFINE_F.md >/dev/null 2>&1; echo checar-ok=$?; ls; define "touch RODOU" xyz > DEFINE_K.md; /bin/bash sdd/bin/verify-gate.sh --checar DEFINE_K.md >/dev/null 2>&1; echo kind-xyz=$?; define "N/A" test > DEFINE_N.md; /bin/bash sdd/bin/verify-gate.sh --checar DEFINE_N.md >/dev/null 2>&1; echo cmd-na=$?; define "N/A (manual-ux)" manual-ux > DEFINE_U.md; /bin/bash sdd/bin/verify-gate.sh --checar DEFINE_U.md >/dev/null 2>&1; echo manual=$?; echo "[NEEDS ""CLARIFICATION: x]" >> DEFINE_F.md; /bin/bash sdd/bin/verify-gate.sh --checar DEFINE_F.md > /dev/null 2>&1; echo marcador=$?; ls -a sdd; /bin/bash sdd/bin/verify-gate.sh --print DEFINE_K.md | grep -E "manual_fallback"; cd $PROJ
+echo == seguir --drive na release; R=$V/s; mkdir -p $R/sdd/bin $R/sdd/features; cp sdd/bin/sdd-fluxo.sh sdd/bin/design-lint.py $R/sdd/bin/; cd $R; git init -q; define true > sdd/features/DEFINE_F.md; /bin/bash sdd/bin/sdd-fluxo.sh seguir build sdd/features/DEFINE_F.md release --drive 2>&1 | cut -c1-140 | tail -n 8; echo seguir-rc=${PIPESTATUS[0]}; cd $PROJ
+echo == lints e manifesto; /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md 2>&1 | tail -n 3; echo skill-lint=${PIPESTATUS[0]}; ls -d .agents/skills/sdd-* | wc -l; /bin/bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills sdd/templates/fragments 2>&1 | tail -n 2; echo decisoes=${PIPESTATUS[0]}; /usr/bin/python3 -B scripts/check-versions.py --base v2.6.0 --base-obrigatoria 2>&1 | tail -n 2; echo versions=${PIPESTATUS[0]}
+for f in sdd/bin/sdd-drive.sh sdd/bin/deploy-do-sha.sh sdd/bin/sdd-archive.py docs/sdd-drive.md docs/pt-BR/sdd-drive.md .agents/skills/sdd-drive/SKILL.md; do printf "%s " $f; grep -c "$f" MANIFEST.txt; done; grep -n sdd-drive docs/roadmap.md docs/pt-BR/roadmap.md; echo roadmap-rc=$?; grep -n "max_rounds\|max_tokens\|transient_steps:\|  workflow:" sdd/config.example.yaml; grep -n "19 skills\|19 " README.md | head -n 3 | cut -c1-120;
+echo == contrato de saida contra a skill: os 12 motivos; for m in gate-verde simulacao orcamento-rodadas manual-ux clarificacao-pendente define-invalido gate-inconclusivo gate-alterado bloqueio-humano aguardando-sessao estado-invalido branch-padrao; do printf "%s:" $m; for f in sdd/bin/sdd-drive.sh .agents/skills/sdd-drive/SKILL.md sdd/WORKFLOW_CONTRACTS.yaml docs/sdd-drive.md docs/pt-BR/sdd-drive.md; do printf " %s" $(grep -c -- "$m" $f); done; echo; done
+  ✅ uso sem argumentos ⇒ 64
+  ✅ --max inválido ⇒ 64
+  ✅ branch padrão ⇒ branch-padrao
+  ✅ DEFINE sem bloco ⇒ define-invalido
+  ✅ marcador ativo ⇒ clarificacao-pendente
+  ✅ sem estado ⇒ estado-invalido
+  ✅ não consegue gravar ⇒ 2
+  ✅ simulação ⇒ simulacao
+  ✅ iniciar ⇒ ação
+  ✅ iniciar de novo ⇒ estado-invalido
+  ✅ 3ª repetição ⇒ bloqueio-humano
+  ✅ resume ⇒ 10
+  ✅ bloqueio ⇒ bloqueio-humano
+  ✅ aguardar ⇒ aguardando-sessao
+  ✅ gate mudou ⇒ gate-alterado
+  ✅ gate mudou continua parado
+  ✅ aceitar o gate novo
+  ✅ vermelho no limite ⇒ orcamento-rodadas
+  ✅ o limite segue valendo
+  ✅ manual-ux ⇒ manual-ux
+  ✅ gate inconclusivo ⇒ gate-inconclusivo
+  ✅ verde: iniciar
+  ✅ verde: vermelho gasta rodada
+  ✅ verde: sem commit novo não roda de novo
+  ✅ verde: arquivo novo ⇒ COMMITAR
+  ✅ verde: gate 0 ⇒ avaliar
+  ✅ verde: sem relatório não conclui
+  ✅ verde: concluir ⇒ gate-verde
+✅ self-test: todos os casos passaram.
+RESULTADO: VERDE
+→ o script está conforme o contrato.
+self-test=0
+porcelain-antes= 4 depois= 4
+ls: sdd/fixtures/drive: No such file or directory
+== self-test em copia sabotada: motivo muda
+RESULTADO: VERDE
+→ o script está conforme o contrato.
+  🛑 gate mudou ⇒ gate-alterado
+  🛑 gate mudou continua parado
+🛑 self-test: 2 caso(s) falharam: gate mudou ⇒ gate-alterado; gate mudou continua parado
+RESULTADO: FALHA
+sabotado=2
+== gitconfig global hostil: commit.gpgsign
+  🛑 iniciar ⇒ ação
+  🛑 iniciar de novo ⇒ estado-invalido
+  🛑 3ª repetição ⇒ bloqueio-humano
+  🛑 resume ⇒ 10
+  🛑 bloqueio ⇒ bloqueio-humano
+  🛑 aguardar ⇒ aguardando-sessao
+  🛑 gate mudou ⇒ gate-alterado
+  🛑 gate mudou continua parado
+  🛑 aceitar o gate novo
+  🛑 vermelho no limite ⇒ orcamento-rodadas
+  🛑 o limite segue valendo
+  🛑 manual-ux ⇒ manual-ux
+  🛑 gate inconclusivo ⇒ gate-inconclusivo
+  🛑 verde: iniciar
+  🛑 verde: vermelho gasta rodada
+  🛑 verde: sem commit novo não roda de novo
+  🛑 verde: arquivo novo ⇒ COMMITAR
+  🛑 verde: gate 0 ⇒ avaliar
+  🛑 verde: sem relatório não conclui
+  🛑 verde: concluir ⇒ gate-verde
+🛑 self-test: 21 caso(s) falharam: iniciar ⇒ ação; iniciar de novo ⇒ estado-invalido; 3ª repetição ⇒ bloqueio-humano; resume ⇒ 10; bloqueio ⇒ bloqueio-humano; aguardar ⇒ aguardando-sessao; gate mudou ⇒
+RESULTADO: FALHA
+gpg-self-test=2
+== scripts novos: construcoes fora do piso
+grep-rc=1
+bash-n=0
+bash-n=0
+ast ok
+== verify-gate --checar AT-037
+checar-ok=0
+DEFINE_F.md
+sdd
+kind-xyz=64
+cmd-na=64
+manual=0
+marcador=5
+.
+..
+bin
+manual_fallback: —
+== seguir --drive na release
+PARAR: publicar não se desfaz — é decisão sua (D1)
+RESULTADO: PARAR
+→ Próximo passo: /sdd-release sdd/features/DEFINE_F.md
+seguir-rc=1
+== lints e manifesto
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+skill-lint=0
+      19
+🟢 sdd-decisoes-lint --sites: 27 pergunta(s) em 23 arquivo(s), cada uma com a marca de classe e no formato.
+decisoes=0
+RESULTADO: VERDE
+→ siga para o próximo passo.
+versions=0
+sdd/bin/sdd-drive.sh 1
+sdd/bin/deploy-do-sha.sh 1
+sdd/bin/sdd-archive.py 1
+docs/sdd-drive.md 1
+docs/pt-BR/sdd-drive.md 1
+.agents/skills/sdd-drive/SKILL.md 1
+roadmap-rc=1
+44:  workflow: ""
+47:  transient_steps: ""
+89:  max_rounds: 3
+51:## The 19 skills
+== contrato de saida contra a skill: os 12 motivos
+gate-verde: 7 2 1 3 3
+simulacao: 5 1 1 1 1
+orcamento-rodadas: 7 1 1 1 1
+manual-ux: 6 1 1 1 1
+clarificacao-pendente: 8 1 1 1 1
+define-invalido: 12 1 1 1 1
+gate-inconclusivo: 5 1 1 1 1
+gate-alterado: 5 1 1 2 2
+bloqueio-humano: 7 1 1 1 1
+aguardando-sessao: 5 1 1 1 1
+estado-invalido: 8 2 1 1 1
+branch-padrao: 5 1 1 1 1
+[exit=0]

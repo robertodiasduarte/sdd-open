@@ -1,0 +1,149 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkarq $V/x
+echo == P1 ficha ABERTA de F14: FIX_REPORT_F14 e outros do grupo; echo a > sdd/features/DEFINE_F14.md; echo a > sdd/reports/BUILD_REPORT_F14.md; echo a > sdd/reports/FIX_REPORT_F14.md; echo a > sdd/reports/FIX_F14.md; printf "## Ficha\n\n| Campo | Valor |\n|---|---|\n| Status | 🟡 em andamento |\n" > sdd/handoffs/HANDOFF_F14.md; velho; arq; arq --lote soltos --aplicar; git status --short
+echo == P2 feature minuscula/hifen \(o drive aceita esses nomes\) com ficha aberta; V2=$(novo); mkarq $V2/x; echo a > sdd/features/DEFINE_minha-frente.md;echo a > sdd/reports/BUILD_REPORT_minha-frente.md; echo a > sdd/reports/DRIVE_REPORT_minha-frente.md; echo a > sdd/reviews/AVALIACAO_minha-frente_20200101.md; printf "| Status | 🟡 em andamento |\n" > sdd/handoffs/HANDOFF_minha-frente.md; velho; arq; arq --lote soltos --aplicar; git status --short
+echo == P3 documento solto citado numa ficha aberta; V3=$(novo); mkarq $V3/x; echo a > sdd/reports/NOTAS_DA_FRENTE.md; echo a > sdd/reviews/parecer.txt; echo a > sdd/reports/BUILD_REPORT_ABC.json; printf "| Status | 🟡 aberta |\nVer sdd/reports/NOTAS_DA_FRENTE.md e sdd/reviews/parecer.txt e sdd/reports/BUILD_REPORT_ABC.json\n" > sdd/handoffs/HANDOFF_ABC.md; velho; arq --lote soltos --aplicar; git status --short
+echo == P4 grupo com ledger e slice com ficha aberta; V4=$(novo); mkarq $V4/x; mkdir -p sdd/releases/G sdd/reports/evidence/G; echo l > sdd/releases/G/LEDGER.md; echo a > sdd/features/DEFINE_G_s2.md; echo a > sdd/features/DEFINE_G.md; echo a > sdd/reports/evidence/G/x.log; printf "| Status | ⏳ |\n" > sdd/handoffs/HANDOFF_G_s2.md; velho; arq
+echo == P5 ficha fechada so por texto com check no meio / sem Status; V5=$(novo); mkarq $V5/x; echo a > sdd/features/DEFINE_H.md; echo a > sdd/features/DEFINE_I.md; echo a > sdd/features/DEFINE_J.md; printf "| Status | em ✅ quase |\n" > sdd/handoffs/HANDOFF_H.md; printf "sem status\n" > sdd/handoffs/HANDOFF_I.md; printf "| **Status** | ✅ fechada |\nCita DEFINE_J\n" > sdd/handoffs/HANDOFF_J.md; velho; arq
+== P1 ficha ABERTA de F14: FIX_REPORT_F14 e outros do grupo
+--- sdd-archive 
+
+== Lote com-ledger: 0 arquivo(s) ==
+
+== Lote sem-ledger: 0 arquivo(s) ==
+
+== Lote soltos: 1 arquivo(s) ==
+  sdd/reports/FIX_REPORT_F14.md  →  sdd/archive/_REPORTS_2020-01/FIX_REPORT_F14.md
+
+== Protegidos: 1 grupo(s) ==
+  F14 (3 documento(s)): ficha aberta em HANDOFF_F14.md
+
+== Recentes (ficam): 0 grupo(s) ==
+
+== Sem classificação (decisão sua): 0 ==
+
+== Subpastas (ficam): 0 ==
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[rc=0]
+--- sdd-archive --lote soltos --aplicar
+
+== Lote soltos: 1 arquivo(s) ==
+  sdd/reports/FIX_REPORT_F14.md  →  sdd/archive/_REPORTS_2020-01/FIX_REPORT_F14.md
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+✅ movi 1 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+[rc=0]
+R  sdd/reports/FIX_REPORT_F14.md -> sdd/archive/_REPORTS_2020-01/FIX_REPORT_F14.md
+== P2 feature minuscula/hifen (o drive aceita esses nomes) com ficha aberta
+--- sdd-archive 
+
+== Lote com-ledger: 0 arquivo(s) ==
+
+== Lote sem-ledger: 0 arquivo(s) ==
+
+== Lote soltos: 3 arquivo(s) ==
+  sdd/reports/BUILD_REPORT_minha-frente.md  →  sdd/archive/_REPORTS_2020-01/BUILD_REPORT_minha-frente.md
+  sdd/reports/DRIVE_REPORT_minha-frente.md  →  sdd/archive/_REPORTS_2020-01/DRIVE_REPORT_minha-frente.md
+  sdd/reviews/AVALIACAO_minha-frente_20200101.md  →  sdd/archive/_REPORTS_2020-01/AVALIACAO_minha-frente_20200101.md
+
+== Protegidos: 0 grupo(s) ==
+
+== Recentes (ficam): 0 grupo(s) ==
+
+== Sem classificação (decisão sua): 1 ==
+  sdd/features/DEFINE_minha-frente.md
+
+== Subpastas (ficam): 0 ==
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=3 · protegidos=0 · recentes=0 · sem classificação=1 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[rc=0]
+--- sdd-archive --lote soltos --aplicar
+
+== Lote soltos: 3 arquivo(s) ==
+  sdd/reports/BUILD_REPORT_minha-frente.md  →  sdd/archive/_REPORTS_2020-01/BUILD_REPORT_minha-frente.md
+  sdd/reports/DRIVE_REPORT_minha-frente.md  →  sdd/archive/_REPORTS_2020-01/DRIVE_REPORT_minha-frente.md
+  sdd/reviews/AVALIACAO_minha-frente_20200101.md  →  sdd/archive/_REPORTS_2020-01/AVALIACAO_minha-frente_20200101.md
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=3 · protegidos=0 · recentes=0 · sem classificação=1 · subpastas=0
+✅ movi 3 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+[rc=0]
+R  sdd/reviews/AVALIACAO_minha-frente_20200101.md -> sdd/archive/_REPORTS_2020-01/AVALIACAO_minha-frente_20200101.md
+R  sdd/reports/BUILD_REPORT_minha-frente.md -> sdd/archive/_REPORTS_2020-01/BUILD_REPORT_minha-frente.md
+R  sdd/reports/DRIVE_REPORT_minha-frente.md -> sdd/archive/_REPORTS_2020-01/DRIVE_REPORT_minha-frente.md
+== P3 documento solto citado numa ficha aberta
+--- sdd-archive --lote soltos --aplicar
+
+== Lote soltos: 3 arquivo(s) ==
+  sdd/reports/BUILD_REPORT_ABC.json  →  sdd/archive/_REPORTS_2020-01/BUILD_REPORT_ABC.json
+  sdd/reports/NOTAS_DA_FRENTE.md  →  sdd/archive/_REPORTS_2020-01/NOTAS_DA_FRENTE.md
+  sdd/reviews/parecer.txt  →  sdd/archive/_REPORTS_2020-01/parecer.txt
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=3 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+✅ movi 3 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+[rc=0]
+R  sdd/reports/BUILD_REPORT_ABC.json -> sdd/archive/_REPORTS_2020-01/BUILD_REPORT_ABC.json
+R  sdd/reports/NOTAS_DA_FRENTE.md -> sdd/archive/_REPORTS_2020-01/NOTAS_DA_FRENTE.md
+R  sdd/reviews/parecer.txt -> sdd/archive/_REPORTS_2020-01/parecer.txt
+== P4 grupo com ledger e slice com ficha aberta
+--- sdd-archive 
+
+== Lote com-ledger: 2 arquivo(s) ==
+  sdd/features/DEFINE_G.md  →  sdd/archive/G/DEFINE_G.md
+  sdd/features/DEFINE_G_s2.md  →  sdd/archive/G/DEFINE_G_s2.md
+
+== Lote sem-ledger: 0 arquivo(s) ==
+
+== Lote soltos: 0 arquivo(s) ==
+
+== Protegidos: 0 grupo(s) ==
+
+== Recentes (ficam): 0 grupo(s) ==
+
+== Sem classificação (decisão sua): 0 ==
+
+== Subpastas (ficam): 1 ==
+  sdd/reports/evidence/
+
+TOTAIS: com-ledger=2 · sem-ledger=0 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=1
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[rc=0]
+== P5 ficha fechada so por texto com check no meio / sem Status
+--- sdd-archive 
+
+== Lote com-ledger: 0 arquivo(s) ==
+
+== Lote sem-ledger: 1 arquivo(s) ==
+  sdd/features/DEFINE_J.md  →  sdd/archive/J/DEFINE_J.md
+
+== Lote soltos: 0 arquivo(s) ==
+
+== Protegidos: 2 grupo(s) ==
+  H (1 documento(s)): ficha aberta em HANDOFF_H.md
+  I (1 documento(s)): ficha aberta em HANDOFF_I.md
+
+== Recentes (ficam): 0 grupo(s) ==
+
+== Sem classificação (decisão sua): 0 ==
+
+== Subpastas (ficam): 0 ==
+
+TOTAIS: com-ledger=0 · sem-ledger=1 · soltos=0 · protegidos=2 · recentes=0 · sem classificação=0 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[rc=0]
+[exit=0]

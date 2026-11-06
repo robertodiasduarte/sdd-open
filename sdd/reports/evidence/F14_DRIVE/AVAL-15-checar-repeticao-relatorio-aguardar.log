@@ -1,0 +1,94 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo $V/x "false"
+s() { /bin/bash sdd/bin/sdd-drive.sh "$@" > $V/o 2>&1; rc=$?; echo "[$*] rc=$rc $(grep -E "^(motivo|ACAO|rodada|tarefa|🛑)" $V/o | head -n 4 | cut -c1-90 | tr "\n" ";")"; }
+cp $D $V/o.md; echo == AT-002 cmd nao executavel; for c in "" "N/A" "N/A (manual-ux)" "—" "TODO" "<comando>" "{{CMD}}"; do cp $V/o.md $D; C="$c" python3 - <<PY
+import os,re
+t=open("sdd/features/DEFINE_F.md").read(); t=re.sub(r"cmd: .*","cmd: \"%s\""%os.environ["C"],t); open("sdd/features/DEFINE_F.md","w").write(t)
+PY
+/bin/bash sdd/bin/verify-gate.sh --checar $D > /dev/null 2>&1; echo "cmd=[$c] checar=$?"; /bin/bash sdd/bin/sdd-drive.sh --dry-run $D | grep -E "^motivo"; done; cp $V/o.md $D; test -e sdd/reports && echo gravou || echo nada-gravado
+echo == AT-007; s iniciar $D; s proximo $D; s proximo $D; s proximo $D; s proximo $D; echo c>c; git add c; git commit -qm c; s proximo $D; s proximo $D; s --resume $D; s --resume $D; s --resume $D; s proximo $D; s proximo $D
+echo == AT-015/016 relatorio; s bloqueio $D "credencial faltando XYZ"; grep -c XYZ sdd/reports/DRIVE_REPORT_F.md; s recibo $D "linha 1
+linha 2 | pipe"; echo "apos recibo: motivo XYZ ainda no relatorio?" $(grep -c XYZ sdd/reports/DRIVE_REPORT_F.md); sed -n 1,12p sdd/reports/DRIVE_REPORT_F.md; grep -n -A2 "Decidi" sdd/reports/DRIVE_REPORT_F.md; s bloqueio $D "   "; s recibo $D ""
+echo == aguardar; echo b>b.md; drv aguardar $D executor-drive b.md; python3 -c "import json;s=json.load(open(\"sdd/reports/progress/DRIVE_F.json\"));print(s[\"motivo\"],s[\"avisou_paradas\"])"; /bin/bash sdd/bin/sdd-drive.sh aguardar $D executor-drive b.md | grep -c "parada(s)"; s aguardar $D executor-drive nao-existe.md; s aguardar $D papel/ruim b.md; s aguardar $D executor-drive; s --resume $D
+== AT-002 cmd nao executavel
+cmd=[] checar=64
+motivo: define-invalido
+cmd=[N/A] checar=64
+motivo: define-invalido
+cmd=[N/A (manual-ux)] checar=64
+motivo: define-invalido
+cmd=[—] checar=0
+motivo: simulacao
+cmd=[TODO] checar=0
+motivo: simulacao
+cmd=[<comando>] checar=0
+motivo: simulacao
+cmd=[{{CMD}}] checar=0
+motivo: simulacao
+nada-gravado
+== AT-007
+[iniciar sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+[proximo sdd/features/DEFINE_F.md] rc=20 motivo: bloqueio-humano;
+[proximo sdd/features/DEFINE_F.md] rc=20 motivo: bloqueio-humano;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+[--resume sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+[--resume sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+[--resume sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+[proximo sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+== AT-015/016 relatorio
+[bloqueio sdd/features/DEFINE_F.md credencial faltando XYZ] rc=20 motivo: bloqueio-humano;
+1
+[recibo sdd/features/DEFINE_F.md linha 1
+linha 2 | pipe] rc=0 
+apos recibo: motivo XYZ ainda no relatorio? 0
+# DRIVE_REPORT: F
+
+A construção parou e precisa de você. Nada foi publicado. Rodadas vermelhas: 0 de 3.
+
+| Campo | Valor |
+|---|---|
+| Motivo | bloqueio-humano |
+| DEFINE | `sdd/features/DEFINE_F.md` |
+| Commit inicial | `1e777c3f5d38` |
+| Teste final | `false` |
+
+## Testes finais
+26:## Decidi sozinho
+27-
+28-- linha 1 linha 2 | pipe
+[bloqueio sdd/features/DEFINE_F.md    ] rc=64 🛑 sdd-drive: bloqueio exige <DEFINE.md> "<motivo>";
+[recibo sdd/features/DEFINE_F.md ] rc=64 🛑 sdd-drive: recibo exige <DEFINE.md> "<texto>";
+== aguardar
+--- sdd-drive aguardar sdd/features/DEFINE_F.md executor-drive b.md
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: executor-drive).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/r.tIa3rF/x.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_executor-drive_F.md → o agente começa a ler a próxima tarefa de sdd/reports/progress/PROGRESS_F.md.
+3. Quando ele terminar, copie o bloco que começa com `<<<RODADA` até `>>>` e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** a tarefa ainda não foi feita e nada foi publicado.
+**Brief:** sdd/reports/briefs/BRIEF_executor-drive_F.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+tarefa: a
+Esta execução tem 2 tarefa(s): sem subagente, são até 2 parada(s), uma por tarefa; você pode parar e voltar quando quiser.
+motivo: aguardando-sessao
+Esta etapa precisa de uma sessão nova do agente. Nada foi publicado.
+RESULTADO: AGUARDANDO_HUMANO
+→ siga os passos acima; na volta, use --resume.
+[rc=40]
+aguardando-sessao True
+0
+[aguardar sdd/features/DEFINE_F.md executor-drive nao-existe.md] rc=64 🛑 sdd-fluxo: brief ausente, vazio ou ilegível: nao-existe.md;
+[aguardar sdd/features/DEFINE_F.md papel/ruim b.md] rc=64 🛑 sdd-fluxo: papel inválido: 'papel/ruim' (letras, números, - e _);
+[aguardar sdd/features/DEFINE_F.md executor-drive] rc=64 🛑 sdd-drive: aguardar exige <DEFINE.md> <papel> <brief>;
+[--resume sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;tarefa: 1 de 2 — a;
+[exit=0]

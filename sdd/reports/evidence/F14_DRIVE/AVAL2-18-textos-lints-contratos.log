@@ -1,0 +1,136 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p18.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p18.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+cd /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
+echo "=== AT-035"; grep -nE 'drive:|max_rounds|deploy:|workflow:|transient_steps|max_tokens' -B0 sdd/config.example.yaml; echo "max_tokens: $(grep -c max_tokens sdd/config.example.yaml)"
+echo "=== AT-036"; ls docs/sdd-drive.md docs/pt-BR/sdd-drive.md; grep -n 'sdd-drive' README.md | head -3; grep -c 'sdd-drive' docs/roadmap.md docs/pt-BR/roadmap.md; grep -nE '19 skills|19ª|19 ' README.md docs/*guia* docs/pt-BR/*guia* sdd/templates/AGENTS.md.tmpl AGENTS.md.tmpl 2>/dev/null | head; grep -nE 'sdd-drive|deploy-do-sha|sdd-archive|docs/sdd-drive|docs/pt-BR/sdd-drive' MANIFEST.txt
+echo "=== lints"; /usr/bin/python3 -B sdd/bin/skill-lint.py .agents/skills/sdd-drive/SKILL.md; echo "[rc=$?]"; /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md | tail -2; echo "[rc=${PIPESTATUS[0]}]"; ls -d .agents/skills/sdd-*/ | wc -l; /bin/bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills sdd/templates/fragments | tail -3; echo "[rc=${PIPESTATUS[0]}]"; GIT_TERMINAL_PROMPT=0 /usr/bin/python3 -B scripts/check-versions.py --base v2.6.0 --base-obrigatoria | tail -3; echo "[rc=${PIPESTATUS[0]}]"
+grep -nE 'mapfile|declare -A|\$\{[a-zA-Z_]+\^\^' sdd/bin/sdd-drive.sh sdd/bin/deploy-do-sha.sh sdd/bin/sdd-archive.py; echo "[grep rc=$?]"
+echo "=== AT-037 --checar"; cd $LAB; mkdir -p c37; cd c37; git init -q; mkdir -p sdd/features sdd/bin; cp $PROJ/sdd/bin/verify-gate.sh sdd/bin/; D=sdd/features/DEFINE_F.md; define 'touch rodou' > $D; /bin/bash sdd/bin/verify-gate.sh --checar $D; echo "[rc=$?]"; ls; ls sdd; define 'x' xyz > $D; /bin/bash sdd/bin/verify-gate.sh --checar $D 2>&1 | tail -2; echo "[rc=${PIPESTATUS[0]}]"; define 'N/A (x)' > $D; /bin/bash sdd/bin/verify-gate.sh --checar $D 2>&1 | tail -2; echo "[rc=${PIPESTATUS[0]}]"; define 'N/A (manual-ux)' manual-ux > $D; /bin/bash sdd/bin/verify-gate.sh --checar $D | tail -1; echo "[rc=${PIPESTATUS[0]}]"; define 'touch rodou' > $D; printf '\n[NEEDS CLARIFICATION: q]\n' >> $D; /bin/bash sdd/bin/verify-gate.sh --checar $D | tail -2; echo "[rc=${PIPESTATUS[0]}]"; define 'touch rodou' > $D; /bin/bash sdd/bin/verify-gate.sh --print $D; echo "[rc=$?]"; /bin/bash sdd/bin/verify-gate.sh --strict $D | tail -2; echo "[rc=${PIPESTATUS[0]}]"; ls
+cd $PROJ; echo "=== seguir --drive"; /bin/bash sdd/bin/sdd-fluxo.sh seguir design sdd/features/DEFINE_F14_DRIVE.md release --drive 2>&1 | tail -4; echo "[rc=${PIPESTATUS[0]}]"; 
+echo "=== AT-019 motivos e exits iguais nos 4 lugares (leitura + execucao do teste)"; for t in orcamento-rodadas 'D4 · limite de tentativas' 'D2 · muda o produto' 'auto · de rotina' 'paro antes de publicar' '<<<RODADA' 'verificar --fundo'; do printf '%-28s %s\n' "$t" "$(grep -c -- "$t" .agents/skills/sdd-drive/SKILL.md)"; done
+for m in gate-verde simulacao orcamento-rodadas manual-ux clarificacao-pendente define-invalido gate-inconclusivo gate-alterado bloqueio-humano aguardando-sessao estado-invalido branch-padrao; do printf '%-24s skill=%s contrato=%s doc=%s docpt=%s\n' $m $(grep -c -- "$m" .agents/skills/sdd-drive/SKILL.md) $(grep -c -- "$m" sdd/WORKFLOW_CONTRACTS.yaml) $(grep -c -- "$m" docs/sdd-drive.md) $(grep -c -- "$m" docs/pt-BR/sdd-drive.md); done
+echo "=== AT-021 / AT-027 / AT-031 sdd-release"; grep -nE 'raio-de-impacto|invariants|superfície' .agents/skills/sdd-release/SKILL.md | head -8; ls .agents/skills/sdd-release/references/ | grep raio; grep -nE 'deploy-do-sha' .agents/skills/sdd-release/SKILL.md | head; grep -cE 'gh run list|merge-base|gh workflow run' .agents/skills/sdd-release/SKILL.md; grep -nE 'git show origin/.*CHANGELOG|sdd-archive' .agents/skills/sdd-release/SKILL.md | head
+echo "=== AT-020 despachar executor-drive"; grep -n 'executor-drive' sdd/bin/sdd-fluxo.sh | head -4
+echo "=== avaliador: escrita em producao: nenhuma"; git status --short
+=== AT-035
+36:deploy:
+44:  workflow: ""
+47:  transient_steps: ""
+88:drive:
+89:  max_rounds: 3
+max_tokens: 0
+=== AT-036
+docs/pt-BR/sdd-drive.md
+docs/sdd-drive.md
+58:| **Cross-cutting** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-drive` · `sdd-auditoria-harness` | when the case calls for it |
+103:- [Driving a feature](docs/sdd-drive.md) ([PT](docs/pt-BR/sdd-drive.md)) — `sdd-drive` takes one DEFINE to "ready to publish" with a round limit, resume and 12 stop reasons, and never publishes; also `deploy-do-sha.sh` and `sdd-archive.py`.
+docs/roadmap.md:0
+docs/pt-BR/roadmap.md:0
+README.md:51:## The 19 skills
+docs/pt-BR/guia-do-aluno.md:6:O SDD Open é um conjunto de 19 **skills** — roteiros que a IA segue para trabalhar com método — mais
+docs/pt-BR/guia-do-aluno.md:209:As 19 skills se dividem em quatro blocos, na ordem em que você vai usá-las.
+21:.agents/skills/sdd-drive/SKILL.md
+22:.agents/skills/sdd-drive/references/como-falar.md
+23:.agents/skills/sdd-drive/references/executor.md
+144:docs/pt-BR/sdd-drive.md
+148:docs/sdd-drive.md
+164:sdd/bin/deploy-do-sha.sh
+179:sdd/bin/sdd-archive.py
+181:sdd/bin/sdd-drive.sh
+=== lints
+✅ .agents/skills/sdd-drive/SKILL.md: frontmatter válido
+[rc=0]
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+[rc=0]
+      19
+🟢 sdd-decisoes-lint --sites: 27 pergunta(s) em 23 arquivo(s), cada uma com a marca de classe e no formato.
+[rc=0]
+PASS: check-versions — 19 skills com versão coerente, comparadas a v2.6.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[rc=0]
+[grep rc=1]
+=== AT-037 --checar
+✅ DEFINE em condição de rodar o gate; o comando não foi executado.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[rc=0]
+sdd
+bin
+features
+RESULTADO: SPEC INVÁLIDA
+→ o arquivo não existe, não está num repositório git, ou não tem um bloco Verify Gate válido (ver sdd/templates/fragments/VERIFY_GATE.md).
+[rc=64]
+RESULTADO: SPEC INVÁLIDA
+→ o arquivo não existe, não está num repositório git, ou não tem um bloco Verify Gate válido (ver sdd/templates/fragments/VERIFY_GATE.md).
+[rc=64]
+→ siga para o próximo passo.
+[rc=0]
+🛑 CLARIFICAÇÃO PENDENTE (exit 5) — 'sdd/features/DEFINE_F.md' tem marcador(es) ativo(s) de ambiguidade:
+   │ 20: [NEEDS CLARIFICATION: q]
+   Resolva pelo protocolo (sdd/templates/fragments/CLARIFY.md): ≤5 perguntas,
+   resposta integrada NO CORPO da spec, registro em '## Clarifications'.
+RESULTADO: CLARIFICAR
+→ resolva os marcadores de ambiguidade no DEFINE e volte ao Define.
+[rc=5]
+── Verify Gate de sdd/features/DEFINE_F.md ──
+kind:       test
+cmd:        touch rodou
+pass_when:  exit 0
+threshold:  —
+manual_fallback: —
+[rc=0]
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[rc=0]
+rodou
+sdd
+=== seguir --drive
+PARAR: publicar não se desfaz — é decisão sua (D1)
+RESULTADO: PARAR
+→ Próximo passo: /sdd-release sdd/features/DEFINE_F14_DRIVE.md
+[rc=1]
+=== AT-019 motivos e exits iguais nos 4 lugares (leitura + execucao do teste)
+orcamento-rodadas            1
+D4 · limite de tentativas   2
+D2 · muda o produto         2
+auto · de rotina            1
+paro antes de publicar       1
+<<<RODADA                    1
+verificar --fundo            1
+gate-verde               skill=2 contrato=1 doc=3 docpt=3
+simulacao                skill=1 contrato=1 doc=1 docpt=1
+orcamento-rodadas        skill=1 contrato=1 doc=1 docpt=1
+manual-ux                skill=1 contrato=1 doc=1 docpt=1
+clarificacao-pendente    skill=1 contrato=1 doc=1 docpt=1
+define-invalido          skill=1 contrato=1 doc=1 docpt=1
+gate-inconclusivo        skill=1 contrato=1 doc=1 docpt=1
+gate-alterado            skill=1 contrato=1 doc=2 docpt=2
+bloqueio-humano          skill=1 contrato=1 doc=1 docpt=1
+aguardando-sessao        skill=1 contrato=1 doc=1 docpt=1
+estado-invalido          skill=2 contrato=1 doc=1 docpt=1
+branch-padrao            skill=1 contrato=1 doc=1 docpt=1
+=== AT-021 / AT-027 / AT-031 sdd-release
+130:**0b. Raio de impacto por superfície (modelo).** O bug que passa está no código não modificado que depende do que
+131:mudou. Liste, do diff, as superfícies com contrato: assinatura ou forma de retorno, coluna, rota, permissão, comando,
+132:slot de configuração. Para cada uma, um agente fresco com o brief `references/raio-de-impacto.md` e só os 5 campos dele:
+133:em paralelo quando o agente tem subagente; sem subagente, na própria sessão, uma superfície de cada vez, sem parada. O
+134:brief pede os consumidores **não modificados**, as invariantes de `sdd/invariants.md` que tocam o módulo e o
+135:`arquivo:linha` de cada um. Projeto sem `sdd/invariants.md`: passe `invariantes: ausente` e diga que essa parte foi pulada.
+137:nenhuma superfície: declare a passada pulada, não "revisada sem achados".
+148:| **WAIVABLE** (lista fechada) | Verify Gate `3` com evidência alternativa · teste vermelho comprovadamente pré-existente · recibo manual-ux pendente quando o deploy não altera superfície visual | vira **FAIL-candidato** para a decisão humana no OK |
+raio-de-impacto.md
+227:    `bash sdd/bin/deploy-do-sha.sh --commit <SHA publicado> --workflow <arquivo> --branch {default_branch}`. O `--workflow` vem do
+3
+245:    `git show origin/{default_branch}:CHANGELOG.md > CHANGELOG.md`, sem depender de qual lado é "ours" na operação.
+255:    passivo é outra operação, deliberada: `python3 sdd/bin/sdd-archive.py` (simulação por padrão; depois,
+=== AT-020 despachar executor-drive
+94:    executor-drive)     le='a próxima tarefa de sdd/reports/progress/PROGRESS_'"$feat"'.md'
+=== avaliador: escrita em producao: nenhuma
+?? sdd/features/
+?? sdd/handoffs/
+?? sdd/reports/
+?? sdd/reviews/
+?? sdd/traces/
+[exit=0]

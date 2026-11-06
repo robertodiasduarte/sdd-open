@@ -1,0 +1,16 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkdir -p $V/g; cd $V/g; git init -q; git symbolic-ref HEAD refs/heads/f; mkdir -p sdd/bin sdd/reports src; cp $PROJ/sdd/bin/avaliador-guard.sh sdd/bin/; echo r > sdd/reports/RASTREADO.md; echo c > src/c.py; git add -A; git commit -qm b; echo n > sdd/reports/N.md; echo m >> sdd/reports/RASTREADO.md; /bin/bash sdd/bin/avaliador-guard.sh; echo rc-rastreado-modificado=$?; git checkout -q -- sdd/reports/RASTREADO.md; echo n > src/novo.py; /bin/bash sdd/bin/avaliador-guard.sh; echo rc-nao-rastreado-fora=$?
+ℹ️  1 documento(s) de sdd/ não rastreado(s) ficam fora do commit: eles não voltam se a pasta for limpa.
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/reports/RASTREADO.md
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/r.j7Gh1B/g add -A -- 'sdd/reports/RASTREADO.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/r.j7Gh1B/g commit -m "wip(build): congelado para o avaliador"
+rc-rastreado-modificado=1
+ℹ️  1 documento(s) de sdd/ não rastreado(s) ficam fora do commit: eles não voltam se a pasta for limpa.
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - src/novo.py
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/r.j7Gh1B/g add -A -- 'src/novo.py' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/r.j7Gh1B/g commit -m "wip(build): congelado para o avaliador"
+rc-nao-rastreado-fora=1
+[exit=0]

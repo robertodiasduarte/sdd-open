@@ -1,0 +1,6 @@
+$ echo "tracked em sdd/reviews:"; git ls-files sdd/reviews | /usr/bin/awk "END{print NR}"; T=$(mktemp -d); git archive HEAD | tar -x -C $T; ls $T/sdd/reviews/UX_REVIEW_F14_DRIVE.md; echo "existe_no_archive_exit=$?"; rm -rf $T
+tracked em sdd/reviews:
+0
+ls: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.SqluT34cDR/sdd/reviews/UX_REVIEW_F14_DRIVE.md: No such file or directory
+existe_no_archive_exit=1
+[exit=0]

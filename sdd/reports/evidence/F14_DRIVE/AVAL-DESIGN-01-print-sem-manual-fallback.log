@@ -1,0 +1,16 @@
+$ bash sdd/bin/verify-gate.sh --print sdd/features/DEFINE_F14_DRIVE.md; echo "--- exit print=$?"; T=$(mktemp -d); git -C $T init -q; printf "%s\n" "# D" "" "## Verify Gate" "" "\`\`\`yaml" "verify_gate:" "  kind: manual-ux" "  cmd: \"N/A (manual-ux)\"" "  pass_when: \"exit 0\"" "  threshold: \"—\"" "  manual_fallback: \"checklist A\"" "\`\`\`" > $T/D.md; (cd $T && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive/sdd/bin/verify-gate.sh --print D.md) > $T/a.txt; /usr/bin/sed -i "" "s/checklist A/checklist B/" $T/D.md; (cd $T && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive/sdd/bin/verify-gate.sh --print D.md) > $T/b.txt; echo "--- saida do --print com manual_fallback=A"; cat $T/a.txt; echo "--- diff A x B (vazio = manual_fallback invisivel a impressao digital)"; diff $T/a.txt $T/b.txt; echo "diff_exit=$?"; rm -rf $T
+── Verify Gate de sdd/features/DEFINE_F14_DRIVE.md ──
+kind:       test
+cmd:        T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+pass_when:  exit 0
+threshold:  —
+--- exit print=0
+--- saida do --print com manual_fallback=A
+── Verify Gate de D.md ──
+kind:       manual-ux
+cmd:        N/A (manual-ux)
+pass_when:  exit 0
+threshold:  —
+--- diff A x B (vazio = manual_fallback invisivel a impressao digital)
+diff_exit=0
+[exit=0]

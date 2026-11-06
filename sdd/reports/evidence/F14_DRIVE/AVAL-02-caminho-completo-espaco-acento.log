@@ -1,0 +1,147 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo "$V/projeto com espaço e ação"; python3 --version; /bin/bash --version | head -1; pwd
+drv --dry-run $D; ls sdd/reports 2>&1; test -e gate.calls && echo GATE-RODOU || echo gate-nao-rodou; git status --porcelain
+drv iniciar $D; cat sdd/reports/progress/DRIVE_F.json; cat sdd/reports/progress/PROGRESS_F.md
+drv proximo $D
+echo a > a; git add a; git commit -qm a; printf -- "- [x] a\n- [ ] b\n" > sdd/reports/progress/PROGRESS_F.md; drv proximo $D
+feito; drv proximo $D
+drv verificar $D; sed -n 1p sdd/reports/evidence/F/DRIVE-gate-r1.log; tail -n 1 sdd/reports/evidence/F/DRIVE-gate-r1.log
+drv verificar $D; wc -l < gate.calls
+drv proximo $D
+drv --resume $D
+echo c > c; git add c; git commit -qm c; drv proximo $D; touch .verde; drv verificar $D; drv concluir $D
+echo x > sdd/reports/BUILD_REPORT_F.md; drv concluir $D; sdd_rc=$?; cat sdd/reports/DRIVE_REPORT_F.md
+Python 3.9.6
+GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/r.homwJ9/projeto com espaço e ação
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+Simulação de sdd/features/DEFINE_F.md, com até 3 rodada(s). Eu faria, nesta ordem:
+  1. reaproveitar sdd/features/DESIGN_F.md, com a revisão se ela for exigida;
+  2. construir o que falta, uma tarefa por sessão nova, com 1 commit por tarefa;
+  3. rodar o teste final (Verify Gate) e, se vermelho, corrigir e voltar ao passo 2;
+  4. com o verde, avaliador e relatórios; e parar antes de publicar.
+kind: test
+cmd: echo x >> gate.calls; test -f .verde
+motivo: simulacao
+Simulação: nada foi executado nem gravado.
+RESULTADO: CONCLUIDO
+→ para executar de verdade, rode sdd-drive.sh iniciar com este DEFINE.
+[rc=0]
+ls: sdd/reports: No such file or directory
+gate-nao-rodou
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+{
+ "versao": 2,
+ "feature": "F",
+ "define": "sdd/features/DEFINE_F.md",
+ "gate_sha": "1574a0e696a885c4f36adca069c978b553c31dc245f952094d41ac5f12a69c12",
+ "gate_cmd": "echo x >> gate.calls; test -f .verde",
+ "inicio": "89e6af054f1cc729f228c4f3379c860b2c40d1bf",
+ "maximo": 3,
+ "gates": [],
+ "trocas_gate": [],
+ "recibos": [],
+ "repeticao": {
+  "chave": "",
+  "n": 0
+ },
+ "motivo": "",
+ "avisou_paradas": false
+}
+# PROGRESS: F
+
+- [ ] a
+- [ ] b
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 2 de 2 — b
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+$ verify-gate.sh sdd/features/DEFINE_F.md
+[exit=2]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+       1
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+--- sdd-drive --resume sdd/features/DEFINE_F.md
+retomando: rodada 2/3 · 2 de 2 tarefas prontas · último teste final: 2 · não gastei rodada
+ACAO: CORRIGIR
+rodada: 2/3
+o teste final ficou vermelho (normal nesta etapa): restam 2 rodada(s) · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: CONTINUAR
+→ leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 2/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 2/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r2.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 2/3
+Falta sdd/reports/BUILD_REPORT_F.md.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 2/3
+report-lint.py saiu 1:
+🛑 [tabela] nenhuma tabela de critérios reconhecida (uma coluna Resultado, Status, Passou ou Result e uma coluna Evidência): sem ela, nenhum critério é conferido
+🛑 [avaliação ausente] não há `AVALIACAO_F_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ use a tabela do template: `| ID | Critério | Resultado | Evidência |`.
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_F_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+cat: sdd/reports/DRIVE_REPORT_F.md: No such file or directory
+[exit=1]

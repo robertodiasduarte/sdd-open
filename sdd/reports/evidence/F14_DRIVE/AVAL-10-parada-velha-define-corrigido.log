@@ -1,0 +1,34 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo $V/x "true"; drv iniciar $D > /dev/null; cp $D $V/o
+echo "[NEEDS ""CLARIFICATION: qual?]" >> $D; drv proximo $D; cp $V/o $D; echo == DEFINE resolvido, a seta manda rodar de novo; /bin/bash sdd/bin/verify-gate.sh --checar $D; echo checar=$?; drv proximo $D; drv proximo $D; drv --resume $D
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: clarificacao-pendente
+O DEFINE ainda tem dúvida aberta ou a revisão de governança pendente.
+RESULTADO: PARADA
+→ volte ao Define, resolva e rode de novo; nada foi construído por cima da dúvida.
+[rc=20]
+== DEFINE resolvido, a seta manda rodar de novo
+✅ DEFINE em condição de rodar o gate; o comando não foi executado.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+checar=0
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: clarificacao-pendente
+O DEFINE ainda tem dúvida aberta ou a revisão de governança pendente.
+RESULTADO: PARADA
+→ volte ao Define, resolva e rode de novo; nada foi construído por cima da dúvida.
+[rc=20]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: clarificacao-pendente
+O DEFINE ainda tem dúvida aberta ou a revisão de governança pendente.
+RESULTADO: PARADA
+→ volte ao Define, resolva e rode de novo; nada foi construído por cima da dúvida.
+[rc=20]
+--- sdd-drive --resume sdd/features/DEFINE_F.md
+retomando: rodada 1/3 · 0 de 2 tarefas prontas · último teste final: nenhum · não gastei rodada
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+[exit=0]

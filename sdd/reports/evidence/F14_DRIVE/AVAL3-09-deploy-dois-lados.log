@@ -1,0 +1,205 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/cen.py /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p08.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p08.sh
+# cen.py <dir> <python-expr>: grava cenario.json; R(id, sha, ...) monta um run
+import json, sys
+def R(i, s, st="completed", c="success", t="2026-01-01T00:00:00Z", b="main", e="push"):
+    return dict(databaseId=i, headSha=s, headBranch=b, status=st, conclusion=c, createdAt=t, workflowName="deploy", event=e)
+def J(nome, c, *passos):
+    return dict(name=nome, conclusion=c, steps=[dict(name=n, conclusion=k) for n, k in passos])
+d, expr = sys.argv[1], sys.argv[2]
+X, Y, Z = (sys.argv[3:] + [""]*3)[:3]
+json.dump(eval(expr), open(d + "/cenario.json", "w"))
+. $(dirname "$0")/lab.sh
+mkdep() { R="$1"; mkdir -p "$R"; git init -q --bare "$R/remoto.git"; mkdir -p "$R/clone"; cd "$R/clone" || exit 9; git init -q; git symbolic-ref HEAD refs/heads/main; echo 1 > a.txt; git add -A; git commit -q -m 1; git remote add origin "$R/remoto.git"; git push -q origin main; X=$(git rev-parse HEAD); GH_DIR="$R/gh"; mkdir -p "$GH_DIR"; export GH_DIR; export PATH="$LAB/ghshim:$PATH"; }
+cen() { /usr/bin/python3 -I -B "$LAB/cen.py" "$GH_DIR" "$1" "$X" "${Y:-}" "${Z:-}"; : > "$GH_DIR/gh.log"; echo 0 > "$GH_DIR/pos"; echo 0 > "$GH_DIR/viewc"; }
+dep() { /bin/bash "$PROJ/sdd/bin/deploy-do-sha.sh" "$@" 2>&1; echo "[rc=$?]"; }
+d1() { dep --commit "$X" --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0 "$@"; }
+disp() { echo "disparos: $(grep -c "^workflow run" "$GH_DIR/gh.log"); rerun: $(grep -c "rerun" "$GH_DIR/gh.log"); consultas: $(wc -l < "$GH_DIR/gh.log" | tr -d " ")"; ls .git/deploy-do-sha 2>/dev/null; }
+caso() { echo; echo "=== $1"; ( mkdep "$(novo)"; "$2" ) 2>&1 | cut -c1-190; }
+TR="--transitorios pass,pass2"
+FALHO="R(1,X,c=\"failure\")"
+d_todos() { cen "dict(passos=[dict(runs=[$FALHO]),dict(runs=[$FALHO]),dict(runs=[$FALHO,R(2,X,e=\"workflow_dispatch\",t=\"2026-01-02T00:00:00Z\")])],jobs=[J(\"a\",\"failure\",(\"pass\",\"failure\")),J(\"b\",\"failure\",(\"pass2\",\"failure\"))])"; d1 $TR; disp; }
+d_um_real() { cen "dict(passos=[dict(runs=[$FALHO])],jobs=[J(\"a\",\"failure\",(\"pass\",\"failure\")),J(\"b\",\"failure\",(\"real\",\"failure\"))])"; d1 $TR; disp; }
+d_job_sem() { cen "dict(passos=[dict(runs=[$FALHO])],jobs=[J(\"a\",\"failure\",(\"pass\",\"failure\")),J(\"b\",\"failure\",(\"p\",\"cancelled\"))])"; d1 $TR; disp; }
+d_job_vazio() { cen "dict(passos=[dict(runs=[$FALHO])],jobs=[J(\"b\",\"failure\")])"; d1 $TR; disp; }
+d_job_timeout() { cen "dict(passos=[dict(runs=[$FALHO]),dict(runs=[$FALHO])],jobs=[J(\"a\",\"success\",(\"pass\",\"failure\")),J(\"b\",\"timed_out\",(\"longo\",\"cancelled\"))])"; d1 $TR; disp; }
+d_job_nome_na_lista() { cen "dict(passos=[dict(runs=[$FALHO]),dict(runs=[$FALHO])],jobs=[J(\"b\",\"failure\")])"; d1 --transitorios "job b"; disp; }
+d_404() { cen "dict(passos=[dict(runs=[$FALHO])],dispatch_erro=\"HTTP 404: Not Found (https://api.github.com/repos/x/y/actions/workflows/deploy.yml/dispatches)\",passo=\"pass\")"; d1 $TR; disp; echo "--- 2a chamada:"; d1 $TR; disp; }
+d_403() { cen "dict(passos=[dict(runs=[$FALHO])],dispatch_erro=\"HTTP 403: must have admin rights\",passo=\"pass\")"; d1 $TR; disp; }
+d_lista_502() { cen "dict(passos=[dict(runs=[])],lista_erro=\"HTTP 502: Bad Gateway\")"; d1 $TR; disp; }
+d_view_502() { cen "dict(passos=[dict(runs=[$FALHO])],view_erro=\"HTTP 502: Bad Gateway\",passo=\"pass\")"; d1 $TR; disp; }
+d_view_volta() { cen "dict(passos=[dict(runs=[$FALHO]),dict(runs=[$FALHO]),dict(runs=[$FALHO]),dict(runs=[$FALHO]),dict(runs=[$FALHO,R(2,X,e=\"workflow_dispatch\",t=\"2026-01-02T00:00:00Z\")])],view_erro=\"HTTP 502: Bad Gateway\",view_erro_n=2,passo=\"pass\")"; dep --commit "$X" --workflow deploy.yml --intervalo 0 --teto 20 --sem-run 5 $TR; disp; }
+d_wf1() { cen "dict(passos=[dict(runs=[])],lista_erro=\"could not find any workflows named deploy.yml\")"; d1; disp; }
+d_wf2() { cen "dict(passos=[dict(runs=[])],lista_erro=\"HTTP 404: workflow deploy.yml not found on the default branch\")"; d1; disp; }
+d_wf3() { cen "dict(passos=[dict(runs=[])],lista_erro=\"HTTP 404: Not Found (https://api.github.com/repos/x/y/actions/workflows/deploy.yml)\")"; d1; disp; }
+d_wf4() { cen "dict(passos=[dict(runs=[])],lista_erro=\"failed to get run: HTTP 503: workflow service not found upstream\")"; d1; disp; }
+d_auth() { cen "dict(passos=[dict(runs=[])],lista_erro=\"HTTP 401: Bad credentials\")"; d1; disp; }
+d_view_lixo() { cen "dict(passos=[dict(runs=[$FALHO])],view_bruto=\"<html>\")"; d1 $TR; disp; }
+d_passo_none() { cen "dict(passos=[dict(runs=[$FALHO])],jobs=[dict(name=\"a\",conclusion=\"failure\",steps=[dict(conclusion=\"failure\")])])"; d1 $TR; disp; }
+d_verde() { cen "dict(passos=[dict(runs=[R(1,X)])])"; d1; disp; }
+d_sem_sha() { cen "dict(passos=[dict(runs=[dict(databaseId=1,headBranch=\"main\",status=\"completed\",conclusion=\"success\",createdAt=\"2026-01-01T00:00:00Z\",event=\"push\")])],sem_filtro=True)"; d1; disp; }
+for c in d_todos d_um_real d_job_sem d_job_vazio d_job_timeout d_job_nome_na_lista d_404 d_403 d_lista_502 d_view_502 d_view_volta d_wf1 d_wf2 d_wf3 d_wf4 d_auth d_view_lixo d_passo_none d_verde d_sem_sha; do caso $c $c; done
+
+=== d_todos
+🔁 o passo "pass" é passageiro e 56e7f45 é a ponta: repetindo o deploy na ponta de main (1 vez).
+✅ no ar — run 2 (SHA 56e7f45)
+RESULTADO: NO AR
+→ siga para o próximo passo da publicação.
+[rc=0]
+disparos: 1; rerun: 0; consultas: 5
+redisparado-56e7f45ac95937dfeeda1a2d07e9816013644e66
+
+=== d_um_real
+🔴 falhou — run 1 ("real"); não repeti: este passo não está em deploy.transient_steps.
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+disparos: 0; rerun: 0; consultas: 3
+
+=== d_job_sem
+🔴 falhou — run 1 ("job b"); não repeti: este passo não está em deploy.transient_steps.
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+disparos: 0; rerun: 0; consultas: 3
+
+=== d_job_vazio
+🔴 falhou — run 1 ("job b"); não repeti: este passo não está em deploy.transient_steps.
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+disparos: 0; rerun: 0; consultas: 3
+
+=== d_job_timeout
+🔁 o passo "pass" é passageiro e 4edc2b3 é a ponta: repetindo o deploy na ponta de main (1 vez).
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+RESULTADO: AINDA NAO SEI
+→ rode de novo para continuar esperando; não repito de novo.
+[rc=4]
+disparos: 1; rerun: 0; consultas: 6
+redisparado-4edc2b39ac252e86339565cfa0ebf7e803edb88c
+
+=== d_job_nome_na_lista
+🔁 o passo "job b" é passageiro e 4edc2b3 é a ponta: repetindo o deploy na ponta de main (1 vez).
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+RESULTADO: AINDA NAO SEI
+→ rode de novo para continuar esperando; não repito de novo.
+[rc=4]
+disparos: 1; rerun: 0; consultas: 6
+redisparado-4edc2b39ac252e86339565cfa0ebf7e803edb88c
+
+=== d_404
+🔁 o passo "pass" é passageiro e 6c03c77 é a ponta: repetindo o deploy na ponta de main (1 vez).
+🔴 falhou — run 1 ("pass"); tentei repetir e o GitHub recusou: HTTP 404: Not Found (https://api.github.com/repos/x/y/actions/workflows/deploy.yml/dispatches). O workflow precisa de workflow_d
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+disparos: 1; rerun: 0; consultas: 4
+--- 2a chamada:
+🔁 o passo "pass" é passageiro e 6c03c77 é a ponta: repetindo o deploy na ponta de main (1 vez).
+🔴 falhou — run 1 ("pass"); tentei repetir e o GitHub recusou: HTTP 404: Not Found (https://api.github.com/repos/x/y/actions/workflows/deploy.yml/dispatches). O workflow precisa de workflow_d
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+disparos: 2; rerun: 0; consultas: 8
+
+=== d_403
+🔁 o passo "pass" é passageiro e 4bf7306 é a ponta: repetindo o deploy na ponta de main (1 vez).
+🔴 falhou — run 1 ("pass"); tentei repetir e o GitHub recusou: HTTP 403: must have admin rights. O workflow precisa de workflow_dispatch no on:; sem isso, um push novo.
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+disparos: 1; rerun: 0; consultas: 4
+
+=== d_lista_502
+⏳ consulta falhou (HTTP 502: Bad Gateway), tentando de novo · 0/0 min · run —
+⏳ ainda não sei — o deploy não terminou em 0 min (run —); isso não é falha. Último erro de consulta: HTTP 502: Bad Gateway.
+RESULTADO: AINDA NAO SEI
+→ rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+[rc=4]
+disparos: 0; rerun: 0; consultas: 38
+
+=== d_view_502
+⏳ consulta falhou (HTTP 502: Bad Gateway), tentando de novo · 0/0 min · run 1
+⏳ ainda não sei — o deploy não terminou em 0 min (run 1); isso não é falha. Último erro de consulta: HTTP 502: Bad Gateway.
+RESULTADO: AINDA NAO SEI
+→ rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+[rc=4]
+disparos: 0; rerun: 0; consultas: 39
+
+=== d_view_volta
+⏳ consulta falhou (HTTP 502: Bad Gateway), tentando de novo · 0/0 min · run 1
+🔁 o passo "pass" é passageiro e 8a0ccc0 é a ponta: repetindo o deploy na ponta de main (1 vez).
+✅ no ar — run 2 (SHA 8a0ccc0)
+RESULTADO: NO AR
+→ siga para o próximo passo da publicação.
+[rc=0]
+disparos: 1; rerun: 0; consultas: 11
+redisparado-8a0ccc0d4ecd0ad1b6cd2e6cc1b7233acd7a496e
+
+=== d_wf1
+🛑 deploy-do-sha: o GitHub não conhece o workflow 'deploy.yml': could not find any workflows named deploy.yml
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+RESULTADO: ERRO DE USO
+→ corrija a chamada e rode de novo; nada foi consultado.
+[rc=64]
+disparos: 0; rerun: 0; consultas: 1
+
+=== d_wf2
+🛑 deploy-do-sha: o GitHub não conhece o workflow 'deploy.yml': HTTP 404: workflow deploy.yml not found on the default branch
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+RESULTADO: ERRO DE USO
+→ corrija a chamada e rode de novo; nada foi consultado.
+[rc=64]
+disparos: 0; rerun: 0; consultas: 1
+
+=== d_wf3
+⏳ consulta falhou (HTTP 404: Not Found (https://api.github.com/repos/x/y/actions/workflows/deploy.yml)), tentando de novo · 0/0 min · run —
+⏳ ainda não sei — o deploy não terminou em 0 min (run —); isso não é falha. Último erro de consulta: HTTP 404: Not Found (https://api.github.com/repos/x/y/actions/workflows/deploy.yml).
+RESULTADO: AINDA NAO SEI
+→ rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+[rc=4]
+disparos: 0; rerun: 0; consultas: 38
+
+=== d_wf4
+🛑 deploy-do-sha: o GitHub não conhece o workflow 'deploy.yml': failed to get run: HTTP 503: workflow service not found upstream
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+RESULTADO: ERRO DE USO
+→ corrija a chamada e rode de novo; nada foi consultado.
+[rc=64]
+disparos: 0; rerun: 0; consultas: 1
+
+=== d_auth
+⚠️ inconclusivo — o gh não está logado (HTTP 401: Bad credentials).
+RESULTADO: INCONCLUSIVO
+→ rode gh auth login e repita; não concluí nada sobre o deploy.
+[rc=3]
+disparos: 0; rerun: 0; consultas: 1
+
+=== d_view_lixo
+🔴 falhou — run 1; não repeti: a resposta do GitHub não diz qual passo falhou.
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+disparos: 0; rerun: 0; consultas: 3
+
+=== d_passo_none
+🔴 falhou — run 1; não repeti: este passo não está em deploy.transient_steps.
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+disparos: 0; rerun: 0; consultas: 3
+
+=== d_verde
+✅ no ar — run 1 (SHA 240ce58)
+RESULTADO: NO AR
+→ siga para o próximo passo da publicação.
+[rc=0]
+disparos: 0; rerun: 0; consultas: 1
+
+=== d_sem_sha
+✅ no ar — run 1 (SHA 240ce58)
+RESULTADO: NO AR
+→ siga para o próximo passo da publicação.
+[rc=0]
+disparos: 0; rerun: 0; consultas: 1
+[exit=0]

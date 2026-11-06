@@ -1,0 +1,105 @@
+$ git rev-parse HEAD
+b0663d32b65421ea706a78ef8c9c8d1819e26f59
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F14_DRIVE --revisor2 codex
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: codex (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+▶ desempate: claude (-) — até 15 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261106-072404
+diff_sha256: af2749eeffad1761c147a5e6528e001b0b6cb7d1aef2f37393ad03f919c45842
+revisor: claude (claude-opus-5-5) — US$ 3,1445
+2º revisor: codex (-) — incluído na assinatura
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0639
+desempate: claude (claude-opus-5-5) — US$ 1,8145
+diversidade: vendor
+achados: 1 grave, 1 médio, 3 leves
+custo total: US$ 5,0229
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261106-072404 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261106-072404/META.txt
+worktree                 : /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
+branch                   : feat/f14-drive
+protocolo                : cadeia REVISOR → AUDITOR; paralelo não existe
+base                     : origin/main
+merge_base               : 8a320e9d27d4471f5352e3861a277865ded2d1ed
+head                     : b0663d32b65421ea706a78ef8c9c8d1819e26f59
+paths                    : -
+diff_sha256              : af2749eeffad1761c147a5e6528e001b0b6cb7d1aef2f37393ad03f919c45842
+diff                     : 324KB (45 arquivo(s))
+contexto                 : 100KB (4 doc SDD)
+docs_sdd                 : BRAINSTORM_F14_DRIVE.md, DEFINE_F14_DRIVE.md, DESIGN_F14_DRIVE.md, BUILD_REPORT_F14_DRIVE.md
+contexto_cortado         : -
+diversidade              : vendor
+reviewer_engine_default  : claude
+reviewer_engine_efetivo  : claude
+reviewer_fallback_usado  : nao
+reviewer_motivo          : -
+reviewer_exit            : 0
+reviewer_segundos        : 644
+reviewer_achados         : 4
+reviewer_tokens_entrada  : 211351
+reviewer_tokens_saida    : 67724
+reviewer_tokens_total    : 279075
+reviewer_modelo          : claude-opus-5-5
+reviewer_custo           : US$ 3.1445
+revisor1_raso            : nao
+gatilho_2o_revisor       : 45 arquivos (limiar 8)
+revisor2_engine          : codex
+revisor2_engine_default  : codex
+revisor2_engine_efetivo  : codex
+revisor2_fallback_usado  : nao
+revisor2_motivo          : -
+revisor2_exit            : 0
+revisor2_segundos        : 269
+revisor2_achados         : 1
+revisor2_tokens_entrada  : 155487
+revisor2_tokens_saida    : 7836
+revisor2_tokens_total    : 163323
+revisor2_modelo          : -
+revisor2_custo           : assinatura
+auditor_engine_default   : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo   : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado   : nao
+auditor_motivo           : -
+auditor_exit             : 0
+auditor_segundos         : 235
+auditor_vereditos        : 5
+auditor_tokens_entrada   : 143228
+auditor_tokens_saida     : 14104
+auditor_tokens_total     : 157332
+auditor_modelo           : qwen/qwen3.7-plus via Alibaba
+auditor_custo            : US$ 0.0639
+convergencia_1o_passe    : nao
+desempate_alvo           : R1@codex
+desempate_engine         : claude
+desempate_decisao        : DECISAO:PROCEDE
+desempate_fallback_usado : nao
+desempate_motivo         : -
+desempate_exit           : 0
+desempate_segundos       : 25
+desempate_tokens_entrada : 210185
+desempate_tokens_saida   : 2330
+desempate_tokens_total   : 212515
+desempate_modelo         : claude-opus-5-5
+desempate_custo          : US$ 1.8145
+custo_total              : US$ 5.0229
+quando                   : 20261106-072404
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261106-072404 --ledger sdd/reports/evidence/F14_DRIVE/ledger-review.md --rodada 5 (teto ${TETO:-3})
+ESTADO: BLOQUEADO
+rodada: 5 de 5
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: R1@codex
+motivo: D4 teto: 5 rodadas de review atingido
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[exit=20]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261106-072404
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261106-072404 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261106-072404 sha256=af2749eeffad1761c147a5e6528e001b0b6cb7d1aef2f37393ad03f919c45842 diversidade=vendor
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[exit=0]

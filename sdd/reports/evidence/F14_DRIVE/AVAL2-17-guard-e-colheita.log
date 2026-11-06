@@ -1,0 +1,170 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p17.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p17.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+GUARD="/bin/bash $PROJ/sdd/bin/avaliador-guard.sh"
+g() { echo "--- guard $*"; $GUARD "$@" 2>&1; echo "[rc=$?]"; }
+base() { R="$(novo)"; cd "$R"; git init -q; git symbolic-ref HEAD refs/heads/main; mkdir -p src sdd/features sdd/reports/evidence/X sdd/reviews sdd/handoffs sdd/traces; echo 1 > src/app.py; echo d > sdd/features/DEFINE_T.md; git add -A; git commit -qm b; }
+echo "=== AT-032 nao rastreado em cada pasta de documento"
+base; echo n > sdd/features/N.md; echo n > sdd/handoffs/H.md; echo n > sdd/reports/R.md; echo n > sdd/reviews/V.md; echo n > "sdd/reports/com espaço ç.md"; mkdir -p sdd/reports/sub; echo n > sdd/reports/sub/x.md; g
+echo "=== AT-033 rastreado modificado; nao rastreado fora; nome vizinho; rename; codigo .py em features"
+base; echo x >> sdd/features/DEFINE_T.md; g
+base; echo x > src/n.py; g
+base; mkdir -p sdd/featuresX sdd/reports2; echo x > sdd/featuresX/a.md; echo y > sdd/reports2/a.md; g
+base; git mv src/app.py sdd/reports/app.py; g
+base; git mv sdd/features/DEFINE_T.md src/DEFINE_T.md; g
+base; mkdir sdd/x; git mv src/app.py sdd/x/app.py; g
+base; echo x > sdd/traces/t.jsonl; echo y > sdd/reports/evidence/X/a.log; g
+echo "--- nao rastreado em features mais um sujo em codigo: os dois avisos"
+base; echo n > sdd/features/N.md; echo x >> src/app.py; g
+echo "--- documento rastreado em evidence modificado: permitido"
+base; echo y > sdd/reports/evidence/X/t.log; git add -A; git commit -qm e; echo z >> sdd/reports/evidence/X/t.log; g
+echo "--- apagado rastreado em features"
+base; rm sdd/features/DEFINE_T.md; g
+echo "--- staged novo em features (rastreado, adicionado) "
+base; echo n > sdd/features/N.md; git add sdd/features/N.md; g
+echo "=== AT-034 colheita"
+CUR="/bin/bash $PROJ/sdd/bin/playbook-curator.sh"
+mkdir -p $LAB/col; cd $LAB/col; printf '# Playbook\n\n## Sempre\n\n- [LM-001] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: `filas_de_envio` :: regra. **Do instead:** ação. · promovido_para: —\n- [LM-002] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: `curto` :: regra. **Do instead:** ação. · promovido_para: —\n' > pb.md
+caso() { rm -rf d; mkdir d; printf "$2" > d/AVAL-1.log; echo "--- $1"; $CUR --colher d pb.md 2>&1 | grep -E '^DELTA|^resumo|^SUGEST'; echo "[rc=${PIPESTATUS[0]}]"; }
+caso 'eco de comando' '$ grep LM-001 sdd/playbook.md\n'
+caso 'eco com filas' '$ echo ❌ filas_de_envio\n'
+caso 'delta linha' '❌ delta linha 2: LM-001 é aposentado\n'
+caso 'invariantes linha' '❌ invariantes linha 3: LM-001 x\n'
+caso 'trava INV' '🔴 trava INV: LM-001 x\n'
+caso 'arquivo:linha' 'sdd/playbook.md:12: ❌ LM-001 bullet\n'
+caso 'achado real no mesmo log' '$ grep LM-001 x\n❌ delta linha 2: LM-001 y\n🔴 LM-001 mordeu aqui\n'
+caso 'achado real com espaco antes do cifrao' '  $ grep LM-001\n'
+caso 'achado real que comeca como arquivo com espaco' 'src/a b.py:12: ❌ LM-001 real\n'
+caso 'achado real src/app.py:12: FAIL LM-001' 'src/app.py:12: ❌ LM-001 o bug real do projeto\n'
+caso 'achado real src/app.py sem ❌' 'src/app.py:12: FAIL LM-001 x\n'
+caso 'real com $ no meio' 'FAIL $ LM-001\n'
+=== AT-032 nao rastreado em cada pasta de documento
+--- guard 
+ℹ️  6 documento(s) de sdd/ não rastreado(s) ficam fora do commit: eles não voltam se a pasta for limpa.
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+[rc=0]
+=== AT-033 rastreado modificado; nao rastreado fora; nome vizinho; rename; codigo .py em features
+--- guard 
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/features/DEFINE_T.md
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.OxV7ow add -A -- 'sdd/features/DEFINE_T.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.OxV7ow commit -m "wip(build): congelado para o avaliador"
+[rc=1]
+--- guard 
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - src/n.py
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.i1U5Ok add -A -- 'src/n.py' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.i1U5Ok commit -m "wip(build): congelado para o avaliador"
+[rc=1]
+--- guard 
+🛑 2 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/featuresX/a.md
+   - sdd/reports2/a.md
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.3y0Bjo add -A -- 'sdd/featuresX/a.md' 'sdd/reports2/a.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.3y0Bjo commit -m "wip(build): congelado para o avaliador"
+[rc=1]
+--- guard 
+🛑 2 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - src/app.py
+   - sdd/reports/app.py
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.Fmbw3R add -A -- 'sdd/reports/app.py' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.Fmbw3R commit -m "wip(build): congelado para o avaliador"
+[rc=1]
+--- guard 
+🛑 2 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/features/DEFINE_T.md
+   - src/DEFINE_T.md
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.4nglh7 add -A -- 'src/DEFINE_T.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.4nglh7 commit -m "wip(build): congelado para o avaliador"
+[rc=1]
+--- guard 
+🛑 2 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - src/app.py
+   - sdd/x/app.py
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.XwZVEE add -A -- 'sdd/x/app.py' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.XwZVEE commit -m "wip(build): congelado para o avaliador"
+[rc=1]
+--- guard 
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+[rc=0]
+--- nao rastreado em features mais um sujo em codigo: os dois avisos
+--- guard 
+ℹ️  1 documento(s) de sdd/ não rastreado(s) ficam fora do commit: eles não voltam se a pasta for limpa.
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - src/app.py
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.Gho4NA add -A -- 'src/app.py' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.Gho4NA commit -m "wip(build): congelado para o avaliador"
+[rc=1]
+--- documento rastreado em evidence modificado: permitido
+--- guard 
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+[rc=0]
+--- apagado rastreado em features
+--- guard 
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/features/DEFINE_T.md
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.abBzpu add -A -- 'sdd/features/DEFINE_T.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.abBzpu commit -m "wip(build): congelado para o avaliador"
+[rc=1]
+--- staged novo em features (rastreado, adicionado) 
+--- guard 
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/features/N.md
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.f4nClv add -A -- 'sdd/features/N.md' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.f4nClv commit -m "wip(build): congelado para o avaliador"
+[rc=1]
+=== AT-034 colheita
+--- eco de comando
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=1]
+--- eco com filas
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=1]
+--- delta linha
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=1]
+--- invariantes linha
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=1]
+--- trava INV
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=1]
+--- arquivo:linha
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=1]
+--- achado real no mesmo log
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=1]
+--- achado real com espaco antes do cifrao
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=1]
+--- achado real que comeca como arquivo com espaco
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:1 · fp=d33c6e1bc3
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=0]
+--- achado real src/app.py:12: FAIL LM-001
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=1]
+--- achado real src/app.py sem ❌
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:1 · fp=622aacb424
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=0]
+--- real com $ no meio
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:1 · fp=c482b57724
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=0]
+[exit=0]

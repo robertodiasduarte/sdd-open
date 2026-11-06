@@ -1,0 +1,42 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/ghshim/gh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/cen.py; sed -n /mkdep/,\$p /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh
+#!/usr/bin/python3 -B
+# gh de mentira: mesma mecanica do tests/test_deploy_do_sha.py; passos em $GH_DIR/cenario.json, argv em $GH_DIR/gh.log
+import json, os, sys
+a = sys.argv[1:]; d = os.environ["GH_DIR"]
+open(os.path.join(d, "gh.log"), "a").write(" ".join(a) + "\n")
+c = json.load(open(os.path.join(d, "cenario.json")))
+if c.get("erro"):
+    sys.stderr.write(c["erro"] + "\n"); sys.exit(1)
+pos = os.path.join(d, "pos"); i = int(open(pos).read()) if os.path.exists(pos) else 0
+passos = c["passos"]
+if a[:2] == ["run", "list"]:
+    if "--commit" in a:
+        open(pos, "w").write(str(i + 1)); p = passos[min(i, len(passos) - 1)]
+        print(json.dumps([r for r in p["runs"] if r.get("headSha") == a[a.index("--commit") + 1]]))
+    else:
+        p = passos[min(max(i - 1, 0), len(passos) - 1)]; print(json.dumps(p["runs"]))
+elif a[:2] == ["run", "view"]:
+    if "view_bruto" in c: print(c["view_bruto"])
+    else: print(json.dumps(dict(jobs=c.get("jobs") or [dict(steps=[dict(name=c.get("passo", "x"), conclusion="failure")])])))
+elif a[:2] == ["workflow", "run"]:
+    if c.get("dispatch_erro"):
+        sys.stderr.write(c["dispatch_erro"] + "\n"); sys.exit(1)
+    open(pos, "w").write(str(i + 1))
+else:
+    sys.exit(9)
+# cen.py <dir> <python-expr>: grava cenario.json; R(id, sha, ...) monta um run
+import json, sys
+def R(i, s, st="completed", c="success", t="2026-01-01T00:00:00Z", b="main", e="push"):
+    return dict(databaseId=i, headSha=s, headBranch=b, status=st, conclusion=c, createdAt=t, workflowName="deploy", event=e)
+d, expr = sys.argv[1], sys.argv[2]
+X, Y, Z = (sys.argv[3:] + [""]*3)[:3]
+v = eval(expr)
+json.dump(v, open(d + "/cenario.json", "w"))
+# --- deploy: mkdep <pasta> cria remoto nu + clone em main com 1 commit; X=sha; dep roda o script real (bash 3.2) com gh de mentira
+mkdep() { R="$1"; mkdir -p "$R"; git init -q --bare "$R/remoto.git"; mkdir -p "$R/clone"; cd "$R/clone" || exit 9; git init -q; git symbolic-ref HEAD refs/heads/main; echo 1 > a.txt; git add -A; git commit -q -m 1; git remote add origin "$R/remoto.git"; git push -q origin main; X=$(git rev-parse HEAD); GH_DIR="$R/gh"; mkdir -p "$GH_DIR"; export GH_DIR; export PATH="$LAB/ghshim:$PATH"; }
+novoc() { echo $RANDOM >> a.txt; git add -A; git commit -q -m c; git push -q origin main; git rev-parse HEAD; }
+cen() { python3 -B "$LAB/cen.py" "$GH_DIR" "$1" "$X" "${Y:-}" "${Z:-}"; }
+limpa() { : > "$GH_DIR/gh.log"; echo 0 > "$GH_DIR/pos"; }
+dep() { echo "--- deploy-do-sha $*"; /bin/bash "$PROJ/sdd/bin/deploy-do-sha.sh" "$@" 2>&1 | cut -c1-190; echo "[rc=${PIPESTATUS[0]}]"; }
+d1() { dep --commit "$X" --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0 "$@"; }
+[exit=0]

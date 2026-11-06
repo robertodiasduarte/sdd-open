@@ -1,0 +1,7 @@
+feature_id: INCORPORAR_STARTER
+slice_id: F14_DRIVE
+versao: v2.7.0
+estado: shipado
+dod: "F14 inteira publicada, 1ª e 2ª entrega; o programa segue na F15"
+descricao: "sdd-drive, raio de impacto por superfície, deploy-do-sha, sdd-archive"
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261106-072404 sha256=af2749eeffad1761c147a5e6528e001b0b6cb7d1aef2f37393ad03f919c45842 diversidade=vendor

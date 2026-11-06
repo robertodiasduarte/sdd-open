@@ -1,0 +1,2040 @@
+$ HOME=<temporário> CODEX_HOME=<temporário, só auth.json> codex exec --ephemeral -s workspace-write -C <cópia> "<prompt abaixo>"   # HEAD b0663d32b65421ea706a78ef8c9c8d1819e26f59
+codex: codex-cli 0.163.0 · modelo: gpt-6.1-sol
+prompt: Sessão nova, sem conversa anterior. Continue o drive de sdd/features/DEFINE_DEMO.md, seguindo .agents/skills/sdd-drive/SKILL.md. Neste agente não há subagente nem colaborador. Esta é uma demonstração de uma função só, sem camadas: a linha `avaliador: N.A. (demonstração de uma função, sem camadas)` no BUILD_REPORT vale no lugar do avaliador. Leve até onde a skill mandar parar.
+
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p.git, /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/tmp]
+reasoning effort: none
+reasoning summaries: none
+session id: 01a1b09d-e4c8-7032-a241-2bf29fe5e04f
+--------
+user
+Sessão nova, sem conversa anterior. Continue o drive de sdd/features/DEFINE_DEMO.md, seguindo .agents/skills/sdd-drive/SKILL.md. Neste agente não há subagente nem colaborador. Esta é uma demonstração de uma função só, sem camadas: a linha `avaliador: N.A. (demonstração de uma função, sem camadas)` no BUILD_REPORT vale no lugar do avaliador. Leve até onde a skill mandar parar.
+codex
+Vou ler a skill `sdd-drive` e o estado da feature para retomar do ponto registrado, sem subagentes e com a dispensa do avaliador que você definiu.
+exec
+/bin/zsh -lc "pwd; rg --files -g 'AGENTS.md' -g '*DEMO*' -g '*drive*' -g 'config.yaml' -g 'playbook.md' -g '*state*' .agents sdd" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ succeeded in 0ms:
+/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+sdd/reports/briefs/BRIEF_executor-drive_DEMO.md
+sdd/reports/DRIVE_REPORT_DEMO.md
+sdd/reports/progress/DRIVE_DEMO.json
+sdd/reports/progress/PROGRESS_DEMO.md
+sdd/playbook.md
+sdd/config.yaml
+sdd/features/DEFINE_DEMO.md
+sdd/features/DESIGN_DEMO.md
+sdd/bin/sdd-drive.sh
+sdd/fixtures/contexto/playbook.md
+
+exec
+/bin/zsh -lc 'cat .agents/skills/sdd-drive/SKILL.md' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ succeeded in 0ms:
+---
+name: sdd-drive
+description: "Leva um DEFINE até \"pronto para publicar\" sozinho: desenha, constrói uma tarefa por sessão nova, roda o teste final, corrige e repete até o limite de rodadas, e para antes de publicar. Um script decide a próxima ação e conta as rodadas; o agente executa. Use quando a pessoa disser /sdd-drive, \"pilote esta feature\", \"leve até o fim\", \"construa e confira sozinho\" ou quiser retomar uma execução que caiu. Não publica: publicar é sempre pela sdd-release, com o OK da pessoa."
+compatibility: Requer bash >= 3.2, Python >= 3.9 e git >= 2.20; roda sdd/bin/sdd-drive.sh. Funciona com ou sem subagente; sem ele, para a cada tarefa e pede uma sessão nova.
+license: MIT
+metadata:
+  author: Roberto Dias Duarte
+  version: "1.0.0"
+  updated: "2026-11"
+  fase: "orquestração"
+---
+
+# sdd-drive — o piloto
+
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
+`sdd-drive v1.0.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+
+Levar um DEFINE aprovado até o teste final verde e os relatórios prontos, voltando à pessoa só quando a decisão
+é dela. **Quem decide é o script** `sdd/bin/sdd-drive.sh`: ele guarda o estado, roda o teste final, conta as rodadas e
+diz a próxima ação. Você executa a ação e pergunta de novo. Nunca conte rodada de cabeça nem rode o Verify Gate por
+conta própria para decidir.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Ações do script |
+|---|---|---|
+| 1 | Conferir | `iniciar`, `--dry-run`, `--resume` |
+| 2 | Desenhar | `DESIGN`, `REVISAO_DESIGN` |
+| 3 | Construir | `RODADA`, `COMMITAR`, `CORRIGIR` |
+| 4 | Teste final | `VERIFICAR`, `ESPERAR` |
+| 5 | Relatório | `AVALIAR_E_RELATAR`, `concluir` |
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Drive: ✅ 1 Conferir · ✅ 2 Desenhar · ▶️ 3 Construir (rodada 1/3 · tarefa 4 de 12) · ⬜ 4 Teste final · ⬜ 5 Relatório`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare. Nas ações de rotina não há decisão: siga para a próxima.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- Repasse a frase do motivo que o script imprimiu, nunca o nome (`estado-invalido` é jargão).
+
+## Entrada
+
+`/sdd-drive sdd/features/DEFINE_{FEATURE}.md [--max N]`, numa frente de trabalho própria, com o DEFINE já com Verify
+Gate e revisão de governança. Para retomar: "continue o drive" numa sessão nova.
+
+## O laço
+
+1. **Abra dizendo o combinado**, em 1 frase: o que vai fazer, `até N rodadas` (uma rodada é construir o que falta e
+   rodar o teste final) e `paro antes de publicar`.
+2. **Comece.** `bash sdd/bin/sdd-drive.sh iniciar <DEFINE> [--max N]`; para só ver o plano, `--dry-run`. Execução que já
+   existe: `bash sdd/bin/sdd-drive.sh --resume <DEFINE>`.
+3. **Leia a saída e faça o que ela manda.** Exit 10 traz `ACAO:`; faça a ação da tabela e chame
+   `bash sdd/bin/sdd-drive.sh proximo <DEFINE>`. Repita. Exit 0, 20 ou 40 terminam o laço: siga a tabela de motivos.
+
+| `ACAO:` | Quem faz | Como |
+|---|---|---|
+| `DESIGN` | você, pela fase Design | rode a `sdd-design` sobre o DEFINE; se a saída trouxer o motivo, corrija só esse ponto |
+| `REVISAO_DESIGN` | agente fresco | revisão de contexto fresco do DESIGN, pela escada abaixo; registre cada nota no Advisor Ledger, nenhum HIGH aberto |
+| `RODADA` | agente fresco, um por tarefa | brief `references/executor.md`, com só os 5 campos dele e a tarefa da linha `tarefa:` |
+| `COMMITAR` | você | commite os arquivos listados (`git add` por nome) e chame `proximo` |
+| `VERIFICAR` | o script | `bash sdd/bin/sdd-drive.sh verificar <DEFINE> --fundo` e, depois, `proximo` |
+| `ESPERAR` | ninguém | espere alguns minutos e chame `proximo`; o teste final roda destacado de você |
+| `CORRIGIR` | você | leia o log citado; se o DESIGN estava errado, corrija-o; se foi uma tarefa, reabra a linha com `- [ ]` no `PROGRESS`; commite e chame `proximo` |
+| `AVALIAR_E_RELATAR` | agente fresco e você | avaliador de contexto fresco (`sdd-build/references/contexto-fresco.md`, modo `veredito`, até 2 ciclos) e o `BUILD_REPORT`; depois `bash sdd/bin/sdd-drive.sh concluir <DEFINE>` |
+
+**O teste final pode levar mais que o limite de um comando do seu agente:** por isso `verificar --fundo`, que devolve na
+hora e deixa o teste rodando destacado. Só o script roda o teste que decide: o resultado do executor não conta.
+
+**Contexto fresco:** pela escada de `sdd-build/references/contexto-fresco.md`. Com subagente, um por tarefa, com o brief
+como prompt inteiro. Sem subagente, grave o brief em `sdd/reports/briefs/BRIEF_executor-drive_{F}.md` e rode
+`bash sdd/bin/sdd-drive.sh aguardar <DEFINE> executor-drive sdd/reports/briefs/BRIEF_executor-drive_{F}.md`: ele para
+com exit 40 e a parada ⏸️. Repasse a parada; na volta, `--resume`.
+
+**O bloco `<<<RODADA` que volta do executor:** `bloqueio:` preenchido ⇒ `bash sdd/bin/sdd-drive.sh bloqueio <DEFINE> "<o motivo>"`. O
+resto serve só para o relatório: quem diz se a tarefa andou é o `PROGRESS` em disco.
+
+## Decisões durante a execução
+
+Chamar o drive liga o encadeamento só nesta execução; nada muda em `flow.autonomous`. `[auto · de rotina]` vale a
+recomendada, sem pergunta, e vai para o recibo: `bash sdd/bin/sdd-drive.sh recibo <DEFINE> "<o que decidi e como desfazer>"`, que
+sai na seção `Decidi sozinho` do `DRIVE_REPORT`. As marcadas `[D1 · não se desfaz]`, `[D2 · muda o produto]`,
+`[D3 · muda a regra do método]`, `[D4 · limite de tentativas]` e `[D5 · provas em conflito]` são sempre perguntadas à pessoa.
+
+## Os motivos de parada
+
+| `motivo:` | Exit | O que fazer |
+|---|---|---|
+| `gate-verde` | 0 | diga a frase, o resumo do `DRIVE_REPORT` e a barreira |
+| `simulacao` | 0 | mostre o plano; nada foi gravado |
+| `orcamento-rodadas` | 20 | pergunta `[D4 · limite de tentativas]` de `references/como-falar.md` |
+| `gate-alterado` | 20 | pergunta `[D2 · muda o produto]` de `references/como-falar.md`, com os 2 comandos |
+| `manual-ux` | 20 | mostre o checklist do `manual_fallback`; é terminal: o recibo vai ao `BUILD_REPORT`, e o drive não assina por ninguém |
+| `clarificacao-pendente` | 20 | volte ao Define; nunca construa por cima de dúvida |
+| `define-invalido` | 20 | volte ao Define |
+| `gate-inconclusivo` | 20 | diga o que faltou (no log) e, resolvido, `--resume`; não gastou rodada |
+| `bloqueio-humano` | 20 | parada ⏸️ com o texto do script; resolvido, `--resume` |
+| `aguardando-sessao` | 40 | repasse a parada; na volta, `--resume` |
+| `estado-invalido` | 20 | diga qual arquivo e as 2 saídas da seta; nunca edite o estado à mão |
+| `branch-padrao` | 20 | ofereça a `sdd-new-session` |
+
+Exit 2 é falha do próprio script (não conseguiu gravar, ou `sdd/bin/` desatualizado): diga a causa e a seta. Exit 64 é
+chamada errada: corrija.
+
+## ⛔ A barreira
+
+**O drive nunca publica.** Nenhuma ação leva a `git push`, a deploy ou à `sdd-release`. Ao terminar, pare: quem chama a
+`sdd-release` é a pessoa, e ela pede o OK de sempre. Verde no teste final não é "no ar".
+
+## Por que cada regra existe
+
+- **O script decide, o agente executa** — limite que mora no texto vira sugestão no fim de uma sessão longa; exit code não cansa.
+- **Só o script roda o teste que decide** — quem construiu tende a ler o próprio resultado com boa vontade.
+- **A impressão digital do teste final** — um agente com pressa pode enfraquecer o comando, e o verde deixaria de provar algo.
+- **Parada na 3ª repetição** — uma tarefa que nunca anda giraria para sempre, já que a rodada não tem teto de tarefas.
+- **Publicar fora do piloto** — publicar não se desfaz, e é a única decisão que nunca pode ser de rotina.
+
+## Encerramento (obrigatório)
+
+Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é `/sdd-drive`.
+
+**Próximo passo:** com `gate-verde`, `/sdd-release <descrição do que liberar>`, chamado pela pessoa.
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open
+
+exec
+/bin/zsh -lc "cat .agents/skills/sdd-drive/references/como-falar.md sdd/templates/fragments/RESUMO_ETAPA.md sdd/templates/fragments/PERGUNTA_DECISAO.md; rg --files -g AGENTS.md -g '"'!node_modules'"' -g '"'!vendor'"'; cat sdd/reports/progress/DRIVE_DEMO.json sdd/reports/progress/PROGRESS_DEMO.md sdd/features/DEFINE_DEMO.md sdd/features/DESIGN_DEMO.md sdd/reports/briefs/BRIEF_executor-drive_DEMO.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ succeeded in 0ms:
+# Como falar com o aluno — sdd-drive
+
+Quem pede o piloto quer voltar só para decidir. O risco é achar que verde é "no ar", que uma execução longa travou ou
+que uma parada é erro. Este arquivo dá as palavras, as 2 perguntas e um exemplo inteiro. O formato de pergunta e de parada é o
+de `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+
+## Glossário (explique na primeira vez em que o termo aparecer)
+
+- drive, piloto — "constrói e confere sozinho até o teste final passar, e para antes de publicar";
+- rodada — "uma passada construindo o que falta, mais o teste final";
+- teste final (Verify Gate) — "o comando escrito no DEFINE que diz se a feature está pronta";
+- frente — "uma cópia de trabalho separada, para não mexer no que está no ar";
+- sessão nova — "uma janela nova do seu agente, sem a conversa daqui, para quem faz a tarefa não trazer as hipóteses desta";
+- executor — "o agente que faz uma tarefa só e sai";
+- relatório do piloto (`DRIVE_REPORT`) — "o que aconteceu em cada rodada, com os commits".
+
+## Status desta skill, preenchido
+
+`Drive: ✅ 1 Conferir · ✅ 2 Desenhar · ▶️ 3 Construir (rodada 1/3 · tarefa 4 de 12) · ⬜ 4 Teste final · ⬜ 5 Relatório`
+
+## A pergunta do limite de rodadas
+
+**Sua decisão** — [D4 · limite de tentativas] **O teste final continuou vermelho nas 3 rodadas. O que falha é o cálculo do relatório mensal. O que eu faço?**
+- **corrigir o DESIGN e seguir** (recomendado) — 3 tentativas sem verde sugerem que o desenho está errado, e não a tarefa; eu reviso o DESIGN com você e dou mais 1 rodada.
+- **dar mais 1 rodada** — tento de novo sem mudar o desenho; serve se o último conserto chegou perto.
+- **parar aqui** — o que está pronto fica nos commits, e nada é publicado.
+- **não sei** — mostro o trecho do teste que falha e o que mudou entre as rodadas.
+
+## A pergunta do teste final alterado
+
+**Sua decisão** — [D2 · muda o produto] **O comando do teste final mudou durante a execução: era `npm test` e agora é `npm test -- --bail`. Qual vale?**
+- **voltar o comando antigo** (recomendado) — o verde continua significando o teste que você aprovou.
+- **aceitar o novo** — continua com o comando novo; a troca fica escrita no relatório.
+- **não sei** — explico o que mudou entre os 2 comandos e o que deixaria de ser testado.
+
+## Exemplo de resposta completa
+
+Situação: a segunda rodada terminou verde, os relatórios estão prontos, e o `concluir` saiu `gate-verde`.
+
+**Status** — `Drive: ✅ 1 Conferir · ✅ 2 Desenhar · ✅ 3 Construir · ✅ 4 Teste final · ✅ 5 Relatório`
+
+**O que foi feito** — Construí as 12 tarefas em 2 rodadas: a 1ª ficou vermelha no cálculo do relatório, e a 2ª passou. O
+avaliador sem esta conversa aprovou.
+
+**Agora: etapa 5 — Relatório** — O teste final passou e os relatórios estão prontos. Nada foi publicado: isso continua
+sendo decisão sua.
+
+**Próximo passo** — Para publicar, peça a `sdd-release`; ela mostra o que sobe e pede o seu OK.
+# Fragmento — Resumo de Etapa (micro-kanban da linha de produção)
+
+> Reusável. Lido pelo **encerramento obrigatório** de `/brainstorm`, `/define`, `/ux-review`,
+> `/design`, `/build`, a fase Release e `sdd/bin/adversarial-review.sh`. É o **dono único** do formato: as
+> superfícies apontam pra cá, nunca copiam o texto normativo.
+
+## Por que existe
+
+Com ~25 frentes SDD simultâneas, o custo real não é executar a etapa — é **reconstruir o
+contexto ao voltar nela**: em que etapa está, o que trava, qual a próxima ação. Esse resumo
+existia só por improviso, quando sobrava contexto, e sumia justamente nas sessões longas (as
+que mais precisam dele). Aqui ele vira contrato.
+
+## Os 4 blocos (nesta ordem, sempre)
+
+````markdown
+## 📍 Linha de produção — {FEATURE}
+
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design — ⬜ review adversarial — ⬜ /build — ⬜ /release
+
+**Onde estamos:** {≤2 linhas: o que esta etapa produziu + o fato notável que o leitor não adivinha}
+
+**O que precisa de você ({N} pergunta{s}):**
+1. {pergunta bloqueante, com contexto suficiente pra decidir SEM abrir arquivo}
+
+**O que vem depois, na ordem:**
+1. {próxima ação concreta} — {⚠️ landmine inline, se houver}
+2. {…}
+````
+
+## Os 4 símbolos
+
+| Símbolo | Significado | Regra |
+|---|---|---|
+| ✅ | Etapa concluída | Só por **artefato presente** no worktree (tabela abaixo) |
+| 🏃 | Etapa que acabou de rodar | Exatamente uma por resumo (exceto `/brainstorm`, que é pré-linha) |
+| ⬜ | Pendente | Default de tudo que não foi feito |
+| ➖ | Pulado | **Só com decisão registrada** (DEFINE § Clarifications). Sem rastro ⇒ `⬜`, nunca `➖` |
+
+## Tabela de inferência (a fonte da verdade é o filesystem)
+
+| Etapa | ✅ quando existe no worktree |
+|---|---|
+| setup | worktree + branch (`git rev-parse --abbrev-ref HEAD`) |
+| /sdd-brainstorm | `sdd/features/BRAINSTORM_{F}.md` |
+| /sdd-define | `sdd/features/DEFINE_{F}.md` |
+| /sdd-ux-review | `sdd/reviews/UX_REVIEW_{F}.md` |
+| /sdd-design | `sdd/features/DESIGN_{F}.md` |
+| review adversarial | `<review.output_dir>/EXTERNAL_REVIEW_*/` (padrão `sdd/reports/reviews/`) **com `reviewer.md` + `META.txt` dentro** (o `sdd/bin/adversarial-review.sh` grava por TIMESTAMP, sem `{F}` no nome — conferir pelo `diff_sha256`/branch do META que o diff revisado é o desta frente; `auditor_exit ≠ 0` = auditor FALHOU, não "zero achados") |
+| /sdd-build | `sdd/reports/BUILD_REPORT_{F}.md` |
+| /sdd-release | `sdd/releases/{F}/` **com ledger do slice ATUAL** — famílias com vários slices (ex.: `ALERTAS_AULA_GRUPO` tem s1/s2/s3) já têm ledger no `main`: casar o slice desta frente, senão a fase Release sai `✅` antes do ship |
+
+**Nada é escrito em disco.** O kanban é derivado na hora, a cada resumo — por isso não pode
+divergir da realidade: ele *é* a realidade. Nunca criar arquivo de estado paralelo.
+
+## Regras de omissão (as duas que mais importam)
+
+1. **`O que precisa de você` só existe se N ≥ 1.** Sem pergunta bloqueante, o bloco inteiro
+   **some** — não renderizar vazio nem com "nada pendente". Bloco vazio treina o leitor a pular
+   a seção, e aí a pergunta que importa passa batido.
+2. **Etapa que não se aplica é `➖`, nunca `⬜` perpétuo.** Uma frente sem UI não vai rodar
+   `/ux-review` jamais; deixá-la `⬜` faz o kanban mentir, e um kanban que mente contamina a
+   confiança no resumo inteiro. O `➖` exige decisão registrada — citar onde foi decidida.
+
+## Forma do kanban — duas renderizações
+
+Primária, uma linha (use sempre que couber em ~100 caracteres):
+
+```markdown
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design — ⬜ review adversarial — ⬜ /build — ⬜ /release
+```
+
+Fallback, duas linhas — quebre **no `🏃`**, com o passado acima e o futuro abaixo (nunca
+quebrar no meio de uma casa, nunca abreviar nomes: `/define` e `/design` viram ambíguos).
+**Sem `🏃` na linha** (caso do `/brainstorm`, que é pré-linha): quebrar após a última casa `✅`/`➖`
+— mesma semântica de passado acima, futuro abaixo:
+
+```markdown
+✅ setup — ✅ /brainstorm — ✅ /define — ➖ /ux-review — 🏃 /design
+⬜ review adversarial — ⬜ /build — ⬜ /release
+```
+
+## Exemplo real completo
+
+> Exemplo real (anonimizado) — o caso que originou este contrato.
+
+````markdown
+## 📍 Linha de produção — CERTIFICADO_POR_MODULO
+
+✅ setup — ➖ /sdd-brainstorm — ✅ /sdd-define — ✅ /sdd-ux-review — ✅ /sdd-design — 🏃 review adversarial — ⬜ /sdd-build — ⬜ /sdd-release
+
+**Onde estamos:** 3 commits na branch, zero código ainda — o ponto certo pra revisar a
+abordagem.
+
+**O que precisa de você (1 pergunta):**
+1. **Matrícula inativa com tarefa aprovada merece certificado?** Um participante concluiu a
+   tarefa e depois foi desativado. Ele **fez o trabalho** — mas perdeu o vínculo. Hoje o design
+   diz **não emite**. É 1 caso, mas o backfill é imutável: emitido, não desemite.
+
+**O que vem depois, na ordem:**
+1. **Review de 2º vendor chega** → aplico ou rebato cada nota no *Advisor Ledger* (nunca descartar em silêncio).
+2. **`/sdd-build`** → 15 arquivos. ⚠️ Migrations aplicadas fora do git precisam de commit correspondente na hora, senão viram órfãs.
+3. **Kill-switch antes do backfill** — não é opcional. Sem ele, 1.107 emissões imutáveis sem freio.
+4. **Preencher a carga horária dos 21 módulos** — trabalho de conteúdo, seu, não de código.
+5. **Backfill** com dry-run + consulta inversa, uma execução por vez.
+6. **Review adversarial de verdade** — aí sim, com código no diff.
+7. **`/sdd-release`** — ⚠️ bloqueado por uma migration órfã de outra frente.
+````
+
+## Regras de redação (o que separa um resumo útil de um relatório)
+
+- **Densidade > completude.** ≤35 linhas no total; "Onde estamos" em ≤2. Se não cabe, você está
+  narrando processo em vez de reportar estado.
+- **O fato notável, não o óbvio.** "DEFINE gravado" não informa nada — o comando acabou de rodar.
+  "Grep provou que o formato nunca existiu escrito" informa.
+- **Pergunta decidível sem abrir arquivo.** Quem lê tem de conseguir responder ali; se precisa
+  abrir o DESIGN pra entender a pergunta, ela está mal escrita.
+- **Landmine inline, na ação que ela morde** — não numa seção de avisos no fim, que ninguém lê
+  no momento em que importa.
+- **PII:** o resumo é efêmero (nunca gravado), mas prefira identificador não-pessoal ("1 participante
+  do grupo X") a nome/e-mail literal.
+# Fragmento — Pergunta de decisão e parada
+
+> Reusável. Lido pelo `references/como-falar.md` de cada skill e pelo bloco "O que precisa de você"
+> do `RESUMO_ETAPA.md`. É o **dono único** do formato: as skills apontam para cá e trazem só os
+> próprios exemplos. O `sdd/bin/skill-lint.py --conversa` confere as perguntas desses exemplos.
+
+## Por que existe
+
+Quem responde à skill, em geral, nunca usou git nem terminal, e decide sem abrir arquivo. Pergunta sem
+opção vira "pode" sem saber o que autoriza; opção sem efeito vira chute; e uma parada sem passos deixa a
+pessoa sem saber o que fazer.
+
+## Pergunta de autorização
+
+Quando a skill precisa de um sim, de uma escolha entre caminhos conhecidos ou de um OK antes de algo que
+não se desfaz:
+
+```markdown
+**Sua decisão** — [auto · de rotina] **Posso gravar o DEFINE com estes 6 testes de aceitação?**
+- **sim** (recomendado) — gravo o arquivo e sigo para o Verify Gate: os 6 testes cobrem os 4 objetivos.
+- **mostrar antes** — mostro os 6 testes, um por linha, e pergunto de novo.
+- **não** — paro aqui; nada é gravado.
+- **não sei** — explico o que é um teste de aceitação com o teste 1 como exemplo.
+```
+
+1. A pergunta vai em negrito e termina em `?`. Ela é decidível sem abrir arquivo: o contexto necessário
+   está na própria resposta.
+2. Uma opção por linha, `- **rótulo** — efeito`. O efeito diz o que acontece, não o que a opção "é".
+3. A recomendada vem **primeiro**, com `(recomendado)` e o porquê no efeito. Exatamente uma.
+4. Números em vez de adjetivos: "6 testes", "3 arquivos", "leva uns 4 minutos"; nunca "alguns", "rápido".
+5. Identificadores técnicos (AT-003, LM-004, um SHA) só no fim do efeito, entre parênteses: `(ref: AT-003)`.
+   A frase tem de fazer sentido sem eles.
+6. Sempre a opção **não sei**: a skill responde à dúvida e repete as opções.
+7. Nunca uma opção **Outro** escrita. Quem quer outra coisa diz, e a resposta que não casa com nenhuma
+   opção é tratada como dúvida: responder e repetir as opções. Se a ferramenta de pergunta do agente
+   acrescentar um campo livre sozinha, ele continua lá; a skill não escreve um.
+8. **Eco** de 1 linha: no "O que foi feito" da resposta seguinte, o eco registra a escolha: *"Você escolheu
+   **sim**: gravei o DEFINE com os 6 testes."*
+9. **Classe da decisão.** Toda pergunta de decisão leva **uma** marca logo antes do negrito, com o
+   rótulo fixo da classe (a forma geral, `[Dn]` + rótulo):
+   `**Sua decisão** — [D1 · não se desfaz] **Posso publicar estas 5 mudanças?**`. A marca diz o tipo
+   da decisão em palavras e se ela continua sendo perguntada com o encadeamento ligado
+   (`flow.autonomous: true`; ver `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+
+   | Marca | Quando | Com o encadeamento ligado |
+   |---|---|---|
+   | `[D1 · não se desfaz]` | efeito fora da pasta que o git não desfaz: publicar, enviar, apagar, comprar, usar credencial | pergunta |
+   | `[D2 · muda o produto]` | muda o que a feature faz ou o texto que a pessoa lê: escopo, regra de negócio, dúvida do DEFINE | pergunta |
+   | `[D3 · muda a regra do método]` | muda regra que vale para todas as features: playbook, gate, dispensar uma revisão | pergunta |
+   | `[D4 · limite de tentativas]` | o loop de revisão não convergiu: 3 rodadas ou 2 ciclos do avaliador | pergunta |
+   | `[D5 · provas em conflito]` | dois lados com prova: um achado grave refutado com evidência | pergunta |
+   | `[auto · de rotina]` | a recomendada resolve: modo de execução, onde gravar, formato | não pergunta: vale a recomendada, e a decisão vai para o recibo "Decidi sozinho" |
+
+   Antes da primeira pergunta `[auto · de rotina]` da sessão, rode `bash sdd/bin/sdd-fluxo.sh estado`:
+   0 ligado · 1 desligado · 64 valor inválido (avise com a linha que ele imprimiu e trate como
+   desligado). A pergunta do OK da `sdd-release` ("Posso finalizar…?") é D1 por construção e não leva
+   marca: o texto dela é contrato. `sdd/bin/sdd-decisoes-lint.sh --sites` confere a marca e o rótulo.
+
+## Pergunta aberta
+
+Quando a resposta não cabe em opções (um nome, um número, um caminho):
+
+```markdown
+**Sua decisão** — [D2 · muda o produto] **Qual é o tempo máximo aceitável para processar um extrato?** Responda com um número
+e a unidade (por exemplo, "30 segundos"), ou "não sei": aí eu proponho um valor com base nas amostras.
+```
+
+Não invente opções para uma pergunta aberta. Diga como responder e deixe a saída "não sei".
+
+## Várias perguntas de uma vez
+
+Só quando a etapa precisa delas juntas, até 5, numeradas; a pessoa pode responder pelos números
+("1 sim, 2 mostrar antes"). Cada uma segue o formato acima.
+
+## Parada ⏸️
+
+Quando a etapa não pode seguir sem uma ação da pessoa (instalar algo, fazer login, abrir uma sessão
+nova do agente para um avaliador sem esta conversa):
+
+```markdown
+**Status** — `Build: ✅ 1 Plano · ✅ 2 Modo · ✅ 3 Tarefas 5/5 · ⏸️ 4 Verify Gate · ⬜ 5 Relatório`
+
+**Por que parei:** a conferência final precisa de alguém que não viu esta conversa, e este agente não
+abre uma conversa nova sozinho.
+
+**Onde:** numa janela nova do seu agente, na mesma pasta do projeto.
+
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o pedido que está no arquivo do brief → o agente começa a ler o DEFINE.
+3. Quando ele terminar, copie a última linha (`VEREDITO: …`) → é ela que eu preciso.
+
+**O que não foi feito:** o relatório não foi gravado e nada foi publicado.
+
+**Brief:** `sdd/reports/briefs/BRIEF_avaliador_PAGAMENTOS.md`
+
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+```
+
+- O Status mostra ⏸️ na etapa parada.
+- **Por que parei:** uma frase, com o motivo da pessoa, não a regra da skill.
+- **Onde:** terminal, navegador, pasta, outra janela do agente.
+- **Passos:** numerados, um comando por passo quando houver comando, com o que esperar na tela.
+- **O que não foi feito:** sempre ("Nada foi publicado.", "Nenhuma frente foi criada.").
+- **Brief:** e **Sessão nova:** só quando a parada é por uma sessão sem esta conversa: o caminho do
+  arquivo que a skill gravou e como abrir a sessão. Sem isso, as duas linhas somem.
+- A frase final só quando a pessoa tem algo a fazer.
+{
+ "versao": 2,
+ "feature": "DEMO",
+ "define": "sdd/features/DEFINE_DEMO.md",
+ "gate_sha": "da6828158bc0f4267980d71ba50e151408ae51d97151be131de396a278e14e10",
+ "gate_cmd": "python3 -B -c 'import soma; assert soma.soma(2, 3) == 5'",
+ "inicio": "6f1948cd0c3d73982c819a24e6884a038257157a",
+ "maximo": 3,
+ "gate_linhas": [
+  "kind:       test",
+  "cmd:        python3 -B -c 'import soma; assert soma.soma(2, 3) == 5'",
+  "pass_when:  exit 0",
+  "threshold:  —",
+  "manual_fallback: —"
+ ],
+ "gates": [],
+ "trocas_gate": [],
+ "recibos": [],
+ "repeticao": {
+  "chave": "",
+  "n": 0
+ },
+ "motivo": "aguardando-sessao",
+ "detalhe": "",
+ "parada_gate": "",
+ "avisou_paradas": true
+}
+# PROGRESS: DEMO
+
+- [x] soma.py
+# DEFINE: DEMO
+
+## Problem Statement
+
+Falta uma função que soma 2 números.
+
+## Technical Context
+
+| Aspect | Value | Notes |
+|---|---|---|
+| **Governança** | N.A. — demonstração sem dinheiro, tributo nem dado pessoal | prova |
+
+## Verify Gate
+
+```yaml
+verify_gate:
+  kind: test
+  cmd: "python3 -B -c 'import soma; assert soma.soma(2, 3) == 5'"
+  pass_when: "exit 0"
+  threshold: "—"
+  manual_fallback: "—"
+```
+# DESIGN: DEMO
+
+## Metadata
+
+| Attribute | Value |
+|---|---|
+| **Status** | Ready for Build |
+
+## Key Decisions
+
+### Decision 1: Uma função
+
+Sem alternativa: o pedido é uma função só.
+
+## File Manifest
+
+| # | File | Action | Purpose | Agent / Owner | Dependencies |
+|---:|---|---|---|---|---|
+| 1 | `soma.py` | Create | a função `soma(a, b)` | (general) | None |
+
+**Total Files:** 1
+define: sdd/features/DEFINE_DEMO.md · design: sdd/features/DESIGN_DEMO.md · progress: sdd/reports/progress/PROGRESS_DEMO.md · tarefa: - [ ] soma.py · worktree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+
+exec
+/bin/zsh -lc 'cat .agents/skills/sdd-playbook/SKILL.md; git status --short' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ succeeded in 0ms:
+---
+name: sdd-playbook
+description: >-
+  Playbook de landmines do projeto em sdd/playbook.md, formato ACE-lite — bullets com ID estável (LM-nnn), contadores ajudou/mordeu, superfícies greppáveis e atualização só por delta. Ativa em toda sessão: lê apenas a seção "## Sempre" no início; o resto entra por superfície via sdd/bin/playbook-lint.sh --grep. Nunca reescreve, comprime ou apaga bullets — uma sessão só PROPÕE candidatos; quem aplica é a fase Release: a contagem com evidência entra sozinha e vai para um recibo, e a mudança de regra só com o OK humano, item por item. Use quando alguém disser "isso já mordeu antes?", "registra essa armadilha", /sdd-playbook, ou ao tocar qualquer superfície durante Design e Build.
+compatibility: Requer bash >= 3.2 e git >= 2.20 (sdd/bin/playbook-lint.sh); a curadoria (sdd/bin/playbook-curator.sh) também pede python3 >= 3.9.
+license: MIT
+metadata:
+  author: Roberto Dias Duarte
+  version: "2.2.0"
+  updated: "2026-11"
+  fase: "transversal"
+---
+
+# sdd-playbook — landmines com ID, contadores e delta updates
+
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
+`sdd-playbook v2.2.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+
+Fonte: ACE (Agentic Context Engineering, arXiv 2510.04618). O que portamos: **delta updates
+itemizados** (sem eles o ganho do paper cai de +12,5 para +3,6) e um **papel que julga separado
+do que executa**. O que **não** portamos: curador autônomo (lição auto-gerada sem verificação
+piora), dedup por embedding, carga integral em toda sessão.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Leitura | Início de sessão |
+| 2 | Candidato | Candidato |
+| 3 | Promoção | Escada de promoção |
+
+A etapa 1 é silenciosa: não gera resposta própria. A camada vale quando a skill fala com o aluno
+(propor um candidato, pedir o OK de uma promoção).
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Playbook: ✅ 1 Leitura · ▶️ 2 Candidato · ⬜ 3 Promoção`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
+
+## Início de sessão (obrigatório, silencioso)
+
+Ler **só** a seção `## Sempre` — nunca o arquivo inteiro:
+
+```bash
+awk '/^## Sempre/{f=1;next} /^## /{f=0} f' sdd/playbook.md
+```
+
+Aplicar sem anunciar. As demais seções entram **por superfície**, quando a superfície é tocada:
+
+```bash
+sdd/bin/playbook-lint.sh --grep "<arquivo|comando|tabela|conceito>" sdd/playbook.md
+```
+
+Casa os termos de `sup:`; imprime os `LM-nnn`; exit 1 quando não há nenhum (ausência é
+informação). `--grep-all` busca no bloco inteiro quando você não sabe a superfície. A fase
+Design faz isso por superfície do manifest e registra em `## Landmines aplicáveis`; a fase Build
+repete e registra só os IDs em `## Landmines lidas no build`. É esse `✔ tratado` que vira
+`ajudou` na curadoria.
+
+## Formato (o lint é o juiz — `sdd/bin/playbook-lint.sh sdd/playbook.md`)
+
+```markdown
+- [LM-014] ajudou=1 mordeu=0 · conf=2026-09-02 · sup: `pedido` `status_pagamento` :: regra em 1–3 linhas. **Do instead:** ação concreta. → ficha: HANDOFF_X · promovido_para: —
+- [LM-007] ☠ 2026-09-02 :: motivo da aposentadoria                      (só sob ## Tombstones)
+```
+
+- `LM-nnn` é único e **nunca reusado**; `sup:` ≥1 termo greppável em crase; `Do instead:`
+  obrigatório; `→ ficha:` aponta para `sdd/handoffs/<nome>.md` ou incidente (o bullet aponta,
+  nunca duplica); `promovido_para:` = path do mecanismo (hook, check, script) quando a landmine
+  virou código, ou `—`.
+- Seções na ordem fixa: `Sempre` (≤10 bullets, ≤1.500 palavras) · `Dados` · `Backend` ·
+  `Frontend` · `Infra / deploy` · `Reviews / harness` · `Domínio` · `Tombstones` (última).
+  Só `Sempre` e `Tombstones` são obrigatórias; troque as intermediárias em
+  `PLAYBOOK_SECTIONS` se o seu projeto precisar (mesma ordem, `|` entre nomes).
+
+## Papéis
+
+| Papel | Quem | O que faz |
+|---|---|---|
+| Generator | você, em qualquer sessão | cita `LM-nnn` em `## Landmines aplicáveis` (`✔ tratado` vira `ajudou`); pode **propor** candidato |
+| Reflector | artefatos existentes | achados do avaliador fresco, Advisor Ledger, incidentes, gate vermelho, `WAIVED` — achado cuja causa **já tinha bullet** ⇒ `mordeu+1` |
+| Curator | passo 17b da fase Release: um script colhe, um agente sem a conversa julga, a pessoa decide | `sdd/bin/playbook-curator.sh --colher` lê `ajudou`/`mordeu` das tabelas, `mordeu` dos achados, candidatos e promoções; o curador (`references/curator.md`) confere cada linha contra o `arquivo:linha` e devolve o bloco de curadoria, sem escrever nada; `--conferir-bloco` reprova bloco incompleto e separa a contagem com evidência (entra sem pergunta, vai para o recibo) da mudança de regra — `ADD`, `TOMBSTONE`, `REFINE`, `promovido_para=`, invariante —, que só entra com o seu OK; `mordeu ≥ 2` ⇒ pergunta de promoção obrigatória |
+
+A escrita legítima no playbook é a fase Release (delta aprovado) — ou, fora dela, um commit
+revisado com lint verde e OK humano. Nunca "no meio do trabalho". Quem aplica é sempre
+`sdd/bin/playbook-curator.sh --aplicar <delta> sdd/playbook.md`, que valida o delta inteiro antes de
+editar e imprime o playbook novo; o resultado passa pelo lint antes de ser copiado por cima.
+
+Gramática do delta (1 verbo por linha):
+
+```text
+LM-020 ajudou+1
+LM-016 mordeu+1
+LM-004 promovido_para=<caminho do mecanismo>
+ADD <seção> :: sup: `termo1` `termo2` :: regra. **Do instead:** ação. → ficha: — · promovido_para: —
+TOMBSTONE LM-nnn :: motivo
+REFINE LM-nnn :: novo texto. **Do instead:** ação.
+```
+
+## Proibições (o lint aplica)
+
+- **Não reescrever, comprimir, reordenar em massa ou renumerar.** `--anti-collapse <antes>
+  <depois>` bloqueia quando um `LM-` desaparece ou >20% dos bullets mudam de conteúdo/seção
+  (contadores e `conf` não contam). Reescrita grande = 2+ commits.
+- **Não apagar.** Aposentar = mover para `## Tombstones` como `- [LM-nnn] ☠ data :: motivo`.
+  Uma mudança de conteúdo por commit sempre passa; de 2 para cima vale o limite de 20%.
+- **Não escrever a partir da fase Design** (a varredura é read-only).
+- **Não inflar `## Sempre`**: só landmine de sessão sem superfície greppável.
+
+## Candidato — o único jeito de uma sessão "escrever"
+
+No BUILD_REPORT (seção "Candidatos ao playbook") ou na ficha, bloco literal:
+
+```text
+<<<CANDIDATO_PLAYBOOK
+secao: Backend
+sup: `termo1` `termo2`
+regra: … **Do instead:** …
+evidencia: caminho do log/incidente/AT que prova que mordeu (ou DESIGN onde ajudou)
+ficha: HANDOFF_X (se existir; senão "—")
+mordeu_antes: LM-nnn (se a causa já tinha bullet) | —
+>>>
+```
+
+Sem `evidencia:` o candidato não é candidato (lição sem verificação piora o contexto).
+
+## Escada de promoção
+
+`mordeu ≥ 2` = a regra escrita não bastou. O destino é um **mecanismo** (hook de pre-commit,
+check no gate, script), e o bullet ganha `promovido_para:`; cai para `## Tombstones` só quando
+o mecanismo tiver caso de teste que **falha** sem ele. `sdd/bin/playbook-lint.sh --stats`
+conta por `mordeu`.
+
+## Invariantes — a regra que nunca pode ser quebrada
+
+A landmine diz "isto me mordeu". A invariante, em `sdd/invariants.md`, diz "isto nunca pode ser violado,
+e aqui está o que vigia": uma linha por regra, com a landmine de origem e o estado (`ok` = um check roda
+sozinho; `auto` = dá para automatizar, com a tarefa; `humano` = exige julgamento, com o motivo). Toda
+landmine ativa que já mordeu, ou que foi promovida, precisa estar classificada lá: como origem de uma
+invariante, ou em `## Descartados` com o motivo.
+
+- **Só a curadoria escreve** em `sdd/invariants.md`, com o seu OK por item.
+- **A trava:** `bash sdd/bin/playbook-curator.sh --validar-inv sdd/playbook.md sdd/invariants.md` reprova
+  invariante com origem aposentada, landmine do universo sem classificação, ID repetido e `check=` que
+  não existe. Aposentar uma landmine que é origem de uma invariante só passa junto com o ajuste que o
+  `--cruzar` propõe: é uma decisão só, não duas.
+- Projeto sem `sdd/invariants.md`: a curadoria diz que pulou o cruzamento e segue só com o playbook.
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open
+?? sdd/reports/
+
+codex
+sdd-drive v1.0.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+
+**Status** — Drive: ▶️ 1 Conferir · ✅ 2 Desenhar · ⬜ 3 Construir · ⬜ 4 Teste final · ⬜ 5 Relatório
+
+Vou retomar a execução com o limite registrado de 3 rodadas — cada rodada reúne a construção e o teste final — e parar antes de publicar. A tarefa da função já consta como concluída; vou consultar o script para saber o próximo passo. A dispensa do avaliador será registrada exatamente como você pediu.
+exec
+/bin/zsh -lc "awk '/"'^## Sempre/{f=1;next} /''^## /{f=0} f'"' sdd/playbook.md; bash sdd/bin/sdd-drive.sh --resume sdd/features/DEFINE_DEMO.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ exited 10 in 369ms:
+
+- [LM-001] ajudou=1 mordeu=0 · conf=2026-11-05 · sup: `grep -q` `verify-gate` `if (true)` `asserção` :: Um gate que só confere FIAÇÃO (o `grep` acha a chamada, a regra CSS existe) fica verde com `if (true)` — ele prova que o texto está lá, não que o comportamento acontece. **Do instead:** o gate EXECUTA o código com fixtures dos dois lados (caso que passa E caso que falha) e valida-se com um mutante que derruba uma asserção nomeada. · promovido_para: —
+- [LM-002] ajudou=1 mordeu=0 · conf=2026-11-05 · sup: `exit 0` `baseline` `sed -n` `grep -c` :: Uma asserção que NÃO AVALIA NADA sai `exit 0`: quoting corrompido faz o `grep` nem rodar, âncora de `sed` casa o bloco errado e a contagem dá zero antes e depois. **Do instead:** toda asserção precisa de baseline VERMELHO — rode-a contra a árvore ANTES da mudança; se já passa, ela não prova a mudança. · promovido_para: —
+- [LM-003] ajudou=1 mordeu=0 · conf=2026-11-05 · sup: `git status` `--uncommitted` `review` `untracked` :: Trabalho commitado com arquivos untracked ao lado faz um review de "não commitado" revisar o VAZIO — e um review que passou sobre diff nenhum é pior que review nenhum. **Do instead:** commitar antes de qualquer review externo; conferir que o diff revisado tem os arquivos que você mudou (`git diff --stat` bate com a lista do review). · promovido_para: —
+- [LM-004] ajudou=0 mordeu=0 · conf=2026-10-29 · sup: `exit 0` `migration` `db push` `apply_migration` `Migrations aplicadas` :: Migration "aplicada" porque o comando saiu `exit 0` pode não estar no banco: a CLI ligada a outro projeto, `declined` do servidor, SQL sem efeito — e o código vai para produção chamando a coluna que não existe. **Do instead:** prova é ler de volta — `migration list` mostra a versão no remoto e um `select` acha o efeito (ou a ausência esperada); registre em `## Migrations aplicadas` com o log em `evidence/`. · promovido_para: `sdd/bin/report-lint.py`
+
+retomando: rodada 1/3 · 1 de 1 tarefas prontas · último teste final: nenhum · não gastei rodada
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+
+exec
+/bin/zsh -lc 'bash sdd/bin/sdd-drive.sh verificar sdd/features/DEFINE_DEMO.md --fundo' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ exited 10 in 378ms:
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 41522); a saída do script fica em sdd/reports/progress/DRIVE_DEMO.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+
+exec
+/bin/zsh -lc 'bash sdd/bin/sdd-drive.sh proximo sdd/features/DEFINE_DEMO.md' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ exited 10 in 381ms:
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+
+exec
+/bin/zsh -lc "cat soma.py sdd/reports/DRIVE_REPORT_DEMO.md; cat .agents/skills/sdd-build/SKILL.md; rg -n 'concluir|avaliador|BUILD_REPORT' sdd/bin/sdd-drive.sh; rg --files sdd/reports/progress" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ succeeded in 0ms:
+def soma(a, b):
+    return a + b
+# DRIVE_REPORT: DEMO
+
+Esta etapa precisa de uma sessão nova do agente. Nada foi publicado. Rodadas vermelhas: 0 de 3.
+
+| Campo | Valor |
+|---|---|
+| Motivo | aguardando-sessao |
+| DEFINE | `sdd/features/DEFINE_DEMO.md` |
+| Commit inicial | `6f1948cd0c3d` |
+| Teste final | `python3 -B -c 'import soma; assert soma.soma(2, 3) == 5'` |
+
+## Testes finais
+
+| # | Rodada | Commit | Exit | Log |
+|---|---|---|---|---|
+| — | — | — | — | nenhum teste final rodou |
+
+## Commits desde o início
+
+Nenhum.
+
+## Teste final alterado
+
+Nenhuma troca.
+
+## Decidi sozinho
+
+Nada.
+
+Nada foi publicado: publicar é decisão da pessoa, pela sdd-release.
+---
+name: sdd-build
+description: Fase 3 do SDD Open — executa o manifest do DESIGN arquivo a arquivo com verificação incremental, trata o Verify Gate do DEFINE como bloqueante, exige evidência abrível para cada critério (nunca "deve funcionar"), recomenda review de segundo vendor e avaliação em contexto fresco, e grava sdd/reports/BUILD_REPORT_{FEATURE}.md. Use quando o DESIGN estiver pronto ou o usuário disser /sdd-build.
+compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda sdd/bin/verify-gate.sh como critério de parada.
+license: MIT
+metadata:
+  author: Roberto Dias Duarte
+  version: "2.6.0"
+  updated: "2026-11"
+  fase: "3"
+---
+
+# sdd-build — Fase 3
+
+Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
+`sdd-build v2.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+
+Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
+critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
+ele em `0` (ou `4` com recibo humano), o build não terminou.
+
+## Como falar com o aluno
+
+Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
+e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+Quem usa esta skill, em geral, nunca usou git nem terminal.
+
+| Etapa | Nome para o aluno | Passos desta skill |
+|---|---|---|
+| 1 | Plano | 1, 1.5 e 2–3 |
+| 2 | Modo | 3b |
+| 3 | Tarefas N/M | 4 e 4b (o contador no Status; uma frase antes de cada tarefa) |
+| 4 | Verify Gate | 5 |
+| 5 | Relatório | 6 |
+
+Toda resposta, nesta ordem (pule a parte sem conteúdo):
+
+1. **Status** — uma linha que começa pelo nome da fase: `Build: ✅ 1 Plano · ▶️ 2 Modo · ⬜ 3 Tarefas 0/5 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
+   etapa, o motivo vai em Agora.
+2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
+   não precisa responder.
+4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
+   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
+
+- Uma etapa por resposta: termine na decisão e pare.
+- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
+- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
+  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
+- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
+- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
+  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
+  eu continuo daqui."
+- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
+
+## Entrada
+
+`/sdd-build sdd/features/DESIGN_{FEATURE}.md [--mode ralph]`
+
+## Processo
+
+### 0. Revisão do DESIGN
+
+Antes da 1ª tarefa, rode `bash sdd/bin/sdd-fluxo.sh review-design sdd/features/DESIGN_{F}.md`:
+
+| Exit | Ação |
+|---|---|
+| `0` exigida | se o Advisor Ledger do DESIGN não tem nenhuma linha de revisão, rode a revisão do DESIGN antes de codar — revisor e depois auditor, `bash sdd/bin/adversarial-review.sh --feature {F} --paths "sdd/features/DEFINE_{F}.md sdd/features/DESIGN_{F}.md"`, como na `sdd-design` — e registre cada nota no ledger |
+| `1` dispensável | registre no relatório `revisão do DESIGN: dispensável (<o motivo que o script imprimiu>)` |
+| `64` manifest ilegível | rode a revisão assim mesmo (o lado seguro) e registre por quê |
+
+Mudar a abordagem depois do código custa uma reescrita; antes, uma edição no DESIGN.
+
+### 1. Contexto e landmines
+
+Leia DESIGN, DEFINE, `AGENTS.md`, `sdd/config.yaml`. **Conte as camadas** do manifest usando
+`layers:` do config (ex.: `api`, `ui`, `sql`): ≥2 camadas distintas ⇒ os passos 1.5 e 5d são
+obrigatórios; 1 camada ⇒ registre `avaliador: N.A. (1 camada)` no relatório. O limite é
+`evidence.require_avaliacao_layers` do config (default 2), e o `report-lint.py` confere a contagem.
+
+Confira a flag `LLM Prompts` do DEFINE contra o DESIGN: `true` sem a seção `LLM Prompts` no DESIGN,
+ou `false` com ela, ⇒ pare e itere o DESIGN antes de codar. O drift do passo 4 continua armado nos
+dois casos. Script de `sdd/bin/` que não existir (instalação antiga) ⇒ rode o `init` de novo: ele
+completa o que falta em `sdd/`.
+
+Repita a varredura de landmines por superfície (o manifest cresce no build):
+`sdd/bin/playbook-lint.sh --grep "<termo>" sdd/playbook.md`. Registre **só os IDs** em
+`## Landmines lidas no build` (`LM-nnn` + 1 linha + ✔ tratado / N.A.). Hit que o DESIGN não
+listou vira tarefa **antes** do código.
+
+### 1.5. Contrato de aceite negociado (≥2 camadas)
+
+Antes de codar, alguém **que não viu esta conversa** revisa os ATs e o Verify Gate contra o
+DESIGN e propõe ≤5 ajustes (classes: não-verificável · estado sem critério · gate não cobre
+AT · aceite circular · efeito não observável). Ver `references/contexto-fresco.md` para o
+brief. Antes de despachar, rode `bash sdd/bin/avaliador-guard.sh`: exit 1 ⇒ commite o que ele
+listar e rode de novo; exit 2 ⇒ pare. Negocie com o usuário (múltipla escolha, uma opção por proposta); toda proposta recebe
+**ACEITA** (aplicada no DEFINE, `Revision History` atualizado, `verify-gate.sh --print` ainda
+parseia) ou **RECUSADA (motivo)** — registradas em `## Contrato de aceite` do DESIGN. Nunca
+silêncio. Se o DESIGN já tem contrato negociado após a última edição do DEFINE, pule.
+
+### 2–3. Tarefas e ordem
+
+Converta o manifest em lista de tarefas e ordene por dependência (imports, schemas
+compartilhados). **A primeira tarefa é o gate**: se o Verify Gate aponta para um script que
+ainda não existe, crie-o **já com todos os blocos, falhando** — só assim existe baseline
+vermelho de verdade. Script ausente sai `3` (inconclusivo), não `2`, e um gate que nunca
+ficou vermelho não prova nada.
+
+### 3b. Modo de execução (recomendação → decisão do usuário)
+
+| Sinal | Empurra para |
+|---|---|
+| poucos arquivos, acoplados (schemas/helpers compartilhados) | **default** (um autor lembra nomes e assinaturas) |
+| muitos arquivos independentes, build longo, risco de perder o fio | **ralph** (contexto fresco por tarefa, commit atômico, retomável) |
+| volume paralelizável fora de segurança e de prompts LLM | **briefs** (workers paralelos; experimental) |
+
+Empate → default. Mesmo com recomendação óbvia, **pergunte**; com `--mode` explícito,
+registre "modo fixado por flag". Detalhes em `references/modos-e-retry.md`.
+
+### 4. Executar cada tarefa
+
+Guidelines inegociáveis: suposição vira pergunta · simplicidade · mudança cirúrgica ·
+critério antes do código · **evidência, não declaração**.
+
+1. **Prompt no inventário** (o arquivo está em `LLM Prompts` do DESIGN, ou é estágio de uma LOOP_SPEC gerada):
+   vá direto ao roteador pelo `Tipo` da linha, sem varredura antes, porque o texto ainda não existe.
+   - **`one-shot`:** compile o contrato do DESIGN (tom, saída, fallback, referências) e passe à skill
+     `sdd-prompt-builder` (ou a que estiver em `prompts.builder_skill` do `sdd/config.yaml`); não reabra
+     decisões de provedor/modelo.
+   - **`loop`:** escreva `🔁 item em laço: especificação e <n> prompts (<nome>)`, com o `<n>` da tabela de estágios
+     assim que ela existir. Compile o contrato do DESIGN (Intenção, Perfil de risco dos efeitos, material de referência
+     literal, decisões já fechadas, Ground truth disponível) e passe à `sdd-loop-builder`, que devolve um bloco com a
+     LOOP_SPEC, a tabela de estágios, os prompts pendentes e o Verify Gate; depois, para cada estágio LLM, a skill de
+     prompt recebe o bloco de contrato da linha, a linha do estágio e o contrato dele em PROMPTS PENDENTES. O bloco
+     inteiro vai para `<pasta do processo>/LOOP_SPEC.md`, e cada prompt para o arquivo da tabela. Esses arquivos
+     contam como inventariados e como previstos no manifest. Estágio de código vira código, nunca prompt. Valor de
+     orçamento marcado como proposta na LOOP_SPEC vai para o relatório. Se a skill devolver **item faltando**, nada
+     é gravado neste item: itere o DESIGN com o item que falta e retome. Se devolver **não é laço**, troque no DESIGN o `Tipo`
+     para `one-shot` e o destino para o arquivo do prompt (sem a coluna, acrescente-a), registre no relatório e siga
+     por esse caminho.
+   - **Sem `Tipo`** (DESIGN antigo): pergunte a si mesmo "o processo re-prompta o modelo com base na própria saída
+     anterior?". Sim, `loop`; não, `one-shot`; na dúvida, `loop`. Registre a triagem no relatório.
+   - ⛔ **Não encerre o turno ao receber o bloco de texto:** ele é entrada desta fase, não a entrega. Embrulhe na forma
+     que a linguagem pede e grave no destino no mesmo turno, sem pedir "continue".
+   - **Skill ausente** (`sdd-loop-builder`, ou a de prompt): escreva `🛑 não encontrei a skill <nome>; este item ficou de
+     fora e nada foi improvisado.` e faça esta pergunta à letra, com a marca; o resto do manifest segue.
+
+     **Sua decisão** — [D2 · muda o produto] **Como sigo com este item de prompt, sem a skill que o escreve?**
+     - **instalar e continuar** (recomendado) — você roda o `init` do sdd-open de novo, que completa o que falta sem sobrescrever, e eu retomo este item.
+     - **tirar do escopo** — o item sai do manifest, com o motivo no relatório, e o DESIGN é iterado.
+     - **não sei** — explico o que o item faz e o que se perde sem ele.
+   - **Antes de gravar**, o texto gerado passa por `bash sdd/bin/prompt-drift-scan.sh --conteudo <caminho>`, pela
+     entrada padrão: saída 2 aqui é o esperado e grava; 0 também grava; 64 é chamada errada, nunca ignore.
+2. **Arquivo fora do inventário** (sempre, mesmo com `LLM Prompts: false`): antes de gravar, passe o conteúdo por
+   `bash sdd/bin/prompt-drift-scan.sh --conteudo <caminho>`, pela entrada padrão. Arquivo vazio não precisa. Saída 0:
+   grave. Saída 64: chamada errada; corrija, nunca ignore. Saída 2: **pare** e pergunte: iterar o DESIGN, ou confirmar
+   falso positivo e registrar em "Drift detectado". O aviso de `prompts.wrapper_pattern` vazio vai ao aluno uma vez por
+   Build: se o projeto chama a IA por uma função própria, a varredura não a vê até o slot ser preenchido.
+3. **Escrever** seguindo os Code Patterns. 4. **Verificar** (lint, tipos, teste do arquivo).
+5. **Marcar** concluído.
+
+**Escada de retry — correção é redispatch fresco, nunca reply:** 1ª falha → corrigir no
+contexto (erro trivial). 2ª falha → **reexecutar do zero** a partir de um brief que leva SÓ o
+critério que falhou (verbatim), o erro (verbatim) e a instrução "trate como tarefa nova; não
+assuma que a tentativa anterior estava quase certa". 3ª falha → **parar** e reportar; nunca
+contornar o critério.
+
+### 4b. Migration (só se o manifest tem)
+
+Manifest com `*.sql`, pasta `migrations/`, caminho que casa `layers.sql` do config ou ação descrita
+como migration ⇒ leia `references/aplicar-migration.md` e siga-o **antes** do Verify Gate: descobrir
+ferramenta e projeto (nome **e** ref), parar na divergência, uma confirmação só com o SQL inteiro,
+aplicar, e **provar por leitura**. `exit 0` não prova (LM-004). Sem migration, o passo não existe e
+não se fala de banco.
+
+### 5. Validação
+
+**5a. Verify Gate (bloqueante):** `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`
+
+| exit | Ação |
+|---|---|
+| `0` | verde — seguir |
+| `2` | vermelho — **abortar**; corrigir código (ou iterar DESIGN/DEFINE se a premissa está errada) e rodar de novo |
+| `3` | inconclusivo — **não** é verde: instale a ferramenta ou rode onde ela exista; registre |
+| `4` | manual-ux — mostre o `manual_fallback` ao humano e **pare** até o recibo (quem, data, resultado) |
+| `5` | clarificação pendente (marcador de dúvida, ou a linha `Governança` sem valor final: o passo 11 do `sdd-define` não fechou) — **pare** e volte ao Define, ou rode só o passo 11; não é vermelho de build |
+| `64` | DEFINE sem gate válido — volte ao Define |
+
+Se o build corrigiu (ou escreveu) a asserção do gate, prove que ela tem dentes:
+`bash sdd/bin/gate-baseline.sh sdd/features/DEFINE_{F}.md --sobrepor <script do gate>` roda o gate
+contra a branch de produção e exige vermelho **avaliando** (exit 0). Exit 2 ⇒ a asserção não
+distingue o antes do depois: reancore e rode de novo; exit 3 ⇒ registre no relatório.
+
+**5b. Checks do projeto:** `{{TEST_CMD}}` via `bash sdd/bin/test-baseline.sh` (só falha nova
+aborta; aceitar uma falha como conhecida, com `--aceitar`, é decisão do usuário), `{{TYPECHECK_CMD}}`,
+`{{LINT_CMD}}` do config, quando preenchidos. Slot vazio = pular **e dizer que pulou**.
+
+**5c. Review adversarial pós-build.** A `sdd-release` exige o review externo desta versão do código
+(ou uma dispensa com motivo): rodá-lo aqui, enquanto o contexto está fresco, sai mais barato do que na
+release. **Commite antes**, e rode `bash sdd/bin/adversarial-review.sh --feature {F}` — uma engine do
+registry revisa o diff congelado e outra audita a revisão, em cadeia, nunca em paralelo; o 2º revisor
+e o desempate entram sozinhos quando o diff pede. Depois, `bash sdd/bin/sdd-fluxo.sh loop --review
+<pasta que ele imprimiu> --ledger <ledger da revisão> --rodada N` decide se segue, corrige ou pergunta.
+Contrato de resposta em `sdd/templates/fragments/ADVISOR_CONSULT.md`; cada nota → APLICADA ·
+REBATIDA_EVIDENCIA · REBATIDA_ESCOPO no Advisor Ledger do relatório. Engine que não seguiu o formato
+**falhou** (exit 68): nunca leia como "zero achados". Review nunca substitui smoke real.
+
+**5d. Avaliador de contexto fresco (bloqueante em ≥2 camadas).** Quem julga não é quem
+constrói. Antes de despachar, `bash sdd/bin/avaliador-guard.sh` (exit 1 ⇒ commite o listado; exit
+2 ⇒ pare). Alguém sem esta conversa (agente novo, sessão nova, ou subagente onde o vendor
+tiver) lê o DEFINE como contrato e **prova cada AT executando** — comando, chamada, clique
+— nunca lendo o diff. O brief leva só: modo `veredito`, feature, caminhos do DEFINE e do
+DESIGN, pasta do projeto, URL base e se há credenciais autorizadas. Persista o bloco
+`<<<AVALIACAO … >>>` em `sdd/reviews/AVALIACAO_{F}_{YYYYMMDD-HHMM}.md`. `PASS` → seguir.
+`NEEDS_WORK` → os achados são o brief do ciclo seguinte (fresco); máximo 2 ciclos, depois
+`Status: Blocked`. Sem browser/sessão para superfície visual → `NAO_VERIFICADO`, nunca PASS.
+Se esta sessão não abre o papel fresco sozinha: grave o brief em
+`sdd/reports/briefs/BRIEF_avaliador_{F}.md`, rode
+`bash sdd/bin/sdd-fluxo.sh despachar avaliador {F} sdd/reports/briefs/BRIEF_avaliador_{F}.md` e pare no
+exit 40, repassando a parada; continue quando a pessoa colar o bloco `<<<AVALIACAO … >>>` inteiro
+(com a linha `VEREDITO: …`), que vai verbatim para `sdd/reviews/`.
+Detalhes em `references/contexto-fresco.md`.
+
+### 6. BUILD_REPORT
+
+`sdd/reports/BUILD_REPORT_{FEATURE}.md`, do template. **Default-FAIL:** a tabela de ATs nasce
+com todo AT `false`. `true` exige evidência abrível — `sdd/reports/evidence/{F}/AT-nnn.log`
+(1ª linha `$ comando`, saída verbatim), `AVALIACAO_{F}_*.md`, ou `recibo: nome YYYY-MM-DD`
+(só gate manual-ux). "Por raciocínio" e "deve funcionar" são negados. A linha do avaliador é
+obrigatória, numa de 3 formas: o `AVALIACAO_{F}_*.md` em `sdd/reviews/`, `avaliador: N.A. (<motivo>)`
+(menos camadas que o limite) ou `avaliador: PENDENTE (<motivo>)` (build travado antes do 5d; a fase
+Release não sai com ela). Flag `LLM Prompts: true` ⇒ a seção do relatório segue o molde
+`sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md`. Valide:
+
+```bash
+python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md   # exit 0 obrigatório
+```
+
+Seções obrigatórias: Seleção de modo · Contrato de aceite · Landmines lidas no build ·
+Candidatos ao playbook (bloco literal `<<<CANDIDATO_PLAYBOOK … >>>` com `evidencia:`, ou
+"nenhum candidato") · Verify Gate (exit + recibo se manual-ux) · Veredito do avaliador ·
+Advisor Ledger (se houve review) · Drift detectado (mesmo que "nenhum") · Migrations aplicadas
+(se o manifest tem migration: projeto nome · ref, data e prova por leitura — o `report-lint` reprova
+migration listada sem a linha).
+
+## Quality Gate
+
+```text
+[ ] Camadas contadas; ≥2 ⇒ 1.5 e 5d rodaram, com o guard antes · 1 ⇒ "avaliador: N.A." no relatório
+[ ] Contrato de aceite: toda proposta ACEITA|RECUSADA (ou "já negociado" / N.A.)
+[ ] Verify Gate exit 0 (ou 4 com recibo) — nunca 2, nem 3 sem resolução
+[ ] Todos os arquivos do manifest criados; verificações passam; sem TODO no código
+[ ] Todo AT `true` cita evidência válida; report-lint.py exit 0; sem bypass silencioso
+[ ] Seleção de modo e reviews decididas com registro (SIM com ledger ou NÃO com motivo)
+[ ] Drift registrado (mesmo zero) · candidatos ao playbook com evidência (ou "nenhum")
+[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
+```
+
+## Por que cada regra existe
+
+- **O critério de parada é o Verify Gate** — "parece pronto" muda com o cansaço de quem constrói; um
+  comando com exit dá a mesma resposta para todos, inclusive para a release, que roda o gate de novo.
+- **A primeira tarefa é o gate, falhando** — um gate que nunca ficou vermelho não prova nada; script
+  ausente sai 3 (inconclusivo), não 2.
+- **Commit antes de qualquer revisão** — um revisor de "o que não foi commitado" olhando uma árvore já
+  commitada revisa o vazio, e um review que passou sobre nada é pior que nenhum.
+- **Quem julga não é quem constrói** — o autor confirma o que quis fazer; quem não viu a conversa prova
+  o que o DEFINE pede, executando, não lendo o diff.
+- **Evidência abrível, nunca "deve funcionar"** — a frase não pode ser conferida depois; um log com o
+  comando na 1ª linha pode, e o `report-lint.py` reprova o critério sem ele.
+- **Correção é redispatch fresco, não resposta na mesma conversa** — na 2ª falha, o contexto que errou
+  carrega a hipótese errada; recomeçar só com o critério e o erro quebra o ciclo.
+- **Migration provada por leitura** — `exit 0` não prova que a coluna está no banco certo (LM-004), e o
+  código iria para produção chamando o que não existe.
+- **Prompt fora do inventário para o build e pergunta** — texto de produção improvisado escapa do
+  contrato que o Design fechou e de toda revisão.
+- **Guard antes de despachar o avaliador** — ele usa o terminal e pode restaurar arquivos do último
+  commit; o que não foi commitado se perde, e com tudo commitado restaurar devolve o próprio trabalho.
+- **Gate corrigido roda contra o código anterior** — uma asserção que fica verde antes da mudança não
+  avalia nada, e "corrigir até ficar verde" é igual a afrouxar.
+- **Só falha de teste nova aborta** — uma falha antiga travando todo build ensina a ignorar vermelho;
+  separada no baseline, a nova continua aparecendo, e aceitar uma é decisão registrada.
+- **A flag `LLM Prompts` do DEFINE confere com o DESIGN antes de codar** — `true` sem inventário deixa
+  prompt de produção sem contrato; `false` com inventário constrói o que o Define disse que não existe.
+- **A linha do avaliador é obrigatória** — o lint que só confere o veredito que aparece aprova o
+  relatório que não fala do avaliador; a ausência reprova, e `PENDENTE` registra o build travado.
+
+## Encerramento (obrigatório)
+
+Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é
+`/sdd-build`.
+
+**Próximo passo:** `/sdd-release <o que liberar>` — a fase Release roda o Verify Gate de novo
+antes de qualquer publicação.
+
+### Fluxo encadeado
+
+Ao fechar, rode `bash sdd/bin/sdd-fluxo.sh seguir <fase> <DEFINE> <próxima>` só quando a linha
+"Nesta skill" abaixo nomeia o `seguir` (contrato em `sdd/templates/fragments/FLUXO_ENCADEADO.md`).
+Exit 0: escreva a linha de transição que o script imprimiu, o recibo **Decidi sozinho** (se houver) e
+chame a próxima fase nesta sessão. Exit 1 com `encadeamento desligado`: só o Próximo passo acima, sem
+repassar a linha. Exit 1 por outro motivo: diga o motivo em 1 frase e mostre o Próximo passo. Exit 64:
+repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o encadeamento ligado
+vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam perguntadas. "Pare"
+desliga nesta chamada (`--parar`).
+
+Nesta skill: `seguir build sdd/features/DEFINE_{FEATURE}.md release` sempre para — publicar não se
+desfaz e é decisão sua (D1).
+
+---
+
+Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open
+12:#   sdd-drive.sh concluir <DEFINE.md>                 confere gate e relatório; para em gate-verde
+73:                  "percorra o checklist do manual_fallback, assine no BUILD_REPORT e, para publicar, chame a sdd-release."),
+99:    "AVALIAR_E_RELATAR": "rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.",
+113:  sdd-drive.sh proximo|concluir <DEFINE.md>
+192:        self.build_report = "sdd/reports/BUILD_REPORT_%s.md" % self.feature
+757:    print("  4. com o verde, avaliador e relatórios; e parar antes de publicar.")
+977:def cmd_concluir(args):
+978:    p = um_define("concluir", args)
+986:    # concluir e proximo respondem a mesma coisa: tarefa reaberta, DESIGN sumido ou código novo não viram verde.
+1216:        espera("verde: sem relatório não conclui", drive(r, "concluir", D), 10, "Falta sdd/reports/BUILD_REPORT_FIXTURE.md")
+1217:        grava(r, "sdd/reports/BUILD_REPORT_FIXTURE.md", "x\n")
+1218:        espera("verde: concluir ⇒ gate-verde", drive(r, "concluir", D), 0, "motivo: gate-verde")
+1239:              "verificar": cmd_verificar, "concluir": cmd_concluir, "bloqueio": cmd_bloqueio, "recibo": cmd_recibo,
+sdd/reports/progress/DRIVE_DEMO.fundo.log
+sdd/reports/progress/DRIVE_DEMO.json
+sdd/reports/progress/PROGRESS_DEMO.md
+
+exec
+/bin/zsh -lc "rg --files sdd/templates | rg 'BUILD'; cat sdd/config.yaml; sed -n '960,1020p' sdd/bin/sdd-drive.sh; cat sdd/reports/progress/DRIVE_DEMO.json sdd/reports/progress/DRIVE_DEMO.fundo.log; rg -n 'required|obrig|AT-|sections|Seleção|Verify Gate|Status' sdd/bin/report-lint.py" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ succeeded in 0ms:
+sdd/templates/BUILD_REPORT_TEMPLATE.md
+sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md
+# sdd/config.yaml — copiado de config.example.yaml pelo `init`. Preencha para o seu projeto.
+#
+# As skills consultam estes slots ({{TEST_CMD}}, {{DEPLOY_CMD}}, …) em vez de fixar comandos.
+# Slot VAZIO significa "pule este passo e diga que pulou" — nunca "adivinhe um comando".
+# Parser: chaves simples `chave: valor` e mapas de 1 nível; sem âncoras, sem listas complexas.
+
+project:
+  name: meu-projeto
+  # Comando de teste, usado por gates `kind: test`.
+  test_cmd: ""
+  # Checagem de tipos/compilação, usada por gates `kind: typecheck`.
+  typecheck_cmd: ""
+  # Checagem de sintaxe por tipo de arquivo (fase Release, passo 0a).
+  lint_cmd: ""
+  # Branch de onde nascem as features. Nunca se trabalha nela diretamente (o pre-commit de sdd/hooks
+  # recusa commit direto nela quando ela já tem remoto).
+  default_branch: main
+  # Teto, em KB, do arquivo de contexto do agente (AGENTS.md, CLAUDE.md, GEMINI.md, .cursorrules) num
+  # commit: ele entra inteiro em toda sessão do agente. Acima disso o pre-commit recusa. Vazio = 100.
+  context_file_max_kb: 100
+
+# Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho
+# do avaliador de contexto fresco. `sql` também diz o que conta como migration (report-lint.py).
+# Exemplos: sql: "db/migrations/**" · api: "src/api/**" · ui: "src/ui/**" · infra: "deploy/**"
+layers:
+  api: ""
+  ui: ""
+  sql: ""
+
+# Evidência do build (report-lint.py): a partir de quantas camadas de `layers:` tocadas pelo File
+# Manifest do DESIGN a avaliação em contexto fresco é obrigatória. Abaixo disso, a linha
+# `avaliador: N.A. (<motivo>)` no BUILD_REPORT vale. 1 = avaliador sempre. Inteiro >= 1.
+evidence:
+  require_avaliacao_layers: 2
+
+deploy:
+  # Roda na fase Release, depois da única aprovação humana.
+  cmd: ""
+  # Detecta o que chegou em produção sem commit correspondente (função publicada pelo console,
+  # migration aplicada pelo painel). Vazio = você só deploya via git e esse drift não existe.
+  drift_check_cmd: ""
+  # Arquivo do workflow que publica (ex.: deploy.yml), usado por sdd/bin/deploy-do-sha.sh para saber se o commit
+  # está no ar. Vazio = a sdd-release passa o nome que leu em .github/workflows/.
+  workflow: ""
+  # Nomes de passos desse workflow em que repetir é seguro, separados por vírgula (ex.: "Verify SSH connection").
+  # Falha em um deles, com o commit na ponta da branch, repete o deploy 1 vez. Vazio = nunca repete sozinho.
+  transient_steps: ""
+
+release:
+  # Bloqueadores próprios do projeto: começa com regras genéricas, cresce a cada incidente.
+  landmines_cmd: ""
+  # Opcional, pós-deploy (changelog, comunicado, ledger).
+  changelog_hook: ""
+
+review:
+  # Revisão adversarial (sdd/bin/adversarial-review.sh; docs/adversarial-review.md): uma engine revisa o
+  # diff, OUTRA audita a revisão. As engines moram no registry (1 linha por engine; engine nova = 1 linha).
+  registry: sdd/review/registry.tsv
+  # Quem revisa e quem audita: ids do registry (claude, codex, gemini, openrouter ou openrouter:<modelo>).
+  # Uma lista separada por vírgula é a cadeia: a 1ª é a padrão, as outras entram se a anterior ficar sem
+  # cota. Vazio = a skill pergunta. O auditor precisa ser outra engine (igual = exit 67; com uma engine
+  # só, rode com --um-engine e a revisão registra "diversidade: nenhuma").
+  revisor1: ""
+  auditor: ""
+  # Pasta das revisões (diff, respostas, META.txt). Precisa estar ignorada pelo git (.gitignore ou
+  # .git/info/exclude): o script recusa gravar o diff numa pasta que iria para o repositório.
+  output_dir: sdd/reports/reviews
+  # Teto, em KB, do contexto SDD (BRAINSTORM, DEFINE, DESIGN, BUILD_REPORT) enviado junto do diff.
+  # Acima disso o BRAINSTORM sai primeiro. Inteiro > 0.
+  context_max_kb: 180
+  # Superfície de segurança do projeto, em globs separados por vírgula (ex.: "auth/**,api/public/**").
+  # Uma linha do File Manifest que casa um destes globs torna a revisão do DESIGN obrigatória
+  # (sdd/bin/sdd-fluxo.sh review-design) e, num diff que toca um caminho destes, aciona o 2º revisor da
+  # revisão adversarial (uma chamada de engine a mais, que pode ser paga). Vazio = só os termos fixos do script (auth, login, token,
+  # senha, password, jwt, GRANT, rota pública) e os globs de layers.sql.
+  security_globs: ""
+
+# Fluxo encadeado (sdd/templates/fragments/FLUXO_ENCADEADO.md). false = cada fase termina e mostra o
+# Próximo passo, como sempre. true = com o gate da fase verde, a fase seguinte começa na mesma sessão,
+# as perguntas [auto · de rotina] seguem a opção recomendada e vão para o recibo "Decidi sozinho"; as
+# marcadas D1 a D5 continuam perguntadas e a release nunca começa sozinha. Não liga nem desliga o jeito
+# de conversar das skills.
+flow:
+  autonomous: false
+
+# O piloto (skill sdd-drive; docs/sdd-drive.md). Quantas rodadas ele tem para ficar verde, por execução: 1 rodada é
+# construir o que falta e rodar o teste final. Inteiro >= 1; --max sobrepõe. Vazio = 3.
+drive:
+  max_rounds: 3
+
+# Preenchido pelo sdd-open (`init`): agentes para os quais os adaptadores são gerados.
+vendors: ""
+# Editor e pasta de worktrees são usados pela skill de nova sessão (sdd-new-session).
+editor: ""
+worktree_base: ""
+
+# Skill de engenharia de prompt usada pela fase Build quando o DESIGN inventaria prompts de
+# producao. Vem preenchida com a skill que acompanha o pacote; troque pelo nome da sua se
+# tiver outra. Vazio = a fase Build bloqueia o item de prompt e pede decisao, em vez de
+# improvisar o texto que vai para producao.
+prompts:
+  builder_skill: "sdd-prompt-builder"
+  # Se o projeto chama a IA por uma função própria, a expressão do parâmetro dela: o script
+  # sdd/bin/prompt-drift-scan.sh procura essa expressão seguida de texto fixo. Exemplos:
+  # "systemPrompt:" ou "callLLM\\(" (entre aspas duplas, a contrabarra vai dobrada). Vazio = a
+  # varredura vê só os sinais genéricos, e avisa disso.
+  wrapper_pattern: ""
+    if rc == 2:
+        if vermelhos(st) >= st["maximo"]:
+            parada(p, st, "orcamento-rodadas", "Rodadas vermelhas: %d de %d · log: %s" % (vermelhos(st), st["maximo"], log))
+        nome, detalhe = proxima(p, st)
+        if nome != "CORRIGIR":
+            detalhe = ("O teste final ficou vermelho e gastou 1 rodada (log: %s); há commit novo depois de quando ele começou." % log
+                       + ("\n" + detalhe if detalhe else ""))
+        acao(p, st, nome, detalhe)
+    if rc == 4:
+        parada(p, st, "manual-ux", "log: " + log)
+    if rc == 5:
+        parada(p, st, "clarificacao-pendente", "log: " + log)
+    if rc == 64:
+        parada(p, st, "define-invalido", "log: " + log)
+    parada(p, st, "gate-inconclusivo", "O teste final saiu %d · log: %s" % (rc, log))
+
+
+def cmd_concluir(args):
+    p = um_define("concluir", args)
+    st = carrega(p)
+    parada_guardada(p, st)
+    confere_gate(p, st)
+    barra_orcamento(p, st)
+    sujos = fora_dos_documentos(p)
+    if sujos:
+        acao(p, st, "COMMITAR", lista_sujos(sujos))
+    # concluir e proximo respondem a mesma coisa: tarefa reaberta, DESIGN sumido ou código novo não viram verde.
+    nome, detalhe = proxima(p, st)
+    if nome != "AVALIAR_E_RELATAR":
+        ult = ultimo_valido(p, st)
+        if nome == "VERIFICAR" and ult and ult["exit"] == 0:
+            detalhe = "Há código novo depois do último teste final verde (%s)." % ult["commit"][:12]
+        acao(p, st, nome, detalhe)
+    if not os.path.isfile(p.p(p.build_report)):
+        acao(p, st, "AVALIAR_E_RELATAR", "Falta %s." % p.build_report)
+    lint = os.path.join(BIN, "report-lint.py")
+    for extra in ([], ["--pendente"]):
+        r = roda([sys.executable, "-B", lint] + extra + [p.build_report], p.raiz)
+        if r.returncode != 0:
+            acao(p, st, "AVALIAR_E_RELATAR", "report-lint.py %ssaiu %d:\n%s" % (" ".join(extra) + " " if extra else "", r.returncode,
+                                                                                 (r.stdout + r.stderr).strip()[-1500:]))
+    parada(p, st, "gate-verde", "Rodadas vermelhas: %d de %d." % (vermelhos(st), st["maximo"]))
+
+
+def cmd_bloqueio(args):
+    if len(args) != 2 or not args[1].strip():
+        uso("bloqueio exige <DEFINE.md> \"<motivo>\"")
+    p = Projeto(args[0])
+    st = carrega(p)
+    parada(p, st, "bloqueio-humano", args[1].strip())
+
+
+def cmd_recibo(args):
+    if len(args) != 2 or not args[1].strip():
+        uso("recibo exige <DEFINE.md> \"<texto>\"")
+    p = Projeto(args[0])
+    st = carrega(p)
+    st["recibos"].append(" ".join(args[1].split()))
+    grava_estado(p, st)
+    relatorio(p, st, st.get("motivo") or "")
+    print("✅ anotado em %s (Decidi sozinho)." % p.relatorio)
+{
+ "versao": 2,
+ "feature": "DEMO",
+ "define": "sdd/features/DEFINE_DEMO.md",
+ "gate_sha": "da6828158bc0f4267980d71ba50e151408ae51d97151be131de396a278e14e10",
+ "gate_cmd": "python3 -B -c 'import soma; assert soma.soma(2, 3) == 5'",
+ "inicio": "6f1948cd0c3d73982c819a24e6884a038257157a",
+ "maximo": 3,
+ "gate_linhas": [
+  "kind:       test",
+  "cmd:        python3 -B -c 'import soma; assert soma.soma(2, 3) == 5'",
+  "pass_when:  exit 0",
+  "threshold:  —",
+  "manual_fallback: —"
+ ],
+ "gates": [
+  {
+   "n": 1,
+   "rodada": 1,
+   "commit": "516848cc2425d4a77cb2c74bf01bd29feeb411d3",
+   "exit": 0,
+   "log": "sdd/reports/evidence/DEMO/DRIVE-gate-r1.log",
+   "impressao": "da6828158bc0f4267980d71ba50e151408ae51d97151be131de396a278e14e10"
+  }
+ ],
+ "trocas_gate": [],
+ "recibos": [],
+ "repeticao": {
+  "chave": "AVALIAR_E_RELATAR||516848cc2425d4a77cb2c74bf01bd29feeb411d3|bae08d0718d4edc663c8619d5345bbc66140e1354f3e79498511804a8959236f",
+  "n": 1
+ },
+ "motivo": "",
+ "detalhe": "",
+ "parada_gate": "",
+ "avisou_paradas": true
+}
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/DEMO/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+6:  - `sdd/reports/evidence/{FEATURE}/AT-nnn.log` — 1ª linha `$ <comando>`, output verbatim, não vazio
+8:  - `recibo: <nome> YYYY-MM-DD` — só quando o Verify Gate do DEFINE é kind=manual-ux
+18:E a tabela de critérios tem de ser reconhecida (colunas Resultado/Status/Passou/Result e Evidência).
+41:AT_ROW_RE = re.compile(r"^\|\s*(AT-\d+[A-Za-z0-9_-]*)\s*(?<!\\)\|")
+473:    if not (line.startswith("|") and "Evid" in line and ("Result" in line or "Status" in line or "Passou" in line)):
+488:        if line.startswith("|") and ("Evid" in line) and ("Result" in line or "Status" in line or "Passou" in line):
+506:        violations.append((TABELA, "nenhuma tabela de critérios reconhecida (uma coluna Resultado, Status, Passou ou "
+537:    return (f"produza `evidence/{feature}/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite "
+
+codex
+**Status** — Drive: ✅ 1 Conferir · ✅ 2 Desenhar · ✅ 3 Construir · ✅ 4 Teste final · ▶️ 5 Relatório
+
+O teste final passou na primeira rodada: `soma(2, 3)` retornou `5`. Vou gravar o relatório com a evidência e a dispensa do avaliador, validar o documento e pedir ao script que conclua a execução.
+exec
+/bin/zsh -lc "cat sdd/templates/BUILD_REPORT_TEMPLATE.md; sed -n '1,105p' sdd/bin/report-lint.py; sed -n '480,535p' sdd/bin/report-lint.py; cat sdd/reports/evidence/DEMO/DRIVE-gate-r1.log; git log -2 --oneline; bash sdd/bin/playbook-lint.sh --grep 'soma.py' sdd/playbook.md" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ exited 1 in 0ms:
+# BUILD REPORT: {Feature Name}
+
+> Implementation report for {Feature Name}
+
+## Metadata
+
+| Attribute | Value |
+|-----------|-------|
+| **Feature** | {FEATURE_NAME} |
+| **Date** | {YYYY-MM-DD} |
+| **Author** | build-agent |
+| **DEFINE** | [DEFINE_{FEATURE}.md](../features/DEFINE_{FEATURE}.md) |
+| **DESIGN** | [DESIGN_{FEATURE}.md](../features/DESIGN_{FEATURE}.md) |
+| **Status** | In Progress / Complete / Blocked |
+
+---
+
+## Summary
+
+| Metric | Value |
+|--------|-------|
+| **Tasks Completed** | {X}/{Y} |
+| **Files Created** | {N} |
+| **Lines of Code** | {N} |
+| **Build Time** | {Duration} |
+| **Tests Passing** | {X}/{Y} |
+| **Agents Used** | {N} |
+
+---
+
+## Landmines lidas no build
+
+> fase Build: `sdd/bin/playbook-lint.sh --grep "<superfície>" sdd/playbook.md` por item do
+> File Manifest (tabela/RPC, slug de edge, basename, cron, conceito). **Só IDs + 1 linha** — nunca colar
+> blocos (orçamento de contexto). O Curator (fase Release) converte `✔ tratado` em
+> `ajudou`. Seção **obrigatória**: zero hits ⇒ `varredura rodada em {YYYY-MM-DD}, 0 aplicáveis`.
+> O valor está nos hits que o DESIGN **não** listou em `## Landmines aplicáveis`.
+
+| Superfície | LM-nnn | Veredito | Como / onde |
+|------------|--------|----------|-------------|
+| `{tabela \| edge \| arquivo}` | LM-{nnn} | ✔ tratado \| N.A. | {arquivo do manifest / decisão que trata · ou por que não se aplica} |
+
+---
+
+## Candidatos ao playbook
+
+> Contrato: `.agents/skills/sdd-playbook/SKILL.md` § Candidato. O Curator só lê blocos literais; sem
+> `evidencia:` o candidato sai **REJEITADO**. Nenhum candidato ⇒ escrever "nenhum candidato nesta build".
+
+```text
+<<<CANDIDATO_PLAYBOOK
+secao: {uma das 8 seções, ≠ Tombstones}
+sup: `{termo}` `{termo}`
+regra: {regra em 1–3 linhas}. **Do instead:** {ação concreta}.
+evidencia: {path do log/AT/incidente que prova que mordeu, ou DESIGN onde ajudou}
+ficha: {feedback_x | —}
+mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
+>>>
+```
+
+---
+
+## Task Execution with Agent Attribution
+
+| # | Task | Agent | Status | Duration | Notes |
+|---|------|-------|--------|----------|-------|
+| 1 | {Task description} | @{agent-name} | ✅ Complete | {Xm} | {Any notes} |
+| 2 | {Task description} | @{agent-name} | ✅ Complete | {Xm} | {Any notes} |
+| 3 | {Task description} | (direct) | 🔄 In Progress | - | {No specialist matched} |
+| 4 | {Task description} | @{agent-name} | ⏳ Pending | - | - |
+
+**Legend:** ✅ Complete | 🔄 In Progress | ⏳ Pending | ❌ Blocked
+
+**Agent Key:**
+- `@{agent-name}` = Delegated to a specialist agent
+- `(direct)` = Built directly by build-agent (no specialist matched)
+
+---
+
+## Agent Contributions
+
+| Agent | Files | Specialization Applied |
+|-------|-------|------------------------|
+| @{agent-1} | {N} | {What patterns/KB used} |
+| @{agent-2} | {N} | {What patterns/KB used} |
+| (direct) | {N} | DESIGN patterns only |
+
+---
+
+## Files Created
+
+| File | Lines | Agent | Verified | Notes |
+| ---- | ----- | ----- | -------- | ----- |
+| `{path/to/file1.py}` | {N} | @{agent-name} | ✅ | {Any notes} |
+| `{path/to/file2.py}` | {N} | @{agent-name} | ✅ | {Any notes} |
+| `{path/to/config.yaml}` | {N} | (direct) | ✅ | {Any notes} |
+
+---
+
+## Migrations aplicadas (condicional — só se Files Created lista migration)
+
+> Obrigatória quando a tabela acima lista `*.sql`, um caminho com `migrations/` ou algo que casa
+> com `layers.sql` do `sdd/config.yaml`: o `sdd/bin/report-lint.py` reprova sem ela. Uma linha por
+> migration, com o **mesmo caminho** da tabela acima. Procedimento:
+> `.agents/skills/sdd-build/references/aplicar-migration.md`. `exit 0` não prova: a prova é ler de
+> volta do banco (`migration list` + `select`), capturada em `evidence/{FEATURE}/MIG-nnn.log`, ou
+> `recibo: nome AAAA-MM-DD` quando o aluno rodou o `select` no SQL Editor. Sem migration, apague a seção.
+
+| Arquivo | Projeto (nome · ref) | Aplicada em | Prova por leitura |
+|---|---|---|---|
+| `{supabase/migrations/AAAAMMDDHHMMSS_nome.sql}` | {Nome do projeto} · `{ref}` | {AAAA-MM-DD HH:MM (cli \| mcp \| manual) ou "já aplicada em AAAA-MM-DD"} | `evidence/{FEATURE}/MIG-001.log` (migration list: Remote ✓ · select: coluna ✓) |
+
+---
+
+## Verification Results
+
+### Lint Check (ruff)
+
+```text
+{Output from ruff check or "All checks passed"}
+```
+
+**Status:** ✅ Pass / ❌ Fail
+
+### Type Check (mypy)
+
+```text
+{Output from mypy or "All checks passed" or "N/A - not configured"}
+```
+
+**Status:** ✅ Pass / ❌ Fail / ⏭️ Skipped
+
+### Tests (pytest)
+
+```text
+{Output from pytest or summary}
+```
+
+| Test | Result |
+|------|--------|
+| `test_function_1` | ✅ Pass |
+| `test_function_2` | ✅ Pass |
+| `test_integration` | ✅ Pass |
+
+**Status:** ✅ {X}/{Y} Pass | ❌ {N} Fail
+
+---
+
+## Advisor Ledger (condicional — só se houve review de 2º vendor)
+
+> Contrato: `fragments/ADVISOR_CONSULT.md`. Toda nota recebe **um dos três vereditos**, por
+> escrito — nunca descartada em silêncio. Se não houve consulta, remover esta seção.
+>
+> **Ônus de prova simétrico:** acusar exige `arquivo:linha`, **rebater também**.
+> `REBATIDA_EVIDENCIA` sem citação que contradiga é proibido — vira `REBATIDA_ESCOPO`
+> (backlog) ou `APLICADA`. É o Caso B do paper arXiv:2608.18167 (crítico cede a rebatida
+> fraca, bug some).
+
+**Consulta:** {tipo: plan-review | delivery-review | conflito | judgment call} · {data} · {ferramenta: sdd/bin/adversarial-review.sh (pasta em review.output_dir) | sessão nova do agente | …}
+**VERDICT do advisor:** {1 linha, verbatim}
+**Proveniência:** {engines efetivos por papel; se houve fallback, declarar aqui — troca silenciosa é falso-verde}
+
+| # | Nota | Severidade | Veredito | Evidência |
+|---|------|-----------|----------|-----------|
+| 1 | {resumo 1 linha} | HIGH | APLICADA | commit `{sha}` |
+| 2 | {resumo 1 linha} | MED | REBATIDA_EVIDENCIA | `arquivo:linha` que contradiz |
+| 3 | {resumo 1 linha} | LOW | REBATIDA_ESCOPO | fora do slice; backlog em {onde} |
+
+---
+
+## Issues Encountered
+
+| # | Issue | Resolution | Time Impact |
+|---|-------|------------|-------------|
+| 1 | {Description of issue} | {How it was resolved} | {+Xm} |
+| 2 | {Description of issue} | {How it was resolved} | {+Xm} |
+
+---
+
+## Deviations from Design
+
+| Deviation | Reason | Impact |
+|-----------|--------|--------|
+| {What changed from DESIGN} | {Why it changed} | {Effect on system} |
+
+---
+
+## Blockers (if any)
+
+| Blocker | Required Action | Owner |
+|---------|-----------------|-------|
+| {Description} | {What needs to happen} | {Who can unblock} |
+
+---
+
+## Contrato de aceite (C2) e avaliador de contexto fresco (C1)
+
+> Gate de ativação: o File Manifest toca **≥ N camadas** de `layers:` do `sdd/config.yaml`
+> (N = `evidence.require_avaliacao_layers`, default 2). Abaixo disso → as duas linhas abaixo recebem
+> `N.A. (1 camada)`. Build travado antes do avaliador → `PENDENTE (<motivo>)`: o relatório pode ser
+> gravado, mas a fase Release não sai enquanto a linha existir.
+
+**Camadas do manifest:** {n} ({lista})
+**Contrato de aceite (passo 1.5 da `sdd-build`):** {n propostas / n aceitas — seção `## Contrato de aceite` do DESIGN} | já negociado em {data} | N.A. (1 camada)
+**Veredito do avaliador (C1):** {PASS | NEEDS_WORK | N.A. (1 camada) | PENDENTE (motivo)} · ciclos: {n} · achados: {n} · `AVALIACAO_{FEATURE}_{YYYYMMDD-HHMM}.md`
+
+> O `sdd/bin/report-lint.py` nega `PASS`/`NEEDS_WORK` sem o `AVALIACAO_*.md` existente (e não
+> ignorado pelo git) em `sdd/reviews/`, e reprova o relatório sem nenhuma das 3 formas — avaliação
+> ausente (`sdd/templates/fragments/EVIDENCIA.md`, "A linha do avaliador"). A contagem de achados mede a calibração do avaliador
+> (`.agents/skills/sdd-build/references/contexto-fresco.md`).
+
+---
+
+## Acceptance Test Verification
+
+> **Default-FAIL (D1):** todo AT **nasce `false`**. `true` exige evidência que o
+> `sdd/bin/report-lint.py` consegue abrir — contrato em
+> [`fragments/EVIDENCIA.md`](fragments/EVIDENCIA.md). Formas aceitas: `` `evidence/{FEATURE}/AT-nnn.log` ``
+> (1ª linha `$ cmd`, output verbatim) · `` `AVALIACAO_{FEATURE}_{ts}.md` `` (provado pelo
+> avaliador) · `recibo: {nome} {YYYY-MM-DD}` (gate `manual-ux`). "Por raciocínio" é negado.
+
+| ID | Critério (EARS, verbatim do DEFINE) | Resultado | Evidência |
+|----|-------------------------------------|-----------|-----------|
+| AT-001 | {When …, the system shall …} | false | — |
+| AT-002 | {If …, then the system shall …} | false | — |
+| AT-003 | {While …, the system shall …} | false | — |
+
+**Verify Gate (`sdd/bin/verify-gate.sh <DEFINE>`):** exit {n} · `evidence/{FEATURE}/GATE.log`
+
+---
+
+## Performance Notes
+
+| Metric | Expected | Actual | Status |
+|--------|----------|--------|--------|
+| {Metric 1} | {From DEFINE} | {Measured} | ✅ / ❌ |
+| {Metric 2} | {From DEFINE} | {Measured} | ✅ / ❌ |
+
+---
+
+## Final Status
+
+### Overall: {✅ COMPLETE / 🔄 IN PROGRESS / ❌ BLOCKED}
+
+**Completion Checklist:**
+
+- [ ] All tasks from manifest completed
+- [ ] All verification checks pass
+- [ ] All tests pass
+- [ ] No blocking issues
+- [ ] Acceptance tests verified — todo `true` com evidência lida (nenhum "por raciocínio")
+- [ ] Avaliador de contexto fresco: PASS (ou N.A. 1 camada) com `AVALIACAO_*.md` persistido
+- [ ] Ready for /release
+
+---
+
+## Next Step
+
+**If Complete:** `/release <descrição do que liberar>`
+
+**If Blocked:** Resolve blockers, then `/build` to resume
+
+**If Issues Found:** `/iterate DESIGN_{FEATURE}.md "{change needed}"`
+#!/usr/bin/env python3
+"""report-lint.py — contrato de evidência do BUILD_REPORT (default-FAIL, fail-closed).
+
+Um critério de aceite só pode estar `true` no BUILD_REPORT se a célula de evidência apontar
+para algo que este script consegue ABRIR e conferir:
+  - `sdd/reports/evidence/{FEATURE}/AT-nnn.log` — 1ª linha `$ <comando>`, output verbatim, não vazio
+  - `AVALIACAO_{FEATURE}_<ts>.md` em sdd/reviews/ — veredito de avaliador em contexto fresco
+  - `recibo: <nome> YYYY-MM-DD` — só quando o Verify Gate do DEFINE é kind=manual-ux
+"✅ por raciocínio", "deve funcionar", "provavelmente" são NEGADOS: declaração não é prova.
+Evidência que existe no disco mas o git IGNORA não vai para o commit: também é negada.
+
+O relatório precisa provar a AVALIAÇÃO, não só citá-la quando aparece (ausência reprova):
+  - `AVALIACAO_{FEATURE}_<AAAAMMDD>….md` não vazio e não ignorado em sdd/reviews/; ou
+  - `avaliador: N.A. (<motivo>)` — negado quando o File Manifest do DESIGN toca ≥ N camadas de
+    `layers:` (N = `evidence.require_avaliacao_layers` do sdd/config.yaml, default 2); ou
+  - `avaliador: PENDENTE (<motivo>)` — o build travou antes do avaliador; passa aqui com aviso,
+    e a fase Release aborta (`--pendente`).
+E a tabela de critérios tem de ser reconhecida (colunas Resultado/Status/Passou/Result e Evidência).
+
+Migration listada nos arquivos do relatório (`*.sql`, pasta `migrations/` ou o glob de `layers.sql` do
+sdd/config.yaml) exige a linha dela em `## Migrations aplicadas`: mesmo caminho, projeto `nome · ref`,
+data AAAA-MM-DD e prova por leitura — log de evidence/{FEATURE}/ ou `recibo: nome AAAA-MM-DD`.
+"exit 0" não prova migration: só ler de volta do banco prova.
+
+Só stdlib. Uso:
+    python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md     # exit 0 ok · 1 violações · 64 uso
+    python3 sdd/bin/report-lint.py --stdin sdd/reports/BUILD_REPORT_{FEATURE}.md < conteudo.md
+    python3 sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_{FEATURE}.md …   # 1 se há PENDENTE
+
+A fase Build roda isto antes de declarar sucesso; a fase Release roda os dois primeiros modos.
+Contrato completo: sdd/templates/fragments/EVIDENCIA.md
+"""
+import fnmatch
+import glob
+import os
+import re
+import subprocess
+import sys
+
+REPORT_RE = re.compile(r"^BUILD_REPORT_(.+)\.md$")
+AT_ROW_RE = re.compile(r"^\|\s*(AT-\d+[A-Za-z0-9_-]*)\s*(?<!\\)\|")
+TRUE_RE = re.compile(r"^\s*(?:true\b|✅|pass(?:ed)?\b|verde\b)", re.IGNORECASE)
+RECIBO_RE = re.compile(r"recibo:\s*\S+.*\b\d{4}-\d{2}-\d{2}\b", re.IGNORECASE)
+FAKE_RE = re.compile(
+    r"por racioc[ií]nio|by reasoning|by inspection|deve funcionar|provavelmente|should work",
+    re.IGNORECASE,
+)
+PATH_RE = re.compile(r"`([^`]+\.(?:log|txt|md))`")
+# Veredito em qualquer forma: inline `**Veredito do avaliador (C1):** PASS`, título `## Veredito do
+# avaliador (C1)` + parágrafo seguinte, ou tabela `| **Veredito do avaliador (C1)** | PASS |`. O valor é
+# o 1º token de veredito depois do rótulo, no mesmo parágrafo ou no seguinte (quando o rótulo é título); numa
+# tabela, só a linha do rótulo. Também valem `Veredito do avaliador:` e `## Veredito do avaliador` sem (C1).
+VERDICT_LABEL_RE = re.compile(
+    r"Veredito do avaliador \(C1\)|\*\*Veredito do avaliador:\*\*|\*\*Veredito do avaliador\*\*"
+    r"|^#{1,6}[ \t]+Veredito do avaliador\b|^[ \t>*_-]*Veredito do avaliador:|\|[ \t]*Veredito do avaliador\b",
+    re.IGNORECASE | re.MULTILINE,
+)
+VERDICT_VALUE_RE = re.compile(r"\b(PASS_PENDENTE_RECIBO|PENDENTE|PASS|NEEDS_WORK|N\.?A\.?)\b", re.IGNORECASE)
+# Declaração sobre o avaliador, em linha própria; o tipo em CAIXA ALTA, para que "avaliador na rodada 1"
+# não vire N.A. nem "avaliador pendente de recibo" vire PENDENTE.
+DECL_RE = re.compile(
+    r"^[ \t>*_|-]*(?:Veredito do )?avaliador(?: \(C1\))?[ \t*:|]*"
+    r"(?P<tipo>(?-i:N\.A\.?|NA|PENDENTE))(?![A-Za-z_])[ \t*]*(?:\((?P<motivo>[^)\n]*)\))?",
+    re.IGNORECASE | re.MULTILINE,
+)
+MANIFEST_RE = re.compile(
+    r"^##[ \t]+(?:\d+(?:\.\d+)*\.?[ \t]+)?File Manifest\b[^\n]*\n(.*?)(?=^## |\Z)",
+    re.MULTILINE | re.DOTALL | re.IGNORECASE,
+)
+PARAGRAPH_END_RE = re.compile(r"\n[ \t]*\n")
+FENCE_RE = re.compile(r"^[ \t]*(```|~~~)")
+SPLIT_RE = re.compile(r"(?<!\\)\|")
+# "## Files Created", "## 2. Arquivos criados", "## Fase A — Files Created/Modified", "## … Manifest …"
+FILES_SEC_RE = re.compile(r"^##\s+(?:[\d.]+\s+|.*?[—–]\s*)?(?:files\b|arquivos\b)|^##\s+.*manifest", re.IGNORECASE)
+MIG_SEC_RE = re.compile(r"^##\s+migrations aplicadas\b", re.IGNORECASE)
+TICK_RE = re.compile(r"`([^`]+)`")
+DELETE_CELLS = {"delete", "deleted", "removido", "removida", "excluído", "excluido", "excluída", "excluida"}
+EXIT0_RE = re.compile(r"\bexit\s*(?:code\s*)?0\b", re.IGNORECASE)
+DATA_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
+
+FEATURES_DIR = "sdd/features"
+REVIEWS_DIR = "sdd/reviews"
+REPORTS_DIR = "sdd/reports"
+CAMADAS_DEFAULT = 2
+
+# Classes de violação: cada uma tem a sua linha `→` no fim da saída.
+TABELA = "tabela"
+EVIDENCIA = "evidência"
+AUSENTE = "avaliação ausente"
+DECLARACAO = "declaração"
+MIGRATION = "migration"
+IGNORADO_MSG = ("existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — "
+                "remova a regra ou use `git add -f`")
+
+
+def split_row(line):
+    return [c.strip() for c in SPLIT_RE.split(line.strip().strip("|"))]
+
+
+def define_gate_kind(root, feature):
+    cands = glob.glob(os.path.join(root, FEATURES_DIR, f"DEFINE_{feature}.md"))
+    if not cands:
+        base = re.sub(r"_S\d+[A-Za-z]?$", "", feature)
+        cands = glob.glob(os.path.join(root, FEATURES_DIR, f"DEFINE_{base}*.md"))
+    for c in cands:
+
+
+def check(content, root, report_dir, feature):
+    violations, warnings = [], []
+    gate_kind = define_gate_kind(root, feature)
+    header, achou_tabela = None, False
+    for raw in content.splitlines():
+        line = raw.strip()
+        if line.startswith("|") and ("Evid" in line) and ("Result" in line or "Status" in line or "Passou" in line):
+            header = tabela_reconhecida(line)
+            achou_tabela = achou_tabela or header is not None
+            continue
+        m = AT_ROW_RE.match(line)
+        if not m or not header:
+            continue
+        cells = split_row(line)
+        if len(cells) < max(header["result"], header["evid"]):
+            continue
+        result = cells[len(cells) - header["result"]]
+        evid = cells[len(cells) - header["evid"]]
+        if not TRUE_RE.match(result):
+            continue
+        ok, why = evidence_ok(evid, root, report_dir, feature, gate_kind, warnings)
+        if not ok:
+            violations.append((EVIDENCIA, f"{m.group(1)}: `{result}` sem evidência válida — {why}"))
+    if not achou_tabela:
+        violations.append((TABELA, "nenhuma tabela de critérios reconhecida (uma coluna Resultado, Status, Passou ou "
+                                   "Result e uma coluna Evidência): sem ela, nenhum critério é conferido"))
+
+    for verdict, scope in verdicts_in(strip_fences(content)):
+        if verdict.replace(".", "") in ("NA", "PENDENTE"):
+            continue  # declarações: quem confere é existencia_avaliacao()
+        refs = [p for p in PATH_RE.findall(scope) if os.path.basename(p).startswith(f"AVALIACAO_{feature}_")]
+        found = [c for p in refs
+                 for c in (os.path.join(root, p), os.path.join(root, REVIEWS_DIR, os.path.basename(p)))
+                 if os.path.isfile(c)]
+        if not found:
+            violations.append((EVIDENCIA, f"Veredito do avaliador `{verdict}` sem `AVALIACAO_{feature}_*.md` existente em "
+                                          f"{REVIEWS_DIR}/ (no mesmo parágrafo do veredito)"))
+        elif all(git_ignorado(root, c, warnings) for c in found):
+            violations.append((EVIDENCIA, f"Veredito do avaliador `{verdict}`: `{os.path.basename(found[0])}` {IGNORADO_MSG}"))
+    violations += existencia_avaliacao(content, root, feature, warnings)
+    violations += [(MIGRATION, v) for v in check_migrations(content, root, report_dir, feature)]
+    return violations, warnings
+
+
+def conserto(classe, feature):
+    if classe == TABELA:
+        return "use a tabela do template: `| ID | Critério | Resultado | Evidência |`."
+    if classe == AUSENTE:
+        return (f"rode o avaliador e grave `{REVIEWS_DIR}/AVALIACAO_{feature}_<AAAAMMDD-HHMM>.md`, ou escreva a linha "
+                "`avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.")
+    if classe == DECLARACAO:
+        return "escreva `avaliador: N.A. (<motivo>)` só com menos camadas que o limite; senão rode o avaliador ou use `PENDENTE (<motivo>)`."
+    if classe == MIGRATION:
+        return ("migration: aplique e leia de volta (.agents/skills/sdd-build/references/aplicar-migration.md) e registre "
+$ verify-gate.sh sdd/features/DEFINE_DEMO.md
+▶ Verify Gate [test]: python3 -B -c 'import soma; assert soma.soma(2, 3) == 5'
+   │ 
+✅ GATE VERDE (test) — pass_when: 'exit 0' satisfeito (rc=0).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+516848c feat: implementa soma de dois números
+6f1948c base
+0 bullets para "soma.py" em sdd/playbook.md (modo sup)
+
+exec
+/bin/zsh -lc "sed -n '180,255p' sdd/bin/report-lint.py" in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ succeeded in 0ms:
+    norm = p.replace("\\", "/")
+    if f"evidence/{feature}/" not in norm or not norm.endswith((".log", ".txt")):
+        return f"`{p}` fora de evidence/{feature}/*.log — só evidência da própria feature vale"
+    found = caminho_do_log(p, root, report_dir)
+    if not found:
+        return f"`{p}` não existe"
+    if os.path.getsize(found) == 0:
+        return f"`{p}` está vazio"
+    first = open(found, encoding="utf-8", errors="replace").readline()
+    if not first.startswith("$ "):
+        return f"`{p}` sem a 1ª linha `$ <comando>` (não é output capturado)"
+    return None
+
+
+def ler_mapa(root, mapa):
+    """{chave: valor} do mapa de 1 nível `mapa:` do sdd/config.yaml ({} se config ausente)."""
+    try:
+        linhas = open(os.path.join(root, "sdd", "config.yaml"), encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return {}
+    dentro, valores = False, {}
+    for linha in linhas:
+        if re.match(r"^\S", linha):
+            dentro = linha.split("#", 1)[0].strip() == mapa + ":"
+            continue
+        m = re.match(r"^\s+([A-Za-z0-9_-]+):\s*(.*)$", linha) if dentro else None
+        if m and m.group(1) not in valores:
+            v = m.group(2).strip()
+            if v[:1] in "\"'":
+                v = v[1:].split(v[0], 1)[0].strip()
+            else:
+                v = v.split("#", 1)[0].strip()
+            valores[m.group(1)] = v
+    return valores
+
+
+def ler_layers_sql(root):
+    """Valor de `layers: sql:` do sdd/config.yaml, ou "" (config ausente ou slot vazio)."""
+    return ler_mapa(root, "layers").get("sql", "")
+
+
+def limite_camadas(root, warnings):
+    """N de `evidence.require_avaliacao_layers` (default 2; valor inválido → 2 com aviso)."""
+    v = ler_mapa(root, "evidence").get("require_avaliacao_layers", "")
+    if v == "":
+        return CAMADAS_DEFAULT
+    if re.fullmatch(r"[1-9]\d*", v):
+        return int(v)
+    warnings.append(f"`evidence.require_avaliacao_layers: {v}` não é inteiro ≥ 1 — usei {CAMADAS_DEFAULT}")
+    return CAMADAS_DEFAULT
+
+
+def e_migration(caminho, layers_sql):
+    if caminho.endswith("/"):
+        return False
+    if caminho.endswith(".sql") or re.search(r"(?:^|/)migrations/", caminho):
+        return True
+    return bool(layers_sql) and fnmatch.fnmatchcase(caminho, layers_sql)
+
+
+def secoes(content, titulo_re):
+    """Linhas de cada seção `## ` cujo título casa titulo_re (até o próximo `## `)."""
+    todas, atual = [], None
+    for raw in content.splitlines():
+        if raw.startswith("## "):
+            atual = [] if titulo_re.match(raw) else None
+            if atual is not None:
+                todas.append(atual)
+            continue
+        if atual is not None:
+            atual.append(raw.strip())
+    return todas
+
+
+def linhas_de_tabela(linhas):
+    return [split_row(l) for l in linhas if l.startswith("|") and not re.match(r"^\|[\s:|-]+\|?$", l)]
+
+apply patch
+patch: completed
+/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p/sdd/reports/BUILD_REPORT_DEMO.md
+diff --git a/sdd/reports/BUILD_REPORT_DEMO.md b/sdd/reports/BUILD_REPORT_DEMO.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d930cb954bd8d5aebf8954b7b8d09c08e399071
+--- /dev/null
++++ b/sdd/reports/BUILD_REPORT_DEMO.md
+@@ -0,0 +1,72 @@
++# BUILD REPORT: DEMO
++
++## Metadata
++
++| Attribute | Value |
++|---|---|
++| Feature | DEMO |
++| Date | 2026-11-06 |
++| DEFINE | [DEFINE_DEMO.md](../features/DEFINE_DEMO.md) |
++| DESIGN | [DESIGN_DEMO.md](../features/DESIGN_DEMO.md) |
++| Status | Complete |
++
++## Summary
++
++Uma tarefa de uma concluída. `soma(a, b)` retorna `a + b`.
++Código já presente no commit `516848cc2425d4a77cb2c74bf01bd29feeb411d3` ao retomar esta sessão.
++O script do drive executou o teste final na rodada 1 e registrou exit 0.
++
++## Seleção de modo
++
++Retomada do sdd-drive em sessão nova, sem subagente nem colaborador, conforme pedido explícito.
++Nenhuma delegação realizada nesta sessão.
++
++## Files Created
++
++| File | Lines | Agent | Verified | Notes |
++|---|---|---|---|---|
++| `soma.py` | 2 | executor da sessão anterior | sim | implementação existente, conferida pelo teste final |
++
++## Contrato de aceite
++
++N.A. — demonstração de uma função, sem camadas; limite configurado do avaliador: 2 camadas.
++O DEFINE não enumera ATs; a linha abaixo identifica o critério executável do Verify Gate,
++sem acrescentar requisito ao DEFINE.
++
++## Acceptance Test Verification
++
++| ID | Critério | Resultado | Evidência |
++|---|---|---|---|
++| AT-001 | `assert soma.soma(2, 3) == 5` | true | `evidence/DEMO/DRIVE-gate-r1.log` |
++
++## Verify Gate
++
++Exit 0, rodada 1, executado pelo script sdd-drive, sem alteração do comando aprovado.
++Evidência: [DRIVE-gate-r1.log](evidence/DEMO/DRIVE-gate-r1.log).
++Teste, tipos e lint adicionais do projeto foram pulados: os três comandos estão vazios no config.
++O resultado cobre a asserção do DEFINE; não há comprovação de outros casos neste gate.
++
++## Veredito do avaliador
++
++avaliador: N.A. (demonstração de uma função, sem camadas)
++
++Dispensa expressamente definida pelo usuário nesta sessão. Nenhuma avaliação independente realizada.
++Revisão externa não realizada: esta execução não dispõe de subagente nem colaborador.
++
++## Landmines lidas no build
++
++Varredura rodada em 2026-11-06 para `soma.py`: 0 aplicáveis.
++Seção Sempre lida na retomada; nenhuma alteração no código nem no teste final nesta sessão.
++
++## Candidatos ao playbook
++
++Nenhum candidato nesta build.
++
++## Drift detectado
++
++Nenhum: função e assinatura correspondem ao manifest; nenhum prompt de produção.
++
++## Final Status
++
++Complete — tarefa concluída, teste final verde, sem bloqueadores de construção.
++Nada foi publicado. Publicação depende de pedido da pessoa pela sdd-release.
+
+exec
+/bin/zsh -lc 'python3 -B sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_DEMO.md' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ succeeded in 0ms:
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_DEMO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+exec
+/bin/zsh -lc 'bash sdd/bin/sdd-drive.sh concluir sdd/features/DEFINE_DEMO.md' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ succeeded in 577ms:
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+
+exec
+/bin/zsh -lc 'cat sdd/reports/DRIVE_REPORT_DEMO.md; git status --short; git branch --show-current' in /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.T1eYXaGbZ6/p
+ succeeded in 0ms:
+# DRIVE_REPORT: DEMO
+
+O teste final passou e os relatórios estão prontos. Nada foi publicado. Rodadas vermelhas: 0 de 3.
+
+| Campo | Valor |
+|---|---|
+| Motivo | gate-verde |
+| DEFINE | `sdd/features/DEFINE_DEMO.md` |
+| Commit inicial | `6f1948cd0c3d` |
+| Teste final | `python3 -B -c 'import soma; assert soma.soma(2, 3) == 5'` |
+
+Rodadas vermelhas: 0 de 3.
+
+## Testes finais
+
+| # | Rodada | Commit | Exit | Log |
+|---|---|---|---|---|
+| 1 | 1 | `516848cc2425` | 0 | `sdd/reports/evidence/DEMO/DRIVE-gate-r1.log` |
+
+## Commits desde o início
+
+- 516848c feat: implementa soma de dois números
+
+## Teste final alterado
+
+Nenhuma troca.
+
+## Decidi sozinho
+
+Nada.
+
+Nada foi publicado: publicar é decisão da pessoa, pela sdd-release.
+?? sdd/reports/
+?? sdd/traces/
+frente
+
+codex
+**Status** — Drive: ✅ 1 Conferir · ✅ 2 Desenhar · ✅ 3 Construir · ✅ 4 Teste final · ✅ 5 Relatório
+
+O teste final passou na primeira rodada, com zero rodadas vermelhas. O relatório passou na validação e contém exatamente a dispensa do avaliador solicitada. Nenhum subagente foi usado.
+
+[BUILD_REPORT](sdd/reports/BUILD_REPORT_DEMO.md) · [DRIVE_REPORT](sdd/reports/DRIVE_REPORT_DEMO.md)
+
+📍 Linha de produção — DEMO
+
+✅ /sdd-define · ✅ /sdd-design · ✅ /sdd-build · 🏃 /sdd-drive · ⬜ /sdd-release
+
+**Onde estamos:** execução concluída pelo script. Relatórios gravados, ainda sem commit. Nada foi publicado.
+
+**O que vem depois:** quando quiser publicar, peça `/sdd-release DEMO`.
+tokens used
+58.020
+**Status** — Drive: ✅ 1 Conferir · ✅ 2 Desenhar · ✅ 3 Construir · ✅ 4 Teste final · ✅ 5 Relatório
+
+O teste final passou na primeira rodada, com zero rodadas vermelhas. O relatório passou na validação e contém exatamente a dispensa do avaliador solicitada. Nenhum subagente foi usado.
+
+[BUILD_REPORT](sdd/reports/BUILD_REPORT_DEMO.md) · [DRIVE_REPORT](sdd/reports/DRIVE_REPORT_DEMO.md)
+
+📍 Linha de produção — DEMO
+
+✅ /sdd-define · ✅ /sdd-design · ✅ /sdd-build · 🏃 /sdd-drive · ⬜ /sdd-release
+
+**Onde estamos:** execução concluída pelo script. Relatórios gravados, ainda sem commit. Nada foi publicado.
+
+**O que vem depois:** quando quiser publicar, peça `/sdd-release DEMO`.
+[exit=0]

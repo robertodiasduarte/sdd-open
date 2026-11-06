@@ -1,0 +1,104 @@
+$ git rev-parse HEAD
+ff5c53940427480959bdc4b48bc31f5834be8995
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F14_DRIVE --revisor2 openrouter:deepseek/deepseek-v4-pro
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: openrouter:deepseek/deepseek-v4-pro (deepseek/deepseek-v4-pro) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+▶ desempate: codex (-) — até 15 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261105-200215
+diff_sha256: fc7b55c16a6c2b0298156e1609f90c7be186a7faf2ec9a2398744819dc84dac9
+revisor: claude (claude-opus-5-5) — US$ 3,0360
+2º revisor: openrouter:deepseek/deepseek-v4-pro (deepseek/deepseek-v4-pro via Novita) — US$ 0,3214
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0627
+desempate: codex (-) — incluído na assinatura
+diversidade: vendor
+achados: 1 grave, 7 médios, 4 leves
+custo total: US$ 3,4201
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261105-200215 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261105-200215/META.txt
+worktree                 : /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
+branch                   : feat/f14-drive
+protocolo                : cadeia REVISOR → AUDITOR; paralelo não existe
+base                     : origin/main
+merge_base               : 8a320e9d27d4471f5352e3861a277865ded2d1ed
+head                     : ff5c53940427480959bdc4b48bc31f5834be8995
+paths                    : -
+diff_sha256              : fc7b55c16a6c2b0298156e1609f90c7be186a7faf2ec9a2398744819dc84dac9
+diff                     : 301KB (44 arquivo(s))
+contexto                 : 98KB (4 doc SDD)
+docs_sdd                 : BRAINSTORM_F14_DRIVE.md, DEFINE_F14_DRIVE.md, DESIGN_F14_DRIVE.md, BUILD_REPORT_F14_DRIVE.md
+contexto_cortado         : -
+diversidade              : vendor
+reviewer_engine_default  : claude
+reviewer_engine_efetivo  : claude
+reviewer_fallback_usado  : nao
+reviewer_motivo          : -
+reviewer_exit            : 0
+reviewer_segundos        : 631
+reviewer_achados         : 11
+reviewer_tokens_entrada  : 199679
+reviewer_tokens_saida    : 67260
+reviewer_tokens_total    : 266939
+reviewer_modelo          : claude-opus-5-5
+reviewer_custo           : US$ 3.0360
+revisor1_raso            : nao
+gatilho_2o_revisor       : 44 arquivos (limiar 8)
+revisor2_engine          : openrouter:deepseek/deepseek-v4-pro
+revisor2_engine_default  : openrouter:deepseek/deepseek-v4-pro
+revisor2_engine_efetivo  : openrouter:deepseek/deepseek-v4-pro
+revisor2_fallback_usado  : nao
+revisor2_motivo          : -
+revisor2_exit            : 0
+revisor2_segundos        : 530
+revisor2_achados         : 1
+revisor2_tokens_entrada  : 134806
+revisor2_tokens_saida    : 33048
+revisor2_tokens_total    : 167854
+revisor2_modelo          : deepseek/deepseek-v4-pro via Novita
+revisor2_custo           : US$ 0.3214
+auditor_engine_default   : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo   : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado   : nao
+auditor_motivo           : -
+auditor_exit             : 0
+auditor_segundos         : 240
+auditor_vereditos        : 12
+auditor_tokens_entrada   : 137370
+auditor_tokens_saida     : 14619
+auditor_tokens_total     : 151989
+auditor_modelo           : qwen/qwen3.7-plus via Alibaba
+auditor_custo            : US$ 0.0627
+convergencia_1o_passe    : nao
+desempate_alvo           : R1@claude
+desempate_engine         : codex
+desempate_decisao        : DECISAO:PROCEDE
+desempate_fallback_usado : nao
+desempate_motivo         : -
+desempate_exit           : 0
+desempate_segundos       : 24
+desempate_tokens_entrada : 147210
+desempate_tokens_saida   : 581
+desempate_tokens_total   : 147791
+desempate_modelo         : -
+desempate_custo          : assinatura
+custo_total              : US$ 3.4201
+quando                   : 20261105-200215
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261105-200215 --ledger sdd/reports/evidence/F14_DRIVE/ledger-review.md --rodada 1 (teto ${TETO:-3})
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: R1@claude
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+[exit=10]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261105-200215
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261105-200215 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261105-200215 sha256=fc7b55c16a6c2b0298156e1609f90c7be186a7faf2ec9a2398744819dc84dac9 diversidade=vendor
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[exit=0]

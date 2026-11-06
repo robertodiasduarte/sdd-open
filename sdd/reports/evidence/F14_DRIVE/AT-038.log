@@ -1,0 +1,32 @@
+$ PREFIXO=codex-b0663d3 bash sdd/reports/evidence/F14_DRIVE/codex-drive.sh parada executor retomada
+── parada, sem subagente ──
+parada: codex rc=0
+  ✅ o agente rodou o iniciar
+  ✅ o agente rodou o aguardar até a parada
+  ✅ o estado diz aguardando-sessao
+  ✅ o brief está no destino
+  ✅ o relatório diz que nada foi publicado
+  ✅ o agente parou: nada foi commitado
+── executor, sessão nova ──
+executor: codex rc=0
+  ✅ a tarefa está feita
+  ✅ 1 commit da tarefa
+  ✅ o commit leva o arquivo
+  ✅ o PROGRESS marcou [x]
+  ✅ o bloco voltou
+  ✅ o executor não rodou o gate pelo script
+── retomada, sessão nova ──
+retomada: codex rc=0
+  ✅ o agente retomou
+  ✅ o teste final rodou pelo script
+  ✅ o último teste final foi verde
+  ✅ o log tem o exit real
+  ✅ parou em motivo tabelado
+  ✅ o relatório diz que nada foi publicado
+  ✅ nenhum git push no transcrito
+  ✅ o remoto não mudou
+motivo final: gate-verde · gates: [0]
+516848c feat: implementa soma de dois números
+6f1948c base
+falhas: 0
+[exit=0]

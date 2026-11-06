@@ -1,0 +1,93 @@
+$ git rev-parse HEAD
+c5b06555fa1f19b2d8438c9b12964175c714c62b
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F14_DRIVE --revisor2 codex
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: codex (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+RESULTADO: PAROU
+auditor: openrouter:qwen/qwen3.7-plus falhou (cota, cobrança ou erro)
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261106-062106
+diff_sha256: 7136b55eacf60bf1659e8cd2406c9cc596824a48771e6476bf5dcc60c084a5a7
+revisor: claude (claude-opus-5-5) — US$ 3,2931
+2º revisor: codex (-) — incluído na assinatura
+auditor: falhou (exit 67) — última engine tentada: openrouter:qwen/qwen3.7-plus
+diversidade: -
+custo total: US$ 3,2931 (+ 1 papel(is) com custo desconhecido)
+→ acrescente outra engine à lista ou tente mais tarde
+[exit=67]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261106-062106/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
+branch                  : feat/f14-drive
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 8a320e9d27d4471f5352e3861a277865ded2d1ed
+head                    : c5b06555fa1f19b2d8438c9b12964175c714c62b
+paths                   : -
+diff_sha256             : 7136b55eacf60bf1659e8cd2406c9cc596824a48771e6476bf5dcc60c084a5a7
+diff                    : 317KB (44 arquivo(s))
+contexto                : 100KB (4 doc SDD)
+docs_sdd                : BRAINSTORM_F14_DRIVE.md, DEFINE_F14_DRIVE.md, DESIGN_F14_DRIVE.md, BUILD_REPORT_F14_DRIVE.md
+contexto_cortado        : -
+diversidade             : -
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 726
+reviewer_achados        : 5
+reviewer_tokens_entrada : 208072
+reviewer_tokens_saida   : 76551
+reviewer_tokens_total   : 284623
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 3.2931
+revisor1_raso           : nao
+gatilho_2o_revisor      : 44 arquivos (limiar 8)
+revisor2_engine         : codex
+revisor2_engine_default : codex
+revisor2_engine_efetivo : codex
+revisor2_fallback_usado : nao
+revisor2_motivo         : -
+revisor2_exit           : 0
+revisor2_segundos       : 409
+revisor2_achados        : 3
+revisor2_tokens_entrada : 154730
+revisor2_tokens_saida   : 11270
+revisor2_tokens_total   : 166000
+revisor2_modelo         : -
+revisor2_custo          : assinatura
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : openrouter:qwen/qwen3.7-plus falhou (cota, cobrança ou erro)
+auditor_exit            : 67
+auditor_segundos        : 1
+auditor_vereditos       : 0
+auditor_tokens_entrada  : n/d
+auditor_tokens_saida    : n/d
+auditor_tokens_total    : n/d
+auditor_modelo          : n/d
+auditor_custo           : $?
+convergencia_1o_passe   : n/a (auditor falhou)
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 3.2931 (+ 1 papel(is) com custo $?)
+quando                  : 20261106-062106
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261106-062106 --ledger sdd/reports/evidence/F14_DRIVE/ledger-review.md --rodada 4 (teto ${TETO:-3})
+ESTADO: BLOQUEADO
+rodada: 4 de 4
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: review inválida (reviewer_exit=0 auditor_exit=67) — refazer
+motivo: D4 teto: 4 rodadas de review atingido
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[exit=20]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261106-062106
+🛑 adversarial-review: a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261106-062106 não completou (reviewer_exit=0, auditor_exit=67)
+RESULTADO: NÃO CONFERE
+→ rode a revisão de novo.
+[exit=2]

@@ -1,0 +1,73 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p05.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p05.sh
+. $(dirname "$0")/lab.sh
+G="echo \$\$ >> gate.calls; while [ ! -f .go ]; do sleep 0.1; done; test -f .verde"
+L=sdd/reports/progress/DRIVE_F.lock
+linhas() { [ -f gate.calls ] && wc -l < gate.calls | tr -d " " || echo 0; }
+rodada() { # rodada <n de processos> <fundo|frente> <semente da trava: nada|morta|vazia>
+  mkrepo "$(novo)" "$G" >/dev/null; touch .verde; /bin/bash sdd/bin/sdd-drive.sh iniciar $D >/dev/null 2>&1; feito; rel
+  case "$3" in morta) echo 99999 > $L ;; vazia) : > $L ;; esac
+  k=0; while [ $k -lt "$1" ]; do
+    if [ "$2" = fundo ]; then /bin/bash sdd/bin/sdd-drive.sh verificar $D --fundo >/dev/null 2>&1 &
+    else /bin/bash sdd/bin/sdd-drive.sh verificar $D >/dev/null 2>&1 & fi
+    k=$((k+1)); done
+  sleep 3.5; n=$(linhas); touch .go; wait; sleep 0.6; echo "$n"
+}
+serie() { # serie <rotulo> <rodadas> <procs> <modo> <semente>
+  echo "=== $1: $2 rodadas, $3 processos, $4, trava: $5"; dup=0; res=""; r=0
+  while [ $r -lt "$2" ]; do n=$(rodada "$3" "$4" "$5"); res="$res $n"; [ "$n" -gt 1 ] && dup=$((dup+1)); r=$((r+1)); done
+  echo "gates simultaneos por rodada:$res"; echo "rodadas com mais de 1 gate: $dup de $2"
+}
+serie limpa-fundo 8 8 fundo nada
+serie limpa-frente 8 8 frente nada
+serie morta-fundo 8 8 fundo morta
+serie morta-frente 8 8 frente morta
+# 2o gate perde a trava quando o 1o termina
+echo "=== soltar trava alheia"
+G2="n=\$(wc -l < gate.calls 2>/dev/null || echo 0); echo x >> gate.calls; n=\$((n+1)); while [ ! -f .go\$n ]; do sleep 0.1; done; test -f .verde"
+mkrepo "$(novo)" "$G2" >/dev/null; printf ".go1\n.go2\n.go3\n" >> .gitignore; git add .gitignore; git commit -qm i; touch .verde; drv iniciar $D > /dev/null; feito; rel
+drv verificar $D --fundo; sleep 1; P=$(cat $L); kill -9 $P; sleep 0.2; drv verificar $D --fundo; sleep 1; echo "gates rodando: $(linhas)"; echo "trava: $(cat $L)"; touch .go1; sleep 1; echo "1o gate terminou; trava: $(cat $L 2>/dev/null || echo SUMIU)"; drv proximo $D; drv verificar $D; echo "gates rodando agora: $(linhas)"; touch .go2 .go3; sleep 1; gates
+=== limpa-fundo: 8 rodadas, 8 processos, fundo, trava: nada
+gates simultaneos por rodada: 1 1 1 1 1 1 1 1
+rodadas com mais de 1 gate: 0 de 8
+=== limpa-frente: 8 rodadas, 8 processos, frente, trava: nada
+gates simultaneos por rodada: 1 1 1 1 1 1 1 1
+rodadas com mais de 1 gate: 0 de 8
+=== morta-fundo: 8 rodadas, 8 processos, fundo, trava: morta
+gates simultaneos por rodada: 1 1 1 1 1 1 1 1
+rodadas com mais de 1 gate: 0 de 8
+=== morta-frente: 8 rodadas, 8 processos, frente, trava: morta
+gates simultaneos por rodada: 1 1 1 1 1 1 1 1
+rodadas com mais de 1 gate: 0 de 8
+=== soltar trava alheia
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 15352); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 16365); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+gates rodando: 2
+trava: 16365
+1o gate terminou; trava: SUMIU
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+gates rodando agora: 2
+gates: [(1, '676c7b3', 0), (2, '676c7b3', 0)]
+[exit=0]

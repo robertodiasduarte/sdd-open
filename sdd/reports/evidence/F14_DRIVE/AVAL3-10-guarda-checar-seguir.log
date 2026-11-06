@@ -1,0 +1,280 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p09.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p09.sh
+. $(dirname "$0")/lab.sh
+GD="/bin/bash $PROJ/sdd/bin/avaliador-guard.sh"
+caso() { echo; echo "=== $1"; ( cd "$(novo)"; git init -q; git symbolic-ref HEAD refs/heads/main; mkdir -p sdd/reports/evidence sdd/features sdd/handoffs sdd/reviews sdd/traces; echo print > codigo.py; echo d > sdd/reports/doc.md; echo e > sdd/reports/evidence/e.log; git add -A; git commit -qm b; "$2" ) 2>&1 | cut -c1-180; }
+g() { $GD "$@" 2>&1 | grep -vE "^→|^   último commit|^🛑 [0-9]+ arquivo" ; echo "[rc=${PIPESTATUS[0]}]"; }
+t1() { g; }
+t2() { echo x > sdd/reports/novo.md; echo x > sdd/handoffs/n.md; echo x > sdd/reviews/n.md; echo x > sdd/features/n.md; echo x > "sdd/reports/com espaço -> seta.md"; g; }
+t3() { echo y >> sdd/reports/doc.md; g; }
+t4() { echo y >> sdd/reports/evidence/e.log; echo z > sdd/traces/t.jsonl; g; }
+t5() { git mv codigo.py sdd/reports/evidence/codigo.py; g; }
+t6() { git mv sdd/reports/evidence/e.log x.py; g; }
+t7() { git mv codigo.py "sdd/reports/novo nome.py"; g; }
+t8() { echo x > "a -> b.py"; g; }
+t9() { echo x > sdd/reportsx; mkdir -p sdd/traces2 sdd/reports-velho; echo x > sdd/traces2/a; echo x > sdd/reports-velho/a; g; }
+t10() { mv codigo.py ../fora-$$; g; }
+t11() { git add -N sdd/reports/doc.md; echo new > sdd/reports/a.md; git add sdd/reports/a.md; g; }
+t12() { git config status.renames copies; cp codigo.py copia.py; git add copia.py; echo m >> codigo.py; git add codigo.py; git status --porcelain; g; }
+t13() { git update-index --skip-worktree codigo.py; echo y >> codigo.py; g; }
+t14() { g --root /nao/existe; cd /; g --root /; }
+t15() { echo x > "sdd/handoffs/codigo novo.py"; g; }
+t16() { echo x > "aspas\"nome.py"; printf x > "$(printf "tab\tnome.py")"; g; }
+t17() { git mv codigo.py "código ação.py"; git commit -qm a; echo x >> "código ação.py"; g; }
+t18() { SDD_AVALIADOR_GUARD=OFF g; }
+for c in t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 t11 t12 t13 t14 t15 t16 t17 t18; do caso $c $c; done
+echo; echo "######## verify-gate --checar"
+VG="/bin/bash sdd/bin/verify-gate.sh"
+vcaso() { echo; echo "=== $1"; ( mkrepo "$(novo)"; "$2" ) 2>&1 | cut -c1-170; }
+c1() { $VG --checar $D | tail -2; echo "[rc=${PIPESTATUS[0]}]"; ls sdd/traces 2>/dev/null; }
+c2() { define "touch PWNED" > $D; SDD_TRACE=on $VG --checar $D >/dev/null; echo "[rc=$?]"; ls PWNED sdd/traces 2>&1; }
+c3() { define "x" xyz > $D; $VG --checar $D >/dev/null 2>&1; echo "[rc=$?]"; }
+c4() { define "N/A (manual-ux)" test > $D; $VG --checar $D >/dev/null 2>&1; echo "[rc=$?]"; define "" test > $D; $VG --checar $D >/dev/null 2>&1; echo "[rc=$?]"; }
+c5() { define "N/A (manual-ux)" manual-ux > $D; $VG --checar $D >/dev/null 2>&1; echo "[rc=$?]"; }
+c6() { define "true" > $D; printf "\n[NEEDS CLARIFICATION: x]\n" >> $D; $VG --checar $D >/dev/null 2>&1; echo "[rc=$?]"; $VG --strict --checar $D > /dev/null 2>&1; echo "strict [rc=$?]"; }
+c7() { define "true" | grep -v Governança > $D; $VG --checar $D >/dev/null 2>&1; echo "[rc=$?]"; }
+c8() { printf "# D\n" > $D; $VG --checar $D >/dev/null 2>&1; echo "[rc=$?]"; $VG --checar nao/existe.md >/dev/null 2>&1; echo "[rc=$?]"; }
+c9() { $VG --print --checar $D | head -2; echo "[rc=${PIPESTATUS[0]}]"; }
+c10() { define "echo ok" > $D; /usr/bin/python3 -I -B -c "p=\"$D\";s=open(p,newline=\"\").read();open(p,\"w\",newline=\"\").write(s.replace(chr(10),chr(13)+chr(10)))"; $VG --checar $D >/dev/null 2>&1; echo "checar CRLF [rc=$?]"; $VG --print $D | grep "^cmd" | od -c | head -2; $VG $D > /dev/null 2>&1; echo "gate CRLF [rc=$?]"; }
+c11() { cd "$(novo)"; cp $PROJ/sdd/features/DEFINE_F14_DRIVE.md .; /bin/bash $PROJ/sdd/bin/verify-gate.sh --checar DEFINE_F14_DRIVE.md > /dev/null 2>&1; echo "fora de repo [rc=$?]"; }
+for c in c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11; do vcaso $c $c; done
+echo; echo "######## seguir --drive"
+SG="/bin/bash sdd/bin/sdd-fluxo.sh seguir"
+DS=sdd/features/DESIGN_F.md
+s() { "$@" 2>&1 | grep -E "PARAR|DRIVE_ACAO|seguindo|RESULTADO|SLOT" ; echo "[rc=${PIPESTATUS[0]}]"; }
+novos() { printf "# DESIGN: F\n\n## Metadata\n\n| Attribute | Value |\n|---|---|\n| **Status** | Ready for Build |\n\n## Key Decisions\n\n### Decision 1: x\n\nx\n\n## File Manifest\n\n| # | File | Action | Purpose | Agent / Owner | Dependencies |\n|---:|---|---|---|---|---|\n| 1 | \`a\` | Create | x | (general) | None |\n| 2 | \`b\` | Create | x | (general) | None |\n| 3 | \`c\` | Create | x | (general) | None |\n\n**Total Files:** 3\n"; }
+s1() { s $SG design $D build --drive; }
+s2() { mkdir -p sdd; printf "flow:\n  autonomous: false\n" > sdd/config.yaml; s $SG design $D build; s $SG design $D build --drive; }
+s3() { printf "flow:\n  autonomous: talvez\n" > sdd/config.yaml; s $SG design $D build; s $SG design $D build --drive; }
+s4() { s $SG design $D release --drive; }
+s5() { s $SG design $D build --drive --parar; }
+s6() { novos > $DS; s $SG design $D build --drive; s $SG design $D build --parar; printf "flow:\n  autonomous: true\n" > sdd/config.yaml; s $SG design $D build; }
+s7() { novos > $DS; printf "\n## Advisor Ledger\n\n| # | Severidade | Veredito |\n|---|---|---|\n| 1 | HIGH | em aberto |\n" >> $DS; s $SG design $D build --drive; printf "\n" >> $DS; /usr/bin/python3 -I -B -c "p=\"$DS\";s=open(p).read().replace(\"em aberto\",\"APLICADA\");open(p,\"w\").write(s)"; s $SG design $D build --drive; }
+s8() { /usr/bin/python3 -I -B -c "p=\"$DS\";s=open(p).read().replace(\"Ready for Build\",\"Draft\");open(p,\"w\").write(s)"; s $SG design $D build --drive; drv iniciar $D; }
+s9() { s $SG design $D foo --drive; s $SG design --drive; }
+for c in s1 s2 s3 s4 s5 s6 s7 s8 s9; do vcaso $c $c; done
+echo; echo "######## archive: vizinho minusculo"
+cd "$(novo)"; mkarq "$PWD"; velho; printf "# H\n\n| **Status** | aberta |\n\nFica rapido, em capital e dados.\n" > sdd/handoffs/HANDOFF_OUTRA.md; doc sdd/features/DEFINE_api.md; doc sdd/features/DEFINE_dados.md; $ARQ --hoje 2026-11-05 2>&1 | grep -E "TOTAIS|documento\(s\)\)|→  " | cut -c1-140
+
+=== t1
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+[rc=0]
+
+=== t2
+ℹ️  5 documento(s) de sdd/ não rastreado(s) ficam fora do commit: eles não voltam se a pasta for limpa.
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+[rc=0]
+
+=== t3
+   - sdd/reports/doc.md
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t4
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+[rc=0]
+
+=== t5
+   - codigo.py
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t6
+   - x.py
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t7
+   - codigo.py
+   - sdd/reports/novo nome.py
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t8
+   - a -> b.py
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t9
+   - sdd/reports-velho/a
+   - sdd/reportsx
+   - sdd/traces2/a
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t10
+   - codigo.py
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t11
+   - sdd/reports/a.md
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t12
+M  codigo.py
+C  codigo.py -> copia.py
+   - codigo.py
+   - codigo.py
+   - copia.py
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t13
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+[rc=0]
+
+=== t14
+🛑 --root inexistente: /nao/existe
+RESULTADO: ERRO DE USO
+[rc=64]
+⚠️  não consegui conferir a árvore: / não é um repositório git
+RESULTADO: INCONCLUSIVO
+[rc=2]
+
+=== t15
+ℹ️  1 documento(s) de sdd/ não rastreado(s) ficam fora do commit: eles não voltam se a pasta for limpa.
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+[rc=0]
+
+=== t16
+   - aspas\"nome.py
+   - tab\tnome.py
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t17
+   - código ação.py
+RESULTADO: VERMELHO
+[rc=1]
+
+=== t18
+⚠️  guard desligado (SDD_AVALIADOR_GUARD=off) — declare no BUILD_REPORT.
+RESULTADO: VERDE
+[rc=0]
+
+######## verify-gate --checar
+
+=== c1
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[rc=0]
+
+=== c2
+[rc=0]
+ls: PWNED: No such file or directory
+ls: sdd/traces: No such file or directory
+
+=== c3
+[rc=64]
+
+=== c4
+[rc=64]
+[rc=64]
+
+=== c5
+[rc=0]
+
+=== c6
+[rc=5]
+strict [rc=1]
+
+=== c7
+[rc=5]
+
+=== c8
+[rc=5]
+[rc=64]
+
+=== c9
+── Verify Gate de sdd/features/DEFINE_F.md ──
+kind:       test
+sdd/bin/verify-gate.sh: line 244: echo: write error: Broken pipe
+[rc=141]
+
+=== c10
+checar CRLF [rc=0]
+0000000    c   m   d   :                                   e   c   h   o
+0000020        o   k   "  \n                                            
+gate CRLF [rc=2]
+
+=== c11
+fora de repo [rc=64]
+
+######## seguir --drive
+
+=== s1
+✅ DESIGN pronto → seguindo para o BUILD (execução do sdd-drive)
+[rc=0]
+
+=== s2
+PARAR: encadeamento desligado
+RESULTADO: PARAR
+[rc=1]
+✅ DESIGN pronto → seguindo para o BUILD (execução do sdd-drive)
+[rc=0]
+
+=== s3
+RESULTADO: SLOT INVÁLIDO
+[rc=64]
+✅ DESIGN pronto → seguindo para o BUILD (execução do sdd-drive)
+[rc=0]
+
+=== s4
+PARAR: publicar não se desfaz — é decisão sua (D1)
+RESULTADO: PARAR
+[rc=1]
+
+=== s5
+PARAR: pedido de parar nesta chamada (--parar)
+RESULTADO: PARAR
+[rc=1]
+
+=== s6
+PARAR: revisão do DESIGN exigida e não registrada no Advisor Ledger
+DRIVE_ACAO: REVISAO_DESIGN
+RESULTADO: PARAR
+[rc=1]
+PARAR: pedido de parar nesta chamada (--parar)
+RESULTADO: PARAR
+[rc=1]
+PARAR: revisão do DESIGN exigida e não registrada no Advisor Ledger
+RESULTADO: PARAR
+[rc=1]
+
+=== s7
+PARAR: HIGH aberto no Advisor Ledger: 1
+DRIVE_ACAO: REVISAO_DESIGN
+RESULTADO: PARAR
+[rc=1]
+✅ DESIGN pronto → seguindo para o BUILD (execução do sdd-drive)
+[rc=0]
+
+=== s8
+PARAR: DESIGN não está pronto (Status: Draft)
+RESULTADO: PARAR
+[rc=1]
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: DESIGN
+rodada: 1/3
+DESIGN não está pronto (Status: Draft)
+RESULTADO: CONTINUAR
+→ rode a fase Design sobre este DEFINE e chame proximo de novo.
+[rc=10]
+
+=== s9
+RESULTADO: ERRO DE USO
+[rc=64]
+RESULTADO: ERRO DE USO
+[rc=64]
+
+######## archive: vizinho minusculo
+  api (1 documento(s)): citada numa ficha aberta
+  dados (1 documento(s)): citada numa ficha aberta
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=2 · recentes=0 · sem classificação=0 · subpastas=0
+[exit=0]

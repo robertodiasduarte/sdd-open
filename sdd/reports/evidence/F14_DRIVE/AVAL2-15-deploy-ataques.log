@@ -1,0 +1,506 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p15.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p15.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+caso() { echo; echo "##### $1"; shift; "$@" | grep -vE '^RESULTADO|^→|^--- deploy'; }
+mkdep "$(novo)"; Y=$(novoc); Z=$(novoc); git reset -q --hard $X; git update-ref refs/remotes/origin/main $Z; git fetch -q origin; 
+T1=2026-01-01T00:00:00Z; T2=2026-01-02T00:00:00Z; T3=2026-01-03T00:00:00Z
+P0="dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky')"
+ponta() { git -C "$R/remoto.git" update-ref refs/heads/main $1; git fetch -q origin; git update-ref -d refs/remotes/origin/main 2>/dev/null; git fetch -q origin; }
+ponta $X
+echo "=== AT-022"
+cen "dict(passos=[dict(runs=[R(1,X)])])"; caso 'verde' d1; reg
+cen "dict(passos=[dict(runs=[R(1,X,st='in_progress',c=None)]),dict(runs=[R(1,X,st='in_progress',c=None)]),dict(runs=[R(1,X)])])"; caso 'andando depois verde' d1
+for v in "R(1,X,b='outra')" "R(1,X,b='v1.0')" "R(1,X,e='schedule')" "R(1,X,e='pull_request')" "dict(databaseId=1,headSha=X,status='completed',conclusion='success',createdAt=T1)"; do cen "dict(passos=[dict(runs=[$v])])" 2>/dev/null || cen "dict(passos=[dict(runs=[R(1,X,e=None)])])"; caso "nao conta: $v" d1; done
+cen "dict(passos=[dict(runs=[R(1,X,st='in_progress',c=None)])])"; caso 'teto com run andando' d1
+echo "=== AT-023 substituto"
+ponta $Y
+cen "dict(passos=[dict(runs=[R(1,X,c='cancelled'),R(2,Y,t='2026-01-02T00:00:00Z')])])"; caso 'cancelado + verde que contem' d1
+cen "dict(passos=[dict(runs=[R(1,X,c='failure'),R(2,Y,t='2026-01-02T00:00:00Z')])])"; caso 'falha + verde que contem' d1
+cen "dict(passos=[dict(runs=[R(1,X,c='failure'),R(2,Y,st='in_progress',c=None,t='2026-01-02T00:00:00Z')])])"; caso 'falha + substituto andando' d1
+cen "dict(passos=[dict(runs=[R(1,X,c='cancelled'),R(2,Y,c='failure',t='2026-01-02T00:00:00Z')])])"; caso 'cancelado + substituto vermelho' d1
+cen "dict(passos=[dict(runs=[R(1,X,c='failure'),R(2,Y,e='schedule',t='2026-01-02T00:00:00Z')])])"; caso 'falha + schedule verde novo' d1
+cen "dict(passos=[dict(runs=[R(1,X,c='failure'),R(2,'f'*40,t='2026-01-02T00:00:00Z')])])"; caso 'falha + commit desconhecido' d1; reg
+cen "dict(passos=[dict(runs=[R(1,X,c='failure'),R(2,None,t='2026-01-02T00:00:00Z')])])"; caso 'falha + run sem headSha' d1
+cen "dict(passos=[dict(runs=[R(1,X,c='failure',t='2026-01-02T00:00:00Z'),R(2,Y,t='2026-01-01T00:00:00Z')])])"; caso 'verde de filho, mais velho que o run do SHA' d1
+ponta $X
+git checkout -q -b lado $X; echo l > l.txt; git add l.txt; git commit -qm l; W=$(git rev-parse HEAD); git checkout -q main
+cen "dict(passos=[dict(runs=[R(1,X,c='cancelled'),R(2,'$W',t='2026-01-02T00:00:00Z')])])"; caso 'verde em filho de lado (contem): vale' d1
+git checkout -q -b lado2 $X~0; git reset -q --hard $X; git commit -q --allow-empty --amend -m outro; V=$(git rev-parse HEAD); git checkout -q main
+cen "dict(passos=[dict(runs=[R(1,X,c='cancelled'),R(2,'$V',t='2026-01-02T00:00:00Z')])])"; caso 'verde mais novo que NAO contem' d1
+echo "=== AT-024 redisparo"
+M="$(git rev-parse --git-common-dir)/deploy-do-sha"; rm -rf "$M"
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')]),dict(runs=[R(1,X,c='failure'),R(2,X,st='in_progress',c=None,t='2026-01-02T00:00:00Z',e='workflow_dispatch')]),dict(runs=[R(1,X,c='failure'),R(2,X,t='2026-01-02T00:00:00Z',e='workflow_dispatch')])],passo='flaky')"; caso 'passageiro: redispara, espera, verde' d1 --transitorios 'flaky,outro'; reg; ls "$M"; rm -rf "$M"
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky')"; caso 'redispara e run nao aparece: 4' dep --commit $X --workflow deploy.yml --intervalo 0 --teto 5 --sem-run 0 --transitorios flaky; reg; ls "$M"
+echo "--- segunda chamada com a marca, sem run novo"; cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky')"; caso 'marca + so o run velho' dep --commit $X --workflow deploy.yml --intervalo 0 --teto 5 --sem-run 0 --transitorios flaky; reg
+cen "dict(passos=[dict(runs=[R(1,X,c='failure'),R(2,X,c='failure',t='2026-01-02T00:00:00Z',e='workflow_dispatch')])],passo='flaky')"; caso 'marca + redisparo falhou de novo' d1 --transitorios flaky; reg; rm -rf "$M"
+cen "dict(passos=[dict(runs=[R(1,X,c='failure',t='2026-01-02T00:00:00Z'),R(2,X,e='workflow_dispatch',c='failure')])],passo='flaky')"; caso 'dispatch humano antes, sem marca: nao repete' d1 --transitorios flaky; reg
+echo "=== AT-025 todos os passos"
+J() { echo "jobs=[$1]"; }
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],jobs=[dict(steps=[dict(name='flaky',conclusion='failure')]),dict(steps=[dict(name='real',conclusion='failure')])])"; caso 'job1 passageiro, job2 real' d1 --transitorios flaky; reg
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],jobs=[dict(steps=[dict(name='real',conclusion='failure')]),dict(steps=[dict(name='flaky',conclusion='failure')])])"; caso 'job1 real, job2 passageiro' d1 --transitorios flaky; reg
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],jobs=[dict(steps=[dict(name='flaky',conclusion='failure'),dict(name='outro',conclusion='failure')])])"; caso 'dois passageiros no mesmo job' d1 --transitorios 'flaky, outro' --sem-run 0 ; rm -rf "$M"; reg
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],jobs=[dict(name='a',conclusion='failure',steps=[dict(name='flaky',conclusion='failure')]),dict(name='b',conclusion='failure',steps=[dict(name='real',conclusion='cancelled')])])"; caso 'job2 falhou sem passo failure (timeout: passo cancelled)' d1 --transitorios flaky; reg; rm -rf "$M"
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],jobs=[dict(name='a',conclusion='failure',steps=[dict(name='flaky',conclusion='failure')]),dict(name='b',conclusion='failure',steps=[])])"; caso 'job2 falhou sem passos (setup)' d1 --transitorios flaky; reg; rm -rf "$M"
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],jobs=[dict(name='a',conclusion='failure',steps=[])])"; caso 'so job falho sem passos' d1 --transitorios flaky; reg
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],view_erro='HTTP 502: Bad Gateway')"; caso 'run view falha na hora H' d1 --transitorios flaky; reg
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],view_erro='gh auth login required')"; caso 'run view: login caiu' d1 --transitorios flaky
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],view_bruto='[1,2]')"; caso 'run view lista' d1 --transitorios flaky
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='real')"; caso 'fora da lista' d1 --transitorios flaky; reg
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky')"; caso 'lista vazia' d1; caso 'lista vazia explicita' d1 --transitorios ''; caso 'lista so virgula' d1 --transitorios ' , '
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky')"; ponta $Y; caso 'nao e mais a ponta' d1 --transitorios flaky; reg; ponta $X
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky')"; git remote set-url origin /nao/existe; caso 'fetch falhou' d1 --transitorios flaky; reg; git remote set-url origin "$R/remoto.git"
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky')"; caso 'teto passou' dep --commit $X --workflow deploy.yml --intervalo 0 --teto 0 --sem-run 0 --transitorios flaky; reg
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky',dispatch_erro='could not create workflow dispatch event: HTTP 422: Workflow does not have workflow_dispatch trigger')"; caso 'GitHub recusa o disparo 422' d1 --transitorios flaky; reg; rm -rf "$M"
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky',dispatch_erro='HTTP 404: workflow deploy.yml not found on the default branch')"; caso 'GitHub recusa o disparo 404' d1 --transitorios flaky; rm -rf "$M"
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky',dispatch_erro='HTTP 403: Resource not accessible')"; caso 'GitHub recusa o disparo 403' d1 --transitorios flaky; rm -rf "$M"
+echo "=== AT-026"
+cen "dict(passos=[dict(runs=[])])"; caso 'nenhum run' d1
+cen "dict(erro='could not find any workflows named nope',passos=[])"; caso 'workflow desconhecido A' d1
+cen "dict(erro='HTTP 404: workflow nope.yml not found on the default branch',passos=[])"; caso 'workflow desconhecido B' d1
+cen "dict(erro='could not find workflow: HTTP 404: Not Found (https://api.github.com/x)',passos=[])"; caso 'workflow desconhecido C (gh mais antigo?)' d1
+cen "dict(erro='X',passos=[])"; caso 'consulta falhando ate o teto' d1
+cen "dict(erro='To get started with GitHub CLI, please run:  gh auth login',passos=[])"; caso 'sem login' d1
+cen "dict(erro='HTTP 401: Bad credentials',passos=[])"; caso 'token ruim' d1
+cen "dict(passos=[dict(runs=[])])"
+caso 'sem commit' dep --workflow deploy.yml; caso 'sha desconhecido' dep --commit deadbeef --workflow deploy.yml; caso 'sem workflow' dep --commit $X; caso 'opcao' dep --commit $X --workflow w --xyz 1; caso 'sem valor' dep --commit $X --workflow; caso 'teto letra' dep --commit $X --workflow w --teto abc; caso 'teto negativo' dep --commit $X --workflow w --teto -1; caso 'repo inexistente' dep --commit $X --workflow w --repo /nao/existe
+caso 'flag vazia e slot' dep --commit $X --workflow '' 
+PATH_OLD=$PATH; mkdir -p $LAB/sogit; ln -sf /usr/bin/git $LAB/sogit/git; ln -sf /usr/bin/python3 $LAB/sogit/python3
+export PATH=$LAB/sogit:/bin; caso 'gh ausente' dep --commit $X --workflow w; export PATH=$PATH_OLD
+echo "=== slot e --repo com espaco; python -I; LC_ALL=C"
+mkdir -p sdd; printf 'deploy:\n  workflow: "deploy.yml"  # c\n  transient_steps: "flaky, outro"\nproject:\n  default_branch: main\n' > sdd/config.yaml
+rm -rf "$M"; cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='outro')"; caso 'slots' dep --commit ${X:0:9} --intervalo 0 --teto 2 --sem-run 0; reg; rm -f sdd/config.yaml; rm -rf "$M"
+cen "dict(passos=[dict(runs=[R(1,X)])])"; LC_ALL=C LANG=C PYTHONIOENCODING=ascii caso 'LC_ALL=C ascii' d1
+caso 'no subdir' dep --commit $X --workflow w --repo "$R/clone" --teto 0 --sem-run 0
+echo "=== worktree: marca na pasta comum"
+rm -rf "$M"; git worktree add -q "$R/wt dir" -b wt $X; cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky')"; (cd "$R/wt dir"; caso 'worktree' dep --commit $X --workflow w --intervalo 0 --teto 2 --sem-run 0 --transitorios flaky); ls "$M"; reg
+cen "dict(passos=[dict(runs=[R(1,X,c='failure')])],passo='flaky')"; caso 'da raiz, depois de redisparar na worktree: nao repete' dep --commit $X --workflow w --intervalo 0 --teto 2 --sem-run 0 --transitorios flaky; reg
+echo "=== registro: nunca run rerun"
+=== AT-022
+
+##### verde
+✅ no ar — run 1 (SHA 5d96f53)
+[rc=0]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+
+##### andando depois verde
+⏳ in_progress · 0/0 min · run 1
+✅ no ar — run 1 (SHA 5d96f53)
+[rc=0]
+
+##### nao conta: R(1,X,b='outra')
+⏳ ainda não sei — não achei nenhum run de 5d96f53 no workflow deploy.yml em 0 s; isso não diz que não há o que verificar.
+[rc=4]
+
+##### nao conta: R(1,X,b='v1.0')
+⏳ ainda não sei — não achei nenhum run de 5d96f53 no workflow deploy.yml em 0 s; isso não diz que não há o que verificar.
+[rc=4]
+
+##### nao conta: R(1,X,e='schedule')
+⏳ ainda não sei — não achei nenhum run de 5d96f53 no workflow deploy.yml em 0 s; isso não diz que não há o que verificar.
+[rc=4]
+
+##### nao conta: R(1,X,e='pull_request')
+⏳ ainda não sei — não achei nenhum run de 5d96f53 no workflow deploy.yml em 0 s; isso não diz que não há o que verificar.
+[rc=4]
+
+##### nao conta: dict(databaseId=1,headSha=X,status='completed',conclusion='success',createdAt=T1)
+⏳ ainda não sei — não achei nenhum run de 5d96f53 no workflow deploy.yml em 0 s; isso não diz que não há o que verificar.
+[rc=4]
+
+##### teto com run andando
+⏳ in_progress · 0/0 min · run 1
+⏳ ainda não sei — o deploy não terminou em 0 min (run 1); isso não é falha.
+[rc=4]
+=== AT-023 substituto
+
+##### cancelado + verde que contem
+✅ no ar via substituto — o run 1 do seu SHA 5d96f53 saiu cancelled, e o run 2, de df329bd, que contém o seu, terminou bem.
+[rc=0]
+
+##### falha + verde que contem
+✅ no ar via substituto — o run 1 do seu SHA 5d96f53 saiu failure, e o run 2, de df329bd, que contém o seu, terminou bem.
+[rc=0]
+
+##### falha + substituto andando
+⏳ in_progress (substituto df329bd) · 0/0 min · run 2
+⏳ ainda não sei — o deploy não terminou em 0 min (run 2); isso não é falha.
+[rc=4]
+
+##### cancelado + substituto vermelho
+🔴 não está no ar — o run 1 saiu cancelled, e o substituto df329bd (run 2), que contém o seu, terminou failure
+[rc=2]
+
+##### falha + schedule verde novo
+🔴 falhou — run 1 ("x"); não repeti: deploy.transient_steps está vazio, e aí eu nunca repito sozinho.
+[rc=2]
+
+##### falha + commit desconhecido
+⏳ aguardando o clone conhecer fffffff para saber se contém o seu · 0/0 min · run 2
+⏳ ainda não sei — o deploy não terminou em 0 min (run 2); isso não é falha.
+[rc=4]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+
+##### falha + run sem headSha
+🔴 falhou — run 1 ("x"); não repeti: deploy.transient_steps está vazio, e aí eu nunca repito sozinho.
+[rc=2]
+
+##### verde de filho, mais velho que o run do SHA
+🔴 falhou — run 1 ("x"); não repeti: deploy.transient_steps está vazio, e aí eu nunca repito sozinho.
+[rc=2]
+
+##### verde em filho de lado (contem): vale
+✅ no ar via substituto — o run 1 do seu SHA 5d96f53 saiu cancelled, e o run 2, de 1dee607, que contém o seu, terminou bem.
+[rc=0]
+
+##### verde mais novo que NAO contem
+🔴 não está no ar — o run 1 saiu cancelled, e nenhum deploy mais novo contém 5d96f53
+[rc=2]
+=== AT-024 redisparo
+
+##### passageiro: redispara, espera, verde
+🔁 o passo "flaky" é passageiro e 5d96f53 é a ponta: repetindo o deploy na ponta de main (1 vez).
+✅ no ar — run 2 (SHA 5d96f53)
+[rc=0]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+workflow run deploy.yml --ref main
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+redisparado-5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+
+##### redispara e run nao aparece: 4
+🔁 o passo "flaky" é passageiro e 5d96f53 é a ponta: repetindo o deploy na ponta de main (1 vez).
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+[rc=4]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+workflow run deploy.yml --ref main
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+redisparado-5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+--- segunda chamada com a marca, sem run novo
+
+##### marca + so o run velho
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+[rc=4]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+
+##### marca + redisparo falhou de novo
+🔴 falhou — run 2 ("flaky"); não repeti: este commit já foi repetido 1 vez (este script).
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 2 --json jobs
+
+##### dispatch humano antes, sem marca: nao repete
+🔴 falhou — run 1 ("flaky"); não repeti: este commit já foi repetido 1 vez (workflow_dispatch).
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+=== AT-025 todos os passos
+
+##### job1 passageiro, job2 real
+🔴 falhou — run 1 ("real"); não repeti: este passo não está em deploy.transient_steps.
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+
+##### job1 real, job2 passageiro
+🔴 falhou — run 1 ("real"); não repeti: este passo não está em deploy.transient_steps.
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+
+##### dois passageiros no mesmo job
+🔁 o passo "flaky" é passageiro e 5d96f53 é a ponta: repetindo o deploy na ponta de main (1 vez).
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+[rc=4]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+workflow run deploy.yml --ref main
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+
+##### job2 falhou sem passo failure (timeout: passo cancelled)
+🔁 o passo "flaky" é passageiro e 5d96f53 é a ponta: repetindo o deploy na ponta de main (1 vez).
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+[rc=4]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+workflow run deploy.yml --ref main
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+
+##### job2 falhou sem passos (setup)
+🔁 o passo "flaky" é passageiro e 5d96f53 é a ponta: repetindo o deploy na ponta de main (1 vez).
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+[rc=4]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+workflow run deploy.yml --ref main
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+
+##### so job falho sem passos
+🔴 falhou — run 1; não repeti: este passo não está em deploy.transient_steps.
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+
+##### run view falha na hora H
+🔴 falhou — run 1; não repeti: este passo não está em deploy.transient_steps.
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+
+##### run view: login caiu
+⚠️ inconclusivo — o gh não está logado (gh auth login required).
+[rc=3]
+
+##### run view lista
+🔴 falhou — run 1; não repeti: este passo não está em deploy.transient_steps.
+[rc=2]
+
+##### fora da lista
+🔴 falhou — run 1 ("real"); não repeti: este passo não está em deploy.transient_steps.
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+
+##### lista vazia
+🔴 falhou — run 1 ("flaky"); não repeti: deploy.transient_steps está vazio, e aí eu nunca repito sozinho.
+[rc=2]
+
+##### lista vazia explicita
+🔴 falhou — run 1 ("flaky"); não repeti: deploy.transient_steps está vazio, e aí eu nunca repito sozinho.
+[rc=2]
+
+##### lista so virgula
+🔴 falhou — run 1 ("flaky"); não repeti: deploy.transient_steps está vazio, e aí eu nunca repito sozinho.
+[rc=2]
+
+##### nao e mais a ponta
+🔴 falhou — run 1 ("flaky"); não repeti: 5d96f53 não é mais a ponta de main (agora df329bd).
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+
+##### fetch falhou
+🔴 falhou — run 1 ("flaky"); não repeti: não consegui confirmar a ponta de main (git fetch falhou).
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+
+##### teto passou
+🔴 falhou — run 1 ("flaky"); não repeti: o teto de 0 min já passou, e repetir é decisão sua.
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+
+##### GitHub recusa o disparo 422
+🔁 o passo "flaky" é passageiro e 5d96f53 é a ponta: repetindo o deploy na ponta de main (1 vez).
+🔴 falhou — run 1 ("flaky"); tentei repetir e o GitHub recusou: could not create workflow dispatch event: HTTP 422: Workflow does not have workflow_dispatch trigger. O workflow precisa de workflow_dispatch no on:; sem isso, um push novo.
+[rc=2]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+workflow run deploy.yml --ref main
+
+##### GitHub recusa o disparo 404
+🔁 o passo "flaky" é passageiro e 5d96f53 é a ponta: repetindo o deploy na ponta de main (1 vez).
+🛑 deploy-do-sha: o GitHub não conhece o workflow 'deploy.yml': HTTP 404: workflow deploy.yml not found on the default branch
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### GitHub recusa o disparo 403
+🔁 o passo "flaky" é passageiro e 5d96f53 é a ponta: repetindo o deploy na ponta de main (1 vez).
+🔴 falhou — run 1 ("flaky"); tentei repetir e o GitHub recusou: HTTP 403: Resource not accessible. O workflow precisa de workflow_dispatch no on:; sem isso, um push novo.
+[rc=2]
+=== AT-026
+
+##### nenhum run
+⏳ ainda não sei — não achei nenhum run de 5d96f53 no workflow deploy.yml em 0 s; isso não diz que não há o que verificar.
+[rc=4]
+
+##### workflow desconhecido A
+🛑 deploy-do-sha: o GitHub não conhece o workflow 'deploy.yml': could not find any workflows named nope
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### workflow desconhecido B
+🛑 deploy-do-sha: o GitHub não conhece o workflow 'deploy.yml': HTTP 404: workflow nope.yml not found on the default branch
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### workflow desconhecido C (gh mais antigo?)
+⏳ consulta falhou (could not find workflow: HTTP 404: Not Found (https://api.github.com/x)), tentando de novo · 0/0 min · run —
+⏳ ainda não sei — o deploy não terminou em 0 min (run —); isso não é falha. Último erro de consulta: could not find workflow: HTTP 404: Not Found (https://api.github.com/x).
+[rc=4]
+
+##### consulta falhando ate o teto
+⏳ consulta falhou (X), tentando de novo · 0/0 min · run —
+⏳ ainda não sei — o deploy não terminou em 0 min (run —); isso não é falha. Último erro de consulta: X.
+[rc=4]
+
+##### sem login
+⚠️ inconclusivo — o gh não está logado (To get started with GitHub CLI, please run:  gh auth login).
+[rc=3]
+
+##### token ruim
+⚠️ inconclusivo — o gh não está logado (HTTP 401: Bad credentials).
+[rc=3]
+
+##### sem commit
+🛑 deploy-do-sha: falta --commit <sha>
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### sha desconhecido
+🛑 deploy-do-sha: commit não encontrado: deadbeef
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### sem workflow
+🛑 deploy-do-sha: falta o workflow: passe --workflow <arquivo> ou preencha deploy.workflow em sdd/config.yaml
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### opcao
+🛑 deploy-do-sha: opção desconhecida: --xyz
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### sem valor
+🛑 deploy-do-sha: --workflow exige um valor
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### teto letra
+🛑 deploy-do-sha: --teto precisa ser um número inteiro de segundos: 'abc'
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### teto negativo
+🛑 deploy-do-sha: --teto precisa ser um número inteiro de segundos: '-1'
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### repo inexistente
+🛑 deploy-do-sha: pasta não encontrada: /nao/existe
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### flag vazia e slot
+🛑 deploy-do-sha: falta o workflow: passe --workflow <arquivo> ou preencha deploy.workflow em sdd/config.yaml
+uso: deploy-do-sha.sh --commit <sha> [--workflow <arquivo>] [--branch <b>] [--repo <dir>] [--teto 2400] [--intervalo 15] [--sem-run 120] [--transitorios "passo a,passo b"]
+[rc=64]
+
+##### gh ausente
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p15.sh: line 2: grep: command not found
+=== slot e --repo com espaco; python -I; LC_ALL=C
+
+##### slots
+🔁 o passo "outro" é passageiro e 5d96f53 é a ponta: repetindo o deploy na ponta de main (1 vez).
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+[rc=4]
+--- gh.log:
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+workflow run deploy.yml --ref main
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+
+##### LC_ALL=C ascii
+✅ no ar — run 1 (SHA 5d96f53)
+[rc=0]
+
+##### no subdir
+✅ no ar — run 1 (SHA 5d96f53)
+[rc=0]
+=== worktree: marca na pasta comum
+
+##### worktree
+🔁 o passo "flaky" é passageiro e 5d96f53 é a ponta: repetindo o deploy na ponta de main (1 vez).
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+[rc=4]
+redisparado-5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+--- gh.log:
+run list --workflow w --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow w --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+run view 1 --json jobs
+workflow run w --ref main
+run list --workflow w --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow w --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+
+##### da raiz, depois de redisparar na worktree: nao repete
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+[rc=4]
+--- gh.log:
+run list --workflow w --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 5d96f5354509ce3da0cc3c7ac9d8e0295ded37c9
+run list --workflow w --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event
+=== registro: nunca run rerun
+[exit=0]

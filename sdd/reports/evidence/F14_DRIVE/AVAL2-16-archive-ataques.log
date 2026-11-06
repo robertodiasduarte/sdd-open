@@ -1,0 +1,261 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p16.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p16.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+# doc <caminho>: arquivo rastreado num commit velho
+doc() { mkdir -p "$(dirname "$1")"; echo x > "$1"; git add -- "$1"; GIT_AUTHOR_DATE="2020-01-01T00:00:00" GIT_COMMITTER_DATE="2020-01-01T00:00:00" git commit -q -m "d $1"; }
+ficha() { # ficha <nome> <status> [corpo]
+  mkdir -p sdd/handoffs; printf '# H\n\n## Ficha\n\n| Campo | Valor |\n|---|---|\n| **Objetivo** | o |\n| **Status** | %s |\n| **Verify Gate** | v |\n\n%s\n' "$2" "${3:-}" > "sdd/handoffs/HANDOFF_$1.md"; }
+tot() { $ARQ "$@" 2>&1 | grep -E '^TOTAIS|^  .*(→|ficha|citad)'; echo "[rc=${PIPESTATUS[0]}]"; }
+novoa() { mkarq "$(novo)"; }
+echo "=== prefixo mais longo: cada prefixo composto e o vizinho nao listado"
+novoa; ficha F14 '🟡 aberta'; for n in FIX_REPORT_F14 BUILD_PLAN_F14 BUILD_REPORT_F14 REVISAO_DESIGN_F14 DRIVE_REPORT_F14 GOVERNANCA_REVIEW_F14 UX_REVIEW_F14 REVISAO_FRONTEIRA_F14 AVALIACAO_F14-ciclo1 AVALIACAO_F14_20261105-ciclo1 BUILD_REPORT_F14_FIX2 FIX_F14 RELATORIO_F14 CI_FIX_F14 REVISAO_CODIGO_F14 SESSION_PROMPT_F14 ; do doc sdd/reviews/$n.md; done; $ARQ --hoje 2026-11-05 ; echo "[rc=$?]"
+echo "=== os reviews/reports reais deste repositorio: agrupamento (copia so de nomes, com HANDOFF_F14_DRIVE aberta)"
+novoa; ficha F14_DRIVE '🟡 aberta'; ficha F14_PLAYBOOK '🟡 aberta'
+for f in $(ls $PROJ/sdd/reviews $PROJ/sdd/features $PROJ/sdd/reports | grep -E '(F14|.md$)' | grep -E 'F14'); do for d in reviews features reports; do [ -f $PROJ/sdd/$d/$f ] && doc sdd/$d/$f; done; done; ls sdd/reviews sdd/features sdd/reports | wc -l; $ARQ --hoje 2026-11-05 | grep -vE '^$'
+echo "=== minuscula / hifen / caixa diferente / slice"
+novoa; ficha minha-frente 'aberta'; doc sdd/reports/BUILD_REPORT_minha-frente.md; doc sdd/reviews/AVALIACAO_minha-frente.md; doc sdd/reports/DRIVE_REPORT_minha-frente.md; tot --hoje 2026-11-05
+novoa; ficha f14 'aberta'; doc sdd/reports/BUILD_REPORT_F14.md; doc sdd/features/DEFINE_F14.md; tot --hoje 2026-11-05; echo "--- ficha com o nome em MAIUSCULA, documentos em minuscula"; novoa; ficha GO_X 'aberta'; doc sdd/reports/BUILD_REPORT_go_x.md; tot --hoje 2026-11-05
+novoa; ficha G_s2 'aberta'; doc sdd/features/DEFINE_G_s2.md; doc sdd/features/DEFINE_G.md; mkdir -p sdd/releases/G; tot --hoje 2026-11-05
+novoa; ficha G 'aberta'; doc sdd/features/DEFINE_G_s3b.md; tot --hoje 2026-11-05
+novoa; ficha G_s2 '✅ ok'; doc sdd/features/DEFINE_G_s2.md; tot --hoje 2026-11-05
+novoa; ficha g_S2 'aberta'; doc sdd/features/DEFINE_G_S2.md; tot --hoje 2026-11-05
+novoa; ficha G_FIX 'aberta'; doc sdd/features/DEFINE_G.md; tot --hoje 2026-11-05
+echo "=== Status: ✅ fechada, sem campo, negrito"
+novoa; ficha A '✅ fechada'; doc sdd/features/DEFINE_A.md; tot --hoje 2026-11-05
+novoa; mkdir -p sdd/handoffs; echo 'sem ficha' > sdd/handoffs/HANDOFF_A.md; doc sdd/features/DEFINE_A.md; tot --hoje 2026-11-05
+novoa; ficha A '**✅ fechada**'; doc sdd/features/DEFINE_A.md; tot --hoje 2026-11-05; /usr/bin/python3 -I -B $PROJ/sdd/bin/handoff-lint.py sdd/handoffs/HANDOFF_A.md | tail -3
+echo "=== citado em ficha aberta: nome, documento, solto, caminho, HTML; prefixo que contem o nome; acento"
+novoa; ficha X 'aberta' 'cita BETA, sdd/reports/DEFINE_GAMA_20200101.md e sdd/reports/NOTAS.md parecer.txt'; doc sdd/features/DEFINE_BETA.md; doc sdd/features/DEFINE_GAMA.md; doc sdd/reports/DEFINE_GAMA_20200101.md; doc sdd/reports/NOTAS.md; doc sdd/reviews/parecer.txt; doc sdd/reports/OUTRA.md; tot --hoje 2026-11-05
+novoa; ficha ação 'aberta'; doc sdd/reports/BUILD_REPORT_ação.md; tot --hoje 2026-11-05
+echo "=== data de arquivo sujo: rastreado editado, com mtime velho, staged, renomeado, nao rastreado velho e novo"
+novoa; doc sdd/features/DEFINE_D1.md; doc sdd/features/DESIGN_D1.md; echo y >> sdd/features/DESIGN_D1.md; tot --hoje 2026-11-05
+novoa; doc sdd/features/DEFINE_D2.md; echo y >> sdd/features/DEFINE_D2.md; touch -t 202001010000 sdd/features/DEFINE_D2.md; git status --porcelain; tot --hoje 2026-11-05; echo '--- editado (hoje real) e staged com mtime velho'; git add sdd/features/DEFINE_D2.md; tot --hoje 2026-11-05
+novoa; doc sdd/reports/A1.md; git mv sdd/reports/A1.md sdd/reports/A2.md; tot --hoje 2026-11-05
+novoa; doc sdd/reports/N1.md; mkdir -p sdd/reports; echo n > sdd/reports/novo_nao_rastreado.md; tot --hoje 2026-11-05; tot --hoje 2099-01-01; 
+novoa; doc sdd/features/DEFINE_U.md; echo u > sdd/features/DESIGN_U.md; touch -t 202001010000 sdd/features/DESIGN_U.md; tot --hoje 2026-11-05; $ARQ --lote sem-ledger --aplicar --hoje 2026-11-05; git status --porcelain
+novoa; doc sdd/reports/S.md; touch sdd/reports/S.md; echo "--- limpo com mtime novo: vale o commit"; tot --hoje 2026-11-05
+echo "=== rastreado limpo sem entrada no log (commit de merge / shallow): destino"
+novoa; git commit -q --allow-empty -m base; git checkout -q -b b1; doc sdd/reports/M1.md; git checkout -q main; git commit -q --allow-empty -m m2; git merge -q --squash b1 >/dev/null; git commit -q -m squash; tot --hoje 2099-01-01
+echo "=== nomes: espaco, acento NFC e NFD, nome de data, .gitkeep, README"
+novoa; doc "sdd/reports/com espaço.md"; n=$(printf 'cafe\xcc\x81.md'); doc "sdd/reports/$n"; n2=$(printf 'caf\xc3\xa9b.md'); doc "sdd/reports/$n2"; doc sdd/reports/2020-01-01; doc sdd/reports/.gitkeep; doc sdd/reports/README.md; doc sdd/reviews/README.md; doc sdd/features/README.md; doc sdd/reports/.DS_Store; $ARQ --hoje 2026-11-05 | grep -vE '^$'; 
+$ARQ --lote soltos --aplicar --hoje 2026-11-05 2>&1 | tail -8; git status --porcelain | cut -c1-100
+echo "=== destino existente, git mv falha, subpasta, lote sem rastreado, --aplicar sem lote, fora de repo, sem sdd"
+novoa; doc sdd/reports/D.md; mkdir -p sdd/archive/_REPORTS_2020-01; echo o > sdd/archive/_REPORTS_2020-01/D.md; arq --lote soltos --aplicar --hoje 2026-11-05 | tail -6; git status --porcelain
+novoa; doc sdd/reports/E.md; mkdir -p sdd/reports/evidence/x sdd/releases/Q sdd/archive/q; doc sdd/reports/evidence/x/a.log; doc sdd/releases/Q/a.md; arq --hoje 2026-11-05 | grep -E 'Subpastas|evidence|releases|rc=|Nada'; echo arquivo > sdd/archive.tmp; rmdir sdd/archive/q sdd/archive; mv sdd/archive.tmp sdd/archive; arq --lote soltos --aplicar --hoje 2026-11-05 | tail -4
+arq --aplicar | tail -3; arq --lote xyz | tail -2; arq --dias-a abc | tail -2; arq --hoje ontem | tail -2; arq --dias-a -1 | tail -2; arq extra | tail -2; cd "$(novo)"; arq | tail -3; git init -q; arq | tail -3
+echo "=== simulacao nao muda nada; L14 cp1252"
+novoa; doc sdd/reports/Z.md; git status --porcelain > $LAB/s1; arq --hoje 2026-11-05 > /dev/null; git status --porcelain > $LAB/s2; cmp $LAB/s1 $LAB/s2 && echo igual; PYTHONIOENCODING=cp1252 $ARQ --hoje 2026-11-05 | /usr/bin/tail -2; echo "[rc=${PIPESTATUS[0]}]"
+=== prefixo mais longo: cada prefixo composto e o vizinho nao listado
+
+== Lote com-ledger: 0 arquivo(s) ==
+
+== Lote sem-ledger: 0 arquivo(s) ==
+
+== Lote soltos: 6 arquivo(s) ==
+  sdd/reviews/REVISAO_CODIGO_F14.md  →  sdd/archive/_REPORTS_2020-01/REVISAO_CODIGO_F14.md
+  sdd/reviews/AVALIACAO_F14-ciclo1.md  →  sdd/archive/_REPORTS_2020-01/AVALIACAO_F14-ciclo1.md
+  sdd/reviews/REVISAO_FRONTEIRA_F14.md  →  sdd/archive/_REPORTS_2020-01/REVISAO_FRONTEIRA_F14.md
+  sdd/reviews/CI_FIX_F14.md  →  sdd/archive/_REPORTS_2020-01/CI_FIX_F14.md
+  sdd/reviews/RELATORIO_F14.md  →  sdd/archive/_REPORTS_2020-01/RELATORIO_F14.md
+  sdd/reviews/SESSION_PROMPT_F14.md  →  sdd/archive/_REPORTS_2020-01/SESSION_PROMPT_F14.md
+
+== Protegidos: 1 grupo(s) ==
+  F14 (10 documento(s)): ficha aberta em HANDOFF_F14.md
+
+== Recentes (ficam): 0 grupo(s) ==
+
+== Sem classificação (decisão sua): 0 ==
+
+== Subpastas (ficam): 0 ==
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=6 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[rc=0]
+=== os reviews/reports reais deste repositorio: agrupamento (copia so de nomes, com HANDOFF_F14_DRIVE aberta)
+      21
+== Lote com-ledger: 0 arquivo(s) ==
+== Lote sem-ledger: 0 arquivo(s) ==
+== Lote soltos: 1 arquivo(s) ==
+  sdd/reviews/REVISAO_FRONTEIRA_F14_PLAYBOOK_20261105.md  →  sdd/archive/_REPORTS_2020-01/REVISAO_FRONTEIRA_F14_PLAYBOOK_20261105.md
+== Protegidos: 2 grupo(s) ==
+  F14_DRIVE (6 documento(s)): ficha aberta em HANDOFF_F14_DRIVE.md
+  F14_PLAYBOOK (9 documento(s)): ficha aberta em HANDOFF_F14_PLAYBOOK.md
+== Recentes (ficam): 0 grupo(s) ==
+== Sem classificação (decisão sua): 0 ==
+== Subpastas (ficam): 0 ==
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=2 · recentes=0 · sem classificação=0 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+=== minuscula / hifen / caixa diferente / slice
+  minha-frente (3 documento(s)): ficha aberta em HANDOFF_minha-frente.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+  sdd/features/DEFINE_F14.md  →  sdd/archive/F14/DEFINE_F14.md
+  sdd/reports/BUILD_REPORT_F14.md  →  sdd/archive/F14/BUILD_REPORT_F14.md
+TOTAIS: com-ledger=0 · sem-ledger=2 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+--- ficha com o nome em MAIUSCULA, documentos em minuscula
+  sdd/reports/BUILD_REPORT_go_x.md  →  sdd/archive/_REPORTS_2020-01/BUILD_REPORT_go_x.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+  G (2 documento(s)): ficha aberta em HANDOFF_G.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+  G (1 documento(s)): ficha aberta em HANDOFF_G.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+  sdd/features/DEFINE_G_s2.md  →  sdd/archive/G/DEFINE_G_s2.md
+TOTAIS: com-ledger=0 · sem-ledger=1 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+  sdd/features/DEFINE_G_S2.md  →  sdd/archive/G_S2/DEFINE_G_S2.md
+TOTAIS: com-ledger=0 · sem-ledger=1 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+  G (1 documento(s)): citada numa ficha aberta
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+=== Status: ✅ fechada, sem campo, negrito
+  sdd/features/DEFINE_A.md  →  sdd/archive/A/DEFINE_A.md
+TOTAIS: com-ledger=0 · sem-ledger=1 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+  A (1 documento(s)): ficha aberta em HANDOFF_A.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+  A (1 documento(s)): ficha aberta em HANDOFF_A.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+🛑 sdd/handoffs/HANDOFF_A.md: o 1º título não é '# HANDOFF: <feature>'
+🛑 sdd/handoffs/HANDOFF_A.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova (só a ficha com Status ✅ dispensa o prompt)
+🛑 sdd/handoffs/HANDOFF_A.md: ## Histórico de slices sem nenhum '### <slice> — AAAA-MM-DD'
+RESULTADO: VERMELHO
+→ corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo
+=== citado em ficha aberta: nome, documento, solto, caminho, HTML; prefixo que contem o nome; acento
+  sdd/reports/OUTRA.md  →  sdd/archive/_REPORTS_2020-01/OUTRA.md
+  BETA (1 documento(s)): citada numa ficha aberta
+  GAMA (2 documento(s)): documento citado numa ficha aberta
+  NOTAS.md (1 documento(s)): documento citado numa ficha aberta
+  parecer.txt (1 documento(s)): documento citado numa ficha aberta
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=4 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+  sdd/reports/BUILD_REPORT_ação.md  →  sdd/archive/_REPORTS_2020-01/BUILD_REPORT_ação.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+=== data de arquivo sujo: rastreado editado, com mtime velho, staged, renomeado, nao rastreado velho e novo
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=0 · recentes=1 · sem classificação=0 · subpastas=0
+[rc=0]
+ M sdd/features/DEFINE_D2.md
+  sdd/features/DEFINE_D2.md  →  sdd/archive/D2/DEFINE_D2.md
+TOTAIS: com-ledger=0 · sem-ledger=1 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+--- editado (hoje real) e staged com mtime velho
+  sdd/features/DEFINE_D2.md  →  sdd/archive/D2/DEFINE_D2.md
+TOTAIS: com-ledger=0 · sem-ledger=1 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=1 · subpastas=0
+[rc=0]
+  sdd/reports/N1.md  →  sdd/archive/_REPORTS_2020-01/N1.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=1 · subpastas=0
+[rc=0]
+  sdd/reports/N1.md  →  sdd/archive/_REPORTS_2020-01/N1.md
+  sdd/reports/novo_nao_rastreado.md  →  sdd/archive/_REPORTS_2026-11/novo_nao_rastreado.md  ⚠️ não rastreado: pulo
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=2 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+  sdd/features/DEFINE_U.md  →  sdd/archive/U/DEFINE_U.md
+  sdd/features/DESIGN_U.md  →  sdd/archive/U/DESIGN_U.md  ⚠️ não rastreado: pulo
+TOTAIS: com-ledger=0 · sem-ledger=2 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+
+== Lote sem-ledger: 2 arquivo(s) ==
+  sdd/features/DEFINE_U.md  →  sdd/archive/U/DEFINE_U.md
+  sdd/features/DESIGN_U.md  →  sdd/archive/U/DESIGN_U.md  ⚠️ não rastreado: pulo
+
+TOTAIS: com-ledger=0 · sem-ledger=2 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+✅ movi 1 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+R  sdd/features/DEFINE_U.md -> sdd/archive/U/DEFINE_U.md
+?? sdd/features/
+--- limpo com mtime novo: vale o commit
+  sdd/reports/S.md  →  sdd/archive/_REPORTS_2020-01/S.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+=== rastreado limpo sem entrada no log (commit de merge / shallow): destino
+Automatic merge went well; stopped before committing as requested
+  sdd/reports/M1.md  →  sdd/archive/_REPORTS_2026-11/M1.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+=== nomes: espaco, acento NFC e NFD, nome de data, .gitkeep, README
+== Lote com-ledger: 0 arquivo(s) ==
+== Lote sem-ledger: 0 arquivo(s) ==
+== Lote soltos: 6 arquivo(s) ==
+  sdd/reports/.DS_Store  →  sdd/archive/_REPORTS_2020-01/.DS_Store
+  sdd/reports/2020-01-01  →  sdd/archive/_REPORTS_2020-01/2020-01-01
+  sdd/reports/README.md  →  sdd/archive/_REPORTS_2020-01/README.md
+  sdd/reports/caféb.md  →  sdd/archive/_REPORTS_2020-01/caféb.md
+  sdd/reports/com espaço.md  →  sdd/archive/_REPORTS_2020-01/com espaço.md
+  sdd/reviews/README.md  →  sdd/archive/_REPORTS_2020-01/README.md
+== Protegidos: 0 grupo(s) ==
+== Recentes (ficam): 0 grupo(s) ==
+== Sem classificação (decisão sua): 2 ==
+  sdd/features/README.md
+  sdd/reports/café.md
+== Subpastas (ficam): 0 ==
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=6 · protegidos=0 · recentes=0 · sem classificação=2 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+  sdd/reports/caféb.md  →  sdd/archive/_REPORTS_2020-01/caféb.md
+  sdd/reports/com espaço.md  →  sdd/archive/_REPORTS_2020-01/com espaço.md
+  sdd/reviews/README.md  →  sdd/archive/_REPORTS_2020-01/README.md
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=6 · protegidos=0 · recentes=0 · sem classificação=2 · subpastas=0
+✅ movi 5 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+R  sdd/reports/.DS_Store -> sdd/archive/_REPORTS_2020-01/.DS_Store
+R  sdd/reports/2020-01-01 -> sdd/archive/_REPORTS_2020-01/2020-01-01
+R  sdd/reports/README.md -> sdd/archive/_REPORTS_2020-01/README.md
+R  "sdd/reports/caf\303\251b.md" -> "sdd/archive/_REPORTS_2020-01/caf\303\251b.md"
+R  "sdd/reports/com espa\303\247o.md" -> "sdd/archive/_REPORTS_2020-01/com espa\303\247o.md"
+=== destino existente, git mv falha, subpasta, lote sem rastreado, --aplicar sem lote, fora de repo, sem sdd
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+✅ movi 0 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+[rc=0]
+?? sdd/archive/
+== Subpastas (ficam): 1 ==
+  sdd/reports/evidence/
+Nada foi movido.
+[rc=0]
+  sdd/reports/E.md  →  sdd/archive/_REPORTS_2020-01/E.md
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=1
+[rc=2]
+RESULTADO: ERRO DE USO
+→ escolha com-ledger, sem-ledger ou soltos; nada foi movido.
+[rc=64]
+→ rode --help para ver o uso; nada foi movido.
+[rc=64]
+→ rode --help para ver o uso; nada foi movido.
+[rc=64]
+→ corrija e rode de novo; nada foi movido.
+[rc=64]
+→ corrija e rode de novo; nada foi movido.
+[rc=64]
+→ rode --help para ver o uso; nada foi movido.
+[rc=64]
+RESULTADO: FALHA
+→ rode na raiz do projeto; nada foi movido.
+[rc=2]
+RESULTADO: FALHA
+→ rode no projeto que usa o SDD; nada foi movido.
+[rc=2]
+=== simulacao nao muda nada; L14 cp1252
+igual
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[rc=0]
+[exit=0]

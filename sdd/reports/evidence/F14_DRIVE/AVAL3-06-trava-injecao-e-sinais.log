@@ -1,0 +1,83 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p06.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p06.sh
+. $(dirname "$0")/lab.sh
+G="echo \$\$ >> gate.calls; while [ ! -f .go ]; do sleep 0.1; done; test -f .verde"
+L=sdd/reports/progress/DRIVE_F.lock
+linhas() { [ -f gate.calls ] && wc -l < gate.calls | tr -d " " || echo 0; }
+echo "=== janela da trava vazia, com sleep injetado numa COPIA: entre criar e escrever o pid"
+mkrepo "$(novo)" "$G" >/dev/null
+/usr/bin/python3 -I -B -c "
+p=\"sdd/bin/sdd-drive.sh\"; s=open(p,encoding=\"utf-8\").read()
+a=\"    with os.fdopen(fd, \\\"w\\\") as f:\n        f.write(str(os.getpid()))\"
+assert a in s
+s=s.replace(a,\"    time.sleep(0.8)\n\"+a); open(p,\"w\",encoding=\"utf-8\").write(s)"
+git add -A; git commit -qm inj; touch .verde; drv iniciar $D >/dev/null; feito; rel
+/bin/bash sdd/bin/sdd-drive.sh verificar $D >/dev/null 2>&1 &
+sleep 0.5; echo "trava agora (bytes): $(wc -c < $L)"
+/bin/bash sdd/bin/sdd-drive.sh verificar $D >/dev/null 2>&1 &
+sleep 2.5; echo "gates simultaneos: $(linhas)"; touch .go; wait; gates
+echo; echo "=== trava vazia em disco, ninguem rodando"
+mkrepo "$(novo)"; touch .verde; drv iniciar $D > /dev/null; feito; rel; : > $L; drv proximo $D; ls $L 2>/dev/null
+echo; echo "=== SIGINT no gate em 1o plano"
+mkrepo "$(novo)" "$G"; touch .verde; drv iniciar $D > /dev/null; feito; rel
+cat > ../int-$$.py <<PY
+import os, signal, subprocess, sys, time
+p = subprocess.Popen(["/bin/bash", "sdd/bin/sdd-drive.sh", "verificar", "$D"], preexec_fn=lambda: (os.setsid(), signal.signal(signal.SIGINT, signal.default_int_handler)), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8")
+while not os.path.exists("gate.calls"): time.sleep(0.1)
+time.sleep(0.3)
+os.killpg(p.pid, signal.SIGINT)
+out = p.communicate(timeout=20)[0]
+print(out[-900:]); print("[rc=%s]" % p.returncode)
+PY
+/usr/bin/python3 -I -B ../int-$$.py; ls $L 2>/dev/null; gates; drv proximo $D
+echo; echo "=== SIGTERM no python em 1o plano: gate orfao"
+mkrepo "$(novo)" "$G"; touch .verde; drv iniciar $D > /dev/null; feito; rel
+/bin/bash sdd/bin/sdd-drive.sh verificar $D > /dev/null 2>&1 & B=$!
+sleep 1.5; PY=$(/usr/bin/pgrep -P $B | head -1); kill -TERM $PY; sleep 0.3; ls $L; drv proximo $D; gates; tail -2 sdd/reports/evidence/F/DRIVE-gate-r1.log; touch .go; wait 2>/dev/null
+=== janela da trava vazia, com sleep injetado numa COPIA: entre criar e escrever o pid
+trava agora (bytes):        0
+gates simultaneos: 2
+gates: [(1, 'fbef985', 0), (2, 'fbef985', 0)]
+
+=== trava vazia em disco, ninguem rodando
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== SIGINT no gate em 1o plano
+ry/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 507, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1126, in communicate
+    self.wait()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1189, in wait
+    return self._wait(timeout=timeout)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1917, in _wait
+    (pid, sts) = self._try_wait(0)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1875, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+KeyboardInterrupt
+
+[rc=-2]
+sdd/reports/progress/DRIVE_F.lock
+gates: []
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+
+=== SIGTERM no python em 1o plano: gate orfao
+sdd/reports/progress/DRIVE_F.lock
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gates: []
+$ verify-gate.sh sdd/features/DEFINE_F.md
+▶ Verify Gate [test]: echo $$ >> gate.calls; while [ ! -f .go ]; do sleep 0.1; done; test -f .verde
+[exit=0]

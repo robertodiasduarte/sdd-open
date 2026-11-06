@@ -1,0 +1,181 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkarq "$V/pasta com espaço"; A="$PROJ/sdd/bin/sdd-archive.py"
+echo == Q1 nomes com espaco e acento NFC e NFD, soltos; echo a > "sdd/reports/RELATÓRIO final.md"; python3 -c "import unicodedata;open(unicodedata.normalize(\"NFD\",\"sdd/reports/REVISÃO decomposta.md\"),\"w\").write(\"a\")"; echo a > "sdd/reviews/AVALIACAO_K L.md"; velho; git status --porcelain | wc -l; S1=$(git status --porcelain); arq; S2=$(git status --porcelain); test "$S1" = "$S2" && echo status-igual; arq --lote soltos --aplicar; git status --short | cut -c1-120; git commit -qm lote
+echo == Q2 de subpasta / sem sdd / fora de repo; (cd sdd/reports; arq --dias-b 100000 | tail -n 3); V2=$(novo); (cd $V2; arq; git init -q; arq) | grep -E "🛑|rc="
+echo == Q3 uso; arq --aplicar | tail -n 1; arq --lote nada | tail -n 1; arq --dias-a x | tail -n 1; arq --dias-a -1 | tail -n 1; arq --hoje 2026-13-01 | tail -n 1; arq --hoje 20260101 | tail -n 1
+echo == Q4 index travado, git mv falha; V3=$(novo); mkarq $V3/x; echo a > sdd/reports/X.md; echo a > sdd/reports/Y.md; velho; : > .git/index.lock; arq --lote soltos --aplicar | tail -n 5; git status --short | head -n 3; ls sdd/reports; ls sdd/archive/*/ 2>/dev/null; mv .git/index.lock $V3/lock
+echo == Q5 destino existe e nao rastreado; mkdir -p sdd/archive/_REPORTS_2020-01; echo b > sdd/archive/_REPORTS_2020-01/X.md; echo n > sdd/reports/NOVO.md; arq --lote soltos --aplicar; git status --short;  cat sdd/archive/_REPORTS_2020-01/X.md
+echo == Q6 edicao de hoje sem commit no documento \(quieto = so commit\); V4=$(novo); mkarq $V4/x; echo a > sdd/features/DEFINE_M.md; velho; echo editado-hoje >> sdd/features/DEFINE_M.md; echo novo > sdd/features/DESIGN_M.md; arq --lote sem-ledger --aplicar; git status --short
+echo == Q7 grupo novo so nao rastreado: idade; V5=$(novo); mkarq $V5/x; echo a > sdd/features/DEFINE_N.md; echo a > sdd/reports/SOLTO_HOJE.md; git commit -q --allow-empty -m v; arq
+echo == Q8 FIX de feature: FIX_F14 x REVISAO_DESIGN; V6=$(novo); mkarq $V6/x; for n in FIX_F14.md FIX_REPORT_F14.md BUILD_PLAN_F14.md REVISAO_DESIGN_F14_20200101.md REVISAO_F14.md DEFINE_F14_FIX2.md AUDITORIA_F14.md DEFINE_F14_AUDITORIA_X.md; do echo a > sdd/features/$n; done; velho; arq | grep -E "archive/|FIX|Sem class"
+echo == Q9 releases/archive/evidence nunca; V7=$(novo); mkarq $V7/x; mkdir -p sdd/releases/R sdd/archive/Z sdd/reports/evidence/R sdd/reports/progress sdd/reports/briefs sdd/reviews/sub; for f in sdd/releases/R/a.md sdd/archive/Z/a.md sdd/reports/evidence/R/a.log sdd/reports/progress/PROGRESS_R.md sdd/reports/briefs/BRIEF_x.md sdd/reviews/sub/a.md; do echo a > $f; done; echo a > sdd/reports/BUILD_REPORT_R.md; velho; arq --lote com-ledger --aplicar; git status --short
+echo == Q10 saida fora de UTF-8; V8=$(novo); mkarq $V8/x; echo a > sdd/reports/X.md; velho; for enc in cp1252 ascii latin-1; do PYTHONIOENCODING=$enc /usr/bin/python3 -B "$A" > $V8/o.txt 2>&1; echo "$enc rc=$?"; tail -n 1 $V8/o.txt | cut -c1-120; done; LC_ALL=en_US.ISO8859-1 /usr/bin/python3 -B "$A" > $V8/o2.txt 2>&1; echo latin1-locale rc=$?; tail -n 1 $V8/o2.txt | cut -c1-100; PYTHONIOENCODING=cp1252 /usr/bin/python3 -B "$A" --lote soltos --aplicar 2>&1 | tail -n 1 | cut -c1-100; git status --short;  for enc in cp1252; do printf "--- comparativo: outros scripts sob %s: " $enc; PYTHONIOENCODING=$enc /usr/bin/python3 -B $PROJ/sdd/bin/design-lint.py sdd/nada.md > $V8/o3.txt 2>&1; echo rc=$?; tail -n 1 $V8/o3.txt | cut -c1-100; done
+echo == Q11 repositorio sem commit; V9=$(novo); mkarq $V9/x; echo a > sdd/reports/X.md; arq | tail -n 4
+echo == Q12 simulacao no proprio projeto, somente leitura; cd $PROJ; S1=$(git status --porcelain); /usr/bin/python3 -B sdd/bin/sdd-archive.py > $V/o.txt 2>&1; echo rc=$?; S2=$(git status --porcelain); test "$S1" = "$S2" && echo status-igual; grep -E "^(TOTAIS|Nada)" $V/o.txt; grep -c "0000-00" $V/o.txt
+== Q1 nomes com espaco e acento NFC e NFD, soltos
+       0
+--- sdd-archive 
+
+== Lote com-ledger: 0 arquivo(s) ==
+
+== Lote sem-ledger: 0 arquivo(s) ==
+
+== Lote soltos: 3 arquivo(s) ==
+  sdd/reports/RELATÓRIO final.md  →  sdd/archive/_REPORTS_2020-01/RELATÓRIO final.md
+  sdd/reports/REVISÃO decomposta.md  →  sdd/archive/_REPORTS_0000-00/REVISÃO decomposta.md  ⚠️ não rastreado: pulo
+  sdd/reviews/AVALIACAO_K L.md  →  sdd/archive/_REPORTS_2020-01/AVALIACAO_K L.md
+
+== Protegidos: 0 grupo(s) ==
+
+== Recentes (ficam): 0 grupo(s) ==
+
+== Sem classificação (decisão sua): 0 ==
+
+== Subpastas (ficam): 0 ==
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=3 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[rc=0]
+status-igual
+--- sdd-archive --lote soltos --aplicar
+
+== Lote soltos: 3 arquivo(s) ==
+  sdd/reports/RELATÓRIO final.md  →  sdd/archive/_REPORTS_2020-01/RELATÓRIO final.md
+  sdd/reports/REVISÃO decomposta.md  →  sdd/archive/_REPORTS_0000-00/REVISÃO decomposta.md  ⚠️ não rastreado: pulo
+  sdd/reviews/AVALIACAO_K L.md  →  sdd/archive/_REPORTS_2020-01/AVALIACAO_K L.md
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=3 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+✅ movi 2 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+[rc=0]
+R  "sdd/reviews/AVALIACAO_K L.md" -> "sdd/archive/_REPORTS_2020-01/AVALIACAO_K L.md"
+R  "sdd/reports/RELAT\303\223RIO final.md" -> "sdd/archive/_REPORTS_2020-01/RELAT\303\223RIO final.md"
+== Q2 de subpasta / sem sdd / fora de repo
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[rc=0]
+🛑 sdd-archive: esta pasta não é um repositório git.
+[rc=2]
+🛑 sdd-archive: não achei a pasta sdd/ neste repositório.
+[rc=2]
+== Q3 uso
+[rc=64]
+[rc=64]
+[rc=64]
+[rc=64]
+[rc=64]
+[rc=64]
+== Q4 index travado, git mv falha
+  sdd/reports/X.md  →  sdd/archive/_REPORTS_2020-01/X.md
+  sdd/reports/Y.md  →  sdd/archive/_REPORTS_2020-01/Y.md
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=2 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=2]
+X.md
+Y.md
+== Q5 destino existe e nao rastreado
+--- sdd-archive --lote soltos --aplicar
+⚠️ destino já existe, pulei: sdd/archive/_REPORTS_2020-01/X.md
+
+== Lote soltos: 3 arquivo(s) ==
+  sdd/reports/NOVO.md  →  sdd/archive/_REPORTS_0000-00/NOVO.md  ⚠️ não rastreado: pulo
+  sdd/reports/X.md  →  sdd/archive/_REPORTS_2020-01/X.md
+  sdd/reports/Y.md  →  sdd/archive/_REPORTS_2020-01/Y.md
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=3 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+✅ movi 1 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+[rc=0]
+R  sdd/reports/Y.md -> sdd/archive/_REPORTS_2020-01/Y.md
+?? sdd/archive/_REPORTS_2020-01/X.md
+?? sdd/reports/NOVO.md
+b
+== Q6 edicao de hoje sem commit no documento (quieto = so commit)
+--- sdd-archive --lote sem-ledger --aplicar
+
+== Lote sem-ledger: 2 arquivo(s) ==
+  sdd/features/DEFINE_M.md  →  sdd/archive/M/DEFINE_M.md
+  sdd/features/DESIGN_M.md  →  sdd/archive/M/DESIGN_M.md  ⚠️ não rastreado: pulo
+
+TOTAIS: com-ledger=0 · sem-ledger=2 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+✅ movi 1 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+[rc=0]
+RM sdd/features/DEFINE_M.md -> sdd/archive/M/DEFINE_M.md
+?? sdd/features/
+== Q7 grupo novo so nao rastreado: idade
+--- sdd-archive 
+
+== Lote com-ledger: 0 arquivo(s) ==
+
+== Lote sem-ledger: 1 arquivo(s) ==
+  sdd/features/DEFINE_N.md  →  sdd/archive/N/DEFINE_N.md  ⚠️ não rastreado: pulo
+
+== Lote soltos: 1 arquivo(s) ==
+  sdd/reports/SOLTO_HOJE.md  →  sdd/archive/_REPORTS_0000-00/SOLTO_HOJE.md  ⚠️ não rastreado: pulo
+
+== Protegidos: 0 grupo(s) ==
+
+== Recentes (ficam): 0 grupo(s) ==
+
+== Sem classificação (decisão sua): 0 ==
+
+== Subpastas (ficam): 0 ==
+
+TOTAIS: com-ledger=0 · sem-ledger=1 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[rc=0]
+== Q8 FIX de feature: FIX_F14 x REVISAO_DESIGN
+  sdd/features/AUDITORIA_F14.md  →  sdd/archive/F14/AUDITORIA_F14.md
+  sdd/features/BUILD_PLAN_F14.md  →  sdd/archive/F14/BUILD_PLAN_F14.md
+  sdd/features/DEFINE_F14_AUDITORIA_X.md  →  sdd/archive/F14/DEFINE_F14_AUDITORIA_X.md
+  sdd/features/DEFINE_F14_FIX2.md  →  sdd/archive/F14/DEFINE_F14_FIX2.md
+  sdd/features/FIX_F14.md  →  sdd/archive/F14/FIX_F14.md
+  sdd/features/REVISAO_DESIGN_F14_20200101.md  →  sdd/archive/F14/REVISAO_DESIGN_F14_20200101.md
+  sdd/features/REVISAO_F14.md  →  sdd/archive/F14/REVISAO_F14.md
+  sdd/features/FIX_REPORT_F14.md  →  sdd/archive/REPORT_F14/FIX_REPORT_F14.md
+== Sem classificação (decisão sua): 0 ==
+== Q9 releases/archive/evidence nunca
+--- sdd-archive --lote com-ledger --aplicar
+
+== Lote com-ledger: 1 arquivo(s) ==
+  sdd/reports/BUILD_REPORT_R.md  →  sdd/archive/R/BUILD_REPORT_R.md
+
+TOTAIS: com-ledger=1 · sem-ledger=0 · soltos=0 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=4
+✅ movi 1 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+[rc=0]
+R  sdd/reports/BUILD_REPORT_R.md -> sdd/archive/R/BUILD_REPORT_R.md
+== Q10 saida fora de UTF-8
+cp1252 rc=1
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 20: character maps to <undefined>
+ascii rc=1
+UnicodeEncodeError: 'ascii' codec can't encode character '\u2192' in position 20: ordinal not in range(128)
+latin-1 rc=1
+UnicodeEncodeError: 'latin-1' codec can't encode character '\u2192' in position 20: ordinal not in range(256)
+latin1-locale rc=1
+UnicodeEncodeError: 'latin-1' codec can't encode character '\u2192' in position 20: ordinal not in r
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 20: character maps t
+/bin/bash: line 10: printf: --: invalid option
+printf: usage: printf [-v var] format [arguments]
+rc=64
+uso: design-lint.py <DESIGN.md>
+== Q11 repositorio sem commit
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[rc=0]
+== Q12 simulacao no proprio projeto, somente leitura
+rc=0
+status-igual
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=20 · recentes=0 · sem classificação=1 · subpastas=2
+Nada foi movido.
+0
+[exit=1]
