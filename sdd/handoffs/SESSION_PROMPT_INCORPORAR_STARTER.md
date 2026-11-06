@@ -1,10 +1,29 @@
-# Continuar: INCORPORAR_STARTER — sessão 13: correções da v2.7.0 e brainstorm da F15 Substituição do SDD privado
+# Continuar: INCORPORAR_STARTER — sessão 13 (retomada em domingo, 2026-11-08): correções da v2.7.0 e brainstorm da F15 Substituição do SDD privado
 
 Esta sessão roda **dentro da worktree** `/Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive`, branch `feat/f14-drive`, em `b3526ae` (um commit à frente de `origin/main` = `b0663d3` = tag `v2.7.0`). Os artefatos SDD da família (features, handoffs, reports, reviews) já estão no disco, fora do commit; a fonte deles é a branch `docs/incorporar-starter` do remoto, nunca mesclada em `main`.
 
 ## Conferir a worktree (antes de ler qualquer coisa)
 
-A worktree **já existe**: não rode `git worktree add`. Confira que está tudo no lugar:
+A worktree foi **removida em 2026-11-06**, a pedido do Roberto, e precisa ser recriada **antes** de abrir o agente nela. Se ela não existir, ou se a sessão abriu em outra pasta, pare e peça ao Roberto para rodar o comando abaixo no Terminal e abrir o agente em `/Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive`: nenhum `cd` muda a pasta à qual a sessão fica presa.
+
+```bash
+bash /Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/retomar-sessao13.sh
+```
+
+O script faz isto, caso precise repetir à mão:
+
+```bash
+cd /Users/robertoduarte/rdd-public/sdd-open
+GIT_TERMINAL_PROMPT=0 git fetch -q origin
+git worktree add -q /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive feat/f14-drive   # a branch local guarda o b3526ae
+cd /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
+GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.7.0                                       # base do check-versions
+git checkout -q origin/docs/incorporar-starter -- sdd/features sdd/handoffs sdd/reports sdd/reviews
+git rm -r -q --cached sdd/features sdd/handoffs sdd/reports sdd/reviews                    # ficam no disco, fora do commit
+tar -xzf /Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F14_DRIVE-revisoes-traces.tar.gz   # revisões, trace e registro
+```
+
+Já dentro da worktree, confira que está tudo no lugar:
 
 ```bash
 git rev-parse --show-toplevel                 # esperado: /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
@@ -17,20 +36,7 @@ git status --short | head -6                  # esperado: só "?? sdd/…"
 ls sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md sdd/features/PLANO_F4_F15_CONSOLIDADO.md sdd/reports/evidence/F14_DRIVE/rodada5-reviewer.md
 ```
 
-Se a sessão abriu em outra pasta, pare e peça ao Roberto para abrir o agente na pasta da worktree: nenhum `cd` muda a pasta à qual a sessão fica presa. Se a worktree não existir, recrie a partir do clone principal e reabra a sessão nela:
-
-```bash
-cd /Users/robertoduarte/rdd-public/sdd-open
-GIT_TERMINAL_PROMPT=0 git fetch -q origin
-git worktree add /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive feat/f14-drive   # a branch local guarda o b3526ae
-cd /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
-GIT_TERMINAL_PROMPT=0 git fetch -q origin tag v2.7.0                                    # base do check-versions
-GIT_TERMINAL_PROMPT=0 git fetch -q origin docs/incorporar-starter
-git checkout origin/docs/incorporar-starter -- sdd/features sdd/handoffs sdd/reports sdd/reviews
-git rm -r -q --cached sdd/features sdd/handoffs sdd/reports sdd/reviews                 # ficam no disco, fora do commit
-```
-
-**Não apague a branch local `feat/f14-drive` antes de levar o `b3526ae`:** ele só existe nela. A branch local `feat/f14-playbook` já foi levada (`252d351` virou `aabc4a3`); apagá-la é decisão do Roberto. As pastas `EXTERNAL_REVIEW_*` da F14 Drive estão em `/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F14_DRIVE-revisoes-traces.tar.gz`, só nesta máquina, e também no disco da worktree. O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
+**Não apague a branch local `feat/f14-drive` antes de levar o `b3526ae`:** ele só existe nela. A branch local `feat/f14-playbook` já foi levada (`252d351` virou `aabc4a3`); apagá-la é decisão do Roberto. As pastas `EXTERNAL_REVIEW_*` da F14 Drive, o trace e o registro da curadoria estão em `/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F14_DRIVE-revisoes-traces.tar.gz`, só nesta máquina, e voltam ao disco pelo script. O `sdd/ambiente.md` do checkout principal é nota local da `sdd-new-session` do starter, não rastreada; não o commite.
 
 Depois, leia nesta ordem:
 - `sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md`: a Ficha, `## Eventos` e a etapa "F14 Drive", que é a do topo.
