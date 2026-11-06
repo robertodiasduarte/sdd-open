@@ -204,6 +204,14 @@ class Deploy:
         m = self.marca()
         return bool(m) and os.path.exists(m)
 
+    def desmarcar(self):
+        m = self.marca()
+        try:
+            if m:
+                os.remove(m)
+        except OSError:
+            pass
+
     def marcar(self):
         m = self.marca()
         try:
@@ -331,12 +339,15 @@ def main():
                         espera("%s (substituto %s)" % (y.get("status"), curto(y.get("headSha"))), y.get("databaseId"))
                     elif aguardando_novo:
                         if time.time() - repetido_em >= sem_run:
-                            fim(4, "⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em %d s; isso não é falha." % sem_run,
+                            fim(4, "⏳ ainda não sei — pedi para repetir o deploy, e o run novo não apareceu em %d s; isso não é falha." % sem_run,
                                 "AINDA NAO SEI", "rode de novo para continuar esperando; não repito de novo.")
                         espera("repetido, aguardando o run novo aparecer", alvo_run)
                     elif incertos:
                         y = o_mais_novo(incertos)
                         espera("aguardando o clone conhecer %s para saber se contém o seu" % curto(y.get("headSha")), y.get("databaseId"))
+                    elif conc != "failure" and not novos and time.time() - inicio < sem_run:
+                        # cancelado por um push mais novo: o run dele pode ainda não estar na lista
+                        espera("%s; aguardando um deploy mais novo aparecer" % conc, alvo_run)
                     elif conc != "failure":
                         ruins = [r for r in descendentes if r.get("status") == "completed"]
                         if ruins:
@@ -372,13 +383,17 @@ def main():
                         if time.time() - inicio >= teto:
                             fim(2, "%s; não repeti: o teto de %d min já passou, e repetir é decisão sua." % (trecho, int(teto / 60)), "FALHOU", seta)
                         print('🔁 o passo "%s" é passageiro e %s é a ponta: repetindo o deploy na ponta de %s (1 vez).' % (passo, curto(x), branch), file=sys.stderr)
+                        d.marcar()  # antes do disparo: um corte aqui não pode virar uma 2ª repetição
                         try:
                             d.gh("workflow", "run", workflow, "--ref", branch)
                         except ConsultaFalhou as e:
-                            fim(2, "%s; tentei repetir e o GitHub recusou: %s. O workflow precisa de workflow_dispatch no on:; sem isso, um push novo." % (trecho, e), "FALHOU", seta)
+                            if re.search(r"HTTP 4\d\d", str(e)):
+                                d.desmarcar()  # o GitHub respondeu que não: nada foi repetido
+                                fim(2, "%s; tentei repetir e o GitHub recusou: %s. O workflow precisa de workflow_dispatch no on:; sem isso, um push novo." % (trecho, e), "FALHOU", seta)
+                            # sem resposta clara, o pedido pode ter chegado: espera o run novo, e não pede de novo
+                            print("⚠️ o pedido de repetir não teve resposta clara (%s); não peço de novo." % e, file=sys.stderr)
                         ja_redisparou, origem, id_falho = True, "este script", alvo_run
                         repetido_em = time.time()
-                        d.marcar()
             ultimo_erro = ""
         except ConsultaFalhou as e:
             ultimo_erro = str(e)

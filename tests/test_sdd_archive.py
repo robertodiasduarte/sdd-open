@@ -281,6 +281,14 @@ class Protecao(Base):
         _, out, _ = self.arquivo()
         self.assertIn("sdd/features/DESIGN_FECHADA.md  →", out)
 
+    def test_arquivo_de_controle_da_pasta_fica(self):
+        # R3 da rodada 3
+        self.doc("sdd/reports/.gitignore")
+        self.doc("sdd/reports/solto.md")
+        _, out, _ = self.arquivo()
+        self.assertNotIn(".gitignore", out)
+        self.assertIn("sdd/reports/solto.md  →", out)
+
     def test_pastas_que_nunca_saem(self):
         self.doc("sdd/reports/evidence/F1/DEFINE_F1.md")
         self.doc("sdd/archive/X/DEFINE_X.md")

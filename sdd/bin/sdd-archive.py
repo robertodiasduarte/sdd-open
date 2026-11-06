@@ -191,7 +191,7 @@ def main():
             if os.path.isdir(p):
                 subpastas.append(p)
                 continue
-            if nome == ".gitkeep" or not os.path.isfile(p):
+            if nome.startswith(".") or not os.path.isfile(p):  # .gitkeep, .gitignore: controle da pasta, não documento
                 continue
             g, inteiro = grupo(nome)
             if g:

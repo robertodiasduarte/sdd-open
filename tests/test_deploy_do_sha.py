@@ -158,6 +158,19 @@ class Substituto(Base):
         self.cenario([run(1, self.x, conclusion="cancelled"), run(2, y, conclusion="failure", criado="2026-01-01T00:01:00Z")])
         self.assertSai(self.sha(), 2, "🔴 não está no ar", "run 2")
 
+    def test_cancelado_espera_o_substituto_aparecer(self):
+        # R1 da rodada 3: 2 pushes seguidos, e o run do mais novo ainda não está na lista
+        y = self.novo_commit()
+        self.cenario([run(1, self.x, conclusion="cancelled")], [run(1, self.x, conclusion="cancelled"), run(2, y, criado="2026-01-01T00:01:00Z")])
+        res = self.roda([BASH, SCRIPT, "--commit", self.x, "--workflow", "deploy.yml", "--intervalo", "0", "--teto", "30", "--sem-run", "20"], self.r)
+        self.assertSai(res, 0, "✅ no ar via substituto")
+
+    def test_cancelado_sem_substituto_na_janela_sai_2(self):
+        # o outro lado de R1
+        self.cenario([run(1, self.x, conclusion="cancelled")])
+        res = self.roda([BASH, SCRIPT, "--commit", self.x, "--workflow", "deploy.yml", "--intervalo", "0", "--teto", "30", "--sem-run", "1"], self.r)
+        self.assertSai(res, 2, "🔴 não está no ar")
+
     def test_substituto_andando_e_esperado(self):
         y = self.novo_commit()
         self.cenario([run(1, self.x, conclusion="cancelled"), run(2, y, status="in_progress", conclusion=None, criado="2026-01-01T00:01:00Z")],
@@ -244,6 +257,17 @@ class Redisparo(Base):
     def test_dispatch_recusado_diz_o_caminho(self):
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", dispatch_recusado=True)
         self.assertSai(self.sha("--transitorios", "Verify SSH"), 2, "workflow_dispatch", "push novo")
+        self.assertFalse((self.r / (".git/deploy-do-sha/redisparado-" + self.x)).exists(), "recusado: nada foi repetido")
+
+    def test_dispatch_sem_resposta_clara_nao_vira_recusa_nem_repete(self):
+        # R2 da rodada 3
+        self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", dispatch_recusado="HTTP 502: bad gateway")
+        res = self.sha("--transitorios", "Verify SSH")
+        self.assertSai(res, 4, "pedi para repetir")
+        self.assertTrue((self.r / (".git/deploy-do-sha/redisparado-" + self.x)).exists())
+        self.assertEqual(self.log().count("workflow run"), 1)
+        self.assertSai(self.sha("--transitorios", "Verify SSH"), 4, "ainda não sei")
+        self.assertEqual(self.log().count("workflow run"), 1, "a 2ª chamada não repete")
 
     def test_teto_que_ja_passou_nao_repete(self):
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH")
