@@ -358,8 +358,11 @@ class Proxima(Base):
         self.assertIn("tarefa: 3 de 3 — x", res[1])
 
     def test_progress_ou_manifest_sem_linhas(self):
-        self.escreve(self.r, "sdd/features/DESIGN_F.md", design(()).replace("**Total Files:** 0", "**Total Files:** 0"))
-        self.drive("iniciar", D)
+        # R4 da rodada 4: o manifest sem linha reprova no design-lint, e a resposta é voltar ao DESIGN, com o motivo
+        self.escreve(self.r, "sdd/features/DESIGN_F.md", design(()))
+        res = self.drive("iniciar", D)
+        self.assertAcao(res, "DESIGN")
+        self.assertIn("design-lint", res[1])
         self.escreve(self.r, "sdd/features/DESIGN_F.md", design())
         self.escreve(self.r, PROGRESS, "só texto\n")
         res = self.drive("proximo", D)
@@ -1213,6 +1216,43 @@ class Relatorio(Base):
         self.assertEqual(rc, 0, out)
         texto = (self.r / RELATORIO).read_text(encoding="utf-8")
         self.assertIn("## Decidi sozinho\n\n- usei o modo de sempre; desfaça com git revert", texto)
+
+
+class EstadoSoUmPorVez(Base):
+    """R2 e R3 do Codex, rodada 4: nenhum verbo grava com uma cópia antiga."""
+
+    def test_recibos_juntos_nao_se_perdem(self):
+        import subprocess
+        self.drive("iniciar", D)
+        procs = [subprocess.Popen([BASH, "sdd/bin/sdd-drive.sh", "recibo", D, "r%d" % k], cwd=str(self.r), env=self.env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                  stdin=subprocess.DEVNULL) for k in range(6)]
+        self.assertEqual([p.wait() for p in procs], [0] * 6)
+        self.assertEqual(sorted(self.estado()["recibos"]), ["r%d" % k for k in range(6)])
+        self.assertFalse(self.existe("sdd/reports/progress/DRIVE_F.estado.lock"), "a trava não sobra")
+
+    def test_trava_de_estado_abandonada_vence(self):
+        self.drive("iniciar", D)
+        trava = self.escreve(self.r, "sdd/reports/progress/DRIVE_F.estado.lock", "")
+        velho = time.time() - 120
+        os.utime(str(trava), (velho, velho))
+        self.assertAcao(self.drive("proximo", D), "RODADA")
+
+    def test_a_trava_de_estado_e_solta_mesmo_em_parada(self):
+        self.drive("iniciar", D)
+        self.drive("bloqueio", D, "x")
+        self.assertFalse(self.existe("sdd/reports/progress/DRIVE_F.estado.lock"))
+
+
+class ParadaResolvida(Base):
+    def test_recibo_depois_de_resolver_nao_repete_o_motivo_velho(self):
+        # R3 de Claude, rodada 4
+        self.drive("iniciar", D)
+        self.escreve(self.r, D, define(corpo=MARCADOR))
+        self.assertParada(self.drive("proximo", D), "clarificacao-pendente")
+        self.escreve(self.r, D, define())
+        self.assertAcao(self.drive("proximo", D), "RODADA")
+        self.drive("recibo", D, "decidi x")
+        self.assertIn("| Motivo | em andamento |", (self.r / RELATORIO).read_text(encoding="utf-8"))
 
 
 class Aguardar(Base):

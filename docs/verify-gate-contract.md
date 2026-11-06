@@ -74,7 +74,7 @@ gate block. See [context-and-governance.md](context-and-governance.md).
 ## Checking without running
 
 `--print` shows the block and is exempt from the checks: it serves the person writing the DEFINE. `--checar` does the
-opposite: it runs every check the gate would run before the command (marker, `Governança` line, block, `kind`, executable
+opposite: it runs every check the gate would run before the command (marker, `Governança` line, block, `kind`, a filled
 `cmd`), never runs the command, writes no trace, and exits `0`, `5` or `64`; a `manual-ux` gate exits `0`. `sdd-drive` uses it
 to refuse a DEFINE before spending anything.
 

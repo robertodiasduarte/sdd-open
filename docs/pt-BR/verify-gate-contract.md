@@ -73,6 +73,12 @@ linha `Governança` → bloco do gate. Veja [context-and-governance.md](context-
 | `5` | esclarecimento pendente (marcador, ou linha `Governança` sem valor final) | **pare**, volte pro `/sdd-define` (ou rode só o passo 11 dele); nunca itere o design |
 | `64` | bloco inválido ou ausente | a spec não é válida |
 
+## Conferir sem rodar
+
+O `--print` mostra o bloco e é isento das conferências: ele serve a quem escreve o DEFINE. O `--checar` faz o contrário: roda tudo o que o
+gate conferiria antes do comando (marcador, linha `Governança`, bloco, `kind`, `cmd` preenchido), nunca roda o comando, não grava trace e
+sai `0`, `5` ou `64`; um gate `manual-ux` sai `0`. A `sdd-drive` o usa para recusar um DEFINE antes de gastar qualquer coisa.
+
 ## O marcador de ambiguidade
 
 Forma canônica ativa — a única que o scanner detecta, e apenas fora de code fences:

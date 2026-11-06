@@ -94,7 +94,7 @@ ACOES = {
     "REVISAO_DESIGN": "rode a revisão de contexto fresco do DESIGN, registre no Advisor Ledger e chame proximo.",
     "RODADA": "despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.",
     "CORRIGIR": "leia o log, corrija o DESIGN ou reabra a tarefa no PROGRESS (- [ ]), commite e chame proximo.",
-    "COMMITAR": "commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.",
+    "COMMITAR": "commite os arquivos listados e chame proximo; nenhuma rodada foi gasta.",
     "VERIFICAR": "chame sdd-drive.sh verificar: quem roda o teste final é o script.",
     "AVALIAR_E_RELATAR": "rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.",
 }
@@ -306,6 +306,50 @@ def confere_dentro(p):
             falha("%s aponta para fora do repositório (%s)." % (rel, alvo), "troque o link por uma pasta do projeto e rode de novo.")
 
 
+_ESTADO_PEGO = None
+ESPERA_ESTADO = 70
+ESTADO_ABANDONADO = 60
+
+
+def segura_estado(p):
+    """Um verbo por vez lê-altera-grava: sem isto, um recibo gravado com uma cópia antiga apagaria o gate que terminou
+    no meio. É curta (nunca durante o gate); a de um processo morto vence em ESTADO_ABANDONADO segundos."""
+    global _ESTADO_PEGO
+    if _ESTADO_PEGO:
+        return
+    caminho = p.p("sdd/reports/progress/DRIVE_%s.estado.lock" % p.feature)
+    limite_espera = time.time() + ESPERA_ESTADO
+    while True:
+        try:
+            os.makedirs(os.path.dirname(caminho), exist_ok=True)
+            os.close(os.open(caminho, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644))
+            _ESTADO_PEGO = caminho
+            return
+        except FileExistsError:
+            try:
+                if time.time() - os.path.getmtime(caminho) > ESTADO_ABANDONADO:
+                    os.remove(caminho)
+                    continue
+            except OSError:
+                continue
+        except OSError as e:
+            falha("não consegui gravar %s: %s" % (caminho, e))
+        if time.time() > limite_espera:
+            falha("outro comando do drive está com o estado há mais de %d s." % ESPERA_ESTADO,
+                  "espere e rode de novo; se não houver nenhum rodando, apague %s." % os.path.relpath(caminho, p.raiz))
+        time.sleep(0.05)
+
+
+def larga_estado():
+    global _ESTADO_PEGO
+    if _ESTADO_PEGO:
+        try:
+            os.remove(_ESTADO_PEGO)
+        except OSError:
+            pass
+        _ESTADO_PEGO = None
+
+
 def le_estado(p):
     """(estado, defeito). estado None quando não dá para confiar no arquivo."""
     caminho = p.p(p.estado)
@@ -403,6 +447,7 @@ def acao(p, st, nome, detalhe=""):
 
 
 def carrega(p):
+    segura_estado(p)
     st, defeito = le_estado(p)
     if st is None:
         parada(p, None, "estado-invalido", defeito)
@@ -722,6 +767,7 @@ def cmd_iniciar(args):
     p = Projeto(resto[0])
     maximo = limite(p, flag)
     precondicoes(p)
+    segura_estado(p)
     if os.path.exists(p.p(p.estado)):
         parada(p, None, "estado-invalido", "Já existe uma execução em %s: use --resume, ou apague o arquivo para recomeçar." % p.estado)
     rc, sha, cmd, linhas = bloco_do_gate(p)
@@ -824,7 +870,9 @@ def cmd_proximo(args):
     confere_gate(p, st)
     barra_orcamento(p, st)
     nome, detalhe = proxima(p, st)
+    st["motivo"], st["detalhe"] = "", ""  # a parada anterior já foi resolvida: chegou até aqui
     conta_repeticao(p, st, nome, detalhe)
+    grava_estado(p, st)
     acao(p, st, nome, detalhe)
 
 
@@ -870,6 +918,7 @@ def cmd_verificar(args):
         log = "sdd/reports/evidence/%s/DRIVE-gate-r%d.log" % (p.feature, n)
     # O que o gate prova é o que existia quando ele começou: um commit ou uma troca de comando no meio não ganham esse verde.
     commit_testado, impressao_testada = p.head(), st["gate_sha"]
+    larga_estado()  # o gate pode levar muitos minutos, e recibo e proximo não esperam por ele
     env_gate = dict(os.environ)
     env_gate.pop("SDD_DRIVE_TRAVA_HERDADA", None)  # a suíte de um projeto pode exercitar este mesmo script
     try:
@@ -1197,7 +1246,11 @@ def main():
 
 
 try:
-    sys.exit(main())
+    try:
+        rc_main = main()
+    finally:
+        larga_estado()
+    sys.exit(rc_main)
 except subprocess.TimeoutExpired as e:
     falha("um comando passou do tempo: %s" % (e.cmd,))
 except OSError as e:

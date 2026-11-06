@@ -213,15 +213,19 @@ class Deploy:
             pass
 
     def marcar(self):
+        """True se esta chamada ficou com o redisparo; False se outra já ficou (criação exclusiva: 2 chamadas juntas não repetem 2 vezes)."""
         m = self.marca()
         try:
             if not m:
                 raise OSError("git rev-parse --git-path falhou")
             os.makedirs(os.path.dirname(m), exist_ok=True)
-            with open(m, "w", encoding="utf-8") as f:
+            with open(m, "x", encoding="utf-8") as f:
                 f.write(datetime.datetime.now(datetime.timezone.utc).isoformat() + "\n")
+        except FileExistsError:
+            return False
         except OSError as e:
             print("⚠️ a marca local do redisparo não gravou (%s); o run por workflow_dispatch segue contando." % e, file=sys.stderr)
+        return True
 
 
 def mais_novo_que(r, p):
@@ -255,7 +259,10 @@ def main():
     repo = r.stdout.strip()
     r = roda(["git", "-C", repo, "rev-parse", "--verify", a["commit"] + "^{commit}"], repo)
     if r.returncode != 0:  # o merge de um PR nasce no remoto: o clone pode ainda não conhecer
-        roda(["git", "-C", repo, "fetch", "-q", "origin"], repo)
+        busca = roda(["git", "-C", repo, "fetch", "-q", "origin"], repo)
+        if busca.returncode != 0:
+            fim(4, "⏳ ainda não sei — o clone não conhece %s, e o git fetch falhou: %s" % (a["commit"], (busca.stderr or "").strip().split("\n")[0]),
+                "AINDA NAO SEI", "confira a rede e o acesso ao remoto e rode de novo; não concluí nada sobre o deploy.")
         r = roda(["git", "-C", repo, "rev-parse", "--verify", a["commit"] + "^{commit}"], repo)
     if r.returncode != 0:
         uso("commit não encontrado, nem depois de git fetch: %s" % a["commit"])
@@ -382,16 +389,19 @@ def main():
                             fim(2, "%s; não repeti: %s não é mais a ponta de %s (agora %s)." % (trecho, curto(x), branch, curto(ponta)), "FALHOU", seta)
                         if time.time() - inicio >= teto:
                             fim(2, "%s; não repeti: o teto de %d min já passou, e repetir é decisão sua." % (trecho, int(teto / 60)), "FALHOU", seta)
-                        print('🔁 o passo "%s" é passageiro e %s é a ponta: repetindo o deploy na ponta de %s (1 vez).' % (passo, curto(x), branch), file=sys.stderr)
-                        d.marcar()  # antes do disparo: um corte aqui não pode virar uma 2ª repetição
-                        try:
-                            d.gh("workflow", "run", workflow, "--ref", branch)
-                        except ConsultaFalhou as e:
-                            if re.search(r"HTTP 4\d\d", str(e)):
-                                d.desmarcar()  # o GitHub respondeu que não: nada foi repetido
-                                fim(2, "%s; tentei repetir e o GitHub recusou: %s. O workflow precisa de workflow_dispatch no on:; sem isso, um push novo." % (trecho, e), "FALHOU", seta)
-                            # sem resposta clara, o pedido pode ter chegado: espera o run novo, e não pede de novo
-                            print("⚠️ o pedido de repetir não teve resposta clara (%s); não peço de novo." % e, file=sys.stderr)
+                        # a marca vem antes do disparo: um corte aqui não pode virar uma 2ª repetição
+                        if d.marcar():
+                            print('🔁 o passo "%s" é passageiro e %s é a ponta: repetindo o deploy na ponta de %s (1 vez).' % (passo, curto(x), branch), file=sys.stderr)
+                            try:
+                                d.gh("workflow", "run", workflow, "--ref", branch)
+                            except ConsultaFalhou as e:
+                                if re.search(r"HTTP 4\d\d", str(e)):
+                                    d.desmarcar()  # o GitHub respondeu que não: nada foi repetido
+                                    fim(2, "%s; tentei repetir e o GitHub recusou: %s. O workflow precisa de workflow_dispatch no on:; sem isso, um push novo." % (trecho, e), "FALHOU", seta)
+                                # sem resposta clara, o pedido pode ter chegado: espera o run novo, e não pede de novo
+                                print("⚠️ o pedido de repetir não teve resposta clara (%s); não peço de novo." % e, file=sys.stderr)
+                        else:
+                            print("⏳ outra chamada acabou de repetir este deploy; só espero o run novo.", file=sys.stderr)
                         ja_redisparou, origem, id_falho = True, "este script", alvo_run
                         repetido_em = time.time()
             ultimo_erro = ""

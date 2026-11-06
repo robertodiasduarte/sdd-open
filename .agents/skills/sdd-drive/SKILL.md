@@ -77,7 +77,7 @@ Gate e revisão de governança. Para retomar: "continue o drive" numa sessão no
 | `DESIGN` | você, pela fase Design | rode a `sdd-design` sobre o DEFINE; se a saída trouxer o motivo, corrija só esse ponto |
 | `REVISAO_DESIGN` | agente fresco | revisão de contexto fresco do DESIGN, pela escada abaixo; registre cada nota no Advisor Ledger, nenhum HIGH aberto |
 | `RODADA` | agente fresco, um por tarefa | brief `references/executor.md`, com só os 5 campos dele e a tarefa da linha `tarefa:` |
-| `COMMITAR` | você | commite os arquivos listados (`git add` por nome) e chame `verificar` |
+| `COMMITAR` | você | commite os arquivos listados (`git add` por nome) e chame `proximo` |
 | `VERIFICAR` | o script | `bash sdd/bin/sdd-drive.sh verificar <DEFINE> --fundo` e, depois, `proximo` |
 | `ESPERAR` | ninguém | espere alguns minutos e chame `proximo`; o teste final roda destacado de você |
 | `CORRIGIR` | você | leia o log citado; se o DESIGN estava errado, corrija-o; se foi uma tarefa, reabra a linha com `- [ ]` no `PROGRESS`; commite e chame `proximo` |

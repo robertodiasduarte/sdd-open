@@ -32,6 +32,9 @@ if a[:2] == ["run", "list"]:
         p = passos[min(max(i - 1, 0), len(passos) - 1)]
         print(json.dumps(p["runs"]))
 elif a[:2] == ["run", "view"]:
+    if c.get("marca_no_view"):
+        os.makedirs(os.path.dirname(c["marca_no_view"]), exist_ok=True)
+        open(c["marca_no_view"], "w").write("outra chamada")
     if c.get("view_lista"):
         print("[1]")
     else:
@@ -254,6 +257,14 @@ class Redisparo(Base):
         self.assertSai(self.sha("--transitorios", "Verify SSH", commit=y), 2, "já existe deploy mais novo")
         self.assertNotIn("workflow run", self.log())
 
+    def test_duas_chamadas_juntas_repetem_uma_vez(self):
+        # R1 do Codex, rodada 4: a outra chamada ganha a marca entre conferir e marcar
+        marca = self.r / (".git/deploy-do-sha/redisparado-" + self.x)
+        self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", marca_no_view=str(marca))
+        res = self.sha("--transitorios", "Verify SSH")
+        self.assertSai(res, 4, "não apareceu")
+        self.assertNotIn("workflow run", self.log(), "quem perdeu a marca não dispara")
+
     def test_dispatch_recusado_diz_o_caminho(self):
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", dispatch_recusado=True)
         self.assertSai(self.sha("--transitorios", "Verify SSH"), 2, "workflow_dispatch", "push novo")
@@ -400,6 +411,13 @@ class MergeDeOutroClone(Base):
         y = self.git(outro, "rev-parse", "HEAD").strip()
         self.cenario([run(1, y)])
         self.assertSai(self.sha(commit=y), 0, "✅ no ar — run 1")
+
+    def test_sha_desconhecido_com_fetch_que_falha_sai_4(self):
+        # R1 de Claude, rodada 4: sem conseguir perguntar ao remoto, a resposta é "ainda não sei"
+        self.git(self.r, "remote", "set-url", "origin", str(self.tmp / "sumiu.git"))
+        rc, out, err = self.sha(commit="f" * 40)
+        self.assertEqual(rc, 4, out + err)
+        self.assertIn("o git fetch falhou", out)
 
     def test_sha_que_ninguem_conhece_segue_saindo_64(self):
         rc, out, err = self.sha(commit="f" * 40)
