@@ -143,6 +143,10 @@ class Item10(unittest.TestCase):
             self.assertIn("| `%s` |" % exitc, ITEM10)
         self.assertIn("`--teto 300`", ITEM10)
         self.assertIn("segundo plano", ITEM10)
+        # R1 de Claude, rodada 5: repetir o 4 tem teto total, e "nenhum run" não se repete
+        corrido = " ".join(ITEM10.split())
+        self.assertIn("**no máximo 8 chamadas** (os mesmos 40 minutos)", corrido)
+        self.assertIn('Saiu 4 com "não achei nenhum run"? Não repita', corrido)
         self.assertIn("{{DRIFT_CHECK_CMD}}", ITEM10)
         self.assertIn("smoke", ITEM10)
         self.assertIn("Verde não prova teste", ITEM10)
@@ -189,7 +193,7 @@ class Pacote(unittest.TestCase):
     def test_versoes(self):
         self.assertIn('version: "1.0.0"', SKILL)
         self.assertIn("`sdd-drive v1.0.0 · nov/2026", SKILL)
-        self.assertIn('version: "2.8.0"', RELEASE)
+        self.assertIn('version: "2.8.1"', RELEASE)
 
     def test_bash_32(self):
         for rel in ("sdd/bin/sdd-drive.sh", "sdd/bin/deploy-do-sha.sh", "sdd/bin/avaliador-guard.sh"):

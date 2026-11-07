@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.8.0"
+  version: "2.8.1"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.8.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.8.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -228,7 +228,9 @@ removido.
     tem o `sdd/config.yaml` (o worktree temporário do passo 5 pode não ter os passos passageiros). O `--workflow` vem do
     slot `deploy.workflow`; vazio, passe o arquivo que a linha ✅ do `deploy-espera-testes.py` citou no item 7. No caminho do PR, o
     SHA publicado é o do merge. O script espera até 40 minutos: rode em segundo plano, onde o agente permite; onde não, chame com
-    `--teto 300` e repita enquanto sair 4, o que é seguro (nada é repetido por causa disso).
+    `--teto 300` e repita enquanto sair 4, **no máximo 8 chamadas** (os mesmos 40 minutos), o que é seguro (nada é repetido por
+    causa disso). Saiu 4 com "não achei nenhum run"? Não repita: diga que não achou o run do commit e que o push pode não
+    acionar o workflow (`paths`, branch). Esgotadas as 8, diga "ainda não sei" citando o run, nunca ✅.
 
     | Exit | O que dizer |
     |---|---|

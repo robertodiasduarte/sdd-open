@@ -1237,6 +1237,52 @@ class EstadoSoUmPorVez(Base):
         os.utime(str(trava), (velho, velho))
         self.assertAcao(self.drive("proximo", D), "RODADA")
 
+    def _dono(self, trava):
+        """Um processo que segura a trava de estado e fica vivo, como um verbo parado no meio."""
+        import subprocess
+        import sys
+        dono = subprocess.Popen([sys.executable, "-I", "-c",
+                                 "import fcntl, os, sys, time\n"
+                                 "fd = os.open(sys.argv[1], os.O_RDONLY | os.O_CREAT, 0o644)\n"
+                                 "fcntl.flock(fd, fcntl.LOCK_EX)\nprint('pego', flush=True)\ntime.sleep(300)\n", str(trava)],
+                                stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        self.addCleanup(lambda: (dono.kill(), dono.wait(), dono.stdout.close()))
+        self.assertEqual(dono.stdout.readline().strip(), b"pego")
+        return dono
+
+    @unittest.skipIf(os.name == "nt", "fcntl")
+    def test_trava_de_dono_vivo_nao_vence_pela_idade(self):
+        # R1 do Codex, rodada 5: a trava vencia aos 60 s com o dono vivo, e o recibo de um apagava o do outro
+        import subprocess
+        self.drive("iniciar", D)
+        trava = self.r / "sdd/reports/progress/DRIVE_F.estado.lock"
+        dono = self._dono(trava)
+        velho = time.time() - 600
+        os.utime(str(trava), (velho, velho))
+        recibo = subprocess.Popen([BASH, "sdd/bin/sdd-drive.sh", "recibo", D, "esperou"], cwd=str(self.r), env=self.env,
+                                  stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        self.addCleanup(lambda: (recibo.kill(), recibo.wait(), recibo.stdout.close()))
+        time.sleep(3)
+        self.assertIsNone(recibo.poll(), "o recibo tomou a trava de um dono vivo")
+        self.assertEqual(self.estado()["recibos"], [])
+        # o outro lado: o dono morre sem largar (corte), e a trava se solta sozinha
+        dono.kill()
+        dono.wait()
+        out = recibo.communicate(timeout=60)[0].decode("utf-8", "replace")
+        self.assertEqual(recibo.returncode, 0, out)
+        self.assertEqual(self.estado()["recibos"], ["esperou"])
+
+    def test_trava_que_nao_abre_sai_2_sem_laco(self):
+        # R3 de Claude, rodada 5: o OSError da trava abandonada voltava ao laço sem espera e sem limite
+        self.drive("iniciar", D)
+        os.makedirs(str(self.r / "sdd/reports/progress"), exist_ok=True)
+        os.symlink(str(self.r / "nao-existe/trava"), str(self.r / "sdd/reports/progress/DRIVE_F.estado.lock"))
+        inicio = time.time()
+        rc, out, err = self.drive("recibo", D, "x")
+        self.assertLess(time.time() - inicio, 30)
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("apague sdd/reports/progress/DRIVE_F.estado.lock", err)
+
     def test_a_trava_de_estado_e_solta_mesmo_em_parada(self):
         self.drive("iniciar", D)
         self.drive("bloqueio", D, "x")

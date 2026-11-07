@@ -65,6 +65,17 @@ class Simulacao(Base):
         _, out, _ = self.arquivo("--dias-a", "1", "--dias-b", "1")
         self.assertIn("com-ledger=1 · sem-ledger=1", out)
 
+    def test_solto_recente_fica_e_nao_e_decisao_sua(self):
+        # R4 de Claude, rodada 5: o solto recente caía em "Sem classificação"
+        self.doc("sdd/reports/solto.md", "2026-11-02T12:00:00")
+        self.doc("sdd/features/notas.md", "2026-11-02T12:00:00")
+        _, out, _ = self.arquivo()
+        self.assertIn("solto.md (1 documento(s), quieto há 3 dia(s), limite 60)", out)
+        self.assertNotIn("sdd/reports/solto.md  →", out)
+        # o outro lado: documento sem grupo em features/ segue decisão sua, qualquer que seja a idade
+        self.assertIn("== Sem classificação (decisão sua): 1 ==\n  sdd/features/notas.md", out)
+        self.assertIn("soltos=0 · protegidos=0 · recentes=1 · sem classificação=1", out)
+
     def test_atividade_mais_recente_do_grupo_manda(self):
         self.doc("sdd/features/DEFINE_A.md")
         self.doc("sdd/features/DESIGN_A.md", "2026-11-01T12:00:00")
@@ -213,6 +224,18 @@ class Protecao(Base):
         self.assertNotIn("DEFINE_G_s2.md  →", out)
         self.assertNotIn("DESIGN_G.md  →", out)
         self.assertIn("G (2 documento(s)): ficha aberta", out)
+
+    def test_ficha_de_slice_protege_sem_documento_com_o_nome_do_slice(self):
+        # a sabotagem viva "archive: slice não protege" (F14 Drive): só a ficha G_s2 diz que a G está aberta
+        self.ficha("G_s2", "aberta")
+        self.doc("sdd/features/DEFINE_G.md")
+        self.doc("sdd/features/DESIGN_G.md")
+        self.doc("sdd/features/DEFINE_GX.md")
+        _, out, _ = self.arquivo()
+        self.assertIn("G (2 documento(s)): ficha aberta em HANDOFF_G_s2.md", out, "cita a ficha que existe")
+        self.assertNotIn("DEFINE_G.md  →", out)
+        self.assertNotIn("DESIGN_G.md  →", out)
+        self.assertIn("sdd/features/DEFINE_GX.md  →", out, "o outro lado: a ficha da G não protege a GX")
 
     def test_documento_solto_citado_em_ficha_aberta_fica(self):
         # M8 do ciclo 1

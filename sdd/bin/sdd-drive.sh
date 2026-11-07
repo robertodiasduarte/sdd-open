@@ -40,6 +40,7 @@ SDD_DRIVE_BIN="$BIN" SDD_DRIVE_SELF="$0" SDD_DRIVE_BASH="${BASH:-bash}" python3 
 from __future__ import annotations
 
 import datetime
+import errno
 import hashlib
 import json
 import os
@@ -49,6 +50,13 @@ import subprocess
 import sys
 import tempfile
 import time
+
+try:
+    import fcntl
+    msvcrt = None
+except ImportError:  # Python nativo do Windows
+    fcntl = None
+    import msvcrt
 
 for _canal in (sys.stdout, sys.stderr):
     try:
@@ -306,48 +314,77 @@ def confere_dentro(p):
             falha("%s aponta para fora do repositório (%s)." % (rel, alvo), "troque o link por uma pasta do projeto e rode de novo.")
 
 
-_ESTADO_PEGO = None
+_ESTADO_PEGO = None  # (descritor, caminho)
 ESPERA_ESTADO = 70
-ESTADO_ABANDONADO = 60
+
+
+def _tranca(fd):
+    """True se este processo ficou com a trava. É a trava do sistema operacional: ela some quando o dono termina, mesmo
+    cortado, e nunca enquanto ele vive. Trava por idade tomava a de um dono vivo (R1 do Codex, rodada 5)."""
+    try:
+        if fcntl is not None:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        else:
+            msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+        return True
+    except OSError as e:
+        if e.errno in (errno.EAGAIN, errno.EWOULDBLOCK, errno.EACCES, errno.EDEADLK):
+            return False
+        raise
 
 
 def segura_estado(p):
     """Um verbo por vez lê-altera-grava: sem isto, um recibo gravado com uma cópia antiga apagaria o gate que terminou
-    no meio. É curta (nunca durante o gate); a de um processo morto vence em ESTADO_ABANDONADO segundos."""
+    no meio. É curta (nunca durante o gate). Nada aqui apaga a trava de outro processo: só o dono a larga."""
     global _ESTADO_PEGO
     if _ESTADO_PEGO:
         return
     caminho = p.p("sdd/reports/progress/DRIVE_%s.estado.lock" % p.feature)
+    rel = os.path.relpath(caminho, p.raiz)
     limite_espera = time.time() + ESPERA_ESTADO
     while True:
         try:
             os.makedirs(os.path.dirname(caminho), exist_ok=True)
-            os.close(os.open(caminho, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644))
-            _ESTADO_PEGO = caminho
-            return
-        except FileExistsError:
-            try:
-                if time.time() - os.path.getmtime(caminho) > ESTADO_ABANDONADO:
-                    os.remove(caminho)
-                    continue
-            except OSError:
-                continue
+            # só leitura: uma trava que sobrou de outro usuário (sudo) continua utilizável, e não há o que apagar
+            fd = os.open(caminho, os.O_RDONLY | os.O_CREAT, 0o644)
         except OSError as e:
-            falha("não consegui gravar %s: %s" % (caminho, e))
+            falha("não consegui abrir a trava %s: %s" % (rel, e), "apague %s e rode de novo; o estado ficou como estava." % rel)
+        try:
+            pego = _tranca(fd)
+        except OSError as e:
+            os.close(fd)
+            falha("não consegui travar %s: %s" % (rel, e), "confira se a pasta aceita trava de arquivo e rode de novo.")
+        if pego:
+            # quem largou antes apagou o arquivo: trava num arquivo que já saiu do caminho não protege nada
+            try:
+                if os.path.samestat(os.fstat(fd), os.stat(caminho)):
+                    _ESTADO_PEGO = (fd, caminho)
+                    return
+            except OSError:
+                pass
+        os.close(fd)
         if time.time() > limite_espera:
             falha("outro comando do drive está com o estado há mais de %d s." % ESPERA_ESTADO,
-                  "espere e rode de novo; se não houver nenhum rodando, apague %s." % os.path.relpath(caminho, p.raiz))
+                  "espere ele terminar e rode de novo; a trava se solta sozinha quando ele sai, mesmo cortado.")
         time.sleep(0.05)
 
 
 def larga_estado():
     global _ESTADO_PEGO
     if _ESTADO_PEGO:
-        try:
-            os.remove(_ESTADO_PEGO)
-        except OSError:
-            pass
+        fd, caminho = _ESTADO_PEGO
         _ESTADO_PEGO = None
+        if fcntl is not None:
+            try:
+                os.remove(caminho)  # ainda com a trava: quem esperava neste arquivo vê que ele saiu do caminho e tenta de novo
+            except OSError:
+                pass
+        else:
+            try:
+                msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # no Windows, o arquivo aberto por outro não se apaga: fica, sem trava
+            except OSError:
+                pass
+        os.close(fd)
 
 
 def le_estado(p):

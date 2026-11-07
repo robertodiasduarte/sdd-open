@@ -270,6 +270,17 @@ class Redisparo(Base):
         self.assertSai(self.sha("--transitorios", "Verify SSH"), 2, "workflow_dispatch", "push novo")
         self.assertFalse((self.r / (".git/deploy-do-sha/redisparado-" + self.x)).exists(), "recusado: nada foi repetido")
 
+    def test_dispatch_sem_login_sai_3_e_nao_gasta_o_redisparo(self):
+        # R2 de Claude, rodada 5: o 401 saía 3 com a marca gravada, e depois do login o único redisparo se perdia
+        self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", dispatch_recusado="HTTP 401: Bad credentials")
+        self.assertSai(self.sha("--transitorios", "Verify SSH"), 3, "não está logado")
+        self.assertFalse((self.r / (".git/deploy-do-sha/redisparado-" + self.x)).exists(), "401: nada foi disparado")
+        # o outro lado: logado de novo, a chamada seguinte faz o redisparo, uma vez só
+        self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH")
+        self.assertSai(self.sha("--transitorios", "Verify SSH"), 4, "pedi para repetir")
+        self.assertTrue((self.r / (".git/deploy-do-sha/redisparado-" + self.x)).exists())
+        self.assertEqual(self.log().count("workflow run"), 2)
+
     def test_dispatch_sem_resposta_clara_nao_vira_recusa_nem_repete(self):
         # R2 da rodada 3
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", dispatch_recusado="HTTP 502: bad gateway")

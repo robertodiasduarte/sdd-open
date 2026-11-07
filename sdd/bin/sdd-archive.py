@@ -87,11 +87,11 @@ class Parser(argparse.ArgumentParser):
 
 
 def fichas():
-    """As fichas abertas: feature → texto."""
-    abertas = {}
+    """As fichas abertas: (feature → texto, feature → arquivo da ficha)."""
+    abertas, arquivo = {}, {}
     pasta = "sdd/handoffs"
     if not os.path.isdir(pasta):
-        return abertas
+        return abertas, arquivo
     for nome in sorted(os.listdir(pasta)):
         m = re.match(r"^HANDOFF_(.+)\.md$", nome)
         if not m:
@@ -105,9 +105,12 @@ def fichas():
         if s and s.group(1).strip().startswith("✅"):  # a mesma regra do handoff-lint.py
             continue
         abertas[m.group(1)] = corpo
-        # ficha de um slice (HANDOFF_G_s2) protege a feature inteira
-        abertas.setdefault(re.sub(r"_s\d+[a-z]?$", "", m.group(1)), corpo)
-    return abertas
+        arquivo[m.group(1)] = nome
+        # ficha de um slice (HANDOFF_G_s2) protege a feature inteira; a mensagem cita a ficha que existe
+        g = re.sub(r"_s\d+[a-z]?$", "", m.group(1))
+        if g not in abertas:
+            abertas[g], arquivo[g] = corpo, nome
+    return abertas, arquivo
 
 
 def main():
@@ -177,7 +180,7 @@ def main():
         d = data_real(p)
         return d.isoformat()[:7] if d else "0000-00"
 
-    abertas = fichas()
+    abertas, arquivo_da_ficha = fichas()
     citado = nfc("\n".join(abertas.values())).casefold()  # citação vale em qualquer caixa e forma do nome
     ledger = set(d for d in os.listdir("sdd/releases") if os.path.isdir(os.path.join("sdd/releases", d))) if os.path.isdir("sdd/releases") else set()
 
@@ -216,7 +219,7 @@ def main():
         for p in arquivos:
             n = ficha_do_nome(sem_prefixo(os.path.basename(p)))
             if n:
-                return "ficha aberta em HANDOFF_%s.md" % n
+                return "ficha aberta em " + arquivo_da_ficha[n]
         for n in sorted(nomes[g]):
             if re.search(r"(?<![^\W_])" + re.escape(nfc(n).casefold()) + r"(?![^\W_])", citado):
                 return "citada numa ficha aberta"
@@ -252,11 +255,13 @@ def main():
     for p in sem_grupo:
         n = ficha_do_nome(sem_prefixo(os.path.basename(p)))
         if n:
-            protegidos.append((os.path.basename(p), 1, "ficha aberta em HANDOFF_%s.md" % n))
+            protegidos.append((os.path.basename(p), 1, "ficha aberta em " + arquivo_da_ficha[n]))
         elif nfc(os.path.basename(p)).casefold() in citado:
             protegidos.append((os.path.basename(p), 1, "documento citado numa ficha aberta"))
         elif "/features/" not in p and idade(p) >= a.dias_b:
             lotes["soltos"].append((p, "sdd/archive/_REPORTS_%s/%s" % (mes_de(p), os.path.basename(p))))
+        elif "/features/" not in p:  # o mesmo limite do solto com grupo: recente fica, e não é decisão de ninguém (R4, rodada 5)
+            recentes.append((os.path.basename(p), 1, idade(p), a.dias_b))
         else:
             nao_class.append(p)
 

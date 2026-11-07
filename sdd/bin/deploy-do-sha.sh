@@ -115,6 +115,10 @@ class ConsultaFalhou(Exception):
     pass
 
 
+class SemLogin(Exception):
+    """O gh não está logado: sobe até o main, para quem gravou a marca do redisparo poder apagá-la antes de sair 3."""
+
+
 class Deploy:
     def __init__(self, repo, x, workflow, branch, transitorios):
         self.repo, self.x, self.workflow, self.branch, self.transitorios = repo, x, workflow, branch, transitorios
@@ -128,8 +132,7 @@ class Deploy:
         if r.returncode != 0:
             texto = (r.stderr or r.stdout).strip()
             if re.search(r"auth login|not logged|HTTP 401", texto):
-                fim(3, "⚠️ inconclusivo — o gh não está logado (%s)." % texto.split("\n")[0], "INCONCLUSIVO",
-                    "rode gh auth login e repita; não concluí nada sobre o deploy.")
+                raise SemLogin(texto.split("\n")[0])
             raise ConsultaFalhou(texto.split("\n")[0] if texto else "gh saiu %d" % r.returncode)
         return r.stdout
 
@@ -394,6 +397,9 @@ def main():
                             print('🔁 o passo "%s" é passageiro e %s é a ponta: repetindo o deploy na ponta de %s (1 vez).' % (passo, curto(x), branch), file=sys.stderr)
                             try:
                                 d.gh("workflow", "run", workflow, "--ref", branch)
+                            except SemLogin:
+                                d.desmarcar()  # o 401 diz que nada foi disparado: o único redisparo fica para depois do login
+                                raise
                             except ConsultaFalhou as e:
                                 if re.search(r"HTTP 4\d\d", str(e)):
                                     d.desmarcar()  # o GitHub respondeu que não: nada foi repetido
@@ -417,6 +423,9 @@ def main():
 
 try:
     main()
+except SemLogin as e:
+    fim(3, "⚠️ inconclusivo — o gh não está logado (%s)." % e, "INCONCLUSIVO",
+        "rode gh auth login e repita; não concluí nada sobre o deploy.")
 except subprocess.TimeoutExpired as e:
     print("🛑 deploy-do-sha: um comando passou do tempo: %s" % (e.cmd,), file=sys.stderr)
     print("RESULTADO: AINDA NAO SEI\n→ rode de novo; não concluí nada sobre o deploy.")
