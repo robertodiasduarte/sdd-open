@@ -345,8 +345,9 @@ def segura_estado(p):
     while True:
         try:
             os.makedirs(os.path.dirname(caminho), exist_ok=True)
-            # só leitura: uma trava que sobrou de outro usuário (sudo) continua utilizável, e não há o que apagar
-            fd = os.open(caminho, os.O_RDONLY | os.O_CREAT, 0o644)
+            # só leitura: uma trava que sobrou de outro usuário (sudo) continua utilizável, e não há o que apagar.
+            # O_NOFOLLOW: link no lugar da trava criaria arquivo fora do repositório (R1 de Claude, rodada 6)
+            fd = os.open(caminho, os.O_RDONLY | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0), 0o644)
         except OSError as e:
             falha("não consegui abrir a trava %s: %s" % (rel, e), "apague %s e rode de novo; o estado ficou como estava." % rel)
         try:

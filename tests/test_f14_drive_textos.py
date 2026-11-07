@@ -151,6 +151,19 @@ class Item10(unittest.TestCase):
         self.assertIn("smoke", ITEM10)
         self.assertIn("Verde não prova teste", ITEM10)
 
+    def test_a_frase_que_para_a_repeticao_e_a_do_script(self):
+        # R2 de Claude, rodada 6: a regra "não repita" só vale se o script imprime esta frase, e só no caso sem run
+        deploy = ler("sdd/bin/deploy-do-sha.sh")
+        frase = re.search(r'Saiu 4 com "([^"]+)"\? Não repita', " ".join(ITEM10.split())).group(1)
+        linhas = [ln for ln in deploy.splitlines() if frase in ln]
+        self.assertEqual(len(linhas), 1, "a frase sai de um lugar só")
+        self.assertIn("fim(4,", linhas[0])
+        # o outro lado: o 4 do redisparo sem run novo diz outra coisa, e a regra não o confunde com "push que não aciona"
+        redisparo = [ln for ln in deploy.splitlines() if "pedi para repetir o deploy" in ln]
+        self.assertEqual(len(redisparo), 1)
+        self.assertIn("fim(4,", redisparo[0])
+        self.assertNotIn(frase, redisparo[0])
+
     def test_a_logica_saiu_do_texto(self):
         for velho in ("gh run list", "merge-base --is-ancestor", "gh workflow run <arquivo> --ref"):
             self.assertNotIn(velho, ITEM10)

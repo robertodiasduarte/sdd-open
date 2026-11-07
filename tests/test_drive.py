@@ -1272,6 +1272,7 @@ class EstadoSoUmPorVez(Base):
         self.assertEqual(recibo.returncode, 0, out)
         self.assertEqual(self.estado()["recibos"], ["esperou"])
 
+    @unittest.skipIf(os.name == "nt", "link simbólico e trava que fica no caminho (R1 do Codex, rodada 6)")
     def test_trava_que_nao_abre_sai_2_sem_laco(self):
         # R3 de Claude, rodada 5: o OSError da trava abandonada voltava ao laço sem espera e sem limite
         self.drive("iniciar", D)
@@ -1282,6 +1283,19 @@ class EstadoSoUmPorVez(Base):
         self.assertLess(time.time() - inicio, 30)
         self.assertEqual(rc, 2, out + err)
         self.assertIn("apague sdd/reports/progress/DRIVE_F.estado.lock", err)
+
+    @unittest.skipIf(os.name == "nt", "link simbólico")
+    def test_trava_que_e_link_nao_cria_arquivo_fora(self):
+        # R1 de Claude, rodada 6: o link para uma pasta que existe criava o alvo fora do repositório
+        self.drive("iniciar", D)
+        fora = self.tmp / "fora"
+        fora.mkdir()
+        os.symlink(str(fora / "trava"), str(self.r / "sdd/reports/progress/DRIVE_F.estado.lock"))
+        rc, out, err = self.drive("recibo", D, "x")
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("apague sdd/reports/progress/DRIVE_F.estado.lock", err)
+        self.assertFalse((fora / "trava").exists(), "nada é criado fora do repositório")
+        self.assertEqual(self.estado()["recibos"], [], "sem trava, o estado não muda")
 
     def test_a_trava_de_estado_e_solta_mesmo_em_parada(self):
         self.drive("iniciar", D)
