@@ -24,7 +24,7 @@ Depois, leia: `sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md` (Ficha, `## Eventos` 
 
 - **`v2.7.1` pronta, não publicada.** Os 5 achados da rodada 5, o teste do slice e os 3 achados da rodada 6 estão consertados, cada um com teste dos 2 lados que cai no código anterior. `sdd-release` 2.8.1; `python3 scripts/check-versions.py --base v2.7.0 --base-obrigatoria` verde.
 - **Revisão real:** rodada 7 sobre `3d69536`, `loop` PRONTO, `--conferir` CONFERE. Linha para o ledger da release: `review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261107-133717 sha256=9a3ee072107b2542f581e95f6dafbd34c0874200ff397a367a78c400c69534d9 diversidade=vendor`. Um achado só de Windows nativo ficou pendente por D4 do Roberto (no ledger, `REBATIDA_ESCOPO`, `rodada=7`).
-- **Verify Gate de `3d69536`:** a 1ª execução caiu em `test_duas_chamadas_juntas_repetem_uma_vez` (teto de 1 s) com a máquina carregada; sozinho passou 5 de 5; a 2ª execução, sem carga, grava em `sdd/reports/evidence/F14_DRIVE/verify-gate-3d69536.log` (confira a última linha: `[exit=0]`).
+- **Verify Gate de `3d69536`:** a 1ª execução caiu em `test_duas_chamadas_juntas_repetem_uma_vez` (teto de 1 s) com a máquina carregada; sozinho passou 5 de 5; a 2ª execução, sem carga, saiu **verde**: 1.663 testes, `[exit=0]` (`sdd/reports/evidence/F14_DRIVE/verify-gate-3d69536.log`).
 - **CI do PR #19** (run 42398580503): Ubuntu ✅ 18m21s; o macOS rodava no fechamento. Confira com `GIT_TERMINAL_PROMPT=0 gh pr checks 19 -R robertodiasduarte/sdd-open`.
 - **Sabotagens não rodadas:** `sdd/reports/evidence/F14_DRIVE/sabotagens-5a1e3fc.sh` (10 mutantes, roda sobre `HEAD`).
 - **F15:** brainstorm feito com o Roberto (abordagem A por fases; convivência até o fim; prova com feature nova de 2 camadas; documentos da execução no privado). **Plano v1.6:** F18, F19 e F20 incluídas em 2026-11-07.
@@ -42,7 +42,7 @@ Depois, leia: `sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md` (Ficha, `## Eventos` 
 ## Tarefas, em ordem
 
 1. **Publicar a `v2.7.1`:**
-   - confira o gate (`tail -3 sdd/reports/evidence/F14_DRIVE/verify-gate-3d69536.log`: `[exit=0]`; se não, rode de novo sem carga) e o CI do PR #19 (os 2 jobs verdes);
+   - o gate de `3d69536` já está verde; confira o CI do PR #19 (os 2 jobs verdes);
    - rode `bash sdd/reports/evidence/F14_DRIVE/sabotagens-5a1e3fc.sh > sdd/reports/evidence/F14_DRIVE/sabotagens-3d69536.log 2>&1` e registre as vivas (provável: "trava em arquivo que saiu do caminho vale", janela de corrida curta);
    - siga a `sdd-release` (`.agents/skills/sdd-release/SKILL.md`): bloco do OK uma vez; push `GIT_TERMINAL_PROMPT=0 git push origin HEAD:refs/heads/main` **só com o OK do Roberto citando "sdd-open" na mesma mensagem**; nunca `--force`;
    - depois: `bash sdd/bin/deploy-do-sha.sh --commit 3d69536 --workflow release.yml --branch main`, Release e hash.

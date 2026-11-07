@@ -147,7 +147,7 @@
 ### Casos e testes em aberto
 
 - **Testes novos**, cada um cai no código anterior: `test_trava_de_dono_vivo_nao_vence_pela_idade`, `test_trava_que_nao_abre_sai_2_sem_laco`, `test_trava_que_e_link_nao_cria_arquivo_fora` (`tests/test_drive.py`); `test_dispatch_sem_login_sai_3_e_nao_gasta_o_redisparo` (`test_deploy_do_sha.py`); `test_solto_recente_fica_e_nao_e_decisao_sua`, `test_ficha_de_slice_protege_sem_documento_com_o_nome_do_slice` (`test_sdd_archive.py`); `test_a_frase_que_para_a_repeticao_e_a_do_script` e as 2 asserções do item 10 (`test_f14_drive_textos.py`).
-- **Verify Gate em `3d69536`:** 1ª vez vermelho por 1 teste de tempo sob carga, 1.663 testes (`sdd/reports/evidence/F14_DRIVE/verify-gate-3d69536-sob-carga.log`); 2ª vez, sem carga: rodando no fechamento (a 1ª levou 1.401 s); o resultado fica em `verify-gate-3d69536.log`, última linha `[exit=N]`.
+- **Verify Gate em `3d69536`:** 1ª vez vermelho por 1 teste de tempo sob carga, 1.663 testes (`sdd/reports/evidence/F14_DRIVE/verify-gate-3d69536-sob-carga.log`); 2ª vez, sem carga: **verde**, 1.663 testes, 1 pulado, 1.340 s, `[exit=0]` (`verify-gate-3d69536.log`).
 - **CI do PR #19** (run 42398580503): `gate` (Ubuntu) ✅ 18m21s; macOS ainda rodando no fechamento.
 - **Sabotagens dos consertos novos:** `sdd/reports/evidence/F14_DRIVE/sabotagens-5a1e3fc.sh` (10 mutantes) escrito, **não rodado**. Provável vivo: "trava em arquivo que saiu do caminho vale" (janela de corrida curta). Rode `bash sdd/reports/evidence/F14_DRIVE/sabotagens-5a1e3fc.sh` sem outra carga.
 - **Gate offline da revisão:** 103 asserções verdes em `5a1e3fc` e `3d69536` (`adversarial-gate-*.log`).
