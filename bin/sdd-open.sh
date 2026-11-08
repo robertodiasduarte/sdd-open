@@ -537,7 +537,7 @@ chama_o_nosso() {
 # linha é procurada lá.
 stubs_do_husky() {
   [ -f "$1/h" ] && [ -f "$1/pre-commit" ] \
-    && awk '{ t = $0; sub(/^[[:space:]]+/, "", t) } t ~ /^\.[[:space:]]/ && index(t, "/h") { achou = 1 } END { exit !achou }' "$1/pre-commit" 2>/dev/null
+    && awk '{ t = $0; sub(/^[[:space:]]+/, "", t) } t ~ /^\.[[:space:]]/ && t ~ /\/h"?[[:space:]]*$/ { achou = 1 } END { exit !achou }' "$1/pre-commit" 2>/dev/null
 }
 
 # ENCADEADO <hook que o git executa>TAB<arquivo com a linha>: no husky v9 (core.hooksPath = .husky/_) o git
