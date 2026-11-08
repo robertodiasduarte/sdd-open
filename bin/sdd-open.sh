@@ -543,8 +543,11 @@ stubs_do_husky() {
 # (reconhecido pelo desenho da pasta, stubs_do_husky, não pelo nome).
 hooks_estado() { # → LIVRE | LIGADO | HIGIENE | ENCADEADO <executado>\t<com a linha> | OUTRO <descrição>
   local hp legado pc linha=""
-  # --type=path expande ~/ como o git faz ao executar o hook (~/.githooks não é <raiz>/~/.githooks).
-  hp="$(git config --type=path --get core.hooksPath 2>/dev/null || true)"
+  hp="$(git config --get core.hooksPath 2>/dev/null || true)"
+  # O git expande ~/ ao executar o hook (~/.githooks não é <raiz>/~/.githooks). À mão, e não com
+  # `git config --type=path`: num git anterior ao 2.18 o --type falha, o hp sairia vazio e o init
+  # tomaria o core.hooksPath de outro gerenciador como livre.
+  case "${hp}" in "~") hp="${HOME}" ;; "~/"*) hp="${HOME}/${hp#\~/}" ;; esac
   legado="$(hook_legado)"
   if [ -n "${hp}" ] && hooks_path_e_nosso "${hp}"; then printf 'LIGADO\n'
   elif [ -n "${hp}" ]; then
