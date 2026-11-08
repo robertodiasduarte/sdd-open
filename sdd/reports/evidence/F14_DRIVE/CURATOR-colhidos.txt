@@ -11,3 +11,4 @@ DELTA LM-001 mordeu+1 · conf=2026-11-06 · evidencia=AVAL-24-guarda-curador-enc
 DELTA LM-002 mordeu+1 · conf=2026-11-06 · evidencia=AVAL-24-guarda-curador-encoding.log:7 · fp=9be07e1c1c,b7121c6a74,646cc7b05b,66cf1b2b20,aee5405a8f,699b9d7bf1,19e9f500fa,362f18cd4f,e70b56170c
 DELTA LM-005 mordeu+1 · conf=2026-11-06 · evidencia=AVAL-DESIGN-11-colheita-real-com-filtro-do-design.log:46 · fp=fe0a7ef9fb,0d5a41617b
 DELTA LM-003 mordeu+1 · conf=2026-11-06 · evidencia=AVAL3-11-curador-filtro.log:23 · fp=df28cbb90c,4f4e0a0146,139485acc8,2e12e195d5,164e57d320,a5576a6047,6158af3348
+SUGESTAO mordeu? LM-007 — termo `rename` em AVALIACAO_F14_DRIVE_20261105-ciclo1.md:38 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=debb3f9d4f,c145002594,be7fd47f1e,12db634299

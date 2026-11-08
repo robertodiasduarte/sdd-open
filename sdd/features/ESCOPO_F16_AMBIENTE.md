@@ -97,6 +97,32 @@ Versões de partida: `sdd-checar-ambiente` 1.4.1 · `sdd-iniciar-repo` 1.1.1 · 
 Depois de instalar, fechar e abrir o terminal. Login: `gh auth login` → GitHub.com → HTTPS → Yes → Login
 with a web browser.
 
+### 3.5 Testes no Windows (incluído em 2026-11-07, a pedido do Roberto)
+
+**Achado.** O `README.md:89` promete "Works on macOS, Linux and Windows (Git Bash/WSL)" e o `docs/quickstart.md:80`
+manda usar Git Bash ou WSL no Windows, mas nenhum job do CI roda em Windows: `release.yml` e `publish-gate.yml`
+só têm `ubuntu-latest` (teto 25 min) e `macos-latest` (teto 45 min; a suíte levou 38m35s na `v2.7.1`). Nada do
+pacote rodou em Windows; os achados de Windows das revisões ficaram como "plausíveis", sem medição: CRLF no
+stdout do `playbook-curator.sh` (rodada 4 da F14 Playbook), o ramo `tasklist` do `sdd-drive.sh`, `report-lint` e
+`sdd-archive` sem prova, e o link no lugar da trava de estado sem `O_NOFOLLOW` (rodada 7 da F14 Drive, risco
+aceito). O público do RDD, contadores, usa muito Windows: hoje, o aluno no Windows é o primeiro testador.
+
+**Ajuste, em 2 passos:**
+
+1. **Medir.** Job `testes-windows` em `windows-latest`, com Git Bash (`shell: bash`) e o Python nativo do Windows
+   (o caso real do aluno; o WSL é Linux por dentro e já fica perto do Ubuntu), rodando `publish-gate.sh` e
+   `unittest discover` como os outros. Começa **informativo** (`continue-on-error: true`, fora do `needs:` do job
+   `release`): mede o que quebra sem segurar a Release. Teste que depende de recurso que o Windows não tem (trava
+   `fcntl`, link simbólico sem modo de desenvolvedor, `chmod`, sinal) é pulado com o motivo no `skipIf`; o que
+   falhar por defeito do pacote vira conserto com teste.
+2. **Decidir a promessa.** Com a medição na mão: (a) Windows vira piso testado (o job entra no `needs:` da
+   `release`, com teto próprio) ou (b) o README e o quickstart dizem "Windows (Git Bash/WSL): sem teste
+   automático; use por sua conta". Até essa decisão, a frase do README não pode afirmar suporte que não foi
+   provado: o 1º commit da F16 já a corrige.
+
+**Também:** os achados de Windows guardados (CRLF do curator, `tasklist`, `O_NOFOLLOW` da trava) são medidos no
+job novo e consertados ou rebatidos com evidência.
+
 ## 4. Fora do escopo
 
 - Instalar algo pelo aluno (as skills indicam o comando; `checar-ambiente` continua somente leitura).
@@ -116,4 +142,7 @@ O ciclo de toda frente desta família (cópia por `git archive HEAD`, `publish-g
 5. no macOS com o app do VS Code e sem `code` no `PATH`, o slot recebe `open -a "Visual Studio Code"` e a
    frente abre;
 6. `tests/test_agnostico.py` verde;
-7. Release com `SHA256SUMS.txt` conferido.
+7. o job `testes-windows` (Git Bash + Python nativo) roda nos 2 workflows e o relatório da frente lista o que
+   passou, o que foi pulado (com motivo) e o que foi consertado; a frase de Windows do `README.md` e do
+   `docs/quickstart.md` diz exatamente o que foi provado; os achados de Windows guardados estão medidos;
+8. Release com `SHA256SUMS.txt` conferido.
