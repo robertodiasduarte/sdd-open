@@ -125,6 +125,7 @@
 - 2026-11-07 — Roberto: "documente tudo. vou embarcar daqui a pouco". Sessão 13 fechada sem a `v2.7.1`: a publicação exige o OK dele citando "sdd-open" depois do bloco do OK, e fica para a sessão 14.
 - 2026-11-07 — Roberto voltou antes de embarcar e pediu para continuar: sabotagens (9 de 10 derrubam teste; viva a do `samestat`), CI do PR #19 verde (Ubuntu 18m21s, macOS 38m35s), bloco do OK. "pode" não citava o repositório e não valeu; "sdd-open autorizado": push `b0663d3..3d69536` em `main`; run `release` 42437407177 e `publish-gate` 42437407206 verdes; **Release `v2.7.1`** em 2026-11-08T02:46:40Z, `shasum -a 256 -c` OK. Curadoria: 1 sugestão descartada, nada aplicado.
 - 2026-11-08 — Roberto, pela `/sdd-new-session`: "escreva o prompt para iniciar a sessão subsequente [...] abra o cursor na worktree correta". Lido como o OK para a 1ª alteração no privado: worktree `/Users/robertoduarte/rdd-worktrees/f15-substituicao`, branch `feat/f15-substituicao`, criada pelo `scripts/new-session.sh` do privado (`RDD_EDITOR=cursor`) a partir do `origin/main`; aberta no Cursor; baseline de edges 465. Nada enviado ao remoto.
+- 2026-11-08 — Roberto: "podemos encerrar e limpar aqui?". As 7 pastas `EXTERNAL_REVIEW_*`, o trace e `sdd/releases/` (ledgers e `CURATOR-colhidos.txt`) arquivados em `/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F14_DRIVE-v2.7.1-revisoes-traces.tar.gz`; documentos conferidos por checksum contra a branch `docs/`; worktree `sdd-open-f14-drive` removida e branch local `feat/f14-drive` apagada (já no `main`). Ficam para o Roberto decidir: a worktree `sdd-open-docs-f16`, a branch local `feat/f14-playbook` e a branch remota `feat/f14-drive-v271`.
 - 2026-11-07 — Roberto perguntou por que não há teste em Windows e pediu incluí-lo em alguma frente. Medido: o `README.md:89` promete Windows (Git Bash/WSL) e o CI só tem `ubuntu-latest` e `macos-latest`; nada do pacote rodou em Windows. Plano v1.7: entra na **F16** (item 5 da Entrega; `ESCOPO_F16_AMBIENTE.md` §3.5): job `testes-windows` primeiro informativo, depois a decisão entre Windows como piso testado ou README dizendo "sem teste automático"; a frase do README corrigida no 1º commit da F16.
 
 ---
@@ -192,7 +193,8 @@
 ### Onde está o trabalho
 
 - Remoto `https://github.com/robertodiasduarte/sdd-open.git`, `main` = `3d69536` = tag `v2.7.1`; branch remota `feat/f14-drive-v271` (PR #19 MERGED) pode sair.
-- Worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive`, branch local `feat/f14-drive` em `3d69536`, já em `main`: pode sair, com a worktree, quando o Roberto quiser.
+- Worktree `sdd-open-f14-drive` removida e branch local `feat/f14-drive` apagada em 2026-11-08 (já em `main`). Revisões, trace e ledgers: `/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F14_DRIVE-v2.7.1-revisoes-traces.tar.gz`.
+- Worktree da F15: `/Users/robertoduarte/rdd-worktrees/f15-substituicao`, branch `feat/f15-substituicao` (privado).
 - Worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16` ficou velha depois do envio da F18 para a `docs/`; removê-la é decisão do Roberto. A branch local `feat/f14-playbook` também pode sair.
 - Os artefatos SDD estão na branch `docs/incorporar-starter`; as pastas `EXTERNAL_REVIEW_*` da sessão 13 ficam só nesta máquina, em `sdd/reports/reviews/`.
 
