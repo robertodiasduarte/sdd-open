@@ -1,83 +1,78 @@
-# Continuar: INCORPORAR_STARTER — sessão 14: F15 Substituição do SDD privado, fase 1 (instalar o Open no privado)
+# Continuar: INCORPORAR_STARTER — sessão 15: v2.7.2 do Open (pré-requisito do merge da F15 fase 1)
 
-A `v2.7.1` do Open saiu em 2026-11-08 (https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.7.1, `main` = `3d69536`). Esta sessão começa a **F15**: o repositório privado (`/Users/robertoduarte/RDD/Wordpress`, remoto `robertodiasduarte/wordpressrdd`) passa a usar o Open instalado pelo `init`. É a primeira sessão que **altera o privado**.
+Na sessão 14 (2026-11-08) a fase 1 da F15 foi instalada no repositório privado com o Open `v2.7.1`, na worktree
+`/Users/robertoduarte/rdd-worktrees/f15-substituicao` (branch `feat/f15-substituicao`, commits `00ad127ce`, `50dc01e33`,
+`fa38d1d98`, **fora do `main`**). A instalação achou 2 defeitos **genéricos** do Open; sem corrigi-los, a fase 1 não vai
+ao `main` do privado e o `doctor` não sai ✅ sem ⚠️. Esta sessão os corrige no Open, com release própria (`v2.7.2`), e
+reinstala no privado.
 
 ## Onde abrir esta sessão
 
-A pasta de trabalho da F15 **já existe**: `/Users/robertoduarte/rdd-worktrees/f15-substituicao`, branch `feat/f15-substituicao`, criada em 2026-11-08 pelo `scripts/new-session.sh` do privado a partir do `origin/main` (baseline de edge functions: 465, em `.edge-count-baseline`). A sessão precisa estar aberta **nela**: nenhum `cd` muda a pasta à qual a sessão fica presa. Se abriu em outra, pare e peça ao Roberto para abrir o agente lá. O script sugere `/brainstorm` como 1º comando: **não se aplica**, o brainstorm da F15 já foi feito.
-
-```bash
-git rev-parse --show-toplevel        # esperado: /Users/robertoduarte/rdd-worktrees/f15-substituicao
-git branch --show-current            # esperado: feat/f15-substituicao
-GIT_TERMINAL_PROMPT=0 git fetch -q origin && git log --oneline -1 origin/main
-git status --short | head -5         # esperado: só .edge-count-baseline, se não estiver ignorado
-```
-
-Leia, nesta ordem (os documentos da família estão no Open, branch pública `docs/incorporar-starter`):
+Numa worktree nova do Open (a sessão fica presa à pasta onde nasce; nenhum `cd` muda isso):
 
 ```bash
 O=/Users/robertoduarte/rdd-public/sdd-open
-GIT_TERMINAL_PROMPT=0 git -C "$O" fetch -q origin docs/incorporar-starter
-git -C "$O" show origin/docs/incorporar-starter:sdd/features/BRAINSTORM_F15_SUBSTITUICAO.md
-git -C "$O" show origin/docs/incorporar-starter:sdd/features/PLANO_F4_F15_CONSOLIDADO.md   # quadro "F15", seção 8
-git -C "$O" show origin/docs/incorporar-starter:sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md  # Ficha, Eventos, etapa do topo
+GIT_TERMINAL_PROMPT=0 git -C "$O" fetch -q origin
+git -C "$O" worktree add -b fix/guardas-pasta-e-gancho-encadeado /Users/robertoduarte/rdd-worktrees/sdd-open-v272 origin/main
 ```
 
-## Onde paramos
+Abra o agente em `/Users/robertoduarte/rdd-worktrees/sdd-open-v272`. Os passos 4 e 5 abaixo mexem no privado e precisam
+de uma sessão aberta em `/Users/robertoduarte/rdd-worktrees/f15-substituicao`.
 
-- **Open:** `v2.7.1` publicada, hash conferido (`5aa600aea17a9481d4ac215af574e9c2563adeaf6d6f58e99c6a7c58569930e3`). 19 skills, 1.663 testes. CI: Ubuntu 18m21s (teto 25), macOS 38m35s (teto 45).
-- **F15:** brainstorm feito com o Roberto em 2026-11-07, todas as recomendadas. Abordagem **A, por fases, release por último**: fase 1 instalar · fase 2 a feature da prova (brainstorm a build) pelo Open · fase 3 publicar a mesma feature pelo `sdd-release` do Open · fase 4 remover o SDD privado quando nenhuma frente antiga depender dele. 4 a 5 sessões até a fase 3.
-- **Privado** medido em `origin/main` = `022c14aa7` (2026-11-07; refaça): 29 frentes de feature abertas em worktrees; `.claude/commands/workflow` 8 arquivos; `.claude/agents` 12 papéis + 1 modelo; `sdd-public` 80; `scripts/` 244 itens (em `scripts/gates/`, os do método misturados com dezenas de gates de feature); `.claude/kb/` 50 pastas; `.githooks/` com `pre-commit`, `pre-push` e 3 ganchos do Claude; `/release` em `.claude/commands/release.md`; os documentos SDD em `.claude/sdd/`. O checkout principal está 2.286 commits atrás, com 4 arquivos modificados (D7): `.claude/kb/_index.yaml`, `.claude/kb/anatomia-harness-claude-code/concepts/agents-md-portabilidade.md`, `.claude/kb/anatomia-harness-claude-code/index.md`, `wp-content/plugins/rdd-plataforma/templates/partials/anatomia/n2.php`.
-- **Gabarito da release** (o que o `sdd-release` instalado precisa reproduzir): `.claude/sdd/releases/EXEMPLO_BAIXAR_NFSE_PAGINA/s1_1.486.0.yaml` no privado.
+Leia, nesta ordem:
 
-## Decisões já tomadas, não reabrir (`BRAINSTORM_F15_SUBSTITUICAO.md`, Key Decisions)
+```bash
+cat /Users/robertoduarte/rdd-worktrees/f15-substituicao/sdd/handoffs/HANDOFF_F15_SUBSTITUICAO.md   # Falta, Landmines, Eventos
+O=/Users/robertoduarte/rdd-public/sdd-open
+git -C "$O" show origin/docs/incorporar-starter:sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md | sed -n 1,20p
+```
 
-1. Convivência até o fim, sem data-limite: o SDD privado só sai quando nenhuma frente aberta depender dele; frente nova nasce no Open; o `/release` antigo fica como saída de emergência.
-2. Prova com uma feature **nova, pequena, de 2 camadas**, escolhida no começo da fase 2.
-3. Documentos divididos: o brainstorm na branch `docs/` do Open (pública); define, design, relatório e evidências da execução **no privado**, em `sdd/`. Detalhe de infraestrutura da RDD nunca vai para o Open.
-4. Ponto de extensão do smoke visual: **3 slots genéricos** no `sdd/config.yaml` do Open (antes do OK, antes do push, depois do deploy; saídas 0 ok · 2 reprovou · 10 nada a medir). É uma entrega **no Open**, com release própria, antes da fase 3.
-5. Autorização: um OK por publicação no bloco do OK; o Open não ganha pré-autorização.
-6. Vermelho herdado de outras frentes: a linha de base do Open (`gate-baseline.sh`); conferir na fase 1 se cobre os gates de feature.
-7. D7: ler o diff dos 4 arquivos, guardá-los num patch fora do git, mostrar ao Roberto e, com o OK dele, sincronizar o checkout principal.
-8. A ponte `sdd-public/` sai na fase 1 (`sdd-public/`, `scripts/port-to-public.sh`, `scripts/sdd-public-allowlist.tsv`, `scripts/gates/gate-sdd-open-s1.sh`, `scripts/gates/gate-sdd-prompt-builder.sh`).
-9. Ganchos numa pasta só durante a convivência: o `sdd/hooks/` do Open chama as guardas do `.githooks/`.
-10. As cópias `~/.claude/skills/sdd-*` (e `anthropic-skills:sdd-*` na conta claude.ai) regeneradas a partir do Open na fase 1.
-11. Do Anexo C, somem: `model:` por fase, `/fewer-permission-prompts`, a memória do Roberto como slot. Landmines LM-nnn → `sdd/playbook.md` do privado; patterns e invariantes → `sdd/patterns/` e `sdd/invariants.md`.
-12. Fica de fora: mover os documentos antigos de `.claude/sdd/`; as KBs que a prova não usar; buckets WARM/COOL e lentes por público, salvo se a prova passar por UX.
+## Os 2 defeitos (medidos em 2026-11-08 sobre a v2.7.1)
 
-## Tarefa: fase 1, instalar
+1. **Guardas de BUILD_REPORT casam pelo nome em qualquer pasta.** `bin/adapters/claude/sdd-report-guard.py`
+   (`REPORT_RE` sobre o `basename`) e a regra `[REPORT]` de `sdd/hooks/pre-commit` (`case "$(basename "$f")"`) julgam
+   qualquer `BUILD_REPORT_*.md`. Num projeto que tem outro fluxo com relatórios em outra pasta, o `report-lint` do Open
+   reprova os relatórios de lá (medido: VERMELHO) e o guarda nega a gravação. Correção: agir só em `sdd/reports/` da
+   raiz do projeto (o contrato do `report-lint.py` já é `sdd/reports/BUILD_REPORT_{FEATURE}.md`).
+2. **O `doctor` avisa ⚠️ mesmo com o gancho encadeado.** Com `core.hooksPath` de outro gerenciador, o `doctor` manda
+   acrescentar `bash sdd/hooks/pre-commit || exit 1` (`LINHA_ACRESCENTAR`) ao pre-commit de lá, e continua avisando
+   depois de a linha estar lá (`hooks_estado` só reconhece `core.hooksPath` = `sdd/hooks`). Correção: pre-commit do
+   `core.hooksPath` que contém a linha ⇒ ✅ "hooks encadeados"; sem a linha, o ⚠️ de hoje.
 
-Rode como um fluxo SDD do Open **dentro do privado** (os documentos em `sdd/` do privado). Antes de cada alteração, diga o que vai mudar; mostre o plano do `init` ao Roberto antes de aplicar.
+## Tarefa
 
-1. **D7:** leia o diff dos 4 arquivos do checkout principal, sem tocar; proponha o destino; com o OK, patch fora do git e sync do checkout.
-2. **Instalar:** a partir do Open em `v2.7.1` (`git -C /Users/robertoduarte/rdd-public/sdd-open fetch -q origin && git -C /Users/robertoduarte/rdd-public/sdd-open checkout -q v2.7.1`, ou o `.tar.gz` da Release conferido pelo `SHA256SUMS.txt`), rode primeiro `bash <open>/bin/sdd-open.sh init --vendors claude --dry-run` e mostre o plano: o privado **já tem `CLAUDE.md`** e `core.hooksPath = .githooks`; nada deles pode ser sobrescrito sem OK. Depois, o `init` de verdade.
-3. **`sdd/config.yaml`:** `project.test_cmd` (deno), `deploy.cmd` e `deploy.workflow` (rsync Hostinger pelo GitHub Actions), `deploy.drift_check_cmd` (`scripts/audit-supabase-drift.sh`), `release.landmines_cmd` (`scripts/release-landmines.sh`, com o gate de schema por migration, hoje `scripts/gates/audita-schema-gate.sh`), `layers` (edge/sql/wp-content), `review.*`. Cada valor tirado do `/release` de hoje (`.claude/commands/release.md`), não inventado.
-4. **Ganchos** numa pasta só (decisão 9), com teste dos 2 lados: um commit que a guarda antiga recusa continua recusado.
-5. **Ponte `sdd-public/` fora** (decisão 8) e **cópias `~/.claude/skills/sdd-*` regeneradas** (decisão 10): esta última mexe fora do repositório: só com OK.
-6. **Conteúdo da RDD** nos lugares do Open (decisão 11).
-7. **Linha de base:** conferir se o `gate-baseline.sh` cobre os gates de feature vermelhos herdados (decisão 6); se não cobrir, é ajuste no Open, com release própria.
-
-Pronto quando: no privado, `bash bin/sdd-open.sh doctor` sai ✅ sem ⚠️; um `git commit` passa pelas guardas do Open e do `.githooks/`; `git ls-files sdd-public scripts/port-to-public.sh` vazio; as 29 frentes antigas continuam com o `/workflow:*` e o `/release` funcionando (conferir que nada do que elas usam foi removido).
+1. Fluxo do Open para as 2 correções (DEFINE/DESIGN curtos aqui na `docs/incorporar-starter`, como F1–F14).
+2. Teste dos 2 lados em `tests/`, **com caso-controle**: o mesmo relatório inválido negado em `sdd/reports/` e ignorado
+   fora; `doctor` com a linha (✅) e sem ela (⚠️). Sabotar cada correção e ver o teste cair (na sessão 14, um caso
+   "ignora o outro lado" sem controle passou com a correção removida).
+3. `bash scripts/publish-gate.sh .` verde, revisão de contexto fresco, PR; push no `main` do Open **só com OK do
+   Roberto citando "sdd-open"**; a Release `v2.7.2` sai sozinha; conferir o hash pelo `SHA256SUMS.txt`.
+4. No privado (`/Users/robertoduarte/rdd-worktrees/f15-substituicao`): baixar o pacote `v2.7.2`,
+   `bash <pacote>/bin/sdd-open.sh sync --vendors claude` (regera `.claude/hooks/sdd-report-guard.py`), copiar à mão
+   `sdd/hooks/pre-commit` do pacote (o `sync` não reescreve arquivo do projeto), `bash <pacote>/bin/sdd-open.sh doctor`
+   ⇒ ✅ sem ⚠️, `bash scripts/gates/test-build-report-guard.sh` ⇒ 86/86; commitar.
+5. Perguntar ao Roberto se leva a fase 1 ao `main` do privado (rebase em `origin/main`; o push dispara o deploy do
+   site, sem mudança no ar).
 
 ## O que não quebrar
 
-- **As frentes abertas do privado:** nada que o `/workflow:*`, o `/release` e os scripts do SDD privado usam sai antes da fase 4.
-- **Produção:** a fase 1 não publica nada no site; o deploy só na fase 3, com OK.
-- **Push:** todo comando remoto com `GIT_TERMINAL_PROMPT=0`; push no `main` do privado só com OK explícito do Roberto; push no `main` do Open só com OK citando "sdd-open"; nunca `--force`.
-- **Público × privado:** o `sdd-open` e a branch `docs/incorporar-starter` são públicos; detalhe de infraestrutura e dado da RDD ficam no privado.
-- **Específico da RDD não viaja para o Open:** mudança no Open (os 3 slots da decisão 4, ajuste da linha de base) é genérica, com teste dos 2 lados, numa worktree do Open, com release própria.
-- **Saldo da OpenRouter:** US$ 7,89 em 2026-11-07; `limit_remaining` é o limite da chave, não o saldo (`GET https://openrouter.ai/api/v1/credits`).
-- **Fora de escopo nesta sessão:** fases 2 a 4; F16 a F20.
+- Específico da RDD não viaja para o Open (público): as correções são genéricas, com fixture própria.
+- No privado: não trocar `core.hooksPath` (comum a todas as worktrees); não mover playbook, invariantes nem patterns
+  (fonte única em `.claude/` até a fase 4).
+- Todo comando remoto com `GIT_TERMINAL_PROMPT=0`; nunca `--force`.
+- Fora de escopo: fase 2 (feature da prova), os 3 slots de smoke visual (decisão 4 da F15, release própria antes da
+  fase 3), F16–F20.
 
 ## Fechar
 
-Ao terminar, rode a `sdd-handoff`. A ficha da execução da F15 fica no privado (`sdd/handoffs/HANDOFF_F15_SUBSTITUICAO.md`); o handoff da família (`HANDOFF_INCORPORAR_STARTER.md`, branch `docs/incorporar-starter` do Open) ganha uma linha em Eventos e o campo "Falta" atualizado, gravados pelo molde abaixo, sem trocar de branch em nenhuma worktree:
+`sdd-handoff` na ficha do privado (`sdd/handoffs/HANDOFF_F15_SUBSTITUICAO.md`) e, aqui, linha em Eventos e "Falta" do
+`HANDOFF_INCORPORAR_STARTER.md` + este prompt para a sessão 16, sem trocar de branch em nenhuma worktree:
 
 ```bash
 O=/Users/robertoduarte/rdd-public/sdd-open
 T=$(mktemp -d) && GIT_TERMINAL_PROMPT=0 git -C "$O" fetch -q origin docs/incorporar-starter
 git -C "$O" worktree add -q --detach "$T" origin/docs/incorporar-starter
 # edite "$T/sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md" e "$T/sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md"
-git -C "$T" add sdd/handoffs && git -C "$T" commit -q -m "docs(incorporar-starter): sessão 14" && GIT_TERMINAL_PROMPT=0 git -C "$T" push -q origin HEAD:docs/incorporar-starter
+git -C "$T" add sdd/handoffs && git -C "$T" commit -q -m "docs(incorporar-starter): sessão 15" && GIT_TERMINAL_PROMPT=0 git -C "$T" push -q origin HEAD:docs/incorporar-starter
 git -C "$O" worktree remove --force "$T"
 ```
