@@ -10,7 +10,7 @@
 #   [H3] credencial em texto claro em .json/.yml/.toml/.ini/.cfg/.conf/.env (placeholder passa);
 #        mais `gitleaks protect --staged`, quando o gitleaks está instalado;
 #   [H4] sdd/playbook.md apagado, renomeado ou perdendo conhecimento (playbook-lint --anti-collapse);
-#   [REPORT] BUILD_REPORT_*.md que não passa no sdd/bin/report-lint.py (conteúdo staged);
+#   [REPORT] sdd/reports/BUILD_REPORT_*.md que não passa no sdd/bin/report-lint.py (conteúdo staged);
 #   e, por fim, o alarme da sdd-higiene-dado (CPF/CNPJ, .env, certificado, planilha) quando
 #   `git config sdd.higieneDado` = on.
 # Todas as regras rodam; os achados saem juntos, numa recusa só. Sucesso é silencioso.
@@ -185,14 +185,18 @@ regra_h4() {
 }
 
 # ── [REPORT] BUILD_REPORT staged passa pelo report-lint ───────────────────────────────────────────
-# As fixtures de sdd/fixtures/ reprovam de propósito (são o exemplo do que o lint nega) e o molde de
-# sdd/templates/ (BUILD_REPORT_TEMPLATE.md) é um molde, não um relatório: os dois ficam fora.
+# Só o relatório do método, direto em sdd/reports/ (o contrato do report-lint): BUILD_REPORT_*.md de outra
+# pasta é de outro fluxo do projeto, de sdd/archive/, das fixtures (que reprovam de propósito) ou o molde
+# de sdd/templates/ — nenhum deles é julgado aqui.
 # O lint confere evidência e AVALIACAO no disco; a fase Release confere de novo.
 regra_report() {
   local f out rc avisou=0
   while IFS= read -r -d '' f; do
-    case "$(basename "$f")" in BUILD_REPORT_*.md) ;; *) continue ;; esac
-    case "/$f" in */sdd/fixtures/*|*/sdd/templates/*) continue ;; esac
+    case "$f" in
+      sdd/reports/*/*) continue ;;              # subpasta de sdd/reports/: não é o relatório da feature
+      sdd/reports/BUILD_REPORT_*.md) ;;
+      *) continue ;;
+    esac
     if ! command -v python3 >/dev/null 2>&1; then
       [ "$avisou" = 1 ] || aviso "python3 ausente: $f não foi conferido pelo report-lint neste commit (a fase Release confere)"
       avisou=1; continue

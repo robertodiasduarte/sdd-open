@@ -27,7 +27,7 @@ The plan line of `init` is the notice that the project starts refusing commits:
 | **H5** | a NUL byte in a text file (`.md`, `.sh`, `.py`, `.json`, `.yml`, … or no extension with a shebang). Git and grep then treat the file as binary and the diff disappears for reviewers. UTF-16 text (PowerShell, Excel exports) is recognized by its BOM and passes | write the escape (`\0`, `\x00`, `\u0000`) in the source |
 | **H3** | a credential in clear text in `.json`, `.yml`, `.yaml`, `.toml`, `.ini`, `.cfg`, `.conf` or `.env*` (`password`, `token`, `secret`, `key`… with a quoted value of 6+ characters; in `.env*` also the unquoted `KEY=value`). Placeholders pass: `${VAR}`, `{{ … }}`, `<…>`, `CHANGEME`, `example`, `***`, and version numbers (`^2.0.0` in a `package-lock.json`). The message shows the key, never the value. When `gitleaks` is installed, `gitleaks protect --staged` runs too | replace the value with a placeholder, or `git restore --staged "<file>"` |
 | **H4** | `sdd/playbook.md` deleted, renamed, or losing knowledge (an `[LM-nnn]` disappearing, or 2 or more bullets and more than 20 % of them rewritten at once; a single changed bullet always passes — `playbook-lint.sh --anti-collapse`) | retire = move to `## Tombstones` keeping the ID; a big rewrite = 2 or more commits |
-| **REPORT** | a `BUILD_REPORT_*.md` that fails `sdd/bin/report-lint.py` (checked on the staged content; the fixtures under `sdd/fixtures/` and the template under `sdd/templates/` are skipped) | add the criteria table and the evaluator line (`sdd/templates/fragments/EVIDENCIA.md`), or fix the cited evidence |
+| **REPORT** | a `BUILD_REPORT_*.md` directly under `sdd/reports/` that fails `sdd/bin/report-lint.py` (checked on the staged content; a `BUILD_REPORT_*.md` anywhere else — another workflow of the project, `sdd/archive/`, the fixtures, the template — is not judged) | add the criteria table and the evaluator line (`sdd/templates/fragments/EVIDENCIA.md`), or fix the cited evidence |
 | **alarm** | when `git config sdd.higieneDado` is `on`: CPF/CNPJ with a valid check digit, `.env`, `.pfx`/`.p12`/`.pem` with a private key, a new spreadsheet — the `sdd-higiene-dado` alarm, called by the hook | the alarm's own message says what to do |
 
 A refusal looks like this:
@@ -81,7 +81,9 @@ line to add to the existing manager:
 bash sdd/hooks/pre-commit || exit 1
 ```
 
-`doctor` repeats that line as long as the hooks are not on.
+`doctor` repeats that line until it is there. Once the existing manager's `pre-commit` carries it (on a line
+that is not a comment), `doctor` reports the hooks as **chained** (✅), and warns only if that file lost its
+execute bit or `sdd/hooks/pre-commit` is missing.
 
 ## Turning off
 
@@ -100,9 +102,10 @@ shows the plan line again and, with `--yes`, turns them back on. `doctor` tells 
 the package, marked `sdd-open:generated`; `sync` regenerates them and `sync --check` reports an edited copy)
 and adds two entries to `hooks.PreToolUse` in `.claude/settings.json`, keeping every other key and entry:
 
-- **`sdd-report-guard.py`** (Write, Edit, MultiEdit): before the agent writes a `BUILD_REPORT_*.md`, it
-  simulates the resulting content and runs `sdd/bin/report-lint.py --stdin` on it. The write is denied with the
-  lint's output when it fails; fixtures and the template are skipped.
+- **`sdd-report-guard.py`** (Write, Edit, MultiEdit): before the agent writes a `BUILD_REPORT_*.md` directly
+  under `sdd/reports/`, it simulates the resulting content and runs `sdd/bin/report-lint.py --stdin` on it. The write is denied with the
+  lint's output when it fails; a report anywhere else (another workflow of the project, fixtures, the template)
+  is not judged.
 - **`sdd-avaliador-guard.py`** (Agent, Task): when the dispatched prompt carries the word `veredito` (the
   fresh-context evaluator brief of `sdd-build`), it runs `sdd/bin/avaliador-guard.sh` and denies the dispatch
   while the tree has uncommitted work.

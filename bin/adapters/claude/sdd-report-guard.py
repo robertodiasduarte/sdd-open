@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """sdd-report-guard.py — guard do Claude Code (PreToolUse em Write|Edit|MultiEdit), gerado pelo sdd-open.
 
-Antes de o agente gravar um BUILD_REPORT_*.md, simula o conteúdo final (Write: o content; Edit e
+Antes de o agente gravar um BUILD_REPORT_*.md direto em sdd/reports/, simula o conteúdo final (Write: o content; Edit e
 MultiEdit: aplica old_string → new_string ao arquivo atual) e o passa pelo sdd/bin/report-lint.py
 --stdin do projeto. Exit 1 do lint ⇒ nega a gravação, com a saída do lint como razão. Exit 0 ⇒ silêncio.
 
@@ -45,6 +45,16 @@ def em_fixtures(caminho):
     return "/sdd/fixtures/" in normal or "/sdd/templates/" in normal
 
 
+def em_sdd_reports(caminho, projeto):
+    """O relatório do método mora em <projeto>/sdd/reports/ (o contrato do report-lint). BUILD_REPORT_*.md de
+    outra pasta é de outro fluxo do projeto (ou arquivado): este guard não o julga. Caminhos resolvidos
+    (realpath): no macOS, /tmp e /private/tmp são o mesmo lugar."""
+    if not os.path.isabs(caminho):
+        caminho = os.path.join(projeto, caminho)
+    pasta = os.path.realpath(os.path.dirname(caminho))
+    return pasta == os.path.realpath(os.path.join(projeto, "sdd", "reports"))
+
+
 def conteudo_resultante(tool, entrada, caminho):
     """O conteúdo que o arquivo TERÁ se a ferramenta rodar; None = a ferramenta não gravaria nada."""
     if tool == "Write":
@@ -80,6 +90,8 @@ def main():
     if em_fixtures(caminho):
         return
     projeto = os.environ.get("CLAUDE_PROJECT_DIR") or payload.get("cwd") or os.getcwd()
+    if not em_sdd_reports(caminho, projeto):
+        return
     lint = os.path.join(projeto, "sdd", "bin", "report-lint.py")
     if not os.path.isfile(lint):
         aviso("sdd/bin/report-lint.py não encontrado em %s — BUILD_REPORT não conferido (rode init)" % projeto)

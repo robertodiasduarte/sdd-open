@@ -27,7 +27,7 @@ A linha do plano do `init` é o aviso de que o projeto passa a recusar commits:
 | **H5** | byte NUL em arquivo de texto (`.md`, `.sh`, `.py`, `.json`, `.yml`, … ou sem extensão com shebang). O git e o grep passam a tratar o arquivo como binário e o diff some para quem revisa. Texto em UTF-16 (PowerShell, exportação do Excel) é reconhecido pelo BOM e passa | escreva a grafia de escape (`\0`, `\x00`, `\u0000`) no fonte |
 | **H3** | credencial em texto claro em `.json`, `.yml`, `.yaml`, `.toml`, `.ini`, `.cfg`, `.conf` ou `.env*` (`password`, `token`, `secret`, `key`… com valor entre aspas de 6+ caracteres; em `.env*` também o `CHAVE=valor` sem aspas). Placeholder passa: `${VAR}`, `{{ … }}`, `<…>`, `CHANGEME`, `example`, `***`, e número de versão (`^2.0.0` num `package-lock.json`). A mensagem mostra a chave, nunca o valor. Com o `gitleaks` instalado, `gitleaks protect --staged` roda também | troque o valor por um placeholder, ou `git restore --staged "<arquivo>"` |
 | **H4** | `sdd/playbook.md` apagado, renomeado ou perdendo conhecimento (um `[LM-nnn]` que some, ou 2 ou mais bullets e mais de 20 % deles reescritos de uma vez; 1 bullet alterado sempre passa — `playbook-lint.sh --anti-collapse`) | aposentar = mover para `## Tombstones` mantendo o ID; reescrita grande = 2 ou mais commits |
-| **REPORT** | `BUILD_REPORT_*.md` que não passa no `sdd/bin/report-lint.py` (conferido no conteúdo staged; as fixtures de `sdd/fixtures/` e o molde de `sdd/templates/` são pulados) | acrescente a tabela de critérios e a linha do avaliador (`sdd/templates/fragments/EVIDENCIA.md`), ou corrija a evidência citada |
+| **REPORT** | `BUILD_REPORT_*.md` direto em `sdd/reports/` que não passa no `sdd/bin/report-lint.py` (conferido no conteúdo staged; `BUILD_REPORT_*.md` de outra pasta — outro fluxo do projeto, `sdd/archive/`, as fixtures, o molde — não é julgado) | acrescente a tabela de critérios e a linha do avaliador (`sdd/templates/fragments/EVIDENCIA.md`), ou corrija a evidência citada |
 | **alarme** | quando `git config sdd.higieneDado` é `on`: CPF/CNPJ com dígito verificador válido, `.env`, `.pfx`/`.p12`/`.pem` com chave privada, planilha nova — o alarme da `sdd-higiene-dado`, chamado pelo hook | a mensagem do próprio alarme diz o que fazer |
 
 Uma recusa fica assim:
@@ -81,7 +81,9 @@ gerenciador que existe:
 bash sdd/hooks/pre-commit || exit 1
 ```
 
-O `doctor` repete essa linha enquanto os hooks não estiverem ligados.
+O `doctor` repete essa linha até ela estar lá. Quando o `pre-commit` do gerenciador que existe a traz (numa
+linha que não é comentário), o `doctor` mostra os hooks como **encadeados** (✅), e só avisa se esse arquivo
+perdeu a permissão de execução ou se o `sdd/hooks/pre-commit` sumiu.
 
 ## Desligar
 
@@ -100,9 +102,9 @@ O `init --vendors claude` gera também dois guards em `.claude/hooks/` (cópias 
 pacote, marcadas `sdd-open:generated`; o `sync` as regenera e o `sync --check` acusa cópia editada) e acrescenta
 duas entradas a `hooks.PreToolUse` do `.claude/settings.json`, mantendo toda outra chave e entrada:
 
-- **`sdd-report-guard.py`** (Write, Edit, MultiEdit): antes de o agente gravar um `BUILD_REPORT_*.md`, simula o
-  conteúdo final e o passa pelo `sdd/bin/report-lint.py --stdin`. A gravação é negada com a saída do lint quando
-  ele reprova; fixtures e o molde são pulados.
+- **`sdd-report-guard.py`** (Write, Edit, MultiEdit): antes de o agente gravar um `BUILD_REPORT_*.md` direto em
+  `sdd/reports/`, simula o conteúdo final e o passa pelo `sdd/bin/report-lint.py --stdin`. A gravação é negada com a saída do lint quando
+  ele reprova; relatório de outra pasta (outro fluxo do projeto, fixtures, o molde) não é julgado.
 - **`sdd-avaliador-guard.py`** (Agent, Task): quando o prompt despachado traz a palavra `veredito` (o brief do
   avaliador de contexto fresco da `sdd-build`), roda o `sdd/bin/avaliador-guard.sh` e nega o despacho enquanto
   a árvore tem trabalho não commitado.

@@ -321,6 +321,24 @@ class Hooks(Sandbox):
         self.assertEqual(rc, 0, saida)
         self.assertEqual(saida.strip(), "")
 
+    def test_report_so_julga_o_relatorio_em_sdd_reports(self):
+        # F15: [REPORT] casava BUILD_REPORT_*.md pelo nome em qualquer pasta e recusava o commit do relatório de
+        # outro fluxo do projeto. Os de fora passam; o controle (o mesmo arquivo em sdd/reports/) é recusado.
+        ruim = (RAIZ / "sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md").read_text(encoding="utf-8")
+        for rel in (".claude/sdd/reports/BUILD_REPORT_X.md", "docs/BUILD_REPORT_X.md", "sdd/archive/X/BUILD_REPORT_X.md",
+                    "sdd/reports/antigos/BUILD_REPORT_X.md",
+                    "BUILD_REPORT_X.md", "sdd/reports/BUILD_REPORT_velhos/BUILD_REPORT_X.md"):
+            self.escreve(self.p, rel, ruim)
+        rc, saida = self.tenta_commit()
+        self.assertEqual(rc, 0, saida)
+        self.assertNotIn("[REPORT]", saida)
+        self.escreve(self.p, "sdd/reports/BUILD_REPORT_X.md", ruim)
+        rc, saida = self.tenta_commit()
+        self.assertEqual(rc, 1, saida)
+        self.assertRecusa(saida, "REPORT")
+        self.assertIn("🛑 [REPORT] sdd/reports/BUILD_REPORT_X.md não passa no report-lint:", saida)
+        self.assertEqual(saida.count("não passa no report-lint"), 1, saida)
+
     def test_report_sem_python3_ou_sem_lint_avisa_e_segue(self):
         (self.p / "sdd/reports").mkdir(exist_ok=True)
         shutil.copy2(str(RAIZ / "sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md"), str(self.p / "sdd/reports/BUILD_REPORT_X.md"))

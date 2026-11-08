@@ -198,11 +198,28 @@ class Projeto(Sandbox):
                                                                                FILE=str(self.p / alvo), CONTENT=ruim))
                 self.assertEqual((rc, out, err), (0, "", ""))
 
+    def test_report_guard_so_julga_o_relatorio_em_sdd_reports(self):
+        # F15 (instalação num projeto com outro fluxo): o guard casava BUILD_REPORT_*.md pelo nome em qualquer
+        # pasta e negava o relatório do outro fluxo. Controle: o MESMO conteúdo é negado em sdd/reports/.
+        self.cli("init", "--yes", "--vendors", "claude")
+        ruim = (RAIZ / "sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md").read_text(encoding="utf-8")
+        for alvo in (str(self.p / "sdd/reports/BUILD_REPORT_X.md"), "sdd/reports/BUILD_REPORT_X.md"):
+            with self.subTest(controle=alvo):
+                rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json", FILE=alvo, CONTENT=ruim))
+                self.assertEqual(json.loads(out)["hookSpecificOutput"]["permissionDecision"], "deny", out + err)
+        for rel in (".claude/sdd/reports/BUILD_REPORT_X.md", "docs/BUILD_REPORT_X.md", "sdd/archive/X/BUILD_REPORT_X.md",
+                    "sdd/reports/antigos/BUILD_REPORT_X.md",
+                    "BUILD_REPORT_X.md", "sdd/reports/BUILD_REPORT_velhos/BUILD_REPORT_X.md"):
+            with self.subTest(fora=rel):
+                rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json",
+                                                                               FILE=str(self.p / rel), CONTENT=ruim))
+                self.assertEqual((rc, out, err), (0, "", ""))
+
     def test_report_guard_falha_aberta_com_aviso(self):
         self.cli("init", "--yes", "--vendors", "claude")
-        alvo = str(self.p / "sdd/reports/BUILD_REPORT_X.md")
         vazio = self.tmp / "sem-sdd"
         vazio.mkdir()
+        alvo = str(vazio / "sdd/reports/BUILD_REPORT_X.md")   # o relatório do projeto sem sdd/bin
         rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json", FILE=alvo, CONTENT="# x\n"),
                                   env=dict(self.env, CLAUDE_PROJECT_DIR=str(vazio)))
         self.assertEqual(rc, 0, err)

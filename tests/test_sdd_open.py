@@ -427,6 +427,51 @@ class Hooks(Sandbox):
                 self.assertIn("✅ hooks ligados (sdd/hooks:", out)
                 self.assertNotIn("hooks do open não ligados", out)
 
+    def test_gancho_encadeado_no_outro_gerenciador_e_reconhecido(self):
+        # F15: com core.hooksPath de outro gerenciador, o doctor mandava acrescentar a linha e seguia com ⚠️ depois
+        # de ela estar lá. Controle: sem a linha, ou só num comentário, o ⚠️ continua.
+        self.git(self.p, "config", "core.hooksPath", ".githooks")
+        self.cli("init", "--yes", "--vendors", "codex")
+        pc = self.p / ".githooks/pre-commit"
+        pc.parent.mkdir(exist_ok=True)
+        casos = (
+            ("#!/bin/sh\necho alheio\n", False),
+            ("#!/bin/sh\n# bash sdd/hooks/pre-commit || exit 1\n", False),
+            ("#!/bin/sh\nif [ -f sdd/hooks/pre-commit ]; then\n  bash sdd/hooks/pre-commit || exit 1\nfi\n", True),
+        )
+        for texto, encadeado in casos:
+            with self.subTest(texto=texto):
+                pc.write_text(texto, encoding="utf-8")
+                pc.chmod(0o755)
+                rc, out = self.cli("doctor")
+                if encadeado:
+                    self.assertIn("✅ hooks encadeados (%s chama sdd/hooks/pre-commit" % pc, out)
+                    self.assertNotIn("hooks do open não ligados", out)
+                    self.assertNotIn("⚠️  hooks", out)
+                else:
+                    self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .githooks", out)
+                    self.assertNotIn("hooks encadeados", out)
+        rc, out = self.cli("init", "--yes", "--vendors", "codex", "--verbose")
+        self.assertIn("= hooks encadeados (%s chama sdd/hooks/pre-commit) (já correto)" % pc, out)
+        self.assertNotIn("hooks do open não ligados", out)
+        self.assertEqual(self.hooks_path(), ".githooks")
+        pc.chmod(0o644)
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks: %s chama sdd/hooks/pre-commit, mas está sem permissão de execução" % pc, out)
+        pc.chmod(0o755)
+        (self.p / "sdd/hooks/pre-commit").unlink()
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks: %s chama sdd/hooks/pre-commit, que está ausente" % pc, out)
+
+    def test_pre_commit_legado_que_chama_o_nosso_e_encadeado(self):
+        self.cli("init", "--yes", "--vendors", "codex")
+        self.git(self.p, "config", "--unset", "core.hooksPath")
+        self.legado().write_text("#!/bin/sh\nbash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")
+        self.legado().chmod(0o755)
+        rc, out = self.cli("doctor")
+        self.assertIn("✅ hooks encadeados (", out)
+        self.assertNotIn("hooks do open não ligados", out)
+
     def test_init_repetido_sem_paste_no_path_mantem_os_vendors(self):
         # ciclo 1 do avaliador: a união dos vendors passava por `paste`; sem ele no PATH a lista esvaziava em
         # silêncio e o init terminava INSTALADO sem vendor nenhum

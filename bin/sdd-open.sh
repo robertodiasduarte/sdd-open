@@ -520,13 +520,25 @@ hooks_path_e_nosso() {
   case "${hp}" in /*) [ -d "${hp}" ] && [ "$(cd "${hp}" 2>/dev/null && pwd -P)" = "$(cd "${ROOT}/sdd/hooks" 2>/dev/null && pwd -P)" ] ;; *) return 1 ;; esac
 }
 
-hooks_estado() { # → LIVRE | LIGADO | HIGIENE | OUTRO <descrição>
-  local hp legado
+# 0 quando o pre-commit $1, de outro gerenciador, já chama o nosso: a LINHA_ACRESCENTAR (o que o doctor
+# manda acrescentar) numa linha que não é comentário. Um processo só (awk), sem pipe: sob pipefail, um
+# `grep -q` que fecha o pipe cedo daria falso negativo.
+chama_o_nosso() {
+  [ -f "$1" ] || return 1
+  awk -v l="${LINHA_ACRESCENTAR}" '$0 !~ /^[[:space:]]*#/ && index($0, l) { achou = 1 } END { exit !achou }' "$1" 2>/dev/null
+}
+
+hooks_estado() { # → LIVRE | LIGADO | HIGIENE | ENCADEADO <arquivo> | OUTRO <descrição>
+  local hp legado pc
   hp="$(git config --get core.hooksPath 2>/dev/null || true)"
   legado="$(hook_legado)"
   if [ -n "${hp}" ] && hooks_path_e_nosso "${hp}"; then printf 'LIGADO\n'
-  elif [ -n "${hp}" ]; then printf 'OUTRO core.hooksPath = %s (husky, lefthook ou outro gerenciador)\n' "${hp}"
+  elif [ -n "${hp}" ]; then
+    pc="${hp%/}/pre-commit"; case "${pc}" in /*) ;; *) pc="${ROOT}/${pc}" ;; esac
+    if chama_o_nosso "${pc}"; then printf 'ENCADEADO %s\n' "${pc}"
+    else printf 'OUTRO core.hooksPath = %s (husky, lefthook ou outro gerenciador)\n' "${hp}"; fi
   elif [ -f "${legado}" ] && grep -qF "${MARCA_HIGIENE}" "${legado}"; then printf 'HIGIENE\n'
+  elif chama_o_nosso "${legado}"; then printf 'ENCADEADO %s\n' "${legado}"
   elif [ -f "${legado}" ]; then printf 'OUTRO um pre-commit em %s\n' "${legado}"
   else printf 'LIVRE\n'; fi
 }
@@ -588,6 +600,7 @@ planejar() {
     HOOKS_ESTADO="$(hooks_estado)"
     case "${HOOKS_ESTADO}" in
       LIGADO) plano_estado "core.hooksPath = sdd/hooks" emdia ;;
+      ENCADEADO*) plano_estado "hooks encadeados (${HOOKS_ESTADO#ENCADEADO } chama sdd/hooks/pre-commit)" emdia ;;
       LIVRE|HIGIENE) plano_estado "core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez" novo ;;
       OUTRO*)
         warn "hooks do open não ligados: já existe ${HOOKS_ESTADO#OUTRO }. Nada foi alterado nele."
@@ -743,6 +756,13 @@ doctor() {
           elif [ ! -x "${ROOT}/sdd/hooks/${h}" ]; then warn "hooks: sdd/hooks/${h} sem permissão de execução (o git o ignora em silêncio) — rode: chmod +x sdd/hooks/${h}"; fi
         done
       fi ;;
+    ENCADEADO*)
+      # O git ignora em silêncio um hook sem bit de execução; o `bash sdd/hooks/pre-commit` dispensa o dele,
+      # mas não a existência do arquivo.
+      h="${he#ENCADEADO }"
+      if [ ! -x "${h}" ]; then warn "hooks: ${h} chama sdd/hooks/pre-commit, mas está sem permissão de execução (o git o ignora em silêncio) — rode: chmod +x ${h}"
+      elif [ ! -f "${ROOT}/sdd/hooks/pre-commit" ]; then warn "hooks: ${h} chama sdd/hooks/pre-commit, que está ausente — rode init (completa sdd/hooks)"
+      else ok "hooks encadeados (${h} chama sdd/hooks/pre-commit: 5 regras + relatório + alarme da higiene $(git config --get sdd.higieneDado 2>/dev/null || echo off))"; fi ;;
     OUTRO*) warn "hooks do open não ligados: já existe ${he#OUTRO }. Para ter as 5 regras + relatório, acrescente a ele a linha: ${LINHA_ACRESCENTAR}" ;;
     *) warn "hooks do open não ligados (core.hooksPath vazio) — rode init" ;;
   esac
@@ -852,7 +872,8 @@ if [ "${VERBO}" = "init" ]; then
   doctor
   dica="abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define)."
   # Na branch padrão com remoto, o pre-commit recém-ligado (H6) recusaria o commit da própria instalação.
-  if [ "$(hooks_estado)" = "LIGADO" ] && na_branch_padrao_com_remoto; then
+  case "$(hooks_estado)" in LIGADO|ENCADEADO*) hooks_ativos=1 ;; *) hooks_ativos=0 ;; esac
+  if [ "${hooks_ativos}" = 1 ] && na_branch_padrao_com_remoto; then
     dica="leve a instalação para uma branch nova antes de commitar (a branch padrão já tem remoto e o hook recusa commit direto): git switch -c sdd-open-init · depois, ${dica}"
   fi
   resultado "INSTALADO" "${dica}"
