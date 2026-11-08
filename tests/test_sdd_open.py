@@ -476,6 +476,12 @@ class Hooks(Sandbox):
         script.write_text("npm test\nbash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")
         rc, out = self.cli("doctor")   # R1@claude e R2@codex, rodada 2: pasta `_` sem o ajudante h não prova delegação
         self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)
+        stub.write_text('#!/usr/bin/env sh\n# . "$(dirname "$0")/h"\n', encoding="utf-8")   # R1@codex, rodada 3: /h comentado
+        (self.p / ".husky/_/h").write_text('#!/usr/bin/env sh\n', encoding="utf-8")
+        script.write_text("bash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)
+        stub.write_text('#!/usr/bin/env sh\n. "$(dirname "$0")/h"\n', encoding="utf-8")
         (self.p / ".husky/_/h").write_text('#!/usr/bin/env sh\nsh -e "$(dirname "$(dirname "$0")")/$(basename "$0")"\n', encoding="utf-8")
         script.write_text("npm test\n", encoding="utf-8")
         rc, out = self.cli("doctor")
@@ -492,6 +498,18 @@ class Hooks(Sandbox):
         (self.p / ".husky/_/pre-commit").write_text("#!/bin/sh\nbash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")
         rc, out = self.cli("doctor")
         self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky", out)
+
+    def test_hooks_path_com_til_e_expandido(self):
+        # R1@claude, rodada 3: core.hooksPath = ~/… é expandido pelo git; o doctor o lia como <raiz>/~/…
+        self.cli("init", "--yes", "--vendors", "codex")
+        casa = self.tmp / "casa"
+        (casa / ".githooks").mkdir(parents=True)
+        pc = casa / ".githooks/pre-commit"
+        pc.write_text("#!/bin/sh\nbash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")
+        pc.chmod(0o755)
+        self.git(self.p, "config", "core.hooksPath", "~/.githooks")
+        rc, out, err = self.roda([BASH, CLI, "doctor"], self.p, env=dict(self.env, HOME=str(casa)))
+        self.assertIn("✅ hooks encadeados (%s chama sdd/hooks/pre-commit" % pc, out + err)
 
     def test_pre_commit_legado_que_chama_o_nosso_e_encadeado(self):
         self.cli("init", "--yes", "--vendors", "codex")
