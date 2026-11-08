@@ -524,18 +524,20 @@ hooks_path_e_nosso() {
 # LINHA_ACRESCENTAR (o que o doctor manda acrescentar). A linha comentada, a que só a cita depois de um #
 # (`echo x # bash sdd/hooks/…`) e a que a imprime entre aspas (`echo "rode bash sdd/hooks/…"`) não começam
 # por ela e não rodam nada nosso. Um processo só (awk), sem pipe: sob pipefail, um `grep -q` que fecha o pipe cedo
-# daria falso negativo.
+# daria falso negativo. Limite declarado (docs/hooks.md): é leitura de texto, não execução — um `exit` antes da
+# linha, ou a linha dentro de um heredoc, ainda enganam o diagnóstico; a guarda de verdade é o hook rodar.
 chama_o_nosso() {
   [ -f "$1" ] || return 1
   awk -v l="${LINHA_ACRESCENTAR}" '{ t = $0; sub(/^[[:space:]]+/, "", t); if (index(t, l) == 1) achou = 1 }
     END { exit !achou }' "$1" 2>/dev/null
 }
 
-# 0 quando a pasta $1 tem o desenho do husky v9: o stub pre-commit gerado chama o ajudante h, que roda o
-# script de mesmo nome na pasta-mãe (.husky/pre-commit). Só então a linha é procurada lá.
+# 0 quando a pasta $1 tem o desenho do husky v9: o stub pre-commit gerado CARREGA o ajudante h
+# (`. "$(dirname "$0")/h"`), que roda o script de mesmo nome na pasta-mãe (.husky/pre-commit). Só então a
+# linha é procurada lá.
 stubs_do_husky() {
   [ -f "$1/h" ] && [ -f "$1/pre-commit" ] \
-    && awk '{ t = $0; sub(/^[[:space:]]+/, "", t) } t !~ /^#/ && index(t, "/h") { achou = 1 } END { exit !achou }' "$1/pre-commit" 2>/dev/null
+    && awk '{ t = $0; sub(/^[[:space:]]+/, "", t) } t ~ /^\.[[:space:]]/ && index(t, "/h") { achou = 1 } END { exit !achou }' "$1/pre-commit" 2>/dev/null
 }
 
 # ENCADEADO <hook que o git executa>TAB<arquivo com a linha>: no husky v9 (core.hooksPath = .husky/_) o git

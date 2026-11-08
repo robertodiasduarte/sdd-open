@@ -85,7 +85,8 @@ O `doctor` repete essa linha até ela estar lá. Quando uma linha do `pre-commit
 por ela (o recuo não conta; comentário ou `echo` que só a cita não vale), o `doctor` mostra os hooks como
 **encadeados** (✅), e só avisa se o hook que o git executa perdeu a permissão de execução ou se o
 `sdd/hooks/pre-commit` sumiu. No husky v9 (`core.hooksPath = .husky/_`, stubs gerados que chamam `.husky/_/h`),
-a linha vai em `.husky/pre-commit`, e é lá que o `doctor` a procura.
+a linha vai em `.husky/pre-commit`, e é lá que o `doctor` a procura. A conferência lê o texto, não executa o
+script: um `exit` antes da linha, ou a linha dentro de um heredoc, ainda a enganam. A guarda de verdade é o hook rodar.
 
 ## Desligar
 

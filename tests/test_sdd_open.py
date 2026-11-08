@@ -481,6 +481,9 @@ class Hooks(Sandbox):
         script.write_text("bash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")
         rc, out = self.cli("doctor")
         self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)
+        stub.write_text('#!/usr/bin/env sh\necho "/h"\n', encoding="utf-8")   # R1@codex, rodada 5: só citar /h não carrega o h
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)
         stub.write_text('#!/usr/bin/env sh\n. "$(dirname "$0")/h"\n', encoding="utf-8")
         (self.p / ".husky/_/h").write_text('#!/usr/bin/env sh\nsh -e "$(dirname "$(dirname "$0")")/$(basename "$0")"\n', encoding="utf-8")
         script.write_text("npm test\n", encoding="utf-8")

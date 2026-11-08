@@ -85,7 +85,8 @@ bash sdd/hooks/pre-commit || exit 1
 (indentation aside; a comment or an `echo` that merely quotes it does not count), `doctor` reports the hooks as
 **chained** (✅), and warns only if the hook git runs lost its execute bit or `sdd/hooks/pre-commit` is missing.
 With husky v9 (`core.hooksPath = .husky/_`, generated stubs that call `.husky/_/h`), the line goes in
-`.husky/pre-commit`, and that is where `doctor` looks for it.
+`.husky/pre-commit`, and that is where `doctor` looks for it. The check reads the text, it does not run the
+script: an `exit` before the line, or the line inside a heredoc, still fools it. The actual guard is the hook running.
 
 ## Turning off
 
