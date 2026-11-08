@@ -520,18 +520,26 @@ hooks_path_e_nosso() {
   case "${hp}" in /*) [ -d "${hp}" ] && [ "$(cd "${hp}" 2>/dev/null && pwd -P)" = "$(cd "${ROOT}/sdd/hooks" 2>/dev/null && pwd -P)" ] ;; *) return 1 ;; esac
 }
 
-# 0 quando o pre-commit $1, de outro gerenciador, já chama o nosso: a LINHA_ACRESCENTAR (o que o doctor
-# manda acrescentar) fora de comentário — nem linha que começa com #, nem depois de um # no fim da linha
-# (`echo x # bash sdd/hooks/pre-commit || exit 1` não roda nada nosso). Um processo só (awk), sem pipe:
-# sob pipefail, um `grep -q` que fecha o pipe cedo daria falso negativo.
+# 0 quando o pre-commit $1, de outro gerenciador, já chama o nosso: uma linha que, sem o recuo, COMEÇA pela
+# LINHA_ACRESCENTAR (o que o doctor manda acrescentar). A linha comentada, a que só a cita depois de um #
+# (`echo x # bash sdd/hooks/…`) e a que a imprime entre aspas (`echo "rode bash sdd/hooks/…"`) não começam
+# por ela e não rodam nada nosso. Um processo só (awk), sem pipe: sob pipefail, um `grep -q` que fecha o pipe cedo
+# daria falso negativo.
 chama_o_nosso() {
   [ -f "$1" ] || return 1
-  awk -v l="${LINHA_ACRESCENTAR}" '{ t = $0; sub(/^#.*/, "", t); sub(/[[:space:]]#.*/, "", t); if (index(t, l)) achou = 1 }
+  awk -v l="${LINHA_ACRESCENTAR}" '{ t = $0; sub(/^[[:space:]]+/, "", t); if (index(t, l) == 1) achou = 1 }
     END { exit !achou }' "$1" 2>/dev/null
 }
 
+# 0 quando a pasta $1 tem o desenho do husky v9: o stub pre-commit gerado chama o ajudante h, que roda o
+# script de mesmo nome na pasta-mãe (.husky/pre-commit). Só então a linha é procurada lá.
+stubs_do_husky() {
+  [ -f "$1/h" ] && [ -f "$1/pre-commit" ] && awk 'index($0, "/h") { achou = 1 } END { exit !achou }' "$1/pre-commit" 2>/dev/null
+}
+
 # ENCADEADO <hook que o git executa>TAB<arquivo com a linha>: no husky v9 (core.hooksPath = .husky/_) o git
-# executa o stub gerado .husky/_/pre-commit, que delega a .husky/pre-commit — é lá que a pessoa põe a linha.
+# executa o stub gerado .husky/_/pre-commit, que delega a .husky/pre-commit — é lá que a pessoa põe a linha
+# (reconhecido pelo desenho da pasta, stubs_do_husky, não pelo nome).
 hooks_estado() { # → LIVRE | LIGADO | HIGIENE | ENCADEADO <executado>\t<com a linha> | OUTRO <descrição>
   local hp legado pc linha=""
   hp="$(git config --get core.hooksPath 2>/dev/null || true)"
@@ -541,7 +549,8 @@ hooks_estado() { # → LIVRE | LIGADO | HIGIENE | ENCADEADO <executado>\t<com a 
     pc="${hp%/}/pre-commit"; case "${pc}" in /*) ;; *) pc="${ROOT}/${pc}" ;; esac
     if chama_o_nosso "${pc}"; then linha="${pc}"
     else
-      case "${hp%/}" in _|*/_) chama_o_nosso "$(dirname "$(dirname "${pc}")")/pre-commit" && linha="$(dirname "$(dirname "${pc}")")/pre-commit" ;; esac
+      stubs_do_husky "$(dirname "${pc}")" && chama_o_nosso "$(dirname "$(dirname "${pc}")")/pre-commit" \
+        && linha="$(dirname "$(dirname "${pc}")")/pre-commit"
     fi
     if [ -n "${linha}" ]; then printf 'ENCADEADO %s\t%s\n' "${pc}" "${linha}"
     else printf 'OUTRO core.hooksPath = %s (husky, lefthook ou outro gerenciador)\n' "${hp}"; fi

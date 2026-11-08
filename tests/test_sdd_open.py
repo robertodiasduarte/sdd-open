@@ -438,6 +438,7 @@ class Hooks(Sandbox):
             ("#!/bin/sh\necho alheio\n", False),
             ("#!/bin/sh\n# bash sdd/hooks/pre-commit || exit 1\n", False),
             ("#!/bin/sh\necho alheio # bash sdd/hooks/pre-commit || exit 1\n", False),   # R1@codex, rodada 1
+            ('#!/bin/sh\necho "rode: bash sdd/hooks/pre-commit || exit 1"\n', False),       # R1@codex, rodada 2
             ("#!/bin/sh\nif [ -f sdd/hooks/pre-commit ]; then\n  bash sdd/hooks/pre-commit || exit 1\nfi\n", True),
         )
         for texto, encadeado in casos:
@@ -472,6 +473,10 @@ class Hooks(Sandbox):
         stub.parent.mkdir(parents=True)
         stub.write_text('#!/usr/bin/env sh\n. "$(dirname "$0")/h"\n', encoding="utf-8")
         stub.chmod(0o755)
+        script.write_text("npm test\nbash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")
+        rc, out = self.cli("doctor")   # R1@claude e R2@codex, rodada 2: pasta `_` sem o ajudante h não prova delegação
+        self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)
+        (self.p / ".husky/_/h").write_text('#!/usr/bin/env sh\nsh -e "$(dirname "$(dirname "$0")")/$(basename "$0")"\n', encoding="utf-8")
         script.write_text("npm test\n", encoding="utf-8")
         rc, out = self.cli("doctor")
         self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)

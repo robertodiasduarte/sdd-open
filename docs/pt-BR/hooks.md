@@ -81,9 +81,11 @@ gerenciador que existe:
 bash sdd/hooks/pre-commit || exit 1
 ```
 
-O `doctor` repete essa linha até ela estar lá. Quando o `pre-commit` do gerenciador que existe a traz (numa
-linha que não é comentário), o `doctor` mostra os hooks como **encadeados** (✅), e só avisa se esse arquivo
-perdeu a permissão de execução ou se o `sdd/hooks/pre-commit` sumiu.
+O `doctor` repete essa linha até ela estar lá. Quando uma linha do `pre-commit` do gerenciador que existe começa
+por ela (o recuo não conta; comentário ou `echo` que só a cita não vale), o `doctor` mostra os hooks como
+**encadeados** (✅), e só avisa se o hook que o git executa perdeu a permissão de execução ou se o
+`sdd/hooks/pre-commit` sumiu. No husky v9 (`core.hooksPath = .husky/_`, stubs gerados que chamam `.husky/_/h`),
+a linha vai em `.husky/pre-commit`, e é lá que o `doctor` a procura.
 
 ## Desligar
 

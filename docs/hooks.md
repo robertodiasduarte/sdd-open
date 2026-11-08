@@ -81,9 +81,11 @@ line to add to the existing manager:
 bash sdd/hooks/pre-commit || exit 1
 ```
 
-`doctor` repeats that line until it is there. Once the existing manager's `pre-commit` carries it (on a line
-that is not a comment), `doctor` reports the hooks as **chained** (✅), and warns only if that file lost its
-execute bit or `sdd/hooks/pre-commit` is missing.
+`doctor` repeats that line until it is there. Once a line of the existing manager's `pre-commit` starts with it
+(indentation aside; a comment or an `echo` that merely quotes it does not count), `doctor` reports the hooks as
+**chained** (✅), and warns only if the hook git runs lost its execute bit or `sdd/hooks/pre-commit` is missing.
+With husky v9 (`core.hooksPath = .husky/_`, generated stubs that call `.husky/_/h`), the line goes in
+`.husky/pre-commit`, and that is where `doctor` looks for it.
 
 ## Turning off
 
