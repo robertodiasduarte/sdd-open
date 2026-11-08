@@ -2,21 +2,15 @@
 
 A `v2.7.1` do Open saiu em 2026-11-08 (https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.7.1, `main` = `3d69536`). Esta sessão começa a **F15**: o repositório privado (`/Users/robertoduarte/RDD/Wordpress`, remoto `robertodiasduarte/wordpressrdd`) passa a usar o Open instalado pelo `init`. É a primeira sessão que **altera o privado**.
 
-## Onde abrir esta sessão (2 passos)
+## Onde abrir esta sessão
 
-A sessão fica presa à pasta em que abriu: nenhum `cd` muda isso.
-
-1. **Abrir a pasta de trabalho da F15** (decisão do Roberto no brainstorm: pelo `/new-session` do próprio privado, com o OK dele). Se ainda não existe `/Users/robertoduarte/rdd-worktrees/f15-substituicao`:
-   - confira com `git -C /Users/robertoduarte/RDD/Wordpress worktree list | grep f15-substituicao` (vazio = não existe);
-   - peça ao Roberto o OK para criá-la; com o OK, numa sessão aberta em `/Users/robertoduarte/RDD/Wordpress`, rode `/new-session f15-substituicao` (branch `feat/f15-substituicao` a partir do `origin/main` atualizado);
-   - pare aqui e peça ao Roberto para abrir o agente na pasta nova e colar este mesmo prompt.
-2. **Já dentro dela**, confira:
+A pasta de trabalho da F15 **já existe**: `/Users/robertoduarte/rdd-worktrees/f15-substituicao`, branch `feat/f15-substituicao`, criada em 2026-11-08 pelo `scripts/new-session.sh` do privado a partir do `origin/main` (baseline de edge functions: 465, em `.edge-count-baseline`). A sessão precisa estar aberta **nela**: nenhum `cd` muda a pasta à qual a sessão fica presa. Se abriu em outra, pare e peça ao Roberto para abrir o agente lá. O script sugere `/brainstorm` como 1º comando: **não se aplica**, o brainstorm da F15 já foi feito.
 
 ```bash
 git rev-parse --show-toplevel        # esperado: /Users/robertoduarte/rdd-worktrees/f15-substituicao
 git branch --show-current            # esperado: feat/f15-substituicao
 GIT_TERMINAL_PROMPT=0 git fetch -q origin && git log --oneline -1 origin/main
-git status --short | head -5         # esperado: vazio
+git status --short | head -5         # esperado: só .edge-count-baseline, se não estiver ignorado
 ```
 
 Leia, nesta ordem (os documentos da família estão no Open, branch pública `docs/incorporar-starter`):
