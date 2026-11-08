@@ -521,24 +521,32 @@ hooks_path_e_nosso() {
 }
 
 # 0 quando o pre-commit $1, de outro gerenciador, já chama o nosso: a LINHA_ACRESCENTAR (o que o doctor
-# manda acrescentar) numa linha que não é comentário. Um processo só (awk), sem pipe: sob pipefail, um
-# `grep -q` que fecha o pipe cedo daria falso negativo.
+# manda acrescentar) fora de comentário — nem linha que começa com #, nem depois de um # no fim da linha
+# (`echo x # bash sdd/hooks/pre-commit || exit 1` não roda nada nosso). Um processo só (awk), sem pipe:
+# sob pipefail, um `grep -q` que fecha o pipe cedo daria falso negativo.
 chama_o_nosso() {
   [ -f "$1" ] || return 1
-  awk -v l="${LINHA_ACRESCENTAR}" '$0 !~ /^[[:space:]]*#/ && index($0, l) { achou = 1 } END { exit !achou }' "$1" 2>/dev/null
+  awk -v l="${LINHA_ACRESCENTAR}" '{ t = $0; sub(/^#.*/, "", t); sub(/[[:space:]]#.*/, "", t); if (index(t, l)) achou = 1 }
+    END { exit !achou }' "$1" 2>/dev/null
 }
 
-hooks_estado() { # → LIVRE | LIGADO | HIGIENE | ENCADEADO <arquivo> | OUTRO <descrição>
-  local hp legado pc
+# ENCADEADO <hook que o git executa>TAB<arquivo com a linha>: no husky v9 (core.hooksPath = .husky/_) o git
+# executa o stub gerado .husky/_/pre-commit, que delega a .husky/pre-commit — é lá que a pessoa põe a linha.
+hooks_estado() { # → LIVRE | LIGADO | HIGIENE | ENCADEADO <executado>\t<com a linha> | OUTRO <descrição>
+  local hp legado pc linha=""
   hp="$(git config --get core.hooksPath 2>/dev/null || true)"
   legado="$(hook_legado)"
   if [ -n "${hp}" ] && hooks_path_e_nosso "${hp}"; then printf 'LIGADO\n'
   elif [ -n "${hp}" ]; then
     pc="${hp%/}/pre-commit"; case "${pc}" in /*) ;; *) pc="${ROOT}/${pc}" ;; esac
-    if chama_o_nosso "${pc}"; then printf 'ENCADEADO %s\n' "${pc}"
+    if chama_o_nosso "${pc}"; then linha="${pc}"
+    else
+      case "${hp%/}" in _|*/_) chama_o_nosso "$(dirname "$(dirname "${pc}")")/pre-commit" && linha="$(dirname "$(dirname "${pc}")")/pre-commit" ;; esac
+    fi
+    if [ -n "${linha}" ]; then printf 'ENCADEADO %s\t%s\n' "${pc}" "${linha}"
     else printf 'OUTRO core.hooksPath = %s (husky, lefthook ou outro gerenciador)\n' "${hp}"; fi
   elif [ -f "${legado}" ] && grep -qF "${MARCA_HIGIENE}" "${legado}"; then printf 'HIGIENE\n'
-  elif chama_o_nosso "${legado}"; then printf 'ENCADEADO %s\n' "${legado}"
+  elif chama_o_nosso "${legado}"; then printf 'ENCADEADO %s\t%s\n' "${legado}" "${legado}"
   elif [ -f "${legado}" ]; then printf 'OUTRO um pre-commit em %s\n' "${legado}"
   else printf 'LIVRE\n'; fi
 }
@@ -600,7 +608,7 @@ planejar() {
     HOOKS_ESTADO="$(hooks_estado)"
     case "${HOOKS_ESTADO}" in
       LIGADO) plano_estado "core.hooksPath = sdd/hooks" emdia ;;
-      ENCADEADO*) plano_estado "hooks encadeados (${HOOKS_ESTADO#ENCADEADO } chama sdd/hooks/pre-commit)" emdia ;;
+      ENCADEADO*) plano_estado "hooks encadeados (${HOOKS_ESTADO#*$'\t'} chama sdd/hooks/pre-commit)" emdia ;;
       LIVRE|HIGIENE) plano_estado "core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez" novo ;;
       OUTRO*)
         warn "hooks do open não ligados: já existe ${HOOKS_ESTADO#OUTRO }. Nada foi alterado nele."
@@ -744,7 +752,7 @@ doctor() {
   [ -d "${FONTE_SKILLS}" ] && ok ".agents/skills/ com $(skills_da_fonte "${FONTE_SKILLS}" | wc -l | tr -d ' ') skill(s) sdd-*" \
                             || warn ".agents/skills/ ausente"
   # Hooks de git: ligados (hooksPath + bit de execução) ou um ⚠️ por causa, cada um com o comando.
-  local he h
+  local he h com
   he="$(hooks_estado)"
   case "${he}" in
     LIGADO)
@@ -759,10 +767,10 @@ doctor() {
     ENCADEADO*)
       # O git ignora em silêncio um hook sem bit de execução; o `bash sdd/hooks/pre-commit` dispensa o dele,
       # mas não a existência do arquivo.
-      h="${he#ENCADEADO }"
-      if [ ! -x "${h}" ]; then warn "hooks: ${h} chama sdd/hooks/pre-commit, mas está sem permissão de execução (o git o ignora em silêncio) — rode: chmod +x ${h}"
-      elif [ ! -f "${ROOT}/sdd/hooks/pre-commit" ]; then warn "hooks: ${h} chama sdd/hooks/pre-commit, que está ausente — rode init (completa sdd/hooks)"
-      else ok "hooks encadeados (${h} chama sdd/hooks/pre-commit: 5 regras + relatório + alarme da higiene $(git config --get sdd.higieneDado 2>/dev/null || echo off))"; fi ;;
+      h="${he#ENCADEADO }"; h="${h%%$'\t'*}"; com="${he#*$'\t'}"
+      if [ ! -x "${h}" ]; then warn "hooks: ${h} (o hook que o git executa) está sem permissão de execução e o git o ignora em silêncio — rode: chmod +x ${h}"
+      elif [ ! -f "${ROOT}/sdd/hooks/pre-commit" ]; then warn "hooks: ${com} chama sdd/hooks/pre-commit, que está ausente — rode init (completa sdd/hooks)"
+      else ok "hooks encadeados (${com} chama sdd/hooks/pre-commit: 5 regras + relatório + alarme da higiene $(git config --get sdd.higieneDado 2>/dev/null || echo off))"; fi ;;
     OUTRO*) warn "hooks do open não ligados: já existe ${he#OUTRO }. Para ter as 5 regras + relatório, acrescente a ele a linha: ${LINHA_ACRESCENTAR}" ;;
     *) warn "hooks do open não ligados (core.hooksPath vazio) — rode init" ;;
   esac

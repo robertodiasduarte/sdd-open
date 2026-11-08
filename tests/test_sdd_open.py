@@ -437,6 +437,7 @@ class Hooks(Sandbox):
         casos = (
             ("#!/bin/sh\necho alheio\n", False),
             ("#!/bin/sh\n# bash sdd/hooks/pre-commit || exit 1\n", False),
+            ("#!/bin/sh\necho alheio # bash sdd/hooks/pre-commit || exit 1\n", False),   # R1@codex, rodada 1
             ("#!/bin/sh\nif [ -f sdd/hooks/pre-commit ]; then\n  bash sdd/hooks/pre-commit || exit 1\nfi\n", True),
         )
         for texto, encadeado in casos:
@@ -457,11 +458,35 @@ class Hooks(Sandbox):
         self.assertEqual(self.hooks_path(), ".githooks")
         pc.chmod(0o644)
         rc, out = self.cli("doctor")
-        self.assertIn("⚠️  hooks: %s chama sdd/hooks/pre-commit, mas está sem permissão de execução" % pc, out)
+        self.assertIn("⚠️  hooks: %s (o hook que o git executa) está sem permissão de execução" % pc, out)
         pc.chmod(0o755)
         (self.p / "sdd/hooks/pre-commit").unlink()
         rc, out = self.cli("doctor")
         self.assertIn("⚠️  hooks: %s chama sdd/hooks/pre-commit, que está ausente" % pc, out)
+
+    def test_husky_v9_linha_no_script_e_bit_no_stub(self):
+        # R1@claude, rodada 1: no husky v9 o core.hooksPath é .husky/_ (stubs gerados); a linha vai em .husky/pre-commit.
+        self.cli("init", "--yes", "--vendors", "codex")
+        self.git(self.p, "config", "core.hooksPath", ".husky/_")
+        stub, script = self.p / ".husky/_/pre-commit", self.p / ".husky/pre-commit"
+        stub.parent.mkdir(parents=True)
+        stub.write_text('#!/usr/bin/env sh\n. "$(dirname "$0")/h"\n', encoding="utf-8")
+        stub.chmod(0o755)
+        script.write_text("npm test\n", encoding="utf-8")
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)
+        script.write_text("npm test\nbash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")   # sem bit: o husky roda com sh
+        rc, out = self.cli("doctor")
+        self.assertIn("✅ hooks encadeados (%s chama sdd/hooks/pre-commit" % script, out)
+        self.assertNotIn("⚠️  hooks", out)
+        stub.chmod(0o644)
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks: %s (o hook que o git executa) está sem permissão de execução" % stub, out)
+        self.git(self.p, "config", "core.hooksPath", ".husky")   # pasta que não é a de stubs: a linha tem de estar nela
+        script.write_text("npm test\n", encoding="utf-8")
+        (self.p / ".husky/_/pre-commit").write_text("#!/bin/sh\nbash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")
+        rc, out = self.cli("doctor")
+        self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky", out)
 
     def test_pre_commit_legado_que_chama_o_nosso_e_encadeado(self):
         self.cli("init", "--yes", "--vendors", "codex")
