@@ -1,72 +1,34 @@
-# Continuar: INCORPORAR_STARTER — sessão 15: v2.7.2 do Open (pré-requisito do merge da F15 fase 1)
+# Continuar: INCORPORAR_STARTER — sessão 15: F15, inventário de saída do SDD privado
 
-Na sessão 14 (2026-11-08) a fase 1 da F15 foi instalada no repositório privado com o Open `v2.7.1`, na worktree
-`/Users/robertoduarte/rdd-worktrees/f15-substituicao` (branch `feat/f15-substituicao`, commits `00ad127ce`, `50dc01e33`,
-`fa38d1d98`, **fora do `main`**). A instalação achou 2 defeitos **genéricos** do Open; sem corrigi-los, a fase 1 não vai
-ao `main` do privado e o `doctor` não sai ✅ sem ⚠️. Esta sessão os corrige no Open, com release própria (`v2.7.2`), e
-reinstala no privado.
+A `v2.7.2` do Open saiu em 2026-11-08 (https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.7.2, `main` = `9d8ac24`,
+SHA-256 `05042aa6264826eee86cf8ce26ddee0ad980ac69fef2e388ea78394c71e36c8b`). Com ela, a **fase 1 da F15 está concluída** no
+repositório privado: Open instalado, `doctor` ✅ sem ⚠️, na branch `feat/f15-substituicao` (ainda fora do `main` de lá).
+
+Antes da fase 2, o Roberto pediu um **inventário de saída**: a prova de que, quando o SDD privado sair (fase 4), nada se perde.
+É só leitura e roda **no privado**, porque é lá que estão os arquivos inventariados.
 
 ## Onde abrir esta sessão
 
-Numa worktree nova do Open (a sessão fica presa à pasta onde nasce; nenhum `cd` muda isso):
+Na worktree do privado, `/Users/robertoduarte/rdd-worktrees/f15-substituicao` (branch `feat/f15-substituicao`). O prompt
+detalhado, com a lista de arquivos, os 4 destinos possíveis e onde gravar o resultado, está no fim da ficha da execução:
 
 ```bash
-O=/Users/robertoduarte/rdd-public/sdd-open
-GIT_TERMINAL_PROMPT=0 git -C "$O" fetch -q origin
-git -C "$O" worktree add -b fix/guardas-pasta-e-gancho-encadeado /Users/robertoduarte/rdd-worktrees/sdd-open-v272 origin/main
+sed -n '/^## Prompt de retomada/,/^## Histórico de slices/p' /Users/robertoduarte/rdd-worktrees/f15-substituicao/sdd/handoffs/HANDOFF_F15_SUBSTITUICAO.md
 ```
-
-Abra o agente em `/Users/robertoduarte/rdd-worktrees/sdd-open-v272`. Os passos 4 e 5 abaixo mexem no privado e precisam
-de uma sessão aberta em `/Users/robertoduarte/rdd-worktrees/f15-substituicao`.
-
-Leia, nesta ordem:
-
-```bash
-cat /Users/robertoduarte/rdd-worktrees/f15-substituicao/sdd/handoffs/HANDOFF_F15_SUBSTITUICAO.md   # Falta, Landmines, Eventos
-O=/Users/robertoduarte/rdd-public/sdd-open
-git -C "$O" show origin/docs/incorporar-starter:sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md | sed -n 1,20p
-```
-
-## Os 2 defeitos (medidos em 2026-11-08 sobre a v2.7.1)
-
-1. **Guardas de BUILD_REPORT casam pelo nome em qualquer pasta.** `bin/adapters/claude/sdd-report-guard.py`
-   (`REPORT_RE` sobre o `basename`) e a regra `[REPORT]` de `sdd/hooks/pre-commit` (`case "$(basename "$f")"`) julgam
-   qualquer `BUILD_REPORT_*.md`. Num projeto que tem outro fluxo com relatórios em outra pasta, o `report-lint` do Open
-   reprova os relatórios de lá (medido: VERMELHO) e o guarda nega a gravação. Correção: agir só em `sdd/reports/` da
-   raiz do projeto (o contrato do `report-lint.py` já é `sdd/reports/BUILD_REPORT_{FEATURE}.md`).
-2. **O `doctor` avisa ⚠️ mesmo com o gancho encadeado.** Com `core.hooksPath` de outro gerenciador, o `doctor` manda
-   acrescentar `bash sdd/hooks/pre-commit || exit 1` (`LINHA_ACRESCENTAR`) ao pre-commit de lá, e continua avisando
-   depois de a linha estar lá (`hooks_estado` só reconhece `core.hooksPath` = `sdd/hooks`). Correção: pre-commit do
-   `core.hooksPath` que contém a linha ⇒ ✅ "hooks encadeados"; sem a linha, o ⚠️ de hoje.
-
-## Tarefa
-
-1. Fluxo do Open para as 2 correções (DEFINE/DESIGN curtos aqui na `docs/incorporar-starter`, como F1–F14).
-2. Teste dos 2 lados em `tests/`, **com caso-controle**: o mesmo relatório inválido negado em `sdd/reports/` e ignorado
-   fora; `doctor` com a linha (✅) e sem ela (⚠️). Sabotar cada correção e ver o teste cair (na sessão 14, um caso
-   "ignora o outro lado" sem controle passou com a correção removida).
-3. `bash scripts/publish-gate.sh .` verde, revisão de contexto fresco, PR; push no `main` do Open **só com OK do
-   Roberto citando "sdd-open"**; a Release `v2.7.2` sai sozinha; conferir o hash pelo `SHA256SUMS.txt`.
-4. No privado (`/Users/robertoduarte/rdd-worktrees/f15-substituicao`): baixar o pacote `v2.7.2`,
-   `bash <pacote>/bin/sdd-open.sh sync --vendors claude` (regera `.claude/hooks/sdd-report-guard.py`), copiar à mão
-   `sdd/hooks/pre-commit` do pacote (o `sync` não reescreve arquivo do projeto), `bash <pacote>/bin/sdd-open.sh doctor`
-   ⇒ ✅ sem ⚠️, `bash scripts/gates/test-build-report-guard.sh` ⇒ 86/86; commitar.
-5. Perguntar ao Roberto se leva a fase 1 ao `main` do privado (rebase em `origin/main`; o push dispara o deploy do
-   site, sem mudança no ar).
 
 ## O que não quebrar
 
-- Específico da RDD não viaja para o Open (público): as correções são genéricas, com fixture própria.
-- No privado: não trocar `core.hooksPath` (comum a todas as worktrees); não mover playbook, invariantes nem patterns
-  (fonte única em `.claude/` até a fase 4).
-- Todo comando remoto com `GIT_TERMINAL_PROMPT=0`; nunca `--force`.
-- Fora de escopo: fase 2 (feature da prova), os 3 slots de smoke visual (decisão 4 da F15, release própria antes da
-  fase 3), F16–F20.
+- O inventário não muda código nem remove arquivo.
+- Lacuna achada vira trabalho **genérico** no Open (worktree do Open, release própria) ou slot no privado; nada da RDD no Open,
+  que é público, inclusive esta branch.
+- Levar a fase 1 ao `main` do privado só com OK explícito do Roberto (o push lá dispara o deploy do site).
+- O macOS do CI do Open está a ~2,5 min do teto de 45 (`release` da v2.7.2: 42m35s): uma release nova pode estourar — se
+  estourar, disparar o workflow de novo na ponta do `main`, nunca repetir run antigo. A margem é assunto da F16.
 
 ## Fechar
 
-`sdd-handoff` na ficha do privado (`sdd/handoffs/HANDOFF_F15_SUBSTITUICAO.md`) e, aqui, linha em Eventos e "Falta" do
-`HANDOFF_INCORPORAR_STARTER.md` + este prompt para a sessão 16, sem trocar de branch em nenhuma worktree:
+`sdd-handoff` na ficha do privado e, aqui, linha em Eventos e "Falta" do `HANDOFF_INCORPORAR_STARTER.md` + este prompt,
+sem trocar de branch em nenhuma worktree:
 
 ```bash
 O=/Users/robertoduarte/rdd-public/sdd-open

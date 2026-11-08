@@ -1,0 +1,43 @@
+$ git archive HEAD | tar -x -C <tmp> && cd <tmp> && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh . && python3 -m unittest discover -s tests
+──────────────────────────────────────────────────────────────────
+G1 secrets (gitleaks)
+  ✅ no secrets detected
+G2 forbidden patterns
+  ✅ no forbidden pattern matched
+G3 allowlist (MANIFEST.txt)
+  ✅ tree and manifest match in both directions
+G4 verify-gate exit contract
+  ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+  ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+  ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+G5 documentation
+  ✅ docs present, cross-linked, attribution in place
+──────────────────────────────────────────────────────────────────
+✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................../private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ftC73EdT3g/tests/test_matriz_new_session.py:38: DeprecationWarning: 'maxsplit' is passed as positional argument
+  secao = re.split(r"\n#{2,3} ", secao, 1)[0]
+.....................................................................s..........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 1669 tests in 1512.343s
+
+OK (skipped=1)
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=3, family=2, type=1, proto=0, laddr=('127.0.0.1', 55908)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=4, family=2, type=1, proto=0, laddr=('127.0.0.1', 55909)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=6, family=2, type=1, proto=0, laddr=('127.0.0.1', 55910)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=0, laddr=('127.0.0.1', 55953)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=8, family=2, type=1, proto=0, laddr=('127.0.0.1', 55954)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=9, family=2, type=1, proto=0, laddr=('127.0.0.1', 55955)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=11, family=2, type=1, proto=0, laddr=('127.0.0.1', 55986)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=12, family=2, type=1, proto=0, laddr=('127.0.0.1', 55987)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=13, family=2, type=1, proto=0, laddr=('127.0.0.1', 55988)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=10, family=2, type=1, proto=0, laddr=('127.0.0.1', 56059)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=18, family=2, type=1, proto=0, laddr=('127.0.0.1', 56060)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=19, family=2, type=1, proto=0, laddr=('127.0.0.1', 56061)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 56064)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 56065)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=22, family=2, type=1, proto=0, laddr=('127.0.0.1', 56066)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=23, family=2, type=1, proto=0, laddr=('127.0.0.1', 56067)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=24, family=2, type=1, proto=0, laddr=('127.0.0.1', 56068)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=25, family=2, type=1, proto=0, laddr=('127.0.0.1', 56069)>
+duração: 1516s
+[exit=0]
