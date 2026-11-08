@@ -1,0 +1,40 @@
+$ bash sdd/bin/deploy-do-sha.sh --commit 3d69536 --workflow release.yml --branch main --teto 2700
+⏳ in_progress · 0/45 min · run 42437407177
+⏳ consulta falhou (Get "https://api.github.com/repos/robertodiasduarte/sdd-open/actions/workflows/release.yml": net/http: TLS handshake timeout), tentando de novo · 1/45 min · run 42437407177
+⏳ in_progress · 1/45 min · run 42437407177
+⏳ in_progress · 3/45 min · run 42437407177
+⏳ in_progress · 4/45 min · run 42437407177
+⏳ in_progress · 5/45 min · run 42437407177
+⏳ in_progress · 6/45 min · run 42437407177
+⏳ in_progress · 7/45 min · run 42437407177
+⏳ in_progress · 9/45 min · run 42437407177
+⏳ consulta falhou (Get "https://api.github.com/repos/robertodiasduarte/sdd-open/actions/workflows/release.yml": net/http: TLS handshake timeout), tentando de novo · 9/45 min · run 42437407177
+⏳ in_progress · 9/45 min · run 42437407177
+⏳ in_progress · 11/45 min · run 42437407177
+⏳ in_progress · 12/45 min · run 42437407177
+⏳ in_progress · 13/45 min · run 42437407177
+⏳ in_progress · 14/45 min · run 42437407177
+⏳ in_progress · 16/45 min · run 42437407177
+⏳ consulta falhou (Get "https://api.github.com/repos/robertodiasduarte/sdd-open/actions/workflows/release.yml": net/http: TLS handshake timeout), tentando de novo · 16/45 min · run 42437407177
+⏳ consulta falhou (Get "https://api.github.com/repos/robertodiasduarte/sdd-open/actions/workflows/release.yml": dial tcp 4.228.31.149:443: i/o timeout), tentando de novo · 17/45 min · run 42437407177
+⏳ consulta falhou (error connecting to api.github.com), tentando de novo · 17/45 min · run 42437407177
+⏳ in_progress · 18/45 min · run 42437407177
+⏳ in_progress · 19/45 min · run 42437407177
+⏳ in_progress · 20/45 min · run 42437407177
+⏳ in_progress · 21/45 min · run 42437407177
+⏳ in_progress · 22/45 min · run 42437407177
+⏳ in_progress · 24/45 min · run 42437407177
+⏳ in_progress · 25/45 min · run 42437407177
+⏳ in_progress · 26/45 min · run 42437407177
+⏳ in_progress · 27/45 min · run 42437407177
+⏳ in_progress · 28/45 min · run 42437407177
+⏳ in_progress · 29/45 min · run 42437407177
+⏳ in_progress · 30/45 min · run 42437407177
+⏳ in_progress · 32/45 min · run 42437407177
+⏳ in_progress · 33/45 min · run 42437407177
+⏳ in_progress · 34/45 min · run 42437407177
+⏳ in_progress · 35/45 min · run 42437407177
+✅ no ar — run 42437407177 (SHA 3d69536)
+RESULTADO: NO AR
+→ siga para o próximo passo da publicação.
+[exit=0]
