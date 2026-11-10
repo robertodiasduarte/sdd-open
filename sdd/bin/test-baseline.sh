@@ -221,9 +221,12 @@ if modo == "touched":
                 vizinhos.append((cam, os.path.splitext(c)[0] if c.endswith(".py") else ""))
 
     def do_vizinho(i):
+        # o arquivo do id: o trecho antes de " > " (vitest) ou "::" (pytest, deno), sem "./"
+        arq = re.split(r" > |::", i, maxsplit=1)[0].strip()
+        arq = arq[2:] if arq.startswith("./") else arq
         for cam, mod in vizinhos:
-            if i.startswith(cam) or i.startswith("./" + cam):
-                return True  # vitest, pytest e deno começam o id pelo caminho do arquivo
+            if arq == cam or (arq and cam.endswith("/" + arq)):
+                return True  # o caminho inteiro, ou o relativo à subpasta de onde o runner rodou
             if mod and "/" not in i and re.search(r"(^|\.)" + re.escape(mod) + r"\.", i):
                 return True  # unittest: o módulo como segmento do id
         return False

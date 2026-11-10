@@ -67,6 +67,9 @@ while [ $# -gt 0 ]; do
   esac
 done
 
+# Daqui em diante, um INT/TERM (Ctrl-C, teto do agente) nunca sai 130/143 sem RESULTADO.
+trap 'echo "⚠️  slot.sh interrompido por sinal"; printf "RESULTADO: INCONCLUSIVO\n→ rode de novo; isto não é verde.\n"; exit 3' INT TERM
+
 if ! command -v python3 >/dev/null 2>&1; then
   echo "⚠️  python3 ausente: não consigo ler ${CHAVE} do sdd/config.yaml"
   printf 'RESULTADO: INCONCLUSIVO\n→ instale python3 >= 3.9 e rode de novo; isto não é verde.\n'
@@ -78,7 +81,25 @@ if ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"; then GIT=1; else ROOT="$
 cd "${ROOT}" || uso "não consegui entrar em ${ROOT}"
 CONFIG="${ROOT}/sdd/config.yaml"
 
-# Lê o valor: 1ª linha da saída = VALOR | AUSENTE | ASPAS <linha> | AMBIGUO; o resto é o valor.
+# Pasta comum: derivada do caminho físico da pasta git comum (igual em toda worktree, subpasta ou symlink).
+if [ -z "${DIR}" ]; then
+  if [ "${GIT}" = "1" ]; then
+    COMUM="$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)" || COMUM="${ROOT}"
+  else
+    COMUM="${ROOT}"
+  fi
+  HASH="$(printf '%s' "${COMUM}" | git hash-object --stdin 2>/dev/null | cut -c1-12)"
+  [ -n "${HASH}" ] || HASH="$(printf '%s' "${COMUM}" | cksum | tr -c '0-9\n' '_' | cut -c1-12)"
+  NOME="${FEATURE:-_sem-feature}"
+  case "${NOME}" in */*|.|..) uso "--feature não pode ter / nem ser . ou .." ;; esac
+  DIR="${TMPDIR:-/tmp}"; DIR="${DIR%/}/sdd-slot-${HASH}/${NOME}"
+  # before_ok abre uma release: a pasta padrão é esvaziada mesmo com o slot vazio (o que a release anterior
+  # da mesma feature deixou não pode servir de "antes" para os outros momentos).
+  if [ "${MOMENTO}" = "before_ok" ] && [ -d "${DIR}" ]; then
+    rm -rf "${DIR}" || uso "não consegui esvaziar ${DIR}" "apague a pasta à mão e rode de novo"
+  fi
+fi
+# Lê o valor: 1ª linha da saída = VALOR | AUSENTE | ASPAS <linha> | SOBRA <linha>; o resto é o valor.
 LIDO="$(python3 -B - "${CHAVE}" "${CONFIG}" <<'PY'
 import re, sys
 secao, chave = sys.argv[1].split(".", 1)
@@ -105,31 +126,19 @@ for n, l in enumerate(linhas, 1):
             out.append(v[i]); i += 1
         if i >= len(v):
             print("ASPAS %d" % n); sys.exit(0)
+        if not re.match(r"^(\s+#.*)?\s*$", v[i + 1:]):
+            print("SOBRA %d" % n); sys.exit(0)
         v = "".join(out)
     elif v[:1] == "'":
         fim = re.match(r"'((?:[^']|'')*)'", v)
         if not fim:
             print("ASPAS %d" % n); sys.exit(0)
+        if not re.match(r"^(\s+#.*)?\s*$", v[fim.end():]):
+            print("SOBRA %d" % n); sys.exit(0)
         v = fim.group(1).replace("''", "'")
     else:
-        v = re.split(r"\s#", v, 1)[0].strip()
+        v = re.split(r"\s#", v, maxsplit=1)[0].strip()
     v = v.strip()
-    # Comentário do shell: um # no INÍCIO de uma palavra, fora de aspas (regra do bash). "a#b" e
-    # "https://x/#/y" não são comentário. Aspas sem fechar ficam para o bash -n abaixo.
-    aspa, esc, anterior = "", False, " "
-    for c in v:
-        if esc:
-            esc = False
-        elif c == "\\" and aspa != "'":
-            esc = True
-        elif aspa:
-            if c == aspa:
-                aspa = ""
-        elif c in "'\"":
-            aspa = c
-        elif c == "#" and (anterior.isspace() or anterior in ";|&()<>"):
-            print("COMENTARIO %d" % n); sys.exit(0)
-        anterior = c
     print("VALOR")
     sys.stdout.write(v)
     sys.exit(0)
@@ -141,7 +150,7 @@ ESTADO="${LIDO%%$'\n'*}"
 CMD=""; [ "${LIDO}" != "${ESTADO}" ] && CMD="${LIDO#*$'\n'}"
 case "${ESTADO}" in
   "ASPAS "*)      uso "sdd/config.yaml, linha ${ESTADO#ASPAS }: o valor de ${CHAVE} abre aspas e não fecha" "feche as aspas do valor (uma linha só) e rode de novo" ;;
-  "COMENTARIO "*) uso "sdd/config.yaml, linha ${ESTADO#COMENTARIO }: o comando de ${CHAVE} tem um comentário (#); os arquivos cairiam dentro dele" "tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script" ;;
+  "SOBRA "*)      uso "sdd/config.yaml, linha ${ESTADO#SOBRA }: há texto depois das aspas do valor de ${CHAVE}" "ponha o comando inteiro dentro das aspas (depois delas, só um comentário # do YAML)" ;;
 esac
 if [ "${ESTADO}" != "VALOR" ] || [ -z "${CMD}" ]; then
   if [ -f "${CONFIG}" ]; then echo "ℹ️  ${CHAVE} vazio: pulado (${CONFIG})"
@@ -151,6 +160,12 @@ if [ "${ESTADO}" != "VALOR" ] || [ -z "${CMD}" ]; then
 fi
 
 ERRO="$(bash -n -c "${CMD} \"\$@\"" 2>&1)" || uso "o comando de ${CHAVE} tem erro de sintaxe: $(printf '%s' "${ERRO}" | head -1)" "corrija o comando em sdd/config.yaml (uma linha só; com |, ; ou &&, aponte para um script)"
+# Comentário do shell no comando: os arquivos ("$@" no fim) cairiam dentro dele. Quem responde é o próprio bash,
+# sem executar nada: define uma função com o comando e confere se o "$@" sobreviveu no corpo normalizado. O bash -n
+# acima já garantiu que as chaves do comando fecham, então a definição não sai do corpo da função.
+bash -c 'eval "__slot_cmd() { $1 \"\$@\"
+}" && declare -f __slot_cmd | grep -q "\"\$@\""' _ "${CMD}" 2>/dev/null \
+  || uso "o comando de ${CHAVE} tem um comentário (#); os arquivos cairiam dentro dele" "tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script"
 
 # SHAs: a ref dada que não resolve é erro de chamada; o padrão que não resolve vira variável vazia, com aviso.
 resolve() { git rev-parse --verify --quiet "${1}^{commit}" 2>/dev/null; }
@@ -173,25 +188,7 @@ else
 fi
 [ -n "${ARVORE}" ] || ARVORE="${ROOT}"
 
-# Pasta comum: derivada do caminho físico da pasta git comum (igual em toda worktree, subpasta ou symlink).
-if [ -z "${DIR}" ]; then
-  if [ "${GIT}" = "1" ]; then
-    COMUM="$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)" || COMUM="${ROOT}"
-  else
-    COMUM="${ROOT}"
-  fi
-  HASH="$(printf '%s' "${COMUM}" | git hash-object --stdin 2>/dev/null | cut -c1-12)"
-  [ -n "${HASH}" ] || HASH="$(printf '%s' "${COMUM}" | cksum | tr -c '0-9\n' '_' | cut -c1-12)"
-  NOME="${FEATURE:-_sem-feature}"
-  case "${NOME}" in */*|.|..) uso "--feature não pode ter / nem ser . ou .." ;; esac
-  DIR="${TMPDIR:-/tmp}"; DIR="${DIR%/}/sdd-slot-${HASH}/${NOME}"
-  if [ "${MOMENTO}" = "before_ok" ] && [ -d "${DIR}" ]; then
-    rm -rf "${DIR}" || uso "não consegui esvaziar ${DIR}" "apague a pasta à mão e rode de novo"
-  fi
-fi
 mkdir -p "${DIR}" 2>/dev/null || uso "não consegui criar a pasta comum ${DIR}" "passe --dir <pasta gravável> ou confira o TMPDIR"
-
-trap 'echo "⚠️  slot.sh interrompido por sinal"; printf "RESULTADO: INCONCLUSIVO\n→ rode de novo; isto não é verde.\n"; exit 3' INT TERM
 
 echo "▶ ${CHAVE} (${MOMENTO}): ${CMD}"
 SDD_MOMENTO="${MOMENTO}" SDD_FEATURE="${FEATURE}" SDD_BASE="${BASE_SHA}" SDD_COMMIT="${COMMIT_SHA}" \

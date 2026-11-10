@@ -144,6 +144,7 @@ class Pulado(Base):
             "chave ausente": 'smoke:\n  before_push_cmd: "bash falso.sh 0"\n',
             "secao ausente": 'schema:\n  check_cmd: "bash falso.sh 0"\n',
             "aspas simples vazias": "smoke:\n  before_ok_cmd: ''\n",
+            "vazio com comentario do yaml": 'smoke:\n  before_ok_cmd: ""  # preencher depois\n',
         }
         for nome, texto in casos.items():
             with self.subTest(caso=nome):
@@ -194,6 +195,8 @@ class Uso(Base):
             "comeca com pipe": 'smoke:\n  before_ok_cmd: "| cat"\n',
             "aspa do shell sem fechar": "smoke:\n  before_ok_cmd: \"bash falso.sh 0 'abc\"\n",
             "comentario do shell": 'smoke:\n  before_ok_cmd: "bash falso.sh 0 # gate"\n',
+            "texto depois das aspas": 'smoke:\n  before_ok_cmd: "bash falso.sh 0" --url x\n',  # ciclo 2, achado 2
+            "texto depois das aspas simples": "smoke:\n  before_ok_cmd: 'bash falso.sh 0' x\n",
         }
         for nome, texto in casos.items():
             with self.subTest(caso=nome):
@@ -220,6 +223,18 @@ class Cerquilha(Base):
         rc, out = self.slot("smoke.before_ok_cmd")
         self.assertEqual(rc, 0, out)
         self.assertEqual(self.registro()["ARG"], ["x # y"])
+
+    def test_bordas_do_bash(self):
+        # avaliação ciclo 2, achado 1: quem decide o que é comentário é o próprio bash
+        self.config("smoke:\n  before_ok_cmd: 'bash falso.sh 0 a\\ #b'\n")
+        rc, out = self.slot("smoke.before_ok_cmd", "f1.txt")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.registro()["ARG"], ["a #b", "f1.txt"])
+        (self.r / "registro.txt").unlink()
+        self.config("smoke:\n  before_ok_cmd: \"bash falso.sh 0 $'it\\\\'s' # c\"\n")
+        rc, out = self.slot("smoke.before_ok_cmd", "f1.txt")
+        self.assertEqual(rc, 64, out)
+        self.assertFalse((self.r / "registro.txt").exists())
 
     def test_cerquilha_depois_de_ponto_e_virgula_e_comentario(self):
         self.smoke("bash falso.sh 0;# resto")
@@ -305,6 +320,16 @@ class Ambiente(Base):
         self.assertEqual(rc, 0, out)
         self.assertEqual(self.registro()["DIR"], str(propria))
         self.assertTrue((propria / "meu.txt").exists())
+
+    def test_before_ok_vazio_tambem_esvazia(self):
+        # revisão claude, R2: com o slot de before_ok vazio, o que a release anterior deixou não pode ficar
+        rc, _ = self.slot("smoke.before_ok_cmd", "--feature", "F")
+        pasta = Path(self.registro()["DIR"])
+        (pasta / "velho.txt").write_text("da release anterior", encoding="utf-8")
+        self.config('smoke:\n  before_ok_cmd: ""\n  after_deploy_cmd: "bash falso.sh 0"\n')
+        rc, out = self.slot("smoke.before_ok_cmd", "--feature", "F")
+        self.assertEqual(rc, 11, out)
+        self.assertFalse((pasta / "velho.txt").exists())
 
     def test_sem_git_funciona_com_commit_vazio(self):
         solto = self.tmp / "solto"

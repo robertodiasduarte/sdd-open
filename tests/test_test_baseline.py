@@ -128,6 +128,14 @@ class TestBaseline(Sandbox):
                 self.assertIn("🛑 nova: " + novo, out)
                 self.assertNotIn("fora do diff", out)
 
+    def test_touched_id_relativo_a_subpasta_conta(self):
+        # revisão claude, R3: o runner rodou de dentro de src/, e o id não traz o prefixo da raiz
+        self._vizinhos()
+        self.escreve(self.r, "src/foo.ts", "// v2\n")
+        rc, out = self._touched(" FAIL  foo.test.ts > Foo > quebra\n")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("🛑 nova: foo.test.ts > Foo > quebra", out)
+
     def test_touched_vizinho_commitado_na_branch_tambem_conta(self):
         self._vizinhos()
         self.escreve(self.r, "src/foo.ts", "// v2\n")
