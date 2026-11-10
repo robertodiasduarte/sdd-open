@@ -51,9 +51,11 @@ class Lint(Sandbox):
                 self.assertIn("RESULTADO: VERMELHO\n→ ", out)
 
     def test_varios_arquivos_um_ruim_reprova_o_conjunto(self):
-        rc, out = self.lint(FX / "so-sem-achados.md", FX / "sim-sem-teste.md")
+        bom = self.escreve(self.tmp, "LEDGER_REVISAO_BOM.md", "# x\n\n" + CAB +
+                           "| R1 | LOW | APLICADA | rodada=1 | x | nao | EXTERNAL_REVIEW_20260201-000009 |\n")
+        rc, out = self.lint(bom, FX / "sim-sem-teste.md")
         self.assertEqual(rc, 2, out)
-        self.assertNotIn("so-sem-achados.md:", out)
+        self.assertNotIn("LEDGER_REVISAO_BOM.md:", out)
         self.assertEqual(out.count("🛑"), 1, out)
 
     def test_celulas_fora_do_formato(self):
@@ -149,7 +151,87 @@ class Lint(Sandbox):
     def test_sem_achados_e_linha_de_dados_para_a_mesma_revisao_se_contradizem(self):
         rc, out = self.um("| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |\n\nsem achados: rodada=1 %s" % (PASTA, PASTA))
         self.assertEqual(rc, 2, out)
-        self.assertIn("está marcada `sem achados` na linha 7 e tem achado nesta linha", out)
+        self.assertIn("LEDGER_REVISAO_X.md:5 — a revisão %s está marcada `sem achados` em " % PASTA, out)
+        self.assertIn("LEDGER_REVISAO_X.md:7 e tem achado nesta linha", out)
+        # também entre arquivos passados juntos
+        a = self.escreve(self.tmp, "LEDGER_REVISAO_A.md", "# a\n\nsem achados: rodada=1 %s\n" % PASTA)
+        b = self.escreve(self.tmp, "LEDGER_REVISAO_B.md", "# b\n\n" + CAB + "| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |\n" % PASTA)
+        rc, out = self.lint(a, b)
+        self.assertEqual(rc, 2, out)
+        self.assertIn("LEDGER_REVISAO_A.md:3 e tem achado nesta linha", out)
+
+    def test_linhas_depois_de_linha_em_branco_continuam_sendo_o_ledger(self):
+        # Quem grava "depois de cada rodada" separa as rodadas por uma linha em branco, sem repetir o cabeçalho.
+        boa = "| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |" % PASTA
+        rc, out = self.um(boa + "\n\n| R2 | HIGH | APLICADA | rodada=2 | sem a marca de dano |")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("LEDGER_REVISAO_X.md:7 — a linha tem 5 célula(s)", out)
+        rc, out = self.um(boa + "\n\n| R2 | HIGH | APLICADA | rodada=2 | o total somava duas vezes | sim | %s |" % PASTA)
+        self.assertEqual(rc, 2, out)
+        self.assertIn("dano = sim sem `teste: <nome>`", out)
+        rc, out = self.um(boa + "\n\n| N1 | LOW | REBATIDA_ESCOPO | rodada=2 | fora | nao | %s |" % PASTA)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("2 linha(s)", out)
+
+    def test_arquivo_vazio_nao_esconde_as_violacoes_de_outro(self):
+        rc, out = self.lint(FX / "sim-sem-teste.md", FX / "sem-linhas.md")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("sim-sem-teste.md:5 — dano = sim sem `teste: <nome>`", out)
+        self.assertIn("sem-linhas.md — nenhuma linha de dados", out)
+        self.assertIn("RESULTADO: VERMELHO", out)
+        rc, out = self.um("Sem achados na rodada 2.")   # só a quase-forma, sem nenhuma linha válida
+        self.assertEqual(rc, 2, out)
+        self.assertIn("rodada sem achados se escreve `sem achados: rodada=<N>", out)
+
+    def test_comentario_html_nao_e_conferido(self):
+        # O molde traz as regras num comentário, com um exemplo de linha e a forma do `sem achados:`.
+        topo = "<!--\n  R9 · exemplo\n  sem achados: rodada=<N> EXTERNAL_REVIEW_AAAAMMDD-HHMMSS\n  retroativo: sim\n-->\n\n"
+        rc, out = self.um("| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |" % PASTA, topo)
+        self.assertEqual(rc, 0, out)
+        rc, out = self.um("| R1 | MED | APLICADA | rodada=1 | x | ? | %s |" % PASTA, topo)
+        self.assertEqual(rc, 2, out)   # o `retroativo: sim` de dentro do comentário não libera o `?`
+
+    def test_linha_do_ledger_fora_da_tabela_e_acusada(self):
+        # Achado do avaliador (ciclo 2): a linha colada à tabela sem a barra inicial não é lida como tabela;
+        # o lint saía verde com uma REBATIDA marcada `sim`.
+        boa = "| R1 | LOW | APLICADA | rodada=1 | texto | nao | %s |" % PASTA
+        resto = "R3 | HIGH | REBATIDA_EVIDENCIA | rodada=2 | sem teste | sim | %s |" % PASTA
+        for nome, prefixo in (("sem a barra inicial", ""), ("citação", "> | "), ("item de lista", "- | "),
+                              ("barra invertida", "\\| "), ("espaço de largura zero", "\u200b| ")):
+            with self.subTest(caso=nome):
+                rc, out = self.um(boa + "\n" + prefixo + resto)
+                self.assertEqual(rc, 2, out)
+                self.assertIn("LEDGER_REVISAO_X.md:6 — linha com forma de linha do ledger fora da tabela", out)
+        rc, out = self.um(boa + "\n\nTexto corrido com uma barra | só, que não é linha do ledger.")
+        self.assertEqual(rc, 0, out)
+
+    def test_bom_no_inicio_do_arquivo_nao_esconde_a_primeira_linha(self):
+        arq = self.escreve(self.tmp, "LEDGER_REVISAO_X.md",
+                           "\ufeff| R1 | HIGH | REBATIDA_EVIDENCIA | rodada=1 | x | sim | %s |\n" % PASTA)
+        rc, out = self.lint(arq)
+        self.assertEqual(rc, 2, out)
+        self.assertIn("dano = sim com veredito REBATIDA_EVIDENCIA", out)
+
+    def test_cerca_e_so_a_linha_inteira_e_bloco_aberto_e_acusado(self):
+        boa = "| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |" % PASTA
+        ruim = "| R3 | HIGH | REBATIDA_EVIDENCIA | rodada=2 | sem teste | sim | %s |" % PASTA
+        # código em linha no começo de um parágrafo e cerca indentada por 4 espaços não abrem bloco
+        for nome, meio in (("código em linha", "```R3``` foi rebatido na rodada 2.\n\n"), ("4 espaços", "    ```\n\n")):
+            with self.subTest(caso=nome):
+                rc, out = self.um(boa + "\n\n" + meio + ruim)
+                self.assertEqual(rc, 2, out)
+                self.assertIn("dano = sim com veredito REBATIDA_EVIDENCIA", out)
+        for nome, abre in (("cerca", "```text"), ("comentário", "<!-- anotação")):
+            with self.subTest(caso=nome + " sem fechar"):
+                rc, out = self.um(boa + "\n\n" + abre + "\n" + ruim)
+                self.assertEqual(rc, 2, out)
+                self.assertIn("aberto e não fechado: o resto do arquivo não foi lido", out)
+
+    def test_saida_nao_depende_do_locale(self):
+        env = dict(self.env, PYTHONIOENCODING="ascii", LC_ALL="C")
+        rc, out, err = self.roda([BASH, LINT, FX / "sim-sem-teste.md"], self.tmp, env)
+        self.assertEqual(rc, 2, out + err)
+        self.assertNotIn("Traceback", out + err)
 
     def test_cabecalho_fora_do_molde_da_uma_mensagem_so(self):
         texto = ("# x\n\n| achado | severidade | veredito | rodada | motivo | dano | revisão |\n|--|:-:|---|---|---|---|---|\n"

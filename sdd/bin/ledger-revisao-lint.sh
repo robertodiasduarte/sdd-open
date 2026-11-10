@@ -60,7 +60,41 @@ RETRO_QUASE = re.compile(r"^\s*[-*>]*\s*\**retroativo\**\s*:\**\s*sim\b", re.I)
 TESTE_RE = re.compile(r"(?i)\bteste:\s*`?(?:[\w./-]+::[\w.:-]+|(?:[\w]+\.)*test_\w+(?:\.py)?(?:::[\w.:-]+)?|tests/[\w./-]+)")
 SEPARADOR_RE = re.compile(r"^:?-+:?$")
 CABECALHO = ["achado", "sev", "veredito", "rodada", "evidência", "dano", "revisão"]
-CERCA_RE = re.compile(r"^\s*(```|~~~)")
+CERCA_RE = re.compile(r"^ {0,3}(```|~~~)[\w+.-]*\s*$")   # a linha inteira é a cerca; código em linha não conta
+SOLTA_RE = re.compile(r"^[\s>*\\\u200b\ufeff-]*")
+
+
+def linhas_uteis(texto):
+    """As linhas (n, texto) fora de bloco cercado e de comentário <!-- -->, e os avisos (n, motivo) de bloco que
+    abriu e não fechou. A mesma função está no ledger-revisao-lint.sh e no eval-revisores.sh: os dois leem o ledger
+    do mesmo jeito."""
+    uteis, avisos, cercado, comentario, onde = [], [], False, False, 0
+    for n, ln in enumerate(texto.lstrip("\ufeff").split("\n"), 1):
+        ln = ln.rstrip("\r")
+        if comentario:
+            comentario = "-->" not in ln
+            continue
+        if CERCA_RE.match(ln):
+            cercado, onde = not cercado, n
+            continue
+        if cercado:
+            continue
+        if ln.lstrip().startswith("<!--"):
+            comentario, onde = "-->" not in ln, n
+            continue
+        uteis.append((n, ln))
+    if cercado:
+        avisos.append((onde, "bloco cercado aberto e não fechado: o resto do arquivo não foi lido"))
+    if comentario:
+        avisos.append((onde, "comentário <!-- aberto e não fechado: o resto do arquivo não foi lido"))
+    return uteis, avisos
+
+
+def linha_solta(ln):
+    """Uma linha que não começa por `|` mas tem forma de linha do ledger: a barra inicial atrás de citação, item de
+    lista ou barra invertida, ou 4 ou mais barras verticais. Ela não é lida como tabela; por isso é acusada."""
+    resto = SOLTA_RE.sub("", ln, count=1)
+    return resto.startswith("|") or len(re.findall(r"(?<!\\)\|", ln)) >= 4
 
 
 def uso(motivo):
@@ -90,34 +124,30 @@ for arq in args:   # todos os caminhos são lidos antes: um arquivo ilegível n�
     except (OSError, UnicodeDecodeError):
         uso("não consegui ler %s" % arq)
 
-violacoes, total, limpas, vistos, vazios = [], 0, 0, {}, []
+for s in (sys.stdout, sys.stderr):   # a saída tem acento: nunca depende do locale de quem roda
+    try:
+        s.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
+violacoes, total, limpas, vistos, vazios, pastas_limpas = [], 0, 0, {}, [], {}
+for arq, texto in textos:   # as rodadas ditas sem achados valem entre os arquivos passados juntos
+    for n, ln in linhas_uteis(texto)[0]:
+        m = SEM_ACHADOS_RE.match(ln)
+        if m:
+            pastas_limpas.setdefault(m.group(2), "%s:%d" % (arq, n))
 for arq, texto in textos:
-    linhas, cercado, retroativo = texto.split("\n"), False, False
-    uteis = []   # (n, linha) fora de bloco cercado
-    comentario = False   # <!-- … -->: o molde traz as regras num comentário, que não é ledger
-    for n, ln in enumerate(linhas, 1):
-        if comentario:
-            comentario = "-->" not in ln
-            continue
-        if CERCA_RE.match(ln):
-            cercado = not cercado
-            continue
-        if not cercado and ln.lstrip().startswith("<!--"):
-            comentario = "-->" not in ln
-            continue
-        if not cercado:
-            uteis.append((n, ln.rstrip("\r")))
+    retroativo = False
+    uteis, abertos = linhas_uteis(texto)
+    for n, motivo in abertos:
+        violacoes.append("%s:%d — %s" % (arq, n, motivo))
     for n, ln in uteis:
         if RETRO_RE.match(ln):
             retroativo = True
         elif RETRO_QUASE.match(ln):
             violacoes.append("%s:%d — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, "
                              "citação ou maiúscula" % (arq, n))
-    dados, sem_achados, cabecalho_ruim, pastas_limpas = 0, 0, False, {}
-    for n, ln in uteis:   # 1ª passada: as rodadas ditas sem achados, onde quer que a linha esteja no arquivo
-        m = SEM_ACHADOS_RE.match(ln)
-        if m:
-            pastas_limpas.setdefault(m.group(2), n)
+    dados, sem_achados, cabecalho_ruim = 0, 0, False
     for n, ln in uteis:
         if not re.match(r"^\s*\|", ln):
             m = SEM_ACHADOS_RE.match(ln)
@@ -126,6 +156,10 @@ for arq, texto in textos:
             elif SEM_ACHADOS_QUASE.match(ln):
                 violacoes.append("%s:%d — rodada sem achados se escreve `sem achados: rodada=<N> "
                                  "EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>`" % (arq, n))
+            elif linha_solta(ln):
+                dados += 1
+                violacoes.append("%s:%d — linha com forma de linha do ledger fora da tabela: toda linha do ledger "
+                                 "começa por `|` (sem citação, item de lista nem barra invertida antes)" % (arq, n))
             continue
         c = celulas(ln)
         if not c or all(SEPARADOR_RE.match(x) for x in c):
@@ -180,7 +214,7 @@ for arq, texto in textos:
         elif dano == "?" and not retroativo:
             acusa("dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)")
         if pasta in pastas_limpas:
-            acusa("a revisão %s está marcada `sem achados` na linha %d e tem achado nesta linha" % (pasta, pastas_limpas[pasta]))
+            acusa("a revisão %s está marcada `sem achados` em %s e tem achado nesta linha" % (pasta, pastas_limpas[pasta]))
         chave = (pasta, achado)
         if chave in vistos:
             acusa("achado %s repetido na revisão %s (1ª vez em %s)" % (achado, pasta, vistos[chave]))

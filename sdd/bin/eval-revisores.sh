@@ -61,7 +61,42 @@ PASTA_RE = re.compile("^" + PASTA + "$")
 SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=\d+[a-z]?\s+(" + PASTA + r")\s*$")
 CUSTO_RE = re.compile(r"^(≈)?\s*US\$\s*([0-9]+(?:[.,][0-9]+)?)(\s*\+\s*\$\?)?$")
 SEPARADOR_RE = re.compile(r"^:?-+:?$")
-CERCA_RE = re.compile(r"^\s*(```|~~~)")
+CABECALHO = ["achado", "sev", "veredito", "rodada", "evidência", "dano", "revisão"]
+CERCA_RE = re.compile(r"^ {0,3}(```|~~~)[\w+.-]*\s*$")   # a linha inteira é a cerca; código em linha não conta
+SOLTA_RE = re.compile(r"^[\s>*\\\u200b\ufeff-]*")
+
+
+def linhas_uteis(texto):
+    """As linhas (n, texto) fora de bloco cercado e de comentário <!-- -->, e os avisos (n, motivo) de bloco que
+    abriu e não fechou. A mesma função está no ledger-revisao-lint.sh e no eval-revisores.sh: os dois leem o ledger
+    do mesmo jeito."""
+    uteis, avisos, cercado, comentario, onde = [], [], False, False, 0
+    for n, ln in enumerate(texto.lstrip("\ufeff").split("\n"), 1):
+        ln = ln.rstrip("\r")
+        if comentario:
+            comentario = "-->" not in ln
+            continue
+        if CERCA_RE.match(ln):
+            cercado, onde = not cercado, n
+            continue
+        if cercado:
+            continue
+        if ln.lstrip().startswith("<!--"):
+            comentario, onde = "-->" not in ln, n
+            continue
+        uteis.append((n, ln))
+    if cercado:
+        avisos.append((onde, "bloco cercado aberto e não fechado: o resto do arquivo não foi lido"))
+    if comentario:
+        avisos.append((onde, "comentário <!-- aberto e não fechado: o resto do arquivo não foi lido"))
+    return uteis, avisos
+
+
+def linha_solta(ln):
+    """Uma linha que não começa por `|` mas tem forma de linha do ledger: a barra inicial atrás de citação, item de
+    lista ou barra invertida, ou 4 ou mais barras verticais. Ela não é lida como tabela; por isso é acusada."""
+    resto = SOLTA_RE.sub("", ln, count=1)
+    return resto.startswith("|") or len(re.findall(r"(?<!\\)\|", ln)) >= 4
 
 
 def para(motivo):
@@ -122,13 +157,32 @@ def rotulo(engine):
     return re.sub(r"[:/]", "-", engine)
 
 
+for s in (sys.stdout, sys.stderr):   # a saída tem acento: nunca depende do locale de quem roda
+    try:
+        s.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
+
+def inesperado(tipo, valor, tb):
+    """Dado corrompido que nenhuma checagem previu vira 64 com a causa, nunca traceback."""
+    print("🛑 eval-revisores: não consegui medir (%s: %s)" % (tipo.__name__, str(valor)[:200]), file=sys.stderr)
+    print("RESULTADO: PAROU\n→ um META.txt, arquivo de vereditos ou ledger tem um valor que o script não sabe ler; "
+          "corrija o arquivo citado acima ou tire a pasta dele da medição.", file=sys.stderr)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os._exit(64)
+
+
+sys.excepthook = inesperado
+
 # ── argumentos ──────────────────────────────────────────────────────────────────────────────────────
 args, pasta_arg, ledgers_arg, registry_arg = sys.argv[1:], None, None, None
 i = 0
 while i < len(args):
     a = args[i]
     if a in ("--ledgers", "--registry"):
-        if i + 1 >= len(args) or args[i + 1].startswith("--"):
+        if i + 1 >= len(args) or args[i + 1].startswith("--") or not args[i + 1]:
             para("%s pede um caminho" % a)
         if a == "--ledgers":
             ledgers_arg = args[i + 1]
@@ -181,8 +235,8 @@ for ln in (ler(registry) or "").splitlines():
         cobranca[c[0]] = c[3]
 
 # ── ledgers ─────────────────────────────────────────────────────────────────────────────────────────
-# Só a tabela cujo cabeçalho começa por `achado`, fora de bloco cercado. Toda linha de dados que não entra na
-# conta vai para "fora da conta" com arquivo:linha e o motivo: nenhuma some em silêncio.
+# O arquivo é só do ledger: toda linha de tabela, fora de bloco cercado e de comentário, é o cabeçalho do molde ou
+# um achado. Toda linha que não entra na conta vai para "fora da conta" com arquivo:linha e o motivo.
 fora, linhas_ledger, n_ledgers, pastas_citadas, ditas_sem_achados = [], [], 0, set(), {}
 arquivos = []
 if os.path.isdir(ledgers):
@@ -197,31 +251,28 @@ for arq in arquivos:
         fora.append((nome_arq, "ledger ilegível"))
         continue
     n_ledgers += 1
-    cercado, comentario = False, False
-    for n, ln in enumerate(texto.split("\n"), 1):
-        ln = ln.rstrip("\r")
-        if comentario:
-            comentario = "-->" not in ln
-            continue
-        if CERCA_RE.match(ln):
-            cercado = not cercado
-            continue
-        if cercado:
-            continue
-        if ln.lstrip().startswith("<!--"):
-            comentario = "-->" not in ln
-            continue
+    uteis, abertos = linhas_uteis(texto)
+    for n, motivo in abertos:
+        fora.append(("%s:%d" % (nome_arq, n), motivo))
+    for n, ln in uteis:
         if not re.match(r"^\s*\|", ln):
             m = SEM_ACHADOS_RE.match(ln)
             if m:
                 pastas_citadas.add(m.group(1))
                 ditas_sem_achados.setdefault(m.group(1), "%s:%d" % (nome_arq, n))
+            elif linha_solta(ln):
+                fora.append(("%s:%d" % (nome_arq, n), "linha com forma de linha do ledger fora da tabela (não começa "
+                                                     "por `|`): não foi lida"))
             continue
         c = celulas(ln)
         if not c or all(SEPARADOR_RE.match(x) for x in c):
             continue
-        # o arquivo é só do ledger: toda linha de tabela é cabeçalho ou dado; nenhuma é pulada como "outra tabela"
-        if c[0].strip("*` ").lower().split(" ")[0] == "achado":
+        nomes = [x.strip("*` ").lower() for x in c]
+        if nomes == CABECALHO:
+            continue
+        if nomes[0] == "achado" or nomes[0].startswith("achado "):
+            fora.append(("%s:%d" % (nome_arq, n), "cabeçalho fora do molde (ou linha cuja 1ª célula começa por "
+                                                 "`achado`): não foi lida como achado"))
             continue
         onde = "%s:%d" % (nome_arq, n)
         if len(c) != 7:
@@ -316,11 +367,16 @@ for d in (listar(pasta) if os.path.isdir(pasta) else []):
         else:
             engine = meta.get(chave + "_engine_efetivo") or meta.get(chave + "_engine") or ""
         saida = meta.get(chave + "_exit", "")
-        if engine in ("", "-") or saida in ("", "-"):
+        if engine in ("", "-"):
             continue   # o papel não rodou nesta pasta
-        if not re.match(r"^-?\d+$", saida):
+        if saida in ("", "-"):
+            if meta.get(chave + "_custo", "") not in ("", "-", "n/d"):
+                fora.append((d, "%s (%s): sem exit no META.txt e com custo `%s`; a chamada e o custo dela não foram "
+                             "contados" % (nome, engine, meta[chave + "_custo"])))
+            continue   # o papel não rodou nesta pasta
+        if not re.match(r"^-?\d{1,6}$", saida):
             fora.append((d, "%s (%s): exit `%s` ilegível no META.txt; a chamada e o custo dela não foram contados"
-                         % (nome, engine, saida)))
+                         % (nome, engine, saida[:40] + ("…" if len(saida) > 40 else ""))))
             continue
         if engine == "indisponível":
             fora.append((d, "%s indisponível: nenhuma engine foi chamada" % nome))
@@ -399,8 +455,11 @@ for d in (listar(pasta) if os.path.isdir(pasta) else []):
                 c["fp"] += 1
             else:
                 c["escopo"] += 1
-            if x["dano"] == "sim":
+            if x["dano"] == "sim" and x["veredito"] == "APLICADA":
                 c["dano"] += 1
+            elif x["dano"] == "sim":
+                fora.append((x["onde"], "achado %s: dano = sim com veredito %s não conta como falha com dano"
+                             % (x["id"], x["veredito"])))
             if x["dano"] in ("sim", "nao"):
                 classificados.add(alvo)
         c["sem_class"] += len(ids) - len(classificados)

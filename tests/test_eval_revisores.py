@@ -204,6 +204,36 @@ class Ledgers(Base):
         self.assertIn("LEDGER_REVISAO_X.md:7: achado R1: sem rótulo e ambíguo: a revisão tem R1@claude, R1@codex",
                       self.fora(out))
 
+    def test_linha_do_ledger_fora_da_tabela_e_avisada(self):
+        # Achado do avaliador (ciclo 2): sem a barra inicial a linha não é tabela; antes sumia com "fora da conta: 0".
+        rc, out = self.com("| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s |\n"
+                           "R3 | LOW | REBATIDA_EVIDENCIA | rodada=1 | sem a barra inicial | nao | %s |\n"
+                           "> | R2 | MED | APLICADA | rodada=1 | dentro de citação | nao | %s |\n" % (P1, P1, P1))
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(linhas(out)[0][8], "1 de 9")
+        fora = self.fora(out)
+        self.assertIn("LEDGER_REVISAO_X.md:6: linha com forma de linha do ledger fora da tabela", fora)
+        self.assertIn("LEDGER_REVISAO_X.md:7: linha com forma de linha do ledger fora da tabela", fora)
+
+    def test_linha_cuja_primeira_celula_comeca_por_achado_e_avisada(self):
+        rc, out = self.com("| achado R3 | LOW | REBATIDA_EVIDENCIA | rodada=1 | x | nao | %s |\n" % P1)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("LEDGER_REVISAO_X.md:5: cabeçalho fora do molde", self.fora(out))
+
+    def test_bloco_aberto_e_nao_fechado_e_avisado(self):
+        rc, out = self.com("| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s |\n\n```text\n"
+                           "| R2 | MED | APLICADA | rodada=1 | depois de uma cerca que não fecha | nao | %s |\n" % (P1, P1))
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(linhas(out)[0][8], "1 de 9")
+        self.assertIn("LEDGER_REVISAO_X.md:7: bloco cercado aberto e não fechado", self.fora(out))
+
+    def test_rebatida_marcada_sim_nao_conta_como_dano_e_e_avisada(self):
+        rc, out = self.com("| R3 | LOW | REBATIDA_EVIDENCIA | rodada=1 | teste: `test_x` | sim | %s |\n" % P1)
+        self.assertEqual(rc, 0, out)
+        revisor = linhas(out)[0]
+        self.assertEqual((revisor[9], revisor[10]), ("0 de 9", "1 de 9"))
+        self.assertIn("achado R3: dano = sim com veredito REBATIDA_EVIDENCIA não conta como falha com dano", self.fora(out))
+
     def test_linha_sem_barra_no_fim_conta(self):
         rc, out = self.com("| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s\n" % P1)
         self.assertEqual(rc, 0, out)
@@ -312,6 +342,22 @@ class Custo(Base):
         ln = self.uma("US$ 1.2500", engine="claude", modelo="claude-x")
         self.assertEqual((ln[2], ln[5], ln[6]), ("assinatura", "0.0000", "1.2500"))
 
+    def test_desempate_e_lido_pelos_campos_que_o_adversarial_review_grava(self):
+        # O desempate não tem `_engine_efetivo`: o adversarial-review.sh grava `desempate_engine`. O teste confere
+        # o nome no script que grava e a leitura no medidor, para os dois não se desencontrarem.
+        self.assertIn('("desempate_engine", des["engine"])', (RAIZ / "sdd/bin/adversarial-review.sh").read_text(encoding="utf-8"))
+        d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
+        self.escreve(d, "META.txt", "reviewer_engine_efetivo : claude\nreviewer_modelo : claude-x\n"
+                                    "reviewer_custo : US$ 1.0000\nreviewer_exit : 0\n"
+                                    "desempate_engine : openrouter:m/x\ndesempate_modelo : m/x via P\n"
+                                    "desempate_custo : US$ 0.2500\ndesempate_exit : 0\n")
+        self.escreve(d, "reviewer.verdicts.jsonl", "")
+        rc, out = self.er(self.tmp / "reviews", "--registry", FX / "registry.tsv")
+        self.assertEqual(rc, 0, out)
+        desempate = next(ln for ln in linhas(out) if ln[0] == "desempate")
+        self.assertEqual((desempate[1], desempate[3], desempate[5], desempate[7]),
+                         ("openrouter (m/x via P)", "1", "0.2500", "0"))
+
     def test_papel_com_exit_ausente_ou_engine_traco_nao_rodou(self):
         d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
         self.escreve(d, "META.txt", "reviewer_engine_efetivo : claude\nreviewer_modelo : claude-x\n"
@@ -338,6 +384,39 @@ class Custo(Base):
         self.assertIn("auditor (openrouter:m/x): exit `0 (ok)` ilegível no META.txt; a chamada e o custo dela não "
                       "foram contados", fora)
         self.assertIn("revisor respondeu (exit 0) e a pasta não tem reviewer.verdicts.jsonl: contado com 0 achados", fora)
+
+    def test_exit_ausente_com_custo_e_avisado(self):
+        d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
+        self.escreve(d, "META.txt", "reviewer_engine_efetivo : claude\nreviewer_modelo : claude-x\n"
+                                    "reviewer_custo : US$ 1.0000\nreviewer_exit : 0\n"
+                                    "auditor_engine_efetivo : openrouter:m/x\nauditor_custo : US$ 7.0000\n")
+        self.escreve(d, "reviewer.verdicts.jsonl", "")
+        rc, out = self.er(self.tmp / "reviews", "--registry", FX / "registry.tsv")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("auditor (openrouter:m/x): sem exit no META.txt e com custo `US$ 7.0000`", out)
+
+    def test_dado_corrompido_e_64_com_a_causa_nunca_traceback(self):
+        d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
+        casos = {
+            "custo com 31 dígitos": "reviewer_engine_efetivo : claude\nreviewer_custo : US$ 1%s\nreviewer_exit : 0\n" % ("0" * 30),
+            "exit com 5000 dígitos": "reviewer_engine_efetivo : claude\nreviewer_custo : US$ 1.0\nreviewer_exit : %s\n" % ("9" * 5000),
+        }
+        for nome, meta in casos.items():
+            with self.subTest(caso=nome):
+                self.escreve(d, "META.txt", meta)
+                self.escreve(d, "reviewer.verdicts.jsonl", "")
+                rc, out = self.er(self.tmp / "reviews", "--registry", FX / "registry.tsv")
+                self.assertIn(rc, (2, 64), out)   # sem dados (o exit ilegível é avisado) ou parou com a causa
+                self.assertNotIn("Traceback", out)
+                self.assertIn("RESULTADO:", out)
+                self.assertLess(len(out), 2000, "a mensagem não despeja o valor corrompido inteiro")
+
+    def test_saida_nao_depende_do_locale(self):
+        env = dict(self.env, PYTHONIOENCODING="ascii", LC_ALL="C")
+        rc, out, err = self.roda([BASH, ER, FX, "--ledgers", FX, "--registry", FX / "registry.tsv"], self.tmp, env)
+        self.assertEqual(rc, 0, out + err)
+        self.assertNotIn("Traceback", out + err)
+        self.assertIn("RESULTADO: MEDIDO", out)
 
     def test_achado_que_nao_e_texto_no_arquivo_de_vereditos_nao_derruba(self):
         d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
@@ -399,6 +478,8 @@ class SemDadosEUso(Base):
             "argumento a mais": ((FX, FX), "argumento a mais"),
             "pasta vazia como argumento": (("",), "o caminho da pasta veio vazio"),
             "--ledgers sem valor": ((FX, "--ledgers"), "pede um caminho"),
+            "--ledgers vazio": ((FX, "--ledgers", ""), "--ledgers pede um caminho"),
+            "--registry vazio": ((FX, "--registry", ""), "--registry pede um caminho"),
             "--ledgers inexistente": ((FX, "--ledgers", self.tmp / "nada"), "não existe"),
             "--registry inexistente": ((FX, "--registry", self.tmp / "nada.tsv"), "não existe"),
         }
@@ -458,6 +539,16 @@ class SemDadosEUso(Base):
                          ["json, os, re, subprocess, sys", "decimal import Decimal"])
         # o único subprocess é o `git rev-parse` que acha a raiz
         self.assertEqual(re.findall(r"subprocess\.run\(\[([^\]]*)\]", nucleo), ['"git", "rev-parse", "--show-toplevel"'])
+
+    def test_os_dois_scripts_leem_o_ledger_com_a_mesma_funcao(self):
+        # A regra de "que linha é do ledger" já divergiu entre o lint e o medidor: o texto da função é um só.
+        def funcao(caminho, nome):
+            fonte = caminho.read_text(encoding="utf-8")
+            return fonte.split("\ndef %s(" % nome, 1)[1].split("\n\n\n", 1)[0]
+        lint = RAIZ / "sdd/bin/ledger-revisao-lint.sh"
+        for nome in ("linhas_uteis", "linha_solta"):
+            with self.subTest(funcao=nome):
+                self.assertEqual(funcao(ER, nome), funcao(lint, nome))
 
 
 if __name__ == "__main__":
