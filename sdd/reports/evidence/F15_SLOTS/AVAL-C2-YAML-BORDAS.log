@@ -1,0 +1,29 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/c2c.sh
+---- config:
+smoke:
+  before_push_cmd: "bash e.sh $'it\\'s' # c"
+     YAML (PyYAML, se houver): "bash e.sh $'it\\'s' # c"
+▶ smoke.before_push_cmd (before_push): bash e.sh $'it\'s' # c
+RODOU n=1 args=[it's]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+     referência: bash -c 'bash e.sh $'"'"'it\'"'"'s'"'"' # c "$@"' slot f1.txt → RODOU n=1 args=[it's]
+---- config:
+smoke:
+  before_push_cmd: "bash e.sh" --url https://x
+     YAML (PyYAML, se houver): ERRO YAML: ParserError
+▶ smoke.before_push_cmd (before_push): bash e.sh
+RODOU n=1 args=[f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- config:
+smoke:
+  before_push_cmd: "bash e.sh" # comentario YAML valido
+     YAML (PyYAML, se houver): 'bash e.sh'
+▶ smoke.before_push_cmd (before_push): bash e.sh
+RODOU n=1 args=[f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]

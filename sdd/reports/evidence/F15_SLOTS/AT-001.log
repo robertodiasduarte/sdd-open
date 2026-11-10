@@ -1,0 +1,11 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_slot.Contrato
+# commit: 9013b10
+test_os_tres_exits_do_contrato (test_slot.Contrato) ... ok
+test_schema_recebe_os_arquivos_como_argumentos (test_slot.Contrato) ... ok
+test_sem_arquivos_o_comando_nao_recebe_argumento_extra (test_slot.Contrato) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.467s
+
+OK
+[exit=0]

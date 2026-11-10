@@ -1,0 +1,10 @@
+$ bash sdd/bin/playbook-curator.sh --aplicar "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-709cf0594f25/F15_SLOTS/delta.txt" sdd/playbook.md > "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-709cf0594f25/F15_SLOTS/novo.md"
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-004 ajudou+1
+LM-005 ajudou+1
+LM-006 ajudou+1
+ADD Reviews / harness :: sup: `git checkout` `mutante` `sabotagem` `não commitado` :: Script de sabotagem que desfaz cada mutante com `git checkout -- <arquivo>` apaga junto o conserto ainda não commitado naquele arquivo (na F15_SLOTS, consertos de `slot.sh` e `test-baseline.sh` sumiram e precisaram ser restaurados de cópias). **Do instead:** commite o conserto antes da sabotagem e faça o script recusar árvore com mudança rastreada (`git status --porcelain --untracked-files=no` não vazio ⇒ sai sem mutar), ou aplique os mutantes numa cópia extraída com `git archive`. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `openrouter` `teto` `timeout` `saldo` :: Engine da OpenRouter que passa do teto de tempo do registry é cobrada mesmo sem devolver resposta, e o ledger só mostra `custo $?` (na F15_SLOTS, o 2º revisor estourou 900 s e o saldo caiu de US$ 2,39 para 1,32). **Do instead:** no papel de 2º revisor, use um modelo cujo tempo já foi medido abaixo do teto; anote no ledger o saldo de `/credits` antes e depois da rodada e não repita na rodada seguinte o modelo que estourou. → ficha: — · promovido_para: —
+[exit=0]

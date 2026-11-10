@@ -1,0 +1,113 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/p4.sh
+==== AT006-1 ts->test.ts (vitest)  | alterado=src/foo.ts | falha:  FAIL  src/foo.test.ts > soma > da 2
+-- NEW exit=2
+   🛑 nova: src/foo.test.ts > soma > da 2
+   RESULTADO: VERMELHO
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): src/foo.test.ts > soma > da 2
+   RESULTADO: VERDE
+==== AT006-2 tsx->spec.tsx (vitest)  | alterado=src/bar.tsx | falha:  FAIL  src/bar.spec.tsx > Bar > renderiza
+-- NEW exit=2
+   🛑 nova: src/bar.spec.tsx > Bar > renderiza
+   RESULTADO: VERMELHO
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): src/bar.spec.tsx > Bar > renderiza
+   RESULTADO: VERDE
+==== AT006-3 py->test_calc.py (pytest)  | alterado=pkg/calc.py | falha: FAILED pkg/test_calc.py::test_soma - assert 1 == 2
+-- NEW exit=2
+   🛑 nova: pkg/test_calc.py::test_soma
+   RESULTADO: VERMELHO
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): pkg/test_calc.py::test_soma
+   RESULTADO: VERDE
+==== AT006-4 py->test_calc.py (unittest)  | alterado=pkg/calc.py | falha: FAIL: test_soma (pkg.test_calc.TestCalc)
+-- NEW exit=2
+   🛑 nova: pkg.test_calc.TestCalc.test_soma
+   RESULTADO: VERMELHO
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): pkg.test_calc.TestCalc.test_soma
+   RESULTADO: VERDE
+==== AT006-5 py->calc_test.py (pytest)  | alterado=pkg/calc.py | falha: FAILED pkg/calc_test.py::test_soma - x
+-- NEW exit=2
+   🛑 nova: pkg/calc_test.py::test_soma
+   RESULTADO: VERMELHO
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): pkg/calc_test.py::test_soma
+   RESULTADO: VERDE
+==== AT006-6 js->test.mjs (deno)  | alterado=src/util.js | falha: soma funciona => ./src/util.test.mjs:3:6
+-- NEW exit=2
+   🛑 nova: src/util.test.mjs::soma funciona
+   RESULTADO: VERMELHO
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): src/util.test.mjs::soma funciona
+   RESULTADO: VERDE
+==== AT006-7 raiz: foo.cjs->foo.spec.cjs (vitest)  | alterado=foo.cjs | falha:  FAIL  foo.spec.cjs > x > y
+-- NEW exit=2
+   🛑 nova: foo.spec.cjs > x > y
+   RESULTADO: VERMELHO
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): foo.spec.cjs > x > y
+   RESULTADO: VERDE
+==== AT007-1 FP lib/foo.test.ts com src/foo.ts  | alterado=src/foo.ts | falha:  FAIL  lib/foo.test.ts > foo > quebra
+-- NEW exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): lib/foo.test.ts > foo > quebra
+   RESULTADO: VERDE
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): lib/foo.test.ts > foo > quebra
+   RESULTADO: VERDE
+==== AT007-2 FP test_calc_total outro modulo (unittest)  | alterado=pkg/calc.py | falha: FAIL: test_calc_total (outro.test_outro.TestOutro)
+-- NEW exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): outro.test_outro.TestOutro.test_calc_total
+   RESULTADO: VERDE
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): outro.test_outro.TestOutro.test_calc_total
+   RESULTADO: VERDE
+==== AT007-3 FP test_calc_total outro modulo (pytest)  | alterado=pkg/calc.py | falha: FAILED outro/test_outro.py::test_calc_total - x
+-- NEW exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): outro/test_outro.py::test_calc_total
+   RESULTADO: VERDE
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): outro/test_outro.py::test_calc_total
+   RESULTADO: VERDE
+==== AT007-4 Go fora  | alterado=calc/calc.go | falha: --- FAIL: TestSoma (0.00s)
+-- NEW exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): TestSoma
+   RESULTADO: VERDE
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): TestSoma
+   RESULTADO: VERDE
+==== AT007-5 teste alterado direto (como hoje)  | alterado=src/x.test.ts | falha:  FAIL  src/x.test.ts > a > b
+-- NEW exit=2
+   🛑 nova: src/x.test.ts > a > b
+   RESULTADO: VERMELHO
+-- OLD exit=2
+   🛑 nova: src/x.test.ts > a > b
+   RESULTADO: VERMELHO
+==== AT007-6 sdd/ ignorado  | alterado=sdd/foo.ts | falha:  FAIL  sdd/foo.test.ts > a > b
+-- NEW exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): sdd/foo.test.ts > a > b
+   RESULTADO: VERDE
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): sdd/foo.test.ts > a > b
+   RESULTADO: VERDE
+==== AT007-7 sem teste ao lado no disco  | alterado=src/semteste.ts | falha:  FAIL  src/semteste.test.ts > a > b
+-- NEW exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): src/semteste.test.ts > a > b
+   RESULTADO: VERDE
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): src/semteste.test.ts > a > b
+   RESULTADO: VERDE
+==== NOTA mesmo nome de modulo em outro pacote (unittest)  | alterado=pkg/calc.py | falha: FAIL: test_x (outro.test_calc.T)
+-- NEW exit=2
+   🛑 nova: outro.test_calc.T.test_x
+   RESULTADO: VERMELHO
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): outro.test_calc.T.test_x
+   RESULTADO: VERDE
+==== NOTA mesmo nome de modulo em outro pacote (pytest)  | alterado=pkg/calc.py | falha: FAILED outro/test_calc.py::test_x - x
+-- NEW exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): outro/test_calc.py::test_x
+   RESULTADO: VERDE
+-- OLD exit=0
+   ⚠️  nova, fora do diff (não aborta com --touched): outro/test_calc.py::test_x
+   RESULTADO: VERDE

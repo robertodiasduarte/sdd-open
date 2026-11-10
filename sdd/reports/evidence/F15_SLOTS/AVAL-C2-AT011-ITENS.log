@@ -1,0 +1,18 @@
+$ grep -n -E '^(smoke|schema):|_cmd: ""' sdd/config.example.yaml | grep -E 'smoke|schema|before_|after_|check_'; grep -n 'slot.sh' docs/cli-conventions.md; grep -n -E '^  slot:|^slot:' sdd/WORKFLOW_CONTRACTS.yaml; grep -n -E 'slot.sh|test_slot|test_f15_slots' MANIFEST.txt; grep -c -E 'before_ok_cmd|before_push_cmd|after_deploy_cmd|check_cmd' docs/adaptation-guide.md docs/pt-BR/adaptation-guide.md
+12:  typecheck_cmd: ""
+41:  drift_check_cmd: ""
+61:smoke:
+63:  before_ok_cmd: ""
+65:  before_push_cmd: ""
+67:  after_deploy_cmd: ""
+72:schema:
+73:  check_cmd: ""
+36:`SIMULACAO` · `MOVIDO` (sdd-archive.py) · `OK` · `REPROVOU` · `NADA A MEDIR` (slot.sh; ver
+78:| `slot.sh` | `0` OK · `2` REPROVOU · `3` INCONCLUSIVO (o comando saiu com outro código ou por sinal, ou o script foi interrompido) · `10` NADA A MEDIR · `11` PULADO (slot vazio, ausente ou sem `sdd/config.yaml`) · `64` ERRO DE USO (chave desconhecida, flag sem valor, ref que não resolve, aspas sem fechar, erro de sintaxe ou `#` no comando) ([adaptation-guide.md](adaptation-guide.md)) |
+180:slot:
+184:sdd/bin/slot.sh
+422:tests/test_f15_slots_textos.py
+452:tests/test_slot.py
+docs/adaptation-guide.md:6
+docs/pt-BR/adaptation-guide.md:6
+[exit=0]

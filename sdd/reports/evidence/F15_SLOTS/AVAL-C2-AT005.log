@@ -1,0 +1,91 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/p2.sh
+C1=41fe61284cfb1b09531a76f374e82ccf8b688cef C2=7e209ef2d478c3eef1fc52b0b2c9cff17cefcfb0
+== raiz, before_push (sem flags; BASE padrao origin/main=C1, COMMIT=HEAD=C2)
+▶ smoke.before_push_cmd (before_push): bash env.sh
+MOMENTO=before_push FEATURE=F1 BASE=41fe61284cfb1b09531a76f374e82ccf8b688cef COMMIT=7e209ef2d478c3eef1fc52b0b2c9cff17cefcfb0
+ARVORE=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo
+SLOT_DIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-6ac996a3547f/F1 existe=sim conteudo=[]
+pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo args=0
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+== subpasta sdd/, after_deploy
+▶ smoke.after_deploy_cmd (after_deploy): bash env.sh
+MOMENTO=after_deploy FEATURE=F1 BASE=41fe61284cfb1b09531a76f374e82ccf8b688cef COMMIT=7e209ef2d478c3eef1fc52b0b2c9cff17cefcfb0
+ARVORE=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo
+SLOT_DIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-6ac996a3547f/F1 existe=sim conteudo=[marca-before_push ]
+pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo args=0
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+== worktree 2, schema_check com --base/--commit/--arvore
+▶ schema.check_cmd (schema_check): bash env.sh
+MOMENTO=schema_check FEATURE=F1 BASE=7e209ef2d478c3eef1fc52b0b2c9cff17cefcfb0 COMMIT=41fe61284cfb1b09531a76f374e82ccf8b688cef
+ARVORE=/tmp/qualquer
+SLOT_DIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-6ac996a3547f/F1 existe=sim conteudo=[marca-after_deploy marca-before_push ]
+pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/wt2 args=0
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+== via symlink, before_ok (deve esvaziar a pasta padrao: marcas somem)
+▶ smoke.before_ok_cmd (before_ok): bash env.sh
+MOMENTO=before_ok FEATURE=F1 BASE=41fe61284cfb1b09531a76f374e82ccf8b688cef COMMIT=7e209ef2d478c3eef1fc52b0b2c9cff17cefcfb0
+ARVORE=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo
+SLOT_DIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-6ac996a3547f/F1 existe=sim conteudo=[]
+pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo args=0
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+== --dir explicito com before_ok: nao esvazia
+▶ smoke.before_ok_cmd (before_ok): bash env.sh
+MOMENTO=before_ok FEATURE=F1 BASE=41fe61284cfb1b09531a76f374e82ccf8b688cef COMMIT=7e209ef2d478c3eef1fc52b0b2c9cff17cefcfb0
+ARVORE=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo
+SLOT_DIR=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/meudir existe=sim conteudo=[preexistente ]
+pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo args=0
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+marca-before_ok
+preexistente
+== sem feature
+▶ smoke.before_push_cmd (before_push): bash env.sh
+MOMENTO=before_push FEATURE= BASE=41fe61284cfb1b09531a76f374e82ccf8b688cef COMMIT=7e209ef2d478c3eef1fc52b0b2c9cff17cefcfb0
+ARVORE=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo
+SLOT_DIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-6ac996a3547f/_sem-feature existe=sim conteudo=[]
+pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo args=0
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+== feature com /
+🛑 --feature não pode ter / nem ser . ou ..
+RESULTADO: ERRO DE USO
+→ uso: bash sdd/bin/slot.sh <chave> [--feature F] [--base ref] [--commit sha] [--arvore pasta] [--dir pasta] [arquivo…]
+[exit=64]
+== default_branch inexistente no remoto
+⚠️  SDD_BASE vazio: origin/develop não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash env.sh
+MOMENTO=before_push FEATURE=F1 BASE= COMMIT=7e209ef2d478c3eef1fc52b0b2c9cff17cefcfb0
+ARVORE=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo
+SLOT_DIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-6ac996a3547f/F1 existe=sim conteudo=[marca-before_ok ]
+pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/repo args=0
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+== sem git
+⚠️  SDD_BASE vazio: sem git
+⚠️  SDD_COMMIT vazio: sem git
+▶ smoke.before_push_cmd (before_push): bash env.sh
+MOMENTO=before_push FEATURE=F1 BASE= COMMIT=
+ARVORE=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/semgit
+SLOT_DIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-903c3e69da08/F1 existe=sim conteudo=[]
+pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RUnY6DwHx9/semgit args=0
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+== falso positivo '#': echo a#b (no bash nao e comentario)
+▶ smoke.before_push_cmd (before_push): echo a#b
+a#b
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+bash puro: a#b

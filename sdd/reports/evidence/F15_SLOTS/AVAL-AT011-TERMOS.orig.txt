@@ -1,0 +1,23 @@
+$ for f in $(git diff --name-only 9d8ac24 HEAD); do n=$(grep -Eoi "supabase|deno|wordpress|wp-content|rdd-plataforma|hostinger|RDD/Wordpress|rdd-eval" "$f" | wc -l | tr -d " "); nn=$(git diff -U0 9d8ac24 HEAD -- "$f" | grep "^+" | grep -v "^+++" | grep -Eoi "supabase|deno|wordpress|wp-content|rdd-plataforma|hostinger|RDD/Wordpress|rdd-eval" | wc -l | tr -d " "); echo "$f total=$n em_linhas_novas=$nn"; done
+.agents/skills/sdd-build/SKILL.md total=0 em_linhas_novas=0
+.agents/skills/sdd-build/references/aplicar-migration.md total=36 em_linhas_novas=0
+.agents/skills/sdd-release/SKILL.md total=0 em_linhas_novas=0
+.agents/skills/sdd-release/references/como-falar.md total=0 em_linhas_novas=0
+MANIFEST.txt total=1 em_linhas_novas=0
+docs/adaptation-guide.md total=0 em_linhas_novas=0
+docs/cli-conventions.md total=0 em_linhas_novas=0
+docs/pt-BR/adaptation-guide.md total=0 em_linhas_novas=0
+sdd/WORKFLOW_CONTRACTS.yaml total=0 em_linhas_novas=0
+sdd/bin/slot.sh total=0 em_linhas_novas=0
+sdd/bin/test-baseline.sh total=5 em_linhas_novas=1
+sdd/config.example.yaml total=0 em_linhas_novas=0
+tests/test_contrato_build_release.py total=1 em_linhas_novas=0
+tests/test_correcoes_w0.py total=0 em_linhas_novas=0
+tests/test_decisoes_lint.py total=0 em_linhas_novas=0
+tests/test_f13_textos.py total=8 em_linhas_novas=0
+tests/test_f14_drive_textos.py total=0 em_linhas_novas=0
+tests/test_f14_textos.py total=0 em_linhas_novas=0
+tests/test_f15_slots_textos.py total=11 em_linhas_novas=11
+tests/test_slot.py total=0 em_linhas_novas=0
+tests/test_test_baseline.py total=3 em_linhas_novas=0
+[exit=0]

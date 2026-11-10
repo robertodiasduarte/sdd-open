@@ -1,0 +1,19 @@
+$ bash sdd/bin/playbook-curator.sh --colher "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-709cf0594f25/F15_SLOTS" sdd/playbook.md --inv sdd/invariants.md > "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-709cf0594f25/F15_SLOTS/colheita.txt"
+DELTA LM-001 ajudou+1 · conf=2026-11-10 · evidencia=DESIGN_F15_SLOTS.md:321 · fp=73d4e155a5,1d8f044cb5
+DELTA LM-002 ajudou+1 · conf=2026-11-10 · evidencia=DESIGN_F15_SLOTS.md:322 · fp=2413fe0bad,7f443ce7a3
+DELTA LM-003 ajudou+1 · conf=2026-11-10 · evidencia=DESIGN_F15_SLOTS.md:323 · fp=f26742f76d,c3ab7c6a3d
+DELTA LM-004 ajudou+1 · conf=2026-11-10 · evidencia=DESIGN_F15_SLOTS.md:324 · fp=a8af2cb659,b477e0d973
+DELTA LM-005 ajudou+1 · conf=2026-11-10 · evidencia=DESIGN_F15_SLOTS.md:325 · fp=7e42746a66,37d6658465
+DELTA LM-006 ajudou+1 · conf=2026-11-10 · evidencia=DESIGN_F15_SLOTS.md:326 · fp=b4dc9a18c9,8bf225aaea
+CANDIDATO #1 → LM-009 · secao=Reviews / harness · sup=`git checkout` `mutante` `sabotagem` `não commitado` · evidencia=sdd/reports/evidence/F15_SLOTS/SABOTAGENS.log (o script com a trava); o incidente está em ## Issues Encountered deste relatório, linha 3 · fp=71fc423593
+   delta: ADD Reviews / harness :: sup: `git checkout` `mutante` `sabotagem` `não commitado` :: Script de sabotagem que desfaz cada mutante com `git checkout -- <arquivo>` apaga junto todo conserto ainda não commitado naquele arquivo; os mutantes seguintes "não aplicam" e o resumo mente. **Do instead:** o script recusa rodar com mudança rastreada não commitada (`git status --porcelain --untracked-files=no` vazio) e o conserto é commitado antes da sabotagem. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-010 · secao=Reviews / harness · sup=`openrouter` `teto` `timeout` `saldo` · evidencia=sdd/reports/reviews/EXTERNAL_REVIEW_20261110-055845/META.txt (revisor2_segundos 900, revisor2_custo $?) e o saldo medido antes (US$ 2,39) e depois (US$ 1,32) em ## Issues Encountered · fp=d7251f7f73
+   delta: ADD Reviews / harness :: sup: `openrouter` `teto` `timeout` `saldo` :: Uma engine da OpenRouter que passa do teto de tempo do registry é cobrada mesmo sem resposta (a F15_SLOTS perdeu ~US$ 1 com um 2º revisor que estourou 900 s). **Do instead:** antes da rodada, confira o saldo em `/credits` e prefira, no papel de 2º revisor, um modelo já medido abaixo do teto; registre o saldo antes e depois no ledger da revisão. → ficha: — · promovido_para: —
+SUGESTAO mordeu? LM-002 — termo `baseline` em AVAL-C2-SABOTAGENS.log:85 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=7a432a5d82,57bd69b537
+SUGESTAO mordeu? LM-004 — termo `migration` em AVAL-C2-SABOTAGENS.log:110 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=9b158fcd86,357ffdb5cb
+SUGESTAO mordeu? LM-005 — termo `conserto` em AVALIACAO_F15_SLOTS_20261109-2227.md:15 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=de61cdf3c3,7f17a081f9
+SUGESTAO mordeu? LM-006 — termo `git archive` em AVALIACAO_F15_SLOTS_20261109-2227.md:24 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=72e6ade396
+resumo: deltas=6 (ajudou=6 mordeu=0) candidatos=2 rejeitados=0 promocoes=0 sugestoes=4
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[exit=0]

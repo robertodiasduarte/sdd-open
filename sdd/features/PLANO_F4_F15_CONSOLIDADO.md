@@ -38,7 +38,7 @@ construção: foi assim que 3 worktrees ficaram com 3 versões deste arquivo em 
 | F12 Contexto e governança | ✅ | `v2.4.0` (PR #15, 03/11) | — |
 | F13 UX e LLM | ✅ | `v2.5.0` (PR #16, 04/11) | — |
 | F14 Playbook e Drive | ✅ | `v2.6.0`, `v2.7.0`, `v2.7.1` (PRs #17–#19, 05 a 08/11) | — |
-| F15 Substituição do SDD privado | 🔨 | `v2.7.2` (PR #20, 08/11) sustenta a fase 1; `v2.8.0` (PR #21, aberto em 10/11) traz os slots | Roda no repositório privado; o detalhe por fase está na ficha de lá (`sdd/handoffs/HANDOFF_F15_SUBSTITUICAO.md`, worktree `finalizar-f15`). Fase 1 ✅ 08/11 · fase 2 ✅ 10/11 · **F15_SLOTS** (L0, L3, L4 no Open: worktree `sdd-open-f15-slots`, documentos em `docs/f15-slots`) no PR #21 · fase 3 espera a tag `v2.8.0` · fase 4 espera as frentes antigas do privado fecharem (16 em 10/11) |
+| F15 Substituição do SDD privado | 🔨 | `v2.7.2` (PR #20, 08/11) sustenta a fase 1; **`v2.8.0`** (PR #21, 10/11) traz os slots (F15_SLOTS: L0, L3, L4) | Roda no repositório privado; o detalhe por fase está na ficha de lá (`sdd/handoffs/HANDOFF_F15_SUBSTITUICAO.md`, branch `finalizar-f15`). Fase 1 ✅ 08/11 · fase 2 ✅ 10/11 · **F15_SLOTS ✅ 10/11** (documentos em `sdd/features/*_F15_SLOTS.md`; a curadoria do playbook, commit `c2560fc` na branch local `feat/f15-slots`, sobe na próxima release do Open) · fase 3 **destravada**: sincronizar o privado na `v2.8.0`, ligar os 4 slots e publicar a prova · fase 4 espera as frentes antigas do privado fecharem (16 em 10/11) |
 | F16 Ambiente agnóstico e proativo | ⬜ | — | só no plano (seção 8; `ESCOPO_F16_AMBIENTE.md`); inclui o teste em Windows |
 | F17 Starter gerado a partir do Open | ⬜ | — | só no plano; depois da F16 |
 | F18 Segurança embutida no fluxo | ⬜ | — | só no plano; a onda 1 pode vir antes da F17 |
@@ -485,8 +485,10 @@ Eixo diferente, não de agente: o `deploy-espera-testes.py` só lê GitHub Actio
 | F13 | `prompts.wrapper_pattern` | `""` | regex do wrapper de LLM (ex.: `callLLM\\(`) |
 | F14 | `drive.max_rounds` | `3` | — |
 | F14 | `drive.max_tokens` | `0` | 0 = sem teto; candidato a cair |
+| F15 | `smoke.before_ok_cmd` · `smoke.before_push_cmd` · `smoke.after_deploy_cmd` | `""` | **reabertos por decisão do Roberto** (F15_SLOTS, 2026-11-09; tinham caído na F13): rodados por `sdd/bin/slot.sh` nos itens 6b, 7b e 10 da `sdd-release` 2.9.0; exit 0 ok · 2 reprovou · 10 nada a medir |
+| F15 | `schema.check_cmd` | `""` | **reaberto por decisão do Roberto** (F15_SLOTS, 2026-11-09; tinha caído na F12): rodado por `sdd/bin/slot.sh` na seção 2b do `aplicar-migration.md` (`sdd-build` 2.7.0), antes da prévia, fail-closed |
 
-`layers:` já existe e passa a ser lido por `report-lint` (F7, já parcialmente na F3) e `sdd-fluxo.sh` (F9). Candidatos a cair, segundo o PORTE: `second_reviewer_*` (podem ser constantes no script), `drive.max_tokens`; `schema.check_cmd` caiu na F12; `smoke.*` e `prompts.loop_builder_skill` caíram na F13.
+`layers:` já existe e passa a ser lido por `report-lint` (F7, já parcialmente na F3) e `sdd-fluxo.sh` (F9). Candidatos a cair, segundo o PORTE: `second_reviewer_*` (podem ser constantes no script), `drive.max_tokens`; `schema.check_cmd` caiu na F12; `smoke.*` e `prompts.loop_builder_skill` caíram na F13. **Reabertura (2026-11-09, decisão do Roberto, F15_SLOTS):** `smoke.*` (3 slots) e `schema.check_cmd` voltaram, publicados na `v2.8.0` — são as lacunas L0 e L4 do inventário de saída da F15 (decididas em 2026-11-08), genéricas no Open; a ligação aos scripts do privado é feita no privado.
 
 ### 8.3 Fontes no privado e o que generalizar (PORTE §8.2, §8.3, Anexo A)
 
