@@ -1,0 +1,15 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/ferr/sab2.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/sab
+=== sabotagem: lint passa a conferir o que está dentro de comentário <!-- -->
+-- test_ledger_revisao_lint.py
+Ran 17 tests in 3.942s
+OK
+-- test_f19_textos.py
+FAIL: test_molde_preenchido_com_uma_linha_passa_no_lint (test_f19_textos.Molde)
+FAIL: test_molde_vazio_nao_e_verde (test_f19_textos.Molde)
+Ran 17 tests in 32.992s
+FAILED (failures=2)
+=== sabotagem: lint: arquivo vazio volta a esconder as violações de outro (64 sem mostrar)
+-- test_ledger_revisao_lint.py
+Ran 17 tests in 3.910s
+OK
+[exit 0]

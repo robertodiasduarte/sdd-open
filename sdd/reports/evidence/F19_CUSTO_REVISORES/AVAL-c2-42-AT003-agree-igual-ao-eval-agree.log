@@ -1,0 +1,17 @@
+$ /bin/bash sdd/bin/eval-agree.sh --help 2>&1 | head -8; /bin/bash sdd/bin/eval-agree.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/../f19/reais 2>&1 | sed 's#/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19#<rascunho>#g' | tail -12; echo "[exit ${PIPESTATUS[0]}]"
+  eval-agree.sh [<pasta-das-revisões>]
+      padrão: review.output_dir do sdd/config.yaml da raiz git (sdd/reports/reviews se vazio)
+      taxa_agree = AGREE / (AGREE + DISAGREE_EVIDENCE + DISAGREE_CONCERN), 1 casa; NOVO fica em coluna própria
+      0 MEDIDO · 2 SEM DADOS (nenhuma revisão com auditoria completa, ou a pasta padrão ainda não existe)
+      64 uso, ou a pasta passada não existe
+eval-agree — taxa de AGREE por auditor (26 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/f19/reais)
+
+| Auditor | Revisões | Vereditos | AGREE | DISAGREE_EVIDENCE | DISAGREE_CONCERN | NOVO | taxa_agree |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| openrouter (qwen/qwen3.7-plus) | 23 | 105 | 78 | 12 | 10 | 5 | 78.0% |
+
+fora da conta: 3 (EXTERNAL_REVIEW_20261106-062106: auditor_exit 67; EXTERNAL_REVIEW_20261110-052050: auditor_exit 67; EXTERNAL_REVIEW_20261110-125836: META ilegível)
+RESULTADO: MEDIDO
+→ uma taxa_agree alta com poucos DISAGREE pode ser auditor complacente: compare com outra engine no papel de auditor.
+[exit 0]
+[exit 0]

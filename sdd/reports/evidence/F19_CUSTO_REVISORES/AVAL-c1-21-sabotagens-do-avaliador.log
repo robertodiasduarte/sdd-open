@@ -1,0 +1,24 @@
+$ PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/tools/sab.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/mut
+=== sabotagem soma-do-pago: `c["pago"] += valor` → `c["pago"] += 0` em sdd/bin/eval-revisores.sh
+test_eval_revisores.py exit=1 FAILED (failures=12)
+FAIL: test_formas_do_custo (test_eval_revisores.Custo) (custo='US$ 0.1000')
+FAIL: test_formas_do_custo (test_eval_revisores.Custo) (custo='≈US$ 0.1000')
+FAIL: test_formas_do_custo (test_eval_revisores.Custo) (custo='US$ 0.1000 + $?')
+FAIL: test_formas_do_custo (test_eval_revisores.Custo) (custo='US$ 0,25')
+FAIL: test_formas_do_custo (test_eval_revisores.Custo) (custo='≈US$ 0.000050')
+FAIL: test_cada_celula_da_tabela (test_eval_revisores.Tabela) (linha='2º revisor openrouter (deep/seek)', coluna='Pago US$')
+test_ledger_revisao_lint.py exit=0 OK
+=== sabotagem dano-sim-so-aplicada: `if veredito != "APLICADA":` → `if False:` em sdd/bin/ledger-revisao-lint.sh
+test_eval_revisores.py exit=0 OK
+test_ledger_revisao_lint.py exit=1 FAILED (failures=1)
+FAIL: test_cada_fixture_reprova_pelo_seu_motivo (test_ledger_revisao_lint.Lint) (fixture='sim-rebatida.md')
+=== sabotagem falso-positivo: `c["fp"] += 1` → `c["escopo"] += 1` em sdd/bin/eval-revisores.sh
+test_eval_revisores.py exit=1 FAILED (failures=6)
+FAIL: test_rotulo_da_engine_certa_casa_com_id_sem_rotulo (test_eval_revisores.Ledgers)
+FAIL: test_cada_celula_da_tabela (test_eval_revisores.Tabela) (linha='revisor claude (claude-x)', coluna='Falsos positivos')
+FAIL: test_cada_celula_da_tabela (test_eval_revisores.Tabela) (linha='revisor claude (claude-x)', coluna='Fora de escopo')
+FAIL: test_cada_celula_da_tabela (test_eval_revisores.Tabela) (linha='auditor openrouter (qwen/q-plus via ProvedorB)', coluna='Falsos positivos')
+FAIL: test_cada_celula_da_tabela (test_eval_revisores.Tabela) (linha='auditor openrouter (qwen/q-plus via ProvedorB)', coluna='Fora de escopo')
+FAIL: test_novo_do_auditor_rebatido_duas_vezes_e_falso_positivo_dele (test_eval_revisores.Tabela)
+test_ledger_revisao_lint.py exit=0 OK
+[exit=0]

@@ -1,0 +1,81 @@
+$ /usr/bin/python3 -I -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/ferr/some.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/some
+| caso | lint exit | lint cita R3/linha? | medidor exit | R3 contado (FP 1 de 3)? | R3 em fora da conta? | SOME? |
+|---|---|---|---|---|---|---|
+| 00 controle contíguo | 2 | sim | 0 | 1 de 3 | não | — |
+| 01 linha em branco antes de R2/R3 | 2 | sim | 0 | 1 de 3 | não | — |
+| 02 A1 do ciclo 1: branco + `R2` em crases | 2 | sim | 0 | 1 de 3 | não | — |
+| 03 2º cabeçalho `Achado (rodada 3)` | 2 | não | 0 | 1 de 3 | não | lint-sem-citar  |
+    lint: 🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/some/03/LEDGER_REVISAO_X.md:6 — o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | evidência | dano | revisão |` ⏎ RESULTADO: VERMELHO ⏎ → corrija as linhas acima (molde: 
+    medidor: fora da conta: 0
+| 04 cabeçalho do molde repetido | 2 | sim | 0 | 1 de 3 | não | — |
+| 05 cabeçalho repetido em negrito/maiúsculas | 2 | sim | 0 | 1 de 3 | não | — |
+| 06 R3 sem barra inicial | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 07 R3 sem barra inicial nem final | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 08a R3 com 2 espaços de indentação | 2 | sim | 0 | 1 de 3 | não | — |
+| 08b R3 com 4 espaços | 2 | sim | 0 | 1 de 3 | não | — |
+| 08c R3 com tab | 2 | sim | 0 | 1 de 3 | não | — |
+| 09 arquivo inteiro em CRLF | 2 | sim | 0 | 1 de 3 | não | — |
+| 09b só CR (Mac antigo) | 2 | sim | 0 | 1 de 3 | não | — |
+| 10 R3 depois de comentário de 1 linha | 2 | sim | 0 | 1 de 3 | não | — |
+| 11 R3 depois de comentário aberto e não fechado | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 12 comentário fechado e R3 na mesma linha | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 12b comentário no meio do texto antes de R3 | 2 | sim | 0 | 1 de 3 | não | — |
+| 13 R3 em bloco cercado aberto e não fechado | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 13b cerca ``` aberta, ~~~ no meio, R3 depois | 2 | sim | 0 | 1 de 3 | não | — |
+| 14 linha de texto que começa por código em linha ```x``` e depois R3 | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 15 cerca indentada com 4 espaços (código indentado) e depois R3 | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 16a espaço de largura zero antes da barra | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 16b BOM no início e dado na 1ª linha (sem cabeçalho) | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 16c NBSP antes da barra | 2 | sim | 0 | 1 de 3 | não | — |
+| 17a id em negrito **R3** | 2 | sim | 0 | 0 de 3 | sim | — |
+| 17b id `R3 (claude)` | 2 | sim | 0 | 0 de 3 | sim | — |
+| 17c id R3@ | 2 | sim | 0 | 1 de 3 | não | — |
+| 18 1ª célula `achado R3` | 2 | sim | 0 | 0 de 3 | não | MEDIDOR |
+    lint: 🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/some/18/LEDGER_REVISAO_X.md:5 — o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | evidência | dano | revisão |` ⏎ RESULTADO: VERMELHO ⏎ → corrija as linhas acima (molde: 
+    medidor: fora da conta: 0
+| 18b 1ª célula `Achado` | 2 | sim | 0 | 0 de 3 | não | MEDIDOR |
+    lint: 🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/some/18b/LEDGER_REVISAO_X.md:5 — o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | evidência | dano | revisão |` ⏎ RESULTADO: VERMELHO ⏎ → corrija as linhas acima (molde:
+    medidor: fora da conta: 0
+| 19a citação `> | R3` | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 19b item de lista `- | R3` | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 20 sem cabeçalho nenhum | 2 | sim | 0 | 1 de 3 | não | — |
+| 21 1ª célula vazia | 2 | sim | 0 | 0 de 3 | sim | — |
+| 23 R3 terminando em \r\r\n | 2 | sim | 0 | 1 de 3 | não | — |
+| 25 `\| R3` (barra escapada no início) | 0 | não | 0 | 0 de 3 | não | LINT MEDIDOR |
+    lint: ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão. ⏎ RESULTADO: VERDE ⏎ → passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+    medidor: fora da conta: 0
+| 26a U+2028 antes de R3 (mesma linha de R2) | 2 | sim | 0 | 0 de 3 | sim | — |
+| 26b form feed antes da barra | 2 | sim | 0 | 1 de 3 | não | — |
+| 27 A5: cabeçalho com dano e revisão trocados | 2 | não | 0 | 1 de 3 | não | lint-sem-citar  |
+    lint: 🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/some/27/LEDGER_REVISAO_X.md:1 — o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | evidência | dano | revisão |` ⏎ RESULTADO: VERMELHO ⏎ → corrija as linhas acima (molde: 
+    medidor: fora da conta: 0
+| 28 R3 sem a barra final | 2 | sim | 0 | 1 de 3 | não | — |
+| 29 R3 com `sem achados:` da mesma pasta | 2 | sim | 0 | 1 de 3 | não | — |
+| 30 tabela só com R3 dentro de <details> | 2 | sim | 0 | 1 de 3 | não | — |
+| 31 R3 depois de `<!-- a --> <!-- b` (2º comentário aberto na mesma linha) | 2 | sim | 0 | 1 de 3 | não | — |
+| 32 R3 com pipe duplo no início `|| R3` | 2 | sim | 0 | 0 de 3 | sim | — |
+| 33 R3 com espaço ideográfico U+3000 antes | 2 | sim | 0 | 1 de 3 | não | — |
+casos em que R3 some em algum dos dois: 14 de 44
+[exit 0]

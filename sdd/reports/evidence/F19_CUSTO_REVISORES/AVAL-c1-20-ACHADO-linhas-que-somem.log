@@ -1,0 +1,31 @@
+$ PATH=/usr/bin:/bin /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/tools/min.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/min
+=== o ledger (linha em branco entre a rodada 1 e a rodada 2; a 1ª linha da rodada 2 tem o id entre crases)
+     1	| achado | sev | veredito | rodada | evidência | dano | revisão |
+     2	|---|---|---|---|---|---|---|
+     3	| R1 | LOW | APLICADA | rodada=1 | texto | nao | EXTERNAL_REVIEW_20260301-000001 |
+     4	
+     5	| `R2` | LOW | APLICADA | rodada=2 | id entre crases | nao | EXTERNAL_REVIEW_20260301-000001 |
+     6	| R3 | HIGH | REBATIDA_EVIDENCIA | rodada=2 | linha bem formada, mas dano=sim sem teste e com REBATIDA | sim | EXTERNAL_REVIEW_20260301-000001 |
+=== lint
+✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit=0]
+=== medidor
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+| revisor | claude (c) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 1 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 2 de 3 | — | — | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+[exit=0]
+=== controle: as MESMAS 3 linhas sem a linha em branco
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/min/CONTROLE_sem_linha_em_branco.md:4 — achado ``R2`` fora do formato R<n> ou N<n>, com @<engine> opcional: copie o id do arquivo de vereditos
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/min/CONTROLE_sem_linha_em_branco.md:5 — dano = sim com veredito REBATIDA_EVIDENCIA: só achado APLICADA pode ser falha com dano
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit=2]
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+| revisor | claude (c) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 1 de 3 | 1 de 3 | 1 de 3 | 0 de 3 | 1 de 3 | 0.0000 | 1.0000 | — |
+fora da conta: 1 (CONTROLE_sem_linha_em_branco.md:4: achado `R2` não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: MEDIDO
+[exit=0]
+[exit=0]

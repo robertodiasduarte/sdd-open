@@ -1,0 +1,107 @@
+$ (copia de git archive ae05d6e ja usada por 2 rodadas SEM -B no python3 3.15.0) grep dont_write_bytecode; find __pycache__; git init + bash bin/sdd-open.sh init --vendors claude --yes em projeto novo; find pyc no projeto; validate_reverse da copia gerada; sync --check; publish-gate na copia usada
+## grep -n dont_write_bytecode tests/test_validate_reverse.py
+16:sys.dont_write_bytecode = True
+exit=0
+## python3 -m unittest discover -s tests -p test_validate_reverse.py (3.15, sem -B, 3a vez)
+----------------------------------------------------------------------
+Ran 18 tests in 0.072s
+
+OK
+## find .agents/skills/sdd-engenharia-reversa-saas -name __pycache__ -o -name '*.pyc'
+(fim)
+## find . -name __pycache__ (fora da skill)
+./tests/__pycache__
+./sdd/bin/__pycache__
+## ls .agents/skills/sdd-engenharia-reversa-saas (recursivo, contagem de arquivos)
+.agents/skills/sdd-engenharia-reversa-saas/CHANGELOG.md
+.agents/skills/sdd-engenharia-reversa-saas/SKILL.md
+.agents/skills/sdd-engenharia-reversa-saas/assets/ENGENHARIA_REVERSA_TEMPLATE.md
+.agents/skills/sdd-engenharia-reversa-saas/evals/cases.json
+.agents/skills/sdd-engenharia-reversa-saas/manifest.json
+.agents/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md
+.agents/skills/sdd-engenharia-reversa-saas/references/FONTES.md
+.agents/skills/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md
+.agents/skills/sdd-engenharia-reversa-saas/references/PROTOCOLO_ENGENHARIA_REVERSA.md
+.agents/skills/sdd-engenharia-reversa-saas/references/RUNTIME_COMPATIBILITY.md
+.agents/skills/sdd-engenharia-reversa-saas/references/como-falar.md
+.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py
+      13
+## cd <projeto novo>; git init; bash <copia>/bin/sdd-open.sh init --vendors claude --yes
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+exit=0
+## find <projeto> -name '*.pyc' -o -name __pycache__
+./sdd/bin/__pycache__
+./sdd/bin/__pycache__/skill-lint.cpython-315.pyc
+(fim)
+## diff -r <copia>/.agents/skills/sdd-engenharia-reversa-saas <projeto>/.agents/skills/sdd-engenharia-reversa-saas
+identicas
+## ls <projeto>/.claude/skills/sdd-engenharia-reversa-saas
+.claude/skills/sdd-engenharia-reversa-saas/CHANGELOG.md
+.claude/skills/sdd-engenharia-reversa-saas/SKILL.md
+.claude/skills/sdd-engenharia-reversa-saas/assets/ENGENHARIA_REVERSA_TEMPLATE.md
+.claude/skills/sdd-engenharia-reversa-saas/evals/cases.json
+.claude/skills/sdd-engenharia-reversa-saas/manifest.json
+.claude/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md
+.claude/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md
+.claude/skills/sdd-engenharia-reversa-saas/references/FONTES.md
+.claude/skills/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md
+.claude/skills/sdd-engenharia-reversa-saas/references/PROTOCOLO_ENGENHARIA_REVERSA.md
+.claude/skills/sdd-engenharia-reversa-saas/references/RUNTIME_COMPATIBILITY.md
+.claude/skills/sdd-engenharia-reversa-saas/references/como-falar.md
+.claude/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py
+## /usr/bin/python3 -B .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py lev.md
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=0
+## /usr/bin/python3 -B .claude/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py lev.md
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=0
+## python3 -B .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py lev.md
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=0
+## python3 -B .claude/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py lev.md
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=0
+## python3 (sem -B) .claude/.../validate_reverse.py lev.md ; find pyc na skill
+exit=0
+(fim)
+## bash <copia>/bin/sdd-open.sh sync --check
+RESULTADO: EM DIA
+→ todos os adaptadores refletem .agents/skills/.
+exit=0
+## skill-lint --conversa das copias geradas
+✅ .claude/skills/sdd-engenharia-reversa-saas/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+## PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh <copia usada sem -B no 3.15>
+publish-gate — tree: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c3/t315 — mode: ci
+G1 secrets (gitleaks)
+  ✅ no secrets detected
+G2 forbidden patterns
+  ✅ no forbidden pattern matched
+G3 allowlist (MANIFEST.txt)
+  ⛔ undeclared file: tests/__pycache__/test_validate_reverse.cpython-315.pyc
+  ⛔ undeclared file: tests/__pycache__/test_agnostico.cpython-315.pyc
+  ⛔ undeclared file: tests/__pycache__/test_skill_lint.cpython-315.pyc
+  ⛔ undeclared file: tests/__pycache__/test_matriz_new_session.cpython-315.pyc
+  ⛔ undeclared file: tests/__pycache__/apoio.cpython-315.pyc
+  ⛔ undeclared file: tests/__pycache__/test_decisoes_lint.cpython-315.pyc
+  ⛔ undeclared file: tests/__pycache__/test_f21_textos.cpython-315.pyc
+  ⛔ undeclared file: tests/__pycache__/test_docs.cpython-315.pyc
+  ⛔ undeclared file: tests/__pycache__/test_conversa.cpython-315.pyc
+  ⛔ undeclared file: sdd/bin/__pycache__/skill-lint.cpython-315.pyc
+G4 verify-gate exit contract
+  ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+  ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+  ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+G5 documentation
+⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+   pattern without adding an equivalent one.
+exit=1
+## mesma coisa na copia usada sem -B no 3.9.6
+✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+exit=0

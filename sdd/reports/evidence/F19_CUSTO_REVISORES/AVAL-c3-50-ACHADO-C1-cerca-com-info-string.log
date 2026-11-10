@@ -1,0 +1,180 @@
+$ /bin/bash casos/c1.sh <rascunho>   (pasta de revisão EXTERNAL_REVIEW_20260201-000001 = os arquivos de vereditos de sdd/fixtures/fluxo/review-ok, com R1@rev HIGH e R2@rev MED, e um META.txt de 4 linhas: revisor `rev`, exit 0, US$ 1; PATH=/usr/bin:/bin)
+=================== LEDGER_REVISAO_C1.md
+     1	# Ledger da revisão — caso C1 do avaliador
+     2	
+     3	Medição da rodada 1:
+     4	
+     5	```sh title=medicao
+     6	bash sdd/bin/verify-gate.sh
+     7	```
+     8	
+     9	| achado | sev | veredito | rodada | evidência | dano | revisão |
+    10	|---|---|---|---|---|---|---|
+    11	| R2@rev | MED | APLICADA | rodada=1 | nome trocado | nao | EXTERNAL_REVIEW_20260201-000001 |
+    12	| R1@rev | HIGH | REBATIDA_EVIDENCIA | rodada=1 | sem teste | sim | EXTERNAL_REVIEW_20260201-000001 |
+    13	
+    14	Medição da rodada 2:
+    15	
+    16	```sh title=medicao
+    17	bash sdd/bin/verify-gate.sh
+    18	```
+    19	
+    20	sem achados: rodada=2 EXTERNAL_REVIEW_20260201-000002
+== lint do commit avaliado (0d4a730)
+✅ ledger da revisão: 0 linha(s) e 1 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit 0]
+== lint do ciclo 2 (661ef65)
+🛑 LEDGER_REVISAO_C1.md:12 — dano = sim com veredito REBATIDA_EVIDENCIA: só achado APLICADA pode ser falha com dano
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit 2]
+== medidor do commit avaliado
+| revisor | rev (rev-x) | desconhecida | 1 | 0 | n/d | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 1 (EXTERNAL_REVIEW_20260201-000001: sem linha em nenhum ledger: os achados dela ficam em sem classificar)
+RESULTADO: MEDIDO
+== medidor do ciclo 2
+| revisor | rev (rev-x) | desconhecida | 1 | 0 | n/d | 1.0000 | 2 | 1 de 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | — | 1.0000 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+== sdd-fluxo.sh loop --ledger
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+RESULTADO: PRONTO
+[exit 0]
+=================== LEDGER_REVISAO_C1_csharp.md
+     1	# Ledger da revisão — caso C1 do avaliador
+     2	
+     3	Medição da rodada 1:
+     4	
+     5	```c#
+     6	bash sdd/bin/verify-gate.sh
+     7	```
+     8	
+     9	| achado | sev | veredito | rodada | evidência | dano | revisão |
+    10	|---|---|---|---|---|---|---|
+    11	| R2@rev | MED | APLICADA | rodada=1 | nome trocado | nao | EXTERNAL_REVIEW_20260201-000001 |
+    12	| R1@rev | HIGH | REBATIDA_EVIDENCIA | rodada=1 | sem teste | sim | EXTERNAL_REVIEW_20260201-000001 |
+    13	
+    14	Medição da rodada 2:
+    15	
+    16	```c#
+    17	bash sdd/bin/verify-gate.sh
+    18	```
+    19	
+    20	sem achados: rodada=2 EXTERNAL_REVIEW_20260201-000002
+== lint do commit avaliado (0d4a730)
+✅ ledger da revisão: 0 linha(s) e 1 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit 0]
+== lint do ciclo 2 (661ef65)
+🛑 LEDGER_REVISAO_C1_csharp.md:12 — dano = sim com veredito REBATIDA_EVIDENCIA: só achado APLICADA pode ser falha com dano
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit 2]
+== medidor do commit avaliado
+| revisor | rev (rev-x) | desconhecida | 1 | 0 | n/d | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 1 (EXTERNAL_REVIEW_20260201-000001: sem linha em nenhum ledger: os achados dela ficam em sem classificar)
+RESULTADO: MEDIDO
+== medidor do ciclo 2
+| revisor | rev (rev-x) | desconhecida | 1 | 0 | n/d | 1.0000 | 2 | 1 de 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | — | 1.0000 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+== sdd-fluxo.sh loop --ledger
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+RESULTADO: PRONTO
+[exit 0]
+=================== LEDGER_REVISAO_C1_controle.md
+     1	# Ledger da revisão — caso C1 do avaliador
+     2	
+     3	Medição da rodada 1:
+     4	
+     5	```sh
+     6	bash sdd/bin/verify-gate.sh
+     7	```
+     8	
+     9	| achado | sev | veredito | rodada | evidência | dano | revisão |
+    10	|---|---|---|---|---|---|---|
+    11	| R2@rev | MED | APLICADA | rodada=1 | nome trocado | nao | EXTERNAL_REVIEW_20260201-000001 |
+    12	| R1@rev | HIGH | REBATIDA_EVIDENCIA | rodada=1 | sem teste | sim | EXTERNAL_REVIEW_20260201-000001 |
+    13	
+    14	Medição da rodada 2:
+    15	
+    16	```sh
+    17	bash sdd/bin/verify-gate.sh
+    18	```
+    19	
+    20	sem achados: rodada=2 EXTERNAL_REVIEW_20260201-000002
+== lint do commit avaliado (0d4a730)
+🛑 LEDGER_REVISAO_C1_controle.md:12 — dano = sim com veredito REBATIDA_EVIDENCIA: só achado APLICADA pode ser falha com dano
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit 2]
+== lint do ciclo 2 (661ef65)
+🛑 LEDGER_REVISAO_C1_controle.md:12 — dano = sim com veredito REBATIDA_EVIDENCIA: só achado APLICADA pode ser falha com dano
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit 2]
+== medidor do commit avaliado
+| revisor | rev (rev-x) | desconhecida | 1 | 0 | n/d | 1.0000 | 2 | 1 de 2 | 0 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | — | — | — |
+fora da conta: 1 (LEDGER_REVISAO_C1_controle.md:12: achado R1@rev: dano = sim com veredito REBATIDA_EVIDENCIA não conta como falha com dano)
+RESULTADO: MEDIDO
+== medidor do ciclo 2
+| revisor | rev (rev-x) | desconhecida | 1 | 0 | n/d | 1.0000 | 2 | 1 de 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | — | 1.0000 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+== sdd-fluxo.sh loop --ledger
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+RESULTADO: PRONTO
+[exit 0]
+=================== LEDGER_REVISAO_C1_um_bloco.md
+     1	# Ledger da revisão — caso C1b do avaliador: arquivo legítimo, um bloco só
+     2	
+     3	```sh title=medicao
+     4	bash sdd/bin/verify-gate.sh
+     5	```
+     6	
+     7	| achado | sev | veredito | rodada | evidência | dano | revisão |
+     8	|---|---|---|---|---|---|---|
+     9	| R2@rev | MED | APLICADA | rodada=1 | nome trocado | nao | EXTERNAL_REVIEW_20260201-000001 |
+    10	| R1@rev | HIGH | APLICADA | rodada=1 | teste: `test_fecha_o_mes` · soma corrigida | sim | EXTERNAL_REVIEW_20260201-000001 |
+== lint do commit avaliado (0d4a730)
+🛑 LEDGER_REVISAO_C1_um_bloco.md:5 — bloco cercado aberto e não fechado: o resto do arquivo não foi lido
+🛑 LEDGER_REVISAO_C1_um_bloco.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit 2]
+== lint do ciclo 2 (661ef65)
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit 0]
+== medidor do commit avaliado
+| revisor | rev (rev-x) | desconhecida | 1 | 0 | n/d | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 2 (LEDGER_REVISAO_C1_um_bloco.md:5: bloco cercado aberto e não fechado: o resto do arquivo não foi lido; EXTERNAL_REVIEW_20260201-000001: sem linha em nenhum ledger: os achados dela ficam em sem classificar)
+RESULTADO: MEDIDO
+== medidor do ciclo 2
+| revisor | rev (rev-x) | desconhecida | 1 | 0 | n/d | 1.0000 | 2 | 2 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | — | 1.0000 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+== sdd-fluxo.sh loop --ledger
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 0
+rebatidas: 0
+motivo: grave(s) corrigido(s) — código mudou, exige nova review: R1@rev
+RESULTADO: CONTINUAR
+[exit 10]

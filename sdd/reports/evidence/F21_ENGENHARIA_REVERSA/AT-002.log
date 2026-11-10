@@ -1,0 +1,21 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_f21_textos.Texto.test_linha_de_identificacao test_conversa.Identificacao test_conversa.Camada test_skill_lint.SkillLint.test_as_18_skills_reais_passam_com_conversa test_decisoes_lint.AlvosReais
+test_linha_de_identificacao (test_f21_textos.Texto) ... ok
+test_linha_de_identificacao_tem_a_versao_do_frontmatter (test_conversa.Identificacao) ... ok
+test_metadata_tem_updated (test_conversa.Identificacao) ... ok
+test_nenhuma_abre_com_banner (test_conversa.Identificacao) ... ok
+test_sao_18_e_as_16_da_camada_existem (test_conversa.Identificacao) ... ok
+test_skill_com_ate_500_linhas (test_conversa.Identificacao) ... ok
+test_bloco_comum_igual_nas_16 (test_conversa.Camada) ... ok
+test_como_falar_existe_e_cita_o_fragmento (test_conversa.Camada) ... ok
+test_skill_portada_nao_cita_o_starter (test_conversa.Camada) ... ok
+test_status_comeca_pelo_nome_da_fase (test_conversa.Camada) ... ok
+test_as_18_skills_reais_passam_com_conversa (test_skill_lint.SkillLint) ... ok
+test_fragmentos_2_perguntas (test_decisoes_lint.AlvosReais) ... ok
+test_o_ok_da_release_nao_conta_e_a_heuristica_da_kb_tambem_nao (test_decisoes_lint.AlvosReais) ... ok
+test_skills_do_pacote_27_perguntas (test_decisoes_lint.AlvosReais) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.270s
+
+OK
+[exit=0]

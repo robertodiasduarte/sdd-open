@@ -1,0 +1,361 @@
+$ para cada arquivo (test_validate_reverse, test_f21_textos, test_skill_lint, test_conversa, test_docs, test_decisoes_lint, test_agnostico, test_matriz_new_session): SDD_TEST_BASH=/bin/bash <python> [-B] -m unittest discover -s tests -p <arquivo> — copia de git archive ae05d6e; sem -B (rodada 1 e 2) e com -B; python3 3.15.0 e /usr/bin/python3 3.9.6
+######## Python 3.15.0 — SEM -B, rodada 1
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_validate_reverse.py
+..................
+----------------------------------------------------------------------
+Ran 18 tests in 0.062s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_f21_textos.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 27.678s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_skill_lint.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 1.013s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_conversa.py
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.041s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_docs.py
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 0.034s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_decisoes_lint.py
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 1.282s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_agnostico.py
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.070s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_matriz_new_session.py
+....../private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c3/t315/tests/test_matriz_new_session.py:39: DeprecationWarning: 'maxsplit' is passed as positional argument
+  secao = re.split(r"\n#{2,3} ", secao, 1)[0]
+......
+----------------------------------------------------------------------
+Ran 12 tests in 0.008s
+
+OK
+exit=0
+## find <copia>/.agents -name __pycache__ -o -name '*.pyc'
+(fim do find)
+## find <copia> -name __pycache__
+./tests/__pycache__
+./sdd/bin/__pycache__
+######## Python 3.15.0 — SEM -B, rodada 2 (mesma copia)
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_validate_reverse.py
+..................
+----------------------------------------------------------------------
+Ran 18 tests in 0.062s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_f21_textos.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 28.153s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_skill_lint.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 1.102s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_conversa.py
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.039s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_docs.py
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 0.032s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_decisoes_lint.py
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 1.270s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_agnostico.py
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.067s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3  -m unittest discover -s tests -p test_matriz_new_session.py
+....../private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c3/t315/tests/test_matriz_new_session.py:39: DeprecationWarning: 'maxsplit' is passed as positional argument
+  secao = re.split(r"\n#{2,3} ", secao, 1)[0]
+......
+----------------------------------------------------------------------
+Ran 12 tests in 0.008s
+
+OK
+exit=0
+## find <copia>/.agents -name __pycache__ -o -name '*.pyc'
+(fim do find)
+######## Python 3.15.0 — COM -B
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3 -B -m unittest discover -s tests -p test_validate_reverse.py
+..................
+----------------------------------------------------------------------
+Ran 18 tests in 0.061s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3 -B -m unittest discover -s tests -p test_f21_textos.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 26.919s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3 -B -m unittest discover -s tests -p test_skill_lint.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 0.936s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3 -B -m unittest discover -s tests -p test_conversa.py
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.036s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3 -B -m unittest discover -s tests -p test_docs.py
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 0.032s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3 -B -m unittest discover -s tests -p test_decisoes_lint.py
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 1.159s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3 -B -m unittest discover -s tests -p test_agnostico.py
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.078s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash python3 -B -m unittest discover -s tests -p test_matriz_new_session.py
+....../private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c3/t315/tests/test_matriz_new_session.py:39: DeprecationWarning: 'maxsplit' is passed as positional argument
+  secao = re.split(r"\n#{2,3} ", secao, 1)[0]
+......
+----------------------------------------------------------------------
+Ran 12 tests in 0.008s
+
+OK
+exit=0
+######## Python 3.9.6 — SEM -B, rodada 1
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_validate_reverse.py
+..................
+----------------------------------------------------------------------
+Ran 18 tests in 0.064s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_f21_textos.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 28.505s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_skill_lint.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 2.304s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_conversa.py
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.074s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_docs.py
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 0.044s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_decisoes_lint.py
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 1.343s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_agnostico.py
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.082s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_matriz_new_session.py
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.007s
+
+OK
+exit=0
+## find <copia>/.agents -name __pycache__ -o -name '*.pyc'
+(fim do find)
+## find <copia> -name __pycache__
+######## Python 3.9.6 — SEM -B, rodada 2 (mesma copia)
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_validate_reverse.py
+..................
+----------------------------------------------------------------------
+Ran 18 tests in 0.062s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_f21_textos.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 27.914s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_skill_lint.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 2.339s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_conversa.py
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.071s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_docs.py
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 0.043s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_decisoes_lint.py
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 1.367s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_agnostico.py
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.082s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3  -m unittest discover -s tests -p test_matriz_new_session.py
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.007s
+
+OK
+exit=0
+## find <copia>/.agents -name __pycache__ -o -name '*.pyc'
+(fim do find)
+######## Python 3.9.6 — COM -B
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_validate_reverse.py
+..................
+----------------------------------------------------------------------
+Ran 18 tests in 0.062s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_f21_textos.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 27.221s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_skill_lint.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 2.300s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_conversa.py
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.071s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_docs.py
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 0.043s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_decisoes_lint.py
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 1.366s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_agnostico.py
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.080s
+
+OK
+exit=0
+## cd <copia>; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_matriz_new_session.py
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.007s
+
+OK
+exit=0

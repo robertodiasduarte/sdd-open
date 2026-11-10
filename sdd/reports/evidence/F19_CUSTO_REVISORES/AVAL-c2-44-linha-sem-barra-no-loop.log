@@ -1,0 +1,19 @@
+$ cat -n /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/loop/LEDGER_REVISAO_SEMBARRA.md; echo '== lint'; /bin/bash sdd/bin/ledger-revisao-lint.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/loop/LEDGER_REVISAO_SEMBARRA.md; echo "[exit $?]"; echo '== loop'; /bin/bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/loop/LEDGER_REVISAO_SEMBARRA.md --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_pass.md --ciclo-avaliador 1 2>&1 | grep -E '^(ESTADO|rodada|graves_abertos|rebatidas|motivo|RESULTADO)'; echo "[exit ${PIPESTATUS[0]}]"
+     1	| achado | sev | veredito | rodada | evidência | dano | revisão |
+     2	|---|---|---|---|---|---|---|
+     3	| R2@rev | MED | APLICADA | rodada=1 | x | nao | EXTERNAL_REVIEW_20260201-000001 |
+     4	R1@rev | HIGH | REBATIDA_EVIDENCIA | rodada=1 | medido | sim | EXTERNAL_REVIEW_20260201-000001 |
+== lint
+✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit 0]
+== loop
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 1
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: R1@rev
+RESULTADO: CONTINUAR
+[exit 10]
+[exit 0]

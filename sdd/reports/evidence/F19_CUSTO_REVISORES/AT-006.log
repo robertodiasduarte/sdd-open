@@ -1,0 +1,33 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_ledger_revisao_lint
+test_a_mensagem_da_linha_solta_diz_como_escrever_texto_com_barras (test_ledger_revisao_lint.Lint) ... ok
+test_ajuda (test_ledger_revisao_lint.Lint) ... ok
+test_arquivo_ilegivel_depois_nao_esconde_nada (test_ledger_revisao_lint.Lint) ... ok
+test_arquivo_vazio_nao_esconde_as_violacoes_de_outro (test_ledger_revisao_lint.Lint) ... ok
+test_bom_no_inicio_do_arquivo_nao_esconde_a_primeira_linha (test_ledger_revisao_lint.Lint) ... ok
+test_cabecalho_fora_do_molde_da_uma_mensagem_so (test_ledger_revisao_lint.Lint) ... ok
+test_cada_fixture_reprova_pelo_seu_motivo (test_ledger_revisao_lint.Lint) ... ok
+test_celulas_fora_do_formato (test_ledger_revisao_lint.Lint) ... ok
+test_cerca_e_so_a_linha_inteira_e_bloco_aberto_e_acusado (test_ledger_revisao_lint.Lint) ... ok
+test_cerca_segue_o_commonmark (test_ledger_revisao_lint.Lint) ... ok
+test_comentario_html_nao_e_conferido (test_ledger_revisao_lint.Lint) ... ok
+test_controle_e_retroativo_passam (test_ledger_revisao_lint.Lint) ... ok
+test_linha_do_ledger_fora_da_tabela_e_acusada (test_ledger_revisao_lint.Lint) ... ok
+test_linhas_depois_de_linha_em_branco_continuam_sendo_o_ledger (test_ledger_revisao_lint.Lint) ... ok
+test_nenhuma_linha_de_tabela_e_pulada (test_ledger_revisao_lint.Lint) ... ok
+test_o_mesmo_achado_em_dois_arquivos_e_repeticao (test_ledger_revisao_lint.Lint) ... ok
+test_o_mesmo_achado_em_revisoes_diferentes_nao_e_repeticao (test_ledger_revisao_lint.Lint) ... ok
+test_o_que_o_formato_aceita (test_ledger_revisao_lint.Lint) ... ok
+test_retroativo_so_vale_como_linha_propria_e_fora_de_cerca (test_ledger_revisao_lint.Lint) ... ok
+test_rodada_sem_achados (test_ledger_revisao_lint.Lint) ... ok
+test_saida_nao_depende_do_locale (test_ledger_revisao_lint.Lint) ... ok
+test_sem_achados_e_linha_de_dados_para_a_mesma_revisao_se_contradizem (test_ledger_revisao_lint.Lint) ... ok
+test_teste_citado_tem_de_ter_forma_de_teste (test_ledger_revisao_lint.Lint) ... ok
+test_texto_cercado_nao_e_conferido_e_linha_de_tabela_e_sempre (test_ledger_revisao_lint.Lint) ... ok
+test_uso_e_64 (test_ledger_revisao_lint.Lint) ... ok
+test_varios_arquivos_um_ruim_reprova_o_conjunto (test_ledger_revisao_lint.Lint) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 2.578s
+
+OK
+[exit=0]

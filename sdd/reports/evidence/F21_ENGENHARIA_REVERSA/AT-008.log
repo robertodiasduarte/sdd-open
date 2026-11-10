@@ -1,0 +1,11 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_f21_textos.NoProjeto
+test_a_pasta_inteira_chega_igual (test_f21_textos.NoProjeto) ... ok
+test_lint_da_copia_gerada_aprova_levantamento_valido (test_f21_textos.NoProjeto) ... ok
+test_molde_da_copia_gerada_reprova_por_titulo_e_o_da_fonte_nao (test_f21_textos.NoProjeto) ... ok
+test_sync_check_em_dia_logo_depois_do_init (test_f21_textos.NoProjeto) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 32.676s
+
+OK
+[exit=0]

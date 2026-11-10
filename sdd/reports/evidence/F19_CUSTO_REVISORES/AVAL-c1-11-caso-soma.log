@@ -1,0 +1,15 @@
+$ PATH=/usr/bin:/bin /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/soma --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/soma --registry /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/soma/registry.tsv
+eval-revisores — custo e resultado por papel, engine e modelo (17 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/soma; 1 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (c) | assinatura | 2 | 0 | 0.0000 | 2.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | claude (dez-x-0.1) | assinatura | 10 | 0 | 0.0000 | 1.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (a/b via X) | pay-per-token | 2 | 0 | 0.3000 | 0.3000 | 2 | 2 de 2 | 2 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0.1500 | 0.1500 | — |
+| revisor | openrouter (tiny) | pay-per-token | 3 | 0 | 0.000090 | 0.000090 | 3 | 3 de 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0.000030 | 0.000030 | — |
+| auditor | openrouter (q/p via B) | pay-per-token | 2 | 0 | 0.6100 | 0.6100 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+
+fora da conta: 12 (EXTERNAL_REVIEW_20260301-000010: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000011: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000012: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000013: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000014: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000015: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000016: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000017: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000018: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000019: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000030: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000031: sem linha em nenhum ledger: os achados dela ficam em sem classificar)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit=0]

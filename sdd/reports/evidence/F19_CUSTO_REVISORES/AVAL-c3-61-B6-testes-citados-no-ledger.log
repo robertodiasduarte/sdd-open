@@ -1,0 +1,15 @@
+$ para cada nome test_… citado em sdd/reviews/LEDGER_REVISAO_F19_CUSTO_REVISORES.md: grep -rn "def <nome>" tests/ na cópia de 0d4a730
+test_arquivo_vazio_nao_esconde_as_violacoes_de_outro → tests/test_ledger_revisao_lint.py:176:    def test_arquivo_vazio_nao_esconde_as_violacoes_de_outro(self):
+test_cabecalho_fora_do_molde_da_uma_mensagem_so → tests/test_ledger_revisao_lint.py:236:    def test_cabecalho_fora_do_molde_da_uma_mensagem_so(self):
+test_dano_fora_da_lista_e_avisado_e_nao_conta → tests/test_eval_revisores.py:188:    def test_dano_fora_da_lista_e_avisado_e_nao_conta(self):
+test_desempate_e_lido_pelos_campos_que_o_adversarial_review_grava → tests/test_eval_revisores.py:345:    def test_desempate_e_lido_pelos_campos_que_o_adversarial_review_grava(sel
+test_ledger_sem_rotulo_casa_com_id_rotulado_quando_nao_ha_ambiguidade → tests/test_eval_revisores.py:195:    def test_ledger_sem_rotulo_casa_com_id_rotulado_quando_nao_ha_ambiguidade
+test_linhas_depois_de_linha_em_branco_continuam_sendo_o_ledger → tests/test_ledger_revisao_lint.py:163:    def test_linhas_depois_de_linha_em_branco_continuam_sendo_o_ledger(s
+test_rotulo_escrito_como_o_id_cru_da_engine_tambem_casa → tests/test_eval_revisores.py:263:    def test_rotulo_escrito_como_o_id_cru_da_engine_tambem_casa(self):
+test_sem_achados_dito_para_revisao_que_tem_achados_e_avisado → tests/test_eval_revisores.py:269:    def test_sem_achados_dito_para_revisao_que_tem_achados_e_avisado(self):
+test_uso_errado_e_64_com_causa_e_conserto → tests/test_eval_revisores.py:474:    def test_uso_errado_e_64_com_causa_e_conserto(self):
+
+$ sabotagem em cópia: `if vazios and not violacoes:` → `if vazios:` no lint; roda test_ledger_revisao_lint
+FAIL: test_arquivo_vazio_nao_esconde_as_violacoes_de_outro (test_ledger_revisao_lint.Lint)
+Ran 24 tests in 5.329s
+FAILED (failures=1)

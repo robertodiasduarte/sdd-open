@@ -1,0 +1,34 @@
+$ for PY in /usr/bin /opt/homebrew/bin; do PATH=$PY:/usr/bin:/bin /bin/bash sdd/bin/eval-revisores.sh sdd/fixtures/revisao/custo --ledgers sdd/fixtures/revisao/custo/LEDGER_REVISAO_EXEMPLO.md --registry sdd/fixtures/revisao/custo/registry.tsv; echo "[exit $?]"; done
+eval-revisores — custo e resultado por papel, engine e modelo (6 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia/sdd/fixtures/revisao/custo; 1 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (claude-x) | assinatura | 6 | 0 | 0.0000 | ≈7.0000 | 9 | 6 de 9 | 3 de 9 | 1 de 9 | 1 de 9 | 1 de 9 | 0.0000 | ≈2.3333 | — |
+| 2º revisor | codex (-) | assinatura | 1 | 0 | 0.0000 | n/d | 1 | 1 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0.0000 | — | — |
+| 2º revisor | gemini (-) | desconhecida | 0 | 1 (1 credencial) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| 2º revisor | openrouter (deep/seek) | pay-per-token | 0 | 1 (1 cota ou tempo) | 1.0000 (incerto em 1 de 1) | 1.0000 (incerto em 1 de 1) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| auditor | codex (-) | assinatura | 0 | 1 (1 trocada por outra engine) | 0.0000 | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+| auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 4 | 0 | 0.1500 (n/d em 1 de 4) | 0.1500 (n/d em 1 de 4) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 71.4% (5 de 7) |
+| auditor | openrouter (qwen/q-plus via ProvedorB) | pay-per-token | 2 | 0 | 0.6100 | 0.6100 | 2 | 0 de 2 | 0 de 2 | 2 de 2 | 0 de 2 | 0 de 2 | — | — | 100.0% (3 de 3) |
+
+fora da conta: 4 (EXTERNAL_REVIEW_20260201-000006: META ilegível ou incompleto; EXTERNAL_REVIEW_20260201-000007: 2º revisor indisponível: nenhuma engine foi chamada; LEDGER_REVISAO_EXEMPLO.md:20: achado R1@codex: o rótulo @codex não é o da engine que respondeu como revisor (claude); LEDGER_REVISAO_EXEMPLO.md:21: achado R9@claude não está em EXTERNAL_REVIEW_20260201-000005)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit 0]
+eval-revisores — custo e resultado por papel, engine e modelo (6 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia/sdd/fixtures/revisao/custo; 1 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (claude-x) | assinatura | 6 | 0 | 0.0000 | ≈7.0000 | 9 | 6 de 9 | 3 de 9 | 1 de 9 | 1 de 9 | 1 de 9 | 0.0000 | ≈2.3333 | — |
+| 2º revisor | codex (-) | assinatura | 1 | 0 | 0.0000 | n/d | 1 | 1 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0.0000 | — | — |
+| 2º revisor | gemini (-) | desconhecida | 0 | 1 (1 credencial) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| 2º revisor | openrouter (deep/seek) | pay-per-token | 0 | 1 (1 cota ou tempo) | 1.0000 (incerto em 1 de 1) | 1.0000 (incerto em 1 de 1) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| auditor | codex (-) | assinatura | 0 | 1 (1 trocada por outra engine) | 0.0000 | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+| auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 4 | 0 | 0.1500 (n/d em 1 de 4) | 0.1500 (n/d em 1 de 4) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 71.4% (5 de 7) |
+| auditor | openrouter (qwen/q-plus via ProvedorB) | pay-per-token | 2 | 0 | 0.6100 | 0.6100 | 2 | 0 de 2 | 0 de 2 | 2 de 2 | 0 de 2 | 0 de 2 | — | — | 100.0% (3 de 3) |
+
+fora da conta: 4 (EXTERNAL_REVIEW_20260201-000006: META ilegível ou incompleto; EXTERNAL_REVIEW_20260201-000007: 2º revisor indisponível: nenhuma engine foi chamada; LEDGER_REVISAO_EXEMPLO.md:20: achado R1@codex: o rótulo @codex não é o da engine que respondeu como revisor (claude); LEDGER_REVISAO_EXEMPLO.md:21: achado R9@claude não está em EXTERNAL_REVIEW_20260201-000005)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit 0]
+[exit 0]

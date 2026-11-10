@@ -1,0 +1,56 @@
+$ git log -3; git ls-tree -r --name-only 5736ae4 | grep pyc; git diff --stat 5736ae4 ae05d6e; PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh <copia de git archive 5736ae4>; idem <copia de git archive ae05d6e>
+## git log (o brief dizia HEAD = 5736ae4; durante a avaliacao o HEAD passou a ae05d6e)
+ae05d6e2687aaff28a56173c9e4576f38e5abe8c 2026-11-10 12:58:53 -0300 fix(f21): tira do commit 3 .pyc de tests/ e o trace do gate, que entraram por engano
+5736ae4d63dc91f98ecbee1db37ea970f45664af 2026-11-10 12:58:12 -0300 fix(f21): achados da revisão adversarial (R1, R2) e do avaliador, ciclo 1 (A1–A4)
+2af3d6ca4d44d130c9093f141fa5f71641ced8ff 2026-11-10 12:16:52 -0300 feat(f21): skill sdd-engenharia-reversa-saas 1.1.0 — estudo de um SaaS antes do Brainstorm (20ª skill)
+## git ls-tree -r --name-only 5736ae4 | grep pyc
+tests/__pycache__/apoio.cpython-315.pyc
+tests/__pycache__/test_f21_textos.cpython-315.pyc
+tests/__pycache__/test_validate_reverse.cpython-315.pyc
+## git ls-tree -r --name-only ae05d6e | grep -c pyc
+0
+## git diff --stat 5736ae4 ae05d6e
+ sdd/traces/F21_ENGENHARIA_REVERSA.jsonl                 |   1 -
+ tests/__pycache__/apoio.cpython-315.pyc                 | Bin 8024 -> 0 bytes
+ tests/__pycache__/test_f21_textos.cpython-315.pyc       | Bin 34564 -> 0 bytes
+ tests/__pycache__/test_validate_reverse.cpython-315.pyc | Bin 14310 -> 0 bytes
+ 4 files changed, 1 deletion(-)
+## publish-gate na copia de git archive 5736ae4
+publish-gate — tree: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c2/copia — mode: ci
+──────────────────────────────────────────────────────────────────
+G1 secrets (gitleaks)
+  ✅ no secrets detected
+G2 forbidden patterns
+  ✅ no forbidden pattern matched
+G3 allowlist (MANIFEST.txt)
+  ⛔ undeclared file: tests/__pycache__/test_validate_reverse.cpython-315.pyc
+  ⛔ undeclared file: tests/__pycache__/apoio.cpython-315.pyc
+  ⛔ undeclared file: tests/__pycache__/test_f21_textos.cpython-315.pyc
+  ⛔ undeclared file: sdd/traces/F21_ENGENHARIA_REVERSA.jsonl
+G4 verify-gate exit contract
+  ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+  ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+  ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+G5 documentation
+──────────────────────────────────────────────────────────────────
+⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+   pattern without adding an equivalent one.
+exit=1
+## publish-gate na copia de git archive ae05d6e
+publish-gate — tree: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c2/gate — mode: ci
+──────────────────────────────────────────────────────────────────
+G1 secrets (gitleaks)
+  ✅ no secrets detected
+G2 forbidden patterns
+  ✅ no forbidden pattern matched
+G3 allowlist (MANIFEST.txt)
+  ✅ tree and manifest match in both directions
+G4 verify-gate exit contract
+  ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+  ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+  ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+G5 documentation
+  ✅ docs present, cross-linked, attribution in place
+──────────────────────────────────────────────────────────────────
+✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+exit=0

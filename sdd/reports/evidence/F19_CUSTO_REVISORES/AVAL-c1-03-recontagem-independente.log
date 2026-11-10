@@ -1,0 +1,34 @@
+$ /usr/bin/python3 -I -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/tools/indep.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/f19/reais   # recontagem independente com Decimal (script do avaliador)
+fallback: EXTERNAL_REVIEW_20261110-055845 {'auditor_engine_default': 'codex', 'auditor_engine_efetivo': 'openrouter', 'auditor_motivo': 'codex falhou (cota, cobrança ou erro)'}
+fallback: EXTERNAL_REVIEW_20261110-062431 {'auditor_engine_default': 'codex', 'auditor_engine_efetivo': 'openrouter', 'auditor_motivo': 'codex falhou (cota, cobrança ou erro)'}
+fallback: EXTERNAL_REVIEW_20261110-070608 {'auditor_engine_default': 'codex', 'auditor_engine_efetivo': 'openrouter', 'auditor_motivo': 'codex falhou (cota, cobrança ou erro)'}
+sem META: EXTERNAL_REVIEW_20261110-125836
+('auditor', 'codex', '-') calls 1 ok 0 fail {'67': 1} nominal 0 (com número 0, n/d 1) pago None achados 0 agree 0 dis 0
+    parcelas: 
+('auditor', 'openrouter', 'qwen/qwen3.7-plus') calls 1 ok 0 fail {'67': 1} nominal 0 (com número 0, n/d 1) pago 0 achados 0 agree 0 dis 0
+    parcelas: 
+('auditor', 'openrouter', 'qwen/qwen3.7-plus via Alibaba') calls 23 ok 23 fail {} nominal 1.0933 (com número 23, n/d 0) pago 1.0933 achados 5 agree 78 dis 22
+    parcelas: 0.0486 + 0.0412 + 0.0448 + 0.0481 + 0.0447 + 0.0447 + 0.0679 + 0.0695 + 0.0867 + 0.0633 + 0.0627 + 0.0626 + 0.0605 + 0.0639 + 0.0271 + 0.0282 + 0.0289 + 0.0300 + 0.0294 + 0.0353 + 0.0382 + 0.0313 + 0.0357
+('desempate', 'claude', 'claude-opus-5-5') calls 1 ok 1 fail {} nominal 1.8145 (com número 1, n/d 0) pago None achados 0 agree 0 dis 0
+    parcelas: 1.8145
+('desempate', 'codex', '-') calls 1 ok 1 fail {} nominal 0 (com número 0, n/d 1) pago None achados 0 agree 0 dis 0
+    parcelas: 
+('reviewer', 'claude', 'claude-fable-5-2') calls 4 ok 4 fail {} nominal 5.1073 (com número 4, n/d 0) pago None achados 7 agree 0 dis 0
+    parcelas: 1.1171 + 1.2664 + 1.3221 + 1.4017
+('reviewer', 'claude', 'claude-opus-5-5') calls 21 ok 21 fail {} nominal 50.3657 (com número 21, n/d 0) pago None achados 83 agree 0 dis 0
+    parcelas: 2.3670 + 2.2394 + 2.2640 + 2.3433 + 2.3068 + 2.2011 + 3.3732 + 3.7611 + 3.5641 + 3.7014 + 3.0360 + 2.9826 + 3.1955 + 3.2931 + 3.1445 + 0.8356 + 0.9194 + 1.1895 + 1.2384 + 1.1010 + 1.3087
+('revisor2', 'codex', '-') calls 14 ok 9 fail {'67': 5} nominal 0 (com número 0, n/d 14) pago None achados 18 agree 0 dis 0
+    parcelas: 
+('revisor2', 'gemini', '-') calls 1 ok 0 fail {'65': 1} nominal 0 (com número 0, n/d 1) pago None achados 0 agree 0 dis 0
+    parcelas: 
+('revisor2', 'openrouter', 'deepseek/deepseek-v4-pro') calls 3 ok 0 fail {'67': 3} nominal 0 (com número 0, n/d 3) pago 0 achados 0 agree 0 dis 0
+    parcelas: 
+('revisor2', 'openrouter', 'deepseek/deepseek-v4-pro via Novita') calls 1 ok 1 fail {} nominal 0.3214 (com número 1, n/d 0) pago 0.3214 achados 1 agree 0 dis 0
+    parcelas: 0.3214
+('revisor2', 'openrouter', 'deepseek/deepseek-v4-pro via Relace') calls 1 ok 1 fail {} nominal 0.1827 (com número 1, n/d 0) pago 0.1827 achados 1 agree 0 dis 0
+    parcelas: 0.1827
+('revisor2', 'openrouter', 'z-ai/glm-5.3') calls 1 ok 0 fail {'67': 1} nominal 0 (com número 0, n/d 1) pago 0 achados 0 agree 0 dis 0
+    parcelas: 
+('revisor2', 'openrouter', 'z-ai/glm-5.3 via Relace') calls 1 ok 1 fail {} nominal 0.2194 (com número 1, n/d 0) pago 0.2194 achados 1 agree 0 dis 0
+    parcelas: 0.2194
+[exit=0]

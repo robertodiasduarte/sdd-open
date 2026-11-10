@@ -1,0 +1,169 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/ferr/a2a6.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/a2a6
+##### A2a — achado que não é texto
+--- a2a [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 1 | 1 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a2a [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 1 | 1 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+fora da conta: 0
+RESULTADO: MEDIDO
+##### A2b — pasta de revisões e pasta de --ledgers sem permissão
+--- a2b pasta 000 [python de /usr/bin] exit=64
+🛑 eval-revisores: não consegui ler a pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/a2a6/a2b/rev (Permission denied)
+RESULTADO: PAROU
+--- a2b pasta 000 [python de /opt/homebrew/bin] exit=64
+🛑 eval-revisores: não consegui ler a pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/a2a6/a2b/rev (Permission denied)
+RESULTADO: PAROU
+--- a2b ledgers 000 [python de /usr/bin] exit=64
+🛑 eval-revisores: não consegui ler a pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/a2a6/a2b/leds (Permission denied)
+RESULTADO: PAROU
+--- a2b ledgers 000 [python de /opt/homebrew/bin] exit=64
+🛑 eval-revisores: não consegui ler a pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/a2a6/a2b/leds (Permission denied)
+RESULTADO: PAROU
+--- a2b pasta da rodada 000 [python de /usr/bin] exit=2
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: META ilegível ou incompleto; L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: SEM DADOS
+--- a2b pasta da rodada 000 [python de /opt/homebrew/bin] exit=2
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: META ilegível ou incompleto; L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: SEM DADOS
+--- a2b arquivo de ledger 000 [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 2 (L.md: ledger ilegível; ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- a2b arquivo de ledger 000 [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 2 (L.md: ledger ilegível; ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- a2b vereditos 000 [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: revisor respondeu (exit 0) e a pasta não tem reviewer.verdicts.jsonl: contado com 0 achados; L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: MEDIDO
+--- a2b vereditos 000 [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: revisor respondeu (exit 0) e a pasta não tem reviewer.verdicts.jsonl: contado com 0 achados; L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: MEDIDO
+##### A3 — rótulo N1@openrouter:qwen/q-plus (a forma do controle.md do lint)
+--- a3 [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a3 [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a3 rótulo com hífens [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a3 rótulo com hífens [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a3 engine base [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a3 engine base [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a3 rótulo errado (controle negativo) [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 1 (L4.md:3: achado N1@codex: o rótulo @codex não é o da engine que respondeu como auditor (openrouter:qwen/q-plus))
+RESULTADO: MEDIDO
+--- a3 rótulo errado (controle negativo) [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 1 (L4.md:3: achado N1@codex: o rótulo @codex não é o da engine que respondeu como auditor (openrouter:qwen/q-plus))
+RESULTADO: MEDIDO
+##### A4 — exit ausente, exit ilegível, papel sem arquivo de vereditos
+--- a4a auditor_exit = '0 (ok)' com US$ 5 [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | — | — |
+fora da conta: 1 (EXTERNAL_REVIEW_20260301-000001: auditor (openrouter:qwen/q-plus): exit `0 (ok)` ilegível no META.txt; a chamada e o custo dela não foram contados)
+RESULTADO: MEDIDO
+--- a4a auditor_exit = '0 (ok)' com US$ 5 [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | — | — |
+fora da conta: 1 (EXTERNAL_REVIEW_20260301-000001: auditor (openrouter:qwen/q-plus): exit `0 (ok)` ilegível no META.txt; a chamada e o custo dela não foram contados)
+RESULTADO: MEDIDO
+--- a4b auditor_exit AUSENTE com US$ 7 [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | — | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a4b auditor_exit AUSENTE com US$ 7 [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | — | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a4c auditor_exit VAZIO com US$ 9 [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | — | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a4c auditor_exit VAZIO com US$ 9 [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | — | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a4d reviewer_exit AUSENTE com US$ 1 [python de /usr/bin] exit=0
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 1 (L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: MEDIDO
+--- a4d reviewer_exit AUSENTE com US$ 1 [python de /opt/homebrew/bin] exit=0
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 1 (L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: MEDIDO
+--- a4e revisor exit 0 sem arquivo de vereditos [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: revisor respondeu (exit 0) e a pasta não tem reviewer.verdicts.jsonl: contado com 0 achados; L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: MEDIDO
+--- a4e revisor exit 0 sem arquivo de vereditos [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: revisor respondeu (exit 0) e a pasta não tem reviewer.verdicts.jsonl: contado com 0 achados; L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: MEDIDO
+##### A6 — notas
+--- a6a custo US$ 0.00000001 [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | <0.000001 | <0.000001 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a6a custo US$ 0.00000001 [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | <0.000001 | <0.000001 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- a6b argumento vazio [python de /usr/bin] exit=64
+🛑 eval-revisores: o caminho da pasta veio vazio
+RESULTADO: PAROU
+--- a6b argumento vazio [python de /opt/homebrew/bin] exit=64
+🛑 eval-revisores: o caminho da pasta veio vazio
+RESULTADO: PAROU
+--- a6b --ledgers vazio [python de /usr/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 1 (ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- a6b --ledgers vazio [python de /opt/homebrew/bin] exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+| auditor | openrouter (qwen/q-plus via ProvA) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+fora da conta: 1 (ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- a6b --registry vazio [python de /usr/bin] exit=64
+🛑 eval-revisores: o arquivo de --registry não existe: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/a2a6/a6b
+RESULTADO: PAROU
+--- a6b --registry vazio [python de /opt/homebrew/bin] exit=64
+🛑 eval-revisores: o arquivo de --registry não existe: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/a2a6/a6b
+RESULTADO: PAROU
+[exit 0]

@@ -1,0 +1,11 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_f21_textos.Manifesto
+test_cenarios_cobram_as_duas_regras_da_1_1_0 (test_f21_textos.Manifesto) ... ok
+test_contagem_do_manifesto_bate_com_os_cenarios (test_f21_textos.Manifesto) ... ok
+test_nao_afirma_verificacao_de_outro_pacote (test_f21_textos.Manifesto) ... ok
+test_os_17_cenarios (test_f21_textos.Manifesto) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+OK
+[exit=0]

@@ -1,0 +1,38 @@
+$ git diff --quiet v2.8.0 HEAD -- .agents/skills/sdd-brainstorm .agents/skills/sdd-define
+[exit=0]  (0 = esta frente não editou as duas skills orquestradas)
+
+$ git diff --stat v2.8.0 HEAD
+ .../sdd-engenharia-reversa-saas/CHANGELOG.md       |  31 +++
+ .../skills/sdd-engenharia-reversa-saas/SKILL.md    | 210 ++++++++++++++
+ .../assets/ENGENHARIA_REVERSA_TEMPLATE.md          | 101 +++++++
+ .../sdd-engenharia-reversa-saas/evals/cases.json   | 263 ++++++++++++++++++
+ .../sdd-engenharia-reversa-saas/manifest.json      | 236 ++++++++++++++++
+ .../references/COMO_FUNCIONA.md                    |  19 ++
+ .../references/ESCOPO_CONFIRMADO.md                |  81 ++++++
+ .../references/FONTES.md                           |  25 ++
+ .../references/ORQUESTRACAO_SDD.md                 |  57 ++++
+ .../references/PROTOCOLO_ENGENHARIA_REVERSA.md     |  89 ++++++
+ .../references/RUNTIME_COMPATIBILITY.md            |  20 ++
+ .../references/como-falar.md                       | 112 ++++++++
+ .../scripts/validate_reverse.py                    | 211 ++++++++++++++
+ .agents/skills/sdd-release/SKILL.md                |   6 +-
+ .gitattributes                                     |   3 +
+ AGENTS.md.tmpl                                     |   1 +
+ MANIFEST.txt                                       |  15 +
+ README.md                                          |   5 +-
+ README.pt-BR.md                                    |   5 +-
+ docs/cli-conventions.md                            |   6 +
+ docs/pt-BR/guia-do-aluno.md                        |  17 +-
+ sdd/playbook.md                                    |  14 +-
+ tests/test_contrato_build_release.py               |   2 +-
+ tests/test_conversa.py                             |   5 +-
+ tests/test_decisoes_lint.py                        |   4 +-
+ tests/test_docs.py                                 |   6 +-
+ tests/test_f14_drive_textos.py                     |   2 +-
+ tests/test_f14_textos.py                           |   2 +-
+ tests/test_f15_slots_textos.py                     |   4 +-
+ tests/test_f21_textos.py                           | 304 +++++++++++++++++++++
+ tests/test_matriz_new_session.py                   |   3 +-
+ tests/test_skill_lint.py                           |   4 +-
+ tests/test_validate_reverse.py                     | 181 ++++++++++++
+ 33 files changed, 2014 insertions(+), 30 deletions(-)

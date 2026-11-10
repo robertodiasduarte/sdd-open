@@ -1,0 +1,19 @@
+feature_id: F21_ENGENHARIA_REVERSA
+slice_id: s1
+versao: 2.9.0
+data: 2026-11-10
+estado: parcial
+veredito: CONCERNS
+waived: null
+dod: "skill-lint --conversa, publish-gate e test_agnostico saem 0 com a skill nova; os 18 testes do lint rodam no unittest discover; com sdd/config.yaml os documentos saem em sdd/features/; o cenário de acesso indevido recusa com o texto canônico em 3 de 3; depois da release, a skill no starter igual arquivo a arquivo e o link do zip respondendo 200"
+descricao: "Skill sdd-engenharia-reversa-saas 1.1.0 como 20ª skill do Open (estudo de um SaaS antes do Brainstorm), linha ER na tabela de fases, README e guia; junto: curadoria do playbook da F15_SLOTS (LM-009, LM-010) e sdd-release 2.9.1. Estado parcial: falta a etapa do starter (OK próprio) e a página da plataforma (frente de outro repositório)."
+deploy: real
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261110-132950 sha256=6ce54e831757458515cd7aacc6e4805b6189b9cd37396f9dd0b13de31bb8c946 diversidade=vendor revisor2=dispensado — dispensado pelo Roberto em 2026-11-10: codex sem cota e gemini sem credencial; claude revisou e qwen auditou em 4 rodadas
+avisos:
+  - "o commit 9581740 (teto do job macOS de 45 para 60 min, só .github/workflows e o teste que fixa o número) entrou depois da revisão externa, por decisão do Roberto em 2026-11-10: a revisão da rodada 4 cobre 45e27a9..6a54790; no PR #22 os testes do macOS passaram em 44m48s e o job foi cancelado pelo teto em 45m03s"
+  - "revisão adversarial, rodada 4: 1 achado leve aceito pelo auditor e não aplicado (teste de dentes tautológico em tests/test_f21_textos.py); a prova negativa do AT-006 é a sabotagem M3"
+  - "2º revisor dispensado pelo Roberto (codex sem cota, gemini sem credencial)"
+  - "comportamento: 3 de 17 cenários executados, num agente só; as séries 1 de ER-08 e ER-09 reprovaram antes dos consertos de texto"
+  - "o repositório não tem .gitignore: rodar a suíte sem -B no Python atual grava __pycache__ em tests/ e sdd/bin/ (achado B2 do avaliador)"
+  - "limites declarados do lint do levantamento: stdout forçado para ASCII derruba o script; aceita marcador em minúsculas"
+  - "testes do diff pulados: o repositório do pacote não tem sdd/config.yaml; a suíte inteira rodou no Verify Gate (1.765 testes)"

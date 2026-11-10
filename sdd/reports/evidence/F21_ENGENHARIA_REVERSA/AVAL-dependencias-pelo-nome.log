@@ -1,0 +1,10 @@
+$ grep -rnE "SDD Brainstorm|SDD Define" .agents/skills/sdd-engenharia-reversa-saas
+.agents/skills/sdd-engenharia-reversa-saas/evals/cases.json:57:      "entrada": "Não há skill SDD Brainstorm instalada após concluir o relatório.",
+.agents/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md:19:As skills SDD Brainstorm e SDD Define precisam estar disponíveis no ambiente. Este pacote não inclui cópias delas. A integração ocorre antes do Brainstorm, por documentos e contexto; não
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md:16:- Orquestração das skills instaladas SDD Brainstorm e SDD Define com seus assets e gates.
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md:34:- Skills SDD Brainstorm e SDD Define instaladas com seus assets e referências.
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md:39:- Na execução: BRAINSTORM_{NOVA_SOLUCAO}.md conforme gates do SDD Brainstorm.
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md:40:- Na execução: DEFINE_{NOVA_SOLUCAO}.md conforme gates do SDD Define; rascunho explícito se bloqueado.
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md:69:Conversa de criação como caso ilustrativo, incluindo contraexemplo aprovado; arquivos instalados das skills SDD Brainstorm e SDD Define, com templates e referências inventariados em 
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_f21_textos.py | tail -1   # verde com as ocorrências acima
+OK

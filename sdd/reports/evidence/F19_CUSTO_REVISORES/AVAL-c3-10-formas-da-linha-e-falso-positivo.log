@@ -1,0 +1,221 @@
+$ /usr/bin/python3 -I casos/driver.py <copia 0d4a730> <scripts de 661ef65> <work>   (cada caso: um ledger com R1 e R2 bons e a linha R3 `REBATIDA_EVIDENCIA` + `dano = sim` escrita de uma forma, ou um arquivo legítimo; pasta de revisão com 3 achados R1 R2 R3)
+| caso | descrição | espera | lint c3 (3.9/3.15) | lint cita a linha? | lint c2 | medidor c3 (3.9/3.15) | fora da conta | linha no fora? | revisor: aplicados · FP · sem classificar | veredito do caso |
+|---|---|---|---|---|---|---|---|---|---|---|
+| a00 | controle: linha ruim COM a barra inicial | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| a01 | sem a barra inicial (B1) | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a02 | atrás de citação `> |` | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a03 | atrás de item de lista `- |` | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a04 | atrás de `* |` | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a05 | barra invertida antes da 1ª barra `\|` | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a06 | espaço de largura zero antes da barra | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a07 | BOM no início e 1ª linha de dados | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| a08 | atrás de `+ |` | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a09 | atrás de `1. |` | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a10 | atrás de `# |` | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a11 | nbsp antes da barra | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| a12 | U+2060 antes da barra | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a13 | sem barra inicial nem final | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a14 | todas as barras escapadas (texto puro) | acusa | 0/0 | NÃO | 0 | 0/0 | 0 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | LINT CEGO MEDIDOR CEGO |
+| a15 | tabela inteira sem barras nas pontas (GFM válido) | acusa | 2/2 | sim | 64 | 0/0 | 6 | sim | 0 de 3 · 0 de 3 · 3 de 3 | ok |
+| a16 | depois de comentário fechado na mesma linha `<!-- x --> | R3` | acusa | 0/0 | NÃO | 0 | 0/0 | 0 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | LINT CEGO MEDIDOR CEGO |
+| a17 | depois do `-->` que fecha comentário de várias linhas | acusa | 0/0 | NÃO | 0 | 0/0 | 0 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | LINT CEGO MEDIDOR CEGO |
+| a18 | só 3 barras: as últimas células coladas | acusa | 0/0 | NÃO | 0 | 0/0 | 0 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | LINT CEGO MEDIDOR CEGO |
+| a19 | barras de largura cheia `｜` | acusa | 0/0 | NÃO | 0 | 0/0 | 0 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | LINT CEGO MEDIDOR CEGO |
+| a20 | tab antes da barra | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| a21 | 4 espaços antes da barra | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| a26 | U+2028 entre duas linhas | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a27 | tab vertical antes da barra | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| a28 | arquivo com fim de linha CR (Mac antigo) | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| a29 | NUL antes da barra | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a30 | linha de dados colada ao texto: `nota: | R3 | …` | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a31 | depois de linha em branco e parágrafo | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| a32 | id entre crases | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a33 | 1ª célula `achado R3` (B3) | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a34 | 1ª célula `Achado` com dados (parece cabeçalho) | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 0 de 3 · 1 de 3 | ok |
+| a35 | linha ruim dentro de `<details>` | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| a36 | sem barra inicial, com a 1ª barra escapada e 3 soltas | acusa | 0/0 | NÃO | 0 | 0/0 | 0 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | LINT CEGO MEDIDOR CEGO |
+| b01 | linha de texto começando por código em linha ``` (falsa cerca) | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| b02 | ``` indentado por 4 espaços (não é cerca) | acusa | 2/2 | sim | 0 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| b03 | cerca aberta e nunca fechada | acusa | 2/2 | NÃO | 0 | 0/0 | 1 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | lint acusa em outra linha MEDIDOR CEGO |
+| b04 | comentário aberto e nunca fechado | acusa | 2/2 | NÃO | 0 | 0/0 | 1 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | lint acusa em outra linha MEDIDOR CEGO |
+| b05 | linha ruim entre dois blocos cujo info string tem espaço (paridade) | acusa | 0/0 | NÃO | 2 | 0/0 | 0 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | LINT CEGO MEDIDOR CEGO |
+| b05b | idem com ```{.python} | acusa | 0/0 | NÃO | 2 | 0/0 | 0 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | LINT CEGO MEDIDOR CEGO |
+| b05c | linha ruim entre dois blocos de 4 crases | acusa | 2/2 | sim | 2 | 0/0 | 1 | sim | 2 de 3 · 1 de 3 · 0 de 3 | ok |
+| b05d | bloco ~~~ com uma linha ``` dentro, depois a linha ruim, depois outro bloco igual | acusa | 0/0 | NÃO | 0 | 0/0 | 0 | NÃO | 2 de 3 · 0 de 3 · 1 de 3 | LINT CEGO MEDIDOR CEGO |
+| b06 | LEGÍTIMO: bloco de 4 crases com tabela de exemplo dentro | passa | 2/2 | — | 0 | 0/0 | 1 | — | 3 de 3 · 0 de 3 · 0 de 3 | FALSO POSITIVO no lint (c2 saía 0) aviso indevido no medidor |
+| b07 | LEGÍTIMO: bloco ~~~ com uma linha ``` dentro | passa | 2/2 | — | 0 | 0/0 | 1 | — | 3 de 3 · 0 de 3 · 0 de 3 | FALSO POSITIVO no lint (c2 saía 0) aviso indevido no medidor |
+| b08 | LEGÍTIMO: bloco com info string de 2 palavras (```sh title=x) e linhas depois | passa | 2/2 | — | 0 | 0/0 | 1 | — | 1 de 3 · 0 de 3 · 2 de 3 | FALSO POSITIVO no lint (c2 saía 0) aviso indevido no medidor |
+| b09 | LEGÍTIMO: bloco cercado fechado com linhas de exemplo | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| b10 | LEGÍTIMO: comentário fechado com linhas de exemplo | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| b11 | LEGÍTIMO: bloco ```text com `~~~` dentro | passa | 2/2 | — | 0 | 0/0 | 1 | — | 3 de 3 · 0 de 3 · 0 de 3 | FALSO POSITIVO no lint (c2 saía 0) aviso indevido no medidor |
+| c01 | LEGÍTIMO: texto com 2 barras | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c02 | LEGÍTIMO: texto com 3 barras | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c03 | LEGÍTIMO: texto com 4 barras | passa | 2/2 | — | 0 | 0/0 | 1 | — | 3 de 3 · 0 de 3 · 0 de 3 | FALSO POSITIVO no lint (c2 saía 0) aviso indevido no medidor |
+| c04 | LEGÍTIMO: texto citando o cabeçalho entre crases | passa | 2/2 | — | 0 | 0/0 | 1 | — | 3 de 3 · 0 de 3 · 0 de 3 | FALSO POSITIVO no lint (c2 saía 0) aviso indevido no medidor |
+| c05 | LEGÍTIMO: evidência com 5 `\|` | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c06 | LEGÍTIMO: texto com 5 barras escapadas | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c07 | LEGÍTIMO: citação, listas, régua e negrito no texto | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c08 | LEGÍTIMO: comando em crases com 4 barras no texto | passa | 2/2 | — | 0 | 0/0 | 1 | — | 3 de 3 · 0 de 3 · 0 de 3 | FALSO POSITIVO no lint (c2 saía 0) aviso indevido no medidor |
+| c09 | LEGÍTIMO: texto 'Sem achados graves nesta rodada.' | passa | 2/2 | — | 2 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | FALSO POSITIVO no lint (c2 saía 2) |
+| c10 | LEGÍTIMO: CRLF no arquivo inteiro | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c11 | LEGÍTIMO: cabeçalho em negrito repetido entre rodadas + alinhamento | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c12 | LEGÍTIMO: sem achados de outra pasta + dados | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c13 | LEGÍTIMO: linha de navegação com 4 barras | passa | 2/2 | — | 0 | 0/0 | 1 | — | 3 de 3 · 0 de 3 · 0 de 3 | FALSO POSITIVO no lint (c2 saía 0) aviso indevido no medidor |
+| c14 | LEGÍTIMO: citação com uma barra `> use a | b` | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c15 | LEGÍTIMO: evidência com `\|` e acento, id com rótulo | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c16 | LEGÍTIMO: retroativo com `?` | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 1 de 3 | ok |
+| c17 | LEGÍTIMO: texto com `||` (ou lógico) duas vezes | passa | 2/2 | — | 0 | 0/0 | 1 | — | 3 de 3 · 0 de 3 · 0 de 3 | FALSO POSITIVO no lint (c2 saía 0) aviso indevido no medidor |
+| c18 | LEGÍTIMO: linhas indentadas e tabela dentro de item de lista | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c19 | LEGÍTIMO: 2 barras e seta no texto `rodada 1 | rodada 2 | rodada 3` | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+| c20 | LEGÍTIMO: o molde do pacote preenchido com 3 linhas | passa | 0/0 | — | 0 | 0/0 | 0 | — | 3 de 3 · 0 de 3 · 0 de 3 | ok |
+
+DETALHE DOS CASOS QUE NÃO SAÍRAM `ok`
+
+### a14 — todas as barras escapadas (texto puro)
+--- lint (exit 0):
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- medidor (exit 0): fora da conta: 0
+
+### a16 — depois de comentário fechado na mesma linha `<!-- x --> | R3`
+--- lint (exit 0):
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- medidor (exit 0): fora da conta: 0
+
+### a17 — depois do `-->` que fecha comentário de várias linhas
+--- lint (exit 0):
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- medidor (exit 0): fora da conta: 0
+
+### a18 — só 3 barras: as últimas células coladas
+--- lint (exit 0):
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- medidor (exit 0): fora da conta: 0
+
+### a19 — barras de largura cheia `｜`
+--- lint (exit 0):
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- medidor (exit 0): fora da conta: 0
+
+### a36 — sem barra inicial, com a 1ª barra escapada e 3 soltas
+--- lint (exit 0):
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- medidor (exit 0): fora da conta: 0
+
+### b03 — cerca aberta e nunca fechada
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:7 — bloco cercado aberto e não fechado: o resto do arquivo não foi lido
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:7: bloco cercado aberto e não fechado: o resto do arquivo não foi lido)
+
+### b04 — comentário aberto e nunca fechado
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:7 — comentário <!-- aberto e não fechado: o resto do arquivo não foi lido
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:7: comentário <!-- aberto e não fechado: o resto do arquivo não foi lido)
+
+### b05 — linha ruim entre dois blocos cujo info string tem espaço (paridade)
+--- lint (exit 0):
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- medidor (exit 0): fora da conta: 0
+
+### b05b — idem com ```{.python}
+--- lint (exit 0):
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- medidor (exit 0): fora da conta: 0
+
+### b05d — bloco ~~~ com uma linha ``` dentro, depois a linha ruim, depois outro bloco igual
+--- lint (exit 0):
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- medidor (exit 0): fora da conta: 0
+
+### b06 — LEGÍTIMO: bloco de 4 crases com tabela de exemplo dentro
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:10 — a linha tem 3 célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão); este arquivo só tem a tabela do ledger
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:10: linha com 3 célula(s), o ledger tem 7 (rode o ledger-revisao-lint.sh))
+
+### b07 — LEGÍTIMO: bloco ~~~ com uma linha ``` dentro
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:11 — bloco cercado aberto e não fechado: o resto do arquivo não foi lido
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:11: bloco cercado aberto e não fechado: o resto do arquivo não foi lido)
+
+### b08 — LEGÍTIMO: bloco com info string de 2 palavras (```sh title=x) e linhas depois
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:9 — bloco cercado aberto e não fechado: o resto do arquivo não foi lido
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:9: bloco cercado aberto e não fechado: o resto do arquivo não foi lido)
+
+### b11 — LEGÍTIMO: bloco ```text com `~~~` dentro
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:11 — bloco cercado aberto e não fechado: o resto do arquivo não foi lido
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:11: bloco cercado aberto e não fechado: o resto do arquivo não foi lido)
+
+### c03 — LEGÍTIMO: texto com 4 barras
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:9 — linha com forma de linha do ledger fora da tabela: toda linha do ledger começa por `|` (sem citação, item de lista nem barra invertida antes)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:9: linha com forma de linha do ledger fora da tabela (não começa por `|`): não foi lida)
+
+### c04 — LEGÍTIMO: texto citando o cabeçalho entre crases
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:9 — linha com forma de linha do ledger fora da tabela: toda linha do ledger começa por `|` (sem citação, item de lista nem barra invertida antes)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:9: linha com forma de linha do ledger fora da tabela (não começa por `|`): não foi lida)
+
+### c08 — LEGÍTIMO: comando em crases com 4 barras no texto
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:9 — linha com forma de linha do ledger fora da tabela: toda linha do ledger começa por `|` (sem citação, item de lista nem barra invertida antes)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:9: linha com forma de linha do ledger fora da tabela (não começa por `|`): não foi lida)
+
+### c09 — LEGÍTIMO: texto 'Sem achados graves nesta rodada.'
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:9 — rodada sem achados se escreve `sem achados: rodada=<N> EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>`
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 0
+
+### c13 — LEGÍTIMO: linha de navegação com 4 barras
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:9 — linha com forma de linha do ledger fora da tabela: toda linha do ledger começa por `|` (sem citação, item de lista nem barra invertida antes)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:9: linha com forma de linha do ledger fora da tabela (não começa por `|`): não foi lida)
+
+### c17 — LEGÍTIMO: texto com `||` (ou lógico) duas vezes
+--- lint (exit 2):
+🛑 LEDGER_REVISAO_X.md:9 — linha com forma de linha do ledger fora da tabela: toda linha do ledger começa por `|` (sem citação, item de lista nem barra invertida antes)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+--- medidor (exit 0): fora da conta: 1 (LEDGER_REVISAO_X.md:9: linha com forma de linha do ledger fora da tabela (não começa por `|`): não foi lida)
+
+exit=0

@@ -1,0 +1,143 @@
+$ /usr/bin/python3 -I casos/driver3.py <copia 0d4a730> <work3> <reais>   (pasta de base: revisor claude exit 0 US$ 1 com R1 R2 R3; auditor openrouter exit 0 US$ 0.5 com AGREE, DISAGREE_EVIDENCE e NOVO N1; ledger com as 4 linhas)
+== B5: exit ausente ou vazio
+a4b — auditor sem a linha auditor_exit, com custo US$ 7
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: auditor (openrouter:qwen/q-plus): sem exit no META.txt e com custo `US$ 7`; a chamada e o custo dela não foram contados; LEDGER_REVISAO_X.md:8: achado N1 não está em EXTERNAL_REVIEW_20260301-000001)
+  RESULTADO: MEDIDO
+a4c — auditor_exit vazio, com custo US$ 7
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: auditor (openrouter:qwen/q-plus): sem exit no META.txt e com custo `US$ 7`; a chamada e o custo dela não foram contados; LEDGER_REVISAO_X.md:8: achado N1 não está em EXTERNAL_REVIEW_20260301-000001)
+  RESULTADO: MEDIDO
+a4d — revisor sem reviewer_exit, com custo US$ 1
+  exit 0
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 4 (EXTERNAL_REVIEW_20260301-000001: revisor (claude): sem exit no META.txt e com custo `US$ 1.0000`; a chamada e o custo dela não foram contados; LEDGER_REVISAO_X.md:5: achado R1 não está em EXTERNAL_REVIEW_20260301-000001; LEDGER_REVISAO_X.md:6: achado R2 não está em EXTERNAL_REVIEW_20260301-000001; LEDGER_REVISAO_X.md:7: achado R3 não está em EXTERNAL_REVIEW_20260301-000001)
+  RESULTADO: MEDIDO
+e10 — revisor sem exit e sem custo, com 3 achados no arquivo de vereditos
+  exit 0
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 3 (LEDGER_REVISAO_X.md:5: achado R1 não está em EXTERNAL_REVIEW_20260301-000001; LEDGER_REVISAO_X.md:6: achado R2 não está em EXTERNAL_REVIEW_20260301-000001; LEDGER_REVISAO_X.md:7: achado R3 não está em EXTERNAL_REVIEW_20260301-000001)
+  RESULTADO: MEDIDO
+e10b — auditor sem exit, custo `assinatura`
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: auditor (openrouter:qwen/q-plus): sem exit no META.txt e com custo `assinatura`; a chamada e o custo dela não foram contados; LEDGER_REVISAO_X.md:8: achado N1 não está em EXTERNAL_REVIEW_20260301-000001)
+  RESULTADO: MEDIDO
+e10c — auditor sem exit, custo `n/d`, com NOVO no arquivo
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  fora da conta: 1 (LEDGER_REVISAO_X.md:8: achado N1 não está em EXTERNAL_REVIEW_20260301-000001)
+  RESULTADO: MEDIDO
+e11 — auditor com engine `-`, exit 0 e custo US$ 7
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  fora da conta: 1 (LEDGER_REVISAO_X.md:8: achado N1 não está em EXTERNAL_REVIEW_20260301-000001)
+  RESULTADO: MEDIDO
+e11b — auditor sem a linha da engine, exit 0 e custo US$ 7
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  fora da conta: 1 (LEDGER_REVISAO_X.md:8: achado N1 não está em EXTERNAL_REVIEW_20260301-000001)
+  RESULTADO: MEDIDO
+e11c — desempate com engine e custo US$ 9, sem desempate_exit
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 1 (EXTERNAL_REVIEW_20260301-000001: desempate (claude): sem exit no META.txt e com custo `US$ 9`; a chamada e o custo dela não foram contados)
+  RESULTADO: MEDIDO
+e11d — 2º revisor `indisponível` com custo US$ 4
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 1 (EXTERNAL_REVIEW_20260301-000001: 2º revisor indisponível: nenhuma engine foi chamada)
+  RESULTADO: MEDIDO
+
+== números: o que fica de fora sem aviso?
+e01 — linha do R2 truncada no arquivo de vereditos (JSON inválido)
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 2 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | — | — | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 1 (LEDGER_REVISAO_X.md:6: achado R2 não está em EXTERNAL_REVIEW_20260301-000001)
+  RESULTADO: MEDIDO
+e01b — linha sem a chave `achado` no arquivo de vereditos
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 2 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | — | — | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 1 (LEDGER_REVISAO_X.md:6: achado R2 não está em EXTERNAL_REVIEW_20260301-000001)
+  RESULTADO: MEDIDO
+e01c — auditor com vereditos `agree` e `DISAGREE` (fora da lista)
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 100.0% (1 de 1) |
+  fora da conta: 0
+  RESULTADO: MEDIDO
+e02 — a mesma pasta copiada 2 vezes (` copy` e `-2`)
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 3 | 0 | 0.0000 | 3.0000 | 9 | 3 de 9 | 0 de 9 | 0 de 9 | 0 de 9 | 6 de 9 | — | — | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 3 | 0 | 1.5000 | 1.5000 | 3 | 0 de 3 | 0 de 3 | 1 de 3 | 0 de 3 | 2 de 3 | — | — | 50.0% (3 de 6) |
+  fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001 copy: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260301-000001-2: sem linha em nenhum ledger: os achados dela ficam em sem classificar)
+  RESULTADO: MEDIDO
+e03 — R1 sem rótulo nos dois revisores; o ledger tem uma linha R1
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  | 2º revisor | codex (-) | assinatura | 1 | 0 | 0.0000 | n/d | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 0
+  RESULTADO: MEDIDO
+B7c — dano = sim sem teste (R1), e com REBATIDA (R2, R3)
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 1 de 3 | 1 de 3 | 1 de 3 | 1 de 3 | 0 de 3 | 0.0000 | 1.0000 | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 2 (LEDGER_REVISAO_X.md:6: achado R2: dano = sim com veredito REBATIDA_EVIDENCIA não conta como falha com dano; LEDGER_REVISAO_X.md:7: achado R3: dano = sim com veredito REBATIDA_ESCOPO não conta como falha com dano)
+  RESULTADO: MEDIDO
+e05 — veredito minúsculo e dano `NAO`
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 1 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 2 de 3 | — | — | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 2 (LEDGER_REVISAO_X.md:5: veredito `aplicada` fora da lista; LEDGER_REVISAO_X.md:7: dano `NAO` fora de sim, nao, ?)
+  RESULTADO: MEDIDO
+e06 — R1 duas vezes com vereditos diferentes
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 1 (LEDGER_REVISAO_X.md:6: achado R1 repetido (1ª vez em LEDGER_REVISAO_X.md:5))
+  RESULTADO: MEDIDO
+e07 — linha de pasta que não existe + `sem achados` para pasta com achados
+  exit 0
+  | revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | — | — | — |
+  | auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.5000 | 0.5000 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 50.0% (1 de 2) |
+  fora da conta: 2 (LEDGER_REVISAO_X.md:11: o ledger diz `sem achados` para EXTERNAL_REVIEW_20260301-000001, mas a revisão tem 4 achado(s): eles ficam em sem classificar; LEDGER_REVISAO_X.md:9: achado R1 não está em EXTERNAL_REVIEW_20260301-000009)
+  RESULTADO: MEDIDO
+
+== B7: notas
+B7a — --ledgers ""
+  exit 64
+  🛑 eval-revisores: --ledgers pede um caminho
+  RESULTADO: PAROU
+B7a2 — --registry ""
+  exit 64
+  🛑 eval-revisores: --registry pede um caminho
+  RESULTADO: PAROU
+B7a3 — --ledgers sem valor
+  exit 64
+  🛑 eval-revisores: --ledgers pede um caminho
+  RESULTADO: PAROU
+B7a4 — pasta ""
+  exit 64
+  🛑 eval-revisores: o caminho da pasta veio vazio
+  RESULTADO: PAROU
+B7a5 — duas pastas
+  exit 64
+  🛑 eval-revisores: argumento a mais: b7/rev
+  RESULTADO: PAROU
+B7b — lint: `sem achados` num arquivo e linha de dados da mesma revisão em outro, juntos [py39]
+  exit 2 · 🛑 LEDGER_REVISAO_B.md:5 — a revisão EXTERNAL_REVIEW_20260301-000001 está marcada `sem achados` em LEDGER_REVISAO_A.md:3 e tem achado nesta linha
+  ordem trocada: exit 2 · 🛑 LEDGER_REVISAO_B.md:5 — a revisão EXTERNAL_REVIEW_20260301-000001 está marcada `sem achados` em LEDGER_REVISAO_A.md:3 e tem achado nesta linha
+B7b — lint: `sem achados` num arquivo e linha de dados da mesma revisão em outro, juntos [py315]
+  exit 2 · 🛑 LEDGER_REVISAO_B.md:5 — a revisão EXTERNAL_REVIEW_20260301-000001 está marcada `sem achados` em LEDGER_REVISAO_A.md:3 e tem achado nesta linha
+  ordem trocada: exit 2 · 🛑 LEDGER_REVISAO_B.md:5 — a revisão EXTERNAL_REVIEW_20260301-000001 está marcada `sem achados` em LEDGER_REVISAO_A.md:3 e tem achado nesta linha
+
+== reais: soma dos custo_total dos META contra a soma do nominal da tabela
+  soma de custo_total em 25 META: 59.1043 · soma da coluna Nominal da tabela: 59.1043 · soma da coluna Pago: 1.8168
+exit=0

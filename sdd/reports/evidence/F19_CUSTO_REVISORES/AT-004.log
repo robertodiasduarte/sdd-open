@@ -1,0 +1,10 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_eval_revisores.Tabela.test_chamada_que_falhou_conta_em_falhas_e_o_custo_dela_entra test_eval_revisores.Tabela.test_engine_prevista_que_falhou_e_foi_trocada_ganha_a_falha test_eval_revisores.Tabela.test_fora_da_conta_diz_o_motivo_de_cada_exclusao
+test_chamada_que_falhou_conta_em_falhas_e_o_custo_dela_entra (test_eval_revisores.Tabela) ... ok
+test_engine_prevista_que_falhou_e_foi_trocada_ganha_a_falha (test_eval_revisores.Tabela) ... ok
+test_fora_da_conta_diz_o_motivo_de_cada_exclusao (test_eval_revisores.Tabela) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.165s
+
+OK
+[exit=0]

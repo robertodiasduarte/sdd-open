@@ -1,0 +1,20 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_f21_textos.Documentos test_docs.ReadmeEAgents test_docs.Guia
+test_agents_tmpl_tem_a_linha_er_entre_kb_e_0_e_as_outras_no_lugar (test_f21_textos.Documentos) ... ok
+test_ancoras_das_skills_orquestradas (test_f21_textos.Documentos) ... ok
+test_cli_conventions_declara_o_lint (test_f21_textos.Documentos) ... ok
+test_guia_do_aluno (test_f21_textos.Documentos) ... ok
+test_readme_nos_dois_idiomas (test_f21_textos.Documentos) ... ok
+test_agents_tmpl (test_docs.ReadmeEAgents) ... ok
+test_readme_cita_as_skills_a_kb_e_o_ok (test_docs.ReadmeEAgents) ... ok
+test_dez_blocos_numerados (test_docs.Guia) ... ok
+test_instalacao_e_atualizacao_do_open (test_docs.Guia) ... ok
+test_o_teste_acusa_sdd_fora_do_git (test_docs.Guia) ... ok
+test_os_sete_agentes (test_docs.Guia) ... ok
+test_sem_as_premissas_do_starter (test_docs.Guia) ... ok
+test_uma_ficha_por_skill (test_docs.Guia) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.010s
+
+OK
+[exit=0]

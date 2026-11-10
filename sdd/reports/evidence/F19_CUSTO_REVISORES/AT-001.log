@@ -1,0 +1,12 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_eval_revisores.Tabela.test_sai_0_medido_com_a_seta test_eval_revisores.Tabela.test_cabecalho_tem_as_16_colunas_na_ordem test_eval_revisores.Tabela.test_cada_celula_da_tabela test_eval_revisores.Tabela.test_o_mesmo_modelo_por_dois_provedores_fica_em_duas_linhas test_eval_revisores.SemDadosEUso.test_le_o_output_dir_do_config
+test_sai_0_medido_com_a_seta (test_eval_revisores.Tabela) ... ok
+test_cabecalho_tem_as_16_colunas_na_ordem (test_eval_revisores.Tabela) ... ok
+test_cada_celula_da_tabela (test_eval_revisores.Tabela) ... ok
+test_o_mesmo_modelo_por_dois_provedores_fica_em_duas_linhas (test_eval_revisores.Tabela) ... ok
+test_le_o_output_dir_do_config (test_eval_revisores.SemDadosEUso) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.317s
+
+OK
+[exit=0]

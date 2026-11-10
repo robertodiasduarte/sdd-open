@@ -1,0 +1,18 @@
+$ sabotar.sh <repo> HEAD  (6a54790)
+== MUTANTE M1 regra da pasta volta à 1.0.0 — .agents/skills/sdd-engenharia-reversa-saas/SKILL.md
+FAIL: test_regra_da_pasta_igual_nos_dois_arquivos (test_f21_textos.Texto.test_regra_da_pasta_igual_nos_dois_arquivos)
+FAIL: test_sem_a_regra_antiga_da_pasta (test_f21_textos.Texto.test_sem_a_regra_antiga_da_pasta)
+FAILED (failures=2)
+MORTO por test_regra_da_pasta_igual_nos_dois_arquivos [exit=1]
+== MUTANTE M2 lint deixa passar observado sem sessão — .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py
+FAIL: test_observed_requires_session_evidence (test_validate_reverse.ReportTests.test_observed_requires_session_evidence)
+FAILED (failures=1)
+MORTO por test_observed_requires_session_evidence [exit=1]
+== MUTANTE M3 nome do produto real volta ao exemplo — .agents/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md
+FAIL: test_sem_produto_real_vitrine_ou_ferramenta_de_um_agente (test_f21_textos.Texto.test_sem_produto_real_vitrine_ou_ferramenta_de_um_agente)
+FAILED (failures=1)
+MORTO por test_sem_produto_real_vitrine_ou_ferramenta_de_um_agente [exit=1]
+== MUTANTE M4 linha ER sai do AGENTS.md.tmpl — AGENTS.md.tmpl
+FAIL: test_agents_tmpl_tem_a_linha_er_entre_kb_e_0_e_as_outras_no_lugar (test_f21_textos.Documentos.test_agents_tmpl_tem_a_linha_er_entre_kb_e_0_e_as_outras_no_lugar)
+FAILED (failures=1)
+MORTO por test_agents_tmpl_tem_a_linha_er_entre_kb_e_0_e_as_outras_no_lugar [exit=1]

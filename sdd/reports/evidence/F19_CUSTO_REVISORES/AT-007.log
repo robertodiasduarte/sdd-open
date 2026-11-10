@@ -1,0 +1,18 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_fluxo.Loop.test_ledger_de_7_colunas_fecha_como_o_de_5 test_fluxo.Loop.test_ledger_de_7_colunas_em_revisao_de_ids_sem_rotulo test_eval_agree
+test_ledger_de_7_colunas_fecha_como_o_de_5 (test_fluxo.Loop) ... ok
+test_ledger_de_7_colunas_em_revisao_de_ids_sem_rotulo (test_fluxo.Loop) ... ok
+test_at014_numeros_exatos_da_fixture (test_eval_agree.EvalAgree) ... ok
+test_at014_pasta_padrao_vem_do_output_dir (test_eval_agree.EvalAgree) ... ok
+test_at015_fora_da_conta_com_o_motivo (test_eval_agree.EvalAgree) ... ok
+test_at016_sem_dados_e_uso (test_eval_agree.EvalAgree) ... ok
+test_at017_so_le_arquivos (test_eval_agree.EvalAgree) ... ok
+test_aval1_l3_projeto_sem_revisoes_ainda_e_sem_dados (test_eval_agree.EvalAgree) ... ok
+test_aval1_l4_sem_git_no_path_usa_a_pasta_atual (test_eval_agree.EvalAgree) ... ok
+test_real2_comentario_sem_indentacao_no_bloco_review (test_eval_agree.EvalAgree) ... ok
+test_real2_gemini_com_varios_modelos_fica_numa_linha (test_eval_agree.EvalAgree) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 1.471s
+
+OK
+[exit=0]

@@ -1,0 +1,11 @@
+$ PYTHONIOENCODING=ascii /usr/bin/python3 -B .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py semsecao.md; echo exit=$?   # levantamento válido com a seção "Lacunas e contradições" renomeada
+Traceback (most recent call last):
+  File "<tmp>/arch/.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py", line 211, in <module>
+    raise SystemExit(main())
+  File "<tmp>/arch/.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py", line 206, in main
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 58-59: ordinal not in range(128)
+exit=1
+$ mesmo comando sem PYTHONIOENCODING
+{"errors": ["SECAO_AUSENTE_OU_DUPLICADA:Lacunas e contradições"], "evidence_count": 1, "finding_count": 1, "ok": false, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=2

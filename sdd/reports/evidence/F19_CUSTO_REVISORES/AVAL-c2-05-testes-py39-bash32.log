@@ -1,0 +1,42 @@
+$ for t in test_eval_revisores test_ledger_revisao_lint test_f19_textos test_fluxo test_eval_agree test_contrato_build_release test_docs test_bash32; do echo "== $t"; PATH=/usr/bin:/bin SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "$t.py" 2>&1 | tail -4; done
+== test_eval_revisores
+----------------------------------------------------------------------
+Ran 42 tests in 5.977s
+
+OK
+== test_ledger_revisao_lint
+----------------------------------------------------------------------
+Ran 17 tests in 3.918s
+
+OK
+== test_f19_textos
+----------------------------------------------------------------------
+Ran 17 tests in 28.442s
+
+OK
+== test_fluxo
+----------------------------------------------------------------------
+Ran 69 tests in 23.459s
+
+OK
+== test_eval_agree
+----------------------------------------------------------------------
+Ran 9 tests in 1.216s
+
+OK
+== test_contrato_build_release
+----------------------------------------------------------------------
+Ran 29 tests in 0.151s
+
+OK
+== test_docs
+----------------------------------------------------------------------
+Ran 23 tests in 0.046s
+
+OK
+== test_bash32
+----------------------------------------------------------------------
+Ran 3 tests in 0.070s
+
+OK
+[exit 0]

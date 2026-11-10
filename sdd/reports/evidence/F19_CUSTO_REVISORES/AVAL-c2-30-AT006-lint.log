@@ -1,0 +1,76 @@
+$ /usr/bin/python3 -I -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/ferr/lint.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/lint
+== fixtures do pacote
+achado-repetido.md                     exit 2 · 1 violação(ões) · achado R1@claude repetido na revisão EXTERNAL_REVIEW_20260201-000001 (1ª vez em /private/tmp/claude-501/-Users
+controle.md                            exit 0 · 0 violação(ões)
+interrogacao-fora-de-retroativo.md     exit 2 · 1 violação(ões) · dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)
+retroativo-mal-escrito.md              exit 2 · 2 violação(ões) · a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+retroativo.md                          exit 0 · 0 violação(ões)
+sem-dano.md                            exit 2 · 1 violação(ões) · a linha tem 5 célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão); este arquivo
+sem-linhas.md                          exit 64 · 1 violação(ões) · nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+sim-rebatida.md                        exit 2 · 1 violação(ões) · dano = sim com veredito REBATIDA_EVIDENCIA: só achado APLICADA pode ser falha com dano
+sim-sem-teste.md                       exit 2 · 1 violação(ões) · dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste o
+so-sem-achados.md                      exit 0 · 0 violação(ões)
+veredito-invalido.md                   exit 2 · 1 violação(ões) · veredito `APLICADA em parte` fora de APLICADA, REBATIDA_EVIDENCIA, REBATIDA_ESCOPO
+== o molde e o ledger de exemplo do medidor
+sdd/templates/LEDGER_REVISAO_TEMPLATE.md                     exit 64 · 🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia/sdd/temp
+sdd/fixtures/revisao/custo/LEDGER_REVISAO_EXEMPLO.md         exit 0 · ✅ ledger da revisão: 13 linha(s) e 1 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+sdd/fixtures/fluxo/ledger-7-colunas.md                       exit 0 · ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+c01 controle mínimo                                                        esperado  0 · saiu  0 · 0 msg · ok
+c02 ids R1, N1, R1@claude, N1@openrouter:qwen/q-plus; rodada=5a; pasta com esperado  0 · saiu  0 · 0 msg · ok
+c03 falta a célula dano (6 células)                                        esperado  2 · saiu  2 · 1 msg · ok · a linha tem 6 célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão); este arquivo só tem a 
+c04 5 colunas antigas                                                      esperado  2 · saiu  2 · 1 msg · ok · a linha tem 5 célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão); este arquivo só tem a 
+c05 8 células (barra não escapada)                                         esperado  2 · saiu  2 · 1 msg · ok · a linha tem 8 células, o ledger da revisão tem 7: escape `|` dentro de célula com `\|`
+c06 barra escapada na evidência                                            esperado  0 · saiu  0 · 0 msg · ok
+c07 dano = sim sem teste                                                   esperado  2 · saiu  2 · 1 msg · ok · dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste ou tests/…)
+c08 dano = sim com `teste: qualquer coisa` (sem forma de teste)            esperado  2 · saiu  2 · 1 msg · ok · dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste ou tests/…)
+c09 dano = sim com teste: test_x                                           esperado  0 · saiu  0 · 0 msg · ok
+c10 dano = sim com Teste: `tests/test_a.py::test_b`                        esperado  0 · saiu  0 · 0 msg · ok
+c11 dano = sim com REBATIDA_EVIDENCIA e teste                              esperado  2 · saiu  2 · 1 msg · ok · dano = sim com veredito REBATIDA_EVIDENCIA: só achado APLICADA pode ser falha com dano
+c12 dano = sim com REBATIDA_ESCOPO e teste                                 esperado  2 · saiu  2 · 1 msg · ok · dano = sim com veredito REBATIDA_ESCOPO: só achado APLICADA pode ser falha com dano
+c13 dano = ? sem retroativo                                                esperado  2 · saiu  2 · 1 msg · ok · dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)
+c14 dano = ? com `retroativo: sim`                                         esperado  0 · saiu  0 · 0 msg · ok
+c15 dano = ? com `retroativo: sim` dentro de cerca                         esperado  2 · saiu  2 · 1 msg · ok · dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)
+c16 quase-forma **retroativo: sim**                                        esperado  2 · saiu  2 · 2 msg · ok · a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+c17 quase-forma `> retroativo: sim`                                        esperado  2 · saiu  2 · 2 msg · ok · a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+c18 quase-forma `Retroativo: Sim`                                          esperado  2 · saiu  2 · 2 msg · ok · a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+c19 quase-forma `retroativo: sim ` + texto                                 esperado  2 · saiu  2 · 2 msg · ok · a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+c20 quase-forma em ledger sem `?` (reprova assim mesmo?)                   esperado  2 · saiu  2 · 1 msg · ok · a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+c21 dano = talvez                                                          esperado  2 · saiu  2 · 1 msg · ok · dano `talvez` fora de sim, nao, ?
+c22 dano = SIM (maiúscula)                                                 esperado  2 · saiu  2 · 1 msg · ok · dano `SIM` fora de sim, nao, ?
+c23 dano = não (com til)                                                   esperado  2 · saiu  2 · 1 msg · ok · dano `não` fora de sim, nao, ?
+c24 veredito ACEITA                                                        esperado  2 · saiu  2 · 1 msg · ok · veredito `ACEITA` fora de APLICADA, REBATIDA_EVIDENCIA, REBATIDA_ESCOPO
+c25 veredito `APLICADA em parte`                                           esperado  2 · saiu  2 · 1 msg · ok · veredito `APLICADA em parte` fora de APLICADA, REBATIDA_EVIDENCIA, REBATIDA_ESCOPO
+c26 severidade CRITICAL                                                    esperado  2 · saiu  2 · 1 msg · ok · severidade `CRITICAL` fora de HIGH, MED, LOW
+c27 rodada `1`                                                             esperado  2 · saiu  2 · 1 msg · ok · rodada `1` fora do formato rodada=<N>
+c28 rodada `rodada=`                                                       esperado  2 · saiu  2 · 1 msg · ok · rodada `rodada=` fora do formato rodada=<N>
+c29 pasta `EXTERNAL_REVIEW_2026`                                           esperado  2 · saiu  2 · 1 msg · ok · revisão `EXTERNAL_REVIEW_2026` não é uma pasta EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>
+c30 pasta com caminho `sdd/reports/reviews/EXTERNAL_…`                     esperado  2 · saiu  2 · 1 msg · ok · revisão `sdd/reports/reviews/EXTERNAL_REVIEW_20260301-000001` não é uma pasta EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>
+c31 evidência vazia                                                        esperado  2 · saiu  2 · 1 msg · ok · evidência vazia
+c32 evidência `—`                                                          esperado  2 · saiu  2 · 1 msg · ok · evidência vazia
+c33 id `r2` minúsculo                                                      esperado  2 · saiu  2 · 1 msg · ok · achado `r2` fora do formato R<n> ou N<n>, com @<engine> opcional: copie o id do arquivo de vereditos
+c34 id `R2@`                                                               esperado  2 · saiu  2 · 1 msg · ok · achado `R2@` fora do formato R<n> ou N<n>, com @<engine> opcional: copie o id do arquivo de vereditos
+c35 id `X2`                                                                esperado  2 · saiu  2 · 1 msg · ok · achado `X2` fora do formato R<n> ou N<n>, com @<engine> opcional: copie o id do arquivo de vereditos
+c36 cabeçalho com 2 nomes trocados (A5): 1 mensagem só                     esperado  2 · saiu  2 · 1 msg · ok · o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | evidência | dano | revisão |`
+c37 cabeçalho `achado | severidade | …`                                    esperado  2 · saiu  2 · 1 msg · ok · o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | evidência | dano | revisão |`
+c38 cabeçalho de 5 colunas                                                 esperado  2 · saiu  2 · 1 msg · ok · o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | evidência | dano | revisão |`
+c39 outra tabela no arquivo                                                esperado  2 · saiu  2 · 2 msg · ok · a linha tem 2 célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão); este arquivo só tem a 
+c40 outra tabela de 7 colunas no arquivo                                   esperado  2 · saiu  2 · 12 msg · ok · achado `a` fora do formato R<n> ou N<n>, com @<engine> opcional: copie o id do arquivo de vereditos
+c41 mesmo achado repetido na mesma revisão, mesmo arquivo                  esperado  2 · saiu  2 · 1 msg · ok · achado R1 repetido na revisão EXTERNAL_REVIEW_20260301-000001 (1ª vez em /private/tmp/claude-501/-Users-robertoduarte-rd
+c42 mesmo id em revisões diferentes                                        esperado  0 · saiu  0 · 0 msg · ok
+c43 mesmo achado repetido entre 2 arquivos                                 esperado  2 · saiu  2 · 1 msg · ok · achado R1 repetido na revisão EXTERNAL_REVIEW_20260301-000001 (1ª vez em /private/tmp/claude-501/-Users-robertoduarte-rd
+c44 `sem achados:` + linha de dados da mesma revisão                       esperado  2 · saiu  2 · 1 msg · ok · a revisão EXTERNAL_REVIEW_20260301-000001 está marcada `sem achados` na linha 5 e tem achado nesta linha
+c45 `sem achados:` num arquivo e linha de dados da mesma revisão em outro  esperado  2 · saiu  0 · 0 msg · DIFERENTE DO ESPERADO
+c46 só `sem achados:`                                                      esperado  0 · saiu  0 · 0 msg · ok
+c47 `sem achados` mal escrito (`Sem achados na rodada 2`)                  esperado  2 · saiu  2 · 1 msg · ok · rodada sem achados se escreve `sem achados: rodada=<N> EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>`
+c48 `- sem achados: rodada=2 PASTA` (item de lista)                        esperado  2 · saiu  2 · 1 msg · ok · rodada sem achados se escreve `sem achados: rodada=<N> EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>`
+c49 `sem achados:` repetido para a mesma revisão                           esperado  0 · saiu  0 · 0 msg · ok
+c50 arquivo só com texto                                                   esperado 64 · saiu 64 · 1 msg · ok · nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+c51 arquivo só com cabeçalho                                               esperado 64 · saiu 64 · 1 msg · ok · nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+c52 arquivo vazio + arquivo com violação → mostra a violação               esperado  2 · saiu  2 · 2 msg · ok · veredito `XX` fora de APLICADA, REBATIDA_EVIDENCIA, REBATIDA_ESCOPO
+c53 arquivo com violação + arquivo vazio                                   esperado  2 · saiu  2 · 2 msg · ok · veredito `XX` fora de APLICADA, REBATIDA_EVIDENCIA, REBATIDA_ESCOPO
+c54 arquivo bom + arquivo vazio                                            esperado 64 · saiu 64 · 1 msg · ok · nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+c55 arquivo com violação + caminho ilegível → 64, lido antes               esperado 64 · saiu 64 · 1 msg · ok
+c56 linhas só dentro de cerca                                              esperado 64 · saiu 64 · 1 msg · ok · nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+c57 linhas só dentro de comentário                                         esperado 64 · saiu 64 · 1 msg · ok · nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+casos: 57 · diferentes do esperado: 1
+[exit 0]

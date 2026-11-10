@@ -1,0 +1,25 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_validate_reverse
+test_cli_missing_file_returns_safe_failure (test_validate_reverse.ReportTests) ... ok
+test_cli_works_outside_bundle_and_does_not_write_report (test_validate_reverse.ReportTests) ... ok
+test_conclusion_with_gaps_rejected (test_validate_reverse.ReportTests) ... ok
+test_conclusion_with_narrow_explicit_scope_is_valid (test_validate_reverse.ReportTests) ... ok
+test_duplicate_evidence_rejected (test_validate_reverse.ReportTests) ... ok
+test_duplicate_findings_rejected (test_validate_reverse.ReportTests) ... ok
+test_duplicated_required_section_rejected (test_validate_reverse.ReportTests) ... ok
+test_escaped_pipe_supported (test_validate_reverse.ReportTests) ... ok
+test_inaccessible_source_cannot_support_documented_claim (test_validate_reverse.ReportTests) ... ok
+test_inference_needs_support (test_validate_reverse.ReportTests) ... ok
+test_missing_dimension_rejected (test_validate_reverse.ReportTests) ... ok
+test_no_sources_is_valid_when_explicitly_unknown (test_validate_reverse.ReportTests) ... ok
+test_observed_requires_session_evidence (test_validate_reverse.ReportTests) ... ok
+test_observed_with_session_is_structurally_valid (test_validate_reverse.ReportTests) ... ok
+test_partial_documented_report_is_valid (test_validate_reverse.ReportTests) ... ok
+test_truncated_table_rejected (test_validate_reverse.ReportTests) ... ok
+test_unfilled_asset_rejected (test_validate_reverse.ReportTests) ... ok
+test_unknown_reference_rejected (test_validate_reverse.ReportTests) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.073s
+
+OK
+[exit=0]

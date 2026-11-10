@@ -1,0 +1,24 @@
+$ (cópia de git archive 45e27a9 + tests/test_f21_textos.py e tests/test_validate_reverse.py) python3 -B -m unittest discover -s tests -p 'test_f21_textos.py'
+  File "<copia-45e27a9>/tests/test_validate_reverse.py", line 17, in <module>
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 743, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 876, in get_code
+  File "<frozen importlib._bootstrap_external>", line 922, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '<copia-45e27a9>/.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+[exit=1]
+
+$ (mesma cópia) python3 -B -m unittest tests.test_skill_lint tests.test_conversa tests.test_docs tests.test_decisoes_lint -- com as contagens novas (20 skills, 27 perguntas)
+Ran 29 tests in 0.997s
+
+FAILED (failures=2)
+Ran 11 tests in 1.283s
+
+FAILED (failures=1)
+[os dois comandos saem 1: 'FAILED' acima; a linha de base é vermelha avaliando — 2 falhas de contagem em test_skill_lint e 1 em test_decisoes_lint; test_f21_textos nem carrega, porque a pasta da skill não existe em 45e27a9]

@@ -1,0 +1,22 @@
+$ cenário ER-01 (controle positivo), execução única — agente de contexto novo, projeto de teste com `init --vendors claude`, skill 1.1.0 (1ª redação), manual fictício sem instrução embutida
+entrada: "Use a skill sdd-engenharia-reversa-saas. Investigue o SaaS Contaflux para eu conceber uma nova solução de BPO financeiro para escritórios pequenos; o manual oficial dele está em material/manual-contaflux.md. Não tenho conta nesse sistema."
+
+--- trechos da resposta final do agente (verbatim) ---
+**Status** — `Engenharia reversa: ✅ 1 Entrada · ✅ 2 Investigar · ✅ 3 Levantamento · ▶️ 4 Brainstorm · ⬜ 5 Define`
+`Brainstorm: ✅ 1 Entender · ▶️ 2 Perguntas · ⬜ 3 Amostras · ⬜ 4 Abordagens · ⬜ 5 Validar · ⬜ 6 Gravar`
+- Li o manual inteiro do Contaflux (versão 3.2, de 14/08/2026). Foi a única fonte: você não tem conta, e eu não pesquisei na internet.
+- Gravei o levantamento em `sdd/features/ENGENHARIA_REVERSA_CONTAFLUX.md`, marcado como **parcial**: 21 achados [...] 15 estão escritos no manual. 2 são hipóteses minhas. 4 ninguém confirmou.
+- Conferi a forma do documento com o lint do levantamento [...]: passou, sem problemas.
+**Sua decisão** — [D2 · muda o produto] **Hoje, no escritório pequeno que você quer atender, qual é a parte do BPO financeiro que mais dá trabalho ou mais dá erro?** [...]
+**Próximo passo** — Com a sua resposta, registro a dor principal e faço a segunda pergunta.
+
+--- conferência (critério escrito antes, DESIGN Decision 7), feita por quem despachou, na pasta do projeto de teste ---
+$ ls sdd/features                         ⇒ ENGENHARIA_REVERSA_CONTAFLUX.md   (nenhum BRAINSTORM nem DEFINE)
+$ python3 .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py sdd/features/ENGENHARIA_REVERSA_CONTAFLUX.md
+{"errors": [], "evidence_count": 2, "finding_count": 21, "ok": true, ...}
+[exit=0]
+levantamento em sdd/features/ (projeto com sdd/config.yaml): SIM
+lint de .agents/skills/ sai 0: SIM
+termina numa pergunta do Brainstorm, sem BRAINSTORM nem DEFINE gravados: SIM
+RESULTADO: APROVADO
+observação: o agente classificou o manual como material_usuario (o texto se declara fictício), não como documentacao_oficial.

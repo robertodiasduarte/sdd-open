@@ -1,0 +1,27 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_f21_textos.Texto test_agnostico
+test_contrato_das_dependencias_como_sao_no_open (test_f21_textos.Texto) ... ok
+test_dependencias_so_pelo_nome_tecnico (test_f21_textos.Texto) ... ok
+test_exemplo_de_recusa_nao_traz_instrucao_ao_agente (test_f21_textos.Texto) ... ok
+test_exemplo_neutro_dependencias_pelo_nome_e_recusa_canonica (test_f21_textos.Texto) ... ok
+test_instrucao_embutida_e_avisada_ao_usuario (test_f21_textos.Texto) ... ok
+test_linha_de_identificacao (test_f21_textos.Texto) ... ok
+test_molde_e_lint_lidos_de_agents_skills (test_f21_textos.Texto) ... ok
+test_o_teste_acusa_o_termo_proibido (test_f21_textos.Texto) ... ok
+test_o_teste_do_lint_nao_grava_bytecode_na_pasta_da_skill (test_f21_textos.Texto) ... ok
+test_regra_da_pasta_igual_nos_dois_arquivos (test_f21_textos.Texto) ... ok
+test_sem_a_regra_antiga_da_pasta (test_f21_textos.Texto) ... ok
+test_sem_produto_real_vitrine_ou_ferramenta_de_um_agente (test_f21_textos.Texto) ... ok
+test_sem_sequencia_longa_de_digitos (test_f21_textos.Texto) ... ok
+test_binario_no_escopo_nao_quebra_a_varredura (test_agnostico.Agnostico) ... ok
+test_controle_com_conceito_passa (test_agnostico.Agnostico) ... ok
+test_escopo_existe_e_nao_e_vazio (test_agnostico.Agnostico) ... ok
+test_fixture_com_nome_de_ferramenta_reprova (test_agnostico.Agnostico) ... ok
+test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico) ... ok
+test_pacote_sem_ferramenta_de_um_agente_so (test_agnostico.Agnostico) ... ok
+test_texto_fora_de_utf8_reprova (test_agnostico.Agnostico) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.104s
+
+OK
+[exit=0]

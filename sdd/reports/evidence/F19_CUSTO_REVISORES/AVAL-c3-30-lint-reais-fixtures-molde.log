@@ -1,0 +1,35 @@
+$ para cada ledger real e cada fixture: PATH=/usr/bin:/bin /bin/bash sdd/bin/ledger-revisao-lint.sh <arquivo>  (e o mesmo com python do PATH)
+[39] LEDGER_REVISAO_F13_UX_LLM.md → exit 0 · ✅ ledger da revisão: 23 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[315] LEDGER_REVISAO_F13_UX_LLM.md → exit 0 · ✅ ledger da revisão: 23 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[39] LEDGER_REVISAO_F14_DRIVE.md → exit 0 · ✅ ledger da revisão: 41 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[315] LEDGER_REVISAO_F14_DRIVE.md → exit 0 · ✅ ledger da revisão: 41 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[39] LEDGER_REVISAO_F14_PLAYBOOK.md → exit 0 · ✅ ledger da revisão: 33 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[315] LEDGER_REVISAO_F14_PLAYBOOK.md → exit 0 · ✅ ledger da revisão: 33 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[39] LEDGER_REVISAO_F15_SLOTS.md → exit 0 · ✅ ledger da revisão: 12 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[315] LEDGER_REVISAO_F15_SLOTS.md → exit 0 · ✅ ledger da revisão: 12 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[39] LEDGER_REVISAO_F19_CUSTO_REVISORES.md → exit 0 · ✅ ledger da revisão: 10 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[315] LEDGER_REVISAO_F19_CUSTO_REVISORES.md → exit 0 · ✅ ledger da revisão: 10 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[39] LEDGER_REVISAO_F21_ENGENHARIA_REVERSA.md → exit 0 · ✅ ledger da revisão: 7 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[315] LEDGER_REVISAO_F21_ENGENHARIA_REVERSA.md → exit 0 · ✅ ledger da revisão: 7 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+
+os 6 juntos:
+✅ ledger da revisão: 126 linha(s) e 0 rodada(s) sem achados em 6 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+exit=0
+
+fixtures do pacote:
+sdd/fixtures/revisao/ledger/achado-repetido.md → exit 2 · 1 violação(ões) · 🛑 sdd/fixtures/revisao/ledger/achado-repetido.md:6 — achado R1@claude repetido na revisão EXTERNAL_REVIEW_20260201-000001 (1ª vez em sdd/fixtures/revisao/ledger/achado-repetido.md:5)
+sdd/fixtures/revisao/ledger/controle.md → exit 0 · 0 violação(ões) · ✅ ledger da revisão: 4 linha(s) e 1 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+sdd/fixtures/revisao/ledger/interrogacao-fora-de-retroativo.md → exit 2 · 1 violação(ões) · 🛑 sdd/fixtures/revisao/ledger/interrogacao-fora-de-retroativo.md:5 — dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)
+sdd/fixtures/revisao/ledger/retroativo-mal-escrito.md → exit 2 · 2 violação(ões) · 🛑 sdd/fixtures/revisao/ledger/retroativo-mal-escrito.md:3 — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+sdd/fixtures/revisao/ledger/retroativo.md → exit 0 · 0 violação(ões) · ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+sdd/fixtures/revisao/ledger/sem-dano.md → exit 2 · 1 violação(ões) · 🛑 sdd/fixtures/revisao/ledger/sem-dano.md:5 — a linha tem 5 célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão); este arquivo só tem a tabela do ledger
+sdd/fixtures/revisao/ledger/sem-linhas.md → exit 64 · 1 violação(ões) · 🛑 sdd/fixtures/revisao/ledger/sem-linhas.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+sdd/fixtures/revisao/ledger/sim-rebatida.md → exit 2 · 1 violação(ões) · 🛑 sdd/fixtures/revisao/ledger/sim-rebatida.md:5 — dano = sim com veredito REBATIDA_EVIDENCIA: só achado APLICADA pode ser falha com dano
+sdd/fixtures/revisao/ledger/sim-sem-teste.md → exit 2 · 1 violação(ões) · 🛑 sdd/fixtures/revisao/ledger/sim-sem-teste.md:5 — dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste ou tests/…)
+sdd/fixtures/revisao/ledger/so-sem-achados.md → exit 0 · 0 violação(ões) · ✅ ledger da revisão: 0 linha(s) e 2 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+sdd/fixtures/revisao/ledger/veredito-invalido.md → exit 2 · 1 violação(ões) · 🛑 sdd/fixtures/revisao/ledger/veredito-invalido.md:5 — veredito `APLICADA em parte` fora de APLICADA, REBATIDA_EVIDENCIA, REBATIDA_ESCOPO
+sdd/fixtures/revisao/custo/LEDGER_REVISAO_EXEMPLO.md → exit 0 · 0 violação(ões) · ✅ ledger da revisão: 13 linha(s) e 1 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+sdd/fixtures/fluxo/ledger-7-colunas.md → exit 0 · 0 violação(ões) · ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+sdd/templates/LEDGER_REVISAO_TEMPLATE.md → exit 64 · 1 violação(ões) · 🛑 sdd/templates/LEDGER_REVISAO_TEMPLATE.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde

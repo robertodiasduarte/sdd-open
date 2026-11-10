@@ -1,0 +1,31 @@
+$ cat sdd/fixtures/revisao/custo/registry.tsv; for PY in /usr/bin /opt/homebrew/bin; do PATH=$PY:/usr/bin:/bin /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/at/custos --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/at/custos --registry sdd/fixtures/revisao/custo/registry.tsv | sed -n '3,$p'; echo "[exit ${PIPESTATUS[0]}]"; done
+# registry de exemplo das fixtures de custo: só as 4 primeiras colunas importam aqui (engine, adapter, modelo, cobranca)
+claude	claude	-	assinatura	revisor,auditor,desempate	900	x	x	x
+codex	codex	-	assinatura	revisor,auditor,desempate	900	x	x	x
+gemini	gemini	-	desconhecida	revisor,auditor,desempate	900	x	x	x
+openrouter	openrouter	qwen/q-plus	pay-per-token	revisor,auditor,desempate	900	x	x	x
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (m-x) | assinatura | 6 | 0 | 0.0000 | ≈2.9200 (n/d em 2 de 6) | 6 | 0 de 6 | 0 de 6 | 0 de 6 | 0 de 6 | 6 de 6 | — | — | — |
+| revisor | gemini (m-x) | desconhecida | 1 | 0 | n/d | 3.0000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | — |
+| 2º revisor | openrouter (t/t via T) | pay-per-token | 3 | 0 | 0.000090 | 0.000090 | 3 | 3 de 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0.000030 | 0.000030 | — |
+| auditor | openrouter (q/p via A) | pay-per-token | 2 | 0 | 0.3000 | 0.3000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 50.0% (1 de 2) |
+| auditor | openrouter (q/p via B) | pay-per-token | 2 | 0 | 1.0000 (n/d em 1 de 2, incerto em 1 de 2) | 1.0000 (n/d em 1 de 2, incerto em 1 de 2) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 100.0% (2 de 2) |
+
+fora da conta: 4 (EXTERNAL_REVIEW_20260401-000001: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260401-000002: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260401-000003: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260401-000004: sem linha em nenhum ledger: os achados dela ficam em sem classificar)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit 0]
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (m-x) | assinatura | 6 | 0 | 0.0000 | ≈2.9200 (n/d em 2 de 6) | 6 | 0 de 6 | 0 de 6 | 0 de 6 | 0 de 6 | 6 de 6 | — | — | — |
+| revisor | gemini (m-x) | desconhecida | 1 | 0 | n/d | 3.0000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | — |
+| 2º revisor | openrouter (t/t via T) | pay-per-token | 3 | 0 | 0.000090 | 0.000090 | 3 | 3 de 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0.000030 | 0.000030 | — |
+| auditor | openrouter (q/p via A) | pay-per-token | 2 | 0 | 0.3000 | 0.3000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 50.0% (1 de 2) |
+| auditor | openrouter (q/p via B) | pay-per-token | 2 | 0 | 1.0000 (n/d em 1 de 2, incerto em 1 de 2) | 1.0000 (n/d em 1 de 2, incerto em 1 de 2) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 100.0% (2 de 2) |
+
+fora da conta: 4 (EXTERNAL_REVIEW_20260401-000001: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260401-000002: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260401-000003: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260401-000004: sem linha em nenhum ledger: os achados dela ficam em sem classificar)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit 0]
+[exit 0]

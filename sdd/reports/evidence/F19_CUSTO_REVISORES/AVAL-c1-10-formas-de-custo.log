@@ -1,0 +1,34 @@
+$ PATH=/usr/bin:/bin /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/custo --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/custo --registry /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/custo/registry.tsv
+eval-revisores — custo e resultado por papel, engine e modelo (24 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/custo; 0 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | openrouter (f01 [US$ 0.1]) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f02 [US$ 0.2]) | pay-per-token | 1 | 0 | 0.2000 | 0.2000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f03 [US$ 0.00003]) | pay-per-token | 1 | 0 | 0.000030 | 0.000030 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f04 [US$ 0,05]) | pay-per-token | 1 | 0 | 0.0500 | 0.0500 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f05 [US$ 1,234.56]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f06 [US$ 0.05 (estimado)]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f07 [US$0.05]) | pay-per-token | 1 | 0 | 0.0500 | 0.0500 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f08 [≈ US$ 0.05]) | pay-per-token | 1 | 0 | ≈0.0500 | ≈0.0500 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f09 [~US$ 0.05]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f10 [USD 0.05]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f11 [$0.05]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f12 [0.05]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f13 [US$ 0]) | pay-per-token | 1 | 0 | 0.0000 | 0.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f14 [US$ -1]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f15 [US$ 0.00000001]) | pay-per-token | 1 | 0 | 0.000000 | 0.000000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f16 [US$ 1.00005]) | pay-per-token | 1 | 0 | 1.0000 | 1.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f17 [US$ 0.05 + $?]) | pay-per-token | 1 | 0 | 0.0500 (incerto em 1 de 1) | 0.0500 (incerto em 1 de 1) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f18 [≈US$ 0.05 + $?]) | pay-per-token | 1 | 0 | ≈0.0500 (incerto em 1 de 1) | ≈0.0500 (incerto em 1 de 1) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f19 [assinatura]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f20 [$?]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f21 [n/d]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f22 []) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f23 [US$ 1e-3]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (f24 [US$ .5]) | pay-per-token | 1 | 0 | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+
+fora da conta: 1 (ledgers: nenhum ledger lido: os achados das 24 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit=0]
