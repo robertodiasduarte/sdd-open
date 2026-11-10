@@ -196,6 +196,11 @@ class Uso(Base):
             "aspa do shell sem fechar": "smoke:\n  before_ok_cmd: \"bash falso.sh 0 'abc\"\n",
             "comentario do shell": 'smoke:\n  before_ok_cmd: "bash falso.sh 0 # gate"\n',
             "texto depois das aspas": 'smoke:\n  before_ok_cmd: "bash falso.sh 0" --url x\n',  # ciclo 2, achado 2
+            # revisão rodada 2, R1: com um separador no fim, o exit seria o do "$@" vazio (0), não o do comando
+            "termina em ponto e virgula": 'smoke:\n  before_ok_cmd: "bash falso.sh 2;"\n',
+            "termina em e comercial": 'smoke:\n  before_ok_cmd: "bash falso.sh 2 &"\n',
+            "termina em pipe": 'smoke:\n  before_ok_cmd: "bash falso.sh 2 |"\n',
+            "termina em e logico": 'smoke:\n  before_ok_cmd: "bash falso.sh 2 &&"\n',
             "texto depois das aspas simples": "smoke:\n  before_ok_cmd: 'bash falso.sh 0' x\n",
         }
         for nome, texto in casos.items():
@@ -339,6 +344,18 @@ class Ambiente(Base):
         rc, out = self.slot("smoke.before_ok_cmd", "--feature", "F")
         self.assertEqual(rc, 11, out)
         self.assertFalse((pasta / "velho.txt").exists())
+
+    def test_caminhos_relativos_valem_de_onde_foi_chamado(self):
+        # revisão rodada 2, R2: o script vai para a raiz, mas arquivo, --arvore e --dir relativos são de quem chamou
+        sub = self.r / "db"
+        self.escreve(sub, "a b.sql", "select 1;\n")
+        rc, out, err = self.roda([BASH, str(self.r / SCRIPT), "schema.check_cmd", "--arvore", "wt", "--dir", "comum",
+                                  "a b.sql", "nao-existe.sql"], sub)
+        self.assertEqual(rc, 0, out + err)
+        reg = self.registro()
+        self.assertEqual(reg["ARG"], ["db/a b.sql", "nao-existe.sql"])
+        self.assertEqual(reg["ARVORE"], str(sub / "wt"))
+        self.assertEqual(reg["DIR"], str(sub / "comum"))
 
     def test_sem_git_funciona_com_commit_vazio(self):
         solto = self.tmp / "solto"

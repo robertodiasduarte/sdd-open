@@ -77,7 +77,19 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 GIT=0
-if ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"; then GIT=1; else ROOT="$(pwd -P)"; fi
+INICIO="$(pwd -P)"
+if ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"; then GIT=1; else ROOT="${INICIO}"; fi
+# Caminhos relativos valem a partir de onde a pessoa chamou, não da raiz para onde o script vai.
+case "${ARVORE}" in ""|/*) ;; *) ARVORE="${INICIO}/${ARVORE}" ;; esac
+case "${DIR}" in ""|/*) ;; *) DIR="${INICIO}/${DIR}" ;; esac
+case "${INICIO}" in "${ROOT}"/*) SUB="${INICIO#"${ROOT}"/}" ;; *) SUB="" ;; esac
+if [ -n "${SUB}" ] && [ ${#ARQS[@]} -gt 0 ]; then
+  i=0
+  while [ "${i}" -lt ${#ARQS[@]} ]; do
+    case "${ARQS[${i}]}" in /*) ;; *) [ -e "${INICIO}/${ARQS[${i}]}" ] && ARQS[${i}]="${SUB}/${ARQS[${i}]}" ;; esac
+    i=$((i + 1))
+  done
+fi
 cd "${ROOT}" || uso "não consegui entrar em ${ROOT}"
 CONFIG="${ROOT}/sdd/config.yaml"
 
@@ -163,9 +175,13 @@ ERRO="$(bash -n -c "${CMD} \"\$@\"" 2>&1)" || uso "o comando de ${CHAVE} tem err
 # Comentário do shell no comando: os arquivos ("$@" no fim) cairiam dentro dele. Quem responde é o próprio bash,
 # sem executar nada: define uma função com o comando e confere se o "$@" sobreviveu no corpo normalizado. O bash -n
 # acima já garantiu que as chaves do comando fecham, então a definição não sai do corpo da função.
-bash -c 'eval "__slot_cmd() { $1 \"\$@\"
-}" && declare -f __slot_cmd | grep -q "\"\$@\""' _ "${CMD}" 2>/dev/null \
+CORPO="$(bash -c 'eval "__slot_cmd() { $1 \"\$@\"
+}" && declare -f __slot_cmd' _ "${CMD}" 2>/dev/null)"
+printf '%s\n' "${CORPO}" | grep -q '"\$@"' \
   || uso "o comando de ${CHAVE} tem um comentário (#); os arquivos cairiam dentro dele" "tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script"
+# Separador no fim (;, &, |, &&, ||): o "$@" viraria um comando à parte, e o exit do slot seria o dele, não o seu.
+printf '%s\n' "${CORPO}" | grep -Eq '[^|&;[:space:]][[:space:]]+"\$@"$' \
+  || uso "o comando de ${CHAVE} termina num separador (;, &, | ou &&); o exit dele se perderia" "tire o separador do fim, ou aponte para um script"
 
 # SHAs: a ref dada que não resolve é erro de chamada; o padrão que não resolve vira variável vazia, com aviso.
 resolve() { git rev-parse --verify --quiet "${1}^{commit}" 2>/dev/null; }
