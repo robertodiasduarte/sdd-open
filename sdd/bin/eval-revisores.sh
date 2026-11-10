@@ -61,7 +61,6 @@ PASTA_RE = re.compile("^" + PASTA + "$")
 SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=\d+[a-z]?\s+(" + PASTA + r")\s*$")
 CUSTO_RE = re.compile(r"^(≈)?\s*US\$\s*([0-9]+(?:[.,][0-9]+)?)(\s*\+\s*\$\?)?$")
 SEPARADOR_RE = re.compile(r"^:?-+:?$")
-LINHA_DE_ACHADO = re.compile(r"^[RN]\d+(@|$)")
 CERCA_RE = re.compile(r"^\s*(```|~~~)")
 
 
@@ -102,6 +101,14 @@ def slot_review(raiz, chave):
     return valor
 
 
+def listar(pasta):
+    """Os nomes de uma pasta, em ordem; pasta que não se deixa ler é erro de uso, nunca traceback."""
+    try:
+        return sorted(os.listdir(pasta))
+    except OSError as e:
+        para("não consegui ler a pasta %s (%s)" % (pasta, e.strerror or "erro de leitura"))
+
+
 def celulas(ln):
     """As células de uma linha de tabela, pelo mesmo corte do ledger-revisao-lint.sh."""
     c = [x.strip() for x in re.split(r"(?<!\\)\|", ln)][1:]
@@ -133,6 +140,8 @@ while i < len(args):
         para("opção desconhecida: " + a)
     if pasta_arg is not None:
         para("argumento a mais: " + a)
+    if not a:
+        para("o caminho da pasta veio vazio")
     pasta_arg = a
     i += 1
 
@@ -177,7 +186,7 @@ for ln in (ler(registry) or "").splitlines():
 fora, linhas_ledger, n_ledgers, pastas_citadas, ditas_sem_achados = [], [], 0, set(), {}
 arquivos = []
 if os.path.isdir(ledgers):
-    arquivos = [os.path.join(ledgers, f) for f in sorted(os.listdir(ledgers))
+    arquivos = [os.path.join(ledgers, f) for f in listar(ledgers)
                 if f.startswith("LEDGER_REVISAO_") and f.endswith(".md")]
 elif os.path.isfile(ledgers):
     arquivos = [ledgers]
@@ -188,7 +197,7 @@ for arq in arquivos:
         fora.append((nome_arq, "ledger ilegível"))
         continue
     n_ledgers += 1
-    cercado, comentario, na_tabela, viu_cabecalho = False, False, False, False
+    cercado, comentario = False, False
     for n, ln in enumerate(texto.split("\n"), 1):
         ln = ln.rstrip("\r")
         if comentario:
@@ -203,25 +212,16 @@ for arq in arquivos:
             comentario = "-->" not in ln
             continue
         if not re.match(r"^\s*\|", ln):
-            na_tabela = False
             m = SEM_ACHADOS_RE.match(ln)
             if m:
                 pastas_citadas.add(m.group(1))
                 ditas_sem_achados.setdefault(m.group(1), "%s:%d" % (nome_arq, n))
             continue
         c = celulas(ln)
-        if not c:
+        if not c or all(SEPARADOR_RE.match(x) for x in c):
             continue
-        if not na_tabela:
-            if c[0].strip("*` ").lower() == "achado":
-                na_tabela, viu_cabecalho = "ledger", True
-                continue
-            if viu_cabecalho and LINHA_DE_ACHADO.match(c[0]):
-                na_tabela = "ledger"   # outra rodada, depois de linha em branco, sem repetir o cabeçalho
-            else:
-                na_tabela = "outra"
-                continue
-        if na_tabela == "outra" or all(SEPARADOR_RE.match(x) for x in c):
+        # o arquivo é só do ledger: toda linha de tabela é cabeçalho ou dado; nenhuma é pulada como "outra tabela"
+        if c[0].strip("*` ").lower().split(" ")[0] == "achado":
             continue
         onde = "%s:%d" % (nome_arq, n)
         if len(c) != 7:
@@ -249,8 +249,8 @@ def ids_do(arquivo, so_novo=False):
             v = json.loads(ln) or {}
         except ValueError:
             continue
-        if not isinstance(v, dict) or not v.get("achado"):
-            continue
+        if not isinstance(v, dict) or not isinstance(v.get("achado"), str) or not v["achado"]:
+            continue   # linha sem id de texto não é um achado
         if so_novo and v.get("veredito") != "NOVO":
             continue
         if v["achado"] not in ids:
@@ -281,7 +281,7 @@ def linha_de(por, nome, engine, modelo):
 
 # ── pastas ──────────────────────────────────────────────────────────────────────────────────────────
 por, lidas, sem_ledger = {}, 0, []
-for d in sorted(os.listdir(pasta) if os.path.isdir(pasta) else []):
+for d in (listar(pasta) if os.path.isdir(pasta) else []):
     caminho = os.path.join(pasta, d)
     if not d.startswith("EXTERNAL_REVIEW_") or not os.path.isdir(caminho):
         continue
@@ -316,8 +316,12 @@ for d in sorted(os.listdir(pasta) if os.path.isdir(pasta) else []):
         else:
             engine = meta.get(chave + "_engine_efetivo") or meta.get(chave + "_engine") or ""
         saida = meta.get(chave + "_exit", "")
-        if engine in ("", "-") or not re.match(r"^-?\d+$", saida):
+        if engine in ("", "-") or saida in ("", "-"):
             continue   # o papel não rodou nesta pasta
+        if not re.match(r"^-?\d+$", saida):
+            fora.append((d, "%s (%s): exit `%s` ilegível no META.txt; a chamada e o custo dela não foram contados"
+                         % (nome, engine, saida)))
+            continue
         if engine == "indisponível":
             fora.append((d, "%s indisponível: nenhuma engine foi chamada" % nome))
             continue
@@ -352,6 +356,8 @@ for d in sorted(os.listdir(pasta) if os.path.isdir(pasta) else []):
                     c["agree"] += 1
                 elif v in ("DISAGREE_EVIDENCE", "DISAGREE_CONCERN"):
                     c["dis"] += 1
+        if arq and ids_papel.get(chave) is None:
+            fora.append((d, "%s respondeu (exit 0) e a pasta não tem %s: contado com 0 achados" % (nome, arq)))
         ids = ids_papel.get(chave) or []
         c["achados"] += len(ids)
         aceitos = (rotulo(engine), engine, engine.split(":", 1)[0])   # o rótulo do script, o id cru, a engine base
@@ -421,6 +427,8 @@ if not por:
 
 def numero(valor):
     """4 casas; custo menor que 0,0001 sai com 6, para não virar 0.0000."""
+    if Decimal(0) < valor < Decimal("0.000001"):
+        return "<0.000001"   # custo que existe nunca aparece como zero
     casas = "0.000001" if Decimal(0) < valor < Decimal("0.0001") else "0.0001"
     return str(valor.quantize(Decimal(casas)))
 

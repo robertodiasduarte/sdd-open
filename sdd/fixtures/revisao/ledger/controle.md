@@ -9,10 +9,6 @@
 
 sem achados: rodada=3 EXTERNAL_REVIEW_20260201-000003
 
-| Engine | Papel |
-|---|---|
-| claude | revisor |
-
 ```markdown
 | achado | sev | veredito | rodada | evidência | dano | revisão |
 | R9 | exemplo cercado, não conferido |

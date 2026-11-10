@@ -17,6 +17,8 @@ Como preencher (o lint confere; apague este comentário se quiser):
 Uma linha por achado, por exemplo:
   R1 · HIGH · APLICADA · rodada=1 · teste: `test_soma_do_mes` · o total somava o estorno duas vezes · sim · EXTERNAL_REVIEW_20260201-000001
 
+- Este arquivo guarda só o ledger: não ponha outra tabela aqui (o lint confere toda linha de tabela como achado).
+  O cabeçalho pode se repetir entre as rodadas; texto corrido entre as tabelas pode.
 - 7 células por linha; uma barra vertical dentro de célula se escreve com a barra invertida antes dela.
 - achado: copie o id do arquivo de vereditos da rodada (`reviewer.verdicts.jsonl`, `reviewer2.verdicts.jsonl`,
   `auditor.verdicts.jsonl`), como está: `R1` e `N1` numa rodada de um revisor só; `R1@claude`, `R1@codex` quando houve dois.

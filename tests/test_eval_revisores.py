@@ -246,15 +246,30 @@ class Ledgers(Base):
                       "revisão tem 3 achado(s)", fora)
         self.assertNotIn("EXTERNAL_REVIEW_20260201-000007, mas", fora)   # a 7 não tem achado mesmo
 
-    def test_tabela_que_nao_e_o_ledger_e_bloco_cercado_nao_sao_lidos(self):
+    def test_bloco_cercado_nao_e_lido_e_outra_tabela_e_avisada(self):
         led = self.escreve(self.tmp, "LEDGER_REVISAO_X.md",
-                           "# x\n\n| Engine | Papel |\n|---|---|\n| claude | revisor |\n\n```markdown\n" + CAB +
+                           "# x\n\n```markdown\n" + CAB +
                            "| R2 | MED | APLICADA | rodada=1 | exemplo cercado | nao | %s |\n```\n\n" % P1 + CAB +
-                           "| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s |\n" % P1)
+                           "| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s |\n\n| Engine | Papel |\n|---|---|\n| claude | revisor |\n" % P1)
         rc, out = self.er(FX, "--ledgers", led, "--registry", FX / "registry.tsv")
         self.assertEqual(rc, 0, out)
         self.assertEqual(linhas(out)[0][8], "1 de 9")
-        self.assertNotIn("LEDGER_REVISAO_X.md", self.fora(out))
+        self.assertIn("LEDGER_REVISAO_X.md:13: linha com 2 célula(s), o ledger tem 7", self.fora(out))
+        self.assertIn("LEDGER_REVISAO_X.md:15: linha com 2 célula(s)", self.fora(out))
+
+    def test_nenhuma_linha_de_tabela_some_em_silencio(self):
+        # Achado do avaliador (ciclo 1): id entre crases depois de linha em branco, ou um segundo cabeçalho,
+        # faziam o resto do bloco sumir com "fora da conta: 0".
+        rc, out = self.com("| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s |\n\n"
+                           "| `R2` | MED | APLICADA | rodada=1 | id entre crases | nao | %s |\n"
+                           "| R3 | LOW | REBATIDA_EVIDENCIA | rodada=1 | linha comum depois dela | nao | %s |\n\n"
+                           "| Achado (rodada 2) | sev | veredito | rodada | evidência | dano | revisão |\n|---|---|---|---|---|---|---|\n"
+                           "| R1 | MED | APLICADA | rodada=2 | depois de um segundo cabeçalho | nao | %s2 |\n"
+                           % (P1, P1, P1, P1[:-1]))
+        self.assertEqual(rc, 0, out)
+        revisor = linhas(out)[0]
+        self.assertEqual((revisor[8], revisor[10]), ("2 de 9", "1 de 9"))   # R1 da rodada 1, R1 da rodada 2; R3 rebatida
+        self.assertIn("LEDGER_REVISAO_X.md:7: achado `R2` não está em %s" % P1, self.fora(out))
 
     def test_sem_registry_a_cobranca_e_desconhecida_e_o_pago_e_nd(self):
         reg = self.escreve(self.tmp, "registry.tsv", "# vazio\n")
@@ -306,6 +321,33 @@ class Custo(Base):
         self.assertEqual(rc, 0, out)
         self.assertEqual([ln[0] for ln in linhas(out)], ["revisor"])
 
+    def test_custo_que_existe_nunca_aparece_como_zero(self):
+        ln = self.uma("US$ 0.00000001")
+        self.assertEqual((ln[5], ln[6]), ("<0.000001", "<0.000001"))
+
+    def test_exit_ilegivel_e_papel_sem_arquivo_de_vereditos_sao_avisados(self):
+        d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
+        self.escreve(d, "META.txt", "reviewer_engine_efetivo : claude\nreviewer_modelo : claude-x\n"
+                                    "reviewer_custo : US$ 1.0000\nreviewer_exit : 0\n"
+                                    "auditor_engine_efetivo : openrouter:m/x\nauditor_custo : US$ 5.0000\n"
+                                    "auditor_exit : 0 (ok)\n")
+        rc, out = self.er(self.tmp / "reviews", "--registry", FX / "registry.tsv")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual([ln[0] for ln in linhas(out)], ["revisor"])
+        fora = next(ln for ln in out.splitlines() if ln.startswith("fora da conta:"))
+        self.assertIn("auditor (openrouter:m/x): exit `0 (ok)` ilegível no META.txt; a chamada e o custo dela não "
+                      "foram contados", fora)
+        self.assertIn("revisor respondeu (exit 0) e a pasta não tem reviewer.verdicts.jsonl: contado com 0 achados", fora)
+
+    def test_achado_que_nao_e_texto_no_arquivo_de_vereditos_nao_derruba(self):
+        d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
+        self.escreve(d, "META.txt", "reviewer_engine_efetivo : claude\nreviewer_custo : US$ 1.0000\nreviewer_exit : 0\n")
+        self.escreve(d, "reviewer.verdicts.jsonl", '{"achado": 5}\n{"achado": "R1"}\n[1, 2]\nnão é json\n')
+        rc, out = self.er(self.tmp / "reviews", "--registry", FX / "registry.tsv")
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("Traceback", out)
+        self.assertEqual(linhas(out)[0][7], "1")
+
     def test_pasta_com_sufixo_de_colisao_e_lida_e_casa_com_o_ledger(self):
         nome = "EXTERNAL_REVIEW_20260301-000001-2"
         d = self.tmp / "reviews" / nome
@@ -355,6 +397,7 @@ class SemDadosEUso(Base):
             "pasta inexistente": ((self.tmp / "nao-existe",), "não existe"),
             "opção desconhecida": (("--json",), "opção desconhecida"),
             "argumento a mais": ((FX, FX), "argumento a mais"),
+            "pasta vazia como argumento": (("",), "o caminho da pasta veio vazio"),
             "--ledgers sem valor": ((FX, "--ledgers"), "pede um caminho"),
             "--ledgers inexistente": ((FX, "--ledgers", self.tmp / "nada"), "não existe"),
             "--registry inexistente": ((FX, "--registry", self.tmp / "nada.tsv"), "não existe"),
@@ -365,6 +408,23 @@ class SemDadosEUso(Base):
                 self.assertEqual(rc, 64, out)
                 self.assertIn(trecho, out)
                 self.assertIn("RESULTADO: PAROU\n→ ", out)
+
+    def test_pasta_sem_permissao_de_leitura_e_64_sem_traceback(self):
+        import os
+        if os.geteuid() == 0:
+            self.skipTest("root lê qualquer pasta")
+        fechada = self.tmp / "fechada"
+        fechada.mkdir()
+        fechada.chmod(0)
+        try:
+            for args in ((fechada,), (FX, "--ledgers", fechada)):
+                with self.subTest(args=len(args)):
+                    rc, out = self.er(*args)
+                    self.assertEqual(rc, 64, out)
+                    self.assertIn("não consegui ler a pasta", out)
+                    self.assertNotIn("Traceback", out)
+        finally:
+            fechada.chmod(0o700)
 
     def test_ajuda_mostra_so_o_uso(self):
         rc, out = self.er("--help")

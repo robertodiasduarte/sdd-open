@@ -9,7 +9,8 @@
 #
 # USO-INICIO
 #   ledger-revisao-lint.sh <LEDGER_REVISAO_F.md>…
-#       a tabela do ledger é a que tem o cabeçalho começando por `achado`; cada linha de dados tem 7 células:
+#       o arquivo é só do ledger: toda linha de tabela é o cabeçalho abaixo ou uma linha de dados de 7 células
+#       (outra tabela no arquivo reprova; texto corrido, bloco cercado e comentário podem ficar):
 #         | achado | sev | veredito | rodada | evidência | dano | revisão |
 #         achado    o id como está no arquivo de vereditos da rodada: R<n> ou N<n>, com @<engine> quando a
 #                   rodada teve 2 revisores (R1, R1@claude, N1)
@@ -21,7 +22,7 @@
 #         revisão   a pasta EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS> da rodada (com -<n> se o nome colidiu)
 #       rodada em que a revisão não achou nada: uma linha fora da tabela,
 #         sem achados: rodada=<N> EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>
-#       bloco cercado por ```, comentário <!-- --> e outras tabelas do arquivo não são conferidos
+#       bloco cercado por ``` e comentário <!-- --> não são conferidos
 #       0 ok · 2 violação (arquivo:linha — motivo) · 64 uso, arquivo ilegível, ou arquivo sem linha de dados
 #       e sem linha `sem achados:` (nada conferido nunca é verde)
 # USO-FIM
@@ -58,7 +59,7 @@ RETRO_RE = re.compile(r"^retroativo: sim$")
 RETRO_QUASE = re.compile(r"^\s*[-*>]*\s*\**retroativo\**\s*:\**\s*sim\b", re.I)
 TESTE_RE = re.compile(r"(?i)\bteste:\s*`?(?:[\w./-]+::[\w.:-]+|(?:[\w]+\.)*test_\w+(?:\.py)?(?:::[\w.:-]+)?|tests/[\w./-]+)")
 SEPARADOR_RE = re.compile(r"^:?-+:?$")
-LINHA_DE_ACHADO = re.compile(r"^[RN]\d+(@|$)")
+CABECALHO = ["achado", "sev", "veredito", "rodada", "evidência", "dano", "revisão"]
 CERCA_RE = re.compile(r"^\s*(```|~~~)")
 
 
@@ -112,10 +113,13 @@ for arq, texto in textos:
         elif RETRO_QUASE.match(ln):
             violacoes.append("%s:%d — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, "
                              "citação ou maiúscula" % (arq, n))
-    dados, sem_achados, na_tabela, viu_cabecalho, cabecalho_ruim = 0, 0, False, False, False
+    dados, sem_achados, cabecalho_ruim, pastas_limpas = 0, 0, False, {}
+    for n, ln in uteis:   # 1ª passada: as rodadas ditas sem achados, onde quer que a linha esteja no arquivo
+        m = SEM_ACHADOS_RE.match(ln)
+        if m:
+            pastas_limpas.setdefault(m.group(2), n)
     for n, ln in uteis:
         if not re.match(r"^\s*\|", ln):
-            na_tabela = False
             m = SEM_ACHADOS_RE.match(ln)
             if m:
                 sem_achados += 1
@@ -124,26 +128,18 @@ for arq, texto in textos:
                                  "EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>`" % (arq, n))
             continue
         c = celulas(ln)
-        if not c:
+        if not c or all(SEPARADOR_RE.match(x) for x in c):
             continue
-        if not na_tabela:
-            # primeira linha de uma tabela: só é o ledger se o cabeçalho começa por `achado`
-            if c[0].strip("*` ").lower() == "achado":
-                na_tabela, viu_cabecalho = "ledger", True
-                if [x.strip("*` ").lower() for x in c] != ["achado", "sev", "veredito", "rodada", "evidência", "dano",
-                                                           "revisão"]:
-                    cabecalho_ruim = True
-                    violacoes.append("%s:%d — o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | "
-                                     "evidência | dano | revisão |`" % (arq, n))
-                continue
-            if viu_cabecalho and LINHA_DE_ACHADO.match(c[0]):
-                # as linhas de outra rodada, depois de uma linha em branco e sem repetir o cabeçalho, continuam
-                # sendo o ledger: uma linha que começa por um id de achado é conferida, nunca pulada
-                na_tabela = "ledger"
-            else:
-                na_tabela = "outra"
-                continue
-        if na_tabela == "outra" or all(SEPARADOR_RE.match(x) for x in c):
+        # O arquivo é só do ledger: toda linha de tabela é o cabeçalho do molde ou uma linha de dados. Não há
+        # "outra tabela" a pular: uma regra que adivinhava qual tabela era o ledger deixou linha sem conferir.
+        nomes = [x.strip("*` ").lower() for x in c]
+        if nomes == CABECALHO:
+            cabecalho_ruim = False
+            continue
+        if nomes[0] == "achado" or nomes[0].startswith("achado "):
+            cabecalho_ruim = True
+            violacoes.append("%s:%d — o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | "
+                             "evidência | dano | revisão |`" % (arq, n))
             continue
         dados += 1
         if cabecalho_ruim:
@@ -153,8 +149,8 @@ for arq, texto in textos:
             violacoes.append("%s:%d — %s" % (arq, n, motivo))
 
         if len(c) < 7:
-            acusa("a linha tem %d célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão)"
-                  % len(c))
+            acusa("a linha tem %d célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão); "
+                  "este arquivo só tem a tabela do ledger" % len(c))
             continue
         if len(c) > 7:
             acusa("a linha tem %d células, o ledger da revisão tem 7: escape `|` dentro de célula com `\\|`" % len(c))
@@ -183,6 +179,8 @@ for arq, texto in textos:
                       "(test_…, arquivo::teste ou tests/…)")
         elif dano == "?" and not retroativo:
             acusa("dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)")
+        if pasta in pastas_limpas:
+            acusa("a revisão %s está marcada `sem achados` na linha %d e tem achado nesta linha" % (pasta, pastas_limpas[pasta]))
         chave = (pasta, achado)
         if chave in vistos:
             acusa("achado %s repetido na revisão %s (1ª vez em %s)" % (achado, pasta, vistos[chave]))

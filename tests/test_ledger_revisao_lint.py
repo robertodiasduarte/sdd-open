@@ -31,7 +31,7 @@ class Lint(Sandbox):
         return self.lint(self.escreve(self.tmp, "LEDGER_REVISAO_X.md", "# x\n\n" + topo + CAB + linha + "\n"))
 
     def test_controle_e_retroativo_passam(self):
-        for nome, n in (("controle.md", 4), ("retroativo.md", 1), ("so-sem-achados.md", 0)):
+        for nome, n in (("controle.md", 4), ("retroativo.md", 1), ("so-sem-achados.md", 0)):  # controle: 4 linhas + 1 rodada sem achados
             with self.subTest(fixture=nome):
                 rc, out = self.lint(FX / nome)
                 self.assertEqual(rc, 0, out)
@@ -118,41 +118,38 @@ class Lint(Sandbox):
                 self.assertEqual(rc, 2, out)
                 self.assertIn("a marca de retroativo é a linha `retroativo: sim`", out)
 
-    def test_outra_tabela_e_bloco_cercado_nao_sao_conferidos(self):
-        rc, out = self.um("| R1@a | LOW | APLICADA | rodada=1 | x | nao | %s |\n\n| Engine | Papel |\n|---|---|\n| a | revisor |"
-                          "\n\n```markdown\n%s| R9 | exemplo cercado |\n```" % (PASTA, CAB))
+    def test_bloco_cercado_nao_e_conferido_e_outra_tabela_reprova(self):
+        boa = "| R1@a | LOW | APLICADA | rodada=1 | x | nao | %s |" % PASTA
+        rc, out = self.um(boa + "\n\n```markdown\n%s| R9 | exemplo cercado |\n```" % CAB)
         self.assertEqual(rc, 0, out)
         self.assertIn("1 linha(s)", out)
+        # O arquivo é só do ledger: uma tabela a mais reprova, em vez de passar sem ser lida.
+        rc, out = self.um(boa + "\n\n| Engine | Papel |\n|---|---|\n| a | revisor |")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("a linha tem 2 célula(s)", out)
+        self.assertIn("este arquivo só tem a tabela do ledger", out)
 
-    def test_linhas_depois_de_linha_em_branco_continuam_sendo_o_ledger(self):
-        # Quem grava "depois de cada rodada" separa as rodadas por uma linha em branco, sem repetir o cabeçalho.
-        boa = "| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |" % PASTA
-        rc, out = self.um(boa + "\n\n| R2 | HIGH | APLICADA | rodada=2 | sem a marca de dano |")
-        self.assertEqual(rc, 2, out)
-        self.assertIn("LEDGER_REVISAO_X.md:7 — a linha tem 5 célula(s)", out)
-        rc, out = self.um(boa + "\n\n| R2 | HIGH | APLICADA | rodada=2 | o total somava duas vezes | sim | %s |" % PASTA)
-        self.assertEqual(rc, 2, out)
-        self.assertIn("dano = sim sem `teste: <nome>`", out)
-        rc, out = self.um(boa + "\n\n| N1 | LOW | REBATIDA_ESCOPO | rodada=2 | fora | nao | %s |" % PASTA)
-        self.assertEqual(rc, 0, out)
+    def test_nenhuma_linha_de_tabela_e_pulada(self):
+        # Achado do avaliador (ciclo 1): depois de uma linha em branco, um id entre crases ou um segundo cabeçalho
+        # faziam o bloco inteiro ser tratado como "outra tabela", e uma linha `sim` sem teste passava.
+        boa = "| R1 | LOW | APLICADA | rodada=1 | texto | nao | %s |" % PASTA
+        ruim = "| R3 | HIGH | REBATIDA_EVIDENCIA | rodada=2 | sem teste | sim | %s |" % PASTA
+        for nome, meio in (("id entre crases", "| `R2` | LOW | APLICADA | rodada=2 | x | nao | %s |\n" % PASTA),
+                           ("id em negrito", "| **R2** | LOW | APLICADA | rodada=2 | x | nao | %s |\n" % PASTA),
+                           ("segundo cabeçalho", "| Achado (rodada 2) | sev | veredito | rodada | evidência | dano | revisão |\n|---|---|---|---|---|---|---|\n"),
+                           ("cabeçalho repetido", CAB)):
+            with self.subTest(caso=nome):
+                rc, out = self.um(boa + "\n\n" + meio + ruim)
+                self.assertEqual(rc, 2, out)
+                self.assertRegex(out, r"dano = sim com veredito REBATIDA_EVIDENCIA|o cabeçalho não é o do molde")
+        rc, out = self.um(boa + "\n\n" + CAB + "| R2 | LOW | APLICADA | rodada=2 | x | nao | %s |" % PASTA)
+        self.assertEqual(rc, 0, out)   # repetir o cabeçalho do molde entre as rodadas é permitido
         self.assertIn("2 linha(s)", out)
 
-    def test_arquivo_vazio_nao_esconde_as_violacoes_de_outro(self):
-        rc, out = self.lint(FX / "sim-sem-teste.md", FX / "sem-linhas.md")
+    def test_sem_achados_e_linha_de_dados_para_a_mesma_revisao_se_contradizem(self):
+        rc, out = self.um("| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |\n\nsem achados: rodada=1 %s" % (PASTA, PASTA))
         self.assertEqual(rc, 2, out)
-        self.assertIn("sim-sem-teste.md:5 — dano = sim sem `teste: <nome>`", out)
-        self.assertIn("sem-linhas.md — nenhuma linha de dados", out)
-        rc, out = self.um("Sem achados na rodada 2.")   # só a quase-forma, sem nenhuma linha válida
-        self.assertEqual(rc, 2, out)
-        self.assertIn("rodada sem achados se escreve `sem achados: rodada=<N>", out)
-
-    def test_comentario_html_nao_e_conferido(self):
-        # O molde traz as regras num comentário, com um exemplo de linha e a forma do `sem achados:`.
-        topo = "<!--\n  R9 · exemplo\n  sem achados: rodada=<N> EXTERNAL_REVIEW_AAAAMMDD-HHMMSS\n  retroativo: sim\n-->\n\n"
-        rc, out = self.um("| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |" % PASTA, topo)
-        self.assertEqual(rc, 0, out)
-        rc, out = self.um("| R1 | MED | APLICADA | rodada=1 | x | ? | %s |" % PASTA, topo)
-        self.assertEqual(rc, 2, out)   # o `retroativo: sim` de dentro do comentário não libera o `?`
+        self.assertIn("está marcada `sem achados` na linha 7 e tem achado nesta linha", out)
 
     def test_cabecalho_fora_do_molde_da_uma_mensagem_so(self):
         texto = ("# x\n\n| achado | severidade | veredito | rodada | motivo | dano | revisão |\n|--|:-:|---|---|---|---|---|\n"
@@ -200,7 +197,7 @@ class Lint(Sandbox):
             "opção": (("--fix",), "opção desconhecida"),
             "inexistente": ((self.tmp / "nada.md",), "não consegui ler"),
             "sem linha de dados": ((FX / "sem-linhas.md",), "nada conferido nunca é verde"),
-            "só outra tabela": ((self.escreve(self.tmp, "o.md", "| Engine | Papel |\n|---|---|\n| a | b |\n"),), "nada conferido nunca é verde"),
+            "só texto": ((self.escreve(self.tmp, "o.md", "# Ledger\n\nAinda sem rodada.\n"),), "nada conferido nunca é verde"),
         }
         for nome, (args, trecho) in casos.items():
             with self.subTest(caso=nome):

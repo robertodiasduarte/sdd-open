@@ -184,6 +184,7 @@ line that matches no finding, a repeated line, a label that is not the engine th
 The first four cells are what `sdd-fluxo.sh loop --ledger` already reads; `dano` (`sim`, `nao`, or `?` in a
 ledger marked `retroativo: sim`) and the review folder come after. `bash sdd/bin/ledger-revisao-lint.sh <file>…`
 checks it: `0` ok · `2` violation with `file:line — reason` · `64` usage, unreadable file or nothing to check.
+The file holds only the ledger: every table row in it is the header or a finding, and any other table fails.
 What counts as damage is written in `sdd/review/CRITERIO_DANO.md`: the finding was applied, the fix came with a
 test that fails on the old code, and the scenario affects data, money, access, publication or availability. The
 person who decides the finding sets the mark, never another model.

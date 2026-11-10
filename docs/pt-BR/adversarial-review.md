@@ -185,6 +185,7 @@ linha do ledger que não casa com nenhum achado, linha repetida, rótulo que nã
 As 4 primeiras células são as que o `sdd-fluxo.sh loop --ledger` já lê; `dano` (`sim`, `nao`, ou `?` num ledger
 marcado `retroativo: sim`) e a pasta da revisão vêm depois. `bash sdd/bin/ledger-revisao-lint.sh <arquivo>…`
 confere: `0` ok · `2` violação com `arquivo:linha — motivo` · `64` uso, arquivo ilegível ou nada a conferir. O
+arquivo guarda só o ledger: toda linha de tabela dele é o cabeçalho ou um achado, e outra tabela reprova. O
 que conta como dano está escrito em `sdd/review/CRITERIO_DANO.md`: o achado foi aplicado, o conserto veio com
 um teste que falha no código antigo, e o cenário afeta dado, dinheiro, acesso, publicação ou disponibilidade.
 Quem marca é quem decide o achado, nunca outro modelo.
