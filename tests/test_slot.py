@@ -236,6 +236,15 @@ class Cerquilha(Base):
         self.assertEqual(rc, 64, out)
         self.assertFalse((self.r / "registro.txt").exists())
 
+    def test_comando_nao_escapa_da_checagem(self):
+        # o bash -n vem antes da checagem de comentário (que define uma função com o comando): um comando que
+        # fecha a chave da função não pode rodar nada durante a checagem, e sai 64 com a causa certa
+        self.smoke("true; }; touch escapou.txt; __x() { :")
+        rc, out = self.slot("smoke.before_ok_cmd")
+        self.assertEqual(rc, 64, out)
+        self.assertIn("erro de sintaxe", out)
+        self.assertFalse((self.r / "escapou.txt").exists())
+
     def test_cerquilha_depois_de_ponto_e_virgula_e_comentario(self):
         self.smoke("bash falso.sh 0;# resto")
         rc, out = self.slot("smoke.before_ok_cmd")
