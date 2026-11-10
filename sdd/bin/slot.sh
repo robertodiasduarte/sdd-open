@@ -48,13 +48,19 @@ shift
 
 FEATURE=""; BASE=""; BASE_DADA=0; COMMIT="HEAD"; COMMIT_DADO=0; ARVORE=""; DIR=""
 ARQS=()
+# valor de flag: presente, não vazio e que não seja outra flag (com "{F}" vazio, "--feature --base x" tomaria
+# "--base" como nome e mandaria "x" ao comando como arquivo).
+valor() {
+  [ "${3}" -ge 2 ] && [ -n "${2}" ] || uso "${1} exige um valor" "passe ${1} <valor>; um nome vazio indica variável não preenchida na chamada"
+  case "${2}" in --*) uso "${1} recebeu outra flag (${2}) como valor" "passe ${1} <valor>; um nome vazio indica variável não preenchida na chamada" ;; esac
+}
 while [ $# -gt 0 ]; do
   case "${1}" in
-    --feature) [ $# -ge 2 ] && [ -n "${2}" ] || uso "--feature exige um nome"; FEATURE="${2}"; shift 2 ;;
-    --base)    [ $# -ge 2 ] && [ -n "${2}" ] || uso "--base exige uma ref"; BASE="${2}"; BASE_DADA=1; shift 2 ;;
-    --commit)  [ $# -ge 2 ] && [ -n "${2}" ] || uso "--commit exige um SHA"; COMMIT="${2}"; COMMIT_DADO=1; shift 2 ;;
-    --arvore)  [ $# -ge 2 ] && [ -n "${2}" ] || uso "--arvore exige uma pasta"; ARVORE="${2}"; shift 2 ;;
-    --dir)     [ $# -ge 2 ] && [ -n "${2}" ] || uso "--dir exige uma pasta"; DIR="${2}"; shift 2 ;;
+    --feature) valor "${1}" "${2:-}" $#; FEATURE="${2}"; shift 2 ;;
+    --base)    valor "${1}" "${2:-}" $#; BASE="${2}"; BASE_DADA=1; shift 2 ;;
+    --commit)  valor "${1}" "${2:-}" $#; COMMIT="${2}"; COMMIT_DADO=1; shift 2 ;;
+    --arvore)  valor "${1}" "${2:-}" $#; ARVORE="${2}"; shift 2 ;;
+    --dir)     valor "${1}" "${2:-}" $#; DIR="${2}"; shift 2 ;;
     --)        shift; while [ $# -gt 0 ]; do ARQS+=("${1}"); shift; done ;;
     --*)       uso "opção desconhecida: ${1}" ;;
     *)         ARQS+=("${1}"); shift ;;
@@ -74,7 +80,7 @@ CONFIG="${ROOT}/sdd/config.yaml"
 
 # Lê o valor: 1ª linha da saída = VALOR | AUSENTE | ASPAS <linha> | AMBIGUO; o resto é o valor.
 LIDO="$(python3 -B - "${CHAVE}" "${CONFIG}" <<'PY'
-import re, shlex, sys
+import re, sys
 secao, chave = sys.argv[1].split(".", 1)
 try:
     linhas = open(sys.argv[2], encoding="utf-8", errors="replace").read().splitlines()
@@ -108,12 +114,22 @@ for n, l in enumerate(linhas, 1):
     else:
         v = re.split(r"\s#", v, 1)[0].strip()
     v = v.strip()
-    if v:
-        try:
-            if shlex.split(v, comments=True) != shlex.split(v):
-                print("COMENTARIO %d" % n); sys.exit(0)
-        except ValueError:
-            pass  # aspas do shell sem fechar: o bash -n abaixo diz onde
+    # Comentário do shell: um # no INÍCIO de uma palavra, fora de aspas (regra do bash). "a#b" e
+    # "https://x/#/y" não são comentário. Aspas sem fechar ficam para o bash -n abaixo.
+    aspa, esc, anterior = "", False, " "
+    for c in v:
+        if esc:
+            esc = False
+        elif c == "\\" and aspa != "'":
+            esc = True
+        elif aspa:
+            if c == aspa:
+                aspa = ""
+        elif c in "'\"":
+            aspa = c
+        elif c == "#" and (anterior.isspace() or anterior in ";|&()<>"):
+            print("COMENTARIO %d" % n); sys.exit(0)
+        anterior = c
     print("VALOR")
     sys.stdout.write(v)
     sys.exit(0)

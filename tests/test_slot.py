@@ -178,6 +178,9 @@ class Uso(Base):
         self.smoke("bash falso.sh 0")
         for args in (["smoke.foo_cmd"], ["release.landmines_cmd"], [], ["smoke.before_ok_cmd", "--feature"],
                      ["smoke.before_ok_cmd", "--xyz", "1"], ["smoke.before_ok_cmd", "--commit", "nao-existe-abc"],
+                     ["smoke.before_ok_cmd", "--feature", "--arvore", "/tmp"],  # avaliação ciclo 1, achado 1
+                     ["smoke.before_ok_cmd", "--arvore", "--feature", "F1"],
+                     ["smoke.before_ok_cmd", "--feature", "", "--base", "main"],
                      ["smoke.before_ok_cmd", "--base", "nao-existe-abc"]):
             with self.subTest(args=args):
                 rc, out = self.slot(*args)
@@ -199,6 +202,30 @@ class Uso(Base):
                 self.assertEqual(rc, 64, out)
                 self.assertIn("RESULTADO: ERRO DE USO", out)
                 self.assertFalse((self.r / "registro.txt").exists())
+
+
+class Cerquilha(Base):
+    """AT-001 × AT-004 (avaliação ciclo 1, achado 2): # só é comentário no início de uma palavra, fora de aspas."""
+
+    def test_cerquilha_no_meio_da_palavra_roda(self):
+        for arg in ("https://app.example.com/#/pedidos", "a#b"):
+            with self.subTest(arg=arg):
+                self.smoke("bash falso.sh 0 %s" % arg)
+                rc, out = self.slot("smoke.before_ok_cmd")
+                self.assertEqual(rc, 0, out)
+                self.assertEqual(self.registro()["ARG"], [arg])
+
+    def test_cerquilha_entre_aspas_roda(self):
+        self.config("smoke:\n  before_ok_cmd: \"bash falso.sh 0 'x # y'\"\n")
+        rc, out = self.slot("smoke.before_ok_cmd")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.registro()["ARG"], ["x # y"])
+
+    def test_cerquilha_depois_de_ponto_e_virgula_e_comentario(self):
+        self.smoke("bash falso.sh 0;# resto")
+        rc, out = self.slot("smoke.before_ok_cmd")
+        self.assertEqual(rc, 64, out)
+        self.assertFalse((self.r / "registro.txt").exists())
 
 
 class Ambiente(Base):

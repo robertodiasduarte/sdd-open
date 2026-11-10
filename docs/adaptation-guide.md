@@ -89,7 +89,9 @@ arguments, and with `SDD_MOMENTO`, `SDD_FEATURE`, `SDD_BASE`, `SDD_COMMIT` (the 
 and `SDD_SLOT_DIR`. The last one is a folder outside the repository, the same for the three smoke moments of a
 feature from any worktree: it is how your "before" and "after" find each other. It is emptied at
 `before_ok`. Keep the command on one line and without a `#` comment; with `|`, `;` or `&&`, point to a script.
-A smoke that measures a page should measure `SDD_COMMIT`/`SDD_ARVORE`, not the folder it runs from.
+A smoke that measures a page should measure `SDD_COMMIT`/`SDD_ARVORE`, not the folder it runs from. After the deploy,
+`SDD_BASE` and `SDD_COMMIT` are usually the same commit (the release fetched the published one): the "before" of
+your comparison lives in `SDD_SLOT_DIR`, written by your `before_ok` or `before_push` command.
 
 ## Parallel work: worktrees
 

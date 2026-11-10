@@ -15,6 +15,8 @@
 #                                                  # foo.ts → foo.test.ts / foo.spec.ts (.ts .tsx .js .jsx
 #                                                  # .mjs .cjs), calc.py → test_calc.py / calc_test.py.
 #                                                  # Go e jest ficam de fora: o id da falha não traz o arquivo.
+#                                                  # No unittest, o casamento é pelo módulo: um test_calc de
+#                                                  # outro pacote também conta (erra para o lado seguro).
 #                                                  # A sdd-release roda este modo antes do OK (0a, item 9).
 #   sdd/bin/test-baseline.sh --aceitar '<id>'      # registra uma falha como conhecida (decisão humana)
 #
@@ -37,7 +39,7 @@ while [ $# -gt 0 ]; do
     --touched) TOUCHED=1; shift ;;
     --base)    [ $# -ge 2 ] && [ -n "${2}" ] || uso "--base exige uma ref"; BASE="${2}"; shift 2 ;;
     --aceitar) [ $# -ge 2 ] && [ -n "${2}" ] || uso "--aceitar exige um id"; ACEITAR="${2}"; ACEITAR_DADO=1; shift 2 ;;
-    -h|--help) sed -n '2,24p' "$0"; exit 64 ;;
+    -h|--help) sed -n '2,26p' "$0"; exit 64 ;;
     *)         uso "argumento inesperado: ${1}" ;;
   esac
 done

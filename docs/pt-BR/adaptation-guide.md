@@ -93,7 +93,8 @@ desse commit: antes do OK, o worktree temporário da release) e `SDD_SLOT_DIR`. 
 repositório, a mesma nos três momentos do smoke de uma feature, de qualquer worktree: é por ela que o seu "antes"
 e o seu "depois" se encontram. Ela é esvaziada no `before_ok`. Uma linha só, sem comentário `#` no comando; com
 `|`, `;` ou `&&`, aponte para um script. Um smoke que mede uma página deve medir `SDD_COMMIT`/`SDD_ARVORE`, não a
-pasta onde roda.
+pasta onde roda. Depois do deploy, `SDD_BASE` e `SDD_COMMIT` costumam ser o mesmo commit (a release buscou o
+publicado): o "antes" da sua comparação mora na `SDD_SLOT_DIR`, gravado pelo seu comando de `before_ok` ou `before_push`.
 
 ## Trabalho paralelo: worktrees
 
