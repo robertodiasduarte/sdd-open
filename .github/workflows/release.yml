@@ -52,7 +52,7 @@ jobs:
   testes:
     name: Testes (só leitura)
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 45   # F19: a suíte passou de 25 min aqui (26m15s no PR) e a v2.10.0 ficou sem Release
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:

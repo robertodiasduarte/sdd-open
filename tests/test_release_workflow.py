@@ -155,6 +155,10 @@ class PisoNoMacos(unittest.TestCase):
                 self.assertNotIn("contents: write", bloco)
                 self.assertNotIn("if:", sem_comentarios(bloco))
 
+    def test_job_ubuntu_da_release_tem_folga_para_a_suite(self):
+        # F19: a suíte levou 26 min no Ubuntu e o teto de 25 cancelou o job; a tag v2.10.0 ficou sem Release
+        self.assertRegex(job(RELEASE, "testes"), r"(?m)^    timeout-minutes: 45\b")
+
     def test_piso_afirmado_e_python3_do_path_e_o_do_piso(self):
         # imprimir a versão não prova o piso: o passo sai ≠0 se a imagem trocar de Python ou de bash
         afirma_py = "sys.exit(sys.version_info[:2] != (3, 9))"
