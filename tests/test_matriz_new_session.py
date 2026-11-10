@@ -18,7 +18,8 @@ from apoio import RAIZ
 SKILLS = RAIZ / ".agents/skills"
 CHECAR = SKILLS / "sdd-checar-ambiente/scripts/checar.sh"
 SESSAO = SKILLS / "sdd-new-session/SKILL.md"
-PORTADAS = ("sdd-checar-ambiente", "sdd-higiene-dado", "sdd-iniciar-repo", "sdd-kb")
+PORTADAS = ("sdd-checar-ambiente", "sdd-higiene-dado", "sdd-iniciar-repo", "sdd-kb",
+            "sdd-engenharia-reversa-saas")  # F21: portada de um pacote avulso, mesmas 3 regras
 MSG = re.compile(r'(?:add_(?:impede|remoto)\s+|MSG=)"((?:[^"\\]|\\.)*)"')
 
 

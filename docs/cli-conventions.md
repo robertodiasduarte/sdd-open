@@ -84,6 +84,7 @@ RESULTADO: ERRO
 | `copiar-docs.sh` (em `.agents/skills/sdd-new-session/scripts/`) | `0` N COPIADO(S) ou NADA A COPIAR · `2` uma cópia falhou · `64` uso, pasta inexistente ou checkout principal fora de um repositório git |
 | `sdd-kb/scripts/gate.sh` | `0` verde · `2` vermelho (caso bom rejeitado, caso ruim aceito ou por outro motivo, âncora ausente, RULE_MAP do exemplo derivado, ou rodado da cópia gerada pelo `sync`) |
 | `sdd-kb/scripts/validate_kb.py` · `kb_normativo.py` | `0` PASS · `2` FAIL · `64` uso |
+| `sdd-engenharia-reversa-saas/scripts/validate_reverse.py` | `0` ok · `2` reprovado, arquivo ilegível ou uso |
 
 O `kb-dominios.py` termina como os outros lints: no verde, `✅ <DEFINE>: KB Domains válido (…)`, os
 testes do RULE_MAP (`<domínio>: <REGRA> → <teste>`), `RESULTADO: VERDE` e, se houver testes, `→ ponha
@@ -94,6 +95,13 @@ só no verde (`RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, 
 **Exceção declarada:** `validate_kb.py` e `kb_normativo.py` vieram do starter com as mensagens em inglês
 (`PASS:` · `FAIL:` · `WARN:`) e exit `2` na falha. Os testes portados conferem o texto dessas razões, então
 elas ficam como estão; a skill `sdd-kb` manda o agente traduzir a saída para quem lê.
+
+**Exceção declarada:** `validate_reverse.py` (skill `sdd-engenharia-reversa-saas`) entrou byte a byte como foi
+validado fora do pacote: imprime uma linha de JSON (`ok`, `errors` com códigos como `OBSERVADO_SEM_SESSAO`,
+contagens e `scope`), sem `RESULTADO:` nem `→`, e sai `2` na falha. Quem lê a saída é o agente, e a skill
+manda traduzir cada código para quem usa. Limite conhecido: com a saída
+padrão forçada para ASCII (`PYTHONIOENCODING=ascii`), um código de erro com acento faz o script cair com
+`UnicodeEncodeError` e exit `1`, sem o JSON; rode-o com a saída em UTF-8, o padrão do Python 3.
 
 ## Cor
 

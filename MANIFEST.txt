@@ -21,6 +21,19 @@
 .agents/skills/sdd-drive/SKILL.md
 .agents/skills/sdd-drive/references/como-falar.md
 .agents/skills/sdd-drive/references/executor.md
+.agents/skills/sdd-engenharia-reversa-saas/CHANGELOG.md
+.agents/skills/sdd-engenharia-reversa-saas/SKILL.md
+.agents/skills/sdd-engenharia-reversa-saas/assets/ENGENHARIA_REVERSA_TEMPLATE.md
+.agents/skills/sdd-engenharia-reversa-saas/evals/cases.json
+.agents/skills/sdd-engenharia-reversa-saas/manifest.json
+.agents/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md
+.agents/skills/sdd-engenharia-reversa-saas/references/FONTES.md
+.agents/skills/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md
+.agents/skills/sdd-engenharia-reversa-saas/references/PROTOCOLO_ENGENHARIA_REVERSA.md
+.agents/skills/sdd-engenharia-reversa-saas/references/RUNTIME_COMPATIBILITY.md
+.agents/skills/sdd-engenharia-reversa-saas/references/como-falar.md
+.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py
 .agents/skills/sdd-governanca/SKILL.md
 .agents/skills/sdd-governanca/assets/GOVERNANCA_PADRAO_TEMPLATE.md
 .agents/skills/sdd-governanca/assets/GOVERNANCA_REVIEW_TEMPLATE.md
@@ -420,6 +433,7 @@ tests/test_f13_textos.py
 tests/test_f14_drive_textos.py
 tests/test_f14_textos.py
 tests/test_f15_slots_textos.py
+tests/test_f21_textos.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py
@@ -451,5 +465,6 @@ tests/test_sdd_open.py
 tests/test_skill_lint.py
 tests/test_slot.py
 tests/test_test_baseline.py
+tests/test_validate_reverse.py
 tests/test_verify_gate.py
 tests/test_verify_gate_trace.py

@@ -1,2 +1,5 @@
 # O SHA-256 do catálogo de fontes confere os bytes: um checkout com core.autocrlf não pode trocar o fim de linha.
 .agents/skills/sdd-kb/assets/example-kb-normativo/fontes/** -text
+# O teste compara o SHA-256 do lint e do molde com os do pacote de origem: o fim de linha não pode mudar no checkout.
+.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py -text
+.agents/skills/sdd-engenharia-reversa-saas/assets/ENGENHARIA_REVERSA_TEMPLATE.md -text

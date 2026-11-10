@@ -46,14 +46,15 @@ seu é sobrescrito. [Quickstart completo →](docs/pt-BR/quickstart.md)
 | **Auditoria read-only do harness** | harness acumula: comando que ninguém chama, agente que ninguém despacha, doc que derivou do código. Uma passada read-only inventaria cada comando, agente, skill, hook e script, mede referências de entrada e recência, e emite um único `AUDITORIA_SDD_<data>.md` — nunca apaga: a faxina em si continua decisão humana | skill `sdd-auditoria-harness` · `scripts/collect_evidence.py` |
 | **Revisão de governança** | em sistema financeiro, contábil ou fiscal, compara o DEFINE com um catálogo curado (lançamento que não se apaga, fechamento de período, trilha de auditoria, segregação de funções, aritmética exata…) e recomenda requisitos em EARS com teste negativo que o Verify Gate executa; base legal só citada quando confirmada no catálogo; uma decisão por item, e a recusa fica registrada como risco aceito. Desde a v2.4.0 roda dentro de todo Define (passo 11), por um agente fresco, e o Verify Gate sai 5 até ela fechar | skill `sdd-governanca` |
 | **Base de conhecimento** | o que você sabe sobre um domínio (um processo, uma norma, um manual) organizado em conceitos e receitas que o agente consulta; em norma, o período em que cada regra vale, a fonte com SHA-256 e o mapa regra → fonte → teste. O Define só cita domínio que existe, conferido por `sdd/bin/kb-dominios.py` | skill `sdd-kb` · `sdd/kb/` |
+| **Engenharia reversa de SaaS** | quem quer construir algo parecido com um sistema que já existe estuda esse produto **antes** do Brainstorm: `ENGENHARIA_REVERSA_{SAAS}.md` traz cada achado com fonte e classe (observado, documentado, informado, inferido, não verificado), conferido por um lint; depois a skill conduz o Brainstorm e o Define da **sua** solução. Só fontes públicas e conta própria, sem copiar marca nem código; sem pesquisa na web o levantamento sai parcial | skill `sdd-engenharia-reversa-saas` |
 | **Handoff por ficha** | um arquivo por feature no repositório, com prompt de retomada autossuficiente — sem depender da memória de nenhum agente | skill `sdd-handoff` · `sdd/handoffs/` |
 
-## As 19 skills
+## As 20 skills
 
 | Bloco | Skills | Quando |
 |---|---|---|
 | **Preparar** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | uma vez por computador e por projeto (está tudo pronto? pôr no git, alarme de commit contra dado de cliente); a new-session a cada frente de trabalho |
-| **Criar** | `sdd-kb` (opcional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-ux-review` · `sdd-design` · `sdd-build` | uma vez por feature — o fluxo SDD |
+| **Criar** | `sdd-kb` (opcional) · `sdd-engenharia-reversa-saas` (opcional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-ux-review` · `sdd-design` · `sdd-build` | uma vez por feature — o fluxo SDD |
 | **Fechar** | `sdd-handoff` · `sdd-release` | no fim de cada sessão e de cada frente |
 | **Transversais** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-drive` · `sdd-auditoria-harness` | quando o caso pedir |
 

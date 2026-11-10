@@ -3,13 +3,13 @@
 Lê direto da raiz (sem rede, sem sandbox). Sete grupos:
   Links           — todo link relativo de README*.md, CONTRIBUTING.md e docs/**/*.md aponta para arquivo
                     que existe, e toda #âncora casa com um título pela regra do GitHub;
-  Guia            — docs/pt-BR/guia-do-aluno.md cobre as 19 skills, os 7 agentes e a instalação do open,
+  Guia            — docs/pt-BR/guia-do-aluno.md cobre as 20 skills, os 7 agentes e a instalação do open,
                     sem as premissas do sdd-starter (npx, 15 skills, sdd/ fora do git…);
   Quickstart      — a regra do método, "valide antes de seguir" por fase, a tabela "onde roda" no passo 4
                     e a atualização pelo doctor + init no passo 5;
   Roadmap         — os temas planejados e "Specs como deltas" em avaliação, sem data;
   Comparison      — "Specs como deltas" continua ❌ em avaliação na coluna do SDD Open;
-  ReadmeEAgents   — README e AGENTS.md.tmpl citam as 19 skills, a KB e o OK único;
+  ReadmeEAgents   — README e AGENTS.md.tmpl citam as 20 skills, a KB e o OK único;
   PorQueCadaRegra — as 7 skills de fase e as 2 de terreno guardam o motivo das próprias regras.
 
 As frases fixas ficam nas constantes abaixo: mudar a redação de uma delas é mudar a constante de propósito.
@@ -230,7 +230,7 @@ class Guia(unittest.TestCase):
     def test_uma_ficha_por_skill(self):
         faltam = [s for s in SKILLS if not re.search(r"(?m)^#### %s\s*$" % re.escape(s), self.texto)]
         self.assertEqual(faltam, [], "skills sem ficha no catálogo")
-        self.assertEqual(len(SKILLS), 19)
+        self.assertEqual(len(SKILLS), 20)
 
     def test_os_sete_agentes(self):
         self.assertEqual([a for a in AGENTES if a not in self.texto], [])

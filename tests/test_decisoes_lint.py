@@ -30,10 +30,10 @@ class Base(Sandbox):
 
 
 class AlvosReais(Base):
-    def test_skills_do_pacote_26_perguntas(self):  # F15_SLOTS: +1, o smoke reprovado depois do deploy (sdd-release)
+    def test_skills_do_pacote_27_perguntas(self):  # F21: +1, como aprofundar o estudo (sdd-engenharia-reversa-saas)
         rc, out = self.lint("--sites", RAIZ / ".agents/skills")
         self.assertEqual(rc, 0, out)
-        self.assertIn("26 pergunta(s) em 21 arquivo(s)", out)
+        self.assertIn("27 pergunta(s) em 22 arquivo(s)", out)
 
     def test_fragmentos_2_perguntas(self):
         rc, out = self.lint("--sites", RAIZ / "sdd/templates/fragments")

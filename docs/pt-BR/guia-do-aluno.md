@@ -3,7 +3,7 @@
 > Para quem nunca usou git, terminal ou programou. Se você já conhece essas coisas, o
 > [Quickstart](quickstart.md) é mais direto.
 
-O SDD Open é um conjunto de 19 **skills** — roteiros que a IA segue para trabalhar com método — mais
+O SDD Open é um conjunto de 20 **skills** — roteiros que a IA segue para trabalhar com método — mais
 alguns conferidores que rodam no seu computador. Cada skill faz uma coisa só, conversa com você em
 etapas e **não faz nada que não se desfaz sem você escolher**. Este guia mostra o caminho inteiro:
 preparar o computador, criar o primeiro projeto e publicá-lo.
@@ -206,7 +206,7 @@ o Build e a Release rodam. Ele devolve um número, e a skill traduz:
 
 ## 4. O mapa do caminho
 
-As 19 skills se dividem em quatro blocos, na ordem em que você vai usá-las.
+As 20 skills se dividem em quatro blocos, na ordem em que você vai usá-las.
 
 ```text
 PREPARAR (uma vez por computador e por projeto; a new-session, a cada frente)
@@ -219,6 +219,7 @@ CRIAR (uma vez por feature — o fluxo SDD)
  (opcional)  "lapidar a ideia"  "o que precisa      (se tem tela,     "como será      "a IA
  "ensinar                        fazer"; já roda a  arquivo ou        feito"          constrói"
   o contexto"                    governança dentro) mensagem)
+   Antes do brainstorm, também opcional: sdd-engenharia-reversa-saas ("estudar um sistema que já existe")
 
 FECHAR (no fim de cada sessão e de cada frente)
    sdd-handoff ──► sdd-release
@@ -314,6 +315,18 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **Como pedir** | *"use a skill sdd-kb — quero ensinar a IA sobre o Simples Nacional do escritório"* |
 | **O que produz** | Uma pasta em `sdd/kb/` com conceitos (para entender) e receitas (para fazer), o índice `sdd/kb/_index.yaml` e as fontes registradas. A `sdd-define` passa a citar o domínio pelo nome da pasta. |
 | **O que vai perguntar** | Qual é o assunto e onde ele termina; se tem regra que vale por período (sim → perfil normativo); e, no fim, a sua revisão — quem responde pelo conteúdo é você. |
+
+#### sdd-engenharia-reversa-saas
+
+| | |
+|---|---|
+| **Para que serve** | Estuda um sistema que já existe (um SaaS: sistema usado pela internet, por assinatura) **antes** do Brainstorm, para você definir a sua própria solução sabendo o que foi visto, o que está escrito e o que é suposição. É opcional. |
+| **Quando usar** | Você quer construir algo parecido com um sistema que conhece (por exemplo, um sistema de BPO financeiro) e quer entender o que ele faz antes de decidir o que o seu vai fazer. |
+| **Quando não usar** | Para copiar marca, tela ou código de outro produto, ou para entrar em conta que não é sua: ela recusa. Se você já tem o Brainstorm pronto, vá direto para a `sdd-define`. |
+| **Como pedir** | *"use a skill sdd-engenharia-reversa-saas — quero estudar o sistema Exemplo (exemplo.com) e definir a minha solução de BPO financeiro"* |
+| **O que produz** | `sdd/features/ENGENHARIA_REVERSA_{SAAS}.md`, com cada achado numerado, a fonte e o quanto dá para confiar; depois conduz o Brainstorm e o Define da sua solução, com as perguntas dessas duas skills. |
+| **O que vai perguntar** | Qual é o sistema (nome e site); até onde vai o estudo quando as fontes públicas não mostram algo; e, daí em diante, as perguntas do Brainstorm e do Define. |
+| **Limite** | Usa fontes públicas e a sua própria conta, só lendo; não copia marca nem código. Sem pesquisa na internet, o levantamento sai parcial e diz o que faltou. |
 
 #### sdd-brainstorm
 
