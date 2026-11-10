@@ -133,6 +133,7 @@
 
 - 2026-11-09 — Roberto pediu as 3 lacunas genéricas do inventário de saída da F15 (L0 smoke, L3 testes do diff, L4 checagem de migration) numa release própria do Open. Brainstorm, Define e Design da F15_SLOTS numa frente só; `smoke.*` e `schema.check_cmd` **reabertos por decisão do Roberto** (§8.2 do plano). Documentos na branch nova `docs/f15-slots`, porque a `docs/incorporar-starter` está em uso na worktree `sdd-open-docs-f16`.
 - 2026-11-10 — Build da F15_SLOTS: avaliador fresco em 2 ciclos (PASS), revisão paga em 4 rodadas (codex sem cota; auditor qwen; 2º revisor dispensado na rodada final por D3 do Roberto). Um erro do build: o script de sabotagem desfez consertos não commitados; restaurados de cópia, viraram a LM-009. Roberto: "finalizar (push + deploy + verificar) sdd-open"; PR #21, push `9d8ac24..45e27a9` + tag `v2.8.0`; **Release `v2.8.0`** em 2026-11-10T12:44:30Z (hash conferido). Curadoria `c2560fc` guardada para a próxima publicação (D1).
+- 2026-11-10 — Roberto: "podemos encerrar e limpar aqui?". Revisões, ledger, registro da curadoria, trace e brief arquivados em `/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F15_SLOTS-v2.8.0-revisoes-traces.tar.gz`; 62 documentos conferidos byte a byte contra a `docs/f15-slots`; worktrees `sdd-open-f15-slots` e `sdd-open-docs-f15-slots` removidas; branch local `feat/f15-slots` mantida por causa do `c2560fc`.
 ---
 
 ## 2026-11-10 — F15 Slots: L0 + L3 + L4 do inventário de saída (entregue, Release v2.8.0)
@@ -183,8 +184,9 @@
 ### Onde está o trabalho
 
 - Remoto `https://github.com/robertodiasduarte/sdd-open.git`, `main` = `45e27a9` = tag `v2.8.0`; branch remota `feat/f15-slots` (PR #21 MERGED) em `45e27a9`.
-- Worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f15-slots` (branch `feat/f15-slots`, local à frente do remoto pelo `c2560fc`); revisões em `sdd/reports/reviews/EXTERNAL_REVIEW_20261110-*` só nela.
-- Documentos SDD desta frente na branch `docs/f15-slots` (worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs-f15-slots`), nascida de `origin/docs/incorporar-starter` = `297f070`; a `docs/incorporar-starter` não foi tocada (está em uso na `sdd-open-docs-f16`).
+- Worktrees `sdd-open-f15-slots` e `sdd-open-docs-f15-slots` removidas em 2026-11-10. A branch local `feat/f15-slots` ficou no checkout principal (`/Users/robertoduarte/rdd-public/sdd-open`) por causa do `c2560fc` (curadoria não enviada); para levá-lo: `git -C /Users/robertoduarte/rdd-public/sdd-open cherry-pick c2560fc` numa worktree da próxima frente.
+- Revisões (`EXTERNAL_REVIEW_20261110-*`), ledger, `CURATOR-colhidos.txt`, trace e brief do curador: `/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F15_SLOTS-v2.8.0-revisoes-traces.tar.gz` (38 itens).
+- Documentos SDD desta frente na branch `docs/f15-slots` (remota), nascida de `origin/docs/incorporar-starter` = `297f070`; a `docs/incorporar-starter` não foi tocada (está em uso na `sdd-open-docs-f16`). Ficam para o Roberto decidir: mesclar `docs/f15-slots` na `docs/incorporar-starter` e apagar a branch remota `feat/f15-slots` (PR #21 MERGED).
 
 ### Prompt de retomada
 
@@ -195,8 +197,8 @@ Leia primeiro sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md, seção "2026-11-10 �
 Onde paramos: v2.8.0 publicada em 2026-11-10 (main = 45e27a9) com os slots smoke.* e schema.check_cmd, o sdd/bin/slot.sh
 e os testes do diff na sdd-release; Verify Gate de sdd/features/DEFINE_F15_SLOTS.md saiu 0 em 45e27a9 (1.717 testes).
 Tarefas:
-1. Na próxima frente do Open, levar o commit c2560fc (curadoria F15_SLOTS, branch feat/f15-slots da worktree
-   /Users/robertoduarte/rdd-worktrees/sdd-open-f15-slots) junto com a release dela (push na main que toca sdd/playbook.md publica).
+1. Na próxima frente do Open, levar o commit c2560fc (curadoria F15_SLOTS, branch local feat/f15-slots do checkout
+   /Users/robertoduarte/rdd-public/sdd-open: git cherry-pick c2560fc) junto com a release dela (push na main que toca sdd/playbook.md publica).
 2. Trocar "FASE 1, itens 1 a 6" por "itens 1 a 6b" na tabela de etapas da .agents/skills/sdd-release/SKILL.md (bump patch).
 3. No privado, a F15 segue: sdd-open.sh sync para v2.8.0, ligar os 4 slots, fases 2 e 3 (BRAINSTORM_F15_SUBSTITUICAO.md).
 Alertas: o bloco do OK não muda de rótulos; push só com "sdd-open autorizado"; nada do privado no repositório público.
