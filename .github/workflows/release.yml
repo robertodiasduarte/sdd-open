@@ -145,7 +145,8 @@ jobs:
     runs-on: macos-latest
     # F12: mesma suíte, mesmo commit: 1ª tentativa cancelada nos 30 min, 2ª em 27m06s (F11: 17m31s): o runner varia
     # muito. Um corte aqui impede a publicação, e não há teste a menos que justifique arriscar: 45.
-    timeout-minutes: 45
+    # F21: com 1.765 testes, os testes passaram em 44m48s e o job foi cancelado em 45m03s (na F15, 27m40s): 60.
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
