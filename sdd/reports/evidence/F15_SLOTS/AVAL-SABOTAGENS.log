@@ -1,0 +1,41 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/p7.sh
+== A1 slot.sh: exit 7 vira OK: MUTANTE NAO APLICOU
+== A2 slot.sh: 11 vira 0 (vazio=OK) (sdd/bin/slot.sh)
+FAIL: test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado) (caso='vazio')
+FAIL: test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado) (caso='chave ausente')
+FAIL: test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado) (caso='secao ausente')
+FAIL: test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado) (caso='aspas simples vazias')
+FAIL: test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado)
+Ran 16 tests in 3.170s
+FAILED (failures=5)
+[exit=0]
+== A3 slot.sh: before_ok nao esvazia (sdd/bin/slot.sh)
+FAIL: test_before_ok_esvazia_so_a_pasta_padrao (test_slot.Ambiente)
+Ran 16 tests in 3.016s
+FAILED (failures=1)
+[exit=0]
+== A4 slot.sh: sem trap de sinal (sdd/bin/slot.sh)
+FAIL: test_term_no_proprio_slot_e_inconclusivo (test_slot.Inconclusivo)
+Ran 16 tests in 3.059s
+FAILED (failures=1)
+[exit=0]
+== A5 test-baseline: unittest sem ancora (sdd/bin/test-baseline.sh)
+FAIL: test_touched_falha_sem_relacao_continua_fora_do_diff (test_test_baseline.TestBaseline) (saida='FAIL: test_calc_total (outro.modulo.Caso.test_calc_total)')
+Ran 18 tests in 3.148s
+FAILED (failures=1)
+[exit=0]
+== A6 release: item 9 some (.agents/skills/sdd-release/SKILL.md)
+FAIL: test_0a_roda_os_testes_do_diff_depois_do_verify_gate (test_f15_slots_textos.Release)
+Ran 18 tests in 0.018s
+FAILED (failures=1)
+[exit=0]
+== A7 release: 7b vira bloqueante (.agents/skills/sdd-release/SKILL.md)
+FAIL: test_7b_smoke_antes_do_push_nunca_segura (test_f15_slots_textos.Release)
+Ran 18 tests in 0.018s
+FAILED (failures=1)
+[exit=0]
+== A8 build: linha Checagem some (.agents/skills/sdd-build/references/aplicar-migration.md)
+FAIL: test_aplicar_migration_checa_antes_da_previa (test_f15_slots_textos.Build)
+Ran 18 tests in 0.018s
+FAILED (failures=1)
+[exit=0]

@@ -1,0 +1,15 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_slot.Uso test_slot.Cerquilha
+# commit: 9013b10
+test_chamada_errada_e_64 (test_slot.Uso) ... ok
+test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) ... ok
+test_bordas_do_bash (test_slot.Cerquilha) ... ok
+test_cerquilha_depois_de_ponto_e_virgula_e_comentario (test_slot.Cerquilha) ... ok
+test_cerquilha_entre_aspas_roda (test_slot.Cerquilha) ... ok
+test_cerquilha_no_meio_da_palavra_roda (test_slot.Cerquilha) ... ok
+test_comando_nao_escapa_da_checagem (test_slot.Cerquilha) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.102s
+
+OK
+[exit=0]

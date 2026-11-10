@@ -1,0 +1,14 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_slot.Ambiente
+# commit: 9013b10
+test_before_ok_esvazia_so_a_pasta_padrao (test_slot.Ambiente) ... ok
+test_before_ok_vazio_tambem_esvazia (test_slot.Ambiente) ... ok
+test_mesma_pasta_de_outra_worktree_subpasta_e_symlink (test_slot.Ambiente) ... ok
+test_padroes_sem_flags (test_slot.Ambiente) ... ok
+test_sem_git_funciona_com_commit_vazio (test_slot.Ambiente) ... ok
+test_variaveis_do_momento (test_slot.Ambiente) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.699s
+
+OK
+[exit=0]

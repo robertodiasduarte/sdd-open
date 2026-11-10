@@ -1,0 +1,29 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/p9.sh
+--- bloco extraido da skill:
+cmd='bash sdd/bin/slot.sh schema.check_cmd --feature {F} <cada .sql a aplicar>'
+{ echo "\$ $cmd"; eval "$cmd"; echo "[exit=$?]"; } > sdd/reports/evidence/{F}/SCHEMA-CHECK.log 2>&1
+=== caso ok: SCHEMA-CHECK.log =
+$ bash sdd/bin/slot.sh schema.check_cmd --feature FX migrations/001_a.sql
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+⚠️  SDD_COMMIT vazio: o repositório ainda não tem commit
+▶ schema.check_cmd (schema_check): bash checa.sh
+checando 1 arquivo(s): migrations/001_a.sql
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+=== caso reprova: SCHEMA-CHECK.log =
+$ bash sdd/bin/slot.sh schema.check_cmd --feature FX migrations/001_a.sql migrations/002_b.sql
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+⚠️  SDD_COMMIT vazio: o repositório ainda não tem commit
+▶ schema.check_cmd (schema_check): bash checa.sh
+checando 2 arquivo(s): migrations/001_a.sql migrations/002_b.sql
+REPROVA: migrations/002_b.sql tem DROP TABLE
+RESULTADO: REPROVOU
+→ não aplique a migration: corrija o SQL e rode de novo.
+[exit=2]
+=== caso vazio: SCHEMA-CHECK.log =
+$ bash sdd/bin/slot.sh schema.check_cmd --feature FX migrations/001_a.sql
+ℹ️  schema.check_cmd vazio: pulado (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.dxqZ8okS1k/sdd/config.yaml)
+RESULTADO: PULADO
+→ diga que o passo foi pulado porque o slot está vazio; para usá-lo, preencha schema.check_cmd em sdd/config.yaml.
+[exit=11]

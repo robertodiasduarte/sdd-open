@@ -1,0 +1,18 @@
+$ (R4·R1) falha de carga do vizinho: bash sdd/bin/test-baseline.sh --touched --base main --cmd "cat saida.txt; exit 1"
+▶ testes: cat saida.txt; exit 1
+⚠️  o comando saiu 1 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+$ (R4·N1) comentário no comando: bash sdd/bin/slot.sh smoke.before_ok_cmd f1.sql
+🛑 o comando de smoke.before_ok_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]
+$ (R4·N1) # no meio da palavra, execução real: bash sdd/bin/slot.sh smoke.before_push_cmd f1.sql
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh 0 a#b
+args=[a#b f1.sql]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]

@@ -443,8 +443,10 @@ Eixo diferente, não de agente: o `deploy-espera-testes.py` só lê GitHub Actio
 | F13 | `prompts.wrapper_pattern` | `""` | regex do wrapper de LLM (ex.: `callLLM\\(`) |
 | F14 | `drive.max_rounds` | `3` | — |
 | F14 | `drive.max_tokens` | `0` | 0 = sem teto; candidato a cair |
+| F15 | `smoke.before_ok_cmd` · `smoke.before_push_cmd` · `smoke.after_deploy_cmd` | `""` | **reabertos por decisão do Roberto** (F15_SLOTS, 2026-11-09; tinham caído na F13): rodados por `sdd/bin/slot.sh` nos itens 6b, 7b e 10 da `sdd-release` 2.9.0; exit 0 ok · 2 reprovou · 10 nada a medir |
+| F15 | `schema.check_cmd` | `""` | **reaberto por decisão do Roberto** (F15_SLOTS, 2026-11-09; tinha caído na F12): rodado por `sdd/bin/slot.sh` na seção 2b do `aplicar-migration.md` (`sdd-build` 2.7.0), antes da prévia, fail-closed |
 
-`layers:` já existe e passa a ser lido por `report-lint` (F7, já parcialmente na F3) e `sdd-fluxo.sh` (F9). Candidatos a cair, segundo o PORTE: `second_reviewer_*` (podem ser constantes no script), `drive.max_tokens`; `schema.check_cmd` caiu na F12; `smoke.*` e `prompts.loop_builder_skill` caíram na F13.
+`layers:` já existe e passa a ser lido por `report-lint` (F7, já parcialmente na F3) e `sdd-fluxo.sh` (F9). Candidatos a cair, segundo o PORTE: `second_reviewer_*` (podem ser constantes no script), `drive.max_tokens`; `schema.check_cmd` caiu na F12; `smoke.*` e `prompts.loop_builder_skill` caíram na F13. **Reabertura (2026-11-09, decisão do Roberto, F15_SLOTS):** `smoke.*` (3 slots) e `schema.check_cmd` voltaram, publicados na `v2.8.0` — são as lacunas L0 e L4 do inventário de saída da F15 (decididas em 2026-11-08), genéricas no Open; a ligação aos scripts do privado é feita no privado.
 
 ### 8.3 Fontes no privado e o que generalizar (PORTE §8.2, §8.3, Anexo A)
 
