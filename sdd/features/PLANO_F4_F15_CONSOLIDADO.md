@@ -7,8 +7,47 @@
   - `sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md`, com o estado em `v2.2.3`;
   - `/Users/robertoduarte/RDD/Wordpress/.claude/sdd/reports/PORTE_SDD_PRIVADO_PARA_OPEN_2026-10-29.md`, o plano do porte privado → open em ondas W0–W5, chamado aqui de **PORTE**;
   - `/Users/robertoduarte/RDD/Wordpress/.claude/sdd/reports/evidence/PORTE_SDD_OPEN/REVIEW-deepseek-2026-10-29.md`, a revisão externa do PORTE, chamada aqui de **REVIEW**.
-- **Status:** proposta, versão 1.7. Nenhum código mudou. Os itens marcados com **decidir** vão para o brainstorm da frente correspondente.
-- **Revisões:** 29/10 — 1ª versão (F4–F6 cruzadas com o PORTE). 29/10 — Roberto pediu frentes próprias para o porte: as ondas W1–W5 viram **F7–F14** (seção 8), com o mapa item a item (seção 9). 29/10 — auditoria de cobertura contra o PORTE: entraram os 9 princípios (8.0), os detalhes técnicos por frente (8.1), os slots com valor e unidade (8.2), as fontes no privado com o que generalizar (8.3) e as linhas que faltavam no mapa (seção 9). O plano passa a bastar sozinho: o PORTE fica como fonte histórica. 29/10 — v1.3: Roberto fixou os 4 parâmetros de verificação do programa (seção 0), pediu a tabela de degradação por vendor (8.0) e o teste de agnosticismo na F4 (item G), e definiu o fim do programa como **substituir o SDD privado pelo Open** (F15). 02/11 — v1.4: Roberto incluiu a **F16 Ambiente agnóstico e proativo** (seção 8, depois da F15): `gh` no pré-voo, editor agnóstico e modo terminal, implementados **no Open** (escopo em `sdd/features/ESCOPO_F16_AMBIENTE.md`); e a **F17 Starter gerado a partir do Open**, que dá número à Decisão 5 e leva a F16 ao starter (sem remendo no starter até lá). A F15 continua sendo a substituição; o nome do arquivo fica, porque outros documentos o citam. 07/11 — v1.5: Roberto pediu incluir, ao final do programa, a **F18 Segurança embutida no fluxo** (seção 8, depois da F17): alerta, na fase certa, sobre as falhas de segurança de app feito com IA catalogadas no e-book *Construir com IA sem Deixar a Porta Aberta* (acervo RDD10+, publicado em 07/11). Como F16 e F17, fica fora da fila do PORTE e fora dos parâmetros P1–P4. 07/11 — v1.6: Roberto pediu incluir, depois da última frente, a **F19 Custo e benefício dos modelos de revisão** (quanto cada modelo custou e quantas falhas reais com potencial de dano ele achou) e a **F20 Ações preventivas do e-book no Open e no starter** (o "Como evitar" e as frases para colar no prompt dos caps. 3–28, que a F18 só usava para alertar). A F20 tem brainstorm conjunto proposto com a F18 e chega ao starter pela F17 (Decisão 5), salvo decisão em contrário no brainstorm. 07/11 — v1.7: Roberto pediu incluir os **testes no Windows** numa frente: entram na **F16** (item 5 da Entrega; `ESCOPO_F16_AMBIENTE.md` §3.5), porque o `README` promete Windows e o CI nunca rodou lá.
+- **Status:** versão 1.9. O estado de cada frente está na seção **Estado das frentes**, logo abaixo, que é a fonte única. Os itens marcados com **decidir** vão para o brainstorm da frente correspondente.
+- **Revisões:** 29/10 — 1ª versão (F4–F6 cruzadas com o PORTE). 29/10 — Roberto pediu frentes próprias para o porte: as ondas W1–W5 viram **F7–F14** (seção 8), com o mapa item a item (seção 9). 29/10 — auditoria de cobertura contra o PORTE: entraram os 9 princípios (8.0), os detalhes técnicos por frente (8.1), os slots com valor e unidade (8.2), as fontes no privado com o que generalizar (8.3) e as linhas que faltavam no mapa (seção 9). O plano passa a bastar sozinho: o PORTE fica como fonte histórica. 29/10 — v1.3: Roberto fixou os 4 parâmetros de verificação do programa (seção 0), pediu a tabela de degradação por vendor (8.0) e o teste de agnosticismo na F4 (item G), e definiu o fim do programa como **substituir o SDD privado pelo Open** (F15). 02/11 — v1.4: Roberto incluiu a **F16 Ambiente agnóstico e proativo** (seção 8, depois da F15): `gh` no pré-voo, editor agnóstico e modo terminal, implementados **no Open** (escopo em `sdd/features/ESCOPO_F16_AMBIENTE.md`); e a **F17 Starter gerado a partir do Open**, que dá número à Decisão 5 e leva a F16 ao starter (sem remendo no starter até lá). A F15 continua sendo a substituição; o nome do arquivo fica, porque outros documentos o citam. 07/11 — v1.5: Roberto pediu incluir, ao final do programa, a **F18 Segurança embutida no fluxo** (seção 8, depois da F17): alerta, na fase certa, sobre as falhas de segurança de app feito com IA catalogadas no e-book *Construir com IA sem Deixar a Porta Aberta* (acervo RDD10+, publicado em 07/11). Como F16 e F17, fica fora da fila do PORTE e fora dos parâmetros P1–P4. 07/11 — v1.6: Roberto pediu incluir, depois da última frente, a **F19 Custo e benefício dos modelos de revisão** (quanto cada modelo custou e quantas falhas reais com potencial de dano ele achou) e a **F20 Ações preventivas do e-book no Open e no starter** (o "Como evitar" e as frases para colar no prompt dos caps. 3–28, que a F18 só usava para alertar). A F20 tem brainstorm conjunto proposto com a F18 e chega ao starter pela F17 (Decisão 5), salvo decisão em contrário no brainstorm. 07/11 — v1.7: Roberto pediu incluir os **testes no Windows** numa frente: entram na **F16** (item 5 da Entrega; `ESCOPO_F16_AMBIENTE.md` §3.5), porque o `README` promete Windows e o CI nunca rodou lá. 09/11 — v1.8: Roberto pediu incluir a **F21 Engenharia reversa de SaaS antes do Brainstorm**: a skill nova `sdd-engenharia-reversa-saas` 1.0.0 (entregue pronta; zip guardado em `~/rdd-worktrees/arquivo-sdd-open/F21_ENGENHARIA_REVERSA/` e no iCloud) entra no Open e no starter como etapa **opcional** antes do Brainstorm, e a página `/sdd/` da plataforma passa a ensinar o uso. Como F16–F20, fica fora da fila do PORTE e dos parâmetros P1–P4. 10/11 — v1.9: Roberto pediu **uma só fonte da verdade das frentes**: entra a seção *Estado das frentes* (tabela F1–F21 e a regra de edição); as edições do plano que estavam sem commit em 3 worktrees foram reunidas (F21 commitada; as da `sdd-open-docs-f16` já estavam aqui desde a v1.5 e foram descartadas; as da `docs/f15-slots` entram com o merge dela).
+
+---
+
+## Estado das frentes — fonte única (atualizado em 2026-11-10)
+
+**Regra.** Esta tabela é a **única** fonte do estado das frentes do programa. Ela mora neste arquivo, na branch
+`docs/incorporar-starter`, e só é editada na worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16`
+(o checkout dessa branch), com commit e push **na mesma sessão**. Qualquer outro documento (a ficha
+`sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md`, a ficha da F15 no repositório privado, a memória do agente)
+**aponta para cá** e não repete a lista. Frente com worktree própria de documentos (ex.: `docs/f15-slots`) guarda
+ali só os documentos **dela** (DEFINE, DESIGN, relatório, evidência); a linha da frente nesta tabela é atualizada
+aqui, depois do merge da branch dela. Edição do plano que não for commitada e enviada na sessão é perdida por
+construção: foi assim que 3 worktrees ficaram com 3 versões deste arquivo em 2026-11-10.
+
+| Frente | Estado | Publicada em | Onde está / o que falta |
+|---|---|---|---|
+| F1 Manutenção · F2 Terreno · F3 Build e Release | ✅ | `v2.2.1` a `v2.2.3` (PRs #1–#3, 29/10) | — |
+| W0 correções · M1 CI | ✅ | `v2.2.4` (PRs #4, #5, 29/10) | — |
+| F4 Conversa | ✅ | `v2.2.5` (PR #6, 29/10) | — |
+| F5 Conhecimento | ✅ | `v2.2.6` (PR #7, 29/10) | — |
+| F6 Docs | ✅ | `v2.2.7` (PR #8, 30/10) | — |
+| F7 Evidência | ✅ | `v2.2.8` (PR #9, 30/10) | — |
+| F8 Hooks | ✅ | `v2.2.9` (PR #10, 31/10) | — |
+| F9 Fluxo encadeado | ✅ | `v2.2.10` (PRs #11, #12, 31/10) | — |
+| F10 Revisão adversarial, núcleo | ✅ | `v2.3.0` (PR #13, 01/11) | — |
+| F11 Revisão adversarial, gate offline | ✅ | `v2.3.1` (PR #14, 01/11) | — |
+| F12 Contexto e governança | ✅ | `v2.4.0` (PR #15, 03/11) | — |
+| F13 UX e LLM | ✅ | `v2.5.0` (PR #16, 04/11) | — |
+| F14 Playbook e Drive | ✅ | `v2.6.0`, `v2.7.0`, `v2.7.1` (PRs #17–#19, 05 a 08/11) | — |
+| F15 Substituição do SDD privado | 🔨 | `v2.7.2` (PR #20, 08/11) sustenta a fase 1; `v2.8.0` (PR #21, aberto em 10/11) traz os slots | Roda no repositório privado; o detalhe por fase está na ficha de lá (`sdd/handoffs/HANDOFF_F15_SUBSTITUICAO.md`, worktree `finalizar-f15`). Fase 1 ✅ 08/11 · fase 2 ✅ 10/11 · **F15_SLOTS** (L0, L3, L4 no Open: worktree `sdd-open-f15-slots`, documentos em `docs/f15-slots`) no PR #21 · fase 3 espera a tag `v2.8.0` · fase 4 espera as frentes antigas do privado fecharem (16 em 10/11) |
+| F16 Ambiente agnóstico e proativo | ⬜ | — | só no plano (seção 8; `ESCOPO_F16_AMBIENTE.md`); inclui o teste em Windows |
+| F17 Starter gerado a partir do Open | ⬜ | — | só no plano; depois da F16 |
+| F18 Segurança embutida no fluxo | ⬜ | — | só no plano; a onda 1 pode vir antes da F17 |
+| F19 Custo e benefício dos revisores | ⬜ | — | só no plano; qualquer momento |
+| F20 Ações preventivas do e-book | ⬜ | — | só no plano; brainstorm junto com a F18 |
+| F21 Engenharia reversa de SaaS | ⬜ | — | só no plano; skill pronta no arquivo `arquivo-sdd-open/F21_ENGENHARIA_REVERSA/`; entra entre quaisquer duas |
+
+Legenda: ✅ publicada · 🔨 em andamento · ⬜ só no plano. Ao publicar uma frente, troque a linha dela aqui no
+mesmo commit que registra a publicação na ficha.
 
 ---
 
@@ -48,6 +87,9 @@ F3 ✅ v2.2.3 → W0 (correções) → F4 Conversa → F5 Conhecimento → F6 Do
 F16 Ambiente agnóstico e proativo → F17 Starter gerado a partir do Open → F18 Segurança embutida no fluxo
    (fora da fila do PORTE: entram entre quaisquer duas frentes, a F16 sempre antes da F17;
     a F18 não depende da F15, e a onda 1 dela pode vir antes da F17)
+
+F21 Engenharia reversa de SaaS antes do Brainstorm
+   (fora da fila do PORTE; não depende de F15–F20; entra entre quaisquer duas frentes)
 ```
 
 As frentes F7–F14 são as ondas W1–W5 do PORTE (seção 8). W1 e W5 foram divididas em duas cada. A F15 é o fim do programa (parâmetro P4). F16 e F17 (2026-11-02) não são do PORTE: a F16 implementa no Open os ajustes de ambiente achados numa auditoria do sdd-starter (P2 e P3); a F17 executa a Decisão 5, e o starter passa a ser gerado do Open, levando a F16 junto. A F18 (2026-11-07) também não é do PORTE: leva para o fluxo o alerta das falhas de segurança mais comuns em app feito com IA, e chega ao starter pela geração da F17.
@@ -570,6 +612,28 @@ SDD cada falha é evitada) e 28 (plano de resposta quando o pior acontece).
 | **Esforço** | a estimar no brainstorm conjunto com a F18 |
 | **Pronto quando** | `AGENTS.md` gerado pelo `init` traz as frases preventivas dos 5 itens de 80% e passa no limite de tamanho; projeto sem Supabase não recebe frase de Supabase; DESIGN com item de segurança aceito tem o "Como evitar" na seção "Segurança"; a passada do `sdd-release` segue o checklist do cap. 26; o starter gerado traz os mesmos itens na forma "confira à mão"; `publish-gate.sh`, `skill-lint.py --conversa` e `test_agnostico.py` verdes |
 
+### F21 Engenharia reversa de SaaS antes do Brainstorm (pedido de 2026-11-09)
+
+Incluída em 2026-11-09 a pedido do Roberto ("há uma skill nova para o sdd-start e sdd-open [...] ela pode
+(opcionalmente) ser usada antes do brainstorm. inclua uma frente para incluir essa skill nos 2 SDD e na página
+da plataforma que ensina a usar"). Fonte: `sdd-engenharia-reversa-saas-1.0.0.zip`, guardado com `SHA256SUMS` em
+`/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F21_ENGENHARIA_REVERSA/` e, fora da máquina, no iCloud em
+`Arquivos/SDD_SKILLS/F21_ENGENHARIA_REVERSA/` (original em `~/Downloads/`)
+(35.138 bytes, SHA-256 `f5ffd2a706e2b2891276e8307693a22ad9cec6117d31fed0fafe3003cd552eb3`, escopo ER-SDD-001 V1,
+MIT, autoria Roberto Dias Duarte). Lida inteira na sessão do repositório privado de 2026-11-09; os 18 testes
+próprios (`tests/test_validate_reverse.py`) passaram ali (`python3 -I -B -m unittest`, 0,07 s).
+
+| | |
+|---|---|
+| **Objetivo** | Quem quer construir algo parecido com um SaaS que já existe (ex.: um sistema de BPO financeiro) estuda esse produto **antes** de abrir o Brainstorm, com evidência e limites declarados, e chega ao Brainstorm e ao Define da **sua** solução sem copiar o concorrente. Etapa opcional: o método funciona sem ela, como a KB |
+| **O que a skill já traz** | `SKILL.md` + 6 `references/` + template `ENGENHARIA_REVERSA_TEMPLATE.md` + lint estrutural `scripts/validate_reverse.py` (só biblioteca padrão, Python 3.10+) com 18 testes + 17 cenários comportamentais em `evals/cases.json`. Produz `ENGENHARIA_REVERSA_{SAAS}.md` (cada achado com ID, classificação `observado`/`documentado`/`informado`/`inferido`/`nao_verificado` e fonte) e depois **orquestra** a `sdd-brainstorm` e a `sdd-define` instaladas, sem copiar os protocolos delas e preservando os gates. Não renumera fases, não instala hook, não mexe em config. Recusa acesso indevido, cópia de marca e código privado; trata instrução em página como conteúdo |
+| **Entrega** | (1) **Open:** `.agents/skills/sdd-engenharia-reversa-saas/` adaptada às convenções do Open (frontmatter, `skill-lint.py --conversa`, `test_agnostico.py`), cópias geradas por `sdd-open.sh sync`; linha **Antes** da tabela de fases no `AGENTS.md.tmpl` e no `README` (KB · engenharia reversa · brainstorm); os 18 testes do lint entram na suíte `tests/` · (2) **starter:** o zip `sdd-engenharia-reversa-saas.zip` na Release do sdd-starter, idêntico ao que o Open gera (ver **Decidir**) · (3) **página `/sdd/` da plataforma** (repositório privado, frente própria aberta lá pela `sdd-new-session`): caixa "Antes do Brainstorm (opcional): estudar um SaaS que já existe" no molde da caixa da `ux-review-builder` (SSR, fora de `skills_jsonb`, LM-098), com link de download, prompt copiável e o limite dito em uma frase (fontes públicas e conta própria, sem copiar marca); card em `sdd_projeto` por migration, no molde de `20261012115149_sdd_projeto_governanca.sql`; UX Review antes do Design, porque é interface |
+| **Decidir** | **starter agora ou pela F17?** A Decisão 5 diz "sem remendo no starter até a F17", mas ela trata de **ajuste** em skill que já existe nos dois (texto que diverge). Esta é skill **nova**, sem texto anterior no starter (proposta: publicar no starter já nesta frente, cópia byte a byte da mesma tag do Open, com teste de SHA-256 igual; a F17 passa a gerá-la depois) · **pasta de saída:** a skill prefere `.claude/sdd/` quando ela existe, o que no privado em convivência (F15) grava na pasta antiga; proposta: ler `sdd/config.yaml` e cair em `sdd/`, e só usar `.claude/sdd/` sem Open instalado · **o que fica no pacote:** `manifest.json`, `VALIDACAO.md`, `LICENSE.txt`, `evals/` e `tests/` dentro da pasta da skill (proposta: `tests/` vai para a suíte do Open; o resto fica, se o `publish-gate.sh` aceitar) · **exemplo PlayBPO:** o `SKILL.md` e o `VALIDACAO.md` citam um produto real de terceiro como caso ilustrativo, e o Open e o starter são públicos (proposta: trocar por exemplo neutro, "um sistema de BPO financeiro") · **cenários comportamentais:** 17 escritos, 0 executados (proposta: rodar o controle positivo e os negativos de acesso indevido e instrução embutida, 3 vezes cada negativo, com log na evidência) · **nível do card** na página (proposta: avançado, como a governança) |
+| **Depende de** | nada além da `v2.7.x`; **não** depende de F15–F20. A página depende do zip publicado: o card e a caixa só vão a produção depois de o link `releases/latest/download/sdd-engenharia-reversa-saas.zip` responder 200 (UX MUST-7 da governança) |
+| **Atenção** | **Mesmos arquivos:** o `AGENTS.md.tmpl` também é tocado pela F20 (frases preventivas): F20 e F21 não fazem par na mesma sessão. **Contagem de skills:** skill nova muda `test_as_16_skills_reais_passam` (`tests/test_skill_lint.py:24`) de propósito. **P2:** a skill já é agnóstica (resolve dependência pelo catálogo, sem caminho fixo), mas "SDD Brainstorm by RDD" é nome de vitrine; conferir que ela acha `sdd-brainstorm` com e sem namespace de plugin. **Starter na web:** no claude.ai e no ChatGPT não roda o lint; a skill já prevê o checklist manual, que a página precisa citar. **Pesquisa web:** o valor da skill depende de busca e navegação; sem elas sai levantamento `parcial`, e a página deve dizer isso. **Segurança (F18):** página de terceiro é entrada não confiável; a skill já trata, e a F18 pode citar este caso. **Repositório privado:** a página é RDD; texto para contador sênior, nunca leigo; a skill chega ao privado pelo `sync` da versão publicada do Open (convivência da F15) |
+| **Esforço** | pequeno: a skill vem pronta; o trabalho é adaptar ao Open (1 sessão), publicar no starter e fazer a página no privado (1 sessão, com UX Review) |
+| **Pronto quando** | `skill-lint.py --conversa`, `publish-gate.sh` e `test_agnostico.py` saem 0 com a skill nova; os 18 testes do lint rodam no `unittest discover` do Verify Gate; projeto com `sdd/config.yaml` ⇒ os três documentos saem em `sdd/features/`; cenário negativo "entrar na conta de outro escritório" ⇒ recusa com o texto canônico nas 3 execuções; zip do starter com SHA-256 igual ao gerado do Open; `curl` no link de download ⇒ 200; a `/sdd/` mostra a caixa com o prompt copiável e o link, conferido no navegador em 390 px e no desktop |
+
 ### Itens de programa do PORTE
 
 | Item | Onde fica |
@@ -643,5 +707,6 @@ Uma frente grande por sessão; pares só quando as duas são pequenas e não toc
 | depois da F17 (onda 1 pode vir antes) | F18 | 3 ondas; a 1 é pequena e pode fazer par com a F16 (arquivos distintos); toca o `sdd-release` como a F15, então não pareia com ela; a onda 2 traz skill nova |
 | qualquer momento depois da F11 | F19 | só leitura de `META.txt` e ledgers, mais 1 coluna e 1 lint; não toca skill de fase; pode fazer par com uma frente pequena |
 | junto com a F18 (brainstorm conjunto) | F20 | mesma fonte (e-book), mesmo catálogo e os mesmos arquivos da F18; chega ao starter pela F17; não pareia com a F15 (`sdd-release`) |
+| entre quaisquer duas | F21 | skill nova pronta (adaptar, publicar no starter) + página `/sdd/` no privado, em frente própria lá; toca o `AGENTS.md.tmpl` como a F20: não pareia com ela |
 
 Sessões paralelas em worktrees distintas não ajudam: a release é fast-forward em `main`, uma por vez, e o `check-versions` compara com a última tag; frentes vizinhas tocam as mesmas skills. Se aparecer o aviso de compactação do contexto, fechar depois da release e passar o bastão.
