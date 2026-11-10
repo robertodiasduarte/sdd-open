@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.9.1"
+  version: "2.10.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.9.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -126,7 +126,13 @@ diff-base (`git merge-base origin/{default_branch} HEAD`).
    `--conferir` de novo) ou **publicar sem revisão** (o motivo da pessoa vira
    `review_externo: dispensado — <motivo>`). 2º revisor acionado e sem resultado ⇒ rode de novo com
    outra engine ou registre a dispensa dele com `--aceitar-sem-revisor2 "<motivo>"`. O OK continua
-   sendo uma pergunta só: a dispensa é decidida antes dele.
+   sendo uma pergunta só: a dispensa é decidida antes dele. Com revisão feita (não dispensada), confira
+   também o ledger da revisão: `bash sdd/bin/ledger-revisao-lint.sh sdd/reviews/LEDGER_REVISAO_{F}.md` —
+   exit 2 ⇒ **abortar**, citando cada `arquivo:linha` (achado sem a marca `dano`, `sim` sem o teste citado);
+   exit 64 ⇒ o arquivo não existe ou está vazio: grave as linhas das rodadas pelo molde
+   `sdd/templates/LEDGER_REVISAO_TEMPLATE.md` (rodada sem achados: `sem achados: rodada=N <pasta>`) e
+   rode de novo. Sem esse registro, o custo por falha real de cada engine não se mede
+   (`bash sdd/bin/eval-revisores.sh`).
 
 9. **Testes do diff:** `bash sdd/bin/test-baseline.sh --touched` (base `origin/{default_branch}`), **depois do item 4**,
    nunca em paralelo com ele (a suíte dos dois na mesma árvore inventa falha). Conta o teste alterado e o teste ao

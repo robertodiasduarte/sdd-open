@@ -158,6 +158,7 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 
 **Consulta:** {tipo: plan-review | delivery-review | conflito | judgment call} · {data} · {ferramenta: sdd/bin/adversarial-review.sh (pasta em review.output_dir) | sessão nova do agente | …}
 **VERDICT do advisor:** {1 linha, verbatim}
+**Ledger da revisão:** `sdd/reviews/LEDGER_REVISAO_{FEATURE}.md` (uma linha por achado, com a marca `dano`; conferido por `sdd/bin/ledger-revisao-lint.sh`) | N.A. (consulta fora do `adversarial-review.sh`)
 **Proveniência:** {engines efetivos por papel; se houve fallback, declarar aqui — troca silenciosa é falso-verde}
 
 | # | Nota | Severidade | Veredito | Evidência |

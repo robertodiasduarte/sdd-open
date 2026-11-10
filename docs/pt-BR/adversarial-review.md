@@ -148,6 +148,52 @@ pode não estar auditando: compare com outra engine no papel de auditor. A taxa 
 projeto revisou, não um benchmark. Nunca chama engine. Exits: `0` MEDIDO · `2` SEM DADOS (também quando a pasta padrão ainda não existe) ·
 `64` uso, ou uma pasta passada que não existe.
 
+## eval-revisores
+
+```bash
+bash sdd/bin/eval-revisores.sh [<pasta das revisões>] [--ledgers <pasta ou arquivo>] [--registry <registry.tsv>]
+```
+
+Responde "quanto custou cada engine de revisão, e o que ela achou que valia o conserto?" com o que o projeto
+já registrou. Lê o `META.txt` e os arquivos de vereditos de cada `EXTERNAL_REVIEW_*`, mais os ledgers da
+revisão (`sdd/reviews/LEDGER_REVISAO_{F}.md`), e mostra uma linha por papel + engine + modelo (o modelo como o
+`META.txt` registra, com o provedor: o mesmo modelo por dois provedores aparece em duas linhas):
+
+| Coluna | Significado |
+|---|---|
+| Rodadas · Falhas | chamadas que responderam · chamadas que falharam, por motivo: `credencial` (exit 65), `cota ou tempo` (67), `resposta inválida` (68), `trocada por outra engine` (a engine prevista falhou e outra respondeu) |
+| Pago US$ | o que saiu do saldo: custo numérico só das engines `pay-per-token` (pelo `registry.tsv`); `0.0000` para engine por assinatura, `n/d` quando a cobrança é desconhecida |
+| Nominal US$ | todo custo numérico, reportado ou estimado (`≈`), inclusive o valor de tabela que uma engine por assinatura reporta |
+| Achados | achados do arquivo de vereditos do papel (os `NOVO`, para o auditor) |
+| Aplicados · Com dano · Falsos positivos · Fora de escopo · Sem classificar | do ledger: `APLICADA` · `dano` = `sim` · `REBATIDA_EVIDENCIA` · `REBATIDA_ESCOPO` · sem linha no ledger, ou `dano` = `?` |
+| Pago por dano · Nominal por dano | custo dividido pelos achados com dano, nas duas bases; `—` quando não há nenhum |
+| AGREE | só para o auditor: a mesma taxa do `eval-agree.sh`, com a amostra ao lado |
+
+Chamada sem custo numérico (`assinatura` sem valor, `$?`) aparece como `n/d em N de M` e nunca conta como
+zero; um custo escrito `US$ n + $?` (a engine estourou o tempo) soma o `n` e mostra `incerto em N de M`. As
+somas usam aritmética decimal exata. Tudo o que ficou fora dos números vai para `fora da conta`, com o motivo:
+linha do ledger que não casa com nenhum achado, linha repetida, rótulo que não é o da engine que respondeu,
+`META.txt` ilegível. Exits: `0` MEDIDO · `2` SEM DADOS · `64` uso, ou um caminho passado que não existe.
+
+**O ledger.** Um arquivo por frente, `sdd/reviews/LEDGER_REVISAO_{F}.md`, uma linha por achado decidido (molde:
+`sdd/templates/LEDGER_REVISAO_TEMPLATE.md`):
+
+```text
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+```
+
+As 4 primeiras células são as que o `sdd-fluxo.sh loop --ledger` já lê; `dano` (`sim`, `nao`, ou `?` num ledger
+marcado `retroativo: sim`) e a pasta da revisão vêm depois. `bash sdd/bin/ledger-revisao-lint.sh <arquivo>…`
+confere: `0` ok · `2` violação com `arquivo:linha — motivo` · `64` uso, arquivo ilegível ou nada a conferir. O
+que conta como dano está escrito em `sdd/review/CRITERIO_DANO.md`: o achado foi aplicado, o conserto veio com
+um teste que falha no código antigo, e o cenário afeta dado, dinheiro, acesso, publicação ou disponibilidade.
+Quem marca é quem decide o achado, nunca outro modelo.
+
+**Leia com estes limites.** O script conta o que foi registrado; não julga e não recomenda cadeia. Poucas
+rodadas dão número instável: toda taxa vem com a amostra. Engine por assinatura tem custo nominal e pago
+zero, e por isso há duas colunas. O `META.txt` não separa o custo da tentativa que falhou antes de uma troca
+de engine: ele fica na linha da engine que respondeu. Nunca chama engine e nunca usa rede.
+
 ## Limites
 
 - As engines veem só o diff e o contexto SDD: não veem produção, o banco nem um deploy feito fora do git.

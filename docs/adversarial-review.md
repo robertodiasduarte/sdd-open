@@ -147,6 +147,53 @@ may not be auditing: compare it with another engine as auditor. The rate reflect
 reviewed, not a benchmark. It never calls an engine. Exits: `0` MEDIDO · `2` SEM DADOS (also when the default folder does not exist yet) ·
 `64` usage, or a folder given that does not exist.
 
+## eval-revisores
+
+```bash
+bash sdd/bin/eval-revisores.sh [<reviews folder>] [--ledgers <folder or file>] [--registry <registry.tsv>]
+```
+
+It answers "what did each review engine cost, and what did it find that was worth fixing?" from what the
+project already recorded. It reads every `EXTERNAL_REVIEW_*/META.txt` and verdict file, plus the review
+ledgers (`sdd/reviews/LEDGER_REVISAO_{F}.md`), and prints one line per role + engine + model (the model as the
+`META.txt` records it, provider included, so the same model through two providers shows as two lines):
+
+| Column | Meaning |
+|---|---|
+| Rodadas · Falhas | calls that answered · calls that failed, by reason: `credencial` (exit 65), `cota ou tempo` (67), `resposta inválida` (68), `trocada por outra engine` (the planned engine failed and another one answered) |
+| Pago US$ | what left the balance: numeric cost of `pay-per-token` engines only (per `registry.tsv`); `0.0000` for a subscription engine, `n/d` when the billing mode is unknown |
+| Nominal US$ | every numeric cost, reported or estimated (`≈`), including the list price a subscription engine reports |
+| Achados | findings in the role's verdict file (`NOVO` findings for the auditor) |
+| Aplicados · Com dano · Falsos positivos · Fora de escopo · Sem classificar | from the ledger: `APLICADA` · `dano` = `sim` · `REBATIDA_EVIDENCIA` · `REBATIDA_ESCOPO` · no ledger line, or `dano` = `?` |
+| Pago por dano · Nominal por dano | cost divided by findings with damage, on both bases; `—` when there are none |
+| AGREE | auditor only: the same rate as `eval-agree.sh`, with the sample next to it |
+
+A call without a numeric cost (`assinatura` with no value, `$?`) shows as `n/d em N de M` and never counts as
+zero; a cost written `US$ n + $?` (the engine timed out) adds `n` and shows `incerto em N de M`. Sums use exact
+decimal arithmetic. Everything left out of the numbers is listed in `fora da conta` with the reason: a ledger
+line that matches no finding, a repeated line, a label that is not the engine that answered, an unreadable
+`META.txt`. Exits: `0` MEDIDO · `2` SEM DADOS · `64` usage, or a path given that does not exist.
+
+**The ledger.** One file per feature, `sdd/reviews/LEDGER_REVISAO_{F}.md`, one line per decided finding
+(template: `sdd/templates/LEDGER_REVISAO_TEMPLATE.md`):
+
+```text
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+```
+
+The first four cells are what `sdd-fluxo.sh loop --ledger` already reads; `dano` (`sim`, `nao`, or `?` in a
+ledger marked `retroativo: sim`) and the review folder come after. `bash sdd/bin/ledger-revisao-lint.sh <file>…`
+checks it: `0` ok · `2` violation with `file:line — reason` · `64` usage, unreadable file or nothing to check.
+What counts as damage is written in `sdd/review/CRITERIO_DANO.md`: the finding was applied, the fix came with a
+test that fails on the old code, and the scenario affects data, money, access, publication or availability. The
+person who decides the finding sets the mark, never another model.
+
+**Read it with these limits.** The script counts what was recorded; it does not judge and does not recommend a
+chain. Few rounds give unstable numbers: every rate comes with its sample. A subscription engine has a nominal
+cost but paid zero, which is why there are two columns. The `META.txt` does not separate the cost of an attempt
+that failed before a fallback: it stays on the line of the engine that answered. It never calls an engine and
+never uses the network.
+
 ## Limits
 
 - The engines see only the diff and the SDD context: they do not see production, the database or a

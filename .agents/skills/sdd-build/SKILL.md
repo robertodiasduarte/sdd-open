@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.7.0"
+  version: "2.8.0"
   updated: "2026-11"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.8.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
 critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
@@ -205,11 +205,20 @@ aborta; aceitar uma falha como conhecida, com `--aceitar`, é decisão do usuár
 (ou uma dispensa com motivo): rodá-lo aqui, enquanto o contexto está fresco, sai mais barato do que na
 release. **Commite antes**, e rode `bash sdd/bin/adversarial-review.sh --feature {F}` — uma engine do
 registry revisa o diff congelado e outra audita a revisão, em cadeia, nunca em paralelo; o 2º revisor
-e o desempate entram sozinhos quando o diff pede. Depois, `bash sdd/bin/sdd-fluxo.sh loop --review
-<pasta que ele imprimiu> --ledger <ledger da revisão> --rodada N` decide se segue, corrige ou pergunta.
-Contrato de resposta em `sdd/templates/fragments/ADVISOR_CONSULT.md`; cada nota → APLICADA ·
-REBATIDA_EVIDENCIA · REBATIDA_ESCOPO no Advisor Ledger do relatório. Engine que não seguiu o formato
-**falhou** (exit 68): nunca leia como "zero achados". Review nunca substitui smoke real.
+e o desempate entram sozinhos quando o diff pede. Decida cada achado (APLICADA · REBATIDA_EVIDENCIA ·
+REBATIDA_ESCOPO; contrato de resposta em `sdd/templates/fragments/ADVISOR_CONSULT.md`) e grave uma linha por
+achado no **ledger da revisão**, `sdd/reviews/LEDGER_REVISAO_{F}.md` (molde:
+`sdd/templates/LEDGER_REVISAO_TEMPLATE.md`): o id copiado do arquivo de vereditos da rodada, a severidade,
+o veredito, `rodada=N`, a evidência, a marca `dano` e o nome da pasta da revisão. A marca `dano` é de quem
+decide o achado, pelo `sdd/review/CRITERIO_DANO.md`: `sim` só quando o achado foi aplicado, o conserto tem
+teste que falha no código antigo (citado como `teste: <nome>`) e o cenário afeta dado, dinheiro, acesso,
+publicação ou disponibilidade; senão `nao`. Rodada sem achados: a linha `sem achados: rodada=N <pasta>`.
+Confira com `bash sdd/bin/ledger-revisao-lint.sh sdd/reviews/LEDGER_REVISAO_{F}.md` (exit 2 ⇒ corrija a linha
+apontada) e rode `bash sdd/bin/sdd-fluxo.sh loop --review <pasta que ele imprimiu> --ledger
+sdd/reviews/LEDGER_REVISAO_{F}.md --rodada N`, que decide se segue, corrige ou pergunta. O Advisor Ledger do
+relatório resume as rodadas e aponta esse arquivo. Engine que não seguiu o formato **falhou** (exit 68): nunca
+leia como "zero achados". Review nunca substitui smoke real. Para saber quanto cada engine custou e o que
+achou, nas revisões já feitas: `bash sdd/bin/eval-revisores.sh`.
 
 **5d. Avaliador de contexto fresco (bloqueante em ≥2 camadas).** Quem julga não é quem
 constrói. Antes de despachar, `bash sdd/bin/avaliador-guard.sh` (exit 1 ⇒ commite o listado; exit

@@ -22,6 +22,7 @@ FASE = ("sdd-brainstorm", "sdd-define", "sdd-governanca", "sdd-ux-review", "sdd-
         "sdd-iterate", "sdd-release", "sdd-new-session")
 ENCADEIAM = ("sdd-define", "sdd-governanca", "sdd-ux-review", "sdd-design")
 LEDGER_CAB = "| achado | sev | veredito | rodada | evidência |\n|---|---|---|---|---|\n"
+LEDGER_CAB_7 = "| achado | sev | veredito | rodada | evidência | dano | revisão |\n|---|---|---|---|---|---|---|\n"
 FERRAMENTAS = ("bash", "sh", "git", "sed", "grep", "dirname", "cat", "mktemp", "rm", "env", "mkdir")
 
 
@@ -113,6 +114,43 @@ class Loop(Base):
         self.assertEqual(rc, 0, out)
         for linha in ("ESTADO: PRONTO", "rodada: 1 de 3", "graves_abertos: 0", "rebatidas: 1", "RESULTADO: PRONTO"):
             self.assertIn(linha, out)
+
+    def test_ledger_de_7_colunas_fecha_como_o_de_5(self):
+        # F19 (AT-007): o ledger da revisão ganhou `dano` e a pasta depois da evidência; o loop lê as 4 primeiras.
+        rc, out = self.loop("review-ok", "--ledger", FX / "ledger-7-colunas.md")
+        self.assertEqual(rc, 10, out)
+        self.assertIn("exige nova review", out)   # R1@rev APLICADA: o mesmo resultado de ledger-aplicada.md
+        sete = self.escreve(self.tmp, "LEDGER_REVISAO_X.md", LEDGER_CAB_7 +
+                            "| R1@rev | HIGH | REBATIDA_EVIDENCIA | rodada=1 | src/relatorio/mensal.py:10 já fecha o mês "
+                            "| nao | EXTERNAL_REVIEW_20260201-000001 |\n")
+        rc, out = self.loop("review-ok", "--ledger", sete, "--avaliacao", FX / "AVALIACAO_pass.md",
+                            "--ciclo-avaliador", "1")
+        self.assertEqual(rc, 0, out)
+        for linha in ("ESTADO: PRONTO", "graves_abertos: 0", "rebatidas: 1"):
+            self.assertIn(linha, out)
+        for arq in (sete, FX / "ledger-7-colunas.md"):   # um por vez: os dois decidem o mesmo achado da mesma revisão
+            rc, lint, err = self.roda([BASH, RAIZ / "sdd/bin/ledger-revisao-lint.sh", arq], self.tmp)
+            self.assertEqual(rc, 0, lint + err)
+
+    def test_ledger_de_7_colunas_em_revisao_de_ids_sem_rotulo(self):
+        # Rodada de um revisor só: o arquivo de vereditos traz `R1` e o auditor `N1`. O ledger copia o id como
+        # está; com um rótulo inventado o loop não fecha o achado (só casa id exato ou a base do id rotulado).
+        review = self.tmp / "review-sem-rotulo"
+        shutil.copytree(str(FX / "review-ok"), str(review))
+        for arq in ("reviewer.verdicts.jsonl", "auditor.verdicts.jsonl"):
+            p = review / arq
+            p.write_text(p.read_text(encoding="utf-8").replace("@rev", ""), encoding="utf-8")
+        linha = "| %s | HIGH | REBATIDA_EVIDENCIA | rodada=1 | medido | nao | EXTERNAL_REVIEW_20260201-000001 |\n"
+        certo = self.escreve(self.tmp, "LEDGER_REVISAO_CERTO.md", LEDGER_CAB_7 + linha % "R1")
+        rc, out = self.loop(review, "--ledger", certo, "--avaliacao", FX / "AVALIACAO_pass.md", "--ciclo-avaliador", "1")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("ESTADO: PRONTO", out)
+        rc, lint, err = self.roda([BASH, RAIZ / "sdd/bin/ledger-revisao-lint.sh", certo], self.tmp)
+        self.assertEqual(rc, 0, lint + err)
+        inventado = self.escreve(self.tmp, "LEDGER_REVISAO_INVENTADO.md", LEDGER_CAB_7 + linha % "R1@claude")
+        rc, out = self.loop(review, "--ledger", inventado)
+        self.assertEqual(rc, 10, out)
+        self.assertIn("sem veredito no ledger: R1", out)
 
     def test_continuar_por_cada_causa(self):
         casos = (

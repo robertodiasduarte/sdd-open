@@ -77,6 +77,8 @@ RESULTADO: ERRO
 | `sdd-archive.py` | `0` SIMULACAO ou MOVIDO · `2` FALHA · `64` uso |
 | `slot.sh` | `0` OK · `2` REPROVOU · `3` INCONCLUSIVO (o comando saiu com outro código ou por sinal, ou o script foi interrompido) · `10` NADA A MEDIR · `11` PULADO (slot vazio, ausente ou sem `sdd/config.yaml`) · `64` ERRO DE USO (chave desconhecida, flag sem valor, ref que não resolve, aspas sem fechar, erro de sintaxe ou `#` no comando) ([adaptation-guide.md](adaptation-guide.md)) |
 | `eval-agree.sh` | `0` MEDIDO · `2` SEM DADOS (inclusive sem a pasta padrão) · `64` uso ou pasta passada inexistente |
+| `eval-revisores.sh` | `0` MEDIDO · `2` SEM DADOS (inclusive sem a pasta padrão) · `64` uso, ou pasta, `--ledgers` ou `--registry` inexistente ([adversarial-review.md](adversarial-review.md)) |
+| `ledger-revisao-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, arquivo ilegível, ou arquivo sem linha de dados e sem linha `sem achados:` |
 | `sdd-decisoes-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, caminho inexistente, tabela de marcas ausente ou nenhuma pergunta |
 | `contraste.sh` | `0` PASSA · `2` REPROVA, ou `--self-test` VERMELHO · `64` uso ([llm-in-code.md](llm-in-code.md)) |
 | `prompt-drift-scan.sh` | `0` LIMPO · `2` DRIFT, ou `--self-test` VERMELHO · `64` uso, caminho que não dá para ler, config ilegível ou slot inválido; nunca conclui LIMPO sem ter lido ([llm-in-code.md](llm-in-code.md)) |

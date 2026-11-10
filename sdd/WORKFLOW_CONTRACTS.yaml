@@ -203,6 +203,48 @@ slot:
     uso: "64"
   argumentos: "os arquivos vão no fim do comando, um por argumento"
 
+ledger_revisao:
+  arquivo: "`sdd/reviews/LEDGER_REVISAO_{F}.md`"
+  molde: "`sdd/templates/LEDGER_REVISAO_TEMPLATE.md`"
+  criterio: "`sdd/review/CRITERIO_DANO.md`"
+  colunas:
+    - "achado"
+    - "sev"
+    - "veredito"
+    - "rodada"
+    - "evidência"
+    - "dano"
+    - "revisão"
+  dano:
+    - "sim"
+    - "nao"
+    - "?"
+  rodada_sem_achados: "sem achados: rodada=<N> EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>"
+  written_by:
+    - "`.agents/skills/sdd-build/SKILL.md`: passo 5c, depois de cada rodada"
+  consumed_by:
+    - "`sdd/bin/ledger-revisao-lint.sh`: todas as células"
+    - "`sdd/bin/sdd-fluxo.sh` loop --ledger: as 4 primeiras células"
+    - "`sdd/bin/eval-revisores.sh`: todas as células"
+    - "`.agents/skills/sdd-release/SKILL.md`: 0a, item 8"
+  lint_exits:
+    ok: "0"
+    violacao: "2"
+    uso: "64"
+
+eval_revisores:
+  script: "`sdd/bin/eval-revisores.sh`"
+  le:
+    - "<review.output_dir>/EXTERNAL_REVIEW_*/META.txt e os arquivos de vereditos"
+    - "`sdd/reviews/LEDGER_REVISAO_*.md`"
+    - "`sdd/review/registry.tsv` (coluna cobranca)"
+  escreve: "nada"
+  rede: "nunca"
+  exits:
+    medido: "0"
+    sem_dados: "2"
+    uso: "64"
+
 raio_de_impacto:
   brief: "`.agents/skills/sdd-release/references/raio-de-impacto.md`"
   activation: "passo 0b da sdd-release: um agente fresco por superfície; sem subagente, em sequência na mesma sessão"

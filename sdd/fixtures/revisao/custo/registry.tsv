@@ -1,0 +1,5 @@
+# registry de exemplo das fixtures de custo: só as 4 primeiras colunas importam aqui (engine, adapter, modelo, cobranca)
+claude	claude	-	assinatura	revisor,auditor,desempate	900	x	x	x
+codex	codex	-	assinatura	revisor,auditor,desempate	900	x	x	x
+gemini	gemini	-	desconhecida	revisor,auditor,desempate	900	x	x	x
+openrouter	openrouter	qwen/q-plus	pay-per-token	revisor,auditor,desempate	900	x	x	x

@@ -1,0 +1,14 @@
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+reviewer_engine_efetivo : claude
+reviewer_modelo         : claude-x
+reviewer_custo          : US$ 1.0000
+reviewer_exit           : 0
+revisor2_engine_efetivo : openrouter:deep/seek
+revisor2_modelo         : n/d
+revisor2_custo          : US$ 1.0000 + $?
+revisor2_exit           : 67
+revisor2_motivo         : tempo esgotado
+auditor_engine_efetivo  : openrouter:qwen/q-plus
+auditor_modelo          : qwen/q-plus via ProvedorB
+auditor_custo           : US$ 0.3000
+auditor_exit            : 0
