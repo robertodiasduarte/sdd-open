@@ -294,7 +294,8 @@ class Configuracao(unittest.TestCase):
         cfg = ler("sdd/config.example.yaml")
         self.assertRegex(cfg, r'(?m)^  wrapper_pattern: ""$')
         self.assertIn("systemPrompt:", cfg)
-        for proibido in ("smoke.", "smoke:", "urls_cmd", "a11y_cmd", "loop_builder_skill"):
+        # smoke.* voltou na F15_SLOTS (reaberto por decisão do Roberto); os outros cortados da F13 continuam fora.
+        for proibido in ("urls_cmd", "a11y_cmd", "loop_builder_skill"):
             self.assertNotIn(proibido, cfg)
 
     def test_guias_de_adaptacao(self):

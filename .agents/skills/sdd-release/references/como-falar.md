@@ -50,7 +50,8 @@ relatório, o lint e o playbook passaram. Nada foi enviado ao GitHub ainda.
 **O push publica sozinho?** sim, o workflow `deploy.yml` publica ao receber o push na `main`.
 **O deploy espera os testes?** sim — o job que publica só roda depois do job de testes.
 **Banco:** sem migração nesta frente.
-**Verificações:** Verify Gate 0 · report-lint ok · lint ok · landmines ok · drift pulado — slot vazio
+**Verificações:** Verify Gate 0 · report-lint ok · lint ok · landmines ok · drift pulado — slot vazio ·
+testes do diff ok · smoke pulado — slot vazio
 **Veredito:** 🟢 PASS
 **Ledger:** `feature_id` conferencia-notas · `estado` shipado
 
@@ -74,6 +75,20 @@ engine. A pergunta vem **antes** do bloco do OK, como uma pergunta própria; o b
 
 As opções vêm logo depois da última linha do bloco: continua sendo uma pergunta só. Formato completo de
 pergunta e de parada: `sdd/templates/fragments/PERGUNTA_DECISAO.md`.
+
+## Exemplo — o smoke reprovou depois do deploy (etapa 4 — Publicar)
+
+Situação: o deploy está no ar e o comando do slot `smoke.after_deploy_cmd` saiu 2. O código já está em
+produção: a pergunta é o que fazer agora, não se publica. Diga o que o smoke viu, nas palavras dele, e onde está
+o detalhe (a saída do comando, a pasta que ele cita).
+
+**Sua decisão** — [D1 · não se desfaz] **A conferência depois da publicação achou a página de pedidos pior do que antes. O que fazemos?**
+- **reverter** (recomendado) — desfaço a mudança com um commit novo e publico por este mesmo caminho, com o
+  seu OK; a produção volta ao que era em alguns minutos.
+- **corrigir** — a versão nova fica no ar; volto ao build para consertar, e isto vira pendência na ficha.
+- **seguir com motivo** — é um falso alarme (por exemplo, conteúdo que mudou sozinho); peço o motivo em uma
+  frase, e ele fica na ficha.
+- **não sei** — mostro o que o smoke mediu antes e depois, tela por tela.
 
 ## Exemplo — a curadoria, depois de publicar (etapa 4 — Publicar)
 

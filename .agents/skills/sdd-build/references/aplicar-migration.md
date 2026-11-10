@@ -88,6 +88,30 @@ Já aplicada ⇒ **não reaplicar**. Registre na seção `## Migrations aplicada
 "já aplicada em <data>" (a data que a lista mostrar) e siga para a prova (seção 5) — aplicada não é o
 mesmo que aplicada **neste** projeto.
 
+## 2b. Checagem do SQL (slot `schema.check_cmd`)
+
+Antes de mostrar qualquer SQL para aprovação, o projeto confere as migrations com a ferramenta dele (lint de
+schema, regras próprias), pelo slot `schema.check_cmd` do `sdd/config.yaml`. Rode só sobre as migrations que
+**vão ser aplicadas** (as já aplicadas da seção 2 ficam de fora), gravando o exit do próprio script, nunca o de um
+`tee` ou `tail`:
+
+```bash
+cmd='bash sdd/bin/slot.sh schema.check_cmd --feature {F} <cada .sql a aplicar>'
+{ echo "\$ $cmd"; eval "$cmd"; echo "[exit=$?]"; } > sdd/reports/evidence/{F}/SCHEMA-CHECK.log 2>&1
+```
+
+| Exit | O que fazer |
+|---|---|
+| `0` | siga para a prévia |
+| `10` | siga e diga "checagem de schema: nada a conferir nestes arquivos" |
+| `11` | siga e diga "checagem de schema pulada: slot vazio" |
+| `2` | **não aplica**: mostre a saída ao aluno, corrija o SQL e rode a checagem de novo |
+| `3` ou `64` | **não aplica**: diga que o problema é da ferramenta ou do config, não do SQL (o `RESULTADO:` e a `→` do script dizem qual), e conserte antes de seguir |
+
+Se a prévia (seção 3) mostrar migration pendente fora do manifest e o aluno decidir incluí-la, rode a checagem de
+novo sobre ela antes do bloco de confirmação (log `SCHEMA-CHECK-2.log`): SQL que vai para o banco passa pela
+checagem, sem exceção.
+
 ## 3. Prévia
 
 - **CLI:** `supabase db push --linked --dry-run` imprime o que seria aplicado. ⛔ O `db push` aplica
@@ -109,6 +133,7 @@ Mostre **um bloco**, neste formato, e espere a resposta. Não há segunda pergun
 **Migration:** `supabase/migrations/20261025_cliente_cnpj.sql` (14 linhas)
 **Destino:** projeto **Curso RDD10** (ref `abcdefghijklmnopqrst`) — remoto, **único banco do projeto ⇒ é produção**
 **Ferramenta:** `supabase db push --linked` — dry-run: 1 migration pendente (esta; nenhuma outra fora do manifest)
+**Checagem:** ok — `evidence/{F}/SCHEMA-CHECK.log` (ou: nada a conferir · pulada — slot vazio)
 ⛔ **Atenção:** o SQL tem `ALTER TABLE cliente DROP COLUMN telefone` — apaga dados; **não há undo**.
 
 ```sql

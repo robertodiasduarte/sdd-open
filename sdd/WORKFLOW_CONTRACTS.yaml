@@ -177,6 +177,32 @@ sdd_drive:
     - "branch-padrao"
   barreira: "nenhum verbo publica; publicar é a sdd-release, com o OK da pessoa"
 
+slot:
+  script: "`sdd/bin/slot.sh`"
+  chaves:
+    - "smoke.before_ok_cmd"
+    - "smoke.before_push_cmd"
+    - "smoke.after_deploy_cmd"
+    - "schema.check_cmd"
+  consumed_by:
+    - "`.agents/skills/sdd-release/SKILL.md`: itens 6b, 7b e 10 (os 3 smokes)"
+    - "`.agents/skills/sdd-build/references/aplicar-migration.md`: seção 2b, antes da prévia (schema.check_cmd)"
+  variaveis:
+    - "SDD_MOMENTO"
+    - "SDD_FEATURE"
+    - "SDD_BASE"
+    - "SDD_COMMIT"
+    - "SDD_ARVORE"
+    - "SDD_SLOT_DIR"
+  exits:
+    ok: "0"
+    reprovou: "2"
+    inconclusivo: "3"
+    nada_a_medir: "10"
+    pulado: "11"
+    uso: "64"
+  argumentos: "os arquivos vão no fim do comando, um por argumento"
+
 raio_de_impacto:
   brief: "`.agents/skills/sdd-release/references/raio-de-impacto.md`"
   activation: "passo 0b da sdd-release: um agente fresco por superfície; sem subagente, em sequência na mesma sessão"

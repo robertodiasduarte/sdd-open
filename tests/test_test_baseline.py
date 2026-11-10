@@ -97,6 +97,68 @@ class TestBaseline(Sandbox):
         self.assertEqual(rc, 2, out)
         self.assertIn("🛑 nova: tests/test_conta.py::test_novo", out)
 
+    def _vizinhos(self) -> None:
+        """Repositório com fontes e testes ao lado (F15_SLOTS, AT-006/AT-007)."""
+        self.git(self.r, "checkout", "-q", "-b", "main")
+        for rel in ("src/foo.ts", "src/foo.test.ts", "src/bar.tsx", "src/bar.spec.tsx", "pkg/calc.py",
+                    "pkg/test_calc.py", "lib/foo.test.ts", "tests/test_calc.py", "outro/modulo.py"):
+            self.escreve(self.r, rel, "// v1\n")
+        self.commit(self.r, "base")
+        self.git(self.r, "checkout", "-q", "-b", "feat")
+
+    def _touched(self, saida: str) -> tuple[int, str]:
+        self.escreve(self.r, "saida.txt", saida)
+        return self.tb("--touched", "--base", "main", "--cmd", "cat saida.txt; exit 1")
+
+    def test_touched_conta_teste_ao_lado_da_fonte(self):
+        self._vizinhos()
+        casos = (
+            ("src/foo.ts", " FAIL  src/foo.test.ts > Foo > quebra\n", "src/foo.test.ts > Foo > quebra"),
+            ("src/bar.tsx", " FAIL  src/bar.spec.tsx > Bar > quebra\n", "src/bar.spec.tsx > Bar > quebra"),
+            ("pkg/calc.py", "FAIL: test_soma (pkg.test_calc.Caso.test_soma)\n", "pkg.test_calc.Caso.test_soma"),
+            ("pkg/calc.py", "FAILED pkg/test_calc.py::test_soma - assert 1 == 2\n", "pkg/test_calc.py::test_soma"),
+            ("src/foo.ts", "quebra => ./src/foo.test.ts:3:6\n", "src/foo.test.ts::quebra"),
+        )
+        for fonte, saida, novo in casos:
+            with self.subTest(fonte=fonte, novo=novo):
+                self.git(self.r, "checkout", "-q", "--", ".")
+                self.escreve(self.r, fonte, "// v2\n")
+                rc, out = self._touched(saida)
+                self.assertEqual(rc, 2, out)
+                self.assertIn("🛑 nova: " + novo, out)
+                self.assertNotIn("fora do diff", out)
+
+    def test_touched_vizinho_commitado_na_branch_tambem_conta(self):
+        self._vizinhos()
+        self.escreve(self.r, "src/foo.ts", "// v2\n")
+        self.commit(self.r, "build")
+        rc, out = self._touched(" FAIL  src/foo.test.ts > Foo > quebra\n")
+        self.assertEqual(rc, 2, out)
+
+    def test_touched_falha_sem_relacao_continua_fora_do_diff(self):
+        self._vizinhos()
+        self.escreve(self.r, "src/foo.ts", "// v2\n")
+        self.escreve(self.r, "pkg/calc.py", "# v2\n")
+        casos = (
+            " FAIL  lib/foo.test.ts > Foo > quebra\n",                       # mesmo nome, outra pasta
+            "FAIL: test_calc_total (outro.modulo.Caso.test_calc_total)\n",    # método com o nome do módulo
+            "FAILED tests/test_calc.py::test_soma - assert 1 == 2\n",         # teste do mesmo nome em tests/
+            "--- FAIL: TestCalc (0.00s)\nFAIL\texemplo/calc\t0.005s\n",       # go: o id não traz o arquivo
+        )
+        for saida in casos:
+            with self.subTest(saida=saida.splitlines()[0]):
+                rc, out = self._touched(saida)
+                self.assertEqual(rc, 0, out)
+                self.assertIn("nova, fora do diff", out)
+                self.assertNotIn("🛑 nova", out)
+
+    def test_touched_fonte_sem_teste_ao_lado_nao_inventa_vizinho(self):
+        self._vizinhos()
+        self.escreve(self.r, "outro/modulo.py", "# v2\n")
+        rc, out = self._touched("FAIL: test_x (outro.test_modulo.Caso.test_x)\n")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("fora do diff", out)
+
     def test_pacote_go_que_nao_compila_nao_e_mascarado(self):
         self.baseline("TestConhecido", "TestOutroConhecido")
         antes = (self.r / BASELINE).read_bytes()

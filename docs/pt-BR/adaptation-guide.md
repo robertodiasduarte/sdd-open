@@ -72,6 +72,29 @@ Se tudo que você deploya passa pelo git, deixe vazio. Se não, escreva uma chec
 que está deployado com o que está commitado, e ligue ela ali. O fluxo de release vai executá-la na
 fase de pré-voo.
 
+## Smoke e checagem de schema: quatro slots rodados pelo `sdd/bin/slot.sh`
+
+Quatro slots do [`sdd/config.yaml`](../../sdd/config.example.yaml) recebem um comando seu, rodado num momento fixo
+por `bash sdd/bin/slot.sh <chave>`. Os quatro vêm **vazios**: slot vazio é pulado, e a fase diz que pulou.
+
+| Slot | Quando | Exit `2` significa |
+|---|---|---|
+| `smoke.before_ok_cmd` | release, item 6b: depois de landar, antes do bloco do OK, sobre o commit que vai subir | FAIL-candidato no bloco do OK (corrigir, ou WAIVED com o seu motivo) |
+| `smoke.before_push_cmd` | release, item 7b: depois do "sim", antes do push (a produção ainda roda o código velho) | só registro; nada segura o push |
+| `smoke.after_deploy_cmd` | release, item 10: com o deploy confirmado | a release para e pergunta: reverter, corrigir ou seguir com motivo |
+| `schema.check_cmd` | build, passo 4b: antes da prévia das migrations a aplicar | a migration **não** é aplicada |
+
+O seu comando responde `0` ok · `2` reprovou · `10` nada a medir. Qualquer outro exit — ou um sinal — é
+inconclusivo (o `slot.sh` sai `3`), nunca verde; slot vazio sai `11`, chamada ou config quebrado, `64`.
+
+Ele roda na raiz do repositório, com os arquivos (os `.sql` da checagem de schema) no fim, um por argumento, e com
+`SDD_MOMENTO`, `SDD_FEATURE`, `SDD_BASE`, `SDD_COMMIT` (o commit a medir), `SDD_ARVORE` (a pasta com a árvore
+desse commit: antes do OK, o worktree temporário da release) e `SDD_SLOT_DIR`. Esta última é uma pasta fora do
+repositório, a mesma nos três momentos do smoke de uma feature, de qualquer worktree: é por ela que o seu "antes"
+e o seu "depois" se encontram. Ela é esvaziada no `before_ok`. Uma linha só, sem comentário `#` no comando; com
+`|`, `;` ou `&&`, aponte para um script. Um smoke que mede uma página deve medir `SDD_COMMIT`/`SDD_ARVORE`, não a
+pasta onde roda.
+
 ## Trabalho paralelo: worktrees
 
 O fluxo assume que uma feature é desenvolvida numa branch a partir da branch default, e funciona

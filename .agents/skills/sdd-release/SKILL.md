@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.8.1"
+  version: "2.9.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.8.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.9.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -75,8 +75,11 @@ GitHub — ela é um jeito legítimo de logar e não é desligada.
 ## Slots do config (`sdd/config.yaml`)
 
 `project.lint_cmd` · `project.test_cmd` · `project.default_branch` · `deploy.cmd` ·
-`deploy.drift_check_cmd` · `release.landmines_cmd` · `release.changelog_hook`.
-**Slot vazio = passo pulado e declarado** ("lint pulado — slot vazio"), nunca adivinhado.
+`deploy.drift_check_cmd` · `release.landmines_cmd` · `release.changelog_hook` · `smoke.before_ok_cmd` ·
+`smoke.before_push_cmd` · `smoke.after_deploy_cmd`.
+**Slot vazio = passo pulado e declarado** ("lint pulado — slot vazio"), nunca adivinhado. Os 3 de smoke rodam por
+`bash sdd/bin/slot.sh <chave>`: `0` ok · `2` reprovou · `3` inconclusivo · `10` nada a medir · `11` pulado (slot
+vazio) · `64` erro de configuração; nenhum deles vira "ok" fora do `0`.
 
 ## FASE 0 — Gate pré-release
 
@@ -125,6 +128,12 @@ diff-base (`git merge-base origin/{default_branch} HEAD`).
    outra engine ou registre a dispensa dele com `--aceitar-sem-revisor2 "<motivo>"`. O OK continua
    sendo uma pergunta só: a dispensa é decidida antes dele.
 
+9. **Testes do diff:** `bash sdd/bin/test-baseline.sh --touched` (base `origin/{default_branch}`), **depois do item 4**,
+   nunca em paralelo com ele (a suíte dos dois na mesma árvore inventa falha). Conta o teste alterado e o teste ao
+   lado de cada fonte alterada (`foo.ts` → `foo.test.ts`). `2` ⇒ **abortar**, citando cada `🛑 nova:`; `3` ⇒
+   WAIVABLE (0d); `0` com `RESULTADO: PULADO` ⇒ declare "pulado — test_cmd vazio"; as `⚠️ nova, fora do diff` vão
+   para o bloco do OK.
+
 Se 0a abortou, **nem inicie** as passadas de modelo.
 
 **0b. Raio de impacto por superfície (modelo).** O bug que passa está no código não modificado que depende do que
@@ -133,7 +142,8 @@ slot de configuração. Para cada uma, um agente fresco com o brief `references/
 em paralelo quando o agente tem subagente; sem subagente, na própria sessão, uma superfície de cada vez, sem parada. O
 brief pede os consumidores **não modificados**, as invariantes de `sdd/invariants.md` que tocam o módulo e o
 `arquivo:linha` de cada um. Projeto sem `sdd/invariants.md`: passe `invariantes: ausente` e diga que essa parte foi pulada.
-Teste ao lado do módulo tocado ficou vermelho? Consumidor quebrado ou invariante violada = **crítico** (0d). Diff sem
+Se o teste ao lado do módulo tocado ficou vermelho, quem diz é o item 9 da 0a, não o modelo. Consumidor quebrado ou
+invariante violada = **crítico** (0d). Diff sem
 nenhuma superfície: declare a passada pulada, não "revisada sem achados".
 
 **0c. Segurança (modelo — só se o diff toca auth, dados, permissões, rota pública).**
@@ -144,8 +154,8 @@ removido.
 
 | Classe | Achados | Efeito |
 |---|---|---|
-| **NON_WAIVABLE** | segurança crítica · drift · lint · consumidor quebrado · invariante violado · Verify Gate `2` ou `5` | **abortar aqui** com `arquivo:linha` |
-| **WAIVABLE** (lista fechada) | Verify Gate `3` com evidência alternativa · teste vermelho comprovadamente pré-existente · recibo manual-ux pendente quando o deploy não altera superfície visual | vira **FAIL-candidato** para a decisão humana no OK |
+| **NON_WAIVABLE** | segurança crítica · drift · lint · consumidor quebrado · invariante violado · Verify Gate `2` ou `5` · testes do diff `2` | **abortar aqui** com `arquivo:linha` |
+| **WAIVABLE** (lista fechada) | Verify Gate `3` com evidência alternativa · testes do diff `3` · teste vermelho comprovadamente pré-existente · recibo manual-ux pendente quando o deploy não altera superfície visual · smoke antes do OK `2` (6b) | vira **FAIL-candidato** para a decisão humana no OK |
 
 | Veredito | Quando |
 |---|---|
@@ -175,6 +185,10 @@ removido.
    abortar se os hunks se sobrepõem de verdade. Conflito só no `CHANGELOG.md`: a regra do passo 11.
 6. **Gates pré-push:** diff contra `origin/{default_branch}` tem só os arquivos esperados;
    nenhuma deleção de algo que está publicado; classificar se o diff deploya ou é no-op.
+6b. **Smoke antes do OK**, da pasta da frente (onde estão as dependências do projeto), sobre o que vai subir:
+   `bash sdd/bin/slot.sh smoke.before_ok_cmd --feature {F} --base origin/{default_branch} --commit <SHA landado no passo 5> --arvore <worktree temporário do passo 5>`.
+   `0` ok · `2` ⇒ FAIL-candidato no Veredito · `3` ⇒ aviso (inconclusivo) · `64` ⇒ aviso "erro de configuração" ·
+   `10` ⇒ "nada a medir" · `11` ⇒ "pulado — slot vazio". Vai para a linha Verificações; nunca vira uma 2ª pergunta.
 7. **PARAR e mostrar (o 1 OK) — um bloco só.** Antes, rode
    `python3 .agents/skills/sdd-release/scripts/deploy-espera-testes.py .` (só lê
    `.github/workflows/`). No **Agora**, duas frases: os campos já foram conferidos por você; a pessoa
@@ -192,7 +206,9 @@ removido.
    **Banco:** <migration `<arquivo>` em `<projeto nome · ref>` em <data>, provada por leitura — de
    `## Migrations aplicadas` do BUILD_REPORT | sem migração nesta frente>
    **Verificações:** Verify Gate <exit> · report-lint <ok> · lint <ok | pulado — slot vazio> ·
-   landmines <ok | N avisos> · drift <ok | pulado — slot vazio>
+   landmines <ok | N avisos> · drift <ok | pulado — slot vazio> ·
+   testes do diff <ok | ok, N fora do diff | inconclusivo — WAIVABLE | pulado — test_cmd vazio> ·
+   smoke <ok | reprovou — FAIL-candidato | nada a medir | pulado — slot vazio | inconclusivo | erro de configuração>
    **Veredito:** <🟢 PASS | 🟡 CONCERNS com a lista | FAIL-candidatos, cada um: corrigir ou WAIVED
    com `motivo=` seu> · achados que não abortaram
    **Ledger:** `feature_id` <id> · `estado` <shipado | parcial>
@@ -214,6 +230,9 @@ removido.
 
 ## FASE 2 — Após o "go"
 
+7b. **Smoke antes do push** (a produção ainda tem o código velho), com os argumentos do 6b:
+   `bash sdd/bin/slot.sh smoke.before_push_cmd --feature {F} --base origin/{default_branch} --commit <SHA landado> --arvore <worktree temporário>`.
+   O resultado nunca segura o push nem pede pergunta, seja qual for o exit: vai para o relatório (16) e para a ficha (17).
 8. **Push.** Re-check de base: `GIT_TERMINAL_PROMPT=0 git fetch` + `git merge-base --is-ancestor origin/{default_branch} HEAD`
    (falhou → base moveu; re-landar). **Nunca `--force`.** `GIT_TERMINAL_PROMPT=0 git push origin HEAD:{default_branch}`.
    Recusado por permissão (`403`, `Permission denied`, `could not read Username`) ou por branch protegida
@@ -222,7 +241,7 @@ removido.
    caminho é push da branch + PR (`gh pr create`, ou o link que o próprio push imprime), não insistir.
 9. **Deploy:** `{{DEPLOY_CMD}}` (vazio → declarar "deploy pulado — slot vazio"). Tudo que sobe
    para produção tem commit correspondente — deploy sem source commitado é proibido.
-10. **Verificar — pelo commit publicado, não pelo último run.** `{{DRIFT_CHECK_CMD}}` exit 0; smoke da rota principal; e, se
+10. **Verificar — pelo commit publicado, não pelo último run.** `{{DRIFT_CHECK_CMD}}` exit 0; o smoke depois do deploy (abaixo); e, se
     a publicação roda num workflow:
     `bash sdd/bin/deploy-do-sha.sh --commit <SHA publicado> --workflow <arquivo> --branch {default_branch}`, na pasta da frente, a que
     tem o `sdd/config.yaml` (o worktree temporário do passo 5 pode não ter os passos passageiros). O `--workflow` vem do
@@ -239,6 +258,14 @@ removido.
     | `3` | "publicado, sem verificação automática disponível" — nunca ✅ sem ter olhado |
     | `4` | "ainda não sei": não é falha; repita ou abra o run citado, nunca "nada a verificar" |
     | `64` | chamada errada, SHA que o remoto também não conhece, ou `sdd/bin/` antigo: confira o SHA; o script antigo se resolve com o `doctor` e, para o que ele apontar, apagando e rodando o `init` |
+
+    **Smoke depois do deploy.** Roda quando o deploy está confirmado: `deploy-do-sha.sh` `0` ou `3`, ou, sem workflow,
+    `{{DEPLOY_CMD}}` saiu 0. Antes, `GIT_TERMINAL_PROMPT=0 git fetch` (o SHA do merge de um PR nasce no remoto); depois,
+    da pasta da frente, `bash sdd/bin/slot.sh smoke.after_deploy_cmd --feature {F} --base origin/{default_branch} --commit <SHA publicado>`.
+    Com `deploy-do-sha.sh` `2` ou `4`, `deploy.cmd` ≠ 0, deploy pulado ou diff que não publica, ele não roda, e o relatório diz por quê.
+    `0` ok · `2` ⇒ pare e pergunte `[D1 · não se desfaz]` (formato em `references/como-falar.md`): **reverter** (`git revert`
+    do commit, publicado por este mesmo fluxo), **corrigir** (volta ao build; pendência 🐛), **seguir com motivo** (falso
+    positivo; o motivo vai para a ficha) ou **não sei** · `3` e `64` ⇒ pendência 🐛 na ficha, nunca ✅ · `10` e `11` declarados.
 
     Verde não prova teste: step de teste com `continue-on-error`, `|| true` ou `exit 0` fixo ⇒ "o deploy terminou, mas o
     workflow não roda testes antes de publicar" (o `deploy-espera-testes.py` do item 7 já disse isso no bloco do OK).
@@ -257,7 +284,7 @@ removido.
     parecido. Feature aberta → pular (slices seguintes ainda leem os arquivos). A faxina retroativa do
     passivo é outra operação, deliberada: `python3 sdd/bin/sdd-archive.py` (simulação por padrão; depois,
     `--lote <nome> --aplicar`, um lote por commit).
-16. **Report final:** versão, SHAs, deploy, drift, o que foi para produção, arquivamento.
+16. **Report final:** versão, SHAs, deploy, drift, os 3 smokes (resultado de cada um), o que foi para produção, arquivamento.
 
 ## FASE 4 — Ficha da feature e playbook
 
@@ -388,7 +415,7 @@ removido.
 
 ## Gates de ABORTAR (parar e reportar, nunca pushar)
 
-Fase 0a: landmines exit 2 · drift ≠0 · lint · Verify Gate `2` ou `5` · `3` não resolvido ·
+Fase 0a: landmines exit 2 · drift ≠0 · lint · Verify Gate `2` ou `5` · `3` não resolvido · testes do diff com falha nova ·
 `4` sem recibo · report-lint ≠0 · report-lint --pendente ≠0 · gate-shell-evidencia ≠0 · review externo sem revisão nem dispensa. Fase 0b: consumidor não modificado quebrado · invariante
 violado. Fase 0c: credencial hardcoded · permissão frouxa · dado pessoal exposto. Fase 1:
 arquivo inesperado no diff · conflito real · base moveu · escrita em produção sem source · `--ledger` ≠ 0.
@@ -425,6 +452,10 @@ vale **sempre**.
   estado real; o que não pode é esse estado chegar a produção sem que ninguém tenha provado os critérios.
 - **O exit de cada log é conferido** — `cmd | tail` grava o exit do `tail`, sempre 0: sem a
   conferência, um teste que falhou passa como evidência verde.
+- **Os testes do diff rodam antes do OK, por script** — perguntar ao modelo se o teste ao lado do código mudado
+  ficou vermelho dá a resposta que ele imaginou; o `--touched` roda o teste e só aborta pela falha nova do diff.
+- **O smoke tem peso por momento** — antes do OK, quem decide é a pessoa, no mesmo bloco; depois do "sim", uma 2ª
+  parada antes do push quebraria o OK único; depois do deploy, o que está no ar pede a decisão de reverter na hora.
 - **Review externo obrigatório, com dispensa registrada** — quando era opcional, no projeto de origem só
   13 de 84 features tiveram review; a dispensa continua possível, mas com motivo escrito no ledger. O
   `sha256` liga a revisão a esta versão do código: uma revisão antiga não vale para um código novo.

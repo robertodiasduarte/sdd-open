@@ -33,7 +33,8 @@ Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` �
 `BLOCO INVÁLIDO` · `PAR VÁLIDO` · `TRAVA` (playbook-curator.sh; ver [playbook-curation.md](playbook-curation.md)) ·
 `NADA A COPIAR` (copiar-docs.sh da `sdd-new-session`) · `CONCLUIDO` · `CONTINUAR` · `PARADA` · `FALHA` · `RECIBO GRAVADO`
 (sdd-drive.sh; ver [sdd-drive.md](sdd-drive.md)) · `NO AR` · `NAO ESTA NO AR` · `FALHOU` · `AINDA NAO SEI` (deploy-do-sha.sh) ·
-`SIMULACAO` · `MOVIDO` (sdd-archive.py).
+`SIMULACAO` · `MOVIDO` (sdd-archive.py) · `OK` · `REPROVOU` · `NADA A MEDIR` (slot.sh; ver
+[adaptation-guide.md](adaptation-guide.md)).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate
 (inconclusivo: não é vermelho, e sem `--strict` não vira `1`) de parecer verde para quem lê.
@@ -74,6 +75,7 @@ RESULTADO: ERRO
 | `sdd-drive.sh` | `0` CONCLUIDO (`gate-verde`, `simulacao`) · `10` CONTINUAR (`ACAO:`) · `20` PARADA (`motivo:` tabelado) · `40` AGUARDANDO_HUMANO · `2` FALHA do próprio script · `64` uso |
 | `deploy-do-sha.sh` | `0` NO AR · `2` fora do ar · `3` INCONCLUSIVO (sem `gh` ou `git`, ou sem login) · `4` AINDA NAO SEI · `64` uso |
 | `sdd-archive.py` | `0` SIMULACAO ou MOVIDO · `2` FALHA · `64` uso |
+| `slot.sh` | `0` OK · `2` REPROVOU · `3` INCONCLUSIVO (o comando saiu com outro código ou por sinal, ou o script foi interrompido) · `10` NADA A MEDIR · `11` PULADO (slot vazio, ausente ou sem `sdd/config.yaml`) · `64` ERRO DE USO (chave desconhecida, flag sem valor, ref que não resolve, aspas sem fechar, erro de sintaxe ou `#` no comando) ([adaptation-guide.md](adaptation-guide.md)) |
 | `eval-agree.sh` | `0` MEDIDO · `2` SEM DADOS (inclusive sem a pasta padrão) · `64` uso ou pasta passada inexistente |
 | `sdd-decisoes-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, caminho inexistente, tabela de marcas ausente ou nenhuma pergunta |
 | `contraste.sh` | `0` PASSA · `2` REPROVA, ou `--self-test` VERMELHO · `64` uso ([llm-in-code.md](llm-in-code.md)) |

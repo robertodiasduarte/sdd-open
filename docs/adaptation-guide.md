@@ -68,6 +68,29 @@ If everything you deploy goes through git, leave it empty. If not, write a check
 what is deployed against what is committed, and wire it in. The release flow will run it in the
 pre-flight phase.
 
+## Smoke and schema check: four slots run by `sdd/bin/slot.sh`
+
+Four slots of [`sdd/config.yaml`](../sdd/config.example.yaml) take a command of your own, run at a fixed
+moment by `bash sdd/bin/slot.sh <key>`. All four ship **empty**: an empty slot is skipped and the phase says so.
+
+| Slot | When | Exit `2` means |
+|---|---|---|
+| `smoke.before_ok_cmd` | release, item 6b: after landing, before the approval block, on the commit that will ship | a FAIL candidate in the approval block (fix, or WAIVED with your reason) |
+| `smoke.before_push_cmd` | release, item 7b: after the "yes", before the push (production still runs the old code) | recorded only; nothing holds the push |
+| `smoke.after_deploy_cmd` | release, item 10: once the deploy is confirmed | the release stops and asks: revert, fix, or carry on with a reason |
+| `schema.check_cmd` | build, step 4b: before the preview of the migrations to apply | the migration is **not** applied |
+
+Your command answers `0` ok · `2` failed · `10` nothing to measure. Any other exit — or a signal — is
+inconclusive (`slot.sh` exits `3`), never green; an empty slot exits `11`, a broken call or config `64`.
+
+It runs from the repository root with the files (the `.sql` of the schema check) appended as separate
+arguments, and with `SDD_MOMENTO`, `SDD_FEATURE`, `SDD_BASE`, `SDD_COMMIT` (the commit to measure),
+`SDD_ARVORE` (the folder holding that commit's tree: the release's temporary worktree before the approval)
+and `SDD_SLOT_DIR`. The last one is a folder outside the repository, the same for the three smoke moments of a
+feature from any worktree: it is how your "before" and "after" find each other. It is emptied at
+`before_ok`. Keep the command on one line and without a `#` comment; with `|`, `;` or `&&`, point to a script.
+A smoke that measures a page should measure `SDD_COMMIT`/`SDD_ARVORE`, not the folder it runs from.
+
 ## Parallel work: worktrees
 
 The workflow assumes a feature is developed on a branch off the default branch, and it works

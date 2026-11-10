@@ -52,6 +52,26 @@ release:
   # Opcional, pós-deploy (changelog, comunicado, ledger).
   changelog_hook: ""
 
+# Smoke da release: um comando seu por momento, rodado por sdd/bin/slot.sh (docs/adaptation-guide.md). Vazio =
+# o momento é pulado e a release diz que pulou. O comando sai 0 ok · 2 reprovou · 10 nada a medir; qualquer
+# outro exit é inconclusivo, nunca verde. Ele recebe SDD_MOMENTO, SDD_FEATURE, SDD_BASE, SDD_COMMIT (o commit a
+# medir), SDD_ARVORE (a pasta com a árvore desse commit) e SDD_SLOT_DIR (pasta fora do repositório, a mesma nos
+# 3 momentos da feature: é por ela que o "antes" e o "depois" se combinam). Uma linha só, sem comentário (#)
+# no comando; com |, ; ou &&, aponte para um script. Exemplo: before_ok_cmd: "bash ci/smoke.sh plano"
+smoke:
+  # Antes do OK, sobre o commit que vai subir: 2 vira FAIL-candidato no bloco do OK.
+  before_ok_cmd: ""
+  # Depois do "sim", antes do push (a produção ainda tem o código velho): só registra, nunca segura o push.
+  before_push_cmd: ""
+  # Depois do deploy confirmado: 2 para a release com a pergunta reverter, corrigir ou seguir com motivo.
+  after_deploy_cmd: ""
+
+# Checagem das migrations antes de aplicar (passo 4b do build), também por sdd/bin/slot.sh. Recebe os .sql que
+# vão ser aplicados como argumentos, no fim do comando. 0 ok · 2 reprovou · 10 nada a conferir; 2 ou qualquer
+# exit fora disso = a migration não é aplicada. Vazio = a checagem é pulada e o build diz que pulou.
+schema:
+  check_cmd: ""
+
 review:
   # Revisão adversarial (sdd/bin/adversarial-review.sh; docs/adversarial-review.md): uma engine revisa o
   # diff, OUTRA audita a revisão. As engines moram no registry (1 linha por engine; engine nova = 1 linha).

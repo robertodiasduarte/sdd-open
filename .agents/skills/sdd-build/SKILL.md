@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.6.0"
+  version: "2.7.0"
   updated: "2026-11"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
 critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
@@ -174,8 +174,9 @@ contornar o critério.
 
 Manifest com `*.sql`, pasta `migrations/`, caminho que casa `layers.sql` do config ou ação descrita
 como migration ⇒ leia `references/aplicar-migration.md` e siga-o **antes** do Verify Gate: descobrir
-ferramenta e projeto (nome **e** ref), parar na divergência, uma confirmação só com o SQL inteiro,
-aplicar, e **provar por leitura**. `exit 0` não prova (LM-004). Sem migration, o passo não existe e
+ferramenta e projeto (nome **e** ref), parar na divergência, rodar a checagem do projeto
+(`bash sdd/bin/slot.sh schema.check_cmd` sobre os `.sql`; `2`, `3` ou `64` ⇒ não aplica; vazio ⇒ pulada e dita),
+uma confirmação só com o SQL inteiro, aplicar, e **provar por leitura**. `exit 0` não prova (LM-004). Sem migration, o passo não existe e
 não se fala de banco.
 
 ### 5. Validação

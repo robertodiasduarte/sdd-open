@@ -11,11 +11,16 @@
 #   sdd/bin/test-baseline.sh --cmd '<comando>'     # outro comando (execução parcial: não poda o baseline)
 #   sdd/bin/test-baseline.sh --touched [--base <ref>]  # só aborta por falha nova cujo id cita um arquivo
 #                                                  # de teste tocado (test_*, *_test.*, *.test.*, *.spec.*)
+#                                                  # ou o teste AO LADO de uma fonte tocada, na mesma pasta:
+#                                                  # foo.ts → foo.test.ts / foo.spec.ts (.ts .tsx .js .jsx
+#                                                  # .mjs .cjs), calc.py → test_calc.py / calc_test.py.
+#                                                  # Go e jest ficam de fora: o id da falha não traz o arquivo.
+#                                                  # A sdd-release roda este modo antes do OK (0a, item 9).
 #   sdd/bin/test-baseline.sh --aceitar '<id>'      # registra uma falha como conhecida (decisão humana)
 #
 # Exit: 0 só falhas conhecidas (ou PULADO: test_cmd vazio) · 2 falha nova · 3 INCONCLUSIVO · 64 uso.
 # Só na execução completa sem falha nova o id que sarou sai do baseline (e é listado).
-# ⚠️ bash 3.2 + python3 (stdlib). Faz parte do contrato da fase Build (passo 5b da sdd-build).
+# ⚠️ bash 3.2 + python3 (stdlib). Faz parte do contrato da fase Build (passo 5b da sdd-build) e da Release (0a, item 9).
 
 set -uo pipefail
 
@@ -32,7 +37,7 @@ while [ $# -gt 0 ]; do
     --touched) TOUCHED=1; shift ;;
     --base)    [ $# -ge 2 ] && [ -n "${2}" ] || uso "--base exige uma ref"; BASE="${2}"; shift 2 ;;
     --aceitar) [ $# -ge 2 ] && [ -n "${2}" ] || uso "--aceitar exige um id"; ACEITAR="${2}"; ACEITAR_DADO=1; shift 2 ;;
-    -h|--help) sed -n '2,19p' "$0"; exit 64 ;;
+    -h|--help) sed -n '2,24p' "$0"; exit 64 ;;
     *)         uso "argumento inesperado: ${1}" ;;
   esac
 done
@@ -190,12 +195,38 @@ velhos = [i for i in ids if i in conhecidos]
 fora = []
 if modo == "touched":
     tocs = []
+    vizinhos = []  # (caminho do teste ao lado, módulo python ou "") — casados com âncora, nunca por substring
     teste = re.compile(r"(^test_|_test\.|\.test\.|\.spec\.|_spec\.|^test\.|Test\.)")
+    familia_js = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs")
     for t in tocados.splitlines():
         t = t.strip()
-        if t and not t.startswith("sdd/") and teste.search(os.path.basename(t)):
-            tocs += [t, os.path.splitext(os.path.basename(t))[0]]
-    fora = [i for i in novos if not any(t and t in i for t in tocs)]
+        if not t or t.startswith("sdd/"):
+            continue
+        base = os.path.basename(t)
+        if teste.search(base):
+            tocs += [t, os.path.splitext(base)[0]]
+            continue
+        pasta, (nome, ext) = os.path.dirname(t), os.path.splitext(base)
+        if ext in familia_js:
+            cands = [nome + "." + tipo + e for tipo in ("test", "spec") for e in familia_js]
+        elif ext == ".py":
+            cands = ["test_" + nome + ".py", nome + "_test.py"]
+        else:
+            cands = []
+        for c in cands:
+            cam = os.path.join(pasta, c) if pasta else c
+            if os.path.isfile(cam):
+                vizinhos.append((cam, os.path.splitext(c)[0] if c.endswith(".py") else ""))
+
+    def do_vizinho(i):
+        for cam, mod in vizinhos:
+            if i.startswith(cam) or i.startswith("./" + cam):
+                return True  # vitest, pytest e deno começam o id pelo caminho do arquivo
+            if mod and "/" not in i and re.search(r"(^|\.)" + re.escape(mod) + r"\.", i):
+                return True  # unittest: o módulo como segmento do id
+        return False
+
+    fora = [i for i in novos if not any(t and t in i for t in tocs) and not do_vizinho(i)]
     novos = [i for i in novos if i not in fora]
 
 for i in novos:
