@@ -9,8 +9,7 @@
 
 sem achados: rodada=3 EXTERNAL_REVIEW_20260201-000003
 
-```markdown
-| achado | sev | veredito | rodada | evidência | dano | revisão |
-| R9 | exemplo cercado, não conferido |
+```text
+Bloco cercado com texto de exemplo, sem linha de tabela: não é conferido.
 retroativo: sim
 ```

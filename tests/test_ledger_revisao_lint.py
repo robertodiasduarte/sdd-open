@@ -120,11 +120,18 @@ class Lint(Sandbox):
                 self.assertEqual(rc, 2, out)
                 self.assertIn("a marca de retroativo é a linha `retroativo: sim`", out)
 
-    def test_bloco_cercado_nao_e_conferido_e_outra_tabela_reprova(self):
+    def test_texto_cercado_nao_e_conferido_e_linha_de_tabela_e_sempre(self):
         boa = "| R1@a | LOW | APLICADA | rodada=1 | x | nao | %s |" % PASTA
-        rc, out = self.um(boa + "\n\n```markdown\n%s| R9 | exemplo cercado |\n```" % CAB)
+        rc, out = self.um(boa + "\n\n```text\nexemplo em texto: R9 · LOW · APLICADA\nsem achados: rodada=<N> <pasta>\n```")
         self.assertEqual(rc, 0, out)
         self.assertIn("1 linha(s)", out)
+        # O sdd-fluxo.sh loop lê linha de tabela dentro de cerca e de comentário: o lint confere do mesmo jeito.
+        ruim = "| R3 | HIGH | REBATIDA_EVIDENCIA | rodada=2 | sem teste | sim | %s |" % PASTA
+        for nome, abre, fecha in (("cerca", "```markdown", "```"), ("comentário", "<!--", "-->")):
+            with self.subTest(dentro_de=nome):
+                rc, out = self.um(boa + "\n\n" + abre + "\n" + ruim + "\n" + fecha)
+                self.assertEqual(rc, 2, out)
+                self.assertIn("LEDGER_REVISAO_X.md:8 — dano = sim com veredito REBATIDA_EVIDENCIA", out)
         # O arquivo é só do ledger: uma tabela a mais reprova, em vez de passar sem ser lida.
         rc, out = self.um(boa + "\n\n| Engine | Papel |\n|---|---|\n| a | revisor |")
         self.assertEqual(rc, 2, out)
@@ -225,7 +232,42 @@ class Lint(Sandbox):
             with self.subTest(caso=nome + " sem fechar"):
                 rc, out = self.um(boa + "\n\n" + abre + "\n" + ruim)
                 self.assertEqual(rc, 2, out)
-                self.assertIn("aberto e não fechado: o resto do arquivo não foi lido", out)
+                self.assertIn("aberto e não fechado: as marcas de texto depois dele não valem", out)
+                self.assertIn("dano = sim com veredito REBATIDA_EVIDENCIA", out)   # a linha depois dele é conferida
+
+    def test_cerca_segue_o_commonmark(self):
+        boa = "| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |" % PASTA
+        solta = "a | b | c | d | e"
+        # rótulo com qualquer caractere abre o bloco; só o fecha o mesmo caractere, em quantidade igual ou maior
+        for nome, abre, fecha, meio in (("rótulo c#", "```c#", "```", ""), ("rótulo com espaço", "```sh title=x", "```", ""),
+                                        ("4 crases", "````", "````", "```\n"), ("til", "~~~~ md", "~~~~", "```\n~~~\n"),
+                                        ("fecha com mais", "```", "`````", "")):
+            with self.subTest(caso=nome):
+                rc, out = self.um("%s\n\n%s\n%sretroativo: sim\n%s\n%s\n" % (boa, abre, meio, solta, fecha))
+                self.assertEqual(rc, 0, out)   # texto dentro do bloco: nem marca, nem linha solta
+                rc, out = self.um("%s\n\n%s\n%s%s\n%s\n\n%s\n" % (boa, abre, meio, solta, fecha, solta))
+                self.assertEqual(rc, 2, out)   # depois do bloco fechado a linha solta volta a ser acusada
+                self.assertEqual(out.count("fora da tabela"), 1, out)
+                self.assertNotIn("aberto e não fechado", out)
+        # cerca de crase com crase no rótulo não abre; fecho com rótulo não fecha
+        rc, out = self.um(boa + "\n\n```a`b\n" + solta + "\n")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("fora da tabela", out)
+        self.assertNotIn("aberto e não fechado", out)
+        rc, out = self.um(boa + "\n\n```\n" + solta + "\n``` fim\n")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("bloco cercado aberto e não fechado", out)
+
+    def test_a_mensagem_da_linha_solta_diz_como_escrever_texto_com_barras(self):
+        boa = "| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |" % PASTA
+        rc, out = self.um(boa + "\n\nmodos: a | b | c | d | e\n")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("escape cada uma com `\\|` ou ponha o trecho num bloco cercado", out)
+        rc, out = self.um(boa + "\n\nmodos: a \\| b \\| c \\| d \\| e\n")
+        self.assertEqual(rc, 0, out)
+        rc, out = self.lint("--help")
+        for termo in ("4 ou mais barras verticais", "3 ou mais crases ou tis", "depois de `-->` na mesma linha"):
+            self.assertIn(termo, out)
 
     def test_saida_nao_depende_do_locale(self):
         env = dict(self.env, PYTHONIOENCODING="ascii", LC_ALL="C")

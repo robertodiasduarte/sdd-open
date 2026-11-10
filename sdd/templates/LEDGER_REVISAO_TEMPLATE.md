@@ -20,6 +20,9 @@ Uma linha por achado, por exemplo:
 - Este arquivo guarda só o ledger: não ponha outra tabela aqui (o lint confere toda linha de tabela como achado).
   O cabeçalho pode se repetir entre as rodadas; texto corrido entre as tabelas pode.
 - 7 células por linha; uma barra vertical dentro de célula se escreve com a barra invertida antes dela.
+- Texto corrido com 4 ou mais barras verticais numa linha é acusado como linha do ledger fora da tabela:
+  escreva cada barra com a barra invertida antes dela, ou ponha o trecho num bloco cercado por três crases.
+- Feche o comentário com a marca de fim sozinha na linha: o que vem depois dela, na mesma linha, não é lido.
 - achado: copie o id do arquivo de vereditos da rodada (`reviewer.verdicts.jsonl`, `reviewer2.verdicts.jsonl`,
   `auditor.verdicts.jsonl`), como está: `R1` e `N1` numa rodada de um revisor só; `R1@claude`, `R1@codex` quando houve dois.
   Não acrescente rótulo que o arquivo não tem: o `sdd-fluxo.sh loop` casa o id exato.

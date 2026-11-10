@@ -224,7 +224,7 @@ class Ledgers(Base):
         rc, out = self.com("| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s |\n\n```text\n"
                            "| R2 | MED | APLICADA | rodada=1 | depois de uma cerca que não fecha | nao | %s |\n" % (P1, P1))
         self.assertEqual(rc, 0, out)
-        self.assertEqual(linhas(out)[0][8], "1 de 9")
+        self.assertEqual(linhas(out)[0][8], "2 de 9")   # a linha depois da cerca aberta é lida, como no loop
         self.assertIn("LEDGER_REVISAO_X.md:7: bloco cercado aberto e não fechado", self.fora(out))
 
     def test_rebatida_marcada_sim_nao_conta_como_dano_e_e_avisada(self):
@@ -276,16 +276,20 @@ class Ledgers(Base):
                       "revisão tem 3 achado(s)", fora)
         self.assertNotIn("EXTERNAL_REVIEW_20260201-000007, mas", fora)   # a 7 não tem achado mesmo
 
-    def test_bloco_cercado_nao_e_lido_e_outra_tabela_e_avisada(self):
+    def test_linha_de_tabela_em_bloco_cercado_ou_comentario_conta_como_no_loop(self):
+        # O sdd-fluxo.sh loop lê a linha do ledger mesmo dentro de cerca ou de comentário; o medidor também.
         led = self.escreve(self.tmp, "LEDGER_REVISAO_X.md",
                            "# x\n\n```markdown\n" + CAB +
-                           "| R2 | MED | APLICADA | rodada=1 | exemplo cercado | nao | %s |\n```\n\n" % P1 + CAB +
+                           "| R2 | MED | APLICADA | rodada=1 | dentro de bloco cercado | nao | %s |\n```\n\n<!--\n"
+                           "| R3 | LOW | REBATIDA_EVIDENCIA | rodada=1 | dentro de comentário | nao | %s |\n-->\n\n" % (P1, P1) + CAB +
                            "| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s |\n\n| Engine | Papel |\n|---|---|\n| claude | revisor |\n" % P1)
         rc, out = self.er(FX, "--ledgers", led, "--registry", FX / "registry.tsv")
         self.assertEqual(rc, 0, out)
-        self.assertEqual(linhas(out)[0][8], "1 de 9")
-        self.assertIn("LEDGER_REVISAO_X.md:13: linha com 2 célula(s), o ledger tem 7", self.fora(out))
-        self.assertIn("LEDGER_REVISAO_X.md:15: linha com 2 célula(s)", self.fora(out))
+        revisor = linhas(out)[0]
+        self.assertEqual((revisor[8], revisor[10]), ("2 de 9", "1 de 9"))
+        fora = self.fora(out)
+        self.assertIn("LEDGER_REVISAO_X.md:17: linha com 2 célula(s), o ledger tem 7", fora)   # a outra tabela é avisada
+        self.assertIn("LEDGER_REVISAO_X.md:19: linha com 2 célula(s)", fora)
 
     def test_nenhuma_linha_de_tabela_some_em_silencio(self):
         # Achado do avaliador (ciclo 1): id entre crases depois de linha em branco, ou um segundo cabeçalho,
@@ -395,6 +399,32 @@ class Custo(Base):
         self.assertEqual(rc, 0, out)
         self.assertIn("auditor (openrouter:m/x): sem exit no META.txt e com custo `US$ 7.0000`", out)
 
+    def test_papel_sem_engine_e_com_custo_vai_para_fora_da_conta(self):
+        d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
+        self.escreve(d, "META.txt", "reviewer_engine_efetivo : claude\nreviewer_custo : US$ 3.0\nreviewer_exit : 0\n"
+                                    "auditor_custo : US$ 9.0\nauditor_exit : 0\n")
+        self.escreve(d, "reviewer.verdicts.jsonl", "")
+        rc, out = self.er(self.tmp / "reviews", "--registry", FX / "registry.tsv")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("EXTERNAL_REVIEW_20260301-000001: auditor: sem engine no META.txt e com custo `US$ 9.0`", out)
+        self.assertNotIn("| auditor |", out)
+
+    def test_cerca_segue_o_commonmark(self):
+        # Rótulo com qualquer caractere abre; só fecha o mesmo caractere, em quantidade igual ou maior, sem rótulo.
+        pasta = "EXTERNAL_REVIEW_20260201-000001"
+        solta = "a | b | c | d | e"
+        for nome, abre, fecha, meio in (("rótulo c#", "```c#", "```", ""), ("rótulo com espaço", "```sh title=x", "```", ""),
+                                        ("4 crases", "````", "````", "```\n"), ("til", "~~~~ md", "~~~~", "```\n~~~\n")):
+            with self.subTest(caso=nome):
+                arq = self.escreve(self.tmp / ("l-" + nome.replace(" ", "_").replace("#", "s")), "LEDGER_REVISAO_X.md",
+                                   "%s\n%s%s\nsem achados: rodada=1 %s\n%s\n\n%s\n" % (abre, meio, solta, pasta, fecha, solta))
+                rc, out = self.er(FX, "--ledgers", arq, "--registry", FX / "registry.tsv")
+                self.assertEqual(rc, 0, out)
+                # dentro do bloco nada conta; depois dele a linha solta é avisada, uma vez
+                self.assertEqual(out.count("linha com forma de linha do ledger fora da tabela"), 1, out)
+                self.assertIn("LEDGER_REVISAO_X.md:%d: linha com forma" % (5 + meio.count("\n") + 1), out)
+                self.assertNotIn("aberto e não fechado", out)
+
     def test_dado_corrompido_e_64_com_a_causa_nunca_traceback(self):
         d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
         casos = {
@@ -406,10 +436,25 @@ class Custo(Base):
                 self.escreve(d, "META.txt", meta)
                 self.escreve(d, "reviewer.verdicts.jsonl", "")
                 rc, out = self.er(self.tmp / "reviews", "--registry", FX / "registry.tsv")
-                self.assertIn(rc, (2, 64), out)   # sem dados (o exit ilegível é avisado) ou parou com a causa
+                self.assertIn(rc, (0, 2), out)   # o valor ilegível é avisado; nada estoura depois
                 self.assertNotIn("Traceback", out)
                 self.assertIn("RESULTADO:", out)
+                self.assertIn("EXTERNAL_REVIEW_20260301-000001: revisor (claude): ", out)
+                self.assertRegex(out, r"custo `US\$ 10+…?` ilegível|exit `9+…` ilegível")
                 self.assertLess(len(out), 2000, "a mensagem não despeja o valor corrompido inteiro")
+
+    def test_erro_inesperado_diz_o_que_estava_lendo(self):
+        # A guarda de último recurso: um erro que nenhuma checagem previu sai 64 e diz qual pasta estava sendo lida.
+        d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
+        self.escreve(d, "META.txt", "reviewer_engine_efetivo : claude\nreviewer_custo : US$ 1.0\nreviewer_exit : 0\n")
+        self.escreve(d, "reviewer.verdicts.jsonl", "[" * 100000 + "\n")   # JSON aninhado demais
+        rc, out = self.er(self.tmp / "reviews", "--registry", FX / "registry.tsv")
+        self.assertNotIn("Traceback", out)
+        self.assertIn(rc, (0, 64), out)
+        if rc == 64:
+            self.assertIn("lendo ", out)
+            self.assertIn("EXTERNAL_REVIEW_20260301-000001", out)
+            self.assertIn("RESULTADO: PAROU", out)
 
     def test_saida_nao_depende_do_locale(self):
         env = dict(self.env, PYTHONIOENCODING="ascii", LC_ALL="C")

@@ -22,6 +22,11 @@
 #       fora da conta = o que não entrou nos números, com o motivo (linha de ledger sem par, pasta ilegível…)
 #       0 MEDIDO · 2 SEM DADOS (nenhuma pasta com META.txt legível, ou a pasta padrão ainda não existe)
 #       64 uso, ou pasta/arquivo passado não existe
+#       limites: o medidor soma o que o META.txt e o ledger dizem, sem conferir (rode o ledger-revisao-lint.sh
+#       antes: um `sim` conta como dano mesmo sem `teste:`); papel sem engine ou sem exit no META.txt não ganha
+#       linha (se tem custo, vai para fora da conta); arquivo de vereditos com linha cortada ou sem o campo
+#       `achado` conta só as linhas inteiras; os valores
+#       são somados exatos e arredondados só na hora de imprimir (4 casas; percentual, 1 casa)
 # USO-FIM
 #
 # ⚠️ bash 3.2 (o /bin/bash do macOS) · núcleo em Python 3.9 stdlib.
@@ -59,37 +64,46 @@ VEREDITOS = ("APLICADA", "REBATIDA_EVIDENCIA", "REBATIDA_ESCOPO")
 PASTA = r"EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?"
 PASTA_RE = re.compile("^" + PASTA + "$")
 SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=\d+[a-z]?\s+(" + PASTA + r")\s*$")
-CUSTO_RE = re.compile(r"^(≈)?\s*US\$\s*([0-9]+(?:[.,][0-9]+)?)(\s*\+\s*\$\?)?$")
+CUSTO_RE = re.compile(r"^(≈)?\s*US\$\s*([0-9]{1,12}(?:[.,][0-9]{1,12})?)(\s*\+\s*\$\?)?$")
 SEPARADOR_RE = re.compile(r"^:?-+:?$")
 CABECALHO = ["achado", "sev", "veredito", "rodada", "evidência", "dano", "revisão"]
-CERCA_RE = re.compile(r"^ {0,3}(```|~~~)[\w+.-]*\s*$")   # a linha inteira é a cerca; código em linha não conta
+# Cerca como no CommonMark: abre com 3 ou mais crases ou tis e qualquer rótulo (```c#, ```sh title=x, ````);
+# fecha com o mesmo caractere, em quantidade igual ou maior, sem rótulo. Código em linha (```x```) não abre.
+CERCA_RE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
 SOLTA_RE = re.compile(r"^[\s>*\\\u200b\ufeff-]*")
 
 
 def linhas_uteis(texto):
-    """As linhas (n, texto) fora de bloco cercado e de comentário <!-- -->, e os avisos (n, motivo) de bloco que
-    abriu e não fechou. A mesma função está no ledger-revisao-lint.sh e no eval-revisores.sh: os dois leem o ledger
-    do mesmo jeito."""
-    uteis, avisos, cercado, comentario, onde = [], [], False, False, 0
-    for n, ln in enumerate(texto.lstrip("\ufeff").split("\n"), 1):
+    """As linhas do arquivo como (n, texto, dentro), e os avisos (n, motivo) de bloco que abriu e não fechou.
+    `dentro` diz que a linha está num bloco cercado ou num comentário <!-- -->: ali as marcas de texto
+    (`retroativo: sim`, `sem achados:`) não valem, mas uma linha de tabela é conferida do mesmo jeito, porque o
+    `sdd-fluxo.sh loop` a lê. A mesma função está no ledger-revisao-lint.sh e no eval-revisores.sh."""
+    linhas, avisos, cercado, comentario, onde = [], [], "", False, 0
+    for n, ln in enumerate(texto.lstrip("﻿").split("\n"), 1):
         ln = ln.rstrip("\r")
         if comentario:
+            linhas.append((n, ln, True))
             comentario = "-->" not in ln
             continue
-        if CERCA_RE.match(ln):
-            cercado, onde = not cercado, n
-            continue
+        m = CERCA_RE.match(ln)
         if cercado:
+            if m and m.group(1)[0] == cercado[0] and len(m.group(1)) >= len(cercado) and not m.group(2).strip():
+                cercado = ""
+            else:
+                linhas.append((n, ln, True))
+            continue
+        if m and not (m.group(1)[0] == "`" and "`" in m.group(2)):
+            cercado, onde = m.group(1), n
             continue
         if ln.lstrip().startswith("<!--"):
             comentario, onde = "-->" not in ln, n
             continue
-        uteis.append((n, ln))
+        linhas.append((n, ln, False))
     if cercado:
-        avisos.append((onde, "bloco cercado aberto e não fechado: o resto do arquivo não foi lido"))
+        avisos.append((onde, "bloco cercado aberto e não fechado: as marcas de texto depois dele não valem"))
     if comentario:
-        avisos.append((onde, "comentário <!-- aberto e não fechado: o resto do arquivo não foi lido"))
-    return uteis, avisos
+        avisos.append((onde, "comentário <!-- aberto e não fechado: as marcas de texto depois dele não valem"))
+    return linhas, avisos
 
 
 def linha_solta(ln):
@@ -164,11 +178,15 @@ for s in (sys.stdout, sys.stderr):   # a saída tem acento: nunca depende do loc
         pass
 
 
+LENDO = ["os argumentos"]   # o que estava sendo lido, para a mensagem de erro inesperado dizer onde
+
+
 def inesperado(tipo, valor, tb):
     """Dado corrompido que nenhuma checagem previu vira 64 com a causa, nunca traceback."""
-    print("🛑 eval-revisores: não consegui medir (%s: %s)" % (tipo.__name__, str(valor)[:200]), file=sys.stderr)
-    print("RESULTADO: PAROU\n→ um META.txt, arquivo de vereditos ou ledger tem um valor que o script não sabe ler; "
-          "corrija o arquivo citado acima ou tire a pasta dele da medição.", file=sys.stderr)
+    print("🛑 eval-revisores: não consegui medir (%s: %s), lendo %s" % (tipo.__name__, str(valor)[:200], LENDO[0]),
+          file=sys.stderr)
+    print("RESULTADO: PAROU\n→ esse arquivo tem um valor que o script não sabe ler: corrija-o ou tire a pasta dele "
+          "da medição, e rode de novo.", file=sys.stderr)
     sys.stdout.flush()
     sys.stderr.flush()
     os._exit(64)
@@ -245,6 +263,7 @@ if os.path.isdir(ledgers):
 elif os.path.isfile(ledgers):
     arquivos = [ledgers]
 for arq in arquivos:
+    LENDO[0] = arq
     texto = ler(arq)
     nome_arq = os.path.basename(arq)
     if texto is None:
@@ -254,15 +273,18 @@ for arq in arquivos:
     uteis, abertos = linhas_uteis(texto)
     for n, motivo in abertos:
         fora.append(("%s:%d" % (nome_arq, n), motivo))
-    for n, ln in uteis:
+    for n, ln, dentro in uteis:
         if not re.match(r"^\s*\|", ln):
+            if dentro:
+                continue   # texto de exemplo ou de comentário: só linha de tabela conta ali dentro
             m = SEM_ACHADOS_RE.match(ln)
             if m:
                 pastas_citadas.add(m.group(1))
                 ditas_sem_achados.setdefault(m.group(1), "%s:%d" % (nome_arq, n))
             elif linha_solta(ln):
                 fora.append(("%s:%d" % (nome_arq, n), "linha com forma de linha do ledger fora da tabela (não começa "
-                                                     "por `|`): não foi lida"))
+                                                     "por `|`): não foi lida. Em texto corrido, escape cada "
+                                                     "barra com `\\|` ou use um bloco cercado"))
             continue
         c = celulas(ln)
         if not c or all(SEPARADOR_RE.match(x) for x in c):
@@ -336,6 +358,7 @@ for d in (listar(pasta) if os.path.isdir(pasta) else []):
     caminho = os.path.join(pasta, d)
     if not d.startswith("EXTERNAL_REVIEW_") or not os.path.isdir(caminho):
         continue
+    LENDO[0] = caminho
     meta = {}
     for ln in (ler(os.path.join(caminho, "META.txt")) or "").splitlines():
         m = re.match(r"^(\S+)\s*:\s*(.*?)\s*$", ln)
@@ -368,6 +391,10 @@ for d in (listar(pasta) if os.path.isdir(pasta) else []):
             engine = meta.get(chave + "_engine_efetivo") or meta.get(chave + "_engine") or ""
         saida = meta.get(chave + "_exit", "")
         if engine in ("", "-"):
+            if meta.get(chave + "_custo", "") not in ("", "-", "n/d"):
+                bruto = meta[chave + "_custo"]
+                fora.append((d, "%s: sem engine no META.txt e com custo `%s`; a chamada e o custo dela não foram "
+                             "contados" % (nome, bruto[:40] + ("…" if len(bruto) > 40 else ""))))
             continue   # o papel não rodou nesta pasta
         if saida in ("", "-"):
             if meta.get(chave + "_custo", "") not in ("", "-", "n/d"):
@@ -388,9 +415,13 @@ for d in (listar(pasta) if os.path.isdir(pasta) else []):
             f["falhas"][TROCADA] = f["falhas"].get(TROCADA, 0) + 1
         c = linha_de(por, nome, engine, meta.get(chave + "_modelo", ""))
         c["chamadas"] += 1
-        valor, estimado, incerto = custo_de(meta.get(chave + "_custo"))
+        bruto = (meta.get(chave + "_custo") or "").strip()
+        valor, estimado, incerto = custo_de(bruto)
         if valor is None:
             c["sem_custo"] += 1
+            if "US$" in bruto:   # tem cara de valor e não é um: avisa, em vez de virar "n/d" calado
+                fora.append((d, "%s (%s): custo `%s` ilegível, contado como sem custo informado"
+                             % (nome, engine, bruto[:40] + ("…" if len(bruto) > 40 else ""))))
         else:
             c["nominal"] += valor
             c["estimado"] = c["estimado"] or estimado
@@ -474,6 +505,7 @@ else:
     for d in sem_ledger:
         fora.append((d, "sem linha em nenhum ledger: os achados dela ficam em sem classificar"))
 
+LENDO[0] = "a tabela já somada (erro ao imprimir)"
 print("eval-revisores — custo e resultado por papel, engine e modelo (%d pasta(s) lida(s) em %s; %d ledger(s))"
       % (lidas, pasta, n_ledgers))
 if not por:
