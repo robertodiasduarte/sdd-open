@@ -42,9 +42,9 @@ construção: foi assim que 3 worktrees ficaram com 3 versões deste arquivo em 
 | F16 Ambiente agnóstico e proativo | ⬜ | — | só no plano (seção 8; `ESCOPO_F16_AMBIENTE.md`); inclui o teste em Windows |
 | F17 Starter gerado a partir do Open | ⬜ | — | só no plano; depois da F16 |
 | F18 Segurança embutida no fluxo | ⬜ | — | só no plano; a onda 1 pode vir antes da F17 |
-| F19 Custo e benefício dos revisores | ⬜ | — | só no plano; qualquer momento |
+| F19 Custo e benefício dos revisores | 🔨 | — | sessão aberta em 10/11 junto com a F21 (worktree `sdd-open-f21-f19`); nasce do `main` depois da release da F21; prompt em `sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md` |
 | F20 Ações preventivas do e-book | ⬜ | — | só no plano; brainstorm junto com a F18 |
-| F21 Engenharia reversa de SaaS | ⬜ | — | só no plano; skill pronta no arquivo `arquivo-sdd-open/F21_ENGENHARIA_REVERSA/`; entra entre quaisquer duas |
+| F21 Engenharia reversa de SaaS | 🔨 | — | sessão aberta em 10/11 (worktree `sdd-open-f21-f19`, branch `feat/f21-engenharia-reversa` de `45e27a9`); leva junto a curadoria `c2560fc` da F15_SLOTS; skill pronta em `arquivo-sdd-open/F21_ENGENHARIA_REVERSA/`; a página `/sdd/` é frente própria no privado |
 
 Legenda: ✅ publicada · 🔨 em andamento · ⬜ só no plano. Ao publicar uma frente, troque a linha dela aqui no
 mesmo commit que registra a publicação na ficha.
