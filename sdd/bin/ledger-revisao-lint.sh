@@ -112,7 +112,7 @@ for arq, texto in textos:
         elif RETRO_QUASE.match(ln):
             violacoes.append("%s:%d — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, "
                              "citação ou maiúscula" % (arq, n))
-    dados, sem_achados, na_tabela, viu_cabecalho = 0, 0, False, False
+    dados, sem_achados, na_tabela, viu_cabecalho, cabecalho_ruim = 0, 0, False, False, False
     for n, ln in uteis:
         if not re.match(r"^\s*\|", ln):
             na_tabela = False
@@ -130,7 +130,9 @@ for arq, texto in textos:
             # primeira linha de uma tabela: só é o ledger se o cabeçalho começa por `achado`
             if c[0].strip("*` ").lower() == "achado":
                 na_tabela, viu_cabecalho = "ledger", True
-                if [x.strip("*` ").lower() for x in c[:4]] != ["achado", "sev", "veredito", "rodada"] or len(c) != 7:
+                if [x.strip("*` ").lower() for x in c] != ["achado", "sev", "veredito", "rodada", "evidência", "dano",
+                                                           "revisão"]:
+                    cabecalho_ruim = True
                     violacoes.append("%s:%d — o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | "
                                      "evidência | dano | revisão |`" % (arq, n))
                 continue
@@ -144,6 +146,8 @@ for arq, texto in textos:
         if na_tabela == "outra" or all(SEPARADOR_RE.match(x) for x in c):
             continue
         dados += 1
+        if cabecalho_ruim:
+            continue   # com o cabeçalho fora do molde as colunas não se sabem: uma mensagem só, a do cabeçalho
 
         def acusa(motivo):
             violacoes.append("%s:%d — %s" % (arq, n, motivo))

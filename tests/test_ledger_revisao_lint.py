@@ -161,6 +161,14 @@ class Lint(Sandbox):
         self.assertEqual(rc, 2, out)
         self.assertEqual(out.count("🛑"), 1, out)
         self.assertIn("o cabeçalho não é o do molde", out)
+        # duas colunas trocadas de lugar, com as linhas preenchidas nessa ordem: a mensagem é a do cabeçalho
+        trocado = ("# x\n\n| achado | sev | veredito | rodada | evidência | revisão | dano |\n|---|---|---|---|---|---|---|\n"
+                   "| R1 | LOW | APLICADA | rodada=1 | x | %s | nao |\n| R2 | LOW | APLICADA | rodada=1 | y | %s | nao |\n"
+                   % (PASTA, PASTA))
+        rc, out = self.lint(self.escreve(self.tmp, "LEDGER_REVISAO_Y.md", trocado))
+        self.assertEqual(rc, 2, out)
+        self.assertEqual(out.count("🛑"), 1, out)
+        self.assertIn("LEDGER_REVISAO_Y.md:3 — o cabeçalho não é o do molde", out)
 
     def test_rodada_sem_achados(self):
         rc, out = self.um("| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |\n\nsem achados: rodada=2 %s" % (PASTA, PASTA[:-1] + "2"))

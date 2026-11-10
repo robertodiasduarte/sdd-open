@@ -174,7 +174,7 @@ for ln in (ler(registry) or "").splitlines():
 # ── ledgers ─────────────────────────────────────────────────────────────────────────────────────────
 # Só a tabela cujo cabeçalho começa por `achado`, fora de bloco cercado. Toda linha de dados que não entra na
 # conta vai para "fora da conta" com arquivo:linha e o motivo: nenhuma some em silêncio.
-fora, linhas_ledger, n_ledgers, pastas_citadas = [], [], 0, set()
+fora, linhas_ledger, n_ledgers, pastas_citadas, ditas_sem_achados = [], [], 0, set(), {}
 arquivos = []
 if os.path.isdir(ledgers):
     arquivos = [os.path.join(ledgers, f) for f in sorted(os.listdir(ledgers))
@@ -207,6 +207,7 @@ for arq in arquivos:
             m = SEM_ACHADOS_RE.match(ln)
             if m:
                 pastas_citadas.add(m.group(1))
+                ditas_sem_achados.setdefault(m.group(1), "%s:%d" % (nome_arq, n))
             continue
         c = celulas(ln)
         if not c:
@@ -300,6 +301,11 @@ for d in sorted(os.listdir(pasta) if os.path.isdir(pasta) else []):
     for chave, nome, arq in PAPEIS:
         if arq:
             ids_papel[chave] = ids_do(os.path.join(caminho, arq), so_novo=(chave == "auditor"))
+    if d in ditas_sem_achados:
+        n_ids = sum(len(lista or []) for lista in ids_papel.values())
+        if n_ids:
+            fora.append((ditas_sem_achados[d], "o ledger diz `sem achados` para %s, mas a revisão tem %d achado(s): "
+                                               "eles ficam em sem classificar" % (d, n_ids)))
     bases = {}   # id sem o rótulo → papéis que têm um id com essa base nesta pasta
     for p2, lista in ids_papel.items():
         for x in (lista or []):
@@ -348,7 +354,7 @@ for d in sorted(os.listdir(pasta) if os.path.isdir(pasta) else []):
                     c["dis"] += 1
         ids = ids_papel.get(chave) or []
         c["achados"] += len(ids)
-        aceitos = (rotulo(engine), engine.split(":", 1)[0])
+        aceitos = (rotulo(engine), engine, engine.split(":", 1)[0])   # o rótulo do script, o id cru, a engine base
         consumidos, classificados = {}, set()
         for x in do_ledger:
             if x["usada"]:

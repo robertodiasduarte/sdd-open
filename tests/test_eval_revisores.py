@@ -230,6 +230,22 @@ class Ledgers(Base):
         b = next(ln for ln in linhas(out) if ln[1].endswith("via ProvedorB)"))
         self.assertEqual(b[10], "1 de 2")
 
+    def test_rotulo_escrito_como_o_id_cru_da_engine_tambem_casa(self):
+        rc, out = self.com("| N1@openrouter:qwen/q-plus | HIGH | REBATIDA_EVIDENCIA | rodada=2 | x | nao | %s2 |\n" % P1[:-1])
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(next(ln for ln in linhas(out) if ln[1].endswith("via ProvedorB)"))[10], "1 de 2")
+        self.assertNotIn("rótulo", self.fora(out))
+
+    def test_sem_achados_dito_para_revisao_que_tem_achados_e_avisado(self):
+        led = self.escreve(self.tmp, "LEDGER_REVISAO_X.md", "# x\n\nsem achados: rodada=2 %s2\nsem achados: rodada=7 %s7\n"
+                           % (P1[:-1], P1[:-1]))
+        rc, out = self.er(FX, "--ledgers", led, "--registry", FX / "registry.tsv")
+        self.assertEqual(rc, 0, out)
+        fora = self.fora(out)
+        self.assertIn("LEDGER_REVISAO_X.md:3: o ledger diz `sem achados` para EXTERNAL_REVIEW_20260201-000002, mas a "
+                      "revisão tem 3 achado(s)", fora)
+        self.assertNotIn("EXTERNAL_REVIEW_20260201-000007, mas", fora)   # a 7 não tem achado mesmo
+
     def test_tabela_que_nao_e_o_ledger_e_bloco_cercado_nao_sao_lidos(self):
         led = self.escreve(self.tmp, "LEDGER_REVISAO_X.md",
                            "# x\n\n| Engine | Papel |\n|---|---|\n| claude | revisor |\n\n```markdown\n" + CAB +
