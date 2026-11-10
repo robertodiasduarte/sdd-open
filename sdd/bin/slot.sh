@@ -40,7 +40,7 @@ case "${CHAVE}" in
   smoke.before_push_cmd)  MOMENTO="before_push" ;;
   smoke.after_deploy_cmd) MOMENTO="after_deploy" ;;
   schema.check_cmd)       MOMENTO="schema_check" ;;
-  -h|--help)              sed -n '2,29p' "$0"; exit 64 ;;
+  -h|--help)              sed -n '2,27p' "$0"; exit 64 ;;
   "")                     uso "falta a chave do slot" ;;
   *)                      uso "chave desconhecida: ${CHAVE}" "use uma destas: smoke.before_ok_cmd, smoke.before_push_cmd, smoke.after_deploy_cmd, schema.check_cmd" ;;
 esac
@@ -180,7 +180,8 @@ CORPO="$(bash -c 'eval "__slot_cmd() { $1 \"\$@\"
 printf '%s\n' "${CORPO}" | grep -q '"\$@"' \
   || uso "o comando de ${CHAVE} tem um comentário (#); os arquivos cairiam dentro dele" "tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script"
 # Separador no fim (;, &, |, &&, ||): o "$@" viraria um comando à parte, e o exit do slot seria o dele, não o seu.
-printf '%s\n' "${CORPO}" | grep -Eq '[^|&;[:space:]][[:space:]]+"\$@"$' \
+# (sem âncora no fim da linha: o declare -f põe as redireções, como 2>&1 ou > saida, depois do "$@")
+printf '%s\n' "${CORPO}" | grep -Eq '[^|&;[:space:]][[:space:]]+"\$@"' \
   || uso "o comando de ${CHAVE} termina num separador (;, &, | ou &&); o exit dele se perderia" "tire o separador do fim, ou aponte para um script"
 
 # SHAs: a ref dada que não resolve é erro de chamada; o padrão que não resolve vira variável vazia, com aviso.

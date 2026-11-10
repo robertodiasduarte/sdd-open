@@ -196,29 +196,39 @@ class ConfigEDocs(unittest.TestCase):
 
 
 class SemProjetoPrivado(unittest.TestCase):
-    """AT-011: os arquivos do produto que a F15_SLOTS cria ou altera não citam projeto privado. A lista é fixa
-    porque o gate roda numa cópia sem .git (não há diff para calcular); este arquivo fica de fora porque contém a
-    própria família de termos."""
+    """AT-011: o texto que a F15_SLOTS acrescenta não cita projeto privado. A lista é fixa (os 21 arquivos do diff),
+    porque o gate roda numa cópia sem .git e não há diff para calcular. As isenções são nomeadas: texto anterior
+    a esta frente que usa um termo da família por outro motivo (o Supabase é o caminho provado da migration desde
+    a F3; o deno é um dos formatos de saída de teste desde a F7) e os arquivos de teste que guardam a própria
+    lista de termos."""
 
     ARQUIVOS = ("sdd/bin/slot.sh", "sdd/bin/test-baseline.sh", "sdd/config.example.yaml",
                 ".agents/skills/sdd-release/SKILL.md", ".agents/skills/sdd-release/references/como-falar.md",
                 ".agents/skills/sdd-build/SKILL.md", ".agents/skills/sdd-build/references/aplicar-migration.md",
                 "docs/adaptation-guide.md", "docs/pt-BR/adaptation-guide.md", "docs/cli-conventions.md",
-                "sdd/WORKFLOW_CONTRACTS.yaml", "tests/test_slot.py")
+                "sdd/WORKFLOW_CONTRACTS.yaml", "MANIFEST.txt", "tests/test_slot.py", "tests/test_test_baseline.py",
+                "tests/test_contrato_build_release.py", "tests/test_correcoes_w0.py", "tests/test_f14_textos.py",
+                "tests/test_f14_drive_textos.py", "tests/test_decisoes_lint.py", "tests/test_f13_textos.py",
+                "tests/test_f15_slots_textos.py")
+    # arquivo → termos (em minúsculas) que já estavam nele antes desta frente, pelo motivo da docstring
+    ANTERIORES = {"sdd/bin/test-baseline.sh": {"deno"}, "MANIFEST.txt": {"deno"},
+                  "tests/test_test_baseline.py": {"deno"}, "tests/test_contrato_build_release.py": {"supabase"}}
+    LISTAS_DE_TERMOS = ("tests/test_f13_textos.py", "tests/test_f15_slots_textos.py")
 
     def test_nada_de_projeto_privado(self):
+        self.assertEqual(len(self.ARQUIVOS), 21)
         termo = re.compile(r"supabase|\bdeno\b|wordpress|wp-content|rdd-plataforma|hostinger|rdd/wordpress|rdd-eval|"
                            r"a11y|smoke-release|audita-schema|\bLM-1\d\d\b", re.I)
         for rel in self.ARQUIVOS:
+            if rel in self.LISTAS_DE_TERMOS:
+                continue
             with self.subTest(rel=rel):
                 txt = ler(rel)
-                if rel == ".agents/skills/sdd-build/references/aplicar-migration.md":
-                    # o protocolo de migration já usa o Supabase como caminho provado (F3); só o texto novo conta
-                    txt = entre(txt, "## 2b. Checagem do SQL", "## 3. Prévia")
-                achados = termo.findall(txt)
-                if rel == "sdd/bin/test-baseline.sh":
-                    # o deno é um dos 6 formatos de saída de teste que o script lê desde a F7, não um projeto
-                    achados = [a for a in achados if a.lower() != "deno"]
+                if rel.endswith("aplicar-migration.md"):
+                    # o protocolo já usa o Supabase como caminho provado (F3); o texto novo é a §2b e a linha Checagem
+                    txt = entre(txt, "## 2b. Checagem do SQL", "## 3. Prévia") + "\n".join(
+                        l for l in txt.splitlines() if l.startswith("**Checagem:**"))
+                achados = [a for a in termo.findall(txt) if a.lower() not in self.ANTERIORES.get(rel, set())]
                 self.assertEqual(achados, [], rel)
 
 

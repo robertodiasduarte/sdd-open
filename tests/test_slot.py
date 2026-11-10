@@ -244,6 +244,22 @@ class Cerquilha(Base):
         self.assertEqual(rc, 64, out)
         self.assertFalse((self.r / "registro.txt").exists())
 
+    def test_redirecao_no_fim_roda(self):
+        # revisão rodada 3, R1@claude: o declare -f põe a redireção depois do "$@"; 2>&1, > e < são comandos válidos
+        for redir in ("2>&1", "> saida.txt", "< /dev/null"):
+            with self.subTest(redir=redir):
+                self.smoke("bash falso.sh 0 %s" % redir)
+                rc, out = self.slot("smoke.before_ok_cmd", "a.sql")
+                self.assertEqual(rc, 0, out)
+                self.assertEqual(self.registro()["ARG"], ["a.sql"])
+
+    def test_ajuda_mostra_so_o_cabecalho(self):
+        # revisão rodada 3, R1@glm: o -h não imprime código
+        rc, out = self.slot("--help")
+        self.assertEqual(rc, 64, out)
+        self.assertIn("Exit: 0 OK", out)
+        self.assertNotIn("set -uo pipefail", out)
+
     def test_comando_nao_escapa_da_checagem(self):
         # o bash -n vem antes da checagem de comentário (que define uma função com o comando): um comando que
         # fecha a chave da função não pode rodar nada durante a checagem, e sai 64 com a causa certa
