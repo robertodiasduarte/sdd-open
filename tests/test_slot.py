@@ -190,24 +190,27 @@ class Uso(Base):
                 self.assertFalse((self.r / "registro.txt").exists())
 
     def test_config_que_nao_da_para_rodar_e_64(self):
+        # caso → (config, a causa que a mensagem tem de dizer: o AT-004 pede a causa certa, não só o exit)
         casos = {
-            "aspas yaml sem fechar": 'smoke:\n  before_ok_cmd: "bash falso.sh 0\n',
-            "comeca com pipe": 'smoke:\n  before_ok_cmd: "| cat"\n',
-            "aspa do shell sem fechar": "smoke:\n  before_ok_cmd: \"bash falso.sh 0 'abc\"\n",
-            "comentario do shell": 'smoke:\n  before_ok_cmd: "bash falso.sh 0 # gate"\n',
-            "texto depois das aspas": 'smoke:\n  before_ok_cmd: "bash falso.sh 0" --url x\n',  # ciclo 2, achado 2
+            "aspas yaml sem fechar": ('smoke:\n  before_ok_cmd: "bash falso.sh 0\n', "abre aspas e não fecha"),
+            "comeca com pipe": ('smoke:\n  before_ok_cmd: "| cat"\n', "erro de sintaxe"),
+            "aspa do shell sem fechar": ("smoke:\n  before_ok_cmd: \"bash falso.sh 0 'abc\"\n", "erro de sintaxe"),
+            "comentario do shell": ('smoke:\n  before_ok_cmd: "bash falso.sh 0 # gate"\n', "comentário (#)"),
+            # ciclo 2, achado 2
+            "texto depois das aspas": ('smoke:\n  before_ok_cmd: "bash falso.sh 0" --url x\n', "texto depois das aspas"),
+            "texto depois das aspas simples": ("smoke:\n  before_ok_cmd: 'bash falso.sh 0' x\n", "texto depois das aspas"),
             # revisão rodada 2, R1: com um separador no fim, o exit seria o do "$@" vazio (0), não o do comando
-            "termina em ponto e virgula": 'smoke:\n  before_ok_cmd: "bash falso.sh 2;"\n',
-            "termina em e comercial": 'smoke:\n  before_ok_cmd: "bash falso.sh 2 &"\n',
-            "termina em pipe": 'smoke:\n  before_ok_cmd: "bash falso.sh 2 |"\n',
-            "termina em e logico": 'smoke:\n  before_ok_cmd: "bash falso.sh 2 &&"\n',
-            "texto depois das aspas simples": "smoke:\n  before_ok_cmd: 'bash falso.sh 0' x\n",
+            "termina em ponto e virgula": ('smoke:\n  before_ok_cmd: "bash falso.sh 2;"\n', "separador"),
+            "termina em e comercial": ('smoke:\n  before_ok_cmd: "bash falso.sh 2 &"\n', "separador"),
+            "termina em pipe": ('smoke:\n  before_ok_cmd: "bash falso.sh 2 |"\n', "separador"),
+            "termina em e logico": ('smoke:\n  before_ok_cmd: "bash falso.sh 2 &&"\n', "separador"),
         }
-        for nome, texto in casos.items():
+        for nome, (texto, causa) in casos.items():
             with self.subTest(caso=nome):
                 self.config(texto)
                 rc, out = self.slot("smoke.before_ok_cmd")
                 self.assertEqual(rc, 64, out)
+                self.assertIn(causa, out)
                 self.assertIn("RESULTADO: ERRO DE USO", out)
                 self.assertFalse((self.r / "registro.txt").exists())
 
