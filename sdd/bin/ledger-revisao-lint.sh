@@ -58,6 +58,7 @@ RETRO_RE = re.compile(r"^retroativo: sim$")
 RETRO_QUASE = re.compile(r"^\s*[-*>]*\s*\**retroativo\**\s*:\**\s*sim\b", re.I)
 TESTE_RE = re.compile(r"(?i)\bteste:\s*`?(?:[\w./-]+::[\w.:-]+|(?:[\w]+\.)*test_\w+(?:\.py)?(?:::[\w.:-]+)?|tests/[\w./-]+)")
 SEPARADOR_RE = re.compile(r"^:?-+:?$")
+LINHA_DE_ACHADO = re.compile(r"^[RN]\d+(@|$)")
 CERCA_RE = re.compile(r"^\s*(```|~~~)")
 
 
@@ -88,7 +89,7 @@ for arq in args:   # todos os caminhos são lidos antes: um arquivo ilegível n�
     except (OSError, UnicodeDecodeError):
         uso("não consegui ler %s" % arq)
 
-violacoes, total, limpas, vistos = [], 0, 0, {}
+violacoes, total, limpas, vistos, vazios = [], 0, 0, {}, []
 for arq, texto in textos:
     linhas, cercado, retroativo = texto.split("\n"), False, False
     uteis = []   # (n, linha) fora de bloco cercado
@@ -111,7 +112,7 @@ for arq, texto in textos:
         elif RETRO_QUASE.match(ln):
             violacoes.append("%s:%d — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, "
                              "citação ou maiúscula" % (arq, n))
-    dados, sem_achados, na_tabela = 0, 0, False
+    dados, sem_achados, na_tabela, viu_cabecalho = 0, 0, False, False
     for n, ln in uteis:
         if not re.match(r"^\s*\|", ln):
             na_tabela = False
@@ -128,13 +129,18 @@ for arq, texto in textos:
         if not na_tabela:
             # primeira linha de uma tabela: só é o ledger se o cabeçalho começa por `achado`
             if c[0].strip("*` ").lower() == "achado":
-                na_tabela = "ledger"
+                na_tabela, viu_cabecalho = "ledger", True
                 if [x.strip("*` ").lower() for x in c[:4]] != ["achado", "sev", "veredito", "rodada"] or len(c) != 7:
                     violacoes.append("%s:%d — o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | "
                                      "evidência | dano | revisão |`" % (arq, n))
+                continue
+            if viu_cabecalho and LINHA_DE_ACHADO.match(c[0]):
+                # as linhas de outra rodada, depois de uma linha em branco e sem repetir o cabeçalho, continuam
+                # sendo o ledger: uma linha que começa por um id de achado é conferida, nunca pulada
+                na_tabela = "ledger"
             else:
                 na_tabela = "outra"
-            continue
+                continue
         if na_tabela == "outra" or all(SEPARADOR_RE.match(x) for x in c):
             continue
         dados += 1
@@ -179,13 +185,22 @@ for arq, texto in textos:
         else:
             vistos[chave] = "%s:%d" % (arq, n)
     if not dados and not sem_achados:
-        uso("%s não tem nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde" % arq)
+        vazios.append(arq)
     total += dados
     limpas += sem_achados
 
-if violacoes:
+# as violações saem sempre, mesmo quando outro arquivo não tem nada a conferir
+if violacoes or vazios:
     for v in violacoes:
         print("🛑 " + v, file=sys.stderr)
+    for arq in vazios:
+        print("🛑 %s — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde" % arq,
+              file=sys.stderr)
+if vazios and not violacoes:
+    print("RESULTADO: ERRO DE USO\n→ grave as linhas do ledger pelo molde (sdd/templates/LEDGER_REVISAO_TEMPLATE.md) "
+          "e rode de novo.", file=sys.stderr)
+    sys.exit(64)
+if violacoes:
     print("RESULTADO: VERMELHO\n→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; "
           "critério: sdd/review/CRITERIO_DANO.md) e rode de novo.", file=sys.stderr)
     sys.exit(2)

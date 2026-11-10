@@ -61,6 +61,7 @@ PASTA_RE = re.compile("^" + PASTA + "$")
 SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=\d+[a-z]?\s+(" + PASTA + r")\s*$")
 CUSTO_RE = re.compile(r"^(≈)?\s*US\$\s*([0-9]+(?:[.,][0-9]+)?)(\s*\+\s*\$\?)?$")
 SEPARADOR_RE = re.compile(r"^:?-+:?$")
+LINHA_DE_ACHADO = re.compile(r"^[RN]\d+(@|$)")
 CERCA_RE = re.compile(r"^\s*(```|~~~)")
 
 
@@ -187,7 +188,7 @@ for arq in arquivos:
         fora.append((nome_arq, "ledger ilegível"))
         continue
     n_ledgers += 1
-    cercado, comentario, na_tabela = False, False, False
+    cercado, comentario, na_tabela, viu_cabecalho = False, False, False, False
     for n, ln in enumerate(texto.split("\n"), 1):
         ln = ln.rstrip("\r")
         if comentario:
@@ -211,8 +212,14 @@ for arq in arquivos:
         if not c:
             continue
         if not na_tabela:
-            na_tabela = "ledger" if c[0].strip("*` ").lower() == "achado" else "outra"
-            continue
+            if c[0].strip("*` ").lower() == "achado":
+                na_tabela, viu_cabecalho = "ledger", True
+                continue
+            if viu_cabecalho and LINHA_DE_ACHADO.match(c[0]):
+                na_tabela = "ledger"   # outra rodada, depois de linha em branco, sem repetir o cabeçalho
+            else:
+                na_tabela = "outra"
+                continue
         if na_tabela == "outra" or all(SEPARADOR_RE.match(x) for x in c):
             continue
         onde = "%s:%d" % (nome_arq, n)
@@ -222,6 +229,8 @@ for arq in arquivos:
             fora.append((onde, "veredito `%s` fora da lista" % c[2]))
         elif not PASTA_RE.match(c[6]):
             fora.append((onde, "revisão `%s` não é uma pasta EXTERNAL_REVIEW_*" % c[6]))
+        elif c[5] not in ("sim", "nao", "?"):
+            fora.append((onde, "dano `%s` fora de sim, nao, ?" % c[5]))
         else:
             pastas_citadas.add(c[6])
             linhas_ledger.append({"pasta": c[6], "id": c[0], "veredito": c[2], "dano": c[5], "onde": onde,
@@ -356,6 +365,14 @@ for d in sorted(os.listdir(pasta) if os.path.isdir(pasta) else []):
                         alvo = b
                     else:
                         x["motivo"] = "o rótulo @%s não é o da engine que respondeu como %s (%s)" % (rot, nome, engine)
+                elif not rot:
+                    # o sentido inverso, que o loop também aceita: ledger sem rótulo, arquivo com rótulo. Só casa
+                    # quando um único achado da pasta tem essa base; com dois revisores (R2@a e R2@b) é ambíguo
+                    donos = [y for lista in ids_papel.values() for y in (lista or []) if y.split("@", 1)[0] == b]
+                    if len(donos) == 1 and donos[0] in ids:
+                        alvo = donos[0]
+                    elif len(donos) > 1 and any(y in ids for y in donos):
+                        x["motivo"] = "sem rótulo e ambíguo: a revisão tem %s; copie o id com o @engine" % ", ".join(donos)
             if alvo is None:
                 continue
             x["usada"] = True

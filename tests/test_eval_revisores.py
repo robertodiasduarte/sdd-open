@@ -177,6 +177,33 @@ class Ledgers(Base):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, fora)
 
+    def test_linhas_depois_de_linha_em_branco_entram_na_conta_ou_no_aviso(self):
+        rc, out = self.com("| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s |\n\n"
+                           "| R2 | MED | APLICADA | rodada=1 | outra rodada, sem repetir o cabeçalho | nao | %s |\n\n"
+                           "| R3 | LOW | APLICADA | rodada=1 | sem a marca de dano |\n" % (P1, P1))
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(linhas(out)[0][8], "2 de 9")
+        self.assertIn("LEDGER_REVISAO_X.md:9: linha com 5 célula(s)", self.fora(out))
+
+    def test_dano_fora_da_lista_e_avisado_e_nao_conta(self):
+        rc, out = self.com("| R1 | HIGH | APLICADA | rodada=1 | teste: `test_x` | Sim | %s |\n" % P1)
+        self.assertEqual(rc, 0, out)
+        revisor = linhas(out)[0]
+        self.assertEqual((revisor[8], revisor[9]), ("0 de 9", "0 de 9"))
+        self.assertIn("LEDGER_REVISAO_X.md:5: dano `Sim` fora de sim, nao, ?", self.fora(out))
+
+    def test_ledger_sem_rotulo_casa_com_id_rotulado_quando_nao_ha_ambiguidade(self):
+        p3, p5 = P1[:-1] + "3", P1[:-1] + "5"
+        rc, out = self.com("| R1 | MED | APLICADA | rodada=3 | na rodada 3 só há R1@claude | nao | %s |\n"
+                           "| R2 | HIGH | APLICADA | rodada=5 | na rodada 5 só há R2@claude | nao | %s |\n"
+                           "| R1 | MED | APLICADA | rodada=5 | na rodada 5 há R1@claude e R1@codex | nao | %s |\n"
+                           % (p3, p5, p5))
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(linhas(out)[0][8], "2 de 9")
+        self.assertEqual(next(ln for ln in linhas(out) if ln[1] == "codex (-)")[8], "0 de 1")
+        self.assertIn("LEDGER_REVISAO_X.md:7: achado R1: sem rótulo e ambíguo: a revisão tem R1@claude, R1@codex",
+                      self.fora(out))
+
     def test_linha_sem_barra_no_fim_conta(self):
         rc, out = self.com("| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s\n" % P1)
         self.assertEqual(rc, 0, out)

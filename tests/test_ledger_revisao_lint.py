@@ -124,6 +124,28 @@ class Lint(Sandbox):
         self.assertEqual(rc, 0, out)
         self.assertIn("1 linha(s)", out)
 
+    def test_linhas_depois_de_linha_em_branco_continuam_sendo_o_ledger(self):
+        # Quem grava "depois de cada rodada" separa as rodadas por uma linha em branco, sem repetir o cabeçalho.
+        boa = "| R1 | LOW | APLICADA | rodada=1 | x | nao | %s |" % PASTA
+        rc, out = self.um(boa + "\n\n| R2 | HIGH | APLICADA | rodada=2 | sem a marca de dano |")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("LEDGER_REVISAO_X.md:7 — a linha tem 5 célula(s)", out)
+        rc, out = self.um(boa + "\n\n| R2 | HIGH | APLICADA | rodada=2 | o total somava duas vezes | sim | %s |" % PASTA)
+        self.assertEqual(rc, 2, out)
+        self.assertIn("dano = sim sem `teste: <nome>`", out)
+        rc, out = self.um(boa + "\n\n| N1 | LOW | REBATIDA_ESCOPO | rodada=2 | fora | nao | %s |" % PASTA)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("2 linha(s)", out)
+
+    def test_arquivo_vazio_nao_esconde_as_violacoes_de_outro(self):
+        rc, out = self.lint(FX / "sim-sem-teste.md", FX / "sem-linhas.md")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("sim-sem-teste.md:5 — dano = sim sem `teste: <nome>`", out)
+        self.assertIn("sem-linhas.md — nenhuma linha de dados", out)
+        rc, out = self.um("Sem achados na rodada 2.")   # só a quase-forma, sem nenhuma linha válida
+        self.assertEqual(rc, 2, out)
+        self.assertIn("rodada sem achados se escreve `sem achados: rodada=<N>", out)
+
     def test_comentario_html_nao_e_conferido(self):
         # O molde traz as regras num comentário, com um exemplo de linha e a forma do `sem achados:`.
         topo = "<!--\n  R9 · exemplo\n  sem achados: rodada=<N> EXTERNAL_REVIEW_AAAAMMDD-HHMMSS\n  retroativo: sim\n-->\n\n"
