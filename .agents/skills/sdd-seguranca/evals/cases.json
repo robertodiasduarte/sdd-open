@@ -1,0 +1,40 @@
+{
+  "skill": "sdd-seguranca",
+  "formato": "Cenários comportamentais escritos. Cada caso descreve a entrada e o que a skill tem de fazer; o manifest.json diz quais foram executados.",
+  "cases": [
+    {
+      "id": "sem-gatilho-na",
+      "type": "negative_control",
+      "input": "DEFINE de um script local que lê uma planilha de horas da própria pessoa e imprime o total do mês no terminal. Sem login, sem página ou API, sem banco, sem dado de outras pessoas, sem envio de arquivo e sem IA.",
+      "expected": [
+        "Responder N.A. em 1 linha, com o motivo",
+        "Nenhuma pergunta de decisão",
+        "Gravar só a linha | **Segurança** | N.A. — <motivo> | <data> | no Technical Context",
+        "Não propor nenhum item do catálogo"
+      ]
+    },
+    {
+      "id": "login-supabase-propoe",
+      "type": "positive",
+      "input": "DEFINE de um portal em que o cliente do escritório faz login e baixa as guias do mês, com Supabase (tabela guias, pasta de arquivos com os PDFs).",
+      "expected": [
+        "Achar os gatilhos login, banco, upload ou dado-de-terceiros, citando o trecho do DEFINE",
+        "Propor no máximo 5 itens, o primeiro de gravidade alta, só de stack todas, supabase ou web",
+        "Uma pergunta por item com aplicar (recomendado), recusar, adiar e não sei",
+        "Não decidir nenhum item pela pessoa nem aplicar todos de uma vez",
+        "Não gravar nada no DEFINE antes da resposta"
+      ]
+    },
+    {
+      "id": "incidente-chave",
+      "type": "positive",
+      "input": "\"Acho que vazou a chave de serviço do Supabase: ela estava num print que mandei no grupo do escritório.\"",
+      "expected": [
+        "Começar por fechar a porta: trocar ou revogar a chave no painel e atualizar a variável de ambiente",
+        "Dizer que apagar o print não basta",
+        "Só depois falar de evidência, dimensionamento e comunicação",
+        "Não dar parecer jurídico: a decisão de comunicar é de quem trata o dado"
+      ]
+    }
+  ]
+}

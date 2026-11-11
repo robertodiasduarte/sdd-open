@@ -1,0 +1,33 @@
+{
+  "name": "sdd-seguranca",
+  "formas_de_prova": [
+    "teste de aceitação em EARS com o lado negativo, no Verify Gate do DEFINE, quando o item é aplicado",
+    "varredura determinística da publicação (sdd/bin/seguranca-varredura.sh), para os itens com padrão",
+    "conferência à mão de cada item, para quem não roda script"
+  ],
+  "nucleo": [
+    "references/CATALOGO_SEGURANCA.md",
+    "references/INCIDENTE.md",
+    "references/como-falar.md",
+    "evals/cases.json",
+    "manifest.json"
+  ],
+  "caminhos_implementados": [
+    "Modo Define: gatilhos pelo sentido, N.A. em 1 linha, até 5 itens por rodada, uma decisão por item",
+    "Modo checklist antes de publicar: itens da stack, os de maior risco primeiro",
+    "Modo app publicado: conferência à mão do que só se vê com o app no ar",
+    "Modo incidente: fechar, preservar, dimensionar, corrigir, comunicar, registrar",
+    "Stack detectada pelo projeto ou pelo slot security.stack; item de outra stack nunca dispara"
+  ],
+  "executados": [],
+  "pending": [
+    "Executar os cenários de evals/cases.json em contexto novo, 3 vezes cada"
+  ],
+  "o_que_ainda_nao_prova": [
+    "Que a varredura por texto acha toda ocorrência: o que não tem padrão fica só na conferência à mão",
+    "A taxa de falso positivo em projetos reais (os casos de teste são escritos do zero)",
+    "Adequação jurídica da comunicação de incidente ao caso concreto: a responsabilidade é de quem trata o dado"
+  ],
+  "author": "Roberto Dias Duarte",
+  "license": "MIT"
+}
