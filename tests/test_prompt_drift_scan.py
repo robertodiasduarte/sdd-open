@@ -12,7 +12,7 @@ import stat
 import subprocess
 import unittest
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, SEM_CHMOD, SOU_ROOT, Sandbox
 
 SCRIPT = RAIZ / "sdd/bin/prompt-drift-scan.sh"
 PADRAO = 'prompts:\n  wrapper_pattern: "systemPrompt:"\n'
@@ -320,7 +320,8 @@ class ErroDeUso(Base):
         (self.p / "src").mkdir()
         self.conferir(*self.em_disco("src"), "não é um arquivo")
 
-    @unittest.skipIf(os.geteuid() == 0, "root lê qualquer arquivo")
+    @unittest.skipIf(*SOU_ROOT)
+    @unittest.skipIf(*SEM_CHMOD)
     def test_arquivo_ilegivel(self):
         f = self.arquivo("src/a.py")
         f.chmod(0)
@@ -376,7 +377,8 @@ class ErroDeUso(Base):
         self.slot('\ufeffprompts:\n  wrapper_pattern: "systemPrompt:"\n')
         self.assertEqual(self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n")[0], 2)
 
-    @unittest.skipIf(os.geteuid() == 0, "root lê qualquer arquivo")
+    @unittest.skipIf(*SOU_ROOT)
+    @unittest.skipIf(*SEM_CHMOD)
     def test_config_ilegivel_nao_vira_slot_vazio(self):
         cfg = self.p / "sdd/config.yaml"
         cfg.chmod(0)
@@ -427,7 +429,8 @@ class ErroDeUso(Base):
     def test_opcao_desconhecida(self):
         self.conferir(*self.em_disco("--nada"), "opção desconhecida")
 
-    @unittest.skipIf(os.geteuid() == 0, "root lê qualquer arquivo")
+    @unittest.skipIf(*SOU_ROOT)
+    @unittest.skipIf(*SEM_CHMOD)
     def test_pasta_sdd_sem_permissao_nunca_vira_slot_vazio(self):
         sdd = self.p / "sdd"
         sdd.chmod(0)

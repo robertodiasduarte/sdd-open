@@ -87,7 +87,7 @@ every front:   sdd-new-session
   header that says so; `sync --check` detects when someone edited a copy.
 - **User territory:** `sdd/` (specs, reports, handoffs, playbook, config) is never touched by `sync`.
 
-Works on macOS, Linux and Windows (Git Bash/WSL): bash 3.2, zero zsh, zero symlinks.
+Works on macOS and Linux, tested in CI on every release; on Windows (Git Bash/WSL) it has no automated tests yet. bash 3.2, zero zsh, zero symlinks.
 
 ## Documentation
 

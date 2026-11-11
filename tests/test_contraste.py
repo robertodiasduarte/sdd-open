@@ -5,10 +5,9 @@ Os oráculos foram calculados fora do script, em Python. Exit 0 PASSA · 2 REPRO
 from __future__ import annotations
 
 import subprocess
-import sys
 import unittest
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, MACOS, RAIZ, Sandbox
 
 SCRIPT = RAIZ / "sdd/bin/contraste.sh"
 
@@ -120,7 +119,7 @@ class Locale(Base):
         sonda = subprocess.run(["awk", "BEGIN{printf \"%.1f\", .5}"], env=env, capture_output=True, text=True)
         if sonda.stdout != "0,5":
             # No macOS, o piso que este teste existe para cobrir, pular seria perder o teste em silêncio.
-            self.assertNotEqual(sys.platform, "darwin", "macOS sem pt_BR com vírgula no awk")
+            self.assertFalse(MACOS, "macOS sem pt_BR com vírgula no awk")
             self.skipTest("este sistema não tem pt_BR com vírgula no awk (saída: %r)" % sonda.stdout)
         rc, out, _ = self.medir("#000", "#fff", ".5", env=env)
         self.assertEqual((rc, out.splitlines()[0]), (2, "3.97:1 REPROVA (piso 4.5:1)"))

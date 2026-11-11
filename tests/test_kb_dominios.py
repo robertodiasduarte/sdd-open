@@ -9,7 +9,7 @@ from __future__ import annotations
 import os
 import unittest
 
-from apoio import PYTHON, RAIZ, Sandbox
+from apoio import PYTHON, RAIZ, SEM_CHMOD, SOU_ROOT, Sandbox
 
 LINT = RAIZ / "sdd/bin/kb-dominios.py"
 DEFINE_SKILL = RAIZ / ".agents/skills/sdd-define/SKILL.md"
@@ -150,7 +150,8 @@ class KbDominios(Sandbox):
                 rc, out, err = self.roda([PYTHON, "-B", LINT, *args], self.tmp)
                 self.assertEqual(rc, 64, out + err)
 
-    @unittest.skipIf(hasattr(os, "geteuid") and os.geteuid() == 0, "root lê pasta sem permissão")
+    @unittest.skipIf(*SOU_ROOT)
+    @unittest.skipIf(*SEM_CHMOD)
     def test_sdd_kb_ilegivel_e_1_sem_traceback(self):
         define = self.projeto("fiscal")
         kb = self.tmp / "sdd/kb"
@@ -164,7 +165,8 @@ class KbDominios(Sandbox):
         self.assertIn("RESULTADO: VERMELHO", err)
         self.assertNotIn("Traceback", out + err)
 
-    @unittest.skipIf(hasattr(os, "geteuid") and os.geteuid() == 0, "root lê pasta sem permissão")
+    @unittest.skipIf(*SOU_ROOT)
+    @unittest.skipIf(*SEM_CHMOD)
     def test_dominio_ilegivel_nao_da_traceback(self):
         define = self.projeto("fiscal")
         dom = self.tmp / "sdd/kb/fiscal"

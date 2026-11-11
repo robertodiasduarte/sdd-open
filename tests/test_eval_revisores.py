@@ -14,7 +14,7 @@ import hashlib
 import re
 import shutil
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, SEM_CHMOD, SOU_ROOT, Sandbox
 
 ER = RAIZ / "sdd/bin/eval-revisores.sh"
 FX = RAIZ / "sdd/fixtures/revisao/custo"
@@ -550,9 +550,9 @@ class SemDadosEUso(Base):
                 self.assertIn("RESULTADO: PAROU\n→ ", out)
 
     def test_pasta_sem_permissao_de_leitura_e_64_sem_traceback(self):
-        import os
-        if os.geteuid() == 0:
-            self.skipTest("root lê qualquer pasta")
+        for pulo in (SOU_ROOT, SEM_CHMOD):
+            if pulo[0]:
+                self.skipTest(pulo[1])
         fechada = self.tmp / "fechada"
         fechada.mkdir()
         fechada.chmod(0)

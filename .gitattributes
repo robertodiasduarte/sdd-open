@@ -1,3 +1,6 @@
+# F16: fim de linha LF em todo checkout, inclusive no Windows com core.autocrlf=true (o padrão do instalador
+# do Git): um script bash com CRLF falha com $'\r': command not found. As linhas -text abaixo continuam valendo.
+* text=auto eol=lf
 # O SHA-256 do catálogo de fontes confere os bytes: um checkout com core.autocrlf não pode trocar o fim de linha.
 .agents/skills/sdd-kb/assets/example-kb-normativo/fontes/** -text
 # O teste compara o SHA-256 do lint e do molde com os do pacote de origem: o fim de linha não pode mudar no checkout.

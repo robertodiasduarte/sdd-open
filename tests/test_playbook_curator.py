@@ -9,7 +9,7 @@ import shutil
 import unittest
 from pathlib import Path
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, SEM_CHMOD, SOU_ROOT, Sandbox
 
 CURATOR = RAIZ / "sdd/bin/playbook-curator.sh"
 LINT = RAIZ / "sdd/bin/playbook-lint.sh"
@@ -435,7 +435,8 @@ class Desde(Base):
 class FalhaNuncaENada(Base):
     """R1@claude e R2@codex da rodada 1: exceção não tratada saía 1, o código de "leu tudo e não achou nada"."""
 
-    @unittest.skipIf(os.geteuid() == 0, "root lê qualquer arquivo")
+    @unittest.skipIf(*SOU_ROOT)
+    @unittest.skipIf(*SEM_CHMOD)
     def test_playbook_sem_permissao_sai_2_sem_traceback(self):
         os.chmod(str(self.pb), 0)
         for args in (["--colher", self.dir, self.pb], ["--aplicar", self.escreve(self.tmp, "d.txt", "LM-001 ajudou+1\n"), self.pb]):
@@ -447,7 +448,8 @@ class FalhaNuncaENada(Base):
                 self.assertIn('não é \"0 deltas\"'.replace('\\', ''), err)
                 self.assertNotIn("NADA A COLHER", out)
 
-    @unittest.skipIf(os.geteuid() == 0, "root lê qualquer arquivo")
+    @unittest.skipIf(*SOU_ROOT)
+    @unittest.skipIf(*SEM_CHMOD)
     def test_documento_sem_permissao_tambem(self):
         d = self.doc("AVAL-1.log", "❌ LM-001\n")
         os.chmod(str(d), 0)

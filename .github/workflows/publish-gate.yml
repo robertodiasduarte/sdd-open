@@ -187,3 +187,48 @@ jobs:
         env:
           SDD_TEST_BASH: /bin/bash
         run: /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+
+  # F16: o caso real do aluno no Windows é o Git Bash com o Python nativo (o WSL é Linux por dentro, e o
+  # Ubuntu acima já o cobre). Informativo até o Roberto decidir o piso: fica FORA do `needs:` do job
+  # `release`, então um vermelho aqui aparece no run sem segurar a Release (sem continue-on-error).
+  testes-windows:
+    name: Testes no Windows (Git Bash + Python nativo, só leitura)
+    runs-on: windows-latest
+    timeout-minutes: 90   # F16: a 1ª medição diz o tempo real; o teto é revisto antes da tag
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+
+      - name: Install gitleaks (windows)
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          curl -fsSL -o "$RUNNER_TEMP/gitleaks.zip" \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_windows_x64.zip
+          python -m zipfile -e "$RUNNER_TEMP/gitleaks.zip" "$RUNNER_TEMP/bin"
+          "$RUNNER_TEMP/bin/gitleaks.exe" version
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+      # Afirmado, não só impresso: o Python é o nativo (os.name == nt) e o bash dos testes é o do Git,
+      # nunca o bash.exe do WSL que o PATH do Windows pode achar antes.
+      - name: Git Bash and native Python (asserted)
+        run: |
+          command -v bash
+          bash -c 'echo "bash $BASH_VERSION"; uname -s; case "$(uname -s)" in MINGW*|MSYS*) ;; *) exit 1 ;; esac'
+          python -c 'import os, sys; print(sys.version, os.name); sys.exit(os.name != "nt")'
+          echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"
+
+      - name: Run publish gate
+        env:
+          PUBLISH_GATE_MODE: ci
+        run: bash scripts/publish-gate.sh "$(pwd)"
+
+      - name: Unit tests (Git Bash + native Python)
+        run: python -B -m unittest discover -s tests -p 'test_*.py'

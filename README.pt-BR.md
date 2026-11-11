@@ -88,7 +88,7 @@ a cada frente:     sdd-new-session
 - **Território do usuário:** `sdd/` (specs, relatórios, fichas, playbook, config) nunca é
   tocado pelo `sync`.
 
-Funciona em macOS, Linux e Windows (Git Bash/WSL): bash 3.2, zero zsh, zero symlink.
+Funciona em macOS e Linux, testado no CI a cada release; no Windows (Git Bash/WSL), ainda sem teste automático. bash 3.2, zero zsh, zero symlink.
 
 ## Documentação
 

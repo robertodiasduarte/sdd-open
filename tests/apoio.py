@@ -27,6 +27,30 @@ BASH = os.environ.get("SDD_TEST_BASH") or shutil.which("bash") or "bash"
 PYTHON = sys.executable  # o mesmo interpretador da suíte: rodar com o 3.9 testa os linters no 3.9
 
 
+def _symlink_ok() -> bool:
+    """Tenta criar um link num temporário: no Windows, depende do modo de desenvolvedor."""
+    d = tempfile.mkdtemp(prefix="sdd-open-link-")
+    try:
+        os.symlink(os.path.join(d, "alvo"), os.path.join(d, "link"))
+        return True
+    except (OSError, NotImplementedError, AttributeError):
+        return False
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
+# F16: pulo por recurso que o sistema não tem. Um motivo por recurso, sempre daqui: tests/test_windows.py
+# reprova skipIf/skipUnless de plataforma escrito fora deste arquivo. Uso: @unittest.skipIf(*SEM_FCNTL).
+WINDOWS = os.name == "nt"
+MACOS = sys.platform == "darwin"   # para o teste que NÃO pode ser pulado no piso (tests/test_contraste.py)
+SEM_SYMLINK = (not _symlink_ok(), "link simbólico: este sistema não deixa criar (no Windows, exige o modo de desenvolvedor)")
+SEM_FCNTL = (WINDOWS, "fcntl: o Windows não tem a trava POSIX")
+SEM_CHMOD = (WINDOWS, "chmod: no Windows o bit de execução e a permissão de leitura não valem")
+SEM_SINAL = (WINDOWS, "sinal POSIX: o Windows não entrega SIGTERM nem SIGKILL a um grupo de processos")
+SEM_POSIX_UID = (not hasattr(os, "geteuid"), "os.geteuid: só existe em sistema POSIX")
+SOU_ROOT = (hasattr(os, "geteuid") and os.geteuid() == 0, "root lê qualquer arquivo, com ou sem permissão")
+
+
 class Sandbox(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp(prefix="sdd-open-")).resolve()

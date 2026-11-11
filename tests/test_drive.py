@@ -10,7 +10,7 @@ import stat
 import time
 import unittest
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, SEM_FCNTL, SEM_SYMLINK, Sandbox
 
 D = "sdd/features/DEFINE_F.md"
 ESTADO = "sdd/reports/progress/DRIVE_F.json"
@@ -1250,7 +1250,7 @@ class EstadoSoUmPorVez(Base):
         self.assertEqual(dono.stdout.readline().strip(), b"pego")
         return dono
 
-    @unittest.skipIf(os.name == "nt", "fcntl")
+    @unittest.skipIf(*SEM_FCNTL)
     def test_trava_de_dono_vivo_nao_vence_pela_idade(self):
         # R1 do Codex, rodada 5: a trava vencia aos 60 s com o dono vivo, e o recibo de um apagava o do outro
         import subprocess
@@ -1272,7 +1272,7 @@ class EstadoSoUmPorVez(Base):
         self.assertEqual(recibo.returncode, 0, out)
         self.assertEqual(self.estado()["recibos"], ["esperou"])
 
-    @unittest.skipIf(os.name == "nt", "link simbólico e trava que fica no caminho (R1 do Codex, rodada 6)")
+    @unittest.skipIf(*SEM_SYMLINK)   # link no lugar da trava (R1 do Codex, rodada 6)
     def test_trava_que_nao_abre_sai_2_sem_laco(self):
         # R3 de Claude, rodada 5: o OSError da trava abandonada voltava ao laço sem espera e sem limite
         self.drive("iniciar", D)
@@ -1284,7 +1284,7 @@ class EstadoSoUmPorVez(Base):
         self.assertEqual(rc, 2, out + err)
         self.assertIn("apague sdd/reports/progress/DRIVE_F.estado.lock", err)
 
-    @unittest.skipIf(os.name == "nt", "link simbólico")
+    @unittest.skipIf(*SEM_SYMLINK)
     def test_trava_que_e_link_nao_cria_arquivo_fora(self):
         # R1 de Claude, rodada 6: o link para uma pasta que existe criava o alvo fora do repositório
         self.drive("iniciar", D)

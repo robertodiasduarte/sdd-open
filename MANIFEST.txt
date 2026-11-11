@@ -510,3 +510,4 @@ tests/test_test_baseline.py
 tests/test_validate_reverse.py
 tests/test_verify_gate.py
 tests/test_verify_gate_trace.py
+tests/test_windows.py

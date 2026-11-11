@@ -132,6 +132,53 @@ class Release(unittest.TestCase):
                 self.assertEqual(set(usos), {CHECKOUT_V5.split("uses: ")[-1]})
 
 
+FRASES_WINDOWS = {
+    # arquivo → (trecho da frase de Windows, o que ela diz enquanto o piso não foi decidido)
+    "README.md": ("on Windows (Git Bash/WSL)", "no automated tests yet"),
+    "README.pt-BR.md": ("no Windows (Git Bash/WSL)", "ainda sem teste automático"),
+    "docs/quickstart.md": ("On Windows, use Git Bash or WSL", "no automated tests on Windows yet"),
+    "docs/pt-BR/quickstart.md": ("No Windows, use Git Bash ou WSL", "ainda sem teste automático no Windows"),
+}
+
+
+class Windows(unittest.TestCase):
+    """F16 (AT-007): o caso real do aluno no Windows (Git Bash + Python nativo) roda nos dois workflows, e o
+    README e o quickstart dizem exatamente o que o workflow prova."""
+
+    def test_job_windows_nos_dois_workflows(self):
+        for texto, nome in ((RELEASE, "release.yml"), (GATE, "publish-gate.yml")):
+            with self.subTest(workflow=nome):
+                bloco = job(texto, "testes-windows")
+                self.assertIn("    runs-on: windows-latest\n", bloco)
+                self.assertRegex(bloco, r"(?m)^    defaults:\n      run:\n        shell: bash$")
+                self.assertRegex(bloco, r"(?m)^    timeout-minutes: \d+")
+                self.assertIn("actions/setup-python@", bloco)
+                self.assertIn("gitleaks_8.30.1_windows_x64.zip", bloco)
+                self.assertIn("sys.exit(os.name != \"nt\")", bloco)   # o Python é o nativo, afirmado
+                self.assertIn('echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"', bloco)
+                self.assertIn('run: bash scripts/publish-gate.sh "$(pwd)"', bloco)
+                self.assertIn("PUBLISH_GATE_MODE: ci", bloco)
+                self.assertIn("run: python -B -m unittest discover -s tests -p 'test_*.py'", bloco)
+                self.assertNotIn("contents: write", bloco)
+                self.assertNotIn("if:", sem_comentarios(bloco))
+                self.assertLess(bloco.index("SDD_TEST_BASH="), bloco.index("unittest discover"))
+
+    def test_frases_dizem_o_que_o_workflow_prova(self):
+        piso = "testes-windows" in re.search(r"(?m)^    needs: (.*)$", job(RELEASE, "release")).group(1)
+        for rel, (trecho, sem_teste) in FRASES_WINDOWS.items():
+            texto = (RAIZ / rel).read_text(encoding="utf-8")
+            with self.subTest(arquivo=rel, piso_decidido=piso):
+                self.assertIn(trecho, texto)
+                if piso:
+                    self.assertNotIn(sem_teste, texto)
+                else:
+                    self.assertIn(sem_teste, texto)
+        # o README não pode afirmar Windows ao lado de macOS e Linux enquanto o job não segura a Release
+        if not piso:
+            self.assertNotIn("Works on macOS, Linux and Windows", (RAIZ / "README.md").read_text(encoding="utf-8"))
+            self.assertNotIn("Funciona em macOS, Linux e Windows", (RAIZ / "README.pt-BR.md").read_text(encoding="utf-8"))
+
+
 def varredura(texto: str) -> str:
     """O programa Python do passo de integridade das skills, como está no workflow."""
     bloco = texto.split("- name: " + VARREDURA, 1)[1]
