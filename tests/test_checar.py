@@ -142,7 +142,7 @@ class Base(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def git(self, *args: str) -> str:
-        return subprocess.run(["git", *args], cwd=self.raiz, check=True, capture_output=True, text=True).stdout
+        return subprocess.run(["git", *args], cwd=self.raiz, check=True, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
 
     def escreve(self, nome: str, conteudo: str | bytes) -> None:
         p = self.raiz / nome
@@ -172,7 +172,7 @@ class Base(unittest.TestCase):
         for k in [k for k, v in e.items() if v is None]:
             del e[k]
         t0 = time.monotonic()
-        r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.raiz, capture_output=True, text=True,
+        r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.raiz, capture_output=True, text=True, encoding="utf-8", errors="replace",
                            env=e, stdin=subprocess.DEVNULL, timeout=60)
         return r.returncode, r.stdout, time.monotonic() - t0
 
@@ -573,7 +573,7 @@ class TestOndeEstou(unittest.TestCase):
                "GIT_CONFIG_GLOBAL": str(self.global_vazio), "GIT_CONFIG_NOSYSTEM": "1",
                "SDD_CHECAR_GITHUB_API": "http://127.0.0.1:9", "SDD_CHECAR_GH": str(self.gh_stub),
                "GH_STUB_LOG": str(self.tmp / "gh.log")}
-        r = subprocess.run([BASH, str(script), *args], cwd=pasta, capture_output=True, text=True,
+        r = subprocess.run([BASH, str(script), *args], cwd=pasta, capture_output=True, text=True, encoding="utf-8", errors="replace",
                            env=env, stdin=subprocess.DEVNULL, timeout=60)
         return r.returncode, r.stdout
 
@@ -942,7 +942,7 @@ class TestEditor(Base):
         fora.mkdir()
         p = self.tmp / "editores"
         self.exe(p, "subl")
-        r = subprocess.run([BASH, str(SCRIPT), "--editor"], cwd=fora, capture_output=True, text=True,
+        r = subprocess.run([BASH, str(SCRIPT), "--editor"], cwd=fora, capture_output=True, text=True, encoding="utf-8", errors="replace",
                            env={**os.environ, "SDD_CHECAR_EDITOR_PATH": str(p), "GIT_CEILING_DIRECTORIES": str(self.tmp)},
                            stdin=subprocess.DEVNULL, timeout=60)
         self.assertEqual((r.returncode, r.stdout), (0, "subl\n"))

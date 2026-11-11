@@ -66,7 +66,7 @@ class Base(unittest.TestCase):
         env = {**os.environ, "HOME": str(self.home), "GIT_CEILING_DIRECTORIES": str(self.tmp),
                "GIT_CONFIG_GLOBAL": str(self.global_vazio), "GIT_CONFIG_NOSYSTEM": "1",
                "SDD_CHECAR_GH": str(self.gh_stub), **extra}
-        r = subprocess.run([BASH, str(SCRIPT)], cwd=pasta or self.raiz, capture_output=True, text=True,
+        r = subprocess.run([BASH, str(SCRIPT)], cwd=pasta or self.raiz, capture_output=True, text=True, encoding="utf-8", errors="replace",
                            env=env, stdin=subprocess.DEVNULL, timeout=60)
         return r.returncode, r.stdout
 
@@ -250,7 +250,7 @@ class TestAchados(Base):
         env = {**os.environ, "HOME": str(self.home), "GIT_CEILING_DIRECTORIES": str(self.tmp),
                "GIT_CONFIG_GLOBAL": str(self.global_vazio), "GIT_CONFIG_NOSYSTEM": "1",
                "PATH": f"{bin_}{os.pathsep}{os.environ['PATH']}"}
-        r = subprocess.run([BASH, str(SCRIPT)], cwd=self.raiz, capture_output=True, text=True, env=env,
+        r = subprocess.run([BASH, str(SCRIPT)], cwd=self.raiz, capture_output=True, text=True, encoding="utf-8", errors="replace", env=env,
                            stdin=subprocess.DEVNULL, timeout=60)
         self.assertEqual(r.returncode, 1, r.stdout)
         self.assertNotIn("Nada sensível", r.stdout)

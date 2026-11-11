@@ -109,7 +109,7 @@ Ao usuário, mostre só a forma do shell em uso. Os comandos `git` e `gh` são i
   precisar do programa do GitHub para o terminal (gh) e de entrar na sua conta nele. Quer instalar agora,
   enquanto eu confiro o resto?"*
 
-  **Sua decisão** — **Instalo o programa do GitHub agora ou depois?**
+  **Sua decisão** — [auto · de rotina] **Instalo o programa do GitHub agora ou depois?**
   - **instalar agora** (recomendado) — eu mostro os passos do seu sistema (tabela abaixo) e sigo conferindo o
     projeto enquanto você instala; quando terminar, me avise e eu confiro de novo.
   - **depois** — eu sigo, e paro só na publicação (Passo 6), com os mesmos passos.

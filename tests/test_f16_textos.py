@@ -78,7 +78,7 @@ class IniciarRepo(unittest.TestCase):
     def test_passo_0_avisa_do_gh_cedo_sem_parar(self):
         passo0 = skill("sdd-iniciar-repo").split("## Passo 0", 1)[1].split("## Passo 1", 1)[0]
         for termo in ("`gh --version` falha, ou `gh auth status` diz que não há conta logada", "**não pare**",
-                      "**Instalo o programa do GitHub agora ou depois?**", "**instalar agora** (recomendado)",
+                      "[auto · de rotina] **Instalo o programa do GitHub agora ou depois?**", "**instalar agora** (recomendado)",
                       "**depois** — eu sigo, e paro só na publicação (Passo 6)", "**não sei**", "<!-- INSTALAR-INICIO -->"):
             with self.subTest(termo=termo):
                 self.assertIn(termo, passo0)
