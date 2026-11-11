@@ -596,3 +596,86 @@ class Hooks(Sandbox):
         self.git(self.p, "switch", "-q", "-c", "sdd-open-init")
         rc, out, err = self.roda(["git", "commit", "-q", "-m", "init"], self.p)
         self.assertEqual(rc, 0, out + err)
+
+
+class SegurancaNoAgents(Sandbox):
+    """F18/F20 (AT-007): o bloco do AGENTS.md traz as regras de maior risco da stack do projeto e o ponteiro."""
+
+    INICIO = "### Segurança ao construir"
+    FIM = "Agentes preparados neste projeto:"
+
+    def bloco(self, p) -> str:
+        texto = (p / "AGENTS.md").read_text(encoding="utf-8")
+        return texto[texto.index(self.INICIO):texto.index(self.FIM)]
+
+    def init(self, p, cli=CLI) -> tuple[int, str]:
+        rc, out, err = self.roda([BASH, cli, "init", "--yes", "--vendors", "codex"], p)
+        return rc, out + err
+
+    def regras(self, bloco: str) -> list:
+        return [ln for ln in bloco.splitlines() if ln.startswith("- ")]
+
+    def test_com_supabase_as_5_regras_e_o_ponteiro(self):
+        p = self.repo("app")
+        self.escreve(p, "supabase/config.toml", "")
+        self.escreve(p, "package.json", "{}\n")
+        rc, out = self.init(p)
+        self.assertEqual(rc, 0, out)
+        b = self.bloco(p)
+        self.assertEqual(len(self.regras(b)), 6, b)
+        self.assertIn("RLS ligada", b)
+        self.assertIn("seguranca-varredura.sh --regras", self.regras(b)[-1])
+        self.assertNotIn("regras de segurança da stack fora", out)
+
+    def test_sem_stack_so_a_regra_de_todas_e_o_ponteiro(self):
+        p = self.repo("cli")
+        rc, out = self.init(p)
+        self.assertEqual(rc, 0, out)
+        b = self.bloco(p)
+        self.assertEqual(len(self.regras(b)), 2, b)
+        self.assertNotIn("RLS", b)
+        self.assertIn("Nenhuma chave secreta", b)
+
+    def test_o_acrescimo_cabe_em_2_kb(self):
+        p = self.repo("app")
+        self.escreve(p, "supabase/config.toml", "")
+        self.escreve(p, "package.json", "{}\n")
+        self.escreve(p, "vercel.json", "{}\n")
+        self.init(p)
+        self.assertLessEqual(len(self.bloco(p).encode("utf-8")), 2048)
+
+    def test_stack_nova_deixa_o_bloco_divergente_e_o_sync_refaz(self):
+        p = self.repo("app")
+        self.init(p)
+        self.commit(p, "init")
+        self.escreve(p, "supabase/config.toml", "")
+        rc, out, err = self.roda([BASH, CLI, "sync", "--check", "--vendors", "codex"], p)
+        self.assertEqual(rc, 1, out + err)
+        self.assertIn("AGENTS.md (bloco sdd-open)", out + err)
+        rc, out, err = self.roda([BASH, CLI, "sync", "--yes", "--vendors", "codex"], p)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("RLS ligada", self.bloco(p))
+        rc, out, err = self.roda([BASH, CLI, "sync", "--check", "--vendors", "codex"], p)
+        self.assertEqual(rc, 0, out + err)
+
+    def test_sem_o_catalogo_fica_o_ponteiro_e_o_aviso(self):
+        pacote = self.tmp / "pacote"
+        shutil.copytree(str(RAIZ), str(pacote), ignore=shutil.ignore_patterns(".git", "tests", "__pycache__"))
+        (pacote / ".agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md").unlink()
+        p = self.repo("app")
+        self.escreve(p, "supabase/config.toml", "")
+        rc, out = self.init(p, pacote / "bin/sdd-open.sh")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("AGENTS.md: regras de segurança da stack fora (o catálogo da sdd-seguranca não está no pacote)", out)
+        regras = self.regras(self.bloco(p))
+        self.assertEqual(len(regras), 1, regras)
+        self.assertIn("seguranca-varredura.sh --regras", regras[0])
+
+    def test_o_ponteiro_e_o_mesmo_nas_duas_copias(self):
+        # LM-005: o init precisa do ponteiro quando o leitor do catálogo falha; as duas cópias não podem divergir.
+        sh = (RAIZ / "bin/sdd-open.sh").read_text(encoding="utf-8")
+        py = (RAIZ / "sdd/bin/seguranca-varredura.sh").read_text(encoding="utf-8")
+        no_init = re.search(r"^SEG_PONTEIRO='(.*)'$", sh, re.M).group(1)
+        partes = re.search(r'^PONTEIRO = \((.*?)\)$', py, re.M | re.S).group(1)
+        no_script = "".join(re.findall(r'"((?:[^"\\]|\\.)*)"', partes))
+        self.assertEqual(no_init, no_script)

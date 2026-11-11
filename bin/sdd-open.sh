@@ -408,8 +408,25 @@ PERFIL
 }
 
 CORPO_AGENTS="$(mktemp)"; trap 'rm -f "${CORPO_AGENTS}"' EXIT
+# F18/F20: a linha {{SEGURANCA}} do template vira as regras de maior risco da stack do projeto, lidas do catálogo do
+# PACOTE pelo único leitor dele (seguranca-varredura.sh --agents), mais o ponteiro para a sdd-seguranca. Sem Python,
+# sem o catálogo ou com o leitor falhando, fica só o ponteiro, e o ⚠️ diz por quê (o caminho reserva nunca é calado).
+SEG_PONTEIRO='- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de segurança da stack deste projeto; a skill `sdd-seguranca` explica cada uma, tem a lista de conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).'
 gerar_corpo_agents() {
-  sed -e "s|{{VENDORS}}|$(printf '%s' "${VENDORS}" | sed 's/^ *//; s/ /, /g')|g" "${PKG}/AGENTS.md.tmpl" > "${CORPO_AGENTS}"
+  local regras motivo="" cat_pkg="${PKG}/.agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md"
+  regras="$(mktemp)"
+  if [ ! -f "${cat_pkg}" ]; then motivo="o catálogo da sdd-seguranca não está no pacote"
+  elif ! sdd_python_pronto 2>/dev/null; then motivo="sem Python 3.9 para ler o catálogo"
+  elif ! bash "${PKG}/sdd/bin/seguranca-varredura.sh" --agents --raiz "${ROOT}" --catalogo "${cat_pkg}" > "${regras}" 2>/dev/null \
+       || ! grep -q . "${regras}"; then motivo="o leitor do catálogo falhou"
+  fi
+  if [ -n "${motivo}" ]; then
+    printf '%s\n' "${SEG_PONTEIRO}" > "${regras}"
+    warn "AGENTS.md: regras de segurança da stack fora (${motivo}) — o ponteiro para a sdd-seguranca ficou"
+  fi
+  sed -e "s|{{VENDORS}}|$(printf '%s' "${VENDORS}" | sed 's/^ *//; s/ /, /g')|g" \
+      -e '/^{{SEGURANCA}}$/{' -e "r ${regras}" -e 'd' -e '}' "${PKG}/AGENTS.md.tmpl" > "${CORPO_AGENTS}"
+  rm -f "${regras}"
 }
 
 agents_md_checar() { # valida marcadores sem escrever (mesmas regras do merge: linha inteira, 1 par, ordem)

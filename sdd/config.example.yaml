@@ -108,6 +108,15 @@ flow:
 drive:
   max_rounds: 3
 
+# Segurança do app (skill sdd-seguranca e sdd/bin/seguranca-varredura.sh). stack: vazio = detectar pelo projeto
+# (pasta supabase/ ou @supabase/ no package.json ⇒ supabase; vercel.json, .vercel/ ou vercel no package.json ⇒ vercel;
+# package.json ou .html ⇒ web); ou a lista por vírgula de supabase, vercel e web; "nenhuma" = só os itens que valem
+# para qualquer stack. Item de outra stack nunca dispara. max_warnings: avisos que a varredura mostra na tela (os mais
+# graves); a lista inteira vai para o arquivo de --saida. Inteiro >= 1; vazio = 5.
+security:
+  stack: ""
+  max_warnings: 5
+
 # Preenchido pelo sdd-open (`init`): agentes para os quais os adaptadores são gerados.
 vendors: ""
 # Editor e pasta de worktrees são usados pela skill de nova sessão (sdd-new-session).

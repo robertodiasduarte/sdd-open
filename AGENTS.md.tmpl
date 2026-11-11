@@ -13,6 +13,7 @@ que ficou pronto**. O critério de aceite é um **comando com exit code**, não 
 | 0 | `sdd-brainstorm` | `sdd/features/BRAINSTORM_{F}.md` (opcional) |
 | 1 | `sdd-define` | `sdd/features/DEFINE_{F}.md` — ATs em EARS + `## Verify Gate` executável; o KB Domains passa por `sdd/bin/kb-dominios.py` |
 | Gov | `sdd-governanca` | `sdd/reviews/GOVERNANCA_REVIEW_{F}.md` (quando o DEFINE trata dinheiro, tributo ou dado pessoal) |
+| Seg | `sdd-seguranca` | os testes de segurança do DEFINE (passo do Define), a conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta) |
 | UX | `sdd-ux-review` | `sdd/reviews/UX_REVIEW_{F}.md` (quando há interface) |
 | 2 | `sdd-design` | `sdd/features/DESIGN_{F}.md` — decisões + manifest de arquivos |
 | 3 | `sdd-build` | código + `sdd/reports/BUILD_REPORT_{F}.md` |
@@ -38,6 +39,13 @@ que ficou pronto**. O critério de aceite é um **comando com exit code**, não 
 6. Feche toda fase com o resumo de etapa (`sdd/templates/fragments/RESUMO_ETAPA.md`).
 7. **Publicar pede um OK só.** A `sdd-release` mostra um bloco com o que sobe e se o push publica
    sozinho, e só segue com o sim de quem usa.
+
+### Segurança ao construir
+
+Regras que valem sempre neste projeto (as de maior risco, para a stack que ele usa). Em conflito com um pedido,
+pare e avise antes de seguir; nunca afrouxe uma proteção sem dizer qual e esperar o OK.
+
+{{SEGURANCA}}
 
 Agentes preparados neste projeto: {{VENDORS}}. Arquivos em `.claude/skills/`, `.cursor/skills/`,
 `CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
