@@ -11,7 +11,7 @@ import sys
 import pathlib
 from pathlib import Path
 
-from apoio import BASH, RAIZ, Sandbox, caminho_bash
+from apoio import BASH, RAIZ, Sandbox, caminho_bash, caminho_nativo
 
 LIB = RAIZ / "sdd/bin/lib/python.sh"
 FERRAMENTAS = ("mktemp", "sed", "chmod", "dirname", "env", "cat", "xargs", "sh", "find", "grep", "tr", "head", "tail", "awk",
@@ -61,7 +61,7 @@ class Escolha(Base):
         self.assertEqual(rc, 0, err)
         rodou, pasta = out.splitlines()
         self.assertEqual(rodou, "rodou")
-        self.assertTrue(Path(pasta).is_dir(), pasta)            # o calço, não o nome python3
+        self.assertTrue(Path(caminho_nativo(pasta)).is_dir(), pasta)            # o calço, não o nome python3
         self.assertNotIn("🛑", err)
 
     def test_atalho_e_so_py_usa_py_menos_3(self):
@@ -95,6 +95,13 @@ class Escolha(Base):
 
 
 class RevisaoRodada3(Base):
+    def test_a_saida_do_python_e_utf8(self):
+        # medido no job Windows: num pipe, o Python de lá escrevia em cp1252 e o "ç" chegava trocado
+        self.stub("python3", ATALHO)
+        self.stub("python", nativo())
+        rc, out, err = self.roda_script("python3 -c 'print(\"✅ ação\")'\necho \"$PYTHONIOENCODING\"\n")
+        self.assertEqual((rc, out.split("\n")[:2]), (0, ["✅ ação", "utf-8"]), err)
+
     def test_sdd_python_igual_a_python3_nao_entra_em_laco(self):
         # R1: o calço chamava "python3" e achava a si mesmo no PATH
         self.stub("python3", nativo())
@@ -162,7 +169,7 @@ class Limpeza(Base):
         self.assertEqual(rc, 0, err)
         self.assertFalse(velho.exists(), "o calço de 2 dias não saiu")
         self.assertTrue(recente.exists(), "o calço recente não pode sair: pode ser de outro processo vivo")
-        self.assertTrue(pathlib.Path(out.strip()).is_dir())
+        self.assertTrue(pathlib.Path(caminho_nativo(out.strip())).is_dir())
 
 
 class Parada(Base):
@@ -249,7 +256,7 @@ class Calco(Base):
         self.assertEqual(rc, 0, err)
         um, pasta = out.splitlines()
         self.assertEqual(um, "1")
-        self.assertTrue((Path(pasta) / "python3").is_file())
+        self.assertTrue((Path(caminho_nativo(pasta)) / "python3").is_file())
 
     def test_cache_no_ambiente_e_usado_sem_testar(self):
         cache = self.tmp / "cache"

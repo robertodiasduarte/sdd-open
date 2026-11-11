@@ -59,6 +59,13 @@ def caminho_bash(p) -> str:
     return s
 
 
+def caminho_nativo(s: str) -> str:
+    """O contrário de caminho_bash: no Windows, /c/x/y volta a ser C:\\x\\y para o Python abrir."""
+    if WINDOWS and len(s) > 2 and s[0] == "/" and s[2] == "/" and s[1].isalpha():
+        return s[1].upper() + ":" + s[2:].replace("/", "\\")
+    return s
+
+
 SOU_ROOT = (hasattr(os, "geteuid") and os.geteuid() == 0, "root lê qualquer arquivo, com ou sem permissão")
 
 

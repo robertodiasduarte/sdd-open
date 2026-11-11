@@ -15,6 +15,7 @@
 #     um Python que existe e não roda (no Windows, o atalho da Microsoft Store, que sai 9009); um Python mais
 #     velho que o 3.9; ou o calço que não pôde ser criado.
 # SDD_PYTHON_RESOLVIDO (python3, ou a pasta do calço) vai para o ambiente: os processos filhos não testam de novo.
+# PYTHONIOENCODING=utf-8 também (se ainda não definido): no Windows, a saída do Python num pipe não seria UTF-8.
 # ⚠️ bash 3.2.
 
 SDD_PYTHON_MOTIVO=""
@@ -104,5 +105,10 @@ sdd_python_exigir() {
   printf '→ instale o Python 3.9 ou mais novo (Windows: winget install --id Python.Python.3.12 -e; macOS: brew install python; Linux: sudo apt install python3), feche e abra o terminal e rode de novo.\n' >&2
   exit 64
 }
+
+# No Windows, com a saída num pipe (o Git Bash), o Python escreve na codificação do sistema (cp1252): o ✅ e o "ç"
+# dos scripts sairiam trocados ou com erro. UTF-8 na entrada e na saída, sem passar por cima de quem já definiu.
+PYTHONIOENCODING="${PYTHONIOENCODING:-utf-8}"
+export PYTHONIOENCODING
 
 sdd_python_resolver
