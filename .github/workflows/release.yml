@@ -188,7 +188,7 @@ jobs:
   testes-windows:
     name: Testes no Windows (Git Bash + Python nativo, só leitura)
     runs-on: windows-latest
-    # F16: a 1ª medição (PR #25, run 42938720292) rodou a suíte inteira e foi cancelada nos 90 min com 15% feito
+    # F16: a 1ª medição (PR #25, commit 416c0d5) rodou a suíte inteira e foi cancelada nos 90 min com 15% feito
     # (~19 s por teste, 156 quebras em 282). Aqui fica só o caminho do aluno; o porte da suíte é a frente F16W.
     timeout-minutes: 30
     defaults:
