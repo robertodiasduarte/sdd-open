@@ -19,9 +19,13 @@
     "Modo incidente: fechar, preservar, dimensionar, corrigir, comunicar, registrar",
     "Stack detectada pelo projeto ou pelo slot security.stack; item de outra stack nunca dispara"
   ],
-  "executados": [],
+  "executados": [
+    "sem-gatilho-na: 3 execuções em contexto novo, 3 aprovadas (N.A. em 1 linha, sem pergunta, só a linha Segurança gravada)",
+    "login-supabase-propoe: 3 execuções em contexto novo, 3 aprovadas (gatilhos com o trecho, 5 itens do mais grave, 1 pergunta por vez, DEFINE intacto)"
+  ],
   "pending": [
-    "Executar os cenários de evals/cases.json em contexto novo, 3 vezes cada"
+    "Executar o cenário incidente-chave em contexto novo",
+    "Executar os cenários em outros agentes além do que construiu a skill"
   ],
   "o_que_ainda_nao_prova": [
     "Que a varredura por texto acha toda ocorrência: o que não tem padrão fica só na conferência à mão",
