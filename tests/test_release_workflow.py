@@ -202,7 +202,8 @@ class PisoNoMacos(unittest.TestCase):
                 self.assertIn("run: /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'", bloco)
                 self.assertIn("gitleaks_8.30.1_darwin_arm64.tar.gz", bloco)  # sem pular a classe que precisa dele
                 self.assertIn('"$RUNNER_TEMP/bin/gitleaks" version', bloco)
-                self.assertRegex(bloco, r"(?m)^    timeout-minutes: 60$")   # F21: testes verdes em 44m48s, job cancelado nos 45 min
+                # F21: testes verdes em 44m48s, job cancelado nos 45 min (60). F16: 47m19s com 1.936 testes (75).
+                self.assertRegex(bloco, r"(?m)^    timeout-minutes: 75$")
                 self.assertNotIn("contents: write", bloco)
                 self.assertNotIn("if:", sem_comentarios(bloco))
 
