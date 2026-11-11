@@ -70,8 +70,12 @@ REGRAS = {"regra:rls", "regra:definer"}
 STACKS = ("supabase", "vercel", "web")
 GRAV = {"alta": 0, "media": 1, "baixa": 2}
 FASES = ("define", "design", "build", "release", "bancada")
-FORA_PASTAS = (".agents/", ".claude/", ".cursor/", ".gemini/", ".codex/", ".kimi/", "sdd/", "node_modules/")
+# Os padrões de código (eval, HTML cru…) não olham as pastas do SDD e dos agentes, que citam os próprios padrões. Chave
+# (item que bloqueia) é procurada em toda parte, menos no catálogo e em node_modules/ (avaliador, ciclo 1, A1): um log
+# de evidência, uma ficha ou um settings.json de agente também vazam.
+FORA_PASTAS = (".agents/", ".claude/", ".cursor/", ".gemini/", ".codex/", ".kimi/", "sdd/")
 FORA_ARQ = {"AGENTS.md", "CLAUDE.md", "GEMINI.md"}
+NUNCA = ("node_modules/",)
 MAX_BYTES = 1024 * 1024
 CATALOGO_REL = ".agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md"
 PONTEIRO = ("- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de "
@@ -261,6 +265,10 @@ ITENS = ler_catalogo(CATALOGO)
 
 
 # ── arquivos do projeto ────────────────────────────────────────────────────
+def fora_do_codigo(p):
+    return p in FORA_ARQ or p.startswith(FORA_PASTAS)
+
+
 def lista_arquivos():
     if not EH_GIT:
         return []
@@ -272,7 +280,7 @@ def lista_arquivos():
         if not p or p in vistos:
             continue
         vistos.add(p)
-        if p in FORA_ARQ or p.startswith(FORA_PASTAS) or not os.path.isfile(os.path.join(RAIZ, p)):
+        if p.startswith(NUNCA) or p == CATALOGO_REL or not os.path.isfile(os.path.join(RAIZ, p)):
             continue
         saida.append(p)
     return sorted(saida)
@@ -303,7 +311,7 @@ def descobre_stack():
         achou.append("supabase")
     if os.path.isfile(os.path.join(RAIZ, "vercel.json")) or os.path.isdir(os.path.join(RAIZ, ".vercel")) or '"vercel"' in pkg:
         achou.append("vercel")
-    if pkg or any(p.lower().endswith((".html", ".htm")) for p in ARQUIVOS):
+    if pkg or any(p.lower().endswith((".html", ".htm")) and not fora_do_codigo(p) for p in ARQUIVOS):
         achou.append("web")
     return achou, "detectada"
 
@@ -394,6 +402,15 @@ def nome_funcao(bruto):
     return n[len("public."):] if n.startswith("public.") else n
 
 
+CORPO_PEM = re.compile(r"^(?:\s|\\n|\\r)*[A-Za-z0-9+/=]{40,}")
+
+
+def corpo_pem(resto, seguinte):
+    """Chave privada de verdade tem o corpo: 40+ caracteres base64 depois do cabeçalho, na mesma linha (depois de um
+    \\n escrito, como num JSON) ou na linha seguinte. Só o cabeçalho é documentação (avaliador, ciclo 1)."""
+    return bool(CORPO_PEM.match(resto)) or any(CORPO_PEM.match(s.strip()) for s in seguinte)
+
+
 def casa(p, globs):
     nome = p.rsplit("/", 1)[-1]
     return any(g == "*" or fnmatch.fnmatch(p, g) or fnmatch.fnmatch(nome, g) for g in globs)
@@ -437,15 +454,18 @@ for f in ATIVOS:
     padrao = f["c"]["padrao"]
     if f["re"] is not None:
         for p, t in textos.items():
-            if not casa(p, f["globs"]):
+            if not casa(p, f["globs"]) or (f["c"]["bloqueia"] != "sim" and fora_do_codigo(p)):
                 continue
-            for n, ln in enumerate(t.split("\n"), 1):
+            linhas_t = t.split("\n")
+            for n, ln in enumerate(linhas_t, 1):
                 m = f["re"].search(ln)
+                if m and "PRIVATE KEY-----" in m.group(0) and not corpo_pem(ln[m.end():], linhas_t[n:n + 1]):
+                    continue
                 if m and not (f["id"] != "S11" and comentado(ln, m.start(), p.endswith(".sql"))):
                     achados.append((f, p, n))
     elif padrao in REGRAS:
-        migr = {p: sem_comentarios_sql(t) for p, t in textos.items()
-                if p.endswith(".sql") and (casa(p, f["globs"]) or (sql_globs and casa(p, sql_globs)))}
+        migr = {p: sem_comentarios_sql(t) for p, t in textos.items() if p.endswith(".sql") and not fora_do_codigo(p)
+                and (casa(p, f["globs"]) or (sql_globs and casa(p, sql_globs)))}
         if padrao == "regra:rls":
             # Na ordem das migrações (nome do arquivo, depois a posição): criar, ligar, desligar e apagar. O RLS de uma
             # migração antiga não cobre a tabela recriada nem a RLS desligada depois (revisão do código, rodada 3, R1).

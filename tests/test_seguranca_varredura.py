@@ -15,7 +15,8 @@ CATALOGO = RAIZ / ".agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md
 
 # Chaves falsas, nos 7 formatos que S11 reconhece (montadas por partes).
 SEGREDOS = {
-    "chave privada": "-----BEGIN " + "RSA PRIVATE KEY-----",
+    # o cabeçalho só conta com o corpo da chave: aqui na mesma linha, depois de um \n escrito (como num JSON)
+    "chave privada": "-----BEGIN " + "RSA PRIVATE KEY-----\\n" + "MIIEpAIBAAKCAQEA" + "q1W2e3R4t5Y6u7I8" * 3,
     "sk-": "s" + "k-" + "a1B2c3D4" * 5,
     "sk_live_": "s" + "k_live_" + "Z9y8X7w6" * 2,
     "ghp_": "gh" + "p_" + "A1b2C3d4E5" * 3 + "xyz",
@@ -103,7 +104,8 @@ class Segredo(Base):
 
     def test_arquivo_novo_nao_rastreado_conta_inteiro(self):
         p = self.projeto()
-        self.escreve(p, "config/chaves.txt", "x\n%s\n" % SEGREDOS["chave privada"])
+        corpo = "MIIEpAIBAAKCAQEA" + "q1W2e3R4t5Y6u7I8" * 3
+        self.escreve(p, "config/chaves.txt", "x\n-----BEGIN " + "PRIVATE KEY-----\n" + corpo + "\n")
         rc, out = self.varre(p)
         self.assertEqual(rc, 2, out)
         self.assertIn("config/chaves.txt:2", out)
@@ -181,6 +183,19 @@ class RevisaoDoDesign(Base):
 
 class RevisaoDoCodigo(Base):
     """Rodada 2 da revisão (código): cada teste caiu no script de antes do conserto."""
+
+    def test_a1_cabecalho_pem_sem_corpo_nao_e_chave(self):
+        # avaliador ciclo 1: documentação e casos de teste mostram o cabeçalho com corpo de mentira; chave real tem corpo
+        p = self.projeto()
+        self.escreve(p, "docs/chaves.md", "Um arquivo que começa com -----BEGIN " + "PRIVATE KEY----- é segredo.\n"
+                     "printf -- '-----BEGIN " + "RSA PRIVATE KEY-----\\nMIIabc\\n-----END RSA PRIVATE KEY-----\\n'\n")
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 0, out)
+        corpo = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASC" * 2
+        self.escreve(p, "certs/k.pem", "-----BEGIN " + "PRIVATE KEY-----\n" + corpo + "\n-----END PRIVATE KEY-----\n")
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 2, out)
+        self.assertIn("🛑 S11 alta certs/k.pem:1", out)
 
     def test_r1_rls_comentado_nao_conta(self):
         for comentario in ("-- alter table clientes enable row level security; -- TODO",
@@ -360,6 +375,10 @@ class Avisos(Base):
             "api/c.js": "app.use(cors({ origin: '*' }))\n",
             "src/d.js": "const f = new Function('return 1');\n",  # sdd-seguranca: aceito S16 — caso de teste da varredura, nunca executado
             "src/e.js": "fetch('https://x.example.com', { headers: { 'Access-Control-Allow-Origin': '*' } })\n",
+            # avaliador ciclo 1, A2 e A3: atribuição com colchete (JS e Python) e innerHTML +=
+            "src/f.js": "headers['Access-Control-Allow-Origin'] = '*';\n",
+            "api/g.py": "response.headers[\"Access-Control-Allow-Origin\"] = \"*\"\n",
+            "src/h.js": "el.innerHTML += texto;\n",
         }
         for rel, txt in casos.items():
             with self.subTest(arquivo=rel):
@@ -512,11 +531,30 @@ class Stack(Base):
 
 
 class Uso(Base):
-    def test_arquivos_do_sdd_e_dos_agentes_nao_sao_varridos(self):
-        p = self.projeto()
+    def test_pastas_do_sdd_e_dos_agentes_ficam_fora_dos_padroes_de_codigo(self):
+        p = self.projeto({"package.json": "{}\n"})
         for rel in (".agents/skills/x/SKILL.md", "sdd/features/DEFINE_X.md", "AGENTS.md", ".claude/skills/y.md",
                     "node_modules/z/index.js"):
-            self.escreve(p, rel, "k = \"%s\"\n" % SEGREDOS["sk-"])
+            self.escreve(p, rel, "el.innerHTML = eval(x)\n")  # sdd-seguranca: aceito S16 — caso de teste, nunca executado
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 0, out)
+
+    def test_a1_segredo_em_sdd_e_nos_agentes_bloqueia(self):
+        # avaliador ciclo 1, A1: a exclusão de pastas vale para os padrões de código, não para chave (S11)
+        for rel in ("sdd/reports/evidence/X/AVAL-1.log", "sdd/handoffs/HANDOFF_X.md", ".claude/settings.json",
+                    "AGENTS.md", ".agents/skills/x/SKILL.md"):
+            with self.subTest(rel=rel):
+                p = self.projeto()
+                self.escreve(p, rel, "k = \"%s\"\n" % SEGREDOS["ghp_"])
+                rc, out = self.varre(p)
+                self.assertEqual(rc, 2, out)
+                self.assertIn("🛑 S11 alta %s:1" % rel, out)
+                self.tearDown(); self.setUp()
+
+    def test_a1_node_modules_e_o_proprio_catalogo_ficam_fora(self):
+        p = self.projeto()
+        self.escreve(p, "node_modules/z/index.js", "k = \"%s\"\n" % SEGREDOS["ghp_"])
+        self.copia(".agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md", p)
         rc, out = self.varre(p)
         self.assertEqual(rc, 0, out)
 

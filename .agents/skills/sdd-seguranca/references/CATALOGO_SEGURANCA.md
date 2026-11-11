@@ -202,7 +202,7 @@ Dispensa de um achado da varredura: na linha dele, ou na de cima, um comentário
 - bloqueia: nao
 - agents: nao
 - gatilho: rota-publica, dado-de-terceiros
-- padrao: re:`dangerouslySetInnerHTML|\bv-html\b|\.(inner|outer)HTML\s*=(?!=)`
+- padrao: re:`dangerouslySetInnerHTML|\bv-html\b|\.(inner|outer)HTML\s*\+?=(?!=)`
 - arquivos: *.js, *.jsx, *.ts, *.tsx, *.mjs, *.cjs, *.vue, *.svelte, *.astro, *.html
 - frase: Nenhum texto vindo do usuário é exibido como HTML; quando HTML é inevitável, ele passa por um sanitizador e a página tem política de conteúdo (CSP).
 - evitar: Mostre texto do usuário sempre como texto; se o produto precisa de formatação, escolha um formato limitado e um sanitizador conhecido.
@@ -232,7 +232,7 @@ Dispensa de um achado da varredura: na linha dele, ou na de cima, um comentário
 - bloqueia: nao
 - agents: nao
 - gatilho: rota-publica
-- padrao: re:`(?i)access-control-allow-origin['"]?\s*[:,=]\s*['"]\*['"]|access-control-allow-origin['"]?\s*,\s*['"]value['"]\s*:\s*['"]\*['"]|\borigin\s*:\s*['"]\*['"]`
+- padrao: re:`(?i)access-control-allow-origin['"]?\]?\s*[:,=]\s*['"]\*['"]|access-control-allow-origin['"]?\s*,\s*['"]value['"]\s*:\s*['"]\*['"]|\borigin\s*:\s*['"]\*['"]`
 - arquivos: *.js, *.jsx, *.ts, *.tsx, *.mjs, *.cjs, *.py, *.json, *.toml
 - frase: As funções de servidor aceitam chamadas só de uma lista fixa de origens; nunca `*` em produção.
 - evitar: Escreva a lista de origens permitidas (o domínio do app e o de teste) numa configuração e use-a em todas as funções.

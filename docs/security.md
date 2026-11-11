@@ -46,7 +46,7 @@ bash sdd/bin/seguranca-varredura.sh [--base REF] [--saida FILE]
 Read-only, no network, bash 3.2 + Python stdlib. It blocks only two things, and only when **this release adds them**
 (diff of the working tree against `origin/<default branch>`; without that ref, everything counts as new):
 
-- **S11** a literal secret (private key header, known key prefixes with a key body, a service-role key assigned a value);
+- **S11** a literal secret (private key header followed by the key body, known key prefixes with a key body, a service-role key assigned a value);
   a variable read by name is not a secret, and the scan never prints the value;
 - **S01** a table created in a migration with no `enable row level security` anywhere in the migrations (Supabase only).
 

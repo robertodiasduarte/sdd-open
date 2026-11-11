@@ -46,7 +46,7 @@ bash sdd/bin/seguranca-varredura.sh [--base REF] [--saida ARQUIVO]
 Só lê, sem rede, bash 3.2 + Python stdlib. Bloqueia só duas coisas, e só quando **esta publicação as acrescenta**
 (diff da árvore de trabalho contra `origin/<branch padrão>`; sem essa ref, tudo conta como novo):
 
-- **S11** segredo literal (cabeçalho de chave privada, prefixos conhecidos de chave com o corpo da chave, chave de
+- **S11** segredo literal (cabeçalho de chave privada seguido do corpo da chave, prefixos conhecidos de chave com o corpo da chave, chave de
   serviço atribuída com valor); variável lida pelo nome não é segredo, e a varredura nunca imprime o valor;
 - **S01** tabela criada em migração sem `enable row level security` em nenhuma migração (só com Supabase).
 
