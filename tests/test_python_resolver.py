@@ -8,12 +8,14 @@ from __future__ import annotations
 
 import shutil
 import sys
+import pathlib
 from pathlib import Path
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, Sandbox, caminho_bash
 
 LIB = RAIZ / "sdd/bin/lib/python.sh"
-FERRAMENTAS = ("mktemp", "sed", "chmod", "dirname", "env", "cat", "xargs", "sh")
+FERRAMENTAS = ("mktemp", "sed", "chmod", "dirname", "env", "cat", "xargs", "sh", "find", "grep", "tr", "head", "tail", "awk",
+               "wc", "sort", "cut", "git", "basename", "rm", "mkdir", "date", "printf")
 ATALHO = "#!/bin/sh\nexit 9009\n"            # o atalho da Store: existe, não roda
 VELHO = "#!/bin/sh\nexit 1\n"                 # responde, mas a versão é menor que 3.9
 
@@ -21,7 +23,7 @@ VELHO = "#!/bin/sh\nexit 1\n"                 # responde, mas a versão é menor
 def nativo(py: str = sys.executable, aceita_menos_3: bool = False) -> str:
     """Stub que chama o Python da suíte; com aceita_menos_3, engole o `-3` do `py -3`."""
     tira = '[ "$1" = -3 ] && shift\n' if aceita_menos_3 else ""
-    return "#!/bin/sh\n%sexec '%s' \"$@\"\n" % (tira, py)
+    return "#!/bin/sh\n%sexec '%s' \"$@\"\n" % (tira, caminho_bash(py))
 
 
 class Base(Sandbox):
@@ -34,7 +36,7 @@ class Base(Sandbox):
         for nome in FERRAMENTAS:
             real = shutil.which(nome)
             self.assertTrue(real, nome)
-            self.stub(nome, "#!/bin/sh\nexec '%s' \"$@\"\n" % real, pasta=self.ferr)
+            self.stub(nome, "#!/bin/sh\nexec '%s' \"$@\"\n" % caminho_bash(real), pasta=self.ferr)
 
     def stub(self, nome: str, corpo: str, pasta: Path | None = None) -> Path:
         p = (pasta or self.bin) / nome
@@ -44,9 +46,9 @@ class Base(Sandbox):
 
     def roda_script(self, corpo: str, **env: str) -> tuple[int, str, str]:
         script = self.tmp / "script.sh"
-        script.write_text('. "%s"\n%s' % (LIB.as_posix(), corpo), encoding="utf-8")
+        script.write_text('. "%s"\n%s' % (caminho_bash(LIB), corpo), encoding="utf-8")
         e = {k: v for k, v in self.env.items() if k not in ("SDD_PYTHON", "SDD_PYTHON_RESOLVIDO")}
-        e.update(PATH=str(self.bin) + ":" + str(self.ferr), TMPDIR=str(self.tmp))
+        e.update(PATH=caminho_bash(self.bin) + ":" + caminho_bash(self.ferr), TMPDIR=caminho_bash(self.tmp))
         e.update(env)
         return self.roda([BASH, script], self.tmp, e)
 
@@ -80,7 +82,7 @@ class Escolha(Base):
         self.assertEqual(rc, 0, err)
         resolvido, path = out.splitlines()
         self.assertEqual(resolvido, "python3")
-        self.assertEqual(path, str(self.bin) + ":" + str(self.ferr))   # o PATH de quem chamou, intacto
+        self.assertEqual(path, caminho_bash(self.bin) + ":" + caminho_bash(self.ferr))   # o PATH de quem chamou, intacto
 
     def test_sdd_python_com_espaco_no_caminho(self):
         # rodada 1 da revisão, R2: o caminho era cortado na 1ª palavra e ignorado em silêncio
@@ -88,8 +90,79 @@ class Escolha(Base):
         pasta.mkdir(parents=True)
         self.stub("python", nativo(), pasta=pasta)
         self.stub("python3", ATALHO)
-        rc, out, err = self.roda_script("python3 -c 'print(\"escolhido\")'\n", SDD_PYTHON=str(pasta / "python"))
+        rc, out, err = self.roda_script("python3 -c 'print(\"escolhido\")'\n", SDD_PYTHON=caminho_bash(pasta / "python"))
         self.assertEqual((rc, out.strip()), (0, "escolhido"), err)
+
+
+class RevisaoRodada3(Base):
+    def test_sdd_python_igual_a_python3_nao_entra_em_laco(self):
+        # R1: o calço chamava "python3" e achava a si mesmo no PATH
+        self.stub("python3", nativo())
+        rc, out, err = self.roda_script("python3 -c 'print(\"sem laço\")'\n", SDD_PYTHON="python3")
+        self.assertEqual((rc, out.strip()), (0, "sem laço"), err)
+
+    def test_candidato_que_imprime_versao_e_sai_com_erro_nao_serve(self):
+        # R2: a saída valia como versão mesmo com o exit 9009
+        self.stub("python3", "#!/bin/sh\nprintf 3.12\nexit 9009\n")
+        rc, out, err = self.roda_script("sdd_python_pronto || echo FALTA\n")
+        self.assertEqual((rc, out.strip()), (0, "FALTA"), err)
+        self.assertIn("existe, mas não roda", err)
+
+    def test_candidato_que_imprime_lixo_nao_serve(self):
+        self.stub("python3", "#!/bin/sh\necho 'Python was not found; run without arguments to install'\n")
+        rc, out, err = self.roda_script("sdd_python_pronto || echo FALTA\n")
+        self.assertEqual((rc, out.strip()), (0, "FALTA"), err)
+
+    def test_set_e_com_calco_que_nao_se_cria_nao_derruba_na_carga(self):
+        # R5: com set -e, a falha do calço saía 1 na carga, sem causa
+        self.stub("python3", ATALHO)
+        self.stub("python", nativo())
+        script = self.tmp / "com_set_e.sh"
+        script.write_text('set -euo pipefail\n. "%s"\nsdd_python_pronto || echo FALTA\necho SEGUIU\n' % caminho_bash(LIB),
+                          encoding="utf-8")
+        e = {k: v for k, v in self.env.items() if k not in ("SDD_PYTHON", "SDD_PYTHON_RESOLVIDO")}
+        e.update(PATH=caminho_bash(self.bin) + ":" + caminho_bash(self.ferr), TMPDIR=caminho_bash(self.tmp / "nao-existe"))
+        rc, out, err = self.roda([BASH, script], self.tmp, e)
+        self.assertEqual((rc, out.split()), (0, ["FALTA", "SEGUIU"]), err)
+        self.assertIn("não consegui criar o calço", err)
+
+    def test_script_real_de_sdd_bin_com_o_atalho_da_store(self):
+        # R3: um script de verdade, pelo trecho de carga dele, com o atalho no PATH e o python nativo ao lado
+        self.stub("python3", ATALHO)
+        self.stub("python", nativo())
+        lint = RAIZ / "sdd/bin/ledger-revisao-lint.sh"
+        controle = RAIZ / "sdd/fixtures/revisao/ledger/controle.md"
+        e = {k: v for k, v in self.env.items() if k not in ("SDD_PYTHON", "SDD_PYTHON_RESOLVIDO")}
+        e.update(PATH=caminho_bash(self.bin) + ":" + caminho_bash(self.ferr), TMPDIR=caminho_bash(self.tmp))
+        rc, out, err = self.roda([BASH, lint, controle], self.tmp, e)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("RESULTADO: VERDE", out)
+        # e só com o atalho: a guarda do próprio script para, com a causa antes
+        (self.bin / "python").unlink()
+        rc, out, err = self.roda([BASH, lint, controle], self.tmp, e)
+        self.assertNotEqual(rc, 0, out + err)
+        self.assertIn("existe, mas não roda", err)
+        self.assertIn("python3 não encontrado", err)
+
+
+class Limpeza(Base):
+    def test_calco_velho_sai_e_o_novo_fica(self):
+        # avaliador, ciclo 1, achado 5: cada processo de topo deixava uma pasta de calço para sempre
+        import os, time
+        velho = self.tmp / "sdd-python.velho1"
+        velho.mkdir()
+        (velho / "python3").write_text("#!/bin/sh\n", encoding="utf-8")
+        dois_dias = time.time() - 2 * 86400
+        os.utime(str(velho), (dois_dias, dois_dias))
+        recente = self.tmp / "sdd-python.recente"
+        recente.mkdir()
+        self.stub("python3", ATALHO)
+        self.stub("python", nativo())
+        rc, out, err = self.roda_script('echo "$SDD_PYTHON_RESOLVIDO"\n')
+        self.assertEqual(rc, 0, err)
+        self.assertFalse(velho.exists(), "o calço de 2 dias não saiu")
+        self.assertTrue(recente.exists(), "o calço recente não pode sair: pode ser de outro processo vivo")
+        self.assertTrue(pathlib.Path(out.strip()).is_dir())
 
 
 class Parada(Base):
@@ -150,7 +223,7 @@ class Parada(Base):
         # rodada 2, R4: a falha do calço voltava 1 sem mensagem, e o script seguia com o atalho
         self.stub("python3", ATALHO)
         self.stub("python", nativo())
-        rc, out, err = self.roda_script("sdd_python_pronto || echo FALTA\n", TMPDIR=str(self.tmp / "nao-existe"))
+        rc, out, err = self.roda_script("sdd_python_pronto || echo FALTA\n", TMPDIR=caminho_bash(self.tmp / "nao-existe"))
         self.assertEqual((rc, out.strip()), (0, "FALTA"), err)
         self.assertIn("não consegui criar o calço do Python na pasta temporária", err)
 

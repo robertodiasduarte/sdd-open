@@ -36,9 +36,9 @@ ACHADOS = {
     "ramo tasklist do sdd-drive.sh (dono da trava vivo ou morto)":
         ("test_drive.py", "test_trava_de_processo_morto_se_libera"),
     "report-lint sem prova no Windows":
-        ("test_report_lint.py", None),
+        ("test_report_lint.py", "test_log_capturado_da_feature_passa"),
     "sdd-archive sem prova no Windows":
-        ("test_sdd_archive.py", None),
+        ("test_sdd_archive.py", "test_lista_por_lote_e_nao_muda_nada"),
     "trava sem O_NOFOLLOW (link no lugar da trava, F14 Drive, rodada 7)":
         ("test_drive.py", "test_trava_que_e_link_nao_cria_arquivo_fora"),
 }
@@ -77,10 +77,9 @@ class AchadosGuardados(unittest.TestCase):
     def test_cada_achado_tem_teste_que_roda_no_job(self):
         for achado, (arquivo, teste) in ACHADOS.items():
             with self.subTest(achado=achado):
-                texto = (TESTES / arquivo).read_text(encoding="utf-8")
-                self.assertIn("def test_", texto)
-                if teste:
-                    self.assertIn("def %s(" % teste, texto)
+                # cada achado cita um teste que existe (rodada 3, R4: dois não citavam nenhum)
+                self.assertTrue(teste, achado)
+                self.assertIn("def %s(" % teste, (TESTES / arquivo).read_text(encoding="utf-8"))
 
 
 class FimDeLinha(Sandbox):

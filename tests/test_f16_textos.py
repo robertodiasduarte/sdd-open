@@ -100,7 +100,7 @@ class NovaSessao(unittest.TestCase):
     def test_slot_cheio_como_esta_e_vazio_pelo_checar_editor(self):
         for termo in ("**cheio ⇒ use como está**, inclusive com argumentos (`open -a \"Cursor\"`)",
                       "scripts/checar.sh --editor", "`open -a \"<App>\"`", "`%LOCALAPPDATA%\\Programs`",
-                      "`Get-Command <nome>`", "**modo terminal**"):
+                      "`Get-Command <nome>`", "**modo terminal**", "`editor: 'open -a \"Visual Studio Code\"'`"):
             with self.subTest(termo=termo):
                 self.assertIn(termo, self.texto)
 

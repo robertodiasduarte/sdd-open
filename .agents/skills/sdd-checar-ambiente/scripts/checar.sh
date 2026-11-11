@@ -89,24 +89,26 @@ gh_estado() {
 # os testes. Resultado em EDITOR_CMD (o comando, como a sdd-new-session o usa) e EDITOR_DICA (opcional).
 EDITOR_CMD=""
 EDITOR_DICA=""
-editor_no_path() {
+editor_no_path() {   # $2 = o sistema, lido uma vez por quem chama (uname custa caro no Git Bash)
   local d IFS=:
   for d in ${SDD_CHECAR_EDITOR_PATH:-${PATH}}; do
     [ -n "${d}" ] || continue
     [ -f "${d}/$1" ] && [ -x "${d}/$1" ] && return 0
-    if [ "$(sistema)" = windows ] && { [ -f "${d}/$1.cmd" ] || [ -f "${d}/$1.exe" ]; }; then return 0; fi
+    if [ "$2" = windows ] && { [ -f "${d}/$1.cmd" ] || [ -f "${d}/$1.exe" ]; }; then return 0; fi
   done
   return 1
 }
 editor_achado() {
-  local e d a c lad IFS=:
+  local e d a c lad so IFS=:
+  so="$(sistema)"
   for e in code cursor code-insiders windsurf zed subl idea pycharm webstorm; do
-    editor_no_path "${e}" && { EDITOR_CMD="${e}"; return 0; }
+    editor_no_path "${e}" "${so}" && { EDITOR_CMD="${e}"; return 0; }
   done
-  case "$(sistema)" in
+  case "${so}" in
     macos)
-      for d in ${SDD_APPS_DIRS:-/Applications:${HOME:-}/Applications}; do
-        for a in "Visual Studio Code" "Cursor" "Windsurf" "Zed" "Sublime Text"; do
+      # A ordem da lista de apps manda, como a do PATH: o VS Code em ~/Applications vence o Zed em /Applications.
+      for a in "Visual Studio Code" "Cursor" "Windsurf" "Zed" "Sublime Text"; do
+        for d in ${SDD_APPS_DIRS:-/Applications:${HOME:-}/Applications}; do
           [ -d "${d}/${a}.app" ] || continue
           EDITOR_CMD="open -a \"${a}\""
           case "${a}" in

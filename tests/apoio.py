@@ -47,7 +47,18 @@ SEM_SYMLINK = (not _symlink_ok(), "link simbólico: este sistema não deixa cria
 SEM_FCNTL = (WINDOWS, "fcntl: o Windows não tem a trava POSIX")
 SEM_CHMOD = (WINDOWS, "chmod: no Windows o bit de execução e a permissão de leitura não valem")
 SEM_SINAL = (WINDOWS, "sinal POSIX: o Windows não entrega SIGTERM nem SIGKILL a um grupo de processos")
+SEM_NOME_ESPECIAL = (WINDOWS, "nome de arquivo com aspas ou terminado em espaço: o Windows não aceita")
 SEM_POSIX_UID = (not hasattr(os, "geteuid"), "os.geteuid: só existe em sistema POSIX")
+
+
+def caminho_bash(p) -> str:
+    """Caminho como o bash do Git o lê: no Windows, C:\\x\\y vira /c/x/y (C: partiria o PATH em dois)."""
+    s = str(p)
+    if WINDOWS and len(s) > 1 and s[1] == ":":
+        return "/" + s[0].lower() + s[2:].replace("\\", "/")
+    return s
+
+
 SOU_ROOT = (hasattr(os, "geteuid") and os.geteuid() == 0, "root lê qualquer arquivo, com ou sem permissão")
 
 

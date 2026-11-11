@@ -21,15 +21,19 @@ SDD_PYTHON_MOTIVO=""
 SDD_PYTHON_DITO=""
 
 # Versão X.Y que o candidato imprime (vazio se não roda). Funciona também no Python 2.
-sdd_python_versao() {
-  "$@" -c 'import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])' 2>/dev/null </dev/null
+sdd_python_versao() {   # vazio se não roda: rc diferente de 0, ou saída fora do formato X.Y
+  local v
+  v="$("$@" -c 'import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])' 2>/dev/null </dev/null)" || return 0
+  case "${v}" in [0-9]*.[0-9]*) case "${v}" in *[!0-9.]*) ;; *) printf '%s' "${v}" ;; esac ;; esac
 }
 
 # Aspas simples para o sh do calço: a'b ⇒ 'a'\''b'.
 sdd_python_aspas() { printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"; }
 
-sdd_python_calco() {   # $1 = o comando, já entre aspas simples (ex.: 'python' ou 'py' -3)
+sdd_python_calco() {   # $1 = o caminho absoluto do candidato, entre aspas simples, e argumentos (ex.: '/usr/bin/py' -3)
   local d
+  # Calço de mais de 1 dia é sobra de processo que já terminou: sai antes de criar o novo (avaliador, ciclo 1, achado 5).
+  find "${TMPDIR:-/tmp}" -maxdepth 1 -type d -name 'sdd-python.*' -mmin +1440 -exec rm -rf {} + 2>/dev/null || :
   d="$(mktemp -d "${TMPDIR:-/tmp}/sdd-python.XXXXXX" 2>/dev/null)" \
     && printf '#!/bin/sh\nexec %s "$@"\n' "$1" > "${d}/python3" 2>/dev/null \
     && chmod +x "${d}/python3" 2>/dev/null \
@@ -66,14 +70,18 @@ sdd_python_resolver() {
        fi
        SDD_PYTHON_RESOLVIDO="" ;;
   esac
+  # O calço chama o candidato pelo caminho absoluto: com SDD_PYTHON=python3, um calço que chamasse "python3"
+  # acharia a si mesmo no PATH e entraria em laço (revisão da F16, rodada 3, R1).
   if [ -n "${SDD_PYTHON:-}" ] && sdd_python_testa "${SDD_PYTHON}"; then
-    sdd_python_calco "$(sdd_python_aspas "${SDD_PYTHON}")"; return 0
+    sdd_python_calco "$(sdd_python_aspas "$(command -v "${SDD_PYTHON}")")" || :; return 0
   fi
   if sdd_python_testa python3; then
     SDD_PYTHON_RESOLVIDO=python3; export SDD_PYTHON_RESOLVIDO; return 0
   fi
-  if sdd_python_testa python; then sdd_python_calco "'python'"; return 0; fi
-  if sdd_python_testa py -3; then sdd_python_calco "'py' -3"; return 0; fi
+  # `|| :` — com set -e no script que lê a biblioteca, a falha do calço não pode derrubá-lo na carga: o motivo
+  # fica anotado e a guarda do script o diz (rodada 3, R5).
+  if sdd_python_testa python; then sdd_python_calco "$(sdd_python_aspas "$(command -v python)")" || :; return 0; fi
+  if sdd_python_testa py -3; then sdd_python_calco "$(sdd_python_aspas "$(command -v py)") -3" || :; return 0; fi
   return 0
 }
 
@@ -90,7 +98,8 @@ sdd_python_pronto() {
 # Para quem não tem mensagem própria de "python3 ausente".
 sdd_python_exigir() {
   sdd_python_pronto && return 0
-  printf '🛑 %s: precisa do Python 3.9 ou mais novo.\n' "${0##*/}" >&2
+  local nome="${0//\\//}"
+  printf '🛑 %s: precisa do Python 3.9 ou mais novo.\n' "${nome##*/}" >&2
   printf 'RESULTADO: PAROU\n' >&2
   printf '→ instale o Python 3.9 ou mais novo (Windows: winget install --id Python.Python.3.12 -e; macOS: brew install python; Linux: sudo apt install python3), feche e abra o terminal e rode de novo.\n' >&2
   exit 64

@@ -17,6 +17,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from apoio import SEM_NOME_ESPECIAL, caminho_bash
+
 SCRIPT = Path(__file__).resolve().parents[1] / ".agents" / "skills" / "sdd-iniciar-repo" / "scripts" / "inventario.sh"
 BASH = os.environ.get("SDD_TEST_BASH") or shutil.which("bash") or "bash"   # SDD_TEST_BASH=/bin/bash: piso 3.2
 # F16: o gh falso (o mesmo de tests/test_checar.py). GH_STUB escolhe a resposta.
@@ -180,6 +182,7 @@ class TestAchados(Base):
         self.escreve(".env")
         self.assertNotIn("histórico", self.inventario())
 
+    @unittest.skipIf(*SEM_NOME_ESPECIAL)
     def test_nome_com_aspas_e_barra(self):
         # O git põe entre aspas o caminho com " ou \ mesmo com core.quotepath=off: a lista vem com -z.
         self.escreve('dados "cliente"/cert.pfx')
@@ -188,6 +191,7 @@ class TestAchados(Base):
         self.assertIn('dados "cliente"/cert.pfx', antes)
         self.assertIn("a\\b.xlsx", antes)
 
+    @unittest.skipIf(*SEM_NOME_ESPECIAL)
     def test_nome_com_aspas_no_historico(self):
         ident = ("-c", "user.name=T", "-c", "user.email=t@example.com")
         self.git("init", "-q")
@@ -232,6 +236,7 @@ class TestAchados(Base):
         self.grande("aula[1].mp4", 55)
         self.assertTrue(self.ignorado_depois("aula[1].mp4"))
 
+    @unittest.skipIf(*SEM_NOME_ESPECIAL)
     def test_proposta_escapa_espaco_no_fim(self):
         # O git descarta espaço no fim de uma linha do .gitignore, a não ser escapado.
         self.grande("video.mp4 ", 55)
@@ -306,7 +311,7 @@ class TestPreCondicoes(Base):
         (sub / "a.md").write_text("x\n", encoding="utf-8")
         rc, out = self.roda(sub)
         self.assertEqual(rc, 2, out)
-        self.assertIn(str(self.raiz), out)
+        self.assertIn(caminho_bash(self.raiz), out)   # no Windows o Git Bash escreve /c/…
 
 
 class TestSomenteLeitura(Base):
@@ -321,8 +326,6 @@ class TestSomenteLeitura(Base):
         self.assertFalse((self.raiz / ".gitignore").exists())
 
 
-if __name__ == "__main__":
-    unittest.main()
 
 
 class TestGh(Base):
@@ -348,3 +351,7 @@ class TestGh(Base):
         linhas = self.inventario().splitlines()
         self.assertTrue(linhas[0].startswith("Inventário de "), linhas)
         self.assertEqual(linhas[1], "gh: ok")
+
+
+if __name__ == "__main__":
+    unittest.main()

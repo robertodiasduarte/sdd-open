@@ -276,6 +276,8 @@ a evidência — ela vai para o Passo 2, item 6.
    nunca no do checkout principal: lá o arquivo ficaria modificado, a frente não o veria, e o `git pull`
    depois da integração abortaria. Regras:
    - só slot vazio (`""` ou sem valor) recebe valor; slot cheio fica como está;
+   - valor com aspas duplas dentro (`open -a "Visual Studio Code"`, o caminho de um `.cmd`) vai entre aspas
+     simples no YAML: `editor: 'open -a "Visual Studio Code"'`;
    - na linha de cima do slot, a evidência: `# descoberto por sdd-new-session (AAAA-MM-DD): <evidência>`;
    - mesma chave, mesma indentação; nada mais do arquivo muda; **não commite** — o valor vai para a branch
      padrão junto com a feature.
