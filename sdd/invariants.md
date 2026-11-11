@@ -28,3 +28,4 @@ Gramática (1 linha por invariante; abaixo da primeira, linha fora dela é erro)
 - [INV-002] estado=ok origem=LM-005 check=sdd/bin/ledger-revisao-lint.sh :: O arquivo `LEDGER_REVISAO_{F}.md` guarda só o ledger: toda linha com forma de linha de tabela é conferida ou acusada, inclusive fora da tabela, em comentário ou em bloco cercado, e o `ledger-revisao-lint.sh` e o `eval-revisores.sh` leem o arquivo com a mesma função (`linhas_uteis`, `linha_solta`) · por quê: na F19 a regra que escolhia "a tabela do ledger" regrediu 2 vezes e deixou linha sem conferir; o `sdd-fluxo.sh loop` lê essas linhas, e duas cópias da regra já divergiram uma vez (no pacote, `tests/test_eval_revisores.py` compara o texto das duas funções)
 
 ## Descartados
+- [LM-012] descartado :: regra de publicação deste pacote, já barrada pelo `scripts/publish-gate.sh` do repositório, que não é instalado no projeto do aluno; não é regra do sistema que o aluno constrói
