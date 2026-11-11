@@ -1,0 +1,18 @@
+$ python3 -B -m unittest discover -v -s tests -p test_checar.py -k TestEditor
+  test_a_ordem_da_lista_de_apps_vence_a_ordem_das_pastas (test_checar.TestEditor.test_a_ordem_da_lista_de_apps_vence_a_ordem_das_pastas) ... ok
+  test_app_do_macos_fora_do_path_vira_open_a (test_checar.TestEditor.test_app_do_macos_fora_do_path_vira_open_a) ... ok
+  test_app_do_macos_nao_vale_fora_do_macos (test_checar.TestEditor.test_app_do_macos_nao_vale_fora_do_macos) ... ok
+  test_app_na_segunda_pasta_de_aplicativos (test_checar.TestEditor.test_app_na_segunda_pasta_de_aplicativos) ... ok
+  test_editor_fora_de_repositorio (test_checar.TestEditor.test_editor_fora_de_repositorio) ... ok
+  test_editores_lista_todos_em_ordem_e_sem_repetir (test_checar.TestEditor.test_editores_lista_todos_em_ordem_e_sem_repetir) ... ok
+  test_editores_no_windows_pelo_cmd (test_checar.TestEditor.test_editores_no_windows_pelo_cmd) ... ok
+  test_editores_sem_nenhum_sai_1_calado (test_checar.TestEditor.test_editores_sem_nenhum_sai_1_calado) ... ok
+  test_o_editor_continua_sendo_o_primeiro_da_lista (test_checar.TestEditor.test_o_editor_continua_sendo_o_primeiro_da_lista) ... ok
+  test_ordem_no_path (test_checar.TestEditor.test_ordem_no_path) ... ok
+  test_resumo_cita_o_editor_e_sem_editor_nao_avisa (test_checar.TestEditor.test_resumo_cita_o_editor_e_sem_editor_nao_avisa) ... ok
+  test_sem_editor_sai_1_calado (test_checar.TestEditor.test_sem_editor_sai_1_calado) ... ok
+  test_windows_cmd_fora_do_path (test_checar.TestEditor.test_windows_cmd_fora_do_path) ... ok
+  test_windows_cmd_no_path (test_checar.TestEditor.test_windows_cmd_no_path) ... ok
+  Ran 14 tests in 7.029s
+  OK
+# prova manual neste Mac: evidence/F16_AMBIENTE/MANUAL-mac-open-a.log

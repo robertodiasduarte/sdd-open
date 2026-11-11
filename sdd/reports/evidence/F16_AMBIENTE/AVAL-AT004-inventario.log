@@ -1,0 +1,51 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/sondas/at004.sh
+=== stub ausente
+rc=0  segundos=0
+linhas gh: -> 1
+gh: ausente
+=== stub ok
+rc=0  segundos=1
+linhas gh: -> 1
+gh: ok
+=== stub deslogado
+rc=0  segundos=0
+linhas gh: -> 1
+gh: deslogado
+=== stub lento
+rc=0  segundos=10
+linhas gh: -> 1
+gh: sem resposta
+=== stub semrede
+rc=0  segundos=1
+linhas gh: -> 1
+gh: sem resposta
+=== ausente de verdade (PATH sem gh, sem SDD_CHECAR_GH)
+rc=0
+gh: ausente
+=== saída completa do caso deslogado
+Inventário de proj — 1 arquivo entraria no git.
+gh: deslogado
+✅ Nada sensível encontrado entre os arquivos.
+
+Proposta de .gitignore (linhas que faltam):
+# senhas e certificados
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pfx
+*.p12
+*.pem
+*.key
+# dependências (reinstaláveis)
+node_modules/
+.venv/
+venv/
+# arquivos do sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+rc=0
+=== diff das cópias de gh_estado/instalar_gh (checar.sh x inventario.sh)
+      38
+IGUAIS

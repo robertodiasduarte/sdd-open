@@ -1,0 +1,60 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/mut/mut.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad   # mutantes do ciclo 2 em cópias de git archive do HEAD 28caf3a; script abaixo
+=== mutante M1-rc-ignorado (sdd/bin/lib/python.sh) — diff:
+27c27
+<   v="$("$@" -c 'import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])' 2>/dev/null </dev/null)" || return 0
+---
+>   v="$("$@" -c 'import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])' 2>/dev/null </dev/null)"
+FAIL: test_candidato_que_imprime_versao_e_sai_com_erro_nao_serve (test_python_resolver.RevisaoRodada3)
+Ran 23 tests in 18.431s
+FAILED (failures=1)
+=== mutante M2-formato-livre (sdd/bin/lib/python.sh) — diff:
+28c28
+<   case "${v}" in [0-9]*.[0-9]*) case "${v}" in *[!0-9.]*) ;; *) printf '%s' "${v}" ;; esac ;; esac
+---
+>   printf "%s" "${v}"
+FAIL: test_candidato_que_imprime_lixo_nao_serve (test_python_resolver.RevisaoRodada3)
+Ran 23 tests in 14.842s
+FAILED (failures=1)
+=== mutante M3-sem-limpeza (sdd/bin/lib/python.sh) — diff:
+37d36
+<   find "${TMPDIR:-/tmp}" -maxdepth 1 -type d -name 'sdd-python.*' -mmin +1440 -exec rm -rf {} + 2>/dev/null || :
+FAIL: test_calco_velho_sai_e_o_novo_fica (test_python_resolver.Limpeza)
+Ran 23 tests in 12.604s
+FAILED (failures=1)
+=== mutante M4-ordem-pasta (.agents/skills/sdd-checar-ambiente/scripts/checar.sh) — diff:
+110,111c110,111
+<       for a in "Visual Studio Code" "Cursor" "Windsurf" "Zed" "Sublime Text"; do
+<         for d in ${SDD_APPS_DIRS:-/Applications:${HOME:-}/Applications}; do
+---
+>       for d in ${SDD_APPS_DIRS:-/Applications:${HOME:-}/Applications}; do
+>         for a in "Visual Studio Code" "Cursor" "Windsurf" "Zed" "Sublime Text"; do
+FAIL: test_a_ordem_da_lista_de_apps_vence_a_ordem_das_pastas (test_checar.TestEditor)
+Ran 78 tests in 127.606s
+FAILED (failures=1)
+=== mutante M5-sem-regra-yaml (.agents/skills/sdd-new-session/SKILL.md) — diff:
+279,280d278
+<    - valor com aspas duplas dentro (`open -a "Visual Studio Code"`, o caminho de um `.cmd`) vai entre aspas
+<      simples no YAML: `editor: 'open -a "Visual Studio Code"'`;
+FAIL: test_slot_cheio_como_esta_e_vazio_pelo_checar_editor (test_f16_textos.NovaSessao) (termo='`editor: \'open -a "Visual Studio Code"\'`')
+Ran 11 tests in 0.002s
+FAILED (failures=1)
+----- mut.sh -----
+#!/bin/bash
+# Mutantes do ciclo 2, cada um numa cópia de git archive do HEAD; roda só o módulo de teste alvo.
+REPO=/Users/robertoduarte/rdd-worktrees/sdd-open-f16-ambiente; S="$1"
+mut() { local nome="$1" arq="$2" perl_expr="$3" mod="$4"
+  local T; T="$(mktemp -d "$S/mut/$nome.XXXX")"; (cd "$REPO" && git archive HEAD) | tar -x -C "$T"
+  cp "$T/$arq" "$T/$arq.orig"; perl -0pi -e "$perl_expr" "$T/$arq"
+  echo "=== mutante $nome ($arq) — diff:"; diff "$T/$arq.orig" "$T/$arq" | head -12; rm "$T/$arq.orig"
+  (cd "$T" && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "$mod.py" 2>&1 | grep -E '^(FAIL|ERROR):|^Ran |^OK|^FAILED')
+}
+# M1: o rc do candidato volta a ser ignorado (achado 2 do ciclo 1)
+mut M1-rc-ignorado sdd/bin/lib/python.sh 's/2>\/dev\/null <\/dev\/null\)" \|\| return 0/2>\/dev\/null <\/dev\/null)"/' test_python_resolver
+# M2: o formato X.Y deixa de ser exigido (qualquer texto vale)
+mut M2-formato-livre sdd/bin/lib/python.sh 's/case "\$\{v\}" in \[0-9\]\*\.\[0-9\]\*\) case "\$\{v\}" in \*\[!0-9\.\]\*\) ;; \*\) printf .%s. "\$\{v\}" ;; esac ;; esac/printf "%s" "\${v}"/' test_python_resolver
+# M3: a limpeza do calço velho some (achado 5)
+mut M3-sem-limpeza sdd/bin/lib/python.sh 's/^  find "\$\{TMPDIR:-\/tmp\}" -maxdepth 1.*\n//m' test_python_resolver
+# M4: a ordem volta a ser a das pastas (achado 4)
+mut M4-ordem-pasta .agents/skills/sdd-checar-ambiente/scripts/checar.sh 's/      for a in "Visual Studio Code" "Cursor" "Windsurf" "Zed" "Sublime Text"; do\n        for d in \$\{SDD_APPS_DIRS:-\/Applications:\$\{HOME:-\}\/Applications\}; do/      for d in \${SDD_APPS_DIRS:-\/Applications:\${HOME:-}\/Applications}; do\n        for a in "Visual Studio Code" "Cursor" "Windsurf" "Zed" "Sublime Text"; do/' test_checar
+# M5: a regra das aspas simples do slot some da SKILL (achado 6)
+mut M5-sem-regra-yaml .agents/skills/sdd-new-session/SKILL.md 's/   - valor com aspas duplas dentro.*?\n.*?editor: .open -a "Visual Studio Code".`;\n//s' test_f16_textos

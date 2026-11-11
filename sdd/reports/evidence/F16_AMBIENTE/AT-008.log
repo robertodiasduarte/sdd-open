@@ -1,0 +1,9 @@
+$ python3 -B -m unittest discover -v -s tests -p test_windows.py
+  test_cada_achado_tem_teste_que_roda_no_job (test_windows.AchadosGuardados.test_cada_achado_tem_teste_que_roda_no_job) ... ok
+  test_gitattributes_poe_lf_em_todo_checkout (test_windows.FimDeLinha.test_gitattributes_poe_lf_em_todo_checkout) ... ok
+  test_stdout_do_curator_sem_crlf (test_windows.FimDeLinha.test_stdout_do_curator_sem_crlf) ... ok
+  test_a_varredura_acusa_a_pergunta_escrita_a_mao (test_windows.Pulos.test_a_varredura_acusa_a_pergunta_escrita_a_mao) ... ok
+  test_cada_constante_tem_motivo_que_nomeia_o_recurso (test_windows.Pulos.test_cada_constante_tem_motivo_que_nomeia_o_recurso) ... ok
+  test_pulo_de_plataforma_so_por_constante_do_apoio (test_windows.Pulos.test_pulo_de_plataforma_so_por_constante_do_apoio) ... ok
+  Ran 6 tests in 0.192s
+  OK

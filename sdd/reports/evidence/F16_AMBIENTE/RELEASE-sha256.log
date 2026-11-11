@@ -1,0 +1,5 @@
+$ shasum -a 256 -c SHA256SUMS.txt   # em rel-9JFm, baixado de https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.11.0
+sdd-open-v2.11.0.tar.gz: OK
+[exit=0]
+$ cat SHA256SUMS.txt
+7c51606a24e805387d399c8a09d0624bfc4fad88a51098ea49c8253fc5c5d536  sdd-open-v2.11.0.tar.gz

@@ -1,0 +1,456 @@
+﻿2026-11-11T08:15:57.5750902Z Current runner version: '2.338.2'
+2026-11-11T08:15:57.5778319Z ##[group]Runner Image Provisioner
+2026-11-11T08:15:57.5779113Z Hosted Compute Agent
+2026-11-11T08:15:57.5779629Z Version: 20261103.629
+2026-11-11T08:15:57.5780247Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+2026-11-11T08:15:57.5780940Z Build Date: 2026-11-03T17:26:59Z
+2026-11-11T08:15:57.5781563Z Worker ID: {94b441de-4a88-44f2-8656-e16aa0b5151a}
+2026-11-11T08:15:57.5782278Z Region: southcentralus
+2026-11-11T08:15:57.5782790Z Cloud: Azure
+2026-11-11T08:15:57.5783297Z ##[endgroup]
+2026-11-11T08:15:57.5784609Z ##[group]Operating System
+2026-11-11T08:15:57.5785241Z Microsoft Windows Server 2025
+2026-11-11T08:15:57.5785819Z 10.0.26100
+2026-11-11T08:15:57.5786292Z Datacenter
+2026-11-11T08:15:57.5786765Z ##[endgroup]
+2026-11-11T08:15:57.5787244Z ##[group]Runner Image
+2026-11-11T08:15:57.5787806Z Image: windows-2025-vs2026
+2026-11-11T08:15:57.5788367Z Version: 20261103.298.1
+2026-11-11T08:15:57.5789912Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261103.298/images/windows/Windows2025-VS2026-Readme.md
+2026-11-11T08:15:57.5791508Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261103.298
+2026-11-11T08:15:57.5792523Z ##[endgroup]
+2026-11-11T08:15:57.5793618Z ##[group]GITHUB_TOKEN Permissions
+2026-11-11T08:15:57.5795710Z Contents: read
+2026-11-11T08:15:57.5796743Z Metadata: read
+2026-11-11T08:15:57.5797590Z ##[endgroup]
+2026-11-11T08:15:57.5800368Z Secret source: Actions
+2026-11-11T08:15:57.5801330Z Cache mode: write
+2026-11-11T08:15:57.5802120Z Prepare workflow directory
+2026-11-11T08:15:57.6264982Z Prepare all required actions
+2026-11-11T08:15:57.6314404Z Getting action download info
+2026-11-11T08:15:57.8870582Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-11-11T08:15:58.0244225Z Download action repository 'actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0' (SHA:6d4fd22b20465ccc0f7354476588e8df7c9ca0e0)
+2026-11-11T08:15:58.6542662Z Complete job name: Testes no Windows (Git Bash + Python nativo, só leitura)
+2026-11-11T08:15:58.8024450Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-11-11T08:15:58.8025848Z with:
+2026-11-11T08:15:58.8026298Z   fetch-depth: 0
+2026-11-11T08:15:58.8027038Z   repository: robertodiasduarte/sdd-open
+2026-11-11T08:15:58.8032133Z   token: ***
+2026-11-11T08:15:58.8032581Z   ssh-strict: true
+2026-11-11T08:15:58.8033031Z   ssh-user: git
+2026-11-11T08:15:58.8033484Z   persist-credentials: true
+2026-11-11T08:15:58.8033985Z   clean: true
+2026-11-11T08:15:58.8034442Z   sparse-checkout-cone-mode: true
+2026-11-11T08:15:58.8035365Z   fetch-tags: false
+2026-11-11T08:15:58.8035842Z   show-progress: true
+2026-11-11T08:15:58.8036297Z   lfs: false
+2026-11-11T08:15:58.8036717Z   submodules: false
+2026-11-11T08:15:58.8037186Z   set-safe-directory: true
+2026-11-11T08:15:58.8037721Z   allow-unsafe-pr-checkout: false
+2026-11-11T08:15:58.8038601Z ##[endgroup]
+2026-11-11T08:15:58.9703915Z Syncing repository: robertodiasduarte/sdd-open
+2026-11-11T08:15:58.9705978Z ##[group]Getting Git version info
+2026-11-11T08:15:58.9706675Z Working directory is 'D:\a\sdd-open\sdd-open'
+2026-11-11T08:15:59.0620430Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-11T08:15:59.3841644Z git version 2.56.0.windows.4
+2026-11-11T08:15:59.3891035Z ##[endgroup]
+2026-11-11T08:15:59.3912115Z Temporarily overriding HOME='D:\a\_temp\22e75dfa-60b4-4f30-ba93-1b71a3dcc3c1' before making global git config changes
+2026-11-11T08:15:59.3914644Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-11T08:15:59.3922846Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\sdd-open\sdd-open
+2026-11-11T08:15:59.4590008Z Deleting the contents of 'D:\a\sdd-open\sdd-open'
+2026-11-11T08:15:59.4597659Z ##[group]Initializing the repository
+2026-11-11T08:15:59.4607669Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\sdd-open\sdd-open
+2026-11-11T08:15:59.5450159Z Initialized empty Git repository in D:/a/sdd-open/sdd-open/.git/
+2026-11-11T08:15:59.5490292Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/robertodiasduarte/sdd-open
+2026-11-11T08:15:59.6224081Z ##[endgroup]
+2026-11-11T08:15:59.6227871Z ##[group]Disabling automatic garbage collection
+2026-11-11T08:15:59.6234038Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-11-11T08:15:59.6650984Z ##[endgroup]
+2026-11-11T08:15:59.6653807Z ##[group]Setting up auth
+2026-11-11T08:15:59.6664236Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-11T08:15:59.7066332Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-11T08:16:01.1548050Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-11T08:16:01.1948219Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-11T08:16:01.7666238Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-11T08:16:01.8061625Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-11-11T08:16:02.3991666Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-11-11T08:16:02.4385850Z ##[endgroup]
+2026-11-11T08:16:02.4386887Z ##[group]Fetching the repository
+2026-11-11T08:16:02.4401754Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +e7e0e0a0bf3d7e36db488f0ace6acaff49d2780b:refs/remotes/pull/25/merge
+2026-11-11T08:16:03.9899382Z From https://github.com/robertodiasduarte/sdd-open
+2026-11-11T08:16:03.9901266Z  * [new branch]      docs/f15-slots                           -> origin/docs/f15-slots
+2026-11-11T08:16:03.9902442Z  * [new branch]      docs/incorporar-starter                  -> origin/docs/incorporar-starter
+2026-11-11T08:16:03.9903252Z  * [new branch]      feat/f10-revisao                         -> origin/feat/f10-revisao
+2026-11-11T08:16:03.9904364Z  * [new branch]      feat/f11-gate                            -> origin/feat/f11-gate
+2026-11-11T08:16:03.9905847Z  * [new branch]      feat/f12-contexto                        -> origin/feat/f12-contexto
+2026-11-11T08:16:03.9906522Z  * [new branch]      feat/f13-ux-llm                          -> origin/feat/f13-ux-llm
+2026-11-11T08:16:03.9907215Z  * [new branch]      feat/f14-drive                           -> origin/feat/f14-drive
+2026-11-11T08:16:03.9907868Z  * [new branch]      feat/f14-drive-v271                      -> origin/feat/f14-drive-v271
+2026-11-11T08:16:03.9908550Z  * [new branch]      feat/f14-playbook                        -> origin/feat/f14-playbook
+2026-11-11T08:16:03.9909142Z  * [new branch]      feat/f15-slots                           -> origin/feat/f15-slots
+2026-11-11T08:16:03.9909719Z  * [new branch]      feat/f16-ambiente                        -> origin/feat/f16-ambiente
+2026-11-11T08:16:03.9910379Z  * [new branch]      feat/f19-custo-revisores                 -> origin/feat/f19-custo-revisores
+2026-11-11T08:16:03.9911369Z  * [new branch]      feat/f21-engenharia-reversa              -> origin/feat/f21-engenharia-reversa
+2026-11-11T08:16:03.9912265Z  * [new branch]      feat/f4-conversa                         -> origin/feat/f4-conversa
+2026-11-11T08:16:03.9913847Z  * [new branch]      feat/f5-conhecimento                     -> origin/feat/f5-conhecimento
+2026-11-11T08:16:03.9916181Z  * [new branch]      feat/f6-docs                             -> origin/feat/f6-docs
+2026-11-11T08:16:03.9917091Z  * [new branch]      feat/f7-evidencia                        -> origin/feat/f7-evidencia
+2026-11-11T08:16:03.9918117Z  * [new branch]      feat/f8-hooks                            -> origin/feat/f8-hooks
+2026-11-11T08:16:03.9919066Z  * [new branch]      feat/f9-fluxo                            -> origin/feat/f9-fluxo
+2026-11-11T08:16:03.9920074Z  * [new branch]      feat/incorporar-starter                  -> origin/feat/incorporar-starter
+2026-11-11T08:16:03.9921098Z  * [new branch]      feat/m1                                  -> origin/feat/m1
+2026-11-11T08:16:03.9922053Z  * [new branch]      feat/w0-m1                               -> origin/feat/w0-m1
+2026-11-11T08:16:03.9923224Z  * [new branch]      fix/guardas-pasta-e-gancho-encadeado     -> origin/fix/guardas-pasta-e-gancho-encadeado
+2026-11-11T08:16:03.9924499Z  * [new branch]      fix/teto-ubuntu-release                  -> origin/fix/teto-ubuntu-release
+2026-11-11T08:16:03.9925541Z  * [new branch]      main                                     -> origin/main
+2026-11-11T08:16:03.9926712Z  * [new tag]         docs-2026-10-29                          -> docs-2026-10-29
+2026-11-11T08:16:03.9927562Z  * [new tag]         v1.0.0                                   -> v1.0.0
+2026-11-11T08:16:03.9928328Z  * [new tag]         v2.0.0                                   -> v2.0.0
+2026-11-11T08:16:03.9929085Z  * [new tag]         v2.0.1                                   -> v2.0.1
+2026-11-11T08:16:03.9929788Z  * [new tag]         v2.1.0                                   -> v2.1.0
+2026-11-11T08:16:03.9930538Z  * [new tag]         v2.10.0                                  -> v2.10.0
+2026-11-11T08:16:03.9931434Z  * [new tag]         v2.10.1                                  -> v2.10.1
+2026-11-11T08:16:03.9932528Z  * [new tag]         v2.2.0                                   -> v2.2.0
+2026-11-11T08:16:03.9933053Z  * [new tag]         v2.2.1                                   -> v2.2.1
+2026-11-11T08:16:03.9934300Z  * [new tag]         v2.2.10                                  -> v2.2.10
+2026-11-11T08:16:03.9934854Z  * [new tag]         v2.2.2                                   -> v2.2.2
+2026-11-11T08:16:03.9935325Z  * [new tag]         v2.2.3                                   -> v2.2.3
+2026-11-11T08:16:03.9935833Z  * [new tag]         v2.2.4                                   -> v2.2.4
+2026-11-11T08:16:03.9936277Z  * [new tag]         v2.2.5                                   -> v2.2.5
+2026-11-11T08:16:03.9936702Z  * [new tag]         v2.2.6                                   -> v2.2.6
+2026-11-11T08:16:03.9937156Z  * [new tag]         v2.2.7                                   -> v2.2.7
+2026-11-11T08:16:03.9937787Z  * [new tag]         v2.2.8                                   -> v2.2.8
+2026-11-11T08:16:03.9938357Z  * [new tag]         v2.2.9                                   -> v2.2.9
+2026-11-11T08:16:03.9938857Z  * [new tag]         v2.3.0                                   -> v2.3.0
+2026-11-11T08:16:03.9939390Z  * [new tag]         v2.3.1                                   -> v2.3.1
+2026-11-11T08:16:03.9939969Z  * [new tag]         v2.4.0                                   -> v2.4.0
+2026-11-11T08:16:03.9940423Z  * [new tag]         v2.5.0                                   -> v2.5.0
+2026-11-11T08:16:03.9941114Z  * [new tag]         v2.6.0                                   -> v2.6.0
+2026-11-11T08:16:03.9941674Z  * [new tag]         v2.7.0                                   -> v2.7.0
+2026-11-11T08:16:03.9942146Z  * [new tag]         v2.7.1                                   -> v2.7.1
+2026-11-11T08:16:03.9943208Z  * [new tag]         v2.7.2                                   -> v2.7.2
+2026-11-11T08:16:03.9944361Z  * [new tag]         v2.8.0                                   -> v2.8.0
+2026-11-11T08:16:03.9944895Z  * [new tag]         v2.9.0                                   -> v2.9.0
+2026-11-11T08:16:03.9945648Z  * [new ref]         e7e0e0a0bf3d7e36db488f0ace6acaff49d2780b -> pull/25/merge
+2026-11-11T08:16:03.9955799Z ##[endgroup]
+2026-11-11T08:16:03.9957437Z ##[group]Determining the checkout info
+2026-11-11T08:16:03.9958002Z ##[endgroup]
+2026-11-11T08:16:03.9967030Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-11-11T08:16:04.0514764Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-11-11T08:16:04.0897975Z ##[group]Checking out the ref
+2026-11-11T08:16:04.0906500Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/25/merge
+2026-11-11T08:16:04.3000172Z Note: switching to 'refs/remotes/pull/25/merge'.
+2026-11-11T08:16:04.3000439Z 
+2026-11-11T08:16:04.3000701Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-11T08:16:04.3001715Z changes and commit them, and you can discard any commits you make in this
+2026-11-11T08:16:04.3002631Z state without impacting any branches by switching back to a branch.
+2026-11-11T08:16:04.3002949Z 
+2026-11-11T08:16:04.3004084Z If you want to create a new branch to retain commits you create, you may
+2026-11-11T08:16:04.3004855Z do so (now or later) by using -c with the switch command. Example:
+2026-11-11T08:16:04.3005466Z 
+2026-11-11T08:16:04.3005636Z   git switch -c <new-branch-name>
+2026-11-11T08:16:04.3005924Z 
+2026-11-11T08:16:04.3006165Z Or undo this operation with:
+2026-11-11T08:16:04.3006396Z 
+2026-11-11T08:16:04.3006500Z   git switch -
+2026-11-11T08:16:04.3006663Z 
+2026-11-11T08:16:04.3006942Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-11T08:16:04.3007349Z 
+2026-11-11T08:16:04.3007819Z HEAD is now at e7e0e0a Merge d5568517936384a026793d2592d267a99c8f06c2 into 36d04541bbc862b6c48760a9ee66dc0e2a43a1d3
+2026-11-11T08:16:04.3187761Z ##[endgroup]
+2026-11-11T08:16:04.3726242Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-11-11T08:16:04.4081433Z e7e0e0a0bf3d7e36db488f0ace6acaff49d2780b
+2026-11-11T08:16:04.4692714Z ##[group]Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+2026-11-11T08:16:04.4693167Z with:
+2026-11-11T08:16:04.4693350Z   python-version: 3.12
+2026-11-11T08:16:04.4693562Z   check-latest: false
+2026-11-11T08:16:04.4696315Z   token: ***
+2026-11-11T08:16:04.4696630Z   mirror: https://raw.githubusercontent.com/actions/python-versions/main
+2026-11-11T08:16:04.4697019Z   update-environment: true
+2026-11-11T08:16:04.4697239Z   allow-prereleases: false
+2026-11-11T08:16:04.4697448Z   freethreaded: false
+2026-11-11T08:16:04.4697650Z ##[endgroup]
+2026-11-11T08:16:04.6253411Z ##[group]Installed versions
+2026-11-11T08:16:04.6466500Z Successfully set up CPython (3.12.10)
+2026-11-11T08:16:04.6467282Z ##[endgroup]
+2026-11-11T08:16:04.6759780Z ##[group]Run mkdir -p "$RUNNER_TEMP/bin"
+2026-11-11T08:16:04.6760218Z mkdir -p "$RUNNER_TEMP/bin"
+2026-11-11T08:16:04.6760563Z curl -fsSL -o "$RUNNER_TEMP/gitleaks.zip" \
+2026-11-11T08:16:04.6761121Z   https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_windows_x64.zip
+2026-11-11T08:16:04.6761757Z python -m zipfile -e "$RUNNER_TEMP/gitleaks.zip" "$RUNNER_TEMP/bin"
+2026-11-11T08:16:04.6762169Z "$RUNNER_TEMP/bin/gitleaks.exe" version
+2026-11-11T08:16:04.6762485Z echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+2026-11-11T08:16:04.6787563Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-11-11T08:16:04.6787962Z env:
+2026-11-11T08:16:04.6788229Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:04.6788711Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-11T08:16:04.6789220Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:04.6789626Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:04.6790255Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:04.6790575Z ##[endgroup]
+2026-11-11T08:16:06.7330685Z 8.30.1
+2026-11-11T08:16:06.7616887Z ##[group]Run command -v bash
+2026-11-11T08:16:06.7617248Z command -v bash
+2026-11-11T08:16:06.7617690Z bash -c 'echo "bash $BASH_VERSION"; uname -s; case "$(uname -s)" in MINGW*|MSYS*) ;; *) exit 1 ;; esac'
+2026-11-11T08:16:06.7618342Z python -c 'import os, sys; print(sys.version, os.name); sys.exit(os.name != "nt")'
+2026-11-11T08:16:06.7618887Z echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"
+2026-11-11T08:16:06.7637351Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-11-11T08:16:06.7637752Z env:
+2026-11-11T08:16:06.7638019Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:06.7638496Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-11T08:16:06.7638975Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:06.7639407Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:06.7639803Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:06.7640119Z ##[endgroup]
+2026-11-11T08:16:06.8026904Z /usr/bin/bash
+2026-11-11T08:16:06.8335395Z bash 5.3.15(2)-release
+2026-11-11T08:16:06.8638571Z MINGW64_NT-10.0-26100
+2026-11-11T08:16:06.9296434Z 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)] nt
+2026-11-11T08:16:07.0084201Z ##[group]Run bash scripts/publish-gate.sh "$(pwd)"
+2026-11-11T08:16:07.0084641Z bash scripts/publish-gate.sh "$(pwd)"
+2026-11-11T08:16:07.0101901Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-11-11T08:16:07.0102291Z env:
+2026-11-11T08:16:07.0102547Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:07.0103017Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-11T08:16:07.0103482Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:07.0103876Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:07.0104271Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:07.0104664Z   SDD_TEST_BASH: C:\Program Files\Git\usr\bin\bash.exe
+2026-11-11T08:16:07.0104971Z   PUBLISH_GATE_MODE: ci
+2026-11-11T08:16:07.0105168Z ##[endgroup]
+2026-11-11T08:16:07.1106198Z publish-gate — tree: /d/a/sdd-open/sdd-open — mode: ci
+2026-11-11T08:16:07.1110801Z ──────────────────────────────────────────────────────────────────
+2026-11-11T08:16:07.1111249Z G1 secrets (gitleaks)
+2026-11-11T08:16:07.9184264Z   ✅ no secrets detected
+2026-11-11T08:16:07.9449204Z G2 forbidden patterns
+2026-11-11T08:16:10.3527235Z   ✅ no forbidden pattern matched
+2026-11-11T08:16:10.3527762Z G3 allowlist (MANIFEST.txt)
+2026-11-11T08:16:20.4296732Z   ✅ tree and manifest match in both directions
+2026-11-11T08:16:20.4297273Z G4 verify-gate exit contract
+2026-11-11T08:16:21.6304571Z   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+2026-11-11T08:16:22.6230408Z   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+2026-11-11T08:16:23.2079868Z   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+2026-11-11T08:16:23.3135106Z G5 documentation
+2026-11-11T08:16:23.3718539Z   ✅ docs present, cross-linked, attribution in place
+2026-11-11T08:16:23.3720700Z ──────────────────────────────────────────────────────────────────
+2026-11-11T08:16:23.3722191Z ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+2026-11-11T08:16:23.3933915Z ##[group]Run python -B -m unittest -v test_checar test_inventario test_python_resolver test_windows test_f16_textos
+2026-11-11T08:16:23.3935017Z python -B -m unittest -v test_checar test_inventario test_python_resolver test_windows test_f16_textos
+2026-11-11T08:16:23.3953383Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-11-11T08:16:23.3954513Z env:
+2026-11-11T08:16:23.3955080Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:23.3955570Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-11T08:16:23.3956043Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:23.3956451Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:23.3956847Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T08:16:23.3957199Z   SDD_TEST_BASH: C:\Program Files\Git\usr\bin\bash.exe
+2026-11-11T08:16:23.3957513Z   PYTHONUNBUFFERED: 1
+2026-11-11T08:16:23.3957705Z ##[endgroup]
+2026-11-11T08:16:27.0914773Z test_api_fora_do_ar_nao_diz_nada (test_checar.TestDadoExposto.test_api_fora_do_ar_nao_diz_nada) ... ok
+2026-11-11T08:16:29.9519631Z test_env_example_e_sample_nao_alarmam (test_checar.TestDadoExposto.test_env_example_e_sample_nao_alarmam) ... ok
+2026-11-11T08:16:32.7515732Z test_env_ignorado_nao_diz_nada (test_checar.TestDadoExposto.test_env_ignorado_nao_diz_nada) ... ok
+2026-11-11T08:16:35.5898227Z test_env_nao_ignorado_e_aviso (test_checar.TestDadoExposto.test_env_nao_ignorado_e_aviso) ... ok
+2026-11-11T08:16:38.4813317Z test_env_rastreado_e_dado_exposto_no_topo (test_checar.TestDadoExposto.test_env_rastreado_e_dado_exposto_no_topo) ... ok
+2026-11-11T08:16:47.4025899Z test_npm_ignore_scripts (test_checar.TestDadoExposto.test_npm_ignore_scripts) ... ok
+2026-11-11T08:16:50.2604960Z test_p12_e_env_variante (test_checar.TestDadoExposto.test_p12_e_env_variante) ... ok
+2026-11-11T08:16:54.8411004Z test_pem_publico_nao_alarma_privado_alarma (test_checar.TestDadoExposto.test_pem_publico_nao_alarma_privado_alarma) ... ok
+2026-11-11T08:16:57.7170161Z test_pfx_em_repo_publico_diz_que_esta_na_internet (test_checar.TestDadoExposto.test_pfx_em_repo_publico_diz_que_esta_na_internet) ... ok
+2026-11-11T08:17:00.3644876Z test_repo_privado_nao_menciona_visibilidade (test_checar.TestDadoExposto.test_repo_privado_nao_menciona_visibilidade) ... ok
+2026-11-11T08:17:02.9783562Z test_repo_publico_sem_segredo_continua_uma_linha (test_checar.TestDadoExposto.test_repo_publico_sem_segredo_continua_uma_linha) ... ok
+2026-11-11T08:17:05.5519345Z test_saudavel_e_uma_linha_com_identificacao (test_checar.TestDadoExposto.test_saudavel_e_uma_linha_com_identificacao) ... ok
+2026-11-11T08:17:08.1190088Z test_sem_env_nao_fala_de_gitignore (test_checar.TestDadoExposto.test_sem_env_nao_fala_de_gitignore) ... ok
+2026-11-11T08:17:10.6725873Z test_sem_package_json_nao_fala_de_npm (test_checar.TestDadoExposto.test_sem_package_json_nao_fala_de_npm) ... ok
+2026-11-11T08:17:12.2524017Z test_a_ordem_da_lista_de_apps_vence_a_ordem_das_pastas (test_checar.TestEditor.test_a_ordem_da_lista_de_apps_vence_a_ordem_das_pastas) ... ok
+2026-11-11T08:17:13.1302431Z test_app_do_macos_fora_do_path_vira_open_a (test_checar.TestEditor.test_app_do_macos_fora_do_path_vira_open_a) ... ok
+2026-11-11T08:17:14.0350905Z test_app_do_macos_nao_vale_fora_do_macos (test_checar.TestEditor.test_app_do_macos_nao_vale_fora_do_macos) ... ok
+2026-11-11T08:17:14.9456601Z test_app_na_segunda_pasta_de_aplicativos (test_checar.TestEditor.test_app_na_segunda_pasta_de_aplicativos) ... ok
+2026-11-11T08:17:15.8693862Z test_editor_fora_de_repositorio (test_checar.TestEditor.test_editor_fora_de_repositorio) ... ok
+2026-11-11T08:17:16.9928772Z test_ordem_no_path (test_checar.TestEditor.test_ordem_no_path) ... ok
+2026-11-11T08:17:21.2657546Z test_resumo_cita_o_editor_e_sem_editor_nao_avisa (test_checar.TestEditor.test_resumo_cita_o_editor_e_sem_editor_nao_avisa) ... ok
+2026-11-11T08:17:22.2765395Z test_sem_editor_sai_1_calado (test_checar.TestEditor.test_sem_editor_sai_1_calado) ... ok
+2026-11-11T08:17:23.2360884Z test_windows_cmd_fora_do_path (test_checar.TestEditor.test_windows_cmd_fora_do_path) ... ok
+2026-11-11T08:17:24.1802921Z test_windows_cmd_no_path (test_checar.TestEditor.test_windows_cmd_no_path) ... ok
+2026-11-11T08:17:27.3257138Z test_frente_bloqueia_credencial (test_checar.TestFrente.test_frente_bloqueia_credencial) ... ok
+2026-11-11T08:17:29.5923586Z test_frente_bloqueia_host_ssh (test_checar.TestFrente.test_frente_bloqueia_host_ssh) ... ok
+2026-11-11T08:17:29.5925963Z test_frente_bloqueia_login_do_editor (test_checar.TestFrente.test_frente_bloqueia_login_do_editor) ... skipped 'sinal POSIX: o Windows n�o entrega SIGTERM nem SIGKILL a um grupo de processos'
+2026-11-11T08:17:39.9252105Z test_frente_bloqueia_rede (test_checar.TestFrente.test_frente_bloqueia_rede) ... ok
+2026-11-11T08:17:41.4472639Z test_frente_bloqueia_sem_origin (test_checar.TestFrente.test_frente_bloqueia_sem_origin) ... ok
+2026-11-11T08:17:42.8544564Z test_frente_bloqueia_sem_remoto (test_checar.TestFrente.test_frente_bloqueia_sem_remoto) ... ok
+2026-11-11T08:17:45.1821817Z test_frente_bloqueia_vazio (test_checar.TestFrente.test_frente_bloqueia_vazio) ... ok
+2026-11-11T08:17:47.4517706Z test_frente_nao_olha_dado_exposto (test_checar.TestFrente.test_frente_nao_olha_dado_exposto) ... ok
+2026-11-11T08:17:49.6096584Z test_frente_saudavel_uma_linha (test_checar.TestFrente.test_frente_saudavel_uma_linha) ... ok
+2026-11-11T08:17:52.3032028Z test_frente_nao_consulta_o_gh (test_checar.TestGh.test_frente_nao_consulta_o_gh) ... ok
+2026-11-11T08:17:54.4889220Z test_frente_sem_gh_nao_fala_do_gh (test_checar.TestGh.test_frente_sem_gh_nao_fala_do_gh) ... ok
+2026-11-11T08:17:57.2593683Z test_gh_deslogado_com_remoto_do_github (test_checar.TestGh.test_gh_deslogado_com_remoto_do_github) ... ok
+2026-11-11T08:17:59.2170341Z test_gh_deslogado_sem_remoto_tambem_avisa (test_checar.TestGh.test_gh_deslogado_sem_remoto_tambem_avisa) ... ok
+2026-11-11T08:18:02.4384769Z test_gh_logado_nao_diz_nada_e_consulta_so_o_github (test_checar.TestGh.test_gh_logado_nao_diz_nada_e_consulta_so_o_github) ... ok
+2026-11-11T08:18:15.0910023Z test_gh_pendurado_respeita_o_teto (test_checar.TestGh.test_gh_pendurado_respeita_o_teto) ... ok
+2026-11-11T08:18:17.8440915Z test_gh_sem_rede_e_sem_resposta (test_checar.TestGh.test_gh_sem_rede_e_sem_resposta) ... ok
+2026-11-11T08:18:22.3880587Z test_remoto_fora_do_github_nao_chama_nem_cita_o_gh (test_checar.TestGh.test_remoto_fora_do_github_nao_chama_nem_cita_o_gh) ... ok
+2026-11-11T08:18:25.0416573Z test_remoto_recusado_nao_repete_o_login (test_checar.TestGh.test_remoto_recusado_nao_repete_o_login) ... ok
+2026-11-11T08:18:31.1240815Z test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0 (test_checar.TestGh.test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0) ... ok
+2026-11-11T08:18:33.0114253Z test_sem_gh_e_sem_remoto_avisa (test_checar.TestGh.test_sem_gh_e_sem_remoto_avisa) ... ok
+2026-11-11T08:18:34.6087101Z test_arquivos_sem_git_oferece_iniciar_repo (test_checar.TestOndeEstou.test_arquivos_sem_git_oferece_iniciar_repo) ... ok
+2026-11-11T08:18:35.1170345Z test_documents_sem_icloud_nao_acusa (test_checar.TestOndeEstou.test_documents_sem_icloud_nao_acusa) ... ok
+2026-11-11T08:18:35.6697990Z test_git_dentro_de_node_modules_nao_conta (test_checar.TestOndeEstou.test_git_dentro_de_node_modules_nao_conta) ... ok
+2026-11-11T08:18:36.3306035Z test_git_em_duas_subpastas_lista_as_duas (test_checar.TestOndeEstou.test_git_em_duas_subpastas_lista_as_duas) ... ok
+2026-11-11T08:18:37.0536436Z test_git_em_quatro_subpastas_pergunta_qual (test_checar.TestOndeEstou.test_git_em_quatro_subpastas_pergunta_qual) ... ok
+2026-11-11T08:18:38.0849786Z test_git_numa_subpasta_manda_abrir_nela (test_checar.TestOndeEstou.test_git_numa_subpasta_manda_abrir_nela) ... ok
+2026-11-11T08:18:38.2988103Z test_icloud_mesa_e_documentos_pelo_symlink (test_checar.TestOndeEstou.test_icloud_mesa_e_documentos_pelo_symlink) ... ok
+2026-11-11T08:18:39.3556529Z test_nao_grava_nada_fora_do_repositorio (test_checar.TestOndeEstou.test_nao_grava_nada_fora_do_repositorio) ... ok
+2026-11-11T08:18:39.8318053Z test_nome_parecido_nao_acusa (test_checar.TestOndeEstou.test_nome_parecido_nao_acusa) ... ok
+2026-11-11T08:18:40.5440070Z test_pasta_pessoal_nao_varre (test_checar.TestOndeEstou.test_pasta_pessoal_nao_varre) ... ok
+2026-11-11T08:18:41.3684661Z test_pasta_vazia_indica_brainstorm (test_checar.TestOndeEstou.test_pasta_vazia_indica_brainstorm) ... ok
+2026-11-11T08:18:41.7569410Z test_sem_git_e_sem_a_skill_irma_manda_rodar_o_init (test_checar.TestOndeEstou.test_sem_git_e_sem_a_skill_irma_manda_rodar_o_init) ... ok
+2026-11-11T08:18:42.3442405Z test_sincronizada_dentro_de_repositorio (test_checar.TestOndeEstou.test_sincronizada_dentro_de_repositorio) ... ok
+2026-11-11T08:18:45.7568328Z test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) ... ok
+2026-11-11T08:18:46.2286248Z test_so_arquivo_do_sistema_conta_como_vazia (test_checar.TestOndeEstou.test_so_arquivo_do_sistema_conta_como_vazia) ... ok
+2026-11-11T08:18:50.2878447Z test_comandos_impressos_sem_prompt (test_checar.TestRemoto.test_comandos_impressos_sem_prompt) ... ok
+2026-11-11T08:18:53.0279431Z test_credencial_github_privado_explica_as_duas_causas (test_checar.TestRemoto.test_credencial_github_privado_explica_as_duas_causas) ... ok
+2026-11-11T08:18:55.7325967Z test_credencial_recusada_rapida (test_checar.TestRemoto.test_credencial_recusada_rapida) ... ok
+2026-11-11T08:18:56.9045392Z test_git_fora_do_path (test_checar.TestRemoto.test_git_fora_do_path) ... ok
+2026-11-11T08:18:59.5397750Z test_host_ssh_desconhecido (test_checar.TestRemoto.test_host_ssh_desconhecido) ... ok
+2026-11-11T08:18:59.5400606Z test_login_do_editor_esperando (test_checar.TestRemoto.test_login_do_editor_esperando) ... skipped 'sinal POSIX: o Windows n�o entrega SIGTERM nem SIGKILL a um grupo de processos'
+2026-11-11T08:18:59.5403718Z test_rede_parada_com_editor_nao_e_janela_de_login (test_checar.TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login) ... skipped 'sinal POSIX: o Windows n�o entrega SIGTERM nem SIGKILL a um grupo de processos'
+2026-11-11T08:19:10.2507577Z test_rede_pendurada (test_checar.TestRemoto.test_rede_pendurada) ... ok
+2026-11-11T08:19:10.2509535Z test_rede_pendurada_inteira_api_e_remoto (test_checar.TestRemoto.test_rede_pendurada_inteira_api_e_remoto) ... skipped 'sinal POSIX: o Windows n�o entrega SIGTERM nem SIGKILL a um grupo de processos'
+2026-11-11T08:19:12.9501633Z test_remoto_vazio (test_checar.TestRemoto.test_remoto_vazio) ... ok
+2026-11-11T08:19:14.9022190Z test_sem_remoto_continua_aviso (test_checar.TestRemoto.test_sem_remoto_continua_aviso) ... ok
+2026-11-11T08:19:14.9023794Z test_ssh_pendurado_vigia (test_checar.TestRemoto.test_ssh_pendurado_vigia) ... skipped 'sinal POSIX: o Windows n�o entrega SIGTERM nem SIGKILL a um grupo de processos'
+2026-11-11T08:19:17.7725284Z test_vazio_com_warning (test_checar.TestRemoto.test_vazio_com_warning) ... ok
+2026-11-11T08:19:20.1012333Z test_acusa_cada_tipo_e_sai_1 (test_checar.TestSegredo.test_acusa_cada_tipo_e_sai_1) ... ok
+2026-11-11T08:19:21.4778417Z test_nao_sai_para_a_rede (test_checar.TestSegredo.test_nao_sai_para_a_rede) ... ok
+2026-11-11T08:19:28.1481553Z test_repositorio_grande_continua_rapido (test_checar.TestSegredo.test_repositorio_grande_continua_rapido) ... ok
+2026-11-11T08:19:30.3839570Z test_sem_segredo_sai_0_calado (test_checar.TestSegredo.test_sem_segredo_sai_0_calado) ... ok
+2026-11-11T08:19:32.6236997Z test_frente_sem_remoto_cita_iniciar_repo (test_checar.TestSemRemotoIndicaIniciarRepo.test_frente_sem_remoto_cita_iniciar_repo) ... ok
+2026-11-11T08:19:37.2509435Z test_nao_grava_nada (test_checar.TestSomenteLeitura.test_nao_grava_nada) ... ok
+2026-11-11T08:19:40.6478159Z test_cinco_categorias (test_inventario.TestAchados.test_cinco_categorias) ... ok
+2026-11-11T08:19:42.6372346Z test_com_git_ve_o_que_esta_no_repositorio (test_inventario.TestAchados.test_com_git_ve_o_que_esta_no_repositorio) ... ok
+2026-11-11T08:19:44.1422723Z test_conta_arquivos (test_inventario.TestAchados.test_conta_arquivos) ... ok
+2026-11-11T08:19:44.5267668Z test_falha_ao_listar_nao_vira_nada_sensivel (test_inventario.TestAchados.test_falha_ao_listar_nao_vira_nada_sensivel) ... ok
+2026-11-11T08:19:45.9703037Z test_gitignore_existente_ja_esconde_o_arquivo (test_inventario.TestAchados.test_gitignore_existente_ja_esconde_o_arquivo) ... ok
+2026-11-11T08:19:47.5286742Z test_gitignore_existente_nao_repete_linha (test_inventario.TestAchados.test_gitignore_existente_nao_repete_linha) ... ok
+2026-11-11T08:19:49.4923623Z test_historico_mostra_segredo_ja_apagado (test_inventario.TestAchados.test_historico_mostra_segredo_ja_apagado) ... ok
+2026-11-11T08:19:51.1730628Z test_limite_de_dez_por_categoria (test_inventario.TestAchados.test_limite_de_dez_por_categoria) ... ok
+2026-11-11T08:19:51.1732058Z test_nome_com_aspas_e_barra (test_inventario.TestAchados.test_nome_com_aspas_e_barra) ... skipped 'nome de arquivo com aspas ou terminado em espa�o: o Windows n�o aceita'
+2026-11-11T08:19:51.1735211Z test_nome_com_aspas_no_historico (test_inventario.TestAchados.test_nome_com_aspas_no_historico) ... skipped 'nome de arquivo com aspas ou terminado em espa�o: o Windows n�o aceita'
+2026-11-11T08:19:52.8384980Z test_nome_com_espaco (test_inventario.TestAchados.test_nome_com_espaco) ... ok
+2026-11-11T08:19:59.5094774Z test_proposta_cobre_maiuscula (test_inventario.TestAchados.test_proposta_cobre_maiuscula) ... ok
+2026-11-11T08:20:02.3673381Z test_proposta_cobre_o_que_achou (test_inventario.TestAchados.test_proposta_cobre_o_que_achou) ... ok
+2026-11-11T08:20:05.3232528Z test_proposta_escapa_caminho_grande (test_inventario.TestAchados.test_proposta_escapa_caminho_grande) ... ok
+2026-11-11T08:20:05.3234325Z test_proposta_escapa_espaco_no_fim (test_inventario.TestAchados.test_proposta_escapa_espaco_no_fim) ... skipped 'nome de arquivo com aspas ou terminado em espa�o: o Windows n�o aceita'
+2026-11-11T08:20:07.1001788Z test_proposta_vence_negacao_existente (test_inventario.TestAchados.test_proposta_vence_negacao_existente) ... ok
+2026-11-11T08:20:08.8507655Z test_sem_commit_nao_fala_de_historico (test_inventario.TestAchados.test_sem_commit_nao_fala_de_historico) ... ok
+2026-11-11T08:20:10.6933716Z test_sem_planilha_nem_grande_a_proposta_fica_na_base (test_inventario.TestAchados.test_sem_planilha_nem_grande_a_proposta_fica_na_base) ... ok
+2026-11-11T08:20:12.4138569Z test_a_linha_vem_logo_depois_do_cabecalho (test_inventario.TestGh.test_a_linha_vem_logo_depois_do_cabecalho) ... ok
+2026-11-11T08:20:19.1710178Z test_os_quatro_valores (test_inventario.TestGh.test_os_quatro_valores) ... ok
+2026-11-11T08:20:19.3595696Z test_dentro_de_um_repositorio_maior (test_inventario.TestPreCondicoes.test_dentro_de_um_repositorio_maior) ... ok
+2026-11-11T08:20:19.4628581Z test_icloud_mesa_e_documentos (test_inventario.TestPreCondicoes.test_icloud_mesa_e_documentos) ... ok
+2026-11-11T08:20:19.5416381Z test_pasta_pessoal (test_inventario.TestPreCondicoes.test_pasta_pessoal) ... ok
+2026-11-11T08:20:19.7091390Z test_pasta_sincronizada (test_inventario.TestPreCondicoes.test_pasta_sincronizada) ... ok
+2026-11-11T08:20:20.1239836Z test_repositorio_numa_subpasta (test_inventario.TestPreCondicoes.test_repositorio_numa_subpasta) ... ok
+2026-11-11T08:20:22.2835682Z test_nao_grava_nada (test_inventario.TestSomenteLeitura.test_nao_grava_nada) ... ok
+2026-11-11T08:20:22.3807087Z test_cache_no_ambiente_e_usado_sem_testar (test_python_resolver.Calco.test_cache_no_ambiente_e_usado_sem_testar) ... ok
+2026-11-11T08:20:22.9529879Z test_vale_para_bash_filho_sem_testar_de_novo (test_python_resolver.Calco.test_vale_para_bash_filho_sem_testar_de_novo) ... FAIL
+2026-11-11T08:20:23.7985495Z test_vale_para_env_e_xargs (test_python_resolver.Calco.test_vale_para_env_e_xargs) ... ok
+2026-11-11T08:20:24.3304543Z test_vale_para_exec (test_python_resolver.Calco.test_vale_para_exec) ... ok
+2026-11-11T08:20:24.9663228Z test_atalho_da_store_e_python_nativo_usa_o_python (test_python_resolver.Escolha.test_atalho_da_store_e_python_nativo_usa_o_python) ... FAIL
+2026-11-11T08:20:25.5110444Z test_atalho_e_so_py_usa_py_menos_3 (test_python_resolver.Escolha.test_atalho_e_so_py_usa_py_menos_3) ... ok
+2026-11-11T08:20:25.7482257Z test_python3_que_serve_nao_muda_nada (test_python_resolver.Escolha.test_python3_que_serve_nao_muda_nada) ... ok
+2026-11-11T08:20:26.3497864Z test_python3_velho_passa_ao_proximo (test_python_resolver.Escolha.test_python3_velho_passa_ao_proximo) ... ok
+2026-11-11T08:20:26.9486187Z test_sdd_python_com_espaco_no_caminho (test_python_resolver.Escolha.test_sdd_python_com_espaco_no_caminho) ... ok
+2026-11-11T08:20:27.5636428Z test_calco_velho_sai_e_o_novo_fica (test_python_resolver.Limpeza.test_calco_velho_sai_e_o_novo_fica) ... FAIL
+2026-11-11T08:20:27.8077157Z test_atalho_e_python_velho_tambem_para (test_python_resolver.Parada.test_atalho_e_python_velho_tambem_para) ... ok
+2026-11-11T08:20:28.2666978Z test_calco_que_nao_se_cria_e_dito (test_python_resolver.Parada.test_calco_que_nao_se_cria_e_dito) ... ok
+2026-11-11T08:20:28.5148376Z test_exigir_para_com_causa_e_conserto (test_python_resolver.Parada.test_exigir_para_com_causa_e_conserto) ... ok
+2026-11-11T08:20:28.6334354Z test_nenhum_python_a_guarda_falha_calada_e_exigir_para (test_python_resolver.Parada.test_nenhum_python_a_guarda_falha_calada_e_exigir_para) ... ok
+2026-11-11T08:20:28.7987353Z test_python_velho_e_dito_pela_versao (test_python_resolver.Parada.test_python_velho_e_dito_pela_versao) ... ok
+2026-11-11T08:20:29.0468916Z test_so_o_atalho_a_carga_segue_e_a_guarda_diz_a_causa_uma_vez (test_python_resolver.Parada.test_so_o_atalho_a_carga_segue_e_a_guarda_diz_a_causa_uma_vez) ... ok
+2026-11-11T08:20:29.2393544Z test_so_python_2_e_dito_pela_versao (test_python_resolver.Parada.test_so_python_2_e_dito_pela_versao) ... ok
+2026-11-11T08:20:29.4181579Z test_candidato_que_imprime_lixo_nao_serve (test_python_resolver.RevisaoRodada3.test_candidato_que_imprime_lixo_nao_serve) ... ok
+2026-11-11T08:20:29.6087758Z test_candidato_que_imprime_versao_e_sai_com_erro_nao_serve (test_python_resolver.RevisaoRodada3.test_candidato_que_imprime_versao_e_sai_com_erro_nao_serve) ... ok
+2026-11-11T08:20:30.3490542Z test_script_real_de_sdd_bin_com_o_atalho_da_store (test_python_resolver.RevisaoRodada3.test_script_real_de_sdd_bin_com_o_atalho_da_store) ... ok
+2026-11-11T08:20:30.8596473Z test_sdd_python_igual_a_python3_nao_entra_em_laco (test_python_resolver.RevisaoRodada3.test_sdd_python_igual_a_python3_nao_entra_em_laco) ... FAIL
+2026-11-11T08:20:31.4209315Z test_set_e_com_calco_que_nao_se_cria_nao_derruba_na_carga (test_python_resolver.RevisaoRodada3.test_set_e_com_calco_que_nao_se_cria_nao_derruba_na_carga) ... ok
+2026-11-11T08:20:31.4853356Z test_cada_achado_tem_teste_que_roda_no_job (test_windows.AchadosGuardados.test_cada_achado_tem_teste_que_roda_no_job) ... ok
+2026-11-11T08:20:31.4876943Z test_gitattributes_poe_lf_em_todo_checkout (test_windows.FimDeLinha.test_gitattributes_poe_lf_em_todo_checkout) ... ok
+2026-11-11T08:20:32.5750215Z test_stdout_do_curator_sem_crlf (test_windows.FimDeLinha.test_stdout_do_curator_sem_crlf) ... ok
+2026-11-11T08:20:32.5753759Z test_a_varredura_acusa_a_pergunta_escrita_a_mao (test_windows.Pulos.test_a_varredura_acusa_a_pergunta_escrita_a_mao) ... ok
+2026-11-11T08:20:32.5756254Z test_cada_constante_tem_motivo_que_nomeia_o_recurso (test_windows.Pulos.test_cada_constante_tem_motivo_que_nomeia_o_recurso) ... ok
+2026-11-11T08:20:32.8472749Z test_pulo_de_plataforma_so_por_constante_do_apoio (test_windows.Pulos.test_pulo_de_plataforma_so_por_constante_do_apoio) ... ok
+2026-11-11T08:20:32.8477329Z test_skill_descreve_o_gh_o_editor_e_o_modo_editor (test_f16_textos.ChecarAmbiente.test_skill_descreve_o_gh_o_editor_e_o_modo_editor) ... ok
+2026-11-11T08:20:32.8481456Z test_passo_0_avisa_do_gh_cedo_sem_parar (test_f16_textos.IniciarRepo.test_passo_0_avisa_do_gh_cedo_sem_parar) ... ok
+2026-11-11T08:20:32.8487603Z test_passo_2_le_a_linha_gh_e_passo_6_mantem_a_checagem (test_f16_textos.IniciarRepo.test_passo_2_le_a_linha_gh_e_passo_6_mantem_a_checagem) ... ok
+2026-11-11T08:20:32.8491678Z test_as_funcoes_do_gh_sao_iguais_nos_2_scripts (test_f16_textos.Instalacao.test_as_funcoes_do_gh_sao_iguais_nos_2_scripts) ... ok
+2026-11-11T08:20:32.8502196Z test_o_bloco_de_instalacao_e_igual_nas_3_skills (test_f16_textos.Instalacao.test_o_bloco_de_instalacao_e_igual_nas_3_skills) ... ok
+2026-11-11T08:20:32.8507176Z test_o_bloco_tem_os_comandos_de_cada_sistema_e_o_login (test_f16_textos.Instalacao.test_o_bloco_tem_os_comandos_de_cada_sistema_e_o_login) ... ok
+2026-11-11T08:20:32.8514740Z test_o_comando_que_o_script_imprime_esta_na_tabela (test_f16_textos.Instalacao.test_o_comando_que_o_script_imprime_esta_na_tabela) ... ok
+2026-11-11T08:20:32.8518515Z test_aviso_final_nas_duas_formas (test_f16_textos.NovaSessao.test_aviso_final_nas_duas_formas) ... ok
+2026-11-11T08:20:32.8521946Z test_modo_terminal_em_3_passos_sem_presumir_um_agente (test_f16_textos.NovaSessao.test_modo_terminal_em_3_passos_sem_presumir_um_agente) ... ok
+2026-11-11T08:20:32.8527043Z test_slot_cheio_como_esta_e_vazio_pelo_checar_editor (test_f16_textos.NovaSessao.test_slot_cheio_como_esta_e_vazio_pelo_checar_editor) ... ok
+2026-11-11T08:20:32.8535259Z test_as_3_skills_sobem_de_versao (test_f16_textos.Versoes.test_as_3_skills_sobem_de_versao) ... ok
+2026-11-11T08:20:32.8536424Z 
+2026-11-11T08:20:32.8536957Z ======================================================================
+2026-11-11T08:20:32.8538420Z FAIL: test_vale_para_bash_filho_sem_testar_de_novo (test_python_resolver.Calco.test_vale_para_bash_filho_sem_testar_de_novo)
+2026-11-11T08:20:32.8539104Z ----------------------------------------------------------------------
+2026-11-11T08:20:32.8539582Z Traceback (most recent call last):
+2026-11-11T08:20:32.8550512Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 252, in test_vale_para_bash_filho_sem_testar_de_novo
+2026-11-11T08:20:32.8551867Z     self.assertTrue((Path(pasta) / "python3").is_file())
+2026-11-11T08:20:32.8552554Z AssertionError: False is not true
+2026-11-11T08:20:32.8552920Z 
+2026-11-11T08:20:32.8553130Z ======================================================================
+2026-11-11T08:20:32.8554352Z FAIL: test_atalho_da_store_e_python_nativo_usa_o_python (test_python_resolver.Escolha.test_atalho_da_store_e_python_nativo_usa_o_python)
+2026-11-11T08:20:32.8555682Z ----------------------------------------------------------------------
+2026-11-11T08:20:32.8556366Z Traceback (most recent call last):
+2026-11-11T08:20:32.8557485Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 64, in test_atalho_da_store_e_python_nativo_usa_o_python
+2026-11-11T08:20:32.8559173Z     self.assertTrue(Path(pasta).is_dir(), pasta)            # o cal�o, n�o o nome python3
+2026-11-11T08:20:32.8560002Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T08:20:32.8561018Z AssertionError: False is not true : /c/Users/runneradmin/AppData/Local/Temp/sdd-open-d4qyhbow/sdd-python.kd9oan
+2026-11-11T08:20:32.8561899Z 
+2026-11-11T08:20:32.8562111Z ======================================================================
+2026-11-11T08:20:32.8563185Z FAIL: test_calco_velho_sai_e_o_novo_fica (test_python_resolver.Limpeza.test_calco_velho_sai_e_o_novo_fica)
+2026-11-11T08:20:32.8564277Z ----------------------------------------------------------------------
+2026-11-11T08:20:32.8564979Z Traceback (most recent call last):
+2026-11-11T08:20:32.8566264Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 165, in test_calco_velho_sai_e_o_novo_fica
+2026-11-11T08:20:32.8567190Z     self.assertTrue(pathlib.Path(out.strip()).is_dir())
+2026-11-11T08:20:32.8567584Z AssertionError: False is not true
+2026-11-11T08:20:32.8567796Z 
+2026-11-11T08:20:32.8567948Z ======================================================================
+2026-11-11T08:20:32.8568651Z FAIL: test_sdd_python_igual_a_python3_nao_entra_em_laco (test_python_resolver.RevisaoRodada3.test_sdd_python_igual_a_python3_nao_entra_em_laco)
+2026-11-11T08:20:32.8569570Z ----------------------------------------------------------------------
+2026-11-11T08:20:32.8569973Z Traceback (most recent call last):
+2026-11-11T08:20:32.8570598Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 102, in test_sdd_python_igual_a_python3_nao_entra_em_laco
+2026-11-11T08:20:32.8571484Z     self.assertEqual((rc, out.strip()), (0, "sem la�o"), err)
+2026-11-11T08:20:32.8572053Z AssertionError: Tuples differ: (0, 'sem la\ufffdo') != (0, 'sem la�o')
+2026-11-11T08:20:32.8572351Z 
+2026-11-11T08:20:32.8572486Z First differing element 1:
+2026-11-11T08:20:32.8572762Z 'sem la\ufffdo'
+2026-11-11T08:20:32.8573030Z 'sem la�o'
+2026-11-11T08:20:32.8573144Z 
+2026-11-11T08:20:32.8573266Z - (0, 'sem la\ufffdo')
+2026-11-11T08:20:32.8573525Z ?            ^
+2026-11-11T08:20:32.8573682Z 
+2026-11-11T08:20:32.8573800Z + (0, 'sem la�o')
+2026-11-11T08:20:32.8574046Z ?            ^
+2026-11-11T08:20:32.8574269Z  : 
+2026-11-11T08:20:32.8574401Z 
+2026-11-11T08:20:32.8574597Z ----------------------------------------------------------------------
+2026-11-11T08:20:32.8574976Z Ran 143 tests in 248.544s
+2026-11-11T08:20:32.8575129Z 
+2026-11-11T08:20:32.8575271Z FAILED (failures=4, skipped=8)
+2026-11-11T08:20:32.8811877Z ##[error]Process completed with exit code 1.
+2026-11-11T08:20:32.9190223Z Post job cleanup.
+2026-11-11T08:20:33.1972267Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-11T08:20:33.2530510Z git version 2.56.0.windows.4
+2026-11-11T08:20:33.2719424Z Temporarily overriding HOME='D:\a\_temp\7b2a8e1e-4dd3-4f61-b4c1-c0ed54e15301' before making global git config changes
+2026-11-11T08:20:33.2723161Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-11T08:20:33.2724954Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\sdd-open\sdd-open
+2026-11-11T08:20:33.3293195Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-11T08:20:33.3790511Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-11T08:20:34.0826021Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-11T08:20:34.1321224Z http.https://github.com/.extraheader
+2026-11-11T08:20:34.1390601Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-11-11T08:20:34.1995516Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-11T08:20:34.9568005Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-11T08:20:35.0028655Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-11-11T08:20:35.8584223Z Cleaning up orphan processes

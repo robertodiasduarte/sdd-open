@@ -1,0 +1,10 @@
+# linha de base vermelha da rodada 5 (R1, R2) sobre 9ab4541
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='duas vazias ⇒ pergunte, uma vez só, e nunca
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='pergunta não volta enquanto ele estiver che
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='`git config --get sdd.editor`')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo="`git config --local sdd.editor '<valor>'`")
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='nunca no slot')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='basta preencher o slot `editor`')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='o 1º na ordem da detecção (o comando no PAT
+Ran 1 test in 0.003s
+FAILED (failures=7)

@@ -1,0 +1,17 @@
+$ bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F16_AMBIENTE.md   # HEAD 6c89cb8
+   │      /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RITmwkWSEz/.github/workflows/release.yml:191:    # F16: a 1ª medição (PR #25, run 42938720292) rodou a suíte inteira e foi cancelada nos 90 min com 15% feito
+   │      /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RITmwkWSEz/.github/workflows/publish-gate.yml:197:    # F16: a 1ª medição (PR #25, run 42938720292) rodou a suíte inteira e foi cancelada nos 90 min com 15% feito
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │ ──────────────────────────────────────────────────────────────────
+   │ ⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+   │    pattern without adding an equivalent one.
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+exit= segundos=2

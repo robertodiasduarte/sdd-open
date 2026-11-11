@@ -1,0 +1,9 @@
+# linha de base vermelha dos testes da rodada 3 sobre 0a68960 (antes dos consertos)
+ERROR: test_sdd_python_igual_a_python3_nao_entra_em_laco (test_python_resolver.RevisaoRodada3.test_sdd_python_igual_a_python3_nao_entra_em_laco)
+FAIL: test_candidato_que_imprime_lixo_nao_serve (test_python_resolver.RevisaoRodada3.test_candidato_que_imprime_lixo_nao_serve)
+FAIL: test_candidato_que_imprime_versao_e_sai_com_erro_nao_serve (test_python_resolver.RevisaoRodada3.test_candidato_que_imprime_versao_e_sai_com_erro_nao_serve)
+FAIL: test_set_e_com_calco_que_nao_se_cria_nao_derruba_na_carga (test_python_resolver.RevisaoRodada3.test_set_e_com_calco_que_nao_se_cria_nao_derruba_na_carga)
+Ran 5 tests in 121.449s
+FAILED (failures=3, errors=1)
+Ran 1 test in 0.002s
+OK

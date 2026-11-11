@@ -1,0 +1,13 @@
+$ bash sdd/bin/eval-revisores.sh sdd/reports/reviews --ledgers sdd/reviews
+eval-revisores — custo e resultado por papel, engine e modelo (3 pasta(s) lida(s) em /Users/robertoduarte/rdd-worktrees/sdd-open-f16-ambiente/sdd/reports/reviews; 1 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (claude-opus-5-5) | assinatura | 3 | 0 | 0.0000 | 3.3038 | 16 | 16 de 16 | 1 de 16 | 0 de 16 | 0 de 16 | 0 de 16 | 0.0000 | 3.3038 | — |
+| auditor | claude (claude-opus-5-5) | assinatura | 1 | 0 | 0.0000 | 0.6528 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 40.0% (2 de 5) |
+| auditor | openrouter (qwen/qwen3.7-plus via Alibaba) | pay-per-token | 2 | 0 | 0.0596 | 0.0596 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 100.0% (11 de 11) |
+
+fora da conta: 0
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+exit=0

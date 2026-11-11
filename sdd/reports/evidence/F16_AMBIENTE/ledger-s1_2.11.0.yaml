@@ -1,0 +1,25 @@
+feature_id: F16_AMBIENTE
+slice_id: s1
+versao: 2.11.0
+data: 2026-11-11
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "slot editor vazio e sem git config sdd.editor ⇒ a sdd-new-session pergunta o editor padrão uma vez (lista do checar.sh --editores, terminal:claude, terminal:codex) e grava em git config; sem gh: checar.sh ⇒ ⚠️ com o comando do sistema e rc 0, --frente sem citar o gh; gh deslogado ⇒ ⚠️ gh auth login; inventario.sh imprime a linha gh:; sem editor ⇒ modo terminal e o aviso de terminal novo; no macOS com o app e sem o comando no PATH ⇒ open -a \"Visual Studio Code\" e a frente abre (provado neste Mac); o Python que roda vira python3 (atalho da Store pulado); job testes-windows nos 2 workflows com o caminho do aluno verde no Windows (144 testes, 136 ok, 8 pulados com motivo); README e quickstart dizem 'sem teste automático' no Windows; Verify Gate 0 em 69b7f6b; Release com SHA256SUMS.txt conferido"
+descricao: "Ambiente agnóstico e proativo: sdd-checar-ambiente 1.5.0 (gh e login como ⚠️, editor em 2 camadas, modo --editor), sdd-iniciar-repo 1.2.0 (gh no Passo 0, linha gh: no inventário), sdd-new-session 1.5.0 (pergunta o editor padrão na 1ª vez e grava em git config sdd.editor; slot com argumentos; modo terminal, também por terminal:<agente>; aviso em 2 formas); checar.sh --editores, tabela de instalação igual nas 3; resolvedor de Python para o Windows (sdd/bin/lib/python.sh); job testes-windows informativo; .gitattributes eol=lf; pulos de plataforma por constante. Passo 0: curadoria F21/F19 (LM-011 a LM-013, LM-005 refinada, INV-002), coluna Cobrança, papel indisponível sem exit, .gitignore do pacote."
+deploy: real
+review_externo: dispensado — a rodada 4 de fecho (sdd/reports/reviews/EXTERNAL_REVIEW_20261111-071016, diff inteiro, sha256=c588e8410302) confere com 1bf3b1f e a rodada 5 (sdd/reports/reviews/EXTERNAL_REVIEW_20261111-084600, só o delta --base 1bf3b1f, sha256=76a2cf2c07a0) com 9ab4541, ambas claude + qwen (diversidade=vendor; 2º revisor dispensado: codex sem cota, gemini sem credencial, 2º revisor pago evitado pela LM-010); depois da rodada 5, só o conserto de texto dos achados dela (R1 e R2, 69b7f6b), coberto por teste com linha de base vermelha, por decisão do Roberto
+avisos:
+  - "ajuste pedido pelo Roberto antes da release: a sdd-new-session pergunta o editor padrão na 1ª vez em vez de escolher sozinha (9ab4541); a rodada 5 (só o delta) achou que a resposta no slot da frente voltaria a perguntar em cada frente: vai para git config sdd.editor (69b7f6b)"
+  - "teto do método passado: rodadas 4 e 5 de revisão (teto 3), de fecho, sobre o commit final 1bf3b1f, por decisão do Roberto (ele tinha dispensado e voltou atrás); regra de fecho: só grave pede conserto; 0 graves; R1 (checar-ambiente anterior à 1.5.0 sem --editor) e R4 (aviso repetido no doctor) viram pendência"
+  - "raio de impacto (0b): 1 quebra achada e consertada antes da rodada 4 (1bf3b1f): o python3 herdado era aceito sem conferir o PATH do filho, e os testes 'sem python3' saíam 127 debaixo do test-baseline e do verify-gate"
+  - "revisão do DESIGN na rodada 1 com uma engine só (saldo da OpenRouter em US$ 0,07; decisão do Roberto); a OpenRouter foi recarregada e as rodadas 2 e 3 tiveram claude + qwen"
+  - "avaliador de contexto novo: PASS_PENDENTE_RECIBO no ciclo 2 (todos os 9 ATs PASS); os recibos eram o macOS (verde em 47m19s), o BUILD_REPORT com a contagem do Windows (feito) e esta Release"
+  - "Windows: o porte da suíte inteira é a frente F16W (decisão do Roberto em 2026-11-11, depois da 1ª medição: 282 de ~1.900 testes em 90 min); piso decidido: continua 'sem teste automático'"
+  - "defeito conhecido no Windows: o vigia do teto do ls-remote não mata o grupo de processos; o checar.sh com ssh, askpass ou rede pendurados pode passar de 60 s (5 testes pulados por SEM_SINAL); prioridade da F16W"
+  - "modo terminal da sdd-new-session numa sessão real de agente não executado (LM-011); o roteiro está no ciclo 1 do avaliador"
+  - "limite declarado: a limpeza do calço do Python apaga pela idade da pasta (mais de 1 dia), sem conferir se o processo dono vive"
+  - "1 log do avaliador (ciclo 1) com exit que não prova o comando foi rebaixado a AVAL-AT003-manual-mac.aval.txt; a prova manual do AT-003 é MANUAL-mac-open-a.log"
+  - "LM-012 mordeu: o id de um run do CI (11 dígitos) num comentário dos workflows derrubou o Verify Gate de 6c89cb8; conserto em 2f556fb"
+  - "teto do job macOS: 47m19s no PR com 1.936 testes, teto 60 (folga de 12 min): subido para 75 antes da tag, por decisão do Roberto (c33ea5c)"
+  - "landmines, drift, lint e deploy pulados: o repositório do pacote não tem sdd/config.yaml; a suíte inteira rodou no Verify Gate"

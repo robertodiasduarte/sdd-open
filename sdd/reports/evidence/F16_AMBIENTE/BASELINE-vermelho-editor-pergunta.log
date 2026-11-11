@@ -1,0 +1,23 @@
+# linha de base vermelha do ajuste do editor (pergunta na 1ª vez) sobre c33ea5c
+ERROR: test_editores_no_windows_pelo_cmd (test_checar.TestEditor.test_editores_no_windows_pelo_cmd)
+ERROR: test_o_editor_continua_sendo_o_primeiro_da_lista (test_checar.TestEditor.test_o_editor_continua_sendo_o_primeiro_da_lista)
+FAIL: test_editores_lista_todos_em_ordem_e_sem_repetir (test_checar.TestEditor.test_editores_lista_todos_em_ordem_e_sem_repetir)
+FAIL: test_editores_sem_nenhum_sai_1_calado (test_checar.TestEditor.test_editores_sem_nenhum_sai_1_calado)
+Ran 4 tests in 4.022s
+FAILED (failures=2, errors=2)
+FAIL: test_aviso_final_nas_duas_formas (test_f16_textos.NovaSessao.test_aviso_final_nas_duas_formas)
+FAIL: test_modo_terminal_em_3_passos_sem_presumir_um_agente (test_f16_textos.NovaSessao.test_modo_terminal_em_3_passos_sem_presumir_um_agente)
+FAIL: test_slot_cheio_como_esta_e_vazio_pelo_checar_editores (test_f16_textos.NovaSessao.test_slot_cheio_como_esta_e_vazio_pelo_checar_editores) (termo='`Get-Command\n  <nome>`')
+FAIL: test_slot_cheio_como_esta_e_vazio_pelo_checar_editores (test_f16_textos.NovaSessao.test_slot_cheio_como_esta_e_vazio_pelo_checar_editores) (termo='scripts/checar.sh --editores`')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='**Sua decisão** — [D2 · muda o produto] **Onde você quer abrir as frentes deste projeto?**')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='**Vazio ⇒ pergunte, uma vez só, e\n  nunca escolha sozinho:**')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='**cada outro editor da lista**')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='**dizer o meu comando**')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='**o 1º editor da lista** (recomendado)')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='**só no terminal, com Claude Code**')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='**só no terminal, com Codex**')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='`editor: "terminal:claude"`')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='`editor: "terminal:codex"`')
+FAIL: test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) (termo='a pergunta não volta enquanto o slot estiver cheio')
+FAILED (failures=14)
+Ran 4 tests in 0.005s

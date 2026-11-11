@@ -1,0 +1,509 @@
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	﻿2026-11-11T01:24:26.8221090Z Current runner version: '2.338.2'
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8254287Z ##[group]Runner Image Provisioner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8254778Z Hosted Compute Agent
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8255088Z Version: 20261103.629
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8255460Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8255854Z Build Date: 2026-11-03T17:26:59Z
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8256242Z Worker ID: {947b4da6-bd8c-4ba1-a625-0aa63a8f4267}
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8256635Z Region: southcentralus
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8256933Z Cloud: Azure
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8257220Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8257972Z ##[group]Operating System
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8258335Z Microsoft Windows Server 2025
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8258670Z 10.0.26100
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8258970Z Datacenter
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8259247Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8259540Z ##[group]Runner Image
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8259869Z Image: windows-2025-vs2026
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8260201Z Version: 20261103.298.1
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8260860Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261103.298/images/windows/Windows2025-VS2026-Readme.md
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8262018Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261103.298
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8262536Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8263122Z ##[group]GITHUB_TOKEN Permissions
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8264240Z Contents: read
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8264560Z Metadata: read
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8264851Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8266520Z Secret source: Actions
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8267047Z Cache mode: write
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8267406Z Prepare workflow directory
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8520366Z Prepare all required actions
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:26.8554152Z Getting action download info
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:27.0769522Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:27.1508564Z Download action repository 'actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0' (SHA:6d4fd22b20465ccc0f7354476588e8df7c9ca0e0)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Set up job	2026-11-11T01:24:27.6753524Z Complete job name: Testes no Windows (Git Bash + Python nativo, só leitura)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	﻿2026-11-11T01:24:27.7810473Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7811240Z with:
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7811450Z   fetch-depth: 0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7811683Z   repository: robertodiasduarte/sdd-open
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7813902Z   token: ***
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7814111Z   ssh-strict: true
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7814322Z   ssh-user: git
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7814539Z   persist-credentials: true
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7814779Z   clean: true
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7814993Z   sparse-checkout-cone-mode: true
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7815250Z   fetch-tags: false
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7815467Z   show-progress: true
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7815686Z   lfs: false
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7815886Z   submodules: false
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7816101Z   set-safe-directory: true
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7816355Z   allow-unsafe-pr-checkout: false
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.7816732Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.8748996Z Syncing repository: robertodiasduarte/sdd-open
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.8751022Z ##[group]Getting Git version info
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.8752026Z Working directory is 'D:\a\sdd-open\sdd-open'
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:27.9188223Z [command]"C:\Program Files\Git\bin\git.exe" version
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.2021671Z git version 2.56.0.windows.4
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.2055852Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.2068015Z Temporarily overriding HOME='D:\a\_temp\761f805f-afc3-4497-bc1a-d4eb1afe2acf' before making global git config changes
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.2068971Z Adding repository directory to the temporary git global config as a safe directory
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.2075096Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\sdd-open\sdd-open
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.2550279Z Deleting the contents of 'D:\a\sdd-open\sdd-open'
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.2554290Z ##[group]Initializing the repository
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.2559676Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\sdd-open\sdd-open
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.3157467Z Initialized empty Git repository in D:/a/sdd-open/sdd-open/.git/
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.3183917Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/robertodiasduarte/sdd-open
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.3697918Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.3698856Z ##[group]Disabling automatic garbage collection
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.3704475Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.3946848Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.3947757Z ##[group]Setting up auth
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.3954262Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:28.4193366Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:29.5240188Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:29.5470185Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:29.9433396Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:29.9699563Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:30.3716266Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:30.3964357Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:30.3964881Z ##[group]Fetching the repository
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:30.3972925Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +9547ac008d915827b860c7923e8af52d56f338bc:refs/remotes/pull/25/merge
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6887902Z From https://github.com/robertodiasduarte/sdd-open
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6888994Z  * [new branch]      docs/f15-slots                           -> origin/docs/f15-slots
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6889445Z  * [new branch]      docs/incorporar-starter                  -> origin/docs/incorporar-starter
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6889902Z  * [new branch]      feat/f10-revisao                         -> origin/feat/f10-revisao
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6890242Z  * [new branch]      feat/f11-gate                            -> origin/feat/f11-gate
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6890645Z  * [new branch]      feat/f12-contexto                        -> origin/feat/f12-contexto
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6891080Z  * [new branch]      feat/f13-ux-llm                          -> origin/feat/f13-ux-llm
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6891543Z  * [new branch]      feat/f14-drive                           -> origin/feat/f14-drive
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6891910Z  * [new branch]      feat/f14-drive-v271                      -> origin/feat/f14-drive-v271
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6892290Z  * [new branch]      feat/f14-playbook                        -> origin/feat/f14-playbook
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6892665Z  * [new branch]      feat/f15-slots                           -> origin/feat/f15-slots
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6893048Z  * [new branch]      feat/f16-ambiente                        -> origin/feat/f16-ambiente
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6893540Z  * [new branch]      feat/f19-custo-revisores                 -> origin/feat/f19-custo-revisores
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6893986Z  * [new branch]      feat/f21-engenharia-reversa              -> origin/feat/f21-engenharia-reversa
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6894772Z  * [new branch]      feat/f4-conversa                         -> origin/feat/f4-conversa
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6895947Z  * [new branch]      feat/f5-conhecimento                     -> origin/feat/f5-conhecimento
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6897521Z  * [new branch]      feat/f6-docs                             -> origin/feat/f6-docs
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6898069Z  * [new branch]      feat/f7-evidencia                        -> origin/feat/f7-evidencia
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6898671Z  * [new branch]      feat/f8-hooks                            -> origin/feat/f8-hooks
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6899183Z  * [new branch]      feat/f9-fluxo                            -> origin/feat/f9-fluxo
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6899788Z  * [new branch]      feat/incorporar-starter                  -> origin/feat/incorporar-starter
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6900341Z  * [new branch]      feat/m1                                  -> origin/feat/m1
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6900812Z  * [new branch]      feat/w0-m1                               -> origin/feat/w0-m1
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6901478Z  * [new branch]      fix/guardas-pasta-e-gancho-encadeado     -> origin/fix/guardas-pasta-e-gancho-encadeado
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6902180Z  * [new branch]      fix/teto-ubuntu-release                  -> origin/fix/teto-ubuntu-release
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6902706Z  * [new branch]      main                                     -> origin/main
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6903162Z  * [new tag]         docs-2026-10-29                          -> docs-2026-10-29
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6903632Z  * [new tag]         v1.0.0                                   -> v1.0.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6904068Z  * [new tag]         v2.0.0                                   -> v2.0.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6904513Z  * [new tag]         v2.0.1                                   -> v2.0.1
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6904941Z  * [new tag]         v2.1.0                                   -> v2.1.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6905359Z  * [new tag]         v2.10.0                                  -> v2.10.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6905784Z  * [new tag]         v2.10.1                                  -> v2.10.1
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6906219Z  * [new tag]         v2.2.0                                   -> v2.2.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6906671Z  * [new tag]         v2.2.1                                   -> v2.2.1
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6907073Z  * [new tag]         v2.2.10                                  -> v2.2.10
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6908026Z  * [new tag]         v2.2.2                                   -> v2.2.2
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6908305Z  * [new tag]         v2.2.3                                   -> v2.2.3
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6908579Z  * [new tag]         v2.2.4                                   -> v2.2.4
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6908851Z  * [new tag]         v2.2.5                                   -> v2.2.5
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6909109Z  * [new tag]         v2.2.6                                   -> v2.2.6
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6909389Z  * [new tag]         v2.2.7                                   -> v2.2.7
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6909652Z  * [new tag]         v2.2.8                                   -> v2.2.8
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6909957Z  * [new tag]         v2.2.9                                   -> v2.2.9
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6910223Z  * [new tag]         v2.3.0                                   -> v2.3.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6910475Z  * [new tag]         v2.3.1                                   -> v2.3.1
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6910752Z  * [new tag]         v2.4.0                                   -> v2.4.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6911011Z  * [new tag]         v2.5.0                                   -> v2.5.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6911272Z  * [new tag]         v2.6.0                                   -> v2.6.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6911541Z  * [new tag]         v2.7.0                                   -> v2.7.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6911822Z  * [new tag]         v2.7.1                                   -> v2.7.1
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6912096Z  * [new tag]         v2.7.2                                   -> v2.7.2
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6912389Z  * [new tag]         v2.8.0                                   -> v2.8.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6912649Z  * [new tag]         v2.9.0                                   -> v2.9.0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6913088Z  * [new ref]         9547ac008d915827b860c7923e8af52d56f338bc -> pull/25/merge
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6924907Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6925833Z ##[group]Determining the checkout info
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6926166Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.6932666Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.7375928Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.7625369Z ##[group]Checking out the ref
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.7631474Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/25/merge
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8767954Z Note: switching to 'refs/remotes/pull/25/merge'.
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8768325Z 
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8768703Z You are in 'detached HEAD' state. You can look around, make experimental
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8769397Z changes and commit them, and you can discard any commits you make in this
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8769951Z state without impacting any branches by switching back to a branch.
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8770151Z 
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8770346Z If you want to create a new branch to retain commits you create, you may
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8770675Z do so (now or later) by using -c with the switch command. Example:
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8770838Z 
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8771028Z   git switch -c <new-branch-name>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8771153Z 
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8771291Z Or undo this operation with:
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8771427Z 
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8771498Z   git switch -
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8771609Z 
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8771742Z Turn off this advice by setting config variable advice.detachedHead to false
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8771967Z 
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.8772277Z HEAD is now at 9547ac0 Merge 416c0d52e0ebcf247cd37936b72bf31d90d8a09d into 36d04541bbc862b6c48760a9ee66dc0e2a43a1d3
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.9411089Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:31.9771866Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T01:24:32.0005788Z 9547ac008d915827b860c7923e8af52d56f338bc
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	﻿2026-11-11T01:24:32.0403288Z ##[group]Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.0403594Z with:
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.0403713Z   python-version: 3.12
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.0403831Z   check-latest: false
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.0405111Z   token: ***
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.0405284Z   mirror: https://raw.githubusercontent.com/actions/python-versions/main
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.0405498Z   update-environment: true
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.0405628Z   allow-prereleases: false
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.0405755Z   freethreaded: false
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.0405871Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.1404496Z ##[group]Installed versions
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.1539566Z Successfully set up CPython (3.12.10)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0	2026-11-11T01:24:32.1539924Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	﻿2026-11-11T01:24:32.1760874Z ##[group]Run mkdir -p "$RUNNER_TEMP/bin"
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1761179Z ^[[36;1mmkdir -p "$RUNNER_TEMP/bin"^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1761387Z ^[[36;1mcurl -fsSL -o "$RUNNER_TEMP/gitleaks.zip" \^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1761763Z ^[[36;1m  https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_windows_x64.zip^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1762111Z ^[[36;1mpython -m zipfile -e "$RUNNER_TEMP/gitleaks.zip" "$RUNNER_TEMP/bin"^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1762350Z ^[[36;1m"$RUNNER_TEMP/bin/gitleaks.exe" version^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1762533Z ^[[36;1mecho "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1776121Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1776358Z env:
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1776524Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1776794Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1777046Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1777299Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1777714Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:32.1777922Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Install gitleaks (windows)	2026-11-11T01:24:34.3101606Z 8.30.1
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	﻿2026-11-11T01:24:34.3297816Z ##[group]Run command -v bash
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3298062Z ^[[36;1mcommand -v bash^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3298296Z ^[[36;1mbash -c 'echo "bash $BASH_VERSION"; uname -s; case "$(uname -s)" in MINGW*|MSYS*) ;; *) exit 1 ;; esac'^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3298629Z ^[[36;1mpython -c 'import os, sys; print(sys.version, os.name); sys.exit(os.name != "nt")'^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3298920Z ^[[36;1mecho "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3308448Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3308666Z env:
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3308821Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3309088Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3309344Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3309560Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3309803Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3309972Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3572531Z /usr/bin/bash
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3784858Z bash 5.3.15(2)-release
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.3969082Z MINGW64_NT-10.0-26100
+Testes no Windows (Git Bash + Python nativo, só leitura)	Git Bash and native Python (asserted)	2026-11-11T01:24:34.4375127Z 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)] nt
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	﻿2026-11-11T01:24:34.4895172Z ##[group]Run bash scripts/publish-gate.sh "$(pwd)"
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4895438Z ^[[36;1mbash scripts/publish-gate.sh "$(pwd)"^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4904279Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4904492Z env:
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4904640Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4904881Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4905187Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4905524Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4905734Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4905926Z   SDD_TEST_BASH: C:\Program Files\Git\usr\bin\bash.exe
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4906093Z   PUBLISH_GATE_MODE: ci
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.4906209Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.5444748Z publish-gate — tree: /d/a/sdd-open/sdd-open — mode: ci
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.5447944Z ──────────────────────────────────────────────────────────────────
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.5449925Z G1 secrets (gitleaks)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.9794748Z   ✅ no secrets detected
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:34.9984260Z G2 forbidden patterns
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:36.5698586Z   ✅ no forbidden pattern matched
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:36.5698972Z G3 allowlist (MANIFEST.txt)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:42.5839827Z   ✅ tree and manifest match in both directions
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:42.5840215Z G4 verify-gate exit contract
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:43.3795174Z   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:44.0658096Z   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:44.3910875Z   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:44.4377468Z G5 documentation
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:44.4716955Z   ✅ docs present, cross-linked, attribution in place
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:44.4718061Z ──────────────────────────────────────────────────────────────────
+Testes no Windows (Git Bash + Python nativo, só leitura)	Run publish gate	2026-11-11T01:24:44.4718599Z ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	﻿2026-11-11T01:24:44.4840132Z ##[group]Run python -B -m unittest discover -s tests -p 'test_*.py'
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:24:44.4840442Z ^[[36;1mpython -B -m unittest discover -s tests -p 'test_*.py'^[[0m
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:24:44.4848370Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:24:44.4848576Z env:
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:24:44.4849243Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:24:44.4849479Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:24:44.4849711Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:24:44.4849922Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:24:44.4850128Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:24:44.4850320Z   SDD_TEST_BASH: C:\Program Files\Git\usr\bin\bash.exe
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:24:44.4850474Z ##[endgroup]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0386945Z ...F..F...............................F.............F...F......Exception in thread Thread-770 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0387917Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0395710Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0398860Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0399321Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0401402Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0401790Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0494173Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0494428Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0494726Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0536753Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0537162Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:54.0537779Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1777912Z E.Exception in thread Thread-824 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1778383Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1779203Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1780411Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1781802Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1783253Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1785002Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1787516Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1787807Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1788385Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1788964Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1790075Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:27:57.1790561Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7712076Z EFException in thread Thread-878 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7712565Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7713741Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7714326Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7714876Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7716669Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7717430Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7721485Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7721836Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7722346Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7722942Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7723555Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:28:03.7724550Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4298703Z E..F.FF..FFEFFFF.FFFFFFFF.FFF.FFFFFFFFFException in thread Thread-1440 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4299544Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4300730Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4301951Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4302792Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4303901Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4304579Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4307876Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4308386Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4308939Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4310261Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4310680Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:29:44.4311123Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9039027Z EFFFFEEException in thread Thread-1605 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9039736Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9041412Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9042028Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9042455Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9044252Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9044931Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9047291Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9047641Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9048347Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9048975Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9049950Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:13.9050449Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4481913Z EException in thread Thread-1633 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4482766Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4483468Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4484762Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4485877Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4487672Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4488221Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4490909Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4493241Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4493871Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4494443Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4495878Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:32:23.4496335Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1508499Z EEException in thread Thread-1687 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1509936Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1511098Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1512017Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1512646Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1513286Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1514201Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1517383Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1517943Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1518499Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1520030Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1520423Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:36.1520914Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2557431Z EException in thread Thread-1713 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2562212Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2564452Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2565087Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2565593Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2566178Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2567444Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2567982Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2568362Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2568872Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2569532Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2570017Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:33:37.2570780Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2469842Z EEException in thread Thread-1765 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2470227Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2470661Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2472565Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2473901Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2475023Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2475567Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2478647Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2478963Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2479415Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2479953Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2480420Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:34:50.2480930Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5805876Z EF....Exception in thread Thread-1946 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5806977Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5808658Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5810012Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5810550Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5811472Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5812322Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5815521Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5816245Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5816601Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5817649Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5818033Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T01:35:01.5818586Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 619: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6153008Z EFF.F..F.FFFF...FE...EEEEEEEEEEEEEEF....................................s..........................................F...................E................................................................................FFFFFFFFFFFFFFFFFFFFFFF.F.FFFFF..FF.FFFFFFFFFFFFFFFFF..FFFFF.FFFFF.FFFFFFF.FFFFFFFFFFEEFFFFEEEFFFFFFFFFFFFFFF.FFFF....FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.......................FF.....FF.FFFFFFFFFFFFFFFFF.FFsFEEFF..F...F..F.FFFF.FFFFFF...FEFFF..F....F...F.....EF..FF.F.F.FFFFFFFF..FF.FFFFFFFFFFFFFFFFFFF.F.FF.FFFFFFFFFFF........................................s..........................................................................................................................................................................................................F....FF..FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.F.FFFFFF..FFFF..FFFFF.FFFFFFFFFFFFFFFFFFFFFFFF.F................F...............FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFsFEFFFFF.sFF.FFF.............FF.F.FF.FF..F..................F.F.F.Exception in thread Thread-8233 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6159260Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6159849Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6160207Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6161133Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6161567Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6162012Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6162432Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6162660Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6163037Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6163541Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6163908Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:00.6164384Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 160: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2130022Z E.....FException in thread Thread-8263 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2130562Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2131224Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2132147Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2132498Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2134451Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2135028Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2138544Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2138882Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2140394Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2140909Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2141252Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:06.2142317Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 72: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0814735Z EEEException in thread Thread-8267 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0815300Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0816564Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0817143Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0817514Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0818972Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0819401Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0822866Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0823311Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0823616Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0824059Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0824488Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:07.0825159Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 69: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0915281Z EException in thread Thread-8269 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0916002Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0917582Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0918210Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0919943Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0920528Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0920859Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0923952Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0924204Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0924487Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0925068Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0925541Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:08.0926158Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 144: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3274427Z EException in thread Thread-8271 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3275596Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3276386Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3277011Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3278782Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3279337Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3279881Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3281866Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3282284Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3282735Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3283439Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3283920Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:09.3285122Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 147: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5205994Z EException in thread Thread-8273 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5206700Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5208041Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5211227Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5211761Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5212303Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5212860Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5215341Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5215662Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5216148Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5216757Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5217223Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:10.5218498Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 69: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6883956Z EException in thread Thread-8275 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6885732Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6886699Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6887175Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6887746Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6889852Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6890418Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6893281Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6893627Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6894132Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6894781Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6895835Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:11.6896445Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 69: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3808764Z E..FF....Exception in thread Thread-8307 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3809381Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3809911Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3811441Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3812031Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3814482Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3815042Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3817453Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3817703Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3818114Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3818654Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3819039Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:18:15.3819640Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 133: character maps to <undefined>
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7347231Z .FFsFFFFFFFFFFFFFFFFs.F....F.....................FFF..........................................................................s.Es.........................................FFF..............F.FF.....E...............................F.................E..FFFFFFFFFFFFFF...............................FFFF.FFFF.FFFFFFFFFFFFFFF..FFFFF.F.....F..FFFF..FFFFFFFF.FFFFFFF.F.FF.Exception in thread Thread-9936 (_readerthread):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7349148Z Traceback (most recent call last):
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7350037Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7350703Z     self.run()
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7351088Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7352048Z     self._target(*self._args, **self._kwargs)
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7352931Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7355203Z     buffer.append(fh.read())
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7355628Z                   ^^^^^^^^^
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7355908Z   File "<frozen codecs>", line 322, in decode
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:20:12.7356386Z UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe7 in position 62: invalid continuation byte
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:54:33.8538223Z EFF..FFFFFFFFFEFEFFFEF.FFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFF.FF..FFFFFFFFFEFFFFFFFFFF.FEFFFFFEEEFFFFFFFFFF....FFFFFFFFFFFFFFFFF.F.FFFFFFF..FFFFFFFFF..FFFF..FF.F....FFFFF.F.........F.........F...............................F...................................F.FFFF.F...F............E
+Testes no Windows (Git Bash + Python nativo, só leitura)	Unit tests (Git Bash + native Python)	2026-11-11T02:54:33.8582387Z ##[error]The operation was canceled.
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	﻿2026-11-11T02:54:33.9886736Z Post job cleanup.
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.3000371Z [command]"C:\Program Files\Git\bin\git.exe" version
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.3277286Z git version 2.56.0.windows.4
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.3324198Z Temporarily overriding HOME='D:\a\_temp\15136550-6361-4100-9300-2fa506ed5eb2' before making global git config changes
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.3325061Z Adding repository directory to the temporary git global config as a safe directory
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.3331540Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\sdd-open\sdd-open
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.3612250Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.3878368Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.8198537Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.8425510Z http.https://github.com/.extraheader
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.8457299Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:34.8722568Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:35.2774595Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+Testes no Windows (Git Bash + Python nativo, só leitura)	Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09	2026-11-11T02:54:35.3051210Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+Testes no Windows (Git Bash + Python nativo, só leitura)	Complete job	﻿2026-11-11T02:54:35.7274687Z Cleaning up orphan processes

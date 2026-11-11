@@ -1,0 +1,4 @@
+$ C=$(SDD_CHECAR_EDITOR_PATH=/var/empty bash .agents/skills/sdd-checar-ambiente/scripts/checar.sh --editor | head -1); eval "$C -g \"$F\""   # critério: exit 0 e processo do VS Code presente
+comando detectado: open -a "Visual Studio Code"
+exit=0
+27635 /Applications/Visual Studio Code.app/Contents/MacOS/Code /Users/robertodua

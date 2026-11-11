@@ -12,7 +12,7 @@
 
 ---
 
-## Estado das frentes — fonte única (atualizado em 2026-11-10)
+## Estado das frentes — fonte única (atualizado em 2026-11-11)
 
 **Regra.** Esta tabela é a **única** fonte do estado das frentes do programa. Ela mora neste arquivo, na branch
 `docs/incorporar-starter`, e só é editada na worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16`
@@ -39,7 +39,8 @@ construção: foi assim que 3 worktrees ficaram com 3 versões deste arquivo em 
 | F13 UX e LLM | ✅ | `v2.5.0` (PR #16, 04/11) | — |
 | F14 Playbook e Drive | ✅ | `v2.6.0`, `v2.7.0`, `v2.7.1` (PRs #17–#19, 05 a 08/11) | — |
 | F15 Substituição do SDD privado | 🔨 | `v2.7.2` (PR #20, 08/11) sustenta a fase 1; **`v2.8.0`** (PR #21, 10/11) traz os slots (F15_SLOTS: L0, L3, L4) | Roda no repositório privado; o detalhe por fase está na ficha de lá (`sdd/handoffs/HANDOFF_F15_SUBSTITUICAO.md`). Fases 1, 2 e **3 ✅ 10/11** (a prova AVISO_DESVINCULAR_EMPRESA saiu pela `sdd-release` do Open, plugin v1.492.1, CONCERNS) · F15_SLOTS ✅ · falta a **fase 4**, que espera as frentes antigas do privado fecharem (16 em 10/11); a curadoria do playbook da prova e a do F15_SLOTS (`c2560fc`, branch local `feat/f15-slots`) esperam a fusão dela |
-| F16 Ambiente agnóstico e proativo | ⬜ | — | só no plano (seção 8; `ESCOPO_F16_AMBIENTE.md`); inclui o teste em Windows |
+| F16 Ambiente agnóstico e proativo | ✅ | `v2.11.0` (PR #25, 11/11) | `sdd-checar-ambiente` 1.5.0, `sdd-iniciar-repo` 1.2.0, `sdd-new-session` 1.5.0 (pergunta o editor padrão uma vez, grava em `git config sdd.editor`), resolvedor de Python para o Windows, job `testes-windows` informativo (só o caminho do aluno; README: Windows "sem teste automático"); veredito CONCERNS: 5 rodadas de revisão (2 de fecho, acima do teto, decisão do Roberto); ficam a curadoria de 5 candidatos, o R1 da rodada 4 e o teto do `checar` no Windows (F16W) |
+| F16W Windows: porte da suíte | ⬜ | — | nasceu da 1ª medição da F16 (2026-11-11: 282 de ~1.900 testes em 90 min no `windows-latest`, 156 quebras); medir módulo a módulo; prioridade: o teto do `checar.sh` no Windows (o vigia por grupo de processos não corta a rede pendurada); 4 achados guardados (`tasklist`, `report-lint`, `sdd-archive`, `O_NOFOLLOW`); depois, decidir o piso |
 | F17 Starter gerado a partir do Open | ⬜ | — | só no plano; depois da F16 |
 | F18 Segurança embutida no fluxo | ⬜ | — | só no plano; a onda 1 pode vir antes da F17 |
 | F19 Custo e benefício dos revisores | ✅ | `v2.10.1` (PRs #23 e #24, 10/11; a tag `v2.10.0` ficou sem Release: teto do CI) | ledger da revisão com a marca de dano, lint e `eval-revisores.sh`; veredito CONCERNS: avaliador sem PASS (3 ciclos) e revisão final de uma engine só; ficam 2 achados leves e a curadoria de 2 candidatos para a próxima frente; medir o privado, depois da F15 |

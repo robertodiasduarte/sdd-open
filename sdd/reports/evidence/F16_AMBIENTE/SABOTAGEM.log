@@ -1,0 +1,23 @@
+=== M1 gh ausente vira ok (.agents/skills/sdd-checar-ambiente/scripts/checar.sh) → rc=1 · MORTA
+  $ -B -m unittest discover -s tests -p test_checar.py -k TestGh
+  FAIL: test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0
+  FAIL: test_sem_gh_e_sem_remoto_avisa
+  FAILED (failures=4)
+=== M2 o app do macOS some (.agents/skills/sdd-checar-ambiente/scripts/checar.sh) → rc=1 · MORTA
+  $ -B -m unittest discover -s tests -p test_checar.py -k TestEditor
+  ERROR: test_app_na_segunda_pasta_de_aplicativos
+  FAIL: test_app_do_macos_fora_do_path_vira_open_a
+  FAILED (failures=1, errors=1)
+=== M3 o atalho da Store é aceito (sdd/bin/lib/python.sh) → rc=1 · MORTA
+  $ -B -m unittest discover -s tests -p test_python_resolver.py
+  ERROR: test_atalho_da_store_e_python_nativo_usa_o_python
+  ERROR: test_vale_para_bash_filho_sem_testar_de_novo
+  FAIL: test_atalho_e_python_velho_tambem_para
+  FAIL: test_atalho_e_so_py_usa_py_menos_3
+  FAIL: test_calco_que_nao_se_cria_e_dito
+  FAIL: test_exigir_para_com_causa_e_conserto
+  FAILED (failures=8, errors=2)
+=== M4 o README afirma o Windows com o job informativo (README.md) → rc=1 · MORTA
+  $ -B -m unittest discover -s tests -p test_release_workflow.py -k Windows
+  FAIL: test_frases_dizem_o_que_o_workflow_prova
+  FAILED (failures=2)

@@ -1,0 +1,31 @@
+$ ruby -ryaml -e 'p YAML.load(%q{editor: '\''open -a "Visual Studio Code"'\''})'; ruby -ryaml -e 'p YAML.load(%q{editor: "open -a "Visual Studio Code""})'  # achado 6: a forma da SKILL (aspas simples) e a forma antiga
+{"editor"=>"open -a \"Visual Studio Code\""}
+/System/Library/Frameworks/Ruby.framework/Versions/2.6/usr/lib/ruby/2.6.0/psych.rb:456:in `parse': (<unknown>): did not find expected key while parsing a block mapping at line 1 column 1 (Psych::SyntaxError)
+	from /System/Library/Frameworks/Ruby.framework/Versions/2.6/usr/lib/ruby/2.6.0/psych.rb:456:in `parse_stream'
+
+$ sed -n 270,284p .agents/skills/sdd-new-session/SKILL.md
+   principal que ainda não foi enviado: enviar o commit e atualizar a frente, ou copiar à mão);
+   `NADA A COPIAR` não é erro. Qualquer outro exit ⇒ diga a causa
+   que ele imprimiu; a frente já existe e continua válida.
+5. Abra no editor. O comando é `<editor> "<pasta da frente>"`, com o slot como ele está. **Sem editor, não
+   aborte**: é o modo terminal — a frente já está pronta, e o Passo 3 diz como seguir nela.
+6. **Grave os slots descobertos no `sdd/config.yaml da frente`** (`<pasta das frentes>/<slug>/sdd/config.yaml`),
+   nunca no do checkout principal: lá o arquivo ficaria modificado, a frente não o veria, e o `git pull`
+   depois da integração abortaria. Regras:
+   - só slot vazio (`""` ou sem valor) recebe valor; slot cheio fica como está;
+   - valor com aspas duplas dentro (`open -a "Visual Studio Code"`, o caminho de um `.cmd`) vai entre aspas
+     simples no YAML: `editor: 'open -a "Visual Studio Code"'`;
+   - na linha de cima do slot, a evidência: `# descoberto por sdd-new-session (AAAA-MM-DD): <evidência>`;
+   - mesma chave, mesma indentação; nada mais do arquivo muda; **não commite** — o valor vai para a branch
+     padrão junto com a feature.
+
+$ (repo temporário com editor: 'open -a "Visual Studio Code"' no sdd/config.yaml) grep -n "^editor\|before_ok_cmd" sdd/config.yaml; bash sdd/bin/slot.sh smoke.before_ok_cmd 2>&1 | tail -5
+60:# no comando; com |, ; ou &&, aponte para um script. Exemplo: before_ok_cmd: "bash ci/smoke.sh plano"
+63:  before_ok_cmd: "echo SMOKE_OK"
+114:editor: 'open -a "Visual Studio Code"'
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): echo SMOKE_OK
+SMOKE_OK
+RESULTADO: OK
+→ siga para o próximo passo.
+rc=0

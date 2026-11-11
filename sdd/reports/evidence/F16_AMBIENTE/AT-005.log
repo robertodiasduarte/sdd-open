@@ -1,0 +1,54 @@
+$ python3 -B -m unittest discover -v -s tests -p test_f16_textos.py
+  test_skill_descreve_o_gh_o_editor_e_o_modo_editor (test_f16_textos.ChecarAmbiente.test_skill_descreve_o_gh_o_editor_e_o_modo_editor) ... ok
+  test_passo_0_avisa_do_gh_cedo_sem_parar (test_f16_textos.IniciarRepo.test_passo_0_avisa_do_gh_cedo_sem_parar) ... ok
+  test_passo_2_le_a_linha_gh_e_passo_6_mantem_a_checagem (test_f16_textos.IniciarRepo.test_passo_2_le_a_linha_gh_e_passo_6_mantem_a_checagem) ... ok
+  test_as_funcoes_do_gh_sao_iguais_nos_2_scripts (test_f16_textos.Instalacao.test_as_funcoes_do_gh_sao_iguais_nos_2_scripts) ... ok
+  test_o_bloco_de_instalacao_e_igual_nas_3_skills (test_f16_textos.Instalacao.test_o_bloco_de_instalacao_e_igual_nas_3_skills) ... ok
+  test_o_bloco_tem_os_comandos_de_cada_sistema_e_o_login (test_f16_textos.Instalacao.test_o_bloco_tem_os_comandos_de_cada_sistema_e_o_login) ... ok
+  test_o_comando_que_o_script_imprime_esta_na_tabela (test_f16_textos.Instalacao.test_o_comando_que_o_script_imprime_esta_na_tabela) ... ok
+  test_aviso_final_nas_duas_formas (test_f16_textos.NovaSessao.test_aviso_final_nas_duas_formas) ... ok
+  test_modo_terminal_em_3_passos_sem_presumir_um_agente (test_f16_textos.NovaSessao.test_modo_terminal_em_3_passos_sem_presumir_um_agente) ... ok
+  test_slot_cheio_como_esta_e_vazio_pelo_checar_editores (test_f16_textos.NovaSessao.test_slot_cheio_como_esta_e_vazio_pelo_checar_editores) ... ok
+  test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao.test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho) ... ok
+  test_as_3_skills_sobem_de_versao (test_f16_textos.Versoes.test_as_3_skills_sobem_de_versao) ... ok
+  Ran 12 tests in 0.003s
+  OK
+$ python3 -B -m unittest discover -v -s tests -p test_agnostico.py
+  test_binario_no_escopo_nao_quebra_a_varredura (test_agnostico.Agnostico.test_binario_no_escopo_nao_quebra_a_varredura) ... ok
+  test_controle_com_conceito_passa (test_agnostico.Agnostico.test_controle_com_conceito_passa) ... ok
+  test_escopo_existe_e_nao_e_vazio (test_agnostico.Agnostico.test_escopo_existe_e_nao_e_vazio) ... ok
+  test_fixture_com_nome_de_ferramenta_reprova (test_agnostico.Agnostico.test_fixture_com_nome_de_ferramenta_reprova) ... ok
+  test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico.test_os_8_termos_e_arquivo_sem_extensao_reprovam) ... ok
+  test_pacote_sem_ferramenta_de_um_agente_so (test_agnostico.Agnostico.test_pacote_sem_ferramenta_de_um_agente_so) ... ok
+  test_texto_fora_de_utf8_reprova (test_agnostico.Agnostico.test_texto_fora_de_utf8_reprova) ... ok
+  Ran 7 tests in 0.083s
+  OK
+$ python3 -B -m unittest discover -v -s tests -p test_matriz_new_session.py
+  test_default_branch_divergente_para (test_matriz_new_session.ContratoDaNewSession.test_default_branch_divergente_para) ... ok
+  test_descoberta_grava_so_slot_vazio_na_frente_com_evidencia (test_matriz_new_session.ContratoDaNewSession.test_descoberta_grava_so_slot_vazio_na_frente_com_evidencia) ... ok
+  test_pre_voo_pelo_script_com_os_dois_exits_e_o_fallback (test_matriz_new_session.ContratoDaNewSession.test_pre_voo_pelo_script_com_os_dois_exits_e_o_fallback) ... ok
+  test_test_e_lint_so_com_evidencia_literal_na_ordem (test_matriz_new_session.ContratoDaNewSession.test_test_e_lint_so_com_evidencia_literal_na_ordem) ... ok
+  test_versao (test_matriz_new_session.ContratoDaNewSession.test_versao) ... ok
+  test_o_script_tem_as_mensagens_esperadas (test_matriz_new_session.Matriz.test_o_script_tem_as_mensagens_esperadas) ... ok
+  test_toda_mensagem_de_bloqueio_tem_linha_na_tabela (test_matriz_new_session.Matriz.test_toda_mensagem_de_bloqueio_tem_linha_na_tabela) ... /Users/robertoduarte/rdd-worktrees/sdd-open-f16-ambiente/tests/test_matriz_new_session.py:39: DeprecationWarning: 'maxsplit' is passed as positional argument
+  test_todo_trecho_da_tabela_existe_no_script (test_matriz_new_session.Matriz.test_todo_trecho_da_tabela_existe_no_script) ... ok
+  test_trechos_sao_literais_e_longos (test_matriz_new_session.Matriz.test_trechos_sao_literais_e_longos) ... ok
+  test_sem_agents_openai_yaml (test_matriz_new_session.Portadas.test_sem_agents_openai_yaml) ... ok
+  test_sem_pasta_tests_na_skill (test_matriz_new_session.Portadas.test_sem_pasta_tests_na_skill) ... ok
+  test_sem_referencia_ao_starter (test_matriz_new_session.Portadas.test_sem_referencia_ao_starter) ... ok
+  Ran 12 tests in 0.007s
+  OK
+$ python3 -B -m unittest discover -v -s tests -p test_decisoes_lint.py
+  test_fragmentos_2_perguntas (test_decisoes_lint.AlvosReais.test_fragmentos_2_perguntas) ... ok
+  test_o_ok_da_release_nao_conta_e_a_heuristica_da_kb_tambem_nao (test_decisoes_lint.AlvosReais.test_o_ok_da_release_nao_conta_e_a_heuristica_da_kb_tambem_nao) ... ok
+  test_skills_do_pacote_27_perguntas (test_decisoes_lint.AlvosReais.test_skills_do_pacote_27_perguntas) ... ok
+  test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras.test_cada_regra_reprova_pelo_motivo_certo) ... ok
+  test_citacao_e_pasta_com_varios_arquivos (test_decisoes_lint.Regras.test_citacao_e_pasta_com_varios_arquivos) ... ok
+  test_controle_passa_com_ref_no_fim (test_decisoes_lint.Regras.test_controle_passa_com_ref_no_fim) ... ok
+  test_pergunta_em_bloco_markdown_conta_em_outro_bloco_nao (test_decisoes_lint.Regras.test_pergunta_em_bloco_markdown_conta_em_outro_bloco_nao) ... ok
+  test_as_4_fixtures_reprovam_e_o_controle_passa (test_decisoes_lint.SelfTest.test_as_4_fixtures_reprovam_e_o_controle_passa) ... ok
+  test_fixture_que_passa_deixa_o_self_test_vermelho (test_decisoes_lint.SelfTest.test_fixture_que_passa_deixa_o_self_test_vermelho) ... ok
+  test_64_caminho_inexistente_zero_perguntas_e_tabela_ausente (test_decisoes_lint.Uso.test_64_caminho_inexistente_zero_perguntas_e_tabela_ausente) ... ok
+  test_sem_python3_sai_64 (test_decisoes_lint.Uso.test_sem_python3_sai_64) ... ok
+  Ran 11 tests in 2.550s
+  OK

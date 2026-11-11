@@ -1,0 +1,6 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/sondas/mutante_ma2.sh
+=== MA2: o --frente passa a consultar o gh (o stub é chamado; a saída do --frente não tem ⚠️)
+FAIL: test_frente_nao_consulta_o_gh (test_checar.TestGh)
+Ran 77 tests in 131.407s
+FAILED (failures=1)
+rc=1 · MORTA

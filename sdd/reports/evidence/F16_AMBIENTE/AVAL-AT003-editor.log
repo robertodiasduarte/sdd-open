@@ -1,0 +1,88 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/sondas/at003.sh
+=== PATH com zed e cursor (ordem: cursor antes de zed)
+cursor
+rc=0
+=== PATH com code em p2 depois de p1 (code vence pela lista)
+code
+rc=0
+=== PATH só com idea
+idea
+rc=0
+=== PATH só com pycharm
+pycharm
+rc=0
+=== PATH só com webstorm
+webstorm
+rc=0
+=== PATH só com code-insiders
+code-insiders
+rc=0
+=== PATH só com windsurf
+windsurf
+rc=0
+=== PATH com code SEM bit de execução (macOS) -> não conta
+rc=1
+=== macOS, PATH vazio, VS Code.app em apps1
+open -a "Visual Studio Code"
+dica: para abrir pelo terminal com 'code', no Visual Studio Code: Command Palette (Cmd+Shift+P) → Shell Command: Install 'code' command in PATH
+rc=0
+=== macOS, PATH vazio, só Cursor.app em apps2
+open -a "Cursor"
+dica: para abrir pelo terminal com 'cursor', no Cursor: Command Palette (Cmd+Shift+P) → Shell Command: Install 'cursor' command in PATH
+rc=0
+=== macOS, PATH vazio, só Windsurf.app em apps2
+open -a "Windsurf"
+dica: para abrir pelo terminal com 'windsurf', no Windsurf: Command Palette (Cmd+Shift+P) → Shell Command: Install 'windsurf' command in PATH
+rc=0
+=== macOS, PATH vazio, só Zed.app em apps2
+open -a "Zed"
+rc=0
+=== macOS, PATH vazio, só Sublime Text.app em apps2
+open -a "Sublime Text"
+rc=0
+=== macOS, padrão de SDD_APPS_DIRS usa $HOME/Applications (HOME falso; /Applications real tem VS Code e Cursor)
+open -a "Visual Studio Code"
+dica: para abrir pelo terminal com 'code', no Visual Studio Code: Command Palette (Cmd+Shift+P) → Shell Command: Install 'code' command in PATH
+rc=0
+=== ordem entre pastas: Zed em apps1 e VS Code em apps2
+open -a "Zed"
+rc=0
+=== Linux com apps de macOS presentes -> ignora apps
+rc=1
+=== Windows, só cursor.cmd em LOCALAPPDATA
+"/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.L5cBgkDc7n/lad/Programs/cursor/resources/app/bin/cursor.cmd"
+dica: o editor está instalado, mas o comando dele não está no PATH: reinstale marcando 'Add to PATH', ou use o caminho acima
+rc=0
+=== Windows, code.cmd e cursor.cmd em LOCALAPPDATA
+"/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.L5cBgkDc7n/lad/Programs/Microsoft VS Code/bin/code.cmd"
+dica: o editor está instalado, mas o comando dele não está no PATH: reinstale marcando 'Add to PATH', ou use o caminho acima
+rc=0
+=== Windows, code.cmd no PATH (sem bit x)
+code
+rc=0
+=== Windows, sem LOCALAPPDATA, PATH vazio
+rc=1
+=== Linux, nada
+rc=1
+--- --editor sem git nem rede: roda fora de repositório (cwd=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.L5cBgkDc7n) e com PATH só /usr/bin:/bin
+=== --editor, PATH real reduzido, apps reais (/Applications deste Mac)
+open -a "Visual Studio Code"
+dica: para abrir pelo terminal com 'code', no Visual Studio Code: Command Palette (Cmd+Shift+P) → Shell Command: Install 'code' command in PATH
+rc=0
+--- este Mac, sem SDD_* (PATH real deste shell)
+cursor
+rc=0
+--- resumo do modo normal: sem editor, nenhum ⚠️ de editor
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+
+✅ Repo r, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+--- resumo do modo normal: com editor (code no PATH falso)
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+
+✅ Repo r, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor code · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0

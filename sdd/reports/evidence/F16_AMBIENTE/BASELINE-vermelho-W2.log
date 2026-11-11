@@ -1,0 +1,17 @@
+# linha de base vermelha em 36d0454 (testes da 2ª entrega sobre git archive 36d0454)
+   1 Ran 16 tests in 1.873s
+   1 FAILED (failures=14, errors=2)
+   1 FAIL: test_vale_para_exec (test_python_resolver.Calco.test_vale_para_exec)
+   1 FAIL: test_vale_para_env_e_xargs (test_python_resolver.Calco.test_vale_para_env_e_xargs)
+   1 FAIL: test_so_python_2_e_dito_pela_versao (test_python_resolver.Parada.test_so_python_2_e_dito_pela_versao)
+   1 FAIL: test_so_o_atalho_a_carga_segue_e_a_guarda_diz_a_causa_uma_vez (test_python_resolver.Parada.test_so_o_atalho_a_carga_segue_e_a_guarda_diz_a_causa_uma_vez)
+   1 Ran 11 tests in 0.007s
+   1 FAILED (failures=27, errors=1)
+   1 FAIL: test_slot_cheio_como_esta_e_vazio_pelo_checar_editor (test_f16_textos.NovaSessao.test_slot_cheio_como_esta_e_vazio_pelo_checar_editor) (termo='scripts/checar.sh --editor')
+   1 FAIL: test_slot_cheio_como_esta_e_vazio_pelo_checar_editor (test_f16_textos.NovaSessao.test_slot_cheio_como_esta_e_vazio_pelo_checar_editor) (termo='`open -a "<App>"`')
+   1 FAIL: test_slot_cheio_como_esta_e_vazio_pelo_checar_editor (test_f16_textos.NovaSessao.test_slot_cheio_como_esta_e_vazio_pelo_checar_editor) (termo='`%LOCALAPPDATA%\\Programs`')
+   1 FAIL: test_slot_cheio_como_esta_e_vazio_pelo_checar_editor (test_f16_textos.NovaSessao.test_slot_cheio_como_esta_e_vazio_pelo_checar_editor) (termo='**modo terminal**')
+Ran 20 tests in 13.561s
+FAILED (failures=18)
+Ran 2 tests in 0.519s
+FAILED (failures=5)

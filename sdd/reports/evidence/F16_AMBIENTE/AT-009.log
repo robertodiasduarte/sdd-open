@@ -1,0 +1,76 @@
+$ python3 -B -m unittest discover -v -s tests -p test_matriz_new_session.py
+  test_default_branch_divergente_para (test_matriz_new_session.ContratoDaNewSession.test_default_branch_divergente_para) ... ok
+  test_descoberta_grava_so_slot_vazio_na_frente_com_evidencia (test_matriz_new_session.ContratoDaNewSession.test_descoberta_grava_so_slot_vazio_na_frente_com_evidencia) ... ok
+  test_pre_voo_pelo_script_com_os_dois_exits_e_o_fallback (test_matriz_new_session.ContratoDaNewSession.test_pre_voo_pelo_script_com_os_dois_exits_e_o_fallback) ... ok
+  test_test_e_lint_so_com_evidencia_literal_na_ordem (test_matriz_new_session.ContratoDaNewSession.test_test_e_lint_so_com_evidencia_literal_na_ordem) ... ok
+  test_versao (test_matriz_new_session.ContratoDaNewSession.test_versao) ... ok
+  test_o_script_tem_as_mensagens_esperadas (test_matriz_new_session.Matriz.test_o_script_tem_as_mensagens_esperadas) ... ok
+  test_toda_mensagem_de_bloqueio_tem_linha_na_tabela (test_matriz_new_session.Matriz.test_toda_mensagem_de_bloqueio_tem_linha_na_tabela) ... /Users/robertoduarte/rdd-worktrees/sdd-open-f16-ambiente/tests/test_matriz_new_session.py:39: DeprecationWarning: 'maxsplit' is passed as positional argument
+  test_todo_trecho_da_tabela_existe_no_script (test_matriz_new_session.Matriz.test_todo_trecho_da_tabela_existe_no_script) ... ok
+  test_trechos_sao_literais_e_longos (test_matriz_new_session.Matriz.test_trechos_sao_literais_e_longos) ... ok
+  test_sem_agents_openai_yaml (test_matriz_new_session.Portadas.test_sem_agents_openai_yaml) ... ok
+  test_sem_pasta_tests_na_skill (test_matriz_new_session.Portadas.test_sem_pasta_tests_na_skill) ... ok
+  test_sem_referencia_ao_starter (test_matriz_new_session.Portadas.test_sem_referencia_ao_starter) ... ok
+  Ran 12 tests in 0.008s
+  OK
+$ python3 -B -m unittest discover -v -s tests -p test_release_workflow.py
+  test_alvo_inexistente_ou_vazio_reprova (test_release_workflow.IntegridadeDasSkills.test_alvo_inexistente_ou_vazio_reprova) ... ok
+  test_arquivo_que_nao_e_texto_reprova (test_release_workflow.IntegridadeDasSkills.test_arquivo_que_nao_e_texto_reprova) ... ok
+  test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills.test_cada_sinal_reprova) ... ok
+  test_emoji_com_zwj_e_texto_comum_passam (test_release_workflow.IntegridadeDasSkills.test_emoji_com_zwj_e_texto_comum_passam) ... ok
+  test_mesmo_programa_nos_dois_workflows (test_release_workflow.IntegridadeDasSkills.test_mesmo_programa_nos_dois_workflows) ... ok
+  test_skills_do_pacote_passam (test_release_workflow.IntegridadeDasSkills.test_skills_do_pacote_passam) ... ok
+  test_job_macos_nos_dois_workflows (test_release_workflow.PisoNoMacos.test_job_macos_nos_dois_workflows) ... ok
+  test_job_ubuntu_da_release_tem_folga_para_a_suite (test_release_workflow.PisoNoMacos.test_job_ubuntu_da_release_tem_folga_para_a_suite) ... ok
+  test_piso_afirmado_e_python3_do_path_e_o_do_piso (test_release_workflow.PisoNoMacos.test_piso_afirmado_e_python3_do_path_e_o_do_piso) ... ok
+  test_release_espera_o_piso (test_release_workflow.PisoNoMacos.test_release_espera_o_piso) ... ok
+  test_checks_inline_das_fixtures_continuam (test_release_workflow.PublishGate.test_checks_inline_das_fixtures_continuam) ... ok
+  test_roda_a_suite_e_o_gate_de_versao (test_release_workflow.PublishGate.test_roda_a_suite_e_o_gate_de_versao) ... ok
+  test_token_so_le (test_release_workflow.PublishGate.test_token_so_le) ... ok
+  test_actions_fixadas_por_sha (test_release_workflow.Release.test_actions_fixadas_por_sha) ... ok
+  test_checkout_com_historico_e_tags (test_release_workflow.Release.test_checkout_com_historico_e_tags) ... ok
+  test_checkout_e_o_v5_em_todo_job (test_release_workflow.Release.test_checkout_e_o_v5_em_todo_job) ... ok
+  test_fila_por_ref_sem_cancelar (test_release_workflow.Release.test_fila_por_ref_sem_cancelar) ... ok
+  test_gate_roda_as_classes_de_decisao_e_o_fluxo_encadeado (test_release_workflow.Release.test_gate_roda_as_classes_de_decisao_e_o_fluxo_encadeado) ... ok
+  test_gatilho_push_em_main_nos_paths_do_produto (test_release_workflow.Release.test_gatilho_push_em_main_nos_paths_do_produto) ... ok
+  test_nada_que_mascara_falha (test_release_workflow.Release.test_nada_que_mascara_falha) ... ok
+  test_publicacao_com_pacote_hash_e_release_idempotente (test_release_workflow.Release.test_publicacao_com_pacote_hash_e_release_idempotente) ... ok
+  test_release_depende_dos_testes_e_e_o_unico_com_escrita (test_release_workflow.Release.test_release_depende_dos_testes_e_e_o_unico_com_escrita) ... ok
+  test_sem_interpolacao_em_run (test_release_workflow.Release.test_sem_interpolacao_em_run) ... ok
+  test_so_tag_vxyz_dispara (test_release_workflow.Release.test_so_tag_vxyz_dispara) ... ok
+  test_tag_empurrada_e_a_tag_publicada (test_release_workflow.Release.test_tag_empurrada_e_a_tag_publicada) ... ok
+  test_testes_da_release_conferem_sintaxe_zsh_e_symlink (test_release_workflow.Release.test_testes_da_release_conferem_sintaxe_zsh_e_symlink) ... ok
+  test_testes_nao_tem_escrita (test_release_workflow.Release.test_testes_nao_tem_escrita) ... ok
+  test_testes_rodam_gate_suite_e_versao_com_base_obrigatoria (test_release_workflow.Release.test_testes_rodam_gate_suite_e_versao_com_base_obrigatoria) ... ok
+  test_token_global_so_le (test_release_workflow.Release.test_token_global_so_le) ... ok
+  test_frases_dizem_o_que_o_workflow_prova (test_release_workflow.Windows.test_frases_dizem_o_que_o_workflow_prova) ... ok
+  test_job_windows_nos_dois_workflows (test_release_workflow.Windows.test_job_windows_nos_dois_workflows) ... ok
+  Ran 31 tests in 0.747s
+  OK
+$ python3 -B -m unittest discover -v -s tests -p test_sdd_open.py -k Projeto
+  test_check_acusa_copia_gerada_editada_a_mao (test_sdd_open.Projeto.test_check_acusa_copia_gerada_editada_a_mao) ... ok
+  test_copias_geradas_dos_scripts_portados_passam_bash_n (test_sdd_open.Projeto.test_copias_geradas_dos_scripts_portados_passam_bash_n) ... ok
+  test_doctor_acusa_env_salvo_no_git_e_sai_0 (test_sdd_open.Projeto.test_doctor_acusa_env_salvo_no_git_e_sai_0) ... ok
+  test_doctor_avisa_adapter_diferente_do_pacote (test_sdd_open.Projeto.test_doctor_avisa_adapter_diferente_do_pacote) ... ok
+  test_doctor_avisa_sdd_bin_diferente_do_pacote (test_sdd_open.Projeto.test_doctor_avisa_sdd_bin_diferente_do_pacote) ... ok
+  test_doctor_avisa_skill_mais_velha_que_a_do_pacote (test_sdd_open.Projeto.test_doctor_avisa_skill_mais_velha_que_a_do_pacote) ... ok
+  test_doctor_com_pacote_sem_checar_avisa_e_sai_0 (test_sdd_open.Projeto.test_doctor_com_pacote_sem_checar_avisa_e_sai_0) ... ok
+  test_doctor_em_dia_com_o_pacote (test_sdd_open.Projeto.test_doctor_em_dia_com_o_pacote) ... ok
+  test_doctor_nao_perde_o_resto_de_nome_com_quebra_de_linha (test_sdd_open.Projeto.test_doctor_nao_perde_o_resto_de_nome_com_quebra_de_linha) ... ok
+  test_doctor_sem_segredo_diz_que_esta_limpo (test_sdd_open.Projeto.test_doctor_sem_segredo_diz_que_esta_limpo) ... ok
+  test_doctor_termina_em_resultado (test_sdd_open.Projeto.test_doctor_termina_em_resultado) ... ok
+  test_init_copia_fixtures_de_exemplo_mas_nunca_os_testes (test_sdd_open.Projeto.test_init_copia_fixtures_de_exemplo_mas_nunca_os_testes) ... ok
+  test_init_copia_patterns_e_contratos_e_nunca_sobrescreve (test_sdd_open.Projeto.test_init_copia_patterns_e_contratos_e_nunca_sobrescreve) ... ok
+  test_init_copia_review_e_adapters_e_nunca_sobrescreve (test_sdd_open.Projeto.test_init_copia_review_e_adapters_e_nunca_sobrescreve) ... ok
+  test_init_cria_a_estrutura (test_sdd_open.Projeto.test_init_cria_a_estrutura) ... ok
+  test_init_de_novo_e_idempotente (test_sdd_open.Projeto.test_init_de_novo_e_idempotente) ... ok
+  test_init_instala_as_invariantes_junto_com_o_playbook_do_pacote (test_sdd_open.Projeto.test_init_instala_as_invariantes_junto_com_o_playbook_do_pacote) ... ok
+  test_init_leva_o_resolvedor_de_python_e_completa_quando_falta (test_sdd_open.Projeto.test_init_leva_o_resolvedor_de_python_e_completa_quando_falta) ... ok
+  test_init_nunca_sobrescreve_as_invariantes_do_projeto (test_sdd_open.Projeto.test_init_nunca_sobrescreve_as_invariantes_do_projeto) ... ok
+  test_projeto_com_playbook_proprio_recebe_so_o_esqueleto (test_sdd_open.Projeto.test_projeto_com_playbook_proprio_recebe_so_o_esqueleto) ... ok
+  test_sync_e_idempotente_e_check_fica_em_dia (test_sdd_open.Projeto.test_sync_e_idempotente_e_check_fica_em_dia) ... ok
+  test_sync_preserva_o_texto_do_usuario_no_agents_md (test_sdd_open.Projeto.test_sync_preserva_o_texto_do_usuario_no_agents_md) ... ok
+  test_sync_reescreve_so_o_bloco_quando_a_fonte_muda (test_sdd_open.Projeto.test_sync_reescreve_so_o_bloco_quando_a_fonte_muda) ... ok
+  Ran 23 tests in 462.694s
+  OK
+# suíte inteira no bash 3.2: evidence/F16_AMBIENTE/VERIFY-GATE-<commit>.log
