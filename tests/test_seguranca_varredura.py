@@ -257,6 +257,30 @@ class RevisaoDoCodigo(Base):
                 self.assertIn("🛑 S01 alta supabase/migrations/0007.sql:", out)
                 self.tearDown(); self.setUp()
 
+    def test_r4_1_create_if_not_exists_nao_zera_a_rls(self):
+        # rodada 4, R1: migração idempotente sobre tabela que já tem RLS não bloqueia
+        p = self.projeto({"supabase/config.toml": "",
+                          "supabase/migrations/0001.sql": "create table guias (id int);\nalter table guias enable row level security;\n"})
+        self.escreve(p, "supabase/migrations/0007.sql", "create table if not exists guias (id int);\n")
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 0, out)
+
+    def test_r4_2_rls_num_arquivo_que_ordena_antes_vale(self):
+        # rodada 4, R2: policies.sql ordena antes de tables.sql e o enable continua valendo
+        p = self.projeto({"supabase/config.toml": ""})
+        self.escreve(p, "sdd/config.yaml", "layers:\n  sql: \"sql/*.sql\"\n")
+        self.escreve(p, "sql/policies.sql", "alter table clientes enable row level security;\n")
+        self.escreve(p, "sql/tables.sql", "create table clientes (id int);\n")
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 0, out)
+
+    def test_r4_3_cabecalho_sem_corpo_nao_esconde_outra_chave_na_linha(self):
+        p = self.projeto()
+        self.escreve(p, "conf/x.json", '{"exemplo": "-----BEGIN ' + 'PRIVATE KEY-----", "token": "%s"}\n' % SEGREDOS["ghp_"])
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 2, out)
+        self.assertIn("🛑 S11 alta conf/x.json:1", out)
+
     def test_n1_tabela_em_bloco_comentado_nao_conta(self):
         p = self.projeto({"supabase/config.toml": ""})
         self.escreve(p, "supabase/migrations/0002.sql", "/*\ncreate table rascunho (id int);\n*/\nselect 1;\n")

@@ -83,6 +83,7 @@ PONTEIRO = ("- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --r
             "antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).")
 DISPENSA = re.compile(r"sdd-seguranca:\s*aceito\s+(S\d\d)\s*(?:—|-)\s*(.*)$")
 CREATE = re.compile(r"(?i)\bcreate\s+(?:unlogged\s+)?table\s+(?:if\s+not\s+exists\s+)?([\w.\"]+)")
+SE_NAO_EXISTE = re.compile(r"(?i)\bif\s+not\s+exists\b")
 RLS = re.compile(r"(?i)\balter\s+table\s+(?:if\s+exists\s+)?(?:only\s+)?([\w.\"]+)\s+enable\s+row\s+level\s+security")
 SEM_RLS = re.compile(r"(?i)\balter\s+table\s+(?:if\s+exists\s+)?(?:only\s+)?([\w.\"]+)\s+disable\s+row\s+level\s+security")
 DROP = re.compile(r"(?i)\bdrop\s+table\s+(?:if\s+exists\s+)?([\w.\"]+)")
@@ -458,11 +459,13 @@ for f in ATIVOS:
                 continue
             linhas_t = t.split("\n")
             for n, ln in enumerate(linhas_t, 1):
-                m = f["re"].search(ln)
-                if m and "PRIVATE KEY-----" in m.group(0) and not corpo_pem(ln[m.end():], linhas_t[n:n + 1]):
-                    continue
-                if m and not (f["id"] != "S11" and comentado(ln, m.start(), p.endswith(".sql"))):
-                    achados.append((f, p, n))
+                # todo casamento da linha: um cabeçalho PEM sem corpo não esconde outra chave ao lado (rodada 4, R3)
+                for m in f["re"].finditer(ln):
+                    if "PRIVATE KEY-----" in m.group(0) and not corpo_pem(ln[m.end():], linhas_t[n:n + 1]):
+                        continue
+                    if not (f["id"] != "S11" and comentado(ln, m.start(), p.endswith(".sql"))):
+                        achados.append((f, p, n))
+                    break
     elif padrao in REGRAS:
         migr = {p: sem_comentarios_sql(t) for p, t in textos.items() if p.endswith(".sql") and not fora_do_codigo(p)
                 and (casa(p, f["globs"]) or (sql_globs and casa(p, sql_globs)))}
@@ -476,16 +479,26 @@ for f in ATIVOS:
                     for m in rx.finditer(t):
                         nm = nome_tabela(m.group(1))
                         if nm:
+                            if tipo == "cria" and SE_NAO_EXISTE.search(m.group(0)):
+                                tipo = "cria-se-falta"
                             eventos.append((p, m.start(), tipo, nm, linha_de(t, m.start())))
+            # estado[nome] = (com_rls, onde a tabela ficou sem RLS, já foi criada?)
             estado = {}
             for p, _pos, tipo, nm, n in sorted(eventos, key=lambda e: (e[0], e[1])):
+                rls, onde, criada = estado.get(nm, (False, None, False))
                 if tipo == "apaga":
                     estado.pop(nm, None)
                 elif tipo == "liga":
-                    estado[nm] = (True, estado.get(nm, (True, None))[1])
-                else:   # cria, ou desliga: fica sem RLS até alguém ligar
-                    estado[nm] = (False, (p, n))
-            for nm, (com_rls, onde) in sorted(estado.items()):
+                    estado[nm] = (True, onde, criada)
+                elif tipo == "desliga":
+                    estado[nm] = (False, (p, n), criada)
+                elif tipo == "cria-se-falta" and criada:
+                    pass   # no-op no banco: a tabela já existe com o estado que tem (rodada 4, R1)
+                else:
+                    # o `enable` num arquivo que ordena antes (policies.sql < tables.sql) vale para a tabela criada
+                    # depois, desde que nada a tenha apagado no meio (rodada 4, R2)
+                    estado[nm] = (rls and not criada, (p, n), True)
+            for nm, (com_rls, onde, _criada) in sorted(estado.items()):
                 if not com_rls and onde is not None:
                     achados.append((f, onde[0], onde[1]))
         else:
