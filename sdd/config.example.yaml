@@ -111,6 +111,9 @@ drive:
 # Preenchido pelo sdd-open (`init`): agentes para os quais os adaptadores são gerados.
 vendors: ""
 # Editor e pasta de worktrees são usados pela skill de nova sessão (sdd-new-session).
+# editor: vazio ⇒ a sdd-new-session pergunta na 1ª frente e grava a resposta. O comando é usado como está, com
+# argumentos (com aspas duplas dentro, entre aspas simples: 'open -a "Cursor"'); "terminal:<agente>" (terminal:claude,
+# terminal:codex) abre a frente só no terminal, com esse agente.
 editor: ""
 worktree_base: ""
 

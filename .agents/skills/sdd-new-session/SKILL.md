@@ -224,15 +224,28 @@ a evidência — ela vai para o Passo 2, item 6.
 - **Pasta das frentes** — `worktree_base`; vazio ⇒ `../<nome-do-repo>-frentes` (evidência: "padrão do
   sdd-open"). Fora do repositório: dentro dele, a worktree apareceria como arquivo não rastreado em todas as
   outras frentes.
-- **Editor** — `editor`; **cheio ⇒ use como está**, inclusive com argumentos (`open -a "Cursor"`). Vazio ⇒
-  `bash <pasta da sdd-checar-ambiente>/scripts/checar.sh --editor`: a 1ª linha é o comando (o 1º que existir
-  de `code`, `cursor`, `code-insiders`, `windsurf`, `zed`, `subl`, `idea`, `pycharm`, `webstorm` no PATH; no
-  macOS, o app fora do PATH vira `open -a "<App>"`; no Windows, o `code.cmd` ou `cursor.cmd` de
-  `%LOCALAPPDATA%\Programs`, pelo caminho); a 2ª, quando houver, `dica: …`, que vai para a resposta; sai 1 sem
-  editor. Sem bash: `Get-Command <nome>` sobre a mesma lista, e os mesmos caminhos do `%LOCALAPPDATA%`.
-  Evidência: "`checar.sh --editor` neste computador". Sem editor nenhum, o slot fica vazio e a frente abre em
-  **modo terminal** (Passo 3), sem ar de falha. O config é compartilhado: diga na resposta que é a preferência
-  deste computador e que qualquer um corrige a linha.
+- **Editor** — `editor`; **cheio ⇒ use como está**, inclusive com argumentos (`open -a "Cursor"`); `terminal:<agente>`
+  (`terminal:claude`, `terminal:codex`) ⇒ modo terminal com esse agente (Passo 3). **Vazio ⇒ pergunte, uma vez só, e
+  nunca escolha sozinho:** rode `bash <pasta da sdd-checar-ambiente>/scripts/checar.sh --editores` (uma linha por
+  editor achado neste computador, `<nome><TAB><comando>`, na ordem da detecção: o PATH, depois o app do macOS por
+  `open -a "<App>"`, depois o `.cmd` de `%LOCALAPPDATA%\Programs`; nada e exit 1 sem editor; sem bash, `Get-Command
+  <nome>` sobre `code`, `cursor`, `code-insiders`, `windsurf`, `zed`, `subl`, `idea`, `pycharm`, `webstorm` e os mesmos
+  caminhos do `%LOCALAPPDATA%`) e pergunte:
+
+  **Sua decisão** — [D2 · muda o produto] **Onde você quer abrir as frentes deste projeto?**
+  - **o 1º editor da lista** (recomendado) — é o que o terminal já acha pelo nome neste computador; grava o comando
+    dele no slot, como ele saiu da lista.
+  - **cada outro editor da lista**, pelo nome — grava o comando dele.
+  - **só no terminal, com Claude Code** — sem editor: a frente abre num terminal novo e você roda `claude` nela;
+    grava `editor: "terminal:claude"`.
+  - **só no terminal, com Codex** — o mesmo, com `codex`; grava `editor: "terminal:codex"`.
+  - **dizer o meu comando** — você diz o comando que abre o seu editor, ou `terminal:<comando do seu agente>`; grava
+    como você disser.
+  - **não sei** — explico em uma frase o que cada opção faz e repito a pergunta.
+
+  Sem editor achado, a pergunta só tem as opções de terminal, **dizer o meu comando** e **não sei**. A resposta vai para o slot (Passo 2,
+  item 6), com a evidência "escolha do usuário em <data>", e a pergunta não volta enquanto o slot estiver cheio. O config
+  é compartilhado: diga na resposta que é a preferência deste computador e que qualquer um corrige a linha.
 - **Testes e checagem de sintaxe** — `project.test_cmd` e `project.lint_cmd`, só com **evidência literal**,
   nesta ordem (a primeira fonte que tiver o comando vence):
   1. o comando que um workflow de `.github/workflows/` roda num step de teste (ou de lint), copiado do
@@ -270,8 +283,9 @@ a evidência — ela vai para o Passo 2, item 6.
    principal que ainda não foi enviado: enviar o commit e atualizar a frente, ou copiar à mão);
    `NADA A COPIAR` não é erro. Qualquer outro exit ⇒ diga a causa
    que ele imprimiu; a frente já existe e continua válida.
-5. Abra no editor. O comando é `<editor> "<pasta da frente>"`, com o slot como ele está. **Sem editor, não
-   aborte**: é o modo terminal — a frente já está pronta, e o Passo 3 diz como seguir nela.
+5. Abra no editor. O comando é `<editor> "<pasta da frente>"`, com o slot como ele está. **Com o slot
+   `terminal:<agente>`, ou sem editor, não aborte**: é o modo terminal — a frente já está pronta, e o Passo 3 diz como
+   seguir nela.
 6. **Grave os slots descobertos no `sdd/config.yaml da frente`** (`<pasta das frentes>/<slug>/sdd/config.yaml`),
    nunca no do checkout principal: lá o arquivo ficaria modificado, a frente não o veria, e o `git pull`
    depois da integração abortaria. Regras:
@@ -302,12 +316,13 @@ a evidência — ela vai para o Passo 2, item 6.
    `git worktree remove "<pasta>"` e `git branch -d <slug>`.
 3. **Slots gravados** no `sdd/config.yaml` da frente, cada um com o valor e a evidência; slots que ficaram
    vazios e por quê. Avise que eles chegam à branch padrão junto com a feature.
-4. **Sem editor (modo terminal)**, o **Próximo passo** são 3 passos numerados: 1. abra um terminal novo;
-   2. `cd "<pasta da frente>"`; 3. rode nele o agente que você usa (`claude`, `codex` ou o seu).
+4. **Em modo terminal** (slot `terminal:<agente>`, ou sem editor), o **Próximo passo** são 3 passos numerados:
+   1. abra um terminal novo; 2. `cd "<pasta da frente>"`; 3. rode nele o agente do slot (`claude`, `codex`…; sem
+   slot, o que você usa).
 5. **Última linha, destacada**, na forma que vale para este computador:
    - com editor: `⚠️ Continue na janela nova. Esta sessão do agente continua presa à pasta onde foi aberta —
      nenhum cd muda isso.`
-   - sem editor: `⚠️ Continue num terminal novo aberto na pasta da frente. Esta sessão do agente continua presa
+   - em modo terminal: `⚠️ Continue num terminal novo aberto na pasta da frente. Esta sessão do agente continua presa
      à pasta onde foi aberta — nenhum cd muda isso. Build, commit e push rodam lá.`
 
 ## Por que cada regra existe

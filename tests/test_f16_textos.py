@@ -97,22 +97,35 @@ class NovaSessao(unittest.TestCase):
     def setUp(self):
         self.texto = skill("sdd-new-session")
 
-    def test_slot_cheio_como_esta_e_vazio_pelo_checar_editor(self):
+    def test_slot_cheio_como_esta_e_vazio_pelo_checar_editores(self):
         for termo in ("**cheio ⇒ use como está**, inclusive com argumentos (`open -a \"Cursor\"`)",
-                      "scripts/checar.sh --editor", "`open -a \"<App>\"`", "`%LOCALAPPDATA%\\Programs`",
-                      "`Get-Command <nome>`", "**modo terminal**", "`editor: 'open -a \"Visual Studio Code\"'`"):
+                      "scripts/checar.sh --editores`", "`open -a \"<App>\"`", "`%LOCALAPPDATA%\\Programs`",
+                      "`Get-Command\n  <nome>`", "modo terminal", "`editor: 'open -a \"Visual Studio Code\"'`"):
             with self.subTest(termo=termo):
                 self.assertIn(termo, self.texto)
 
+    def test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho(self):
+        # pedido do Roberto (2026-11-11): "antes de abrir pela primeira vez, o sdd deveria perguntar o default"
+        for termo in ("**Vazio ⇒ pergunte, uma vez só, e\n  nunca escolha sozinho:**",
+                      "**Sua decisão** — [D2 · muda o produto] **Onde você quer abrir as frentes deste projeto?**",
+                      "**o 1º editor da lista** (recomendado)", "**cada outro editor da lista**",
+                      "**só no terminal, com Claude Code**", '`editor: "terminal:claude"`',
+                      "**só no terminal, com Codex**", '`editor: "terminal:codex"`', "**dizer o meu comando**",
+                      "**não sei**", "a pergunta não volta enquanto o slot estiver cheio"):
+            with self.subTest(termo=termo):
+                self.assertIn(termo, self.texto)
+        self.assertNotIn("**outro**", self.texto)   # PERGUNTA_DECISAO: nunca "Outro"
+
     def test_modo_terminal_em_3_passos_sem_presumir_um_agente(self):
         passo3 = self.texto.split("## Passo 3", 1)[1]
-        self.assertIn("1. abra um terminal novo;\n   2. `cd \"<pasta da frente>\"`; 3. rode nele o agente que você usa "
-                      "(`claude`, `codex` ou o seu)", passo3)
+        self.assertIn("**Em modo terminal** (slot `terminal:<agente>`, ou sem editor)", passo3)
+        self.assertIn("1. abra um terminal novo; 2. `cd \"<pasta da frente>\"`; 3. rode nele o agente do slot (`claude`, "
+                      "`codex`…; sem\n   slot, o que você usa)", passo3)
 
     def test_aviso_final_nas_duas_formas(self):
         passo3 = self.texto.split("## Passo 3", 1)[1]
         self.assertIn("com editor: `⚠️ Continue na janela nova.", passo3)
-        self.assertIn("sem editor: `⚠️ Continue num terminal novo aberto na pasta da frente. Esta sessão do agente "
+        self.assertIn("em modo terminal: `⚠️ Continue num terminal novo aberto na pasta da frente. Esta sessão do agente "
                       "continua presa\n     à pasta onde foi aberta — nenhum cd muda isso. Build, commit e push rodam lá.`",
                       passo3)
 

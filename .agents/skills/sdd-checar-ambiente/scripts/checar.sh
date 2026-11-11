@@ -19,7 +19,9 @@
 #      bash checar.sh --segredo  (só o bloco 🔴 Dado exposto, sem rede: o doctor do sdd-open chama este
 #                                 modo; sai 1 com achado e 0 sem achado)
 #      bash checar.sh --editor   (só a detecção de editor, sem git e sem rede: 1ª linha o comando, 2ª opcional
-#                                 "dica: …"; sai 1 sem editor. A sdd-new-session usa com o slot editor vazio)
+#                                 "dica: …"; sai 1 sem editor)
+#      bash checar.sh --editores (todos os editores achados, "<nome><TAB><comando>" por linha; sai 1 sem nenhum. A
+#                                 sdd-new-session usa a lista para perguntar o padrão na 1ª vez, com o slot editor vazio)
 # No modo normal, o `gh auth status` (10 s) roda junto com o ls-remote quando o origin é do GitHub, e sozinho
 # quando não há origin: gh ausente, deslogado ou sem resposta vira ⚠️, nunca 🔴.
 
@@ -30,6 +32,7 @@ case "${1:-}" in
   --frente) MODO=frente ;;
   --segredo) MODO=segredo ;;
   --editor) MODO=editor ;;
+  --editores) MODO=editores ;;
 esac
 
 EXPOSTO=""
@@ -131,6 +134,58 @@ editor_achado() {
   esac
   return 1
 }
+
+# Todos os editores achados, um por linha: "<nome>\t<comando>", na ordem da detecção (PATH, depois o app do macOS,
+# depois o .cmd do Windows); o mesmo editor achado por dois caminhos sai uma vez, pelo 1º. A sdd-new-session usa a lista
+# para perguntar o padrão na 1ª vez, em vez de escolher sozinha.
+editor_nome() {
+  case "$1" in
+    code|"Visual Studio Code"|*/code.cmd) echo "VS Code" ;; cursor|Cursor|*/cursor.cmd) echo "Cursor" ;;
+    code-insiders) echo "VS Code Insiders" ;; windsurf|Windsurf) echo "Windsurf" ;; zed|Zed) echo "Zed" ;;
+    subl|"Sublime Text") echo "Sublime Text" ;; idea) echo "IntelliJ IDEA" ;; pycharm) echo "PyCharm" ;;
+    webstorm) echo "WebStorm" ;; *) echo "$1" ;;
+  esac
+}
+editores_lista() {
+  local e d a n lad so vistos="|" IFS=:
+  so="$(sistema)"
+  for e in code cursor code-insiders windsurf zed subl idea pycharm webstorm; do
+    editor_no_path "${e}" "${so}" || continue
+    n="$(editor_nome "${e}")"
+    case "${vistos}" in *"|${n}|"*) continue ;; esac
+    vistos="${vistos}${n}|"; printf '%s\t%s\n' "${n}" "${e}"
+  done
+  case "${so}" in
+    macos)
+      for a in "Visual Studio Code" "Cursor" "Windsurf" "Zed" "Sublime Text"; do
+        for d in ${SDD_APPS_DIRS:-/Applications:${HOME:-}/Applications}; do
+          [ -d "${d}/${a}.app" ] || continue
+          n="$(editor_nome "${a}")"
+          case "${vistos}" in *"|${n}|"*) break ;; esac
+          vistos="${vistos}${n}|"; printf '%s\topen -a "%s"\n' "${n}" "${a}"
+          break
+        done
+      done ;;
+    windows)
+      lad="${LOCALAPPDATA:-}"
+      [ -n "${lad}" ] && command -v cygpath >/dev/null 2>&1 && lad="$(cygpath -u "${lad}")"
+      [ -n "${lad}" ] || return 0
+      for a in "Microsoft VS Code/bin/code.cmd" "cursor/resources/app/bin/cursor.cmd"; do
+        [ -f "${lad}/Programs/${a}" ] || continue
+        n="$(editor_nome "${a}")"
+        case "${vistos}" in *"|${n}|"*) continue ;; esac
+        vistos="${vistos}${n}|"; printf '%s\t"%s"\n' "${n}" "${lad}/Programs/${a}"
+      done ;;
+  esac
+}
+
+# --editores (F16): a lista inteira, sem git e sem rede. Sai 1 sem nenhum editor.
+if [ "${MODO}" = editores ]; then
+  L="$(editores_lista)"
+  [ -n "${L}" ] || exit 1
+  printf '%s\n' "${L}"
+  exit 0
+fi
 
 # --editor (F16): só a detecção, sem git e sem rede. 1ª linha: o comando; 2ª, opcional: "dica: …". Sai 1 sem editor.
 if [ "${MODO}" = editor ]; then

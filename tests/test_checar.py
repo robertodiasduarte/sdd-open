@@ -931,6 +931,41 @@ class TestEditor(Base):
         rc, linhas = self.editor(SDD_CHECAR_UNAME="Darwin", SDD_APPS_DIRS=str(a) + ":" + str(b))
         self.assertEqual((rc, linhas[0]), (0, 'open -a "Visual Studio Code"'))
 
+    def editores(self, **env: str) -> tuple:
+        rc, out, _ = self.roda("--editores", **env)
+        return rc, [tuple(l.split("\t")) for l in out.splitlines()]
+
+    def test_editores_lista_todos_em_ordem_e_sem_repetir(self):
+        # pedido do Roberto (2026-11-11): a sdd-new-session pergunta o padrão; a lista é a base da pergunta
+        p = self.tmp / "editores"
+        for nome in ("cursor", "zed"):
+            self.exe(p, nome)
+        apps = self.tmp / "Applications"
+        for app in ("Cursor", "Visual Studio Code"):
+            (apps / (app + ".app")).mkdir(parents=True)
+        rc, linhas = self.editores(SDD_CHECAR_UNAME="Darwin", SDD_CHECAR_EDITOR_PATH=str(p), SDD_APPS_DIRS=str(apps))
+        self.assertEqual(rc, 0)
+        self.assertEqual(linhas, [("Cursor", "cursor"), ("Zed", "zed"), ("VS Code", 'open -a "Visual Studio Code"')])
+
+    def test_editores_no_windows_pelo_cmd(self):
+        lad = self.tmp / "AppData" / "Local"
+        self.exe(lad / "Programs" / "Microsoft VS Code" / "bin", "code.cmd")
+        self.exe(lad / "Programs" / "cursor" / "resources" / "app" / "bin", "cursor.cmd")
+        rc, linhas = self.editores(SDD_CHECAR_UNAME="MINGW64_NT-10.0-19045", LOCALAPPDATA=str(lad))
+        self.assertEqual(rc, 0)
+        self.assertEqual([n for n, _ in linhas], ["VS Code", "Cursor"])
+        self.assertTrue(all(c.startswith('"') and c.endswith('.cmd"') for _, c in linhas), linhas)
+
+    def test_editores_sem_nenhum_sai_1_calado(self):
+        self.assertEqual(self.editores(), (1, []))
+
+    def test_o_editor_continua_sendo_o_primeiro_da_lista(self):
+        p = self.tmp / "editores"
+        for nome in ("subl", "cursor"):
+            self.exe(p, nome)
+        rc, linhas = self.editores(SDD_CHECAR_EDITOR_PATH=str(p))
+        self.assertEqual(self.editor(SDD_CHECAR_EDITOR_PATH=str(p))[1][0], linhas[0][1])
+
     def test_app_do_macos_nao_vale_fora_do_macos(self):
         apps = self.tmp / "Applications"
         (apps / "Visual Studio Code.app").mkdir(parents=True)
