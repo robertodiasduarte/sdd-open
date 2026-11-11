@@ -314,9 +314,6 @@ class Projeto(Sandbox):
                 self.assertEqual(rc, 0, out + err)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
 
 class Hooks(Sandbox):
     """F8: o init copia sdd/hooks/, liga core.hooksPath sob a confirmação única e nunca desliga alarme alheio;
@@ -720,3 +717,7 @@ class RaioDeImpactoSeguranca(Sandbox):
         rc, out, err = self.roda([BASH, CLI, "doctor"], p)
         self.assertEqual(rc, 0, out + err)
         self.assertIn("sdd-seguranca está no pacote e não no projeto — para receber: rode init", out + err)
+
+
+if __name__ == "__main__":
+    unittest.main()

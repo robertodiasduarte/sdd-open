@@ -229,6 +229,19 @@ class RevisaoDoCodigo(Base):
         self.assertIn("✔ aceito S16 src/c.js:2 — expressão fixa da planilha", out)
         self.assertIn("✔ aceito S12 src/c.js:2 — html sanitizado antes", out)
 
+    def test_r3_1_tabela_recriada_ou_rls_desligada_numa_migracao_nova(self):
+        # rodada 3, R1: o RLS de uma migração antiga não cobre a tabela recriada nem a RLS desligada depois
+        for nova in ("drop table guias;\ncreate table guias (id int);\n",
+                     "alter table guias disable row level security;\n"):
+            with self.subTest(nova=nova[:20]):
+                p = self.projeto({"supabase/config.toml": "",
+                                  "supabase/migrations/0001.sql": "create table guias (id int);\nalter table guias enable row level security;\n"})
+                self.escreve(p, "supabase/migrations/0007.sql", nova)
+                rc, out = self.varre(p)
+                self.assertEqual(rc, 2, out)
+                self.assertIn("🛑 S01 alta supabase/migrations/0007.sql:", out)
+                self.tearDown(); self.setUp()
+
     def test_n1_tabela_em_bloco_comentado_nao_conta(self):
         p = self.projeto({"supabase/config.toml": ""})
         self.escreve(p, "supabase/migrations/0002.sql", "/*\ncreate table rascunho (id int);\n*/\nselect 1;\n")
@@ -303,7 +316,7 @@ class Avisos(Base):
         "S12": ("src/Comentario.tsx", "<div dangerouslySetInnerHTML={{ __html: texto }} />\n"),
         "S14": ("supabase/functions/api/index.ts", "headers: { 'Access-Control-Allow-Origin': '*' }\n"),
         "S15": ("next.config.js", "module.exports = { productionBrowserSourceMaps: true }\n"),
-        "S16": ("src/calc.js", "const r = eval(formula);\n"),
+        "S16": ("src/calc.js", "const r = eval(formula);\n"),  # sdd-seguranca: aceito S16 — caso de teste da varredura, nunca executado
     }
     PARES = {
         "S02": ("src/lista.ts", "const r = await db.from('c').select('id, nome');\n"),
@@ -314,7 +327,7 @@ class Avisos(Base):
         "S12": ("src/Comentario.tsx", "el.textContent = texto;\nif (el.innerHTML === '') {}\n"),
         "S14": ("supabase/functions/api/index.ts", "headers: { 'Access-Control-Allow-Origin': 'https://app.example.com' }\n"),
         "S15": ("next.config.js", "module.exports = { productionBrowserSourceMaps: false }\n"),
-        "S16": ("src/calc.py", "model.eval()\nretrieval(x)\ndados = json.loads(texto)\n# eval(formula) no comentário\n"),
+        "S16": ("src/calc.py", "model.eval()\nretrieval(x)\ndados = json.loads(texto)\n# eval(formula) no comentário\n"),  # sdd-seguranca: aceito S16 — caso de teste da varredura, nunca executado
     }
 
     def test_os_sete_padroes_avisam_com_a_prova(self):
@@ -345,7 +358,7 @@ class Avisos(Base):
             "src/b.js": "el.innerHTML = corpo;\n",
             "vercel.json": "{\"headers\": [{\"key\": \"Access-Control-Allow-Origin\", \"value\": \"*\"}]}\n",
             "api/c.js": "app.use(cors({ origin: '*' }))\n",
-            "src/d.js": "const f = new Function('return 1');\n",
+            "src/d.js": "const f = new Function('return 1');\n",  # sdd-seguranca: aceito S16 — caso de teste da varredura, nunca executado
             "src/e.js": "fetch('https://x.example.com', { headers: { 'Access-Control-Allow-Origin': '*' } })\n",
         }
         for rel, txt in casos.items():
@@ -360,7 +373,7 @@ class Avisos(Base):
 
 class Teto(Base):
     def oito(self, p) -> None:
-        linhas = ["const r%d = eval(x%d);" % (k, k) for k in range(4)]
+        linhas = ["const r%d = eval(x%d);" % (k, k) for k in range(4)]  # sdd-seguranca: aceito S16 — caso de teste da varredura, nunca executado
         linhas += ["db.from('t').select('*');", "storage.getPublicUrl(a);", "storage.getPublicUrl(b);", "db.select(\"*\")"]
         self.escreve(p, "src/muitos.ts", "\n".join(linhas) + "\n")
 
@@ -422,7 +435,7 @@ class Dispensa(Base):
                       "// sdd-seguranca: aceito S12 — motivo de outro item"):
             with self.subTest(marca=marca):
                 p = self.projeto({"package.json": "{}\n"})
-                self.escreve(p, "src/c.js", marca + "\nconst r = eval(x);\n")
+                self.escreve(p, "src/c.js", marca + "\nconst r = eval(x);\n")  # sdd-seguranca: aceito S16 — caso de teste da varredura, nunca executado
                 rc, out = self.varre(p)
                 self.assertEqual(rc, 1, out)
                 self.assertIn("⚠️ dispensa sem motivo (ou de outro item) não vale: src/c.js:2 (S16)", out)
@@ -541,7 +554,7 @@ class Uso(Base):
     def test_fim_de_linha_sempre_unix(self):
         # raio de impacto: no Windows o Python escreveria \r\n e o bloco do AGENTS.md nunca ficaria em dia
         p = self.projeto({"package.json": "{}\n"})
-        self.escreve(p, "src/c.js", "eval(x)\n")
+        self.escreve(p, "src/c.js", "eval(x)\n")  # sdd-seguranca: aceito S16 — caso de teste da varredura, nunca executado
         log = self.tmp / "s.log"
         self.varre(p, "--saida", str(log))
         self.assertNotIn(b"\r", log.read_bytes())

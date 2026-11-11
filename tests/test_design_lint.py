@@ -287,9 +287,6 @@ class Prompts(Sandbox):
         self.reprova(antigo, "falta o subtítulo ### Inventário")
 
 
-if __name__ == "__main__":
-    unittest.main()
-
 
 class AvisoDeSeguranca(Sandbox):
     """F18/F20: DEFINE com item de segurança aplicado e DESIGN sem a seção ## Segurança ⇒ ⚠️, exit 0."""
@@ -320,3 +317,7 @@ class AvisoDeSeguranca(Sandbox):
                 rc, out, err = self.roda_lint(linha, secao)
                 self.assertEqual(rc, 0, out + err)
                 self.assertNotIn("⚠️", out + err)
+
+
+if __name__ == "__main__":
+    unittest.main()

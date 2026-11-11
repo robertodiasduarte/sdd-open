@@ -41,7 +41,7 @@ esac
 
 if ! sdd_python_pronto; then
   echo "🛑 seguranca-varredura: python3 não encontrado no PATH." >&2
-  printf 'RESULTADO: PAROU\n→ instale o Python 3 (3.9 ou mais novo) e rode de novo; nada foi lido.\n' >&2
+  printf 'RESULTADO: PAROU\n→ instale o Python 3 (3.9 ou mais novo) e rode de novo; nada foi lido.\n' >&2   # como os outros de sdd/bin
   exit 64
 fi
 
@@ -80,6 +80,8 @@ PONTEIRO = ("- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --r
 DISPENSA = re.compile(r"sdd-seguranca:\s*aceito\s+(S\d\d)\s*(?:—|-)\s*(.*)$")
 CREATE = re.compile(r"(?i)\bcreate\s+(?:unlogged\s+)?table\s+(?:if\s+not\s+exists\s+)?([\w.\"]+)")
 RLS = re.compile(r"(?i)\balter\s+table\s+(?:if\s+exists\s+)?(?:only\s+)?([\w.\"]+)\s+enable\s+row\s+level\s+security")
+SEM_RLS = re.compile(r"(?i)\balter\s+table\s+(?:if\s+exists\s+)?(?:only\s+)?([\w.\"]+)\s+disable\s+row\s+level\s+security")
+DROP = re.compile(r"(?i)\bdrop\s+table\s+(?:if\s+exists\s+)?([\w.\"]+)")
 DEFINER = re.compile(r"(?i)\bsecurity\s+definer\b")
 FUNCAO = re.compile(r"(?i)\bcreate\s+(?:or\s+replace\s+)?function\s+([\w.\"]+)")
 # revisão do código, N2: o revoke vale para a função que ele nomeia (ou para todas do esquema), não para o arquivo
@@ -445,12 +447,27 @@ for f in ATIVOS:
         migr = {p: sem_comentarios_sql(t) for p, t in textos.items()
                 if p.endswith(".sql") and (casa(p, f["globs"]) or (sql_globs and casa(p, sql_globs)))}
         if padrao == "regra:rls":
-            com_rls = {nome_tabela(m.group(1)) for t in migr.values() for m in RLS.finditer(t)} - {None}
-            for p, t in migr.items():
-                for m in CREATE.finditer(t):
-                    nm = nome_tabela(m.group(1))
-                    if nm and nm not in com_rls:
-                        achados.append((f, p, linha_de(t, m.start())))
+            # Na ordem das migrações (nome do arquivo, depois a posição): criar, ligar, desligar e apagar. O RLS de uma
+            # migração antiga não cobre a tabela recriada nem a RLS desligada depois (revisão do código, rodada 3, R1).
+            eventos = []
+            for p in sorted(migr):
+                t = migr[p]
+                for tipo, rx in (("cria", CREATE), ("liga", RLS), ("desliga", SEM_RLS), ("apaga", DROP)):
+                    for m in rx.finditer(t):
+                        nm = nome_tabela(m.group(1))
+                        if nm:
+                            eventos.append((p, m.start(), tipo, nm, linha_de(t, m.start())))
+            estado = {}
+            for p, _pos, tipo, nm, n in sorted(eventos, key=lambda e: (e[0], e[1])):
+                if tipo == "apaga":
+                    estado.pop(nm, None)
+                elif tipo == "liga":
+                    estado[nm] = (True, estado.get(nm, (True, None))[1])
+                else:   # cria, ou desliga: fica sem RLS até alguém ligar
+                    estado[nm] = (False, (p, n))
+            for nm, (com_rls, onde) in sorted(estado.items()):
+                if not com_rls and onde is not None:
+                    achados.append((f, onde[0], onde[1]))
         else:
             todas = any(REVOKE_TODAS.search(t) for t in migr.values())
             revogadas = {nome_funcao(m.group(1)) for t in migr.values() for m in REVOKE_FN.finditer(t)}
@@ -469,7 +486,7 @@ SEGREDO_RES = [f["re"] for f in ITENS if f["c"]["bloqueia"] == "sim" and f["re"]
 
 def limpa_motivo(bruto):
     """O motivo termina no fim do comentário e nunca carrega um segredo (revisão do DESIGN, R4)."""
-    m = re.split(r"\*/|-->", bruto, 1)[0]
+    m = re.split(r"\*/|-->", bruto, maxsplit=1)[0]
     for r in SEGREDO_RES:
         m = r.sub("[…]", m)
     m = m.strip()
