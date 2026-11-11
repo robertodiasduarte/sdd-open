@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; funciona em qualquer agente que
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.0"
+  version: "2.3.0"
   updated: "2026-10"
   fase: "0"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-brainstorm — Fase 0 (opcional)
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-brainstorm v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-brainstorm v2.3.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Explorar antes de especificar. O produto desta fase é **clareza**, não código: um documento
 que o `/sdd-define` consegue transformar em spec com pouca pergunta.
@@ -104,6 +104,13 @@ recomendada vem **primeiro**, com "(Recomendado)" e o motivo em uma frase.
 Boas perguntas: "Para quem é?", "O que muda no dia de quem usa?", "Como você saberia que
 ficou pronto?", "O que NÃO precisa estar na primeira versão?".
 
+**Perfil de risco (sempre, uma pergunta aberta).** Antes das abordagens, pergunte as 3 de segurança juntas,
+para responder em uma linha cada: **Quem pode ver cada dado? Quem pode mudar? Quanto alguém pode pedir?**
+("quanto pedir" = tentativas de login, chamadas pagas, inclusive à IA, e arquivos enviados). "Não sei" vale e é
+registrado assim. As respostas vão para `## Perfil de risco` do documento; o passo de segurança do Define (skill
+`sdd-seguranca`) as lê para saber se há login, dado de terceiros, rota pública, envio de arquivo ou chamada paga.
+Esta pergunta não conta entre as 3 de descoberta.
+
 ### 3. Amostras (aterramento)
 
 Sempre pergunte: "Existe algo que ancore a solução? (a) arquivos de entrada reais, (b) exemplos
@@ -149,6 +156,7 @@ assunções em "O que precisa de você" no fechamento. Nunca invente uma respost
 
 ```text
 [ ] ≥3 perguntas de descoberta feitas (ou ASSUMIDO marcado)
+[ ] Perfil de risco: as 3 perguntas de segurança respondidas (ou "não sei") em ## Perfil de risco
 [ ] Pergunta de amostras feita
 [ ] ≥2 abordagens exploradas, com recomendação
 [ ] YAGNI aplicado e registrado

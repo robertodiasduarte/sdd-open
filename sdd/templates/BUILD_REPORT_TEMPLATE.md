@@ -169,6 +169,18 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 
 ---
 
+## Segurança
+
+> Uma vez por build: os itens que o passo de segurança do Define **recusou** ou **adiou** (subseção `### Segurança` das
+> Clarifications do DEFINE), com o motivo. Sem nenhum: `nenhum`. As regras da stack que o build seguiu vêm de
+> `bash sdd/bin/seguranca-varredura.sh --regras`.
+
+| Item | Decisão | Motivo |
+|---|---|---|
+| {Snn <falha>} | {recusado \| adiado} | {o motivo registrado no DEFINE} |
+
+---
+
 ## Issues Encountered
 
 | # | Issue | Resolution | Time Impact |

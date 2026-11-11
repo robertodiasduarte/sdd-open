@@ -228,11 +228,17 @@ Fallback aprovado · Autônomo? · Verification interna · Eval mínimo pré-shi
 
 ---
 
-## Security Considerations
+## Segurança
 
-- {Security consideration 1}
-- {Security consideration 2}
-- {Security consideration 3}
+> Os 5 itens sempre, nesta ordem (N.A. com o motivo quando não se aplica). Os itens aplicados no passo de segurança
+> do Define (linha `Segurança` do DEFINE) entram no item 5 com o "evitar" da ficha do catálogo da `sdd-seguranca`,
+> escrito como decisão deste projeto. Sem esta seção, o `design-lint.py` avisa (não reprova).
+
+1. **Onde mora cada segredo:** {chave → onde fica (variável de ambiente do servidor, cofre) · quem lê}
+2. **Quem vê e quem muda cada tabela (RLS):** {tabela → dono da linha → política por operação}
+3. **Credencial de cada agente ou integração:** {agente → credencial própria · permissão mínima · teto · interruptor}
+4. **Cabeçalhos e CORS do host:** {cabeçalhos configurados · origens permitidas}
+5. **Itens aplicados no Define:** {Snn <falha> → a decisão que fecha a falha neste projeto}
 
 ---
 

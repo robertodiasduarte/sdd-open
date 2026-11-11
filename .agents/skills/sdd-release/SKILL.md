@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.10.0"
+  version: "2.11.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.11.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -139,6 +139,8 @@ diff-base (`git merge-base origin/{default_branch} HEAD`).
    lado de cada fonte alterada (`foo.ts` → `foo.test.ts`). `2` ⇒ **abortar**, citando cada `🛑 nova:`; `3` ⇒
    WAIVABLE (0d); `0` com `RESULTADO: PULADO` ⇒ declare "pulado — test_cmd vazio"; as `⚠️ nova, fora do diff` vão
    para o bloco do OK.
+10. **Segurança (varredura, em toda publicação):** `bash sdd/bin/seguranca-varredura.sh --saida sdd/reports/evidence/{F}/SEGURANCA.log`
+    — `2` ⇒ **abortar** (NON_WAIVABLE) com cada `🛑 Snn arquivo:linha` · `1` ⇒ CONCERNS · `64`/`127` ⇒ **abortar**; detalhe: `references/seguranca.md`.
 
 Se 0a abortou, **nem inicie** as passadas de modelo.
 
@@ -152,15 +154,14 @@ Se o teste ao lado do módulo tocado ficou vermelho, quem diz é o item 9 da 0a,
 invariante violada = **crítico** (0d). Diff sem
 nenhuma superfície: declare a passada pulada, não "revisada sem achados".
 
-**0c. Segurança (modelo — só se o diff toca auth, dados, permissões, rota pública).**
-Credencial hardcoded, permissão frouxa, dado pessoal em log ou resposta, gate de acesso
-removido.
+**0c. Segurança (modelo — em toda publicação, com a lista fixa).** O diff contra cada item de `bash sdd/bin/seguranca-varredura.sh --checklist`
+(os de maior risco primeiro), mais credencial no código, permissão afrouxada, dado pessoal em log e proteção removida; como marcar: `references/seguranca.md`.
 
 **0d. Síntese — um veredito.**
 
 | Classe | Achados | Efeito |
 |---|---|---|
-| **NON_WAIVABLE** | segurança crítica · drift · lint · consumidor quebrado · invariante violado · Verify Gate `2` ou `5` · testes do diff `2` | **abortar aqui** com `arquivo:linha` |
+| **NON_WAIVABLE** | segurança crítica · bloqueio da varredura de segurança (S01, S11) · drift · lint · consumidor quebrado · invariante violado · Verify Gate `2` ou `5` · testes do diff `2` | **abortar aqui** com `arquivo:linha` |
 | **WAIVABLE** (lista fechada) | Verify Gate `3` com evidência alternativa · testes do diff `3` · teste vermelho comprovadamente pré-existente · recibo manual-ux pendente quando o deploy não altera superfície visual · smoke antes do OK `2` (6b) | vira **FAIL-candidato** para a decisão humana no OK |
 
 | Veredito | Quando |
@@ -211,6 +212,7 @@ removido.
    **O deploy espera os testes?** <a frase da linha → do script, traduzida>
    **Banco:** <migration `<arquivo>` em `<projeto nome · ref>` em <data>, provada por leitura — de
    `## Migrations aplicadas` do BUILD_REPORT | sem migração nesta frente>
+   **Segurança:** <varredura: nada achado | N aviso(s), os mais graves pelo id e arquivo> · recusados ou adiados no Define: <Snn, … | nenhum>
    **Verificações:** Verify Gate <exit> · report-lint <ok> · lint <ok | pulado — slot vazio> ·
    landmines <ok | N avisos> · drift <ok | pulado — slot vazio> ·
    testes do diff <ok | ok, N fora do diff | inconclusivo — WAIVABLE | pulado — test_cmd vazio> ·
@@ -297,7 +299,7 @@ removido.
 17. **Atualizar a ficha** (`/sdd-handoff`, incondicional): `sdd/handoffs/HANDOFF_{F}.md` — o
     que foi publicado, veredito 0d (WAIVED com registro completo), pendências separadas em
     🐛 bug fix e ✨ melhoria, avisos da Fase 0 que não abortaram, próximos passos com comandos,
-    alertas. Ficha curta de "publicado, sem pendências" ainda documenta.
+    alertas (as de segurança e a linha fixa `/sdd-seguranca app <URL>`: `references/seguranca.md`). Ficha curta de "publicado, sem pendências" ainda documenta.
 17b. **Curadoria do playbook (incondicional; roda depois do push e nunca desfaz a publicação).** Um
     script colhe, um agente sem esta conversa julga, e um conferidor separa a contagem da mudança de
     regra. Antes de começar, diga em 1 frase que a publicação já terminou e que agora você confere o que
@@ -423,7 +425,7 @@ removido.
 
 Fase 0a: landmines exit 2 · drift ≠0 · lint · Verify Gate `2` ou `5` · `3` não resolvido · testes do diff com falha nova ·
 `4` sem recibo · report-lint ≠0 · report-lint --pendente ≠0 · gate-shell-evidencia ≠0 · review externo sem revisão nem dispensa. Fase 0b: consumidor não modificado quebrado · invariante
-violado. Fase 0c: credencial hardcoded · permissão frouxa · dado pessoal exposto. Fase 1:
+violado. Fase 0a.10: varredura de segurança `2` · `64`. Fase 0c: credencial hardcoded · permissão frouxa · dado pessoal exposto. Fase 1:
 arquivo inesperado no diff · conflito real · base moveu · escrita em produção sem source · `--ledger` ≠ 0.
 
 ## Quando pular o SDD formal

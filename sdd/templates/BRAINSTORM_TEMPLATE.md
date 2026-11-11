@@ -45,6 +45,19 @@
 
 ---
 
+## Perfil de risco
+
+> As 3 perguntas de segurança, uma linha cada ("não sei" vale). O passo de segurança do Define lê esta seção para
+> saber se há login, dado de terceiros, rota pública, envio de arquivo ou chamada paga.
+
+| Pergunta | Resposta |
+|---|---|
+| Quem pode ver? | {cada dado: só o dono, a empresa dele, a equipe, qualquer visitante} |
+| Quem pode mudar? | {quem grava, altera e apaga} |
+| Quanto alguém pode pedir? | {limites: tentativas de login, chamadas pagas (inclusive IA), arquivos enviados} |
+
+---
+
 ## Sample Data Inventory
 
 > Samples improve LLM accuracy through in-context learning and few-shot prompting.

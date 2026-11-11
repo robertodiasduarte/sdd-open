@@ -289,3 +289,34 @@ class Prompts(Sandbox):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class AvisoDeSeguranca(Sandbox):
+    """F18/F20: DEFINE com item de segurança aplicado e DESIGN sem a seção ## Segurança ⇒ ⚠️, exit 0."""
+
+    DEFINE = "# DEFINE: X\n\n| Aspect | Value | Notes |\n|---|---|---|\n| **Segurança** | %s | 2026-11-11 |\n"
+    SECAO = "\n## Segurança\n\n1. **Onde mora cada segredo:** a chave do banco na variável de ambiente do servidor.\n"
+
+    def roda_lint(self, linha_define: str, com_secao: bool):
+        pasta = self.tmp / "features"
+        pasta.mkdir(exist_ok=True)
+        design = pasta / "DESIGN_X.md"
+        texto = FIXTURE.read_text(encoding="utf-8")
+        design.write_text(texto + (self.SECAO if com_secao else ""), encoding="utf-8")
+        if linha_define is not None:
+            (pasta / "DEFINE_X.md").write_text(self.DEFINE % linha_define, encoding="utf-8")
+        return self.roda([PYTHON, "-B", SCRIPT, design], RAIZ)
+
+    def test_aplicado_sem_secao_avisa_e_passa(self):
+        rc, out, err = self.roda_lint("2 aplicados (S01, S07) · 0 recusados · 1 adiado (S13)", False)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("o DEFINE tem 2 item(ns) de segurança aplicado(s)", out)
+        self.assertIn("DESIGN válido", out)
+
+    def test_com_secao_ou_sem_aplicado_nao_avisa(self):
+        for linha, secao in (("2 aplicados (S01, S07)", True), ("0 aplicados · 1 recusado (S13)", False),
+                             ("N.A. — script local sem login", False), (None, False)):
+            with self.subTest(linha=linha, secao=secao):
+                rc, out, err = self.roda_lint(linha, secao)
+                self.assertEqual(rc, 0, out + err)
+                self.assertNotIn("⚠️", out + err)

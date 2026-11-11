@@ -33,7 +33,7 @@ def bloco_do_ok() -> str:
 
 class SddRelease(unittest.TestCase):
     def test_versao(self):
-        self.assertEqual(versao(RELEASE), "2.10.0")
+        self.assertEqual(versao(RELEASE), "2.11.0")
 
     def test_item_7_roda_o_script(self):
         item = ler(RELEASE).split("7. **PARAR e mostrar (o 1 OK)", 1)[1].split("```markdown", 1)[0]
@@ -72,7 +72,7 @@ class SddRelease(unittest.TestCase):
 
 class SddBuild(unittest.TestCase):
     def test_versao(self):
-        self.assertEqual(versao(BUILD), "2.8.0")
+        self.assertEqual(versao(BUILD), "2.9.0")
 
     def test_passo_4b_manda_ler_a_referencia(self):
         passo = ler(BUILD).split("### 4b. Migration", 1)[1].split("### 5.", 1)[0]
@@ -265,7 +265,7 @@ class RevisaoAdversarial(unittest.TestCase):
         self.assertIn("nunca os dois em paralelo", s)
         self.assertIn("--um-engine", s)
         self.assertIn("diversidade: nenhuma", s)
-        self.assertEqual(versao(DESIGN), "2.5.0")
+        self.assertEqual(versao(DESIGN), "2.6.0")
 
     def test_templates_citam_o_script(self):
         for rel in ("sdd/templates/fragments/RESUMO_ETAPA.md", "sdd/templates/fragments/ADVISOR_CONSULT.md",

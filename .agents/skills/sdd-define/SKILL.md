@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.5.1"
+  version: "2.6.0"
   updated: "2026-11"
   fase: "1"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-define — Fase 1
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-define v2.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-define v2.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
 depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
@@ -34,10 +34,11 @@ Quem usa esta skill, em geral, nunca usou git nem terminal.
 | 5 | Verify Gate | 8 |
 | 6 | Gravar | 9 e 10 |
 | 7 | Governança | 11 |
+| 8 | Segurança | 12 |
 
 Toda resposta, nesta ordem (pule a parte sem conteúdo):
 
-1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança`
+1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança · ⬜ 8 Segurança`
    (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
    etapa, o motivo vai em Agora.
 2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
@@ -322,6 +323,24 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
 A linha `Governança` só é escrita por este passo (ou pela dispensa da pessoa). O `verify-gate.sh` sai 5
 enquanto ela não tiver um valor final: `N.A. — …`, `GOVERNANCA_REVIEW_…` ou `dispensada — …`.
 
+### 12. Segurança (sempre, nesta sessão)
+
+Todo app com login, rota pública, dado de terceiros, envio de arquivo, banco ou chamada paga tem as falhas de
+segurança mais comuns de app feito com IA ao alcance; perguntar aqui custa uma linha de AT, e no build custa
+retrabalho. Este passo roda **nesta sessão** (sem revisor fresco) e **não trava** o gate: é alerta, não bloqueio.
+
+1. Siga o **modo Define** da skill `sdd-seguranca` (`.agents/skills/sdd-seguranca/SKILL.md`) sobre este DEFINE,
+   com o `## Perfil de risco` do BRAINSTORM se existir: gatilhos pelo sentido; sem gatilho, `✅ segurança: N.A. —
+   <motivo>` em 1 linha e nenhuma pergunta; com gatilho, os itens da stack (até 5 por rodada, do mais grave), uma
+   pergunta por item, no formato do exemplo da skill.
+2. **Aplicado** ⇒ AT novo no próximo id, em EARS, com o lado negativo, coberto pelo `cmd` do bloco `verify_gate`
+   existente; rode `verify-gate.sh --print` de novo. **Recusado** e **adiado** ⇒ uma linha cada na sessão
+   `### Segurança` de `## Clarifications`, com o motivo (o Build as copia para o BUILD_REPORT).
+3. Escreva a linha da tabela do `## Technical Context`:
+   `| **Segurança** | <a> aplicados (Snn, …) · <r> recusados (Snn, …) · <d> adiados (Snn, …) | <data> |` ou
+   `| **Segurança** | N.A. — <motivo> | <data> |`. O Design lê a linha: com item aplicado, ele escreve o "como
+   evitar" na seção `## Segurança`.
+
 ## Quality Gate
 
 ```text
@@ -335,11 +354,15 @@ enquanto ela não tiver um valor final: `N.A. — …`, `GOVERNANCA_REVIEW_…` 
 [ ] kb-dominios.py sai 0 (KB Domains de ls sdd/kb/ ou nenhum)
 [ ] Linha CONTEXTO de domínio preenchida (contexto/<slug>.md · sha · data, ou nenhum com motivo)
 [ ] Passo 11 rodou: linha Governança final (N.A. — …, GOVERNANCA_REVIEW_…, dispensada — …) e sem marcador de governança
+[ ] Passo 12 rodou: linha Segurança (N.A. — … ou aplicados · recusados · adiados); aplicados viraram AT no gate
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
 
 ## Por que cada regra existe
 
+- **A segurança roda em todo Define, nesta sessão e sem trava** — a pergunta "quem pode ver esta linha?" custa
+  um AT aqui e uma migração depois do build; como é alerta e o catálogo escolhe os itens, um revisor fresco e uma
+  trava a mais no gate custariam mais do que acham.
 - **O aceite é um comando com exit** — prosa ("o desconto deve funcionar") cada um lê do seu jeito; um
   comando dá a mesma resposta para quem construiu, para quem revisa e para a release.
 - **EARS, com o padrão indesejado (If–Then)** — a gramática fixa obriga a nomear o gatilho, e o If–Then
@@ -384,7 +407,7 @@ vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam 
 desliga nesta chamada (`--parar`).
 
 Nesta skill: `seguir define sdd/features/DEFINE_{FEATURE}.md <próxima>`, com a próxima do Próximo
-passo acima (ux-review ou design). A governança já rodou no passo 11.
+passo acima (ux-review ou design). A governança já rodou no passo 11 e a segurança no 12.
 
 ---
 

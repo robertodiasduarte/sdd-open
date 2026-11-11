@@ -44,8 +44,8 @@ class Release(unittest.TestCase):
         cls.fase2 = entre(cls.txt, "## FASE 2", "## FASE 3")
 
     def test_versao(self):
-        self.assertIn('version: "2.10.0"', self.txt)
-        self.assertIn("`sdd-release v2.10.0 · nov/2026", self.txt)
+        self.assertIn('version: "2.11.0"', self.txt)
+        self.assertIn("`sdd-release v2.11.0 · nov/2026", self.txt)
 
     def test_slots_listados(self):
         slots = entre(self.txt, "## Slots do config", "## FASE 0")
@@ -124,8 +124,8 @@ class Build(unittest.TestCase):
 
     def test_versao_e_4b(self):
         txt = ler(BUILD)
-        self.assertIn('version: "2.8.0"', txt)
-        self.assertIn("`sdd-build v2.8.0 · nov/2026", txt)
+        self.assertIn('version: "2.9.0"', txt)
+        self.assertIn("`sdd-build v2.9.0 · nov/2026", txt)
         passo = entre(txt, "### 4b. Migration", "### 5.")
         self.assertIn("schema.check_cmd", passo)
 
@@ -212,7 +212,9 @@ class SemProjetoPrivado(unittest.TestCase):
                 "tests/test_f15_slots_textos.py")
     # arquivo → termos (em minúsculas) que já estavam nele antes desta frente, pelo motivo da docstring
     ANTERIORES = {"sdd/bin/test-baseline.sh": {"deno"}, "MANIFEST.txt": {"deno"},
-                  "tests/test_test_baseline.py": {"deno"}, "tests/test_contrato_build_release.py": {"supabase"}}
+                  "tests/test_test_baseline.py": {"deno"}, "tests/test_contrato_build_release.py": {"supabase"},
+                  # F18/F20: supabase é valor do slot security.stack (a stack pública do catálogo de segurança)
+                  "sdd/config.example.yaml": {"supabase"}}
     LISTAS_DE_TERMOS = ("tests/test_f13_textos.py", "tests/test_f15_slots_textos.py")
 
     def test_nada_de_projeto_privado(self):

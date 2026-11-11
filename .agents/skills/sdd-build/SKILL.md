@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.8.0"
+  version: "2.9.0"
   updated: "2026-11"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.8.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.9.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
 critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
@@ -126,6 +126,11 @@ registre "modo fixado por flag". Detalhes em `references/modos-e-retry.md`.
 
 Guidelines inegociáveis: suposição vira pergunta · simplicidade · mudança cirúrgica ·
 critério antes do código · **evidência, não declaração**.
+
+**Antes da 1ª tarefa, as regras de segurança da stack:** `bash sdd/bin/seguranca-varredura.sh --regras` imprime
+as frases do catálogo da `sdd-seguranca` que valem para a stack deste projeto (sem terminal: leia o catálogo e
+filtre pela stack). Todo código escrito segue essas frases; conflito entre uma frase e o DESIGN é pergunta, nunca
+escolha silenciosa. Os itens aplicados no Define já são ATs do Verify Gate.
 
 1. **Prompt no inventário** (o arquivo está em `LLM Prompts` do DESIGN, ou é estágio de uma LOOP_SPEC gerada):
    vá direto ao roteador pelo `Tipo` da linha, sem varredura antes, porque o texto ainda não existe.
@@ -256,7 +261,8 @@ Candidatos ao playbook (bloco literal `<<<CANDIDATO_PLAYBOOK … >>>` com `evide
 "nenhum candidato") · Verify Gate (exit + recibo se manual-ux) · Veredito do avaliador ·
 Advisor Ledger (se houve review) · Drift detectado (mesmo que "nenhum") · Migrations aplicadas
 (se o manifest tem migration: projeto nome · ref, data e prova por leitura — o `report-lint` reprova
-migration listada sem a linha).
+migration listada sem a linha) · Segurança (os itens recusados e adiados da sessão `### Segurança` do DEFINE,
+uma vez, numa tabela com o motivo; sem nenhum, `nenhum`).
 
 ## Quality Gate
 

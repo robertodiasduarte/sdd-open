@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.5.0"
+  version: "2.6.0"
   updated: "2026-11"
   fase: "2"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Plano + especificação + decisões num documento. O DESIGN diz **como** construir o que o
 DEFINE contratou — e é o último ponto em que mudar de abordagem é barato.
@@ -166,6 +166,15 @@ DEFINE, formato de saída derivado do consumidor, fallback aprovado, material de
 decididos, Autônomo?, Verification interna e Eval mínimo pré-ship. O `design-lint.py` do passo 8 confere as colunas e os
 campos. Não escreva o prompt nem chame skill de prompt aqui: a fase Build faz isso, com o contrato em mãos.
 
+### 5.7. Segurança
+
+Preencha a seção `## Segurança` do template com os 5 itens, nesta ordem (N.A. com o motivo quando não se aplica):
+onde mora cada segredo · quem vê e quem muda cada tabela · credencial de cada agente ou integração · cabeçalhos e
+CORS do host · itens aplicados no Define. Para o item 5, leia a linha `Segurança` do DEFINE: cada `Snn` aplicado
+traz o campo `evitar` da ficha do catálogo da `sdd-seguranca` (`references/CATALOGO_SEGURANCA.md`), escrito como
+a decisão **deste** projeto (o nome da tabela, a variável, a origem permitida), não copiado. A seção é aviso, não
+trava: o `design-lint.py` do passo 8 avisa quando o DEFINE tem item aplicado e a seção falta.
+
 ### 6. Estratégia de testes
 
 | Tipo | Escopo | Ferramenta | Meta |
@@ -182,6 +191,7 @@ Cubra cada AT do DEFINE. O gate composto (se houver) é listado aqui com um bloc
 `python3 sdd/bin/design-lint.py sdd/features/DESIGN_{FEATURE}.md` sobre o arquivo gravado: títulos
 `### Decision N: <nome>` em sequência, `**Total Files:**` igual às linhas do manifest, dependências sem
 ciclo, nenhum placeholder e, com a seção de prompts, o inventário completo. Vermelho ⇒ corrija o DESIGN e rode de novo antes de entregar.
+Um `⚠️` de segurança (item aplicado no Define sem a seção `## Segurança`) não reprova: escreva a seção e rode de novo.
 
 ## Review adversarial do DESIGN (recomendado)
 
@@ -220,6 +230,7 @@ e pare no exit 40, repassando a parada que ele imprime. Se a revisão é exigida
 [ ] Landmines: entrada inteira aberta para cada LM do --grep
 [ ] Estratégia de testes cobre todos os ATs
 [ ] LLM Prompts: se true, inventário 100% + contrato por linha; se false, re-check com zero hits
+[ ] ## Segurança com os 5 itens; cada item aplicado no Define com o "evitar" da ficha como decisão deste projeto
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
 

@@ -32,14 +32,14 @@ velocidade ou segurança", "caso raro", "que informações o sistema guarda".
 
 ## Status desta skill, preenchido
 
-`Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança`
+`Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança · ⬜ 8 Segurança`
 
 ## Exemplo — resposta completa, com decisão (etapa 4 — Perguntas)
 
 Situação: o DEFINE da conferência de notas fiscais tem 6 testes de aceitação; falta decidir o que fazer
 com nota que aparece duas vezes.
 
-**Status** — `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança`
+**Status** — `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança · ⬜ 8 Segurança`
 (no Status: "Verify Gate" é a conferência final, um comando que diz passou ou não passou.)
 
 **O que foi feito** — Escrevi os 4 objetivos e os 6 testes de aceitação, frases do tipo "quando chega

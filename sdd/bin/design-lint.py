@@ -15,6 +15,9 @@ Regras:
     com as colunas Tipo, Versão, Completeness e Refator de? e ≥1 linha; Tipo é one-shot ou loop; um bloco
     `#### Prompt N:` por linha, cada um com Autônomo?, Verification interna e Eval mínimo pré-ship
     preenchidos. Molde: sdd/templates/fragments/LLM_PROMPTS_DESIGN.md. DESIGN sem a seção não muda.
+  - Aviso, sem reprovar (F18/F20): o DEFINE ao lado (DESIGN_X.md → DEFINE_X.md, mesma pasta) tem a linha
+    `| **Segurança** |` com 1 ou mais itens aplicados, e o DESIGN não tem `## Segurança` com conteúdo: o
+    "como evitar" de cada item aplicado é decisão de design. Imprime ⚠️ e o exit não muda.
   - Nenhum placeholder do template fora de código: nome em MAIÚSCULAS entre chaves, ou prosa entre
     chaves (o template só usa chaves; « » é aspa comum em português). Bloco cercado por ``` e trecho
     entre crases não contam.
@@ -225,6 +228,26 @@ def lint(texto: str) -> list:
     return erros
 
 
+def aviso_seguranca(caminho: str, texto: str):
+    """Frase do ⚠️ quando o DEFINE ao lado aplicou itens de segurança e o DESIGN não tem a seção; senão None."""
+    nome = Path(caminho).name
+    if not nome.startswith("DESIGN_"):
+        return None
+    try:
+        define = Path(caminho).with_name("DEFINE_" + nome[len("DESIGN_"):]).read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return None
+    linha = re.search(r"^\|\s*\*\*Segurança\*\*\s*\|([^|\n]*)\|", define, re.M)
+    aplicados = re.search(r"(\d+)\s+aplicad", linha.group(1)) if linha else None
+    if not aplicados or int(aplicados.group(1)) == 0:
+        return None
+    corpo = secao(CERCA.sub("", texto).splitlines(), "Segurança")
+    if corpo and any(ln.strip() and not ln.lstrip().startswith(">") and ln.strip() != "---" for ln in corpo):
+        return None
+    return ("o DEFINE tem %s item(ns) de segurança aplicado(s) e este DESIGN não tem a seção ## Segurança com o "
+            "\"como evitar\" de cada um (molde: sdd/templates/DESIGN_TEMPLATE.md); não reprova" % aplicados.group(1))
+
+
 def main(argv: list) -> int:
     if len(argv) != 2 or not Path(argv[1]).is_file():
         print("uso: design-lint.py <DESIGN.md>", file=sys.stderr)
@@ -237,6 +260,9 @@ def main(argv: list) -> int:
         print("→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo", file=sys.stderr)
         return 1
     erros = lint(texto)
+    aviso = aviso_seguranca(argv[1], texto)
+    if aviso:
+        print(f"⚠️ {argv[1]}: {aviso}")
     for e in erros:
         print(f"🛑 {argv[1]}: {e}", file=sys.stderr)
     if erros:

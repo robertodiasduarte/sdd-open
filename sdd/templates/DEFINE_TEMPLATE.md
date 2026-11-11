@@ -160,6 +160,7 @@ Explicitly NOT included in this feature:
 | **LLM Prompts** | {true \| false} | {Set true se a feature cria/edita prompts runtime — system prompts, passes de pipeline, classificadores. Quando true, a fase Design inventaria cada prompt e a fase Build trata cada um como entregável com contrato próprio.} |
 | **CONTEXTO de domínio** | {contexto/<slug>.md · sha <7 hex> · válido em AAAA-MM-DD \| nenhum (<motivo>)} | {Preenchido pelo passo 1.5 do sdd-define (cartógrafo). O Design lê as Regras vigentes dele.} |
 | **Governança** | {pendente — o passo 11 escreve: N.A. — <motivo> \| GOVERNANCA_REVIEW_<F>.md · a aplicadas · r recusadas · d adiadas \| dispensada — <motivo>} | {Escrita só pelo passo 11 do sdd-define (ou pela dispensa da pessoa). Sem um desses 3 valores finais, o verify-gate.sh sai 5.} |
+| **Segurança** | {pendente — o passo 12 escreve: N.A. — <motivo> \| a aplicados (Snn, …) · r recusados (Snn, …) · d adiados (Snn, …)} | {Escrita pelo passo 12 do sdd-define (skill sdd-seguranca). É registro, não trava: o Design e o Build a leem.} |
 
 **Why This Matters:**
 
@@ -168,6 +169,7 @@ Explicitly NOT included in this feature:
 - **IaC Impact** → Triggers infrastructure planning, avoids "works locally" failures
 - **CONTEXTO de domínio** → o Define e o Design partem das regras que o código já impõe, com arquivo:linha
 - **Governança** → nenhum DEFINE chega ao build sem a revisão de governança (ou sem a dispensa escrita)
+- **Segurança** → o Design escreve o "como evitar" de cada item aplicado, e o Build lista os recusados e adiados
 - **LLM Prompts** → Gate condicional para a etapa de engenharia de prompts; evita overhead em features sem LLM
 
 **LLM Prompts — gatilhos para marcar `true`:**
