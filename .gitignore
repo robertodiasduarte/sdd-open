@@ -1,0 +1,7 @@
+# Gerados ao rodar a suíte e as ferramentas no próprio pacote; nunca entram no git (o publish-gate barra
+# arquivo fora do MANIFEST.txt). O tarball da Release sai do git archive, então este arquivo não chega ao
+# projeto do aluno: o init não o copia.
+__pycache__/
+*.pyc
+sdd/reports/reviews/
+sdd/traces/

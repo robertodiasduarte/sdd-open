@@ -396,6 +396,9 @@ for d in (listar(pasta) if os.path.isdir(pasta) else []):
                 fora.append((d, "%s: sem engine no META.txt e com custo `%s`; a chamada e o custo dela não foram "
                              "contados" % (nome, bruto[:40] + ("…" if len(bruto) > 40 else ""))))
             continue   # o papel não rodou nesta pasta
+        if engine == "indisponível":   # antes do exit: com ou sem exit gravado, o papel não chamou engine
+            fora.append((d, "%s indisponível: nenhuma engine foi chamada" % nome))
+            continue
         if saida in ("", "-"):
             if meta.get(chave + "_custo", "") not in ("", "-", "n/d"):
                 fora.append((d, "%s (%s): sem exit no META.txt e com custo `%s`; a chamada e o custo dela não foram "
@@ -404,9 +407,6 @@ for d in (listar(pasta) if os.path.isdir(pasta) else []):
         if not re.match(r"^-?\d{1,6}$", saida):
             fora.append((d, "%s (%s): exit `%s` ilegível no META.txt; a chamada e o custo dela não foram contados"
                          % (nome, engine, saida[:40] + ("…" if len(saida) > 40 else ""))))
-            continue
-        if engine == "indisponível":
-            fora.append((d, "%s indisponível: nenhuma engine foi chamada" % nome))
             continue
         # a engine prevista falhou e outra respondeu: a falha é da prevista
         prevista = meta.get(chave + "_engine_default", "")

@@ -399,6 +399,20 @@ class Custo(Base):
         self.assertEqual(rc, 0, out)
         self.assertIn("auditor (openrouter:m/x): sem exit no META.txt e com custo `US$ 7.0000`", out)
 
+    def test_papel_indisponivel_sem_exit_e_sem_custo_vai_para_fora_da_conta(self):
+        # F19, rodada 5, R2: o `continue` do exit ausente vinha antes da checagem de `indisponível`, e o papel
+        # sumia da saída sem aviso.
+        d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
+        self.escreve(d, "META.txt", "reviewer_engine_efetivo : claude\nreviewer_modelo : claude-x\n"
+                                    "reviewer_custo : US$ 1.0000\nreviewer_exit : 0\n"
+                                    "revisor2_engine_efetivo : indisponível\nrevisor2_modelo : n/d\n")
+        self.escreve(d, "reviewer.verdicts.jsonl", "")
+        rc, out = self.er(self.tmp / "reviews", "--registry", FX / "registry.tsv")
+        self.assertEqual(rc, 0, out)
+        fora = next((ln for ln in out.splitlines() if ln.startswith("fora da conta:")), "")
+        self.assertIn("EXTERNAL_REVIEW_20260301-000001: 2º revisor indisponível: nenhuma engine foi chamada", fora)
+        self.assertEqual([ln[0] for ln in linhas(out)], ["revisor"])
+
     def test_papel_sem_engine_e_com_custo_vai_para_fora_da_conta(self):
         d = self.tmp / "reviews/EXTERNAL_REVIEW_20260301-000001"
         self.escreve(d, "META.txt", "reviewer_engine_efetivo : claude\nreviewer_custo : US$ 3.0\nreviewer_exit : 0\n"

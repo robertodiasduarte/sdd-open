@@ -161,6 +161,7 @@ revisão (`sdd/reviews/LEDGER_REVISAO_{F}.md`), e mostra uma linha por papel + e
 
 | Coluna | Significado |
 |---|---|
+| Cobrança | como a engine cobra, pela 4ª coluna do `registry.tsv`: `pay-per-token`, `assinatura`, ou `desconhecida` quando a engine não está no registry |
 | Rodadas · Falhas | chamadas que responderam · chamadas que falharam, por motivo: `credencial` (exit 65), `cota ou tempo` (67), `resposta inválida` (68), `trocada por outra engine` (a engine prevista falhou e outra respondeu) |
 | Pago US$ | o que saiu do saldo: custo numérico só das engines `pay-per-token` (pelo `registry.tsv`); `0.0000` para engine por assinatura, `n/d` quando a cobrança é desconhecida |
 | Nominal US$ | todo custo numérico, reportado ou estimado (`≈`), inclusive o valor de tabela que uma engine por assinatura reporta |

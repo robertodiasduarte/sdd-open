@@ -127,7 +127,7 @@ class Documentos(unittest.TestCase):
                               "n/d em N de M", "incerto em N de M", "trocada por outra engine", "fora da conta",
                               "`0` MEDIDO · `2` SEM DADOS", rede, amostra, juiz):
                     self.assertIn(termo, secao, termo)
-                for coluna in ("Pago US$", "Nominal US$", "Com dano", "Falsos positivos", "Sem classificar",
+                for coluna in ("Cobrança", "Pago US$", "Nominal US$", "Com dano", "Falsos positivos", "Sem classificar",
                                "Pago por dano", "AGREE"):
                     self.assertIn(coluna, secao, coluna)
 
@@ -135,6 +135,13 @@ class Documentos(unittest.TestCase):
         texto = ler("docs/cli-conventions.md")
         self.assertIn("| `eval-revisores.sh` | `0` MEDIDO · `2` SEM DADOS", texto)
         self.assertIn("| `ledger-revisao-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso", texto)
+
+    def test_o_pacote_ignora_o_que_a_suite_e_as_ferramentas_geram(self):
+        # Sobra da F19 (F16, item 0d): sem .gitignore, `git add -A` depois da suíte sem -B levou .pyc e o trace
+        # do gate para um commit. O arquivo é declarado no MANIFEST como qualquer outro (o publish-gate barra o resto).
+        linhas = [ln for ln in ler(".gitignore").splitlines() if ln and not ln.startswith("#")]
+        self.assertEqual(linhas, ["__pycache__/", "*.pyc", "sdd/reports/reviews/", "sdd/traces/"])
+        self.assertIn(".gitignore", ler("MANIFEST.txt").splitlines())
 
     def test_contratos_e_manifest(self):
         contratos = ler("sdd/WORKFLOW_CONTRACTS.yaml")

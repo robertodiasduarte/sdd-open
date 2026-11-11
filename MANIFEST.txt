@@ -120,6 +120,7 @@
 .gitattributes
 .github/workflows/publish-gate.yml
 .github/workflows/release.yml
+.gitignore
 AGENTS.md.tmpl
 CONTRIBUTING.md
 LICENSE

@@ -160,6 +160,7 @@ ledgers (`sdd/reviews/LEDGER_REVISAO_{F}.md`), and prints one line per role + en
 
 | Column | Meaning |
 |---|---|
+| Cobrança | how the engine bills, from the 4th column of `registry.tsv`: `pay-per-token`, `assinatura` (subscription), or `desconhecida` (unknown) when the engine is not in the registry |
 | Rodadas · Falhas | calls that answered · calls that failed, by reason: `credencial` (exit 65), `cota ou tempo` (67), `resposta inválida` (68), `trocada por outra engine` (the planned engine failed and another one answered) |
 | Pago US$ | what left the balance: numeric cost of `pay-per-token` engines only (per `registry.tsv`); `0.0000` for a subscription engine, `n/d` when the billing mode is unknown |
 | Nominal US$ | every numeric cost, reported or estimated (`≈`), including the list price a subscription engine reports |
