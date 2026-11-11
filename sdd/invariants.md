@@ -25,5 +25,6 @@ Gramática (1 linha por invariante; abaixo da primeira, linha fora dela é erro)
 ## Invariantes
 
 - [INV-001] estado=ok origem=LM-004 :: Migration só conta como aplicada com prova por leitura registrada em `## Migrations aplicadas` do BUILD_REPORT · por quê: o comando de aplicar pode sair 0 com a migration fora do banco (outro projeto ligado, recusa do servidor, SQL sem efeito), e o código vai para produção chamando o que não existe
+- [INV-002] estado=ok origem=LM-005 check=tests/test_eval_revisores.py :: O arquivo `LEDGER_REVISAO_{F}.md` guarda só o ledger: toda linha com forma de linha de tabela é conferida ou acusada, inclusive fora da tabela, em comentário ou em bloco cercado, e o `ledger-revisao-lint.sh` e o `eval-revisores.sh` leem o arquivo com a mesma função (`linhas_uteis`, `linha_solta`) · por quê: na F19 a regra que escolhia "a tabela do ledger" regrediu 2 vezes e deixou linha sem conferir; o `sdd-fluxo.sh loop` lê essas linhas, e duas cópias da regra já divergiram uma vez
 
 ## Descartados
