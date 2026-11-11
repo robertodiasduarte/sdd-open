@@ -270,7 +270,7 @@ a evidência — ela vai para o Passo 2, item 6.
    principal que ainda não foi enviado: enviar o commit e atualizar a frente, ou copiar à mão);
    `NADA A COPIAR` não é erro. Qualquer outro exit ⇒ diga a causa
    que ele imprimiu; a frente já existe e continua válida.
-5. Abra no editor: `<editor> "<pasta da frente>"`, com o comando do slot como ele está. **Sem editor, não
+5. Abra no editor. O comando é `<editor> "<pasta da frente>"`, com o slot como ele está. **Sem editor, não
    aborte**: é o modo terminal — a frente já está pronta, e o Passo 3 diz como seguir nela.
 6. **Grave os slots descobertos no `sdd/config.yaml da frente`** (`<pasta das frentes>/<slug>/sdd/config.yaml`),
    nunca no do checkout principal: lá o arquivo ficaria modificado, a frente não o veria, e o `git pull`

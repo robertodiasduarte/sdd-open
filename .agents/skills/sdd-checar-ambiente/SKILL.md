@@ -245,7 +245,7 @@ ordem, **omitindo os vazios**:
 3. **⚠️ Vale arrumar** — `.env` fora do `.gitignore`, npm sem `ignore-scripts` (estes primeiro),
    worktree órfã, frente integrada ainda aberta, `.env` ausente.
 4. **✅ Resumo em uma linha**, terminando com a identificação desta skill — ex.:
-   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.4.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Se estiver tudo certo, a resposta inteira é **o Status e a linha ✅** — nenhuma outra frase antes nem
 depois: nada de "Tudo limpo", de lista do que foi verificado ou de oferta de ajuda. Ambiente saudável
@@ -257,7 +257,7 @@ Saudável (a resposta inteira são estas duas linhas):
 
 ```text
 Ambiente: ✅ 1 Verificar · ✅ 2 Explicar
-✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 Com o certificado A1 salvo no git de um repositório público:
@@ -270,7 +270,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git rm --cached "certificados/empresa.pfx" && echo "certificados/empresa.pfx" >> .gitignore
   Depois, revogue o certificado com a autoridade certificadora e emita outro.
 
-✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 Com dois problemas:
@@ -287,7 +287,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git worktree remove ../meu-app-frentes/relatorio-mensal
   git branch -d relatorio-mensal
 
-✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 ---
