@@ -45,16 +45,17 @@ seu é sobrescrito. [Quickstart completo →](docs/pt-BR/quickstart.md)
 | **Review adversarial de 2º vendor** | resposta em formato fixo (veredito, ≤3 riscos, correções, o que ignorar); toda nota é aplicada ou rebatida por escrito | `fragments/ADVISOR_CONSULT.md` |
 | **Auditoria read-only do harness** | harness acumula: comando que ninguém chama, agente que ninguém despacha, doc que derivou do código. Uma passada read-only inventaria cada comando, agente, skill, hook e script, mede referências de entrada e recência, e emite um único `AUDITORIA_SDD_<data>.md` — nunca apaga: a faxina em si continua decisão humana | skill `sdd-auditoria-harness` · `scripts/collect_evidence.py` |
 | **Revisão de governança** | em sistema financeiro, contábil ou fiscal, compara o DEFINE com um catálogo curado (lançamento que não se apaga, fechamento de período, trilha de auditoria, segregação de funções, aritmética exata…) e recomenda requisitos em EARS com teste negativo que o Verify Gate executa; base legal só citada quando confirmada no catálogo; uma decisão por item, e a recusa fica registrada como risco aceito. Desde a v2.4.0 roda dentro de todo Define (passo 11), por um agente fresco, e o Verify Gate sai 5 até ela fechar | skill `sdd-governanca` |
+| **Segurança embutida no fluxo** | um catálogo das 22 falhas de segurança mais comuns em app feito com IA alimenta as regras do `AGENTS.md` para a sua stack, os testes de aceitação do Define, a seção de segurança do Design e uma varredura só de leitura em toda publicação, que bloqueia só segredo literal e tabela nova sem segurança por linha ([detalhes](docs/pt-BR/security.md)) |
 | **Base de conhecimento** | o que você sabe sobre um domínio (um processo, uma norma, um manual) organizado em conceitos e receitas que o agente consulta; em norma, o período em que cada regra vale, a fonte com SHA-256 e o mapa regra → fonte → teste. O Define só cita domínio que existe, conferido por `sdd/bin/kb-dominios.py` | skill `sdd-kb` · `sdd/kb/` |
 | **Engenharia reversa de SaaS** | quem quer construir algo parecido com um sistema que já existe estuda esse produto **antes** do Brainstorm: `ENGENHARIA_REVERSA_{SAAS}.md` traz cada achado com fonte e classe (observado, documentado, informado, inferido, não verificado), conferido por um lint; depois a skill conduz o Brainstorm e o Define da **sua** solução. Só fontes públicas e conta própria, sem copiar marca nem código; sem pesquisa na web o levantamento sai parcial | skill `sdd-engenharia-reversa-saas` |
 | **Handoff por ficha** | um arquivo por feature no repositório, com prompt de retomada autossuficiente — sem depender da memória de nenhum agente | skill `sdd-handoff` · `sdd/handoffs/` |
 
-## As 20 skills
+## As 21 skills
 
 | Bloco | Skills | Quando |
 |---|---|---|
 | **Preparar** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | uma vez por computador e por projeto (está tudo pronto? pôr no git, alarme de commit contra dado de cliente); a new-session a cada frente de trabalho |
-| **Criar** | `sdd-kb` (opcional) · `sdd-engenharia-reversa-saas` (opcional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-ux-review` · `sdd-design` · `sdd-build` | uma vez por feature — o fluxo SDD |
+| **Criar** | `sdd-kb` (opcional) · `sdd-engenharia-reversa-saas` (opcional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-seguranca` · `sdd-ux-review` · `sdd-design` · `sdd-build` | uma vez por feature — o fluxo SDD |
 | **Fechar** | `sdd-handoff` · `sdd-release` | no fim de cada sessão e de cada frente |
 | **Transversais** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-drive` · `sdd-auditoria-harness` | quando o caso pedir |
 
@@ -103,6 +104,7 @@ Funciona em macOS e Linux, testado no CI a cada release; no Windows (Git Bash/WS
 - [Contexto e governança](docs/pt-BR/context-and-governance.md) ([EN](docs/context-and-governance.md)) — o mapa do domínio (passo 1.5) e a revisão de governança (passo 11) do Define, o exit 5 depois de atualizar, os patterns do projeto
 - [Curadoria do playbook e invariantes](docs/pt-BR/playbook-curation.md) ([EN](docs/playbook-curation.md)) — o que a release colhe da feature, o que entra sem pergunta, o arquivo de invariantes e a trava dele.
 - [Pilotar uma feature](docs/pt-BR/sdd-drive.md) ([EN](docs/sdd-drive.md)) — a `sdd-drive` leva um DEFINE até "pronto para publicar" com limite de rodadas, retomada e 12 motivos de parada, e nunca publica; também o `deploy-do-sha.sh` e o `sdd-archive.py`.
+- [Segurança embutida no fluxo](docs/pt-BR/security.md) ([EN](docs/security.md)) — o catálogo da `sdd-seguranca`, fase a fase, a varredura da publicação (`seguranca-varredura.sh`), os dois bloqueios, a dispensa na linha e o modo incidente
 - [Revisão adversarial](docs/pt-BR/adversarial-review.md) ([EN](docs/adversarial-review.md)) — uma engine revisa o diff congelado, outra audita a revisão; custo por papel, privacidade, o review externo que a release exige, o gate offline e o `eval-agree`
 - [Roadmap](docs/pt-BR/roadmap.md) ([EN](docs/roadmap.md)) — o que está planejado e o que está em avaliação
 - [Guia do aluno](docs/pt-BR/guia-do-aluno.md) — passo a passo para quem nunca usou git nem terminal

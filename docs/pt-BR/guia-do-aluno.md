@@ -206,7 +206,7 @@ o Build e a Release rodam. Ele devolve um número, e a skill traduz:
 
 ## 4. O mapa do caminho
 
-As 20 skills se dividem em quatro blocos, na ordem em que você vai usá-las.
+As 21 skills se dividem em quatro blocos, na ordem em que você vai usá-las.
 
 ```text
 PREPARAR (uma vez por computador e por projeto; a new-session, a cada frente)
@@ -360,6 +360,17 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **Como pedir** | *"use a skill sdd-governanca com sdd/features/DEFINE_HONORARIOS.md"* |
 | **O que produz** | `sdd/reviews/GOVERNANCA_REVIEW_NOME.md` e, para cada lacuna que você mandar aplicar, um requisito novo no Define com o roteiro que prova que a ação proibida falha. |
 | **O que vai perguntar** | Item a item: aplicar, recusar com motivo ou adiar. Ela recomenda; quem decide e responde é o profissional. |
+
+#### sdd-seguranca
+
+| | |
+|---|---|
+| **Para que serve** | Lembra as trancas de segurança que a IA esquece (tabela que qualquer um lê, chave no código, registro de outra pessoa pelo id, CORS aberto…), a partir de um catálogo de 22 falhas, cada uma com a regra que previne, o teste, a decisão de design e a conferência à mão. |
+| **Quando usar** | Ela roda dentro de todo Define (o passo 12, Segurança). Chame-a à parte para conferir antes de publicar (*"use a skill sdd-seguranca: checklist"*), para conferir o app já no ar, ou quando algo vazou. |
+| **Quando não usar** | Projeto sem login, rota pública, dado de terceiros, envio de arquivo, banco nem IA paga — no Define ela responde "não se aplica" em uma linha. |
+| **Como pedir** | *"use a skill sdd-seguranca com sdd/features/DEFINE_PORTAL.md"* · *"vazou a chave do banco"* |
+| **O que produz** | Testes de aceitação novos no Define para os itens que você aplicar, a linha `Segurança` no Define e, no modo incidente, o roteiro de resposta. A varredura da publicação (`sdd/bin/seguranca-varredura.sh`) usa o mesmo catálogo. |
+| **O que vai perguntar** | Item a item, até 5 por vez, do mais grave: aplicar, recusar com motivo ou adiar. No incidente, nada antes de fechar a porta. |
 
 #### sdd-ux-review
 

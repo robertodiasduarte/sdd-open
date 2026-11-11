@@ -113,7 +113,14 @@
 .agents/skills/sdd-release/references/como-falar.md
 .agents/skills/sdd-release/references/ledger.md
 .agents/skills/sdd-release/references/raio-de-impacto.md
+.agents/skills/sdd-release/references/seguranca.md
 .agents/skills/sdd-release/scripts/deploy-espera-testes.py
+.agents/skills/sdd-seguranca/SKILL.md
+.agents/skills/sdd-seguranca/evals/cases.json
+.agents/skills/sdd-seguranca/manifest.json
+.agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md
+.agents/skills/sdd-seguranca/references/INCIDENTE.md
+.agents/skills/sdd-seguranca/references/como-falar.md
 .agents/skills/sdd-ux-review/SKILL.md
 .agents/skills/sdd-ux-review/references/como-falar.md
 .agents/skills/sdd-ux-review/references/entrevista-publico.md
@@ -156,10 +163,12 @@ docs/pt-BR/playbook-curation.md
 docs/pt-BR/quickstart.md
 docs/pt-BR/roadmap.md
 docs/pt-BR/sdd-drive.md
+docs/pt-BR/security.md
 docs/pt-BR/verify-gate-contract.md
 docs/quickstart.md
 docs/roadmap.md
 docs/sdd-drive.md
+docs/security.md
 docs/verify-gate-contract.md
 scripts/check-versions.py
 scripts/next-version.sh
@@ -197,6 +206,7 @@ sdd/bin/sdd-archive.py
 sdd/bin/sdd-decisoes-lint.sh
 sdd/bin/sdd-drive.sh
 sdd/bin/sdd-fluxo.sh
+sdd/bin/seguranca-varredura.sh
 sdd/bin/skill-lint.py
 sdd/bin/slot.sh
 sdd/bin/test-baseline.sh
@@ -475,6 +485,7 @@ tests/test_f14_drive_textos.py
 tests/test_f14_textos.py
 tests/test_f15_slots_textos.py
 tests/test_f16_textos.py
+tests/test_f18_f20_textos.py
 tests/test_f19_textos.py
 tests/test_f21_textos.py
 tests/test_fluxo.py
@@ -507,6 +518,8 @@ tests/test_sdd_archive.py
 tests/test_sdd_kb.py
 tests/test_sdd_kb_normativo.py
 tests/test_sdd_open.py
+tests/test_seguranca_catalogo.py
+tests/test_seguranca_varredura.py
 tests/test_skill_lint.py
 tests/test_slot.py
 tests/test_test_baseline.py

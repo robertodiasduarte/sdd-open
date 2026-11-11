@@ -34,7 +34,8 @@ Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` �
 `NADA A COPIAR` (copiar-docs.sh da `sdd-new-session`) · `CONCLUIDO` · `CONTINUAR` · `PARADA` · `FALHA` · `RECIBO GRAVADO`
 (sdd-drive.sh; ver [sdd-drive.md](sdd-drive.md)) · `NO AR` · `NAO ESTA NO AR` · `FALHOU` · `AINDA NAO SEI` (deploy-do-sha.sh) ·
 `SIMULACAO` · `MOVIDO` (sdd-archive.py) · `OK` · `REPROVOU` · `NADA A MEDIR` (slot.sh; ver
-[adaptation-guide.md](adaptation-guide.md)).
+[adaptation-guide.md](adaptation-guide.md)) · `NADA ACHADO` · `AVISOS` · `BLOQUEADO` (seguranca-varredura.sh; ver
+[security.md](security.md)).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate
 (inconclusivo: não é vermelho, e sem `--strict` não vira `1`) de parecer verde para quem lê.
@@ -67,6 +68,7 @@ RESULTADO: ERRO
 | `sdd-fluxo.sh` | `review-design`: `0` EXIGIDO · `1` DISPENSAVEL · `64` manifest ilegível (rode a revisão) · `loop`: `0` PRONTO · `10` CONTINUAR · `20` BLOQUEADO · `30` AGUARDANDO_RECIBO · `64` · `despachar`: `40` AGUARDANDO_HUMANO · `64` · `seguir`: `0` SEGUIR · `1` PARAR · `64` · `estado`: `0` ligado · `1` desligado · `64` valor inválido |
 | `adversarial-review.sh` | `0` REVIEW COMPLETA · `64` uso, slot vazio, diff vazio ou > 8 MB, pasta não ignorada · `65` credencial (sem troca de engine) · `66` CLI ausente · `67` auditor = revisor ou lista esgotada · `68` REVIEW INVÁLIDA (resposta sem vereditos) · `--conferir`: `0` CONFERE · `2` NÃO CONFERE · `--ledger`: `0` LEDGER OK · `2` LEDGER SEM REVIEW · `64` ilegível ([adversarial-review.md](adversarial-review.md)) |
 | `adversarial-review-gate.sh` | `0` GATE VERDE · `2` GATE VERMELHO (cada ❌ com o campo e o valor lido) · `3` GATE QUEBRADO (não conseguiu se isolar; nada foi chamado) · `64` uso ([adversarial-review.md](adversarial-review.md)) |
+| `seguranca-varredura.sh` | `0` NADA ACHADO · `1` AVISOS (CONCERNS na release) · `2` BLOQUEADO (segredo literal ou tabela sem RLS acrescentados) · `64` uso, slot inválido, catálogo ilegível ou fora de git · `--stack`, `--regras`, `--checklist`, `--agents`: `0` ou `64` ([security.md](security.md)) |
 | `contexto-lint.sh` | `0` VERDE · `2` VERMELHO (`🛑 [classe]` por achado) · `--validade`: `0` VALIDO · `1` VENCIDO · `2` sha ou ref inexistente · `--sugerir`: `0` (GERAR · REUSAR · PULAR) · `64` uso ([context-and-governance.md](context-and-governance.md)) |
 | `patterns-lint.sh` | `0` VERDE · `2` VERMELHO · `64` uso |
 | `governanca-fronteira.sh` | `0` SÓ O PERMITIDO MUDOU · `1` ESCRITA FORA DO PERMITIDO (`FORA:`) · `64` fronteira não verificada |
