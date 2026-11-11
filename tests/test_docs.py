@@ -230,7 +230,7 @@ class Guia(unittest.TestCase):
     def test_uma_ficha_por_skill(self):
         faltam = [s for s in SKILLS if not re.search(r"(?m)^#### %s\s*$" % re.escape(s), self.texto)]
         self.assertEqual(faltam, [], "skills sem ficha no catálogo")
-        self.assertEqual(len(SKILLS), 20)
+        self.assertEqual(len(SKILLS), 21)  # F18/F20: sdd-seguranca
 
     def test_os_sete_agentes(self):
         self.assertEqual([a for a in AGENTES if a not in self.texto], [])

@@ -538,6 +538,17 @@ class Uso(Base):
         self.assertEqual(rc, 64, out + err)
         self.assertRegex(err, r"catálogo ilegível: .*cat\.md:\d+ — campo `gravidade` fora da ordem em S01")
 
+    def test_fim_de_linha_sempre_unix(self):
+        # raio de impacto: no Windows o Python escreveria \r\n e o bloco do AGENTS.md nunca ficaria em dia
+        p = self.projeto({"package.json": "{}\n"})
+        self.escreve(p, "src/c.js", "eval(x)\n")
+        log = self.tmp / "s.log"
+        self.varre(p, "--saida", str(log))
+        self.assertNotIn(b"\r", log.read_bytes())
+        texto = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn('_canal.reconfigure(encoding="utf-8", errors="replace", newline="\\n")', texto)
+        self.assertIn('open(op["--saida"], "w", encoding="utf-8", newline="\\n")', texto)
+
     def test_catalogo_ausente_e_64_e_o_padrao_e_o_da_skill_instalada(self):
         p = self.projeto()
         rc, out, err = self.roda([BASH, SCRIPT, "--stack"], p)

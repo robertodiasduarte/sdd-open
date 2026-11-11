@@ -48,6 +48,14 @@ fi
 exec python3 -B - "$@" <<'PY'
 import codecs, fnmatch, os, re, subprocess, sys
 
+# Fim de linha sempre \n: no Windows o Python escreveria \r\n, e o bloco do AGENTS.md que o init monta com --agents nunca
+# ficaria em dia (raio de impacto da F18/F20; o mesmo cuidado de sdd/bin/sdd-archive.py).
+for _canal in (sys.stdout, sys.stderr):
+    try:
+        _canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
+
 CAMPOS = ["stack", "fase", "gravidade", "bloqueia", "agents", "gatilho", "padrao", "arquivos",
           "frase", "evitar", "at", "confira", "ref"]
 DOMINIO = {
@@ -573,7 +581,7 @@ if op["--saida"]:
     try:
         d = os.path.dirname(os.path.abspath(op["--saida"]))
         os.makedirs(d, exist_ok=True)
-        with open(op["--saida"], "w", encoding="utf-8") as fh:
+        with open(op["--saida"], "w", encoding="utf-8", newline="\n") as fh:
             fh.write("\n".join(completo) + "\n")
     except OSError as e:
         print("⚠️ não deu para gravar --saida %s (%s)" % (op["--saida"], e))

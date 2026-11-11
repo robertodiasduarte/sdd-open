@@ -679,3 +679,44 @@ class SegurancaNoAgents(Sandbox):
         partes = re.search(r'^PONTEIRO = \((.*?)\)$', py, re.M | re.S).group(1)
         no_script = "".join(re.findall(r'"((?:[^"\\]|\\.)*)"', partes))
         self.assertEqual(no_init, no_script)
+
+
+class CausaDoPythonNoInit(Sandbox):
+    """Raio de impacto da F18/F20: o bloco do AGENTS.md confere o Python, e a causa (dita uma vez) não pode sumir."""
+
+    def test_init_sem_python_diz_a_causa_uma_vez(self):
+        stubs = self.tmp / "sem-python"
+        stubs.mkdir()
+        for nome in ("python3", "python", "py"):
+            s = stubs / nome
+            s.write_text("#!/bin/sh\nexit 9009\n", encoding="utf-8")
+            s.chmod(0o755)
+        env = {k: v for k, v in self.env.items() if k not in ("SDD_PYTHON", "SDD_PYTHON_RESOLVIDO")}
+        env["PATH"] = str(stubs) + os.pathsep + env.get("PATH", "")
+        p = self.repo("app")
+        rc, out, err = self.roda([BASH, CLI, "init", "--yes", "--vendors", "codex"], p, env)
+        tudo = out + err
+        self.assertEqual(rc, 0, tudo)
+        self.assertEqual(tudo.count("existe, mas não roda"), 1, tudo)
+        self.assertIn("regras de segurança da stack fora (sem Python 3.9 para ler o catálogo)", tudo)
+
+
+class RaioDeImpactoSeguranca(Sandbox):
+    """Raio de impacto da F18/F20: o caminho reserva diz a causa real; o doctor acusa a skill do pacote que falta."""
+
+    def test_stack_invalida_no_config_vira_a_causa_do_aviso(self):
+        p = self.repo("app")
+        self.escreve(p, "sdd/config.yaml", "security:\n  stack: \"firebase\"\n")
+        rc, out, err = self.roda([BASH, CLI, "init", "--yes", "--vendors", "codex"], p)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("regras de segurança da stack fora (o leitor do catálogo falhou: security.stack", out + err)
+        self.assertIn("firebase", out + err)
+
+    def test_doctor_acusa_skill_do_pacote_que_falta_no_projeto(self):
+        p = self.repo("app")
+        rc, out, err = self.roda([BASH, CLI, "init", "--yes", "--vendors", "codex"], p)
+        self.assertEqual(rc, 0, out + err)
+        shutil.rmtree(p / ".agents/skills/sdd-seguranca")
+        rc, out, err = self.roda([BASH, CLI, "doctor"], p)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("sdd-seguranca está no pacote e não no projeto — para receber: rode init", out + err)

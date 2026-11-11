@@ -416,10 +416,15 @@ gerar_corpo_agents() {
   local regras motivo="" cat_pkg="${PKG}/.agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md"
   regras="$(mktemp)"
   if [ ! -f "${cat_pkg}" ]; then motivo="o catálogo da sdd-seguranca não está no pacote"
-  elif ! sdd_python_pronto 2>/dev/null; then motivo="sem Python 3.9 para ler o catálogo"
-  elif ! bash "${PKG}/sdd/bin/seguranca-varredura.sh" --agents --raiz "${ROOT}" --catalogo "${cat_pkg}" > "${regras}" 2>/dev/null \
-       || ! grep -q . "${regras}"; then motivo="o leitor do catálogo falhou"
+  # Sem `2>/dev/null`: o sdd_python_pronto diz a causa uma vez por processo; calada aqui, ela sumiria do doctor e do
+  # die dos adaptadores que vêm depois (raio de impacto da F18/F20).
+  elif ! sdd_python_pronto; then motivo="sem Python 3.9 para ler o catálogo"
+  elif ! bash "${PKG}/sdd/bin/seguranca-varredura.sh" --agents --raiz "${ROOT}" --catalogo "${cat_pkg}" > "${regras}" 2>"${regras}.err" \
+       || ! grep -q . "${regras}"; then
+    # a causa que o leitor deu (slot inválido, catálogo ilegível), não um "falhou" genérico
+    motivo="o leitor do catálogo falhou: $(sed -n 's/^🛑 seguranca-varredura: //p' "${regras}.err" | head -1)"
   fi
+  rm -f "${regras}.err"
   if [ -n "${motivo}" ]; then
     printf '%s\n' "${SEG_PONTEIRO}" > "${regras}"
     warn "AGENTS.md: regras de segurança da stack fora (${motivo}) — o ponteiro para a sdd-seguranca ficou"
@@ -835,7 +840,11 @@ doctor() {
   # quem já instalou continua com a versão velha sem saber. Só aponta; quem apaga é a pessoa.
   local s vp vq f rel atrasados=0 pkg_skills="${PKG}/.agents/skills"
   for s in $(skills_da_fonte "${pkg_skills}"); do
-    [ -f "${FONTE_SKILLS}/${s}/SKILL.md" ] || continue
+    if [ ! -f "${FONTE_SKILLS}/${s}/SKILL.md" ]; then
+      # Projeto atualizado só com sync: a skill nova do pacote não chega (o AGENTS.md já pode apontar para ela).
+      [ -d "${FONTE_SKILLS}" ] && { warn "${s} está no pacote e não no projeto — para receber: rode init (copia o que falta sem tocar o que existe)"; atrasados=$((atrasados + 1)); }
+      continue
+    fi
     vq="$(versao_skill "${pkg_skills}/${s}/SKILL.md")"; vp="$(versao_skill "${FONTE_SKILLS}/${s}/SKILL.md")"
     [ -n "${vq}" ] && versao_menor "${vp}" "${vq}" || continue
     warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — para receber: apague .agents/skills/${s} e rode init (edições suas nela se perdem)"
