@@ -15,6 +15,11 @@
 # Exit: 0 índice gravado · 2 conservação violada · 64 erro de uso
 # Compat: bash 3.2, awk POSIX. Lê os DESIGNs do disco (no Open os artefatos SDD nem sempre são versionados).
 set -euo pipefail
+# F16: o Python que roda vira python3 (no Windows, python ou py -3). Só builtins (o PATH pode não ter dirname); sem
+# a biblioteca (projeto sincronizado antes dela, ou script copiado sozinho), vale a guarda de antes.
+if [ "${0%/*}" = "$0" ]; then _sdd_bin=.; else _sdd_bin="${0%/*}"; fi
+if [ -f "${_sdd_bin}/lib/python.sh" ]; then . "${_sdd_bin}/lib/python.sh"
+else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }; fi
 export LC_ALL=C
 
 uso() { sed -n '2,17p' "$0" >&2; printf 'RESULTADO: ERRO DE USO\n→ rode com --root e --out válidos.\n' >&2; exit 64; }
@@ -33,6 +38,7 @@ if [ -z "${root}" ]; then root="$(git rev-parse --show-toplevel 2>/dev/null || p
 root="$(cd "${root}" && pwd)"
 out="${out:-${root}/docs/adr/index.md}"
 
+sdd_python_exigir
 # os links do índice são relativos à pasta do --out (docs/adr/index.md ⇒ ../../)
 pre="$(python3 -c 'import os, sys; print(os.path.relpath(sys.argv[1], os.path.dirname(os.path.abspath(sys.argv[2]))))' "${root}" "${out}")/"
 [ "${pre}" = "./" ] && pre=""

@@ -25,6 +25,11 @@
 # ⚠️ bash 3.2 + python3 (stdlib). Faz parte do contrato da fase Build (passo 5b da sdd-build) e da Release (0a, item 9).
 
 set -uo pipefail
+# F16: o Python que roda vira python3 (no Windows, python ou py -3). Só builtins (o PATH pode não ter dirname); sem
+# a biblioteca (projeto sincronizado antes dela, ou script copiado sozinho), vale a guarda de antes.
+if [ "${0%/*}" = "$0" ]; then _sdd_bin=.; else _sdd_bin="${0%/*}"; fi
+if [ -f "${_sdd_bin}/lib/python.sh" ]; then . "${_sdd_bin}/lib/python.sh"
+else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }; fi
 
 uso() {
   echo "🛑 ${1}" >&2
@@ -43,7 +48,7 @@ while [ $# -gt 0 ]; do
     *)         uso "argumento inesperado: ${1}" ;;
   esac
 done
-command -v python3 >/dev/null 2>&1 || { echo "⚠️  python3 ausente"; printf 'RESULTADO: INCONCLUSIVO\n→ instale python3 >= 3.9.\n'; exit 3; }
+sdd_python_pronto || { echo "⚠️  python3 ausente"; printf 'RESULTADO: INCONCLUSIVO\n→ instale python3 >= 3.9.\n'; exit 3; }
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || ROOT="$(pwd)"
 cd "${ROOT}" || exit 64

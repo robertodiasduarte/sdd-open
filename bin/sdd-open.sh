@@ -16,6 +16,9 @@
 set -uo pipefail
 
 PKG="$(cd "$(dirname "${0}")/.." && pwd -P)"
+# F16: o Python que roda vira python3 (no Windows, python ou py -3); sem a biblioteca, vale a guarda de antes.
+if [ -f "${PKG}/sdd/bin/lib/python.sh" ]; then . "${PKG}/sdd/bin/lib/python.sh"
+else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }; fi
 . "${PKG}/bin/lib/say.sh"
 . "${PKG}/bin/lib/vendors.sh"
 . "${PKG}/bin/lib/merge.sh"
@@ -305,7 +308,7 @@ gerado_em_dia() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo [$5=prefixo
 # um --require herdado (o Yarn PnP usa) faria o node --check executar módulo do projeto (R1@codex, volta 7).
 compila() { # $1=arquivo $2=verificador do perfil → 0 compila · 1 não compila · 2 sem verificador
   case "${2}" in
-    python) command -v python3 >/dev/null 2>&1 || return 2
+    python) sdd_python_pronto || return 2
             python3 -I -c 'import sys; compile(open(sys.argv[1],"rb").read(), sys.argv[1], "exec")' "${1}" >/dev/null 2>&1 || return 1 ;;
     bash)   bash -n "${1}" >/dev/null 2>&1 || return 1 ;;
     node)   command -v node >/dev/null 2>&1 || return 2
@@ -313,9 +316,9 @@ compila() { # $1=arquivo $2=verificador do perfil → 0 compila · 1 não compil
     ruby)   command -v ruby >/dev/null 2>&1 || return 2
             env -u RUBYOPT ruby -c "${1}" >/dev/null 2>&1 || return 1 ;;
     json)   if command -v jq >/dev/null 2>&1; then jq empty "${1}" >/dev/null 2>&1 || return 1
-            elif command -v python3 >/dev/null 2>&1; then python3 -I -m json.tool "${1}" >/dev/null 2>&1 || return 1
+            elif sdd_python_pronto; then python3 -I -m json.tool "${1}" >/dev/null 2>&1 || return 1
             else return 2; fi ;;
-    xml)    command -v python3 >/dev/null 2>&1 || return 2
+    xml)    sdd_python_pronto || return 2
             python3 -I -c 'import sys, xml.etree.ElementTree as E; E.parse(sys.argv[1])' "${1}" >/dev/null 2>&1 || return 1 ;;
     *)      return 2 ;;
   esac
@@ -463,7 +466,7 @@ gemini_settings_checar() {
   local dest="${ROOT}/.gemini/settings.json" saida
   # python3 é pré-condição do adaptador gemini: checar ANTES de qualquer escrita (o DESIGN
   # promete "nada foi alterado"; o avaliador viu init escrever sdd/ e depois morrer — ciclo 2).
-  command -v python3 >/dev/null 2>&1 || die "o adaptador gemini precisa de python3 para editar .gemini/settings.json com segurança" \
+  sdd_python_pronto || die "o adaptador gemini precisa de python3 para editar .gemini/settings.json com segurança" \
     "instale python3 ou rode sem o vendor gemini — nada foi alterado" 64
   [ -f "${dest}" ] || return 0
   saida=$(python3 -I -c 'import json,sys
@@ -479,7 +482,7 @@ except json.JSONDecodeError as e:
 # qualquer escrita, como no Gemini; JSON inválido também para tudo antes de escrever.
 claude_settings_checar() {
   local dest="${ROOT}/.claude/settings.json" saida
-  command -v python3 >/dev/null 2>&1 || die "o adaptador claude precisa de python3 para editar .claude/settings.json com segurança e para os guards de .claude/hooks/" \
+  sdd_python_pronto || die "o adaptador claude precisa de python3 para editar .claude/settings.json com segurança e para os guards de .claude/hooks/" \
     "instale python3 ou rode sem o vendor claude — nada foi alterado" 64
   [ -f "${dest}" ] || return 0
   # Sintaxe E forma (topo objeto, hooks objeto, PreToolUse lista): o merge recusaria depois de sdd/, skills e
@@ -757,7 +760,7 @@ doctor() {
   say "sdd-open doctor — projeto: ${ROOT}"
   printf '  bash %s.%s · git %s · python3 %s\n' "${BASH_VERSINFO[0]}" "${BASH_VERSINFO[1]}" \
     "$(git --version 2>/dev/null | sed 's/git version //')" \
-    "$(command -v python3 >/dev/null 2>&1 && python3 -I -c 'import sys;print(".".join(map(str,sys.version_info[:2])))' || echo 'ausente')"
+    "$(sdd_python_pronto && python3 -I -c 'import sys;print(".".join(map(str,sys.version_info[:2])))' || echo 'ausente')"
   if [ -d "${ROOT}/sdd" ]; then
     n_falt=$(sdd_faltantes | grep -c . || true)
     if [ "${n_falt}" = "0" ]; then ok "sdd/ presente ($(ls "${ROOT}/sdd/features" 2>/dev/null | wc -l | tr -d ' ') feature(s) em sdd/features/)"
@@ -798,7 +801,7 @@ doctor() {
       codex|kimi) ok "${v}: nativo — nada a gerar ($(vendor_nativo_motivo "${v}")) · ${st}" ;;
       claude) if [ ! -d "${ROOT}/.claude/skills" ]; then warn "claude: adaptador não gerado — rode sync --vendors claude"
               elif [ -f "${ROOT}/.claude/hooks/sdd-report-guard.py" ] && [ -f "${ROOT}/.claude/hooks/sdd-avaliador-guard.py" ] \
-                   && command -v python3 >/dev/null 2>&1 && claude_settings_em_dia "${ROOT}/.claude/settings.json"; then
+                   && sdd_python_pronto && claude_settings_em_dia "${ROOT}/.claude/settings.json"; then
                 ok "claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · ${st} · cobre também Grok Build e GLM"
               else warn "claude: adaptador incompleto (guards de .claude/hooks ou .claude/settings.json; exige python3) — rode sync --vendors claude"; fi ;;
       cursor) if [ -d "${ROOT}/.cursor/skills" ]; then ok "cursor: gerado (.cursor/skills) · ${st}"

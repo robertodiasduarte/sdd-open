@@ -91,6 +91,20 @@ class Projeto(Sandbox):
         rc, out, err = self.roda([BASH, self.p / "sdd/bin/playbook-curator.sh", "--validar-inv", "sdd/playbook.md", "sdd/invariants.md"], self.p)
         self.assertEqual(rc, 0, out + err)
 
+    def test_init_leva_o_resolvedor_de_python_e_completa_quando_falta(self):
+        # F16, rodada 1 da revisão (R5): os scripts de sdd/bin leem sdd/bin/lib/python.sh. O init copia sdd/bin
+        # inteiro; um projeto anterior a ele recebe a biblioteca rodando o init de novo (o doctor avisa).
+        lib = self.p / "sdd/bin/lib/python.sh"
+        self.assertTrue(lib.is_file())
+        rc, out, err = self.roda([BASH, "-c", '. sdd/bin/lib/python.sh && sdd_python_pronto && echo PRONTO'], self.p)
+        self.assertEqual((rc, out.strip()), (0, "PRONTO"), err)
+        lib.unlink()
+        rc, out = self.cli("doctor")
+        self.assertIn("sdd/ incompleto", out)
+        rc, out = self.cli("init", "--yes", "--vendors", "claude,codex")
+        self.assertEqual(rc, 0, out)
+        self.assertTrue(lib.is_file(), "o init de novo não repôs a biblioteca")
+
     def test_projeto_com_playbook_proprio_recebe_so_o_esqueleto(self):
         # A invariante do pacote aponta para a LM-004 do pacote: num playbook que já existia, ela pode não existir.
         (self.p / "sdd/invariants.md").unlink()

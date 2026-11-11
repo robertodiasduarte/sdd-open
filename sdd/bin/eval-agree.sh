@@ -17,6 +17,11 @@
 # ⚠️ bash 3.2 (o /bin/bash do macOS) · núcleo em Python 3.9 stdlib.
 
 set -u
+# F16: o Python que roda vira python3 (no Windows, python ou py -3). Só builtins (o PATH pode não ter dirname); sem
+# a biblioteca (projeto sincronizado antes dela, ou script copiado sozinho), vale a guarda de antes.
+if [ "${0%/*}" = "$0" ]; then _sdd_bin=.; else _sdd_bin="${0%/*}"; fi
+if [ -f "${_sdd_bin}/lib/python.sh" ]; then . "${_sdd_bin}/lib/python.sh"
+else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }; fi
 
 case "${1:-}" in
   -h|--help)
@@ -24,7 +29,7 @@ case "${1:-}" in
     exit 0 ;;
 esac
 
-if ! command -v python3 >/dev/null 2>&1; then
+if ! sdd_python_pronto; then
   echo "🛑 eval-agree: python3 não encontrado no PATH." >&2
   printf 'RESULTADO: PAROU\n→ instale o Python 3 (3.9 ou mais novo) e rode de novo.\n' >&2
   exit 64

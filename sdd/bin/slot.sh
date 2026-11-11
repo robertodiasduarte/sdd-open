@@ -27,6 +27,11 @@
 # ⚠️ bash 3.2 + python3 (stdlib, só para ler o YAML). docs/adaptation-guide.md descreve o contrato para o projeto.
 
 set -uo pipefail
+# F16: o Python que roda vira python3 (no Windows, python ou py -3). Só builtins (o PATH pode não ter dirname); sem
+# a biblioteca (projeto sincronizado antes dela, ou script copiado sozinho), vale a guarda de antes.
+if [ "${0%/*}" = "$0" ]; then _sdd_bin=.; else _sdd_bin="${0%/*}"; fi
+if [ -f "${_sdd_bin}/lib/python.sh" ]; then . "${_sdd_bin}/lib/python.sh"
+else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }; fi
 
 uso() {
   echo "🛑 ${1}" >&2
@@ -70,7 +75,7 @@ done
 # Daqui em diante, um INT/TERM (Ctrl-C, teto do agente) nunca sai 130/143 sem RESULTADO.
 trap 'echo "⚠️  slot.sh interrompido por sinal"; printf "RESULTADO: INCONCLUSIVO\n→ rode de novo; isto não é verde.\n"; exit 3' INT TERM
 
-if ! command -v python3 >/dev/null 2>&1; then
+if ! sdd_python_pronto; then
   echo "⚠️  python3 ausente: não consigo ler ${CHAVE} do sdd/config.yaml"
   printf 'RESULTADO: INCONCLUSIVO\n→ instale python3 >= 3.9 e rode de novo; isto não é verde.\n'
   exit 3

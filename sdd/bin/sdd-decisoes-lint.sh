@@ -21,6 +21,11 @@
 # ⚠️ bash 3.2 · o núcleo é Python 3.9 stdlib e importa o perguntas() de sdd/bin/skill-lint.py.
 
 set -u
+# F16: o Python que roda vira python3 (no Windows, python ou py -3). Só builtins (o PATH pode não ter dirname); sem
+# a biblioteca (projeto sincronizado antes dela, ou script copiado sozinho), vale a guarda de antes.
+if [ "${0%/*}" = "$0" ]; then _sdd_bin=.; else _sdd_bin="${0%/*}"; fi
+if [ -f "${_sdd_bin}/lib/python.sh" ]; then . "${_sdd_bin}/lib/python.sh"
+else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }; fi
 
 BIN="$(cd "$(dirname "$0")" && pwd)"
 export SDD_LINT_BIN="$BIN"
@@ -34,7 +39,7 @@ uso() {
 }
 
 precisa_python() {
-  command -v python3 >/dev/null 2>&1 && return 0
+  sdd_python_pronto && return 0
   echo "🛑 sdd-decisoes-lint: python3 não encontrado no PATH." >&2
   printf 'RESULTADO: ERRO DE USO\n→ instale o Python 3 (3.9 ou mais novo) e rode de novo.\n' >&2
   exit 64

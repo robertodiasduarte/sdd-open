@@ -27,10 +27,15 @@
 #    -I tira a pasta do projeto do sys.path: um json.py do usuário não entra no lugar do módulo.
 
 set -u
+# F16: o Python que roda vira python3 (no Windows, python ou py -3). Só builtins (o PATH pode não ter dirname); sem
+# a biblioteca (projeto sincronizado antes dela, ou script copiado sozinho), vale a guarda de antes.
+if [ "${0%/*}" = "$0" ]; then _sdd_bin=.; else _sdd_bin="${0%/*}"; fi
+if [ -f "${_sdd_bin}/lib/python.sh" ]; then . "${_sdd_bin}/lib/python.sh"
+else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }; fi
 
 BIN="$(cd "$(dirname "$0")" && pwd)"
 
-if ! command -v python3 >/dev/null 2>&1; then
+if ! sdd_python_pronto; then
   echo "🛑 sdd-drive: python3 não encontrado no PATH." >&2
   printf 'RESULTADO: ERRO DE USO\n→ instale o Python 3 (3.9 ou mais novo) e rode de novo.\n' >&2
   exit 64

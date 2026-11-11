@@ -187,6 +187,7 @@ sdd/bin/governanca-fronteira.sh
 sdd/bin/handoff-lint.py
 sdd/bin/kb-dominios.py
 sdd/bin/ledger-revisao-lint.sh
+sdd/bin/lib/python.sh
 sdd/bin/patterns-lint.sh
 sdd/bin/playbook-curator.sh
 sdd/bin/playbook-lint.sh
@@ -494,6 +495,7 @@ tests/test_playbook_invariantes.py
 tests/test_playbook_lint.py
 tests/test_prompt_drift_scan.py
 tests/test_publish_gate_patterns.py
+tests/test_python_resolver.py
 tests/test_release_workflow.py
 tests/test_report_lint.py
 tests/test_report_lint_evidencia.py

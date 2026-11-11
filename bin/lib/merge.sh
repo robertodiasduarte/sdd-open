@@ -77,7 +77,7 @@ agents_md_em_dia() { # $1=destino $2=corpo
 # JSON inválido é ERRO nomeando a linha — nunca sobrescreve o arquivo do usuário.
 merge_gemini_settings() { # $1=destino
   local dest="${1}" saida rc
-  command -v python3 >/dev/null 2>&1 || die "o adaptador gemini precisa de python3 para editar .gemini/settings.json com segurança" \
+  sdd_python_pronto || die "o adaptador gemini precisa de python3 para editar .gemini/settings.json com segurança" \
     "instale python3 ou rode init sem o vendor gemini" 64
   mkdir -p "$(dirname "${dest}")"
   saida=$(python3 -I - "${dest}" <<'PY' 2>&1
@@ -142,7 +142,7 @@ PY
 # linha — nunca sobrescreve o arquivo do usuário. Mesma casca do merge do Gemini.
 merge_claude_settings() { # $1=destino
   local dest="${1}" saida rc
-  command -v python3 >/dev/null 2>&1 || die "o adaptador claude precisa de python3 para editar .claude/settings.json com segurança (e para os guards de .claude/hooks/)" \
+  sdd_python_pronto || die "o adaptador claude precisa de python3 para editar .claude/settings.json com segurança (e para os guards de .claude/hooks/)" \
     "instale python3 ou rode init sem o vendor claude" 64
   mkdir -p "$(dirname "${dest}")"
   saida=$(python3 -I - "${dest}" <<'PY' 2>&1
