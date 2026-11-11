@@ -268,6 +268,30 @@ class Projeto(Sandbox):
         self.assertEqual(rc, 0, out)
         self.assertIn("sdd/bin/adapters/claude.sh difere do pacote — se você não editou, apague e rode init", out)
 
+    def test_doctor_avisa_lib_diferente_do_pacote(self):
+        # F16, pequeno da ficha (corrigido na F18/F20): o laço de deriva não olhava sdd/bin/lib/
+        lib = self.p / "sdd/bin/lib/python.sh"
+        lib.write_text(lib.read_text(encoding="utf-8") + "# editado\n", encoding="utf-8")
+        rc, out = self.cli("doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("sdd/bin/lib/python.sh difere do pacote — se você não editou, apague e rode init", out)
+
+    def test_doctor_diz_o_motivo_do_python_uma_vez(self):
+        # F16, rodada 4, R4 (corrigido na F18/F20): dentro de $(…) o "dito uma vez" se perdia e o aviso repetia
+        stubs = self.tmp / "sem-python"
+        stubs.mkdir()
+        for nome in ("python3", "python", "py"):
+            s = stubs / nome
+            s.write_text("#!/bin/sh\nexit 9009\n", encoding="utf-8")
+            s.chmod(0o755)
+        env = {k: v for k, v in self.env.items() if k not in ("SDD_PYTHON", "SDD_PYTHON_RESOLVIDO")}
+        env["PATH"] = str(stubs) + os.pathsep + env.get("PATH", "")
+        rc, out, err = self.roda([BASH, CLI, "doctor"], self.p, env)
+        tudo = out + err
+        self.assertEqual(rc, 0, tudo)
+        self.assertIn("python3 ausente", tudo)
+        self.assertEqual(tudo.count("existe, mas não roda"), 1, tudo)
+
     def test_doctor_em_dia_com_o_pacote(self):
         # versão do projeto MAIOR que a do pacote é evolução da pessoa, não atraso
         self.versao_da_skill(self.p / ".agents/skills/sdd-release/SKILL.md", "9.0.0")

@@ -67,7 +67,7 @@ class Instalacao(unittest.TestCase):
 
 class Versoes(unittest.TestCase):
     def test_as_3_skills_sobem_de_versao(self):
-        for nome, versao in (("sdd-checar-ambiente", "1.5.0"), ("sdd-iniciar-repo", "1.2.0"), ("sdd-new-session", "1.5.0")):
+        for nome, versao in (("sdd-checar-ambiente", "1.5.0"), ("sdd-iniciar-repo", "1.2.0"), ("sdd-new-session", "1.5.1")):
             with self.subTest(skill=nome):
                 texto = skill(nome)
                 self.assertIn('  version: "%s"' % versao, texto)
@@ -101,6 +101,15 @@ class NovaSessao(unittest.TestCase):
         for termo in ("**cheio ⇒ use como está**, inclusive com argumentos (`open -a \"Cursor\"`)",
                       "scripts/checar.sh --editores`", "`open -a \"<App>\"`", "`%LOCALAPPDATA%\\Programs`",
                       "`Get-Command\n  <nome>`", "modo terminal", "`editor: 'open -a \"Visual Studio Code\"'`"):
+            with self.subTest(termo=termo):
+                self.assertIn(termo, self.texto)
+
+    def test_lista_do_checar_editores_so_vale_com_versao_e_forma(self):
+        # F16 rodada 4, R1 (corrigido na F18/F20): uma sdd-checar-ambiente anterior à 1.5.0 não conhece
+        # --editores, cai no modo normal e sai 0; a lista só vale com a versão e a forma "<nome><TAB><comando>".
+        for termo in ("**Confira a lista antes de usá-la:**", "for 1.5.0 ou maior **e** toda linha não vazia",
+                      "`<nome><TAB><comando>`\n  (exatamente um TAB", "cai no\n  diagnóstico normal e sai 0",
+                      "⇒ trate como \"nenhum editor achado\""):
             with self.subTest(termo=termo):
                 self.assertIn(termo, self.texto)
 

@@ -12,7 +12,7 @@ compatibility: Requer git >= 2.20 e um agente com acesso ao terminal (bash, zsh 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.5.0"
+  version: "1.5.1"
   updated: "2026-11"
   fase: "0"
 ---
@@ -20,7 +20,7 @@ metadata:
 # sdd-new-session — abrir uma frente
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-new-session v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-new-session v1.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Um comando, uma tarefa, um diretório: `git worktree` + branch nova nascida do estado **remoto atual**
 da branch padrão. A outra ponta é a `sdd-release`.
@@ -231,7 +231,13 @@ a evidência — ela vai para o Passo 2, item 6.
   editor achado neste computador, `<nome><TAB><comando>`, na ordem da detecção: o PATH, depois o app do macOS por
   `open -a "<App>"`, depois o `.cmd` de `%LOCALAPPDATA%\Programs`; nada e exit 1 sem editor; sem bash, `Get-Command
   <nome>` sobre `code`, `cursor`, `code-insiders`, `windsurf`, `zed`, `subl`, `idea`, `pycharm`, `webstorm` e os mesmos
-  caminhos do `%LOCALAPPDATA%`) e pergunte:
+  caminhos do `%LOCALAPPDATA%`). **Confira a lista antes de usá-la:** ela só vale se a `version:` do `SKILL.md` da
+  `sdd-checar-ambiente` for 1.5.0 ou maior **e** toda linha não vazia da saída tiver a forma `<nome><TAB><comando>`
+  (exatamente um TAB, texto dos dois lados). Uma `sdd-checar-ambiente` anterior à 1.5.0 não conhece `--editores`, cai no
+  diagnóstico normal e sai 0: a saída seria o resumo do ambiente, não editores. Versão menor, versão ilegível ou linha
+  fora da forma ⇒ trate como "nenhum editor achado", diga em 1 frase que a `sdd-checar-ambiente` instalada é antiga e
+  que atualizá-la (o `doctor` do pacote aponta a skill velha; o guia do aluno, em "Quando sair versão nova", diz
+  como) traz a lista, e siga. Depois, pergunte:
 
   **Sua decisão** — [D2 · muda o produto] **Onde você quer abrir as frentes deste projeto?**
   - **o 1º editor da lista** (recomendado) — o 1º na ordem da detecção (o comando no PATH vem antes do app do macOS

@@ -756,11 +756,12 @@ aplicar() {
 }
 
 doctor() {
-  local v bin st n_falt
+  local v bin st n_falt pyv=ausente
   say "sdd-open doctor — projeto: ${ROOT}"
+  # Fora de $(…): num subshell, o "dito uma vez" do sdd_python_pronto se perde e o aviso repete (F16, rodada 4, R4).
+  if sdd_python_pronto; then pyv="$(python3 -I -c 'import sys;print(".".join(map(str,sys.version_info[:2])))' 2>/dev/null)" || pyv=ausente; fi
   printf '  bash %s.%s · git %s · python3 %s\n' "${BASH_VERSINFO[0]}" "${BASH_VERSINFO[1]}" \
-    "$(git --version 2>/dev/null | sed 's/git version //')" \
-    "$(sdd_python_pronto && python3 -I -c 'import sys;print(".".join(map(str,sys.version_info[:2])))' || echo 'ausente')"
+    "$(git --version 2>/dev/null | sed 's/git version //')" "${pyv:-ausente}"
   if [ -d "${ROOT}/sdd" ]; then
     n_falt=$(sdd_faltantes | grep -c . || true)
     if [ "${n_falt}" = "0" ]; then ok "sdd/ presente ($(ls "${ROOT}/sdd/features" 2>/dev/null | wc -l | tr -d ' ') feature(s) em sdd/features/)"
@@ -823,7 +824,7 @@ doctor() {
     warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — para receber: apague .agents/skills/${s} e rode init (edições suas nela se perdem)"
     atrasados=$((atrasados + 1))
   done
-  for f in "${PKG}"/sdd/bin/* "${PKG}"/sdd/bin/adapters/*; do
+  for f in "${PKG}"/sdd/bin/* "${PKG}"/sdd/bin/adapters/* "${PKG}"/sdd/bin/lib/*; do
     rel="${f#"${PKG}"/sdd/}"
     [ -f "${f}" ] && [ -f "${ROOT}/sdd/${rel}" ] || continue
     cmp -s "${f}" "${ROOT}/sdd/${rel}" && continue
