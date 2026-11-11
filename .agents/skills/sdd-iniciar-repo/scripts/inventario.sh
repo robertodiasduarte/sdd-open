@@ -8,6 +8,7 @@
 # Não grava nada no projeto. Sem .git, a lista vem de um repositório descartável em mktemp -d, que
 # só serve para o git aplicar o .gitignore existente; é apagado na saída.
 # Uso: bash inventario.sh   (de dentro da pasta do projeto)
+# Também imprime, logo abaixo do cabeçalho, a linha `gh: ausente|deslogado|ok|sem resposta` (F16; teto de 10 s).
 # Saída: 0 = relatório; 2 = pré-condição que impede (pasta sincronizada, pasta pessoal, dentro de um
 # repositório maior, repositório numa subpasta, git ausente) — a mensagem diz o que fazer;
 # 1 = não consegui listar os arquivos (nunca vira "nada sensível").
@@ -41,6 +42,45 @@ pasta_sincronizada() {
   done
   return 1
 }
+
+# ── gh e instalação por sistema (F16) ────────────────────────────────────────
+# Copiado igual em sdd-iniciar-repo/scripts/inventario.sh (as skills são instaladas sozinhas):
+# tests/test_f16_textos.py compara o texto das duas cópias, de "# ── gh e instalação" até "# ── fim do gh".
+# SDD_CHECAR_UNAME e SDD_CHECAR_GH existem para os testes; o padrão é o sistema e o `gh` do PATH.
+sistema() {
+  case "${SDD_CHECAR_UNAME:-$(uname -s 2>/dev/null)}" in
+    Darwin) echo macos ;;
+    MINGW*|MSYS*|CYGWIN*|Windows*) echo windows ;;
+    *) echo linux ;;
+  esac
+}
+instalar_gh() {
+  case "$(sistema)" in
+    macos) echo "brew install gh   (sem Homebrew: instalador em https://cli.github.com); depois feche e abra o terminal" ;;
+    windows) echo "winget install --id GitHub.cli -e   (depois feche e abra o terminal)" ;;
+    *) echo "siga https://github.com/cli/cli/blob/trunk/docs/install_linux.md   (depois feche e abra o terminal)" ;;
+  esac
+}
+# ausente | deslogado | ok | sem resposta. Só lê (o gh consulta a API do GitHub), com teto de 10 s; a saída do
+# gh nunca é repassada, só a classificação. Como no ls-remote do checar.sh: o gh roda num grupo de processos
+# próprio (set -m) e o vigia mata o GRUPO, porque um filho vivo seguraria a saída depois do gh morto.
+gh_estado() {
+  local g="${SDD_CHECAR_GH:-gh}" s rc
+  command -v "${g}" >/dev/null 2>&1 || { echo ausente; return 0; }
+  s="$( ( set -m
+          LC_ALL=C GH_PROMPT_DISABLED=1 "${g}" auth status --hostname github.com </dev/null 2>&1 & p=$!
+          ( sleep 10; kill -KILL -- "-${p}" ) >/dev/null 2>&1 & w=$!
+          wait "${p}"; r=$?
+          kill -KILL -- "-${p}" 2>/dev/null
+          kill -- "-${w}" 2>/dev/null
+          echo "__rc=${r}" ) 2>/dev/null )"
+  rc="$(printf '%s\n' "${s}" | sed -n 's/^__rc=//p' | tail -1)"
+  if [ "${rc}" = 0 ]; then echo ok
+  elif [ "${rc}" = 137 ] || printf '%s' "${s}" | grep -qiE 'error connecting|dial tcp|could not resolve|timeout|timed out'; then
+    echo "sem resposta"
+  else echo deslogado; fi
+}
+# ── fim do gh ────────────────────────────────────────────────────────────────
 
 # ── pré-condições ────────────────────────────────────────────────────────────
 command -v git >/dev/null 2>&1 || parar "O git não está instalado." \
@@ -116,6 +156,9 @@ if [ "${N}" = 1 ]; then QUANTOS="1 arquivo"; VERBO="entraria"; ESTA="está ou en
 else QUANTOS="${N} arquivos"; VERBO="entrariam"; ESTA="estão ou entrariam"; fi
 [ "${COM_GIT}" = 1 ] && VERBO="${ESTA}"
 printf 'Inventário de %s — %s %s no git.\n' "$(basename "${AQUI}")" "${QUANTOS}" "${VERBO}"
+# F16: o programa do GitHub para o terminal, conferido já aqui (a publicação é a última etapa, e é lá que ele faz
+# falta): ausente, deslogado, ok ou sem resposta (teto de 10 s). A skill traduz a linha no Passo 0.
+printf 'gh: %s\n' "$(gh_estado)"
 listar "🔴 Senhas e certificados (não podem ir para o git):" "${SEGREDOS}"
 listar "⚠️ Planilhas (costumam ter dado de cliente; ninguém lê o conteúdo de .xlsx por você):" "${PLANILHAS}"
 if [ -n "${GRANDES}" ]; then

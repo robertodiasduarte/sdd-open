@@ -12,7 +12,7 @@ compatibility: Requer git >= 2.20 e um agente com acesso ao terminal (bash, zsh 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.4.1"
+  version: "1.5.0"
   updated: "2026-11"
   fase: "0"
 ---
@@ -20,7 +20,7 @@ metadata:
 # sdd-new-session — abrir uma frente
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-new-session v1.4.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-new-session v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Um comando, uma tarefa, um diretório: `git worktree` + branch nova nascida do estado **remoto atual**
 da branch padrão. A outra ponta é a `sdd-release`.
@@ -194,6 +194,20 @@ siga.
 ⛔ Não invente uma frente assumindo como o projeto é. Uma frente criada a partir de suposição falha na
 primeira vez que for usada, e o usuário não vai saber por quê.
 
+<!-- INSTALAR-INICIO -->
+**Instalar o `git` e o `gh` (o programa do GitHub para o terminal)** — o comando do sistema em uso:
+
+| Sistema | git | gh |
+|---|---|---|
+| macOS | `xcode-select --install` (ou `brew install git`) | `brew install gh` (sem Homebrew: o instalador em https://cli.github.com) |
+| Windows | `winget install --id Git.Git -e` | `winget install --id GitHub.cli -e` |
+| Linux | o gerenciador da distribuição (`sudo apt install git`) | https://github.com/cli/cli/blob/trunk/docs/install_linux.md |
+
+Depois de instalar, feche e abra o terminal. Login no GitHub: `gh auth login` → **GitHub.com** → **HTTPS** →
+**Yes** → **Login with a web browser**. O `gh` não é obrigatório: quem entra por chave SSH ou pelo gerenciador de
+credenciais do git não precisa dele.
+<!-- INSTALAR-FIM -->
+
 ## Passo 1 — Descubra os slots (não pergunte o que dá para descobrir)
 
 Leia o `sdd/config.yaml` do checkout principal. Para cada slot, guarde o valor e, se veio de descoberta,
@@ -210,9 +224,15 @@ a evidência — ela vai para o Passo 2, item 6.
 - **Pasta das frentes** — `worktree_base`; vazio ⇒ `../<nome-do-repo>-frentes` (evidência: "padrão do
   sdd-open"). Fora do repositório: dentro dele, a worktree apareceria como arquivo não rastreado em todas as
   outras frentes.
-- **Editor** — `editor`; vazio ⇒ o primeiro que existir de `code`, `cursor`, `subl` (`command -v <nome>`
-  no bash/zsh, `Get-Command <nome>` no PowerShell; evidência: "`command -v code` neste computador"). O config
-  é compartilhado: diga na resposta que é a preferência deste computador e que qualquer um corrige a linha.
+- **Editor** — `editor`; **cheio ⇒ use como está**, inclusive com argumentos (`open -a "Cursor"`). Vazio ⇒
+  `bash <pasta da sdd-checar-ambiente>/scripts/checar.sh --editor`: a 1ª linha é o comando (o 1º que existir
+  de `code`, `cursor`, `code-insiders`, `windsurf`, `zed`, `subl`, `idea`, `pycharm`, `webstorm` no PATH; no
+  macOS, o app fora do PATH vira `open -a "<App>"`; no Windows, o `code.cmd` ou `cursor.cmd` de
+  `%LOCALAPPDATA%\Programs`, pelo caminho); a 2ª, quando houver, `dica: …`, que vai para a resposta; sai 1 sem
+  editor. Sem bash: `Get-Command <nome>` sobre a mesma lista, e os mesmos caminhos do `%LOCALAPPDATA%`.
+  Evidência: "`checar.sh --editor` neste computador". Sem editor nenhum, o slot fica vazio e a frente abre em
+  **modo terminal** (Passo 3), sem ar de falha. O config é compartilhado: diga na resposta que é a preferência
+  deste computador e que qualquer um corrige a linha.
 - **Testes e checagem de sintaxe** — `project.test_cmd` e `project.lint_cmd`, só com **evidência literal**,
   nesta ordem (a primeira fonte que tiver o comando vence):
   1. o comando que um workflow de `.github/workflows/` roda num step de teste (ou de lint), copiado do
@@ -250,7 +270,8 @@ a evidência — ela vai para o Passo 2, item 6.
    principal que ainda não foi enviado: enviar o commit e atualizar a frente, ou copiar à mão);
    `NADA A COPIAR` não é erro. Qualquer outro exit ⇒ diga a causa
    que ele imprimiu; a frente já existe e continua válida.
-5. Abra no editor. **Sem editor, não aborte**: a frente já está pronta; mostre o caminho.
+5. Abra no editor: `<editor> "<pasta da frente>"`, com o comando do slot como ele está. **Sem editor, não
+   aborte**: é o modo terminal — a frente já está pronta, e o Passo 3 diz como seguir nela.
 6. **Grave os slots descobertos no `sdd/config.yaml da frente`** (`<pasta das frentes>/<slug>/sdd/config.yaml`),
    nunca no do checkout principal: lá o arquivo ficaria modificado, a frente não o veria, e o `git pull`
    depois da integração abortaria. Regras:
@@ -279,8 +300,13 @@ a evidência — ela vai para o Passo 2, item 6.
    `git worktree remove "<pasta>"` e `git branch -d <slug>`.
 3. **Slots gravados** no `sdd/config.yaml` da frente, cada um com o valor e a evidência; slots que ficaram
    vazios e por quê. Avise que eles chegam à branch padrão junto com a feature.
-4. **Última linha, destacada:** `⚠️ Continue na janela nova. Esta sessão do agente continua presa à pasta
-   onde foi aberta — nenhum cd muda isso.`
+4. **Sem editor (modo terminal)**, o **Próximo passo** são 3 passos numerados: 1. abra um terminal novo;
+   2. `cd "<pasta da frente>"`; 3. rode nele o agente que você usa (`claude`, `codex` ou o seu).
+5. **Última linha, destacada**, na forma que vale para este computador:
+   - com editor: `⚠️ Continue na janela nova. Esta sessão do agente continua presa à pasta onde foi aberta —
+     nenhum cd muda isso.`
+   - sem editor: `⚠️ Continue num terminal novo aberto na pasta da frente. Esta sessão do agente continua presa
+     à pasta onde foi aberta — nenhum cd muda isso. Build, commit e push rodam lá.`
 
 ## Por que cada regra existe
 

@@ -1,11 +1,11 @@
 ---
 name: sdd-checar-ambiente
 license: MIT
-description: "Diagnostica, sem alterar nada, se este computador e este repositório estão prontos para trabalhar com SDD: repositório git, agente de código, identidade do git, acesso ao remoto (credencial, rede, repositório ainda vazio), worktrees órfãs, dependências, editor e dado exposto (senha, certificado A1 ou chave privada já salvos no git; .env fora do .gitignore; npm sem ignore-scripts; repositório público). Responde em uma linha quando está tudo certo e, quando não está, lista o que impede primeiro, cada item com o comando exato que resolve. Use quando o usuário pedir para checar o ambiente, antes de abrir a primeira frente de trabalho num projeto, ou quando algo estranho acontecer (commit que falha, comando não encontrado, worktree que sumiu)."
+description: "Diagnostica, sem alterar nada, se este computador e este repositório estão prontos para trabalhar com SDD: repositório git, agente de código, identidade do git, acesso ao remoto (credencial, rede, repositório ainda vazio), o programa do GitHub para o terminal (gh) e o login nele, worktrees órfãs, dependências, editor (também fora do PATH) e dado exposto (senha, certificado A1 ou chave privada já salvos no git; .env fora do .gitignore; npm sem ignore-scripts; repositório público). Responde em uma linha quando está tudo certo e, quando não está, lista o que impede primeiro, cada item com o comando exato que resolve. Use quando o usuário pedir para checar o ambiente, antes de abrir a primeira frente de trabalho num projeto, ou quando algo estranho acontecer (commit que falha, comando não encontrado, worktree que sumiu)."
 metadata:
   author: Roberto Dias Duarte
-  version: "1.4.1"
-  updated: "2026-10"
+  version: "1.5.0"
+  updated: "2026-11"
 ---
 
 # Checar ambiente
@@ -71,12 +71,17 @@ no projeto ou na pasta global do agente.)
 script: blocos `🔴 Dado exposto`, `🔴 Impede o trabalho` e `⚠️ Vale arrumar` só se tiverem itens, e por
 último a linha `✅ Pronto: repo …` (ou `✅ Repo …` quando houver problema). Checagem que passou ou não se
 aplica não é mencionada fora dessa linha. Termine a linha ✅ com a identificação desta skill:
-`sdd-checar-ambiente v1.4.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 (o script faz isso sozinho, lendo a versão deste arquivo).
 
 **Só o dado exposto** — `bash <pasta desta skill>/scripts/checar.sh --segredo` imprime apenas o bloco
 `🔴 Dado exposto` (ou nada), sem rede, e sai 1 quando acha algo. É o que o `doctor` do sdd-open roda; o
 pré-voo da `sdd-new-session` usa `--frente`.
+
+**Só o editor** — `bash <pasta desta skill>/scripts/checar.sh --editor` imprime na 1ª linha o comando que abre
+o editor deste computador (`code`, `cursor`… ou, com o app instalado e o comando fora do PATH, `open -a "<App>"`
+no macOS e o caminho do `.cmd` no Windows) e, quando houver, na 2ª `dica: …`; sai 1 sem editor. Não usa git
+nem rede. É o que a `sdd-new-session` roda com o slot `editor` vazio.
 
 ## Regras
 
@@ -86,7 +91,8 @@ pré-voo da `sdd-new-session` usa `--frente`.
   não diga nada sobre isso); e uma consulta `ls-remote` ao remoto, de até 10 segundos, **sem pedir senha**,
   para saber se a credencial e a rede chegam lá e se ele já tem algum commit (com a janela de login de um
   editor presente, uma 2ª `ls-remote` em paralelo, sem janela e sem credencial, separa janela esperando de
-  rede parada).
+  rede parada). No modo normal, uma 3ª, em paralelo com o `ls-remote` e também de até 10 segundos:
+  `gh auth status --hostname github.com`, só quando o `origin` é do GitHub ou ainda não há `origin`.
 - **Nunca deixe o git pedir senha no terminal**: o agente ficaria esperando uma resposta que ninguém vê.
   Todo comando que fala com o remoto roda com `GIT_TERMINAL_PROMPT=0 git …` no bash/zsh; no PowerShell,
   `$env:GIT_TERMINAL_PROMPT=0; git …`. A janela de login do editor (VS Code, Cursor) **não** é desligada:
@@ -175,8 +181,32 @@ pré-voo da `sdd-new-session` usa `--frente`.
   instaladas fora dele.
 - `.env.example` versionado e nenhum `.env` ⇒ falta a configuração local (copiar o exemplo e
   preencher).
-- Editor no PATH: `code`, `cursor` ou `subl` (nesta ordem). **Sem editor não é problema** — não entra
+- **Programa do GitHub para o terminal (`gh`)**, só no modo normal e só com `origin` do GitHub ou sem
+  `origin` (fora do GitHub, não fale dele; o `--frente` não fala dele): ausente ⇒ ⚠️ "O programa do GitHub
+  para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.", com
+  o comando do sistema em uso (tabela abaixo); instalado e sem conta logada (`gh auth status` falha) ⇒ ⚠️ com
+  `gh auth login`; sem resposta em 10 s ⇒ ⚠️ "não deu para conferir o login". **Nunca 🔴**: chave SSH e o
+  gerenciador de credenciais continuam valendo. Se o remoto já recusou o acesso com `gh auth login` no 🔴, o
+  aviso de login não se repete.
+- **Editor**, o 1º que existir: no PATH, `code`, `cursor`, `code-insiders`, `windsurf`, `zed`, `subl`, `idea`,
+  `pycharm`, `webstorm`; no macOS, fora do PATH, o app `Visual Studio Code`, `Cursor`, `Windsurf`, `Zed` ou
+  `Sublime Text` em `/Applications` ou `~/Applications` (o comando vira `open -a "<App>"`); no Windows, fora do
+  PATH, `code.cmd` ou `cursor.cmd` em `%LOCALAPPDATA%\Programs`. **Sem editor não é problema** — não entra
   em 🔴 nem em ⚠️; se houver um, cite-o no resumo ✅.
+
+<!-- INSTALAR-INICIO -->
+**Instalar o `git` e o `gh` (o programa do GitHub para o terminal)** — o comando do sistema em uso:
+
+| Sistema | git | gh |
+|---|---|---|
+| macOS | `xcode-select --install` (ou `brew install git`) | `brew install gh` (sem Homebrew: o instalador em https://cli.github.com) |
+| Windows | `winget install --id Git.Git -e` | `winget install --id GitHub.cli -e` |
+| Linux | o gerenciador da distribuição (`sudo apt install git`) | https://github.com/cli/cli/blob/trunk/docs/install_linux.md |
+
+Depois de instalar, feche e abra o terminal. Login no GitHub: `gh auth login` → **GitHub.com** → **HTTPS** →
+**Yes** → **Login with a web browser**. O `gh` não é obrigatório: quem entra por chave SSH ou pelo gerenciador de
+credenciais do git não precisa dele.
+<!-- INSTALAR-FIM -->
 
 **6. Dado de cliente e segredos** (o computador do escritório tem dado de cliente e certificado A1)
 - **Já salvo no git** (`git ls-files`): `.env` ou `.env.*` (exceto `.env.example` e `.env.sample`),

@@ -18,6 +18,10 @@
 #                                 todo achado vira 🔴 e a resposta diz que nada foi criado)
 #      bash checar.sh --segredo  (só o bloco 🔴 Dado exposto, sem rede: o doctor do sdd-open chama este
 #                                 modo; sai 1 com achado e 0 sem achado)
+#      bash checar.sh --editor   (só a detecção de editor, sem git e sem rede: 1ª linha o comando, 2ª opcional
+#                                 "dica: …"; sai 1 sem editor. A sdd-new-session usa com o slot editor vazio)
+# No modo normal, o `gh auth status` (10 s) roda junto com o ls-remote quando o origin é do GitHub, e sozinho
+# quando não há origin: gh ausente, deslogado ou sem resposta vira ⚠️, nunca 🔴.
 
 set -u
 
@@ -25,6 +29,7 @@ MODO=normal
 case "${1:-}" in
   --frente) MODO=frente ;;
   --segredo) MODO=segredo ;;
+  --editor) MODO=editor ;;
 esac
 
 EXPOSTO=""
@@ -38,6 +43,100 @@ add_arrumar() { ARRUMAR="${ARRUMAR}- $1"$'\n'"  $2"$'\n'; }
 # Achado de remoto: no pré-voo da frente impede; no diagnóstico geral, depende do caso.
 add_remoto()  { if [ "${MODO}" = frente ]; then add_impede "$1" "$2"; else add_arrumar "$1" "$2"; fi; }
 tem() { command -v "$1" >/dev/null 2>&1; }
+
+# ── gh e instalação por sistema (F16) ────────────────────────────────────────
+# Copiado igual em sdd-iniciar-repo/scripts/inventario.sh (as skills são instaladas sozinhas):
+# tests/test_f16_textos.py compara o texto das duas cópias, de "# ── gh e instalação" até "# ── fim do gh".
+# SDD_CHECAR_UNAME e SDD_CHECAR_GH existem para os testes; o padrão é o sistema e o `gh` do PATH.
+sistema() {
+  case "${SDD_CHECAR_UNAME:-$(uname -s 2>/dev/null)}" in
+    Darwin) echo macos ;;
+    MINGW*|MSYS*|CYGWIN*|Windows*) echo windows ;;
+    *) echo linux ;;
+  esac
+}
+instalar_gh() {
+  case "$(sistema)" in
+    macos) echo "brew install gh   (sem Homebrew: instalador em https://cli.github.com); depois feche e abra o terminal" ;;
+    windows) echo "winget install --id GitHub.cli -e   (depois feche e abra o terminal)" ;;
+    *) echo "siga https://github.com/cli/cli/blob/trunk/docs/install_linux.md   (depois feche e abra o terminal)" ;;
+  esac
+}
+# ausente | deslogado | ok | sem resposta. Só lê (o gh consulta a API do GitHub), com teto de 10 s; a saída do
+# gh nunca é repassada, só a classificação. Como no ls-remote do checar.sh: o gh roda num grupo de processos
+# próprio (set -m) e o vigia mata o GRUPO, porque um filho vivo seguraria a saída depois do gh morto.
+gh_estado() {
+  local g="${SDD_CHECAR_GH:-gh}" s rc
+  command -v "${g}" >/dev/null 2>&1 || { echo ausente; return 0; }
+  s="$( ( set -m
+          LC_ALL=C GH_PROMPT_DISABLED=1 "${g}" auth status --hostname github.com </dev/null 2>&1 & p=$!
+          ( sleep 10; kill -KILL -- "-${p}" ) >/dev/null 2>&1 & w=$!
+          wait "${p}"; r=$?
+          kill -KILL -- "-${p}" 2>/dev/null
+          kill -- "-${w}" 2>/dev/null
+          echo "__rc=${r}" ) 2>/dev/null )"
+  rc="$(printf '%s\n' "${s}" | sed -n 's/^__rc=//p' | tail -1)"
+  if [ "${rc}" = 0 ]; then echo ok
+  elif [ "${rc}" = 137 ] || printf '%s' "${s}" | grep -qiE 'error connecting|dial tcp|could not resolve|timeout|timed out'; then
+    echo "sem resposta"
+  else echo deslogado; fi
+}
+# ── fim do gh ────────────────────────────────────────────────────────────────
+
+# ── editor (F16) ─────────────────────────────────────────────────────────────
+# 1º que existir: no PATH, a lista abaixo; fora do PATH, o app no macOS (open -a) e o .cmd no Windows.
+# SDD_CHECAR_EDITOR_PATH (padrão: o PATH) e SDD_APPS_DIRS (padrão: /Applications e ~/Applications) existem para
+# os testes. Resultado em EDITOR_CMD (o comando, como a sdd-new-session o usa) e EDITOR_DICA (opcional).
+EDITOR_CMD=""
+EDITOR_DICA=""
+editor_no_path() {
+  local d IFS=:
+  for d in ${SDD_CHECAR_EDITOR_PATH:-${PATH}}; do
+    [ -n "${d}" ] || continue
+    [ -f "${d}/$1" ] && [ -x "${d}/$1" ] && return 0
+    if [ "$(sistema)" = windows ] && { [ -f "${d}/$1.cmd" ] || [ -f "${d}/$1.exe" ]; }; then return 0; fi
+  done
+  return 1
+}
+editor_achado() {
+  local e d a c lad IFS=:
+  for e in code cursor code-insiders windsurf zed subl idea pycharm webstorm; do
+    editor_no_path "${e}" && { EDITOR_CMD="${e}"; return 0; }
+  done
+  case "$(sistema)" in
+    macos)
+      for d in ${SDD_APPS_DIRS:-/Applications:${HOME:-}/Applications}; do
+        for a in "Visual Studio Code" "Cursor" "Windsurf" "Zed" "Sublime Text"; do
+          [ -d "${d}/${a}.app" ] || continue
+          EDITOR_CMD="open -a \"${a}\""
+          case "${a}" in
+            "Visual Studio Code") c=code ;; Cursor) c=cursor ;; Windsurf) c=windsurf ;; *) c="" ;;
+          esac
+          [ -n "${c}" ] && EDITOR_DICA="para abrir pelo terminal com '${c}', no ${a}: Command Palette (Cmd+Shift+P) → Shell Command: Install '${c}' command in PATH"
+          return 0
+        done
+      done ;;
+    windows)
+      lad="${LOCALAPPDATA:-}"
+      [ -n "${lad}" ] && command -v cygpath >/dev/null 2>&1 && lad="$(cygpath -u "${lad}")"
+      [ -n "${lad}" ] || return 1
+      for a in "Microsoft VS Code/bin/code.cmd" "cursor/resources/app/bin/cursor.cmd"; do
+        [ -f "${lad}/Programs/${a}" ] || continue
+        EDITOR_CMD="\"${lad}/Programs/${a}\""
+        EDITOR_DICA="o editor está instalado, mas o comando dele não está no PATH: reinstale marcando 'Add to PATH', ou use o caminho acima"
+        return 0
+      done ;;
+  esac
+  return 1
+}
+
+# --editor (F16): só a detecção, sem git e sem rede. 1ª linha: o comando; 2ª, opcional: "dica: …". Sai 1 sem editor.
+if [ "${MODO}" = editor ]; then
+  editor_achado || exit 1
+  printf '%s\n' "${EDITOR_CMD}"
+  [ -n "${EDITOR_DICA}" ] && printf 'dica: %s\n' "${EDITOR_DICA}"
+  exit 0
+fi
 # O pré-voo da frente sai 1 quando bloqueia (a skill para pelo código); o diagnóstico geral sai sempre 0.
 # (O --segredo não passa por aqui: sai pelo próprio bloco, logo abaixo da definição de dado_exposto.)
 sair() { if [ "${MODO}" = frente ] && [ -n "${IMPEDE}" ]; then exit 1; fi; exit 0; }
@@ -306,6 +405,7 @@ fi
 # Roda EM PARALELO com o ls-remote (abaixo): em sequência, rede parada somava 3 s ao teto de 10 s.
 # Imprime __publico=1 quando é público; nada quando não é ou quando a consulta falha.
 PUBLICO=0
+GH=""   # estado do gh (F16): só no modo normal, com origin do GitHub ou sem origin
 SLUG="$(printf '%s' "${URL_ORIGIN}" \
   | sed -n -E 's#^(https?://([^@/]+@)?|ssh://([^@/]+@)?|git@)github\.com[:/]([^/]+/[^/]+)$#\4#p' | sed 's#\.git$##; s#/$##')"
 # Só curl (vem com macOS, Linux e o Git for Windows): ele tem teto de 3 s. O `gh repo view` não tem
@@ -321,10 +421,12 @@ if [ -n "${URL_ORIGIN}" ]; then
   # as duas não se misturarem no meio de uma linha. Teto total = o maior dos dois, não a soma.
   SAIDA="$(
     [ -n "${SLUG}" ] && [ "${MODO}" = normal ] && { publico </dev/null & }
+    [ -n "${SLUG}" ] && [ "${MODO}" = normal ] && { echo "__gh=$(gh_estado)" </dev/null & }
     s="$(alcance)"; wait; printf '%s\n' "${s}"
   )"
   [ -n "$(printf '%s\n' "${SAIDA}" | grep -x '__publico=1')" ] && PUBLICO=1
-  SAIDA="$(printf '%s\n' "${SAIDA}" | grep -v -x '__publico=1')"
+  GH="$(printf '%s\n' "${SAIDA}" | sed -n 's/^__gh=//p' | tail -1)"
+  SAIDA="$(printf '%s\n' "${SAIDA}" | grep -v -x '__publico=1' | grep -v '^__gh=')"
   RC="$(printf '%s\n' "${SAIDA}" | sed -n 's/^__rc=//p' | tail -1)"
   # Só as refs contam: stderr chega junto (avisos de redirecionamento ou de host novo não são refs).
   REFS="$(printf '%s\n' "${SAIDA}" | grep -E "^[0-9a-f]{40}"$'\t'"refs/heads/" || true)"
@@ -355,7 +457,7 @@ if [ -n "${URL_ORIGIN}" ]; then
         add_impede "Este computador ainda não confirmou a identidade de ${ONDE_HOST} para SSH." "${CMD}" ;;
       *"could not read username"*|*"could not read password"*|*"authentication failed"*|*"terminal prompts disabled"*|*"permission denied (publickey"*|*"repository not found"*|*"returned error: 403"*)
         if [ -n "${SLUG}" ]; then
-          if tem gh; then CMD="gh auth login"; else CMD="Instale o GitHub CLI (https://cli.github.com) e rode: gh auth login"; fi
+          if tem "${SDD_CHECAR_GH:-gh}"; then CMD="gh auth login"; else CMD="Instale o GitHub CLI (https://cli.github.com) e rode: gh auth login"; fi
           CMD="${CMD}"$'\n'"  Alternativas: chave SSH (ssh-keygen e cadastrar a chave pública no GitHub) ou o gerenciador de credenciais do git."
         else
           # Fora do GitHub, gh auth login não resolve: o login é o do próprio serviço.
@@ -377,7 +479,7 @@ if [ -n "${URL_ORIGIN}" ]; then
           # O askpass do editor (VS Code/Cursor) não é desligado: quem está logado no GitHub por ele alcança
           # o remoto sem janela nenhuma. O vigia cortou E o remoto, consultado sem askpass, pediu login: a
           # janela ficou esperando. Askpass definido sozinho não prova isso (rede parada nem o chama).
-          if tem gh; then CMD="Responda a janela do editor, ou rode: gh auth login"
+          if tem "${SDD_CHECAR_GH:-gh}"; then CMD="Responda a janela do editor, ou rode: gh auth login"
           else CMD="Responda a janela do editor, ou instale o GitHub CLI (https://cli.github.com) e rode: gh auth login"; fi
           add_impede "A janela de login do editor está esperando resposta (o git pediu usuário e senha para ${ONDE_HOST})." "${CMD}"
         elif [ "${RC}" = "143" ] || [ "${RC}" = "137" ] || [ -z "${ERRO}" ]; then
@@ -390,6 +492,24 @@ if [ -n "${URL_ORIGIN}" ]; then
         fi ;;
     esac
   fi
+fi
+
+# gh (F16): sem origin, a consulta roda sozinha (quem ainda vai publicar precisa saber cedo); origin fora do
+# GitHub, não roda. Nunca 🔴: SSH e o gerenciador de credenciais continuam valendo. Se o remoto já recusou com
+# "gh auth login" no 🔴, o aviso não se repete.
+if [ "${MODO}" = normal ] && [ -z "${URL_ORIGIN}" ]; then GH="$(gh_estado)"; fi
+if [ "${MODO}" = normal ]; then
+  case "${IMPEDE}" in
+    *"gh auth login"*) ;;
+    *) case "${GH}" in
+         ausente) add_arrumar "O programa do GitHub para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais." \
+                              "$(instalar_gh)" ;;
+         deslogado) add_arrumar "O gh está instalado, mas nenhuma conta do GitHub está logada nele — publicar o projeto vai pedir esse login." \
+                                "gh auth login   (GitHub.com → HTTPS → Yes → Login with a web browser)" ;;
+         "sem resposta") add_arrumar "Não deu para conferir o login do gh no GitHub agora (o GitHub não respondeu em 10 s)." \
+                                     "Rode de novo quando a conexão voltar; para ver na hora: gh auth status" ;;
+       esac ;;
+  esac
 fi
 
 if [ "${MODO}" = frente ]; then
@@ -465,8 +585,8 @@ case "${FRENTES}" in
   1) TXT_FRENTES="1 frente aberta" ;;
   *) TXT_FRENTES="${FRENTES} frentes abertas" ;;
 esac
-EDITOR_ACHADO=""
-for e in code cursor subl; do tem "${e}" && { EDITOR_ACHADO="${e}"; break; }; done
+editor_achado
+EDITOR_ACHADO="${EDITOR_CMD}"
 [ "${PUBLICO}" -eq 1 ] && REPO="${REPO} (público no GitHub)"
 RESUMO="repo ${REPO}, branch ${BRANCH}, ${TXT_FRENTES}, ${AGENTES}${EDITOR_ACHADO:+, editor ${EDITOR_ACHADO}}"
 relatorio "${RESUMO}"

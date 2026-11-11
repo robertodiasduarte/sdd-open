@@ -31,6 +31,16 @@ SSH_GITHUB = "git" + ARROBA + "github.com"
 SSH_INVALIDO = "git" + ARROBA + "exemplo.invalid"
 # caminho absoluto: o teste do git fora do PATH troca o PATH. SDD_TEST_BASH=/bin/bash testa o piso bash 3.2.
 BASH = os.environ.get("SDD_TEST_BASH") or shutil.which("bash") or "bash"
+# F16: o gh falso. GH_STUB escolhe a resposta; cada chamada fica anotada em GH_STUB_LOG.
+GH_STUB = """#!/bin/sh
+echo "$@" >> "${GH_STUB_LOG}"
+case "${GH_STUB:-ok}" in
+  ok) echo "github.com"; echo "  Logged in to github.com account conta-de-teste"; exit 0 ;;
+  deslogado) echo "You are not logged into any GitHub hosts. To log in, run: gh auth login" >&2; exit 1 ;;
+  rede) echo "X Failed to log in to github.com: error connecting to api.github.com" >&2; exit 1 ;;
+  pendurado) sleep 30; exit 0 ;;
+esac
+"""
 
 
 def chave_privada_falsa() -> str:
@@ -119,6 +129,14 @@ class Base(unittest.TestCase):
             self.git("config", "--add", f"url.file://{self.gh}/.insteadOf", prefixo)
         self.global_vazio = self.tmp / "gitconfig-global"
         self.global_vazio.write_text("", encoding="utf-8")
+        # F16: um gh logado e nenhum editor por padrão, para o relatório não depender da máquina de quem roda.
+        self.gh_stub = self.tmp / "bin-gh" / "gh"
+        self.gh_stub.parent.mkdir()
+        self.gh_stub.write_text(GH_STUB, encoding="utf-8")
+        self.gh_stub.chmod(0o755)
+        self.gh_log = self.tmp / "gh.log"
+        self.sem_editor = self.tmp / "sem-editor"
+        self.sem_editor.mkdir()
 
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
@@ -149,7 +167,8 @@ class Base(unittest.TestCase):
         # janela de login de verdade: só entra quando o teste o define.
         herdado = {k: v for k, v in os.environ.items() if k not in ("GIT_ASKPASS", "SSH_ASKPASS")}
         e = {**herdado, "SDD_CHECAR_GITHUB_API": self.api, "GIT_CONFIG_GLOBAL": str(self.global_vazio),
-             "GIT_CONFIG_NOSYSTEM": "1", **env}
+             "GIT_CONFIG_NOSYSTEM": "1", "SDD_CHECAR_GH": str(self.gh_stub), "GH_STUB_LOG": str(self.gh_log),
+             "SDD_CHECAR_EDITOR_PATH": str(self.sem_editor), "SDD_APPS_DIRS": str(self.sem_editor), **env}
         for k in [k for k, v in e.items() if v is None]:
             del e[k]
         t0 = time.monotonic()
@@ -502,7 +521,8 @@ class TestSomenteLeitura(Base):
         self.commit("a.pfx", "chave.pem")
         self.escreve("package.json", "{}\n")
         antes = self.foto()
-        out = self.checar(npm_config_ignore_scripts="false")
+        # o gh falso anota as chamadas fora da pasta fotografada: o que se confere é o checar.sh
+        out = self.checar(npm_config_ignore_scripts="false", GH_STUB_LOG=os.devnull)
         self.assertIn("Dado exposto", out)
         self.assertEqual(antes, self.foto())
 
@@ -531,6 +551,10 @@ class TestOndeEstou(unittest.TestCase):
         self.home.mkdir()
         self.global_vazio = self.tmp / "gitconfig-global"
         self.global_vazio.write_text("", encoding="utf-8")
+        self.gh_stub = self.tmp / "bin-gh" / "gh"   # F16: nunca o gh real de quem roda a suíte
+        self.gh_stub.parent.mkdir()
+        self.gh_stub.write_text(GH_STUB, encoding="utf-8")
+        self.gh_stub.chmod(0o755)
 
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
@@ -547,7 +571,8 @@ class TestOndeEstou(unittest.TestCase):
         herdado = {k: v for k, v in os.environ.items() if k not in ("GIT_ASKPASS", "SSH_ASKPASS")}
         env = {**herdado, "HOME": str(self.home), "GIT_CEILING_DIRECTORIES": str(self.tmp),
                "GIT_CONFIG_GLOBAL": str(self.global_vazio), "GIT_CONFIG_NOSYSTEM": "1",
-               "SDD_CHECAR_GITHUB_API": "http://127.0.0.1:9"}
+               "SDD_CHECAR_GITHUB_API": "http://127.0.0.1:9", "SDD_CHECAR_GH": str(self.gh_stub),
+               "GH_STUB_LOG": str(self.tmp / "gh.log")}
         r = subprocess.run([BASH, str(script), *args], cwd=pasta, capture_output=True, text=True,
                            env=env, stdin=subprocess.DEVNULL, timeout=60)
         return r.returncode, r.stdout
@@ -766,3 +791,168 @@ class TestSegredo(Base):
         self.assertEqual(rc, 1, out)
         self.assertIn('git rm --cached "sub/.ENV.local"', out)
         self.assertLess(dt, 3, f"--segredo levou {dt:.1f} s com 3 mil arquivos rastreados")
+
+
+GH_AUSENTE = "O programa do GitHub para o terminal (gh) não está instalado"
+
+
+class TestGh(Base):
+    """F16, AT-001 e AT-002: o gh e o login aparecem cedo, como ⚠️, nunca 🔴."""
+
+    def chamadas(self) -> list:
+        return self.gh_log.read_text(encoding="utf-8").splitlines() if self.gh_log.exists() else []
+
+    def test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0(self):
+        for uname, comando in (("Darwin", "brew install gh"), ("MINGW64_NT-10.0-19045", "winget install --id GitHub.cli -e"),
+                               ("Linux", "https://github.com/cli/cli/blob/trunk/docs/install_linux.md")):
+            with self.subTest(sistema=uname):
+                rc, out, _ = self.roda(SDD_CHECAR_GH=str(self.tmp / "nao-existe" / "gh"), SDD_CHECAR_UNAME=uname)
+                self.assertEqual(rc, 0, out)
+                self.assertIn("⚠️ Vale arrumar", out)
+                self.assertIn(GH_AUSENTE, out)
+                self.assertIn(comando, out)
+                self.assertIn("feche e abra o terminal", out)
+                self.assertNotIn("🔴", out)
+
+    def test_frente_sem_gh_nao_fala_do_gh(self):
+        rc, out, _ = self.roda("--frente", SDD_CHECAR_GH=str(self.tmp / "nao-existe" / "gh"))
+        self.assertEqual(rc, 0, out)
+        self.assertTrue(out.startswith("✅ Pronto para abrir a frente"), out)
+        self.assertNotRegex(out, r"\bgh\b")
+
+    def test_frente_nao_consulta_o_gh(self):
+        self.roda("--frente", GH_STUB="deslogado")
+        self.assertEqual(self.chamadas(), [])
+
+    def test_gh_logado_nao_diz_nada_e_consulta_so_o_github(self):
+        out = self.checar()
+        self.assertEqual(len(out.strip().splitlines()), 1, out)
+        self.assertEqual(self.chamadas(), ["auth status --hostname github.com"])
+
+    def test_gh_deslogado_com_remoto_do_github(self):
+        out = self.checar(GH_STUB="deslogado")
+        self.assertIn("⚠️ Vale arrumar", out)
+        self.assertIn("nenhuma conta do GitHub está logada nele", out)
+        self.assertIn("gh auth login   (GitHub.com → HTTPS → Yes → Login with a web browser)", out)
+        self.assertNotIn("🔴", out)
+
+    def test_gh_deslogado_sem_remoto_tambem_avisa(self):
+        self.git("remote", "remove", "origin")
+        out = self.checar(GH_STUB="deslogado")
+        self.assertIn("O repositório não tem remoto", out)
+        self.assertIn("gh auth login   (GitHub.com", out)
+        self.assertEqual(self.chamadas(), ["auth status --hostname github.com"])
+
+    def test_sem_gh_e_sem_remoto_avisa(self):
+        self.git("remote", "remove", "origin")
+        out = self.checar(SDD_CHECAR_GH=str(self.tmp / "nao-existe" / "gh"))
+        self.assertIn(GH_AUSENTE, out)
+
+    def test_remoto_fora_do_github_nao_chama_nem_cita_o_gh(self):
+        bare = self.tmp / "outro-servico.git"
+        subprocess.run(["git", "init", "-q", "--bare", str(bare)], check=True)
+        self.git("push", "-q", str(bare), "HEAD:refs/heads/main")
+        self.origin(str(bare))
+        for estado in ("deslogado", "ausente"):
+            with self.subTest(gh=estado):
+                env = {"GH_STUB": "deslogado"} if estado == "deslogado" else {"SDD_CHECAR_GH": str(self.tmp / "nao-existe" / "gh")}
+                out = self.checar(**env)
+                self.assertNotRegex(out, r"\bgh\b", out)
+        self.assertEqual(self.chamadas(), [])
+
+    def test_gh_sem_rede_e_sem_resposta(self):
+        out = self.checar(GH_STUB="rede")
+        self.assertIn("Não deu para conferir o login do gh no GitHub agora", out)
+        self.assertNotIn("nenhuma conta do GitHub está logada", out)
+
+    def test_gh_pendurado_respeita_o_teto(self):
+        rc, out, dt = self.roda(GH_STUB="pendurado")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("o GitHub não respondeu em 10 s", out)
+        self.assertLess(dt, 20, "o teto do gh auth status é 10 s")
+
+    def test_remoto_recusado_nao_repete_o_login(self):
+        porta = self.srv401.server_address[1]   # o mesmo cenário de test_credencial_github_privado_explica_as_duas_causas
+        self.git("config", f"url.http://127.0.0.1:{porta}/x.git.insteadOf", "https://github.com/escritorio/privado.git")
+        rc, out, _ = self.roda(GH_STUB="deslogado")
+        self.assertIn("gh auth login", out)
+        self.assertNotIn("nenhuma conta do GitHub está logada", out)
+
+
+class TestEditor(Base):
+    """F16, AT-003: o editor no PATH ampliado, o app fora do PATH no macOS e o .cmd no Windows."""
+
+    def editor(self, **env: str) -> tuple:
+        rc, out, _ = self.roda("--editor", **env)
+        return rc, out.splitlines()
+
+    def exe(self, pasta: Path, nome: str) -> None:
+        pasta.mkdir(parents=True, exist_ok=True)
+        f = pasta / nome
+        f.write_text("#!/bin/sh\n", encoding="utf-8")
+        f.chmod(0o755)
+
+    def test_ordem_no_path(self):
+        p = self.tmp / "editores"
+        for nome in ("zed", "webstorm"):
+            self.exe(p, nome)
+        self.assertEqual(self.editor(SDD_CHECAR_EDITOR_PATH=str(p)), (0, ["zed"]))
+        self.exe(p, "code-insiders")
+        self.assertEqual(self.editor(SDD_CHECAR_EDITOR_PATH=str(p)), (0, ["code-insiders"]))
+        self.exe(p, "code")
+        self.assertEqual(self.editor(SDD_CHECAR_EDITOR_PATH=str(p)), (0, ["code"]))
+
+    def test_app_do_macos_fora_do_path_vira_open_a(self):
+        apps = self.tmp / "Applications"
+        (apps / "Visual Studio Code.app").mkdir(parents=True)
+        rc, linhas = self.editor(SDD_CHECAR_UNAME="Darwin", SDD_APPS_DIRS=str(apps))
+        self.assertEqual(rc, 0)
+        self.assertEqual(linhas[0], 'open -a "Visual Studio Code"')
+        self.assertIn("Shell Command: Install 'code' command in PATH", linhas[1])
+
+    def test_app_na_segunda_pasta_de_aplicativos(self):
+        casa = self.tmp / "casa" / "Applications"
+        (casa / "Cursor.app").mkdir(parents=True)
+        rc, linhas = self.editor(SDD_CHECAR_UNAME="Darwin", SDD_APPS_DIRS=str(self.tmp / "vazia") + ":" + str(casa))
+        self.assertEqual((rc, linhas[0]), (0, 'open -a "Cursor"'))
+
+    def test_app_do_macos_nao_vale_fora_do_macos(self):
+        apps = self.tmp / "Applications"
+        (apps / "Visual Studio Code.app").mkdir(parents=True)
+        self.assertEqual(self.editor(SDD_CHECAR_UNAME="Linux", SDD_APPS_DIRS=str(apps)), (1, []))
+
+    def test_windows_cmd_fora_do_path(self):
+        lad = self.tmp / "AppData" / "Local"
+        self.exe(lad / "Programs" / "Microsoft VS Code" / "bin", "code.cmd")
+        rc, linhas = self.editor(SDD_CHECAR_UNAME="MINGW64_NT-10.0-19045", LOCALAPPDATA=str(lad))
+        self.assertEqual(rc, 0)
+        self.assertTrue(linhas[0].startswith('"') and linhas[0].endswith('Microsoft VS Code/bin/code.cmd"'), linhas)
+        self.assertIn("Add to PATH", linhas[1])
+
+    def test_windows_cmd_no_path(self):
+        p = self.tmp / "bin-win"
+        self.exe(p, "cursor.cmd")
+        self.assertEqual(self.editor(SDD_CHECAR_UNAME="MINGW64_NT-10.0-19045", SDD_CHECAR_EDITOR_PATH=str(p)), (0, ["cursor"]))
+
+    def test_sem_editor_sai_1_calado(self):
+        self.assertEqual(self.editor(), (1, []))
+
+    def test_editor_fora_de_repositorio(self):
+        fora = self.tmp / "fora"
+        fora.mkdir()
+        p = self.tmp / "editores"
+        self.exe(p, "subl")
+        r = subprocess.run([BASH, str(SCRIPT), "--editor"], cwd=fora, capture_output=True, text=True,
+                           env={**os.environ, "SDD_CHECAR_EDITOR_PATH": str(p), "GIT_CEILING_DIRECTORIES": str(self.tmp)},
+                           stdin=subprocess.DEVNULL, timeout=60)
+        self.assertEqual((r.returncode, r.stdout), (0, "subl\n"))
+
+    def test_resumo_cita_o_editor_e_sem_editor_nao_avisa(self):
+        p = self.tmp / "editores"
+        self.exe(p, "code")
+        out = self.checar(SDD_CHECAR_EDITOR_PATH=str(p))
+        self.assertEqual(len(out.strip().splitlines()), 1, out)
+        self.assertIn(", editor code", out)
+        out = self.checar()
+        self.assertEqual(len(out.strip().splitlines()), 1, out)
+        self.assertNotIn("editor", out)

@@ -19,6 +19,14 @@ from pathlib import Path
 
 SCRIPT = Path(__file__).resolve().parents[1] / ".agents" / "skills" / "sdd-iniciar-repo" / "scripts" / "inventario.sh"
 BASH = os.environ.get("SDD_TEST_BASH") or shutil.which("bash") or "bash"   # SDD_TEST_BASH=/bin/bash: piso 3.2
+# F16: o gh falso (o mesmo de tests/test_checar.py). GH_STUB escolhe a resposta.
+GH_STUB = """#!/bin/sh
+case "${GH_STUB:-ok}" in
+  ok) echo "github.com"; exit 0 ;;
+  deslogado) echo "You are not logged into any GitHub hosts. To log in, run: gh auth login" >&2; exit 1 ;;
+  rede) echo "X Failed to log in to github.com: error connecting to api.github.com" >&2; exit 1 ;;
+esac
+"""
 
 
 class Base(unittest.TestCase):
@@ -30,6 +38,10 @@ class Base(unittest.TestCase):
         self.raiz.mkdir()
         self.global_vazio = self.tmp / "gitconfig-global"
         self.global_vazio.write_text("", encoding="utf-8")
+        self.gh_stub = self.tmp / "bin-gh" / "gh"   # F16: nunca o gh real de quem roda a suíte
+        self.gh_stub.parent.mkdir()
+        self.gh_stub.write_text(GH_STUB, encoding="utf-8")
+        self.gh_stub.chmod(0o755)
 
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
@@ -50,9 +62,10 @@ class Base(unittest.TestCase):
         subprocess.run(["git", *args], cwd=cwd or self.raiz, check=True, capture_output=True,
                        env={**os.environ, "GIT_CONFIG_GLOBAL": str(self.global_vazio), "GIT_CONFIG_NOSYSTEM": "1"})
 
-    def roda(self, pasta: Path | None = None) -> tuple[int, str]:
+    def roda(self, pasta: Path | None = None, **extra: str) -> tuple[int, str]:
         env = {**os.environ, "HOME": str(self.home), "GIT_CEILING_DIRECTORIES": str(self.tmp),
-               "GIT_CONFIG_GLOBAL": str(self.global_vazio), "GIT_CONFIG_NOSYSTEM": "1"}
+               "GIT_CONFIG_GLOBAL": str(self.global_vazio), "GIT_CONFIG_NOSYSTEM": "1",
+               "SDD_CHECAR_GH": str(self.gh_stub), **extra}
         r = subprocess.run([BASH, str(SCRIPT)], cwd=pasta or self.raiz, capture_output=True, text=True,
                            env=env, stdin=subprocess.DEVNULL, timeout=60)
         return r.returncode, r.stdout
@@ -310,3 +323,28 @@ class TestSomenteLeitura(Base):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestGh(Base):
+    """F16, AT-004: a linha `gh:` sai já no inventário, com um de 4 valores."""
+
+    def linha_gh(self, **env: str) -> list:
+        self.escreve("a.txt")
+        rc, out = self.roda(**env)
+        self.assertEqual(rc, 0, out)
+        return [l for l in out.splitlines() if l.startswith("gh:")]
+
+    def test_os_quatro_valores(self):
+        for caso, env, esperado in (
+                ("logado", {}, "gh: ok"),
+                ("deslogado", {"GH_STUB": "deslogado"}, "gh: deslogado"),
+                ("sem rede", {"GH_STUB": "rede"}, "gh: sem resposta"),
+                ("ausente", {"SDD_CHECAR_GH": str(self.tmp / "nao-existe" / "gh")}, "gh: ausente")):
+            with self.subTest(caso=caso):
+                self.assertEqual(self.linha_gh(**env), [esperado])
+
+    def test_a_linha_vem_logo_depois_do_cabecalho(self):
+        self.escreve("a.txt")
+        linhas = self.inventario().splitlines()
+        self.assertTrue(linhas[0].startswith("Inventário de "), linhas)
+        self.assertEqual(linhas[1], "gh: ok")

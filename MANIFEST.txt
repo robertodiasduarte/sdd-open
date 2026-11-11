@@ -474,6 +474,7 @@ tests/test_f13_textos.py
 tests/test_f14_drive_textos.py
 tests/test_f14_textos.py
 tests/test_f15_slots_textos.py
+tests/test_f16_textos.py
 tests/test_f19_textos.py
 tests/test_f21_textos.py
 tests/test_fluxo.py
