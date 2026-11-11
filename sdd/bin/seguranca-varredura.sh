@@ -46,7 +46,7 @@ if ! sdd_python_pronto; then
 fi
 
 exec python3 -B - "$@" <<'PY'
-import fnmatch, os, re, subprocess, sys
+import codecs, fnmatch, os, re, subprocess, sys
 
 CAMPOS = ["stack", "fase", "gravidade", "bloqueia", "agents", "gatilho", "padrao", "arquivos",
           "frase", "evitar", "at", "confira", "ref"]
@@ -73,8 +73,11 @@ DISPENSA = re.compile(r"sdd-seguranca:\s*aceito\s+(S\d\d)\s*(?:—|-)\s*(.*)$")
 CREATE = re.compile(r"(?i)\bcreate\s+(?:unlogged\s+)?table\s+(?:if\s+not\s+exists\s+)?([\w.\"]+)")
 RLS = re.compile(r"(?i)\balter\s+table\s+(?:if\s+exists\s+)?(?:only\s+)?([\w.\"]+)\s+enable\s+row\s+level\s+security")
 DEFINER = re.compile(r"(?i)\bsecurity\s+definer\b")
+FUNCAO = re.compile(r"(?i)\bcreate\s+(?:or\s+replace\s+)?function\s+([\w.\"]+)")
+# revisão do código, N2: o revoke vale para a função que ele nomeia (ou para todas do esquema), não para o arquivo
+REVOKE_FN = re.compile(r"(?i)\brevoke\b[^;]*?\bfunction\s+([\w.\"]+)[^;]*\bfrom\b[^;]*\banon\b")
+REVOKE_TODAS = re.compile(r"(?i)\brevoke\b[^;]*\ball\s+functions\b[^;]*\bfrom\b[^;]*\banon\b")
 # Só `from anon` fecha: no Supabase o papel anônimo recebe execute por grant próprio, que `from public` não tira.
-REVOKE = re.compile(r"(?i)\brevoke\b[^;]*\bfrom\b[^;]*\banon\b")
 
 
 def fim(rc, palavra, seta, para=sys.stdout):
@@ -330,19 +333,31 @@ def base_e_novas():
         ref = "origin/" + ((PROJ.get("default_branch") or "").strip() or "main")
     if git(RAIZ, "rev-parse", "--verify", "--quiet", ref + "^{commit}")[0] != 0:
         return ref, False, None
-    rc, out, err = git(RAIZ, "diff", "--no-color", "--no-ext-diff", "-U0", "--no-renames",
+    # --relative: com --raiz numa subpasta, os caminhos do diff ficam relativos a ela, como os do ls-files (R3).
+    rc, out, err = git(RAIZ, "diff", "--no-color", "--no-ext-diff", "-U0", "--no-renames", "--relative",
                        "--src-prefix=a/", "--dst-prefix=b/", ref, "--")
     if rc != 0:
         uso("o git não comparou com %s (%s)" % (ref, err.decode("utf-8", "replace").strip()[:200]))
-    novas, atual = {}, None
+    novas, atual, cabecalho = {}, None, False
     for ln in out.decode("utf-8", "replace").splitlines():
-        if ln.startswith("+++ "):
+        # O `+++` só é cabeçalho entre o `diff --git` e o 1º `@@`: dentro do hunk, "+++ x" é uma linha que começa
+        # com "++" (R4). O git põe um TAB no fim do nome com espaço (R2) e aspas no nome com caractere especial.
+        if ln.startswith("diff --git "):
+            cabecalho, atual = True, None
+            continue
+        if cabecalho and ln.startswith("+++ "):
             alvo = ln[4:]
+            if alvo.endswith("\t"):
+                alvo = alvo[:-1]
+            if len(alvo) >= 2 and alvo[0] == alvo[-1] == '"':
+                alvo = codecs.escape_decode(alvo[1:-1].encode("utf-8"))[0].decode("utf-8", "replace")
             atual = alvo[2:] if alvo.startswith("b/") else None
             if atual is not None:
                 novas.setdefault(atual, set())
             continue
         m = re.match(r"^@@ -\S+ \+(\d+)(?:,(\d+))? @@", ln)
+        if m:
+            cabecalho = False
         if m and atual is not None:
             ini, qtd = int(m.group(1)), int(m.group(2) if m.group(2) is not None else 1)
             novas[atual].update(range(ini, ini + qtd))
@@ -351,6 +366,22 @@ def base_e_novas():
         if p:
             novas[p] = "tudo"
     return ref, True, novas
+
+
+def sem_comentarios_sql(t):
+    """O texto com `-- …` e `/* … */` trocados por espaços, mantendo as quebras de linha (R1, N1)."""
+    def branco(m):
+        return re.sub(r"[^\n]", " ", m.group(0))
+    return re.sub(r"/\*.*?\*/|--[^\n]*", branco, t, flags=re.S)
+
+
+def linha_de(t, pos):
+    return t.count("\n", 0, pos) + 1
+
+
+def nome_funcao(bruto):
+    n = bruto.replace('"', "").lower()
+    return n[len("public."):] if n.startswith("public.") else n
 
 
 def casa(p, globs):
@@ -403,32 +434,26 @@ for f in ATIVOS:
                 if m and not (f["id"] != "S11" and comentado(ln, m.start(), p.endswith(".sql"))):
                     achados.append((f, p, n))
     elif padrao in REGRAS:
-        migr = {p: t for p, t in textos.items() if p.endswith(".sql") and (casa(p, f["globs"]) or (sql_globs and casa(p, sql_globs)))}
+        migr = {p: sem_comentarios_sql(t) for p, t in textos.items()
+                if p.endswith(".sql") and (casa(p, f["globs"]) or (sql_globs and casa(p, sql_globs)))}
         if padrao == "regra:rls":
-            com_rls = set()
-            for t in migr.values():
-                for m in RLS.finditer(t):
-                    nm = nome_tabela(m.group(1))
-                    if nm:
-                        com_rls.add(nm)
+            com_rls = {nome_tabela(m.group(1)) for t in migr.values() for m in RLS.finditer(t)} - {None}
             for p, t in migr.items():
                 for m in CREATE.finditer(t):
                     nm = nome_tabela(m.group(1))
-                    n = t.count("\n", 0, m.start()) + 1
-                    linha = t.split("\n")[n - 1]
-                    col = m.start() - (t.rfind("\n", 0, m.start()) + 1)
-                    if nm and nm not in com_rls and not comentado(linha, col, True):
-                        achados.append((f, p, n))
+                    if nm and nm not in com_rls:
+                        achados.append((f, p, linha_de(t, m.start())))
         else:
+            todas = any(REVOKE_TODAS.search(t) for t in migr.values())
+            revogadas = {nome_funcao(m.group(1)) for t in migr.values() for m in REVOKE_FN.finditer(t)}
             for p, t in migr.items():
-                if REVOKE.search(t):
-                    continue
+                funcoes = list(FUNCAO.finditer(t))
                 for m in DEFINER.finditer(t):
-                    n = t.count("\n", 0, m.start()) + 1
-                    linha = t.split("\n")[n - 1]
-                    col = m.start() - (t.rfind("\n", 0, m.start()) + 1)
-                    if not comentado(linha, col, True):
-                        achados.append((f, p, n))
+                    antes = [fn for fn in funcoes if fn.start() < m.start()]
+                    nome = nome_funcao(antes[-1].group(1)) if antes else None
+                    if todas or (nome is not None and nome in revogadas):
+                        continue
+                    achados.append((f, p, linha_de(t, m.start())))
 
 
 SEGREDO_RES = [f["re"] for f in ITENS if f["c"]["bloqueia"] == "sim" and f["re"] is not None]
@@ -453,18 +478,16 @@ def nova(p, n):
 bloqueios, avisos, aceitos, dispensas_ruins = [], [], [], []
 for f, p, n in achados:
     linhas = textos[p].split("\n")
-    marca = None
-    for k in (n, n - 1):
-        if 1 <= k <= len(linhas):
-            m = DISPENSA.search(linhas[k - 1])
-            if m:
-                marca = m
-                break
-    if marca is not None:
-        motivo = limpa_motivo(marca.group(2))
-        if marca.group(1) == f["id"] and len(re.sub(r"\s", "", motivo)) >= 3:
+    # A marca do próprio item, na linha do achado ou na de cima; marca de outro item não esconde a dele (R5).
+    marcas = [m for k in (n, n - 1) if 1 <= k <= len(linhas)
+              for m in [DISPENSA.search(linhas[k - 1])] if m]
+    do_item = [m for m in marcas if m.group(1) == f["id"]]
+    if do_item:
+        motivo = limpa_motivo(do_item[0].group(2))
+        if len(re.sub(r"\s", "", motivo)) >= 3:
             aceitos.append((f, p, n, motivo))
             continue
+    if marcas:
         dispensas_ruins.append((f, p, n))
     e_nova = nova(p, n)
     if f["c"]["bloqueia"] == "sim" and e_nova:

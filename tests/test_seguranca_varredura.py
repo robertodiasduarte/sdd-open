@@ -179,6 +179,74 @@ class RevisaoDoDesign(Base):
         self.assertIn("⚠️ S03 alta supabase/migrations/0002.sql:1", out)
 
 
+class RevisaoDoCodigo(Base):
+    """Rodada 2 da revisão (código): cada teste caiu no script de antes do conserto."""
+
+    def test_r1_rls_comentado_nao_conta(self):
+        for comentario in ("-- alter table clientes enable row level security; -- TODO",
+                           "/* alter table clientes\n   enable row level security; */"):
+            with self.subTest(comentario=comentario[:12]):
+                p = self.projeto({"supabase/config.toml": ""})
+                self.escreve(p, "supabase/migrations/0002.sql", "create table clientes (id uuid primary key);\n" + comentario + "\n")
+                rc, out = self.varre(p)
+                self.assertEqual(rc, 2, out)
+                self.assertIn("🛑 S01 alta supabase/migrations/0002.sql:1", out)
+                self.tearDown(); self.setUp()
+
+    def test_r2_nome_com_espaco_commitado_na_branch(self):
+        p = self.projeto({"src/minha config.js": "um\n"})
+        self.escreve(p, "src/minha config.js", "um\nconst k = \"%s\";\n" % SEGREDOS["sk_live_"])
+        self.commit(p, "na branch")
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 2, out)
+        self.assertIn("🛑 S11 alta src/minha config.js:2", out)
+
+    def test_r3_raiz_numa_subpasta(self):
+        p = self.projeto({"app/src/k.ts": "um\n"})
+        self.escreve(p, "app/src/k.ts", "um\nconst k = \"%s\";\n" % SEGREDOS["ghp_"])
+        self.commit(p, "na branch")
+        rc, out = self.varre(p, "--raiz", str(p / "app"))
+        self.assertEqual(rc, 2, out)
+        self.assertIn("🛑 S11 alta src/k.ts:2", out)
+
+    def test_r4_linha_que_comeca_com_mais_mais_nao_e_cabecalho(self):
+        p = self.projeto({"src/a.txt": "".join("linha %d\n" % k for k in range(30))})
+        linhas = ["linha %d" % k for k in range(30)]
+        linhas.insert(2, "++ nota")
+        linhas.insert(25, "k = \"%s\"" % SEGREDOS["ghp_"])
+        self.escreve(p, "src/a.txt", "\n".join(linhas) + "\n")
+        self.commit(p, "na branch")
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 2, out)
+        self.assertIn("🛑 S11 alta src/a.txt:26", out)
+
+    def test_r5_marca_de_outro_item_na_linha_nao_esconde_a_de_cima(self):
+        p = self.projeto({"package.json": "{}\n"})
+        self.escreve(p, "src/c.js", "// sdd-seguranca: aceito S16 — expressão fixa da planilha\n"
+                     "el.innerHTML = eval(x) // sdd-seguranca: aceito S12 — html sanitizado antes\n")
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("✔ aceito S16 src/c.js:2 — expressão fixa da planilha", out)
+        self.assertIn("✔ aceito S12 src/c.js:2 — html sanitizado antes", out)
+
+    def test_n1_tabela_em_bloco_comentado_nao_conta(self):
+        p = self.projeto({"supabase/config.toml": ""})
+        self.escreve(p, "supabase/migrations/0002.sql", "/*\ncreate table rascunho (id int);\n*/\nselect 1;\n")
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 0, out)
+
+    def test_n2_revoke_de_uma_funcao_nao_cobre_a_outra(self):
+        p = self.projeto({"supabase/config.toml": ""})
+        self.escreve(p, "supabase/migrations/0002.sql",
+                     "create function a() returns int language sql security definer as $$ select 1 $$;\n"
+                     "revoke execute on function a() from anon;\n"
+                     "create or replace function public.b() returns int language sql\n  security definer as $$ select 2 $$;\n")
+        rc, out = self.varre(p)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("⚠️ S03 alta supabase/migrations/0002.sql:4", out)
+        self.assertNotIn("0002.sql:1", out)
+
+
 class Rls(Base):
     def supa(self, **kw) -> "Path":
         return self.projeto({"supabase/config.toml": "[api]\n", **kw})
