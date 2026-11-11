@@ -78,7 +78,10 @@ class Sandbox(unittest.TestCase):
         vazio.write_text("", encoding="utf-8")
         # SDD_TRACE e SDD_TRACE_DIR de quem roda a suíte não entram: com SDD_TRACE=off no ambiente, os testes
         # de trace cairiam sem o código ter mudado (🐛 da F12). Quem precisa de um dos dois passa no próprio teste.
-        base = {k: v for k, v in os.environ.items() if k not in ("SDD_TRACE", "SDD_TRACE_DIR")}
+        # F16: SDD_PYTHON_RESOLVIDO e PYTHONIOENCODING também não: rodando debaixo de um script do pacote (test-baseline,
+        # verify-gate), o teste herdaria o Python resolvido pelo pai e o "sem python3" deixaria de valer.
+        base = {k: v for k, v in os.environ.items()
+                if k not in ("SDD_TRACE", "SDD_TRACE_DIR", "SDD_PYTHON_RESOLVIDO", "PYTHONIOENCODING")}
         self.env = dict(
             base,
             HOME=str(self.home),

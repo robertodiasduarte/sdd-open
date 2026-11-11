@@ -152,6 +152,32 @@ class RevisaoRodada3(Base):
         self.assertIn("python3 não encontrado", err)
 
 
+class HerancaDoPai(Base):
+    def test_python3_herdado_sem_python3_no_path_nao_vale(self):
+        # raio de impacto da release: debaixo do test-baseline ou do verify-gate, o filho herdava "python3" e confiava
+        rc, out, err = self.roda_script("sdd_python_pronto || echo FALTA\ncommand -v python3 || echo AUSENTE\n",
+                                        SDD_PYTHON_RESOLVIDO="python3")
+        self.assertEqual((rc, out.split()), (0, ["FALTA", "AUSENTE"]), err)
+
+    def test_python3_herdado_com_python3_no_path_vale_sem_testar(self):
+        self.stub("python3", "#!/bin/sh\necho chamado-sem-teste\n")   # nem imprime versão: o valor herdado é aceito
+        rc, out, err = self.roda_script("sdd_python_pronto && echo PRONTO\n", SDD_PYTHON_RESOLVIDO="python3")
+        self.assertEqual((rc, out.strip()), (0, "PRONTO"), err)
+
+    def test_o_sandbox_nao_herda_o_python_resolvido(self):
+        import os
+        from unittest import mock
+        import apoio
+        with mock.patch.dict(os.environ, {"SDD_PYTHON_RESOLVIDO": "python3", "PYTHONIOENCODING": "cp1252"}):
+            s = apoio.Sandbox("setUp")
+            s.setUp()
+            try:
+                self.assertNotIn("SDD_PYTHON_RESOLVIDO", s.env)
+                self.assertNotIn("PYTHONIOENCODING", s.env)
+            finally:
+                s.tearDown()
+
+
 class Limpeza(Base):
     def test_calco_velho_sai_e_o_novo_fica(self):
         # avaliador, ciclo 1, achado 5: cada processo de topo deixava uma pasta de calço para sempre

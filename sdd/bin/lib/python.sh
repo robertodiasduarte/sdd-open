@@ -61,7 +61,10 @@ sdd_python_testa() {
 sdd_python_resolver() {
   case "${SDD_PYTHON_RESOLVIDO:-}" in
     "") ;;
-    python3) return 0 ;;
+    # Herdado do processo pai: só vale se o python3 existe no PATH deste processo (um `bash -c` com o PATH
+    # restrito herdaria o "python3" e chamaria um comando que não existe; raio de impacto da release da F16).
+    python3) command -v python3 >/dev/null 2>&1 && return 0
+             SDD_PYTHON_RESOLVIDO="" ;;
     *) if [ -x "${SDD_PYTHON_RESOLVIDO}/python3" ]; then
          case ":${PATH}:" in
            *":${SDD_PYTHON_RESOLVIDO}:"*) ;;
