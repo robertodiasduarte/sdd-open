@@ -188,7 +188,9 @@ jobs:
   testes-windows:
     name: Testes no Windows (Git Bash + Python nativo, só leitura)
     runs-on: windows-latest
-    timeout-minutes: 90   # F16: a 1ª medição diz o tempo real; o teto é revisto antes da tag
+    # F16: a 1ª medição (PR #25, run 42938720292) rodou a suíte inteira e foi cancelada nos 90 min com 15% feito
+    # (~19 s por teste, 156 quebras em 282). Aqui fica só o caminho do aluno; o porte da suíte é a frente F16W.
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash
@@ -224,8 +226,13 @@ jobs:
           PUBLISH_GATE_MODE: ci
         run: bash scripts/publish-gate.sh "$(pwd)"
 
-      - name: Unit tests (Git Bash + native Python)
-        run: python -B -m unittest discover -s tests -p 'test_*.py'
+      # Só o caminho do aluno no Windows: checar-ambiente, inventário do iniciar-repo, resolvedor de Python,
+      # pulos por recurso e textos da F16. -v e sem buffer: o nome de cada teste sai na hora, mesmo se o teto cortar.
+      - name: Unit tests, student path (Git Bash + native Python)
+        working-directory: tests
+        env:
+          PYTHONUNBUFFERED: '1'
+        run: python -B -m unittest -v test_checar test_inventario test_python_resolver test_windows test_f16_textos
 
   release:
     name: Publicar release

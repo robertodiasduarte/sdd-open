@@ -158,10 +158,14 @@ class Windows(unittest.TestCase):
                 self.assertIn('echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"', bloco)
                 self.assertIn('run: bash scripts/publish-gate.sh "$(pwd)"', bloco)
                 self.assertIn("PUBLISH_GATE_MODE: ci", bloco)
-                self.assertIn("run: python -B -m unittest discover -s tests -p 'test_*.py'", bloco)
+                # F16: só o caminho do aluno; a suíte inteira no Windows é a frente F16W
+                self.assertIn("run: python -B -m unittest -v test_checar test_inventario test_python_resolver "
+                              "test_windows test_f16_textos", bloco)
+                self.assertIn("working-directory: tests", bloco)
+                self.assertRegex(bloco, r"(?m)^    timeout-minutes: 30$")
                 self.assertNotIn("contents: write", bloco)
                 self.assertNotIn("if:", sem_comentarios(bloco))
-                self.assertLess(bloco.index("SDD_TEST_BASH="), bloco.index("unittest discover"))
+                self.assertLess(bloco.index("SDD_TEST_BASH="), bloco.index("python -B -m unittest -v"))
 
     def test_frases_dizem_o_que_o_workflow_prova(self):
         piso = "testes-windows" in re.search(r"(?m)^    needs: (.*)$", job(RELEASE, "release")).group(1)
