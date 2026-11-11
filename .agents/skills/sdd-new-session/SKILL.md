@@ -225,16 +225,17 @@ a evidência — ela vai para o Passo 2, item 6.
   sdd-open"). Fora do repositório: dentro dele, a worktree apareceria como arquivo não rastreado em todas as
   outras frentes.
 - **Editor** — `editor`; **cheio ⇒ use como está**, inclusive com argumentos (`open -a "Cursor"`); `terminal:<agente>`
-  (`terminal:claude`, `terminal:codex`) ⇒ modo terminal com esse agente (Passo 3). **Vazio ⇒ pergunte, uma vez só, e
-  nunca escolha sozinho:** rode `bash <pasta da sdd-checar-ambiente>/scripts/checar.sh --editores` (uma linha por
+  (`terminal:claude`, `terminal:codex`) ⇒ modo terminal com esse agente (Passo 3). Slot vazio ⇒ a preferência deste
+  computador, `git config --get sdd.editor` rodado na pasta do projeto (cheia ⇒ use como está, do mesmo jeito). **As
+  duas vazias ⇒ pergunte, uma vez só, e nunca escolha sozinho:** rode `bash <pasta da sdd-checar-ambiente>/scripts/checar.sh --editores` (uma linha por
   editor achado neste computador, `<nome><TAB><comando>`, na ordem da detecção: o PATH, depois o app do macOS por
   `open -a "<App>"`, depois o `.cmd` de `%LOCALAPPDATA%\Programs`; nada e exit 1 sem editor; sem bash, `Get-Command
   <nome>` sobre `code`, `cursor`, `code-insiders`, `windsurf`, `zed`, `subl`, `idea`, `pycharm`, `webstorm` e os mesmos
   caminhos do `%LOCALAPPDATA%`) e pergunte:
 
   **Sua decisão** — [D2 · muda o produto] **Onde você quer abrir as frentes deste projeto?**
-  - **o 1º editor da lista** (recomendado) — é o que o terminal já acha pelo nome neste computador; grava o comando
-    dele no slot, como ele saiu da lista.
+  - **o 1º editor da lista** (recomendado) — o 1º na ordem da detecção (o comando no PATH vem antes do app do macOS
+    e do `.cmd` do Windows); grava o comando dele como ele saiu da lista.
   - **cada outro editor da lista**, pelo nome — grava o comando dele.
   - **só no terminal, com Claude Code** — sem editor: a frente abre num terminal novo e você roda `claude` nela;
     grava `editor: "terminal:claude"`.
@@ -243,9 +244,12 @@ a evidência — ela vai para o Passo 2, item 6.
     como você disser.
   - **não sei** — explico em uma frase o que cada opção faz e repito a pergunta.
 
-  Sem editor achado, a pergunta só tem as opções de terminal, **dizer o meu comando** e **não sei**. A resposta vai para o slot (Passo 2,
-  item 6), com a evidência "escolha do usuário em <data>", e a pergunta não volta enquanto o slot estiver cheio. O config
-  é compartilhado: diga na resposta que é a preferência deste computador e que qualquer um corrige a linha.
+  Sem editor achado, a pergunta só tem as opções de terminal, **dizer o meu comando** e **não sei**. A resposta é uma
+  preferência deste computador, não do projeto: grave-a com `git config --local sdd.editor '<valor>'` na pasta do
+  projeto, nunca no slot (o `sdd/config.yaml` da frente só chega à branch padrão na integração, e a pergunta voltaria em
+  cada frente aberta até lá). O `git config` vale na hora para todas as frentes deste repositório, nunca é commitado, e a
+  pergunta não volta enquanto ele estiver cheio. Diga na resposta onde ficou, como trocar
+  (`git config --local sdd.editor '<outro>'`) e que, para fixar o editor para o time todo, basta preencher o slot `editor`.
 - **Testes e checagem de sintaxe** — `project.test_cmd` e `project.lint_cmd`, só com **evidência literal**,
   nesta ordem (a primeira fonte que tiver o comando vence):
   1. o comando que um workflow de `.github/workflows/` roda num step de teste (ou de lint), copiado do
@@ -289,7 +293,8 @@ a evidência — ela vai para o Passo 2, item 6.
 6. **Grave os slots descobertos no `sdd/config.yaml da frente`** (`<pasta das frentes>/<slug>/sdd/config.yaml`),
    nunca no do checkout principal: lá o arquivo ficaria modificado, a frente não o veria, e o `git pull`
    depois da integração abortaria. Regras:
-   - só slot vazio (`""` ou sem valor) recebe valor; slot cheio fica como está;
+   - só slot vazio (`""` ou sem valor) recebe valor; slot cheio fica como está; o `editor` não entra aqui (a escolha
+     dele vai para o `git config`, no Passo 1);
    - valor com aspas duplas dentro (`open -a "Visual Studio Code"`, o caminho de um `.cmd`) vai entre aspas
      simples no YAML: `editor: 'open -a "Visual Studio Code"'`;
    - na linha de cima do slot, a evidência: `# descoberto por sdd-new-session (AAAA-MM-DD): <evidência>`;

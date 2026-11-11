@@ -106,12 +106,17 @@ class NovaSessao(unittest.TestCase):
 
     def test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho(self):
         # pedido do Roberto (2026-11-11): "antes de abrir pela primeira vez, o sdd deveria perguntar o default"
-        for termo in ("**Vazio ⇒ pergunte, uma vez só, e\n  nunca escolha sozinho:**",
+        for termo in ("duas vazias ⇒ pergunte, uma vez só, e nunca escolha sozinho:**",
                       "**Sua decisão** — [D2 · muda o produto] **Onde você quer abrir as frentes deste projeto?**",
                       "**o 1º editor da lista** (recomendado)", "**cada outro editor da lista**",
                       "**só no terminal, com Claude Code**", '`editor: "terminal:claude"`',
                       "**só no terminal, com Codex**", '`editor: "terminal:codex"`', "**dizer o meu comando**",
-                      "**não sei**", "a pergunta não volta enquanto o slot estiver cheio"):
+                      "**não sei**", "pergunta não volta enquanto ele estiver cheio",
+                      # rodada 5, R1: a escolha é deste computador e vale para todas as frentes na hora
+                      "`git config --get sdd.editor`", "`git config --local sdd.editor '<valor>'`",
+                      "nunca no slot", "basta preencher o slot `editor`",
+                      # rodada 5, R2: a ordem da detecção, não "o que o terminal acha pelo nome"
+                      "o 1º na ordem da detecção (o comando no PATH vem antes do app do macOS"):
             with self.subTest(termo=termo):
                 self.assertIn(termo, self.texto)
         self.assertNotIn("**outro**", self.texto)   # PERGUNTA_DECISAO: nunca "Outro"
