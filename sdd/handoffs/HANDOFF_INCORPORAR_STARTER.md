@@ -233,6 +233,7 @@ sdd-decisoes-lint, versões de skill): skill ou pergunta nova mexe nelas.
 - 2026-11-11 — F18 + F20, brainstorm (Roberto): o pacote **não cita o e-book** (texto próprio, referência OWASP/CWE); **o máximo numa sessão** (ondas 1 a 3 da F18 e entregas 1 a 5 da F20); skill nova `sdd-seguranca`; 2 bloqueios para toda tabela nova (chave literal e tabela sem RLS), só no que a publicação acrescenta, com dispensa na linha; teto de 5 avisos; 5 regras + 1 ponteiro no `AGENTS.md`; incidente como modo da skill; amostras só escritas do zero. Define: revisão de segurança na própria sessão, sem trava; base `origin/<branch padrão>`, sem ela tudo é novo; adiados vão ao BUILD_REPORT; 2 cenários × 3 execuções.
 - 2026-11-11 — F18 + F20, release (Roberto): rodada 4 de revisão acima do teto, só do delta (os consertos depois da rodada 3); os 3 consertos da rodada 4 com dispensa registrada; "sdd-open autorizado push"; a curadoria enviada na hora (`v2.12.1`), não deixada para a próxima.
 - 2026-11-11 — **F18 + F20 publicadas: Release `v2.12.0`** (`main` = `382ef04`, PR #26) e, em 2026-11-12, **`v2.12.1`** (`main` = `e22a1b2`, só a curadoria do playbook).
+- 2026-11-12 — Roberto decidiu juntar o item 4 do cronograma (medir o privado com o `eval-revisores.sh`, pendência da F19) à **fase 4 da F15**: mesma sessão, no repositório privado, logo depois da troca, para a medição já pegar revisões feitas com o Open. O cronograma passa de 4 para 3 linhas. A frente da fase 4 foi aberta lá (`feat/f15-fase4`); o prompt da sessão mora na ficha da F15 de lá, não aqui, porque cita caminhos e frentes da RDD. A trava da fase 4 caiu de 16 para 1 frente antiga. A próxima frente do Open continua sendo a F17 (este SESSION_PROMPT não muda).
 
 ## 2026-11-11 — F18 + F20 Segurança embutida no fluxo (Release v2.12.0, v2.12.1)
 
@@ -465,7 +466,7 @@ skills de entrada: mudou num, mude nos outros.
 - **F19, o que os números ainda não dizem:** as 6 frentes do retroativo têm dano `?`; só a F19 tem dano marcado (3 de 15). Custo por falha com dano só fica útil com mais frentes gravadas no formato novo.
 - **Revisão com duas engines:** saldo da OpenRouter em US$ 0,0747 (a chamada do auditor não cabe); codex sem cota; gemini sem credencial. Sem recarga, a próxima frente repete a revisão de uma engine só.
 - **Página `/sdd/` da F21:** frente própria no repositório privado; nada dela aqui.
-- **Medir o privado com o `eval-revisores.sh`:** decisão do Roberto, depois da F15.
+- **Medir o privado com o `eval-revisores.sh`:** decisão do Roberto (12/11): na sessão da fase 4 da F15, logo depois da troca; prompt na ficha da F15 do privado.
 
 ### Próximos passos
 
