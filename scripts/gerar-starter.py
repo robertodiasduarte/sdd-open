@@ -297,7 +297,8 @@ def lint(pasta: Path, aceites: list[tuple[str, str, str]] = (), fora: list[str] 
             continue
         texto = p.read_text(encoding="utf-8", errors="replace")
         # o par que define a pasta (`.claude/skills/x/` ou `.agents/skills/x/`) é texto certo no starter: some do lint
-        texto = PAR.sub(lambda m: re.sub(r"[^\n]", " ", m.group(0)), texto)
+        # (só de skill gerada: o par de uma skill que o starter não recebe aponta o que não existe lá; rodada 5, R2)
+        texto = PAR.sub(lambda m: m.group(0) if m.group(1) in fora else re.sub(r"[^\n]", " ", m.group(0)), texto)
         for n, ln in enumerate(texto.split("\n"), 1):
             for rx in padroes:
                 # cada citação da linha conta; um aceite cobre só a citação que está dentro do trecho dele

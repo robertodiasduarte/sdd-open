@@ -302,6 +302,10 @@ class Lint(Base):
         self.assertIn("sdd-kb/scripts/x.py:1", out)
         self.assertIn("sdd-kb/SKILL.md:1", out)
         self.assertNotIn("ok.md", out)   # o par que define a pasta é texto certo
+        # revisão, rodada 5, R2: o par só isenta skill gerada; o de uma skill que o starter não recebe reprova
+        self.escreve(pasta, "sdd-kb/references/fora.md", "Veja `.claude/skills/sdd-playbook/` ou\n`.agents/skills/sdd-playbook/`.\n")
+        rc, out, err = self.roda([PY, "-B", RAIZ / "scripts/gerar-starter.py", "--lint", pasta], self.tmp)
+        self.assertIn("sdd-kb/references/fora.md:2", out)
 
     def test_r4_aceite_nao_isenta_outra_citacao_na_mesma_linha(self):
         # revisão, rodada 2, R4: o aceite de uma citação não pode calar outra citação na mesma linha
