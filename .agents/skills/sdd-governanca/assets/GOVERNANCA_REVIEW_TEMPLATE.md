@@ -56,5 +56,6 @@
 
 > A skill recomenda; o profissional decide e responde.
 >
-> No Build, rode a auditoria de schema (`rdd-audita-schema`) sobre a migration: os itens com coluna
-> `pós-build` preenchida no catálogo têm prova também no SQL.
+> No Build, o passo *Aplicar a migration* da `sdd-build` prova por leitura (`information_schema`,
+> `pg_policies`, `pg_trigger`) que o SQL criou o que estes itens exigem: os itens com `prova pós-build = sim`
+> no catálogo têm o que conferir no banco depois de aplicada a migration.

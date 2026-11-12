@@ -5,7 +5,7 @@ compatibility: "Requer bash >= 3.2 e git >= 2.20. Não executa nada no banco do 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.4.0"
+  version: "2.4.1"
   updated: "2026-11"
   fase: "Gov"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-governanca — revisão de governança
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-governanca v2.4.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-governanca v2.4.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Num sistema financeiro, contábil ou fiscal, governança responde uma pergunta: **daqui a cinco anos,
 um fiscal, um auditor ou um perito reconstrói o que aconteceu, quem fez e por quê — com prova de que

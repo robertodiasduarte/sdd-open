@@ -18,8 +18,10 @@
   `todos` · `equipe` (campo `uso` = equipe ou clientes) · `multi_cnpj` (campo `multi_cnpj` = sim) ·
   `ia` (campo `ia_grava_sozinha` = sim, ou o DEFINE menciona IA que grava, classifica ou sugere lançamento).
   Abaixo do porte, o item é `N.A. por porte`, com o motivo.
-- `pós-build` cita o item do checklist da skill `rdd-audita-schema` que prova o mesmo ponto no SQL já
-  escrito. A revisão de governança acontece no papel, antes do Design; a auditoria de schema, depois do Build.
+- `prova pós-build` = `sim` quando o ponto também se prova **lendo o banco** depois que a migration foi aplicada
+  (o passo *Aplicar a migration* da `sdd-build` prova por leitura em `information_schema`, `pg_policies`,
+  `pg_trigger`, `pg_proc`); `—` quando o item só se prova por comportamento. A revisão de governança
+  acontece no papel, antes do Design; a prova por leitura, depois do Build.
 - Os nomes de tabela das provas (`lancamento`, `lancamento_linha`, `periodo`, `auditoria`, `aprovacao`,
   `documento`) são de referência: adapte aos nomes do DEFINE e **não mexa na inversão** do teste.
 
@@ -27,33 +29,33 @@
 
 ### Mínimo inegociável
 
-| id | elemento | exigência | mecanismo de referência (Postgres) | gate negativo | base | sev | porte_min | pós-build |
+| id | elemento | exigência | mecanismo de referência (Postgres) | gate negativo | base | sev | porte_min | prova pós-build |
 |----|----------|-----------|------------------------------------|---------------|------|-----|-----------|-----------|
-| G01 | Lançamento que não se apaga | Sem UPDATE nem DELETE em lançamento gravado; correção só por estorno ou complementação, com motivo | `REVOKE UPDATE, DELETE` do papel da aplicação **e** trigger que lança erro (o REVOKE não alcança o dono da tabela) | UPDATE e DELETE em lançamento gravado **falham** | B1, B2 | alta | todos | 5, 13 |
-| G02 | Partidas dobradas no banco | Débito = crédito em cada lançamento | Constraint trigger `DEFERRABLE INITIALLY DEFERRED` que soma as linhas do lançamento | Lançamento desbalanceado **é rejeitado** | — | alta | todos | 14 |
-| G03 | Fechamento de período | Competência fechada não aceita lançamento; reabrir é um evento com motivo e aprovador | Tabela `periodo` (competência, situação, quem fechou, quando) + trigger no lançamento | Lançar em período fechado **falha**; reabrir sem aprovador **falha** | — | alta | todos | 6 |
-| G04 | Trilha de auditoria do negócio | Quem, quando (UTC), de onde, antes e depois, e **por quê** de cada ação que muda dado contábil | Tabela append-only escrita só por função `security definer`; o papel da aplicação não tem INSERT direto | Ação gera 1 linha na trilha; INSERT direto do cliente **falha** | — | alta | todos | 2 |
+| G01 | Lançamento que não se apaga | Sem UPDATE nem DELETE em lançamento gravado; correção só por estorno ou complementação, com motivo | `REVOKE UPDATE, DELETE` do papel da aplicação **e** trigger que lança erro (o REVOKE não alcança o dono da tabela) | UPDATE e DELETE em lançamento gravado **falham** | B1, B2 | alta | todos | sim |
+| G02 | Partidas dobradas no banco | Débito = crédito em cada lançamento | Constraint trigger `DEFERRABLE INITIALLY DEFERRED` que soma as linhas do lançamento | Lançamento desbalanceado **é rejeitado** | — | alta | todos | sim |
+| G03 | Fechamento de período | Competência fechada não aceita lançamento; reabrir é um evento com motivo e aprovador | Tabela `periodo` (competência, situação, quem fechou, quando) + trigger no lançamento | Lançar em período fechado **falha**; reabrir sem aprovador **falha** | — | alta | todos | sim |
+| G04 | Trilha de auditoria do negócio | Quem, quando (UTC), de onde, antes e depois, e **por quê** de cada ação que muda dado contábil | Tabela append-only escrita só por função `security definer`; o papel da aplicação não tem INSERT direto | Ação gera 1 linha na trilha; INSERT direto do cliente **falha** | — | alta | todos | sim |
 | G05 | Log forense de segurança | Acessos, falhas de login, **leituras** de dado sensível, exportações, uso do certificado digital | Log separado da trilha de negócio, retenção própria, cópia fora do banco | Exportar um relatório **gera** evento de leitura | — | média | equipe | — |
 | G06 | Prova de que o log não foi editado | Mostrar que a trilha não foi alterada, nem por administrador | Hash encadeado por linha + âncora diária fora do sistema (armazenamento imutável, e-mail, repositório git) | Verificador recalcula a cadeia; alterar 1 linha **quebra** a verificação | — | média | equipe | — |
-| G07 | Segregação de funções | Quem lança não aprova; acima da alçada, duas aprovações | Papéis + RLS; aprovação como entidade própria (quem cria ≠ quem aprova) | Mesmo usuário criar e aprovar **é rejeitado** | — | alta | equipe | 2 |
+| G07 | Segregação de funções | Quem lança não aprova; acima da alçada, duas aprovações | Papéis + RLS; aprovação como entidade própria (quem cria ≠ quem aprova) | Mesmo usuário criar e aprovar **é rejeitado** | — | alta | equipe | sim |
 | G08 | Documento-fonte imutável | Todo lançamento aponta para a origem; o original fica guardado com hash | Storage sem sobrescrita + SHA-256 gravado na ingestão | Trocar o arquivo ou o hash de um documento já ligado **falha** | — | alta | todos | — |
-| G09 | Aritmética exata | Nunca ponto flutuante em valor; regra de arredondamento e do centavo residual escrita | `numeric(18,2)` no valor; mais casas no cálculo intermediário; rateio com resíduo atribuído por regra | Nenhuma coluna de valor em `real`/`double precision`; rateio de 100 por 3 fecha em 100,00 | — | alta | todos | 1 |
-| G10 | Importação idempotente | Reimportar o mesmo arquivo não duplica nada | UNIQUE na chave natural (identificador da transação no extrato, chave de acesso da nota de 44 dígitos) | Importar 2 vezes deixa a mesma contagem; a 2ª inserção da mesma chave **falha** | — | alta | todos | 4 |
+| G09 | Aritmética exata | Nunca ponto flutuante em valor; regra de arredondamento e do centavo residual escrita | `numeric(18,2)` no valor; mais casas no cálculo intermediário; rateio com resíduo atribuído por regra | Nenhuma coluna de valor em `real`/`double precision`; rateio de 100 por 3 fecha em 100,00 | — | alta | todos | sim |
+| G10 | Importação idempotente | Reimportar o mesmo arquivo não duplica nada | UNIQUE na chave natural (identificador da transação no extrato, chave de acesso da nota de 44 dígitos) | Importar 2 vezes deixa a mesma contagem; a 2ª inserção da mesma chave **falha** | — | alta | todos | sim |
 
 ### Segunda camada
 
-| id | elemento | exigência | mecanismo de referência (Postgres) | gate negativo | base | sev | porte_min | pós-build |
+| id | elemento | exigência | mecanismo de referência (Postgres) | gate negativo | base | sev | porte_min | prova pós-build |
 |----|----------|-----------|------------------------------------|---------------|------|-----|-----------|-----------|
-| G11 | Regra com vigência e memória de cálculo | Toda regra fiscal ou de cálculo tem `vigencia_inicio`/`vigencia_fim`; o resultado guarda a memória de cálculo | Tabela de regras por vigência; cálculo grava a regra e os insumos usados | Recalcular uma competência passada reproduz o mesmo valor | — | média | todos | 16 |
+| G11 | Regra com vigência e memória de cálculo | Toda regra fiscal ou de cálculo tem `vigencia_inicio`/`vigencia_fim`; o resultado guarda a memória de cálculo | Tabela de regras por vigência; cálculo grava a regra e os insumos usados | Recalcular uma competência passada reproduz o mesmo valor | — | média | todos | sim |
 | G12 | Conciliação com totais de controle | Diferença vira pendência explícita, nunca ajuste silencioso | Totais de controle por lote; tabela de pendências | Lote com diferença **não fecha** sem pendência registrada | — | média | todos | — |
-| G13 | Isolamento entre clientes | O dado de um CNPJ nunca aparece para o usuário de outro | RLS por empresa + chave estrangeira composta `(empresa_id, id)` | Usuário da empresa A **não lê** linha da empresa B (teste com 2 usuários) | — | alta | multi_cnpj | 2 |
+| G13 | Isolamento entre clientes | O dado de um CNPJ nunca aparece para o usuário de outro | RLS por empresa + chave estrangeira composta `(empresa_id, id)` | Usuário da empresa A **não lê** linha da empresa B (teste com 2 usuários) | — | alta | multi_cnpj | sim |
 | G14 | Retenção × proteção de dados | Guardar até a prescrição; o pedido de eliminação cede à obrigação legal (pseudonimizar em vez de apagar) | Prazo de guarda por tipo de documento; rotina de pseudonimização | Pedido de eliminação de dado sob guarda legal **não apaga** o registro contábil | B3, B4 | média | todos | — |
 | G15 | Backup com restauração testada | Backup que nunca foi restaurado não é backup | Rotina de restauração periódica num ambiente separado | Restauração de teste recupera o último fechamento | — | média | equipe | — |
 | G16 | Certificado digital e segredos | Certificado A1 e chaves fora do código e do banco em claro; todo uso vai ao log forense | Cofre de segredos; certificado cifrado; evento por uso | Procurar o certificado no repositório e no banco **não acha** | — | alta | todos | — |
 
 ### Quando há IA no sistema
 
-| id | elemento | exigência | mecanismo de referência (Postgres) | gate negativo | base | sev | porte_min | pós-build |
+| id | elemento | exigência | mecanismo de referência (Postgres) | gate negativo | base | sev | porte_min | prova pós-build |
 |----|----------|-----------|------------------------------------|---------------|------|-----|-----------|-----------|
 | G17 | IA sugere, humano confirma | Nada entra no razão sem aceite de uma pessoa | Sugestão em tabela própria; lançamento só por ação de usuário identificado | Gravação pela IA direto no razão **falha** | — | alta | ia | — |
 | G18 | Registro da decisão da IA | Modelo, versão do prompt, confiança, quem aceitou, se editou antes de aceitar | Colunas na sugestão + na trilha (G04) | Sugestão aceita sem esses campos **é rejeitada** | — | média | ia | — |
