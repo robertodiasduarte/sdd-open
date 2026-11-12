@@ -408,7 +408,15 @@ def conferir_versoes(saida: Path, destino: Path) -> None:
         raise Falha(65, "o version gate do starter reprovaria:\n  " + "\n  ".join(erros))
 
 
+DONO_INTEIRO = ("scripts", ".github/workflows")   # as mesmas pastas que o check-gerado.py confere inteiras
+
+
 def gravar(saida: Path, destino: Path) -> None:
+    # arquivo que saiu da semente sai do destino; senão a trava o acusaria como sobra (revisão, rodada 1, R2)
+    for pasta in DONO_INTEIRO:
+        for p in (arquivos(destino / pasta) if (destino / pasta).is_dir() else []):
+            if not (saida / pasta / p.relative_to(destino / pasta)).is_file():
+                p.unlink()
     for p in arquivos(saida):
         rel = p.relative_to(saida)
         if rel.parts[0] == "skills" and len(rel.parts) > 1:
@@ -457,8 +465,9 @@ def main(argv: list[str]) -> int:
             saida.mkdir()
             commit = extrair_tag(a.tag, arvore)
             if (arvore / "scripts" / "gerar-starter.py").read_bytes() != Path(__file__).read_bytes():
-                raise Falha(64, "este gerador difere do que está na tag %s: rode o da tag "
-                                "(git show %s:scripts/gerar-starter.py > /tmp/g.py; python3 /tmp/g.py …)" % (a.tag, a.tag))
+                raise Falha(64, "este gerador difere do que está na tag %s: rode o da tag, de uma worktree dela "
+                                "(git worktree add --detach /tmp/open-%s %s && python3 /tmp/open-%s/scripts/gerar-starter.py "
+                                "--tag %s <starter>)" % (a.tag, a.tag, a.tag, a.tag, a.tag))
             relatorio = montar(arvore, saida, a.tag, commit)
             conferir_versoes(saida, destino)
             try:

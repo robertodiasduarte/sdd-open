@@ -162,6 +162,25 @@ class Gera(Base):
         self.assertEqual(rc, 0, out + err)
         self.assertTrue(self.limpo(self.starter))
 
+    def test_r2_arquivo_que_saiu_da_semente_sai_do_destino(self):
+        # revisão, rodada 1, R2: scripts/ e .github/workflows/ são inteiros do gerador; um arquivo antigo que ficasse
+        # lá seria "sobra" na trava e pediria remendo à mão no starter
+        self.escreve(self.starter, "scripts/velho.sh", "echo velho\n")
+        self.escreve(self.starter, ".github/workflows/velho.yml", "name: velho\n")
+        self.commit(self.starter, "infra antiga")
+        rc, out, err = self.gerar()
+        self.assertEqual(rc, 0, out + err)
+        self.assertFalse((self.starter / "scripts/velho.sh").exists())
+        self.assertFalse((self.starter / ".github/workflows/velho.yml").exists())
+        rc, out, err = self.roda([PY, "-B", "scripts/check-gerado.py"], self.starter)
+        self.assertEqual(rc, 0, out + err)
+
+    def test_r1_testes_de_skill_sem_nenhuma_pasta_tests_nao_quebram(self):
+        for wf in ("ci.yml", "auto-release.yml"):
+            t = (RAIZ / "scripts/starter/raiz/.github/workflows" / wf).read_text(encoding="utf-8")
+            with self.subTest(wf=wf):
+                self.assertIn('[ -d "$t" ] || continue', t)
+
     def test_at007_o_starter_passa_nas_checagens_dele(self):
         rc, out, err = self.gerar()
         self.assertEqual(rc, 0, out + err)
@@ -245,6 +264,7 @@ class Recusa(Base):
         rc, out, err = self.gerar()
         self.assertEqual(rc, 64, out + err)
         self.assertIn("difere do que está na tag", out)
+        self.assertIn("worktree add", out)   # revisão, rodada 1, R5: rodar de /tmp tirava o gerador do repositório
         self.assertEqual(arvore(self.starter), antes)
 
 
@@ -311,6 +331,10 @@ class Trava(Base):
 
 
 class ReadmeEInit(Base):
+    def test_readme_sem_ambiente_md(self):
+        # revisão, rodada 1, R4: a new-session gerada é a do Open, que não grava sdd/ambiente.md
+        self.assertNotIn("ambiente.md", (RAIZ / "scripts/starter/raiz/README.md").read_text(encoding="utf-8"))
+
     def test_readme_cita_toda_skill_gerada(self):
         r = (RAIZ / "scripts/starter/raiz/README.md").read_text(encoding="utf-8")
         for skill in LISTA:

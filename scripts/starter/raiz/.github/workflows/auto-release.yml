@@ -58,6 +58,7 @@ jobs:
       - name: Skill tests
         run: |
           for t in skills/*/tests; do
+            [ -d "$t" ] || continue   # sem nenhuma pasta tests/, o glob volta literal
             echo "== $t"
             python3 -B -m unittest discover -s "$t" -p 'test_*.py'
           done
