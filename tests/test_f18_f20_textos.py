@@ -16,7 +16,7 @@ def skill(nome: str) -> str:
 
 class Versoes(unittest.TestCase):
     def test_versoes_e_linha_de_identificacao(self):
-        for nome, versao in (("sdd-seguranca", "1.0.0"), ("sdd-brainstorm", "2.3.0"), ("sdd-define", "2.6.0"),
+        for nome, versao in (("sdd-seguranca", "1.0.1"), ("sdd-brainstorm", "2.3.0"), ("sdd-define", "2.6.0"),
                              ("sdd-design", "2.6.0"), ("sdd-build", "2.9.0"), ("sdd-release", "2.11.0")):
             texto = skill(nome)
             with self.subTest(skill=nome):

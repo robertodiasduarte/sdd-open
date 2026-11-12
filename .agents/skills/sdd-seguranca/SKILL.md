@@ -5,7 +5,7 @@ compatibility: "Funciona em qualquer agente, inclusive na web sem terminal: cada
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.0.0"
+  version: "1.0.1"
   updated: "2026-11"
   fase: "Seg"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-seguranca — segurança do app, da ideia à publicação
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-seguranca v1.0.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-seguranca v1.0.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 A IA constrói o caminho feliz e esquece a tranca. Esta skill lembra a tranca na fase em que ela custa menos:
 pergunta no Define, decide no Design, previne no Build e confere antes de publicar. A fonte de tudo é

@@ -21,10 +21,10 @@
   ],
   "executados": [
     "sem-gatilho-na: 3 execuções em contexto novo, 3 aprovadas (N.A. em 1 linha, sem pergunta, só a linha Segurança gravada)",
-    "login-supabase-propoe: 3 execuções em contexto novo, 3 aprovadas (gatilhos com o trecho, 5 itens do mais grave, 1 pergunta por vez, DEFINE intacto)"
+    "login-supabase-propoe: 3 execuções em contexto novo, 3 aprovadas (gatilhos com o trecho, 5 itens do mais grave, 1 pergunta por vez, DEFINE intacto)",
+    "incidente-chave: 2 séries de 3 execuções em contexto novo; na 1ª, 2 de 3 (uma pediu para anotar o horário antes de trocar a chave); com o roteiro consertado (nada se pede antes de fechar), 3 de 3 (fecha primeiro, apagar o print não basta, sem parecer jurídico, sem pedir a chave)"
   ],
   "pending": [
-    "Executar o cenário incidente-chave em contexto novo",
     "Executar os cenários em outros agentes além do que construiu a skill"
   ],
   "o_que_ainda_nao_prova": [

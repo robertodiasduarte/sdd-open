@@ -17,13 +17,15 @@ o texto da comunicação e o prazo aplicável são de quem responde pelo tratame
 | agente de IA fazendo o que não devia | desligue o agente (o interruptor que o Design registrou) e revogue a credencial dele |
 | não sabe a causa | tire o app do ar ou ponha em manutenção |
 
-Não espere entender para fechar. Diga à pessoa, em uma frase, o que foi fechado e o que ainda está aberto.
+Não espere entender para fechar, e não peça nada antes de fechar: nem anotar horário, nem juntar registro,
+nem avisar alguém. O 1º passo numerado da resposta é o do fechar. Diga à pessoa, em uma frase, o que foi
+fechado e o que ainda está aberto.
 
 ## 2. Preservar a evidência
 
 - Não apague registros nem "limpe" o banco. Exporte os registros do período (API, login, arquivos, funções) e
   guarde fora do app.
-- Anote data e hora de cada passo, inclusive do passo 1.
+- Anote data e hora de cada passo. A do fechar se anota logo **depois** de fechar, nunca antes.
 
 ## 3. Dimensionar
 
