@@ -283,7 +283,7 @@ def ler_aceites(arq: Path) -> list[tuple[str, str, str]]:
     return aceites
 
 
-def lint(pasta: Path, aceites: list[tuple[str, str, str]] = (), fora: list[str] = ()) -> list[str]:
+def lint(pasta: Path, aceites: list[tuple[str, str, str]] = (), fora: list[str] = (), sem_uso: bool = True) -> list[str]:
     """`fora`: skills do Open que o starter não recebe; citar a pasta delas (`.agents/skills/<nome>/`) é citar o que
     não existe lá. As geradas podem ser citadas: o par que define a pasta fica, e o resto vira <pasta …>."""
     padroes = LINT_INIT + [re.compile(r"\.agents/skills/%s/" % re.escape(n)) for n in fora]
@@ -303,7 +303,7 @@ def lint(pasta: Path, aceites: list[tuple[str, str, str]] = (), fora: list[str] 
                         achados.append("%s:%d: %s" % (rel, n, m.group(0)))
                     break
     for i, (arq, trecho, _) in enumerate(aceites):
-        if i not in usados:
+        if sem_uso and i not in usados:
             achados.append("lint-aceitos.tsv: o aceite de %s ('%s') não casou com nada; tire a linha" % (arq, trecho[:40]))
     return achados
 
@@ -439,7 +439,7 @@ def main(argv: list[str]) -> int:
             lista = [ln.strip() for ln in (RAIZ_OPEN / "scripts/starter/lista.txt").read_text(encoding="utf-8").splitlines()
                      if ln.strip() and not ln.startswith("#")]
             fora = sorted(p.name for p in (RAIZ_OPEN / ".agents" / "skills").iterdir() if p.is_dir() and p.name not in lista)
-            achados = lint(Path(a.lint), fora=fora)
+            achados = lint(Path(a.lint), ler_aceites(RAIZ_OPEN / "scripts/starter/lint-aceitos.tsv"), fora, sem_uso=False)
             for x in achados:
                 print("🛑 %s" % x)
             if achados:
