@@ -20,6 +20,11 @@ The practical consequences:
 - **The private layer never appears here.** Concrete landmine rules, domain skills and internal
   conventions are excluded by an allowlist, not by a filter.
 
+The beginner distribution, [sdd-starter](https://github.com/robertodiasduarte/sdd-starter), is **generated**
+from this repository: after a release here, `python3 scripts/gerar-starter.py --tag vX.Y.Z <clone of sdd-starter>`
+writes the generated skills, its README, `scripts/` and `.github/workflows/`, offline and from the tag only. A
+change to a generated skill is made here; the starter's CI refuses hand edits (`scripts/check-gerado.py` there).
+
 If that model does not suit you, forking is genuinely reasonable — this is a few hundred lines
 of bash, two small Python validators and a set of markdown skills. The MIT license is there for that.
 
