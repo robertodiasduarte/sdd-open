@@ -146,6 +146,12 @@ class NewSessionDoStarter(unittest.TestCase):
         self.assertIn("**A mesma branch não abre em duas worktrees**", porque)
         self.assertIn("O `-d` minúsculo é proteção", porque)
 
+    def test_a_do_remoto_nao_vem_do_pre_voo(self):
+        # raio de impacto (F17): o checar.sh prefere o slot; comparar o slot com o "principal" do pré-voo nunca diverge
+        self.assertNotIn("(ou o `principal`\n  da linha ✅ do pré-voo)", self.s)
+        self.assertIn("nunca o `principal` da linha ✅ do pré-voo", self.s)
+        self.assertIn("o `<b>` é a branch principal do projeto", self.s)
+
     def test_c4_textos_curtos(self):
         self.assertIn("nada vai para a internet; nenhum arquivo seu é alterado", self.s)
         self.assertIn("nenhum cd muda isso. Build, commit e push rodam lá dentro.`", self.s)

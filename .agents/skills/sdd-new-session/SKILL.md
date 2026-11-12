@@ -110,7 +110,8 @@ bash <pasta das skills>/sdd-checar-ambiente/scripts/checar.sh --frente
   traduzir cada achado** abaixo (a linha cujo trecho aparece na mensagem) e termine com *"Nada foi criado.
   Depois de resolver, peça a frente de novo."*
 - **exit 0** com a linha `✅ Pronto para abrir a frente: repo <r>, principal <b>` ⇒ siga para o Passo 1;
-  o `<b>` é a branch principal do remoto.
+  o `<b>` é a branch principal do projeto (o slot `project.default_branch` quando ela existe no remoto; senão, a do
+  remoto).
 - **Qualquer outra coisa** — o script não existe, não há bash (PowerShell puro), ou saiu 0 **sem** essa
   linha (versão antiga, que não conhece o `--frente`) ⇒ faça o **Pré-voo à mão** abaixo.
 
@@ -237,8 +238,8 @@ credenciais do git não precisa dele.
 Leia o `sdd/config.yaml` do checkout principal. Para cada slot, guarde o valor e, se veio de descoberta,
 a evidência — ela vai para o Passo 2, item 6.
 
-- **Branch padrão** — a "HEAD branch" de `GIT_TERMINAL_PROMPT=0 git remote show origin` (ou o `principal`
-  da linha ✅ do pré-voo). Não é "a branch em que estou agora".
+- **Branch padrão** — a "HEAD branch" de `GIT_TERMINAL_PROMPT=0 git remote show origin` (nunca o `principal` da linha ✅ do pré-voo,
+  que já prefere o slot e tornaria a comparação abaixo inútil). Não é "a branch em que estou agora".
   - `project.default_branch` vazio ⇒ use a do remoto (evidência: `git remote show origin`).
   - Cheio e igual à do remoto ⇒ siga.
   - Cheio e **diverge** da do remoto (o exemplo do config vem com `main`; o remoto pode ser `master`) ⇒
