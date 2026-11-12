@@ -304,8 +304,9 @@ def lint(pasta: Path, aceites: list[tuple[str, str, str]] = (), fora: list[str] 
                 # (revisão, rodada 2, R4: antes, o aceite de uma citação calava outra na mesma linha)
                 rel = p.relative_to(pasta).as_posix()
                 for m in rx.finditer(ln):
-                    cobre = [i for i, (arq, trecho, _) in enumerate(aceites) if arq == rel and trecho in ln
-                             and ln.index(trecho) <= m.start() and m.end() <= ln.index(trecho) + len(trecho)]
+                    cobre = [i for i, (arq, trecho, _) in enumerate(aceites) if arq == rel
+                             and any(o.start() <= m.start() and m.end() <= o.end()
+                                     for o in re.finditer(re.escape(trecho), ln))]
                     if cobre:
                         usados.update(cobre)
                     else:

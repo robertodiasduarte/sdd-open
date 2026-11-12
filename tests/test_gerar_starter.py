@@ -314,6 +314,10 @@ class Lint(Base):
         self.escreve(pasta, "skills/sdd-higiene-dado/scripts/alarme.sh", aceito + "\n")
         rc, out, err = self.roda([PY, "-B", RAIZ / "scripts/gerar-starter.py", "--lint", pasta], self.tmp)
         self.assertEqual(rc, 0, out + err)
+        # rodada 3, R2: o mesmo trecho aceito duas vezes na linha cobre as duas ocorrências
+        self.escreve(pasta, "skills/sdd-higiene-dado/scripts/alarme.sh", aceito + " || " + aceito + "\n")
+        rc, out, err = self.roda([PY, "-B", RAIZ / "scripts/gerar-starter.py", "--lint", pasta], self.tmp)
+        self.assertEqual(rc, 0, out + err)
 
     def test_at004_a_copia_crua_reprova_e_a_gerada_passa(self):
         crua = self.tmp / "crua"
