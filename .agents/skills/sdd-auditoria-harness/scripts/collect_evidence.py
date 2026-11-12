@@ -68,17 +68,34 @@ def rel(path: Path, root: Path) -> str:
 
 def classify(path: Path, root: Path) -> str:
     r = rel(path, root)
-    if r.endswith("CLAUDE.md"):
+    # Arquivos de instrucao do projeto: CLAUDE.md (Claude Code) e AGENTS.md, o padrao aberto
+    # (agents.md) que Codex, Cursor, Gemini CLI e outros leem.
+    if r.endswith("CLAUDE.md") or r.endswith("AGENTS.md"):
         return "fonte-de-verdade"
-    if r.startswith(".claude/commands/"):
+    if r.startswith(".claude/commands/") or r.startswith(".codex/prompts/"):
         return "comando"
-    if r.startswith(".claude/agents/"):
+    if r.startswith(".claude/agents/") or r.startswith(".agents/agents/"):
         return "agente"
-    if r.startswith(".claude/skills/") and r.endswith("/SKILL.md"):
+    # Skills: cada motor le de um caminho proprio. `.agents/skills/` e lido por Codex e
+    # Kimi CLI; `.claude/skills/` pelo Claude Code; `.codex/skills/` pelo Codex.
+    if r.endswith("/SKILL.md") and (
+        r.startswith(".claude/skills/")
+        or r.startswith(".agents/skills/")
+        or r.startswith(".codex/skills/")
+    ):
         return "skill"
-    if r in {".claude/settings.json", ".claude/settings.local.json"}:
+    if r in {
+        ".claude/settings.json",
+        ".claude/settings.local.json",
+        ".codex/config.toml",
+    }:
         return "settings"
-    if r.startswith(".claude/scripts/") or r.startswith("scripts/"):
+    if (
+        r.startswith(".claude/scripts/")
+        or r.startswith(".agents/scripts/")
+        or r.startswith(".codex/scripts/")
+        or r.startswith("scripts/")
+    ):
         return "script"
     return "doc-processo"
 
@@ -125,6 +142,7 @@ def candidate_roots(root: Path) -> list[Path]:
     out = []
     for p in [
         root / ".claude" / "sdd",
+        root / ".agents" / "sdd",
         root / "sdd",
         root / "specs",
         root / ".specs",
@@ -143,22 +161,34 @@ def candidate_roots(root: Path) -> list[Path]:
 def collect_inventory(root: Path) -> list[Path]:
     items: set[Path] = set()
 
-    for p in root.rglob("CLAUDE.md"):
-        if p.is_file() and not p.is_symlink() and within(p, root):
-            items.add(p)
+    # ⛔ Auditar so `.claude/` produz FALHA SILENCIOSA num projeto de outro motor: o
+    #    inventario volta VAZIO, sem erro, e quem le conclui que o harness esta limpo.
+    #    Provado com um repo Codex (AGENTS.md + .agents/skills/): 0 itens antes deste fix.
+    for nome in ("CLAUDE.md", "AGENTS.md"):
+        for p in root.rglob(nome):
+            if p.is_file() and not p.is_symlink() and within(p, root):
+                items.add(p)
 
     patterns = [
+        # Claude Code
         ".claude/commands/**/*.md",
         ".claude/agents/**/*.md",
         ".claude/skills/*/SKILL.md",
         ".claude/scripts/**/*",
+        # Codex / Kimi CLI (padrao `.agents/`, e o `.codex/` proprio do Codex)
+        ".agents/skills/*/SKILL.md",
+        ".agents/agents/**/*.md",
+        ".agents/scripts/**/*",
+        ".codex/skills/*/SKILL.md",
+        ".codex/prompts/**/*.md",
+        ".codex/scripts/**/*",
     ]
     for pattern in patterns:
         for p in root.glob(pattern):
             if p.is_file() and not p.is_symlink() and within(p, root):
                 items.add(p)
 
-    for name in [".claude/settings.json", ".claude/settings.local.json"]:
+    for name in [".claude/settings.json", ".claude/settings.local.json", ".codex/config.toml"]:
         p = root / name
         if p.is_file() and not p.is_symlink():
             items.add(p)
