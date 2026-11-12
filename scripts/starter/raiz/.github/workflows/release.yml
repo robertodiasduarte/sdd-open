@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Generated files gate
+        run: python3 scripts/check-gerado.py
+
+      - name: Content safety gate
+        run: bash scripts/publish-check.sh
+
+      - name: Version gate
+        run: python3 scripts/check-versions.py
+
+      - name: Build skill zips
+        run: bash scripts/package.sh
+
+      # Mesmo carimbo do auto-release.yml: tag manual (minor/major) nao pode
+      # sair sem checksums, senao a trilha de integridade tem buracos.
+      - name: Publish checksums
+        run: cd dist && shasum -a 256 *.zip > SHA256SUMS.txt && cat SHA256SUMS.txt
+
+      - name: Publish GitHub Release with zips
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
+        with:
+          files: |
+            dist/*.zip
+            dist/SHA256SUMS.txt
+          generate_release_notes: true

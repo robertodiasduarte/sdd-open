@@ -1,0 +1,12 @@
+# Skills do sdd-open que o scripts/gerar-starter.py gera no sdd-starter, uma por linha (a ordem fixa a saída).
+# As outras skills do starter ficam congeladas até a F17b (sdd/features/BRAINSTORM_F17_STARTER_GERADO.md, no Open).
+sdd-checar-ambiente
+sdd-iniciar-repo
+sdd-higiene-dado
+sdd-new-session
+sdd-kb
+sdd-seguranca
+sdd-auditoria-harness
+sdd-prompt-builder
+sdd-engenharia-reversa-saas
+sdd-loop-builder

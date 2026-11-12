@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0   # o version gate compara com a base, que o checkout raso nao traz
+
+      - name: Generated files gate
+        run: python3 scripts/check-gerado.py
+
+      - name: Content safety gate
+        run: bash scripts/publish-check.sh
+
+      # Quem baixa o .zip nao da git pull: a versao dentro do SKILL.md e o unico jeito de saber
+      # que a copia envelheceu. Skill alterada sem subir metadata.version reprova aqui.
+      - name: Version gate
+        env:
+          BASE_PR: ${{ github.base_ref }}
+          BASE_PUSH: ${{ github.event.before }}
+        run: |
+          if [ -n "$BASE_PR" ]; then base="origin/$BASE_PR"; else base="$BASE_PUSH"; fi
+          python3 scripts/check-versions.py --base "$base"
+
+      - name: Validators compile
+        run: python3 -m py_compile skills/*/scripts/*.py scripts/*.py
+
+      - name: Shell scripts parse
+        run: for f in scripts/package.sh scripts/publish-check.sh skills/*/scripts/*.sh; do bash -n "$f"; done
+
+      - name: Skill tests
+        run: |
+          for t in skills/*/tests; do
+            echo "== $t"
+            python3 -B -m unittest discover -s "$t" -p 'test_*.py'
+          done
+
+      - name: KB validator gate
+        run: bash skills/sdd-kb/scripts/gate.sh
+
+      - name: Skill zips build
+        run: bash scripts/package.sh

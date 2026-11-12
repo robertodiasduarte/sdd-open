@@ -1,0 +1,121 @@
+name: Auto Release
+
+# Uma mudanca em skills/** publica sozinha a release seguinte, porque e a Release
+# que os alunos de claude.ai/ChatGPT baixam (releases/latest/download/<skill>.zip,
+# citado na pagina /sdd/ e no README). O `npx skills add` le o branch direto e nao
+# depende disto.
+#
+# ⛔ O bump e a publicacao moram no MESMO job de proposito. Uma tag empurrada pelo
+# GITHUB_TOKEN nao dispara outro workflow ("events triggered by the GITHUB_TOKEN
+# will not create a new workflow run" — docs.github.com/en/actions/how-tos/
+# write-workflows/choose-when-workflows-run/trigger-a-workflow), entao o desenho
+# "empurra a tag e deixa o release.yml publicar" criaria a tag e NUNCA publicaria,
+# sem erro no log. O release.yml segue servindo as tags manuais (minor/major).
+#
+# ⛔ Os testes rodam AQUI, antes do zip. O ci.yml roda em paralelo e nao segura nada: um
+# zip com teste vermelho chegaria a releases/latest. Os steps de checagem sao copia do
+# ci.yml (mesmo `run:`); um check novo la sem copia aqui reprova a asserção do gate.
+#
+# 2 jobs (ADEQUACAO_RELEASE s2): os testes rodam no job `testes` com token SO DE LEITURA; so o
+# job `release` (needs: testes) recebe contents: write para criar a tag e a Release. `needs` nao
+# e outro workflow: a regra do GITHUB_TOKEN acima nao se aplica, e bump + publicacao seguem juntos
+# no mesmo job. Teste vermelho => job release `skipped`, nenhuma tag nova.
+
+on:
+  push:
+    branches: [main]
+    paths: ['skills/**']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: auto-release
+  cancel-in-progress: false
+
+jobs:
+  testes:
+    name: Testes (so leitura)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10   # o run de 24/10 levou 101 s com testes e publicacao num job so
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0   # o checkout raso nao traz tags, e o bump precisa da ultima
+
+      - name: Generated files gate
+        run: python3 scripts/check-gerado.py
+
+      - name: Content safety gate
+        run: bash scripts/publish-check.sh
+
+      - name: Validators compile
+        run: python3 -m py_compile skills/*/scripts/*.py scripts/*.py
+
+      - name: Shell scripts parse
+        run: for f in scripts/package.sh scripts/publish-check.sh skills/*/scripts/*.sh; do bash -n "$f"; done
+
+      - name: Skill tests
+        run: |
+          for t in skills/*/tests; do
+            echo "== $t"
+            python3 -B -m unittest discover -s "$t" -p 'test_*.py'
+          done
+
+      - name: KB validator gate
+        run: bash skills/sdd-kb/scripts/gate.sh
+
+      # Fail-closed: skill alterada sem subir metadata.version nao vira Release, porque o zip
+      # publicado diria ao aluno uma versao que nao muda quando o conteudo muda.
+      # Base = a ultima release publicada (a tag), nunca github.event.before: com a fila
+      # (concurrency: auto-release), um push cancelado teria o diff engolido. for-each-ref e nao
+      # `git tag | head -1`: com pipefail, o head fechando o pipe derrubaria o step (SIGPIPE).
+      - name: Version gate (contra a ultima release publicada)
+        run: |
+          set -euo pipefail
+          tag="$(git for-each-ref --count=1 --sort=-v:refname --format='%(refname:short)' 'refs/tags/v*')"
+          [ -n "$tag" ] || { echo "::error::nenhuma tag v* — sem base para o version gate"; exit 1; }
+          base="$(git rev-list -n1 "$tag")"
+          echo "base: $tag ($base)"
+          python3 scripts/check-versions.py --base "$base" --base-obrigatoria
+
+  release:
+    name: Publicar release
+    needs: testes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write   # so aqui: criar a tag e a Release
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0   # o checkout raso nao traz tags, e o bump precisa da ultima
+
+      - name: Compute next patch tag
+        id: tag
+        run: |
+          set -euo pipefail
+          # -v:refname ordena por VERSAO (alfabetico poria v1.9.0 acima de v1.10.0); for-each-ref
+          # e nao `git tag | head -1`, que sob pipefail cai por SIGPIPE quando a lista de tags cresce.
+          latest="$(git for-each-ref --count=1 --sort=-v:refname --format='%(refname:short)' 'refs/tags/v*')"
+          [ -n "$latest" ] || { echo "nenhuma tag v* encontrada"; exit 1; }
+          IFS=. read -r maj min pat <<< "${latest#v}"
+          echo "next=v${maj}.${min}.$((pat + 1))" >> "$GITHUB_OUTPUT"
+
+      - name: Build skill zips
+        run: bash scripts/package.sh
+
+      # Carimbo de integridade E de data: o hash prova que o zip nao foi trocado,
+      # e a data da Release (que nao e o autor quem escreve) prova que este
+      # conteudo existia aqui nesta data. Verificacao do lado de quem baixa:
+      #   shasum -a 256 -c SHA256SUMS.txt
+      - name: Publish checksums
+        run: cd dist && shasum -a 256 *.zip > SHA256SUMS.txt && cat SHA256SUMS.txt
+
+      - uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
+        with:
+          tag_name: ${{ steps.tag.outputs.next }}
+          files: |
+            dist/*.zip
+            dist/SHA256SUMS.txt
+          generate_release_notes: true
