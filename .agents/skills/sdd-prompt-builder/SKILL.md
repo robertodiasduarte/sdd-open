@@ -5,7 +5,7 @@ compatibility: Skill de documento — nao requer ferramenta externa. Consumida p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.2"
+  version: "2.2.0"
   updated: "2026-11"
   fase: "3-apoio"
 ---
@@ -13,7 +13,7 @@ metadata:
 # Prompt Builder
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-prompt-builder v2.1.2 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-prompt-builder v2.2.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Produzir um único prompt operacional pronto para uso em runtime. Priorizar o menor prompt que preserve clareza, controle de saída, recuperabilidade e fidelidade ao contexto fornecido.
 

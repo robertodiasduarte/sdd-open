@@ -59,6 +59,10 @@ projeto centraliza as chamadas num wrapper (`callLLM`, `askModel`, um client pr�
 `prompts.wrapper_pattern` com a expressão do parâmetro desse wrapper: procurar só pelas assinaturas
 do SDK deixa o gate cego, e o script avisa enquanto o slot estiver vazio.
 
+**Sem o script** (projeto sem `sdd/bin/prompt-drift-scan.sh`, ou agente sem terminal): confira os mesmos sinais à
+mão, no código real do projeto, antes de gravar. Se o projeto centraliza as chamadas num wrapper, o sinal é o
+parâmetro desse wrapper recebendo um literal; se nada centraliza, as assinaturas do SDK são o sinal.
+
 Duas exclusões evitam que o gate vire lobo e seja ignorado:
 
 - **arquivos de teste** — literal em fixture de teste não é prompt de produção;

@@ -95,5 +95,15 @@ class AuditoriaVariosMotores(unittest.TestCase):
                 self.assertIn(termo, s)
 
 
+class PromptBuilderSemScript(unittest.TestCase):
+    """AT-008: sem o prompt-drift-scan.sh (projeto sem init, agente sem terminal) o drift se confere à mão."""
+
+    def test_drift_a_mao_quando_o_script_nao_existe(self):
+        s = ler(".agents/skills/sdd-prompt-builder/references/sdd-integration.md")
+        trecho = s[s.index("## Drift detection"):]
+        self.assertIn("**Sem o script**", trecho)
+        self.assertIn("se nada centraliza, as assinaturas do SDK são o sinal", trecho)
+
+
 if __name__ == "__main__":
     unittest.main()
