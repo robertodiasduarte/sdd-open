@@ -180,6 +180,15 @@ class Projeto(Sandbox):
         self.assertResultado(out)
         self.assertIn("AGENTS.md com o bloco sdd-open", out)
 
+    def test_doctor_avisa_skill_do_starter_no_mesmo_projeto(self):
+        # F17 (AT-010): o starter gerado volta a ter agents/openai.yaml; as duas famílias no mesmo projeto colidem nos nomes
+        rc, out = self.cli("doctor")
+        self.assertNotIn("skills do sdd-starter detectadas", out)
+        self.escreve(self.p, ".claude/skills/sdd-kb/agents/openai.yaml", "interface:\n  display_name: \"x\"\n")
+        rc, out = self.cli("doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("skills do sdd-starter detectadas no mesmo projeto", out)
+
     def test_doctor_acusa_env_salvo_no_git_e_sai_0(self):
         self.escreve(self.p, ".env", "SENHA=x\n")
         self.commit(self.p, "env")
