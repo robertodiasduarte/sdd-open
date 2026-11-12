@@ -458,7 +458,7 @@ else
   if [ -n "${SLOT_PRINCIPAL}" ] && git show-ref --verify --quiet "refs/remotes/origin/${SLOT_PRINCIPAL}"; then
     if [ -n "${PRINCIPAL}" ] && [ "${PRINCIPAL}" != "${SLOT_PRINCIPAL}" ]; then
       add_arrumar "A referência local origin/HEAD aponta para ${PRINCIPAL}, mas a branch padrão do projeto (project.default_branch no sdd/config.yaml) é ${SLOT_PRINCIPAL}: valeu a do projeto." \
-                  "git remote set-head origin -a   (atualiza a referência local pela do remoto)"
+                  "git remote set-head origin -a   (atualiza a referência local pela do remoto; se o remoto mudou de branch padrão de propósito, ajuste project.default_branch no sdd/config.yaml)"
     fi
     PRINCIPAL="${SLOT_PRINCIPAL}"
   fi

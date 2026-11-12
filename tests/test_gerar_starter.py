@@ -303,6 +303,18 @@ class Lint(Base):
         self.assertIn("sdd-kb/SKILL.md:1", out)
         self.assertNotIn("ok.md", out)   # o par que define a pasta é texto certo
 
+    def test_r4_aceite_nao_isenta_outra_citacao_na_mesma_linha(self):
+        # revisão, rodada 2, R4: o aceite de uma citação não pode calar outra citação na mesma linha
+        pasta = self.tmp / "l2"
+        aceito = '[ -f "${ROOT}/sdd/hooks/pre-commit" ] && grep -qF "${MARCA_DISPATCHER}" "${ROOT}/sdd/hooks/pre-commit"'
+        self.escreve(pasta, "skills/sdd-higiene-dado/scripts/alarme.sh", aceito + " && bash sdd/bin/x.sh\n")
+        rc, out, err = self.roda([PY, "-B", RAIZ / "scripts/gerar-starter.py", "--lint", pasta], self.tmp)
+        self.assertEqual(rc, 65, out + err)
+        self.assertIn("alarme.sh:1: sdd/bin/", out)
+        self.escreve(pasta, "skills/sdd-higiene-dado/scripts/alarme.sh", aceito + "\n")
+        rc, out, err = self.roda([PY, "-B", RAIZ / "scripts/gerar-starter.py", "--lint", pasta], self.tmp)
+        self.assertEqual(rc, 0, out + err)
+
     def test_at004_a_copia_crua_reprova_e_a_gerada_passa(self):
         crua = self.tmp / "crua"
         for skill in LISTA:

@@ -1,4 +1,4 @@
 # <arquivo relativo à raiz do starter>	<trecho exato da linha>	<motivo>
 skills/sdd-higiene-dado/scripts/alarme.sh	# o git aceita sdd/hooks/ e ./sdd/hooks	código que convive com o dispatcher do SDD Open quando o projeto migrar; sem ele, inofensivo
-skills/sdd-higiene-dado/scripts/alarme.sh	[ -f "${ROOT}/sdd/hooks/pre-commit" ]	teste de existência do dispatcher do SDD Open; sem ele, o alarme segue no .git/hooks
+skills/sdd-higiene-dado/scripts/alarme.sh	[ -f "${ROOT}/sdd/hooks/pre-commit" ] && grep -qF "${MARCA_DISPATCHER}" "${ROOT}/sdd/hooks/pre-commit"	teste de existência do dispatcher do SDD Open; sem ele, o alarme segue no .git/hooks
 skills/sdd-higiene-dado/scripts/alarme.sh	O dispatcher (sdd/hooks/pre-commit) nunca é tocado.	comentário do mesmo convívio

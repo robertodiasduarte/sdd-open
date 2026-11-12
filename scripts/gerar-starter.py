@@ -300,15 +300,16 @@ def lint(pasta: Path, aceites: list[tuple[str, str, str]] = (), fora: list[str] 
         texto = PAR.sub(lambda m: re.sub(r"[^\n]", " ", m.group(0)), texto)
         for n, ln in enumerate(texto.split("\n"), 1):
             for rx in padroes:
-                m = rx.search(ln)
-                if m:
-                    rel = p.relative_to(pasta).as_posix()
-                    aceito = [i for i, (arq, trecho, _) in enumerate(aceites) if arq == rel and trecho in ln]
-                    if aceito:
-                        usados.update(aceito)
+                # cada citação da linha conta; um aceite cobre só a citação que está dentro do trecho dele
+                # (revisão, rodada 2, R4: antes, o aceite de uma citação calava outra na mesma linha)
+                rel = p.relative_to(pasta).as_posix()
+                for m in rx.finditer(ln):
+                    cobre = [i for i, (arq, trecho, _) in enumerate(aceites) if arq == rel and trecho in ln
+                             and ln.index(trecho) <= m.start() and m.end() <= ln.index(trecho) + len(trecho)]
+                    if cobre:
+                        usados.update(cobre)
                     else:
                         achados.append("%s:%d: %s" % (rel, n, m.group(0)))
-                    break
     for i, (arq, trecho, _) in enumerate(aceites):
         if sem_uso and i not in usados:
             achados.append("lint-aceitos.tsv: o aceite de %s ('%s') não casou com nada; tire a linha" % (arq, trecho[:40]))

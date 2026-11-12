@@ -467,6 +467,8 @@ class TestFrente(Base):
         self.assertEqual(rc, 0, out)
         self.assertIn("aponta para main", out)
         self.assertIn("git remote set-head origin -a", out)
+        # revisão, rodada 2, R3: a divergência pode ser real (o remoto mudou de padrão, ou o slot está errado)
+        self.assertIn("se o remoto mudou de branch padrão de propósito, ajuste project.default_branch", out)
 
     def test_slot_com_branch_que_o_origin_nao_tem_nao_vale(self):
         self._origin_com_producao("homologacao")
