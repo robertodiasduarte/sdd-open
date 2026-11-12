@@ -217,6 +217,9 @@ def reference_needles(path: Path, root: Path, text: str | None) -> set[str]:
     stem = path.stem
     if "/commands/" in f"/{rpath}":
         needles.add("/" + stem)
+    if rpath.startswith(".codex/prompts/"):
+        # o Codex chama um prompt próprio como /prompts:<nome>; sem este needle ele sairia com 0 referências
+        needles.add("/prompts:" + stem)
     if text:
         m = re.search(r"(?m)^name:\s*['\"]?([^'\"\n]+)", text)
         if m:

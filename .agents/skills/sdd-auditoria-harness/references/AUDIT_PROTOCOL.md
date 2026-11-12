@@ -108,6 +108,11 @@ Antes de classificar duplicação, compare:
 
 Dois itens parecidos, mas com fases/consumidores diferentes, não são necessariamente duplicados.
 
+**Cópia gerada não é duplicata.** Uma skill em `.claude/skills/X` (ou outra pasta de motor) com a marca de geração
+(`sdd-open:generated` ou um cabeçalho `GENERATED`) é a cópia que uma ferramenta regenera a partir da fonte
+(`.agents/skills/X`), para outro motor ler. Não recomende FUNDIR nem APOSENTAR a cópia: aponte a fonte e, se a cópia
+estiver diferente dela, o achado é deriva da cópia (regenerar), não duplicação.
+
 ## 8. Deriva
 
 Extraia referências locais de:

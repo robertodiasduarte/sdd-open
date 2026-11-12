@@ -88,6 +88,21 @@ class AuditoriaVariosMotores(unittest.TestCase):
             with self.subTest(caminho=caminho):
                 self.assertEqual(inv.get(caminho), tipo, inv)
 
+    def test_prompt_do_codex_chamado_como_prompts_nome_tem_referencia(self):
+        # raio de impacto (F17): .codex/prompts/x.md vira "comando", e o Codex o chama como /prompts:x
+        self.escreve("AGENTS.md", "Para revisar, rode /prompts:revisa antes do commit.\n")
+        self.escreve(".codex/prompts/revisa.md", "# Revisa\n")
+        r = subprocess.run([sys.executable, str(RAIZ / ".agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py"),
+                            str(self.tmp)], capture_output=True, text=True, encoding="utf-8")
+        itens = {i["path"]: i for i in json.loads(r.stdout)["items"]}
+        self.assertEqual(itens[".codex/prompts/revisa.md"]["inbound_reference_count"], 1, itens)
+
+    def test_protocolo_diz_que_copia_gerada_nao_e_duplicata(self):
+        p = ler(".agents/skills/sdd-auditoria-harness/references/AUDIT_PROTOCOL.md")
+        dup = p[p.index("## 7. Duplicação"):p.index("## 8. Deriva")]
+        self.assertIn("Cópia gerada não é duplicata", dup)
+        self.assertIn("sdd-open:generated", dup)
+
     def test_skill_cita_os_motores_e_a_precedencia(self):
         s = ler(".agents/skills/sdd-auditoria-harness/SKILL.md")
         for termo in ("AGENTS.md", ".agents/skills", ".codex/", "sdd/_index.md", "@AGENTS.md"):
