@@ -105,5 +105,39 @@ class PromptBuilderSemScript(unittest.TestCase):
         self.assertIn("se nada centraliza, as assinaturas do SDK são o sinal", trecho)
 
 
+class NewSessionDoStarter(unittest.TestCase):
+    """AT-008: C1–C4 da comparação (evidence/F17_STARTER_GERADO/COMPARACAO-terreno.md)."""
+
+    def setUp(self):
+        self.s = ler(".agents/skills/sdd-new-session/SKILL.md")
+
+    def test_c1_pre_voo_a_mao_com_a_nuvem_e_os_4_casos(self):
+        mao = self.s[self.s.index("### Pré-voo à mão"):]
+        mao = mao[:mao.index("Depois, o remoto")]
+        for termo in ("Pasta sincronizada", "Library/Mobile Documents", "OneDrive", "Mesa e Documentos",
+                      "A. **Pasta pessoal**", "B. **Git numa subpasta**", "C. **Pasta vazia**", "D. **Arquivos sem git**",
+                      "Get-ChildItem"):
+            with self.subTest(termo=termo):
+                self.assertIn(termo, mao)
+
+    def test_c2_skills_fora_do_git_vao_para_a_frente(self):
+        self.assertIn("**Skills do agente fora do git**", self.s)
+        self.assertIn("`git ls-files <pasta>` vazio", self.s)
+        self.assertIn("sdd-release", self.s[self.s.index("## Passo 2"):self.s.index("## Passo 3")])
+        self.assertIn("se a cópia for negada, **não pare**", self.s)
+
+    def test_c3_as_duas_notas_do_por_que(self):
+        porque = self.s[self.s.index("## Por que cada regra existe"):]
+        self.assertIn("**A mesma branch não abre em duas worktrees**", porque)
+        self.assertIn("O `-d` minúsculo é proteção", porque)
+
+    def test_c4_textos_curtos(self):
+        self.assertIn("nada vai para a internet; nenhum arquivo seu é alterado", self.s)
+        self.assertIn("nenhum cd muda isso. Build, commit e push rodam lá dentro.`", self.s)
+        g = ler(".agents/skills/sdd-new-session/references/como-falar.md")
+        self.assertIn("- commit —", g)
+        self.assertIn("- dependências —", g)
+
+
 if __name__ == "__main__":
     unittest.main()

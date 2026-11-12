@@ -12,7 +12,7 @@ compatibility: Requer git >= 2.20 e um agente com acesso ao terminal (bash, zsh 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.5.1"
+  version: "1.6.0"
   updated: "2026-11"
   fase: "0"
 ---
@@ -20,7 +20,7 @@ metadata:
 # sdd-new-session — abrir uma frente
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-new-session v1.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-new-session v1.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Um comando, uma tarefa, um diretório: `git worktree` + branch nova nascida do estado **remoto atual**
 da branch padrão. A outra ponta é a `sdd-release`.
@@ -47,8 +47,9 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
    (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
    etapa, o motivo vai em Agora.
 2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
-3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
-   não precisa responder.
+3. **Agora: etapa N — nome** — 2 a 4 frases. Se for criar algo, diga em passos numerados o que vai fazer e o
+   que **não** vai acontecer (nada vai para a internet; nenhum arquivo seu é alterado). Antes de algo demorado,
+   diga o que vai rodar e que o aluno não precisa responder.
 4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
    recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
    em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
@@ -115,9 +116,32 @@ bash <pasta das skills>/sdd-checar-ambiente/scripts/checar.sh --frente
 
 ### Pré-voo à mão (sem bash ou sem o script)
 
-Se `git rev-parse --show-toplevel` falha, a pasta não é um repositório: **pare** — provavelmente o terminal
-foi aberto na pasta errada (`cd <pasta do projeto>`), ou o projeto ainda não tem git (a skill
-`sdd-iniciar-repo` põe o projeto no git e num GitHub privado).
+Nesta ordem, parando na primeira que falhar:
+
+0. **Pasta sincronizada** (antes de tudo, com ou sem repositório): o caminho (`pwd -P` no bash/zsh,
+   `(Get-Location).Path` no PowerShell) tem `Library/Mobile Documents`, `Library/CloudStorage`, `iCloudDrive`,
+   `OneDrive`, `Dropbox`, `Google Drive`, `My Drive` ou `Meu Drive`; ou, no Mac, a pasta está em `~/Desktop` ou
+   `~/Documents` e `ls -ld ~/Library/Mobile\ Documents/com~apple~CloudDocs/Documents` (ou `Desktop`) mostra um
+   atalho (`->`) — é a Mesa e Documentos no iCloud, e o caminho não muda. ⇒ *"Esta pasta está dentro do
+   <provedor>, que sincroniza tudo o que muda — o .git e as frentes se corrompem ou duplicam."*: mover o projeto
+   para fora da nuvem (ex.: `~/Projetos`) pelo Finder ou Explorador de Arquivos e abrir o terminal lá.
+
+Com `git rev-parse --show-toplevel` falhando, a pasta não é um repositório: **pare** e diga **qual** é o caso,
+nesta ordem:
+
+- A. **Pasta pessoal** — a pasta é `~` (`$HOME`; no PowerShell, `$env:USERPROFILE`) ⇒ *"O terminal está na sua
+  pasta pessoal, não na pasta de um projeto."* (não varra a pasta pessoal).
+- B. **Git numa subpasta** — bash/zsh:
+  `find . -mindepth 1 -maxdepth 3 \( -name node_modules -o -name .Trash -o -name Library \) -prune -o -name .git -print`;
+  PowerShell: `Get-ChildItem -Recurse -Depth 2 -Force -Filter .git -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch 'node_modules' } | ForEach-Object { Split-Path $_.FullName -Parent }`.
+  Uma pasta ⇒ *"O projeto está em ./X — o terminal foi aberto uma pasta acima dele."*: abrir o agente de novo
+  dentro dela. Duas ou três ⇒ liste e pergunte qual. Mais de três ⇒ diga quantas e pergunte qual é o projeto,
+  sem listar todas.
+- C. **Pasta vazia** — nada além de `.DS_Store`, `desktop.ini`, `Thumbs.db` (`ls -A`; no PowerShell,
+  `Get-ChildItem -Force`) ⇒ *"Ainda não há projeto nesta pasta."*: começar pela skill `sdd-brainstorm`; o git
+  entra quando houver o que guardar.
+- D. **Arquivos sem git** ⇒ *"Este projeto ainda não usa git — e a frente nasce do git."*: a skill
+  `sdd-iniciar-repo` põe o projeto no git e num GitHub privado.
 
 Depois, o remoto, nesta ordem, parando na primeira que falhar:
 
@@ -270,6 +294,9 @@ a evidência — ela vai para o Passo 2, item 6.
 - **Preparação** — `package.json` versionado com `node_modules` no `.gitignore` ⇒ `npm install` na pasta
   nova; mesma lógica para `requirements.txt` e `composer.json`. `.env` no `.gitignore` com `.env.example`
   versionado ⇒ copiar o `.env` do checkout principal.
+- **Skills do agente fora do git** — cada pasta em `.claude/skills/` ou `.agents/skills/` sem nenhum arquivo
+  versionado (`git ls-files <pasta>` vazio, pasta por pasta) ⇒ precisa ser copiada para a frente; sem isso, a
+  `sdd-release` não existe dentro dela.
 
 ## Passo 2 — Crie a frente
 
@@ -293,6 +320,13 @@ a evidência — ela vai para o Passo 2, item 6.
    principal que ainda não foi enviado: enviar o commit e atualizar a frente, ou copiar à mão);
    `NADA A COPIAR` não é erro. Qualquer outro exit ⇒ diga a causa
    que ele imprimiu; a frente já existe e continua válida.
+   Copie também **cada pasta de skill não versionada** (a descoberta acima), a partir do checkout principal
+   (caminhos absolutos, entre aspas):
+   `mkdir -p "<frente>/.claude/skills" && cp -R "<checkout principal>/.claude/skills/<skill>" "<frente>/.claude/skills/"`,
+   idem `.agents/skills/`. Confira que `<frente>/.claude/skills/sdd-release` (ou `.agents/skills/sdd-release`)
+   existe quando existe no checkout principal — sem ela, a frente não consegue ser fechada. O agente pode pedir
+   aprovação para escrever na pasta de skills: se a cópia for negada, **não pare** — termine a frente e, na
+   resposta, entregue o comando de cópia pronto.
 5. Abra no editor. O comando é `<editor> "<pasta da frente>"`, com o slot como ele está. **Com o slot
    `terminal:<agente>`, ou sem editor, não aborte**: é o modo terminal — a frente já está pronta, e o Passo 3 diz como
    seguir nela.
@@ -332,7 +366,7 @@ a evidência — ela vai para o Passo 2, item 6.
    slot, o que você usa).
 5. **Última linha, destacada**, na forma que vale para este computador:
    - com editor: `⚠️ Continue na janela nova. Esta sessão do agente continua presa à pasta onde foi aberta —
-     nenhum cd muda isso.`
+     nenhum cd muda isso. Build, commit e push rodam lá dentro.`
    - em modo terminal: `⚠️ Continue num terminal novo aberto na pasta da frente. Esta sessão do agente continua presa
      à pasta onde foi aberta — nenhum cd muda isso. Build, commit e push rodam lá.`
 
@@ -350,6 +384,14 @@ a evidência — ela vai para o Passo 2, item 6.
   usuário; o agente trava sem que ninguém veja.
 - **A branch nasce de `origin/<padrão>` atualizada** — nascer da branch atual herda trabalho pela metade
   de outra tarefa.
+- **A mesma branch não abre em duas worktrees** — o Git recusa. Por isso não se volta para a branch padrão
+  dentro da pasta da frente: integra-se pela `sdd-release` e atualiza-se no checkout principal.
+- **Worktree e branch órfãs se acumulam** — depois de integrar, `git worktree remove` **e** `git branch -d`.
+  O `-d` minúsculo é proteção: só apaga o que já foi integrado.
+- **Pasta que não é repositório tem quatro casos opostos** — "abra na pasta certa" e "ponha o projeto no git"
+  são conselhos contrários; uma frase única para os dois deixava o aluno sem saber qual era o caso dele.
+- **Skill fora do git não vai sozinha para a frente** — a worktree só traz o que está versionado; sem a cópia,
+  a frente nasce sem a `sdd-release` e não consegue ser fechada.
 - **Branch padrão que diverge do remoto para tudo** — o `fetch` de `origin/<padrão>` falharia no meio da
   criação, ou a frente nasceria da branch errada.
 - **Slot só com evidência literal, e só o vazio** — um comando de teste chutado faz o Verify Gate rodar a

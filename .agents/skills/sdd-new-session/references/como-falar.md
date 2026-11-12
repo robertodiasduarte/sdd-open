@@ -13,7 +13,9 @@ de cada problema do pré-voo; este arquivo dá as palavras e dois exemplos intei
 - pré-voo — "a conferência rápida antes de criar a frente: git, projeto e acesso ao GitHub";
 - remoto — "a cópia do projeto guardada no GitHub (ou em outro serviço)";
 - slot — "um campo do arquivo de configuração do projeto; slot vazio quer dizer 'pule e diga que pulou'";
-- editor — "o programa onde você abre os arquivos do projeto".
+- editor — "o programa onde você abre os arquivos do projeto";
+- commit — "uma versão salva (commit)";
+- dependências — "programas de apoio que se reinstalam com um comando".
 
 Não fale em `HEAD`, fetch, origin ou upstream sem traduzir: diga o efeito ("a versão mais nova do
 GitHub", "a cópia do GitHub").
