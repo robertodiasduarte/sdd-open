@@ -74,11 +74,11 @@ class Pacote(unittest.TestCase):
     def test_frontmatter_e_versao_iguais_nos_tres_lugares(self):
         fm = ler(SKILL / "SKILL.md").split("\n---\n", 1)[0]
         for trecho in ("name: " + NOME, "compatibility: ", "license: MIT", "  author: Roberto Dias Duarte",
-                       '  version: "1.1.0"', '  updated: "2026-11"'):
+                       '  version: "1.1.1"', '  updated: "2026-11"'):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, fm)
-        self.assertEqual(json.loads(ler(SKILL / "manifest.json"))["version"], "1.1.0")
-        self.assertEqual(json.loads(ler(SKILL / "evals/cases.json"))["version"], "1.1.0")
+        self.assertEqual(json.loads(ler(SKILL / "manifest.json"))["version"], "1.1.1")
+        self.assertEqual(json.loads(ler(SKILL / "evals/cases.json"))["version"], "1.1.1")
 
     def test_manifest_txt_lista_cada_arquivo(self):
         manifest = ler(RAIZ / "MANIFEST.txt").splitlines()
@@ -103,7 +103,7 @@ class Texto(unittest.TestCase):
         self.orq = ler(SKILL / "references/ORQUESTRACAO_SDD.md")
 
     def test_linha_de_identificacao(self):
-        self.assertIn("`%s v1.1.0 · nov/2026 · versão atual: "
+        self.assertIn("`%s v1.1.1 · nov/2026 · versão atual: "
                       "https://github.com/robertodiasduarte/sdd-open/releases/latest`" % NOME, self.skill)
 
     def test_regra_da_pasta_igual_nos_dois_arquivos(self):

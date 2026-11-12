@@ -1,5 +1,11 @@
 # Histórico
 
+## 1.1.1 — nov/2026
+
+- Sem mudança de comportamento. A versão sobe para a 1ª geração da distribuição para iniciantes (F17): a
+  cópia gerada leva o cabeçalho, o `GERADO.txt` e o bloco "Quando migrar", e o version gate do starter exige
+  versão maior que a 1.1.0 copiada à mão em nov/2026.
+
 ## 1.1.0 — nov/2026
 
 Entrada no sdd-open como 20ª skill, portada da 1.0.0 sem mudar o protocolo do escopo ER-SDD-001.

@@ -12,7 +12,7 @@ O SDD Starter é um conjunto de **skills** portáteis que guiam qualquer agente 
 
 Cada fase produz um artefato Markdown que alimenta a próxima. Você termina com requisitos de verdade, arquitetura de verdade e código funcionando — em vez de um prompt único e uma reza. As aplicações que você especificar podem mirar qualquer alvo que seu agente consiga construir: Windows, macOS, web, Lovable, Base44 e outros.
 
-Se você quer a versão avançada deste fluxo — com Verify Gate executável, contrato de exit codes e integração com CI — veja o projeto irmão **[SpecGate](https://github.com/robertodiasduarte/specgate)**. O SDD Starter é a rampa de entrada; o SpecGate é a rodovia.
+Se você quer a versão avançada deste fluxo — com Verify Gate executável, contrato de exit codes e integração com CI — veja o projeto irmão **[SDD Open](https://github.com/robertodiasduarte/sdd-open)**. O SDD Starter é a rampa de entrada; o SDD Open é a rodovia.
 
 ## As skills
 
@@ -25,7 +25,7 @@ Se você quer a versão avançada deste fluxo — com Verify Gate executável, c
 | [`sdd-build`](skills/sdd-build/) | Implementar — e, se o manifest tem migration, aplica a migration no banco depois de confirmar o projeto (nome e ref) | Os três artefatos + projeto gravável | Código funcionando + `BUILD_REPORT_{FEATURE}.md` (com as migrations aplicadas e a prova) |
 | [`sdd-handoff`](skills/sdd-handoff/) | Fechar o ciclo | O trabalho da sessão | `HANDOFF_{FEATURE}.md` + prompt de retomada |
 
-E cinco skills **complementares**, que não entram na sequência — elas alimentam as fases:
+E sete skills **complementares**, que não entram na sequência — elas alimentam as fases:
 
 | Skill | Para quê | Entrada | Saída |
 |---|---|---|---|
@@ -33,6 +33,8 @@ E cinco skills **complementares**, que não entram na sequência — elas alimen
 | [`sdd-prompt-builder`](skills/sdd-prompt-builder/) | Escrever o prompt de produção do seu app | O que o prompt precisa fazer + o contrato de saída | O prompt pronto, com fórmulas e regra para dado ausente |
 | [`sdd-auditoria-harness`](skills/sdd-auditoria-harness/) | Faxina e deriva do seu harness, em qualquer motor | A raiz do repositório | `AUDITORIA_SDD_<data>.md` (read-only: não altera nada) |
 | [`ux-review-builder`](skills/ux-review-builder/) | Criar o padrão de experiência do seu projeto e a sua `ux-review` — a revisão que roda entre o Define e o Design | Uma entrevista sobre público, referências e o que é inaceitável | `UX_STANDARD.md` + skill `ux-review` + `UX_REVIEW_TEMPLATE.md` |
+| [`sdd-seguranca`](skills/sdd-seguranca/) | Conferir as falhas de segurança mais comuns de app feito com IA — e o que fazer quando algo vazou | O app, antes de publicar (ou o incidente) | Item a item, a conferência à mão de cada falha; no incidente, primeiro fechar a porta |
+| [`sdd-loop-builder`](skills/sdd-loop-builder/) | Desenhar o laço de um agente de IA que repete até terminar | O processo que se repete | Quando ele para, quanto pode gastar e como confere que terminou |
 | [`sdd-governanca`](skills/sdd-governanca/) | Saber o que o sistema vai ter de provar numa fiscalização — para app que trata dinheiro, tributo ou dado pessoal | O DEFINE, depois do Define e antes do Design | `GOVERNANCA_REVIEW_{FEATURE}.md` com as lacunas, a decisão de cada uma e os requisitos aplicados no DEFINE |
 
 E cinco skills para **preparar o ambiente e trabalhar em frentes isoladas** no seu repositório (Claude Code ou Codex no terminal):
@@ -46,6 +48,12 @@ E cinco skills para **preparar o ambiente e trabalhar em frentes isoladas** no s
 | [`sdd-release`](skills/sdd-release/) | Fechar a frente e publicar | No fim da tarefa, de dentro da pasta da frente | Verifica (testes, segredo no diff, base atualizada), mostra uma vez o que vai para produção e só publica depois do seu OK |
 
 Cada pasta de skill é autocontida: um `SKILL.md` com o procedimento completo, `references/` com os protocolos, `assets/` com os templates canônicos de saída e (quando aplicável) `scripts/` com um validador estrutural e `agents/openai.yaml` para agentes baseados em OpenAI.
+
+## De onde vêm estas skills
+
+Desde a 1ª geração (nov/2026), dez skills deste repositório são **geradas** a partir do [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` e `sdd-loop-builder`. Cada uma traz um `GERADO.txt` e não se edita aqui: quem melhora, melhora no Open, e a próxima geração traz a mudança. A 1ª geração foi uma atualização grande dessas dez (skills de ambiente com `gh`, editor e modo terminal; a skill de segurança; o mesmo texto do Open).
+
+As outras oito (`sdd-brainstorm`, `sdd-define`, `sdd-design`, `sdd-build`, `sdd-handoff`, `sdd-release`, `sdd-governanca` e `ux-review-builder`) continuam como estavam, congeladas até a próxima etapa da geração.
 
 ## Instalação
 
@@ -103,7 +111,7 @@ SDD Starter is a set of portable **skills** that guide any AI agent — Claude (
 
 Each phase produces a Markdown artifact that feeds the next one. You end up with real requirements, a real architecture, and working code — instead of a one-shot prompt and a prayer. The apps you specify can target anything your agent can build: Windows, macOS, web, Lovable, Base44, and more.
 
-If you want the advanced version of this workflow — with an executable Verify Gate, exit-code contracts, and CI integration — see the sibling project **[SpecGate](https://github.com/robertodiasduarte/specgate)**. SDD Starter is the on-ramp; SpecGate is the highway.
+If you want the advanced version of this workflow — with an executable Verify Gate, exit-code contracts, and CI integration — see the sibling project **[SDD Open](https://github.com/robertodiasduarte/sdd-open)**. SDD Starter is the on-ramp; SDD Open is the highway.
 
 ## The skills
 
@@ -116,7 +124,7 @@ If you want the advanced version of this workflow — with an executable Verify 
 | [`sdd-build`](skills/sdd-build/) | Implement — and, when the manifest has a migration, applies the migration to the database after confirming the project (name and ref) | All three artifacts + writable project | Working code + `BUILD_REPORT_{FEATURE}.md` (with the migrations applied and the proof) |
 | [`sdd-handoff`](skills/sdd-handoff/) | Close the cycle | The session's work | `HANDOFF_{FEATURE}.md` + resume prompt |
 
-Plus five **complementary** skills that are not part of the sequence — they feed the phases:
+Plus seven **complementary** skills that are not part of the sequence — they feed the phases:
 
 | Skill | Purpose | Input | Output |
 |---|---|---|---|
@@ -124,6 +132,8 @@ Plus five **complementary** skills that are not part of the sequence — they fe
 | [`sdd-prompt-builder`](skills/sdd-prompt-builder/) | Write your app's production prompt | What the prompt must do + the output contract | The ready prompt, with formulas and a rule for missing data |
 | [`sdd-auditoria-harness`](skills/sdd-auditoria-harness/) | Cleanup and drift of your harness, on any engine | The repository root | `AUDITORIA_SDD_<date>.md` (read-only: changes nothing) |
 | [`ux-review-builder`](skills/ux-review-builder/) | Build your project's UX standard and your own `ux-review` — the review that runs between Define and Design | An interview on audience, references and what is unacceptable | `UX_STANDARD.md` + `ux-review` skill + `UX_REVIEW_TEMPLATE.md` |
+| [`sdd-seguranca`](skills/sdd-seguranca/) | Check the most common security flaws of AI-built apps — and what to do when something leaked | The app, before shipping (or the incident) | Item by item, the manual check for each flaw; in an incident, close the door first |
+| [`sdd-loop-builder`](skills/sdd-loop-builder/) | Design the loop of an AI agent that repeats until done | The repeating process | When it stops, how much it may spend and how it checks it is really done |
 | [`sdd-governanca`](skills/sdd-governanca/) | Know what the system will have to prove in a tax audit — for apps that handle money, taxes or personal data | The DEFINE, after Define and before Design | `GOVERNANCA_REVIEW_{FEATURE}.md` with the gaps, the decision on each one and the requirements applied to the DEFINE |
 
 And five skills to **prepare the environment and work in isolated workstreams** in your repository (Claude Code or Codex in the terminal):
@@ -137,6 +147,12 @@ And five skills to **prepare the environment and work in isolated workstreams** 
 | [`sdd-release`](skills/sdd-release/) | Close the workstream and ship | At the end of the task, from inside the workstream folder | Checks (tests, secrets in the diff, up-to-date base), shows once what goes to production and ships only after your OK |
 
 Each skill folder is self-contained: a `SKILL.md` with the full procedure, `references/` with protocols, `assets/` with the canonical output templates, and (where applicable) `scripts/` with a structural validator and `agents/openai.yaml` for OpenAI-based agents.
+
+## Where these skills come from
+
+Since the first generation (Nov 2026), ten skills in this repository are **generated** from [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` and `sdd-loop-builder`. Each one carries a `GERADO.txt` and is not edited here: improvements go to SDD Open, and the next generation brings them. The first generation was a large update of those ten.
+
+The other eight (`sdd-brainstorm`, `sdd-define`, `sdd-design`, `sdd-build`, `sdd-handoff`, `sdd-release`, `sdd-governanca` and `ux-review-builder`) stay as they were, frozen until the next stage of the generation.
 
 ## Installation
 

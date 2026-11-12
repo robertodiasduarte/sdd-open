@@ -8,7 +8,8 @@ recusa antes disso.
 
 Confere:
   - GERADO.txt da raiz: cada arquivo listado existe e tem o sha256 listado (inclui o GERADO.txt de cada skill
-    gerada: apagar uma skill gerada inteira aparece como "falta");
+    gerada: apagar uma skill gerada inteira aparece como "falta"); scripts/ e .github/workflows/ não têm arquivo
+    a mais; sem o GERADO.txt da raiz, falha;
   - skills/<nome>/GERADO.txt: cada arquivo listado existe e tem o sha256 listado, e a pasta não tem arquivo
     a mais (fora o próprio GERADO.txt, .DS_Store e __pycache__/).
 
@@ -27,6 +28,7 @@ from pathlib import Path
 
 LINHA = re.compile(r"^([0-9a-f]{64})  (\S.*)$")
 IGNORA = {"GERADO.txt", ".DS_Store"}
+DONO_INTEIRO = ("scripts", ".github/workflows")
 
 
 class Ilegivel(Exception):
@@ -81,7 +83,13 @@ def main(argv: list[str]) -> int:
         if not topo.is_file():
             erros.append("GERADO.txt: falta (a geração do sdd-open grava este arquivo na raiz)")
         else:
-            erros += conferir(raiz, ler_lista(topo), "")
+            lista_raiz = ler_lista(topo)
+            erros += conferir(raiz, lista_raiz, "")
+            # scripts/ e .github/workflows/ são inteiros do gerador: arquivo a mais lá também é mudança feita aqui
+            for pasta in DONO_INTEIRO:
+                if (raiz / pasta).is_dir():
+                    sub = {k[len(pasta) + 1:]: v for k, v in lista_raiz.items() if k.startswith(pasta + "/")}
+                    erros += sobras(raiz / pasta, sub, pasta + "/")
         skills = sorted(p.parent for p in (raiz / "skills").glob("*/GERADO.txt"))
         for pasta in skills:
             lista = ler_lista(pasta / "GERADO.txt")

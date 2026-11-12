@@ -6,14 +6,14 @@ license: MIT
 metadata:
   author: Roberto Dias Duarte
   methodology: Metodologia de Roberto Dias Duarte
-  version: "1.1.0"
+  version: "1.1.1"
   updated: "2026-11"
 ---
 
 # SDD Engenharia Reversa de SaaS
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-engenharia-reversa-saas v1.1.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-engenharia-reversa-saas v1.1.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 ## Quick start
 

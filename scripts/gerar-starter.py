@@ -49,9 +49,10 @@ LINT_INIT = [
     re.compile(r"sdd/bin/"), re.compile(r"sdd/templates/"), re.compile(r"sdd/hooks/"),
     re.compile(r"sdd/review/"), re.compile(r"sdd/patterns/"), re.compile(r"sdd/playbook\.md"),
     re.compile(r"sdd/invariants\.md"), re.compile(r"sdd/WORKFLOW_CONTRACTS\.yaml"),
-    re.compile(r"bin/sdd-open\.sh"), re.compile(r"\.agents/skills/[a-z0-9-]+/"), re.compile(r"init do sdd-open"),
+    re.compile(r"bin/sdd-open\.sh"), re.compile(r"init do sdd-open"), re.compile(r"`init` do sdd-open"),
 ]
-MOLDE = re.compile(r"sdd/templates/[A-Za-z0-9_./-]+\.md")
+MOLDE = re.compile(r"sdd/templates/[A-Za-z0-9_/-]+\.md")
+SEMVER = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 
 
 class Falha(Exception):
@@ -182,25 +183,52 @@ def trazer_moldes(skill_dir: Path, moldes_dir: Path) -> None:
         os.chmod(alvo, 0o644)
 
 
-def reescrever(texto: str, skill: str, lista: list[str], moldes_dir: Path) -> str:
+def reescrever(texto: str, skill: str, lista: list[str], moldes_dir: Path, markdown: bool) -> str:
+    """Caminhos só no Markdown (num script, `<pasta desta skill>` viraria redirecionamento do shell); a URL do Open
+    em todo arquivo de texto. O par que define a pasta (`.claude/skills/x/` ou `.agents/skills/x/`) fica como está."""
+    texto = texto.replace(URL_OPEN, URL_STARTER)
+    if not markdown:
+        return texto
     texto = MOLDE.sub(lambda m: PASTA_DESTA + "references/" + Path(m.group(0)).name
                       if (moldes_dir / m.group(0)).is_file() else m.group(0), texto)
+    guardados: list[str] = []
+
+    def guardar(m: re.Match) -> str:
+        guardados.append(m.group(0))
+        return "\x00%d\x00" % (len(guardados) - 1)
+
+    for nome in lista:
+        texto = re.sub(r"\.claude/skills/%s/`\s+ou\s+`\.agents/skills/%s/" % (re.escape(nome), re.escape(nome)), guardar, texto)
     texto = texto.replace(".agents/skills/%s/" % skill, PASTA_DESTA)
     for irma in lista:
         if irma != skill:
             texto = texto.replace(".agents/skills/%s/" % irma, PASTA_DAS + irma + "/")
-    return texto
+    return re.sub(r"\x00(\d+)\x00", lambda m: guardados[int(m.group(1))], texto)
 
 
 def identificacao(texto: str, skill: str) -> str:
     linhas, trocadas = texto.split("\n"), 0
     for i, ln in enumerate(linhas):
-        if ln.startswith("`%s v" % skill) and URL_OPEN in ln:
-            linhas[i] = ln.replace(URL_OPEN, URL_STARTER)
+        if ln.startswith("`%s v" % skill) and URL_STARTER in ln:
             trocadas += 1
     if trocadas != 1:
         raise Falha(65, "%s: a linha de identificação apareceu %d vez(es); esperado 1" % (skill, trocadas))
     return "\n".join(linhas)
+
+
+def sem_fluxo_encadeado(texto: str, skill: str) -> str:
+    """No starter não há encadeamento de fases (nem o sdd-fluxo.sh): a seção sai do título até o `---` seguinte."""
+    linhas = texto.split("\n")
+    titulos = [i for i, ln in enumerate(linhas) if ln == "### Fluxo encadeado"]
+    if not titulos:
+        return texto
+    if len(titulos) > 1:
+        raise Falha(65, "%s/SKILL.md tem %d seções '### Fluxo encadeado'; esperado no máximo 1" % (skill, len(titulos)))
+    ini = titulos[0]
+    fim = next((i for i in range(ini + 1, len(linhas)) if linhas[i] == "---"), None)
+    if fim is None:
+        raise Falha(65, "%s/SKILL.md: a seção '### Fluxo encadeado' não termina num '---'" % skill)
+    return "\n".join(linhas[:ini] + linhas[fim:])
 
 
 def com_cabecalho(texto: str, skill: str, cabecalho: str, migrar: str) -> str:
@@ -218,6 +246,8 @@ def ler_openai(arq: Path) -> dict[str, tuple[str, str, str]]:
         c = linha.split("\t")
         if len(c) != 4 or not all(x.strip() for x in c):
             raise Falha(65, "openai.tsv: linha sem os 4 campos: %s" % linha[:60])
+        if any('"' in x or "\\" in x for x in c):
+            raise Falha(65, "openai.tsv: aspas ou barra invertida quebrariam o YAML: %s" % linha[:60])
         tab[c[0]] = (c[1], c[2], c[3])
     return tab
 
@@ -238,17 +268,43 @@ def lista_gerado(pasta: Path, cabecalho: str, ignora: tuple[str, ...] = ()) -> b
 
 
 # ── lint do init ─────────────────────────────────────────────────────────────
-def lint(pasta: Path) -> list[str]:
-    achados = []
+def ler_aceites(arq: Path) -> list[tuple[str, str, str]]:
+    """`<arquivo relativo à raiz do starter>\t<trecho exato da linha>\t<motivo>`: citação que fica, com o motivo."""
+    if not arq.is_file():
+        return []
+    aceites = []
+    for linha in arq.read_text(encoding="utf-8").splitlines():
+        if not linha.strip() or linha.startswith("#"):
+            continue
+        c = linha.split("\t")
+        if len(c) != 3 or not all(x.strip() for x in c):
+            raise Falha(65, "lint-aceitos.tsv: linha sem os 3 campos (arquivo, trecho, motivo): %s" % linha[:60])
+        aceites.append((c[0], c[1], c[2]))
+    return aceites
+
+
+def lint(pasta: Path, aceites: list[tuple[str, str, str]] = (), fora: list[str] = ()) -> list[str]:
+    """`fora`: skills do Open que o starter não recebe; citar a pasta delas (`.agents/skills/<nome>/`) é citar o que
+    não existe lá. As geradas podem ser citadas: o par que define a pasta fica, e o resto vira <pasta …>."""
+    padroes = LINT_INIT + [re.compile(r"\.agents/skills/%s/" % re.escape(n)) for n in fora]
+    achados, usados = [], set()
     for p in arquivos(pasta):
         if p.name == "CHANGELOG.md" or not eh_texto(p):
             continue
         for n, ln in enumerate(p.read_text(encoding="utf-8", errors="replace").split("\n"), 1):
-            for rx in LINT_INIT:
+            for rx in padroes:
                 m = rx.search(ln)
                 if m:
-                    achados.append("%s:%d: %s" % (p.relative_to(pasta).as_posix(), n, m.group(0)))
+                    rel = p.relative_to(pasta).as_posix()
+                    aceito = [i for i, (arq, trecho, _) in enumerate(aceites) if arq == rel and trecho in ln]
+                    if aceito:
+                        usados.update(aceito)
+                    else:
+                        achados.append("%s:%d: %s" % (rel, n, m.group(0)))
                     break
+    for i, (arq, trecho, _) in enumerate(aceites):
+        if i not in usados:
+            achados.append("lint-aceitos.tsv: o aceite de %s ('%s') não casou com nada; tire a linha" % (arq, trecho[:40]))
     return achados
 
 
@@ -258,9 +314,13 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
     lista = [ln.strip() for ln in (dados / "lista.txt").read_text(encoding="utf-8").splitlines()
              if ln.strip() and not ln.startswith("#")]
     tabela = ler_openai(dados / "openai.tsv")
-    cabecalho = (dados / "blocos" / "GENERATED.md").read_text(encoding="utf-8").format(tag=tag, commit=commit)
+    # O cabeçalho e o GERADO.txt de cada skill NÃO levam a tag: com ela, toda geração mudaria as 10 skills e o
+    # version gate do starter pediria versão nova em todas (revisão do DESIGN, item 2). A tag fica só na raiz.
+    cabecalho = (dados / "blocos" / "GENERATED.md").read_text(encoding="utf-8")
     migrar = (dados / "blocos" / "MIGRAR.md").read_text(encoding="utf-8")
-    nota = "# GENERATED pelo sdd-open %s (commit %s) com scripts/gerar-starter.py — não edite aqui." % (tag, commit)
+    nota = "# GENERATED pelo sdd-open com scripts/gerar-starter.py — não edite aqui: edite no sdd-open e gere de novo."
+    nota_raiz = "# GENERATED pelo sdd-open %s (commit %s) com scripts/gerar-starter.py — não edite aqui." % (tag, commit)
+    fora = sorted(p.name for p in (arvore / ".agents" / "skills").iterdir() if p.is_dir() and p.name not in lista)
 
     # moldes: cópia de sdd/templates/ com as trocas de _moldes aplicadas uma vez
     moldes = saida.parent / "moldes"
@@ -278,10 +338,13 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
         destino = saida / "skills" / skill
         shutil.copytree(origem, destino)
         n_trocas = aplicar_trocas(destino, dados / "trocas" / ("%s.md" % skill))
+        s = destino / "SKILL.md"
+        s.write_text(sem_fluxo_encadeado(s.read_text(encoding="utf-8"), skill), encoding="utf-8")
         trazer_moldes(destino, moldes)
         for p in arquivos(destino):
             if eh_texto(p):
-                p.write_text(reescrever(p.read_text(encoding="utf-8"), skill, lista, moldes), encoding="utf-8")
+                p.write_text(reescrever(p.read_text(encoding="utf-8"), skill, lista, moldes, p.suffix == ".md"),
+                             encoding="utf-8")
         s = destino / "SKILL.md"
         s.write_text(com_cabecalho(identificacao(s.read_text(encoding="utf-8"), skill), skill, cabecalho, migrar),
                      encoding="utf-8")
@@ -291,12 +354,12 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
         relatorio.append("✅ %s: %d arquivo(s), %d troca(s)" % (skill, len(arquivos(destino)) - 1, n_trocas))
 
     shutil.copytree(dados / "raiz", saida, dirs_exist_ok=True)
-    achados = lint(saida)
+    achados = lint(saida, ler_aceites(dados / "lint-aceitos.tsv"), fora)
     if achados:
         raise Falha(65, "o lint do init achou %d citação(ões) a arquivo que só o init cria:\n  %s"
-                    % (len(achados), "\n  ".join(achados[:40])))
+                    % (len(achados), "\n  ".join(achados)))
     infra = [p.relative_to(saida).as_posix() for p in arquivos(saida) if not p.relative_to(saida).parts[0] == "skills"]
-    linhas = [nota]
+    linhas = [nota_raiz]
     for rel in sorted(infra + ["skills/%s/GERADO.txt" % s for s in lista]):
         linhas.append("%s  %s" % (sha((saida / rel).read_bytes()), rel))
     (saida / "GERADO.txt").write_text("\n".join(linhas) + "\n", encoding="utf-8")
@@ -311,6 +374,38 @@ def conferir_destino(destino: Path) -> None:
         raise Falha(64, "%s não é um repositório git (o git é a rede de segurança da geração)" % destino)
     if r.stdout.strip():
         raise Falha(64, "%s tem mudança não commitada ou arquivo não rastreado: commite ou guarde antes" % destino)
+
+
+def versao(skill_md: Path) -> tuple[str, str]:
+    texto = skill_md.read_text(encoding="utf-8")
+    v = re.search(r'^\s+version:\s*"?([0-9.]+)"?\s*$', texto, re.M)
+    u = re.search(r'^\s+updated:\s*"?([0-9-]+)"?\s*$', texto, re.M)
+    return (v.group(1) if v else ""), (u.group(1) if u else "")
+
+
+def conferir_versoes(saida: Path, destino: Path) -> None:
+    """O version gate do starter (check-versions.py --base) exige versão maior em toda skill que muda. Conferir
+    aqui, antes de gravar, evita gerar algo que o CI de lá reprova."""
+    erros = []
+    for pasta in sorted((saida / "skills").iterdir()):
+        antiga = destino / "skills" / pasta.name
+        if not (antiga / "SKILL.md").is_file():
+            continue
+        iguais = sorted(p.relative_to(pasta).as_posix() for p in arquivos(pasta)) == \
+            sorted(p.relative_to(antiga).as_posix() for p in arquivos(antiga) if "__pycache__" not in p.parts) and \
+            all((pasta / r).read_bytes() == (antiga / r).read_bytes()
+                for r in (p.relative_to(pasta).as_posix() for p in arquivos(pasta)))
+        if iguais:
+            continue
+        (vn, un), (va, ua) = versao(pasta / "SKILL.md"), versao(antiga / "SKILL.md")
+        mn, ma = SEMVER.match(vn), SEMVER.match(va)
+        if mn and ma and tuple(map(int, mn.groups())) <= tuple(map(int, ma.groups())):
+            erros.append("%s: a cópia gerada mudou e a versão não subiu (%s no starter, %s no Open): suba a versão "
+                         "da skill no Open" % (pasta.name, va, vn))
+        if un and ua and un < ua:
+            erros.append("%s: updated voltou no tempo (%s → %s)" % (pasta.name, ua, un))
+    if erros:
+        raise Falha(65, "o version gate do starter reprovaria:\n  " + "\n  ".join(erros))
 
 
 def gravar(saida: Path, destino: Path) -> None:
@@ -341,7 +436,10 @@ def main(argv: list[str]) -> int:
         return 64 if e.code else 0
     try:
         if a.lint:
-            achados = lint(Path(a.lint))
+            lista = [ln.strip() for ln in (RAIZ_OPEN / "scripts/starter/lista.txt").read_text(encoding="utf-8").splitlines()
+                     if ln.strip() and not ln.startswith("#")]
+            fora = sorted(p.name for p in (RAIZ_OPEN / ".agents" / "skills").iterdir() if p.is_dir() and p.name not in lista)
+            achados = lint(Path(a.lint), fora=fora)
             for x in achados:
                 print("🛑 %s" % x)
             if achados:
@@ -358,7 +456,11 @@ def main(argv: list[str]) -> int:
             arvore.mkdir()
             saida.mkdir()
             commit = extrair_tag(a.tag, arvore)
+            if (arvore / "scripts" / "gerar-starter.py").read_bytes() != Path(__file__).read_bytes():
+                raise Falha(64, "este gerador difere do que está na tag %s: rode o da tag "
+                                "(git show %s:scripts/gerar-starter.py > /tmp/g.py; python3 /tmp/g.py …)" % (a.tag, a.tag))
             relatorio = montar(arvore, saida, a.tag, commit)
+            conferir_versoes(saida, destino)
             try:
                 gravar(saida, destino)
             except OSError as e:

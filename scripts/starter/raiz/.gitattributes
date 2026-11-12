@@ -1,0 +1,7 @@
+# Gerado pelo sdd-open. Fim de linha LF em todo checkout, inclusive no Windows com core.autocrlf=true: um script
+# bash com CRLF falha com $'\r', e o check-gerado.py confere o sha256 dos bytes.
+* text=auto eol=lf
+# O SHA-256 do catálogo de fontes confere os bytes: um checkout não pode trocar o fim de linha.
+skills/sdd-kb/assets/example-kb-normativo/fontes/** -text
+skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py -text
+skills/sdd-engenharia-reversa-saas/assets/ENGENHARIA_REVERSA_TEMPLATE.md -text
