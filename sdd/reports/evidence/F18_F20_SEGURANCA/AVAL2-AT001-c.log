@@ -1,0 +1,55 @@
+$ cat /tmp/aval2-f18.hrKa/probes/extra.sh; bash /tmp/aval2-f18.hrKa/probes/extra.sh
+. /tmp/aval2-f18.hrKa/probes/lib.sh
+echo "### (x1) conta de serviço JSON: PEM numa linha só com \\n literal e corpo depois"
+novo x1; printf '{"type":"service_account","private_key":"-----BEGIN PRIVATE KEY-----\\n%s\\n-----END PRIVATE KEY-----\\n"}\n' "$(rnd 120)" > sa.json; git add -A; V | grep -v '^   confira'
+echo; echo "### (x2) chave sk-proj com _ e - no corpo (forma comum)"
+novo x2; printf 'OPENAI_API_KEY=sk-proj-%s_%s-%s9%s\n' "$(rnd 20)" "$(rnd 30)" "$(rnd 20)" "$(rnd 40)" > .env.local; git add -f .env.local; V | grep -v '^   confira'
+echo; echo "### (x3) padrões de código (eval, innerHTML) em sdd/ e .agents/ continuam fora (exclusão vale só para S11 sair dela)"
+novo x3; mkdir -p sdd/notas .agents/skills/minha; printf "const v = eval(x);\nel.innerHTML = t;\n" > sdd/notas/ex.js; cp sdd/notas/ex.js .agents/skills/minha/ex.js; git add -A; V | grep -v '^   confira'
+echo; echo "### (x4) arquivo com o mesmo NOME do catálogo em outro caminho não esconde chave"
+novo x4; mkdir -p docs; printf 'k = sk_live_%s\n' "$(rnd 24)" > docs/CATALOGO_SEGURANCA.md; git add -A; V | grep -v '^   confira'
+echo; echo "### (x5) fim de linha CRLF"
+novo x5; printf 'k = "sk_live_%s"\r\nel.innerHTML = t;\r\n' "$(rnd 24)" > w.js; git add -A; V | grep -v '^   confira'
+echo; echo "### (x6) PEM em YAML com bloco indentado (corpo na linha seguinte, com recuo)"
+novo x6; { printf 'tls:\n  key: |\n    -----BEGIN EC PRIVATE KEY-----\n    %s\n    -----END EC PRIVATE KEY-----\n' "$(rnd 64)"; } > cfg.yaml; git add -A; V | grep -v '^   confira'
+### (x1) conta de serviço JSON: PEM numa linha só com \n literal e corpo depois
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 39 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta sa.json:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (x2) chave sk-proj com _ e - no corpo (forma comum)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 39 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta .env.local:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (x3) padrões de código (eval, innerHTML) em sdd/ e .agents/ continuam fora (exclusão vale só para S11 sair dela)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 40 arquivo(s) varrido(s), 1 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### (x4) arquivo com o mesmo NOME do catálogo em outro caminho não esconde chave
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 39 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta docs/CATALOGO_SEGURANCA.md:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (x5) fim de linha CRLF
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 39 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta w.js:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+⚠️ S12 alta w.js:2 — HTML vindo do usuário sem escapar
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (x6) PEM em YAML com bloco indentado (corpo na linha seguinte, com recuo)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 39 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta cfg.yaml:3 — Chave secreta no código (bloqueia: novo nesta publicação)
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2

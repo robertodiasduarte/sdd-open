@@ -1,0 +1,73 @@
+$ cat /tmp/aval-f18.SxgC/probes/at010.sh; bash /tmp/aval-f18.SxgC/probes/at010.sh
+PKG=/Users/robertoduarte/rdd-worktrees/sdd-open-f18-f20-seguranca
+T=/tmp/aval-f18.SxgC/at010; OLD=/tmp/aval-f18.SxgC/at007/pkg-old
+rm -rf $T; mkdir -p $T/r; cd $T/r; git init -q -b main; git config user.email a@b.c; git config user.name a
+printf 'A=1\n' > .env; printf 'x' > cert.pfx; printf -- '-----BEGIN PRIVATE KEY-----\nAAAA\n-----END PRIVATE KEY-----\n' > k.pem; printf 'ok' > a.p12; printf -- '-----BEGIN CERTIFICATE-----\nAA\n-----END CERTIFICATE-----\n' > pub.pem
+git add -A -f; git commit -qm s --no-verify
+echo "### (a) checar.sh --segredo: v2.11.0 × HEAD no mesmo repositório"
+bash $OLD/.agents/skills/sdd-checar-ambiente/scripts/checar.sh --segredo > $T/old.txt 2>&1; echo "v2.11.0 exit=$?"
+bash $PKG/.agents/skills/sdd-checar-ambiente/scripts/checar.sh --segredo > $T/new.txt 2>&1; echo "HEAD exit=$?"
+cat $T/new.txt; echo "--- diff v2.11.0 × HEAD:"; diff $T/old.txt $T/new.txt && echo "(idêntico)"
+echo; echo "### (b) doctor: linha de segredo v2.11.0 × HEAD"
+cp -R $T/r $T/r2; cd $T/r; bash $OLD/bin/sdd-open.sh init --vendors codex --yes >/dev/null 2>&1; bash $OLD/bin/sdd-open.sh doctor 2>&1 | grep -i -A4 'segredo' > $T/dold.txt
+cd $T/r2; bash $PKG/bin/sdd-open.sh init --vendors codex --yes >/dev/null 2>&1; bash $PKG/bin/sdd-open.sh doctor 2>&1 | grep -i -A4 'segredo' > $T/dnew.txt
+cat $T/dnew.txt; echo "--- diff:"; diff $T/dold.txt $T/dnew.txt && echo "(idêntico)"
+echo; echo "### (c) verify-gate.sh: linha Segurança pendente não trava; Governança pendente trava"
+cd $T/r2; mkdir -p sdd/features
+mkdef() { printf '# DEFINE: X\n\n## Technical Context\n\n| Aspect | Value | Notes |\n|---|---|---|\n| **Governança** | %s | x |\n| **Segurança** | %s | x |\n\n## Verify Gate\n\n```yaml\nverify_gate:\n  kind: test\n  cmd: "true"\n  pass_when: "exit 0"\n  threshold: "—"\n  manual_fallback: "—"\n```\n' "$1" "$2" > sdd/features/DEFINE_X.md; }
+mkdef "N.A. — sem gatilho" "PENDENTE — 3 itens sem decisão"; bash sdd/bin/verify-gate.sh sdd/features/DEFINE_X.md 2>&1 | tail -3; echo "exit=${PIPESTATUS[0]}"
+mkdef "PENDENTE" "N.A."; bash sdd/bin/verify-gate.sh sdd/features/DEFINE_X.md 2>&1 | tail -3; echo "exit=${PIPESTATUS[0]}"
+echo; echo "### (d) testes de não-regressão (bash 3.2)"
+cd $PKG
+for t in test_checar.py test_governanca_gate.py test_governanca_bloco.py test_verify_gate.py test_bash32.py test_python_resolver.py test_check_versions.py test_contrato_build_release.py test_decisoes_lint.py; do printf -- "-- %s: " $t; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "$t" 2>&1 | tail -3 | tr '\n' ' '; echo; done
+echo; echo "### (e) check-versions --base v2.11.0"
+/usr/bin/python3 -B scripts/check-versions.py --base v2.11.0 2>&1 | tail -8; echo "exit=$?"
+### (a) checar.sh --segredo: v2.11.0 × HEAD no mesmo repositório
+v2.11.0 exit=1
+HEAD exit=1
+🔴 Dado exposto
+- O arquivo de senhas .env está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+  git rm --cached ".env" && echo ".env" >> .gitignore
+  Depois, troque as senhas e chaves que estão nele.
+- O certificado digital a.p12 está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+  git rm --cached "a.p12" && echo "a.p12" >> .gitignore
+  Depois, revogue o certificado com a autoridade certificadora e emita outro.
+- O certificado digital cert.pfx está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+  git rm --cached "cert.pfx" && echo "cert.pfx" >> .gitignore
+  Depois, revogue o certificado com a autoridade certificadora e emita outro.
+- A chave privada k.pem está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+  git rm --cached "k.pem" && echo "k.pem" >> .gitignore
+  Depois, gere uma chave nova e descarte esta.
+--- diff v2.11.0 × HEAD:
+(idêntico)
+
+### (b) doctor: linha de segredo v2.11.0 × HEAD
+--- diff:
+(idêntico)
+
+### (c) verify-gate.sh: linha Segurança pendente não trava; Governança pendente trava
+✅ GATE VERDE (test) — pass_when: 'exit 0' satisfeito (rc=0).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+      e apague do DEFINE o marcador "governança não rodou", se houver.
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+exit=5
+
+### (d) testes de não-regressão (bash 3.2)
+-- test_checar.py: Ran 82 tests in 143.890s  OK 
+-- test_governanca_gate.py: Ran 12 tests in 3.446s  OK 
+-- test_governanca_bloco.py: Ran 8 tests in 1.367s  OK 
+-- test_verify_gate.py: Ran 27 tests in 2.487s  OK 
+-- test_bash32.py: Ran 3 tests in 0.071s  OK 
+-- test_python_resolver.py: Ran 26 tests in 25.532s  OK 
+-- test_check_versions.py: Ran 16 tests in 5.083s  OK 
+-- test_contrato_build_release.py: Ran 29 tests in 0.186s  OK 
+-- test_decisoes_lint.py: Ran 11 tests in 2.522s  OK 
+
+### (e) check-versions --base v2.11.0
+PASS: check-versions — 21 skills com versão coerente, comparadas a v2.11.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0

@@ -1,0 +1,6 @@
+$ grep -n 'Segurança\*\* |' /tmp/aval2-f18.hrKa/vg/DEFINE_X.md; bash sdd/bin/verify-gate.sh --checar /tmp/aval2-f18.hrKa/vg/DEFINE_X.md  # cópia do DEFINE desta frente com a linha '| **Segurança** | pendente | passo 12 |' logo abaixo da Governança
+161:| **Segurança** | pendente | passo 12 |
+✅ DEFINE em condição de rodar o gate; o comando não foi executado.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0

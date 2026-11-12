@@ -1,0 +1,28 @@
+$ bash sdd/bin/playbook-curator.sh --colher "$STG" sdd/playbook.md --inv sdd/invariants.md
+DELTA LM-001 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:237 · fp=e66c1b81b5,3471918ddf
+DELTA LM-002 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:238 · fp=f00a701b22,cfa6c3ee43
+DELTA LM-003 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:239 · fp=2f559f8a3e,51261a77b4
+DELTA LM-005 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:240 · fp=3938af9a38,b091a20e91
+DELTA LM-006 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:241 · fp=6929d5f4e9,bda7385b93
+DELTA LM-007 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:242 · fp=d49568616e
+DELTA LM-008 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:243 · fp=8721a85a01,5785a8b1c3
+DELTA LM-009 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:244 · fp=67c3fd985c,e48c54ba5b
+DELTA LM-010 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:245 · fp=c17968e7b7,3781699ef0
+DELTA LM-011 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:246 · fp=9a96f9b12b,3c4e18f5a3
+DELTA LM-012 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:247 · fp=40529d9e41,ee9d1d449d
+DELTA LM-013 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:248 · fp=780c682b97,0cda583cd9
+DELTA LM-014 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:249 · fp=5a7ddc569b,9ad5dd85aa
+DELTA LM-015 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:250 · fp=a51d729f5d,882f350ef8
+DELTA LM-017 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:252 · fp=089be8e86e,738b8a5ac7
+CANDIDATO #1 → LM-018 · secao=Reviews / harness · sup=`PIPESTATUS` `zsh` `[exit=` `evidência` · evidencia=sdd/reports/evidence/F18_F20_SEGURANCA/AT-001.log · fp=b3aef61e8f
+   delta: ADD Reviews / harness :: sup: `PIPESTATUS` `zsh` `[exit=` `evidência` :: Log de evidência gerado com `${PIPESTATUS[0]}` num shell zsh grava `[exit=]` vazio (a variável não existe no zsh): o log parece válido e não prova nada. **Do instead:** rode o comando sem pipe, guarde `rc=$?` e grave o log por um script executado com `bash`; confira que todo log novo termina em `[exit=<número>]`. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-019 · secao=Reviews / harness · sup=`2>/dev/null` `dito uma vez` `sdd_python_pronto` `aviso` · evidencia=sdd/reports/evidence/F18_F20_SEGURANCA/RAIO-DE-IMPACTO.md · fp=3482ad998c
+   delta: ADD Reviews / harness :: sup: `2>/dev/null` `dito uma vez` `sdd_python_pronto` `aviso` :: Calar com `2>/dev/null` uma função que avisa uma vez por processo (ela marca "já dito") apaga o aviso do processo inteiro: na F18/F20, a checagem do Python do bloco do `AGENTS.md` sumiu com a causa que o `doctor` e o `die` dos adaptadores deviam dizer depois. **Do instead:** chame a função sem calar o stderr (ela já evita repetir) e teste a frase no fluxo completo (`init`), não só no comando isolado. → ficha: — · promovido_para: —
+CANDIDATO #3 → LM-020 · secao=Reviews / harness · sup=`chave falsa` `evidência` `AVAL` `varredura` · evidencia=sdd/reviews/AVALIACAO_F18_F20_SEGURANCA_20261111-1545-ciclo1.md · fp=96b041c60b
+   delta: ADD Reviews / harness :: sup: `chave falsa` `evidência` `AVAL` `varredura` :: Sonda de segurança que grava chave falsa por extenso (ou cabeçalho PEM) num log de evidência faz a varredura do próprio pacote bloquear e pode barrar o push da branch pública de documentos. **Do instead:** no brief do avaliador, peça que a chave seja montada em tempo de execução e que o log mostre só o comando que a monta; rode a varredura no pacote antes da release. → ficha: — · promovido_para: —
+CANDIDATO #4 → LM-021 · secao=Reviews / harness · sup=`DISAGREE_EVIDENCE` `auditor` `premissa` `git diff` · evidencia=sdd/reviews/LEDGER_REVISAO_F18_F20_SEGURANCA.md · fp=b039389390
+   delta: ADD Reviews / harness :: sup: `DISAGREE_EVIDENCE` `auditor` `premissa` `git diff` :: O auditor rebateu 2 achados do revisor com premissa falsa sobre o git (que a linha `+++` não leva TAB no nome com espaço, que `git -C <subpasta> diff` devolve caminho relativo): medido num repositório temporário, os 2 achados eram reais. **Do instead:** desacordo do auditor sobre comportamento de ferramenta se decide por medição num repositório temporário, registrada no ledger, nunca pela palavra de um dos dois. → ficha: — · promovido_para: —
+resumo: deltas=15 (ajudou=15 mordeu=0) candidatos=4 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[exit=0]

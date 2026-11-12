@@ -1,0 +1,64 @@
+$ cat /tmp/aval-f18.SxgC/probes/at005.sh; bash /tmp/aval-f18.SxgC/probes/at005.sh
+. /tmp/aval-f18.SxgC/probes/lib.sh
+echo "### (a) dispensa válida na mesma linha (aviso S16) e na linha de cima (bloqueio S11)"
+novo at005a
+printf 'const r = eval(x); // sdd-seguranca: aceito S16 — expressão vem de constante do build, não do usuário\n' > a.js
+printf '# sdd-seguranca: aceito S11 — chave de teste falsa usada só na fixture\nk = "sk_live_%s"\n' "$(rnd 24)" > fx.py
+V --saida /tmp/aval-f18.SxgC/c/at005a/l.txt; echo "--- --saida:"; cat /tmp/aval-f18.SxgC/c/at005a/l.txt
+echo; echo "### (b) dispensa sem motivo"
+novo at005b; printf 'const r = eval(x); // sdd-seguranca: aceito S16 —\n' > a.js; V
+echo; echo "### (c) dispensa de OUTRO item (S12 numa linha com S11)"
+novo at005c; printf '# sdd-seguranca: aceito S12 — falso positivo\nk = "sk_live_%s"\n' "$(rnd 24)" > fx.py; V
+echo; echo "### (d) dispensa duas linhas acima (fora do alcance) ⇒ não vale"
+novo at005d; printf '// sdd-seguranca: aceito S16 — motivo qualquer válido\n\nconst r = eval(x);\n' > a.js; V
+echo; echo "### (e) motivo com forma de segredo não vaza"
+novo at005e; S="sk_live_$(rnd 24)"; printf '// sdd-seguranca: aceito S16 — a chave %s é de teste\nconst r = eval(x);\n' "$S" > a.js; OUT=$(V); echo "$OUT"; echo "$OUT" | grep -qF "$S" && echo "VALOR VAZOU" || echo "(valor não aparece na saída)"
+### (a) dispensa válida na mesma linha (aviso S16) e na linha de cima (bloqueio S11)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 4 arquivo(s) varrido(s), 0 pulado(s)
+✔ aceito S11 fx.py:2 — chave de teste falsa usada só na fixture
+✔ aceito S16 a.js:1 — expressão vem de constante do build, não do usuário
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+--- --saida:
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 4 arquivo(s) varrido(s), 0 pulado(s)
+✔ aceito S11 fx.py:2 — chave de teste falsa usada só na fixture
+✔ aceito S16 a.js:1 — expressão vem de constante do build, não do usuário
+RESULTADO: NADA ACHADO
+
+### (b) dispensa sem motivo
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S16 alta a.js:1 — Texto virando código
+   confira à mão: Procure `eval(`, `new Function(` e `exec(` no código: cada achado precisa de motivo escrito, e nenhum pode receber texto de fora.
+⚠️ dispensa sem motivo (ou de outro item) não vale: a.js:1 (S16)
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### (c) dispensa de OUTRO item (S12 numa linha com S11)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S11 alta fx.py:2 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+⚠️ dispensa sem motivo (ou de outro item) não vale: fx.py:2 (S11)
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (d) dispensa duas linhas acima (fora do alcance) ⇒ não vale
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S16 alta a.js:3 — Texto virando código
+   confira à mão: Procure `eval(`, `new Function(` e `exec(` no código: cada achado precisa de motivo escrito, e nenhum pode receber texto de fora.
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### (e) motivo com forma de segredo não vaza
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S11 alta a.js:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+⚠️ dispensa sem motivo (ou de outro item) não vale: a.js:1 (S11)
+✔ aceito S16 a.js:2 — a chave […] é de teste
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+(valor não aparece na saída)

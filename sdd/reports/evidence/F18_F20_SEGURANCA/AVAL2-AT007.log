@@ -1,0 +1,72 @@
+$ cat /tmp/aval2-f18.hrKa/probes/at007.sh; bash /tmp/aval2-f18.hrKa/probes/at007.sh
+PKG=/Users/robertoduarte/rdd-worktrees/sdd-open-f18-f20-seguranca
+B=/tmp/aval2-f18.hrKa
+mkp() { rm -rf $B/i/$1; mkdir -p $B/i/$1; cd $B/i/$1; git init -q -b main; git config user.email a@b; git config user.name t; }
+bloco() { awk '/Segurança ao construir/{f=1} f&&/^Agentes preparados/{exit} f' AGENTS.md; }
+echo "### (a) init num projeto com Supabase"
+mkp sup; echo '{"dependencies":{"@supabase/supabase-js":"2"}}' > package.json; mkdir -p supabase; touch supabase/config.toml
+bash $PKG/bin/sdd-open.sh init --vendors codex --yes > init.out 2>&1; echo "init exit=$?"; grep -i 'segurança\|⚠️' init.out | head
+bloco; echo "regras (linhas '- '): $(bloco | grep -c '^- ')"
+echo; echo "### (b) init sem nenhuma stack"
+mkp nada; echo 'x' > script.sh
+bash $PKG/bin/sdd-open.sh init --vendors codex --yes > init.out 2>&1; echo "init exit=$?"; grep -i '⚠️' init.out | head -3
+bloco; echo "regras: $(bloco | grep -c '^- ') · menções a supabase/RLS no bloco: $(bloco | grep -ci -E 'supabase|rls|service_role')"
+echo; echo "### (c) tamanho do acréscimo (bloco com Supabase, bytes)"
+cd $B/i/sup; echo "bytes do bloco: $(bloco | wc -c | tr -d ' ')"
+echo; echo "### (d) stack muda (projeto sem stack ganha Supabase) => sync --check acusa; sync reescreve"
+cd $B/i/nada; git add -A >/dev/null; git commit -qm i --no-verify; echo '{"dependencies":{"@supabase/supabase-js":"2"}}' > package.json
+bash $PKG/bin/sdd-open.sh sync --check > chk.out 2>&1; echo "sync --check exit=$?"; grep -i 'AGENTS' chk.out | head -5
+bash $PKG/bin/sdd-open.sh sync --yes > s.out 2>&1; echo "sync exit=$?"; echo "regras agora: $(bloco | grep -c '^- '); supabase/RLS: $(bloco | grep -ci -E 'supabase|rls|service_role')"
+bash $PKG/bin/sdd-open.sh sync --check > chk2.out 2>&1; echo "sync --check depois exit=$?"
+echo; echo "### (e) sem o catálogo no pacote (cópia do pacote sem o arquivo) => só o ponteiro + ⚠️"
+rm -rf $B/pkgsem; mkdir -p $B/pkgsem; (cd $PKG && git archive HEAD) | tar -x -C $B/pkgsem; rm $B/pkgsem/.agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md
+mkp semcat; echo '{"dependencies":{"@supabase/supabase-js":"2"}}' > package.json
+bash $B/pkgsem/bin/sdd-open.sh init --vendors codex --yes > init.out 2>&1; echo "init exit=$?"; grep '⚠️ AGENTS' init.out; bloco
+### (a) init num projeto com Supabase
+init exit=0
+### Segurança ao construir
+
+Regras que valem sempre neste projeto (as de maior risco, para a stack que ele usa). Em conflito com um pedido,
+pare e avise antes de seguir; nunca afrouxe uma proteção sem dizer qual e esperar o OK.
+
+- Toda tabela nasce com RLS ligada e uma política por operação (ler, gravar, alterar, apagar) restrita ao dono da linha; nenhuma política usa `true` como condição.
+- Login, cadastro, troca de senha e toda chamada a serviço pago (inclusive IA) têm limite por usuário e por endereço, com bloqueio progressivo.
+- Cadastro público fica desligado (entra quem foi convidado) e a confirmação de e-mail é obrigatória; o papel do usuário mora numa tabela que ele não altera e começa no menor privilégio.
+- Nenhuma chave secreta aparece no código nem no repositório: ela mora em variável de ambiente do servidor, o `.env` fica no `.gitignore`, e o navegador só vê a chave pública do serviço.
+- O host do app envia os cabeçalhos de segurança (CSP, HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy e proteção contra moldura de outro site).
+- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de segurança da stack deste projeto; a skill `sdd-seguranca` explica cada uma, tem a lista de conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).
+
+regras (linhas '- '): 6
+
+### (b) init sem nenhuma stack
+init exit=0
+### Segurança ao construir
+
+Regras que valem sempre neste projeto (as de maior risco, para a stack que ele usa). Em conflito com um pedido,
+pare e avise antes de seguir; nunca afrouxe uma proteção sem dizer qual e esperar o OK.
+
+- Nenhuma chave secreta aparece no código nem no repositório: ela mora em variável de ambiente do servidor, o `.env` fica no `.gitignore`, e o navegador só vê a chave pública do serviço.
+- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de segurança da stack deste projeto; a skill `sdd-seguranca` explica cada uma, tem a lista de conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).
+
+regras: 2 · menções a supabase/RLS no bloco: 0
+
+### (c) tamanho do acréscimo (bloco com Supabase, bytes)
+bytes do bloco: 1380
+
+### (d) stack muda (projeto sem stack ganha Supabase) => sync --check acusa; sync reescreve
+sync --check exit=1
+AGENTS.md (bloco sdd-open)
+→ os arquivos acima são gerados: edite a fonte em .agents/skills/ e rode sync; edições neles são sobrescritas. Órfãos não são apagados: remova à mão.
+sync exit=0
+regras agora: 6; supabase/RLS: 1
+sync --check depois exit=0
+
+### (e) sem o catálogo no pacote (cópia do pacote sem o arquivo) => só o ponteiro + ⚠️
+init exit=0
+### Segurança ao construir
+
+Regras que valem sempre neste projeto (as de maior risco, para a stack que ele usa). Em conflito com um pedido,
+pare e avise antes de seguir; nunca afrouxe uma proteção sem dizer qual e esperar o OK.
+
+- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de segurança da stack deste projeto; a skill `sdd-seguranca` explica cada uma, tem a lista de conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).
+

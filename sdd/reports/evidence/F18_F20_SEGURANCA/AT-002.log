@@ -1,0 +1,6 @@
+$ python3 -B -m unittest discover -s tests -p test_seguranca_varredura.py -k Rls -k test_r1_rls -k test_n1 -k test_r3_1 -k test_r9   # HEAD c30b54c
+----------------------------------------------------------------------
+Ran 10 tests in 2.732s
+
+OK
+[exit=0]

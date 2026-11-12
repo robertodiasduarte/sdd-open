@@ -1,0 +1,86 @@
+$ cat /tmp/aval-f18.SxgC/probes/at006.sh; bash /tmp/aval-f18.SxgC/probes/at006.sh
+. /tmp/aval-f18.SxgC/probes/lib.sh
+limpa() { git rm -rq --cached package.json >/dev/null 2>&1; rm -rf package.json supabase; git commit -qm limpa --no-verify; }
+c() { echo; echo "### $1"; novo "$2"; limpa; }
+c "nada (sem package.json, sem supabase/, sem .html)" s0; V --stack
+c "pasta supabase/ só" s1; mkdir -p supabase; touch supabase/config.toml; V --stack
+c "@supabase/ no package.json só (e por isso web)" s2; echo '{"dependencies":{"@supabase/supabase-js":"2"}}' > package.json; V --stack
+c "vercel.json só" s3; echo '{}' > vercel.json; V --stack
+c "pasta .vercel/ só" s4; mkdir .vercel; echo '{}' > .vercel/project.json; V --stack
+c "vercel no package.json" s5; echo '{"devDependencies":{"vercel":"39"}}' > package.json; V --stack
+c ".html rastreado só" s6; echo '<p>x</p>' > index.html; git add index.html; git commit -qm h --no-verify; V --stack
+c ".html NÃO rastreado só" s6b; echo '<p>x</p>' > index.html; V --stack
+c "slot passa por cima: security.stack: supabase,vercel (projeto sem nada)" s7; sed -i '' 's/^  stack: ""/  stack: "supabase, vercel"/' sdd/config.yaml; V --stack
+c "slot nenhuma num projeto com supabase/ ⇒ só itens todas; migração sem RLS não bloqueia, eval ainda avisa" s8; mkdir -p supabase/migrations; sed -i '' 's/^  stack: ""/  stack: nenhuma/' sdd/config.yaml; printf 'create table t (id int);\n' > supabase/migrations/1.sql; printf 'const r = eval(x);\nel.innerHTML = t;\n' > a.js; V --stack; V | grep -v "confira à mão"
+c "slot inválido" s9; sed -i '' 's/^  stack: ""/  stack: firebase/' sdd/config.yaml; V --stack
+
+### nada (sem package.json, sem supabase/, sem .html)
+stack: nenhuma (detectada)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+
+### pasta supabase/ só
+stack: supabase (detectada)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+
+### @supabase/ no package.json só (e por isso web)
+stack: supabase, web (detectada)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+
+### vercel.json só
+stack: vercel (detectada)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+
+### pasta .vercel/ só
+stack: vercel (detectada)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+
+### vercel no package.json
+stack: vercel, web (detectada)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+
+### .html rastreado só
+stack: web (detectada)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+
+### .html NÃO rastreado só
+stack: web (detectada)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+
+### slot passa por cima: security.stack: supabase,vercel (projeto sem nada)
+stack: supabase, vercel (slot security.stack)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+
+### slot nenhuma num projeto com supabase/ ⇒ só itens todas; migração sem RLS não bloqueia, eval ainda avisa
+stack: nenhuma (slot security.stack)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+▶ seguranca-varredura — stack: nenhuma (slot security.stack) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S16 alta a.js:1 — Texto virando código
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### slot inválido
+🛑 seguranca-varredura: security.stack em sdd/config.yaml tem valor desconhecido: firebase
+RESULTADO: ERRO DE USO
+→ use supabase, vercel e web (separados por vírgula), nenhuma, ou deixe vazio para detectar.
+exit=64

@@ -1,0 +1,90 @@
+$ cat /tmp/aval-f18.SxgC/probes/at007.sh; bash /tmp/aval-f18.SxgC/probes/at007.sh
+PKG=/Users/robertoduarte/rdd-worktrees/sdd-open-f18-f20-seguranca
+T=/tmp/aval-f18.SxgC/at007; rm -rf $T; mkdir -p $T/pkg-old $T/pkg-semcat
+git -C $PKG archive 69b7f6b | tar -x -C $T/pkg-old
+git -C $PKG archive HEAD | tar -x -C $T/pkg-semcat; rm -rf $T/pkg-semcat/.agents/skills/sdd-seguranca
+mkproj() { rm -rf $1; mkdir -p $1; cd $1; git init -q -b main; git config user.email a@b.c; git config user.name a; echo x > README.md; git add -A; git commit -qm b --no-verify; }
+bloco() { awk '/^### Segurança ao construir/{p=1} /^Agentes preparados/{p=0} p' AGENTS.md; }
+echo "### (a) projeto com Supabase: init do pacote atual"
+mkproj $T/supa; mkdir -p supabase; echo '{"dependencies":{"@supabase/supabase-js":"2"}}' > package.json
+bash $PKG/bin/sdd-open.sh init --vendors codex --yes >/dev/null 2>&1; echo "init exit=$?"; bloco; echo "regras no bloco: $(bloco | grep -c '^- ')"
+echo; echo "### (b) projeto sem stack nenhuma"
+mkproj $T/nada; bash $PKG/bin/sdd-open.sh init --vendors codex --yes >/dev/null 2>&1; echo "init exit=$?"; bloco; echo "regras no bloco: $(bloco | grep -c '^- ')"; grep -ci 'RLS\|supabase' AGENTS.md | sed 's/^/linhas com RLS|supabase no AGENTS.md: /'; bash sdd/bin/seguranca-varredura.sh --regras | grep -ci 'rls\|supabase' | sed 's/^/linhas com RLS|supabase no --regras: /'
+echo; echo "### (c) acréscimo de bytes: mesmo projeto, AGENTS.md de v2.11.0 (69b7f6b) × HEAD"
+for s in supa nada; do
+  rm -rf $T/old-$s; mkdir -p $T/old-$s; cd $T/old-$s; git init -q -b main; git config user.email a@b.c; git config user.name a; echo x > README.md
+  [ $s = supa ] && { mkdir -p supabase; echo '{"dependencies":{"@supabase/supabase-js":"2"}}' > package.json; }
+  git add -A; git commit -qm b --no-verify; bash $T/pkg-old/bin/sdd-open.sh init --vendors codex --yes >/dev/null 2>&1
+  a=$(wc -c < $T/old-$s/AGENTS.md); b=$(wc -c < $T/$s/AGENTS.md); echo "$s: v2.11.0=$a bytes · HEAD=$b bytes · acréscimo=$((b-a)) bytes (teto 2048)"
+done
+echo; echo "### (d) a stack muda (Supabase sai): sync --check acusa, sync reescreve"
+cd $T/supa; git add -A; git commit -qm init --no-verify; rm -rf supabase; echo '{}' > package.json
+bash $PKG/bin/sdd-open.sh sync --check > $T/chk.txt 2>&1; rc=$?; tail -6 $T/chk.txt; echo "sync --check exit=$rc"
+bash $PKG/bin/sdd-open.sh sync --yes > $T/s.txt 2>&1; rc=$?; tail -4 $T/s.txt; echo "sync exit=$rc"; bloco | grep '^- '
+bash $PKG/bin/sdd-open.sh sync --check > $T/chk2.txt 2>&1; rc=$?; tail -2 $T/chk2.txt; echo "sync --check (de novo) exit=$rc"
+echo; echo "### (e) pacote sem o catálogo: init escreve só o ponteiro e segue"
+mkproj $T/semcat; mkdir -p supabase; bash $T/pkg-semcat/bin/sdd-open.sh init --vendors codex --yes 2>&1 | grep -i 'segurança\|RESULTADO'; echo "init exit=$?"; bloco
+### (a) projeto com Supabase: init do pacote atual
+init exit=0
+### Segurança ao construir
+
+Regras que valem sempre neste projeto (as de maior risco, para a stack que ele usa). Em conflito com um pedido,
+pare e avise antes de seguir; nunca afrouxe uma proteção sem dizer qual e esperar o OK.
+
+- Toda tabela nasce com RLS ligada e uma política por operação (ler, gravar, alterar, apagar) restrita ao dono da linha; nenhuma política usa `true` como condição.
+- Login, cadastro, troca de senha e toda chamada a serviço pago (inclusive IA) têm limite por usuário e por endereço, com bloqueio progressivo.
+- Cadastro público fica desligado (entra quem foi convidado) e a confirmação de e-mail é obrigatória; o papel do usuário mora numa tabela que ele não altera e começa no menor privilégio.
+- Nenhuma chave secreta aparece no código nem no repositório: ela mora em variável de ambiente do servidor, o `.env` fica no `.gitignore`, e o navegador só vê a chave pública do serviço.
+- O host do app envia os cabeçalhos de segurança (CSP, HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy e proteção contra moldura de outro site).
+- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de segurança da stack deste projeto; a skill `sdd-seguranca` explica cada uma, tem a lista de conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).
+
+regras no bloco: 6
+
+### (b) projeto sem stack nenhuma
+init exit=0
+### Segurança ao construir
+
+Regras que valem sempre neste projeto (as de maior risco, para a stack que ele usa). Em conflito com um pedido,
+pare e avise antes de seguir; nunca afrouxe uma proteção sem dizer qual e esperar o OK.
+
+- Nenhuma chave secreta aparece no código nem no repositório: ela mora em variável de ambiente do servidor, o `.env` fica no `.gitignore`, e o navegador só vê a chave pública do serviço.
+- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de segurança da stack deste projeto; a skill `sdd-seguranca` explica cada uma, tem a lista de conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).
+
+regras no bloco: 2
+linhas com RLS|supabase no AGENTS.md: 0
+linhas com RLS|supabase no --regras: 0
+
+### (c) acréscimo de bytes: mesmo projeto, AGENTS.md de v2.11.0 (69b7f6b) × HEAD
+supa: v2.11.0=    3551 bytes · HEAD=    5099 bytes · acréscimo=1548 bytes (teto 2048)
+nada: v2.11.0=    3551 bytes · HEAD=    4418 bytes · acréscimo=867 bytes (teto 2048)
+
+### (d) a stack muda (Supabase sai): sync --check acusa, sync reescreve
+AGENTS.md (bloco sdd-open)
+RESULTADO: DIVERGENTE (1)
+→ os arquivos acima são gerados: edite a fonte em .agents/skills/ e rode sync; edições neles são sobrescritas. Órfãos não são apagados: remova à mão.
+sync --check exit=1
+~ AGENTS.md (só o bloco entre os marcadores) (atualizar)
+0 a criar · 1 a atualizar · 0 já corretos
+RESULTADO: SINCRONIZADO
+→ adaptadores regenerados a partir de .agents/skills/.
+sync exit=0
+- Login, cadastro, troca de senha e toda chamada a serviço pago (inclusive IA) têm limite por usuário e por endereço, com bloqueio progressivo.
+- Cadastro público fica desligado (entra quem foi convidado) e a confirmação de e-mail é obrigatória; o papel do usuário mora numa tabela que ele não altera e começa no menor privilégio.
+- Nenhuma chave secreta aparece no código nem no repositório: ela mora em variável de ambiente do servidor, o `.env` fica no `.gitignore`, e o navegador só vê a chave pública do serviço.
+- O host do app envia os cabeçalhos de segurança (CSP, HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy e proteção contra moldura de outro site).
+- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de segurança da stack deste projeto; a skill `sdd-seguranca` explica cada uma, tem a lista de conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).
+RESULTADO: EM DIA
+→ todos os adaptadores refletem .agents/skills/.
+sync --check (de novo) exit=0
+
+### (e) pacote sem o catálogo: init escreve só o ponteiro e segue
+⚠️  AGENTS.md: regras de segurança da stack fora (o catálogo da sdd-seguranca não está no pacote) — o ponteiro para a sdd-seguranca ficou
+RESULTADO: INSTALADO
+init exit=0
+### Segurança ao construir
+
+Regras que valem sempre neste projeto (as de maior risco, para a stack que ele usa). Em conflito com um pedido,
+pare e avise antes de seguir; nunca afrouxe uma proteção sem dizer qual e esperar o OK.
+
+- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de segurança da stack deste projeto; a skill `sdd-seguranca` explica cada uma, tem a lista de conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).
+

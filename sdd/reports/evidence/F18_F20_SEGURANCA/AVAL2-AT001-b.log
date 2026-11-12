@@ -1,0 +1,32 @@
+$ cat /tmp/aval2-f18.hrKa/probes/at001b.sh; bash /tmp/aval2-f18.hrKa/probes/at001b.sh
+. /tmp/aval2-f18.hrKa/probes/lib.sh
+echo "### (b1) node_modules/ fica fora (força o add mesmo ignorado-ou-não)"
+novo b1; mkdir -p node_modules/x; printf 'k="sk_live_%s"\n' "$(rnd 24)" > node_modules/x/i.js; git add -f node_modules; git commit -qm n --no-verify; git ls-files node_modules | cat; V
+echo; echo "### (b2) o próprio catálogo fica fora: chave montada dentro do valor do campo ref de S22 (gramática intacta)"
+novo b2; C=.agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md; K="sk_live_$(rnd 24)"; python3 - "$C" "$K" <<'PY'
+import sys; p,k=sys.argv[1],sys.argv[2]; L=open(p,encoding='utf-8').read().split('\n')
+i=max(j for j,l in enumerate(L) if l.startswith('- ref:')); L[i]=L[i]+' '+k; open(p,'w',encoding='utf-8').write('\n'.join(L))
+PY
+git add -A; git commit -qm c --no-verify; V
+echo; echo "### (b3) controle: mesma chave num arquivo comum ao lado do catálogo acusa"
+printf 'k="sk_live_%s"\n' "$(rnd 24)" > .agents/skills/sdd-seguranca/references/outro.md; git add -A; V
+### (b1) node_modules/ fica fora (força o add mesmo ignorado-ou-não)
+node_modules/x/i.js
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 38 arquivo(s) varrido(s), 1 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### (b2) o próprio catálogo fica fora: chave montada dentro do valor do campo ref de S22 (gramática intacta)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 38 arquivo(s) varrido(s), 1 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### (b3) controle: mesma chave num arquivo comum ao lado do catálogo acusa
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 39 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta .agents/skills/sdd-seguranca/references/outro.md:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2

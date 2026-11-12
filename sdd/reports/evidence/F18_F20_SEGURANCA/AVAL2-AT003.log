@@ -1,0 +1,74 @@
+$ cat /tmp/aval2-f18.hrKa/probes/at003.sh; bash /tmp/aval2-f18.hrKa/probes/at003.sh
+. /tmp/aval2-f18.hrKa/probes/lib.sh
+printf 'security:\n  max_warnings: 50\n' > /tmp/aval2-f18.hrKa/cfg50.yaml
+echo "### (P) positivos: um padrão por arquivo (teto subido para 50 para ver todos)"
+novo p; cp $BASE/cfg50.yaml sdd/config.yaml; mkdir -p src
+printf "const r = await supabase.from('t').select('*');\n" > src/s02.ts
+printf 'create function f() returns int language sql security definer as $$ select 1 $$;\nrevoke execute on function f() from public;\n' > supabase/migrations/20260101_s03.sql
+printf "create table t2 (id int);\nalter table t2 enable row level security;\n" >> supabase/migrations/20260101_s03.sql
+printf "const u = supabase.storage.from('b').getPublicUrl(p);\n" > src/s04.ts
+printf 'export const A = () => <div dangerouslySetInnerHTML={{__html: x}} />;\n' > src/s12a.tsx
+printf '<template><div v-html="x"></div></template>\n' > src/s12b.vue
+printf 'el.innerHTML = t;\n' > src/s12c.js
+printf 'el.innerHTML += t;\n' > src/s12d.js
+printf "res.setHeader('Access-Control-Allow-Origin', '*');\n" > src/s14a.js
+printf "headers['Access-Control-Allow-Origin'] = '*';\n" > src/s14b.js
+printf 'response.headers["Access-Control-Allow-Origin"] = "*"\n' > src/s14c.py
+printf "const corsHeaders = { 'Access-Control-Allow-Origin': '*' };\n" > src/s14d.ts
+printf '{"headers":[{"source":"/(.*)","headers":[{"key":"Access-Control-Allow-Origin","value":"*"}]}]}\n' > vercel.json
+printf "app.use(cors({ origin: '*' }));\n" > src/s14e.js
+printf "module.exports = { productionBrowserSourceMaps: true };\n" > next.config.js
+printf "export default { build: { sourcemap: true } };\n" > vite.config.ts
+printf "const v = eval(x);\n" > src/s16a.js
+printf "const f = new Function('a', b);\n" > src/s16b.js
+printf "r = eval(expr)\n" > src/s16c.py
+git add -A; V
+echo; echo "### (N) negativos (pares que não acusam)"
+novo n; cp $BASE/cfg50.yaml sdd/config.yaml; mkdir -p src
+printf "const r = await supabase.from('t').select('id, nome');\n" > src/n02.ts
+printf 'create function f() returns int language sql security definer as $$ select 1 $$;\nrevoke execute on function f() from public, anon;\n' > supabase/migrations/20260101_n03.sql
+printf "const u = await supabase.storage.from('b').createSignedUrl(p, 60);\n" > src/n04.ts
+printf 'el.textContent = t;\nif (el.innerHTML === t) {}\nconst h = el.innerHTML;\n' > src/n12.js
+printf "res.setHeader('Access-Control-Allow-Origin', 'https://meuapp.com');\n" > src/n14a.js
+printf 'response.headers["Access-Control-Allow-Origin"] = "https://meuapp.com"\n' > src/n14b.py
+printf "module.exports = { productionBrowserSourceMaps: false };\n" > next.config.js
+printf "const s = { sourcemap: true };\n" > src/naoconfig.js
+printf "const o = JSON.parse(x);\n// documentação: nunca use eval() com texto do usuário\nmodel.eval();\n" > src/n16.js
+printf "import ast\nv = ast.literal_eval(s)\n" > src/n16.py
+git add -A; V
+### (P) positivos: um padrão por arquivo (teto subido para 50 para ver todos)
+▶ seguranca-varredura — stack: supabase, vercel, web (detectada) · base: origin/main · 57 arquivo(s) varrido(s), 1 pulado(s)
+⚠️ S03 alta supabase/migrations/20260101_s03.sql:1 — Função de banco que qualquer um chama
+   confira à mão: Para cada função: quem pode chamá-la sem login? Ela confere quem está chamando antes de agir? Ela roda com mais poder que quem chamou? Uma resposta errada é falha.
+⚠️ S12 alta src/s12a.tsx:1 — HTML vindo do usuário sem escapar
+   confira à mão: Grave `<b>teste</b>` em cada campo de texto livre e abra as telas que o mostram: tem de aparecer literal, sem negrito.
+⚠️ S12 alta src/s12b.vue:1 — HTML vindo do usuário sem escapar
+⚠️ S12 alta src/s12c.js:1 — HTML vindo do usuário sem escapar
+⚠️ S12 alta src/s12d.js:1 — HTML vindo do usuário sem escapar
+⚠️ S16 alta src/s16a.js:1 — Texto virando código
+   confira à mão: Procure `eval(`, `new Function(` e `exec(` no código: cada achado precisa de motivo escrito, e nenhum pode receber texto de fora.
+⚠️ S16 alta src/s16b.js:1 — Texto virando código
+⚠️ S16 alta src/s16c.py:1 — Texto virando código
+⚠️ S02 media src/s02.ts:1 — Consulta que devolve colunas demais
+   confira à mão: Abra a tela, as ferramentas do navegador e a aba de rede; clique na chamada da listagem e leia a resposta: coluna que a tela não mostra não deveria estar ali.
+⚠️ S04 media src/s04.ts:1 — Arquivo privado com link público
+   confira à mão: Copie o endereço de um documento, abra numa janela anônima: não pode abrir. Tente enviar um arquivo enorme ou de tipo estranho: tem de ser recusado.
+⚠️ S14 media src/s14a.js:1 — CORS aberto para qualquer origem
+   confira à mão: Procure `Access-Control-Allow-Origin` e `origin:` no código das funções de servidor e na configuração do host: o valor tem de ser o seu domínio, nunca `*`.
+⚠️ S14 media src/s14b.js:1 — CORS aberto para qualquer origem
+⚠️ S14 media src/s14c.py:1 — CORS aberto para qualquer origem
+⚠️ S14 media src/s14d.ts:1 — CORS aberto para qualquer origem
+⚠️ S14 media src/s14e.js:1 — CORS aberto para qualquer origem
+⚠️ S14 media vercel.json:1 — CORS aberto para qualquer origem
+⚠️ S15 baixa next.config.js:1 — Código-fonte e detalhes vazando em produção
+   confira à mão: No navegador, ferramentas, aba de fontes: a pasta do código original não pode aparecer. Provoque um erro (endereço que não existe, campo inválido): a mensagem não pode citar tabela nem arquivo.
+⚠️ S15 baixa vite.config.ts:1 — Código-fonte e detalhes vazando em produção
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### (N) negativos (pares que não acusam)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 49 arquivo(s) varrido(s), 1 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0

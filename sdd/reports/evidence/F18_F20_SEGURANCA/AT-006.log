@@ -1,0 +1,6 @@
+$ python3 -B -m unittest discover -s tests -p test_seguranca_varredura.py -k Stack   # HEAD c30b54c
+----------------------------------------------------------------------
+Ran 6 tests in 3.151s
+
+OK
+[exit=0]

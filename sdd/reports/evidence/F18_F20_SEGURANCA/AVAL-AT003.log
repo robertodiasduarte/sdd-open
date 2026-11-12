@@ -1,0 +1,141 @@
+$ cat /tmp/aval-f18.SxgC/probes/at003.sh; bash /tmp/aval-f18.SxgC/probes/at003.sh
+. /tmp/aval-f18.SxgC/probes/lib.sh; M=supabase/migrations
+caso() { echo; echo "### $1"; novo "$2"; }
+caso "S02 acusa: select('*')" s02p; printf "const r = await supabase.from('t').select('*');\n" > a.ts; V
+caso "S02 não acusa: select('id, nome')" s02n; printf "const r = await supabase.from('t').select('id, nome');\n" > a.ts; V
+caso "S03 acusa: security definer com revoke só de public" s03p; printf 'create function public.f() returns int language sql security definer as $$ select 1 $$;\nrevoke execute on function public.f() from public;\n' > $M/1.sql; V
+caso "S03 não acusa: security definer com revoke … from anon" s03n; printf 'create function public.f() returns int language sql security definer as $$ select 1 $$;\nrevoke execute on function public.f() from anon, authenticated;\n' > $M/1.sql; V
+caso "S03 acusa: revoke from anon de OUTRA função no mesmo arquivo" s03q; printf 'create function public.f() returns int language sql security definer as $$ select 1 $$;\nrevoke execute on function public.g() from anon;\n' > $M/1.sql; V
+caso "S04 acusa: getPublicUrl(" s04p; printf "const u = supabase.storage.from('b').getPublicUrl('x.pdf');\n" > a.js; V
+caso "S04 não acusa: createSignedUrl(" s04n; printf "const u = supabase.storage.from('b').createSignedUrl('x.pdf', 60);\n" > a.js; V
+caso "S12 acusa: dangerouslySetInnerHTML, v-html, .innerHTML =" s12p; printf '<div dangerouslySetInnerHTML={{__html: t}} />\n' > a.jsx; printf '<template><div v-html="t"></div></template>\n' > b.vue; printf 'el.innerHTML = t;\n' > c.js; V
+caso "S12 não acusa: .textContent = e comparação innerHTML ==" s12n; printf 'el.textContent = t;\nif (el.innerHTML === "") {}\n' > c.js; V
+caso "S14 acusa: Access-Control-Allow-Origin: *" s14p; printf "headers['Access-Control-Allow-Origin'] = '*';\n" > a.js; V
+caso "S14 não acusa: origem fixa" s14n; printf "headers['Access-Control-Allow-Origin'] = 'https://app.exemplo.com';\n" > a.js; V
+caso "S15 acusa: productionBrowserSourceMaps: true (next.config.js) e sourcemap: true (vite.config.ts)" s15p; printf 'module.exports = { productionBrowserSourceMaps: true };\n' > next.config.js; printf 'export default { build: { sourcemap: true } };\n' > vite.config.ts; V
+caso "S15 não acusa: sourcemap: false; sourcemap: true fora de config de build" s15n; printf 'export default { build: { sourcemap: false } };\n' > vite.config.ts; printf 'const o = { sourcemap: true };\n' > app.js; V
+caso "S16 acusa: eval( e new Function(" s16p; printf 'const r = eval(txt);\nconst f = new Function("a", body);\n' > a.js; printf 'x = eval(entrada)\n' > b.py; V
+caso "S16 não acusa: JSON.parse(, obj.evaluate(" s16n; printf 'const r = JSON.parse(txt);\nconst v = model.eval(x);\npage.evaluate(fn);\n' > a.js; V
+caso "S16 comentário de documentação: // nunca use eval(x) aqui" s16c; printf '// nunca use eval(x) aqui\nconst a = 1;\n' > a.js; V
+caso "nada achado ⇒ 0" nada; printf 'export const soma = (a, b) => a + b;\n' > a.js; V
+
+### S02 acusa: select('*')
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S02 media a.ts:1 — Consulta que devolve colunas demais
+   confira à mão: Abra a tela, as ferramentas do navegador e a aba de rede; clique na chamada da listagem e leia a resposta: coluna que a tela não mostra não deveria estar ali.
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### S02 não acusa: select('id, nome')
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### S03 acusa: security definer com revoke só de public
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S03 alta supabase/migrations/1.sql:1 — Função de banco que qualquer um chama
+   confira à mão: Para cada função: quem pode chamá-la sem login? Ela confere quem está chamando antes de agir? Ela roda com mais poder que quem chamou? Uma resposta errada é falha.
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### S03 não acusa: security definer com revoke … from anon
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### S03 acusa: revoke from anon de OUTRA função no mesmo arquivo
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S03 alta supabase/migrations/1.sql:1 — Função de banco que qualquer um chama
+   confira à mão: Para cada função: quem pode chamá-la sem login? Ela confere quem está chamando antes de agir? Ela roda com mais poder que quem chamou? Uma resposta errada é falha.
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### S04 acusa: getPublicUrl(
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S04 media a.js:1 — Arquivo privado com link público
+   confira à mão: Copie o endereço de um documento, abra numa janela anônima: não pode abrir. Tente enviar um arquivo enorme ou de tipo estranho: tem de ser recusado.
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### S04 não acusa: createSignedUrl(
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### S12 acusa: dangerouslySetInnerHTML, v-html, .innerHTML =
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 5 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S12 alta a.jsx:1 — HTML vindo do usuário sem escapar
+   confira à mão: Grave `<b>teste</b>` em cada campo de texto livre e abra as telas que o mostram: tem de aparecer literal, sem negrito.
+⚠️ S12 alta b.vue:1 — HTML vindo do usuário sem escapar
+⚠️ S12 alta c.js:1 — HTML vindo do usuário sem escapar
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### S12 não acusa: .textContent = e comparação innerHTML ==
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### S14 acusa: Access-Control-Allow-Origin: *
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### S14 não acusa: origem fixa
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### S15 acusa: productionBrowserSourceMaps: true (next.config.js) e sourcemap: true (vite.config.ts)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 4 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S15 baixa next.config.js:1 — Código-fonte e detalhes vazando em produção
+   confira à mão: No navegador, ferramentas, aba de fontes: a pasta do código original não pode aparecer. Provoque um erro (endereço que não existe, campo inválido): a mensagem não pode citar tabela nem arquivo.
+⚠️ S15 baixa vite.config.ts:1 — Código-fonte e detalhes vazando em produção
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### S15 não acusa: sourcemap: false; sourcemap: true fora de config de build
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 4 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### S16 acusa: eval( e new Function(
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 4 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S16 alta a.js:1 — Texto virando código
+   confira à mão: Procure `eval(`, `new Function(` e `exec(` no código: cada achado precisa de motivo escrito, e nenhum pode receber texto de fora.
+⚠️ S16 alta a.js:2 — Texto virando código
+⚠️ S16 alta b.py:1 — Texto virando código
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### S16 não acusa: JSON.parse(, obj.evaluate(
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### S16 comentário de documentação: // nunca use eval(x) aqui
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### nada achado ⇒ 0
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0

@@ -42,30 +42,31 @@ construção: foi assim que 3 worktrees ficaram com 3 versões deste arquivo em 
 | F16 Ambiente agnóstico e proativo | ✅ | `v2.11.0` (PR #25, 11/11) | `sdd-checar-ambiente` 1.5.0, `sdd-iniciar-repo` 1.2.0, `sdd-new-session` 1.5.0 (pergunta o editor padrão uma vez, grava em `git config sdd.editor`), resolvedor de Python para o Windows, job `testes-windows` informativo (só o caminho do aluno; README: Windows "sem teste automático"); veredito CONCERNS: 5 rodadas de revisão (2 de fecho, acima do teto, decisão do Roberto); ficam a curadoria de 5 candidatos, o R1 da rodada 4 e o teto do `checar` no Windows (F16W) |
 | F16W Windows: porte da suíte | ⬜ | — | nasceu da 1ª medição da F16 (2026-11-11: 282 de ~1.900 testes em 90 min no `windows-latest`, 156 quebras); medir módulo a módulo; prioridade: o teto do `checar.sh` no Windows (o vigia por grupo de processos não corta a rede pendurada); 4 achados guardados (`tasklist`, `report-lint`, `sdd-archive`, `O_NOFOLLOW`); depois, decidir o piso |
 | F17 Starter gerado a partir do Open | ⬜ | — | só no plano; depois da F16 |
-| F18 Segurança embutida no fluxo | 🔨 | — | aberta em 2026-11-11 junto com a F20 (brainstorm conjunto), worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f18-f20-seguranca`, branch `feat/f18-f20-seguranca` (de `69b7f6b` = `v2.11.0`); nesta frente, a **onda 1** (piso de alerta), antes da F17; ondas 2 e 3 a decidir no brainstorm |
+| F18 Segurança embutida no fluxo | ✅ | `v2.12.0` (PR #26, 11/11); `v2.12.1` (curadoria do playbook, 12/11) | as 3 ondas numa sessão (decisão do Roberto): skill `sdd-seguranca` 1.0.0 (21ª; catálogo S01–S22 com texto próprio e referência OWASP/CWE, sem citar o e-book; modos Define, checklist, app publicado, incidente), `sdd/bin/seguranca-varredura.sh` em toda release (bloqueia só chave literal e tabela nova sem RLS), passo 12 no Define (sem trava), seção Segurança no Design, perfil de risco no Brainstorm; veredito CONCERNS: rodada 4 de revisão acima do teto (decisão do Roberto), cenário `incidente-chave` não executado, falso positivo real não medido |
 | F19 Custo e benefício dos revisores | ✅ | `v2.10.1` (PRs #23 e #24, 10/11; a tag `v2.10.0` ficou sem Release: teto do CI) | ledger da revisão com a marca de dano, lint e `eval-revisores.sh`; veredito CONCERNS: avaliador sem PASS (3 ciclos) e revisão final de uma engine só; ficam 2 achados leves e a curadoria de 2 candidatos para a próxima frente; medir o privado, depois da F15 |
-| F20 Ações preventivas do e-book | 🔨 | — | aberta em 2026-11-11 na mesma frente da F18 (brainstorm conjunto; entregas separadas: a F18 alerta, a F20 previne); chega ao starter pela F17 |
+| F20 Ações preventivas do e-book | ✅ | `v2.12.0` (com a F18) | entregas 1 a 5: as 5 regras de maior risco da stack no `AGENTS.md` (`init`/`sync`), regras da stack na `sdd-build` (`--regras`), "como evitar" na seção Segurança do Design, a lista fixa na 0c da release, o modo incidente; a entrega 6 (starter) vai pela F17 |
 | F21 Engenharia reversa de SaaS | ✅ | `v2.9.0` (PR #22, 10/11); starter `v1.5.16` (PR #9 de lá, 10/11) | skill `sdd-engenharia-reversa-saas` 1.1.0 no Open e no starter (no starter, 1 linha do `SKILL.md` difere: a de identificação); levou a curadoria da F15_SLOTS; ficam 14 cenários de comportamento não executados e a curadoria de 3 candidatos; a página `/sdd/` é frente própria no privado |
 
 Legenda: ✅ publicada · 🔨 em andamento · ⬜ só no plano. Ao publicar uma frente, troque a linha dela aqui no
 mesmo commit que registra a publicação na ficha.
 
-## Cronograma recomendado (atualizado em 2026-11-11)
+## Cronograma recomendado (atualizado em 2026-11-12)
 
 Ordem das próximas sessões, com o motivo de cada posição. Uma frente por sessão (seção 10); a release é fast-forward na `main`,
 uma por vez. Mudou a ordem? Atualize esta seção e a tabela acima no mesmo commit, com a linha nos Eventos da ficha.
 
 | # | Frente | Quando | Por quê | Não pareia com |
 |---|---|---|---|---|
-| 1 | **F18 onda 1 + F20** (brainstorm conjunto; release com o passo 0 das sobras da F16) | **agora** (aberta em 2026-11-11) | o aluno do starter recebe o alerta (F18) e a prevenção (F20) já na 1ª geração da F17; mesma fonte (o e-book), mesmo catálogo S01–S22 e os mesmos arquivos (`sdd-release`, `sdd-build`, `AGENTS.md.tmpl`) | F15 (`sdd-release`) |
-| 2 | **F17 Starter gerado a partir do Open** | depois da release da F18 onda 1 + F20 | depende da F16 (feita) e, pela decisão de 2026-11-11, das ondas de alerta e prevenção que devem chegar ao aluno do starter; a 1ª geração exige comparar skill a skill | F18 e F20 (gera o que elas escrevem) |
-| 3 | **F18 ondas 2 e 3** (skill `sdd-seguranca` nas fases, se o brainstorm não as trouxer para a 1ª sessão) | depois da F17, ou logo depois da onda 1 se a F17 tiver geração repetível | a onda 1 é a menor; as seguintes mexem em `sdd-brainstorm`, `sdd-define`, `sdd-design` e `sdd-build` | F15 |
-| 4 | **F16W Windows: porte da suíte** | entre quaisquer duas | independente; a prioridade é o teto do `checar.sh` no Windows (defeito conhecido); toca os workflows | frente que mexa em `.github/workflows/` |
-| 5 | **F15 fase 4** (no repositório privado) | quando as frentes antigas do privado fecharem (16 em 10/11) | é a substituição do SDD privado pelo Open; a curadoria da prova e a do F15_SLOTS esperam ela | F18, F20 (`sdd-release`) |
-| 6 | Medir o privado com o `eval-revisores.sh` | depois da F15 | pendência da F19; decisão do Roberto | — |
+| 1 | **F17 Starter gerado a partir do Open** | **agora** | a F16 e a F18 + F20 (`v2.12.1`) estão publicadas: a 1ª geração já leva o ambiente agnóstico, a `sdd-seguranca` (cada item do catálogo tem a forma "confira à mão" para quem usa claude.ai ou ChatGPT) e as regras do `AGENTS.md`; a 1ª geração exige comparar skill a skill | F15 (`sdd-release`) |
+| 2 | **F16W Windows: porte da suíte** | entre quaisquer duas | independente; a prioridade é o teto do `checar.sh` no Windows (defeito conhecido); toca os workflows | frente que mexa em `.github/workflows/` |
+| 3 | **F15 fase 4** (no repositório privado) | quando as frentes antigas do privado fecharem (16 em 10/11) | é a substituição do SDD privado pelo Open; a curadoria da prova e a do F15_SLOTS esperam ela | F17 (`sdd-release`, se a geração tocar nela) |
+| 4 | Medir o privado com o `eval-revisores.sh` | depois da F15 | pendência da F19; decisão do Roberto | — |
 
-Sobras que cada próxima frente leva no passo 0 (da F16): a curadoria dos 5 candidatos ao playbook do
-`BUILD_REPORT_F16_AMBIENTE.md`, o 🐛 da rodada 4 (uma `sdd-checar-ambiente` antiga sem `--editores`) e os pequenos da ficha.
+Sobras que a próxima frente leva no passo 0 (da F18 + F20): o cenário `incidente-chave` da `sdd-seguranca` em contexto
+novo (3 execuções, LM-011); 3 pequenos da F16 que o Roberto deixou fora (o `--help` da `governanca-fronteira.sh` sem Python, o
+editor do `git config` no resumo do `checar`, a linha `gh:` no guia do aluno); a ambiguidade "item 10" (FASE 2 × 0a) da
+`sdd-release`; a recuperação "rode só o passo 11" do `verify-gate.sh` que pula o passo 12. A curadoria da F18 + F20 já saiu
+(`v2.12.1`).
 
 ---
 

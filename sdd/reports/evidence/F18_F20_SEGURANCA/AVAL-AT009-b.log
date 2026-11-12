@@ -1,0 +1,15 @@
+$ cd /tmp/aval-f18.SxgC/proj && grep -n -i 'evitar' .agents/skills/sdd-design/SKILL.md sdd/templates/DESIGN_TEMPLATE.md | head -4; grep -n -i 'confira' .agents/skills/sdd-seguranca/SKILL.md | head -4; grep -n -i 'recusad\|adiad' sdd/templates/BUILD_REPORT_TEMPLATE.md | head -4; grep -n -i 'perfil de risco\|quem pode' sdd/templates/BRAINSTORM_TEMPLATE.md | head -4; grep -n 'max_warnings\|stack:' sdd/config.yaml | head -4
+sdd/templates/DESIGN_TEMPLATE.md:234:> do Define (linha `Segurança` do DEFINE) entram no item 5 com o "evitar" da ficha do catálogo da `sdd-seguranca`,
+.agents/skills/sdd-design/SKILL.md:174:traz o campo `evitar` da ficha do catálogo da `sdd-seguranca` (`references/CATALOGO_SEGURANCA.md`), escrito como
+.agents/skills/sdd-design/SKILL.md:233:[ ] ## Segurança com os 5 itens; cada item aplicado no Define com o "evitar" da ficha como decisão deste projeto
+21:**evitar** que vira decisão, o **padrao** da varredura e o **confira** à mão.
+104:   primeiro, cada um com o "confira". Sem terminal: leia o catálogo, filtre pela stack e pela fase (sem
+115:aberto, S07 limites): para cada um, o "confira" da ficha em passos numerados, um por vez, com o que a pessoa deve
+180:| {Snn <falha>} | {recusado \| adiado} | {o motivo registrado no DEFINE} |
+48:## Perfil de risco
+55:| Quem pode ver? | {cada dado: só o dono, a empresa dele, a equipe, qualquer visitante} |
+56:| Quem pode mudar? | {quem grava, altera e apaga} |
+111:# Segurança do app (skill sdd-seguranca e sdd/bin/seguranca-varredura.sh). stack: vazio = detectar pelo projeto
+114:# para qualquer stack. Item de outra stack nunca dispara. max_warnings: avisos que a varredura mostra na tela (os mais
+117:  stack: ""
+118:  max_warnings: 5

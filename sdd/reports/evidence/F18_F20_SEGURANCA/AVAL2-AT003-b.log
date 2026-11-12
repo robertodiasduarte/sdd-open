@@ -1,0 +1,33 @@
+$ cat /tmp/aval2-f18.hrKa/probes/at003b.sh; bash /tmp/aval2-f18.hrKa/probes/at003b.sh
+. /tmp/aval2-f18.hrKa/probes/lib.sh
+echo "### (P2) variantes de A2/A3 (sem espaços, aspas trocadas, dict Python, Headers.set, outerHTML +=)"
+novo p2; cp $BASE/cfg50.yaml sdd/config.yaml; mkdir -p src
+printf 'headers["Access-Control-Allow-Origin"]="*";\n' > src/a.js
+printf "resp.headers['Access-Control-Allow-Origin']='*'\n" > src/b.py
+printf "return Response(body, headers={'Access-Control-Allow-Origin': '*'})\n" > src/c.py
+printf "h.set('Access-Control-Allow-Origin', '*');\n" > src/d.ts
+printf 'el.outerHTML += t;\nel.innerHTML+=t;\n' > src/e.js
+git add -A; V > o.txt; cat o.txt | grep -v '^   confira'; echo "linhas 'confira à mão' na saída: $(grep -c 'confira à mão' o.txt); avisos: $(grep -c '^⚠️ S' o.txt)"
+echo; echo "### (C) comentários de documentação com os padrões (informativo)"
+novo cm; cp $BASE/cfg50.yaml sdd/config.yaml; mkdir -p src
+printf "// nunca faça: el.innerHTML = textoDoUsuario\n/* evite .select('*') */\n" > src/doc.js
+printf "# nunca chame eval(x) com texto do usuário\n" > src/doc.py
+git add -A; V | grep -v '^   confira'
+### (P2) variantes de A2/A3 (sem espaços, aspas trocadas, dict Python, Headers.set, outerHTML +=)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 45 arquivo(s) varrido(s), 1 pulado(s)
+⚠️ S12 alta src/e.js:1 — HTML vindo do usuário sem escapar
+⚠️ S12 alta src/e.js:2 — HTML vindo do usuário sem escapar
+⚠️ S14 media src/a.js:1 — CORS aberto para qualquer origem
+⚠️ S14 media src/b.py:1 — CORS aberto para qualquer origem
+⚠️ S14 media src/c.py:1 — CORS aberto para qualquer origem
+⚠️ S14 media src/d.ts:1 — CORS aberto para qualquer origem
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+linhas 'confira à mão' na saída: 2; avisos: 6
+
+### (C) comentários de documentação com os padrões (informativo)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 41 arquivo(s) varrido(s), 1 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0

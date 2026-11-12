@@ -1,0 +1,69 @@
+$ cat /tmp/aval-f18.SxgC/probes/at001.sh; bash /tmp/aval-f18.SxgC/probes/at001.sh
+. /tmp/aval-f18.SxgC/probes/lib.sh
+echo "### (a) 6 formatos de segredo acrescentados + 3 leituras por nome"
+novo at001a
+K1="sk_live_$(rnd 24)"; K2="ghp_$(rnd 36)"; K3="github_pat_$(rnd 40)"; K4="AKIA$(rndU 16)"; K5="sk-proj-$(rnd 20)7$(rnd 20)"; K6="eyJ$(rnd 30)"
+printf 'const a = "%s";\nconst b = "%s";\n' "$K1" "$K2" > app.js
+printf 'x = "%s"\ny = "%s"\nz = "%s"\n' "$K3" "$K4" "$K5" > conf.py
+printf 'SUPABASE_SERVICE_ROLE_KEY="%s"\n' "$K6" > settings.toml
+printf -- '-----BEGIN RSA PRIVATE KEY-----\nMIIabc\n-----END RSA PRIVATE KEY-----\n' > chave.txt
+printf 'const a = process.env.STRIPE_KEY;\nconst b = Deno.env.get("SERVICE_ROLE_KEY");\n' > env.js
+printf 'import os\nk = os.environ["OPENAI_API_KEY"]\n' > env.py
+OUT=$(V); echo "$OUT"
+for k in $K1 $K2 $K3 $K4 $K5 $K6 MIIabc; do echo "$OUT" | grep -qF "$k" && echo "VALOR VAZOU NA SAIDA: ${k:0:6}…"; done; echo "(checagem: nenhum valor de segredo na saída se não houver linha 'VALOR VAZOU')"
+echo; echo "### (b) segredo já na base (origin/main) e não acrescentado"
+novo at001b; git switch -q main; printf 'const a = "sk_live_%s";\n' "$(rnd 24)" > old.js; git add old.js; git commit -qm old --no-verify; git push -q origin main --no-verify; git switch -q feat; git merge -q main; V
+echo; echo "### (c) segredo acrescentado numa linha modificada de arquivo rastreado + commitado na branch"
+novo at001c; printf '# x\nk="ghp_%s"\n' "$(rnd 36)" > README.md; git commit -qam b --no-verify; V
+echo; echo "### (d) sem base: repositório sem remoto"
+novo at001d; git remote remove origin; printf 'ok = 1\n' > a.py; V
+echo; echo "### (e) --base <ref> explícita (HEAD já contém o segredo ⇒ já existia)"
+novo at001e; printf 'k="AKIA%s"\n' "$(rndU 16)" > k.py; git add k.py; git commit -qm k --no-verify; V --base HEAD; V --base origin/main | tail -3
+### (a) 6 formatos de segredo acrescentados + 3 leituras por nome
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 8 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S11 alta app.js:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+🛑 S11 alta app.js:2 — Chave secreta no código (bloqueia: novo nesta publicação)
+🛑 S11 alta chave.txt:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+🛑 S11 alta conf.py:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+🛑 S11 alta conf.py:2 — Chave secreta no código (bloqueia: novo nesta publicação)
+🛑 S11 alta conf.py:3 — Chave secreta no código (bloqueia: novo nesta publicação)
+🛑 S11 alta settings.toml:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+(checagem: nenhum valor de segredo na saída se não houver linha 'VALOR VAZOU')
+
+### (b) segredo já na base (origin/main) e não acrescentado
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S11 alta old.js:1 — Chave secreta no código (já existia)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### (c) segredo acrescentado numa linha modificada de arquivo rastreado + commitado na branch
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 2 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S11 alta README.md:2 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (d) sem base: repositório sem remoto
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ base origin/main não existe: tudo conta como novo (sem remoto ou sem a branch padrão)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### (e) --base <ref> explícita (HEAD já contém o segredo ⇒ já existia)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: HEAD · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S11 alta k.py:1 — Chave secreta no código (já existia)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2

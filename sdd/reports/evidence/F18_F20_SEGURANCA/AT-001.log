@@ -1,0 +1,6 @@
+$ python3 -B -m unittest discover -s tests -p test_seguranca_varredura.py -k Segredo -k test_r2_nome -k test_r3_raiz -k test_r4_linha -k test_r4_motivo -k test_r8 -k test_r1_identificador   # HEAD c30b54c
+----------------------------------------------------------------------
+Ran 14 tests in 4.955s
+
+OK
+[exit=0]

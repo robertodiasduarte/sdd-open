@@ -1,0 +1,98 @@
+$ cat /tmp/aval2-f18.hrKa/probes/lib.sh /tmp/aval2-f18.hrKa/probes/at001.sh; bash /tmp/aval2-f18.hrKa/probes/at001.sh
+PKG=/Users/robertoduarte/rdd-worktrees/sdd-open-f18-f20-seguranca
+BASE=/tmp/aval2-f18.hrKa
+novo() { rm -rf $BASE/c/$1; mkdir -p $BASE/c/$1; cp -R $BASE/remote.git $BASE/proj $BASE/c/$1/; cd $BASE/c/$1/proj; git remote set-url origin $BASE/c/$1/remote.git; git fetch -q origin; }
+V() { bash sdd/bin/seguranca-varredura.sh "$@"; echo "exit=$?"; }
+rnd() { LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c $1; }
+rndU() { LC_ALL=C tr -dc 'A-Z0-9' </dev/urandom | head -c $1; }
+. /tmp/aval2-f18.hrKa/probes/lib.sh
+echo "### (a) A1: segredos acrescentados em sdd/ (log de evidência, ficha de handoff), .claude/settings.json, .cursor/, AGENTS.md"
+novo a; mkdir -p sdd/reports/evidence/X sdd/handoffs .claude .cursor
+K1="sk_live_$(rnd 24)"; K2="ghp_$(rnd 36)"; K3="sk-proj-$(rnd 20)7$(rnd 20)"; K4="AKIA$(rndU 16)"; K5="github_pat_$(rnd 40)"
+printf '$ curl -H "Authorization: Bearer %s" https://api\n' "$K1" > sdd/reports/evidence/X/AVAL-1.log
+printf 'export GH_TOKEN=%s\n' "$K2" > sdd/handoffs/HANDOFF_X.md
+printf '{"env":{"OPENAI_API_KEY":"%s"}}\n' "$K3" > .claude/settings.json
+printf 'aws_access_key_id = %s\n' "$K4" > .cursor/mcp.env
+printf '# notas\ntoken: %s\n' "$K5" >> AGENTS.md
+git add -A; git commit -qm evid --no-verify
+V > out.txt 2>&1; cat out.txt
+for k in "$K1" "$K2" "$K3" "$K4" "$K5"; do grep -qF "$k" out.txt && echo "VAZOU VALOR NA SAIDA" ; done; echo "(checagem de valor na saída feita: nenhuma linha 'VAZOU' acima = ok)"
+echo; echo "### (b) node_modules/ e o próprio catálogo ficam fora"
+novo b; mkdir -p node_modules/x; printf 'k="sk_live_%s"\n' "$(rnd 24)" > node_modules/x/i.js; git add -f node_modules; printf -- '- nota: sk_live_%s\n' "$(rnd 24)" >> .agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md; git add -A; git commit -qm n --no-verify; V
+echo; echo "### (c) variável lida pelo nome não é segredo"
+novo c; printf 'const a = process.env.STRIPE_SECRET_KEY;\nconst b = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");\n' > f.ts; printf 'import os\nk = os.environ["OPENAI_API_KEY"]\n' > g.py; git add -A; V
+echo; echo "### (d) mesmo segredo só em linha que já existia na base => aviso 'já existia', exit 1"
+novo d; git checkout -q main; printf 'k = "sk_live_%s"\n' "$(rnd 24)" > pay.py; git add pay.py; git commit -qm p --no-verify; git push -q origin main; git checkout -q feat; git merge -q main; echo 'x=1' >> app.js; V
+echo; echo "### (e) sem remoto => tudo é novo e diz isso"
+novo e; git remote remove origin; printf 'k = "sk_live_%s"\n' "$(rnd 24)" > pay.py; git add pay.py; git commit -qm p --no-verify; V
+echo; echo "### (f) PEM com corpo na linha seguinte (bloqueia) e PEM só com cabeçalho em doc (não acusa)"
+novo f; { printf -- '-----BEGIN RSA PRIVATE KEY-----\n'; printf '%s\n' "$(rnd 64)"; printf -- '-----END RSA PRIVATE KEY-----\n'; } > k.pem; printf 'Uma chave começa com `-----BEGIN PRIVATE KEY-----` e termina com o END.\n' > doc.md; git add -A; V
+echo; echo "### (g) chave de serviço do Supabase atribuída com valor"
+novo g; printf 'SUPABASE_SERVICE_ROLE_KEY=eyJ%s.%s\n' "$(rnd 30)" "$(rnd 30)" > cfg.env; git add -A; V
+echo; echo "### (h) --base <ref> explícito"
+novo h; printf 'k = "sk_live_%s"\n' "$(rnd 24)" > pay.py; git add -A; git commit -qm p --no-verify; V --base HEAD
+### (a) A1: segredos acrescentados em sdd/ (log de evidência, ficha de handoff), .claude/settings.json, .cursor/, AGENTS.md
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 44 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta .claude/settings.json:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+🛑 S11 alta .cursor/mcp.env:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+🛑 S11 alta AGENTS.md:2 — Chave secreta no código (bloqueia: novo nesta publicação)
+🛑 S11 alta sdd/handoffs/HANDOFF_X.md:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+🛑 S11 alta sdd/reports/evidence/X/AVAL-1.log:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+(checagem de valor na saída feita: nenhuma linha 'VAZOU' acima = ok)
+
+### (b) node_modules/ e o próprio catálogo ficam fora
+🛑 seguranca-varredura: catálogo ilegível: /private/tmp/aval2-f18.hrKa/c/b/proj/.agents/skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md:362 — campo `nota` fora da ordem em S22 (esperado `fim da ficha`)
+RESULTADO: ERRO DE USO
+→ o catálogo vem do pacote: apague .agents/skills/sdd-seguranca e rode o init de novo (o doctor aponta a skill velha).
+exit=64
+
+### (c) variável lida pelo nome não é segredo
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 40 arquivo(s) varrido(s), 1 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### (d) mesmo segredo só em linha que já existia na base => aviso 'já existia', exit 1
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 39 arquivo(s) varrido(s), 1 pulado(s)
+⚠️ S11 alta pay.py:1 — Chave secreta no código (já existia)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### (e) sem remoto => tudo é novo e diz isso
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 39 arquivo(s) varrido(s), 1 pulado(s)
+⚠️ base origin/main não existe: tudo conta como novo (sem remoto ou sem a branch padrão)
+🛑 S11 alta pay.py:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (f) PEM com corpo na linha seguinte (bloqueia) e PEM só com cabeçalho em doc (não acusa)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 40 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta k.pem:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (g) chave de serviço do Supabase atribuída com valor
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 39 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta cfg.env:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (h) --base <ref> explícito
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: HEAD · 39 arquivo(s) varrido(s), 1 pulado(s)
+⚠️ S11 alta pay.py:1 — Chave secreta no código (já existia)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1

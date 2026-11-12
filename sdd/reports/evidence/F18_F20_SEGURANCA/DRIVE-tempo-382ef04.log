@@ -1,0 +1,5 @@
+$ bash drive3.sh   # test_drive.SegundoPlano.test_fundo_devolve_na_hora_e_o_resultado_chega_pelo_proximo, 3 vezes, cópia de git archive de 382ef04
+execução 1: Ran 1 test in 4.808s OK  [exit=0]
+execução 2: Ran 1 test in 4.992s OK  [exit=0]
+execução 3: Ran 1 test in 4.244s OK  [exit=0]
+[exit=0]

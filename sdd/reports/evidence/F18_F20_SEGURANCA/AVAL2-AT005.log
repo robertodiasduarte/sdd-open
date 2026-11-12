@@ -1,0 +1,47 @@
+$ cat /tmp/aval2-f18.hrKa/probes/at005.sh; bash /tmp/aval2-f18.hrKa/probes/at005.sh
+. /tmp/aval2-f18.hrKa/probes/lib.sh
+echo "### (a) dispensas válidas: na mesma linha (S12) e na de cima (S01 bloqueio)"
+novo a; mkdir -p src
+printf 'el.innerHTML = t; // sdd-seguranca: aceito S12 — t é HTML fixo do próprio app\n' > src/a.js
+printf -- '-- sdd-seguranca: aceito S01 — tabela só do schema interno, sem acesso da API\ncreate table interna (id int);\n' > supabase/migrations/20260101_i.sql
+git add -A; V | grep -v '^   confira'
+echo; echo "### (b) motivo vazio, motivo curto e id de outro item"
+novo b; mkdir -p src
+printf 'el.innerHTML = t; // sdd-seguranca: aceito S12 —\n' > src/b1.js
+printf 'el.innerHTML = t; // sdd-seguranca: aceito S12 — ok\n' > src/b2.js
+printf '// sdd-seguranca: aceito S16 — não é eval\nel.innerHTML = t;\n' > src/b3.js
+printf 'k = "sk_live_%s"  # sdd-seguranca: aceito S01 — de outro item\n' "$(rnd 24)" > src/b4.py
+git add -A; V | grep -v '^   confira'
+echo; echo "### (c) motivo com forma de segredo não vaza"
+novo c; mkdir -p src; K="ghp_$(rnd 36)"; printf 'el.innerHTML = t; // sdd-seguranca: aceito S12 — fixo, token %s de exemplo\n' "$K" > src/c.js; git add -A; V > o.txt; grep -v '^   confira' o.txt; grep -qF "$K" o.txt && echo "VAZOU" || echo "(valor do token não aparece na saída)"
+### (a) dispensas válidas: na mesma linha (S12) e na de cima (S01 bloqueio)
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 40 arquivo(s) varrido(s), 1 pulado(s)
+✔ aceito S01 supabase/migrations/20260101_i.sql:2 — tabela só do schema interno, sem acesso da API
+✔ aceito S12 src/a.js:1 — t é HTML fixo do próprio app
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### (b) motivo vazio, motivo curto e id de outro item
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 42 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta src/b4.py:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+⚠️ S12 alta src/b1.js:1 — HTML vindo do usuário sem escapar
+⚠️ S12 alta src/b2.js:1 — HTML vindo do usuário sem escapar
+⚠️ S12 alta src/b3.js:2 — HTML vindo do usuário sem escapar
+⚠️ dispensa sem motivo (ou de outro item) não vale: src/b4.py:1 (S11)
+⚠️ dispensa sem motivo (ou de outro item) não vale: src/b1.js:1 (S12)
+⚠️ dispensa sem motivo (ou de outro item) não vale: src/b2.js:1 (S12)
+⚠️ dispensa sem motivo (ou de outro item) não vale: src/b3.js:2 (S12)
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (c) motivo com forma de segredo não vaza
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 40 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta src/c.js:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+⚠️ dispensa sem motivo (ou de outro item) não vale: src/c.js:1 (S11)
+✔ aceito S12 src/c.js:1 — fixo, token […] de exemplo
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+(valor do token não aparece na saída)
