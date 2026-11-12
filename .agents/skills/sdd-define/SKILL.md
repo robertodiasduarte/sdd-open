@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.6.0"
+  version: "2.6.1"
   updated: "2026-11"
   fase: "1"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-define — Fase 1
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-define v2.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-define v2.6.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
 depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
@@ -241,7 +241,7 @@ passos 1 a 4 da `sdd-governanca` são do revisor, um agente fresco (brief
 desta sessão. `--parar` desliga o encadeamento, nunca este passo.
 
 1. **Antes de tudo, a trava.** Grave no DEFINE, em `## Clarifications`, uma sessão nova com o marcador
-   de governança (colchete + `NEEDS CLARIFICATION` + `: governança não rodou — rode só o passo 11 do
+   de governança (colchete + `NEEDS CLARIFICATION` + `: governança não rodou — rode só os passos 11 e 12 do
    sdd-define numa sessão nova, ou dispense com motivo`, fora de cerca) e deixe a linha `Governança` =
    `pendente`. Assim, se a sessão parar aqui (exit 40 ou a pessoa fecha a janela), o `verify-gate.sh`
    sai 5 e o build não passa sem a revisão. Com outro marcador de dúvida aberto, espere a resposta e
@@ -315,8 +315,8 @@ desta sessão. `--parar` desliga o encadeamento, nunca este passo.
    Toda saída que escreve a linha final (itens 7 e 8) **remove o marcador de governança** do item 1.
 9. **2ª falha** ⇒ o marcador fica e a linha diz `| **Governança** | falhou — <motivo> | <data> |`. Mensagem:
    `🛑 governança não rodou — <motivo em palavras>. Efeito: o build e a release param até resolver.`
-   e as 2 saídas numeradas: (1) numa sessão nova, pedir "rode só o passo 11 (Governança) do sdd-define
-   sobre <DEFINE>" — não o Define inteiro, que regravaria a spec; (2) dispensar: trocar a linha da tabela
+   e as 2 saídas numeradas: (1) numa sessão nova, pedir "rode só os passos 11 (Governança) e 12 (Segurança)
+   do sdd-define sobre <DEFINE>" — não o Define inteiro, que regravaria a spec; (2) dispensar: trocar a linha da tabela
    por `| **Governança** | dispensada — <motivo> | <nome, data> |` **e** trocar o marcador por
    `- [x] (governança) dispensada — <motivo>` (com o marcador no arquivo, o gate continua em 5).
 

@@ -5,15 +5,15 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; funciona em qualquer agente que
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.0"
-  updated: "2026-10"
+  version: "2.3.1"
+  updated: "2026-11"
   fase: "0"
 ---
 
 # sdd-brainstorm — Fase 0 (opcional)
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-brainstorm v2.3.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-brainstorm v2.3.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Explorar antes de especificar. O produto desta fase é **clareza**, não código: um documento
 que o `/sdd-define` consegue transformar em spec com pouca pergunta.

@@ -70,7 +70,7 @@ linha `Governança` → bloco do gate. Veja [context-and-governance.md](context-
 | `2` | vermelho | **aborte**; conserte o código, ou itere a spec se o defeito estiver na spec |
 | `3` | inconclusivo | resolva explicitamente; nunca registre como verde, nunca conte como vermelho |
 | `4` | exige assinatura humana | mostre o `manual_fallback`, pare até o recibo ser registrado |
-| `5` | esclarecimento pendente (marcador, ou linha `Governança` sem valor final) | **pare**, volte pro `/sdd-define` (ou rode só o passo 11 dele); nunca itere o design |
+| `5` | esclarecimento pendente (marcador, ou linha `Governança` sem valor final) | **pare**, volte pro `/sdd-define` (ou rode só os passos 11 e 12 dele); nunca itere o design |
 | `64` | bloco inválido ou ausente | a spec não é válida |
 
 ## Conferir sem rodar

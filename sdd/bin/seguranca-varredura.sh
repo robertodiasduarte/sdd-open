@@ -425,11 +425,17 @@ def nome_tabela(bruto):
 
 
 def comentado(linha, col, sql):
-    """O achado está depois de um marcador de comentário na mesma linha (`https://` não conta)."""
-    antes = linha[:col]
+    """A linha COMEÇA por um marcador de comentário que ainda está aberto no achado. Um ` #` ou `<!--` no meio da linha
+    (dentro de uma string, ou já fechado com `-->`) escondia o aviso real ao lado (F17, achado do privado de 2026-11-12):
+    comentário no fim de uma linha de código passa a avisar, e o aviso não bloqueia."""
+    antes = linha[:col].lstrip()
     if sql:
-        return "--" in antes
-    return bool(re.search(r"(^|\s)(//|#|<!--)", antes)) or antes.lstrip().startswith(("*", "/*"))
+        return antes.startswith("--")
+    if antes.startswith("<!--"):
+        return "-->" not in antes
+    if antes.startswith("/*"):
+        return "*/" not in antes
+    return antes.startswith(("//", "#", "*"))
 
 
 ref, base_ok, NOVAS = base_e_novas()

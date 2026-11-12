@@ -4,7 +4,7 @@
 # Os 4 slots são comandos do próprio projeto que o método chama num momento certo:
 #   smoke.before_ok_cmd     sdd-release, item 6b: antes do bloco do OK, sobre o commit que vai subir
 #   smoke.before_push_cmd   sdd-release, item 7b: depois do "sim", antes do push (produção ainda velha)
-#   smoke.after_deploy_cmd  sdd-release, item 10: depois do deploy confirmado
+#   smoke.after_deploy_cmd  sdd-release, FASE 2, item 10: depois do deploy confirmado
 #   schema.check_cmd        sdd-build, passo 4b: os .sql que vão ser aplicados, antes da prévia
 #
 # Uso:

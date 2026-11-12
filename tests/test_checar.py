@@ -449,6 +449,32 @@ class TestFrente(Base):
         self.assertEqual(len(out.strip().splitlines()), 1, out)
         self.assertTrue(out.startswith("✅ Pronto para abrir a frente: repo meu-app, principal main"), out)
 
+    def _origin_com_producao(self, slot: str) -> None:
+        # O remoto tem main e producao; a ref local origin/HEAD ficou velha, apontando para main.
+        self.git("push", "-q", "origin", "HEAD:refs/heads/producao")
+        self.git("fetch", "-q", "origin")
+        self.git("symbolic-ref", "refs/remotes/origin/HEAD", "refs/remotes/origin/main")
+        self.escreve("sdd/config.yaml", "project:\n  name: x\n  default_branch: %s   # comentário\n" % slot)
+
+    def test_frente_usa_a_branch_padrao_do_config_e_avisa_da_ref_velha(self):
+        # F17 (achado do repositório privado, 2026-11-12): com origin/HEAD velho, a principal saía errada.
+        self._origin_com_producao("producao")
+        rc, out, _ = self.roda("--frente")
+        self.assertEqual(rc, 0, out)
+        self.assertTrue(out.startswith("✅ Pronto para abrir a frente: repo meu-app, principal producao"), out)
+        # o --frente só diz o que impede; o aviso da ref velha sai no diagnóstico completo
+        rc, out, _ = self.roda()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("aponta para main", out)
+        self.assertIn("git remote set-head origin -a", out)
+
+    def test_slot_com_branch_que_o_origin_nao_tem_nao_vale(self):
+        self._origin_com_producao("homologacao")
+        rc, out, _ = self.roda("--frente")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("principal main", out)
+        self.assertNotIn("set-head", out)
+
     def test_frente_bloqueia_sem_remoto(self):
         self.git("remote", "remove", "origin")
         rc, out, _ = self.roda("--frente")
@@ -1006,3 +1032,14 @@ class TestEditor(Base):
         out = self.checar()
         self.assertEqual(len(out.strip().splitlines()), 1, out)
         self.assertNotIn("editor", out)
+
+    def test_resumo_prefere_o_editor_escolhido_no_git_config(self):
+        # F17 (sobra da F16): a sdd-new-session grava a escolha em git config sdd.editor; o resumo citava o detectado.
+        p = self.tmp / "editores"
+        self.exe(p, "code")
+        self.git("config", "--local", "sdd.editor", "cursor")
+        out = self.checar(SDD_CHECAR_EDITOR_PATH=str(p))
+        self.assertIn(", editor cursor", out)
+        self.assertNotIn("editor code", out)
+        out = self.checar()   # escolhido e nada detectado: cita o escolhido
+        self.assertIn(", editor cursor", out)

@@ -67,7 +67,7 @@ class Instalacao(unittest.TestCase):
 
 class Versoes(unittest.TestCase):
     def test_as_3_skills_sobem_de_versao(self):
-        for nome, versao in (("sdd-checar-ambiente", "1.5.0"), ("sdd-iniciar-repo", "1.2.0"), ("sdd-new-session", "1.5.1")):
+        for nome, versao in (("sdd-checar-ambiente", "1.5.1"), ("sdd-iniciar-repo", "1.2.0"), ("sdd-new-session", "1.5.1")):
             with self.subTest(skill=nome):
                 texto = skill(nome)
                 self.assertIn('  version: "%s"' % versao, texto)

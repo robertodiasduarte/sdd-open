@@ -33,6 +33,8 @@ _sdd_0="${0//\\//}"   # caminho do Windows (C:\…\x.sh) vira C:/…/x.sh
 if [ "${_sdd_0%/*}" = "${_sdd_0}" ]; then _sdd_bin=.; else _sdd_bin="${_sdd_0%/*}"; fi
 if [ -f "${_sdd_bin}/lib/python.sh" ]; then . "${_sdd_bin}/lib/python.sh"
 else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }; fi
+# --help antes do Python: quem ainda não tem Python lê o uso (F17, sobra da F16).
+case "${1:-}" in -h|--help) sed -n '2,28p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;; esac
 sdd_python_exigir   # os dois modos leem o git pelo Python
 export LC_ALL=C
 

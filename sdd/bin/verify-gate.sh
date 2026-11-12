@@ -154,7 +154,7 @@ msg_governanca() { # $1 = o que foi encontrado
     echo "   (encontrado: ${1})."
     echo "   Desde a v2.4.0, todo DEFINE passa pela revisão de governança antes do build; DEFINEs escritos"
     echo "   antes disso param aqui uma vez."
-    echo "   1. Numa sessão nova do agente, peça: \"rode só o passo 11 (Governança) do sdd-define sobre ${DEFINE}\"."
+    echo "   1. Numa sessão nova do agente, peça: \"rode só os passos 11 (Governança) e 12 (Segurança) do sdd-define sobre ${DEFINE}\"."
     echo "      Não rode o Define inteiro de novo: ele regravaria a spec."
     echo "   2. Ou dispense: na tabela do ## Technical Context (sem essa seção, crie-a com o cabeçalho"
     echo "      | Aspect | Value | Notes |), ponha no lugar da linha Governança"

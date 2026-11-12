@@ -391,6 +391,35 @@ class Avisos(Base):
                 self.assertEqual(rc, 0, out)
                 self.tearDown(); self.setUp()
 
+    def test_marcador_no_meio_da_linha_nao_esconde_o_aviso(self):
+        # F17 (achado do repositório privado, 2026-11-12): " #" numa string ou "<!--"/"/*" já fechados antes do
+        # achado escondiam o aviso real ao lado.
+        avisam = {
+            "src/a.js": 'const s = "a #b"; el.innerHTML = corpo;\n',
+            "src/b.js": "/* nota */ el.innerHTML = corpo;\n",
+            "src/c.tsx": "<!-- nota --> <div dangerouslySetInnerHTML={{ __html: texto }} />\n",
+            "src/d.js": "const u = 'x // y'; el.innerHTML = corpo;\n",
+        }
+        for rel, txt in avisam.items():
+            with self.subTest(rel=rel):
+                p = self.projeto({"supabase/config.toml": "[api]\n", "package.json": "{}\n"})
+                self.escreve(p, rel, txt)
+                rc, out = self.varre(p)
+                self.assertEqual(rc, 1, out)
+                self.assertIn("⚠️ S12 ", out)
+                self.assertIn(rel + ":1", out)
+                self.tearDown(); self.setUp()
+
+    def test_linha_que_comeca_comentada_continua_calada(self):
+        for rel, txt in {"src/a.js": "  // el.innerHTML = corpo;\n", "src/b.js": "/* el.innerHTML = corpo; */\n",
+                         "src/c.py": "# el.innerHTML = corpo\n", "src/d.js": " * el.innerHTML = corpo;\n"}.items():
+            with self.subTest(rel=rel):
+                p = self.projeto({"supabase/config.toml": "[api]\n", "package.json": "{}\n"})
+                self.escreve(p, rel, txt)
+                rc, out = self.varre(p)
+                self.assertEqual(rc, 0, out)
+                self.tearDown(); self.setUp()
+
     def test_variantes_de_html_e_cors(self):
         casos = {
             "src/a.vue": "<p v-html=\"corpo\"></p>\n",

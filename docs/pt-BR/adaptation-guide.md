@@ -81,7 +81,7 @@ por `bash sdd/bin/slot.sh <chave>`. Os quatro vêm **vazios**: slot vazio é pul
 |---|---|---|
 | `smoke.before_ok_cmd` | release, item 6b: depois de landar, antes do bloco do OK, sobre o commit que vai subir | FAIL-candidato no bloco do OK (corrigir, ou WAIVED com o seu motivo) |
 | `smoke.before_push_cmd` | release, item 7b: depois do "sim", antes do push (a produção ainda roda o código velho) | só registro; nada segura o push |
-| `smoke.after_deploy_cmd` | release, item 10: com o deploy confirmado | a release para e pergunta: reverter, corrigir ou seguir com motivo |
+| `smoke.after_deploy_cmd` | release, FASE 2, item 10: com o deploy confirmado | a release para e pergunta: reverter, corrigir ou seguir com motivo |
 | `schema.check_cmd` | build, passo 4b: antes da prévia das migrations a aplicar | a migration **não** é aplicada |
 
 O seu comando responde `0` ok · `2` reprovou · `10` nada a medir. Qualquer outro exit — ou um sinal — é

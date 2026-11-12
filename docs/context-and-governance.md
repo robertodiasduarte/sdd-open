@@ -30,7 +30,7 @@ RESULTADO: CLARIFICAR
 
 Two ways out:
 
-1. In a new agent session, ask: *"run only step 11 (Governança) of sdd-define on sdd/features/DEFINE_X.md"*.
+1. In a new agent session, ask: *"run only steps 11 (Governança) and 12 (Segurança) of sdd-define on sdd/features/DEFINE_X.md"*.
    Do not rerun the whole Define: it would rewrite the spec.
 2. Or dispense it, with a reason, in the `## Technical Context` table (an old DEFINE without that section gets
    it, with the `| Aspect | Value | Notes |` header):

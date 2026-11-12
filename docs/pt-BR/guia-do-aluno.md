@@ -199,7 +199,7 @@ o Build e a Release rodam. Ele devolve um número, e a skill traduz:
 | `2` | o teste falhou | a skill corrige o que construiu e roda de novo; não termina com teste falhando |
 | `3` | não deu para conferir | falta uma ferramenta no computador; a skill diz qual |
 | `4` | precisa da sua assinatura | o aceite é visual: você confere a lista e responde com nome e data |
-| `5` | a spec tem uma dúvida marcada, ou a revisão de governança ainda não rodou | volte ao Define e responda a dúvida; ou peça para rodar só o passo 11 (Governança) do `sdd-define` |
+| `5` | a spec tem uma dúvida marcada, ou a revisão de governança ainda não rodou | volte ao Define e responda a dúvida; ou peça para rodar só os passos 11 (Governança) e 12 (Segurança) do `sdd-define` |
 | `64` | o Define não tem um Verify Gate válido | volte ao Define |
 
 ---
@@ -534,7 +534,10 @@ Resposta esperada: uma linha dizendo que está tudo certo, ou a lista do que fal
 
 Ela percebe que o git já existe sem nenhuma versão salva e começa pelo inventário: mostra o que há na
 pasta e sinaliza o que não pode sair (senhas, certificado, planilha com dado de cliente). Leia a
-lista. Responda cada etapa. Aceite o alarme quando ela oferecer. No fim, o projeto está numa cópia
+lista. Logo abaixo do cabeçalho do inventário vem a linha `gh:`, que diz se o GitHub CLI (o programa `gh`,
+que cria o repositório no GitHub) está pronto: `ok`, `ausente` (não instalado), `deslogado` (instalado, sem
+login) ou `sem resposta` (o GitHub não respondeu). Se não for `ok`, ela diz como instalar ou entrar antes da
+etapa de publicar. Responda cada etapa. Aceite o alarme quando ela oferecer. No fim, o projeto está numa cópia
 privada no GitHub.
 
 **5. Abrir a primeira frente.**
@@ -627,7 +630,7 @@ As skills já tratam os casos abaixo. O que você precisa saber é só como reag
 | **Status com ⏸️** | Falta algo que só você resolve. Siga os passos numerados (onde, o quê, o que ver na tela), volte e repita o pedido. Nada foi publicado. |
 | **O `init` ou o `sync` respondeu `CANCELADO`** | Faltou o `--yes`: o agente rodou sem um terminal onde você pudesse confirmar. Rode o `--dry-run`, leia o plano e repita com `--yes`. |
 | **"este comando precisa de um repositório git"** | A pasta ainda não usa git. Confira que ela não está numa pasta sincronizada, rode `git init -b main` e repita o `init`. |
-| **Verify Gate devolveu `2`, `3`, `4`, `5` ou `64`** | Veja a tabela da seção 3: `2` a skill corrige; `3` falta uma ferramenta; `4` precisa da sua assinatura; `5` volte ao Define e responda a dúvida, ou, se a mensagem diz GOVERNANÇA NÃO REVISADA, peça para rodar só o passo 11 (Governança) do `sdd-define` ([contexto e governança](context-and-governance.md)); `64` volte ao Define. |
+| **Verify Gate devolveu `2`, `3`, `4`, `5` ou `64`** | Veja a tabela da seção 3: `2` a skill corrige; `3` falta uma ferramenta; `4` precisa da sua assinatura; `5` volte ao Define e responda a dúvida, ou, se a mensagem diz GOVERNANÇA NÃO REVISADA, peça para rodar só os passos 11 (Governança) e 12 (Segurança) do `sdd-define` ([contexto e governança](context-and-governance.md)); `64` volte ao Define. |
 | **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certificado, ou é uma planilha nova. Escolha: **corrigir** (tirar o arquivo desta versão ou pô-lo na lista do que fica de fora), **dado fictício** (ela troca o número por um inválido e salva) ou **gravar mesmo assim** (só se você conferiu que pode sair do computador). |
 | **Release não publicou** | Teste falhou, há segredo no que ia subir, ou a base está desatualizada. A skill diz qual. Corrija na frente e peça a release de novo. |
 | **O `doctor` diz que uma skill está mais velha que o pacote, ou que um arquivo de `sdd/bin/` difere dele** | Apague a pasta da skill em `.agents/skills/` (ou o arquivo de `sdd/bin/`, se você não o editou) e rode o `init` de novo com `--yes`; depois, `sync --yes` (seção 2, "Quando sair versão nova"). |

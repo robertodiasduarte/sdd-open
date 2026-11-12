@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.11.0"
+  version: "2.11.1"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.11.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.11.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
 do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
@@ -424,8 +424,8 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
 ## Gates de ABORTAR (parar e reportar, nunca pushar)
 
 Fase 0a: landmines exit 2 · drift ≠0 · lint · Verify Gate `2` ou `5` · `3` não resolvido · testes do diff com falha nova ·
-`4` sem recibo · report-lint ≠0 · report-lint --pendente ≠0 · gate-shell-evidencia ≠0 · review externo sem revisão nem dispensa. Fase 0b: consumidor não modificado quebrado · invariante
-violado. Fase 0a.10: varredura de segurança `2` · `64`. Fase 0c: credencial hardcoded · permissão frouxa · dado pessoal exposto. Fase 1:
+`4` sem recibo · report-lint ≠0 · report-lint --pendente ≠0 · gate-shell-evidencia ≠0 · playbook-lint `2` · review externo sem revisão nem dispensa · ledger-revisao-lint `2`. Fase 0b: consumidor não modificado quebrado · invariante
+violado. Fase 0a.10: varredura de segurança `2` · `64` · `127`. Fase 0c: credencial hardcoded · permissão frouxa · dado pessoal exposto. Fase 1:
 arquivo inesperado no diff · conflito real · base moveu · escrita em produção sem source · `--ledger` ≠ 0.
 
 ## Quando pular o SDD formal

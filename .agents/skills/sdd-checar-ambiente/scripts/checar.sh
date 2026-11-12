@@ -450,6 +450,18 @@ elif [ -z "$(git config --get remote.origin.url 2>/dev/null)" ]; then
              "git remote rename $(git remote | head -1) origin   (ou: git remote add origin <url do repositório>)"
 else
   PRINCIPAL="$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##')"
+  # F17: a ref origin/HEAD é local e envelhece (o remoto troca a branch padrão e ninguém roda set-head). O slot
+  # project.default_branch do sdd/config.yaml vale mais, desde que a branch dele exista no origin: o modelo traz
+  # "main" e um repositório em master não pode virar "main" por causa disso.
+  SLOT_PRINCIPAL=""
+  [ -f "${RAIZ}/sdd/config.yaml" ] && SLOT_PRINCIPAL="$(awk '/^project:/{p=1;next} /^[^[:space:]#]/{p=0} p && /^[[:space:]]+default_branch:/{sub(/^[[:space:]]+default_branch:[[:space:]]*/, ""); sub(/[[:space:]]+#.*$/, ""); gsub(/["'"'"' ]/, ""); print; exit}' "${RAIZ}/sdd/config.yaml" 2>/dev/null)"
+  if [ -n "${SLOT_PRINCIPAL}" ] && git show-ref --verify --quiet "refs/remotes/origin/${SLOT_PRINCIPAL}"; then
+    if [ -n "${PRINCIPAL}" ] && [ "${PRINCIPAL}" != "${SLOT_PRINCIPAL}" ]; then
+      add_arrumar "A referência local origin/HEAD aponta para ${PRINCIPAL}, mas a branch padrão do projeto (project.default_branch no sdd/config.yaml) é ${SLOT_PRINCIPAL}: valeu a do projeto." \
+                  "git remote set-head origin -a   (atualiza a referência local pela do remoto)"
+    fi
+    PRINCIPAL="${SLOT_PRINCIPAL}"
+  fi
   if [ -z "${PRINCIPAL}" ]; then
     for b in main master; do git show-ref --verify --quiet "refs/remotes/origin/${b}" && { PRINCIPAL="${b}"; break; }; done
   fi
@@ -642,8 +654,9 @@ case "${FRENTES}" in
   1) TXT_FRENTES="1 frente aberta" ;;
   *) TXT_FRENTES="${FRENTES} frentes abertas" ;;
 esac
-editor_achado
-EDITOR_ACHADO="${EDITOR_CMD}"
+# O editor escolhido (a sdd-new-session grava em git config sdd.editor) vale mais que o detectado (F17, sobra da F16).
+EDITOR_ACHADO="$(git config --get sdd.editor 2>/dev/null)"
+if [ -z "${EDITOR_ACHADO}" ]; then editor_achado; EDITOR_ACHADO="${EDITOR_CMD}"; fi
 [ "${PUBLICO}" -eq 1 ] && REPO="${REPO} (público no GitHub)"
 RESUMO="repo ${REPO}, branch ${BRANCH}, ${TXT_FRENTES}, ${AGENTES}${EDITOR_ACHADO:+, editor ${EDITOR_ACHADO}}"
 relatorio "${RESUMO}"

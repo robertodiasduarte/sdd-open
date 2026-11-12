@@ -4,7 +4,7 @@ license: MIT
 description: "Diagnostica, sem alterar nada, se este computador e este repositório estão prontos para trabalhar com SDD: repositório git, agente de código, identidade do git, acesso ao remoto (credencial, rede, repositório ainda vazio), o programa do GitHub para o terminal (gh) e o login nele, worktrees órfãs, dependências, editor (também fora do PATH) e dado exposto (senha, certificado A1 ou chave privada já salvos no git; .env fora do .gitignore; npm sem ignore-scripts; repositório público). Responde em uma linha quando está tudo certo e, quando não está, lista o que impede primeiro, cada item com o comando exato que resolve. Use quando o usuário pedir para checar o ambiente, antes de abrir a primeira frente de trabalho num projeto, ou quando algo estranho acontecer (commit que falha, comando não encontrado, worktree que sumiu)."
 metadata:
   author: Roberto Dias Duarte
-  version: "1.5.0"
+  version: "1.5.1"
   updated: "2026-11"
 ---
 
@@ -71,7 +71,7 @@ no projeto ou na pasta global do agente.)
 script: blocos `🔴 Dado exposto`, `🔴 Impede o trabalho` e `⚠️ Vale arrumar` só se tiverem itens, e por
 último a linha `✅ Pronto: repo …` (ou `✅ Repo …` quando houver problema). Checagem que passou ou não se
 aplica não é mencionada fora dessa linha. Termine a linha ✅ com a identificação desta skill:
-`sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-checar-ambiente v1.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 (o script faz isso sozinho, lendo a versão deste arquivo).
 
 **Só o dado exposto** — `bash <pasta desta skill>/scripts/checar.sh --segredo` imprime apenas o bloco
@@ -172,7 +172,8 @@ nem rede. É o que a `sdd-new-session` roda com o slot `editor` vazio.
   depois `git branch -d <branch>`.
 - Se existir `sdd/config.yaml` no checkout principal (a primeira linha de
   `git worktree list --porcelain`), leia `project.default_branch` e `worktree_base`: eles dizem a branch
-  principal e onde as frentes ficam.
+  principal e onde as frentes ficam. A branch do slot vale mais que a referência local `origin/HEAD` (ela
+  envelhece) desde que exista no origin; se as duas discordam ⇒ ⚠️ com `git remote set-head origin -a`.
 
 **5. Ferramentas do projeto**
 - `package.json` presente e `node_modules` ausente ⇒ falta `npm install` (sem isso o primeiro
@@ -188,7 +189,8 @@ nem rede. É o que a `sdd-new-session` roda com o slot `editor` vazio.
   `gh auth login`; sem resposta em 10 s ⇒ ⚠️ "não deu para conferir o login". **Nunca 🔴**: chave SSH e o
   gerenciador de credenciais continuam valendo. Se o remoto já recusou o acesso com `gh auth login` no 🔴, o
   aviso de login não se repete.
-- **Editor**, o 1º que existir: no PATH, `code`, `cursor`, `code-insiders`, `windsurf`, `zed`, `subl`, `idea`,
+- **Editor**: o escolhido em `git config sdd.editor`, se houver (a `sdd-new-session` grava ali a escolha da
+  pessoa); senão, o 1º que existir: no PATH, `code`, `cursor`, `code-insiders`, `windsurf`, `zed`, `subl`, `idea`,
   `pycharm`, `webstorm`; no macOS, fora do PATH, o app `Visual Studio Code`, `Cursor`, `Windsurf`, `Zed` ou
   `Sublime Text` em `/Applications` ou `~/Applications` (o comando vira `open -a "<App>"`); no Windows, fora do
   PATH, `code.cmd` ou `cursor.cmd` em `%LOCALAPPDATA%\Programs`. **Sem editor não é problema** — não entra
@@ -245,7 +247,7 @@ ordem, **omitindo os vazios**:
 3. **⚠️ Vale arrumar** — `.env` fora do `.gitignore`, npm sem `ignore-scripts` (estes primeiro),
    worktree órfã, frente integrada ainda aberta, `.env` ausente.
 4. **✅ Resumo em uma linha**, terminando com a identificação desta skill — ex.:
-   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Se estiver tudo certo, a resposta inteira é **o Status e a linha ✅** — nenhuma outra frase antes nem
 depois: nada de "Tudo limpo", de lista do que foi verificado ou de oferta de ajuda. Ambiente saudável
@@ -257,7 +259,7 @@ Saudável (a resposta inteira são estas duas linhas):
 
 ```text
 Ambiente: ✅ 1 Verificar · ✅ 2 Explicar
-✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 Com o certificado A1 salvo no git de um repositório público:
@@ -270,7 +272,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git rm --cached "certificados/empresa.pfx" && echo "certificados/empresa.pfx" >> .gitignore
   Depois, revogue o certificado com a autoridade certificadora e emita outro.
 
-✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 Com dois problemas:
@@ -287,7 +289,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git worktree remove ../meu-app-frentes/relatorio-mensal
   git branch -d relatorio-mensal
 
-✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 ---

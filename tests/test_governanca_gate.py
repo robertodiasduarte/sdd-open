@@ -38,7 +38,7 @@ class Gate(Sandbox):
     def assert_governanca(self, rc: int, out: str) -> None:
         self.assertEqual(rc, 5, out)
         self.assertIn("GOVERNANÇA NÃO REVISADA (exit 5)", out)
-        self.assertIn("rode só o passo 11 (Governança) do sdd-define", out)
+        self.assertIn("rode só os passos 11 (Governança) e 12 (Segurança) do sdd-define", out)
         self.assertIn("| **Governança** | dispensada — <motivo> | <seu nome, data> |", out)
         self.assertIn("RESULTADO: CLARIFICAR\n→ rode a revisão de governança", out)
         self.assertIn("sem essa seção, crie-a com o cabeçalho", out)   # R2@claude, rodada 4

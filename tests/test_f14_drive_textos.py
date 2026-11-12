@@ -206,7 +206,7 @@ class Pacote(unittest.TestCase):
     def test_versoes(self):
         self.assertIn('version: "1.0.0"', SKILL)
         self.assertIn("`sdd-drive v1.0.0 · nov/2026", SKILL)
-        self.assertIn('version: "2.11.0"', RELEASE)
+        self.assertIn('version: "2.11.1"', RELEASE)
 
     def test_bash_32(self):
         for rel in ("sdd/bin/sdd-drive.sh", "sdd/bin/deploy-do-sha.sh", "sdd/bin/avaliador-guard.sh"):

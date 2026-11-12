@@ -77,7 +77,7 @@ moment by `bash sdd/bin/slot.sh <key>`. All four ship **empty**: an empty slot i
 |---|---|---|
 | `smoke.before_ok_cmd` | release, item 6b: after landing, before the approval block, on the commit that will ship | a FAIL candidate in the approval block (fix, or WAIVED with your reason) |
 | `smoke.before_push_cmd` | release, item 7b: after the "yes", before the push (production still runs the old code) | recorded only; nothing holds the push |
-| `smoke.after_deploy_cmd` | release, item 10: once the deploy is confirmed | the release stops and asks: revert, fix, or carry on with a reason |
+| `smoke.after_deploy_cmd` | release, FASE 2, item 10: once the deploy is confirmed | the release stops and asks: revert, fix, or carry on with a reason |
 | `schema.check_cmd` | build, step 4b: before the preview of the migrations to apply | the migration is **not** applied |
 
 Your command answers `0` ok · `2` failed · `10` nothing to measure. Any other exit — or a signal — is

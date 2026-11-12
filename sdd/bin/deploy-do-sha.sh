@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# deploy-do-sha.sh — "o deploy deste commit está no ar?". É a verificação do item 10 da sdd-release, num lugar só.
+# deploy-do-sha.sh — "o deploy deste commit está no ar?". É a verificação da FASE 2, item 10, da sdd-release, num lugar só.
 #
 # Regra: vale o run do workflow que publica, na branch padrão, do commit perguntado; ou um run mais novo, verde, de um
 # commit que contém o perguntado (substituto, quando um push tomou o lugar na fila). Falha em passo declarado como

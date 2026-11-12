@@ -44,8 +44,8 @@ class Release(unittest.TestCase):
         cls.fase2 = entre(cls.txt, "## FASE 2", "## FASE 3")
 
     def test_versao(self):
-        self.assertIn('version: "2.11.0"', self.txt)
-        self.assertIn("`sdd-release v2.11.0 · nov/2026", self.txt)
+        self.assertIn('version: "2.11.1"', self.txt)
+        self.assertIn("`sdd-release v2.11.1 · nov/2026", self.txt)
 
     def test_slots_listados(self):
         slots = entre(self.txt, "## Slots do config", "## FASE 0")
@@ -124,8 +124,8 @@ class Build(unittest.TestCase):
 
     def test_versao_e_4b(self):
         txt = ler(BUILD)
-        self.assertIn('version: "2.9.0"', txt)
-        self.assertIn("`sdd-build v2.9.0 · nov/2026", txt)
+        self.assertIn('version: "2.9.1"', txt)
+        self.assertIn("`sdd-build v2.9.1 · nov/2026", txt)
         passo = entre(txt, "### 4b. Migration", "### 5.")
         self.assertIn("schema.check_cmd", passo)
 

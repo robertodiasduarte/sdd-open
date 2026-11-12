@@ -68,7 +68,7 @@ gate block. See [context-and-governance.md](context-and-governance.md).
 | `2` | red | **abort**; fix code, or iterate the spec if the defect is in the spec |
 | `3` | inconclusive | resolve explicitly; never record as green, never count as red |
 | `4` | human signature required | show `manual_fallback`, stop until the receipt is recorded |
-| `5` | clarification pending (marker, or no final `Governança` row) | **stop**, return to `/sdd-define` (or run only its step 11); never iterate the design |
+| `5` | clarification pending (marker, or no final `Governança` row) | **stop**, return to `/sdd-define` (or run only its steps 11 and 12); never iterate the design |
 | `64` | invalid or missing block | the spec is not valid |
 
 ## Checking without running
