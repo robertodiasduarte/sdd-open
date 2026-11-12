@@ -52,6 +52,7 @@ LINT_INIT = [
     re.compile(r"bin/sdd-open\.sh"), re.compile(r"init do sdd-open"), re.compile(r"`init` do sdd-open"),
 ]
 MOLDE = re.compile(r"sdd/templates/[A-Za-z0-9_/-]+\.md")
+PAR = re.compile(r"\.claude/skills/(sdd-[a-z0-9-]+)/`\s+ou\s+`\.agents/skills/\1/")
 SEMVER = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 
 
@@ -188,7 +189,9 @@ def reescrever(texto: str, skill: str, lista: list[str], moldes_dir: Path, markd
     em todo arquivo de texto. O par que define a pasta (`.claude/skills/x/` ou `.agents/skills/x/`) fica como está."""
     texto = texto.replace(URL_OPEN, URL_STARTER)
     if not markdown:
-        return texto
+        # num script, o caminho só aparece em mensagem, uso ou comentário (conferido): vira o nome da pasta, por extenso,
+        # porque `<pasta desta skill>` num comando colado viraria redirecionamento (avaliador, ciclo 1, achado 1)
+        return texto.replace(".agents/skills/%s/" % skill, "<pasta da skill %s>/" % skill)
     texto = MOLDE.sub(lambda m: PASTA_DESTA + "references/" + Path(m.group(0)).name
                       if (moldes_dir / m.group(0)).is_file() else m.group(0), texto)
     guardados: list[str] = []
@@ -286,12 +289,16 @@ def ler_aceites(arq: Path) -> list[tuple[str, str, str]]:
 def lint(pasta: Path, aceites: list[tuple[str, str, str]] = (), fora: list[str] = (), sem_uso: bool = True) -> list[str]:
     """`fora`: skills do Open que o starter não recebe; citar a pasta delas (`.agents/skills/<nome>/`) é citar o que
     não existe lá. As geradas podem ser citadas: o par que define a pasta fica, e o resto vira <pasta …>."""
-    padroes = LINT_INIT + [re.compile(r"\.agents/skills/%s/" % re.escape(n)) for n in fora]
+    padroes = LINT_INIT + [re.compile(r"\.agents/skills/%s/" % re.escape(n)) for n in fora] + \
+        [re.compile(r"\.agents/skills/sdd-[a-z0-9-]+/"), re.compile(r"`sync`")]
     achados, usados = [], set()
     for p in arquivos(pasta):
         if p.name == "CHANGELOG.md" or not eh_texto(p):
             continue
-        for n, ln in enumerate(p.read_text(encoding="utf-8", errors="replace").split("\n"), 1):
+        texto = p.read_text(encoding="utf-8", errors="replace")
+        # o par que define a pasta (`.claude/skills/x/` ou `.agents/skills/x/`) é texto certo no starter: some do lint
+        texto = PAR.sub(lambda m: re.sub(r"[^\n]", " ", m.group(0)), texto)
+        for n, ln in enumerate(texto.split("\n"), 1):
             for rx in padroes:
                 m = rx.search(ln)
                 if m:

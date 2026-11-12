@@ -8,6 +8,7 @@ existiam lá, com as versões reais daquela tag.
 from __future__ import annotations
 
 import hashlib
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -142,10 +143,32 @@ class Gera(Base):
     def test_regra_de_pasta_so_no_markdown_e_o_par_que_define_a_pasta_fica(self):
         rc, out, err = self.gerar()
         self.assertEqual(rc, 0, out + err)
-        hook = (self.starter / "skills/sdd-higiene-dado/scripts/pre-commit.sh").read_text(encoding="utf-8")
-        self.assertNotIn("<pasta", hook)   # num script, <pasta …> viraria redirecionamento do shell
+        hook_p = self.starter / "skills/sdd-higiene-dado/scripts/pre-commit.sh"
+        hook = hook_p.read_text(encoding="utf-8")
+        # num script, o marcador só pode estar em mensagem entre aspas, nunca num comando que o shell executa
+        com_marcador = [ln for ln in hook.splitlines() if "<pasta" in ln]
+        self.assertEqual(len(com_marcador), 1, com_marcador)
+        self.assertTrue(com_marcador[0].strip().startswith("DESINSTALAR='"), com_marcador)
+        rc, out, err = self.roda([BASH, "-n", hook_p], self.tmp)
+        self.assertEqual(rc, 0, out + err)
         s = (self.starter / "skills/sdd-iniciar-repo/SKILL.md").read_text(encoding="utf-8")
         self.assertIn("`.claude/skills/sdd-iniciar-repo/` ou\n`.agents/skills/sdd-iniciar-repo/`", s)
+
+    def test_aval1_kb_gerada_sem_caminho_nem_sync_do_open(self):
+        # avaliador, ciclo 1, achado 1: o validate_kb.py gerado mandava rodar .agents/skills/sdd-kb/…, que não existe
+        # numa instalação do Claude Code (.claude/skills/sdd-kb)
+        rc, out, err = self.gerar()
+        self.assertEqual(rc, 0, out + err)
+        for skill in ("sdd-kb", "sdd-engenharia-reversa-saas", "sdd-higiene-dado"):
+            for p in (self.starter / "skills" / skill).rglob("*"):
+                if p.is_file() and p.name not in ("CHANGELOG.md", "GERADO.txt"):
+                    with self.subTest(arquivo=str(p.relative_to(self.starter))):
+                        tx = p.read_text(encoding="utf-8")
+                        self.assertNotIn("`sync`", tx)
+                        sem_par = re.sub(r"\.claude/skills/(sdd-[a-z0-9-]+)/`\s+ou\s+`\.agents/skills/\1/", "", tx)
+                        self.assertNotIn(".agents/skills/%s/" % skill, sem_par)
+        v = (self.starter / "skills/sdd-kb/scripts/validate_kb.py").read_text(encoding="utf-8")
+        self.assertIn("python3 <pasta da skill sdd-kb>/scripts/kb_normativo.py rule-map", v)
 
     def test_at005_duas_geracoes_iguais_byte_a_byte(self):
         outro = self.replica("starter2")
@@ -269,6 +292,17 @@ class Recusa(Base):
 
 
 class Lint(Base):
+    def test_aval1_lint_pega_caminho_da_skill_gerada_fora_do_par(self):
+        pasta = self.tmp / "l"
+        self.escreve(pasta, "sdd-kb/scripts/x.py", "print('rode python3 .agents/skills/sdd-kb/scripts/kb_normativo.py')\n")
+        self.escreve(pasta, "sdd-kb/SKILL.md", "Use `.agents/skills/sdd-kb/assets/`.\n")
+        self.escreve(pasta, "sdd-kb/references/ok.md", "A pasta: `.claude/skills/sdd-kb/` ou\n`.agents/skills/sdd-kb/`, no projeto.\n")
+        rc, out, err = self.roda([PY, "-B", RAIZ / "scripts/gerar-starter.py", "--lint", pasta], self.tmp)
+        self.assertEqual(rc, 65, out + err)
+        self.assertIn("sdd-kb/scripts/x.py:1", out)
+        self.assertIn("sdd-kb/SKILL.md:1", out)
+        self.assertNotIn("ok.md", out)   # o par que define a pasta é texto certo
+
     def test_at004_a_copia_crua_reprova_e_a_gerada_passa(self):
         crua = self.tmp / "crua"
         for skill in LISTA:
