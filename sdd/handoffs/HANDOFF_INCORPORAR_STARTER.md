@@ -22,8 +22,8 @@ Próxima sessão: F17b Starter gerado, etapa 2, com as sobras da F17 no passo 0 
 
 ```text
 Executar a frente F17b do SDD Open: starter gerado, etapa 2 (Decisão 5). Repo público robertodiasduarte/sdd-open.
-Abra a frente com a sdd-new-session a partir de /Users/robertoduarte/rdd-public/sdd-open (branch feat/f17b-starter-etapa2, de
-origin/main = d813954 = v2.13.0). Responda em português.
+A frente já está aberta: /Users/robertoduarte/rdd-worktrees/sdd-open-f17b-starter-etapa2, branch feat/f17b-starter-etapa2,
+de origin/main = d813954 = v2.13.0. Não rode a sdd-new-session. Responda em português.
 Push, merge, tag e Release neste repositório pedem a frase do Roberto "sdd-open autorizado": pergunte, não presuma.
 A F17b toca dois repositórios: o gerador mora no Open; o robertodiasduarte/sdd-starter recebe a cópia gerada e pede OK PRÓPRIO
 do Roberto para cada push, PR e Release lá (merge na main do starter publica a Release automática). Nada da RDD (nomes de
@@ -242,6 +242,7 @@ o publish-check do starter pula o GERADO.txt. sdd-release em 500 linhas (teto do
 - 2026-11-12 — F17, brainstorm (Roberto): meta = **manutenção num repositório só** e starter simples para o iniciante; **caminho 1, em 2 etapas** (agora 10 skills geradas; 8 congeladas até a **F17b**, que decide com dado o destino de define, design, build, release e ux-review-builder); geração **manual**, a partir de tag; `sdd/ambiente.md` sai (a new-session gerada é a do Open); `agents/openai.yaml` por **tabela única** no Open; **trocas exatas fora da skill**.
 - 2026-11-12 — F17, release (Roberto): "sdd-open autorizado" dado antes, para quando tudo estivesse verde; revisão acima do teto em 4 decisões (rodada 4 só do delta; rodada 5 sobre o diff inteiro porque o conferidor marcou a 4 como rasa; rodada 6 para o conserto da 5; rodada 7 como a última, com os leves dela virando pendência).
 - 2026-11-13 — **F17 publicada: Release `v2.13.0`** (`main` = `d813954`, PR #27) e **starter `v1.5.17`** (PR #10 de lá, OK próprio do Roberto para push, PR e integração); `~/.claude/skills/sdd-*` (14) regeneradas pela tag, com backup (D6, OK do Roberto). Roberto: a próxima frente é a **F17b**.
+- 2026-11-13 — **F17b aberta** (pedido do Roberto) com a `sdd-new-session` 1.6.0: worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f17b-starter-etapa2`, branch `feat/f17b-starter-etapa2` de `origin/main` = `d813954` = `v2.13.0`; aberta no Cursor (`git config sdd.editor`); sem `sdd/config.yaml` no repositório, nenhum slot gravado; nada a copiar. O prompt da sessão passa a dizer que a frente existe.
 
 ## 2026-11-12 — F17 Starter gerado a partir do Open (Release v2.13.0, starter v1.5.17)
 

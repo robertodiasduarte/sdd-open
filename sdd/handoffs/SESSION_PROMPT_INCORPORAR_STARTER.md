@@ -1,4 +1,4 @@
-# Continuar: INCORPORAR_STARTER — F17b Starter gerado, etapa 2, com as sobras da F17 no passo 0
+# Continuar: INCORPORAR_STARTER — F17b Starter gerado, etapa 2 (frente aberta em 2026-11-13), com as sobras da F17 no passo 0
 
 A `v2.13.0` do Open saiu em 2026-11-13 (`main` = `d813954`, PR #27): F17, o sdd-starter passa a ser gerado a partir do Open
 (`scripts/gerar-starter.py`). A 1ª geração publicou o starter **`v1.5.17`** (PR #10 de lá): 10 skills geradas, com
@@ -7,8 +7,9 @@ A `v2.13.0` do Open saiu em 2026-11-13 (`main` = `d813954`, PR #27): F17, o sdd-
 
 ## Onde abrir esta sessão
 
-A frente **ainda não existe**. Abra com a `sdd-new-session` a partir de `/Users/robertoduarte/rdd-public/sdd-open` (branch
-`feat/f17b-starter-etapa2`, de `origin/main` = `d813954` = `v2.13.0`). Worktrees que guardam material da F17:
+A frente **já existe** (aberta em 2026-11-13 pela `sdd-new-session`): worktree
+`/Users/robertoduarte/rdd-worktrees/sdd-open-f17b-starter-etapa2`, branch `feat/f17b-starter-etapa2`, de `origin/main` =
+`d813954` (`v2.13.0`). A janela do Cursor foi aberta nela; cole o prompt abaixo lá. Worktrees que guardam material da F17:
 `/Users/robertoduarte/rdd-worktrees/sdd-open-f17-starter-gerado` (as 7 revisões em `sdd/reports/reviews/`, ignoradas pelo git:
 não a apague sem arquivar essa pasta) e `/Users/robertoduarte/rdd-worktrees/sdd-starter-f17-gerado` (o clone do starter usado
 na 1ª geração, branch `feat/f17-primeira-geracao`, já integrada).
@@ -17,8 +18,8 @@ na 1ª geração, branch `feat/f17-primeira-geracao`, já integrada).
 
 ```text
 Executar a frente F17b do SDD Open: starter gerado, etapa 2 (Decisão 5). Repo público robertodiasduarte/sdd-open.
-Abra a frente com a sdd-new-session a partir de /Users/robertoduarte/rdd-public/sdd-open (branch feat/f17b-starter-etapa2, de
-origin/main = d813954 = v2.13.0). Responda em português.
+A frente já está aberta: /Users/robertoduarte/rdd-worktrees/sdd-open-f17b-starter-etapa2, branch feat/f17b-starter-etapa2,
+de origin/main = d813954 = v2.13.0. Não rode a sdd-new-session. Responda em português.
 Push, merge, tag e Release neste repositório pedem a frase do Roberto "sdd-open autorizado": pergunte, não presuma.
 A F17b toca dois repositórios: o gerador mora no Open; o robertodiasduarte/sdd-starter recebe a cópia gerada e pede OK PRÓPRIO
 do Roberto para cada push, PR e Release lá (merge na main do starter publica a Release automática). Nada da RDD (nomes de
