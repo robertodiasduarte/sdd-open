@@ -252,6 +252,89 @@ def sem_fluxo_encadeado(texto: str, skill: str) -> str:
     return "\n".join(linhas[:ini] + linhas[fim:])
 
 
+# ── skill de modo (Decision 2 do DESIGN_F17B_STARTER_ETAPA2) ─────────────────
+# Arquivo citado pelo modo = `references/…`, `assets/…` ou `scripts/…` com extensão, relativo à skill. Limite
+# conhecido: um `scripts/x.sh` do projeto do aluno citado no texto também casa e, sem esse arquivo na skill, o
+# gerador sai 65; escreva a citação de outro jeito (ex.: "o script de deploy do projeto").
+CITA = re.compile(r"(?<![\w/.-])((?:references|assets|scripts)/[A-Za-z0-9_./-]+\.[A-Za-z0-9]+)")
+
+
+def ler_modos(arq: Path) -> dict[str, str]:
+    """`skill<TAB>arquivo de modo relativo à skill`: o SKILL.md do starter sai só desse arquivo."""
+    modos = {}
+    if not arq.is_file():
+        return modos
+    for linha in arq.read_text(encoding="utf-8").splitlines():
+        if not linha.strip() or linha.startswith("#"):
+            continue
+        c = linha.split("\t")
+        if len(c) != 2 or not all(x.strip() for x in c):
+            raise Falha(65, "modos.tsv: linha sem os 2 campos (skill, arquivo de modo): %s" % linha[:60])
+        modos[c[0]] = c[1]
+    return modos
+
+
+def frontmatter(texto: str, onde: str) -> tuple[list[str], str]:
+    """Linhas do frontmatter (sem os `---`) e o corpo depois dele."""
+    if not texto.startswith("---\n") or "\n---\n" not in texto[3:]:
+        raise Falha(65, "%s: sem frontmatter" % onde)
+    fim = texto.index("\n---\n", 3)
+    return texto[4:fim].split("\n"), texto[fim + len("\n---\n"):]
+
+
+def campo(linhas: list[str], nome: str) -> list[str]:
+    """O bloco de um campo de topo (a linha `nome:` e as indentadas que a seguem)."""
+    for i, ln in enumerate(linhas):
+        if ln.startswith(nome + ":"):
+            j = i + 1
+            while j < len(linhas) and (linhas[j].startswith(" ") or not linhas[j].strip()):
+                j += 1
+            return linhas[i:j]
+    return []
+
+
+def compor(origem: Path, destino: Path, modo_rel: str) -> None:
+    skill = origem.name
+    modo = origem / modo_rel
+    if not modo.is_file():
+        raise Falha(65, "%s: o arquivo de modo %s não existe" % (skill, modo_rel))
+    fm_modo, corpo = frontmatter(ler(modo), "%s/%s" % (skill, modo_rel))
+    fm_open, resto = frontmatter(ler(origem / "SKILL.md"), "%s/SKILL.md" % skill)
+    # as duas: sem a compatibility do modo, a do Open (que fala de slots e scripts do init) vazaria para o starter
+    for nome in ("description", "compatibility"):
+        if not campo(fm_modo, nome):
+            raise Falha(65, "%s/%s: o frontmatter do modo não tem %s" % (skill, modo_rel, nome))
+    ident = [ln for ln in resto.split("\n") if ln.startswith("`%s v" % skill)]
+    if len(ident) != 1 or corpo.count(ident[0]) != 1:
+        raise Falha(65, "%s: o modo tem de trazer, uma vez, a mesma linha de identificação do SKILL.md (%s)"
+                    % (skill, ident[0][:40] if ident else "ausente no SKILL.md"))
+    # o frontmatter do Open, com description e compatibility trocados pelos blocos do modo (o campo do Open
+    # pode ter linhas de continuação, como `description: >-`: elas saem junto)
+    final, pular = [], False
+    for ln in fm_open:
+        topo = bool(ln.strip()) and not ln.startswith(" ")
+        if topo:
+            nome = ln.split(":", 1)[0]
+            pular = nome in ("description", "compatibility") and bool(campo(fm_modo, nome))
+            final.extend(campo(fm_modo, nome) if pular else [ln])
+        elif not pular:
+            final.append(ln)
+    destino.mkdir(parents=True)
+    (destino / "SKILL.md").write_bytes(("---\n%s\n---\n%s" % ("\n".join(final), corpo)).encode("utf-8"))
+    pendentes, feitos = set(CITA.findall(corpo)), set()
+    while pendentes:
+        rel = pendentes.pop()
+        if rel in feitos or rel == modo_rel:
+            continue
+        if not (origem / rel).is_file():
+            raise Falha(65, "%s: o modo cita %s, que não existe na skill" % (skill, rel))
+        feitos.add(rel)
+        (destino / rel).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(str(origem / rel), str(destino / rel))
+        if eh_texto(origem / rel):
+            pendentes |= set(CITA.findall(ler(origem / rel)))
+
+
 def com_cabecalho(texto: str, skill: str, cabecalho: str, migrar: str) -> str:
     if not texto.startswith("---\n"):
         raise Falha(65, "%s/SKILL.md não começa pelo frontmatter" % skill)
@@ -342,6 +425,10 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
     lista = [ln.strip() for ln in (dados / "lista.txt").read_text(encoding="utf-8").splitlines()
              if ln.strip() and not ln.startswith("#")]
     tabela = ler_openai(dados / "openai.tsv")
+    modos = ler_modos(dados / "modos.tsv")
+    for skill in modos:
+        if skill not in lista:
+            raise Falha(65, "modos.tsv cita %s, que não está na lista.txt" % skill)
     # O cabeçalho e o GERADO.txt de cada skill NÃO levam a tag: com ela, toda geração mudaria as 10 skills e o
     # version gate do starter pediria versão nova em todas (revisão do DESIGN, item 2). A tag fica só na raiz.
     cabecalho = (dados / "blocos" / "GENERATED.md").read_text(encoding="utf-8")
@@ -364,7 +451,10 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
         if skill not in tabela:
             raise Falha(65, "%s não tem linha em scripts/starter/openai.tsv" % skill)
         destino = saida / "skills" / skill
-        shutil.copytree(origem, destino)
+        if skill in modos:
+            compor(origem, destino, modos[skill])
+        else:
+            shutil.copytree(origem, destino)
         n_trocas = aplicar_trocas(destino, dados / "trocas" / ("%s.md" % skill))
         s = destino / "SKILL.md"
         gravar_se_mudou(s, sem_fluxo_encadeado(ler(s), skill))
@@ -378,7 +468,8 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
         (destino / "agents").mkdir(exist_ok=True)
         (destino / "agents" / "openai.yaml").write_text(openai_yaml(tabela[skill]), encoding="utf-8")
         (destino / "GERADO.txt").write_bytes(lista_gerado(destino, nota))
-        relatorio.append("✅ %s: %d arquivo(s), %d troca(s)" % (skill, len(arquivos(destino)) - 1, n_trocas))
+        relatorio.append("✅ %s: %d arquivo(s), %d troca(s)%s" % (skill, len(arquivos(destino)) - 1, n_trocas,
+                                                              ", de modo (%s)" % modos[skill] if skill in modos else ""))
 
     shutil.copytree(dados / "raiz", saida, dirs_exist_ok=True)
     achados = lint(saida, ler_aceites(dados / "lint-aceitos.tsv"), fora)
@@ -437,7 +528,8 @@ def conferir_versoes(saida: Path, destino: Path) -> None:
         raise Falha(65, "o version gate do starter reprovaria:\n  " + "\n  ".join(erros))
 
 
-DONO_INTEIRO = ("scripts", ".github/workflows")   # as mesmas pastas que o check-gerado.py confere inteiras
+# as mesmas pastas que o check-gerado.py confere inteiras (docs, exemplos e tests desde a F17b)
+DONO_INTEIRO = ("scripts", ".github/workflows", "docs", "exemplos", "tests")
 
 
 def gravar(saida: Path, destino: Path) -> None:

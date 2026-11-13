@@ -34,7 +34,7 @@ COM_SECAO = FASE + ("sdd-new-session", "sdd-iniciar-repo")
 
 GUIA = RAIZ / "docs/pt-BR/guia-do-aluno.md"
 # O que o guia do sdd-starter dizia e no open é falso.
-PROIBIDO_NO_GUIA = ("npx skills", "15 skills", "ux-review-builder", "sdd-starter/releases",
+PROIBIDO_NO_GUIA = ("npx skills", "15 skills", "sdd-starter/releases",   # F17b: a ux-review-builder é do Open
                     "sdd/BRAINSTORM_", "sdd/DEFINE_", "sdd/DESIGN_", "sdd/BUILD_REPORT_", "sdd/HANDOFF_",
                     "registra e libera")
 # "sdd/ fica fora do git", nas redações do starter e nas variações conhecidas (não vai/entra/sobe, fica fora,
@@ -230,7 +230,7 @@ class Guia(unittest.TestCase):
     def test_uma_ficha_por_skill(self):
         faltam = [s for s in SKILLS if not re.search(r"(?m)^#### %s\s*$" % re.escape(s), self.texto)]
         self.assertEqual(faltam, [], "skills sem ficha no catálogo")
-        self.assertEqual(len(SKILLS), 21)  # F18/F20: sdd-seguranca
+        self.assertEqual(len(SKILLS), 22)  # F18/F20: sdd-seguranca · F17b: ux-review-builder
 
     def test_os_sete_agentes(self):
         self.assertEqual([a for a in AGENTES if a not in self.texto], [])

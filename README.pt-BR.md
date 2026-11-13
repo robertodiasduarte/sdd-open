@@ -50,14 +50,14 @@ seu é sobrescrito. [Quickstart completo →](docs/pt-BR/quickstart.md)
 | **Engenharia reversa de SaaS** | quem quer construir algo parecido com um sistema que já existe estuda esse produto **antes** do Brainstorm: `ENGENHARIA_REVERSA_{SAAS}.md` traz cada achado com fonte e classe (observado, documentado, informado, inferido, não verificado), conferido por um lint; depois a skill conduz o Brainstorm e o Define da **sua** solução. Só fontes públicas e conta própria, sem copiar marca nem código; sem pesquisa na web o levantamento sai parcial | skill `sdd-engenharia-reversa-saas` |
 | **Handoff por ficha** | um arquivo por feature no repositório, com prompt de retomada autossuficiente — sem depender da memória de nenhum agente | skill `sdd-handoff` · `sdd/handoffs/` |
 
-## As 21 skills
+## As 22 skills
 
 | Bloco | Skills | Quando |
 |---|---|---|
 | **Preparar** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | uma vez por computador e por projeto (está tudo pronto? pôr no git, alarme de commit contra dado de cliente); a new-session a cada frente de trabalho |
 | **Criar** | `sdd-kb` (opcional) · `sdd-engenharia-reversa-saas` (opcional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-seguranca` · `sdd-ux-review` · `sdd-design` · `sdd-build` | uma vez por feature — o fluxo SDD |
 | **Fechar** | `sdd-handoff` · `sdd-release` | no fim de cada sessão e de cada frente |
-| **Transversais** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-drive` · `sdd-auditoria-harness` | quando o caso pedir |
+| **Transversais** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-drive` · `sdd-auditoria-harness` · `ux-review-builder` | quando o caso pedir (`ux-review-builder`: uma vez por projeto, o padrão de UX que a `sdd-ux-review` lê) |
 
 Nunca usou git nem terminal? O [guia do aluno](docs/pt-BR/guia-do-aluno.md) mostra o caminho
 inteiro, da primeira instalação à primeira publicação.

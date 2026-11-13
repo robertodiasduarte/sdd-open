@@ -134,9 +134,9 @@ vendor_pedido() { case " ${VENDORS} " in *" ${1} "*) return 0 ;; *) return 1 ;; 
 FONTE_SKILLS="${ROOT}/.agents/skills"
 [ "${VERBO}" = "init" ] && FONTE_PKG_SKILLS="${PKG}/.agents/skills"
 
-skills_da_fonte() { # imprime nomes sdd-* presentes na fonte indicada
+skills_da_fonte() { # imprime os nomes das skills do pacote (sdd-* e a ux-review-builder) presentes na fonte indicada
   local base="${1}" d
-  for d in "${base}"/sdd-*/; do
+  for d in "${base}"/sdd-*/ "${base}"/ux-review-builder/; do
     [ -d "${d}" ] || continue
     basename "${d}"
   done
@@ -474,7 +474,7 @@ destinos_checar() {
 # apaga (território do usuário); sinaliza em --check e avisa no sync (kimi R2).
 orfaos_listar() { # $1=destdir → imprime paths órfãos
   local destdir="${1}" d nome
-  for d in "${ROOT}/${destdir}"/sdd-*/; do
+  for d in "${ROOT}/${destdir}"/sdd-*/ "${ROOT}/${destdir}"/ux-review-builder/; do
     [ -d "${d}" ] || continue
     nome="$(basename "${d}")"
     [ -d "${FONTE_SKILLS}/${nome}" ] || printf '%s/%s (órfão: a fonte .agents/skills/ não tem mais esta skill)\n' "${destdir}" "${nome}"

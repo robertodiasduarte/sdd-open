@@ -106,7 +106,7 @@ jobs:
         run: bash sdd/bin/playbook-lint.sh --self-test
 
       - name: Skill frontmatter (Agent Skills spec)
-        run: python3 sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md
+        run: python3 sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md .agents/skills/ux-review-builder/SKILL.md
 
       - name: Decision classes and chained flow
         run: |

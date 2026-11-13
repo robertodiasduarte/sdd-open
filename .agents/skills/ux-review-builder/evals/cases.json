@@ -1,0 +1,115 @@
+{
+  "version": "1.5.0",
+  "cases": [
+    {
+      "id": "create-vague-briefing",
+      "type": "negative_control",
+      "input": "Quero uma tela bonita para meu sistema.",
+      "expected": [
+        "Não gerar artefatos imediatamente",
+        "Iniciar a entrevista progressiva, uma pergunta por vez, sem jargão de UX",
+        "Oferecer referências reconhecíveis sem inventar identidade"
+      ]
+    },
+    {
+      "id": "create-with-references-and-url",
+      "type": "positive",
+      "input": "Quero um portal simples como o ChatGPT, confiável como o Nubank, e tenho uma URL de referência.",
+      "expected": [
+        "Separar observado, desejado e recomendado",
+        "Analisar a URL quando a capacidade existir",
+        "Converter preferências em regras a confirmar"
+      ]
+    },
+    {
+      "id": "evolve-existing-standard",
+      "type": "positive",
+      "input": "Já tenho UX_STANDARD.md e quero aumentar a densidade dos dashboards.",
+      "expected": [
+        "Entrar em modo Evolução",
+        "Preservar IDs existentes",
+        "Apresentar diff conceitual antes de atualizar",
+        "Solicitar nova confirmação"
+      ]
+    },
+    {
+      "id": "pasta-do-sdd",
+      "type": "boundary",
+      "input": "Onde ficam o UX_STANDARD.md e o relatório da ux-review?",
+      "expected": [
+        "Responder sdd/ na raiz do projeto, ou a pasta do SDD que o projeto já usa",
+        "Documentos lado a lado com o DEFINE e o DESIGN, sem subpastas"
+      ]
+    },
+    {
+      "id": "child-review-must-gate",
+      "type": "child_behavior",
+      "input": "A feature viola UX-CORE-002 e não há aceite da exceção.",
+      "expected": [
+        "Classificar MUST",
+        "Marcar BLOCKED FOR DESIGN",
+        "Citar UX-CORE-002"
+      ]
+    },
+    {
+      "id": "child-canonical-change",
+      "type": "child_behavior",
+      "input": "A revisão concluiu que o UX_STANDARD deveria mudar.",
+      "expected": [
+        "Registrar proposta de evolução",
+        "Não editar o UX_STANDARD automaticamente"
+      ]
+    },
+    {
+      "id": "insufficient-evidence",
+      "type": "child_behavior",
+      "input": "O padrão exige foco visível, mas não há mockup nem implementação.",
+      "expected": [
+        "Marcar NAO AVALIAVEL",
+        "Não marcar CONFORME"
+      ]
+    },
+    {
+      "id": "lente-nao-bloqueia",
+      "type": "child_behavior",
+      "input": "A feature não viola nenhuma regra do UX_STANDARD, mas Escolhas por passo (Hick-Hyman) e Agrupamento (Miller) recebem RECOMENDAÇÃO.",
+      "expected": [
+        "Registrar as duas lentes como RECOMENDAÇÃO (SHOULD ou COULD) com evidência",
+        "Manter READY FOR DESIGN",
+        "Registrar no Gate Outcome que as lentes não mudam o resultado",
+        "Levar as recomendações ao handoff marcadas (lente Lx)"
+      ]
+    },
+    {
+      "id": "lente-nao-rebaixa-must",
+      "type": "child_behavior",
+      "input": "O DEFINE mostra uma barra de progresso que começa em 40% antes de qualquer etapa concluída, para motivar.",
+      "expected": [
+        "Classificar MUST por UX-CORE-009, citado à parte",
+        "Marcar BLOCKED FOR DESIGN",
+        "Registrar Progresso real (Gradiente de meta) só como ângulo cognitivo, sem rebaixar o MUST"
+      ]
+    },
+    {
+      "id": "lente-alerta-usuario-avancado",
+      "type": "child_behavior",
+      "input": "Tela de conferência usada todo dia pela mesma equipe; o DEFINE propõe esconder os filtros atrás de 'mais opções'.",
+      "expected": [
+        "Marcar Escolhas por passo (Hick-Hyman) como ALERTA",
+        "Explicar que densidade é recurso para uso diário",
+        "Não gerar MUST nem mudar o resultado do gate"
+      ]
+    },
+    {
+      "id": "evolucao-lente-vira-should",
+      "type": "positive",
+      "input": "Quero que a lente de Retomada vire regra do meu UX_STANDARD.",
+      "expected": [
+        "Entrar em modo Evolução",
+        "Propor a regra com severidade SHOULD ou COULD",
+        "Explicar que bloquear exige uma regra própria em MUST, decidida pelo responsável",
+        "Solicitar nova confirmação"
+      ]
+    }
+  ]
+}

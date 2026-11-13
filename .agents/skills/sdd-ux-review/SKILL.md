@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Independe de stack visual; usa 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.5.0"
+  version: "2.6.0"
   updated: "2026-11"
   fase: "UX"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-ux-review — gate de UX/CX
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-ux-review v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-ux-review v2.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Traduzir requisitos em experiência **antes** que arquitetura e código endureçam. "Interface"
 inclui tela, linha de comando, arquivo gerado, e-mail: qualquer coisa que uma pessoa lê e
@@ -86,6 +86,9 @@ bug?" ou "como faço X?" — essa pergunta **é** o bug; resolve-se na interface
    fora de escopo.
    Leia também os `sdd/reviews/UX_REVIEW_*.md` anteriores: o que já foi decidido de copy, estados e
    símbolos vale aqui, salvo motivo registrado.
+   Se existir `sdd/UX_STANDARD.md` (o padrão de UX do projeto, feito pela skill `ux-review-builder`), ele é
+   a régua desta revisão: leia antes e aplique as regras dele; um achado que contraria o padrão vira
+   pergunta à pessoa, nunca troca silenciosa do padrão.
    Se o DEFINE não diz quem usa e em que contexto, ou se o aluno pedir, conduza antes a entrevista
    de `references/entrevista-publico.md` e grave o resultado em `## User and Context`.
 2. **Jornada.** Antes → Entrada → Ação central → Feedback → Recuperação →

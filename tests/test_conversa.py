@@ -50,12 +50,12 @@ def secao(texto: str) -> str:
 
 
 def todas():
-    return sorted(SKILLS.glob("sdd-*/SKILL.md"))
+    return sorted(list(SKILLS.glob("sdd-*/SKILL.md")) + list(SKILLS.glob("ux-review-builder/SKILL.md")))
 
 
 class Identificacao(unittest.TestCase):
     def test_sao_18_e_as_16_da_camada_existem(self):
-        self.assertEqual(len(todas()), 21)  # F18/F20: sdd-seguranca
+        self.assertEqual(len(todas()), 22)  # F18/F20: sdd-seguranca · F17b: ux-review-builder
         for s in F4:
             with self.subTest(skill=s):
                 self.assertTrue((SKILLS / s / "SKILL.md").is_file())

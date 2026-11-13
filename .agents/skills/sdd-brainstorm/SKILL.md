@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; funciona em qualquer agente que
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.3.1"
+  version: "2.4.0"
   updated: "2026-11"
   fase: "0"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-brainstorm — Fase 0 (opcional)
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-brainstorm v2.3.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-brainstorm v2.4.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Explorar antes de especificar. O produto desta fase é **clareza**, não código: um documento
 que o `/sdd-define` consegue transformar em spec com pouca pergunta.
@@ -145,12 +145,28 @@ próximo. Mínimo **2** confirmações. Se o usuário corrigir, volte: "Entendi 
 Preencha `sdd/templates/BRAINSTORM_TEMPLATE.md` e grave em
 `sdd/features/BRAINSTORM_{FEATURE}.md` (nome em CAIXA_ALTA_COM_UNDERSCORE, estável — é o
 `feature_id` de toda a linha). Inclua a seção **Suggested Requirements for /define** com
-problema, usuários, critérios de sucesso mensuráveis e fora de escopo confirmado.
+problema, usuários, critérios de sucesso mensuráveis e fora de escopo confirmado. Sem acesso aos arquivos do
+projeto, não há o que gravar: entregue no chat, como em **Sem terminal** abaixo.
 
 ## Se o agente não puder perguntar (sessão autônoma)
 
 Responda cada pergunta pela evidência disponível, marque a resposta como `ASSUMIDO` e liste as
 assunções em "O que precisa de você" no fechamento. Nunca invente uma resposta do usuário.
+
+## Sem terminal (sem acesso aos arquivos do projeto)
+
+Na web (claude.ai, ChatGPT) ou em qualquer agente que não lê nem grava os arquivos do projeto, o brainstorm é o
+mesmo; só a entrega muda:
+
+- **Entregue o documento inteiro no chat**, com o nome sugerido (`BRAINSTORM_{FEATURE}.md`) e uma frase dizendo que
+  nada foi gravado: a pessoa copia para um arquivo. Nunca diga que gravou, leu ou conferiu um arquivo que não viu.
+- **Fato, observação e inferência separados:** o que a pessoa disse (fornecido), o que você viu num arquivo ou trecho
+  que ela colou (observado) e o que você concluiu (inferido). Sem acesso ao projeto, a estrutura, os commits e os
+  padrões ficam como `não fornecido`, nunca como inspecionados.
+- **Não sobrescreva em silêncio:** se já existe um BRAINSTORM da mesma feature, pergunte se atualiza o antigo ou cria
+  outro.
+- **YAGNI com zero cortes vale:** se nada pode sair com responsabilidade, registre que a revisão foi feita e nada saiu;
+  nunca invente um corte. Métrica que ainda não tem número vira "a definir", nunca um número inventado.
 
 ## Quality Gate
 

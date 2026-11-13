@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.11.1"
+  version: "2.12.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,11 +14,11 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.11.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.12.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
-Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
-do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
-irreversível na prática.
+Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes do push e do
+deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e irreversível na prática.
+**Projeto sem `sdd/bin/`** (sem o `init`; ex.: GitHub + Vercel com as skills soltas)? Siga `references/MODO_INICIANTE.md`.
 
 ## Como falar com o aluno
 

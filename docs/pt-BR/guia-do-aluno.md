@@ -383,6 +383,17 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **O que produz** | `sdd/reviews/UX_REVIEW_NOME.md`, com os requisitos de interação e o que é obrigatório para o Design. |
 | **O que vai perguntar** | Se o Define não diz quem usa e em que situação (ou se você pedir), uma entrevista curta: quem usa, com que frequência, em que aparelho, e uma referência que você goste. |
 
+#### ux-review-builder
+
+| | |
+|---|---|
+| **Para que serve** | Cria, uma vez por projeto, o padrão de experiência dele (`sdd/UX_STANDARD.md`): público, referências, regras que dá para conferir olhando a tela, quem aprova mudanças. |
+| **Quando usar** | Antes da primeira revisão de UX de um projeto com tela, ou quando o padrão precisa evoluir. |
+| **Quando não usar** | Para revisar uma feature: isso é a `sdd-ux-review`, que lê o padrão. |
+| **Como pedir** | *"use a skill ux-review-builder; quero criar o padrão de experiência do meu projeto"* |
+| **O que produz** | `sdd/UX_STANDARD.md` e o molde do relatório de revisão; a `sdd-ux-review` passa a usar o padrão como régua. |
+| **O que vai perguntar** | Uma pergunta por vez: quem usa, em que situação, referências de que você gosta, o que é inaceitável. |
+
 #### sdd-design
 
 | | |

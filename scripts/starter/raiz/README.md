@@ -45,15 +45,17 @@ E cinco skills para **preparar o ambiente e trabalhar em frentes isoladas** no s
 | [`sdd-higiene-dado`](skills/sdd-higiene-dado/) | Barrar dado de cliente antes do git | Ao preparar a máquina do escritório | Com o seu OK, instala um alarme de commit que recusa CPF/CNPJ, `.env`, certificado A1 e planilha nova — e explica como corrigir |
 | [`sdd-iniciar-repo`](skills/sdd-iniciar-repo/) | Pôr no git um projeto que ainda não usa | Uma vez, quando a pasta do projeto ainda não tem git | Confere a pasta, lista o que entraria (senha, certificado A1, planilha, arquivo grande), propõe o `.gitignore` e, com o seu OK em cada etapa, faz o primeiro commit e cria um repositório **privado** no GitHub |
 | [`sdd-new-session`](skills/sdd-new-session/) | Abrir uma frente de trabalho | No começo de cada tarefa | Cria worktree + branch a partir da produção atualizada e prepara a pasta (dependências, `.env`, as skills que estão fora do git) |
-| [`sdd-release`](skills/sdd-release/) | Fechar a frente e publicar | No fim da tarefa, de dentro da pasta da frente | Verifica (testes, segredo no diff, base atualizada), mostra uma vez o que vai para produção e só publica depois do seu OK |
+| [`sdd-release`](skills/sdd-release/) | Fechar a frente e publicar | No fim da tarefa, de dentro da pasta da frente | Verifica (testes, segredo no diff, base atualizada), mostra uma vez o que vai para produção, só publica depois do seu OK e confere o deploy (inclusive na Vercel) |
 
 Cada pasta de skill é autocontida: um `SKILL.md` com o procedimento completo, `references/` com os protocolos, `assets/` com os templates canônicos de saída e (quando aplicável) `scripts/` com um validador estrutural e `agents/openai.yaml` para agentes baseados em OpenAI.
 
 ## De onde vêm estas skills
 
-Desde a 1ª geração (nov/2026), dez skills deste repositório são **geradas** a partir do [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` e `sdd-loop-builder`. Cada uma traz um `GERADO.txt` e não se edita aqui: quem melhora, melhora no Open, e a próxima geração traz a mudança. A 1ª geração foi uma atualização grande dessas dez (skills de ambiente com `gh`, editor e modo terminal; a skill de segurança; o mesmo texto do Open).
+Quinze skills deste repositório são **geradas** a partir do [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` e `sdd-loop-builder` (desde a 1ª geração, nov/2026), e `sdd-brainstorm`, `sdd-handoff`, `sdd-governanca`, `sdd-release` e `ux-review-builder` (desde a 2ª). Cada uma traz um `GERADO.txt` e não se edita aqui: quem melhora, melhora no Open, e a próxima geração traz a mudança. `docs/`, `exemplos/` e `tests/` também vêm do Open.
 
-As outras oito (`sdd-brainstorm`, `sdd-define`, `sdd-design`, `sdd-build`, `sdd-handoff`, `sdd-release`, `sdd-governanca` e `ux-review-builder`) continuam como estavam, congeladas até a próxima etapa da geração.
+O que a 2ª geração muda para você: brainstorm, handoff e governança funcionam igual na web (o documento sai no chat, dizendo que nada foi gravado); a `sdd-release` confere o deploy da **Vercel** ligada ao GitHub (pelo status do commit, com o endereço no fim), sem pedir token; as skills geradas guardam os documentos em `sdd/features/`, `sdd/handoffs/` e `sdd/reviews/`.
+
+As outras três (`sdd-define`, `sdd-design` e `sdd-build`) continuam como estavam, congeladas até a próxima etapa da geração; elas recebem o documento da fase anterior pelo caminho que você indicar.
 
 ## Instalação
 
@@ -144,15 +146,17 @@ And five skills to **prepare the environment and work in isolated workstreams** 
 | [`sdd-higiene-dado`](skills/sdd-higiene-dado/) | Stop client data before it reaches git | When preparing the office machine | With your OK, installs a commit alarm that rejects CPF/CNPJ numbers, `.env`, A1 certificates and new spreadsheets — and explains how to fix it |
 | [`sdd-iniciar-repo`](skills/sdd-iniciar-repo/) | Put a project that has no git into git | Once, when the project folder has no git yet | Checks the folder, lists what would go in (passwords, A1 certificates, spreadsheets, large files), proposes the `.gitignore` and, with your OK at each step, makes the first commit and creates a **private** GitHub repository |
 | [`sdd-new-session`](skills/sdd-new-session/) | Open a workstream | At the start of each task | Creates worktree + branch from up-to-date production and prepares the folder (dependencies, `.env`, skills kept out of git) |
-| [`sdd-release`](skills/sdd-release/) | Close the workstream and ship | At the end of the task, from inside the workstream folder | Checks (tests, secrets in the diff, up-to-date base), shows once what goes to production and ships only after your OK |
+| [`sdd-release`](skills/sdd-release/) | Close the workstream and ship | At the end of the task, from inside the workstream folder | Checks (tests, secrets in the diff, up-to-date base), shows once what goes to production, ships only after your OK and checks the deploy (Vercel included) |
 
 Each skill folder is self-contained: a `SKILL.md` with the full procedure, `references/` with protocols, `assets/` with the canonical output templates, and (where applicable) `scripts/` with a structural validator and `agents/openai.yaml` for OpenAI-based agents.
 
 ## Where these skills come from
 
-Since the first generation (Nov 2026), ten skills in this repository are **generated** from [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` and `sdd-loop-builder`. Each one carries a `GERADO.txt` and is not edited here: improvements go to SDD Open, and the next generation brings them. The first generation was a large update of those ten.
+Fifteen skills in this repository are **generated** from [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` and `sdd-loop-builder` (since the first generation, Nov 2026), and `sdd-brainstorm`, `sdd-handoff`, `sdd-governanca`, `sdd-release` and `ux-review-builder` (since the second). Each one carries a `GERADO.txt` and is not edited here: improvements go to SDD Open, and the next generation brings them. `docs/`, `exemplos/` and `tests/` also come from SDD Open.
 
-The other eight (`sdd-brainstorm`, `sdd-define`, `sdd-design`, `sdd-build`, `sdd-handoff`, `sdd-release`, `sdd-governanca` and `ux-review-builder`) stay as they were, frozen until the next stage of the generation.
+What the second generation changes for you: brainstorm, handoff and governance work the same on the web (the document comes out in the chat, saying nothing was saved); `sdd-release` checks the deploy of **Vercel** connected to GitHub (through the commit status, with the address at the end), without asking for a token; the generated skills keep documents in `sdd/features/`, `sdd/handoffs/` and `sdd/reviews/`.
+
+The other three (`sdd-define`, `sdd-design` and `sdd-build`) stay as they were, frozen until the next stage of the generation; they take the previous phase's document from the path you give them.
 
 ## Installation
 

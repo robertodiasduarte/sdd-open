@@ -91,8 +91,8 @@ class Skills(unittest.TestCase):
 
     def test_release_item_8_confere_o_lint_do_ledger(self):
         texto = ler(".agents/skills/sdd-release/SKILL.md")
-        self.assertIn('version: "2.11.1"', texto)
-        self.assertIn("`sdd-release v2.11.1 · nov/2026", texto)
+        self.assertIn('version: "2.12.0"', texto)
+        self.assertIn("`sdd-release v2.12.0 · nov/2026", texto)
         item = trecho(texto, "8. **Review externo (obrigatório, com dispensa registrada):**", "\n9. **Testes do diff:**")
         for termo in ("Com revisão feita (não dispensada)", "bash sdd/bin/ledger-revisao-lint.sh sdd/reviews/LEDGER_REVISAO_{F}.md",
                       "exit 2 ⇒ **abortar**", "exit 64", "sem achados: rodada=N"):

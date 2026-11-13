@@ -5,7 +5,7 @@ compatibility: "Requer bash >= 3.2 e git >= 2.20. Não executa nada no banco do 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.4.1"
+  version: "2.5.0"
   updated: "2026-11"
   fase: "Gov"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-governanca — revisão de governança
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-governanca v2.4.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-governanca v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Num sistema financeiro, contábil ou fiscal, governança responde uma pergunta: **daqui a cinco anos,
 um fiscal, um auditor ou um perito reconstrói o que aconteceu, quem fez e por quê — com prova de que
@@ -74,8 +74,8 @@ em **`sdd/reviews/GOVERNANCA_REVIEW_{FEATURE}.md`**; o padrão do projeto usa
 `assets/GOVERNANCA_PADRAO_TEMPLATE.md` e fica em `sdd/GOVERNANCA_PADRAO.md` (raiz de `sdd/`, um por projeto —
 nunca em `sdd/features/`).
 
-**Nesta porta, a prova de cada lacuna aplicada é um script.** Para cada lacuna que o profissional
-mandar aplicar e que tenha `prova_script` no catálogo:
+**Com Verify Gate por comando no DEFINE, a prova de cada lacuna aplicada é um script.** Para cada lacuna
+que o profissional mandar aplicar e que tenha `prova_script` no catálogo:
 
 1. adapte só os nomes de tabela e coluna aos do DEFINE e grave em `sdd/tests/governanca/{FEATURE}_<Gnn>.sql`
    — um arquivo por feature: o mesmo item adaptado a outra tabela, numa feature futura, não sobrescreve este;
@@ -97,6 +97,18 @@ os passos 1 a 4 e devolve o bloco `<<<GOVERNANCA`; quem conduz o Define faz os p
 `prova_script`** (grava o `.sql` e o liga ao `cmd` do Verify Gate; o Design só o lista no manifest).
 Chamada avulsa desta skill continua valendo para revisar de novo um DEFINE já escrito: rode em conversa
 nova, com só o DEFINE e esta skill.
+
+## Sem terminal (sem acesso aos arquivos do projeto)
+
+- **Quando não usar:** o DEFINE não trata dinheiro, saldo, lançamento, nota fiscal, tributo, folha nem dado pessoal
+  (resposta N.A. em 1 linha, sem arquivo); auditar o banco que já existe ou testar a segurança do sistema no ar são
+  outras tarefas.
+- **Prova sem script:** se o DEFINE não tem Verify Gate por comando (na web, ou num projeto sem testes
+  automatizados), a prova de cada lacuna aplicada é só o `prova_manual` do catálogo, de 3 a 5 passos com o
+  resultado esperado, no AT. Nenhum script é pedido ao aluno.
+- **Onde entregar:** sem acesso aos arquivos (claude.ai, ChatGPT), entregue no chat o relatório e o DEFINE atualizado,
+  dizendo que nada foi gravado; no primeiro uso, também o `GOVERNANCA_PADRAO.md`, para guardar no projeto. Com acesso,
+  grave nos caminhos do Processo acima.
 
 ## Regras que não se negociam
 

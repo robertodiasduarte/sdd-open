@@ -71,7 +71,7 @@ class ContratoDaNewSession(unittest.TestCase):
         self.texto = SESSAO.read_text(encoding="utf-8")
 
     def test_versao(self):
-        self.assertIn('version: "1.6.0"', self.texto)   # F16: modo terminal e --editor; F18/F20: lista conferida; F17: do starter
+        self.assertIn('version: "1.6.1"', self.texto)   # F16: modo terminal e --editor; F18/F20: lista conferida; F17: do starter
 
     def test_pre_voo_pelo_script_com_os_dois_exits_e_o_fallback(self):
         for frase in ("checar.sh --frente", "**exit 1**", "**exit 0** com a linha `✅ Pronto para abrir a frente",

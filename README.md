@@ -50,14 +50,14 @@ of yours is overwritten. [Full quickstart →](docs/quickstart.md)
 | **SaaS reverse engineering** | if you want to build something similar to a system that already exists, you study that product **before** the Brainstorm: `ENGENHARIA_REVERSA_{SAAS}.md` carries each finding with its source and class (observed, documented, reported, inferred, unverified), checked by a lint; then the skill drives the Brainstorm and the Define of **your** solution. Public sources and your own account only, no copying of brand or code; without web search the survey comes out partial | skill `sdd-engenharia-reversa-saas` |
 | **Handoff by feature card** | one file per feature in the repository, with a self-contained resume prompt — no dependency on any agent's memory | skill `sdd-handoff` · `sdd/handoffs/` |
 
-## The 21 skills
+## The 22 skills
 
 | Block | Skills | When |
 |---|---|---|
 | **Prepare** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | once per computer and per project (is everything ready? put it in git, a commit alarm against client data); the new-session for every work front |
 | **Create** | `sdd-kb` (optional) · `sdd-engenharia-reversa-saas` (optional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-seguranca` · `sdd-ux-review` · `sdd-design` · `sdd-build` | once per feature — the SDD flow |
 | **Close** | `sdd-handoff` · `sdd-release` | at the end of each session and of each front |
-| **Cross-cutting** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-drive` · `sdd-auditoria-harness` | when the case calls for it |
+| **Cross-cutting** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-drive` · `sdd-auditoria-harness` · `ux-review-builder` | when the case calls for it (`ux-review-builder`: once per project, the UX standard that `sdd-ux-review` reads) |
 
 New to git and the terminal? The [student guide](docs/pt-BR/guia-do-aluno.md) (PT) walks the whole
 path, from the first install to the first release.

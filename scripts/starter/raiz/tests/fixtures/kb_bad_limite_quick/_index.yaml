@@ -1,0 +1,16 @@
+# Índice das bases de conhecimento deste projeto.
+# Exemplo preenchido — mostra como um domínio fica registrado depois que a skill roda.
+
+version: "1.0"
+
+limits:
+  quick_reference: 100
+  concept: 150
+  pattern: 200
+
+domains:
+  kb_bad_limite_quick:
+    name: Fechamento Mensal do Escritório
+    description: Processo de fechamento contábil mensal — ordem das etapas, prazos e o que trava o fechamento.
+    path: kb_bad_limite_quick/
+    updated: 2026-03-11

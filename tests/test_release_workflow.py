@@ -328,7 +328,7 @@ class PublishGate(unittest.TestCase):
                       "check DEFINE_FIXTURE_CONTROLE.md 0",
                       "check DEFINE_FIXTURE_SEM_BLOCO.md 64",
                       "bash sdd/bin/playbook-lint.sh --self-test",
-                      "python3 sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md",
+                      "python3 sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md .agents/skills/ux-review-builder/SKILL.md",
                       'bash "$GITHUB_WORKSPACE/bin/sdd-open.sh" sync --check'):
             with self.subTest(linha=linha):
                 self.assertIn(linha, GATE)

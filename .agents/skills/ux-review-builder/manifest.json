@@ -1,0 +1,29 @@
+{
+  "name": "ux-review-builder",
+  "version": "1.5.0",
+  "caminhos_implementados": [
+    "Criação de UX_STANDARD.md",
+    "Evolução versionada de UX_STANDARD.md",
+    "Geração da skill ux-review",
+    "Geração de UX_REVIEW_TEMPLATE.md",
+    "Validação estrutural dos três artefatos",
+    "Lentes cognitivas na ux-review gerada (recomendam e alertam, não bloqueiam)"
+  ],
+  "pasta_do_sdd": "sdd/ na raiz do projeto, ou a pasta do SDD que o projeto já usa; documentos lado a lado, sem subpastas",
+  "testes_escritos": [
+    "tests/test_validate_generated_bundle.py",
+    "evals/cases.json"
+  ],
+  "pending": [
+    "Executar os cenários comportamentais de evals/cases.json no Claude Code e no Codex"
+  ],
+  "o_que_ainda_nao_prova": [
+    "Comportamento idêntico em todos os agentes",
+    "Qualidade subjetiva das decisões de UX",
+    "Conformidade automática com WCAG ou outra norma sem medição",
+    "Acesso à internet em qualquer instalação"
+  ],
+  "author": "Roberto Dias Duarte",
+  "license": "MIT",
+  "methodology": "Metodologia de Roberto Dias Duarte"
+}

@@ -111,7 +111,7 @@ class Textos(unittest.TestCase):
     def test_brainstorm_updated_no_mes_da_versao(self):
         b = ler(".agents/skills/sdd-brainstorm/SKILL.md")
         self.assertIn('updated: "2026-11"', b)
-        self.assertIn("v2.3.1 · nov/2026", b)
+        self.assertIn("v2.4.0 · nov/2026", b)   # F17b: Sem terminal
 
 
 if __name__ == "__main__":

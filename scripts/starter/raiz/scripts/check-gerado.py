@@ -2,14 +2,15 @@
 """Trava do que o sdd-open gera neste repositório: nada gerado se edita aqui.
 
 O sdd-open (https://github.com/robertodiasduarte/sdd-open) gera, de uma tag publicada, parte deste repositório:
-as skills que têm `skills/<nome>/GERADO.txt`, o README.md, scripts/ e .github/workflows/. Quem quer mudar um
+as skills que têm `skills/<nome>/GERADO.txt`, o README.md, scripts/, .github/workflows/, docs/, exemplos/ e
+tests/. Quem quer mudar um
 desses arquivos muda no sdd-open e gera de novo; mudança feita aqui some na geração seguinte, e esta trava a
 recusa antes disso.
 
 Confere:
   - GERADO.txt da raiz: cada arquivo listado existe e tem o sha256 listado (inclui o GERADO.txt de cada skill
-    gerada: apagar uma skill gerada inteira aparece como "falta"); scripts/ e .github/workflows/ não têm arquivo
-    a mais; sem o GERADO.txt da raiz, falha;
+    gerada: apagar uma skill gerada inteira aparece como "falta"); scripts/, .github/workflows/, docs/, exemplos/
+    e tests/ não têm arquivo a mais; sem o GERADO.txt da raiz, falha;
   - skills/<nome>/GERADO.txt: cada arquivo listado existe e tem o sha256 listado, e a pasta não tem arquivo
     a mais (fora o próprio GERADO.txt, .DS_Store e __pycache__/).
 
@@ -28,7 +29,7 @@ from pathlib import Path
 
 LINHA = re.compile(r"^([0-9a-f]{64})  (\S.*)$")
 IGNORA = {"GERADO.txt", ".DS_Store"}
-DONO_INTEIRO = ("scripts", ".github/workflows")
+DONO_INTEIRO = ("scripts", ".github/workflows", "docs", "exemplos", "tests")
 
 
 class Ilegivel(Exception):
@@ -85,7 +86,7 @@ def main(argv: list[str]) -> int:
         else:
             lista_raiz = ler_lista(topo)
             erros += conferir(raiz, lista_raiz, "")
-            # scripts/ e .github/workflows/ são inteiros do gerador: arquivo a mais lá também é mudança feita aqui
+            # as pastas de DONO_INTEIRO são inteiras do gerador: arquivo a mais lá também é mudança feita aqui
             for pasta in DONO_INTEIRO:
                 if (raiz / pasta).is_dir():
                     sub = {k[len(pasta) + 1:]: v for k, v in lista_raiz.items() if k.startswith(pasta + "/")}

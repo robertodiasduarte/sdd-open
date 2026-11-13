@@ -40,8 +40,8 @@ class SkillLint(Sandbox):
         return rc, out + err
 
     def test_as_18_skills_reais_passam(self):
-        skills = sorted((RAIZ / ".agents/skills").glob("sdd-*/SKILL.md"))
-        self.assertEqual(len(skills), 21, [s.parent.name for s in skills])
+        skills = sorted(list((RAIZ / ".agents/skills").glob("sdd-*/SKILL.md")) + [RAIZ / ".agents/skills/ux-review-builder/SKILL.md"])
+        self.assertEqual(len(skills), 22, [s.parent.name for s in skills])  # F17b: ux-review-builder
         rc, out, err = self.roda([PYTHON, "-B", SCRIPT, *skills], RAIZ)
         self.assertEqual(rc, 0, out + err)
 
@@ -71,8 +71,8 @@ class SkillLint(Sandbox):
         self.assertEqual(rc, 1, out)
 
     def test_as_18_skills_reais_passam_com_conversa(self):
-        skills = sorted((RAIZ / ".agents/skills").glob("sdd-*/SKILL.md"))
-        self.assertEqual(len(skills), 21)
+        skills = sorted(list((RAIZ / ".agents/skills").glob("sdd-*/SKILL.md")) + [RAIZ / ".agents/skills/ux-review-builder/SKILL.md"])
+        self.assertEqual(len(skills), 22)
         rc, out, err = self.roda([PYTHON, "-B", SCRIPT, "--conversa", *skills], RAIZ)
         self.assertEqual(rc, 0, out + err)
 

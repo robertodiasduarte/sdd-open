@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Não depende de memória propri
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.1.2"
+  version: "2.2.0"
   updated: "2026-11"
   fase: "transversal"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-handoff — ficha da feature + passar o bastão
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-handoff v2.1.2 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-handoff v2.2.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Duas responsabilidades, sempre nesta ordem:
 
@@ -131,12 +131,31 @@ agora, ou apaga a linha. O prompt tem de funcionar **sozinho**, mesmo se a ficha
 com Objetivo, Status e Verify Gate, prompt de retomada em bloco de código (só a ficha ✅ sem
 continuação o dispensa), slice datado no histórico, nenhum placeholder, nenhum "como discutimos". Vermelho ⇒ corrija a ficha e rode de novo antes de
 entregar.
+Sem terminal, ou sem esse script no projeto: a conferência é a releitura do checklist de **Sem terminal**.
 
 ### 4. Oferecer limpeza
 
 Feature já publicada e sessão dentro de branch/worktree descartável → oferecer o comando de
 remoção (rodado fora dele). Ficha ✅ completa → oferecer arquivar os artefatos em
 `sdd/archive/{F}/` com 1 OK. Nunca apagar sem confirmação.
+
+## Sem terminal (sem acesso aos arquivos do projeto)
+
+Na web (claude.ai, ChatGPT) ou em qualquer agente que não lê nem grava os arquivos do projeto, a ficha e o prompt
+são os mesmos; mudam a entrega e o que se confere:
+
+- **Dois modos, inferidos e confirmados em 1 linha** (sem menu): **continuar** (o trabalho segue noutra sessão:
+  ficha + prompt de retomada) e **entregar** (a etapa terminou: o mesmo, mais o checklist de fechamento — o código
+  roda? os critérios de aceite passam? as mudanças estão salvas? o que quebrou está anotado? —, que **não bloqueia**:
+  item não confirmado vira pendência). Sem sinal claro, assuma *continuar* e diga que assumiu.
+- **Pendências em duas listas, sempre:** 🐛 bug fix (quebrado, parcial, errado) e ✨ melhoria (próxima etapa). Lista
+  vazia leva "nenhuma" escrito: a ausência declarada também é informação.
+- **Entregue no chat** o documento inteiro e feche com 3 informações, nesta ordem: que ele **não foi gravado**; o nome
+  sugerido (`HANDOFF_{FEATURE}.md`); o que fazer com ele (salvar junto do projeto e mandar no começo da próxima
+  sessão). Nunca dê a entender que gravou.
+- **Sem comando para conferir:** projeto sem gate por comando não tem linha Verify Gate na ficha nem estado do gate
+  no prompt; a conferência da ficha (passo 3b) é a releitura do checklist acima, item a item.
+- **Pressa ("só me dá o prompt"):** entregue o prompt primeiro e a ficha logo depois, sem negociar.
 
 ## Checklist
 

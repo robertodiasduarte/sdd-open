@@ -2,8 +2,8 @@
 
 O Open de teste é um repositório temporário com as pastas que o gerador lê, copiadas da árvore e marcadas com uma
 tag (o Verify Gate roda a suíte numa cópia sem .git: nada aqui depende do .git do pacote). O starter de teste é
-uma réplica mínima da v1.5.16: a infra de scripts/starter/raiz, as 8 skills congeladas e as 8 geradas que já
-existiam lá, com as versões reais daquela tag.
+uma réplica mínima: a infra de scripts/starter/raiz, as 3 skills congeladas até a F17c, as 8 que a F17 gerou com a
+versão que tinham na v1.5.16 (abaixo da do Open) e as 5 que a F17b passa a gerar, com a versão da v1.5.17.
 """
 from __future__ import annotations
 
@@ -19,12 +19,14 @@ PY = sys.executable
 URL_STARTER = "https://github.com/robertodiasduarte/sdd-starter/releases/latest"
 LISTA = [ln.strip() for ln in (RAIZ / "scripts/starter/lista.txt").read_text(encoding="utf-8").splitlines()
          if ln.strip() and not ln.startswith("#")]
-CONGELADAS = {"sdd-brainstorm": "1.1.0", "sdd-define": "1.2.0", "sdd-design": "1.1.0", "sdd-build": "1.2.0",
-              "sdd-handoff": "1.1.0", "sdd-release": "1.3.0", "sdd-governanca": "1.0.1", "ux-review-builder": "1.4.0"}
-# as geradas que já estavam no starter v1.5.16, com a versão de lá (as outras 2 são novas)
+CONGELADAS = {"sdd-define": "1.2.0", "sdd-design": "1.1.0", "sdd-build": "1.2.0"}   # até a F17c
+# as geradas que já estavam no starter, com a versão de lá: as 8 da F17 (v1.5.16) e as 5 da F17b (v1.5.17)
 NO_STARTER = {"sdd-checar-ambiente": "1.2.0", "sdd-iniciar-repo": "1.1.0", "sdd-higiene-dado": "1.1.0",
               "sdd-new-session": "1.3.0", "sdd-kb": "2.1.0", "sdd-auditoria-harness": "1.0.0",
-              "sdd-prompt-builder": "1.0.0", "sdd-engenharia-reversa-saas": "1.1.0"}
+              "sdd-prompt-builder": "1.0.0", "sdd-engenharia-reversa-saas": "1.1.0",
+              "sdd-brainstorm": "1.1.0", "sdd-handoff": "1.1.0", "sdd-governanca": "1.0.1", "sdd-release": "1.3.0",
+              "ux-review-builder": "1.4.0"}
+DA_F17B = ("sdd-brainstorm", "sdd-handoff", "sdd-governanca", "sdd-release", "ux-review-builder")
 COM_REFERENCIA = {"sdd-brainstorm", "sdd-define", "sdd-design", "sdd-build", "sdd-handoff", "ux-review-builder"}
 MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
 
@@ -87,14 +89,14 @@ class Base(Sandbox):
 
 
 class Gera(Base):
-    def test_at001_gera_as_10_e_nao_toca_no_resto(self):
+    def test_at001_gera_as_15_e_nao_toca_no_resto(self):
         antes = arvore(self.starter)
         rc, out, err = self.gerar()
         self.assertEqual(rc, 0, out + err)
         self.assertIn("RESULTADO: GERADO", out)
         depois = arvore(self.starter)
         for rel, h in antes.items():
-            dono = rel.split("/")[0] in ("scripts", ".github") or rel == "README.md" or \
+            dono = rel.split("/")[0] in ("scripts", ".github", "docs", "exemplos", "tests") or rel == "README.md" or \
                 (rel.startswith("skills/") and rel.split("/")[1] in LISTA)
             if not dono:
                 with self.subTest(rel=rel):
@@ -107,6 +109,20 @@ class Gera(Base):
             with self.subTest(rel=rel):
                 self.assertTrue((self.starter / rel).is_file())
         self.assertNotIn("versão antiga", (self.starter / "README.md").read_text(encoding="utf-8"))
+        # F17b (AT-001): docs/, exemplos/ e tests/ vêm do gerador; o que saiu da semente sai do destino
+        self.assertEqual(len(LISTA), 15)
+        for rel in ("docs/quickstart.md", "exemplos/baixar-nfse/README.md", "tests/test_sdd_kb_normativo.py"):
+            with self.subTest(rel=rel):
+                self.assertTrue((self.starter / rel).is_file())
+        self.assertFalse((self.starter / "tests/test_vazio.py").exists())
+        for skill in CONGELADAS:
+            with self.subTest(congelada=skill):
+                self.assertFalse((self.starter / "skills" / skill / "GERADO.txt").exists())
+        readme = (self.starter / "README.md").read_text(encoding="utf-8")
+        for frase in ("As outras três (`sdd-define`, `sdd-design` e `sdd-build`)",
+                      "The other three (`sdd-define`, `sdd-design` and `sdd-build`)"):
+            with self.subTest(frase=frase):
+                self.assertIn(frase, readme)
 
     def test_at003_cada_skill_gerada(self):
         rc, out, err = self.gerar()
@@ -221,6 +237,7 @@ class Gera(Base):
         for nome, args in (("publish-check", [BASH, "scripts/publish-check.sh"]),
                            ("check-versions", [PY, "-B", "scripts/check-versions.py", "--base", "v1.5.16"]),
                            ("kb gate", [BASH, "skills/sdd-kb/scripts/gate.sh"]),
+                           ("tests da raiz", [PY, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"]),
                            ("check-gerado", [PY, "-B", "scripts/check-gerado.py"])):
             with self.subTest(passo=nome):
                 rc, out, err = self.roda(args, self.starter)
@@ -387,6 +404,10 @@ class Trava(Base):
             "GERADO da skill apagado": lambda s: (s / "skills/sdd-kb/GERADO.txt").unlink(),
             "GERADO da raiz apagado": lambda s: (s / "GERADO.txt").unlink(),
             "skill gerada apagada": lambda s: shutil.rmtree(str(s / "skills/sdd-kb")),
+            "docs mudou": lambda s: (s / "docs/quickstart.md").write_text("editado\n", encoding="utf-8"),
+            "exemplos mudou": lambda s: (s / "exemplos/baixar-nfse/README.md").write_bytes(
+                (s / "exemplos/baixar-nfse/README.md").read_bytes() + b" "),
+            "tests sobra": lambda s: (s / "tests/test_meu.py").write_text("x = 1\n", encoding="utf-8"),
         }
         for nome, mexe in casos.items():
             with self.subTest(caso=nome):
@@ -409,6 +430,120 @@ class Trava(Base):
             with self.subTest(wf=wf):
                 self.assertIn("run: python3 scripts/check-gerado.py", t)
                 self.assertLess(t.index("check-gerado.py"), t.index("Content safety gate"))
+
+
+class SkillDeModo(Base):
+    """F17b (AT-002, AT-003): a release do starter sai só de references/MODO_INICIANTE.md."""
+    MODO = ".agents/skills/sdd-release/references/MODO_INICIANTE.md"
+
+    def test_at002_release_gerada_so_do_modo(self):
+        rc, out, err = self.gerar()
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("de modo (references/MODO_INICIANTE.md)", out)
+        d = self.starter / "skills/sdd-release"
+        self.assertEqual(sorted(arvore(d)), ["GERADO.txt", "SKILL.md", "agents/openai.yaml"])
+        s = (d / "SKILL.md").read_text(encoding="utf-8")
+        fm = s[:s.index("\n---\n", 4)]
+        self.assertIn("name: sdd-release", fm)
+        versao_open = re.search(r'version: "([^"]+)"', (RAIZ / ".agents/skills/sdd-release/SKILL.md").read_text(encoding="utf-8")).group(1)
+        self.assertIn('version: "%s"' % versao_open, fm)
+        self.assertIn("Fecha uma frente de trabalho", fm)          # a description do modo
+        self.assertNotIn("Fase 4 do SDD Open", fm)                 # nunca a do Open
+        self.assertIn("## Fase 2 — O único ponto de parada", s)
+        self.assertNotIn("sdd/bin/", s)
+        self.assertEqual(s.count("`sdd-release v%s" % versao_open), 1)
+
+    def test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho(self):
+        modo = self.open / self.MODO
+        modo.write_text(modo.read_text(encoding="utf-8") + "\nVeja `references/um.md`.\n", encoding="utf-8")
+        self.escreve(self.open, ".agents/skills/sdd-release/references/um.md", "Depois, `assets/dois.md`.\n")
+        self.escreve(self.open, ".agents/skills/sdd-release/assets/dois.md",
+                     "Formato: `sdd/templates/fragments/PERGUNTA_DECISAO.md`.\n")
+        self.reetiquetar()
+        rc, out, err = self.gerar()
+        self.assertEqual(rc, 0, out + err)
+        d = self.starter / "skills/sdd-release"
+        self.assertTrue((d / "references/um.md").is_file())
+        self.assertTrue((d / "assets/dois.md").is_file())           # o fecho: o citado pelo citado
+        self.assertTrue((d / "references/PERGUNTA_DECISAO.md").is_file())   # e o molde, pela regra dos moldes
+        self.assertFalse((d / "references/como-falar.md").exists())  # o que o modo não cita não vai
+        self.assertFalse((d / "references/MODO_INICIANTE.md").exists())
+
+    def test_at003_modo_quebrado_sai_65_sem_gravar(self):
+        casos = {
+            "sem o arquivo de modo": lambda m: m.unlink(),
+            "cita arquivo que não existe": lambda m: m.write_text(
+                m.read_text(encoding="utf-8") + "\nVeja `references/nao-existe.md`.\n", encoding="utf-8"),
+            "sem description": lambda m: m.write_text(
+                m.read_text(encoding="utf-8").replace("description:", "descricao:", 1), encoding="utf-8"),
+            "sem compatibility": lambda m: m.write_text(
+                m.read_text(encoding="utf-8").replace("compatibility:", "compatibilidade:", 1), encoding="utf-8"),
+            "identificação diferente": lambda m: m.write_text(
+                re.sub(r"`sdd-release v[0-9.]+ ", "`sdd-release v0.0.1 ", m.read_text(encoding="utf-8")), encoding="utf-8"),
+            "cita caminho do init": lambda m: m.write_text(
+                m.read_text(encoding="utf-8") + "\nRode `bash sdd/bin/verify-gate.sh`.\n", encoding="utf-8"),
+        }
+        original = (self.open / self.MODO).read_bytes()
+        for nome, mexe in casos.items():
+            with self.subTest(caso=nome):
+                (self.open / self.MODO).write_bytes(original)
+                mexe(self.open / self.MODO)
+                self.reetiquetar()
+                antes = arvore(self.starter)
+                rc, out, err = self.gerar()
+                self.assertEqual(rc, 65, out + err)
+                self.assertEqual(arvore(self.starter), antes)
+
+    def test_at003_a_release_crua_reprova_no_lint(self):
+        crua = self.tmp / "crua"
+        shutil.copytree(str(RAIZ / ".agents/skills/sdd-release"), str(crua / "sdd-release"))
+        rc, out, err = self.roda([PY, "-B", RAIZ / "scripts/gerar-starter.py", "--lint", crua], self.tmp)
+        self.assertEqual(rc, 65, out + err)
+        self.assertIn("sdd/bin/", out)
+
+    def test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista(self):
+        for skill in DA_F17B:
+            with self.subTest(skill=skill):
+                v = re.search(r'version: "([^"]+)"',
+                              (RAIZ / ".agents/skills" / skill / "SKILL.md").read_text(encoding="utf-8")).group(1)
+                st = self.replica("st-%s" % skill)
+                self.escreve(st, "skills/%s/SKILL.md" % skill, skill_minima(skill, v, "2026-11"))
+                self.commit(st, "mesma versao")
+                rc, out, err = self.gerar(st)
+                self.assertEqual(rc, 65, out + err)
+                self.assertIn("%s: a cópia gerada mudou e a versão não subiu" % skill, out)
+
+
+class CaminhoDoIniciante(Base):
+    """F17b (AT-006): brainstorm e handoff geradas não pedem comando; na governança, só no trecho condicionado."""
+    COMANDO = re.compile(r"```(?:bash|sh|shell|zsh|powershell)|`(?:bash|python3|psql) |^\s*(?:bash|python3|psql) ", re.M)
+
+    def test_at006_sem_comando_no_caminho_sem_terminal(self):
+        rc, out, err = self.gerar()
+        self.assertEqual(rc, 0, out + err)
+        for skill in ("sdd-brainstorm", "sdd-handoff"):
+            for p in sorted((self.starter / "skills" / skill).rglob("*.md")):
+                if p.name == "CHANGELOG.md":
+                    continue
+                tx = p.read_text(encoding="utf-8")
+                with self.subTest(arquivo=str(p.relative_to(self.starter))):
+                    self.assertIsNone(self.COMANDO.search(tx), tx[:0])
+                    self.assertNotIn("verify-gate.sh", tx)
+                    self.assertNotIn("handoff-lint", tx)
+        # a ficha do starter não tem linha de Verify Gate nem estado do gate no prompt (revisão do DESIGN, nota 11)
+        molde = (self.starter / "skills/sdd-handoff/references/HANDOFF_TEMPLATE.md").read_text(encoding="utf-8")
+        self.assertNotIn("**Verify Gate**", molde)
+        self.assertNotIn("Estado do gate", molde)
+        gov = (self.starter / "skills/sdd-governanca/SKILL.md").read_text(encoding="utf-8")
+        ini = gov.index("**Com Verify Gate por comando no DEFINE")
+        fim = gov.index("O `prova_manual` vai para o AT como roteiro")
+        for m in self.COMANDO.finditer(gov):
+            with self.subTest(pos=m.start()):
+                self.assertTrue(ini < m.start() < fim, gov[m.start() - 80:m.start() + 40])
+        for nome in ("PROCEDIMENTO.md", "como-falar.md"):
+            with self.subTest(arquivo=nome):
+                self.assertIsNone(self.COMANDO.search(
+                    (self.starter / "skills/sdd-governanca/references" / nome).read_text(encoding="utf-8")))
 
 
 class ReadmeEInit(Base):
