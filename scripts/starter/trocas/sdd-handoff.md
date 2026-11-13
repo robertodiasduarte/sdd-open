@@ -51,3 +51,15 @@ compatibility: Funciona na web (claude.ai, ChatGPT), onde a ficha sai no chat, e
 ====
 - **O que foi publicado** (commit ou PR, e o endereço quando houver) vai na ficha.
 >>>> depois
+
+## assets/HANDOFF_EXAMPLE.md
+<<<< antes
+| **Verify Gate** | 🔴 2 em 2026-03-11 (o caso do pagamento no dia do vencimento) — `sdd/bin/verify-gate.sh sdd/features/DEFINE_CONTROLE_HONORARIOS.md` |
+====
+>>>> depois
+
+## assets/HANDOFF_EXAMPLE.md
+<<<< antes
+Estado do gate: `sdd/bin/verify-gate.sh sdd/features/DEFINE_CONTROLE_HONORARIOS.md` saiu 2 em 2026-03-11.
+====
+>>>> depois

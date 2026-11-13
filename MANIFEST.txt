@@ -44,6 +44,7 @@
 .agents/skills/sdd-governanca/references/como-falar.md
 .agents/skills/sdd-governanca/references/revisor.md
 .agents/skills/sdd-handoff/SKILL.md
+.agents/skills/sdd-handoff/assets/HANDOFF_EXAMPLE.md
 .agents/skills/sdd-handoff/references/como-falar.md
 .agents/skills/sdd-higiene-dado/CHANGELOG.md
 .agents/skills/sdd-higiene-dado/SKILL.md
@@ -589,6 +590,7 @@ tests/test_f17_passo0.py
 tests/test_f17_textos.py
 tests/test_f17b_passo0.py
 tests/test_f17b_textos.py
+tests/test_f17c_passo0.py
 tests/test_f18_f20_textos.py
 tests/test_f19_textos.py
 tests/test_f21_textos.py
