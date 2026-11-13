@@ -34,8 +34,9 @@ e revise **pelo arquivo** mesmo assim. Sem contaminação, não escreva a linha.
      letra, só trocando os números: a `**Cobertura:**`, os títulos de seção e o campo `**Base legal:**`.
 3. **Passos 5 e 6: não execute.** Em cada lacuna, `**Decisão:** pendente`. Em *Riscos aceitos*, a linha
    `| — | — | — | pendente — decide o Define |`; em *Aplicado no DEFINE*, `pendente — decide o Define`.
-4. **Prova de cada lacuna.** O `prova_script` adaptado aos nomes do DEFINE fica **no relatório**, em "Como
-   provar", sem mexer na inversão nem na guarda de schema. **Quem grava o `.sql` em
+4. **Prova de cada lacuna.** Em "Como provar", o `prova_manual` sempre; com Verify Gate por comando no DEFINE,
+   também o `prova_script` adaptado aos nomes do DEFINE, **no relatório**, sem mexer na inversão nem na guarda de
+   schema. **Quem grava o `.sql` em
    `sdd/tests/governanca/` e o liga ao `cmd` do Verify Gate é o passo 11 do Define**, na hora em que a
    lacuna é aplicada; o Design só lista o arquivo no File Manifest. Você não grava script nenhum.
 5. **Sem tema** ⇒ a mensagem N.A. do passo 1, **sem criar arquivo nenhum**, e o bloco com `resultado: NA`.

@@ -128,7 +128,8 @@ nova, com só o DEFINE e esta skill.
 [ ] Cada lacuna: o que muda no app · por quê · EARS · como provar · severidade
 [ ] Base legal só de item confirmado; senão a frase padrão
 [ ] Uma decisão por lacuna; recusa com motivo vai a Riscos aceitos
-[ ] Aplicados viram AT no DEFINE + script em sdd/tests/governanca/ chamado pelo cmd do gate
+[ ] Aplicados viram AT no DEFINE com o `prova_manual`; com Verify Gate por comando, também o script em
+    sdd/tests/governanca/ chamado pelo cmd do gate
 [ ] Clarity Score antes e depois · linha fixa de responsabilidade · resumo de etapa
 ```
 

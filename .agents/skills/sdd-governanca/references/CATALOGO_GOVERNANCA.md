@@ -85,9 +85,10 @@
 >   termina bem. Não ponha `!` nem `|| true` na frente: a inversão já está dentro do script.
 > - **`forma: catalogo`** — só lê o catálogo do banco e levanta `GOVERNANCA Gnn REPROVADA` se achar o erro.
 >
-> Rodar com: `psql -v ON_ERROR_STOP=1 -f <arquivo>.sql` **contra um banco de desenvolvimento, de teste ou um
-> branch — nunca contra produção**: mesmo dentro de `begin … rollback`, a tentativa trava a linha e dispara
-> os triggers. Item sem `prova_script` se prova só pelo roteiro.
+> Com Verify Gate por comando no DEFINE, rodar com: `psql -v ON_ERROR_STOP=1 -f <arquivo>.sql` **contra um banco de
+> desenvolvimento, de teste ou um branch — nunca contra produção**: mesmo dentro de `begin … rollback`, a tentativa
+> trava a linha e dispara os triggers. Sem Verify Gate por comando (na web, ou num projeto sem testes
+> automatizados), e no item sem `prova_script`, a prova é só o roteiro (`prova_manual`).
 > Tabela vazia nunca passa: sem linha não há o que provar, e o script diz isso em vez de ficar verde.
 > **Só conta como recusa o código que o mecanismo do item produz** — a lista branca de cada script:
 > `P0001` (trigger com `raise exception`), `42501` (permissão negada), `23514` (CHECK), `23505` (UNIQUE, no G10).

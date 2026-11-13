@@ -104,6 +104,11 @@ class SemTerminal(unittest.TestCase):
         s = ler(".agents/skills/sdd-governanca/SKILL.md")
         self.assertIn("**Com Verify Gate por comando no DEFINE, a prova de cada lacuna aplicada é um script.**", s)
         self.assertNotIn("**Nesta porta, a prova de cada lacuna aplicada é um script.**", s)
+        # avaliador, ciclo 1, A1 e A3: o checklist e o brief do revisor também condicionam o script ao gate
+        self.assertIn("com Verify Gate por comando, também o script em", s)
+        self.assertNotIn("[ ] Aplicados viram AT no DEFINE + script", s)
+        rev = ler(".agents/skills/sdd-governanca/references/revisor.md")
+        self.assertIn("o `prova_manual` sempre; com Verify Gate por comando no DEFINE", rev)
 
 
 class UxReviewBuilder(unittest.TestCase):

@@ -189,6 +189,15 @@ class Projeto(Sandbox):
         self.assertEqual(rc, 0, out)
         self.assertIn("skills do sdd-starter detectadas no mesmo projeto", out)
 
+    def test_init_instala_a_ux_review_builder(self):
+        # F17b (decisão do Roberto, revisão do DESIGN, nota 1): a 22ª skill não segue o padrão sdd-*, e o init copiava só sdd-*
+        rc, out = self.init
+        self.assertEqual(rc, 0, out)
+        self.assertTrue((self.p / ".agents/skills/ux-review-builder/SKILL.md").is_file())
+        self.assertTrue((self.p / ".claude/skills/ux-review-builder/SKILL.md").is_file())
+        rc, out = self.cli("sync", "--check")
+        self.assertEqual(rc, 0, out)
+
     def test_doctor_avisa_a_ux_review_builder_do_starter(self):
         # F17b, raio de impacto: o init passou a copiar a ux-review-builder; a do starter (com agents/openai.yaml)
         # no mesmo projeto colide pelo nome, e o aviso olhava só sdd-*

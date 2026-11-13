@@ -545,6 +545,12 @@ class CaminhoDoIniciante(Base):
         for m in self.COMANDO.finditer(gov):
             with self.subTest(pos=m.start()):
                 self.assertTrue(ini < m.start() < fim, gov[m.start() - 80:m.start() + 40])
+        # avaliador, ciclo 1, A2: o catálogo também é lido no caminho sem terminal (o prova_manual): comando só no
+        # parágrafo condicionado ao Verify Gate por comando
+        cat = (self.starter / "skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md").read_text(encoding="utf-8")
+        for m in self.COMANDO.finditer(cat):
+            with self.subTest(catalogo=m.start()):
+                self.assertIn("Com Verify Gate por comando", cat[max(0, m.start() - 120):m.start()])
         for nome in ("PROCEDIMENTO.md", "como-falar.md"):
             with self.subTest(arquivo=nome):
                 self.assertIsNone(self.COMANDO.search(
