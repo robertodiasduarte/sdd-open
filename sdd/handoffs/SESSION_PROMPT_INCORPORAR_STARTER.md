@@ -9,10 +9,9 @@ A `v2.13.0` do Open saiu em 2026-11-13 (`main` = `d813954`, PR #27): F17, o sdd-
 
 A frente **já existe** (aberta em 2026-11-13 pela `sdd-new-session`): worktree
 `/Users/robertoduarte/rdd-worktrees/sdd-open-f17b-starter-etapa2`, branch `feat/f17b-starter-etapa2`, de `origin/main` =
-`d813954` (`v2.13.0`). A janela do Cursor foi aberta nela; cole o prompt abaixo lá. Worktrees que guardam material da F17:
-`/Users/robertoduarte/rdd-worktrees/sdd-open-f17-starter-gerado` (as 7 revisões em `sdd/reports/reviews/`, ignoradas pelo git:
-não a apague sem arquivar essa pasta) e `/Users/robertoduarte/rdd-worktrees/sdd-starter-f17-gerado` (o clone do starter usado
-na 1ª geração, branch `feat/f17-primeira-geracao`, já integrada).
+`d813954` (`v2.13.0`). A janela do Cursor foi aberta nela; cole o prompt abaixo lá. A worktree e o clone do starter da F17 foram
+removidos em 2026-11-13; as 7 revisões, os documentos e os traces da F17 estão em
+`/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F17_STARTER_GERADO-v2.13.0-documentos-revisoes-traces.tar.gz`.
 
 ## Prompt para colar na sessão nova
 

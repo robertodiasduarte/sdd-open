@@ -296,8 +296,8 @@ o publish-check do starter pula o GERADO.txt. sdd-release em 500 linhas (teto do
 ### Onde está o trabalho
 
 - Remoto `https://github.com/robertodiasduarte/sdd-open.git`, `main` = `d813954` = `v2.13.0`; branch remota `feat/f17-starter-gerado` (PR #27 MERGED).
-- Starter: `main` = `d2f3085` = `v1.5.17`; clone usado em `/Users/robertoduarte/rdd-worktrees/sdd-starter-f17-gerado`.
-- Worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f17-starter-gerado`: as 7 revisões em `sdd/reports/reviews/EXTERNAL_REVIEW_20261112-*` ficam só nela.
+- Starter: `main` = `d2f3085` = `v1.5.17`; o clone usado na geração foi removido (integrado, sem pendência).
+- A worktree da F17 e a branch local foram removidas em 2026-11-13 (a remota `feat/f17-starter-gerado` fica); as 7 revisões, os documentos e os traces estão em `/Users/robertoduarte/rdd-worktrees/arquivo-sdd-open/F17_STARTER_GERADO-v2.13.0-documentos-revisoes-traces.tar.gz`.
 - Documentos da frente nesta branch: `sdd/features/{BRAINSTORM,DEFINE,DESIGN}_F17_STARTER_GERADO.md`, `sdd/reports/BUILD_REPORT_F17_STARTER_GERADO.md`, `sdd/reports/evidence/F17_STARTER_GERADO/`, `sdd/reviews/LEDGER_REVISAO_F17_STARTER_GERADO.md` e as 2 avaliações.
 
 ### Prompt de retomada
