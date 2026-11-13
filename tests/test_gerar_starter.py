@@ -121,6 +121,8 @@ class Gera(Base):
         for q in ("docs/quickstart.md", "docs/quickstart.pt-BR.md"):   # revisão, rodada 1, R6: 15 geradas + 3 congeladas
             with self.subTest(quickstart=q):
                 self.assertIn("18 skills", (self.starter / q).read_text(encoding="utf-8"))
+        # revisão, rodada 2, R3: o quickstart em inglês mandava copiar só 6 pastas
+        self.assertIn("every skill folder under `skills/` (all 18)", (self.starter / "docs/quickstart.md").read_text(encoding="utf-8"))
         readme = (self.starter / "README.md").read_text(encoding="utf-8")
         for frase in ("As outras três (`sdd-define`, `sdd-design` e `sdd-build`)",
                       "The other three (`sdd-define`, `sdd-design` and `sdd-build`)"):

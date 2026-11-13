@@ -36,7 +36,7 @@ The same command serves Cursor, Kimi, Gemini CLI and 70+ agents: change the name
 
 **To update:** `npx skills update`.
 
-For other agents, copy the skill folders (`sdd-brainstorm`, `sdd-define`, `sdd-design`, `sdd-build`, `sdd-handoff`, `sdd-kb`) into whatever directory your agent reads skills/instructions from, keeping each folder intact.
+For other agents, copy every skill folder under `skills/` (all 18) into whatever directory your agent reads skills/instructions from, keeping each folder intact.
 
 ### claude.ai (web)
 
