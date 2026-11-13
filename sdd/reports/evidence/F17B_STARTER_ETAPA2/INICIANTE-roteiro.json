@@ -1,0 +1,48 @@
+{
+  "criterio": "Escrito antes de rodar (2026-11-13). PASSA a execução que, até a última volta do roteiro: (1) entrega o documento inteiro no chat (marca do documento abaixo) com o aviso de que nada foi gravado; (2) não pede ao aluno que rode comando (bloco de código de shell, linha começando por '$ ', 'rode `', 'execute `'); (3) não exige script nem Verify Gate (verify-gate, handoff-lint, psql, prompt-drift); (4) não afirma ter gravado arquivo. Pergunta sem entrega no fim do roteiro REPROVA. 3 execuções por skill; meta 3 de 3.",
+  "skills": {
+    "sdd-brainstorm": {
+      "marca": ["BRAINSTORM", "Suggested Requirements"],
+      "voltas": [
+        "Quero um jeito de controlar os honorários mensais dos clientes do meu escritório de contabilidade. Hoje faço numa planilha e esqueço de cobrar alguns. Estou só no chat, sem o projeto aberto.",
+        "É para mim e para a minha assistente; temos uns 40 clientes, cada um com um valor fixo por mês.",
+        "Hoje anoto na planilha quem pagou e confiro no fim do mês; o problema é descobrir tarde quem não pagou.",
+        "Fica pronto quando, no dia 5 de cada mês, eu souber quem não pagou o mês anterior, sem abrir a planilha.",
+        "Na primeira versão não precisa emitir nota fiscal, boleto nem mandar cobrança automática.",
+        "Só eu e a minha assistente vemos os dados; só eu mudo o valor de um cliente; ninguém de fora pede nada e não há chamada paga.",
+        "Não tenho amostra para enviar agora: nada disponível.",
+        "Pode seguir com a abordagem que você recomendou.",
+        "Confere.",
+        "Confere também.",
+        "Está tudo certo, pode entregar o documento do brainstorm agora.",
+        "Por favor, entregue o documento final do brainstorm agora, completo."
+      ]
+    },
+    "sdd-handoff": {
+      "marca": ["HANDOFF", "Prompt de retomada"],
+      "voltas": [
+        "Passa o bastão: hoje fiz o brainstorm e o define da feature HONORARIOS (controle dos honorários mensais do escritório). O DEFINE tem 6 testes de aceitação; falta o design e o build. O AT-004 (multa por atraso) ficou em dúvida: não sei se a multa entra na primeira versão. Amanhã continuo. Estou no chat da web, sem acesso ao projeto.",
+        "É para continuar amanhã, sou eu mesmo que continuo.",
+        "Não tenho outros IDs além desses; o projeto ainda não tem código.",
+        "Pode entregar.",
+        "Por favor, entregue a ficha e o prompt de retomada agora."
+      ]
+    },
+    "sdd-governanca": {
+      "marca": ["Lacuna", "DEFINE"],
+      "voltas": [
+        "Revise a governança deste DEFINE. Estou no chat, sem terminal.\n\n# DEFINE: HONORARIOS\nProblema: o escritório controla numa planilha os honorários mensais de 40 clientes e esquece de cobrar alguns.\nUsuários: o contador (dono) e a assistente.\nTestes de aceitação:\n- AT-001 When o mês fecha, o sistema shall listar os clientes sem pagamento do mês anterior.\n- AT-002 When a assistente registra um pagamento, o sistema shall guardar a data e o valor.\n- AT-003 When o contador muda o valor mensal de um cliente, o sistema shall usar o novo valor a partir do mês seguinte.\n- AT-004 If um pagamento é registrado com valor diferente do mensal, then o sistema shall avisar a diferença.\nVerify Gate: não há (o projeto ainda não tem testes automatizados).\nFora de escopo: nota fiscal, boleto, cobrança automática.",
+        "É o primeiro uso: o escritório é pequeno, eu (contador) aprovo tudo e a assistente registra os pagamentos; os valores são em reais, com centavos; o mês fecha no último dia; os registros precisam ser guardados por 5 anos; não há auditoria externa.",
+        "Pode usar essas respostas para o padrão.",
+        "Aplicar.",
+        "Aplicar.",
+        "Aplicar.",
+        "Aplicar.",
+        "Aplicar.",
+        "Aplicar.",
+        "Pode entregar o relatório e o DEFINE atualizado agora.",
+        "Por favor, entregue o relatório e o DEFINE atualizado agora, completos."
+      ]
+    }
+  }
+}

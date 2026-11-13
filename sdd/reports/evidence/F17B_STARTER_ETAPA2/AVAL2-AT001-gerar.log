@@ -1,0 +1,62 @@
+$ bash at001.sh
+== gerar
+✅ sdd-checar-ambiente: 5 arquivo(s), 1 troca(s)
+✅ sdd-iniciar-repo: 3 arquivo(s), 1 troca(s)
+✅ sdd-higiene-dado: 10 arquivo(s), 0 troca(s)
+✅ sdd-new-session: 6 arquivo(s), 1 troca(s)
+✅ sdd-kb: 38 arquivo(s), 2 troca(s)
+✅ sdd-seguranca: 9 arquivo(s), 6 troca(s)
+✅ sdd-auditoria-harness: 7 arquivo(s), 0 troca(s)
+✅ sdd-prompt-builder: 9 arquivo(s), 2 troca(s)
+✅ sdd-engenharia-reversa-saas: 15 arquivo(s), 4 troca(s)
+✅ sdd-loop-builder: 6 arquivo(s), 0 troca(s)
+✅ sdd-brainstorm: 6 arquivo(s), 4 troca(s)
+✅ sdd-handoff: 5 arquivo(s), 6 troca(s)
+✅ sdd-governanca: 12 arquivo(s), 5 troca(s)
+✅ sdd-release: 2 arquivo(s), 0 troca(s), de modo (references/MODO_INICIANTE.md)
+✅ ux-review-builder: 20 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+gerador rc=0
+== skills/ gravadas pelo gerador (com GERADO.txt)
+skills/sdd-auditoria-harness/GERADO.txt
+skills/sdd-brainstorm/GERADO.txt
+skills/sdd-checar-ambiente/GERADO.txt
+skills/sdd-engenharia-reversa-saas/GERADO.txt
+skills/sdd-governanca/GERADO.txt
+skills/sdd-handoff/GERADO.txt
+skills/sdd-higiene-dado/GERADO.txt
+skills/sdd-iniciar-repo/GERADO.txt
+skills/sdd-kb/GERADO.txt
+skills/sdd-loop-builder/GERADO.txt
+skills/sdd-new-session/GERADO.txt
+skills/sdd-prompt-builder/GERADO.txt
+skills/sdd-release/GERADO.txt
+skills/sdd-seguranca/GERADO.txt
+skills/ux-review-builder/GERADO.txt
+total:       15
+== lista.txt
+sdd-checar-ambiente sdd-iniciar-repo sdd-higiene-dado sdd-new-session sdd-kb sdd-seguranca sdd-auditoria-harness sdd-prompt-builder sdd-engenharia-reversa-saas sdd-loop-builder sdd-brainstorm sdd-handoff sdd-governanca sdd-release ux-review-builder 
+== byte a byte iguais a v1.5.17 (git diff --stat, vazio = igual)
+diff rc=0 (linhas:        0)
+       0
+== docs/ exemplos/ tests/ = semente scripts/starter/raiz (diff -r, vazio = igual)
+docs: igual à semente
+exemplos: igual à semente
+tests: igual à semente
+== arquivos de v1.5.17 que saíram da semente foram apagados
+== mudanças fora de skills/ docs/ exemplos/ tests/ scripts/ .github/ README GERADO
+(fim)
+== README: 15 geradas e 3 congeladas nos 2 idiomas
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/aval2/st/README.md
+23:| [`sdd-define`](skills/sdd-define/) | Formalizar requisitos | O arquivo de Brainstorm | `DEFINE_{FEATURE}.md` (testes de aceitação EARS, Clarity Score, Verify Gate) |
+54:Quinze skills deste repositório são **geradas** a partir do [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` e `sdd-loop-builder` (desde a 1ª geração, nov/2026), e `sdd-brainstorm`, `sdd-handoff`, `sdd-governanca`, `sdd-release` e `ux-review-builder` (desde a 2ª). Cada uma traz um `GERADO.txt` e não se edita aqui: quem melhora, melhora no Open, e a próxima geração traz a mudança. `docs/`, `exemplos/` e `tests/` também vêm do Open.
+56:O que a 2ª geração muda para você: brainstorm, handoff e governança funcionam igual na web (o documento sai no chat, dizendo que nada foi gravado); a `sdd-release` confere o deploy da **Vercel** ligada ao GitHub (pelo status do commit, com o endereço no fim), sem pedir token; as skills geradas guardam os documentos em `sdd/features/`, `sdd/handoffs/` e `sdd/reviews/`.
+58:As outras três (`sdd-define`, `sdd-design` e `sdd-build`) continuam como estavam, congeladas até a próxima etapa da geração; elas recebem o documento da fase anterior pelo caminho que você indicar.
+69:Cada skill diz a própria versão e a data na primeira resposta (ex.: `sdd-define v1.0.0 · out/2026`). Se você instalou pelo `.zip` e a [última Release](../../releases/latest) traz uma versão mais nova, baixe de novo — o `.zip` não se atualiza sozinho.
+124:| [`sdd-define`](skills/sdd-define/) | Formalize requirements | The Brainstorm file | `DEFINE_{FEATURE}.md` (EARS acceptance tests, Clarity Score, Verify Gate) |
+155:Fifteen skills in this repository are **generated** from [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` and `sdd-loop-builder` (since the first generation, Nov 2026), and `sdd-brainstorm`, `sdd-handoff`, `sdd-governanca`, `sdd-release` and `ux-review-builder` (since the second). Each one carries a `GERADO.txt` and is not edited here: improvements go to SDD Open, and the next generation brings them. `docs/`, `exemplos/` and `tests/` also come from SDD Open.
+157:What the second generation changes for you: brainstorm, handoff and governance work the same on the web (the document comes out in the chat, saying nothing was saved); `sdd-release` checks the deploy of **Vercel** connected to GitHub (through the commit status, with the address at the end), without asking for a token; the generated skills keep documents in `sdd/features/`, `sdd/handoffs/` and `sdd/reviews/`.
+159:The other three (`sdd-define`, `sdd-design` and `sdd-build`) stay as they were, frozen until the next stage of the generation; they take the previous phase's document from the path you give them.
+170:Each skill states its own version and date in its first reply (e.g. `sdd-define v1.0.0 · out/2026`). If you installed from a `.zip` and the [latest Release](../../releases/latest) has a newer version, download it again — a `.zip` does not update itself.
+rc=0

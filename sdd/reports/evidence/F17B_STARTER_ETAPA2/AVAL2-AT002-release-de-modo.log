@@ -1,0 +1,30 @@
+$ bash at002.sh
+== arquivos da release gerada
+./GERADO.txt
+./SKILL.md
+./agents/openai.yaml
+== arquivos da sdd-release do Open (o caminho pesado)
+./SKILL.md
+./references/MODO_INICIANTE.md
+./references/como-falar.md
+./references/ledger.md
+./references/raio-de-impacto.md
+./references/seguranca.md
+./scripts/deploy-espera-testes.py
+frontmatter name          igual ao SKILL do Open: True
+frontmatter description   igual ao modo: True
+frontmatter compatibility igual ao modo: True
+frontmatter license       igual ao SKILL do Open: True
+version gerada=2.12.0 Open=2.12.0 igual=True
+linha de identificação no SKILL do Open: ['`sdd-release v2.12.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`']
+no modo: ['`sdd-release v2.12.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`'] iguais: True
+GENERATED logo após frontmatter: True
+corpo gerado contém o corpo do modo (só a identificação trocada para o starter): True
+bloco 'Quando migrar' presente: True | igual ao blocos/MIGRAR.md: True
+corpo do modo == corpo gerado antes do bloco migrar: True
+gerado cita 'Fase 4 do SDD Open — pipeline'    : False
+gerado cita 'sdd/bin/'                         : False
+gerado cita 'ledger'                           : False
+gerado cita 'MODO_INICIANTE'                   : False
+refs citadas pelo modo: []
+rc=0

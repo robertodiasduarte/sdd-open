@@ -1,0 +1,29 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/at002.sh
+## arquivos da release gerada
+./GERADO.txt
+./SKILL.md
+./agents/openai.yaml
+## arquivos da sdd-release do Open
+./SKILL.md
+./references/MODO_INICIANTE.md
+./references/como-falar.md
+./references/ledger.md
+./references/raio-de-impacto.md
+./references/seguranca.md
+./scripts/deploy-espera-testes.py
+## frontmatter gerado
+---
+name gerado==Open: True sdd-release
+version gerado==Open: True None None
+description gerado==modo: True | ==Open: False
+compatibility gerado==modo: True
+GENERATED logo depois do frontmatter: <!-- GENERATED pelo sdd-open (https://github.com/robertodiasduarte/sdd-open) com scripts/gerar-starter.py. Não edite
+linhas de identificação no Open (>): []
+linhas de identificação no gerado (>): []
+tem bloco Quando migrar: True
+linhas SKILL gerado: 400 | linhas MODO: 383
+## GERADO.txt da release
+# GENERATED pelo sdd-open com scripts/gerar-starter.py — não edite aqui: edite no sdd-open e gere de novo.
+29797b9a419cc51e01ad868c0dde20f0c16d9b078b5e9ae2ea7c72ceee78ce48  SKILL.md
+b302be9d3f6ab178a74c6bda5281b11be9ea8ffd8cafb6b8e48a2d89d2ff9145  agents/openai.yaml
+rc=0

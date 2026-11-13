@@ -1,0 +1,73 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/neg.sh
+### cenário sem-modo
+🛑 sdd-release: o arquivo de modo references/MODO_INICIANTE.md não existe
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+exit=65 | destino intacto: sim | git status: 0 linha(s)
+### cenário cita-inexistente
+🛑 sdd-release: o modo cita references/nao-existe.md, que não existe na skill
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+exit=65 | destino intacto: sim | git status: 0 linha(s)
+### cenário cita-init
+🛑 o lint do init achou 1 citação(ões) a arquivo que só o init cria:
+  skills/sdd-release/SKILL.md:394: sdd/bin/
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+exit=65 | destino intacto: sim | git status: 0 linha(s)
+  version: "1.1.0"
+### cenário versao-sdd-brainstorm-1.1.0
+🛑 o version gate do starter reprovaria:
+  sdd-brainstorm: a cópia gerada mudou e a versão não subiu (1.1.0 no starter, 1.1.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+exit=65 | destino intacto: sim | git status: 0 linha(s)
+  version: "1.1.0"
+### cenário versao-sdd-handoff-1.1.0
+🛑 o version gate do starter reprovaria:
+  sdd-handoff: a cópia gerada mudou e a versão não subiu (1.1.0 no starter, 1.1.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+exit=65 | destino intacto: sim | git status: 0 linha(s)
+  version: "1.0.1"
+### cenário versao-sdd-governanca-1.0.1
+🛑 o version gate do starter reprovaria:
+  sdd-governanca: a cópia gerada mudou e a versão não subiu (1.0.1 no starter, 1.0.1 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+exit=65 | destino intacto: sim | git status: 0 linha(s)
+  version: "1.3.0"
+### cenário versao-sdd-release-1.3.0
+🛑 o version gate do starter reprovaria:
+  sdd-release: a cópia gerada mudou e a versão não subiu (1.3.0 no starter, 1.3.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+exit=65 | destino intacto: sim | git status: 0 linha(s)
+  version: "1.4.0"
+### cenário versao-ux-review-builder-1.4.0
+🛑 o version gate do starter reprovaria:
+  ux-review-builder: a cópia gerada mudou e a versão não subiu (1.4.0 no starter, 1.4.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+exit=65 | destino intacto: sim | git status: 0 linha(s)
+  version: "1.0.9"
+### cenário versao-sdd-brainstorm-1.0.9
+🛑 o version gate do starter reprovaria:
+  sdd-brainstorm: a cópia gerada mudou e a versão não subiu (1.1.0 no starter, 1.0.9 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+exit=65 | destino intacto: sim | git status: 0 linha(s)
+### lint sobre a cópia crua da sdd-release do Open (baseline vermelho)
+🛑 skills/sdd-release/references/seguranca.md:4: sdd/bin/
+🛑 skills/sdd-release/references/seguranca.md:4: .agents/skills/sdd-seguranca/
+🛑 skills/sdd-release/references/seguranca.md:8: sdd/bin/
+🛑 skills/sdd-release/references/seguranca.md:16: sdd/bin/
+🛑 skills/sdd-release/references/seguranca.md:23: sdd/bin/
+🛑 skills/sdd-release/scripts/deploy-espera-testes.py:20: .agents/skills/sdd-release/
+RESULTADO: CITA ARQUIVO DO INIT
+→ troque a citação (scripts/starter/trocas/) e gere de novo.
+exit lint crua=0
+### lint sobre a release gerada (controle verde)
+RESULTADO: VERDE
+→ nenhuma citação a arquivo que só o init cria.
+rc=0

@@ -1,0 +1,216 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources project --system-prompt-file <sdd-governanca gerada + references> [--resume <sessão>] <volta do roteiro>   # sdd-governanca, execução 3
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json
+
+----- volta 1 — aluno -----
+Revise a governança deste DEFINE. Estou no chat, sem terminal.
+
+# DEFINE: HONORARIOS
+Problema: o escritório controla numa planilha os honorários mensais de 40 clientes e esquece de cobrar alguns.
+Usuários: o contador (dono) e a assistente.
+Testes de aceitação:
+- AT-001 When o mês fecha, o sistema shall listar os clientes sem pagamento do mês anterior.
+- AT-002 When a assistente registra um pagamento, o sistema shall guardar a data e o valor.
+- AT-003 When o contador muda o valor mensal de um cliente, o sistema shall usar o novo valor a partir do mês seguinte.
+- AT-004 If um pagamento é registrado com valor diferente do mensal, then o sistema shall avisar a diferença.
+Verify Gate: não há (o projeto ainda não tem testes automatizados).
+Fora de escopo: nota fiscal, boleto, cobrança automática.
+----- volta 1 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+sdd-governanca v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status:** `Governança: ✅ 1 Triagem · ▶️ 2 Padrão do projeto · ⬜ 3 Item a item · ⬜ 4 Relatório · ⬜ 5 Suas decisões · ⬜ 6 Aplicar no DEFINE`
+
+A revisão de **governança** confere se, daqui a alguns anos, dá para reconstruir o que aconteceu, quem fez e por quê, com prova de que nada foi alterado depois. O Status mostra as 6 etapas:
+
+- **Triagem:** confere se o tema se aplica.
+- **Padrão do projeto:** as regras que valem para todas as funcionalidades.
+- **Item a item:** a conferência de cada exigência do catálogo.
+- **Relatório:** a lista do que falta no DEFINE.
+- **Suas decisões:** uma decisão sua para cada ponto do relatório.
+- **Aplicar no DEFINE:** escrever no documento o que você decidir.
+
+**O que foi feito**
+
+A revisão se aplica, porque o DEFINE trata dinheiro em 4 pontos:
+
+- **Problema:** o controle de honorários de 40 clientes.
+- **AT-002:** a assistente registra o pagamento, com data e valor.
+- **AT-003:** o valor mensal muda a partir do mês seguinte.
+- **AT-004:** o sistema avisa quando o valor pago difere do mensal.
+
+A nota fiscal e o boleto estão fora de escopo, então não contaram. Nada foi gravado.
+
+**Agora: etapa 2 — Padrão do projeto**
+
+Preciso de 5 respostas sobre o projeto. Você responde uma vez só e elas valem para todas as funcionalidades. Elas definem quais exigências do catálogo se aplicam aqui.
+
+Como você está no chat e o projeto não tem testes automatizados, a prova de cada ponto será um roteiro manual de 3 a 5 passos. Não haverá script para rodar. Se você já tem um `GOVERNANCA_PADRAO.md` de outra revisão, pode colar o conteúdo dele no lugar das respostas.
+
+**Sua decisão** (responda pelos números, por exemplo "1 equipe, 2 não, 3 não, 4 Fulano CRC…, 5 padrão")
+
+1. [D3 · muda a regra do método] **Quem vai usar o sistema?**
+   - **a equipe do escritório** (recomendado) — o DEFINE cita você e a assistente. Isso liga as exigências de quem pode fazer o quê, como "quem registra não aprova".
+   - **só você** — essas exigências ficam de fora por porte.
+   - **clientes também** — os clientes acessam o sistema, e vale tudo o que vale para a equipe.
+   - **não sei** — explico o que muda em cada caso, com um exemplo deste sistema.
+
+2. [D3 · muda a regra do método] **Mais de um CNPJ usa o mesmo banco de dados, com usuários que não podem ver os dados uns dos outros?**
+   - **não** (recomendado) — os 40 clientes são só registros do seu escritório, e eles não entram no sistema.
+   - **sim** — por exemplo, outro escritório usaria o mesmo sistema. Nesse caso, isolar os dados de cada um vira uma exigência obrigatória.
+   - **não sei** — explico a diferença com um exemplo.
+
+3. [D3 · muda a regra do método] **Alguma IA do sistema grava, classifica ou sugere pagamento ou lançamento sozinha?**
+   - **não** (recomendado) — o DEFINE não fala em IA, e as 4 exigências sobre IA ficam de fora.
+   - **sim** — entra a regra de que a IA sugere e uma pessoa confirma antes de gravar.
+   - **não sei** — explico o que conta como IA aqui.
+
+4. [D3 · muda a regra do método] **Quem responde tecnicamente pelo sistema?** Responda com o nome e o CRC. Se preferir, responda "não sei" e eu deixo o campo marcado como pendente.
+
+5. [D3 · muda a regra do método] **Por quanto tempo os dados têm de ser guardados?**
+   - **até a prescrição** (recomendado) — é o padrão do catálogo para dado financeiro.
+   - **outro prazo** — diga qual e o motivo.
+   - **não sei** — sigo com o padrão e anoto que você vai conferir depois.
+
+**Próximo passo:** com as 5 respostas, confiro o DEFINE contra cada exigência do catálogo.
+
+----- volta 2 — aluno -----
+É o primeiro uso: o escritório é pequeno, eu (contador) aprovo tudo e a assistente registra os pagamentos; os valores são em reais, com centavos; o mês fecha no último dia; os registros precisam ser guardados por 5 anos; não há auditoria externa.
+----- volta 2 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Governança: ✅ 1 Triagem · ▶️ 2 Padrão do projeto · ⬜ 3 Item a item · ⬜ 4 Relatório · ⬜ 5 Suas decisões · ⬜ 6 Aplicar no DEFINE`
+
+**O que foi feito**
+
+Anotei 2 das 5 respostas:
+
+- **Quem usa:** a equipe do escritório. A assistente registra e você aprova.
+- **Guarda:** 5 anos, o prazo que você informou.
+
+Também guardei 3 informações para a conferência item a item:
+
+- Os valores são em reais, com centavos.
+- O mês fecha no último dia.
+- Você aprova tudo.
+
+O DEFINE ainda não menciona essa aprovação, e isso vai pesar na regra "quem registra não aprova". Não ter auditoria externa não tira nenhuma exigência, porque um fiscal ou um perito pode pedir a mesma prova. Nada foi gravado ainda.
+
+**Agora: etapa 2 — Padrão do projeto**
+
+Faltam 3 respostas para fechar o padrão do projeto. Ele fica num arquivo pequeno, que vale para todas as funcionalidades. Depois que você responder, entrego esse arquivo aqui no chat para você guardar no projeto.
+
+**Sua decisão** (responda pelos números, por exemplo "2 não, 3 não, 4 Fulano CRC…")
+
+2. [D3 · muda a regra do método] **Mais de um CNPJ usa o mesmo banco de dados, com usuários que não podem ver os dados uns dos outros?**
+   - **não** (recomendado) — o escritório é um só, e os 40 clientes são registros seus que não entram no sistema.
+   - **sim** — outro escritório ou empresa usaria o mesmo sistema. Aí isolar os dados de cada um vira obrigatório.
+   - **não sei** — explico a diferença com um exemplo.
+
+3. [D3 · muda a regra do método] **Alguma IA do sistema grava, classifica ou sugere pagamento sozinha?**
+   - **não** (recomendado) — o DEFINE não fala em IA, e as 4 exigências sobre IA ficam de fora.
+   - **sim** — entra a regra de que a IA sugere e uma pessoa confirma antes de gravar.
+   - **não sei** — explico o que conta como IA aqui.
+
+4. [D3 · muda a regra do método] **Qual é o seu nome e o seu CRC, como responsável técnico?** Se preferir, responda "não sei" e eu deixo o campo marcado como pendente.
+
+**Próximo passo:** com as 3 respostas, entrego o padrão e confiro o DEFINE item a item.
+
+----- volta 3 — aluno -----
+Pode usar essas respostas para o padrão.
+----- volta 3 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Governança: ✅ 1 Triagem · ▶️ 2 Padrão do projeto · ⬜ 3 Item a item · ⬜ 4 Relatório · ⬜ 5 Suas decisões · ⬜ 6 Aplicar no DEFINE`
+
+**O que foi feito**
+
+Você pediu para usar as respostas que já deu. Elas cobrem quem usa o sistema e o prazo de guarda. Ainda não cobrem 3 campos: mais de um CNPJ, IA e o seu nome com o CRC.
+
+Esses 3 campos decidem quais exigências se aplicam a todas as funcionalidades. Por isso não os preencho sem a sua confirmação.
+
+**Agora: etapa 2 — Padrão do projeto**
+
+O que você contou aponta um caminho. O escritório é pequeno, só você e a assistente usam o sistema, e o DEFINE não fala em IA. Montei o padrão assim:
+
+```text
+uso: equipe
+multi_cnpj: não
+ia_grava_sozinha: não
+responsavel_tecnico: o contador do escritório — nome e CRC pendentes
+guarda_padrao: 5 anos (informado pelo profissional)
+```
+
+**Sua decisão** — [D3 · muda a regra do método] **Posso fechar o padrão do projeto assim?**
+- **sim** (recomendado) — entrego o arquivo aqui no chat para você guardar no projeto e começo a conferência item a item. Com esse padrão, a regra de isolar os dados de cada CNPJ e as 4 regras sobre IA ficam de fora. O nome e o CRC você completa quando quiser.
+- **corrigir** — diga qual linha muda, por exemplo "multi_cnpj: sim" ou "responsável: Fulano, CRC …". Eu ajusto e mostro de novo.
+- **não sei** — explico o efeito de cada linha neste sistema de honorários.
+
+**Próximo passo:** com o sim, entrego o padrão e confiro o DEFINE contra as 20 exigências.
+
+----- volta 4 — aluno -----
+Aplicar.
+----- volta 4 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Governança: ✅ 1 Triagem · ✅ 2 Padrão do projeto · ▶️ 3 Item a item · ⬜ 4 Relatório · ⬜ 5 Suas decisões · ⬜ 6 Aplicar no DEFINE`
+
+**O que foi feito**
+
+Entendi o seu **aplicar** como "sim" ao padrão do projeto, e o padrão está fechado. Nenhuma mudança entrou no DEFINE: cada ponto vai ter uma decisão sua, separada, mais adiante.
+
+Como estamos no chat, nada foi gravado. Guarde o texto abaixo no projeto, num arquivo `sdd/GOVERNANCA_PADRAO.md`:
+
+```text
+# Padrão de governança do projeto
+
+> Respondido uma vez por projeto, na primeira revisão de governança. Vale para todas as features.
+> Mudou alguma coisa? Edite a linha e diga isso na próxima revisão.
+
+uso: equipe
+multi_cnpj: não
+ia_grava_sozinha: não
+responsavel_tecnico: o contador do escritório — nome e CRC pendentes
+guarda_padrao: 5 anos (informado pelo profissional)
+```
+
+**Agora: etapa 3 — Item a item**
+
+Conferi o DEFINE contra as 20 exigências do catálogo. Nenhuma está atendida ainda, o que é normal num DEFINE curto. Uso 3 rótulos:
+
+- **Lacuna:** um ponto em que o DEFINE ainda não exige a garantia.
+- **2ª camada:** o que fica para depois, sem prazo.
+- **N.A.:** não se aplica a este sistema.
+
+**7 lacunas**
+
+| | Exigência | O que muda no app | Risco |
+|---|---|---|---|
+| G01 | Pagamento que não se apaga | O pagamento registrado não se edita nem se exclui. A correção é um estorno com motivo, que aponta para o original. | alto |
+| G03 | Fechamento do mês | Mês fechado não recebe pagamento novo nem alteração. Reabrir exige motivo e a sua aprovação. | alto |
+| G04 | Trilha de auditoria | Cada mudança fica registrada: o que era, o que ficou, quem mudou, quando e por quê. Isso vale também para a troca de valor mensal do AT-003. | alto |
+| G06 | Prova de que a trilha não foi editada | Uma conferência mostra que ninguém alterou a trilha, nem quem administra o sistema. | médio |
+| G07 | Quem registra não aprova | A assistente registra o pagamento e só você aprova. Ninguém aprova o próprio registro, nem você. | alto |
+| G08 | Comprovante guardado | Cada pagamento aponta para o comprovante (PIX ou extrato). O arquivo guardado não pode ser trocado. | alto |
+| G09 | Conta exata em centavos | Os valores são guardados com 2 casas exatas. A diferença do AT-004 não pode sair com centavo errado. | alto |
+
+**4 na 2ª camada** (recomendadas, não obrigatórias nesta entrega)
+
+- **G11, vigência do valor mensal:** o AT-003 já aponta o caminho. Falta exigir que o mês passado continue com o valor antigo.
+- **G12, diferença vira pendência:** o AT-004 avisa a diferença, mas não a registra como pendência.
+- **G14, prazo de guarda × pedido de exclusão de dado pessoal.**
+- **G15, backup com restauração testada.**
+
+**9 N.A.**
+
+- **G02, partidas dobradas:** o sistema controla recebimentos, não escritura contabilidade.
+- **G05, registro de acessos e exportações:** o DEFINE não exporta dados, não usa certificado e não guarda dado sensível.
+- **G10, importação repetida:** não há importação de arquivo, o registro é manual.
+- **G13, isolamento entre CNPJs:** o padrão diz que só há um CNPJ.
+- **G16, certificado digital:** a nota fiscal está fora de escopo.
+- **G17 a G20:** não há IA no sistema.
+
+**Sua decisão** — [auto · de rotina] **Posso montar o relatório com estas 7 lacunas?**
+- **sim** (recomendado) — escrevo o relatório completo aqui no chat. Cada lacuna sai com o porquê, o requisito e um roteiro de prova de 3 a 5 passos. Depois pergunto uma lacuna por vez.
+- **corrigir um veredito** — diga qual item mudar e por quê, por exemplo "G08 é N.A., não guardamos comprovante". Eu ajusto a lista e mostro de novo.
+- **não sei** — explico com um exemplo do escritório por que um dos itens virou lacuna.
+
+**Próximo passo:** com o sim, escrevo o relatório e começo pela lacuna 1 de 7.
+
+===== veredito =====
+voltas: 4 · entregue: sim
+✅ nenhum achado
+RESULTADO: PASSOU
+rc=0

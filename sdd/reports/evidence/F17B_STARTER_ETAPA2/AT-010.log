@@ -1,0 +1,52 @@
+$ cd <git archive e583889>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_agnostico test_check_versions test_conversa test_f17b_textos.ModoIniciante.test_o_open_aponta_o_modo_e_a_release_fica_no_teto test_gerar_starter.ReadmeEInit.test_at010_o_init_nao_copia_scripts test_sdd_open.Projeto.test_doctor_avisa_a_ux_review_builder_do_starter
+test_binario_no_escopo_nao_quebra_a_varredura (test_agnostico.Agnostico.test_binario_no_escopo_nao_quebra_a_varredura) ... ok
+test_controle_com_conceito_passa (test_agnostico.Agnostico.test_controle_com_conceito_passa) ... ok
+test_escopo_existe_e_nao_e_vazio (test_agnostico.Agnostico.test_escopo_existe_e_nao_e_vazio) ... ok
+test_fixture_com_nome_de_ferramenta_reprova (test_agnostico.Agnostico.test_fixture_com_nome_de_ferramenta_reprova) ... ok
+test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico.test_os_8_termos_e_arquivo_sem_extensao_reprovam) ... ok
+test_pacote_sem_ferramenta_de_um_agente_so (test_agnostico.Agnostico.test_pacote_sem_ferramenta_de_um_agente_so) ... ok
+test_texto_fora_de_utf8_reprova (test_agnostico.Agnostico.test_texto_fora_de_utf8_reprova) ... ok
+test_base_indisponivel_sem_obrigatoria_cai_para_estrutural (test_check_versions.CheckVersions.test_base_indisponivel_sem_obrigatoria_cai_para_estrutural) ... ok
+test_base_obrigatoria_que_nao_resolve_reprova (test_check_versions.CheckVersions.test_base_obrigatoria_que_nao_resolve_reprova) ... ok
+test_base_obrigatoria_sem_base_reprova (test_check_versions.CheckVersions.test_base_obrigatoria_sem_base_reprova) ... ok
+test_estrutura_valida_passa (test_check_versions.CheckVersions.test_estrutura_valida_passa) ... ok
+test_evals_divergente_reprova (test_check_versions.CheckVersions.test_evals_divergente_reprova) ... ok
+test_manifest_divergente_reprova (test_check_versions.CheckVersions.test_manifest_divergente_reprova) ... ok
+test_manifest_sem_chave_version_passa (test_check_versions.CheckVersions.test_manifest_sem_chave_version_passa) ... ok
+test_opcao_desconhecida_e_64 (test_check_versions.CheckVersions.test_opcao_desconhecida_e_64) ... ok
+test_skill_mudada_com_bump_passa (test_check_versions.CheckVersions.test_skill_mudada_com_bump_passa) ... ok
+test_skill_mudada_sem_bump_reprova (test_check_versions.CheckVersions.test_skill_mudada_sem_bump_reprova) ... ok
+test_skill_nova_passa (test_check_versions.CheckVersions.test_skill_nova_passa) ... ok
+test_skill_que_nao_tinha_versao_na_base_passa (test_check_versions.CheckVersions.test_skill_que_nao_tinha_versao_na_base_passa) ... ok
+test_versao_ausente_reprova (test_check_versions.CheckVersions.test_versao_ausente_reprova) ... ok
+test_versao_malformada_reprova (test_check_versions.CheckVersions.test_versao_malformada_reprova) ... ok
+test_versao_que_desce_reprova (test_check_versions.CheckVersions.test_versao_que_desce_reprova) ... ok
+test_as_13_skills_do_open_passam (test_check_versions.SkillsDoPacote.test_as_13_skills_do_open_passam) ... ok
+test_bloco_comum_igual_nas_16 (test_conversa.Camada.test_bloco_comum_igual_nas_16) ... ok
+test_como_falar_existe_e_cita_o_fragmento (test_conversa.Camada.test_como_falar_existe_e_cita_o_fragmento) ... ok
+test_skill_portada_nao_cita_o_starter (test_conversa.Camada.test_skill_portada_nao_cita_o_starter) ... ok
+test_status_comeca_pelo_nome_da_fase (test_conversa.Camada.test_status_comeca_pelo_nome_da_fase) ... ok
+test_cobre_publico_estagio_referencia_e_url (test_conversa.EntrevistaPublico.test_cobre_publico_estagio_referencia_e_url) ... ok
+test_confirmacao_passa_no_skill_lint (test_conversa.EntrevistaPublico.test_confirmacao_passa_no_skill_lint) ... ok
+test_passo_1_aponta_a_entrevista (test_conversa.EntrevistaPublico.test_passo_1_aponta_a_entrevista) ... ok
+test_pergunta_so_o_que_muda_a_experiencia (test_conversa.EntrevistaPublico.test_pergunta_so_o_que_muda_a_experiencia) ... ok
+test_perguntas_de_fato_sao_abertas (test_conversa.EntrevistaPublico.test_perguntas_de_fato_sao_abertas) ... ok
+test_so_a_confirmacao_tem_opcoes (test_conversa.EntrevistaPublico.test_so_a_confirmacao_tem_opcoes) ... ok
+test_parada_tem_os_campos (test_conversa.Fragmento.test_parada_tem_os_campos) ... ok
+test_pergunta_tem_as_regras (test_conversa.Fragmento.test_pergunta_tem_as_regras) ... ok
+test_linha_de_identificacao_tem_a_versao_do_frontmatter (test_conversa.Identificacao.test_linha_de_identificacao_tem_a_versao_do_frontmatter) ... ok
+test_metadata_tem_updated (test_conversa.Identificacao.test_metadata_tem_updated) ... ok
+test_nenhuma_abre_com_banner (test_conversa.Identificacao.test_nenhuma_abre_com_banner) ... ok
+test_sao_18_e_as_16_da_camada_existem (test_conversa.Identificacao.test_sao_18_e_as_16_da_camada_existem) ... ok
+test_skill_com_ate_500_linhas (test_conversa.Identificacao.test_skill_com_ate_500_linhas) ... ok
+test_design_confere_com_design_lint (test_conversa.LintNoFimDaFase.test_design_confere_com_design_lint) ... ok
+test_handoff_confere_com_handoff_lint_entre_o_3_e_o_4 (test_conversa.LintNoFimDaFase.test_handoff_confere_com_handoff_lint_entre_o_3_e_o_4) ... ok
+test_o_open_aponta_o_modo_e_a_release_fica_no_teto (test_f17b_textos.ModoIniciante.test_o_open_aponta_o_modo_e_a_release_fica_no_teto) ... ok
+test_at010_o_init_nao_copia_scripts (test_gerar_starter.ReadmeEInit.test_at010_o_init_nao_copia_scripts) ... ok
+test_doctor_avisa_a_ux_review_builder_do_starter (test_sdd_open.Projeto.test_doctor_avisa_a_ux_review_builder_do_starter) ... ok
+
+----------------------------------------------------------------------
+Ran 45 tests in 23.643s
+
+OK
+rc=0

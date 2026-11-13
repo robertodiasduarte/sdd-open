@@ -1,0 +1,31 @@
+$ bash at008.sh
+starter gerado sobre d2f3085 (v1.5.17), mudanças:       56
+== publish-check.sh
+PASS: publish-check found no forbidden content.
+publish-check rc=0
+== check-versions.py --base v1.5.17
+PASS: check-versions — 18 skills com versão coerente, comparadas a v1.5.17.
+check-versions rc=0
+== skills/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+gate.sh rc=0
+== check-gerado.py
+✅ 15 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+check-gerado rc=0
+== unittest discover -s tests
+Ran 62 tests in 5.988s
+
+OK
+unittest rc=0
+== byte trocado num arquivo gerado de docs/ exemplos/ tests/ → check-gerado 1
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+docs (docs/quickstart.md) check-gerado rc=1
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+exemplos (exemplos/baixar-nfse/BRAINSTORM_BAIXAR_NFSE.md) check-gerado rc=1
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+tests (tests/fixtures/bad_incompleto.md) check-gerado rc=1
+rc=0

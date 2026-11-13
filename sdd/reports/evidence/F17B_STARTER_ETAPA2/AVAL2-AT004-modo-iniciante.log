@@ -1,0 +1,49 @@
+$ bash at004.sh
+== pedidos de aprovação: 'Posso publicar' (4)
+  139: "**Posso publicar na `<recomendada>`?** (responda `develop` ou `main` para trocar)" — continua sendo
+  203: e não peça OK "mesmo assim". Nessa resposta **não mencione o bloco do OK nem a pergunta "Posso publicar"**,
+  240: **Posso publicar?**   ← ou "Posso publicar na <alvo>?", no único caso do destino ambíguo (Passo 1)
+  251: - **A única pergunta do bloco é a última linha, "Posso publicar?"** (ou "Posso publicar na `<alvo>`?", se o
+== outras perguntas ao aluno (pergunte|peça|confirme com|quer que) (6)
+  16: 1. **Não pergunte o que dá para descobrir.** Investigue e decida; pergunte só o ambíguo, com
+  81: feito (*"Nada foi publicado."*) e, se o aluno tem algo a fazer, *"Quando terminar, me peça de novo —
+  203: e não peça OK "mesmo assim". Nessa resposta **não mencione o bloco do OK nem a pergunta "Posso publicar"**,
+  254: é uma frase, não uma pergunta — transformá-la em "quer que eu revise antes?" cria um segundo ponto
+  263: depois do OK: **pare**, mostre o que mudou e peça um OK novo — nunca commite o que não foi visto.
+  325: do site, se o projeto tiver um, passa a mostrar a mesma versão. Abra o endereço (ou peça ao aluno para
+== token/credencial/login (4)
+  3: compatibility: "Requer git; para conferir o deploy, o gh (GitHub CLI) com o login que você já tem. Nenhum token é pedido."
+  191: `git diff` mas será commitado. Procure chave de API, token, senha, `.env` sendo versionado por engano:
+  192: atribuições como `API_KEY=`, `SECRET=`, `PASSWORD=`, `TOKEN=` com valor literal, prefixos de chave de
+  372: - **Nenhum token, nunca**: o `gh` usa o login que já existe; pedir ou colar token no chat é o jeito mais comum de
+== CLIs fora git/gh em blocos de comando de publicação (vercel CLI) (0)
+== conferência Vercel: status/checks do commit e URL (6)
+  119: deploy de produção**, e cada push de outra branch ou PR ganha um preview (uma cópia de teste, com endereço
+  225: ao receber o push na main (num PR, só o preview) | não confirmei: <o que viu> | não: <por quê>>
+  321: - `gh api "repos/{owner}/{repo}/commits/<SHA publicado>/status" --jq '.statuses[] | select(.context | startswith("Vercel")) | [.state, .target_url] | 
+  323: e `gh api "repos/{owner}/{repo}/deployments/<id>/statuses" --jq '.[0].environment_url'` ⇒ "No ar: o deploy
+  333: - Nos cenários B e C, o PR ganha um preview: `gh pr checks <número do PR>` mostra o check da Vercel, e o
+  334: endereço do preview está no comentário da Vercel no PR (`gh pr view <número do PR> --comments`). Produção
+== caminho do workflow continua (1)
+  297: - `gh run list --commit <SHA publicado> --branch <principal> --json databaseId,status,conclusion,workflowName,event`
+== falha/ausência da Vercel: não refaz e diz onde olhar (5)
+  197: 6. **A base andou?** `GIT_TERMINAL_PROMPT=0 git fetch origin <alvo>` e `git rev-list --count HEAD..origin/<alvo>`. **Não
+  198: integre agora**: um `git merge` aqui criaria commit antes do OK (e recusaria a pasta com mudanças não
+  329: - `failure` ou `error` ⇒ diga que o deploy da Vercel falhou e dê o link do status, onde está o erro. **Não
+  330: refaça o deploy por conta própria**: corrigir e publicar de novo é uma frente nova.
+  331: - Nenhum status da Vercel depois de ~2 min ⇒ diga que não achou o deploy da Vercel para este commit (a
+== SKILL.md do Open: linhas = 500
+== SKILL.md aponta o modo para projeto sem sdd/bin/: ['**Projeto sem `sdd/bin/`** (sem o `init`; ex.: GitHub + Vercel com as skills soltas)? Siga `references/MODO_INICIANTE.md`.']
+== diff do SKILL.md da sdd-release contra v2.13.0 (o caminho com sdd/bin/ não muda)
+5	5	.agents/skills/sdd-release/SKILL.md
+-  version: "2.11.1"
++  version: "2.12.0"
+-`sdd-release v2.11.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
++`sdd-release v2.12.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+-Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes
+-do push e do deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e
+-irreversível na prática.
++Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes do push e do
++deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e irreversível na prática.
++**Projeto sem `sdd/bin/`** (sem o `init`; ex.: GitHub + Vercel com as skills soltas)? Siga `references/MODO_INICIANTE.md`.
+rc=0

@@ -1,0 +1,11 @@
+$ bash sab.sh
+A1-checklist (volta .agents/skills/sdd-governanca/SKILL.md a 1a71e1a): testes rc=1 → MORTO
+FAIL: test_governanca (test_f17b_textos.SemTerminal)
+A2-catalogo (volta .agents/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md a 1a71e1a): testes rc=1 → MORTO
+FAIL: test_at006_sem_comando_no_caminho_sem_terminal (test_gerar_starter.CaminhoDoIniciante) (catalogo=10104)
+A3-revisor (volta .agents/skills/sdd-governanca/references/revisor.md a 1a71e1a): testes rc=1 → MORTO
+FAIL: test_governanca (test_f17b_textos.SemTerminal)
+controle (HEAD sem mutação):
+
+OK
+rc=0

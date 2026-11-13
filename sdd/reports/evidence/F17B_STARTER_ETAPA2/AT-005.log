@@ -1,0 +1,10 @@
+$ cd <git archive e583889>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17b_textos.SemTerminal
+test_brainstorm (test_f17b_textos.SemTerminal.test_brainstorm) ... ok
+test_governanca (test_f17b_textos.SemTerminal.test_governanca) ... ok
+test_handoff (test_f17b_textos.SemTerminal.test_handoff) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK
+rc=0

@@ -1,0 +1,8 @@
+$ bash t2.sh
+test_as_13_skills_do_open_passam (test_check_versions.SkillsDoPacote) ... ok
+
+----------------------------------------------------------------------
+Ran 69 tests in 39.522s
+
+OK
+rc=0

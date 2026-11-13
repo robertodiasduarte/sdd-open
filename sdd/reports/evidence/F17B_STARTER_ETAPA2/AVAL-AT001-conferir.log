@@ -1,0 +1,29 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/at001.sh
+## skills/ no destino
+sdd-auditoria-harness sdd-brainstorm sdd-build sdd-checar-ambiente sdd-define sdd-design sdd-engenharia-reversa-saas sdd-governanca sdd-handoff sdd-higiene-dado sdd-iniciar-repo sdd-kb sdd-loop-builder sdd-new-session sdd-prompt-builder sdd-release sdd-seguranca ux-review-builder 
+total:       18
+## skills com GERADO.txt (geradas)
+      15
+## congeladas (sem GERADO.txt)
+skills/sdd-build/
+skills/sdd-define/
+skills/sdd-design/
+## byte a byte vs v1.5.17 (git diff --stat v1.5.17 -- congeladas e raiz fixa)
+diff rc=0
+       0
+## docs/ exemplos/ tests/ iguais à semente scripts/starter/raiz?
+docs == semente
+exemplos == semente
+tests == semente
+## arquivos de docs/exemplos/tests que existiam na v1.5.17 e saíram
+ M docs/quickstart.md
+ M docs/quickstart.pt-BR.md
+## README: geradas e congeladas
+54:Quinze skills deste repositório são **geradas** a partir do [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` e `sdd-loop-builder` (desde a 1ª geração, nov/2026), e `sdd-brainstorm`, `sdd-handoff`, `sdd-governanca`, `sdd-release` e `ux-review-builder` (desde a 2ª). Cada uma traz um `GERADO.txt` e não se edita aqui: quem melhora, melhora no Open, e a próxima geração traz a mudança. `docs/`, `exemplos/` e `tests/` também vêm do Open.
+56:O que a 2ª geração muda para você: brainstorm, handoff e governança funcionam igual na web (o documento sai no chat, dizendo que nada foi gravado); a `sdd-release` confere o deploy da **Vercel** ligada ao GitHub (pelo status do commit, com o endereço no fim), sem pedir token; as skills geradas guardam os documentos em `sdd/features/`, `sdd/handoffs/` e `sdd/reviews/`.
+58:As outras três (`sdd-define`, `sdd-design` e `sdd-build`) continuam como estavam, congeladas até a próxima etapa da geração; elas recebem o documento da fase anterior pelo caminho que você indicar.
+155:Fifteen skills in this repository are **generated** from [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` and `sdd-loop-builder` (since the first generation, Nov 2026), and `sdd-brainstorm`, `sdd-handoff`, `sdd-governanca`, `sdd-release` and `ux-review-builder` (since the second). Each one carries a `GERADO.txt` and is not edited here: improvements go to SDD Open, and the next generation brings them. `docs/`, `exemplos/` and `tests/` also come from SDD Open.
+157:What the second generation changes for you: brainstorm, handoff and governance work the same on the web (the document comes out in the chat, saying nothing was saved); `sdd-release` checks the deploy of **Vercel** connected to GitHub (through the commit status, with the address at the end), without asking for a token; the generated skills keep documents in `sdd/features/`, `sdd/handoffs/` and `sdd/reviews/`.
+159:The other three (`sdd-define`, `sdd-design` and `sdd-build`) stay as they were, frozen until the next stage of the generation; they take the previous phase's document from the path you give them.
+README.md
+rc=0

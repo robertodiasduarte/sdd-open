@@ -1,0 +1,10 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/fech.sh
+✅ sdd-release: 4 arquivo(s), 0 troca(s), de modo (references/MODO_INICIANTE.md)
+RESULTADO: GERADO
+exit=0
+./GERADO.txt
+./SKILL.md
+./agents/openai.yaml
+./references/aval-a.md
+./references/aval-b.md
+rc=0

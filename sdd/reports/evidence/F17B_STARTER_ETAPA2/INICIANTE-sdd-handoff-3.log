@@ -1,0 +1,151 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources project --system-prompt-file <sdd-handoff gerada + references> [--resume <sessão>] <volta do roteiro>   # sdd-handoff, execução 3
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json
+
+----- volta 1 — aluno -----
+Passa o bastão: hoje fiz o brainstorm e o define da feature HONORARIOS (controle dos honorários mensais do escritório). O DEFINE tem 6 testes de aceitação; falta o design e o build. O AT-004 (multa por atraso) ficou em dúvida: não sei se a multa entra na primeira versão. Amanhã continuo. Estou no chat da web, sem acesso ao projeto.
+----- volta 1 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+sdd-handoff v2.2.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status** — `Handoff: ✅ 1 Família · ✅ 2 Estado · ✅ 3 Ficha · ✅ 4 Prompt de retomada · ➖ 5 Limpeza`
+(O handoff é o registro do que ficou pronto e do que falta, para a próxima conversa continuar sem depender desta. "Família" é o assunto do trabalho, com uma ficha por assunto. A "Limpeza" foi pulada porque nada foi publicado e não há pasta para apagar.)
+
+**O que foi feito**
+- Assumi o modo **continuar**: você retoma amanhã, então entrego a ficha e o texto de retomada, sem o checklist de fechamento.
+- Tratei HONORARIOS como assunto novo. Não consigo ver o seu projeto daqui. Se você já tiver um arquivo `HANDOFF_HONORARIOS.md` salvo, substitua o conteúdo dele por este.
+- Não listei os 6 testes um a um, porque só sei o tema do AT-004. Por isso, o texto de retomada pede que você anexe o DEFINE.
+
+**Agora: etapa 4 — Prompt de retomada**
+O documento abaixo traz a ficha, que é a tabela com objetivo, status, o que foi feito e o que falta. No fim dele vem o prompt de retomada, o texto pronto para colar na conversa de amanhã. A dúvida do AT-004 está como primeira tarefa, porque ela muda o desenho da solução.
+
+---
+
+````markdown
+# HANDOFF: HONORARIOS
+
+> Ficha da feature: 1 arquivo por feature, etapas como subseções (mais recente no topo).
+
+## Ficha
+
+| Attribute | Value |
+|-----------|-------|
+| **Feature** | HONORARIOS |
+| **Objetivo** | O escritório passa a controlar os honorários mensais de cada cliente: o que foi cobrado, o que foi pago e o que está em aberto. |
+| **Status** | 🔨 em andamento: brainstorm e DEFINE feitos; design e build por fazer |
+| **Última sessão** | 2026-11-13 |
+| **Artefatos** | `DEFINE_HONORARIOS.md` (feito, com 6 testes de aceitação) · `DESIGN_HONORARIOS.md` (por fazer) · `BUILD_REPORT_HONORARIOS.md` (por fazer) |
+
+## Feito
+
+- Brainstorm da feature: feito em 2026-11-13.
+- DEFINE com 6 testes de aceitação (AT-001 a AT-006). A prova é o próprio `DEFINE_HONORARIOS.md`.
+
+## Falta
+
+1. Decidir se o AT-004 (multa por atraso) entra na primeira versão.
+2. Ajustar o DEFINE conforme a decisão: manter o AT-004 ou mover para "fora de escopo / versão 2".
+3. Escrever o DESIGN (`DESIGN_HONORARIOS.md`).
+4. Fazer o build e conferir os testes de aceitação que ficarem na primeira versão.
+
+## Definition of Done
+
+- [ ] AT-004 decidido e registrado no DEFINE (dentro ou fora da primeira versão)
+- [ ] `DESIGN_HONORARIOS.md` escrito e coerente com o DEFINE
+- [ ] Todos os testes de aceitação da primeira versão passam no build
+- [ ] `BUILD_REPORT_HONORARIOS.md` registra o que passou e o que ficou de fora
+
+## ⛔ Landmines desta feature
+
+- Não começar o DESIGN com o AT-004 em aberto. A multa muda o que precisa ser guardado (data de vencimento, data de pagamento, percentual da multa). Primeiro decida, depois desenhe.
+
+## Pendências
+
+🐛 **Bug fix:** nenhuma (ainda não há código).
+
+✨ **Melhoria / próxima etapa:**
+- Decidir o AT-004 (multa por atraso).
+- DESIGN da feature.
+- Build da feature.
+
+## Eventos
+
+- 2026-11-13: AT-004 (multa por atraso) ficou em dúvida quanto a entrar na primeira versão. Decisão adiada para a próxima sessão, por Roberto.
+
+## Recomendações
+
+- Decida o AT-004 antes de qualquer outra coisa. Se houver dúvida, deixe a multa para a versão 2: a primeira versão fica menor e o controle básico (cobrado / pago / em aberto) já entrega valor.
+- Se a multa ficar de fora, guarde mesmo assim a data de vencimento de cada honorário. Isso facilita incluir a multa depois sem refazer o desenho.
+
+## Setup
+
+1. Abra uma conversa nova. Você vê o chat vazio, sem histórico.
+2. Anexe ou cole o `DEFINE_HONORARIOS.md` e esta ficha. O agente passa a ter os 6 testes de aceitação.
+3. Cole o prompt de retomada abaixo. O agente começa pela decisão do AT-004.
+
+## Tarefas
+
+1. **Decidir o AT-004 (multa por atraso)**. Pronto quando: o DEFINE diz explicitamente "AT-004 na primeira versão" ou "AT-004 movido para a versão 2".
+2. **Escrever o DESIGN**. Pronto quando: `DESIGN_HONORARIOS.md` existe e cada teste de aceitação da primeira versão aponta para a parte do design que o atende.
+3. **Fazer o build**. Pronto quando: cada teste de aceitação da primeira versão foi rodado e passou, com o resultado anotado no `BUILD_REPORT_HONORARIOS.md`.
+
+---
+
+## Prompt de retomada
+
+> Cole este bloco inteiro numa conversa nova, junto com o DEFINE_HONORARIOS.md.
+
+```text
+Retomar a feature HONORARIOS.
+
+Contexto: controle dos honorários mensais do escritório (o que foi cobrado,
+o que foi pago, o que está em aberto). Em 2026-11-13 fiz o brainstorm e o
+DEFINE, com 6 testes de aceitação (AT-001 a AT-006). Falta o design e o build.
+Estou no chat da web, sem acesso aos arquivos do projeto: o DEFINE e a ficha
+HANDOFF_HONORARIOS.md vão anexados ou colados junto com esta mensagem.
+
+Leia primeiro: HANDOFF_HONORARIOS.md, depois DEFINE_HONORARIOS.md.
+
+Próxima ação: me ajude a decidir se o AT-004 (multa por atraso) entra na
+primeira versão. Me mostre o que muda no design se entrar e se não entrar,
+recomende uma opção e espere a minha resposta. Depois, atualize o DEFINE
+com a decisão.
+
+Em seguida: escrever o DESIGN_HONORARIOS.md e, depois, o build.
+
+Não faça: não comece o DESIGN antes de o AT-004 estar decidido; não mude
+os outros 5 testes de aceitação sem me perguntar.
+Landmines: a multa exige data de vencimento, data de pagamento e percentual;
+mesmo sem multa na primeira versão, guarde a data de vencimento.
+Ao terminar o build: rodar /sdd-release para publicar.
+```
+
+---
+
+## Histórico de slices
+
+### Brainstorm + DEFINE — 2026-11-13
+
+- Brainstorm da feature HONORARIOS feito.
+- DEFINE escrito com 6 testes de aceitação (AT-001 a AT-006).
+- AT-004 (multa por atraso) ficou em dúvida para a primeira versão; decisão adiada.
+- Próxima sessão: decidir o AT-004, depois o design, depois o build.
+````
+
+---
+
+- **Não gravei este documento.** Daqui do chat não tenho acesso ao seu projeto.
+- **Nome sugerido:** `HANDOFF_HONORARIOS.md`
+- **O que fazer com ele:** salve junto do projeto, ao lado do `DEFINE_HONORARIOS.md`. Amanhã, no começo da conversa nova, mande os dois e cole o prompt de retomada.
+
+**Sua decisão** — [D2 · muda o produto] **Quer decidir agora se a multa por atraso (AT-004) entra na primeira versão, para a ficha já sair fechada?**
+- **deixar para amanhã** (recomendado) — a ficha fica como está; amanhã o agente mostra o impacto das duas opções antes de você escolher (ref: AT-004).
+- **fora da primeira versão** — eu reescrevo a ficha com o AT-004 movido para a versão 2 e o design liberado para começar.
+- **dentro da primeira versão** — eu reescrevo a ficha com a multa no escopo e anoto o que o design precisa guardar.
+- **não sei** — explico em 3 frases o que a multa acrescenta ao trabalho.
+
+**Próximo passo** — Com a sua resposta, ajusto a ficha ou encerro; amanhã, cole o prompt numa conversa nova.
+
+===== veredito =====
+voltas: 1 · entregue: sim
+✅ nenhum achado
+RESULTADO: PASSOU
+rc=0

@@ -1,0 +1,13 @@
+$ bash pgate.sh
+HEAD 1d8fc65
+G4 verify-gate exit contract
+  ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+  ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+  ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+G5 documentation
+  ✅ docs present, cross-linked, attribution in place
+──────────────────────────────────────────────────────────────────
+✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+publish-gate rc=0
+(só a 1ª metade do cmd do Verify Gate; a suíte inteira não foi rodada — ~37 min, fora do escopo desta avaliação)
+rc=0

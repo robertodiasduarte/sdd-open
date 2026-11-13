@@ -1,0 +1,40 @@
+$ cd <git archive e583889>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17b_textos.UxReviewBuilder test_skill_lint test_sdd_open.Projeto.test_init_instala_a_ux_review_builder
+test_a_skill_mora_no_open (test_f17b_textos.UxReviewBuilder.test_a_skill_mora_no_open) ... ok
+test_a_tabela_do_gerador_tem_o_botao (test_f17b_textos.UxReviewBuilder.test_a_tabela_do_gerador_tem_o_botao) ... ok
+test_sdd_ux_review_le_o_padrao (test_f17b_textos.UxReviewBuilder.test_sdd_ux_review_le_o_padrao) ... ok
+test_as_18_skills_reais_passam (test_skill_lint.SkillLint.test_as_18_skills_reais_passam) ... ok
+test_as_18_skills_reais_passam_com_conversa (test_skill_lint.SkillLint.test_as_18_skills_reais_passam_com_conversa) ... ok
+test_cada_fixture_reprova_pelo_seu_motivo (test_skill_lint.SkillLint.test_cada_fixture_reprova_pelo_seu_motivo) ... ok
+test_como_falar_sem_pergunta_de_decisao_reprova (test_skill_lint.SkillLint.test_como_falar_sem_pergunta_de_decisao_reprova) ... ok
+test_controle_passa_com_conversa (test_skill_lint.SkillLint.test_controle_passa_com_conversa) ... ok
+test_description_com_1024_caracteres_passa (test_skill_lint.SkillLint.test_description_com_1024_caracteres_passa) ... ok
+test_description_com_1025_caracteres_reprova (test_skill_lint.SkillLint.test_description_com_1025_caracteres_reprova) ... ok
+test_description_vazia_reprova (test_skill_lint.SkillLint.test_description_vazia_reprova) ... ok
+test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) ... ok
+test_flag_desconhecida_e_64 (test_skill_lint.SkillLint.test_flag_desconhecida_e_64) ... ok
+test_name_diferente_da_pasta_reprova (test_skill_lint.SkillLint.test_name_diferente_da_pasta_reprova) ... ok
+test_opcao_em_duas_linhas_nao_esconde_as_seguintes (test_skill_lint.SkillLint.test_opcao_em_duas_linhas_nao_esconde_as_seguintes) ... ok
+test_opcoes_depois_de_linha_em_branco_ou_com_asterisco_sao_conferidas (test_skill_lint.SkillLint.test_opcoes_depois_de_linha_em_branco_ou_com_asterisco_sao_conferidas) ... ok
+test_outro_com_complemento_reprova (test_skill_lint.SkillLint.test_outro_com_complemento_reprova) ... ok
+test_outros_no_plural_reprova (test_skill_lint.SkillLint.test_outros_no_plural_reprova) ... ok
+test_pergunta_aberta_sem_opcoes_nao_e_conferida (test_skill_lint.SkillLint.test_pergunta_aberta_sem_opcoes_nao_e_conferida) ... ok
+test_pergunta_em_citacao_com_linha_vazia_e_conferida (test_skill_lint.SkillLint.test_pergunta_em_citacao_com_linha_vazia_e_conferida) ... ok
+test_proximo_passo_com_dois_pontos_ou_em_citacao_tambem_tem_limite (test_skill_lint.SkillLint.test_proximo_passo_com_dois_pontos_ou_em_citacao_tambem_tem_limite) ... ok
+test_proximo_passo_com_mais_de_100_caracteres_reprova (test_skill_lint.SkillLint.test_proximo_passo_com_mais_de_100_caracteres_reprova) ... ok
+test_recomendada_fora_do_primeiro_lugar_reprova (test_skill_lint.SkillLint.test_recomendada_fora_do_primeiro_lugar_reprova) ... ok
+test_secao_dentro_de_bloco_de_codigo_nao_conta (test_skill_lint.SkillLint.test_secao_dentro_de_bloco_de_codigo_nao_conta) ... ok
+test_secao_repetida_reprova (test_skill_lint.SkillLint.test_secao_repetida_reprova) ... ok
+test_secao_sem_tabela_de_etapas_reprova (test_skill_lint.SkillLint.test_secao_sem_tabela_de_etapas_reprova) ... ok
+test_secao_sem_uma_das_5_partes_reprova (test_skill_lint.SkillLint.test_secao_sem_uma_das_5_partes_reprova) ... ok
+test_sem_argumento_e_64 (test_skill_lint.SkillLint.test_sem_argumento_e_64) ... ok
+test_sem_flag_mensagem_de_frontmatter_nao_muda (test_skill_lint.SkillLint.test_sem_flag_mensagem_de_frontmatter_nao_muda) ... ok
+test_sem_flag_skill_sem_secao_passa (test_skill_lint.SkillLint.test_sem_flag_skill_sem_secao_passa) ... ok
+test_sem_frontmatter_reprova (test_skill_lint.SkillLint.test_sem_frontmatter_reprova) ... ok
+test_skill_minima_valida (test_skill_lint.SkillLint.test_skill_minima_valida) ... ok
+test_init_instala_a_ux_review_builder (test_sdd_open.Projeto.test_init_instala_a_ux_review_builder) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 27.994s
+
+OK
+rc=0

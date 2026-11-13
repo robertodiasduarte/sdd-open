@@ -1,0 +1,485 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources project --system-prompt-file <sdd-brainstorm gerada + references> [--resume <sessão>] <volta do roteiro>   # sdd-brainstorm, execução s2-3
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json
+
+----- volta 1 — aluno -----
+Quero um jeito de controlar os honorários mensais dos clientes do meu escritório de contabilidade. Hoje faço numa planilha e esqueço de cobrar alguns. Estou só no chat, sem o projeto aberto.
+----- volta 1 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+sdd-brainstorm v2.4.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status:** `Brainstorm: ✅ 1 Entender · ▶️ 2 Perguntas · ⬜ 3 Amostras · ⬜ 4 Abordagens · ⬜ 5 Validar · ⬜ 6 Gravar`
+
+Cada etapa, em palavras simples:
+- **Entender** é captar o seu pedido.
+- **Perguntas** é descobrir o problema de verdade.
+- **Amostras** são exemplos reais, como a sua planilha.
+- **Abordagens** são os jeitos possíveis de resolver. Eu mostro dois ou três e recomendo um.
+- **Validar** são paradas para você confirmar que eu entendi certo.
+- **Gravar** é escrever o documento final.
+
+**O que foi feito:** Entendi o pedido assim: você controla os honorários mensais dos clientes do escritório numa planilha, e alguns ficam sem cobrança por esquecimento. Como você está só no chat, não vi nenhum arquivo. No fim eu entrego o documento aqui na conversa, para você copiar.
+
+**Agora: etapa 2 — Perguntas.** Isto é um brainstorm: a conversa em que a gente entende o problema antes de decidir como resolver. Antes de falar em solução, quero entender onde a cobrança escapa. "Esquecer de cobrar" pode ter causas bem diferentes, e cada causa pede um remédio diferente. Vou fazer uma pergunta por vez.
+
+**Sua decisão:** [D2 · muda o produto] **Quando um honorário fica sem cobrança, o que costuma ter acontecido?** Responda com a letra mais próxima. Pode ser mais de uma, ou pode contar com suas palavras:
+- **a)** A data passa e nada me lembra que era dia de cobrar.
+- **b)** Eu cobro, mas não confiro se o cliente pagou, e o atraso passa batido.
+- **c)** O valor muda de um mês para outro (serviço extra, reajuste), e eu me perco.
+- **d)** Cliente novo ou que saiu não é atualizado na planilha.
+- **não sei:** aí eu pergunto como foi o último caso de que você se lembra.
+
+Se souber, diga também quantos clientes são, mais ou menos.
+
+**Próximo passo:** com a causa em mãos, pergunto quem mais no escritório mexe nessa cobrança.
+
+----- volta 2 — aluno -----
+É para mim e para a minha assistente; temos uns 40 clientes, cada um com um valor fixo por mês.
+----- volta 2 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Brainstorm: ✅ 1 Entender · ▶️ 2 Perguntas · ⬜ 3 Amostras · ⬜ 4 Abordagens · ⬜ 5 Validar · ⬜ 6 Gravar`
+
+**O que foi feito:** Anotei três fatos:
+- Quem usa são você e a sua assistente.
+- São uns 40 clientes.
+- Cada cliente tem um valor fixo por mês.
+
+O valor fixo já tira uma das causas: não é a mudança de valor que faz a cobrança escapar.
+
+**Agora: etapa 2 — Perguntas.** Falta a parte mais importante, que ficou sem resposta: em que momento a cobrança escapa. Com duas pessoas mexendo na mesma planilha, isso pode ser um problema de combinado entre vocês ou de lembrete. A solução muda bastante conforme o caso.
+
+**Sua decisão:** [D2 · muda o produto] **Quando um honorário fica sem cobrança, o que costuma ter acontecido?** Responda com a letra mais próxima. Pode ser mais de uma, ou pode contar com suas palavras:
+- **a)** A data passa e nada lembra ninguém que era dia de cobrar.
+- **b)** A cobrança sai, mas ninguém confere se o cliente pagou, e o atraso passa batido.
+- **c)** Uma pessoa acha que a outra cobrou, e no fim ninguém cobra.
+- **d)** Cliente novo ou que saiu não é atualizado na planilha.
+- **não sei:** conte como foi o último caso de que você se lembra, e eu descubro a causa a partir dele.
+
+**Próximo passo:** com a causa, pergunto como você saberia que o problema foi resolvido.
+
+----- volta 3 — aluno -----
+Hoje anoto na planilha quem pagou e confiro no fim do mês; o problema é descobrir tarde quem não pagou.
+----- volta 3 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Brainstorm: ✅ 1 Entender · ▶️ 2 Perguntas · ⬜ 3 Amostras · ⬜ 4 Abordagens · ⬜ 5 Validar · ⬜ 6 Gravar`
+
+**O que foi feito:** Você respondeu que o problema é descobrir tarde quem não pagou. Hoje vocês anotam os pagamentos na planilha e só conferem no fim do mês. Então a cobrança não está sendo esquecida: o atraso aparece tarde demais.
+
+**Agora: etapa 2 — Perguntas.** Isso muda o foco. O que falta não é um lembrete de cobrar, e sim um aviso cedo de quem está devendo. Preciso saber quanto cedo é "cedo" para vocês. É isso que vai dizer se a solução funcionou.
+
+**Sua decisão:** [D2 · muda o produto] **Quanto tempo depois do vencimento você quer saber que um cliente não pagou?**
+- **no dia seguinte ao vencimento** (recomendado): é o mais simples de conferir. Toda manhã aparece a lista de quem venceu ontem e não pagou. Dá para cobrar antes de o atraso virar costume.
+- **uma vez por semana:** uma lista semanal com todos os atrasados. Dá menos trabalho, mas o atraso pode chegar a 7 dias antes de alguém ver.
+- **alguns dias depois (uma folga):** só avisa depois de 3 ou 5 dias de atraso, para não incomodar quem paga com um pequeno atraso.
+- **não sei:** pergunto em que dia os clientes costumam pagar e proponho um prazo a partir disso.
+
+Diga também se todos os clientes vencem no mesmo dia do mês ou se cada um tem o seu.
+
+**Próximo passo:** depois disso, faço as 3 perguntas de segurança: quem vê, quem muda, quanto se pede.
+
+----- volta 4 — aluno -----
+Fica pronto quando, no dia 5 de cada mês, eu souber quem não pagou o mês anterior, sem abrir a planilha.
+----- volta 4 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Brainstorm: ✅ 1 Entender · ▶️ 2 Perguntas · ⬜ 3 Amostras · ⬜ 4 Abordagens · ⬜ 5 Validar · ⬜ 6 Gravar`
+
+**O que foi feito:** Anotei o seu sinal de pronto. No dia 5 de cada mês, você recebe a lista de quem não pagou o mês anterior, sem precisar abrir a planilha. Isso define uma data só de conferência para todos os clientes. Também diz que o aviso tem de chegar até você, por exemplo por e-mail ou mensagem, em vez de você ir buscar.
+
+**Agora: etapa 2 — Perguntas.** As perguntas sobre o problema terminaram. Antes de mostrar os jeitos de resolver, faltam 3 perguntas de segurança, que valem para qualquer sistema. Os dados aqui são de clientes de vocês, como nomes, valores e quem deve. Por isso, decidir quem enxerga cada coisa evita surpresa depois. Responda em uma linha cada.
+
+**Sua decisão:** [D2 · muda o produto] **Responda pelos números, uma linha cada. "Não sei" também vale e fica anotado assim.**
+1. **Quem pode ver** a lista de clientes, os valores e quem está devendo? Por exemplo: só você e a assistente, ou também alguém de fora.
+2. **Quem pode mudar** essas informações, ou seja, marcar pagamento, mudar valor, incluir ou tirar cliente? As duas igualmente, ou só você em algumas coisas?
+3. **Quanto alguém pode pedir?** Aqui interessa se o aviso do dia 5 vai sair por um serviço pago ou se o sistema vai mandar mensagem para os clientes. Se a ideia é só avisar vocês duas, basta dizer isso.
+
+**Próximo passo:** depois, peço um exemplo real: a planilha de hoje, mesmo com nomes trocados.
+
+----- volta 5 — aluno -----
+Na primeira versão não precisa emitir nota fiscal, boleto nem mandar cobrança automática.
+----- volta 5 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Brainstorm: ✅ 1 Entender · ▶️ 2 Perguntas · ⬜ 3 Amostras · ⬜ 4 Abordagens · ⬜ 5 Validar · ⬜ 6 Gravar`
+
+**O que foi feito:** Anotei o que fica fora da primeira versão: nota fiscal, boleto e cobrança automática ao cliente. Isso responde em parte a pergunta 3. O sistema não fala com os clientes, só avisa vocês duas, então não há cobrança paga nem mensagem saindo para fora. Fica só uma dúvida: o aviso do dia 5 usaria algum serviço pago? Na maioria dos casos, um e-mail para você resolve sem custo.
+
+**Agora: etapa 2 — Perguntas.** Faltam as duas primeiras perguntas de segurança. Elas dizem se o sistema precisa de senha e se precisa separar o que cada uma de vocês pode fazer.
+
+**Sua decisão:** [D2 · muda o produto] **Responda pelos números, uma linha cada. "Não sei" também vale e fica anotado assim.**
+1. **Quem pode ver** a lista de clientes, os valores e quem está devendo? Por exemplo: só você e a assistente, ou também alguém de fora.
+2. **Quem pode mudar** essas informações, ou seja, marcar pagamento, mudar valor, incluir ou tirar cliente? As duas igualmente, ou algumas coisas só você?
+3. **O aviso do dia 5** pode ser um e-mail para você? Responda "sim", ou diga outro canal que prefira, como WhatsApp.
+
+**Próximo passo:** depois, peço um exemplo real: a planilha de hoje, mesmo com nomes trocados.
+
+----- volta 6 — aluno -----
+Só eu e a minha assistente vemos os dados; só eu mudo o valor de um cliente; ninguém de fora pede nada e não há chamada paga.
+----- volta 6 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Brainstorm: ✅ 1 Entender · ✅ 2 Perguntas · ▶️ 3 Amostras · ⬜ 4 Abordagens · ⬜ 5 Validar · ⬜ 6 Gravar`
+
+**O que foi feito:** O perfil de risco ficou fechado:
+- **Quem vê:** só você e a sua assistente.
+- **Quem muda o valor:** só você.
+- **Quanto se pede:** ninguém de fora acessa e não há serviço pago.
+
+Ficou subentendido que a assistente marca os pagamentos. Vou confirmar isso com você na etapa de validar. O canal do aviso (e-mail ou outro) também fica para depois.
+
+**Agora: etapa 3 — Amostras.** Uma amostra é um exemplo real do que entra e do que deve sair. Com a sua planilha, eu vejo como vocês anotam o pagamento: com data, com "sim/não" ou com cor. Vejo também onde as coisas costumam falhar, e isso vale mais do que qualquer descrição. Antes de colar, troque nomes e CNPJs por algo como "Cliente 1", porque esta conversa não é lugar para dados dos seus clientes.
+
+**Sua decisão:** [D2 · muda o produto] **Existe algo que mostre como é hoje?**
+- **colar umas linhas da planilha** (recomendado): copie o cabeçalho e de 3 a 5 linhas, com os nomes trocados. Eu descrevo no documento como os dados estão organizados.
+- **descrever as colunas:** diga quais colunas existem, por exemplo "cliente, valor, mês, pago?". Ajuda menos, mas já serve.
+- **nada disponível:** sigo sem amostra e marco isso no documento.
+- **não sei:** explico como copiar só um pedaço da planilha sem levar o resto.
+
+**Próximo passo:** com a amostra, mostro 2 ou 3 jeitos de resolver e recomendo um.
+
+----- volta 7 — aluno -----
+Não tenho amostra para enviar agora: nada disponível.
+----- volta 7 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Brainstorm: ✅ 1 Entender · ✅ 2 Perguntas · ✅ 3 Amostras · ▶️ 4 Abordagens · ⬜ 5 Validar · ⬜ 6 Gravar`
+
+**O que foi feito:** Anotei "sem amostra" no documento. Na etapa de validar eu descrevo as colunas que imagino, e você corrige.
+
+**Agora: etapa 4 — Abordagens.** Uma abordagem é um jeito de resolver o problema. O caso de vocês é pequeno e bem definido: 40 clientes, valor fixo, duas pessoas, um aviso por mês. Por isso recomendo o caminho que muda menos a rotina. Um "script" é um pequeno programa que roda sozinho, sem ninguém clicar.
+
+**Sua decisão:** [D2 · muda o produto] **Qual abordagem seguimos?**
+- **planilha online com aviso automático** (recomendado): vocês continuam numa planilha, agora no Google Planilhas. A coluna de valor fica travada para só você editar. No dia 5, um script manda para você um e-mail com quem não pagou o mês anterior. Não tem custo, muda pouco o dia a dia e cabe numa única fase de construção. Se a planilha de hoje for Excel no computador, a única mudança é passá-la para o Google, uma vez só.
+- **sistema próprio na web:** uma página com login para vocês duas, cadastro de clientes e o mesmo e-mail do dia 5. Fica mais organizado, mas dá umas 3 vezes mais trabalho e exige cuidar de senhas e de onde o sistema fica hospedado. É demais para 40 clientes.
+- **sistema de gestão pronto:** contratar um programa de contas a receber que já avisa atrasos. Fica pronto sem construir nada, mas tem mensalidade e traz muita função que vocês não pediram, como boleto e nota, que estão fora da primeira versão.
+- **não sei:** mostro como seria o e-mail do dia 5 em cada uma, com um cliente de exemplo.
+
+**Próximo passo:** com a escolha, separo o que fica para depois, a regra de deixar de fora o que não precisa agora.
+
+----- volta 8 — aluno -----
+Pode seguir com a abordagem que você recomendou.
+----- volta 8 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Brainstorm: ✅ 1 Entender · ✅ 2 Perguntas · ✅ 3 Amostras · ▶️ 4 Abordagens · ⬜ 5 Validar · ⬜ 6 Gravar`
+
+**O que foi feito:** Você escolheu a **planilha online com aviso automático**. Ficam de fora, por enquanto, o sistema próprio na web e o sistema de gestão pronto.
+
+**Agora: etapa 4 — Abordagens.** Agora vem o corte do que não é necessário agora. Essa regra se chama YAGNI: o que sai fica anotado, com o motivo, para não voltar escondido depois.
+
+Fica na primeira versão:
+1. A planilha no Google, com uma linha por cliente e uma coluna por mês para marcar o pagamento.
+2. A coluna de valor travada, para só você editar.
+3. No dia 5, um e-mail para você com quem não pagou o mês anterior.
+
+Sai da primeira versão:
+
+| O que sai | Por quê | Pode voltar? |
+|---|---|---|
+| Nota fiscal, boleto, cobrança automática ao cliente | Você já tinha tirado | Sim |
+| Mensagem pelo WhatsApp | O e-mail resolve sem custo | Sim |
+| Aviso todo dia ou toda semana | O seu sinal de pronto é o dia 5 | Sim |
+| Cópia do e-mail para a assistente | Quem cobra é você; ela só anota | Sim |
+| Multa, juros e reajuste automático | O valor é fixo e você pediu só o aviso | Sim |
+| Relatórios e gráficos de histórico | Não ajudam a descobrir o atraso mais cedo | Sim |
+
+**Sua decisão:** [D2 · muda o produto] **Posso fechar esta lista do que fica e do que sai?**
+- **sim** (recomendado): os 3 itens que ficam resolvem o seu sinal de pronto, e os 6 que saem ficam anotados para depois.
+- **trazer algo de volta:** diga qual item. Eu coloco de novo na primeira versão e mostro o que isso acrescenta.
+- **não sei:** explico, item por item, o que mudaria se ele ficasse.
+
+**Próximo passo:** começo a validar, mostrando o entendimento em 2 blocos curtos para você confirmar.
+
+----- volta 9 — aluno -----
+Confere.
+----- volta 9 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Brainstorm: ✅ 1 Entender · ✅ 2 Perguntas · ✅ 3 Amostras · ✅ 4 Abordagens · ▶️ 5 Validar · ⬜ 6 Gravar`
+
+**O que foi feito:** Você confirmou a lista: 3 itens ficam na primeira versão e 6 ficam anotados para depois.
+
+**Agora: etapa 5 — Validar.** São paradas para você confirmar que entendi certo antes de eu escrever o documento. Este é o bloco 1 de 2: o problema, as pessoas e as regras.
+
+> **Bloco 1 — Problema, pessoas e regras**
+>
+> **O problema.** O escritório tem uns 40 clientes, cada um com honorário mensal de valor fixo. Os pagamentos são anotados numa planilha e conferidos só no fim do mês. Assim, um cliente que não pagou é descoberto tarde e a cobrança atrasa.
+>
+> **Quem usa.** Você é a dona da planilha: só você inclui ou tira clientes e muda valores. A sua assistente vê tudo e marca quem pagou. Isso eu deduzi, e é o ponto que mais preciso que você confirme. Ninguém de fora acessa.
+>
+> **Como imagino a planilha** (sem amostra, então é palpite):
+> - Uma linha por cliente.
+> - Colunas fixas: cliente, valor mensal, ativo (sim/não).
+> - Depois, uma coluna por mês (jan, fev, mar…), onde se marca a data do pagamento.
+>
+> **A regra do aviso.** No dia 5 de cada mês, entra na lista quem está **ativo** e está **sem data de pagamento** na coluna do mês anterior. Cliente marcado como inativo não aparece. Assim, quem saiu não vira falso devedor.
+>
+> **Sinal de pronto.** No dia 5, você recebe o e-mail com essa lista e não precisa abrir a planilha para saber quem cobrar.
+
+**Sua decisão:** [D2 · muda o produto] **Este bloco está certo?**
+- **sim** (recomendado): sigo para o bloco 2, que é como o aviso funciona na prática.
+- **corrigir:** diga o que está diferente, por exemplo "a assistente não marca pagamentos". Eu reviso o bloco e mostro de novo.
+- **não sei:** explico o ponto que gerou a dúvida com um cliente de exemplo.
+
+**Próximo passo:** com o bloco 1 confirmado, mostro o bloco 2: o e-mail do dia 5 e o que acontece se der erro.
+
+----- volta 10 — aluno -----
+Confere também.
+----- volta 10 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Brainstorm: ✅ 1 Entender · ✅ 2 Perguntas · ✅ 3 Amostras · ✅ 4 Abordagens · ▶️ 5 Validar · ⬜ 6 Gravar`
+
+**O que foi feito:** Você confirmou o bloco 1. A assistente marca os pagamentos e só você mexe em valores e clientes. Também valem as colunas que imaginei e a regra de quem é ativo e está sem pagamento.
+
+**Agora: etapa 5 — Validar.** Este é o bloco 2 de 2: como o aviso funciona na prática e o que acontece se algo der errado.
+
+> **Bloco 2 — O aviso do dia 5**
+>
+> **Quando sai.** Todo dia 5, por volta das 8h, o script roda sozinho dentro do Google, sem ninguém abrir a planilha.
+>
+> **O que chega.** Um e-mail só para você, com:
+> - o título "Honorários de {mês anterior}: N clientes sem pagamento";
+> - uma linha por cliente, com nome e valor;
+> - o total em aberto no fim;
+> - um link para a planilha, caso queira conferir.
+>
+> **Se todos pagaram.** O e-mail sai do mesmo jeito, dizendo "todos os clientes pagaram". Assim, se o e-mail não chegar, você sabe que algo falhou, e não fica achando que está tudo pago.
+>
+> **Se der erro.** Pode acontecer, por exemplo, se alguém apagar uma coluna. Nesse caso o Google manda para você um aviso de falha do script. A planilha continua lá, e nada se perde.
+>
+> **O que não muda.** Vocês continuam marcando os pagamentos na planilha como fazem hoje, só que nela, no Google. O e-mail apenas lê a planilha e não altera nada.
+
+**Sua decisão:** [D2 · muda o produto] **Este bloco está certo?**
+- **sim** (recomendado): passo a escrever o documento completo aqui no chat, para você copiar.
+- **corrigir:** diga o que muda, por exemplo outro horário ou "não quero e-mail quando todos pagarem". Eu reviso e mostro de novo.
+- **não sei:** mostro um exemplo do e-mail com 2 clientes inventados.
+
+**Próximo passo:** com o bloco 2 confirmado, escrevo o documento final para a próxima fase.
+
+----- volta 11 — aluno -----
+Está tudo certo, pode entregar o documento do brainstorm agora.
+----- volta 11 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Brainstorm: ✅ 1 Entender · ✅ 2 Perguntas · ✅ 3 Amostras · ✅ 4 Abordagens · ✅ 5 Validar · ✅ 6 Gravar`
+
+**O que foi feito:** Você confirmou o bloco 2. Abaixo está o documento completo. **Nada foi gravado em arquivo**, porque estamos só no chat. Copie o texto para um arquivo chamado `BRAINSTORM_CONTROLE_HONORARIOS.md`.
+
+## 📍 Linha de produção — CONTROLE_HONORARIOS
+
+✅ /brainstorm (entregue no chat) — ⬜ setup — ⬜ /define — ⬜ /ux-review — ⬜ /design — ⬜ /build — ⬜ /release
+
+**Onde estamos:** A ideia virou um escopo pequeno: uma planilha no Google e um e-mail automático no dia 5, sem custo. O fato notável: sem amostra, o formato da planilha de hoje ainda é palpite. A próxima fase precisa confirmar isso.
+
+**O que vem depois, na ordem:**
+1. **Copiar o documento** para um arquivo. ⚠️ Se não copiar, ele se perde quando esta conversa fechar.
+2. **Pedir a skill `sdd-define`** com este documento junto. É lá que o rascunho vira requisitos conferíveis.
+3. **Levar a planilha de hoje (com nomes trocados) para o Define.** ⚠️ Se for Excel no computador, a passagem para o Google Planilhas entra como tarefa.
+4. **Design e construção.** ⚠️ O aviso roda na sua conta do Google. A trava da coluna de valor tem de deixar a assistente marcar pagamentos e impedir que ela mude valores.
+
+---
+
+```markdown
+# BRAINSTORM: Controle de Honorários Mensais
+
+> Exploratory session to clarify intent and approach before requirements capture
+
+## Metadata
+
+| Attribute | Value |
+|-----------|-------|
+| **Feature** | CONTROLE_HONORARIOS |
+| **Date** | 2026-11-13 |
+| **Author** | brainstorm-agent |
+| **Status** | Ready for Define |
+
+---
+
+## Initial Idea
+
+**Raw Input:** "Quero um jeito de controlar os honorários mensais dos clientes do meu escritório de contabilidade. Hoje faço numa planilha e esqueço de cobrar alguns."
+
+**Context Gathered:**
+- (fornecido) Escritório de contabilidade com ~40 clientes, cada um com honorário mensal de valor fixo.
+- (fornecido) Pagamentos são anotados numa planilha e conferidos só no fim do mês.
+- (fornecido) O problema real não é esquecer de cobrar: é descobrir tarde quem não pagou.
+- (não fornecido) Estrutura do projeto, commits e padrões existentes: sessão só no chat, nada foi inspecionado.
+- (não fornecido) Se a planilha atual é Excel local ou Google Planilhas.
+
+**Technical Context Observed (for Define):**
+
+| Aspect | Observation | Implication |
+|--------|-------------|-------------|
+| Likely Location | N/A (não fornecido) | A solução vive numa planilha do Google com script anexado, não num repositório de aplicação |
+| Relevant KB Domains | N/A (não fornecido) | — |
+| IaC Patterns | N/A | Sem infraestrutura própria: roda na conta Google da dona |
+
+---
+
+## Discovery Questions & Answers
+
+| # | Question | Answer | Impact |
+|---|----------|--------|--------|
+| 1 | Quando um honorário fica sem cobrança, o que costuma ter acontecido? | Os pagamentos são anotados na planilha e conferidos no fim do mês; o problema é descobrir tarde quem não pagou. | O foco é detectar inadimplência cedo, não lembrar de cobrar. |
+| 2 | Para quem é e qual o tamanho? | A dona e a assistente; ~40 clientes, valor fixo mensal. | Volume pequeno; sem cálculo de valor variável; dois papéis distintos. |
+| 3 | Como você saberia que ficou pronto? | No dia 5 de cada mês, saber quem não pagou o mês anterior, sem abrir a planilha. | Aviso empurrado (e-mail) com data fixa única para todos. |
+| 4 | O que NÃO precisa estar na primeira versão? | Nota fiscal, boleto e cobrança automática ao cliente. | O sistema não fala com clientes; nenhuma integração externa. |
+
+**Minimum Questions:** 3 (to ensure clarity before proceeding) — atendido (4).
+
+---
+
+## Perfil de risco
+
+| Pergunta | Resposta |
+|---|---|
+| Quem pode ver? | Só a dona e a assistente veem todos os dados (clientes, valores, quem deve). Ninguém de fora. |
+| Quem pode mudar? | Só a dona inclui/remove cliente e muda valor. A assistente marca pagamentos (inferido e confirmado na validação 1). |
+| Quanto alguém pode pedir? | Ninguém de fora faz pedidos; não há login público, envio de arquivo nem chamada paga (inclusive IA). Um e-mail automático por mês para a dona. |
+
+---
+
+## Sample Data Inventory
+
+| Type | Location | Count | Notes |
+|------|----------|-------|-------|
+| Input files | N/A | 0 | Usuária não tinha amostra disponível |
+| Output examples | N/A | 0 | — |
+| Ground truth | N/A | 0 | — |
+| Related code | N/A | 0 | — |
+
+**How samples will be used:**
+
+- Nenhuma amostra nesta fase. O formato da planilha descrito abaixo é **inferido** e foi confirmado só como descrição; o Define deve pedir a planilha real (com nomes trocados) antes de fechar requisitos.
+
+---
+
+## Approaches Explored
+
+### Approach A: Planilha online com aviso automático ⭐ Recommended
+
+**Description:** Planilha no Google Planilhas, uma linha por cliente e uma coluna por mês. Coluna de valor protegida (só a dona edita). Um script agendado roda no dia 5 e envia e-mail à dona com os clientes ativos sem pagamento no mês anterior.
+
+**Pros:**
+- Sem custo e sem servidor próprio.
+- Muda pouco a rotina atual (continua sendo planilha).
+- Cabe numa única fase de construção.
+
+**Cons:**
+- Se a planilha atual for Excel local, exige migração única para o Google.
+- Depende da conta Google da dona (o script roda nela).
+
+**Why Recommended:** Resolve exatamente o sinal de pronto (aviso no dia 5) com o menor número de peças, para um volume de 40 clientes.
+
+---
+
+### Approach B: Sistema próprio na web
+
+**Description:** Página com login para as duas usuárias, cadastro de clientes e o mesmo e-mail do dia 5.
+
+**Pros:**
+- Mais estruturado; permissões mais finas.
+
+**Cons:**
+- Cerca de 3 vezes o trabalho da abordagem A.
+- Exige cuidar de senhas, hospedagem e segurança de rota pública.
+
+---
+
+### Approach C: Sistema de gestão pronto
+
+**Description:** Contratar um software de contas a receber que já avisa atrasos.
+
+**Pros:**
+- Nada a construir.
+
+**Cons:**
+- Mensalidade.
+- Traz funções fora do escopo (boleto, nota fiscal).
+
+---
+
+## Selected Approach
+
+| Attribute | Value |
+|-----------|-------|
+| **Chosen** | Approach A |
+| **User Confirmation** | 2026-11-13, nesta sessão |
+| **Reasoning** | A usuária aceitou a recomendação: menor mudança de rotina, sem custo, resolve o aviso do dia 5. |
+
+---
+
+## Key Decisions Made
+
+| # | Decision | Rationale | Alternative Rejected |
+|---|----------|-----------|----------------------|
+| 1 | Um aviso por mês, no dia 5, para todos os clientes | Sinal de pronto definido pela usuária | Vencimento individual por cliente; aviso diário/semanal |
+| 2 | Canal: e-mail para a dona | Sem custo; chega sem abrir a planilha | WhatsApp |
+| 3 | E-mail sai mesmo quando todos pagaram | Silêncio passa a significar falha, não "tudo pago" | Só enviar quando houver pendência |
+| 4 | Cliente inativo não entra na lista | Evita falso devedor para quem saiu | Listar todos |
+| 5 | Só a dona altera valores e clientes; a assistente marca pagamentos | Perfil de risco | Edição livre para as duas |
+
+---
+
+## Features Removed (YAGNI)
+
+| Feature Suggested | Reason Removed | Can Add Later? |
+|-------------------|----------------|----------------|
+| Nota fiscal, boleto, cobrança automática ao cliente | Excluídos pela usuária na primeira versão | Yes |
+| Mensagem por WhatsApp | E-mail resolve sem custo | Yes |
+| Aviso diário ou semanal | O sinal de pronto é o dia 5 | Yes |
+| Cópia do e-mail para a assistente | Quem cobra é a dona; a assistente só anota | Yes |
+| Multa, juros e reajuste automático | Valor fixo; pedido é só o aviso | Yes |
+| Relatórios e gráficos de histórico | Não antecipam a descoberta do atraso | Yes |
+
+---
+
+## Incremental Validations
+
+| Section | Presented | User Feedback | Adjusted? |
+|---------|-----------|---------------|-----------|
+| Bloco 1 — problema, pessoas, papéis, formato inferido da planilha, regra do aviso | ✅ | "Confere também." | No |
+| Bloco 2 — horário, conteúdo do e-mail, caso "todos pagaram", erro, o que não muda | ✅ | "Está tudo certo." | No |
+
+**Minimum Validations:** 2 (to ensure alignment) — atendido.
+
+---
+
+## Suggested Requirements for /define
+
+### Problem Statement (Draft)
+O escritório descobre só no fim do mês quais clientes não pagaram o honorário mensal, e por isso cobra tarde.
+
+### Target Users (Draft)
+| User | Pain Point |
+|------|------------|
+| Dona do escritório | Descobre tarde quem não pagou e precisa abrir a planilha para saber |
+| Assistente | Marca pagamentos, mas a conferência só acontece no fim do mês |
+
+### Success Criteria (Draft)
+- [ ] No dia 5 de cada mês, até as 9h, a dona recebe um e-mail com 100% dos clientes ativos sem pagamento registrado no mês anterior.
+- [ ] Nenhum cliente marcado como inativo aparece no e-mail.
+- [ ] O e-mail mostra nome, valor de cada cliente e o total em aberto, e traz link para a planilha.
+- [ ] Quando todos pagaram, o e-mail sai dizendo "todos os clientes pagaram".
+- [ ] A assistente consegue marcar pagamentos, mas não consegue alterar a coluna de valor nem incluir/remover clientes.
+- [ ] Se o script falhar, a dona recebe aviso de falha; nenhum dado da planilha é alterado pelo script.
+
+### Constraints Identified
+- Custo zero: sem serviço pago nem chamada paga.
+- Roda na conta Google da dona.
+- ~40 clientes, valor fixo mensal.
+- Formato da planilha atual: a definir (sem amostra); plataforma atual (Excel ou Google): não fornecida.
+
+### Out of Scope (Confirmed)
+- Emissão de nota fiscal e boleto.
+- Cobrança ou mensagem automática ao cliente.
+- WhatsApp, avisos diários/semanais, cópia para a assistente.
+- Multa, juros, reajuste, relatórios e gráficos.
+
+---
+
+## Session Summary
+
+| Metric | Value |
+|--------|-------|
+| Questions Asked | 4 de descoberta + 3 de risco + 1 de amostras |
+| Approaches Explored | 3 |
+| Features Removed (YAGNI) | 6 |
+| Validations Completed | 2 |
+| Duration | 1 sessão de chat |
+
+---
+
+## Next Step
+
+**Ready for:** a skill `sdd-define`, com este documento.
+```
+
+**Próximo passo:** peça a skill `sdd-define` e mande este documento junto com o pedido.
+
+===== veredito =====
+voltas: 11 · entregue: sim
+✅ nenhum achado
+RESULTADO: PASSOU
+rc=0

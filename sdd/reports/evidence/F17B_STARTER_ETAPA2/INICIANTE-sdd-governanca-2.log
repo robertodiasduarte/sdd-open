@@ -1,0 +1,327 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources project --system-prompt-file <sdd-governanca gerada + references> [--resume <sessão>] <volta do roteiro>   # sdd-governanca, execução 2
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json
+
+----- volta 1 — aluno -----
+Revise a governança deste DEFINE. Estou no chat, sem terminal.
+
+# DEFINE: HONORARIOS
+Problema: o escritório controla numa planilha os honorários mensais de 40 clientes e esquece de cobrar alguns.
+Usuários: o contador (dono) e a assistente.
+Testes de aceitação:
+- AT-001 When o mês fecha, o sistema shall listar os clientes sem pagamento do mês anterior.
+- AT-002 When a assistente registra um pagamento, o sistema shall guardar a data e o valor.
+- AT-003 When o contador muda o valor mensal de um cliente, o sistema shall usar o novo valor a partir do mês seguinte.
+- AT-004 If um pagamento é registrado com valor diferente do mensal, then o sistema shall avisar a diferença.
+Verify Gate: não há (o projeto ainda não tem testes automatizados).
+Fora de escopo: nota fiscal, boleto, cobrança automática.
+----- volta 1 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+sdd-governanca v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status:** `Governança: ✅ 1 Triagem · ▶️ 2 Padrão do projeto · ⬜ 3 Item a item · ⬜ 4 Relatório · ⬜ 5 Suas decisões · ⬜ 6 Aplicar no DEFINE`
+
+Governança é a garantia de que, anos depois, dá para reconstruir o que aconteceu, quem fez e por quê, com prova de que nada foi alterado. Na fase atual, eu defino com você o padrão do projeto. A conferência item a item vem depois: comparo o DEFINE com cada exigência de uma lista pronta, que chamo de catálogo.
+
+**O que foi feito**
+- Li o DEFINE de HONORARIOS inteiro e encontrei 3 temas que pedem esta revisão:
+  - **Cobrança de honorários:** está no Problema.
+  - **Pagamento:** aparece em AT-001, AT-002 e AT-004.
+  - **Valor em dinheiro:** aparece em AT-002, AT-003 e AT-004.
+- Nota fiscal e boleto aparecem só em "Fora de escopo" e não contaram.
+- Como o projeto não tem testes automatizados, cada prova será um roteiro manual de 3 a 5 passos, que você mesmo executa. Não vou pedir script nenhum.
+- Você está no chat, então nada será gravado: o relatório e o DEFINE atualizado sairão aqui, para você guardar.
+
+**Agora: etapa 2 — Padrão do projeto**
+O padrão do projeto são 5 respostas dadas uma única vez, que valem para todas as funcionalidades deste sistema. Elas decidem quais exigências do catálogo se aplicam ao seu porte. Por exemplo, a regra "quem lança não aprova" só vale quando há mais de uma pessoa usando, e no seu caso há duas: você e a assistente.
+
+Se você já respondeu isso numa revisão anterior e tem o arquivo `GOVERNANCA_PADRAO.md`, basta colar o conteúdo dele aqui.
+
+**Sua decisão:** responda pelos números, por exemplo "1 equipe, 2 não…".
+
+1. [D3 · muda a regra do método] **Quem vai usar o sistema?** As opções são: só você, a equipe do escritório ou clientes também. Responda "não sei" se tiver dúvida. Pelo DEFINE, entendi "a equipe", porque são você e a assistente.
+2. [D3 · muda a regra do método] **Há honorários de mais de um CNPJ do escritório no mesmo banco de dados?** Responda sim ou não. A pergunta é sobre o escritório que cobra, e não sobre os 40 clientes. Também vale "não sei".
+3. [D3 · muda a regra do método] **Alguma inteligência artificial do sistema vai gravar, classificar ou sugerir pagamento ou lançamento sozinha?** Responda sim ou não. O DEFINE não menciona IA. Também vale "não sei".
+4. [D3 · muda a regra do método] **Quem responde tecnicamente pelo sistema?** Responda com o nome e o CRC, ou "não sei".
+5. [D3 · muda a regra do método] **Por quanto tempo esses registros de honorários têm de ser guardados?** Se responder "não sei", uso o padrão, que é até a prescrição.
+
+**Próximo passo:** com as 5 respostas, confiro o DEFINE contra cada item do catálogo e monto o relatório.
+
+----- volta 2 — aluno -----
+É o primeiro uso: o escritório é pequeno, eu (contador) aprovo tudo e a assistente registra os pagamentos; os valores são em reais, com centavos; o mês fecha no último dia; os registros precisam ser guardados por 5 anos; não há auditoria externa.
+----- volta 2 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Governança: ✅ 1 Triagem · ▶️ 2 Padrão do projeto · ⬜ 3 Item a item · ⬜ 4 Relatório · ⬜ 5 Suas decisões · ⬜ 6 Aplicar no DEFINE`
+
+**O que foi feito**
+- Registrei as suas respostas no padrão do projeto:
+  - uso = equipe;
+  - guarda = 5 anos;
+  - responsável técnico = você, o contador.
+- Você não respondeu dois pontos, então preenchi pelo que o DEFINE mostra:
+  - **mais de um CNPJ do escritório = não**, porque o DEFINE fala de um escritório só;
+  - **IA grava sozinha = não**, porque o DEFINE não fala de IA.
+- Faltam o seu nome e o CRC.
+- Guardei o resto do que você contou para a conferência item a item:
+  - a assistente registra e você aprova;
+  - os valores são em reais, com centavos;
+  - o mês fecha no último dia.
+- "Sem auditoria externa" não tira nenhuma exigência da lista. Um fiscal ou um perito pode pedir a reconstrução do mesmo jeito. A diferença é que você mesmo executa os roteiros de prova.
+
+**Agora: etapa 2 — Padrão do projeto**
+Este é o arquivo do padrão. Por ser o primeiro uso, ele sai aqui, no chat, porque nada foi gravado no seu computador. Guarde-o como `sdd/GOVERNANCA_PADRAO.md` no projeto: nas próximas funcionalidades, eu só confirmo em vez de perguntar de novo.
+
+```markdown
+# Padrão de governança do projeto
+
+> Respondido uma vez por projeto, na primeira revisão de governança. Vale para todas as features.
+> Mudou alguma coisa? Edite a linha e diga isso na próxima revisão.
+
+uso: equipe
+multi_cnpj: não
+ia_grava_sozinha: não
+responsavel_tecnico: {seu nome} — CRC {número}
+guarda_padrao: 5 anos — informado pelo profissional
+```
+
+**Sua decisão** — [D3 · muda a regra do método] **Posso usar este padrão, com "mais de um CNPJ = não" e "IA = não"?**
+- **sim** (recomendado): sigo para a conferência item a item. Com IA = não, as 4 exigências do catálogo sobre IA ficam de fora com o motivo escrito. Se quiser, mande junto o seu nome e o CRC, por exemplo "sim, Fulano, CRC SP-123456". Sem eles, a linha fica como "a informar".
+- **corrigir**: diga o que muda, por exemplo "há 2 CNPJs", e eu refaço o padrão antes de seguir.
+- **não sei**: explico o que muda na revisão se houver mais de um CNPJ ou uma IA no sistema.
+
+**Próximo passo:** confiro o DEFINE contra os 20 itens do catálogo e mostro o relatório com as lacunas.
+
+----- volta 3 — aluno -----
+Pode usar essas respostas para o padrão.
+----- volta 3 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Governança: ✅ 1 Triagem · ✅ 2 Padrão do projeto · ▶️ 3 Item a item · ⬜ 4 Relatório · ⬜ 5 Suas decisões · ⬜ 6 Aplicar no DEFINE`
+
+**O que foi feito:** você escolheu **sim**, e o padrão ficou assim: equipe, um CNPJ, sem IA, guarda de 5 anos, responsável técnico a informar.
+
+**Agora: etapa 3 — Item a item**
+
+Conferi o DEFINE contra os 20 itens do catálogo. Cada item recebeu uma de quatro classificações:
+- **lacuna:** um ponto que se aplica aqui e que o DEFINE ainda não exige;
+- **N.A.:** não se aplica a esta funcionalidade;
+- **2ª camada:** recomendado, mas fica para depois, sem prazo;
+- **já coberto:** o DEFINE já exige e prova.
+
+Nenhum item saiu "já coberto". O DEFINE descreve bem o que o sistema faz, mas nenhum teste diz o que ele **recusa**.
+
+**8 lacunas** (severidade é o tamanho do risco):
+
+| Item | O que falta no DEFINE | Severidade |
+|---|---|---|
+| G01: registro que não se apaga | Pagamento registrado pode ser editado ou apagado sem deixar rastro | alta |
+| G03: fechamento do mês | AT-001 fecha o mês, mas nada impede registrar ou alterar pagamento com data num mês já fechado | alta |
+| G04: trilha de auditoria (quem mudou, quando, o que era e por quê) | Mudar o valor mensal (AT-003) ou um pagamento não deixa registro | alta |
+| G07: quem registra não aprova | Você disse que aprova tudo, mas o DEFINE não tem aprovação: o pagamento da assistente vale na hora | alta |
+| G08: comprovante guardado | O pagamento não aponta para o comprovante (PIX, extrato, recibo) | alta |
+| G09: conta exata em centavos | Nada exige valor em centavos exatos. Sem isso, o aviso de diferença do AT-004 pode acusar R$ 0,01 que não existe | alta |
+| G05: registro de acessos | Nada registra quem entrou, quem errou a senha ou quem exportou a lista de clientes e valores | média |
+| G06: prova de que a trilha não foi editada | Nem o administrador deveria conseguir alterar a trilha sem que isso apareça | média |
+
+**8 N.A.:**
+- **Partidas dobradas (G02):** o sistema controla recebimentos e não faz escrituração com débito e crédito.
+- **Importação de arquivo (G10):** o pagamento é digitado e nenhum arquivo é importado.
+- **Separação entre CNPJs (G13):** só há um CNPJ.
+- **Certificado digital (G16):** a nota fiscal está fora do escopo.
+- **G17 a G20:** o sistema não tem IA.
+
+**4 na 2ª camada:**
+- **Valor com vigência e memória de cálculo (G11):** o AT-003 faz metade do caminho, mas não prova que um mês antigo continua com o valor antigo.
+- **Conciliação com pendência (G12):** o AT-004 avisa a diferença, mas não a transforma em pendência.
+- **Guarda e proteção de dados (G14).**
+- **Backup testado (G15).**
+
+**Sua decisão** — [auto · de rotina] **Posso montar o relatório com estas 8 lacunas?**
+- **sim** (recomendado): escrevo o relatório completo. Cada lacuna terá o que muda no app, o porquê, o requisito e o roteiro de prova manual.
+- **mudar uma classificação**: diga qual e por quê. Por exemplo: "o pagamento não é lançamento, G01 não se aplica". Eu ajusto antes de escrever.
+- **não sei**: explico uma das lacunas com um caso do seu escritório.
+
+**Próximo passo:** com o relatório pronto, pergunto uma lacuna por vez: aplicar, recusar ou adiar.
+
+----- volta 4 — aluno -----
+Aplicar.
+----- volta 4 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Governança: ✅ 1 Triagem · ✅ 2 Padrão do projeto · ✅ 3 Item a item · ✅ 4 Relatório · ▶️ 5 Suas decisões · ⬜ 6 Aplicar no DEFINE`
+
+**O que foi feito:** entendi o seu **aplicar** como um **sim** para montar o relatório.
+- O relatório está abaixo, com as 8 lacunas.
+- Por enquanto, nenhuma foi aplicada no DEFINE. Cada lacuna é decidida separadamente, porque um requisito que você não leu vira retrabalho depois que o sistema estiver construído.
+- Nada foi gravado no seu computador. Guarde o relatório no projeto como `sdd/reviews/GOVERNANCA_REVIEW_HONORARIOS.md`.
+
+```markdown
+# GOVERNANÇA: HONORARIOS
+
+| Feature | Data | Padrão do projeto | DEFINE |
+|---|---|---|---|
+| HONORARIOS | 2026-11-13 | uso = equipe · multi_cnpj = não · IA grava sozinha = não · guarda = 5 anos | colado no chat (sdd/features/DEFINE_HONORARIOS.md) |
+
+**Gatilhos encontrados:** cobrança de honorários (Problema) · pagamento (AT-001, AT-002, AT-004) · valor em dinheiro (AT-002, AT-003, AT-004)
+
+**Cobertura:** 20 itens: 0 já cobertos · 8 lacunas · 8 N.A. · 4 na 2ª camada
+
+## Lacunas
+
+### G01 — Pagamento registrado que não se apaga · severidade alta
+
+**O que muda no app:** pagamento registrado não se edita nem se exclui; erro se corrige por estorno, com motivo, apontando para o registro original.
+
+**Por quê:** se o registro pode ser editado, não há como provar depois qual valor e qual data foram registrados, nem separar correção de erro de alteração indevida. **Base legal:** ainda não confirmada no catálogo — confira na fonte antes de citar.
+
+**Requisito (EARS):** **If** alguém tentar alterar ou excluir um pagamento já registrado, **then** the system **shall** recusar e oferecer o estorno, com motivo obrigatório, ligado ao registro original.
+
+**Como provar:** 1) registre um pagamento de R$ 1.200,00; 2) tente alterar o valor: recusado com mensagem clara; 3) tente excluir: recusado; 4) faça o estorno informando o motivo: surge um registro novo, com o motivo, apontando para o original, que continua visível.
+
+**Decisão:** pendente
+
+### G03 — Fechamento do mês · severidade alta
+
+**O que muda no app:** mês fechado não aceita registrar, alterar nem estornar pagamento com data nele; reabrir exige motivo e aprovação do contador. Pagamento atrasado de um mês fechado entra com a data do recebimento, no mês aberto, indicando o mês a que se refere.
+
+**Por quê:** a lista de clientes sem pagamento do mês fechado (AT-001) é a base da cobrança; um registro retroativo faz essa lista deixar de bater com o que foi cobrado. **Base legal:** o catálogo não aponta base legal para este item — o fundamento técnico vale por si.
+
+**Requisito (EARS):** **If** alguém tentar registrar, alterar ou estornar um pagamento com data num mês fechado, ou reabrir um mês sem motivo e sem aprovação do contador, **then** the system **shall** recusar.
+
+**Como provar:** 1) feche outubro; 2) tente registrar um pagamento com data de 15/10: recusado; 3) registre hoje o honorário de outubro de um cliente: aceito, com data de novembro, referente a outubro; 4) tente reabrir outubro sem motivo: recusado.
+
+**Decisão:** pendente
+
+### G04 — Trilha de auditoria · severidade alta
+
+**O que muda no app:** toda mudança de valor mensal, registro, estorno, aprovação e reabertura de mês grava quem fez, quando, o que era, o que ficou e por quê; ninguém altera nem apaga essa trilha.
+
+**Por quê:** o AT-003 muda o valor do honorário; sem trilha, não há como mostrar a um cliente que contesta, ou a um perito, quando e por quem o valor mudou. **Base legal:** o catálogo não aponta base legal para este item — o fundamento técnico vale por si.
+
+**Requisito (EARS):** **If** alguém mudar o valor mensal ou registrar, estornar ou aprovar um pagamento sem informar o motivo quando exigido, ou tentar alterar ou apagar uma linha da trilha, **then** the system **shall** recusar.
+
+**Como provar:** 1) mude o valor mensal de um cliente de R$ 800,00 para R$ 900,00, com motivo; 2) confira 1 linha nova na trilha: você, data e hora, 800,00 → 900,00, motivo; 3) tente mudar sem motivo: recusado; 4) tente editar ou apagar a linha da trilha, inclusive como administrador do sistema: recusado.
+
+**Decisão:** pendente
+
+### G07 — Quem registra não aprova · severidade alta
+
+**O que muda no app:** pagamento registrado fica "aguardando aprovação" até outra pessoa aprovar; quem registrou não aprova o próprio registro. Com 2 usuários, basta 1 aprovação (não há alçada dupla).
+
+**Por quê:** é pela mistura de funções que desvio de recebimento passa despercebido: quem registra um valor menor que o recebido e aprova o próprio registro não deixa rastro de conferência. **Base legal:** o catálogo não aponta base legal para este item — o fundamento técnico vale por si.
+
+**Requisito (EARS):** **If** o usuário que registrou um pagamento tentar aprová-lo, **then** the system **shall** recusar.
+
+**Como provar:** 1) a assistente registra um pagamento; 2) ele aparece como "aguardando aprovação"; 3) com o usuário da assistente, tente aprovar: recusado; 4) com o seu usuário, aprove: o pagamento passa a valer.
+
+**Decisão:** pendente
+
+### G08 — Comprovante guardado · severidade alta
+
+**O que muda no app:** todo pagamento aponta para o comprovante (PIX, extrato, recibo), guardado com a impressão digital do arquivo; comprovante já ligado não se troca.
+
+**Por quê:** sem a origem, o registro é só a palavra de quem digitou; a impressão digital mostra que o arquivo guardado é o mesmo da data do registro. **Base legal:** o catálogo não aponta base legal para este item — o fundamento técnico vale por si.
+
+**Requisito (EARS):** **If** alguém tentar registrar um pagamento sem comprovante ou trocar o comprovante de um pagamento já registrado, **then** the system **shall** recusar.
+
+**Como provar:** 1) registre um pagamento anexando o comprovante; 2) abra o pagamento e baixe o comprovante: é o mesmo arquivo; 3) tente trocar o comprovante: recusado; 4) tente registrar sem comprovante: recusado.
+
+**Decisão:** pendente
+
+### G09 — Conta exata em centavos · severidade alta
+
+**O que muda no app:** valores guardados e comparados em centavos exatos, nunca em número aproximado.
+
+**Por quê:** tipos numéricos aproximados geram frações de centavo; o aviso do AT-004 acusaria diferença de R$ 0,01 que não existe, e o total dos 40 clientes deixaria de bater. **Base legal:** o catálogo não aponta base legal para este item — o fundamento técnico vale por si.
+
+**Requisito (EARS):** **If** um valor for informado com mais de duas casas decimais, **then** the system **shall** recusar; e, ao comparar o pago com o mensal, **shall** comparar ao centavo exato, sem aviso quando forem iguais.
+
+**Como provar:** 1) com valor mensal de R$ 1.234,56, registre R$ 1.234,56: nenhum aviso; 2) registre R$ 1.234,55: aviso de R$ 0,01; 3) tente informar R$ 1.234,567: recusado; 4) o total do mês na tela bate, ao centavo, com a soma na calculadora; 5) no Design, confira que nenhum campo de valor é de tipo aproximado.
+
+**Decisão:** pendente
+
+### G05 — Registro de acessos · severidade média
+
+**O que muda no app:** o sistema registra entradas, senhas erradas e exportações da lista de clientes e valores, separado da trilha de negócio e com cópia fora do sistema.
+
+**Por quê:** a lista de clientes com os honorários é informação sensível do escritório e dos clientes; sem esse registro, não há como saber quem a levou. **Base legal:** o catálogo não aponta base legal para este item — o fundamento técnico vale por si.
+
+**Requisito (EARS):** **If** alguém exportar a lista de clientes e valores ou errar a senha, **then** the system **shall** registrar quem, quando e o quê, antes de entregar o arquivo ou recusar a entrada.
+
+**Como provar:** 1) exporte a lista; 2) confira o evento com quem, quando e o quê; 3) erre a senha: evento registrado; 4) confira que esse registro fica separado da trilha e tem cópia fora do sistema.
+
+**Decisão:** pendente
+
+### G06 — Prova de que a trilha não foi editada · severidade média
+
+**O que muda no app:** cada linha da trilha leva um código que depende da linha anterior, como uma corrente; uma vez por dia, o último código sai do sistema (por exemplo, por e-mail para você). Alterar uma linha antiga quebra a corrente.
+
+**Por quê:** o G04 proíbe editar a trilha pelo sistema, mas quem administra o banco consegue contornar; a corrente mostra que ninguém contornou. **Base legal:** o catálogo não aponta base legal para este item — o fundamento técnico vale por si.
+
+**Requisito (EARS):** **If** uma linha da trilha for alterada por qualquer meio, **then** the system **shall** apontar a linha quebrada na verificação seguinte.
+
+**Como provar:** 1) rode o verificador: íntegro; 2) num ambiente de teste, altere uma linha antiga; 3) rode de novo: ele aponta a linha; 4) confira que o código do dia chegou fora do sistema.
+
+**Decisão:** pendente
+
+## Já coberto
+
+| Item | Onde no DEFINE (linha ou AT) |
+|---|---|
+| — | nenhum item coberto |
+
+## N.A.
+
+| Item | Motivo |
+|---|---|
+| G02 — Partidas dobradas | controle de recebimento, sem escrituração em débito e crédito |
+| G10 — Importação idempotente | pagamento digitado; nenhum arquivo é importado |
+| G13 — Isolamento entre clientes | N.A. por porte: multi_cnpj = não |
+| G16 — Certificado digital e segredos | nota fiscal fora de escopo; sem certificado nem chave de integração |
+| G17 — IA sugere, humano confirma | N.A. por porte: sem IA |
+| G18 — Registro da decisão da IA | N.A. por porte: sem IA |
+| G19 — Taxa de correção | N.A. por porte: sem IA |
+| G20 — Responsabilidade técnica | N.A. por porte: sem IA |
+
+## 2ª camada
+
+| Item | Por que ficou para depois |
+|---|---|
+| G11 — Regra com vigência | não obrigatório nesta feature; o AT-003 já faz metade do caminho |
+| G12 — Conciliação com totais de controle | não obrigatório nesta feature; o AT-004 avisa, mas não cria pendência |
+| G14 — Retenção × proteção de dados | não obrigatório nesta feature; guarda de 5 anos já no padrão |
+| G15 — Backup com restauração testada | não obrigatório nesta feature |
+
+## Riscos aceitos
+
+| Item | Quem | Quando | Por quê |
+|---|---|---|---|
+| — | — | — | pendente |
+
+## Aplicado no DEFINE
+
+| Lacuna | AT novo | AT reescrito (antes → depois) | Clarity Score antes → depois |
+|---|---|---|---|
+| pendente | — | — | — |
+
+---
+
+> A skill recomenda; o profissional decide e responde.
+>
+> No Build, o passo *Aplicar a migration* da `sdd-build` prova por leitura (`information_schema`,
+> `pg_policies`, `pg_trigger`) que o SQL criou o que estes itens exigem: os itens com `prova pós-build = sim`
+> no catálogo têm o que conferir no banco depois de aplicada a migration.
+```
+
+**Agora: etapa 5 — Suas decisões**
+
+Esta é a lacuna 1 de 8, de severidade alta. Hoje, um pagamento registrado pode ser editado ou apagado sem deixar rastro. Num cliente que contesta a cobrança, não haveria como provar o que foi registrado e quando.
+
+Se você aplicar, quem errar não edita o registro: lança um **estorno**, com motivo, e o registro original continua visível. Nenhum teste atual precisa ser reescrito, porque o AT-002 continua valendo como está.
+
+**Sua decisão** — [D2 · muda o produto] **O pagamento registrado passa a ser imutável, isto é, gravado uma vez e corrigido só por estorno?**
+- **aplicar** (recomendado): o requisito entra no DEFINE como um teste novo. É a primeira garantia que um perito pede, e as lacunas de fechamento e de trilha dependem dela.
+- **recusar**: não entra. Preciso do seu motivo, que vai para os riscos aceitos com o seu nome e a data.
+- **adiar**: vai para a 2ª camada, fora desta entrega.
+- **não sei**: mostro, com um caso do escritório, como fica a correção de um valor digitado errado.
+
+**Próximo passo:** com a sua resposta, passo para a lacuna 2 de 8, o fechamento do mês.
+
+===== veredito =====
+voltas: 4 · entregue: sim
+✅ nenhum achado
+RESULTADO: PASSOU
+rc=0

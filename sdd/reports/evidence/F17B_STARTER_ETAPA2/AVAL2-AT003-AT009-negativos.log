@@ -1,0 +1,161 @@
+$ bash neg.sh
+===== AT-003
+---- modo-ausente  [mutação: rm .agents/skills/sdd-release/references/MODO_INICIANTE.md]
+🛑 sdd-release: o arquivo de modo references/MODO_INICIANTE.md não existe
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+---- modo-cita-inexistente  [mutação: printf '\nVeja `references/nao-existe.md`.\n' >> .agents/skills/sdd-release/references/MODO_INICIANTE.md]
+🛑 sdd-release: o modo cita references/nao-existe.md, que não existe na skill
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+---- modo-cita-init  [mutação: printf '\nRode `sdd/bin/verify-gate.sh`.\n' >> .agents/skills/sdd-release/references/MODO_INICIANTE.md]
+🛑 o lint do init achou 1 citação(ões) a arquivo que só o init cria:
+  skills/sdd-release/SKILL.md:394: sdd/bin/
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+---- modo-cita-init-sem-barra  [mutação: printf '\nVeja a pasta sdd/hooks no projeto.\n' >> .agents/skills/sdd-release/references/MODO_INICIANTE.md]
+🛑 o lint do init achou 1 citação(ões) a arquivo que só o init cria:
+  skills/sdd-release/SKILL.md:394: sdd/hooks
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+---- sem-regra-de-modo  [mutação: sed -i '' '/^sdd-release/d' scripts/starter/modos.tsv]
+🛑 o lint do init achou 75 citação(ões) a arquivo que só o init cria:
+  skills/sdd-release/SKILL.md:23: sdd/bin/
+  skills/sdd-release/SKILL.md:83: sdd/bin/
+  skills/sdd-release/SKILL.md:102: sdd/bin/
+  skills/sdd-release/SKILL.md:112: sdd/bin/
+  skills/sdd-release/SKILL.md:113: sdd/bin/
+  skills/sdd-release/SKILL.md:115: sdd/bin/
+  skills/sdd-release/SKILL.md:117: sdd/bin/
+  skills/sdd-release/SKILL.md:119: sdd/bin/
+  skills/sdd-release/SKILL.md:119: sdd/playbook.md
+  skills/sdd-release/SKILL.md:120: sdd/bin/
+  skills/sdd-release/SKILL.md:122: sdd/bin/
+  skills/sdd-release/SKILL.md:123: sdd/bin/
+  skills/sdd-release/SKILL.md:132: sdd/bin/
+  skills/sdd-release/SKILL.md:137: sdd/bin/
+  skills/sdd-release/SKILL.md:139: sdd/bin/
+  skills/sdd-release/SKILL.md:144: sdd/bin/
+  skills/sdd-release/SKILL.md:153: sdd/invariants.md
+  skills/sdd-release/SKILL.md:154: sdd/invariants.md
+  skills/sdd-release/SKILL.md:159: sdd/bin/
+  skills/sdd-release/SKILL.md:189: sdd/bin/
+  skills/sdd-release/SKILL.md:198: sdd/bin/
+  skills/sdd-release/SKILL.md:244: sdd/bin/
+  skills/sdd-release/SKILL.md:256: sdd/bin/
+  skills/sdd-release/SKILL.md:270: sdd/bin/
+  skills/sdd-release/SKILL.md:274: sdd/bin/
+  skills/sdd-release/SKILL.md:295: sdd/bin/
+  skills/sdd-release/SKILL.md:309: .agents/skills/sdd-playbook/
+  skills/sdd-release/SKILL.md:309: .agents/skills/sdd-playbook/
+  skills/sdd-release/SKILL.md:310: sdd/bin/
+  skills/sdd-release/SKILL.md:320: sdd/bin/
+  skills/sdd-release/SKILL.md:320: sdd/playbook.md
+  skills/sdd-release/SKILL.md:320: sdd/invariants.md
+  skills/sdd-release/SKILL.md:321: sdd/invariants.md
+  skills/sdd-release/SKILL.md:331: sdd/playbook.md
+  skills/sdd-release/SKILL.md:334: .agents/skills/sdd-playbook/
+  skills/sdd-release/SKILL.md:334: .agents/skills/sdd-playbook/
+  skills/sdd-release/SKILL.md:336: sdd/bin/
+  skills/sdd-release/SKILL.md:337: sdd/bin/
+  skills/sdd-release/SKILL.md:339: sdd/bin/
+  skills/sdd-release/SKILL.md:343: sdd/bin/
+  skills/sdd-release/SKILL.md:344: sdd/bin/
+  skills/sdd-release/SKILL.md:347: sdd/bin/
+  skills/sdd-release/SKILL.md:347: sdd/playbook.md
+  skills/sdd-release/SKILL.md:353: sdd/playbook.md
+  skills/sdd-release/SKILL.md:353: sdd/invariants.md
+  skills/sdd-release/SKILL.md:368: sdd/invariants.md
+  skills/sdd-release/SKILL.md:369: sdd/bin/
+  skills/sdd-release/SKILL.md:369: sdd/playbook.md
+  skills/sdd-release/SKILL.md:369: sdd/invariants.md
+  skills/sdd-release/SKILL.md:383: sdd/bin/
+  skills/sdd-release/SKILL.md:383: sdd/playbook.md
+  skills/sdd-release/SKILL.md:385: sdd/bin/
+  skills/sdd-release/SKILL.md:386: sdd/bin/
+  skills/sdd-release/SKILL.md:386: sdd/playbook.md
+  skills/sdd-release/SKILL.md:389: sdd/bin/
+  skills/sdd-release/SKILL.md:389: sdd/invariants.md
+  skills/sdd-release/SKILL.md:390: sdd/invariants.md
+  skills/sdd-release/SKILL.md:391: sdd/bin/
+  skills/sdd-release/SKILL.md:394: sdd/playbook.md
+  skills/sdd-release/SKILL.md:394: sdd/invariants.md
+  skills/sdd-release/SKILL.md:399: sdd/playbook.md
+  skills/sdd-release/SKILL.md:399: sdd/invariants.md
+  skills/sdd-release/references/LEDGER_REVISAO_TEMPLATE.md:5: sdd/bin/
+  skills/sdd-release/references/LEDGER_REVISAO_TEMPLATE.md:5: sdd/bin/
+  skills/sdd-release/references/LEDGER_REVISAO_TEMPLATE.md:6: sdd/bin/
+  skills/sdd-release/references/LEDGER_REVISAO_TEMPLATE.md:7: sdd/review/
+  skills/sdd-release/references/como-falar.md:48: sdd/playbook.md
+  skills/sdd-release/references/como-falar.md:137: sdd/playbook.md
+  skills/sdd-release/references/ledger.md:40: sdd/bin/
+  skills/sdd-release/references/raio-de-impacto.md:6: sdd/WORKFLOW_CONTRACTS.yaml
+  skills/sdd-release/references/raio-de-impacto.md:11: sdd/invariants.md
+  skills/sdd-release/references/seguranca.md:4: sdd/bin/
+  skills/sdd-release/references/seguranca.md:8: sdd/bin/
+  skills/sdd-release/references/seguranca.md:16: sdd/bin/
+  skills/sdd-release/references/seguranca.md:23: sdd/bin/
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+---- cópia crua da sdd-release no lint (--lint)
+🛑 skills/sdd-release/references/seguranca.md:23: sdd/bin/
+🛑 skills/sdd-release/scripts/deploy-espera-testes.py:20: .agents/skills/sdd-release/
+RESULTADO: CITA ARQUIVO DO INIT
+→ troque a citação (scripts/starter/trocas/) e gere de novo.
+lint rc=65
+===== AT-009 (versão <= a do starter)
+  version: "1.1.0"
+---- v-sdd-brainstorm-1.1.0  [mutação: sed -i '' -E 's/^(  version: )"[0-9.]+"/\1"1.1.0"/' .agents/skills/sdd-brainstorm/SKILL.md; grep -m1 'version:' .agents/skills/sdd-brainstorm/SKILL.md]
+🛑 o version gate do starter reprovaria:
+  sdd-brainstorm: a cópia gerada mudou e a versão não subiu (1.1.0 no starter, 1.1.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+  version: "1.1.0"
+---- v-sdd-handoff-1.1.0  [mutação: sed -i '' -E 's/^(  version: )"[0-9.]+"/\1"1.1.0"/' .agents/skills/sdd-handoff/SKILL.md; grep -m1 'version:' .agents/skills/sdd-handoff/SKILL.md]
+🛑 o version gate do starter reprovaria:
+  sdd-handoff: a cópia gerada mudou e a versão não subiu (1.1.0 no starter, 1.1.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+  version: "1.0.1"
+---- v-sdd-governanca-1.0.1  [mutação: sed -i '' -E 's/^(  version: )"[0-9.]+"/\1"1.0.1"/' .agents/skills/sdd-governanca/SKILL.md; grep -m1 'version:' .agents/skills/sdd-governanca/SKILL.md]
+🛑 o version gate do starter reprovaria:
+  sdd-governanca: a cópia gerada mudou e a versão não subiu (1.0.1 no starter, 1.0.1 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+  version: "1.3.0"
+---- v-sdd-release-1.3.0  [mutação: sed -i '' -E 's/^(  version: )"[0-9.]+"/\1"1.3.0"/' .agents/skills/sdd-release/SKILL.md; grep -m1 'version:' .agents/skills/sdd-release/SKILL.md]
+🛑 o version gate do starter reprovaria:
+  sdd-release: a cópia gerada mudou e a versão não subiu (1.3.0 no starter, 1.3.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+  version: "1.4.0"
+---- v-ux-review-builder-1.4.0  [mutação: sed -i '' -E 's/^(  version: )"[0-9.]+"/\1"1.4.0"/' .agents/skills/ux-review-builder/SKILL.md; grep -m1 'version:' .agents/skills/ux-review-builder/SKILL.md]
+🛑 o version gate do starter reprovaria:
+  ux-review-builder: a cópia gerada mudou e a versão não subiu (1.4.0 no starter, 1.4.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+  version: "1.2.9"
+---- v-sdd-release-1.2.9  [mutação: sed -i '' -E 's/^(  version: )"[0-9.]+"/\1"1.2.9"/' .agents/skills/sdd-release/SKILL.md; grep -m1 'version:' .agents/skills/sdd-release/SKILL.md]
+🛑 o version gate do starter reprovaria:
+  sdd-release: a cópia gerada mudou e a versão não subiu (1.3.0 no starter, 1.2.9 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+gerador rc=65 | starter intocado: sim
+===== AT-001 extra: arquivo de tests/ que saiu da semente é apagado
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+gerador rc=0
+ls: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/aval2/neg/st1/docs/sobra.md: No such file or directory
+ls: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/aval2/neg/st1/tests/test_sobra.py: No such file or directory
+ D docs/sobra.md
+ D tests/test_sobra.py
+rc=0
