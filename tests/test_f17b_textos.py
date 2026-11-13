@@ -44,6 +44,11 @@ class ModoIniciante(unittest.TestCase):
         self.assertIn("gh run list --commit <SHA publicado>", self.m)
         self.assertIn("nunca `gh run rerun` de um run antigo", self.m)
 
+    def test_sem_consultar_o_github_nunca_conclui_que_o_push_nao_publica(self):
+        # revisão, rodada 1, R2: sem gh utilizável e sem vercel.json, o agente caía em "Nenhum" e dizia que o push não publica
+        self.assertIn("nunca conclua \"Nenhum\"", self.m)
+        self.assertIn("não confirmei: não consegui consultar o GitHub", self.m)
+
     def test_duas_fontes_independentes_para_saber_se_a_vercel_publica(self):
         # LM-024: o arquivo do projeto e o status do commit; a divergência tem resposta escrita
         self.assertIn("Só o arquivo ⇒", self.m)

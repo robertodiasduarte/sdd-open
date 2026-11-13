@@ -791,7 +791,7 @@ doctor() {
   else warn "sdd/ ausente — rode init"; fi
   [ -f "${ROOT}/AGENTS.md" ] && grep -qF "${ABRE}" "${ROOT}/AGENTS.md" && ok "AGENTS.md com o bloco sdd-open" \
                              || warn "AGENTS.md sem o bloco sdd-open — rode init ou sync"
-  [ -d "${FONTE_SKILLS}" ] && ok ".agents/skills/ com $(skills_da_fonte "${FONTE_SKILLS}" | wc -l | tr -d ' ') skill(s) sdd-*" \
+  [ -d "${FONTE_SKILLS}" ] && ok ".agents/skills/ com $(skills_da_fonte "${FONTE_SKILLS}" | wc -l | tr -d ' ') skill(s) do pacote" \
                             || warn ".agents/skills/ ausente"
   # Hooks de git: ligados (hooksPath + bit de execução) ou um ⚠️ por causa, cada um com o comando.
   local he h com
@@ -833,8 +833,15 @@ doctor() {
               else warn "gemini: adaptador incompleto — rode sync --vendors gemini"; fi ;;
     esac
   done
-  if ls "${ROOT}"/.agents/skills/sdd-*/agents/openai.yaml >/dev/null 2>&1 || ls "${ROOT}"/.claude/skills/sdd-*/agents/openai.yaml >/dev/null 2>&1; then
-    warn "skills do sdd-starter detectadas no mesmo projeto: os nomes sdd-* colidem — use um ou outro por projeto"
+  # F17b: a ux-review-builder também é do pacote (o init a copia); a do starter traz agents/openai.yaml como as sdd-*
+  # (um `ls a b` sai ≠ 0 quando um dos dois falta, mesmo com o outro presente: confere arquivo por arquivo)
+  local _starter="" _y
+  for _y in "${ROOT}"/.agents/skills/sdd-*/agents/openai.yaml "${ROOT}"/.agents/skills/ux-review-builder/agents/openai.yaml \
+            "${ROOT}"/.claude/skills/sdd-*/agents/openai.yaml "${ROOT}"/.claude/skills/ux-review-builder/agents/openai.yaml; do
+    if [ -f "${_y}" ]; then _starter=1; fi
+  done
+  if [ -n "${_starter}" ]; then
+    warn "skills do sdd-starter detectadas no mesmo projeto: os nomes (sdd-* e ux-review-builder) colidem — use um ou outro por projeto"
   fi
   # Pacote mais novo que o projeto: init nunca sobrescreve .agents/skills/<skill> nem sdd/bin/*, então
   # quem já instalou continua com a versão velha sem saber. Só aponta; quem apaga é a pessoa.

@@ -34,7 +34,7 @@ Quem escreveu o Define não se revisa: rode esta skill numa conversa nova, com s
 `/sdd-design sdd/features/DEFINE_{FEATURE}.md`.
 ====
 **Próximo passo:** a `ux-review` do seu projeto (criada pela `ux-review-builder`) se há interface; senão
-`/sdd-design` com o DEFINE atualizado.
+a skill `sdd-design`, com o DEFINE atualizado (na web, mande o documento junto com o pedido).
 >>>> depois
 
 ## SKILL.md

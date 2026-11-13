@@ -258,6 +258,7 @@ scripts/starter/raiz/tests/fixtures/kb_good_codigo/kb_good_codigo/index.md
 scripts/starter/raiz/tests/fixtures/kb_good_codigo/kb_good_codigo/patterns/conferir-antes-de-fechar.md
 scripts/starter/raiz/tests/fixtures/kb_good_codigo/kb_good_codigo/quick-reference.md
 scripts/starter/raiz/tests/test_sdd_kb_normativo.py
+scripts/starter/trocas/_moldes/BRAINSTORM_TEMPLATE.md
 scripts/starter/trocas/_moldes/HANDOFF_TEMPLATE.md
 scripts/starter/trocas/_moldes/LLM_PROMPTS_BUILD_REPORT.md
 scripts/starter/trocas/_moldes/LLM_PROMPTS_DESIGN.md

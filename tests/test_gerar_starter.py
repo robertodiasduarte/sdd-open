@@ -118,6 +118,9 @@ class Gera(Base):
         for skill in CONGELADAS:
             with self.subTest(congelada=skill):
                 self.assertFalse((self.starter / "skills" / skill / "GERADO.txt").exists())
+        for q in ("docs/quickstart.md", "docs/quickstart.pt-BR.md"):   # revisão, rodada 1, R6: 15 geradas + 3 congeladas
+            with self.subTest(quickstart=q):
+                self.assertIn("18 skills", (self.starter / q).read_text(encoding="utf-8"))
         readme = (self.starter / "README.md").read_text(encoding="utf-8")
         for frase in ("As outras três (`sdd-define`, `sdd-design` e `sdd-build`)",
                       "The other three (`sdd-define`, `sdd-design` and `sdd-build`)"):
@@ -478,6 +481,8 @@ class SkillDeModo(Base):
                 m.read_text(encoding="utf-8").replace("description:", "descricao:", 1), encoding="utf-8"),
             "sem compatibility": lambda m: m.write_text(
                 m.read_text(encoding="utf-8").replace("compatibility:", "compatibilidade:", 1), encoding="utf-8"),
+            "description acima de 1.024": lambda m: m.write_text(
+                m.read_text(encoding="utf-8").replace('description: "', 'description: "' + "x" * 1030, 1), encoding="utf-8"),
             "identificação diferente": lambda m: m.write_text(
                 re.sub(r"`sdd-release v[0-9.]+ ", "`sdd-release v0.0.1 ", m.read_text(encoding="utf-8")), encoding="utf-8"),
             "cita caminho do init": lambda m: m.write_text(

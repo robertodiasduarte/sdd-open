@@ -122,7 +122,9 @@ E leia: `README.md`, `package.json` (seção `scripts`), `Makefile`, `.github/wo
     `vercel.json` ou a pasta `.vercel/` no projeto são só pista (a ligação pelo GitHub não precisa de nenhum dos
     dois). Só o status ⇒ a Vercel publica. Só o arquivo ⇒ diga que o projeto tem configuração da Vercel mas o
     GitHub não mostra deploy dela (a ligação pode estar desligada): no bloco do OK, "o push publica sozinho?"
-    fica "não confirmei".
+    fica "não confirmei". **Sem conseguir consultar** (o `gh` não está instalado, não está logado ou a consulta
+    falhou), nunca conclua "Nenhum": a resposta é "não confirmei: não consegui consultar o GitHub", e a Fase 3 trata
+    o push na principal como se publicasse.
   - **Deploy manual**: há um comando de publicação (`npm run deploy`, `make deploy`, um script).
   - **Nenhum**: o repositório só guarda código ⇒ "release" = integrar na principal, sem fingir que publicou.
 - **Testes** (`npm test`, `pytest`, um job de CI) e **checagem de sintaxe** para os arquivos tocados

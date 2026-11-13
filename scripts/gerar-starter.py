@@ -304,6 +304,9 @@ def compor(origem: Path, destino: Path, modo_rel: str) -> None:
     for nome in ("description", "compatibility"):
         if not campo(fm_modo, nome):
             raise Falha(65, "%s/%s: o frontmatter do modo não tem %s" % (skill, modo_rel, nome))
+    desc = re.sub(r'^description:\s*"?|"?\s*$', "", " ".join(x.strip() for x in campo(fm_modo, "description")))
+    if len(desc) > 1024:   # o upload do claude.ai e do ChatGPT recusa acima disso (o check-versions do starter também)
+        raise Falha(65, "%s/%s: a description do modo tem %d caracteres; o limite é 1.024" % (skill, modo_rel, len(desc)))
     ident = [ln for ln in resto.split("\n") if ln.startswith("`%s v" % skill)]
     if len(ident) != 1 or corpo.count(ident[0]) != 1:
         raise Falha(65, "%s: o modo tem de trazer, uma vez, a mesma linha de identificação do SKILL.md (%s)"

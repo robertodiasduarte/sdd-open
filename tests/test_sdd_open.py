@@ -189,6 +189,16 @@ class Projeto(Sandbox):
         self.assertEqual(rc, 0, out)
         self.assertIn("skills do sdd-starter detectadas no mesmo projeto", out)
 
+    def test_doctor_avisa_a_ux_review_builder_do_starter(self):
+        # F17b, raio de impacto: o init passou a copiar a ux-review-builder; a do starter (com agents/openai.yaml)
+        # no mesmo projeto colide pelo nome, e o aviso olhava só sdd-*
+        rc, out = self.cli("doctor")
+        self.assertNotIn("skills do sdd-starter detectadas", out)
+        self.escreve(self.p, ".claude/skills/ux-review-builder/agents/openai.yaml", "interface:\n  display_name: \"x\"\n")
+        rc, out = self.cli("doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("skills do sdd-starter detectadas no mesmo projeto", out)
+
     def test_doctor_acusa_env_salvo_no_git_e_sai_0(self):
         self.escreve(self.p, ".env", "SENHA=x\n")
         self.commit(self.p, "env")

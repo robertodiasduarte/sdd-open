@@ -30,3 +30,10 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; funciona em qualquer agente que
 ====
 compatibility: Funciona na web (claude.ai, ChatGPT), onde o documento sai no chat, e em qualquer agente com acesso ao projeto.
 >>>> depois
+
+## SKILL.md
+<<<< antes
+**Próximo passo:** `/sdd-define sdd/features/BRAINSTORM_{FEATURE}.md`
+====
+**Próximo passo:** peça a skill `sdd-define` com este BRAINSTORM (na web, mande o documento junto com o pedido).
+>>>> depois
