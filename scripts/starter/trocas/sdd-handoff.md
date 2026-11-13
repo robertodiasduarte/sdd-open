@@ -5,7 +5,7 @@
 <<<< antes
 - estado do Verify Gate (`sdd/bin/verify-gate.sh <DEFINE>` saiu N em <data>);
 ====
-- estado do Verify Gate (o comando do projeto e o que ele saiu em <data>, ou `sem gate por comando`);
+- estado do Verify Gate, se o projeto tiver um gate por comando (o comando e o que ele saiu em <data>);
 >>>> depois
 
 ## SKILL.md
@@ -16,7 +16,7 @@ continuação o dispensa), slice datado no histórico, nenhum placeholder, nenhu
 entregar.
 Sem terminal, ou sem esse script no projeto: a conferência é a releitura do checklist de **Sem terminal**.
 ====
-Releia a ficha antes de entregar: Objetivo, Status e Verify Gate preenchidos, prompt de retomada em bloco
+Releia a ficha antes de entregar: Objetivo e Status preenchidos, prompt de retomada em bloco
 de código (só a ficha ✅ sem continuação o dispensa), slice datado no histórico, nenhum placeholder, nenhum
 "como discutimos". Faltou algo ⇒ corrija antes de entregar.
 >>>> depois
@@ -35,4 +35,19 @@ compatibility: Funciona na web (claude.ai, ChatGPT), onde a ficha sai no chat, e
 ====
   `## Ship`: preencha a que tiver o que dizer e apague a que ficar vazia; nenhuma é obrigatória, mas
   nenhuma fica com o texto do molde entre chaves.
+>>>> depois
+
+## SKILL.md
+<<<< antes
+[ ] Cabeçalho: Objetivo · Status · Feito (com SHAs) · Falta · DoD · Verify Gate · veredito da release
+====
+[ ] Cabeçalho: Objetivo · Status · Feito (com SHAs) · Falta · DoD
+>>>> depois
+
+## SKILL.md
+<<<< antes
+- **Veredito da release** (PASS / CONCERNS / WAIVED) vai na ficha; WAIVED exige o registro
+  completo (`classe= · finding= · motivo= · por= · data=`).
+====
+- **O que foi publicado** (commit ou PR, e o endereço quando houver) vai na ficha.
 >>>> depois
