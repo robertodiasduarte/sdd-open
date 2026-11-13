@@ -88,8 +88,8 @@ Grave o relatório pelo template. Ele abre com a **cobertura em uma linha** e ca
    lei, decreto, norma, artigo, parágrafo ou inciso que não seja o `texto_citavel` de uma base `confirmado`
    — nem de memória, nem "aproximadamente", nem em outro lugar do relatório.
 3. **Requisito (EARS)** — no padrão Unwanted: **If** {ação proibida}, **then** the system **shall** {recusar …}.
-4. **Como provar** — o `prova_manual` do item adaptado aos nomes do DEFINE; quando a forma de entrega pede
-   script, o `prova_script` adaptado, **sem mexer na inversão**.
+4. **Como provar** — o `prova_manual` do item adaptado aos nomes do DEFINE, sempre; com Verify Gate por
+   comando no DEFINE, também o `prova_script` adaptado, **sem mexer na inversão**.
 5. **Severidade** — a do catálogo (`alta` · `média` · `baixa`).
 
 ## Passo 5 — Decisão por item

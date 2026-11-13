@@ -139,7 +139,7 @@ evidência, dimensionar, corrigir a causa, comunicar e registrar.
 [ ] Recusados e adiados com motivo em ### Segurança; linha Segurança no Technical Context
 [ ] Checklist: cada item marcado (cumprido · não cumprido · não se aplica), nunca ✅ sem conferência
 [ ] Incidente: porta fechada antes de qualquer outra coisa
-[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
+[ ] Resposta fechada com o resumo de etapa (`sdd/templates/fragments/RESUMO_ETAPA.md`)
 ```
 
 ## Por que cada regra existe

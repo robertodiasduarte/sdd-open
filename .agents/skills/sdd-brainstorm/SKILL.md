@@ -179,7 +179,7 @@ mesmo; só a entrega muda:
 [ ] ≥2 validações incrementais
 [ ] Abordagem escolhida confirmada pelo usuário (ou marcada pendente)
 [ ] Requisitos-rascunho para o Define incluídos
-[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
+[ ] Resposta fechada com o resumo de etapa (`sdd/templates/fragments/RESUMO_ETAPA.md`)
 ```
 
 ## Por que cada regra existe

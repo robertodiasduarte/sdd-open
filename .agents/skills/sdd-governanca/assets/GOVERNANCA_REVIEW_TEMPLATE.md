@@ -18,7 +18,7 @@
 
 **Requisito (EARS):** **If** {ação proibida}, **then** the system **shall** {recusar e …}
 
-**Como provar:** {prova_manual adaptada | prova_script adaptada, sem mexer na inversão}
+**Como provar:** {prova_manual adaptada; com Verify Gate por comando no DEFINE, também a prova_script adaptada, sem mexer na inversão}
 
 **Decisão:** {aplicar | recusar — motivo: … | adiar}
 

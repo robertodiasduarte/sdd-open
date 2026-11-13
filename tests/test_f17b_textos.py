@@ -107,8 +107,26 @@ class SemTerminal(unittest.TestCase):
         # avaliador, ciclo 1, A1 e A3: o checklist e o brief do revisor também condicionam o script ao gate
         self.assertIn("com Verify Gate por comando, também o script em", s)
         self.assertNotIn("[ ] Aplicados viram AT no DEFINE + script", s)
+        # avaliador, ciclo 2, achado 1: o procedimento e o molde do relatório também condicionam o script
+        self.assertIn("com Verify Gate por\n   comando no DEFINE, também o `prova_script`",
+                      ler(".agents/skills/sdd-governanca/references/PROCEDIMENTO.md"))
+        self.assertIn("com Verify Gate por comando no DEFINE, também a prova_script",
+                      ler(".agents/skills/sdd-governanca/assets/GOVERNANCA_REVIEW_TEMPLATE.md"))
         rev = ler(".agents/skills/sdd-governanca/references/revisor.md")
         self.assertIn("o `prova_manual` sempre; com Verify Gate por comando no DEFINE", rev)
+
+
+class CaminhoCurto(unittest.TestCase):
+    """Avaliador, ciclo 2, achado 2: a forma curta `fragments/X.md` não é reescrita pelo gerador e aponta o nada no starter."""
+
+    def test_skills_geradas_citam_o_molde_pelo_caminho_inteiro(self):
+        lista = [ln.strip() for ln in ler("scripts/starter/lista.txt").splitlines() if ln.strip() and not ln.startswith("#")]
+        for skill in lista:
+            for p in sorted((RAIZ / ".agents/skills" / skill).rglob("*.md")):
+                if p.name == "CHANGELOG.md":
+                    continue
+                with self.subTest(arquivo=str(p.relative_to(RAIZ))):
+                    self.assertIsNone(re.search(r"(?<![\w/])fragments/[A-Z_]+\.md", p.read_text(encoding="utf-8")))
 
 
 class UxReviewBuilder(unittest.TestCase):
