@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -42,6 +43,17 @@ def within(child: Path, root: Path) -> bool:
     except Exception:
         return False
 
+# Pastas de dependência ficam fora da varredura: um CLAUDE.md ou AGENTS.md dentro de node_modules/ é de um pacote
+# de terceiro, não do harness deste projeto, e varrer a árvore inteira deixa a coleta lenta num projeto Node.
+PASTAS_IGNORADAS = {"node_modules"}
+
+def walk_files(base: Path) -> Iterable[Path]:
+    """Todos os arquivos sob `base`, sem descer em PASTAS_IGNORADAS nem seguir link de pasta."""
+    for atual, pastas, nomes in os.walk(base):
+        pastas[:] = sorted(d for d in pastas if d not in PASTAS_IGNORADAS)
+        for nome in sorted(nomes):
+            yield Path(atual) / nome
+
 def safe_files(base: Path) -> Iterable[Path]:
     if not base.exists():
         return
@@ -49,7 +61,7 @@ def safe_files(base: Path) -> Iterable[Path]:
         if within(base, base.parent) and not base.is_symlink():
             yield base
         return
-    for p in base.rglob("*"):
+    for p in walk_files(base):
         if p.is_file() and not p.is_symlink() and within(p, base):
             yield p
 
@@ -165,7 +177,7 @@ def collect_inventory(root: Path) -> list[Path]:
     #    inventario volta VAZIO, sem erro, e quem le conclui que o harness esta limpo.
     #    Provado com um repo Codex (AGENTS.md + .agents/skills/): 0 itens antes deste fix.
     for nome in ("CLAUDE.md", "AGENTS.md"):
-        for p in root.rglob(nome):
+        for p in (q for q in walk_files(root) if q.name == nome):
             if p.is_file() and not p.is_symlink() and within(p, root):
                 items.add(p)
 

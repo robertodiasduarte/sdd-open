@@ -513,6 +513,7 @@ tests/test_f15_slots_textos.py
 tests/test_f16_textos.py
 tests/test_f17_passo0.py
 tests/test_f17_textos.py
+tests/test_f17b_passo0.py
 tests/test_f18_f20_textos.py
 tests/test_f19_textos.py
 tests/test_f21_textos.py

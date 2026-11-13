@@ -46,8 +46,9 @@ PASTA_DAS = "<pasta das skills>/"
 # fora: é histórico, não instrução. sdd/config.yaml e AGENTS.md não entram: o primeiro é lido "se existir", o
 # segundo é arquivo comum a vários agentes.
 LINT_INIT = [
-    re.compile(r"sdd/bin/"), re.compile(r"sdd/templates/"), re.compile(r"sdd/hooks/"),
-    re.compile(r"sdd/review/"), re.compile(r"sdd/patterns/"), re.compile(r"sdd/playbook\.md"),
+    # a pasta com ou sem a barra final: `sdd/hooks` também é citar o que só o init cria (F17b, passo 0); a
+    # lookahead deixa de fora o nome mais longo (`sdd/reviews/` não é `sdd/review/`)
+    re.compile(r"sdd/(?:bin|templates|hooks|review|patterns)(?:/|(?![A-Za-z0-9_-]))"), re.compile(r"sdd/playbook\.md"),
     re.compile(r"sdd/invariants\.md"), re.compile(r"sdd/WORKFLOW_CONTRACTS\.yaml"),
     re.compile(r"bin/sdd-open\.sh"), re.compile(r"init do sdd-open"), re.compile(r"`init` do sdd-open"),
 ]
@@ -64,6 +65,17 @@ class Falha(Exception):
 
 def git(*args: str, cwd: Path) -> subprocess.CompletedProcess:
     return subprocess.run(["git", "-C", str(cwd), *args], capture_output=True)
+
+
+def ler(p: Path) -> str:
+    """Texto sem traduzir o fim de linha (read_text troca CRLF por LF): o que nenhuma regra muda sai byte a byte."""
+    return p.read_bytes().decode("utf-8")
+
+
+def gravar_se_mudou(p: Path, texto: str) -> None:
+    dado = texto.encode("utf-8")
+    if dado != p.read_bytes():
+        p.write_bytes(dado)
 
 
 def sha(dado: bytes) -> str:
@@ -135,12 +147,12 @@ def aplicar_trocas(base: Path, arq: Path) -> int:
         p = base / alvo
         if not p.is_file():
             raise Falha(65, "%s, bloco %d: o arquivo %s não existe" % (arq.name, n, alvo))
-        texto = p.read_text(encoding="utf-8")
+        texto = ler(p)
         vezes = texto.count(antes)
         if vezes != 1:
             raise Falha(65, "%s, bloco %d: o trecho casou %d vez(es) em %s; esperado exatamente 1 "
                             "(o texto do Open mudou? ajuste a troca)" % (arq.name, n, vezes, alvo))
-        p.write_text(texto.replace(antes, depois, 1), encoding="utf-8")
+        gravar_se_mudou(p, texto.replace(antes, depois, 1))
     return len(trocas)
 
 
@@ -161,8 +173,9 @@ def trazer_moldes(skill_dir: Path, moldes_dir: Path) -> None:
     """Fechamento transitivo: um molde citado pode citar outro; todos vão para references/ da skill."""
     pendentes = set()
     for p in arquivos(skill_dir):
-        if eh_texto(p):
-            pendentes |= moldes_citados(p.read_text(encoding="utf-8"), moldes_dir)
+        # o CHANGELOG é histórico: um molde citado lá não vai para references/ (e o lint já o deixa de fora)
+        if eh_texto(p) and p.name != "CHANGELOG.md":
+            pendentes |= moldes_citados(ler(p), moldes_dir)
     feitos: set[str] = set()
     while pendentes:
         m = pendentes.pop()
@@ -184,16 +197,21 @@ def trazer_moldes(skill_dir: Path, moldes_dir: Path) -> None:
         os.chmod(alvo, 0o644)
 
 
-def reescrever(texto: str, skill: str, lista: list[str], moldes_dir: Path, markdown: bool) -> str:
+def reescrever(texto: str, skill: str, lista: list[str], moldes_dir: Path, markdown: bool,
+               historico: bool = False) -> str:
     """Caminhos só no Markdown (num script, `<pasta desta skill>` viraria redirecionamento do shell); a URL do Open
     em todo arquivo de texto. O par que define a pasta (`.claude/skills/x/` ou `.agents/skills/x/`) fica como está."""
     texto = texto.replace(URL_OPEN, URL_STARTER)
     if not markdown:
         # num script, o caminho só aparece em mensagem, uso ou comentário (conferido): vira o nome da pasta, por extenso,
         # porque `<pasta desta skill>` num comando colado viraria redirecionamento (avaliador, ciclo 1, achado 1)
-        return texto.replace(".agents/skills/%s/" % skill, "<pasta da skill %s>/" % skill)
-    texto = MOLDE.sub(lambda m: PASTA_DESTA + "references/" + Path(m.group(0)).name
-                      if (moldes_dir / m.group(0)).is_file() else m.group(0), texto)
+        # a irmã gerada também (F17b, passo 0): antes, só a própria skill; a irmã sobrava e o lint saía 65
+        for nome in [skill] + [n for n in lista if n != skill]:
+            texto = texto.replace(".agents/skills/%s/" % nome, "<pasta da skill %s>/" % nome)
+        return texto
+    if not historico:   # no CHANGELOG o molde fica como foi escrito: ele não vai para references/
+        texto = MOLDE.sub(lambda m: PASTA_DESTA + "references/" + Path(m.group(0)).name
+                          if (moldes_dir / m.group(0)).is_file() else m.group(0), texto)
     guardados: list[str] = []
 
     def guardar(m: re.Match) -> str:
@@ -349,15 +367,14 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
         shutil.copytree(origem, destino)
         n_trocas = aplicar_trocas(destino, dados / "trocas" / ("%s.md" % skill))
         s = destino / "SKILL.md"
-        s.write_text(sem_fluxo_encadeado(s.read_text(encoding="utf-8"), skill), encoding="utf-8")
+        gravar_se_mudou(s, sem_fluxo_encadeado(ler(s), skill))
         trazer_moldes(destino, moldes)
         for p in arquivos(destino):
             if eh_texto(p):
-                p.write_text(reescrever(p.read_text(encoding="utf-8"), skill, lista, moldes, p.suffix == ".md"),
-                             encoding="utf-8")
+                gravar_se_mudou(p, reescrever(ler(p), skill, lista, moldes, p.suffix == ".md",
+                                              p.name == "CHANGELOG.md"))
         s = destino / "SKILL.md"
-        s.write_text(com_cabecalho(identificacao(s.read_text(encoding="utf-8"), skill), skill, cabecalho, migrar),
-                     encoding="utf-8")
+        gravar_se_mudou(s, com_cabecalho(identificacao(ler(s), skill), skill, cabecalho, migrar))
         (destino / "agents").mkdir(exist_ok=True)
         (destino / "agents" / "openai.yaml").write_text(openai_yaml(tabela[skill]), encoding="utf-8")
         (destino / "GERADO.txt").write_bytes(lista_gerado(destino, nota))

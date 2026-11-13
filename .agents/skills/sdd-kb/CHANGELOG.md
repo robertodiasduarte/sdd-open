@@ -1,5 +1,10 @@
 # Changelog — sdd-kb
 
+## 2.2.2 — nov/2026
+
+- `scripts/gate.sh` volta a ter o bit de execução (o starter o tinha até a v1.5.16; a cópia gerada pega o modo
+  da tag). Todo uso documentado continua sendo `bash scripts/gate.sh`.
+
 ## 2.2.1 — out/2026
 
 - A pergunta de exemplo de `references/como-falar.md` leva a marca da classe da decisão

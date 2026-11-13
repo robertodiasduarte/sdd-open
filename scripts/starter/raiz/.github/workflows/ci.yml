@@ -43,6 +43,11 @@ jobs:
             python3 -B -m unittest discover -s "$t" -p 'test_*.py'
           done
 
+      # tests/ da raiz: os testes que o starter guarda fora das skills (ex.: o perfil normativo da sdd-kb)
+      - name: Root tests
+        run: |
+          if [ -d tests ]; then python3 -B -m unittest discover -s tests -p 'test_*.py'; fi
+
       - name: KB validator gate
         run: bash skills/sdd-kb/scripts/gate.sh
 

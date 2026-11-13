@@ -2,3 +2,17 @@
 skills/sdd-higiene-dado/scripts/alarme.sh	# o git aceita sdd/hooks/ e ./sdd/hooks	código que convive com o dispatcher do SDD Open quando o projeto migrar; sem ele, inofensivo
 skills/sdd-higiene-dado/scripts/alarme.sh	[ -f "${ROOT}/sdd/hooks/pre-commit" ] && grep -qF "${MARCA_DISPATCHER}" "${ROOT}/sdd/hooks/pre-commit"	teste de existência do dispatcher do SDD Open; sem ele, o alarme segue no .git/hooks
 skills/sdd-higiene-dado/scripts/alarme.sh	O dispatcher (sdd/hooks/pre-commit) nunca é tocado.	comentário do mesmo convívio
+skills/sdd-higiene-dado/manifest.json	core.hooksPath = sdd/hooks	texto condicional: só vale num projeto em que o SDD Open instalou os hooks dele; sem eles, a skill segue no .git/hooks
+skills/sdd-higiene-dado/SKILL.md	(`sdd/hooks`)	texto condicional: só vale num projeto em que o SDD Open instalou os hooks dele; sem eles, a skill segue no .git/hooks
+skills/sdd-higiene-dado/SKILL.md	`core.hooksPath = sdd/hooks` com o dispatcher	texto condicional: só vale num projeto em que o SDD Open instalou os hooks dele; sem eles, a skill segue no .git/hooks
+skills/sdd-higiene-dado/references/COMO_FUNCIONA.md	os próprios hooks (`sdd/hooks`)	texto condicional: só vale num projeto em que o SDD Open instalou os hooks dele; sem eles, a skill segue no .git/hooks
+skills/sdd-higiene-dado/references/RUNTIME_COMPATIBILITY.md	(`core.hooksPath = sdd/hooks`)	texto condicional: só vale num projeto em que o SDD Open instalou os hooks dele; sem eles, a skill segue no .git/hooks
+skills/sdd-higiene-dado/references/RUNTIME_COMPATIBILITY.md	A exceção é o `sdd/hooks` do	texto condicional: só vale num projeto em que o SDD Open instalou os hooks dele; sem eles, a skill segue no .git/hooks
+skills/sdd-higiene-dado/scripts/pre-commit.sh	# sdd-open (sdd/hooks) e sai por	código que convive com o dispatcher do SDD Open quando o projeto migrar; sem ele, inofensivo
+skills/sdd-higiene-dado/scripts/alarme.sh	(core.hooksPath = sdd/hooks, com o dispatcher)	código que convive com o dispatcher do SDD Open quando o projeto migrar; sem ele, inofensivo
+skills/sdd-higiene-dado/scripts/alarme.sh	hooks (sdd/hooks com o dispatcher)	código que convive com o dispatcher do SDD Open quando o projeto migrar; sem ele, inofensivo
+skills/sdd-higiene-dado/scripts/alarme.sh	# Relativo (sdd/hooks) ou absoluto que resolve para <raiz>/sdd/hooks	código que convive com o dispatcher do SDD Open quando o projeto migrar; sem ele, inofensivo
+skills/sdd-higiene-dado/scripts/alarme.sh	[ "${hp}" = "sdd/hooks" ] && return 0	código que convive com o dispatcher do SDD Open quando o projeto migrar; sem ele, inofensivo
+skills/sdd-higiene-dado/scripts/alarme.sh	cd "${ROOT}/sdd/hooks" 2>/dev/null	código que convive com o dispatcher do SDD Open quando o projeto migrar; sem ele, inofensivo
+skills/sdd-higiene-dado/scripts/alarme.sh	hooks do projeto (sdd/hooks)	texto condicional: só vale num projeto em que o SDD Open instalou os hooks dele; sem eles, a skill segue no .git/hooks
+skills/sdd-higiene-dado/scripts/alarme.sh	os hooks do sdd-open (sdd/hooks) e o alarme	texto condicional: só vale num projeto em que o SDD Open instalou os hooks dele; sem eles, a skill segue no .git/hooks
