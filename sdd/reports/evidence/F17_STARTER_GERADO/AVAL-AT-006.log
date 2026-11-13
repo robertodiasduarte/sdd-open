@@ -1,0 +1,88 @@
+$ bash tamper.sh <clone do starter com a saída gerada commitada>   # cada caso aplica, roda check-gerado.py, desfaz por git checkout/clean no clone temporário
+### 1 byte trocado no SKILL.md gerado   [printf 'x' >> skills/sdd-kb/SKILL.md]
+🛑 skills/sdd-kb/SKILL.md: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### 1 byte trocado num script gerado   [sed -i '' 's/RESULTADO/RESULTADX/' skills/sdd-checar-ambiente/scripts/checar.sh]
+✅ 10 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+### arquivo gerado apagado   [rm skills/sdd-seguranca/references/*.md]
+🛑 skills/sdd-seguranca/references/CATALOGO_SEGURANCA.md: falta
+🛑 skills/sdd-seguranca/references/INCIDENTE.md: falta
+🛑 skills/sdd-seguranca/references/PERGUNTA_DECISAO.md: falta
+🛑 skills/sdd-seguranca/references/RESUMO_ETAPA.md: falta
+🛑 skills/sdd-seguranca/references/como-falar.md: falta
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### arquivo a mais numa skill gerada   [echo oi > skills/sdd-kb/extra.md]
+🛑 skills/sdd-kb/extra.md: sobra
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### arquivo a mais em scripts/   [echo oi > scripts/novo.sh]
+🛑 scripts/novo.sh: sobra
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### arquivo a mais em .github/workflows/   [echo 'name: x' > .github/workflows/x.yml]
+🛑 .github/workflows/x.yml: sobra
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### README editado   [echo '' >> README.md]
+🛑 README.md: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### .gitattributes editado   [echo '' >> .gitattributes]
+🛑 .gitattributes: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### GERADO.txt da raiz apagado   [rm GERADO.txt]
+🛑 GERADO.txt: falta (a geração do sdd-open grava este arquivo na raiz)
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### skill gerada apagada inteira   [rm -rf skills/sdd-loop-builder]
+🛑 skills/sdd-loop-builder/GERADO.txt: falta
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### GERADO.txt da skill recalculado depois da edição   [printf 'x' >> skills/sdd-kb/SKILL.md && (cd skills/sdd-kb && shasum -a 256 SKILL.md | sed 's/  / /' >/dev/null; python3 -c "import hashlib,re,pathlib;p=pathlib.Path('GERADO.txt');t=p.read_text();h=hashlib.sha256(pathlib.Path('SKILL.md').read_bytes()).hexdigest();p.write_text(re.sub(r'^[0-9a-f]{64}  SKILL.md$',h+'  SKILL.md',t,flags=re.M))")]
+🛑 skills/sdd-kb/GERADO.txt: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### GERADO.txt da skill apagado (skill vira 'congelada')   [rm skills/sdd-kb/GERADO.txt]
+🛑 skills/sdd-kb/GERADO.txt: falta
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+### GERADO.txt ilegível   [echo 'lixo' >> skills/sdd-kb/GERADO.txt]
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval.NXmc/starter/skills/sdd-kb/GERADO.txt:40: linha fora do formato '<sha256>  <caminho relativo>'
+RESULTADO: ERRO DE LEITURA
+→ gere de novo pelo sdd-open (python3 scripts/gerar-starter.py --tag <vX.Y.Z> <este repositório>).
+rc=64
+### skill congelada editada (não gerada: deve passar)   [echo '' >> skills/sdd-build/SKILL.md]
+✅ 10 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+### __pycache__ numa skill gerada (ignorado)   [mkdir -p skills/sdd-kb/scripts/__pycache__ && echo x > skills/sdd-kb/scripts/__pycache__/a.pyc]
+✅ 10 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+### sem mudança   [true]
+✅ 10 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+$ sed -i '' '1s/bash/bosh/' skills/sdd-checar-ambiente/scripts/checar.sh && git diff --stat && python3 scripts/check-gerado.py   # caso 2 refeito: o sed do tamper.sh não casou (sonda defeituosa)
+ skills/sdd-checar-ambiente/scripts/checar.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+🛑 skills/sdd-checar-ambiente/scripts/checar.sh: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1

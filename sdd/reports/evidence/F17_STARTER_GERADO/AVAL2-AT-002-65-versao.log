@@ -1,0 +1,22 @@
+$ . /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/estado.sh; fresh g; git -C g checkout -q -b f17-gerado; python3 -B open/scripts/gerar-starter.py --tag v9.9.0 g | tail -1; git -C g add -A; git -C g -c user.name=t -c user.email=t@t commit -qm 'geração v9.9.0'; echo '== mesma tag de novo sobre o destino já gerado (controle)'; python3 -B open/scripts/gerar-starter.py --tag v9.9.0 g | tail -1; echo rc=${PIPESTATUS[0]}; git -C g status --porcelain | wc -l
+echo '== tag semversao: higiene-dado muda, versão 1.2.0 = destino'; a=$(estado g); python3 -B open/scripts/gerar-starter.py --tag semversao g; echo rc=$?; echo "destino antes: $a | depois: $(estado g)" | tr '\n' ' '; echo
+echo '== tag comversao: muda e sobe para 1.2.1'; python3 -B open/scripts/gerar-starter.py --tag comversao g | tail -1; echo rc=${PIPESTATUS[0]}; git -C g status --porcelain
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+== mesma tag de novo sobre o destino já gerado (controle)
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0
+       0
+== tag semversao: higiene-dado muda, versão 1.2.0 = destino
+🛑 o version gate do starter reprovaria:
+  sdd-higiene-dado: a cópia gerada mudou e a versão não subiu (1.2.0 no starter, 1.2.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+destino antes: ad8dfc7dfc492595 0 | depois: ad8dfc7dfc492595 0 
+== tag comversao: muda e sobe para 1.2.1
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0
+ M GERADO.txt
+ M skills/sdd-higiene-dado/GERADO.txt
+ M skills/sdd-higiene-dado/SKILL.md
+rc=0

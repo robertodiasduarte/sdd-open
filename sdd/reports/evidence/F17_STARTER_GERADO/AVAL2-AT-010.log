@@ -1,0 +1,79 @@
+$ ls .agents/skills | wc -l; python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/*/SKILL.md 2>&1 | tail -3; echo rc=${PIPESTATUS[0]}
+echo '== test_agnostico'; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_agnostico.py' 2>&1 | tail -3
+echo '== check-versions.py (Open)'; python3 -B scripts/check-versions.py 2>&1 | tail -2; echo rc=${PIPESTATUS[0]}
+echo '== init num projeto novo (sem rede)'; sandbox-exec -p '(version 1)(allow default)(deny network*)' bash bin/sdd-open.sh init --vendors claude,codex /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj > /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/init.out 2>&1; echo rc=$?; tail -3 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/init.out; echo '-- algo de scripts/starter, gerar-starter ou check-gerado no projeto?'; (cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj && find . -path ./.git -prune -o \( -path '*starter*' -o -name 'gerar-starter*' -o -name 'check-gerado*' -o -name 'lista.txt' -o -name 'openai.tsv' -o -name 'lint-aceitos.tsv' \) -print); grep -rIl 'gerar-starter\|scripts/starter' /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj --exclude-dir=.git | head; echo '-- fim da busca'
+echo '== doctor sem skill do starter'; bash bin/sdd-open.sh doctor /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj 2>&1 | grep -i 'starter' ; echo '(nada acima = sem aviso)'
+echo '== doctor com a skill gerada do starter em .claude/skills'; cp -R /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/starter/skills/sdd-loop-builder /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj/.claude/skills/sdd-loop-builder-starter 2>/dev/null || { mkdir -p /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj/.claude/skills; cp -R /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/starter/skills/sdd-loop-builder /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj/.claude/skills/sdd-loop-builder-starter; }; bash bin/sdd-open.sh doctor /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj 2>&1 | grep -i 'starter'
+      21
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-seguranca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+rc=0
+== test_agnostico
+Ran 7 tests in 0.103s
+
+OK
+== check-versions.py (Open)
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+== init num projeto novo (sem rede)
+rc=64
+🛑 opção desconhecida: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj
+RESULTADO: ERRO
+→ rode sem argumentos para ver a ajuda
+-- algo de scripts/starter, gerar-starter ou check-gerado no projeto?
+-- fim da busca
+== doctor sem skill do starter
+🛑 opção desconhecida: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj
+(nada acima = sem aviso)
+== doctor com a skill gerada do starter em .claude/skills
+🛑 opção desconhecida: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj
+rc=0
+$ # refeito: o sdd-open.sh roda de dentro do projeto (a pasta como argumento é recusada com 64)
+sandbox-exec -p '(version 1)(allow default)(deny network*)' bash ../open/bin/sdd-open.sh init --vendors claude,codex > ../init.out 2>&1; echo rc=$?; grep -E 'RESULTADO|✅|🛑' ../init.out | tail -4
+echo '-- algo de scripts/starter, gerar-starter ou check-gerado no projeto?'; find . -path ./.git -prune -o \( -path '*starter*' -o -name 'gerar-starter*' -o -name 'check-gerado*' -o -name 'lista.txt' -o -name 'openai.tsv' -o -name 'lint-aceitos.tsv' -o -name 'GENERATED.md' -o -name 'MIGRAR.md' \) -print; grep -rIl 'gerar-starter\|scripts/starter' . --exclude-dir=.git | head; ls; echo '-- fim da busca'
+echo '== doctor sem skill do starter'; bash ../open/bin/sdd-open.sh doctor 2>&1 | grep -i 'starter'; echo '(nada acima = sem aviso)'
+echo '== doctor com a skill gerada do starter em .claude/skills/sdd-loop-builder (npx -a claude-code)'; rm -rf .claude/skills/sdd-loop-builder; cp -R ../starter/skills/sdd-loop-builder .claude/skills/sdd-loop-builder; bash ../open/bin/sdd-open.sh doctor 2>&1 | grep -i 'starter'
+echo '== doctor com a skill gerada do starter em .agents/skills/sdd-kb (npx -a codex)'; rm -rf .claude/skills/sdd-loop-builder; git checkout -q -- .claude 2>/dev/null; rm -rf .agents/skills/sdd-kb; cp -R ../starter/skills/sdd-kb .agents/skills/sdd-kb; bash ../open/bin/sdd-open.sh doctor 2>&1 | grep -i 'starter'
+rc=0
+RESULTADO: CANCELADO
+-- algo de scripts/starter, gerar-starter ou check-gerado no projeto?
+a.txt
+-- fim da busca
+== doctor sem skill do starter
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj
+(nada acima = sem aviso)
+== doctor com a skill gerada do starter em .claude/skills/sdd-loop-builder (npx -a claude-code)
+cp: .claude/skills/sdd-loop-builder: No such file or directory
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj
+== doctor com a skill gerada do starter em .agents/skills/sdd-kb (npx -a codex)
+cp: .agents/skills/sdd-kb: No such file or directory
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj
+rc=0
+$ # refeito 2: init sem terminal pede --yes
+sandbox-exec -p '(version 1)(allow default)(deny network*)' bash ../open/bin/sdd-open.sh init --vendors claude,codex --yes > ../init.out 2>&1; echo rc=$?; grep -E 'RESULTADO|a criar' ../init.out | tail -3
+echo '-- algo de scripts/starter, gerar-starter ou check-gerado no projeto?'; find . -path ./.git -prune -o \( -path '*starter*' -o -name 'gerar-starter*' -o -name 'check-gerado*' -o -name 'lista.txt' -o -name 'openai.tsv' -o -name 'lint-aceitos.tsv' -o -name 'GENERATED.md' -o -name 'MIGRAR.md' \) -print; grep -rIl 'gerar-starter\|scripts/starter' . --exclude-dir=.git | head; ls -d scripts 2>&1; echo '-- fim da busca'
+echo '== doctor sem skill do starter'; bash ../open/bin/sdd-open.sh doctor 2>&1 | grep -i 'starter'; echo '(nada acima = sem aviso)'
+echo '== doctor com a skill gerada do starter em .claude/skills/sdd-loop-builder (npx -a claude-code)'; mv .claude/skills/sdd-loop-builder ../lb.bak; cp -R ../starter/skills/sdd-loop-builder .claude/skills/sdd-loop-builder; bash ../open/bin/sdd-open.sh doctor 2>&1 | grep -i 'starter'; rm -rf .claude/skills/sdd-loop-builder; mv ../lb.bak .claude/skills/sdd-loop-builder
+echo '== doctor com a skill gerada do starter em .agents/skills/sdd-kb (npx -a codex)'; mv .agents/skills/sdd-kb ../kb.bak; cp -R ../starter/skills/sdd-kb .agents/skills/sdd-kb; bash ../open/bin/sdd-open.sh doctor 2>&1 | grep -i 'starter'; rm -rf .agents/skills/sdd-kb; mv ../kb.bak .agents/skills/sdd-kb
+echo '== de volta ao normal'; bash ../open/bin/sdd-open.sh doctor 2>&1 | grep -i 'starter'; echo '(nada acima = sem aviso)'
+rc=0
+154 a criar · 0 a atualizar · 0 já corretos
+RESULTADO: INSTALADO
+-- algo de scripts/starter, gerar-starter ou check-gerado no projeto?
+ls: scripts: No such file or directory
+-- fim da busca
+== doctor sem skill do starter
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj
+(nada acima = sem aviso)
+== doctor com a skill gerada do starter em .claude/skills/sdd-loop-builder (npx -a claude-code)
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj
+⚠️  skills do sdd-starter detectadas no mesmo projeto: os nomes sdd-* colidem — use um ou outro por projeto
+== doctor com a skill gerada do starter em .agents/skills/sdd-kb (npx -a codex)
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj
+⚠️  skills do sdd-starter detectadas no mesmo projeto: os nomes sdd-* colidem — use um ou outro por projeto
+== de volta ao normal
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/proj
+(nada acima = sem aviso)
+rc=0

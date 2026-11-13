@@ -1,0 +1,16 @@
+$ # projeto de aluno do starter no Claude Code: skill em .claude/skills/sdd-kb (npx skills add … -a claude-code); RULE_MAP.md fora de dia
+$ echo "" >> sdd/kb/dom/RULE_MAP.md; python3 .claude/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom
+FAIL: index file not found: sdd/kb/_index.yaml — register the domain (create it from KB_INDEX_TEMPLATE.yaml on the first run)
+$ python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map sdd/kb/dom   # o comando que a mensagem manda rodar
+/Library/Developer/CommandLineTools/usr/bin/python3: can't open file '/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval.NXmc/aluno/.agents/skills/sdd-kb/scripts/kb_normativo.py': [Errno 2] No such file or directory
+rc=2
+$ git -C <starter> show v1.5.16:skills/sdd-kb/scripts/validate_kb.py | grep -n "rule-map"   # o que o starter dizia antes
+355:            ok = fail("RULE_MAP.md: missing or differs from rules/ — run `python3 scripts/kb_normativo.py rule-map <domain>` (never edit it by hand)") and ok
+$ grep -n "Use sempre esses caminhos\|cópia gerada pelo .sync." <starter>/skills/sdd-kb/SKILL.md
+32:Consultar `<pasta desta skill>/references/kb-protocol.md` para a taxonomia e 
+303:- **O gate saiu vermelho:** a linha `🛑` diz o caso e a linha `→` o conserto;
+$ grep -rn "sync" <starter>/README.md <starter>/docs | head -3   # o starter não tem sync
+rc=0
+$ # refeito com sdd/kb/_index.yaml registrando dom (perfil normativo), como o gate.sh monta
+$ python3 .claude/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom | grep RULE_MAP
+2:FAIL: RULE_MAP.md: missing or differs from rules/ — run `python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map <domain>` (never edit it by hand)

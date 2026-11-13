@@ -1,0 +1,25 @@
+$ echo '== na árvore da tag (open = git archive HEAD)'; (cd open && grep -rn 'rdd-audita' .agents sdd; echo "grep rdd-audita rc=$? (1 = vazio)"; grep -n -i -E 'pydantic|gcp|terraform' sdd/templates/BRAINSTORM_TEMPLATE.md; echo "grep molde rc=$? (1 = vazio)"; grep -rn 'rdd-audita' . --include='*' -I | grep -v '^./tests/' | head; echo 'grep no pacote todo (fora de tests/): fim'; grep -n 'prova pós-build\|Aplicar a migration' .agents/skills/sdd-governanca/references/*.md .agents/skills/sdd-governanca/SKILL.md | head -5 | cut -c1-220)
+for sab in "printf '\nuse a skill rdd-audita-schema\n' >> .agents/skills/sdd-kb/SKILL.md" "printf '\n| ORM | pydantic |\n' >> sdd/templates/BRAINSTORM_TEMPLATE.md" "printf '\n| Cloud | gcp |\n' >> sdd/templates/BRAINSTORM_TEMPLATE.md" "printf '\n| IaC | Terraform |\n' >> sdd/templates/BRAINSTORM_TEMPLATE.md"; do rm -rf sab; cp -R open sab; (cd sab && eval "$sab" && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f17_textos.py' 2>&1 | tail -1; echo "sabotagem [$sab] -> rc=${PIPESTATUS[0]}"); done; rm -rf sab
+== na árvore da tag (open = git archive HEAD)
+grep rdd-audita rc=1 (1 = vazio)
+grep molde rc=1 (1 = vazio)
+grep no pacote todo (fora de tests/): fim
+.agents/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:21:- `prova pós-build` = `sim` quando o ponto também se prova **lendo o banco** depois que a migration foi aplicada
+.agents/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:22:  (o passo *Aplicar a migration* da `sdd-build` prova por leitura em `information_schema`, `pg_policies`,
+.agents/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:32:| id | elemento | exigência | mecanismo de referência (Postgres) | gate negativo | base | sev | porte_min | prova pós-build |
+.agents/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:47:| id | elemento | exigência | mecanismo de referência (Postgres) | gate negativo | base | sev | porte_min | prova pós-build |
+.agents/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:58:| id | elemento | exigência | mecanismo de referência (Postgres) | gate negativo | base | sev | porte_min | prova pós-build |
+FAILED (failures=1)
+sabotagem [printf '\nuse a skill rdd-audita-schema\n' >> .agents/skills/sdd-kb/SKILL.md] -> rc=1
+FAILED (failures=1)
+sabotagem [printf '\n| ORM | pydantic |\n' >> sdd/templates/BRAINSTORM_TEMPLATE.md] -> rc=1
+FAILED (failures=1)
+sabotagem [printf '\n| Cloud | gcp |\n' >> sdd/templates/BRAINSTORM_TEMPLATE.md] -> rc=1
+FAILED (failures=1)
+sabotagem [printf '\n| IaC | Terraform |\n' >> sdd/templates/BRAINSTORM_TEMPLATE.md] -> rc=1
+rc=0
+$ grep -rn -i 'aplicar a migration' .agents/skills/sdd-build/ | head -3 | cut -c1-200; echo '-- prova pós-build que não é sim nem — nas tabelas do catálogo:'; awk -F'|' '/^\| *[A-Z]+-?[0-9]+ *\|/ {v=$(NF-1); gsub(/ /,"",v); if (v!="sim" && v!="—") print FILENAME":"NR": "v}' .agents/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md; echo fim
+.agents/skills/sdd-build/references/aplicar-migration.md:1:# Aplicar a migration no banco (passo 4b do Build)
+-- prova pós-build que não é sim nem — nas tabelas do catálogo:
+fim
+rc=0

@@ -1,0 +1,21 @@
+$ grep -rn 'rdd-audita' .agents sdd --exclude-dir=features --exclude-dir=reports --exclude-dir=releases --exclude-dir=handoffs --exclude-dir=reviews; grep -rn 'rdd-audita-schema' $(git ls-files)
+rc=1
+git_grep_rc=0
+$ grep -n -i 'pydantic\|gcp\|terraform' sdd/templates/BRAINSTORM_TEMPLATE.md
+rc=1
+$ git show main:sdd/templates/BRAINSTORM_TEMPLATE.md | grep -n -i 'pydantic\|gcp\|terraform'   # baseline
+30:| Relevant KB Domains | {pydantic, gcp, gemini, etc.} | {Patterns to consult} |
+31:| IaC Patterns | {Existing Terraform/Terragrunt or N/A} | {Infrastructure approach} |
+$ git show main:.agents/skills/sdd-governanca/SKILL.md | grep -c rdd-audita-schema   # baseline
+main:.agents/skills/sdd-governanca/assets/GOVERNANCA_REVIEW_TEMPLATE.md:1
+main:.agents/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:1
+main:.agents/skills/sdd-governanca/references/PROCEDIMENTO.md:1
+$ grep -rn 'Aplicar a migration' .agents/skills/sdd-governanca .agents/skills/sdd-build/SKILL.md | head
+.agents/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:22:  (o passo *Aplicar a migration* da `sdd-build` prova por leitura em `information_schema`, `pg_policies`,
+.agents/skills/sdd-governanca/references/PROCEDIMENTO.md:124:> No Build, o passo *Aplicar a migration* da `sdd-build` prova por leitura (`information_schema`,
+.agents/skills/sdd-governanca/assets/GOVERNANCA_REVIEW_TEMPLATE.md:59:> No Build, o passo *Aplicar a migration* da `sdd-build` prova por leitura (`information_schema`,
+$ grep -rn -i 'aplicar a migration' .agents/skills/sdd-build | head -3   # o passo citado existe na sdd-build
+.agents/skills/sdd-build/references/aplicar-migration.md:1:# Aplicar a migration no banco (passo 4b do Build)
+rc=0
+$ git grep -c 'rdd-audita-schema' HEAD -- . ':!sdd/features' ':!sdd/reports'
+rc=1

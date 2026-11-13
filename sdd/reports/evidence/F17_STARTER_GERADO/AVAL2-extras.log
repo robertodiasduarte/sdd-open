@@ -1,0 +1,27 @@
+$ echo '== bit de execução: Open (tag) x gerado'; for s in $(grep -v '^#' open/scripts/starter/lista.txt); do (cd open/.agents/skills/$s && find . -type f -perm -u+x | sort) > /tmp/a.$$ 2>/dev/null; (cd ci/skills/$s && find . -type f -perm -u+x | sort) > /tmp/b.$$; diff -q /tmp/a.$$ /tmp/b.$$ >/dev/null && echo "$s: igual ($(wc -l < /tmp/b.$$ | tr -d ' ') executável(is))" || { echo "$s: DIFERE"; diff /tmp/a.$$ /tmp/b.$$; }; done; rm -f /tmp/a.$$ /tmp/b.$$
+echo '== modo no git do starter (commit da geração)'; git -C ci ls-files -s 'skills/*/scripts/*.sh' | awk '{print $1, $4}' | head -12
+echo '== README gerado: lista gerada x congelada e aviso da 1ª geração (SHOULD)'; grep -n -i 'congelad\|gerad' ci/README.md | head -8 | cut -c1-200
+== bit de execução: Open (tag) x gerado
+sdd-checar-ambiente: igual (0 executável(is))
+sdd-iniciar-repo: igual (0 executável(is))
+sdd-higiene-dado: igual (0 executável(is))
+sdd-new-session: igual (0 executável(is))
+sdd-kb: igual (0 executável(is))
+sdd-seguranca: igual (0 executável(is))
+sdd-auditoria-harness: igual (0 executável(is))
+sdd-prompt-builder: igual (0 executável(is))
+sdd-engenharia-reversa-saas: igual (0 executável(is))
+sdd-loop-builder: igual (0 executável(is))
+== modo no git do starter (commit da geração)
+100644 skills/sdd-checar-ambiente/scripts/checar.sh
+100755 skills/sdd-handoff/scripts/gate.sh
+100644 skills/sdd-higiene-dado/scripts/alarme.sh
+100644 skills/sdd-higiene-dado/scripts/pre-commit.sh
+100644 skills/sdd-iniciar-repo/scripts/inventario.sh
+100644 skills/sdd-kb/scripts/gate.sh
+100644 skills/sdd-new-session/scripts/copiar-docs.sh
+== README gerado: lista gerada x congelada e aviso da 1ª geração (SHOULD)
+54:Desde a 1ª geração (nov/2026), dez skills deste repositório são **geradas** a partir do [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-hi
+56:As outras oito (`sdd-brainstorm`, `sdd-define`, `sdd-design`, `sdd-build`, `sdd-handoff`, `sdd-release`, `sdd-governanca` e `ux-review-builder`) continuam como estavam, congeladas até a próxima eta
+153:Since the first generation (Nov 2026), ten skills in this repository are **generated** from [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `s
+rc=0

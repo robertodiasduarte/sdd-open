@@ -1,0 +1,9 @@
+$ (cd tests && python3 -B -m unittest -v test_gerar_starter.Gera.test_at007_o_starter_passa_nas_checagens_dele test_gerar_starter.Recusa.test_at007_versao_que_nao_sobe_reprova_antes_de_gravar)   # AT-007, commit d813954
+test_at007_o_starter_passa_nas_checagens_dele (test_gerar_starter.Gera.test_at007_o_starter_passa_nas_checagens_dele) ... ok
+test_at007_versao_que_nao_sobe_reprova_antes_de_gravar (test_gerar_starter.Recusa.test_at007_versao_que_nao_sobe_reprova_antes_de_gravar) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 6.928s
+
+OK
+[exit=0]

@@ -1,0 +1,10 @@
+$ (cd tests && python3 -B -m unittest -v test_f17_textos.Consertos)   # AT-009, commit d813954
+test_governanca_prova_pos_build_pela_leitura_do_aplicar_a_migration (test_f17_textos.Consertos.test_governanca_prova_pos_build_pela_leitura_do_aplicar_a_migration) ... ok
+test_molde_do_brainstorm_sem_restos_de_outro_dominio (test_f17_textos.Consertos.test_molde_do_brainstorm_sem_restos_de_outro_dominio) ... ok
+test_nenhum_arquivo_do_pacote_cita_skill_rdd_audita (test_f17_textos.Consertos.test_nenhum_arquivo_do_pacote_cita_skill_rdd_audita) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.056s
+
+OK
+[exit=0]

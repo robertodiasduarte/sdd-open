@@ -1,0 +1,9 @@
+$ (cd tests && python3 -B -m unittest -v test_gerar_starter.Gera.test_at005_duas_geracoes_iguais_byte_a_byte test_gerar_starter.Gera.test_gerar_de_novo_a_mesma_tag_nao_muda_nada)   # AT-005, commit d813954
+test_at005_duas_geracoes_iguais_byte_a_byte (test_gerar_starter.Gera.test_at005_duas_geracoes_iguais_byte_a_byte) ... ok
+test_gerar_de_novo_a_mesma_tag_nao_muda_nada (test_gerar_starter.Gera.test_gerar_de_novo_a_mesma_tag_nao_muda_nada) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 8.988s
+
+OK
+[exit=0]

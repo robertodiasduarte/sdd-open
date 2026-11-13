@@ -1,0 +1,18 @@
+feature_id: F17_STARTER_GERADO
+slice_id: s1
+versao: 2.13.0
+data: 2026-11-12
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "scripts/gerar-starter.py gera, de uma tag publicada e sem rede, as 10 skills que funcionam sem o init (checar-ambiente, iniciar-repo, higiene-dado, new-session, kb, seguranca, auditoria-harness, prompt-builder, engenharia-reversa-saas, loop-builder) e o README, .gitattributes, scripts/ e workflows do sdd-starter, com cabeçalho GENERATED, GERADO.txt com sha256, agents/openai.yaml por tabela, trocas exatas e lint do init (65, nada gravado); check-gerado.py no starter recusa edição à mão; o Open recebeu do starter o que ele tinha melhor (new-session, auditoria em vários motores, drift à mão) e consertou a governança e o molde do brainstorm; Verify Gate 0 em d813954; Release com SHA256SUMS.txt conferido"
+descricao: "F17 Starter gerado a partir do Open (Decisão 5, etapa 1 de 2): gerador scripts/gerar-starter.py e scripts/starter/ (lista, tabela, trocas, aceites, blocos, infra do starter); sdd-new-session 1.6.0, sdd-auditoria-harness 1.2.1, sdd-prompt-builder 2.2.0, sdd-governanca 2.4.1, sdd-engenharia-reversa-saas 1.1.1. Passo 0: cenário incidente-chave executado e sdd-seguranca 1.0.1; 8 pequenos (fronteira --help sem Python, editor do git config e default_branch no checar, item 10 qualificado, recuperação pelos passos 11 e 12, resumo de abortar, comentado() da varredura, updated da brainstorm) com sdd-checar-ambiente 1.5.1, sdd-release 2.11.1, sdd-build 2.9.1, sdd-define 2.6.1, sdd-brainstorm 2.3.1."
+deploy: real
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261112-211515 sha256=44e671ea757e168f9072428dd18c73632185828677f2514197fb6809a701aba5 diversidade=vendor revisor2=dispensado — codex sem cota e gemini sem credencial; 2º revisor pago evitado pela LM-010; a cadeia claude revisa + qwen audita é a que funcionou na F16 e na F18 + F20
+avisos:
+  - "teto do método passado: 7 rodadas de revisão (teto 3), a 4ª só do delta e a 5ª à 7ª sobre o diff inteiro, todas por decisão do Roberto; os leves da 7ª viraram pendência"
+  - "raio de impacto (0b): 4 superfícies, 3 quebras em código não modificado (auditoria: /prompts:<nome> e cópia gerada; new-session: a branch do remoto vinha do pré-voo), consertadas com teste"
+  - "avaliador de contexto novo: NEEDS_WORK no ciclo 1 (caminho e sync do Open na kb gerada), PASS_PENDENTE_RECIBO no ciclo 2; o recibo é o que o DEFINE põe fora do gate (geração real, PR e Release do starter, CI, Release do Open, D6)"
+  - "1ª execução do Verify Gate em d813954 caiu num teste de tempo da deploy-do-sha com a revisão rodando junto; isolado 3 de 3 verdes, e a 2ª execução inteira passou"
+  - "pendências da revisão sem ocorrência hoje: CI do starter sem tests/ da raiz; collect_evidence sem excluir node_modules; CRLF; trazer_moldes lendo o CHANGELOG; caminho de skill irmã nos scripts"
+  - "landmines, drift, lint, testes do diff e smoke pulados: o repositório do pacote não tem sdd/config.yaml; a suíte inteira roda no Verify Gate"

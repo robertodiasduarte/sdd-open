@@ -1,0 +1,4 @@
+$ gh release download v2.13.0 --repo robertodiasduarte/sdd-open && shasum -a 256 -c SHA256SUMS.txt
+sdd-open-v2.13.0.tar.gz: OK
+prefixo: 55e76746ce94
+[download_exit=0] [exit=0]

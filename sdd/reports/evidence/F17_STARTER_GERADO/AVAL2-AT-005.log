@@ -1,0 +1,6 @@
+$ cd open && TZ=Asia/Tokyo LC_ALL=C python3 -B scripts/gerar-starter.py --tag v9.9.0 ../outro/lugar/s3 | tail -1; cd ..; diff -r -x .git starter outro/lugar/s3 && echo 'diff -r: vazio'; grep -rIl -e '/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg' -e '/private/' -e '/Users/' -e 'scratchpad' --exclude-dir=.git starter/skills starter/GERADO.txt starter/README.md starter/scripts starter/.github starter/.gitattributes | head; echo 'grep caminho-da-maquina: fim'; grep -rIn -E '20[0-9]{2}-[0-9]{2}-[0-9]{2}T|2026-11-12' --exclude-dir=.git starter/GERADO.txt starter/skills/*/GERADO.txt | head -3; echo 'grep data-de-hoje nos GERADO.txt: fim'
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+diff -r: vazio
+grep caminho-da-maquina: fim
+grep data-de-hoje nos GERADO.txt: fim
+rc=0

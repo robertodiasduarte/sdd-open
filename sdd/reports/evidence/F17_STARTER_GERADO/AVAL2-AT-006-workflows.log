@@ -1,0 +1,41 @@
+$ for f in starter/.github/workflows/*.yml; do echo "== $f"; grep -n -E '^\s*- name:|run: .*(check-gerado|unittest|pytest|tests|check-versions|publish-check|gate.sh)' $f; done; which act || echo 'act: ausente (sem runner local do GitHub Actions)'
+== starter/.github/workflows/auto-release.yml
+46:      - name: Generated files gate
+47:        run: python3 scripts/check-gerado.py
+49:      - name: Content safety gate
+50:        run: bash scripts/publish-check.sh
+52:      - name: Validators compile
+55:      - name: Shell scripts parse
+56:        run: for f in scripts/package.sh scripts/publish-check.sh skills/*/scripts/*.sh; do bash -n "$f"; done
+58:      - name: Skill tests
+66:      - name: KB validator gate
+67:        run: bash skills/sdd-kb/scripts/gate.sh
+74:      - name: Version gate (contra a ultima release publicada)
+95:      - name: Compute next patch tag
+106:      - name: Build skill zips
+113:      - name: Publish checksums
+== starter/.github/workflows/ci.yml
+16:      - name: Generated files gate
+17:        run: python3 scripts/check-gerado.py
+19:      - name: Content safety gate
+20:        run: bash scripts/publish-check.sh
+24:      - name: Version gate
+32:      - name: Validators compile
+35:      - name: Shell scripts parse
+36:        run: for f in scripts/package.sh scripts/publish-check.sh skills/*/scripts/*.sh; do bash -n "$f"; done
+38:      - name: Skill tests
+46:      - name: KB validator gate
+47:        run: bash skills/sdd-kb/scripts/gate.sh
+49:      - name: Skill zips build
+== starter/.github/workflows/release.yml
+16:      - name: Generated files gate
+17:        run: python3 scripts/check-gerado.py
+19:      - name: Content safety gate
+20:        run: bash scripts/publish-check.sh
+22:      - name: Version gate
+23:        run: python3 scripts/check-versions.py
+25:      - name: Build skill zips
+30:      - name: Publish checksums
+33:      - name: Publish GitHub Release with zips
+act: ausente (sem runner local do GitHub Actions)
+rc=0

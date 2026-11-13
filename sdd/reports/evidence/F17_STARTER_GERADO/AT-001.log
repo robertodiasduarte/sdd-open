@@ -1,0 +1,8 @@
+$ (cd tests && python3 -B -m unittest -v test_gerar_starter.Gera.test_at001_gera_as_10_e_nao_toca_no_resto)   # AT-001, commit d813954
+test_at001_gera_as_10_e_nao_toca_no_resto (test_gerar_starter.Gera.test_at001_gera_as_10_e_nao_toca_no_resto) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 2.378s
+
+OK
+[exit=0]

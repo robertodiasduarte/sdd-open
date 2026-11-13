@@ -1,0 +1,10 @@
+$ (cd <git archive d813954>/tests && python3 -B -m unittest test_deploy_do_sha.RespostasEstranhas) × 3
+OK
+[execução 1 exit=0]
+OK
+[execução 2 exit=0]
+OK
+[execução 3 exit=0]
+$ (cd <git archive d813954>/tests && python3 -B -m unittest test_deploy_do_sha)
+OK
+[exit=0]

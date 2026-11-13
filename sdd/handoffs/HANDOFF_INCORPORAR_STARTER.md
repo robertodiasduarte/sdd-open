@@ -9,93 +9,95 @@
 | **Objetivo** | Fazer do sdd-open o único SDD do Roberto, sob 4 parâmetros fixados em 2026-10-29 (`sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, seção 0): **P1** corrigir erros antes de construir por cima; **P2** manter o padrão agnóstico (7 agentes; o que depende de subagente degrada para parada manual); **P3** incorporar o que o sdd-starter faz melhor (F1–F6: camada "Como falar com o aluno", skills de terreno, migration provada por leitura, validadores de fase, versão/testes/release, sdd-kb, docs); **P4** levar para o Open o que o SDD privado faz e o Open não (F7–F14: evidência fail-closed, hooks, fluxo encadeado, revisão adversarial, contexto e governança, UX/LLM, playbook e drive) e então **substituir o SDD privado pelo Open** (F15). Sem abrandar o mecanismo do open (gate com seis estados, evidência, avaliador fresco, playbook, release com veredito). |
 | **Status** | 🔨 em andamento |
 | **Feito** | 2026-10-29 — avaliação do starter (`sdd/features/AVALIACAO_STARTER_PARA_OPEN.md`) e abertura da worktree. 2026-10-29 — as 5 decisões do Roberto (ver `## Eventos`); **F1 Manutenção entregue**: 115 testes em `tests/`, `scripts/check-versions.py`, `scripts/next-version.sh`, `.github/workflows/release.yml`, 3 padrões de PII; merge em `main` (`f75fbdb`, PR #1) e **Release `v2.2.1`** publicada sozinha com `sdd-open-v2.2.1.tar.gz` + `SHA256SUMS.txt` (hash conferido). 2026-10-29 — **F2 Terreno entregue**: `sdd-checar-ambiente` 1.3.0 (`checar.sh --segredo`), `sdd-higiene-dado` 1.1.1, `sdd-iniciar-repo` 1.1.1 em `.agents/skills/`; `doctor` confere segredo salvo no git; `sdd-new-session` 1.1.0 (pré-voo por `checar.sh --frente`, tabela de tradução, descoberta gravada no config da frente); 242 testes; merge em `main` (`41c6169`, PR #2) e **Release `v2.2.2`** (hash conferido). 2026-10-29 — **F3 Build e Release entregue**: `sdd-build` 2.1.0 com `references/aplicar-migration.md`; `report-lint.py` reprova migration sem linha provada em `## Migrations aplicadas`; `sdd-release` 2.2.0 com o bloco único do OK e `scripts/deploy-espera-testes.py` (SIM/NAO/NAO_SEI/NAO_SE_APLICA); `doctor` avisa skill e `sdd/bin/` mais velhos que o pacote; `LM-004`; 304 testes; merge em `main` (`1a54da5`, PR #3) e **Release `v2.2.3`** (hash conferido). 2026-10-29 — **W0 entregue** (sessão 1, worktree `sdd-open-w0-m1`): `sdd-iterate` 2.0.1 vê clarificação aberta (`--print` + gate sem `--print`); templates sem contexto de domínio, `/drive`, guard inexistente e passos de outro SDD; `sdd-build` 2.1.1 (avaliador grava só `AVAL-*.log`); `tests/test_correcoes_w0.py`; 316 testes; merge em `main` (`303cc87`, PR #4) e **Release `v2.2.4`** (hash conferido). 2026-10-29 — **M1 entregue**: job `testes-macos` nos dois workflows (Python 3.9.6 e bash 3.2.57 afirmados, `release` espera por ele), `actions/checkout` v5.1.0 por SHA, passo "Skill integrity" em `.agents/skills/`; 326 testes; push em `main` (`dd27ef6`, PR #5), **sem Release** (só `.github/**` e `tests/`). 2026-10-29 — **F4 Conversa entregue** (sessão 2, worktree `sdd-open-f4-conversa`): camada "Como falar com o aluno" nas 13 skills nativas + `sdd-checar-ambiente` (seção, `references/como-falar.md`, Status com o nome da fase no lugar do banner, linha de identificação, bump minor); `sdd/templates/fragments/PERGUNTA_DECISAO.md`; `skill-lint.py --conversa` + 7 fixtures; `sdd/bin/design-lint.py` e `handoff-lint.py` (passo 8 da `sdd-design`, 3b da `sdd-handoff`); `tests/test_agnostico.py`; 388 testes; 2 ciclos de revisão de contexto fresco; push em `main` (`2fcdda1`, PR #6) e **Release `v2.2.5`** (hash conferido). 2026-10-29 — **F5 Conhecimento entregue** (sessão 3, worktree `sdd-open-f5-conhecimento`): `sdd-kb` 2.2.0 como 17ª skill (porte do starter 2.1.0; KB em `sdd/kb/` fixo; `validate_kb.py --strict` exige `teste` existente dentro da raiz; `gate.sh` autossuficiente, 4 aceitas e 12 rejeitadas pelo motivo certo, recusa a cópia do `sync`); `sdd/bin/kb-dominios.py` (KB Domains fechado em `ls sdd/kb/` ou `nenhum`, só no `## Technical Context`); `sdd-define` 2.3.0 (passo 10); `sdd-ux-review` 2.3.0 (entrevista de público no passo 1); 499 testes; revisão do DESIGN e 2 ciclos de revisão do build em contexto fresco; push em `main` (`7e19462`, PR #7) e **Release `v2.2.6`** (hash conferido). 2026-10-30 — **F6 Docs entregue** (sessão 4, worktree `sdd-open-f6-docs`): `docs/pt-BR/guia-do-aluno.md` (só PT), `docs/roadmap.md` + PT, quickstarts com "valide antes de seguir" e o caminho de atualização corrigido (P1), `adaptation-guide` corrigido (P1), READMEs com as 17 skills, `AGENTS.md.tmpl` com preparo, KB e a regra 7 "um OK só", "Por que cada regra existe" nas 7 skills de fase (bump patch), `tests/test_docs.py`; 514 testes; revisão do DESIGN e 2 ciclos de revisão do build em contexto fresco; push em `main` (`1c9bbc7`, PR #8) e **Release `v2.2.7`** (hash conferido). **P3 (starter) concluído.** 2026-10-30 — **F7 Evidência entregue** (sessão 5, worktree `sdd-open-f7-evidencia`): `report-lint.py` fail-closed (tabela reconhecida, avaliação ausente reprova, `N.A.` contra `layers:` com o slot `evidence.require_avaliacao_layers`, `PENDENTE` e `--pendente`, `git check-ignore`, veredito fora de bloco cercado, `--stdin`); `verify-gate.sh --trace`/`--sem-define`; `gate-baseline.sh`, `gate-shell-evidencia.sh`, `avaliador-guard.sh` e `test-baseline.sh` em `sdd/bin/`; `sdd-build` 2.3.0, `sdd-release` 2.4.0; 630 testes; revisão do DESIGN e 2 ciclos de revisão do build em contexto fresco (0 HIGH); push em `main` (`1d225e5`, PR #9) e **Release `v2.2.8`** (hash conferido). 2026-10-31 — **F8 Hooks entregue** (sessão 6, worktree `sdd-open-f8-hooks`): `sdd/hooks/pre-commit` (dispatcher com H2–H6, `report-lint --stdin` do `BUILD_REPORT` staged e o alarme da higiene quando ligado; recusa única com classes, "Por que importa" e `RESULTADO: COMMIT RECUSADO`) e `pre-push` (aviso de base velha); `init` liga `core.hooksPath = sdd/hooks` com confirmação, `doctor` confere, slot `project.context_file_max_kb: 100`; `sdd-higiene-dado` 1.2.0 (modo `hooks`: `git config sdd.higieneDado on|off`, nada em `.git/`); adaptador do Claude Code da E6 (`init --vendors claude` gera `.claude/hooks/sdd-report-guard.py` e `sdd-avaliador-guard.py` e faz merge em `.claude/settings.json`); `docs/hooks.md` + PT; 683 testes; revisão do DESIGN e 2 ciclos de revisão do build em contexto fresco (0 HIGH aberto); push em `main` (`7c640eb`, PR #10) e **Release `v2.2.9`** (hash conferido). 2026-10-31 — **F9 Fluxo encadeado entregue** (sessão 7, worktree `sdd-open-f9-fluxo`): `sdd/bin/sdd-fluxo.sh` (bash 3.2 + Python stdlib: `review-design` 0/1/64, `loop` 0/10/20/30/64 com `--log` regravado em toda saída, `despachar` **40 AGUARDANDO_HUMANO** com o brief em `sdd/reports/briefs/BRIEF_<papel>_<F>.md`, `seguir` 0/1/64, `estado`, `--self-test`); `sdd/bin/sdd-decisoes-lint.sh` (`--sites`, `--self-test`); marcas `[D1 · não se desfaz]` … `[D5 · provas em conflito]` e `[auto · de rotina]` no item 9 do `PERGUNTA_DECISAO.md` e nas 17 perguntas de decisão (15 nas skills, 2 nos fragmentos); `FLUXO_ENCADEADO.md`; subseção `### Fluxo encadeado` nas 9 skills de fase; slots `flow.autonomous: false` e `review.security_globs: ""`; F6/F8/F10/F11 do PORTE; seção Advisor Ledger no `DESIGN_TEMPLATE.md`; `docs/chained-flow.md` + PT; 744 testes; provada no Codex CLI 0.163 (AT-030/AT-031); revisão do DESIGN e 2 ciclos do build em contexto fresco (21 achados aplicados); push em `main` (`daf9c0f`, PR #11) + correção do teto do `release.yml` (`89ac76f`, PR #12) e **Release `v2.2.10`** por tag (hash conferido). 2026-11-01 — **F10 Revisão adversarial entregue** (sessão 8, worktree `sdd-open-f10-revisao`): `sdd/bin/adversarial-review.sh` (revisor → auditor em cadeia sobre diff congelado com sha256; 2º revisor por gatilho e desempate; exits 0/64/65/66/67/68; `--conferir` e `--ledger`), 4 adapters em `sdd/bin/adapters/` (claude, codex `-s read-only`, gemini, openrouter com `data_collection: deny`), `sdd/review/{registry.tsv,precos.tsv,prompts/}` sem cadeia padrão, `loop` com 2º revisor/rasa/desempate, `sdd-release` 2.6.0 com review externo obrigatório (dispensa D3), `sdd-build` 2.5.0, `sdd-design` 2.3.0, 5 slots `review.*`; 853 testes; revisão do DESIGN, 2 ciclos do build e 4 revisões reais do próprio mecanismo; push em `main` (`248301d`, PR #13) e **Release `v2.3.0`** por tag (hash conferido). 2026-11-01 — **F11 gate offline entregue** (sessão 8, worktree `sdd-open-f11-gate`): `sdd/bin/adversarial-review-gate.sh` (103 asserções em ~7 s com os 4 adapters reais contra stubs por engine em `sdd/review/stubs/`; exits 0/2/3/64), `sdd/bin/eval-agree.sh` (taxa de AGREE por auditor nas revisões já feitas), os 6 achados adiados da F10, `testes-macos` com teto de 30 min, a revisão adversarial fora do roadmap; 894 testes; revisão do DESIGN, 2 ciclos do build e 3 revisões reais; push em `main` (`9508ff0`, PR #14) e **Release `v2.3.1`** automática (hash conferido). 2026-11-03 — **F12 Contexto, patterns e governança entregue** (sessão 9, worktree `sdd-open-f12-contexto`): `sdd-define` 2.5.0 com os passos 1.5 (cartógrafo) e 11 (governança em todo Define), `verify-gate.sh` com o 2º motivo do exit 5, `contexto-lint.sh`, `patterns-lint.sh`, `governanca-fronteira.sh`, `governanca-bloco.py`, `docs-extract-decisions.sh`, `sdd-design` 2.4.0, `sdd/patterns/README.md`, `sdd/WORKFLOW_CONTRACTS.yaml`; 992 testes; revisão do DESIGN, 2 ciclos do build, 5 revisões reais e 2 despachos provados no Codex; push em `main` (`6b7633c`, PR #15) e **Release `v2.4.0`** por tag (hash conferido). 2026-11-04 — **F13 UX e LLM entregue**: tabela WCAG na `sdd-ux-review` 2.5.0, `contraste.sh`, skill nova `sdd-loop-builder` 1.0.0 (18 skills), roteador no passo 4 da `sdd-build` 2.6.0, fragmento `LLM_PROMPTS_DESIGN.md` com o `design-lint.py` conferindo o inventário, `prompt-drift-scan.sh` com `prompts.wrapper_pattern`, `docs/llm-in-code.md`; 1.134 testes; revisão do DESIGN, 3 ciclos do avaliador, 6 revisões reais; push em `main` (`b1348bd`, PR #16) e **Release `v2.5.0`** por tag (hash conferido), com 3 riscos aceitos pelo Roberto (etapa F13). 2026-11-05 — **F14 Playbook, 1ª de 2 entregas**: `sdd/bin/playbook-curator.sh`, `sdd/invariants.md`, passo 17b da `sdd-release` 2.7.0, `sdd-playbook` 2.2.0, `copiar-docs.sh` na `sdd-new-session` 1.4.0, molde do handoff com 6 seções, fronteira de escrita com índice, branch e `.git`; 1.411 testes; `main` = `8a320e9` (PR #17) e **Release `v2.6.0`** (hash conferido). 2026-11-06 — **F14 Drive, 2ª de 2 entregas**: `sdd-drive` 1.0.0 (`sdd/bin/sdd-drive.sh`), raio de impacto na `sdd-release` 2.8.0, `sdd/bin/deploy-do-sha.sh`, `sdd/bin/sdd-archive.py`, slot `drive.max_rounds`; 19 skills, 1.656 testes; `main` = `b0663d3` (PR #18) e **Release `v2.7.0`** (hash conferido), com 3 riscos aceitos pelo Roberto (etapa F14 Drive). 2026-11-07 — **Sessão 13**: os 5 achados da rodada 5, o teste do slice e os 3 achados da rodada 6 consertados (`5a1e3fc`, `3d69536`, sobre a curadoria `b3526ae`; `sdd-release` 2.8.1); revisão real rodadas 6 e 7 (`--conferir` CONFERE sobre `3d69536`); "sdd-open autorizado": push `b0663d3..3d69536`, PR #19 MERGED, **Release `v2.7.1`** (hash conferido); brainstorm da F15 gravado (`sdd/features/BRAINSTORM_F15_SUBSTITUICAO.md`); plano v1.6 com F18, F19 e F20. 2026-11-08 — **v2.7.2** (guardas de BUILD_REPORT e gancho encadeado). 2026-11-10 — **F15 Slots entregue** (L0 + L3 + L4 do inventário de saída): `sdd/bin/slot.sh`, slots `smoke.*` e `schema.check_cmd` reabertos, `sdd-release` 2.9.0 (testes do diff antes do OK, 3 smokes), `sdd-build` 2.7.0 (checagem de schema antes do apply), `test-baseline.sh --touched` com o teste ao lado da fonte; 1.717 testes; `main` = `45e27a9` (PR #21) e **Release `v2.8.0`** (hash conferido). |
-| **Falta** | Estado de cada frente: seção **Estado das frentes** de `sdd/features/PLANO_F4_F15_CONSOLIDADO.md` (fonte única desde 2026-11-10). **F18 + F20 ✅ (`v2.12.0`, 2026-11-11; `v2.12.1` com a curadoria, 2026-11-12)**: pendências na seção "2026-11-11 — F18 + F20"; a próxima é a **F17** (ordem no **Cronograma recomendado** do plano). **F16 ✅ (`v2.11.0`, 2026-11-11)**: pendências na seção "2026-11-11 — F16" (curadoria de 5 candidatos, R1/R4 da rodada 4, o teto do `checar` no Windows); a **F16W** (porte da suíte ao Windows) entra no plano. **F21 ✅ (`v2.9.0`) e F19 ✅ (`v2.10.1`; a tag `v2.10.0` ficou sem Release), 2026-11-10**; a skill da F21 também está no starter (`v1.5.16`). Pendências que elas deixam (detalhe na seção de 2026-11-10 "F21 + F19"): curadoria de 5 candidatos ao playbook; 2 achados leves da F19 (coluna `Cobrança` na documentação do medidor; papel `indisponível` sem exit pulado sem aviso); `.gitignore` do pacote; 14 cenários de comportamento da F21 não executados; página `/sdd/` no privado (frente de lá); saldo da OpenRouter em US$ 0,07 e codex sem cota (a revisão com duas engines depende disso). **F15 Slots ✅ (`v2.8.0`, 2026-11-10)**: o privado sincroniza para a `v2.8.0` (`sdd-open.sh sync`) e liga os 4 slots antes da fase 3; curadoria `c2560fc` sobe na próxima release do Open. Antes: **F15, inventário de saída** (só leitura, no privado: cada arquivo do SDD privado que sai na fase 4 ganha destino — equivalente no Open, script do projeto por slot, abandonado com decisão, ou lacuna; lacuna vira trabalho no Open antes da fase 4), depois o OK do Roberto para levar a fase 1 ao `main` do privado, a fase 2 (feature da prova) e os 3 slots de smoke (release própria) antes da fase 3; **v2.7.2 publicada em 2026-11-08** e fase 1 concluída (`doctor` ✅ sem ⚠️ no privado) · **F16 Ambiente agnóstico e proativo** (no Open; independente; inclui os testes no Windows desde 2026-11-07) → **F17 Starter gerado a partir do Open** (Decisão 5) → **F18 Segurança embutida no fluxo** (incluída em 2026-11-07; onda 1 pode vir antes da F17) · **F19 Custo e benefício dos modelos de revisão** (incluída em 2026-11-07; independente, depois da F11) · **F20 Ações preventivas do e-book no Open e no starter** (incluída em 2026-11-07; brainstorm conjunto com a F18; chega ao starter pela F17) (`sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, seções 8 e 9; agrupamento por sessão na seção 10) — cada uma como fluxo SDD completo numa worktree própria; os artefatos SDD desta família vivem na branch `docs/incorporar-starter`, nunca mesclada (a execução da F15 grava os dela no privado); `MANIFEST.txt` a cada arquivo novo; cada push em `main` que toca o produto publica uma Release sozinho. |
-| **Verify Gate** | última frente (F16_AMBIENTE): `bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F16_AMBIENTE.md` exit 0 em `69b7f6b` (1.941 testes; `evidence/F16_AMBIENTE/VERIFY-GATE-69b7f6b.log`) |
+| **Falta** | Estado de cada frente: seção **Estado das frentes** de `sdd/features/PLANO_F4_F15_CONSOLIDADO.md` (fonte única desde 2026-11-10). **F17 ✅ (`v2.13.0`, 2026-11-13; starter `v1.5.17`)**: etapa 1 de 2 da geração do starter; pendências na seção "2026-11-12 — F17"; a próxima é a **F17b** (ordem no **Cronograma recomendado** do plano). **F18 + F20 ✅ (`v2.12.0`, 2026-11-11; `v2.12.1` com a curadoria, 2026-11-12)**: pendências na seção "2026-11-11 — F18 + F20"; a próxima é a **F17** (ordem no **Cronograma recomendado** do plano). **F16 ✅ (`v2.11.0`, 2026-11-11)**: pendências na seção "2026-11-11 — F16" (curadoria de 5 candidatos, R1/R4 da rodada 4, o teto do `checar` no Windows); a **F16W** (porte da suíte ao Windows) entra no plano. **F21 ✅ (`v2.9.0`) e F19 ✅ (`v2.10.1`; a tag `v2.10.0` ficou sem Release), 2026-11-10**; a skill da F21 também está no starter (`v1.5.16`). Pendências que elas deixam (detalhe na seção de 2026-11-10 "F21 + F19"): curadoria de 5 candidatos ao playbook; 2 achados leves da F19 (coluna `Cobrança` na documentação do medidor; papel `indisponível` sem exit pulado sem aviso); `.gitignore` do pacote; 14 cenários de comportamento da F21 não executados; página `/sdd/` no privado (frente de lá); saldo da OpenRouter em US$ 0,07 e codex sem cota (a revisão com duas engines depende disso). **F15 Slots ✅ (`v2.8.0`, 2026-11-10)**: o privado sincroniza para a `v2.8.0` (`sdd-open.sh sync`) e liga os 4 slots antes da fase 3; curadoria `c2560fc` sobe na próxima release do Open. Antes: **F15, inventário de saída** (só leitura, no privado: cada arquivo do SDD privado que sai na fase 4 ganha destino — equivalente no Open, script do projeto por slot, abandonado com decisão, ou lacuna; lacuna vira trabalho no Open antes da fase 4), depois o OK do Roberto para levar a fase 1 ao `main` do privado, a fase 2 (feature da prova) e os 3 slots de smoke (release própria) antes da fase 3; **v2.7.2 publicada em 2026-11-08** e fase 1 concluída (`doctor` ✅ sem ⚠️ no privado) · **F16 Ambiente agnóstico e proativo** (no Open; independente; inclui os testes no Windows desde 2026-11-07) → **F17 Starter gerado a partir do Open** (Decisão 5) → **F18 Segurança embutida no fluxo** (incluída em 2026-11-07; onda 1 pode vir antes da F17) · **F19 Custo e benefício dos modelos de revisão** (incluída em 2026-11-07; independente, depois da F11) · **F20 Ações preventivas do e-book no Open e no starter** (incluída em 2026-11-07; brainstorm conjunto com a F18; chega ao starter pela F17) (`sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, seções 8 e 9; agrupamento por sessão na seção 10) — cada uma como fluxo SDD completo numa worktree própria; os artefatos SDD desta família vivem na branch `docs/incorporar-starter`, nunca mesclada (a execução da F15 grava os dela no privado); `MANIFEST.txt` a cada arquivo novo; cada push em `main` que toca o produto publica uma Release sozinho. |
+| **Verify Gate** | última frente (F17_STARTER_GERADO): `bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F17_STARTER_GERADO.md` exit 0 em `d813954` (2.090 testes; `evidence/F17_STARTER_GERADO/VERIFY-GATE-d813954.log`) |
 | **Pronto quando** | **P3 (starter):** (1) `bash scripts/publish-gate.sh .` sai 0 na worktree com os steps novos (testes unitários, check-versions, design-lint, handoff-lint, padrões de PII); (2) `python3 sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md` sai 0 e as 13 skills nativas (mais a `sdd-checar-ambiente`) têm a seção `## Como falar com o aluno` mais `references/como-falar.md` ✅ (F4); (3) existem `.agents/skills/sdd-checar-ambiente`, `sdd-higiene-dado`, `sdd-iniciar-repo` e `sdd-kb` com `tests/` passando ✅ (F5); (4) `sdd-build` tem `references/aplicar-migration.md` e `sdd/bin/report-lint.py` reprova migration listada sem prova por leitura ✅; (5) existe pelo menos uma Release no GitHub de `robertodiasduarte/sdd-open` com `SHA256SUMS.txt` ✅; (6) o item "Specs como deltas" do `docs/comparison.md` continua declarado como planejado, não como feito. **P1 (erros):** (7) `grep -rnE 'claude-build-report-guard|/drive|Step 1\.5|slice 2' sdd/ .agents/` sem hit e `verify-gate.sh` sem `--print` sai 5 na fixture de clarificação (W0) ✅; toda nota HIGH/MEDIUM de revisão aplicada ou rebatida com motivo. **P2 (agnóstico):** (8) `tests/test_agnostico.py` verde (nenhum nome de ferramenta de um agente só em skills, templates, `AGENTS.md.tmpl` e playbook) ✅ (F4); CI verde em `ubuntu-latest` e `macos-latest` ✅ (M1); F9 provada no Codex CLI ✅ (`v2.2.10`; o Codex 0.163 abre subagente, o exit 40 foi exercitado com a condição "sem subagente" no prompt); F12 provada no Codex CLI ✅ (`v2.4.0`; os 2 despachos com `exited 40`, sobre `96a97ec`). **P4 (substituição):** (9) F7–F14 publicadas (F7 ✅ `v2.2.8`, F8 ✅ `v2.2.9`, F9 ✅ `v2.2.10`, F10 ✅ `v2.3.0`, F11 ✅ `v2.3.1`, F12 ✅ `v2.4.0`, F13 ✅ `v2.5.0`, F14 ✅ `v2.7.0`); (10) no repositório privado, `bash bin/sdd-open.sh doctor` sai ✅, uma feature real do RDD percorre o fluxo do Open de ponta a ponta e `git ls-files .claude/commands/workflow .claude/agents sdd-public` está vazio (F15). |
 
 ---
 
 ## Prompt de retomada
 
-Próxima sessão: F17 Starter gerado a partir do Open, com as sobras da F18 + F20 no passo 0 (o mesmo de
+Próxima sessão: F17b Starter gerado, etapa 2, com as sobras da F17 no passo 0 (o mesmo de
 `sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`).
 
 ```text
-Executar a frente F17 do SDD Open: starter gerado a partir do Open (Decisão 5). Repo público robertodiasduarte/sdd-open.
-Abra a frente com a sdd-new-session a partir de /Users/robertoduarte/rdd-public/sdd-open (branch feat/f17-starter-gerado, de
-origin/main = e22a1b2 = v2.12.1). Responda em português.
+Executar a frente F17b do SDD Open: starter gerado, etapa 2 (Decisão 5). Repo público robertodiasduarte/sdd-open.
+Abra a frente com a sdd-new-session a partir de /Users/robertoduarte/rdd-public/sdd-open (branch feat/f17b-starter-etapa2, de
+origin/main = d813954 = v2.13.0). Responda em português.
 Push, merge, tag e Release neste repositório pedem a frase do Roberto "sdd-open autorizado": pergunte, não presuma.
-A F17 toca dois repositórios: o gerador mora no Open; o robertodiasduarte/sdd-starter recebe a cópia gerada e pede OK PRÓPRIO
-do Roberto para cada push, PR e Release lá. Nada da RDD (nomes de aluno, edges, caminhos do Wordpress, chaves, código do
-repositório privado, texto do e-book de segurança) entra em nenhum dos dois.
+A F17b toca dois repositórios: o gerador mora no Open; o robertodiasduarte/sdd-starter recebe a cópia gerada e pede OK PRÓPRIO
+do Roberto para cada push, PR e Release lá (merge na main do starter publica a Release automática). Nada da RDD (nomes de
+aluno, edges, caminhos do Wordpress, chaves, código do repositório privado, texto do e-book de segurança) entra em nenhum dos dois.
 
 Leia primeiro (a branch de documentos é docs/incorporar-starter; leia por git show):
 - GIT_TERMINAL_PROMPT=0 git fetch -q origin
-- git show origin/docs/incorporar-starter:sdd/features/PLANO_F4_F15_CONSOLIDADO.md  → "Estado das frentes", o "Cronograma
-  recomendado" (com as sobras do passo 0), a seção da F17 (objetivo, entrega, decidir, depende de) e a seção 10 (pares)
-- git show origin/docs/incorporar-starter:sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md  → Ficha (Falta), Eventos de 2026-11-11 e
-  a seção "2026-11-11 — F18 + F20" (Pendências e Alertas)
-- git show origin/docs/incorporar-starter:sdd/features/AVALIACAO_STARTER_PARA_OPEN.md → o que o starter tem e o Open não
-- o ## Sempre de sdd/playbook.md da frente
-- o starter publicado: gh release view --repo robertodiasduarte/sdd-starter (só leitura) e o README dele
+- git show origin/docs/incorporar-starter:sdd/features/PLANO_F4_F15_CONSOLIDADO.md  → "Estado das frentes" (F17 e F17b), o
+  "Cronograma recomendado" (com as sobras do passo 0), a seção da F17 e a seção 10 (pares)
+- git show origin/docs/incorporar-starter:sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md  → Ficha (Falta), Eventos de 2026-11-12 e
+  2026-11-13 e a seção "2026-11-12 — F17" (Pendências e Alertas)
+- git show origin/docs/incorporar-starter:sdd/features/BRAINSTORM_F17_STARTER_GERADO.md (decisões e YAGNI) e
+  sdd/features/DESIGN_F17_STARTER_GERADO.md (Decisions 1–11: trocas exatas, regras mecânicas, lint, trava, versão)
+- git show origin/docs/incorporar-starter:sdd/reports/evidence/F17_STARTER_GERADO/COMPARACAO-fases-e-apoio.md → o que o
+  starter tem melhor em brainstorm, handoff e governança (modo web), item a item
+- o ## Sempre de sdd/playbook.md da frente; o starter publicado: gh release view --repo robertodiasduarte/sdd-starter
 
-0. Sobras da F18 + F20, na branch da frente (sobem com a release dela):
-   a. Cenário incidente-chave da sdd-seguranca (evals/cases.json) em contexto novo, 3 execuções, critério escrito antes (LM-011);
-      registre em manifest.json → executados.
-   b. Pequenos (decida com o Roberto se entram): o --help da governanca-fronteira.sh exige Python; o resumo do checar mostra o
-      editor detectado, não o do git config sdd.editor; o guia do aluno sem a linha gh: do inventário; a ambiguidade "item 10"
-      (FASE 2 × 0a) da sdd-release (docs/adaptation-guide.md, slot.sh, deploy-do-sha.sh); a recuperação "rode só o passo 11"
-      do verify-gate.sh pula o passo 12.
-   Bump das skills tocadas e python3 scripts/check-versions.py --base v2.12.1.
+0. Sobras da F17, na branch da frente (sobem com a release dela):
+   a. Curadoria dos 3 candidatos ao playbook do BUILD_REPORT da F17 (tag no arquivo gerado muda tudo; aceite que isenta a
+      linha inteira; comparação que vira "o slot contra ele mesmo"): uma decisão do Roberto por candidato.
+   b. Pendentes da revisão da F17, sem ocorrência hoje (decida com o Roberto se entram): o CI do starter sem os testes de
+      tests/ da raiz (a v1.5.16 também não rodava); collect_evidence.py sem excluir node_modules/; copiar byte a byte o que
+      nenhuma regra muda (CRLF); trazer_moldes lendo o CHANGELOG; caminho de skill irmã nos scripts (os dois últimos falham alto,
+      com 65); "sdd/hooks" sem barra passa no lint (~15 linhas condicionais da higiene-dado); o gate.sh da kb cai para 644 no starter.
+   Bump das skills tocadas e python3 scripts/check-versions.py --base v2.13.0.
 
 1. A frente: sdd-brainstorm → sdd-define → sdd-design → sdd-build → sdd-release.
-   - Brainstorm com as decisões abertas do plano: a lista de skills que vão ao starter (só as que funcionam sozinhas: no mínimo
-     sdd-checar-ambiente, sdd-iniciar-repo, sdd-new-session, sdd-higiene-dado, sdd-kb; a sdd-seguranca tem a forma "confira à
-     mão" em todo item do catálogo); o que acontece com as skills que existem só no starter; geração manual (comando na release
-     do Open) ou automática (workflow que abre PR no starter); como o sdd/ambiente.md do starter convive com os slots do
-     sdd/config.yaml do Open. Antes da 1ª geração, compare skill a skill o starter publicado com o Open.
-   - P2 (agnóstico) e a web: o starter é a porta de quem usa claude.ai ou ChatGPT sem terminal; teste no Open que reprova skill
-     gerada que cite arquivo criado pelo init.
+   - Brainstorm com as decisões abertas: o modo web (sem terminal, entregar o documento no chat sem fingir que gravou; fato ×
+     inferência; pendências 🐛/✨; prova por script só quando há gate) em brainstorm, handoff e governança no Open, para elas
+     entrarem na lista do gerador; o destino de define, design, build, release e ux-review-builder (modo sem script dentro do
+     Open, ou sair do starter, com os zips da v1.5.17 ainda baixáveis); se docs/ e exemplos/ do starter passam a ser gerados.
+     Meta do Roberto: manutenção num repositório só; o starter simples para o aluno iniciante.
+   - O gerador já existe: skill nova na lista pede linha no scripts/starter/openai.tsv, trocas em scripts/starter/trocas/ e,
+     se a cópia mudar, versão maior que a do starter (o gerador confere antes de gravar). O README do starter vem de
+     scripts/starter/raiz/README.md (teste exige toda skill gerada citada nos 2 idiomas).
+   - A 2ª geração parte da tag publicada desta frente, num clone limpo do starter, numa branch; as 9 checagens do CI de lá
+     antes do PR; trava, publish-check, check-versions --base <última tag do starter>, gate.sh da kb.
    - O passo 5c da sdd-build grava sdd/reviews/LEDGER_REVISAO_{F}.md (ledger-revisao-lint.sh); no fim, eval-revisores.sh no relatório.
    - Documentos SDD (features, reports, reviews, evidence) ficam fora do git na pasta da frente e vão no fim para a branch de
      documentos (worktree /Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16).
 
-Revisão adversarial: saldo da OpenRouter em US$ 16,53 em 2026-11-12, e a chave tem outro uso (o saldo caiu mais que o custo das
-rodadas): leia /credits antes de cada rodada paga; limit_remaining é o limite da chave, não o saldo. Cadeia que funcionou na F16
-e na F18 + F20: claude revisa, `openrouter` (qwen) audita, --no-revisor2 e --no-desempate (codex sem cota) — registre a dispensa
-do 2º revisor. A chave vem de ~/.config/rdd-eval.env, que guarda segredo em COMENTÁRIO: exporte só a linha
-^OPENROUTER_API_KEY= no ambiente do comando, sem imprimir. HIGH do auditor se confere no código antes de agir; desacordo sobre
-comportamento de ferramenta se decide por medição registrada (LM-021).
-Teto do método: 3 rodadas de revisão e 2 ciclos do avaliador; passar do teto é pergunta ao Roberto. Rode o raio de impacto
-(0b) antes da última rodada: na F18 + F20 ele achou 4 quebras. Avaliador de segurança: chave falsa montada em tempo de
-execução, nunca por extenso nos logs (LM-020).
+Revisão adversarial: saldo da OpenRouter em US$ 14,67 em 2026-11-12 (fim do dia), e a chave tem outro uso: leia /credits antes
+de cada rodada paga; limit_remaining é o limite da chave, não o saldo. Cadeia que funcionou na F16, na F18 + F20 e na F17:
+claude revisa, openrouter (qwen) audita, --no-revisor2 e --no-desempate (codex sem cota) — o --conferir pede
+--aceitar-sem-revisor2 "<motivo>" com diff acima de 8 arquivos. A chave vem de ~/.config/rdd-eval.env, que guarda segredo em
+COMENTÁRIO: exporte só a linha ^OPENROUTER_API_KEY= no ambiente do comando, sem imprimir. HIGH do auditor se confere no código
+antes de agir; desacordo sobre comportamento de ferramenta se decide por medição registrada (LM-021).
+Teto do método: 3 rodadas de revisão e 2 ciclos do avaliador; passar do teto é pergunta ao Roberto. Rodada só do delta com 0
+achados em segundos é marcada "rasa" pelo --conferir e não conta: a última rodada antes da release cobre o diff inteiro.
+Rode o raio de impacto (0b) antes da última rodada (na F17 achou 3 quebras em código não modificado).
 
-Release: pela sdd-release, PR + CI verde antes da tag (Ubuntu ~29 min, teto 45; macOS ~44 min, teto 75; Windows caminho do
-aluno ~4 min, teto 30). A varredura de segurança roda no próprio pacote (item 10 da 0a): log de evidência com chave por
-extenso bloqueia. Se a suíte crescer, olhe o teto ANTES da tag. Sem tag sai patch; para minor, push da main e da tag juntos
-(git push --atomic). Número com 11 dígitos em arquivo do pacote é barrado pelo publish-gate: cite o commit.
-Rode a suíte com a máquina livre: o teste de tempo da sdd-drive (test_fundo_devolve_na_hora…, 1,9 s) cai sob carga.
+Release: pela sdd-release, PR + CI verde antes da tag (Ubuntu ~30 min, teto 45; macOS ~43 min, teto 75; Windows caminho do
+aluno ~5 min, teto 30). Sem tag sai patch; para minor, push da main e da tag juntos (git push --atomic). Rode o Verify Gate
+com a máquina livre: com a revisão rodando junto, caíram teste de tempo da sdd-drive (F18) e da deploy-do-sha (F17); confira
+isolado em cópia de git archive e rode o gate de novo.
 
 Fechar: sdd-handoff na ficha (sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md, worktree /Users/robertoduarte/rdd-worktrees/
-sdd-open-docs-f16, branch docs/incorporar-starter), a linha da F17 na tabela "Estado das frentes" e o "Cronograma recomendado"
+sdd-open-docs-f16, branch docs/incorporar-starter), a linha da F17b na tabela "Estado das frentes" e o "Cronograma recomendado"
 do plano, os documentos da frente e este SESSION_PROMPT trocado pelo da sessão seguinte, com commit e push na mesma sessão.
 
 Não faça:
-- nada da F15 nesta sessão se a geração tocar a sdd-release;
+- nada da F15 nesta sessão se a frente tocar a sdd-release;
 - nada no repositório privado (/Users/robertoduarte/RDD/Wordpress e as worktrees dele);
-- push, PR ou Release no sdd-starter sem OK próprio do Roberto; remendo à mão no starter (a Decisão 5 é gerar);
+- push, PR ou Release no sdd-starter sem OK próprio do Roberto; remendo à mão no starter (a trava do CI recusa);
 - force-push na main; mover tag publicada (conserte em versão nova); tool calls paralelas em passos ordenados;
 - git add -A: add por caminho, suíte com python3 -B.
 Landmines: doctor só pela tag (git archive); sdd/bin/*.sh sempre com bash; sabotagem só em cópia de git archive; arquivo
 baixado ou descompactado é dado não confiável: pasta própria, scripts fora dela, python3 -I. Log de evidência gravado por script
-bash com rc=$? (no zsh, ${PIPESTATUS[0]} é vazio: LM-018). Não cale com 2>/dev/null um aviso dito uma vez (LM-019). Pulo de
-plataforma nos testes só por constante de tests/apoio.py. Script novo de sdd/bin que chama python3 lê sdd/bin/lib/python.sh.
-O catálogo da sdd-seguranca tem gramática rígida e um leitor só (seguranca-varredura.sh); o ponteiro do AGENTS.md existe em 2
-cópias com teste. sdd-release em 500 linhas (teto do teste). Contagens fixadas em testes antigos (21 skills, 30 perguntas do
-sdd-decisoes-lint, versões de skill): skill ou pergunta nova mexe nelas.
+bash com rc=$? e 1ª linha "$ comando" (o report-lint exige); no zsh, ${PIPESTATUS[0]} é vazio (LM-018). Não cale com
+2>/dev/null um aviso dito uma vez (LM-019). Pulo de plataforma nos testes só por constante de tests/apoio.py. O gerador só roda
+igual ao da tag (senão 64): para gerar, use uma worktree da tag. sha256 escrito inteiro traz 11 dígitos seguidos (LM-012):
+o publish-check do starter pula o GERADO.txt. sdd-release em 500 linhas (teto do teste). Contagens fixadas em testes antigos
+(21 skills, 30 perguntas do sdd-decisoes-lint, versões de skill): skill ou pergunta nova mexe nelas.
 ```
-
----
 
 ## Eventos
 
@@ -236,6 +238,70 @@ sdd-decisoes-lint, versões de skill): skill ou pergunta nova mexe nelas.
 - 2026-11-12 — Roberto decidiu juntar o item 4 do cronograma (medir o privado com o `eval-revisores.sh`, pendência da F19) à **fase 4 da F15**: mesma sessão, no repositório privado, logo depois da troca, para a medição já pegar revisões feitas com o Open. O cronograma passa de 4 para 3 linhas. A frente da fase 4 foi aberta lá (`feat/f15-fase4`); o prompt da sessão mora na ficha da F15 de lá, não aqui, porque cita caminhos e frentes da RDD. A trava da fase 4 caiu de 16 para 1 frente antiga. A próxima frente do Open continua sendo a F17 (este SESSION_PROMPT não muda).
 - 2026-11-12 — F15 no privado (sessão da fase 4): a trava caiu para 1 frente antiga e o Roberto decidiu **esperar** ela fechar; sync pela tag **`v2.12.1`** feito (o `init` só completa arquivo ausente: as cópias intactas da versão anterior foram atualizadas por cópia); **medição dos revisores feita** (números na linha da F19; "com dano" sem dado). Para o Open: 3 achados LOW do pacote apontados pela revisão do privado (o resumo "quando abortar" da `sdd-release` sem o exit 127 da varredura e sem o exit 2 do `ledger-revisao-lint.sh`; a heurística `comentado()` da `seguranca-varredura.sh` esconde aviso S12/S16/S14 depois de ` #` ou `<!--` na mesma linha; `updated` da `sdd-brainstorm` em 2026-10) e 1 do `checar.sh` (lê só `refs/remotes/origin/HEAD` local e ignora `project.default_branch`: ref velha faz ele dizer a branch errada). O auditor qwen passou do teto de 15 min com um diff de 576 KB (sync do pacote inteiro).
 - 2026-11-12 — **F17 aberta** (pedido do Roberto) com a `sdd-new-session`: worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f17-starter-gerado`, branch `feat/f17-starter-gerado`, de `origin/main` = `e22a1b2` (`v2.12.1`), aberta no Cursor; `SESSION_PROMPT_INCORPORAR_STARTER.md` atualizado (frente já existe; passo 0 ganha os 4 achados do pacote vindos do privado; D6 com as cópias de usuário velhas; clone local do starter atrasado).
+- 2026-11-12 — F17, passo 0 (Roberto): os 8 pequenos de 0b e 0c entram; o cenário `incidente-chave` rodou em contexto novo (2 de 3, depois do conserto do roteiro 3 de 3).
+- 2026-11-12 — F17, brainstorm (Roberto): meta = **manutenção num repositório só** e starter simples para o iniciante; **caminho 1, em 2 etapas** (agora 10 skills geradas; 8 congeladas até a **F17b**, que decide com dado o destino de define, design, build, release e ux-review-builder); geração **manual**, a partir de tag; `sdd/ambiente.md` sai (a new-session gerada é a do Open); `agents/openai.yaml` por **tabela única** no Open; **trocas exatas fora da skill**.
+- 2026-11-12 — F17, release (Roberto): "sdd-open autorizado" dado antes, para quando tudo estivesse verde; revisão acima do teto em 4 decisões (rodada 4 só do delta; rodada 5 sobre o diff inteiro porque o conferidor marcou a 4 como rasa; rodada 6 para o conserto da 5; rodada 7 como a última, com os leves dela virando pendência).
+- 2026-11-13 — **F17 publicada: Release `v2.13.0`** (`main` = `d813954`, PR #27) e **starter `v1.5.17`** (PR #10 de lá, OK próprio do Roberto para push, PR e integração); `~/.claude/skills/sdd-*` (14) regeneradas pela tag, com backup (D6, OK do Roberto). Roberto: a próxima frente é a **F17b**.
+
+## 2026-11-12 — F17 Starter gerado a partir do Open (Release v2.13.0, starter v1.5.17)
+
+### O que foi feito
+
+- **Passo 0:** cenário `incidente-chave` da `sdd-seguranca` em contexto novo (2 séries × 3, critério escrito antes): 2 de 3 na 1ª (uma execução pôs "anote o horário" antes de trocar a chave); com o `INCIDENTE.md` consertado, 3 de 3 (`aaf779c`, `sdd-seguranca` 1.0.1). Os 8 pequenos de 0b e 0c (`13e1c2e`): `--help` da fronteira sem Python; editor do `git config` e `project.default_branch` no `checar`; "FASE 2, item 10"; recuperação pelos passos 11 e 12; resumo de abortar com 127 e o 2 do ledger; `comentado()` da varredura só no começo da linha; `updated` da brainstorm.
+- **Comparação skill a skill** (2 agentes em contexto novo): o Open já tinha tudo de checar-ambiente, iniciar-repo, higiene-dado e kb; trouxe do starter o que ele tinha melhor em new-session (pré-voo à mão com nuvem e 4 casos, skills fora do git copiadas para a frente, notas do porquê), auditoria-harness (vários motores) e prompt-builder (drift à mão). Consertos achados: a `sdd-governanca` citava `rdd-audita-schema` (inexistente; agora "prova pós-build" pelo "Aplicar a migration") e o molde do brainstorm tinha restos de outro domínio.
+- **F17, fluxo completo** (worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f17-starter-gerado`): BRAINSTORM, DEFINE (v1.3, 10 ATs; governança e segurança N.A.), DESIGN (v1.1, 11 decisões, revisão em contexto novo com 12 notas e 5 HIGH), BUILD_REPORT. `scripts/gerar-starter.py` + `scripts/starter/` (lista, `openai.tsv`, 17 trocas exatas, `lint-aceitos.tsv`, blocos, infra do starter em `raiz/`): lê da tag, sem rede; regras mecânicas (moldes para dentro, caminhos só no Markdown, URL do starter, `### Fluxo encadeado` sai, GENERATED, bloco "Quando migrar", `openai.yaml`, `GERADO.txt` com sha256); lint do `init` fechado; confere a versão contra o destino; 64/65 sem gravar nada. `check-gerado.py` no starter recusa edição à mão. Skills: new-session 1.6.0, auditoria-harness 1.2.1, prompt-builder 2.2.0, governanca 2.4.1, engenharia-reversa-saas 1.1.1.
+- **Release:** PR https://github.com/robertodiasduarte/sdd-open/pull/27 (MERGED); `git push --atomic` de `e22a1b2..d813954` na `main` + tag `v2.13.0`; Release https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.13.0 em 2026-11-13T02:56:48Z, SHA-256 de `sdd-open-v2.13.0.tar.gz` com prefixo `55e76746ce94`, `shasum -a 256 -c` OK (`evidence/F17_STARTER_GERADO/RELEASE-sha256.log`).
+- **Starter:** 1ª geração pela tag num clone limpo (branch `feat/f17-primeira-geracao`, `d2f3085`, 86 arquivos; as 9 checagens do CI de lá verdes antes do PR); PR https://github.com/robertodiasduarte/sdd-starter/pull/10, CI verde (com o passo novo "Generated files gate"), fast-forward na `main`; Release **`v1.5.17`** em 2026-11-13T08:00:51Z, 18 zips `OK` no `SHA256SUMS.txt` (`STARTER-RELEASE-sha256.log`).
+- **D6:** `~/.claude/skills/sdd-*` (14) regeneradas pela tag `v2.13.0`; as antigas em `~/.claude/skills-backup-2026-11-13/` (`D6-skills-usuario.log`).
+
+### Casos e testes em aberto
+
+- **Verify Gate** em `d813954`: exit 0, 2.090 testes (partida: 2.033). A 1ª execução nesse commit caiu num teste de tempo da `deploy-do-sha` com a rodada 7 rodando junto; isolado 3 de 3 verdes (`DEPLOY-tempo-d813954.log`), e a 2ª execução inteira passou. CI do PR: Ubuntu 30m18s (teto 45), macOS 43m07s (teto 75), Windows 4m42s (teto 30).
+- **Revisão:** 7 rodadas no ledger `sdd/reviews/LEDGER_REVISAO_F17_STARTER_GERADO.md` (claude revisa, qwen audita; 2º revisor dispensado e registrado no `--conferir`); `eval-revisores.sh`: claude 12 achados por 4 rodadas contadas (8 aplicados, 0 com dano, nominal US$ 4,00 até a rodada 4), qwen US$ 0,11 pagos, AGREE 91,7% — as rodadas 5 a 7 somaram mais US$ 0,14 pagos.
+- **Raio de impacto:** 4 superfícies, 3 quebras em código não modificado (auditoria: `/prompts:<nome>` e cópia gerada; new-session: a branch do remoto vinha do pré-voo), consertadas com teste.
+- **Avaliador de contexto novo:** NEEDS_WORK no ciclo 1 (a kb gerada mandava rodar `.agents/skills/sdd-kb/…` e citava o `sync`), PASS_PENDENTE_RECIBO no ciclo 2; os recibos de fora do gate (geração real, PR e Release do starter, CI, Release do Open, D6) foram cumpridos depois.
+- **Sabotagens:** 5 de 5 mortas em `4b6a2df`.
+
+### Pendências
+
+**🐛 Bug fix:**
+- nenhum conhecido aberto.
+
+**✨ Feature improvement:**
+- **F17b:** modo web de brainstorm, handoff e governança; destino de define, design, build, release e ux-review-builder; `docs/` e `exemplos/` do starter.
+- **Curadoria de 3 candidatos ao playbook** (BUILD_REPORT da F17).
+- **Da revisão, sem ocorrência hoje:** CI do starter sem `tests/` da raiz (a v1.5.16 também não rodava); `collect_evidence.py` sem excluir `node_modules/`; copiar byte a byte o que nenhuma regra muda (CRLF); `trazer_moldes` lendo o CHANGELOG; caminho de skill irmã nos scripts (os dois últimos falham alto, com 65).
+- **Lint:** `sdd/hooks` sem barra passa (~15 linhas condicionais da higiene-dado).
+- **Starter:** o `gate.sh` da kb caiu para 644 (o modo vem da tag; todo uso é `bash …`).
+- **Cenários em outros agentes:** o `incidente-chave` rodou só no Claude.
+- **Saldo da OpenRouter:** US$ 14,67 em 2026-11-12 (fim do dia).
+
+### Próximos passos
+
+1. ✅ `v2.13.0` e starter `v1.5.17` publicadas; D6 feito.
+2. Próxima frente: **F17b** (Cronograma recomendado do plano), com o passo 0 das sobras acima.
+3. No privado: `sdd-open.sh sync` para a `v2.13.0` quando quiser as skills novas (o gerador não vai ao projeto do aluno).
+
+### Alertas — o que não quebrar
+
+- **Nenhuma skill gerada se edita no starter:** o `check-gerado.py` do CI de lá recusa; muda no Open, gera de novo pela tag.
+- **O gerador só roda igual ao da tag** (senão 64): para gerar, use uma worktree da tag publicada.
+- **Mudança que altera a cópia gerada** (trocas, `openai.tsv`, blocos, moldes) pede versão maior na skill do Open: o gerador confere antes de gravar (65).
+- **Troca exata casa 1 vez**: mudar o texto do Open num trecho trocado faz o gerador parar (65) — ajuste a troca.
+- **sha256 inteiro e 11 dígitos** (LM-012): o `publish-check` do starter pula o `GERADO.txt`; nada de sha inteiro em arquivo do pacote.
+- **Contagens fixadas:** 21 skills, 30 perguntas em 25 arquivos, versões em vários `test_f*_textos`.
+- **O `sdd-open` é público**, inclusive a branch `docs/`.
+
+### Onde está o trabalho
+
+- Remoto `https://github.com/robertodiasduarte/sdd-open.git`, `main` = `d813954` = `v2.13.0`; branch remota `feat/f17-starter-gerado` (PR #27 MERGED).
+- Starter: `main` = `d2f3085` = `v1.5.17`; clone usado em `/Users/robertoduarte/rdd-worktrees/sdd-starter-f17-gerado`.
+- Worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f17-starter-gerado`: as 7 revisões em `sdd/reports/reviews/EXTERNAL_REVIEW_20261112-*` ficam só nela.
+- Documentos da frente nesta branch: `sdd/features/{BRAINSTORM,DEFINE,DESIGN}_F17_STARTER_GERADO.md`, `sdd/reports/BUILD_REPORT_F17_STARTER_GERADO.md`, `sdd/reports/evidence/F17_STARTER_GERADO/`, `sdd/reviews/LEDGER_REVISAO_F17_STARTER_GERADO.md` e as 2 avaliações.
+
+### Prompt de retomada
+
+Na seção `## Prompt de retomada`, logo depois da Ficha (o mesmo de `sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`).
 
 ## 2026-11-11 — F18 + F20 Segurança embutida no fluxo (Release v2.12.0, v2.12.1)
 

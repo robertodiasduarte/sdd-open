@@ -1,0 +1,34 @@
+$ # um arquivo por padrão do AT-004 (f1..f13), mais f13py.py (caminho de skill GERADA num .py) e um CHANGELOG.md (fora por desenho)
+  CHANGELOG.md: 
+  f1.md: veja sdd/bin/x.sh
+  f10.md: veja .agents/skills/sdd-build/SKILL.md
+  f11.md: veja rode o init do sdd-open
+  f12.md: veja o `init` do sdd-open
+  f13.md: veja .agents/skills/sdd-kb/scripts/kb_normativo.py
+  f13py.py: veja .agents/skills/sdd-kb/scripts/kb_normativo.py
+  f14.md: veja CHANGELOG-ok sdd/bin/
+  f2.md: veja sdd/templates/A.md
+  f3.md: veja sdd/hooks/pre-commit
+  f4.md: veja sdd/review/x
+  f5.md: veja sdd/patterns/x.md
+  f6.md: veja sdd/playbook.md
+  f7.md: veja sdd/invariants.md
+  f8.md: veja sdd/WORKFLOW_CONTRACTS.yaml
+  f9.md: veja bin/sdd-open.sh
+$ python3 -B open/scripts/gerar-starter.py --lint sint
+🛑 skills/x/f1.md:2: sdd/bin/
+🛑 skills/x/f10.md:2: .agents/skills/sdd-build/
+🛑 skills/x/f11.md:2: init do sdd-open
+🛑 skills/x/f12.md:2: `init` do sdd-open
+🛑 skills/x/f14.md:2: sdd/bin/
+🛑 skills/x/f2.md:2: sdd/templates/
+🛑 skills/x/f3.md:2: sdd/hooks/
+🛑 skills/x/f4.md:2: sdd/review/
+🛑 skills/x/f5.md:2: sdd/patterns/
+🛑 skills/x/f6.md:2: sdd/playbook.md
+🛑 skills/x/f7.md:2: sdd/invariants.md
+🛑 skills/x/f8.md:2: sdd/WORKFLOW_CONTRACTS.yaml
+🛑 skills/x/f9.md:2: bin/sdd-open.sh
+RESULTADO: CITA ARQUIVO DO INIT
+→ troque a citação (scripts/starter/trocas/) e gere de novo.
+rc=65

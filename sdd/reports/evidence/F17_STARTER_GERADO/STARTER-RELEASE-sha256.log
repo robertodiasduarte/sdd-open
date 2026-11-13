@@ -1,0 +1,7 @@
+$ gh release download v1.5.17 --repo robertodiasduarte/sdd-starter && shasum -a 256 -c SHA256SUMS.txt
+sdd-release.zip: OK
+sdd-seguranca.zip: OK
+ux-review-builder.zip: OK
+zips: 18
+GERADO.txt no zip da sdd-seguranca: 1
+[download_exit=0] [exit=0]

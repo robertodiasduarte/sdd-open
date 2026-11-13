@@ -1,0 +1,12 @@
+$ echo 'LIXO DA ARVORE DE TRABALHO' >> open/.agents/skills/sdd-kb/SKILL.md; printf 'sdd-kb\tX\tY\tZ\n' >> open/scripts/starter/openai.tsv; git -C open status --porcelain; sandbox-exec -p '(version 1)(allow default)(deny network*)' python3 -B open/scripts/gerar-starter.py --tag v9.9.0 starter2 | tail -2; grep -rl 'LIXO DA ARVORE' starter2/skills | wc -l; diff -r -x .git starter starter2 && echo 'diff -r starter starter2: vazio'; git -C open checkout -q -- . ; git -C open status --porcelain | wc -l
+ M .agents/skills/sdd-kb/SKILL.md
+ M scripts/starter/openai.tsv
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+       0
+diff -r starter starter2: vazio
+       0
+rc=0
+$ sandbox-exec -p '(version 1)(allow default)(deny network*)' python3 -c 'import socket; socket.create_connection(("1.1.1.1",443),3)' 2>&1 | tail -1   # prova que a sandbox corta a rede
+PermissionError: [Errno 1] Operation not permitted
+rc=0

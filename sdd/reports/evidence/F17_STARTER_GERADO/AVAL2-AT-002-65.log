@@ -1,0 +1,44 @@
+$ . /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/estado.sh; for t in c0 c2 semopenai lint lintsync; do echo "== tag $t ($(git -C open log -1 --format=%s $t))"; gera $t; done
+== tag c0 (c0)
+🛑 sdd-checar-ambiente.md, bloco 1: o trecho casou 0 vez(es) em scripts/checar.sh; esperado exatamente 1 (o texto do Open mudou? ajuste a troca)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+destino antes: 04c15606a0f3a5b9
+0 | depois: 04c15606a0f3a5b9
+0
+== tag c2 (c2)
+🛑 sdd-checar-ambiente.md, bloco 1: o trecho casou 2 vez(es) em scripts/checar.sh; esperado exatamente 1 (o texto do Open mudou? ajuste a troca)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+destino antes: 04c15606a0f3a5b9
+0 | depois: 04c15606a0f3a5b9
+0
+== tag semopenai (semopenai)
+🛑 sdd-loop-builder não tem linha em scripts/starter/openai.tsv
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+destino antes: 04c15606a0f3a5b9
+0 | depois: 04c15606a0f3a5b9
+0
+== tag lint (lint)
+🛑 o lint do init achou 1 citação(ões) a arquivo que só o init cria:
+  skills/sdd-loop-builder/SKILL.md:135: sdd/bin/
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+destino antes: 04c15606a0f3a5b9
+0 | depois: 04c15606a0f3a5b9
+0
+== tag lintsync (lintsync)
+🛑 o lint do init achou 1 citação(ões) a arquivo que só o init cria:
+  skills/sdd-higiene-dado/SKILL.md:252: `sync`
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+destino antes: 04c15606a0f3a5b9
+0 | depois: 04c15606a0f3a5b9
+0
+rc=0

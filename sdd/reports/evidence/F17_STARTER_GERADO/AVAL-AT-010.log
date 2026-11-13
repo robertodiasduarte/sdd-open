@@ -1,0 +1,35 @@
+$ bash probes/at010.sh <W>
+$ # na cópia do HEAD (open/ = git archive de 4b6a2df, repo temporário)
+$ python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/*/SKILL.md | grep -vc ✅ ; nº de skills
+rc=0
+linhas ✅: 21 · outras: 0 · skills: 21
+$ python3 -B scripts/check-versions.py
+PASS: check-versions — 21 skills com versão coerente.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+$ cd tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest test_agnostico
+Ran 7 tests in 0.108s
+
+OK
+rc=0
+$ (cd proj && bash <open>/bin/sdd-open.sh init --vendors claude,codex --yes) | tail -3
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+rc=0
+$ (cd proj && find . -name gerar-starter.py -o -name check-gerado.py -o -name openai.tsv -o -name lista.txt -o -path "*scripts/starter*" | grep -v ./.git/)
+find_grep_rc=1 (1 = nada de scripts/starter no projeto)
+$ ls -a proj
+. .. .agents .claude .git AGENTS.md CLAUDE.md sdd 
+$ (cd proj && bash <open>/bin/sdd-open.sh doctor) | grep -i starter   # controle: sem skill do starter
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval.NXmc/proj
+grep_rc=0
+$ mkdir -p proj/.agents/skills/sdd-zz/agents && cp starter/skills/sdd-checar-ambiente/agents/openai.yaml proj/.agents/skills/sdd-zz/agents/; doctor | grep -i starter
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval.NXmc/proj
+⚠️  skills do sdd-starter detectadas no mesmo projeto: os nomes sdd-* colidem — use um ou outro por projeto
+grep_rc=0
+$ (o mesmo em .claude/skills/sdd-zz/agents/openai.yaml) doctor | grep -i starter
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval.NXmc/proj
+⚠️  skills do sdd-starter detectadas no mesmo projeto: os nomes sdd-* colidem — use um ou outro por projeto
+grep_rc=0

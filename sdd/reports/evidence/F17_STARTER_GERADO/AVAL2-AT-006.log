@@ -1,0 +1,84 @@
+$ (cd starter && python3 -B scripts/check-gerado.py; echo rc=$?)
+C() { rm -rf c; cp -R starter c; }
+caso() { echo "== $1"; (cd c && python3 -B scripts/check-gerado.py 2>&1 | grep -v '^ *$'; echo rc=${PIPESTATUS[0]}); }
+C; printf 'X' | dd of=c/skills/sdd-kb/SKILL.md bs=1 seek=500 conv=notrunc 2>/dev/null; caso '1 byte trocado em skills/sdd-kb/SKILL.md'
+C; rm c/skills/sdd-loop-builder/agents/openai.yaml; caso 'arquivo da skill faltando'
+C; echo x > c/skills/sdd-seguranca/references/extra.md; caso 'arquivo a mais na pasta da skill'
+C; mkdir -p c/skills/sdd-kb/scripts/__pycache__; echo x > c/skills/sdd-kb/scripts/__pycache__/a.pyc; caso '__pycache__ na skill (ignorado?)'
+C; echo '# x' >> c/scripts/check-versions.py; caso 'scripts/check-versions.py editado'
+C; echo '# x' >> c/.github/workflows/ci.yml; caso 'workflow ci.yml editado'
+C; echo 'x' >> c/README.md; caso 'README.md editado'
+C; rm c/scripts/package.sh; caso 'scripts/package.sh faltando'
+C; echo x > c/scripts/novo.sh; caso 'arquivo a mais em scripts/'
+C; echo x > c/.github/workflows/novo.yml; caso 'arquivo a mais em .github/workflows/'
+C; echo '# x' >> c/skills/sdd-kb/GERADO.txt; echo y >> c/skills/sdd-kb/SKILL.md; caso 'SKILL.md e o GERADO.txt da skill editados juntos'
+C; echo '' >> c/.gitattributes; caso '.gitattributes editado'
+C; echo x >> c/skills/sdd-brainstorm/SKILL.md; caso 'skill congelada editada (fora da trava, deve sair 0)'
+✅ 10 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+== 1 byte trocado em skills/sdd-kb/SKILL.md
+🛑 skills/sdd-kb/SKILL.md: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== arquivo da skill faltando
+🛑 skills/sdd-loop-builder/agents/openai.yaml: falta
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== arquivo a mais na pasta da skill
+🛑 skills/sdd-seguranca/references/extra.md: sobra
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== __pycache__ na skill (ignorado?)
+✅ 10 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+== scripts/check-versions.py editado
+🛑 scripts/check-versions.py: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== workflow ci.yml editado
+🛑 .github/workflows/ci.yml: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== README.md editado
+🛑 README.md: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== scripts/package.sh faltando
+🛑 scripts/package.sh: falta
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== arquivo a mais em scripts/
+🛑 scripts/novo.sh: sobra
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== arquivo a mais em .github/workflows/
+🛑 .github/workflows/novo.yml: sobra
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== SKILL.md e o GERADO.txt da skill editados juntos
+🛑 skills/sdd-kb/GERADO.txt: mudou
+🛑 skills/sdd-kb/SKILL.md: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== .gitattributes editado
+🛑 .gitattributes: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== skill congelada editada (fora da trava, deve sair 0)
+✅ 10 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+rc=0
