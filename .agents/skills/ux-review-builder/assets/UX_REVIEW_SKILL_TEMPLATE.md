@@ -11,16 +11,16 @@ metadata:
 
 ## Quick start
 
-**Pasta do SDD.** Os documentos do SDD ficam em `sdd/` na raiz do projeto — pasta visível, igual em qualquer agente. Se o projeto já tiver `.claude/sdd/`, continue nela. Os documentos ficam lado a lado, sem subpastas.
+**Pasta do SDD.** Os documentos do SDD ficam em `sdd/` na raiz do projeto — pasta visível, igual em qualquer agente —, cada tipo na sua pasta. Documento de uma versão anterior, guardado em `sdd/` ou `.claude/sdd/`, é lido de onde estiver, sem pergunta; o novo vai para a pasta desta versão.
 
-Ler obrigatoriamente, nessa pasta:
-- `DEFINE_{FEATURE}.md`;
-- `UX_STANDARD.md`;
-- `UX_REVIEW_TEMPLATE.md`.
+Ler obrigatoriamente:
+- `DEFINE_{FEATURE}.md`, em `sdd/features/`;
+- `UX_STANDARD.md`, em `sdd/`;
+- `UX_REVIEW_TEMPLATE.md`, em `sdd/`.
 
 Ler quando disponíveis: o BRAINSTORM da feature, capturas de tela, mockups, design system, tokens, componentes existentes e URLs relacionadas.
 
-Gravar `UX_REVIEW_{FEATURE}.md` na mesma pasta, seguindo o modelo. A fase Design lê esse arquivo dali.
+Gravar `UX_REVIEW_{FEATURE}.md` em `sdd/reviews/`, seguindo o modelo. A fase Design lê esse arquivo dali.
 
 ## Quando usar / Quando não usar
 
@@ -34,7 +34,7 @@ Obrigatórios: o DEFINE da feature, o UX_STANDARD vigente e o UX_REVIEW_TEMPLATE
 
 Complementares: BRAINSTORM, telas, componentes, design system, referências, URLs e evidências do comportamento atual.
 
-Se uma fonte obrigatória estiver ausente, bloquear a conclusão e pedir o artefato. Não reconstruir o padrão de memória. Se o DEFINE estiver em outra pasta, usar essa pasta, sem criar subpastas.
+Se uma fonte obrigatória estiver ausente, bloquear a conclusão e pedir o artefato. Não reconstruir o padrão de memória. Se o DEFINE estiver em outra pasta, ler de lá; o relatório segue para `sdd/reviews/`.
 
 ## Procedimento passo a passo
 
@@ -125,7 +125,7 @@ Se a revisão mostrar que o UX_STANDARD precisa mudar, registrar uma `Proposta d
 - lentes cognitivas aplicadas sem gerar `MUST` nem mudar o resultado do gate, com evidência em todo status diferente de `N.A.`;
 - nenhuma mudança automática no UX_STANDARD;
 - handoff concreto para o Design;
-- relatório gravado na pasta do SDD, sem subpastas;
+- relatório gravado em `sdd/reviews/`;
 - modelo preenchido sem valores fixos de outro projeto.
 
 ## Tratamento de exceções
@@ -160,7 +160,7 @@ Se a revisão mostrar que o UX_STANDARD precisa mudar, registrar uma `Proposta d
 
 ## Base documental
 
-Fonte canônica: `UX_STANDARD.md`. Formato de saída: `UX_REVIEW_TEMPLATE.md`. Requisitos funcionais: o DEFINE da feature. Os três ficam na pasta do SDD, lado a lado.
+Fonte canônica: `UX_STANDARD.md`. Formato de saída: `UX_REVIEW_TEMPLATE.md`. Requisitos funcionais: o DEFINE da feature. O padrão e o modelo ficam em `sdd/`; o DEFINE, em `sdd/features/`.
 
 ## Inventário do bundle
 

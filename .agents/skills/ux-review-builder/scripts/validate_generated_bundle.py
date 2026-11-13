@@ -27,9 +27,10 @@ RULE_ID_RE = re.compile(r"\bUX-[A-Z]+-[0-9]{3}\b")
 # only CITE it, so rows under those headings are not definitions.
 RULE_DEF_RE = re.compile(r"^\|\s*(UX-[A-Z0-9]+-[0-9]{3})\s*\|")
 CITATION_SECTIONS = ("excec", "historico")
-# The method keeps every SDD document side by side in one folder: a child skill that points
-# to a subfolder would never find the DEFINE nor be found by the Design phase.
-SUBFOLDER_RE = re.compile(r"\b(features|architecture|templates|reviews)/|\bsdd/[^\s/`'\"]+/")
+# Since 1.6.0 the SDD documents follow the SDD Open folders: the DEFINE in sdd/features/, the UX_REVIEW in
+# sdd/reviews/. A child skill that points to any other subfolder would not find the DEFINE nor be found by the
+# Design phase.
+SUBFOLDER_RE = re.compile(r"\b(architecture|templates)/|\bsdd/(?!features/|reviews/)[^\s/`'\"]+/")
 HARDCODED_PATH_RE = re.compile(r"\bsdd/")
 LENS_MARKER = "lentes cognitivas"
 
@@ -132,7 +133,7 @@ def validate(root: Path, skill_dir: Path | None = None) -> dict:
             if item not in child_skill:
                 errors.append("CONTRATO_CHILD_AUSENTE:" + item)
         child_plain = plain(child_skill)
-        if "`sdd/`" not in child_skill or "`.claude/sdd/`" not in child_skill or "sem subpastas" not in child_plain:
+        if "`sdd/features/`" not in child_skill or "`sdd/reviews/`" not in child_skill or "de onde estiver" not in child_plain:
             errors.append("REGRA_DE_PASTA_AUSENTE")
         if SUBFOLDER_RE.search(child_skill):
             errors.append("SUBPASTA_SDD_NA_FILHA")

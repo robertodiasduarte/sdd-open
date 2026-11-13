@@ -26,11 +26,11 @@ Você não precisa de Node, npm nem de instalar nenhuma biblioteca.
 
 ### 1. Crie a pasta do projeto
 
-Crie uma pasta nova, fora de iCloud, OneDrive, Dropbox ou Google Drive, e abra essa pasta no seu agente. Dentro dela, crie uma subpasta chamada `sdd`.
+Crie uma pasta nova, fora de iCloud, OneDrive, Dropbox ou Google Drive, e abra essa pasta no seu agente. Dentro dela, crie a pasta `sdd/features/` (uma pasta `sdd` com outra, `features`, dentro).
 
-### 2. Coloque os três documentos na pasta `sdd`
+### 2. Coloque os três documentos na pasta `sdd/features`
 
-Abra cada link abaixo no GitHub, clique no botão de baixar o arquivo bruto (**Download raw file**, a seta para baixo no alto do arquivo) e salve em `sdd/`, sem mudar o nome:
+Abra cada link abaixo no GitHub, clique no botão de baixar o arquivo bruto (**Download raw file**, a seta para baixo no alto do arquivo) e salve em `sdd/features/`, sem mudar o nome:
 
 - [BRAINSTORM_BAIXAR_NFSE.md](BRAINSTORM_BAIXAR_NFSE.md): por que construir e o que ficou de fora.
 - [DEFINE_BAIXAR_NFSE.md](DEFINE_BAIXAR_NFSE.md): o que precisa funcionar e como provar.
@@ -43,14 +43,13 @@ Cole este prompt no seu agente:
 ```text
 Execute o SDD Build by RDD para a feature BAIXAR_NFSE.
 
-Os documentos estão em sdd/: BRAINSTORM_BAIXAR_NFSE.md, DEFINE_BAIXAR_NFSE.md e DESIGN_BAIXAR_NFSE.md. Leia os três antes de começar.
+Os documentos estão em sdd/features/: BRAINSTORM_BAIXAR_NFSE.md, DEFINE_BAIXAR_NFSE.md e DESIGN_BAIXAR_NFSE.md. Leia os três antes de começar.
 
 Regras desta construção:
-- Crie somente os arquivos do File Manifest, todos dentro de extensao/. O relatório do build fica em sdd/.
+- Crie somente os arquivos do File Manifest, todos dentro de extensao/. O relatório do build fica em sdd/reports/.
 - Não instale Node, npm nem biblioteca nenhuma.
 - Use o modo de execução default, sem revisão externa, e não me pergunte sobre isso. Siga direto até a extensão ficar pronta, sem parar a cada etapa.
 - A prova do código é a página de testes da extensão, uma vez, ao final; não peça conferência arquivo por arquivo.
-- Se o comando python não existir, use python3. Se nenhum existir, registre no relatório que o validador não rodou.
 - Nunca usei terminal e você não enxerga o meu Chrome: quando eu precisar fazer algo nele, me passe um passo por vez e diga o que devo ver na tela. Se um teste reprovar, peça que eu copie o resultado da página de testes.
 - No Verify Gate, me mostre o checklist um item por vez, espere a minha confirmação e registre o resultado no BUILD_REPORT, sem CNPJ real.
 - Não use nenhum dado real de nota, CNPJ de cliente ou certificado em arquivo do projeto.

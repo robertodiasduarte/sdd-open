@@ -78,6 +78,9 @@ Rodar: `sdd/bin/verify-gate.sh sdd/features/DEFINE_<FEATURE>.md`
 
 1. **`manual-ux` NÃO finge automação.** É gate humano explícito (anti "passa técnico, é lixo
    estético"). `cmd: "N/A (manual-ux)"`; o `manual_fallback` é um checklist assinado no BUILD_REPORT.
+   Escreva o checklist como 3 a 5 frases "Eu abri … e vi …" (o que a pessoa faz e o que ela vê), e só
+   depois de perguntar "existe um comando que devolve 0 quando funciona?": `manual-ux` nunca é atalho para
+   não perguntar.
 2. **Ruído de infra ≠ regressão.** Smoke que recebe 403 do WAF×IP-do-runner é inconclusivo
    (exit 3), nunca vermelho. Prefira smoke rodando **na origem via SSH** (lição do fix do changelog).
 3. **Nenhum gate cruza o a fase Release.** O gate é pré-condição do deploy, não o deploy.

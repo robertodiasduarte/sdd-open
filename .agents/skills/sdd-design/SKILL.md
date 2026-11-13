@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.6.0"
+  version: "2.7.0"
   updated: "2026-11"
   fase: "2"
 ---
@@ -13,7 +13,10 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+
+**Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
+desta skill.
 
 Plano + especificação + decisões num documento. O DESIGN diz **como** construir o que o
 DEFINE contratou — e é o último ponto em que mudar de abordagem é barato.
@@ -68,6 +71,11 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 Leia o DEFINE, o `UX_REVIEW_{FEATURE}.md` se existir, `sdd/templates/DESIGN_TEMPLATE.md`,
 `AGENTS.md`, `sdd/config.yaml` (camadas em `layers:`) e `## Sempre` do playbook. Explore o
 código: como o projeto já resolve problemas parecidos? Que convenções valem?
+
+**Sem acesso, não finja:** sem o código à vista, não diga que o inspecionou e não invente caminho, biblioteca
+nem agente. Sem código e sem a stack escrita no projeto (`AGENTS.md`, `sdd/config.yaml`, README), pergunte a stack e a
+estrutura mínima (pastas, linguagem, como roda) antes do File Manifest; projeto novo só depois de a stack ser
+confirmada.
 
 **Contexto de domínio.** A linha `CONTEXTO de domínio` do DEFINE cita `contexto/<slug>.md`? Leia o
 arquivo (`sdd/contexto/<slug>.md`): as `## Regras vigentes` são o que o código já impõe, e o DESIGN não

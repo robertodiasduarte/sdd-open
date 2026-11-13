@@ -77,10 +77,10 @@
 
 | # | File | Action | Purpose | Agent | Dependencies |
 |---|------|--------|---------|-------|--------------|
-| 1 | `{path/to/file.py}` | Create | {Purpose} | @{agent-name} | None |
+| 1 | `{path/to/file}` | Create | {Purpose} | @{agent-name} | None |
 | 2 | `{path/to/config.yaml}` | Create | {Purpose} | @{agent-name} | None |
-| 3 | `{path/to/handler.py}` | Create | {Purpose} | @{agent-name} | 1, 2 |
-| 4 | `{path/to/test.py}` | Create | {Purpose} | @{agent-name} | 3 |
+| 3 | `{path/to/handler}` | Create | {Purpose} | @{agent-name} | 1, 2 |
+| 4 | `{path/to/test}` | Create | {Purpose} | @{agent-name} | 3 |
 
 **Total Files:** {N}
 
@@ -122,9 +122,9 @@
 
 | Agent | Files Assigned | Why This Agent |
 |-------|----------------|----------------|
-| @{agent-1} | 1, 3 | {Specialization match: e.g., "Cloud Run patterns"} |
-| @{agent-2} | 2 | {Specialization match: e.g., "Pydantic + LLM output"} |
-| @{agent-3} | 4 | {Specialization match: e.g., "pytest fixtures"} |
+| @{agent-1} | 1, 3 | {Specialization match: e.g., "padrões da camada de API"} |
+| @{agent-2} | 2 | {Specialization match: e.g., "validação da saída do LLM"} |
+| @{agent-3} | 4 | {Specialization match: e.g., "fixtures de teste"} |
 | (general) | {if any} | {No specialist found - Build handles directly} |
 
 **Agent Discovery:**
@@ -146,7 +146,7 @@
 
 ### Pattern 1: {Pattern Name}
 
-```python
+```text
 # {Brief description of when to use this pattern}
 
 {Copy-paste ready code snippet}
@@ -154,7 +154,7 @@
 
 ### Pattern 2: {Pattern Name}
 
-```python
+```text
 {Copy-paste ready code snippet}
 ```
 
@@ -202,8 +202,8 @@ Fallback aprovado · Autônomo? · Verification interna · Eval mínimo pré-shi
 
 | Test Type | Scope | Files | Tools | Coverage Goal |
 |-----------|-------|-------|-------|---------------|
-| Unit | Functions | `test_*.py` | pytest | 80% |
-| Integration | API calls | `test_integration.py` | pytest + mocks | Key paths |
+| Unit | Functions | `{arquivos de teste}` | `{{TEST_CMD}}` | {meta} |
+| Integration | API calls | `{arquivo}` | `{{TEST_CMD}}` + mocks | Key paths |
 | E2E | Full flow | Manual | - | Happy path |
 
 ---
@@ -246,7 +246,7 @@ Fallback aprovado · Autônomo? · Verification interna · Eval mínimo pré-shi
 
 | Aspect | Implementation |
 |--------|----------------|
-| Logging | {Approach: e.g., "Structured JSON to Cloud Logging"} |
+| Logging | {Approach: e.g., "JSON estruturado no log do host"} |
 | Metrics | {Approach: e.g., "Custom metrics via Cloud Monitoring"} |
 | Tracing | {Approach: e.g., "OpenTelemetry spans"} |
 

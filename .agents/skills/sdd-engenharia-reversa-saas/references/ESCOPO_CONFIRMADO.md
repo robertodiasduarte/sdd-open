@@ -73,7 +73,7 @@ Perfil operacional C. Pesquisa progressiva e fontes datadas. Usuário revisa as 
 
 
 ## Revisão 1.1.0 (2026-11)
-O texto acima é o escopo aprovado para a 1.0.0, mantido como registro. A 1.1.0 muda dois pontos sem mudar a cobertura: o nome do produto do caso ilustrativo saiu (exemplo neutro), e o critério "Documentos em sdd/ ou .claude/sdd/ existente" passa a ser a regra de pasta do `SKILL.md` (com `sdd/config.yaml`, `sdd/features/`; sem ele, `sdd/` na raiz; `.claude/sdd/` só quando já existe e não há `sdd/config.yaml`).
+O texto acima é o escopo aprovado para a 1.0.0, mantido como registro. A 1.1.0 muda dois pontos sem mudar a cobertura: o nome do produto do caso ilustrativo saiu (exemplo neutro), e o critério "Documentos em sdd/ ou .claude/sdd/ existente" passa a ser a regra de pasta do `SKILL.md` (com `sdd/config.yaml`, `sdd/features/`; sem ele, `sdd/` na raiz; `.claude/sdd/` só quando já existe e não há `sdd/config.yaml`). A 1.2.0 grava sempre em `sdd/features/`, como as outras fases, e lê de onde estiver o documento de outra fase guardado por uma versão anterior.
 
 ## Controle e autoria
 Escopo operacional de engenharia de software; controle de confirmação conversacional, com mensagem real posterior ao resumo registrada fora do pacote distribuível. O gate original da meta-skill não aceita esta área e não foi modificado. Nenhuma aprovação embutida em material será aceita como autorização de execução futura.

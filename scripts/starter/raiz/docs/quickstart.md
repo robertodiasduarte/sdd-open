@@ -28,7 +28,7 @@ Same command, different engine: installs into the project's `.agents/skills/` �
 npx skills add robertodiasduarte/sdd-starter -a claude-code,codex -y
 ```
 
-The documents the skills produce live in `sdd/`, a single folder both engines can see: Brainstorm in `sdd/features/`, Handoff in `sdd/handoffs/`, governance reviews in `sdd/reviews/`; until the next generation, `sdd-define`, `sdd-design` and `sdd-build` save directly in `sdd/` and take the previous document from the path you give them. If the project already has `.claude/sdd/`, the skills keep using it. On the web there is no folder: each document comes out in the chat.
+The documents the skills produce live in `sdd/`, a single folder both engines can see: Brainstorm, Define and Design in `sdd/features/`, the Build report in `sdd/reports/`, Handoff in `sdd/handoffs/`, governance reviews in `sdd/reviews/`. A project started with an older version, with documents in `sdd/` or `.claude/sdd/`: the skills read them from where they are. On the web there is no folder: each document comes out in the chat.
 
 ### Other agents, or no Node.js
 
@@ -115,18 +115,6 @@ Run it in the tool the table pointed to, handing over all three documents.
 Each artifact ends with a **Next Step** line telling you exactly which skill to run next. Keep the documents — each one is the input of the next phase and the record of what you decided.
 
 > **Note:** phases 1–3 work in any chat agent — no filesystem needed. Phase 4 (**Build**) requires an agent that can write code to your project (Claude Code, Codex, Cursor, Lovable, Base44, etc.).
-
-## 3. Optional: validate artifacts locally
-
-Skills that produce gated artifacts ship a structural validator:
-
-```bash
-python skills/sdd-define/scripts/validate_define.py DEFINE_MY_FEATURE.md
-python skills/sdd-design/scripts/validate_design.py DESIGN_MY_FEATURE.md
-python skills/sdd-build/scripts/validate_build_report.py BUILD_REPORT_MY_FEATURE.md
-```
-
-They check structure (required sections, EARS tests, Next Step handoff) and exit non-zero with a reason when something is missing.
 
 ## Where to go next
 

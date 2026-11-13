@@ -5,14 +5,14 @@ license: "MIT"
 metadata:
   author: "Roberto Dias Duarte"
   methodology: "Metodologia de Roberto Dias Duarte"
-  version: "1.5.0"
+  version: "1.6.0"
   updated: "2026-11"
 ---
 
 # UX Review Builder
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só:
-`ux-review-builder v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`ux-review-builder v1.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 ## Quick start
 
@@ -25,7 +25,7 @@ Seguir o fluxo:
 
 Antes da geração, ler `references/INTERVIEW_GUIDE.md`, `references/GOVERNANCE.md` e `references/GENERATION_CONTRACT.md`. Usar os modelos em `assets/UX_STANDARD_TEMPLATE.md`, `assets/UX_REVIEW_SKILL_TEMPLATE.md` e `assets/UX_REVIEW_TEMPLATE.md` apenas depois da confirmação explícita do escopo.
 
-**Pasta do SDD.** O `UX_STANDARD.md` e o `UX_REVIEW_TEMPLATE.md` ficam em `sdd/` na raiz do projeto — pasta visível, igual em qualquer agente. Se o projeto já tiver `.claude/sdd/`, continue nela. É onde a `ux-review` gerada vai procurar e gravar. Num projeto que já usa a skill `sdd-ux-review` (a revisão de UX de cada feature, entre o Define e o Design), o padrão fica em `sdd/UX_STANDARD.md` e é ela que o lê: a `ux-review` gerada vira opcional, e os relatórios ficam onde a `sdd-ux-review` grava.
+**Pasta do SDD.** O `UX_STANDARD.md` e o `UX_REVIEW_TEMPLATE.md` ficam em `sdd/` na raiz do projeto — pasta visível, igual em qualquer agente; a `ux-review` gerada lê o DEFINE em `sdd/features/` e grava o `UX_REVIEW_{FEATURE}.md` em `sdd/reviews/`, onde a fase Design o procura. Documento de uma versão anterior, guardado em `sdd/` ou `.claude/sdd/`, é lido de onde estiver, sem pergunta; o novo vai para a pasta desta versão. Num projeto que já usa a skill `sdd-ux-review` (a revisão de UX de cada feature, entre o Define e o Design), o padrão fica em `sdd/UX_STANDARD.md` e é ela que o lê: a `ux-review` gerada vira opcional, e os relatórios ficam onde a `sdd-ux-review` grava.
 
 ## Quando usar / Quando não usar
 
@@ -153,7 +153,7 @@ Gerar todos os artefatos no idioma do usuário. Manter termos técnicos consolid
 **Onde entregar:**
 
 - **No chat (ChatGPT, Claude):** oferecer os três para download — `UX_STANDARD.md`, `UX_REVIEW_TEMPLATE.md` e a pasta `ux-review/` (em `.zip`, quando o ambiente permitir).
-- **No agente com acesso ao projeto (Claude Code, Codex):** gravar `UX_STANDARD.md` e `UX_REVIEW_TEMPLATE.md` na pasta do SDD (`sdd/`, ou `.claude/sdd/` se já existir) e criar a pasta `ux-review/` na raiz do projeto, pronta para ser instalada como skill.
+- **No agente com acesso ao projeto (Claude Code, Codex):** gravar `UX_STANDARD.md` e `UX_REVIEW_TEMPLATE.md` em `sdd/` e criar a pasta `ux-review/` na raiz do projeto, pronta para ser instalada como skill.
 
 ### 8. Validar a geração
 
@@ -187,7 +187,7 @@ Antes de entregar, confirmar:
 - toda regra verificável com ID único e estável;
 - fonte canônica com versionamento e responsável;
 - modo Evolução preserva IDs e apresenta diff antes de atualizar;
-- a `ux-review` segue a regra da pasta do SDD, sem subpastas;
+- a `ux-review` segue a regra da pasta do SDD (`sdd/features/`, `sdd/reviews/`);
 - a `ux-review` consulta o `UX_STANDARD.md` e não o altera;
 - achados da `ux-review` citam IDs canônicos quando aplicável;
 - `MUST` bloqueia o Design até resolução ou aceite explícito;
@@ -212,7 +212,7 @@ Antes de entregar, confirmar:
 
 **MUST aceito como exceção:** exigir aceite explícito do responsável e registrar a exceção no relatório; não transformar a violação em conformidade.
 
-**Projeto com a pasta do SDD em outro lugar:** perguntar onde ficam os documentos do Define e usar essa pasta, sem criar subpastas.
+**Projeto com os documentos em outro lugar:** perguntar onde ficam os documentos do Define e ler de lá; os novos seguem a regra da pasta do SDD.
 
 **Capacidade de navegação ausente:** continuar com as referências declaradas e os materiais locais.
 

@@ -259,8 +259,10 @@ def sem_fluxo_encadeado(texto: str, skill: str) -> str:
 CITA = re.compile(r"(?<![\w/.-])((?:references|assets|scripts)/[A-Za-z0-9_./-]+\.[A-Za-z0-9]+)")
 
 
-def ler_modos(arq: Path) -> dict[str, str]:
-    """`skill<TAB>arquivo de modo relativo à skill`: o SKILL.md do starter sai só desse arquivo."""
+def ler_modos(arq: Path) -> dict[str, tuple[str, str]]:
+    """`skill<TAB>arquivo de modo[<TAB>pasta-base]`, relativos à skill: o SKILL.md do starter sai só do arquivo de
+    modo. A pasta-base (F17c, Decision 1) é de onde vêm os arquivos que o modo cita, com o mesmo caminho relativo
+    (`web/references/x.md` vai como `references/x.md`); sem ela, a raiz da skill."""
     modos = {}
     if not arq.is_file():
         return modos
@@ -268,9 +270,13 @@ def ler_modos(arq: Path) -> dict[str, str]:
         if not linha.strip() or linha.startswith("#"):
             continue
         c = linha.split("\t")
-        if len(c) != 2 or not all(x.strip() for x in c):
-            raise Falha(65, "modos.tsv: linha sem os 2 campos (skill, arquivo de modo): %s" % linha[:60])
-        modos[c[0]] = c[1]
+        if len(c) not in (2, 3) or not all(x.strip() for x in c):
+            raise Falha(65, "modos.tsv: linha sem 2 ou 3 campos (skill, arquivo de modo[, pasta-base]): %s" % linha[:60])
+        base = c[2] if len(c) == 3 else "."
+        for rel in (c[1], base):
+            if Path(rel).is_absolute() or ".." in Path(rel).parts:
+                raise Falha(65, "modos.tsv: o caminho %s de %s sai da pasta da skill" % (rel, c[0]))
+        modos[c[0]] = (c[1], base)
     return modos
 
 
@@ -293,11 +299,16 @@ def campo(linhas: list[str], nome: str) -> list[str]:
     return []
 
 
-def compor(origem: Path, destino: Path, modo_rel: str) -> None:
+def compor(origem: Path, destino: Path, modo_rel: str, base: str = ".") -> None:
     skill = origem.name
     modo = origem / modo_rel
     if not modo.is_file():
         raise Falha(65, "%s: o arquivo de modo %s não existe" % (skill, modo_rel))
+    raiz = origem / base
+    if not raiz.is_dir():
+        raise Falha(65, "%s: a pasta-base %s do modo não existe" % (skill, base))
+    # o arquivo de modo, visto da pasta-base (para não ir como arquivo citado)
+    modo_na_base = modo.resolve().relative_to(raiz.resolve()).as_posix() if raiz.resolve() in modo.resolve().parents else None
     fm_modo, corpo = frontmatter(ler(modo), "%s/%s" % (skill, modo_rel))
     fm_open, resto = frontmatter(ler(origem / "SKILL.md"), "%s/SKILL.md" % skill)
     # as duas: sem a compatibility do modo, a do Open (que fala de slots e scripts do init) vazaria para o starter
@@ -327,15 +338,17 @@ def compor(origem: Path, destino: Path, modo_rel: str) -> None:
     pendentes, feitos = set(CITA.findall(corpo)), set()
     while pendentes:
         rel = pendentes.pop()
-        if rel in feitos or rel == modo_rel:
+        if rel in feitos or rel == modo_na_base:
             continue
-        if not (origem / rel).is_file():
-            raise Falha(65, "%s: o modo cita %s, que não existe na skill" % (skill, rel))
+        if ".." in Path(rel).parts:
+            raise Falha(65, "%s: o modo cita %s, que sai da pasta-base" % (skill, rel))
+        if not (raiz / rel).is_file():
+            raise Falha(65, "%s: o modo cita %s, que não existe em %s" % (skill, rel, "a skill" if base == "." else base + "/"))
         feitos.add(rel)
         (destino / rel).parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(str(origem / rel), str(destino / rel))
-        if eh_texto(origem / rel):
-            pendentes |= set(CITA.findall(ler(origem / rel)))
+        shutil.copy2(str(raiz / rel), str(destino / rel))
+        if eh_texto(raiz / rel):
+            pendentes |= set(CITA.findall(ler(raiz / rel)))
 
 
 def com_cabecalho(texto: str, skill: str, cabecalho: str, migrar: str) -> str:
@@ -455,7 +468,7 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
             raise Falha(65, "%s não tem linha em scripts/starter/openai.tsv" % skill)
         destino = saida / "skills" / skill
         if skill in modos:
-            compor(origem, destino, modos[skill])
+            compor(origem, destino, *modos[skill])
         else:
             shutil.copytree(origem, destino)
         n_trocas = aplicar_trocas(destino, dados / "trocas" / ("%s.md" % skill))
@@ -472,7 +485,7 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
         (destino / "agents" / "openai.yaml").write_text(openai_yaml(tabela[skill]), encoding="utf-8")
         (destino / "GERADO.txt").write_bytes(lista_gerado(destino, nota))
         relatorio.append("✅ %s: %d arquivo(s), %d troca(s)%s" % (skill, len(arquivos(destino)) - 1, n_trocas,
-                                                              ", de modo (%s)" % modos[skill] if skill in modos else ""))
+                                                              ", de modo (%s)" % modos[skill][0] if skill in modos else ""))
 
     shutil.copytree(dados / "raiz", saida, dirs_exist_ok=True)
     achados = lint(saida, ler_aceites(dados / "lint-aceitos.tsv"), fora)

@@ -45,7 +45,7 @@ A única fase que precisa de acesso de escrita a um projeto. Lê os três artefa
 ## Regras que seguram o fluxo
 
 1. **Artefatos são a interface.** Cada skill lê os artefatos anteriores e escreve exatamente um novo, a partir do template canônico da sua pasta `assets/`.
-2. **Next Step é explícito.** Todo artefato termina com uma única linha de handoff nomeando a próxima skill. O relatório de Build encerra o fluxo: revise o BUILD_REPORT e publique com a `sdd-release`, que também confere que a migration do commit foi aplicada no banco (e vice-versa) antes de pedir o seu OK.
+2. **Next Step é explícito.** Todo artefato termina com uma única linha de handoff nomeando a próxima skill. O relatório de Build aponta a `sdd-handoff`, que registra onde o trabalho está; depois, revise o BUILD_REPORT e publique com a `sdd-release`, que também confere que a migration do commit foi aplicada no banco (e vice-versa) antes de pedir o seu OK.
 3. **Nada de inventar.** As skills são instruídas a marcar ambiguidades e perguntar, nunca adivinhar. Todo fato precisa rastrear até um artefato ou até as suas respostas.
 4. **Gates são bloqueantes.** Um Define sem Verify Gate não está pronto; um Build que falha no Verify Gate não está completo — está bloqueado, e o relatório diz isso.
 

@@ -34,8 +34,9 @@ SHA_ORIGEM = {
     "scripts/validate_reverse.py": "6abb0ab75ae3cde15346a90f4fa40da9122a7291effae5998dcbf367a537810b",
     "assets/ENGENHARIA_REVERSA_TEMPLATE.md": "a2c479e7ba96d8396a55b22e3c4b7addb9169dc7a767c9202982357edc4b0682",
 }
-PASTA = ("Com `sdd/config.yaml` no projeto, gravar em `sdd/features/`. Sem ele, gravar em `sdd/` na raiz. "
-         "`.claude/sdd/` só quando ela já existe e não há `sdd/config.yaml`.")
+# F17c: sempre sdd/features/, como as outras fases; o documento de outra fase de uma versão anterior é lido de onde estiver
+PASTA = ("gravar em `sdd/features/`, como as outras fases. Documento de outra fase em `sdd/` ou `.claude/sdd/` (projeto "
+         "começado numa versão anterior) é lido de onde estiver, sem pergunta.")
 RECUSA = "Posso analisar fontes públicas e acessos autorizados. Não realizo acesso indevido nem obtenho código privado."
 PROIBIDOS = ("Play" + "BPO", "SDD Brainstorm by " + "RDD", "SDD Define by " + "RDD", "sdd-" + "starter")
 AGNOSTICO = re.compile(r"\b(AskUserQuestion|TodoWrite|PreToolUse|PostToolUse|subagent_type)\b")
@@ -74,11 +75,11 @@ class Pacote(unittest.TestCase):
     def test_frontmatter_e_versao_iguais_nos_tres_lugares(self):
         fm = ler(SKILL / "SKILL.md").split("\n---\n", 1)[0]
         for trecho in ("name: " + NOME, "compatibility: ", "license: MIT", "  author: Roberto Dias Duarte",
-                       '  version: "1.1.1"', '  updated: "2026-11"'):
+                       '  version: "1.2.0"', '  updated: "2026-11"'):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, fm)
-        self.assertEqual(json.loads(ler(SKILL / "manifest.json"))["version"], "1.1.1")
-        self.assertEqual(json.loads(ler(SKILL / "evals/cases.json"))["version"], "1.1.1")
+        self.assertEqual(json.loads(ler(SKILL / "manifest.json"))["version"], "1.2.0")
+        self.assertEqual(json.loads(ler(SKILL / "evals/cases.json"))["version"], "1.2.0")
 
     def test_manifest_txt_lista_cada_arquivo(self):
         manifest = ler(RAIZ / "MANIFEST.txt").splitlines()
@@ -103,7 +104,7 @@ class Texto(unittest.TestCase):
         self.orq = ler(SKILL / "references/ORQUESTRACAO_SDD.md")
 
     def test_linha_de_identificacao(self):
-        self.assertIn("`%s v1.1.1 · nov/2026 · versão atual: "
+        self.assertIn("`%s v1.2.0 · nov/2026 · versão atual: "
                       "https://github.com/robertodiasduarte/sdd-open/releases/latest`" % NOME, self.skill)
 
     def test_regra_da_pasta_igual_nos_dois_arquivos(self):

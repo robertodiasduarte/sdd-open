@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.0 - 2026-11
+
+- Pastas do SDD Open: o padrão e o modelo em `sdd/`, o DEFINE em `sdd/features/`, o UX_REVIEW em `sdd/reviews/`
+  (antes, tudo lado a lado em `sdd/`). Documento de uma versão anterior, em `sdd/` ou `.claude/sdd/`, é lido de onde
+  estiver, sem pergunta. O validador passa a exigir essa regra na `ux-review` gerada; um pacote gerado pela 1.5.0
+  reprova com `REGRA_DE_PASTA_AUSENTE` até ser regerado (modo Evolução).
+
 ## 1.5.0 - 2026-11
 
 - A skill passa a morar no SDD Open (era só do sdd-starter, que agora a recebe gerada do Open): linha de

@@ -30,7 +30,7 @@ Se você alterna entre Claude Code e Codex no mesmo repositório, instale para o
 npx skills add robertodiasduarte/sdd-starter -a claude-code,codex -y
 ```
 
-Os documentos que as skills geram ficam em `sdd/`, uma pasta só, que os dois enxergam: o Brainstorm em `sdd/features/`, o Handoff em `sdd/handoffs/`, a revisão de governança em `sdd/reviews/`; até a próxima geração, `sdd-define`, `sdd-design` e `sdd-build` gravam direto em `sdd/` e recebem o documento anterior pelo caminho que você indicar. Se o projeto já tiver `.claude/sdd/`, as skills continuam nela. Na web não há pasta: cada documento sai no chat.
+Os documentos que as skills geram ficam em `sdd/`, uma pasta só, que os dois enxergam: o Brainstorm, o Define e o Design em `sdd/features/`, o relatório do Build em `sdd/reports/`, o Handoff em `sdd/handoffs/`, a revisão de governança em `sdd/reviews/`. Projeto começado numa versão anterior, com documentos em `sdd/` ou `.claude/sdd/`: as skills os leem de onde estiverem. Na web não há pasta: cada documento sai no chat.
 
 ### Outros agentes, ou sem Node.js
 
@@ -115,18 +115,6 @@ Rode na ferramenta que a tabela indicou, entregando os três documentos.
 Cada artefato termina com uma linha de **Next Step** dizendo exatamente qual skill rodar em seguida. Guarde os documentos — cada um é a entrada da fase seguinte e o registro do que você decidiu.
 
 > **Nota:** as fases 1–3 funcionam em qualquer agente de chat — sem filesystem. A fase 4 (**Build**) exige um agente que escreva código no seu projeto (Claude Code, Codex, Cursor, Lovable, Base44, etc.).
-
-## 3. Opcional: valide os artefatos localmente
-
-As skills que produzem artefatos com gate trazem um validador estrutural:
-
-```bash
-python skills/sdd-define/scripts/validate_define.py DEFINE_MINHA_FEATURE.md
-python skills/sdd-design/scripts/validate_design.py DESIGN_MINHA_FEATURE.md
-python skills/sdd-build/scripts/validate_build_report.py BUILD_REPORT_MINHA_FEATURE.md
-```
-
-Eles checam a estrutura (seções obrigatórias, testes EARS, handoff de Next Step) e saem com código diferente de zero, com o motivo, quando algo falta.
 
 ## Próximos passos
 

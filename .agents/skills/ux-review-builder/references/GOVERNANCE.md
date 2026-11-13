@@ -4,14 +4,13 @@
 
 `UX_STANDARD.md` é a fonte canônica da experiência do projeto.
 
-Os documentos do SDD ficam em `sdd/` na raiz do projeto — pasta visível, igual em qualquer agente. Se o projeto já tiver `.claude/sdd/`, continue nela. Os documentos ficam lado a lado, sem subpastas:
+Os documentos do SDD ficam em `sdd/` na raiz do projeto — pasta visível, igual em qualquer agente —, cada tipo na sua pasta:
 
-- `DEFINE_{FEATURE}.md` (gerado pela fase Define);
-- `UX_STANDARD.md` e `UX_REVIEW_TEMPLATE.md` (gerados por esta meta-skill);
-- `UX_REVIEW_{FEATURE}.md` (gerado pela `ux-review` a cada feature);
-- `DESIGN_{FEATURE}.md` (gerado pela fase Design, que lê o UX_REVIEW).
+- `UX_STANDARD.md` e `UX_REVIEW_TEMPLATE.md` em `sdd/` (gerados por esta meta-skill);
+- `DEFINE_{FEATURE}.md` e `DESIGN_{FEATURE}.md` em `sdd/features/` (fases Define e Design);
+- `UX_REVIEW_{FEATURE}.md` em `sdd/reviews/` (gerado pela `ux-review` a cada feature; a fase Design o lê dali).
 
-Se o projeto guardar os documentos do Define em outra pasta, usar essa pasta — sem criar subpastas.
+Documento de uma versão anterior, guardado em `sdd/` ou `.claude/sdd/`, é lido de onde estiver, sem pergunta; o novo vai para a pasta desta versão. Se o projeto guardar os documentos do Define em outra pasta, ler de lá.
 
 ## Precedência
 

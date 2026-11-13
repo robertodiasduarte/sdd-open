@@ -2,8 +2,9 @@
 
 O Open de teste é um repositório temporário com as pastas que o gerador lê, copiadas da árvore e marcadas com uma
 tag (o Verify Gate roda a suíte numa cópia sem .git: nada aqui depende do .git do pacote). O starter de teste é
-uma réplica mínima: a infra de scripts/starter/raiz, as 3 skills congeladas até a F17c, as 8 que a F17 gerou com a
-versão que tinham na v1.5.16 (abaixo da do Open) e as 5 que a F17b passa a gerar, com a versão da v1.5.17.
+uma réplica mínima: a infra de scripts/starter/raiz, as 8 skills que a F17 gerou com a versão que tinham na v1.5.16
+(abaixo da do Open), as 5 que a F17b passou a gerar, com a versão da v1.5.17, e as 3 que a F17c passa a gerar (define,
+design, build), com a versão da v1.5.18. Nenhuma fica congelada.
 """
 from __future__ import annotations
 
@@ -19,13 +20,14 @@ PY = sys.executable
 URL_STARTER = "https://github.com/robertodiasduarte/sdd-starter/releases/latest"
 LISTA = [ln.strip() for ln in (RAIZ / "scripts/starter/lista.txt").read_text(encoding="utf-8").splitlines()
          if ln.strip() and not ln.startswith("#")]
-CONGELADAS = {"sdd-define": "1.2.0", "sdd-design": "1.1.0", "sdd-build": "1.2.0"}   # até a F17c
-# as geradas que já estavam no starter, com a versão de lá: as 8 da F17 (v1.5.16) e as 5 da F17b (v1.5.17)
+# as geradas que já estavam no starter, com a versão de lá: as 8 da F17 (v1.5.16), as 5 da F17b (v1.5.17) e as 3
+# que eram congeladas até a F17c (v1.5.18)
 NO_STARTER = {"sdd-checar-ambiente": "1.2.0", "sdd-iniciar-repo": "1.1.0", "sdd-higiene-dado": "1.1.0",
               "sdd-new-session": "1.3.0", "sdd-kb": "2.1.0", "sdd-auditoria-harness": "1.0.0",
               "sdd-prompt-builder": "1.0.0", "sdd-engenharia-reversa-saas": "1.1.0",
               "sdd-brainstorm": "1.1.0", "sdd-handoff": "1.1.0", "sdd-governanca": "1.0.1", "sdd-release": "1.3.0",
-              "ux-review-builder": "1.4.0"}
+              "ux-review-builder": "1.4.0", "sdd-define": "1.2.0", "sdd-design": "1.1.0", "sdd-build": "1.2.0"}
+DA_F17C = ("sdd-define", "sdd-design", "sdd-build")
 DA_F17B = ("sdd-brainstorm", "sdd-handoff", "sdd-governanca", "sdd-release", "ux-review-builder")
 COM_REFERENCIA = {"sdd-brainstorm", "sdd-define", "sdd-design", "sdd-build", "sdd-handoff", "ux-review-builder"}
 MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
@@ -68,7 +70,7 @@ class Base(Sandbox):
         self.escreve(s, "docs/quickstart.md", "# Quickstart\n")
         self.escreve(s, "exemplos/baixar-nfse/README.md", "# Exemplo\n")
         self.escreve(s, "tests/test_vazio.py", "import unittest\n")
-        for nome, versao in {**CONGELADAS, **NO_STARTER}.items():
+        for nome, versao in NO_STARTER.items():
             self.escreve(s, "skills/%s/SKILL.md" % nome, skill_minima(nome, versao))
             if nome in COM_REFERENCIA or nome == "sdd-kb":
                 self.escreve(s, "skills/%s/references/como-falar.md" % nome, "# Como falar\n")
@@ -89,7 +91,7 @@ class Base(Sandbox):
 
 
 class Gera(Base):
-    def test_at001_gera_as_15_e_nao_toca_no_resto(self):
+    def test_at001_gera_as_18_e_nao_toca_no_resto(self):
         antes = arvore(self.starter)
         rc, out, err = self.gerar()
         self.assertEqual(rc, 0, out + err)
@@ -110,24 +112,33 @@ class Gera(Base):
                 self.assertTrue((self.starter / rel).is_file())
         self.assertNotIn("versão antiga", (self.starter / "README.md").read_text(encoding="utf-8"))
         # F17b (AT-001): docs/, exemplos/ e tests/ vêm do gerador; o que saiu da semente sai do destino
-        self.assertEqual(len(LISTA), 15)
+        self.assertEqual(len(LISTA), 18)   # F17c: as 18, nenhuma congelada
         for rel in ("docs/quickstart.md", "exemplos/baixar-nfse/README.md", "tests/test_sdd_kb_normativo.py"):
             with self.subTest(rel=rel):
                 self.assertTrue((self.starter / rel).is_file())
         self.assertFalse((self.starter / "tests/test_vazio.py").exists())
-        for skill in CONGELADAS:
-            with self.subTest(congelada=skill):
-                self.assertFalse((self.starter / "skills" / skill / "GERADO.txt").exists())
-        for q in ("docs/quickstart.md", "docs/quickstart.pt-BR.md"):   # revisão, rodada 1, R6: 15 geradas + 3 congeladas
+        for skill in ("sdd-define", "sdd-design", "sdd-build"):     # F17c (AT-001)
+            with self.subTest(gerada=skill):
+                self.assertTrue((self.starter / "skills" / skill / "GERADO.txt").is_file())
+        for q in ("docs/quickstart.md", "docs/quickstart.pt-BR.md"):   # revisão, rodada 1, R6: as 18 skills
             with self.subTest(quickstart=q):
                 self.assertIn("18 skills", (self.starter / q).read_text(encoding="utf-8"))
         # revisão, rodada 2, R3: o quickstart em inglês mandava copiar só 6 pastas
         self.assertIn("every skill folder under `skills/` (all 18)", (self.starter / "docs/quickstart.md").read_text(encoding="utf-8"))
         readme = (self.starter / "README.md").read_text(encoding="utf-8")
-        for frase in ("As outras três (`sdd-define`, `sdd-design` e `sdd-build`)",
-                      "The other three (`sdd-define`, `sdd-design` and `sdd-build`)"):
+        for frase in ("As 18 skills deste repositório são **geradas**", "All 18 skills in this repository are **generated**",
+                      "e `sdd-define`, `sdd-design` e `sdd-build` (desde a 3ª)",
+                      "and `sdd-define`, `sdd-design` and `sdd-build` (since the third)"):
             with self.subTest(frase=frase):
                 self.assertIn(frase, readme)
+        for proibida in ("congelad", "frozen", "validate_define", "validate_design", "validate_build_report"):
+            for rel in ("README.md", "docs/quickstart.md", "docs/quickstart.pt-BR.md", "exemplos/baixar-nfse/README.md"):
+                with self.subTest(arquivo=rel, proibida=proibida):
+                    self.assertNotIn(proibida, (self.starter / rel).read_text(encoding="utf-8"))
+        exemplo = (self.starter / "exemplos/baixar-nfse/README.md").read_text(encoding="utf-8")
+        self.assertIn("sdd/features/", exemplo)
+        self.assertIn("sdd/reports/", exemplo)
+        self.assertNotIn("validador", exemplo)
 
     def test_at003_cada_skill_gerada(self):
         rc, out, err = self.gerar()

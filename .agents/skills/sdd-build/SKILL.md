@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.9.1"
+  version: "2.10.0"
   updated: "2026-11"
   fase: "3"
 ---
@@ -13,7 +13,10 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.9.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+
+**Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
+desta skill.
 
 Construir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O
 critério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem
@@ -77,7 +80,9 @@ Mudar a abordagem depois do código custa uma reescrita; antes, uma edição no 
 
 ### 1. Contexto e landmines
 
-Leia DESIGN, DEFINE, `AGENTS.md`, `sdd/config.yaml`. **Conte as camadas** do manifest usando
+Leia DESIGN, DEFINE, `AGENTS.md`, `sdd/config.yaml`. **Sem acesso, não finja:** sem o projeto acessível,
+peça o projeto; não monte um BUILD_REPORT só a partir dos documentos e não diga que escreveu, rodou ou testou o
+que não escreveu, rodou ou testou. **Conte as camadas** do manifest usando
 `layers:` do config (ex.: `api`, `ui`, `sql`): ≥2 camadas distintas ⇒ os passos 1.5 e 5d são
 obrigatórios; 1 camada ⇒ registre `avaliador: N.A. (1 camada)` no relatório. O limite é
 `evidence.require_avaliacao_layers` do config (default 2), e o `report-lint.py` confere a contagem.

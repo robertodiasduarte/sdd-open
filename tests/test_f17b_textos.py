@@ -121,8 +121,11 @@ class CaminhoCurto(unittest.TestCase):
 
     def test_skills_geradas_citam_o_molde_pelo_caminho_inteiro(self):
         lista = [ln.strip() for ln in ler("scripts/starter/lista.txt").splitlines() if ln.strip() and not ln.startswith("#")]
+        # skill de modo com pasta-base (F17c): o gerador leva só a pasta do modo; o SKILL.md do Open não vai
+        bases = {c[0]: c[2] for c in (ln.split("\t") for ln in ler("scripts/starter/modos.tsv").splitlines()
+                                      if ln.strip() and not ln.startswith("#")) if len(c) == 3}
         for skill in lista:
-            for p in sorted((RAIZ / ".agents/skills" / skill).rglob("*.md")):
+            for p in sorted((RAIZ / ".agents/skills" / skill / bases.get(skill, ".")).rglob("*.md")):
                 if p.name == "CHANGELOG.md":
                     continue
                 with self.subTest(arquivo=str(p.relative_to(RAIZ))):
@@ -134,8 +137,8 @@ class UxReviewBuilder(unittest.TestCase):
 
     def test_a_skill_mora_no_open(self):
         s = ler(".agents/skills/ux-review-builder/SKILL.md")
-        self.assertIn('version: "1.5.0"', s)
-        self.assertIn("`ux-review-builder v1.5.0 · nov/2026 · versão atual: "
+        self.assertIn('version: "1.6.0"', s)
+        self.assertIn("`ux-review-builder v1.6.0 · nov/2026 · versão atual: "
                       "https://github.com/robertodiasduarte/sdd-open/releases/latest`", s)
         self.assertIn("## Como falar com o aluno", s)
         self.assertTrue((RAIZ / ".agents/skills/ux-review-builder/references/como-falar.md").is_file())

@@ -61,7 +61,7 @@ Measurable outcomes (must include numbers):
 
 > Gramática **EARS** obrigatória em DEFINE novo/retocado (keywords em inglês, corpo em PT-BR) —
 > padrões, exemplos e mapa padrão→`kind` de gate em
-> [`fragments/EARS.md`](fragments/EARS.md). Regras que o `/define` recusa se faltarem:
+> [`fragments/EARS.md`](fragments/EARS.md). Regras que a `sdd-define` recusa se faltarem:
 > ≥1 AT **If/Then** (unwanted) quando houver gatilho indesejado plausível; padrões
 > **While/If-Then/Where** considerados (AT presente ou N.A. justificado — estado não lido ·
 > erro silencioso · flag de config são as 3 classes que mais mordem); em **bugfix**,
@@ -88,7 +88,7 @@ Measurable outcomes (must include numbers):
 > ```
 >
 > Enquanto houver marcador ativo, `sdd/bin/verify-gate.sh` devolve **exit 5** e
-> `/build` e a fase Release param. Resolver pelo protocolo de `fragments/CLARIFY.md` (≤5 por rodada),
+> a `sdd-build` e a fase Release param. Resolver pelo protocolo de `fragments/CLARIFY.md` (≤5 por rodada),
 > integrar a resposta NO CORPO da spec e logar abaixo.
 
 ### Session {YYYY-MM-DD}
@@ -99,7 +99,7 @@ Measurable outcomes (must include numbers):
 
 ## Verify Gate
 
-> **Gate executável de aceite (pass/fail).** `/build` (Step 5) e a fase Release (Fase 0a) rodam isto via
+> **Gate executável de aceite (pass/fail).** A `sdd-build` (passo 5) e a fase Release (Fase 0a) rodam isto via
 > `sdd/bin/verify-gate.sh` e tratam como **BLOQUEANTE** — não é prosa, é comando.
 > Habilitador da F1 (loop engineering): o critério de parada de qualquer loop.
 > Taxonomia completa: [`fragments/VERIFY_GATE.md`](fragments/VERIFY_GATE.md).
@@ -121,8 +121,8 @@ verify_gate:
 - `threshold`: só `eval` (ex.: `"recall >= 0.80"` — limiar embutido no `cmd`)
 - `manual_fallback`: só `manual-ux` — checklist humano assinado no BUILD_REPORT
 
-**Regras:** `manual-ux` é gate HUMANO (não finge automação). Smoke 403 do WAF×runner =
-inconclusivo, não vermelho (rode na origem via SSH). Nenhum gate cruza o a fase Release.
+**Regras:** `manual-ux` é gate HUMANO (não finge automação): 3 a 5 frases "Eu abri … e vi …". Smoke bloqueado
+pela rede de quem roda (ex.: 403 de um firewall) = inconclusivo, não vermelho. Nenhum gate cruza a fase Release.
 
 Rodar localmente: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{FEATURE_NAME}.md`
 
@@ -154,9 +154,9 @@ Explicitly NOT included in this feature:
 
 | Aspect | Value | Notes |
 |--------|-------|-------|
-| **Deployment Location** | {src/ \| functions/ \| gen/ \| deploy/ \| custom path} | {Why this location} |
+| **Deployment Location** | {pasta(s) do projeto onde a mudança mora} | {Why this location} |
 | **KB Domains** | {bases de conhecimento do projeto a consultar (nomes de pasta em `sdd/kb/`, de `ls sdd/kb/`), ou `nenhum` explícito} | {Which patterns to consult} |
-| **IaC Impact** | {New resources \| Modify existing \| None \| TBD} | {Terraform/Terragrunt changes needed} |
+| **IaC Impact** | {New resources \| Modify existing \| None \| TBD} | {recursos de infraestrutura que mudam, ou nenhum} |
 | **LLM Prompts** | {true \| false} | {Set true se a feature cria/edita prompts runtime — system prompts, passes de pipeline, classificadores. Quando true, a fase Design inventaria cada prompt e a fase Build trata cada um como entregável com contrato próprio.} |
 | **CONTEXTO de domínio** | {contexto/<slug>.md · sha <7 hex> · válido em AAAA-MM-DD \| nenhum (<motivo>)} | {Preenchido pelo passo 1.5 do sdd-define (cartógrafo). O Design lê as Regras vigentes dele.} |
 | **Governança** | {pendente — o passo 11 escreve: N.A. — <motivo> \| GOVERNANCA_REVIEW_<F>.md · a aplicadas · r recusadas · d adiadas \| dispensada — <motivo>} | {Escrita só pelo passo 11 do sdd-define (ou pela dispensa da pessoa). Sem um desses 3 valores finais, o verify-gate.sh sai 5.} |

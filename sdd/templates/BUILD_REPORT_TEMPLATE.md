@@ -87,12 +87,32 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 
 ---
 
+## Seleção de modo
+
+| Item | Valor |
+|---|---|
+| Sinais | {quantos arquivos, dependências entre tarefas, o que a plataforma executa} |
+| Recomendação | {default · ralph · briefs} — {motivo em 1 frase} |
+| Decisão do usuário | {modo escolhido, AAAA-MM-DD} |
+
+---
+
+## Drift detectado
+
+| # | Onde | O que divergiu do DESIGN | Decisão | Ação |
+|---|---|---|---|---|
+| 1 | `{caminho}` | {descrição} | {falso positivo · revisar a spec · desvio aprovado} | {ação} |
+
+Nenhum drift ⇒ escreva `nenhum`.
+
+---
+
 ## Files Created
 
 | File | Lines | Agent | Verified | Notes |
 | ---- | ----- | ----- | -------- | ----- |
-| `{path/to/file1.py}` | {N} | @{agent-name} | ✅ | {Any notes} |
-| `{path/to/file2.py}` | {N} | @{agent-name} | ✅ | {Any notes} |
+| `{path/to/file1}` | {N} | @{agent-name} | ✅ | {Any notes} |
+| `{path/to/file2}` | {N} | @{agent-name} | ✅ | {Any notes} |
 | `{path/to/config.yaml}` | {N} | (direct) | ✅ | {Any notes} |
 
 ---
@@ -114,26 +134,26 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 
 ## Verification Results
 
-### Lint Check (ruff)
+### Lint (`{{LINT_CMD}}`)
 
 ```text
-{Output from ruff check or "All checks passed"}
+{Saída do lint do projeto, ou "N/A - não configurado"}
 ```
 
 **Status:** ✅ Pass / ❌ Fail
 
-### Type Check (mypy)
+### Typecheck (`{{TYPECHECK_CMD}}`)
 
 ```text
-{Output from mypy or "All checks passed" or "N/A - not configured"}
+{Saída do typecheck do projeto, ou "N/A - não configurado"}
 ```
 
 **Status:** ✅ Pass / ❌ Fail / ⏭️ Skipped
 
-### Tests (pytest)
+### Testes (`{{TEST_CMD}}`)
 
 ```text
-{Output from pytest or summary}
+{Saída dos testes do projeto, ou o resumo}
 ```
 
 | Test | Result |
@@ -263,14 +283,14 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 - [ ] No blocking issues
 - [ ] Acceptance tests verified — todo `true` com evidência lida (nenhum "por raciocínio")
 - [ ] Avaliador de contexto fresco: PASS (ou N.A. 1 camada) com `AVALIACAO_*.md` persistido
-- [ ] Ready for /release
+- [ ] Pronto para a `sdd-release`
 
 ---
 
 ## Next Step
 
-**If Complete:** `/release <descrição do que liberar>`
+**If Complete:** `sdd-release` (o que liberar, em 1 frase)
 
-**If Blocked:** Resolve blockers, then `/build` to resume
+**If Blocked:** resolva os bloqueios e retome com a `sdd-build`
 
-**If Issues Found:** `/iterate DESIGN_{FEATURE}.md "{change needed}"`
+**If Issues Found:** `sdd-iterate` sobre `DESIGN_{FEATURE}.md` (a mudança necessária)

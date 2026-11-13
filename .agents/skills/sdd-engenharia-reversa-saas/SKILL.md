@@ -6,14 +6,14 @@ license: MIT
 metadata:
   author: Roberto Dias Duarte
   methodology: Metodologia de Roberto Dias Duarte
-  version: "1.1.1"
+  version: "1.2.0"
   updated: "2026-11"
 ---
 
 # SDD Engenharia Reversa de SaaS
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-engenharia-reversa-saas v1.1.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-engenharia-reversa-saas v1.2.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 ## Quick start
 
@@ -40,7 +40,7 @@ Se o usuário pedir somente uma descrição rápida ou já tiver Brainstorm vali
 - Contexto da nova solução, público, problemas e restrições: aproveitar respostas existentes e descobrir o que falta durante o Brainstorm.
 - Fontes públicas; materiais do usuário e navegação em conta autorizada são opcionais.
 - Dependências: skills `sdd-brainstorm` e `sdd-define` (o nome pode vir com prefixo de plugin) com seus templates e referências, descobertas no ambiente. Não exigir caminhos pessoais fixos.
-- Local de saída: Com `sdd/config.yaml` no projeto, gravar em `sdd/features/`. Sem ele, gravar em `sdd/` na raiz. `.claude/sdd/` só quando ela já existe e não há `sdd/config.yaml`. Se duas pastas contiverem documentos do mesmo ciclo, esclarecer qual é a pasta ativa antes de escrever. Sem projeto identificado, perguntar apenas onde salvar; continuar a pesquisa independente dessa resposta.
+- Local de saída: gravar em `sdd/features/`, como as outras fases. Documento de outra fase em `sdd/` ou `.claude/sdd/` (projeto começado numa versão anterior) é lido de onde estiver, sem pergunta. Se o mesmo documento deste ciclo existir em duas pastas, esclarecer qual é a pasta ativa antes de escrever. Sem projeto identificado, perguntar apenas onde salvar; continuar a pesquisa independente dessa resposta.
 
 Não pedir senhas ou tokens no chat. Se necessário, o usuário autentica a sessão pela interface do ambiente. Pesquisa pública faz parte do pedido de investigação, respeitando restrições expressas. Se não houver pesquisa disponível, usar os materiais acessíveis e registrar a limitação.
 

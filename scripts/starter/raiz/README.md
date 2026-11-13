@@ -47,15 +47,15 @@ E cinco skills para **preparar o ambiente e trabalhar em frentes isoladas** no s
 | [`sdd-new-session`](skills/sdd-new-session/) | Abrir uma frente de trabalho | No começo de cada tarefa | Cria worktree + branch a partir da produção atualizada e prepara a pasta (dependências, `.env`, as skills que estão fora do git) |
 | [`sdd-release`](skills/sdd-release/) | Fechar a frente e publicar | No fim da tarefa, de dentro da pasta da frente | Verifica (testes, segredo no diff, base atualizada), mostra uma vez o que vai para produção, só publica depois do seu OK e confere o deploy (inclusive na Vercel) |
 
-Cada pasta de skill é autocontida: um `SKILL.md` com o procedimento completo, `references/` com os protocolos, `assets/` com os templates canônicos de saída e (quando aplicável) `scripts/` com um validador estrutural e `agents/openai.yaml` para agentes baseados em OpenAI.
+Cada pasta de skill é autocontida: um `SKILL.md` com o procedimento completo, `references/` com os protocolos, `assets/` com os templates canônicos de saída (quando aplicável) `scripts/` com o que a skill roda e `agents/openai.yaml` para agentes baseados em OpenAI.
 
 ## De onde vêm estas skills
 
-Quinze skills deste repositório são **geradas** a partir do [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` e `sdd-loop-builder` (desde a 1ª geração, nov/2026), e `sdd-brainstorm`, `sdd-handoff`, `sdd-governanca`, `sdd-release` e `ux-review-builder` (desde a 2ª). Cada uma traz um `GERADO.txt` e não se edita aqui: quem melhora, melhora no Open, e a próxima geração traz a mudança. `docs/`, `exemplos/` e `tests/` também vêm do Open.
+As 18 skills deste repositório são **geradas** a partir do [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` e `sdd-loop-builder` (desde a 1ª geração, nov/2026), e `sdd-brainstorm`, `sdd-handoff`, `sdd-governanca`, `sdd-release` e `ux-review-builder` (desde a 2ª), e `sdd-define`, `sdd-design` e `sdd-build` (desde a 3ª). Cada uma traz um `GERADO.txt` e não se edita aqui: quem melhora, melhora no Open, e a próxima geração traz a mudança. `docs/`, `exemplos/` e `tests/` também vêm do Open.
 
 O que a 2ª geração muda para você: brainstorm, handoff e governança funcionam igual na web (o documento sai no chat, dizendo que nada foi gravado); a `sdd-release` confere o deploy da **Vercel** ligada ao GitHub (pelo status do commit, com o endereço no fim), sem pedir token; as skills geradas guardam os documentos em `sdd/features/`, `sdd/handoffs/` e `sdd/reviews/`.
 
-As outras três (`sdd-define`, `sdd-design` e `sdd-build`) continuam como estavam, congeladas até a próxima etapa da geração; elas recebem o documento da fase anterior pelo caminho que você indicar.
+O que a 3ª geração muda para você: `sdd-define`, `sdd-design` e `sdd-build` continuam com as mesmas perguntas e o mesmo jeito de trabalhar, e passam a guardar o DEFINE e o DESIGN em `sdd/features/` e o BUILD_REPORT em `sdd/reports/`, como as outras; nenhuma skill pede mais para você rodar um validador. Na web, o documento sai no chat.
 
 ## Instalação
 
@@ -148,15 +148,15 @@ And five skills to **prepare the environment and work in isolated workstreams** 
 | [`sdd-new-session`](skills/sdd-new-session/) | Open a workstream | At the start of each task | Creates worktree + branch from up-to-date production and prepares the folder (dependencies, `.env`, skills kept out of git) |
 | [`sdd-release`](skills/sdd-release/) | Close the workstream and ship | At the end of the task, from inside the workstream folder | Checks (tests, secrets in the diff, up-to-date base), shows once what goes to production, ships only after your OK and checks the deploy (Vercel included) |
 
-Each skill folder is self-contained: a `SKILL.md` with the full procedure, `references/` with protocols, `assets/` with the canonical output templates, and (where applicable) `scripts/` with a structural validator and `agents/openai.yaml` for OpenAI-based agents.
+Each skill folder is self-contained: a `SKILL.md` with the full procedure, `references/` with protocols, `assets/` with the canonical output templates, (where applicable) `scripts/` with what the skill runs, and `agents/openai.yaml` for OpenAI-based agents.
 
 ## Where these skills come from
 
-Fifteen skills in this repository are **generated** from [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` and `sdd-loop-builder` (since the first generation, Nov 2026), and `sdd-brainstorm`, `sdd-handoff`, `sdd-governanca`, `sdd-release` and `ux-review-builder` (since the second). Each one carries a `GERADO.txt` and is not edited here: improvements go to SDD Open, and the next generation brings them. `docs/`, `exemplos/` and `tests/` also come from SDD Open.
+All 18 skills in this repository are **generated** from [SDD Open](https://github.com/robertodiasduarte/sdd-open): `sdd-checar-ambiente`, `sdd-iniciar-repo`, `sdd-higiene-dado`, `sdd-new-session`, `sdd-kb`, `sdd-seguranca`, `sdd-auditoria-harness`, `sdd-prompt-builder`, `sdd-engenharia-reversa-saas` and `sdd-loop-builder` (since the first generation, Nov 2026), and `sdd-brainstorm`, `sdd-handoff`, `sdd-governanca`, `sdd-release` and `ux-review-builder` (since the second), and `sdd-define`, `sdd-design` and `sdd-build` (since the third). Each one carries a `GERADO.txt` and is not edited here: improvements go to SDD Open, and the next generation brings them. `docs/`, `exemplos/` and `tests/` also come from SDD Open.
 
 What the second generation changes for you: brainstorm, handoff and governance work the same on the web (the document comes out in the chat, saying nothing was saved); `sdd-release` checks the deploy of **Vercel** connected to GitHub (through the commit status, with the address at the end), without asking for a token; the generated skills keep documents in `sdd/features/`, `sdd/handoffs/` and `sdd/reviews/`.
 
-The other three (`sdd-define`, `sdd-design` and `sdd-build`) stay as they were, frozen until the next stage of the generation; they take the previous phase's document from the path you give them.
+What the third generation changes for you: `sdd-define`, `sdd-design` and `sdd-build` keep the same questions and the same way of working, and now keep the DEFINE and the DESIGN in `sdd/features/` and the BUILD_REPORT in `sdd/reports/`, like the others; no skill asks you to run a validator anymore. On the web, the document comes out in the chat.
 
 ## Installation
 

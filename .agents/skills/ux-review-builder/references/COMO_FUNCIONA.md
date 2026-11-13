@@ -8,4 +8,4 @@ As escolhas viram propostas de regras verificáveis. Nada entra na fonte canôni
 
 O resultado são três peças: a fonte canônica `UX_STANDARD.md`, a skill `ux-review` e o modelo de relatório `UX_REVIEW_TEMPLATE.md`. A `ux-review` consulta o padrão em cada feature e pode bloquear a passagem para o Design quando encontra um `MUST`.
 
-Os documentos ficam na pasta do SDD do projeto, lado a lado com o Define e o Design (regra em `references/GOVERNANCE.md`).
+Os documentos ficam na pasta do SDD do projeto: o padrão em `sdd/`, o UX_REVIEW em `sdd/reviews/`, ao lado do Define e do Design em `sdd/features/` (regra em `references/GOVERNANCE.md`).

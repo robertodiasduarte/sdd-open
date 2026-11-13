@@ -20,7 +20,8 @@ REVIEW_TEMPLATE_MIN = (
 )
 CHILD_MIN = (
     "UX_STANDARD.md UX_REVIEW_TEMPLATE.md MUST NAO AVALIAVEL "
-    "Os documentos ficam em `sdd/` (ou `.claude/sdd/`), sem subpastas. nao editar"
+    "Ler o DEFINE em `sdd/features/` e gravar em `sdd/reviews/`; documento de versao anterior, em `sdd/` ou "
+    "`.claude/sdd/`, e lido de onde estiver. nao editar"
 )
 CORE = "\n".join(f"UX-CORE-{i:03d}" for i in range(1, 11)) + "\n"
 
@@ -54,7 +55,7 @@ class ValidatorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
             core = "\n".join(f"UX-CORE-{i:03d}" for i in range(1, 11))
-            write_bundle(root, core, REVIEW_TEMPLATE_MIN, CHILD_MIN + "\nLer `sdd/features/DEFINE_X.md`.")
+            write_bundle(root, core, REVIEW_TEMPLATE_MIN, CHILD_MIN + "\nLer `sdd/architecture/DEFINE_X.md`.")
             result = validator.validate(root)
             self.assertFalse(result["pass"])
             self.assertIn("SUBPASTA_SDD_NA_FILHA", result["errors"])
@@ -112,8 +113,17 @@ class ValidatorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
             core = "\n".join(f"UX-CORE-{i:03d}" for i in range(1, 11))
-            write_bundle(root, core, REVIEW_TEMPLATE_MIN, CHILD_MIN.replace(" (ou `.claude/sdd/`)", ""))
+            write_bundle(root, core, REVIEW_TEMPLATE_MIN, CHILD_MIN.replace("de onde estiver", "da pasta"))
             self.assertIn("REGRA_DE_PASTA_AUSENTE", validator.validate(root)["errors"])
+
+    def test_the_open_folders_are_accepted(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            core = "\n".join(f"UX-CORE-{i:03d}" for i in range(1, 11))
+            write_bundle(root, core, REVIEW_TEMPLATE_MIN,
+                         CHILD_MIN + " Ler sdd/features/DEFINE_X.md e gravar sdd/reviews/UX_REVIEW_X.md.")
+            self.assertNotIn("SUBPASTA_SDD_NA_FILHA", validator.validate(root)["errors"])
+            self.assertNotIn("REGRA_DE_PASTA_AUSENTE", validator.validate(root)["errors"])
 
     def test_any_subfolder_under_sdd_is_rejected(self):
         with tempfile.TemporaryDirectory() as td:

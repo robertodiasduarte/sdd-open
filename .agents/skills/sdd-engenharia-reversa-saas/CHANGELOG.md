@@ -1,5 +1,11 @@
 # Histórico
 
+## 1.2.0 — nov/2026
+
+- A pasta de saída é sempre `sdd/features/`, como as outras fases (antes, sem `sdd/config.yaml`, `sdd/` na raiz);
+  documento de outra fase guardado por uma versão anterior, em `sdd/` ou `.claude/sdd/`, é lido de onde estiver,
+  sem pergunta. A pergunta da pasta ativa fica só para o mesmo documento deste ciclo em duas pastas.
+
 ## 1.1.1 — nov/2026
 
 - Sem mudança de comportamento. A versão sobe para a 1ª geração da distribuição para iniciantes (F17): a

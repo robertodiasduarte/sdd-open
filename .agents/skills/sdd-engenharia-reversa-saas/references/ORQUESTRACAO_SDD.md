@@ -52,6 +52,6 @@ O documento final pronto termina com o próximo passo canônico da dependência.
 
 ## Arquivos e mudanças
 
-As três saídas ficam lado a lado. Com `sdd/config.yaml` no projeto, gravar em `sdd/features/`. Sem ele, gravar em `sdd/` na raiz. `.claude/sdd/` só quando ela já existe e não há `sdd/config.yaml`. Se não houver filesystem, fornecer Markdown completo com nome indicado, sem alegar que salvou.
+As três saídas ficam lado a lado: gravar em `sdd/features/`, como as outras fases. Documento de outra fase em `sdd/` ou `.claude/sdd/` (projeto começado numa versão anterior) é lido de onde estiver, sem pergunta. Se não houver filesystem, fornecer Markdown completo com nome indicado, sem alegar que salvou.
 
 Evitar um quarto documento de estado: manter retomada no levantamento e registros canônicos de decisões/revisões nos documentos SDD. Não renomear um ciclo em andamento silenciosamente. Antes de alterar material existente, ler e preservar as partes válidas e o histórico.

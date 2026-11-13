@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.6.1"
+  version: "2.7.0"
   updated: "2026-11"
   fase: "1"
 ---
@@ -13,7 +13,10 @@ metadata:
 # sdd-define — Fase 1
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-define v2.6.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-define v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+
+**Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
+desta skill.
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
 depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
@@ -72,6 +75,9 @@ extração é direta: perguntas já respondidas, abordagem já escolhida, YAGNI 
 Leia `sdd/templates/DEFINE_TEMPLATE.md`, `AGENTS.md`, a entrada, e os 3 fragmentos que regem
 esta fase: `sdd/templates/fragments/EARS.md`, `CLARIFY.md`, `VERIFY_GATE.md`. Leia `## Sempre`
 de `sdd/playbook.md`.
+
+**Sem acesso, não finja:** não diga que leu código, testes ou infraestrutura que não leu; sem o código à vista,
+não invente caminho, comando nem biblioteca: o que falta vira pergunta ou suposição rotulada.
 
 ### 1.5. Contexto de domínio (cartógrafo)
 
@@ -203,7 +209,10 @@ Derive o gate dos ATs e critérios de sucesso, seguindo `fragments/VERIFY_GATE.m
 | UX pura | `manual-ux` | `N/A (manual-ux)` + `manual_fallback` = checklist |
 
 Os slots `{{TEST_CMD}}`/`{{TYPECHECK_CMD}}` vêm de `sdd/config.yaml`. Slot vazio: pergunte o
-comando real; nunca adivinhe. Valide o bloco:
+comando real; nunca adivinhe. Na **1ª vez** (slot vazio e nenhum comando de teste no projeto), a pergunta é uma
+só: "**existe um comando que devolve 0 quando funciona?**" Sim ⇒ `kind: test` com ele. Não ⇒ `kind: manual-ux`,
+com 3 a 5 frases "Eu abri … e vi …" no `manual_fallback`. `manual-ux` nunca é atalho para não perguntar.
+Valide o bloco:
 
 ```bash
 sdd/bin/verify-gate.sh --print sdd/features/DEFINE_{FEATURE}.md   # lista kind/cmd/pass_when sem erro 64

@@ -1,3 +1,7 @@
-# skill<TAB>arquivo de modo (relativo à skill): o scripts/gerar-starter.py monta o SKILL.md do starter só desse arquivo
-# (Decision 2 do DESIGN_F17B_STARTER_ETAPA2).
+# skill<TAB>arquivo de modo[<TAB>pasta-base], relativos à skill: o scripts/gerar-starter.py monta o SKILL.md do starter
+# só do arquivo de modo (Decision 2 do DESIGN_F17B_STARTER_ETAPA2). A pasta-base, opcional, é de onde vêm os arquivos
+# que o modo cita, com o mesmo caminho relativo; sem ela, a raiz da skill (Decision 1 do DESIGN_F17C_STARTER_ETAPA3).
+sdd-define	web/MODO_WEB.md	web
+sdd-design	web/MODO_WEB.md	web
+sdd-build	web/MODO_WEB.md	web
 sdd-release	references/MODO_INICIANTE.md
