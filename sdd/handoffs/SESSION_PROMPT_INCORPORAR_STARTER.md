@@ -7,8 +7,9 @@ próxima frente é a **F17c**: `sdd-define`, `sdd-design` e `sdd-build`, as 3 ma
 
 ## Onde abrir esta sessão
 
-A frente **ainda não existe**: abra com a `sdd-new-session` (branch `feat/f17c-starter-etapa3`, de `origin/main` =
-`e583889` = `v2.14.0`). A worktree da F17b (`/Users/robertoduarte/rdd-worktrees/sdd-open-f17b-starter-etapa2`) e o clone do
+A frente **já existe** (aberta em 2026-11-13 pela `sdd-new-session`): worktree
+`/Users/robertoduarte/rdd-worktrees/sdd-open-f17c-starter-etapa3`, branch `feat/f17c-starter-etapa3`, de `origin/main` =
+`e583889` (`v2.14.0`). A janela do Cursor foi aberta nela; cole o prompt abaixo lá. A worktree da F17b (`/Users/robertoduarte/rdd-worktrees/sdd-open-f17b-starter-etapa2`) e o clone do
 starter dela (`/Users/robertoduarte/rdd-worktrees/sdd-starter-f17b-gerado`) podem ser removidos depois de conferir que nada
 ficou só neles (os documentos e a evidência da F17b estão na branch de documentos).
 
@@ -16,8 +17,12 @@ ficou só neles (os documentos e a evidência da F17b estão na branch de docume
 
 ```text
 Executar a frente F17c do SDD Open: starter gerado, etapa 3 (Decisão 5) — sdd-define, sdd-design e sdd-build em modo web,
-geradas do Open. Repo público robertodiasduarte/sdd-open. Abra a frente com a sdd-new-session (branch
-feat/f17c-starter-etapa3, de origin/main = e583889 = v2.14.0). Responda em português.
+geradas do Open. Repo público robertodiasduarte/sdd-open. A frente já está aberta:
+/Users/robertoduarte/rdd-worktrees/sdd-open-f17c-starter-etapa3, branch feat/f17c-starter-etapa3, de origin/main = e583889 =
+v2.14.0. Não rode a sdd-new-session. Responda em português.
+Execute o pipeline inteiro até a release (passo 0, brainstorm, define, design, build, release, fechamento) e pergunte ao
+Roberto somente o que for necessário: as decisões dele (escopo, paradas novas, curadoria, passar do teto do método) e as
+autorizações (a frase do Open; o OK de cada push, PR e merge no starter). Decisão de rotina, decida e registre.
 Push, merge, tag e Release neste repositório pedem a frase do Roberto "sdd-open autorizado" (a frase exata): pergunte, não presuma.
 A F17c toca dois repositórios: o gerador mora no Open; o robertodiasduarte/sdd-starter recebe a cópia gerada e pede OK PRÓPRIO
 do Roberto para cada push, PR e merge lá (merge na main do starter publica a Release automática). Na F17b o classificador do
