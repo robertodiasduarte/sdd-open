@@ -401,10 +401,12 @@ def conferir_versoes(saida: Path, destino: Path) -> None:
         antiga = destino / "skills" / pasta.name
         if not (antiga / "SKILL.md").is_file():
             continue
-        iguais = sorted(p.relative_to(pasta).as_posix() for p in arquivos(pasta)) == \
-            sorted(p.relative_to(antiga).as_posix() for p in arquivos(antiga) if "__pycache__" not in p.parts) and \
-            all((pasta / r).read_bytes() == (antiga / r).read_bytes()
-                for r in (p.relative_to(pasta).as_posix() for p in arquivos(pasta)))
+        # o que o git e o check-gerado.py não veem (lixo do Finder, cache do Python) não é mudança (rodada 6, R1)
+        def lista(base: Path) -> list[str]:
+            return sorted(p.relative_to(base).as_posix() for p in arquivos(base)
+                          if p.name != ".DS_Store" and "__pycache__" not in p.parts and p.suffix != ".pyc")
+        iguais = lista(pasta) == lista(antiga) and \
+            all((pasta / r).read_bytes() == (antiga / r).read_bytes() for r in lista(pasta))
         if iguais:
             continue
         (vn, un), (va, ua) = versao(pasta / "SKILL.md"), versao(antiga / "SKILL.md")
@@ -474,6 +476,9 @@ def main(argv: list[str]) -> int:
             arvore.mkdir()
             saida.mkdir()
             commit = extrair_tag(a.tag, arvore)
+            if not (arvore / "scripts" / "gerar-starter.py").is_file() or not (arvore / "scripts" / "starter").is_dir():
+                raise Falha(64, "a tag %s não tem o gerador do starter (é anterior à F17): gere de uma tag que já o tenha"
+                            % a.tag)   # rodada 6, R2: antes, traceback com exit 1
             if (arvore / "scripts" / "gerar-starter.py").read_bytes() != Path(__file__).read_bytes():
                 raise Falha(64, "este gerador difere do que está na tag %s: rode o da tag, de uma worktree dela "
                                 "(git worktree add --detach /tmp/open-%s %s && python3 /tmp/open-%s/scripts/gerar-starter.py "

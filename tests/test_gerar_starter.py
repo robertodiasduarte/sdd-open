@@ -185,6 +185,17 @@ class Gera(Base):
         self.assertEqual(rc, 0, out + err)
         self.assertTrue(self.limpo(self.starter))
 
+    def test_r6_ds_store_no_destino_nao_conta_como_mudanca(self):
+        # revisão, rodada 6, R1: o Finder cria .DS_Store (ignorado pelo git); o gerador não pode pedir versão nova por ele
+        rc, out, err = self.gerar()
+        self.assertEqual(rc, 0, out + err)
+        self.commit(self.starter, "1a geracao")
+        (self.starter / "skills/sdd-kb/.DS_Store").write_bytes(b"\x00\x01finder")
+        self.escreve(self.starter, ".gitignore", ".DS_Store\n")
+        self.commit(self.starter, "gitignore")
+        rc, out, err = self.gerar()
+        self.assertEqual(rc, 0, out + err)
+
     def test_r2_arquivo_que_saiu_da_semente_sai_do_destino(self):
         # revisão, rodada 1, R2: scripts/ e .github/workflows/ são inteiros do gerador; um arquivo antigo que ficasse
         # lá seria "sobra" na trava e pediria remendo à mão no starter
@@ -279,6 +290,22 @@ class Recusa(Base):
         rc, out, err = self.gerar()
         self.nada_gravado(rc, 65, out, err, antes)
         self.assertIn("sdd-engenharia-reversa-saas: a cópia gerada mudou e a versão não subiu", out)
+
+    def test_r6_tag_anterior_ao_gerador_diz_a_causa(self):
+        # revisão, rodada 6, R2: uma tag sem o gerador dava traceback com exit 1
+        g = self.open / "scripts/gerar-starter.py"
+        guardado = g.read_bytes()
+        self.git(self.open, "rm", "-q", "-r", "scripts")
+        self.commit(self.open, "antes da F17")
+        self.git(self.open, "tag", "v0.1.0")
+        g.parent.mkdir(parents=True, exist_ok=True)
+        g.write_bytes(guardado)
+        antes = arvore(self.starter)
+        rc, out, err = self.gerar(tag="v0.1.0")
+        self.assertEqual(rc, 64, out + err)
+        self.assertIn("não tem o gerador do starter", out)
+        self.assertNotIn("Traceback", out + err)
+        self.assertEqual(arvore(self.starter), antes)
 
     def test_gerador_diferente_do_da_tag(self):
         g = self.open / "scripts/gerar-starter.py"   # mudança não commitada: a tag tem o gerador antigo
