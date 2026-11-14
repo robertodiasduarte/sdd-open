@@ -198,13 +198,6 @@ def linha(c: dict) -> str:
 
 
 def main(argv: list) -> int:
-    # Revisão R1 (LM-015): no Windows, o stdout do executor num pipe é cp1252 estrito; a cauda de uma unidade com
-    # 🛑 ou ✅ derrubaria o print antes de gravar o log e o resumo. O executor escreve sempre em UTF-8.
-    for canal in (sys.stdout, sys.stderr):
-        try:
-            canal.reconfigure(encoding="utf-8", errors="replace")
-        except (AttributeError, ValueError):
-            pass
     fatia, n, teto, paralelo, saida, so, pasta, lista = 1, 1, 900.0, 1, None, None, RAIZ / "tests", False
     it = iter(argv)
     try:
@@ -306,4 +299,11 @@ def main(argv: list) -> int:
 
 
 if __name__ == "__main__":
+    # F16W2: no Windows, o stdout num pipe (o Git Bash do aluno) é cp1252 e o print troca \n por \r\n: o ✅ e o "ç"
+    # quebrariam o script, e o bash que captura a saída veria um \r a mais. Saída em UTF-8 e \n, sempre.
+    for _canal in (sys.stdout, sys.stderr):
+        try:
+            _canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+        except (AttributeError, ValueError):
+            pass
     sys.exit(main(sys.argv[1:]))

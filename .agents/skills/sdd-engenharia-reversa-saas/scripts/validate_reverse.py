@@ -7,6 +7,7 @@ from datetime import date
 import json
 from pathlib import Path
 import re
+import sys
 
 SECTIONS = (
     "Metadata", "Objetivo e limites", "Fontes e evidências", "Achados classificados",
@@ -208,4 +209,11 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
+    # F16W2: no Windows, o stdout num pipe (o Git Bash do aluno) é cp1252 e o print troca \n por \r\n: o ✅ e o "ç"
+    # quebrariam o script, e o bash que captura a saída veria um \r a mais. Saída em UTF-8 e \n, sempre.
+    for _canal in (sys.stdout, sys.stderr):
+        try:
+            _canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+        except (AttributeError, ValueError):
+            pass
     raise SystemExit(main())

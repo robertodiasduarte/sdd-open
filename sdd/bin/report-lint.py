@@ -593,11 +593,20 @@ def main(argv):
         print(f"🛑 {path}: o nome precisa ser BUILD_REPORT_{{FEATURE}}.md", file=sys.stderr)
         return 64
     try:
-        content = sys.stdin.read() if stdin else open(path, encoding="utf-8").read()
+        # F16W2: o stdin em bytes, decodificado em UTF-8 (no Windows, sys.stdin leria em cp1252); o fim de linha como
+        # na leitura do arquivo em modo texto
+        content = (sys.stdin.buffer.read().decode("utf-8").replace("\r\n", "\n").replace("\r", "\n") if stdin
+                   else open(path, encoding="utf-8").read())
     except (OSError, UnicodeDecodeError) as e:
         print(f"🛑 não consegui ler {path}: {e}", file=sys.stderr)
         return 64
-    root = os.popen("git rev-parse --show-toplevel 2>/dev/null").read().strip() or os.getcwd()
+    # F16W2: sem os.popen, que no Windows passa pelo cmd.exe (não conhece /dev/null e a raiz caía no cwd)
+    try:
+        r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, stdin=subprocess.DEVNULL)
+        root = r.stdout.decode("utf-8", "replace").strip() if r.returncode == 0 else ""
+    except OSError:
+        root = ""
+    root = root or os.getcwd()
     report_dir = os.path.dirname(os.path.abspath(path))
     feature = rm.group(1)
     violations, warnings = check(content, root, report_dir, feature)
@@ -622,4 +631,11 @@ def main(argv):
 
 
 if __name__ == "__main__":
+    # F16W2: no Windows, o stdout num pipe (o Git Bash do aluno) é cp1252 e o print troca \n por \r\n: o ✅ e o "ç"
+    # quebrariam o script, e o bash que captura a saída veria um \r a mais. Saída em UTF-8 e \n, sempre.
+    for _canal in (sys.stdout, sys.stderr):
+        try:
+            _canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+        except (AttributeError, ValueError):
+            pass
     sys.exit(main(sys.argv))

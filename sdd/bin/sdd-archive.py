@@ -114,11 +114,6 @@ def fichas():
 
 
 def main():
-    for canal in (sys.stdout, sys.stderr):
-        try:
-            canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
-        except Exception:
-            pass
     ap = Parser(description="Faxina retroativa dos documentos do SDD; simulação por padrão.")
     ap.add_argument("--lote", choices=LOTES)
     ap.add_argument("--aplicar", action="store_true")
@@ -310,4 +305,11 @@ def main():
 
 
 if __name__ == "__main__":
+    # F16W2: no Windows, o stdout num pipe (o Git Bash do aluno) é cp1252 e o print troca \n por \r\n: o ✅ e o "ç"
+    # quebrariam o script, e o bash que captura a saída veria um \r a mais. Saída em UTF-8 e \n, sempre.
+    for _canal in (sys.stdout, sys.stderr):
+        try:
+            _canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+        except (AttributeError, ValueError):
+            pass
     sys.exit(main())
