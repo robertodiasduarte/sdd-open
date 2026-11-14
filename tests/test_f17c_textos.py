@@ -89,6 +89,15 @@ class ModoWebGerado(Base):
                 with self.subTest(arquivo=rel):
                     self.assertNotIn("quando executável", tx)    # a obrigação em prosa que citava o lint (LM-026)
 
+    def test_build_sem_o_projeto_recomenda_um_agente_que_grave(self):
+        # decisão do Roberto (avaliador, ciclo 2): escrever no chat para o aluno salvar não é o recomendado
+        s = ler(self.starter / "skills/sdd-build/SKILL.md")
+        for trecho in ("**recomendar** abrir o projeto num agente que grave arquivos no computador do usuário",
+                       "Escrever o código no chat para o usuário salvar só se ele pedir; aí nenhuma tarefa é marcada\nfeita",
+                       "nem dizer\nque há onde gravar sem ter"):
+            with self.subTest(trecho=trecho):
+                self.assertIn(trecho, s)
+
     def test_at005_build_le_a_saida_do_comando_sem_o_verify_gate_sh(self):
         vg = ler(self.starter / "skills/sdd-build/references/verify-gate.md")
         for trecho in ("`exit 0` (o caso comum) → `0` é green; qualquer outro código é red",
@@ -168,7 +177,8 @@ class NaoFinjaNoOpen(unittest.TestCase):
         s = ler(SKILLS / "sdd-define/SKILL.md")
         passo = s.split("### 8. Verify Gate", 1)[1].split("### 9.", 1)[0]
         for trecho in ("\"**existe um comando que devolve 0 quando funciona?**\"", "Não ⇒ `kind: manual-ux`",
-                       "3 a 5 frases \"Eu abri … e vi …\"", "`manual-ux` nunca é atalho para não perguntar"):
+                       "3 a 5 frases \"Eu abri … e vi …\"", "`manual-ux` nunca é atalho para não perguntar",
+                       "só a UX\npura (aparência, que nenhum comando julga) vai direto a `manual-ux`"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, passo)
         frag = ler(RAIZ / "sdd/templates/fragments/VERIFY_GATE.md")

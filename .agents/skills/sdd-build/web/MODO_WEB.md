@@ -80,7 +80,11 @@ Exigir:
 
 Ler os três documentos integralmente antes de editar código. **Documento de uma fase anterior** (projeto começado antes desta versão): leia de onde estiver — `sdd/features/`, `sdd/` ou `.claude/sdd/` —, grave o novo na pasta desta versão e não pergunte onde está.
 
-Se o projeto não estiver acessível, pedir ao usuário para fornecê-lo/conectá-lo. Não fingir um Build completo somente a partir dos arquivos de especificação.
+Se o projeto não estiver acessível (na web, ou sem ferramenta que grave arquivos), parar antes da primeira tarefa e
+**recomendar** abrir o projeto num agente que grave arquivos no computador do usuário (Claude Code, Codex, Cursor e
+outros), com os três documentos. Não fingir um Build completo somente a partir dos arquivos de especificação, nem dizer
+que há onde gravar sem ter. Escrever o código no chat para o usuário salvar só se ele pedir; aí nenhuma tarefa é marcada
+feita e nenhuma conferência é afirmada sem o relato dele, e o relatório diz que quem salvou e conferiu foi ele.
 
 Entradas opcionais:
 - `UX_REVIEW_{FEATURE}.md`;

@@ -212,7 +212,8 @@ Derive o gate dos ATs e critérios de sucesso, seguindo `fragments/VERIFY_GATE.m
 Os slots `{{TEST_CMD}}`/`{{TYPECHECK_CMD}}` vêm de `sdd/config.yaml`. Slot vazio: pergunte o
 comando real; nunca adivinhe. Na **1ª vez** (slot vazio e nenhum comando de teste no projeto), a pergunta é uma
 só: "**existe um comando que devolve 0 quando funciona?**" Sim ⇒ `kind: test` com ele. Não ⇒ `kind: manual-ux`,
-com 3 a 5 frases "Eu abri … e vi …" no `manual_fallback`. `manual-ux` nunca é atalho para não perguntar.
+com 3 a 5 frases "Eu abri … e vi …" no `manual_fallback`. `manual-ux` nunca é atalho para não perguntar; só a UX
+pura (aparência, que nenhum comando julga) vai direto a `manual-ux`, como na tabela acima.
 Valide o bloco:
 
 ```bash
