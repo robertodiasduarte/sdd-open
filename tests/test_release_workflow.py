@@ -158,14 +158,25 @@ class Windows(unittest.TestCase):
                 self.assertIn('echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"', bloco)
                 self.assertIn('run: bash scripts/publish-gate.sh "$(pwd)"', bloco)
                 self.assertIn("PUBLISH_GATE_MODE: ci", bloco)
-                # F16: só o caminho do aluno; a suíte inteira no Windows é a frente F16W
-                self.assertIn("run: python -B -m unittest -v test_checar test_inventario test_python_resolver "
-                              "test_windows test_f16_textos", bloco)
-                self.assertIn("working-directory: tests", bloco)
+                # F16W: a suíte inteira, módulo a módulo, em 8 fatias paralelas pelo executor
+                self.assertRegex(bloco, r"(?m)^    strategy:\n      fail-fast: false.*\n      matrix:\n"
+                                        r"        fatia: \[1, 2, 3, 4, 5, 6, 7, 8\]$")
+                self.assertIn('run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/8" '
+                              '--teto-modulo 600 --saida "$RUNNER_TEMP/tpm"', bloco)
+                self.assertNotIn("unittest -v test_checar", bloco)   # o caminho do aluno sozinho ficou para trás
                 self.assertRegex(bloco, r"(?m)^    timeout-minutes: 30$")
                 self.assertNotIn("contents: write", bloco)
-                self.assertNotIn("if:", sem_comentarios(bloco))
-                self.assertLess(bloco.index("SDD_TEST_BASH="), bloco.index("python -B -m unittest -v"))
+                # só 2 condições: o publish-gate numa fatia, e o artefato também no vermelho
+                ifs = re.findall(r"(?m)^\s+if: (.*)$", sem_comentarios(bloco))
+                self.assertEqual(ifs, ["matrix.fatia == 1", "always()"])
+                self.assertIn("uses: actions/upload-artifact@", bloco)
+                self.assertIn("path: ${{ runner.temp }}/tpm", bloco)
+                self.assertNotIn("continue-on-error", sem_comentarios(bloco))
+                self.assertLess(bloco.index("SDD_TEST_BASH="), bloco.index("run: python -B scripts/testes-por-modulo.py"))
+
+    def test_o_job_windows_e_igual_nos_dois_workflows(self):
+        # mesmo N, mesmos tetos, mesmos passos: um só desenho a manter
+        self.assertEqual(job(RELEASE, "testes-windows").rstrip(), job(GATE, "testes-windows").rstrip())
 
     def test_frases_dizem_o_que_o_workflow_prova(self):
         piso = "testes-windows" in re.search(r"(?m)^    needs: (.*)$", job(RELEASE, "release")).group(1)

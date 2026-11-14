@@ -23,7 +23,7 @@ import time
 import unittest
 from pathlib import Path
 
-from apoio import SEM_SINAL, caminho_bash
+from apoio import caminho_bash
 
 SCRIPT = Path(__file__).resolve().parents[1] / ".agents" / "skills" / "sdd-checar-ambiente" / "scripts" / "checar.sh"
 # O publish-gate do sdd-open reprova e-mail fora de example.com, inclusive "git@host": montados aqui.
@@ -313,7 +313,6 @@ class TestRemoto(Base):
         for palavra in ("senha", "login", "credencial"):
             self.assertNotIn(palavra, out.lower())
 
-    @unittest.skipIf(*SEM_SINAL)   # F16: no Windows o vigia não mata o grupo; o conserto é a F16W
     def test_rede_pendurada_inteira_api_e_remoto(self):
         # Máquina sem rede ou atrás de firewall que descarta pacotes: a API do GitHub também não responde.
         # A consulta à API (teto de 3 s) não pode somar ao teto do ls-remote (10 s). O remoto é do GitHub
@@ -327,7 +326,6 @@ class TestRemoto(Base):
         self.assertIn("Não consegui falar com github.com agora (sem internet ou rede bloqueada).", out)
         self.assertNotIn("público", out)
 
-    @unittest.skipIf(*SEM_SINAL)   # F16: no Windows o vigia não mata o grupo; o conserto é a F16W
     def test_ssh_pendurado_vigia(self):
         # Neto que não é `exec` (sh -c com 2 comandos): matar só o filho deixaria o pipe aberto.
         self.origin(f"ssh://{SSH_INVALIDO}/x.git")
@@ -344,7 +342,6 @@ class TestRemoto(Base):
         self.assertIn(f"ssh -T {SSH_INVALIDO}", out)
         self.assertNotIn("gh auth login", out)
 
-    @unittest.skipIf(*SEM_SINAL)   # F16: no Windows o vigia não mata o grupo; o conserto é a F16W
     def test_login_do_editor_esperando(self):
         self.origin(f"http://127.0.0.1:{self.srv401.server_address[1]}/x.git")
         registro = self.tmp / "askpass.log"
@@ -357,7 +354,6 @@ class TestRemoto(Base):
         self.assertIn("A janela de login do editor está esperando resposta", out)
         self.assertNotIn("sem internet", out)
 
-    @unittest.skipIf(*SEM_SINAL)   # F16: no Windows o vigia não mata o grupo; o conserto é a F16W
     def test_rede_parada_com_editor_nao_e_janela_de_login(self):
         # GIT_ASKPASS definido (terminal do VS Code/Cursor) não prova que o git pediu login: com a rede
         # parada o askpass nunca é chamado, e a resposta é de rede — nunca "janela do editor".
@@ -516,7 +512,6 @@ class TestFrente(Base):
         self.bloqueia(out, rc)
         self.assertIn("sem internet", out)
 
-    @unittest.skipIf(*SEM_SINAL)   # F16: no Windows o vigia não mata o grupo; o conserto é a F16W
     def test_frente_bloqueia_login_do_editor(self):
         self.origin(f"http://127.0.0.1:{self.srv401.server_address[1]}/x.git")
         askpass = self.tmp / "askpass.sh"
