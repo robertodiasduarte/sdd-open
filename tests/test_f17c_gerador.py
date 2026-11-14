@@ -60,6 +60,15 @@ class ModoWeb(Base):
         self.assertNotIn("report-lint", mig)
         self.assertNotIn("MIG-001.log", mig)
 
+    def test_as_3_geradas_cabem_em_500_linhas(self):
+        # revisão do DESIGN, nota 15: o que a especificação de Agent Skills recomenda
+        rc, out, err = self.gerar()
+        self.assertEqual(rc, 0, out + err)
+        for skill in DA_F17C:
+            n = len((self.starter / "skills" / skill / "SKILL.md").read_text(encoding="utf-8").splitlines())
+            with self.subTest(skill=skill, linhas=n):
+                self.assertLessEqual(n, 500)
+
     def test_sem_pasta_base_o_modo_continua_na_raiz_da_skill(self):
         # a release (F17b) não tem 3ª coluna: o que o modo cita vem da raiz da skill, como antes
         modo = self.open / ".agents/skills/sdd-release/references/MODO_INICIANTE.md"
