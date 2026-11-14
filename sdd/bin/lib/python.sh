@@ -35,14 +35,27 @@ sdd_python_calco() {   # $1 = o caminho absoluto do candidato, entre aspas simpl
   local d
   # Calço de mais de 1 dia é sobra de processo que já terminou: sai antes de criar o novo (avaliador, ciclo 1, achado 5).
   find "${TMPDIR:-/tmp}" -maxdepth 1 -type d -name 'sdd-python.*' -mmin +1440 -exec rm -rf {} + 2>/dev/null || :
+  local corpo
+  if sdd_python_windows && command -v tr >/dev/null 2>&1; then
+    # F16W2: no Windows, o Python escreve "\r\n" no stdout e, com -I, ignora o PYTHONIOENCODING. O calço roda com
+    # -X utf8 (vale com -I: stdin, stdout e stderr em UTF-8), -u (a saída chega na hora, mesmo no pipe) e tira o \r
+    # da saída padrão; pipefail devolve o exit do Python (o tr sai 0). A entrada segue direta.
+    corpo="$(printf '#!%s\nset -o pipefail\n%s -X utf8 -u "$@" | %s -d '"'"'\\r'"'"'\n' \
+      "${BASH:-/bin/bash}" "$1" "$(sdd_python_aspas "$(command -v tr)")")"
+  else
+    corpo="$(printf '#!/bin/sh\nexec %s "$@"' "$1")"
+  fi
   d="$(mktemp -d "${TMPDIR:-/tmp}/sdd-python.XXXXXX" 2>/dev/null)" \
-    && printf '#!/bin/sh\nexec %s "$@"\n' "$1" > "${d}/python3" 2>/dev/null \
+    && printf '%s\n' "${corpo}" > "${d}/python3" 2>/dev/null \
     && chmod +x "${d}/python3" 2>/dev/null \
     || { SDD_PYTHON_MOTIVO="não consegui criar o calço do Python na pasta temporária (${TMPDIR:-/tmp}): confira se ela existe e aceita escrita"; return 1; }
   SDD_PYTHON_RESOLVIDO="${d}"
   PATH="${d}:${PATH}"
   export SDD_PYTHON_RESOLVIDO PATH
 }
+
+# 0 no Windows (Git Bash/MSYS: só lá existe /proc/<pid>/winpid). SDD_PYTHON_FORCA_WINDOWS=1 só para os testes do Mac.
+sdd_python_windows() { [ -n "${SDD_PYTHON_FORCA_WINDOWS:-}" ] || [ -r "/proc/$$/winpid" ]; }
 
 # Testa um candidato: 0 serve; 1 existe e não serve (anota o motivo); 2 não existe.
 sdd_python_testa() {
@@ -80,6 +93,8 @@ sdd_python_resolver() {
     sdd_python_calco "$(sdd_python_aspas "$(command -v "${SDD_PYTHON}")")" || :; return 0
   fi
   if sdd_python_testa python3; then
+    # no Windows, o calço também quando o python3 serve (F16W2: UTF-8 e sem \r, inclusive com -I)
+    if sdd_python_windows; then sdd_python_calco "$(sdd_python_aspas "$(command -v python3)")" || :; return 0; fi
     SDD_PYTHON_RESOLVIDO=python3; export SDD_PYTHON_RESOLVIDO; return 0
   fi
   # `|| :` — com set -e no script que lê a biblioteca, a falha do calço não pode derrubá-lo na carga: o motivo

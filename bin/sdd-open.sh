@@ -18,7 +18,8 @@ set -uo pipefail
 PKG="$(cd "$(dirname "${0}")/.." && pwd -P)"
 # F16: o Python que roda vira python3 (no Windows, python ou py -3); sem a biblioteca, vale a guarda de antes.
 if [ -f "${PKG}/sdd/bin/lib/python.sh" ]; then . "${PKG}/sdd/bin/lib/python.sh"
-else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }; fi
+else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }
+  export PYTHONIOENCODING="${PYTHONIOENCODING:-utf-8}"; fi   # F16W2: sem a biblioteca, ao menos o UTF-8
 . "${PKG}/bin/lib/say.sh"
 . "${PKG}/bin/lib/vendors.sh"
 . "${PKG}/bin/lib/merge.sh"
