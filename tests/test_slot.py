@@ -12,7 +12,7 @@ import time
 import unittest
 from pathlib import Path
 
-from apoio import BASH, Sandbox
+from apoio import BASH, SEM_SINAL, Sandbox
 
 SCRIPT = "sdd/bin/slot.sh"
 # O comando falso: o 1º argumento é o exit (ou "sinal"/"dorme"); os outros são os arquivos que o slot repassou.
@@ -116,6 +116,7 @@ class Inconclusivo(Base):
         self.assertIn("sinal 15", out)
         self.assertIn("RESULTADO: INCONCLUSIVO", out)
 
+    @unittest.skipIf(*SEM_SINAL)   # F16W: o teste manda TERM ao grupo do slot (os.killpg não existe no Windows)
     def test_term_no_proprio_slot_e_inconclusivo(self):
         self.smoke("bash falso.sh dorme")
         p = subprocess.Popen([BASH, SCRIPT, "smoke.before_ok_cmd"], cwd=str(self.r), env=self.env,

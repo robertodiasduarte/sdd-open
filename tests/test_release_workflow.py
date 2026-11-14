@@ -158,11 +158,11 @@ class Windows(unittest.TestCase):
                 self.assertIn('echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"', bloco)
                 self.assertIn('run: bash scripts/publish-gate.sh "$(pwd)"', bloco)
                 self.assertIn("PUBLISH_GATE_MODE: ci", bloco)
-                # F16W: a suíte inteira, módulo a módulo, em 8 fatias paralelas pelo executor
+                # F16W: a suíte inteira, módulo a módulo, em 12 fatias paralelas pelo executor
                 self.assertRegex(bloco, r"(?m)^    strategy:\n      fail-fast: false.*\n      matrix:\n"
-                                        r"        fatia: \[1, 2, 3, 4, 5, 6, 7, 8\]$")
-                self.assertIn('run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/8" '
-                              '--teto-modulo 600 --saida "$RUNNER_TEMP/tpm"', bloco)
+                                        r"        fatia: \[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12\]$")
+                self.assertIn('run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/12" '
+                              '--teto-unidade 600 --saida "$RUNNER_TEMP/tpm"', bloco)
                 self.assertNotIn("unittest -v test_checar", bloco)   # o caminho do aluno sozinho ficou para trás
                 self.assertRegex(bloco, r"(?m)^    timeout-minutes: 30$")
                 self.assertNotIn("contents: write", bloco)

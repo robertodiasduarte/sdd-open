@@ -51,7 +51,7 @@ def main():
     if not os.path.isfile(guard):
         aviso("sdd/bin/avaliador-guard.sh não encontrado em %s — despacho não conferido (rode init)" % projeto)
         return
-    r = subprocess.run(["bash", guard], capture_output=True, text=True, cwd=projeto)
+    r = subprocess.run(["bash", guard], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=projeto)
     saida = (r.stdout + r.stderr).strip()
     if r.returncode == 0:
         if "⚠️" in saida:

@@ -1,4 +1,4 @@
-"""F16W (AT-001, AT-002): scripts/testes-por-modulo.py, o executor da suíte módulo a módulo.
+"""F16W (AT-001, AT-002): scripts/testes-por-modulo.py, o executor da suíte módulo a módulo (unidade = classe).
 
 Roda sobre uma pasta de testes falsa: um módulo verde, um que falha, um com pulo, um que pendura com um neto
 vivo segurando a saída. O executor não usa git (o Verify Gate roda numa cópia sem .git, LM-006).
@@ -63,14 +63,14 @@ class Executor(Sandbox):
         saida = self.tmp / "saida"
         rc, out, err = self.executa("--saida", saida)
         self.assertEqual(rc, 0, out + err)
-        self.assertRegex(out, r"test_um\s+OK\s+testes=2\s+falhas=0\s+erros=0\s+pulados=0")
-        self.assertRegex(out, r"test_dois\s+OK\s+testes=2\s+falhas=0\s+erros=0\s+pulados=1")
-        self.assertIn("total: 2 módulo(s), 4 teste(s): 0 falha(s), 0 erro(s), 1 pulado(s)", out)
+        self.assertRegex(out, r"test_um\.T\s+OK\s+testes=2\s+falhas=0\s+erros=0\s+pulados=0")
+        self.assertRegex(out, r"test_dois\.T\s+OK\s+testes=2\s+falhas=0\s+erros=0\s+pulados=1")
+        self.assertIn("total: 2 unidade(s), 4 teste(s): 0 falha(s), 0 erro(s), 1 pulado(s)", out)
         self.assertTrue(out.rstrip().endswith("RESULTADO: VERDE"), out)
-        self.assertTrue((saida / "test_um.log").is_file())
+        self.assertTrue((saida / "test_um.T.log").is_file())
         resumo = (saida / "resumo.tsv").read_text(encoding="utf-8").splitlines()
-        self.assertEqual(resumo[0].split("\t"), ["modulo", "estado", "testes", "falhas", "erros", "pulados", "segundos"])
-        self.assertEqual([l.split("\t")[:2] for l in resumo[1:]], [["test_dois", "OK"], ["test_um", "OK"]])
+        self.assertEqual(resumo[0].split("\t"), ["unidade", "estado", "testes", "falhas", "erros", "pulados", "segundos"])
+        self.assertEqual([l.split("\t")[:2] for l in resumo[1:]], [["test_dois.T", "OK"], ["test_um.T", "OK"]])
 
     def test_falha_e_erro_saem_1_com_os_nomes(self):
         self.modulo("test_um", VERDE)
@@ -78,28 +78,29 @@ class Executor(Sandbox):
         self.modulo("test_quebrado", QUEBRADO)
         rc, out, err = self.executa()
         self.assertEqual(rc, 1, out + err)
-        self.assertRegex(out, r"test_ruim\s+FALHOU\s+testes=3\s+falhas=1\s+erros=1")
+        self.assertRegex(out, r"test_ruim\.T\s+FALHOU\s+testes=3\s+falhas=1\s+erros=1")
         self.assertIn("FAIL T.test_cai", out)
         self.assertIn("ERROR T.test_quebra", out)
-        # import quebrado: o unittest relata 1 erro de carga; o módulo não fica verde
+        # import quebrado: a unidade é o módulo inteiro, e o unittest relata 1 erro de carga
         self.assertRegex(out, r"test_quebrado\s+FALHOU")
-        self.assertIn("módulos com problema: test_quebrado (FALHOU), test_ruim (FALHOU)", out)
+        self.assertIn("unidades com problema: test_quebrado (FALHOU), test_ruim.T (FALHOU)", out)
         self.assertTrue(out.rstrip().endswith("RESULTADO: VERMELHO"), out)
 
     def test_teto_mata_a_arvore_e_segue(self):
         self.modulo("test_a_pendura", PENDURA)
         self.modulo("test_b_verde", VERDE)
         inicio = time.monotonic()
-        rc, out, err = self.executa("--teto-modulo", "3", timeout=100)
+        rc, out, err = self.executa("--teto-unidade", "3", timeout=100)
         gasto = time.monotonic() - inicio
         self.assertEqual(rc, 1, out + err)
-        self.assertRegex(out, r"test_a_pendura\s+TETO")
-        self.assertRegex(out, r"test_b_verde\s+OK")
+        self.assertRegex(out, r"test_a_pendura\.T\s+TETO")
+        self.assertRegex(out, r"test_b_verde\.T\s+OK")
         # o neto dorme 120 s: terminar bem antes disso prova que ninguém esperou por ele
         self.assertLess(gasto, 60, out)
 
     def test_fatias_disjuntas_completas_e_estaveis(self):
         pesos = {"test_a": 9, "test_b": 7, "test_c": 5, "test_d": 3, "test_e": 1, "test_f": 1, "test_g": 0}
+        unidades = sorted(m + ".T" for m, k in pesos.items() if k)   # módulo sem teste não vira unidade
         for nome, n in pesos.items():
             self.modulo(nome, "import unittest\nclass T(unittest.TestCase):\n" +
                         "".join("    def test_%d(self): pass\n" % i for i in range(n)) + "    pass\n")
@@ -111,12 +112,26 @@ class Executor(Sandbox):
                     self.assertEqual(rc, 0, err)
                     fatias.append([l for l in out.splitlines() if l])
                 juntas = [m for f in fatias for m in f]
-                self.assertEqual(sorted(juntas), sorted(pesos))
+                self.assertEqual(sorted(juntas), unidades)
                 self.assertEqual(len(juntas), len(set(juntas)))
                 de_novo = [self.executa("--lista", "--fatia", "%d/%d" % (i, n))[1].split() for i in range(1, n + 1)]
                 self.assertEqual(fatias, de_novo)
-        # 2 fatias: 9 na 1ª, 7 na 2ª, 5 na 2ª (7 < 9), 3 na 1ª, e no empate a 1ª ⇒ a, d, e, g | b, c, f
-        self.assertEqual(self.executa("--lista", "--fatia", "1/2")[1].split(), ["test_a", "test_d", "test_e", "test_g"])
+        # 2 fatias: 9 na 1ª, 7 na 2ª, 5 na 2ª (7 < 9), 3 na 1ª, e no empate (12, 12) a 1ª ⇒ a, d, e | b, c, f
+        self.assertEqual(self.executa("--lista", "--fatia", "1/2")[1].split(), ["test_a.T", "test_d.T", "test_e.T"])
+
+    def test_classes_viram_unidades_e_a_herdada_conta_uma_vez(self):
+        self.modulo("test_base", "import unittest\nclass Base(unittest.TestCase):\n    def test_x(self): pass\n")
+        self.modulo("test_filho", "import unittest\nfrom test_base import Base\n"
+                                  "class A(Base):\n    def test_y(self): pass\nclass B(unittest.TestCase):\n"
+                                  "    def test_z(self): pass\n")
+        rc, out, err = self.executa("--lista")
+        self.assertEqual(rc, 0, err)
+        # A herda test_x: a unidade A tem 2 testes; Base, importada em test_filho, fica só em test_base
+        self.assertEqual(out.split(), ["test_base.Base", "test_filho.A", "test_filho.B"])
+        rc, out, err = self.executa("--so", "test_filho")
+        self.assertEqual(rc, 0, out + err)
+        self.assertRegex(out, r"test_filho\.A\s+OK\s+testes=2")
+        self.assertNotIn("test_base", out)
 
     def test_so_roda_os_escolhidos(self):
         self.modulo("test_um", VERDE)
@@ -127,8 +142,8 @@ class Executor(Sandbox):
 
     def test_uso_errado_sai_64_sem_rodar(self):
         self.modulo("test_ruim", FALHA)
-        for args in (["--fatia", "0/3"], ["--fatia", "4/3"], ["--fatia", "x"], ["--teto-modulo", "abc"],
-                     ["--teto-modulo", "0"], ["--paralelo", "0"], ["--so", "test_nao_existe"], ["--nada"],
+        for args in (["--fatia", "0/3"], ["--fatia", "4/3"], ["--fatia", "x"], ["--teto-unidade", "abc"],
+                     ["--teto-unidade", "0"], ["--paralelo", "0"], ["--so", "test_nao_existe"], ["--nada"],
                      ["--fatia"]):
             with self.subTest(args=args):
                 rc, out, err = self.executa(*args)
@@ -143,16 +158,19 @@ class Executor(Sandbox):
 
 
 class SuiteReal(unittest.TestCase):
-    def test_as_8_fatias_cobrem_a_suite(self):
+    def test_as_12_fatias_cobrem_a_suite(self):
         r = subprocess.run([sys.executable, "-B", str(EXECUTOR), "--lista", "--fatia", "1/1"], capture_output=True,
-                           encoding="utf-8", stdin=subprocess.DEVNULL, timeout=60)
+                           encoding="utf-8", stdin=subprocess.DEVNULL, timeout=120)
         todos = r.stdout.split()
-        self.assertEqual(sorted(todos), sorted(p.stem for p in (RAIZ / "tests").glob("test_*.py")))
-        oito = []
-        for i in range(1, 9):
-            oito += subprocess.run([sys.executable, "-B", str(EXECUTOR), "--lista", "--fatia", "%d/8" % i],
-                                   capture_output=True, encoding="utf-8", stdin=subprocess.DEVNULL, timeout=60).stdout.split()
-        self.assertEqual(sorted(oito), sorted(todos))
+        # todo módulo de teste aparece em pelo menos uma unidade
+        modulos = {u.split(".", 1)[0] for u in todos}
+        self.assertEqual(modulos, {p.stem for p in (RAIZ / "tests").glob("test_*.py")})
+        doze = []
+        for i in range(1, 13):
+            doze += subprocess.run([sys.executable, "-B", str(EXECUTOR), "--lista", "--fatia", "%d/12" % i],
+                                   capture_output=True, encoding="utf-8", stdin=subprocess.DEVNULL, timeout=120).stdout.split()
+        self.assertEqual(sorted(doze), sorted(todos))
+        self.assertEqual(len(doze), len(set(doze)))
 
 
 if __name__ == "__main__":

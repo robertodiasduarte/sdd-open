@@ -100,7 +100,7 @@ def main():
     if conteudo is None:
         return
     r = subprocess.run([sys.executable or "python3", "-B", lint, "--stdin", caminho],
-                       input=conteudo, capture_output=True, text=True, cwd=projeto)
+                       input=conteudo, capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=projeto)
     saida = (r.stdout + r.stderr).strip()
     if r.returncode == 0:
         return

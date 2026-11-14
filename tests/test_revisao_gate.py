@@ -232,7 +232,7 @@ class Gate(Sandbox):
             with self.subTest(caso=nome):
                 rc, out = self.gate(RAIZ, env=dict(self.env, **extra))
                 self.assertEqual(rc, 0, out)
-                self.assertFalse(marca.exists(), "a CLI real foi chamada: " + (marca.read_text() if marca.exists() else ""))
+                self.assertFalse(marca.exists(), "a CLI real foi chamada: " + (marca.read_text(encoding="utf-8") if marca.exists() else ""))
 
     def test_sem_stub_sai_3_antes_de_chamar(self):
         p = self.pacote()

@@ -40,6 +40,9 @@ else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exi
 
 BIN="$(cd "$(dirname "$0")" && pwd)"
 export SDD_FLUXO_BIN="$BIN"
+# F16W: o Python chama o mesmo bash que roda este script. No Windows, "bash" pelo nome cai no System32 (o bash.exe do
+# WSL) antes do PATH, porque o CreateProcess procura lá primeiro.
+export SDD_FLUXO_BASH="${BASH:-bash}"
 
 uso() {
   [ -n "${1:-}" ] && echo "🛑 sdd-fluxo: ${1}" >&2
@@ -127,6 +130,7 @@ nucleo() {
 import fnmatch, os, re, shlex, subprocess, sys
 
 BIN = os.environ["SDD_FLUXO_BIN"]
+BASH = os.environ.get("SDD_FLUXO_BASH") or "bash"
 verbo, args = sys.argv[1], sys.argv[2:]
 
 
@@ -141,7 +145,7 @@ def ler(caminho):
 def raiz_de(pasta):
     try:
         r = subprocess.run(["git", "-C", pasta, "rev-parse", "--show-toplevel"],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         if r.returncode == 0 and r.stdout.strip():
             return r.stdout.strip()
     except OSError:
@@ -669,11 +673,11 @@ def cmd_seguir():
         para("%s não %s: %s" % (DOC[fase][0], "encontrada" if fem else "encontrado", artefato))
     if not st.startswith("Ready for"):
         para("%s não está %s (Status: %s)" % (DOC[fase][0], DOC[fase][2], st or "ausente"))
-    git = subprocess.run(["git", "-C", raiz, "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+    git = subprocess.run(["git", "-C", raiz, "rev-parse", "--show-toplevel"], capture_output=True, text=True, encoding="utf-8", errors="replace")
     if git.returncode != 0:
         para("a pasta não é um repositório git, e o verify-gate.sh precisa de um (rode git init)")
-    r = subprocess.run(["bash", os.path.join(BIN, "verify-gate.sh"), "--print", os.path.abspath(define)],
-                       cwd=raiz, capture_output=True, text=True)
+    r = subprocess.run([BASH, os.path.join(BIN, "verify-gate.sh"), "--print", os.path.abspath(define)],
+                       cwd=raiz, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if r.returncode != 0:
         para("o Verify Gate do DEFINE não está válido (verify-gate.sh --print saiu %d)" % r.returncode)
     vazios = [c for c in ("kind", "cmd") if re.search(r"^" + c + r":\s*(<vazio>)?\s*$", r.stdout, re.M)]
@@ -688,7 +692,7 @@ def cmd_seguir():
             para("o DEFINE tem marcador de clarificação aberto")
     if fase == "design":
         r = subprocess.run([sys.executable, "-B", os.path.join(BIN, "design-lint.py"), design],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         if r.returncode != 0:
             para("o DESIGN não passa no design-lint (saiu %d)" % r.returncode)
         if review_design(design)[0] in (0, 64):

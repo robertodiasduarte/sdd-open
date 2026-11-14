@@ -15,17 +15,17 @@ GH = """#!{python}
 import json, os, sys
 a = sys.argv[1:]
 d = os.environ["GH_DIR"]
-open(os.path.join(d, "gh.log"), "a").write(" ".join(a) + "\\n")
-c = json.load(open(os.path.join(d, "cenario.json")))
+open(os.path.join(d, "gh.log"), "a", encoding="utf-8").write(" ".join(a) + "\\n")
+c = json.load(open(os.path.join(d, "cenario.json"), encoding="utf-8"))
 if c.get("erro"):
     sys.stderr.write(c["erro"] + "\\n")
     sys.exit(1)
 pos = os.path.join(d, "pos")
-i = int(open(pos).read()) if os.path.exists(pos) else 0
+i = int(open(pos, encoding="utf-8").read()) if os.path.exists(pos) else 0
 passos = c["passos"]
 if a[:2] == ["run", "list"]:
     if "--commit" in a:
-        open(pos, "w").write(str(i + 1))
+        open(pos, "w", encoding="utf-8").write(str(i + 1))
         p = passos[min(i, len(passos) - 1)]
         print(json.dumps([r for r in p["runs"] if r.get("headSha") in (a[a.index("--commit") + 1], None)]))
     else:
@@ -34,7 +34,7 @@ if a[:2] == ["run", "list"]:
 elif a[:2] == ["run", "view"]:
     if c.get("marca_no_view"):
         os.makedirs(os.path.dirname(c["marca_no_view"]), exist_ok=True)
-        open(c["marca_no_view"], "w").write("outra chamada")
+        open(c["marca_no_view"], "w", encoding="utf-8").write("outra chamada")
     if c.get("view_lista"):
         print("[1]")
     else:
@@ -53,7 +53,7 @@ elif a[:2] == ["workflow", "run"]:
         texto = c["dispatch_recusado"] if isinstance(c["dispatch_recusado"], str) else "HTTP 422: Workflow does not have workflow_dispatch trigger"
         sys.stderr.write(texto + "\\n")
         sys.exit(1)
-    open(pos, "w").write(str(i + 1))
+    open(pos, "w", encoding="utf-8").write(str(i + 1))
 else:
     sys.exit(9)
 """
@@ -142,7 +142,7 @@ class Substituto(Base):
         y = self.novo_commit()
         for conclusao in ("cancelled", "failure", "timed_out"):
             with self.subTest(conclusao=conclusao):
-                (self.dir_gh / "pos").write_text("0")
+                (self.dir_gh / "pos").write_text("0", encoding="utf-8")
                 self.cenario([run(1, self.x, conclusion=conclusao), run(2, y, criado="2026-01-01T00:01:00Z")])
                 self.assertSai(self.sha(), 0, "✅ no ar via substituto", "run 2")
 
@@ -224,7 +224,7 @@ class Redisparo(Base):
         )
         for nome, extra, flags, _c, runs, frase in casos:
             with self.subTest(nome):
-                (self.dir_gh / "pos").write_text("0")
+                (self.dir_gh / "pos").write_text("0", encoding="utf-8")
                 self.cenario(runs, **extra)
                 self.assertSai(self.sha(*flags, commit=y), 2, "🔴 falhou — run 1", frase)
                 self.assertNotIn("workflow run", self.log())

@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
-"""Roda a suíte de tests/ módulo a módulo, cada um num processo próprio, com tempo, contagem e teto por módulo.
+"""Roda a suíte de tests/ módulo a módulo, por classe de teste, cada uma num processo próprio, com teto, tempo e contagem.
 
 F16W: no Windows (Git Bash + Python nativo) a suíte inteira não cabe num job só, e um módulo pendurado comia o
-teto do job inteiro sem dizer qual era. Aqui cada módulo tem o seu teto, a sua linha no relatório e a sua saída
-guardada; a suíte se divide em fatias estáveis (--fatia I/N) para rodar em jobs paralelos.
+teto do job inteiro sem dizer qual era. Aqui a unidade é a classe de teste (`modulo.Classe`, lida pelo próprio
+unittest, que vê também os testes herdados): cada uma tem o seu teto, a sua linha no relatório e a sua saída
+guardada, e um módulo grande (test_sdd_open) se espalha por várias fatias. Módulo que nem importa vira uma unidade
+inteira, para o erro aparecer. A suíte se divide em fatias estáveis (--fatia I/N) para rodar em jobs paralelos.
 
 Uso (de quem mantém o pacote; o `init` não copia scripts/ para o projeto do aluno):
-  python3 scripts/testes-por-modulo.py [--fatia I/N] [--teto-modulo S] [--paralelo K] [--saida DIR]
-                                       [--so m1,m2] [--pasta DIR] [--lista]
-  --fatia I/N      roda só a fatia I de N (1 ≤ I ≤ N); as fatias saem do nº de testes de cada módulo, sempre iguais
-  --teto-modulo S  segundos por módulo (padrão 900); estourou ⇒ o módulo é morto, com os filhos, e conta como TETO
-  --paralelo K     módulos ao mesmo tempo (padrão 1)
-  --saida DIR      grava a saída inteira de cada módulo em DIR/<módulo>.log e o resumo em DIR/resumo.tsv
-  --so m1,m2       só estes módulos (nome sem .py), sem fatiar
-  --pasta DIR      a pasta dos testes (padrão: tests/ ao lado deste script)
-  --lista          só imprime os módulos da fatia, um por linha, e sai 0
-Exit: 0 todos os módulos verdes · 1 algum módulo falhou, deu erro ou bateu no teto · 64 uso.
+  python3 scripts/testes-por-modulo.py [--fatia I/N] [--teto-unidade S] [--paralelo K] [--saida DIR]
+                                       [--so a,b] [--pasta DIR] [--lista]
+  --fatia I/N       roda só a fatia I de N (1 ≤ I ≤ N); as fatias saem do nº de testes de cada unidade, sempre iguais
+  --teto-unidade S  segundos por unidade (padrão 900); estourou ⇒ ela é morta, com os filhos, e conta como TETO
+  --paralelo K      unidades ao mesmo tempo (padrão 1)
+  --saida DIR       grava a saída inteira de cada unidade em DIR/<unidade>.log e o resumo em DIR/resumo.tsv
+  --so a,b          só estes módulos (test_x) ou unidades (test_x.Classe), sem fatiar
+  --pasta DIR       a pasta dos testes (padrão: tests/ ao lado deste script)
+  --lista           só imprime as unidades da fatia, uma por linha, e sai 0
+Exit: 0 todas as unidades verdes · 1 alguma falhou, deu erro ou bateu no teto · 64 uso.
 """
 from __future__ import annotations
 
@@ -27,12 +29,12 @@ import sys
 import tempfile
 import threading
 import time
+import unittest
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
 NO_WINDOWS = os.name == "nt"
-DEF_TESTE = re.compile(r"^\s+def test_\w*\(", re.M)
 RAN = re.compile(r"^Ran (\d+) tests? in ([\d.]+)s", re.M)
 FINAL = re.compile(r"^(OK|FAILED)(?: \(([^)]*)\))?\s*$", re.M)
 QUEDA = re.compile(r"^(FAIL|ERROR): (\S+) \(([^)]+)\)", re.M)
@@ -45,10 +47,31 @@ def uso(msg: str) -> int:
     return 64
 
 
-def modulos(pasta: Path) -> list:
-    """(nome, nº de testes) de cada tests/test_*.py, em ordem de nome."""
-    return [(p.stem, len(DEF_TESTE.findall(p.read_text(encoding="utf-8"))))
-            for p in sorted(pasta.glob("test_*.py"))]
+def _folhas(suite):
+    for t in suite:
+        if isinstance(t, unittest.TestSuite):
+            yield from _folhas(t)
+        else:
+            yield t
+
+
+def unidades(pasta: Path) -> list:
+    """(unidade, nº de testes), em ordem de nome. Unidade = `modulo.Classe` pelo id dos testes; a classe herdada de
+    outro módulo conta uma vez só, no módulo dela. Módulo que não importa = o próprio módulo, peso 1."""
+    sys.path.insert(0, str(pasta))
+    cont = {}
+    for p in sorted(pasta.glob("test_*.py")):
+        try:
+            ids = [t.id() for t in _folhas(unittest.defaultTestLoader.loadTestsFromName(p.stem))]
+        except Exception:  # noqa: BLE001 — o processo do módulo mostra o erro
+            ids = None
+        if ids is None or any(i.startswith("unittest.") for i in ids):
+            cont[p.stem] = 1
+            continue
+        for i in ids:
+            k = i.rsplit(".", 1)[0]
+            cont[k] = cont.get(k, 0) + 1
+    return sorted(cont.items())
 
 
 def fatiar(mods: list, n: int) -> list:
@@ -136,7 +159,7 @@ def rodar(nome: str, pasta: Path, teto: float) -> dict:
 
 
 def linha(c: dict) -> str:
-    return "%-30s %-6s testes=%-4d falhas=%-3d erros=%-3d pulados=%-3d %7.1fs" % (
+    return "%-44s %-6s testes=%-4d falhas=%-3d erros=%-3d pulados=%-3d %7.1fs" % (
         c["nome"], c["estado"], c["testes"], c["falhas"], c["erros"], c["pulados"], c["segundos"])
 
 
@@ -151,10 +174,10 @@ def main(argv: list) -> int:
                 if not m or not 1 <= int(m.group(1)) <= int(m.group(2)):
                     return uso("--fatia espera I/N com 1 ≤ I ≤ N, veio %r" % v)
                 fatia, n = int(m.group(1)), int(m.group(2))
-            elif a == "--teto-modulo":
+            elif a == "--teto-unidade":
                 teto = float(next(it))
                 if teto <= 0:
-                    return uso("--teto-modulo espera segundos > 0")
+                    return uso("--teto-unidade espera segundos > 0")
             elif a == "--paralelo":
                 paralelo = int(next(it))
                 if paralelo < 1:
@@ -175,15 +198,15 @@ def main(argv: list) -> int:
         return uso("valor que não é número em %s" % a)
     if not pasta.is_dir():
         return uso("pasta de testes não existe: %s" % pasta)
-    todos = modulos(pasta)
-    if not todos:
+    if not any(pasta.glob("test_*.py")):
         return uso("nenhum test_*.py em %s" % pasta)
-    nomes = {m[0] for m in todos}
+    todos = unidades(pasta)
+    nomes = [u for u, _ in todos]
     if so is not None:
-        fora = [x for x in so if x not in nomes]
+        fora = [x for x in so if not any(u == x or u.startswith(x + ".") for u in nomes)]
         if fora:
-            return uso("módulo inexistente: %s" % ", ".join(fora))
-        escolhidos = sorted(set(so))
+            return uso("módulo ou unidade inexistente: %s" % ", ".join(fora))
+        escolhidos = [u for u in nomes if any(u == x or u.startswith(x + ".") for x in so)]
     else:
         escolhidos = fatiar(todos, n)[fatia - 1]
     if lista:
@@ -191,7 +214,7 @@ def main(argv: list) -> int:
         return 0
 
     pesos = dict(todos)
-    print("fatia %d/%d: %d módulo(s), %d teste(s) declarados; teto por módulo %ds; paralelo %d"
+    print("fatia %d/%d: %d unidade(s), %d teste(s); teto por unidade %ds; paralelo %d"
           % (fatia, n, len(escolhidos), sum(pesos[x] for x in escolhidos), teto, paralelo), flush=True)
     if saida:
         saida.mkdir(parents=True, exist_ok=True)
@@ -218,14 +241,14 @@ def main(argv: list) -> int:
     tot = {k: sum(c[k] for c in feitos) for k in ("testes", "falhas", "erros", "pulados")}
     ruins = [c for c in feitos if c["estado"] != "OK"]
     if saida:
-        cab = "modulo\testado\ttestes\tfalhas\terros\tpulados\tsegundos\n"
+        cab = "unidade\testado\ttestes\tfalhas\terros\tpulados\tsegundos\n"
         (saida / "resumo.tsv").write_text(cab + "".join(
             "%s\t%s\t%d\t%d\t%d\t%d\t%.1f\n" % (c["nome"], c["estado"], c["testes"], c["falhas"], c["erros"],
                                                 c["pulados"], c["segundos"]) for c in feitos), encoding="utf-8")
-    print("total: %d módulo(s), %d teste(s): %d falha(s), %d erro(s), %d pulado(s) em %.1fs"
+    print("total: %d unidade(s), %d teste(s): %d falha(s), %d erro(s), %d pulado(s) em %.1fs"
           % (len(feitos), tot["testes"], tot["falhas"], tot["erros"], tot["pulados"], time.monotonic() - inicio))
     if ruins:
-        print("módulos com problema: " + ", ".join("%s (%s)" % (c["nome"], c["estado"]) for c in ruins))
+        print("unidades com problema: " + ", ".join("%s (%s)" % (c["nome"], c["estado"]) for c in ruins))
         print("RESULTADO: VERMELHO")
         return 1
     print("RESULTADO: VERDE")

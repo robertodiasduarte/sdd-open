@@ -116,7 +116,7 @@ class Ajuda(Base):
 class Locale(Base):
     def test_virgula_decimal_no_sistema_nao_muda_nada(self):
         env = dict(self.env, LC_ALL="pt_BR.UTF-8")
-        sonda = subprocess.run(["awk", "BEGIN{printf \"%.1f\", .5}"], env=env, capture_output=True, text=True)
+        sonda = subprocess.run(["awk", "BEGIN{printf \"%.1f\", .5}"], env=env, capture_output=True, text=True, encoding="utf-8", errors="replace")
         if sonda.stdout != "0,5":
             # No macOS, o piso que este teste existe para cobrir, pular seria perder o teste em silêncio.
             self.assertFalse(MACOS, "macOS sem pt_BR com vírgula no awk")

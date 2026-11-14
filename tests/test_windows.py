@@ -7,6 +7,7 @@ Windows guardados das revisões (F14) têm teste que roda no job `testes-windows
 from __future__ import annotations
 
 import io
+import re
 import subprocess
 import tokenize
 import unittest
@@ -80,6 +81,55 @@ class AchadosGuardados(unittest.TestCase):
                 # cada achado cita um teste que existe (rodada 3, R4: dois não citavam nenhum)
                 self.assertTrue(teste, achado)
                 self.assertIn("def %s(" % teste, (TESTES / arquivo).read_text(encoding="utf-8"))
+
+
+# F16W: subprocess em modo texto sem encoding decodifica no Windows em cp1252 (LM-014): a revisão em português e o
+# caminho do `git rev-parse` numa pasta com acento chegariam trocados. Fora daqui: os arquivos que vão ao starter como
+# estão (o starter tem o próprio CI) e 2 de skill cuja saída lida é só ASCII.
+TEXTO_SEM_ENCODING_ACEITO = {
+    ".agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py": "lê só a data do git (%cs), ASCII",
+    ".agents/skills/ux-review-builder/tests/test_validate_generated_bundle.py": "teste da skill; lê o exit, não o texto",
+}
+
+
+def chamadas_texto_sem_encoding(codigo: str) -> list:
+    """Linha de cada subprocess.run/Popen/check_output/... com text=True e sem encoding na mesma chamada."""
+    achou = []
+    for m in re.finditer(r"subprocess\.(?:run|Popen|check_output|check_call|call)\(", codigo):
+        i, prof, j = m.end(), 1, m.end()
+        while prof and j < len(codigo):
+            prof += {"(": 1, ")": -1}.get(codigo[j], 0)
+            j += 1
+        chamada = codigo[i:j]
+        if re.search(r"\b(text|universal_newlines)=True", chamada) and "encoding=" not in chamada:
+            achou.append(codigo.count("\n", 0, m.start()) + 1)
+    return achou
+
+
+class Decodificacao(unittest.TestCase):
+    def test_subprocess_em_modo_texto_sempre_com_encoding(self):
+        arquivos = [l.strip() for l in (RAIZ / "MANIFEST.txt").read_text(encoding="utf-8").splitlines()
+                    if l.strip().endswith((".py", ".sh")) and not l.startswith("scripts/starter/raiz/")]
+        self.assertGreater(len(arquivos), 100)   # a lista veio do MANIFEST, não vazia
+        fora = []
+        for rel in arquivos:
+            if rel in TEXTO_SEM_ENCODING_ACEITO or rel == "tests/test_windows.py":   # este: os exemplos do autoteste
+                continue
+            for n in chamadas_texto_sem_encoding((RAIZ / rel).read_text(encoding="utf-8")):
+                fora.append("%s:%d" % (rel, n))
+        self.assertEqual(fora, [], 'passe encoding="utf-8", errors="replace" (LM-014)')
+
+    def test_a_varredura_acusa_e_respeita_o_encoding(self):
+        self.assertEqual(chamadas_texto_sem_encoding('x = subprocess.run(["git"], capture_output=True, text=True)\n'), [1])
+        self.assertEqual(chamadas_texto_sem_encoding('\nsubprocess.Popen(f(a), universal_newlines=True)\n'), [2])
+        self.assertEqual(chamadas_texto_sem_encoding(
+            'subprocess.run(["git"], text=True,\n               encoding="utf-8")\n'), [])
+        self.assertEqual(chamadas_texto_sem_encoding('subprocess.run(["git"], capture_output=True)\n'), [])
+
+    def test_os_aceitos_ainda_existem_e_ainda_precisam(self):
+        for rel in TEXTO_SEM_ENCODING_ACEITO:
+            with self.subTest(arquivo=rel):
+                self.assertTrue(chamadas_texto_sem_encoding((RAIZ / rel).read_text(encoding="utf-8")))
 
 
 class FimDeLinha(Sandbox):

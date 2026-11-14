@@ -54,7 +54,7 @@ def main():
         sys.exit(64)
     srv = http.server.HTTPServer(("127.0.0.1", 0), Handler)
     tmp = os.path.join(est, "openrouter.porta.tmp")
-    with open(tmp, "w") as h:
+    with open(tmp, "w", encoding="utf-8") as h:
         h.write(str(srv.server_address[1]))
     os.replace(tmp, os.path.join(est, "openrouter.porta"))
     try:

@@ -66,7 +66,7 @@ if args:
     pasta = os.path.abspath(args[0])
 else:
     try:
-        r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+        r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True, encoding="utf-8", errors="replace")
         raiz = r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else os.getcwd()
     except OSError:
         raiz = os.getcwd()   # sem git no PATH: a pasta atual é a raiz
