@@ -93,8 +93,11 @@ class Base(Sandbox):
     def cenario(self, *passos, **extra):
         (self.dir_gh / "cenario.json").write_text(json.dumps(dict(passos=[dict(runs=list(p)) for p in passos], **extra)), encoding="utf-8")
 
-    def sha(self, *flags, commit=None, env=None):
-        return self.roda([BASH, SCRIPT, "--commit", commit or self.x, "--workflow", "deploy.yml", "--intervalo", "0", "--teto", "1", "--sem-run", "0", *flags], self.r, env)
+    def sha(self, *flags, commit=None, env=None, teto="30"):
+        # F16W: teto folgado por padrão. Com 1 s, a sequência de consultas ao gh falso (um processo Python cada) passava
+        # do teto com a máquina carregada, e no Windows sempre: o script dizia "ainda não sei" (exit 4) no teste que
+        # espera a conclusão. Quem espera justamente o exit 4 pede teto="1".
+        return self.roda([BASH, SCRIPT, "--commit", commit or self.x, "--workflow", "deploy.yml", "--intervalo", "0", "--teto", teto, "--sem-run", "0", *flags], self.r, env)
 
     def log(self):
         p = self.dir_gh / "gh.log"
@@ -121,7 +124,7 @@ class NoAr(Base):
         for r in (run(1, self.x, branch="v1.0.0"), run(2, self.x, branch="feat/x"), run(3, self.x, event="schedule"), run(4, self.x, event="pull_request")):
             with self.subTest(r=r):
                 self.cenario([r])
-                self.assertSai(self.sha(), 4, "ainda não sei")
+                self.assertSai(self.sha(teto="1"), 4, "ainda não sei")
 
     def test_workflow_dispatch_conta(self):
         self.cenario([run(5, self.x, event="workflow_dispatch")])
@@ -183,7 +186,7 @@ class Substituto(Base):
     def test_commit_que_o_clone_nao_conhece_nunca_decide(self):
         desconhecido = "a" * 40
         self.cenario([run(1, self.x, conclusion="cancelled"), run(2, desconhecido, criado="2026-01-01T00:01:00Z")])
-        self.assertSai(self.sha(), 4, "ainda não sei")
+        self.assertSai(self.sha(teto="1"), 4, "ainda não sei")
 
 
 class Redisparo(Base):
@@ -208,12 +211,12 @@ class Redisparo(Base):
         marca.parent.mkdir()
         marca.write_text("x\n", encoding="utf-8")
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH")
-        self.assertSai(self.sha("--transitorios", "Verify SSH"), 4, "o run novo não apareceu")
+        self.assertSai(self.sha("--transitorios", "Verify SSH", teto="1"), 4, "o run novo não apareceu")
         self.assertNotIn("workflow run", self.log())
 
     def test_corrida_sem_o_run_novo_sai_4_nunca_2(self):
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH")
-        self.assertSai(self.sha("--transitorios", "Verify SSH"), 4, "isso não é falha")
+        self.assertSai(self.sha("--transitorios", "Verify SSH", teto="1"), 4, "isso não é falha")
         self.assertEqual(self.log().count("workflow run"), 1)
 
     def test_nao_repete(self):
@@ -261,7 +264,7 @@ class Redisparo(Base):
         # R1 do Codex, rodada 4: a outra chamada ganha a marca entre conferir e marcar
         marca = self.r / (".git/deploy-do-sha/redisparado-" + self.x)
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", marca_no_view=str(marca))
-        res = self.sha("--transitorios", "Verify SSH")
+        res = self.sha("--transitorios", "Verify SSH", teto="1")
         self.assertSai(res, 4, "não apareceu")
         self.assertNotIn("workflow run", self.log(), "quem perdeu a marca não dispara")
 
@@ -277,18 +280,18 @@ class Redisparo(Base):
         self.assertFalse((self.r / (".git/deploy-do-sha/redisparado-" + self.x)).exists(), "401: nada foi disparado")
         # o outro lado: logado de novo, a chamada seguinte faz o redisparo, uma vez só
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH")
-        self.assertSai(self.sha("--transitorios", "Verify SSH"), 4, "pedi para repetir")
+        self.assertSai(self.sha("--transitorios", "Verify SSH", teto="1"), 4, "pedi para repetir")
         self.assertTrue((self.r / (".git/deploy-do-sha/redisparado-" + self.x)).exists())
         self.assertEqual(self.log().count("workflow run"), 2)
 
     def test_dispatch_sem_resposta_clara_nao_vira_recusa_nem_repete(self):
         # R2 da rodada 3
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", dispatch_recusado="HTTP 502: bad gateway")
-        res = self.sha("--transitorios", "Verify SSH")
+        res = self.sha("--transitorios", "Verify SSH", teto="1")
         self.assertSai(res, 4, "pedi para repetir")
         self.assertTrue((self.r / (".git/deploy-do-sha/redisparado-" + self.x)).exists())
         self.assertEqual(self.log().count("workflow run"), 1)
-        self.assertSai(self.sha("--transitorios", "Verify SSH"), 4, "ainda não sei")
+        self.assertSai(self.sha("--transitorios", "Verify SSH", teto="1"), 4, "ainda não sei")
         self.assertEqual(self.log().count("workflow run"), 1, "a 2ª chamada não repete")
 
     def test_teto_que_ja_passou_nao_repete(self):
@@ -322,7 +325,7 @@ class RespostasEstranhas(Base):
     def test_view_que_falha_tenta_de_novo_e_nao_conclui(self):
         # L6 do ciclo 2
         self.cenario([run(1, self.x, conclusion="failure")], passo="Verify SSH", view_erro=True)
-        rc, out, err = self.sha("--transitorios", "Verify SSH")
+        rc, out, err = self.sha("--transitorios", "Verify SSH", teto="1")
         self.assertEqual(rc, 4, out + err)
         self.assertIn("HTTP 502", out)
         self.assertNotIn("workflow run", self.log())
@@ -336,12 +339,12 @@ class RespostasEstranhas(Base):
     def test_run_verde_sem_sha_nao_e_no_ar(self):
         # L13 do ciclo 3: a resposta precisa dizer de qual commit é
         self.cenario([dict(run(1, self.x), headSha=None)])
-        rc, out, err = self.sha()
+        rc, out, err = self.sha(teto="1")
         self.assertEqual(rc, 4, out + err)
 
     def test_503_com_a_palavra_workflow_nao_e_erro_de_uso(self):
         self.cenario([], erro="HTTP 503: workflow service not found upstream")
-        rc, out, err = self.sha()
+        rc, out, err = self.sha(teto="1")
         self.assertEqual(rc, 4, out + err)
 
     def test_run_sem_sha_nao_quebra_nem_decide(self):
@@ -363,7 +366,7 @@ class RespostasEstranhas(Base):
 
     def test_consulta_falhando_nao_repete_a_linha_a_cada_volta(self):
         self.cenario([], erro="HTTP 500: deu ruim")
-        rc, out, err = self.sha()
+        rc, out, err = self.sha(teto="1")
         self.assertEqual(rc, 4, out + err)
         self.assertEqual(err.count("consulta falhou"), 1, err[:400])
 
@@ -371,7 +374,7 @@ class RespostasEstranhas(Base):
 class AindaNaoSei(Base):
     def test_sem_run_nunca_diz_que_nao_ha_o_que_verificar(self):
         self.cenario([])
-        rc, out, err = self.sha()
+        rc, out, err = self.sha(teto="1")
         self.assertEqual(rc, 4, out + err)
         self.assertIn("não achei nenhum run", out)
         self.assertIn("isso não diz que não há o que verificar", out)
@@ -426,7 +429,7 @@ class MergeDeOutroClone(Base):
     def test_sha_desconhecido_com_fetch_que_falha_sai_4(self):
         # R1 de Claude, rodada 4: sem conseguir perguntar ao remoto, a resposta é "ainda não sei"
         self.git(self.r, "remote", "set-url", "origin", str(self.tmp / "sumiu.git"))
-        rc, out, err = self.sha(commit="f" * 40)
+        rc, out, err = self.sha(commit="f" * 40, teto="1")
         self.assertEqual(rc, 4, out + err)
         self.assertIn("o git fetch falhou", out)
 
