@@ -247,7 +247,7 @@ Fallback aprovado · Autônomo? · Verification interna · Eval mínimo pré-shi
 | Aspect | Implementation |
 |--------|----------------|
 | Logging | {Approach: e.g., "JSON estruturado no log do host"} |
-| Metrics | {Approach: e.g., "Custom metrics via Cloud Monitoring"} |
+| Metrics | {Approach: e.g., "contadores no painel do host"} |
 | Tracing | {Approach: e.g., "OpenTelemetry spans"} |
 
 ---

@@ -65,6 +65,9 @@ class ModoWebGerado(Base):
         self.assertIn("Execute o **SDD Design by RDD**.", ler(self.starter / "skills/sdd-define/SKILL.md"))
         bp = ler(self.starter / "skills/sdd-build/references/build-protocol.md")
         self.assertNotIn("HANDOFF_TO_RELEASE", bp)
+        for rel, tx in self.textos("sdd-build"):     # revisão, rodada 1, R2: nenhum resto do fim na Release
+            with self.subTest(arquivo=rel):
+                self.assertNotIn("handoff de Release", tx)
         self.assertIn("Execute o **SDD Handoff by RDD**.", ler(self.starter / "skills/sdd-build/SKILL.md"))
 
     def test_at005_define_e_design_nao_pedem_comando_ao_aluno(self):
@@ -138,7 +141,8 @@ class MoldesDoOpen(unittest.TestCase):
 
     def test_at006_moldes_sem_sobras_de_outro_projeto(self):
         proibidos = ("Terraform", "Terragrunt", "GCP", "Cloud Run", "Cloud Logging", "Pydantic", "ruff", "mypy", "pytest",
-                     "functions/", "`/build`", "/release", "/iterate", "`/define`", "WAF", "SSH", "```python")
+                     "functions/", "`/build`", "/release", "/iterate", "`/define`", "WAF", "SSH", "```python",
+                     "Cloud Monitoring", "Cloud ")   # revisão, rodada 1, R1: qualquer "Cloud <serviço>" de um vendor
         for nome in ("DEFINE_TEMPLATE.md", "DESIGN_TEMPLATE.md", "BUILD_REPORT_TEMPLATE.md"):
             tx = ler(RAIZ / "sdd/templates" / nome)
             for p in proibidos:

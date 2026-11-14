@@ -405,7 +405,7 @@ Incluir:
 
 Se o Build estiver bloqueado:
 - usar `Status: Blocked`;
-- não inserir o handoff de Release como se estivesse completo;
+- não inserir o handoff de conclusão (`Execute o **SDD Handoff by RDD**.`) como se estivesse completo;
 - indicar a ação necessária para desbloqueio.
 
 Se completo:
