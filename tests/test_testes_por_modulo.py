@@ -206,7 +206,7 @@ class Executor(Sandbox):
                      ["--teto-unidade", "0"], ["--teto-unidade", "nan"], ["--teto-unidade", "inf"],
                      ["--paralelo", "0"], ["--so", "test_nao_existe"], ["--nada"], ["--fatia"],
                      ["--so", ","], ["--fatia", "3/3"],   # seleção vazia: 1 unidade só, 3 fatias
-                     ["--fatia", "1/100000000000"]):   # avaliador, ciclo 2, B3: N absurdo não pode esgotar a memória
+                     ["--fatia", "1/1" + "0" * 11]):   # B3: N absurdo não esgota a memória (montado: LM-012)
             with self.subTest(args=args):
                 rc, out, err = self.executa(*args)
                 self.assertEqual(rc, 64, out + err)
