@@ -191,6 +191,26 @@ class Projeto(Sandbox):
         self.assertEqual(d["hookSpecificOutput"]["permissionDecision"], "deny", out)
         self.assertIn("[avaliação ausente]", d["hookSpecificOutput"]["permissionDecisionReason"])
 
+    def test_report_guard_le_o_payload_em_utf8_cru_num_sistema_cp1252(self):
+        # F16W (revisão rodada 3): o Claude Code manda o JSON sem escapar o não-ASCII. Com o stdin lido pela codificação
+        # do sistema (cp1252 no Windows), o ⚠️ derrubava a leitura e a gravação passava sem guarda.
+        self.cli("init", "--yes", "--vendors", "claude")
+        ruim = (RAIZ / "sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md").read_text(encoding="utf-8")
+        alvo = str(self.p / "sdd/reports/BUILD_REPORT_X.md")
+        cru = json.dumps(self.payload("payload-write-build-report.json", FILE=alvo, CONTENT=ruim + "\n⚠️ Á ção\n"),
+                         ensure_ascii=False).encode("utf-8")
+        self.assertFalse(cru.isascii())
+        env = dict(self.env, CLAUDE_PROJECT_DIR=str(self.p), PYTHONIOENCODING="cp1252:strict")
+        for nome in GUARDS:
+            with self.subTest(guard=nome):
+                r = subprocess.run([PYTHON, "-B", str(self.p / ".claude/hooks" / nome)], cwd=str(self.p), env=env,
+                                   input=cru, capture_output=True, timeout=120)
+                self.assertEqual(r.returncode, 0, r.stderr)
+                self.assertNotIn(b"ileg", r.stdout)   # nada de "payload do hook ilegível"
+        r = subprocess.run([PYTHON, "-B", str(self.p / ".claude/hooks/sdd-report-guard.py")], cwd=str(self.p), env=env,
+                           input=cru, capture_output=True, timeout=120)
+        self.assertEqual(json.loads(r.stdout)["hookSpecificOutput"]["permissionDecision"], "deny", r.stdout)
+
     def test_report_guard_simula_o_edit(self):
         self.cli("init", "--yes", "--vendors", "claude")
         alvo = self.escreve(self.p, "sdd/reports/BUILD_REPORT_X.md", RELATORIO_OK)

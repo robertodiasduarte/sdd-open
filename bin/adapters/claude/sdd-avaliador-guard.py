@@ -50,7 +50,9 @@ def negar(motivo):
 
 def main():
     try:
-        payload = json.load(sys.stdin)
+        # F16W (revisão rodada 3): o Claude Code manda o JSON em UTF-8 cru; sys.stdin em modo texto seria cp1252 no
+        # Windows (⚠️ derrubava a leitura e a gravação passava sem guarda). Lido em bytes, decodificado em UTF-8.
+        payload = json.loads(sys.stdin.buffer.read().decode("utf-8"))
     except Exception as exc:
         aviso("payload do hook ilegível (%s) — despacho não conferido" % type(exc).__name__)
         return
