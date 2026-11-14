@@ -65,6 +65,9 @@ class ModoWebGerado(Base):
         self.assertIn("Execute o **SDD Design by RDD**.", ler(self.starter / "skills/sdd-define/SKILL.md"))
         bp = ler(self.starter / "skills/sdd-build/references/build-protocol.md")
         self.assertNotIn("HANDOFF_TO_RELEASE", bp)
+        for rel, tx in self.textos("sdd-build"):     # avaliador, ciclo 1, achado 4: nada "validado" sem validador
+            with self.subTest(validado=rel):
+                self.assertNotIn("validado", tx)
         for rel, tx in self.textos("sdd-build"):     # revisão, rodada 1, R2: nenhum resto do fim na Release
             with self.subTest(arquivo=rel):
                 self.assertNotIn("handoff de Release", tx)
@@ -152,11 +155,14 @@ class MoldesDoOpen(unittest.TestCase):
 
 class NaoFinjaNoOpen(unittest.TestCase):
     def test_at007_as_3_dizem_sem_acesso_nao_finja(self):
+        # avaliador, ciclo 1, achado 2 (LM-026): a frase inteira, não só o título
+        frase = ("**Sem acesso, não finja:** não diga que leu, inspecionou, escreveu, gravou ou rodou o que não leu, "
+                 "inspecionou,\nescreveu, gravou ou rodou; sem o código à vista, não invente caminho, comando nem biblioteca")
         for skill in DA_F17C:
             with self.subTest(skill=skill):
-                self.assertIn("**Sem acesso, não finja:**", ler(SKILLS / skill / "SKILL.md"))
-        self.assertIn("Sem código e sem a stack escrita no projeto (`AGENTS.md`, `sdd/config.yaml`, README), pergunte a stack e a\nestrutura mínima", ler(SKILLS / "sdd-design/SKILL.md"))
-        self.assertIn("peça o projeto; não monte um BUILD_REPORT só a partir dos documentos", ler(SKILLS / "sdd-build/SKILL.md"))
+                self.assertIn(frase, ler(SKILLS / skill / "SKILL.md"))
+        self.assertIn("Sem código e sem a stack escrita no projeto (`AGENTS.md`, `sdd/config.yaml`, README), pergunte a stack e a estrutura mínima", ler(SKILLS / "sdd-design/SKILL.md"))
+        self.assertIn("peça o projeto e não monte um BUILD_REPORT só a partir dos documentos", ler(SKILLS / "sdd-build/SKILL.md"))
 
     def test_at007_define_pergunta_na_primeira_vez(self):
         s = ler(SKILLS / "sdd-define/SKILL.md")
@@ -165,13 +171,16 @@ class NaoFinjaNoOpen(unittest.TestCase):
                        "3 a 5 frases \"Eu abri … e vi …\"", "`manual-ux` nunca é atalho para não perguntar"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, passo)
-        self.assertIn("\"Eu abri … e vi …\"", ler(RAIZ / "sdd/templates/fragments/VERIFY_GATE.md"))
+        frag = ler(RAIZ / "sdd/templates/fragments/VERIFY_GATE.md")
+        self.assertIn("\"Eu abri … e vi …\"", frag)
+        # avaliador, ciclo 1, achado 5: o exemplo segue a regra
+        self.assertIn('manual_fallback: "Eu abri o app no celular', frag)
 
 
 class CaminhoDoOpen(unittest.TestCase):
     def test_at010_linha_do_modo_condicionada_e_o_caminho_de_hoje_fica(self):
         linha = ("**Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga "
-                 "`web/MODO_WEB.md`\ndesta skill.")
+                 "`web/MODO_WEB.md`\ndesta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.")
         for skill in DA_F17C:
             s = ler(SKILLS / skill / "SKILL.md")
             with self.subTest(skill=skill):

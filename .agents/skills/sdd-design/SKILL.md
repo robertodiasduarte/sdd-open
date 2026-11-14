@@ -16,7 +16,7 @@ Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do S
 `sdd-design v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
-desta skill.
+desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
 
 Plano + especificação + decisões num documento. O DESIGN diz **como** construir o que o
 DEFINE contratou — e é o último ponto em que mudar de abordagem é barato.
@@ -72,9 +72,9 @@ Leia o DEFINE, o `UX_REVIEW_{FEATURE}.md` se existir, `sdd/templates/DESIGN_TEMP
 `AGENTS.md`, `sdd/config.yaml` (camadas em `layers:`) e `## Sempre` do playbook. Explore o
 código: como o projeto já resolve problemas parecidos? Que convenções valem?
 
-**Sem acesso, não finja:** sem o código à vista, não diga que o inspecionou e não invente caminho, biblioteca
-nem agente. Sem código e sem a stack escrita no projeto (`AGENTS.md`, `sdd/config.yaml`, README), pergunte a stack e a
-estrutura mínima (pastas, linguagem, como roda) antes do File Manifest; projeto novo só depois de a stack ser
+**Sem acesso, não finja:** não diga que leu, inspecionou, escreveu, gravou ou rodou o que não leu, inspecionou,
+escreveu, gravou ou rodou; sem o código à vista, não invente caminho, comando nem biblioteca, nem agente.
+Sem código e sem a stack escrita no projeto (`AGENTS.md`, `sdd/config.yaml`, README), pergunte a stack e a estrutura mínima (pastas, linguagem, como roda) antes do File Manifest; projeto novo só depois de a stack ser
 confirmada.
 
 **Contexto de domínio.** A linha `CONTEXTO de domínio` do DEFINE cita `contexto/<slug>.md`? Leia o

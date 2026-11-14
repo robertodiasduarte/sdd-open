@@ -95,7 +95,7 @@ Build completo somente quando:
 - verificação incremental registrada;
 - Verify Gate green (`0`) ou manual-ux com receipt;
 - checks complementares aplicáveis green;
-- relatório validado.
+- relatório relido contra o checklist de conclusão.
 
 ## Next step
 

@@ -16,7 +16,7 @@ Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do S
 `sdd-define v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
-desta skill.
+desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
 
 Capturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem
 depois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate
@@ -76,8 +76,9 @@ Leia `sdd/templates/DEFINE_TEMPLATE.md`, `AGENTS.md`, a entrada, e os 3 fragment
 esta fase: `sdd/templates/fragments/EARS.md`, `CLARIFY.md`, `VERIFY_GATE.md`. Leia `## Sempre`
 de `sdd/playbook.md`.
 
-**Sem acesso, não finja:** não diga que leu código, testes ou infraestrutura que não leu; sem o código à vista,
-não invente caminho, comando nem biblioteca: o que falta vira pergunta ou suposição rotulada.
+**Sem acesso, não finja:** não diga que leu, inspecionou, escreveu, gravou ou rodou o que não leu, inspecionou,
+escreveu, gravou ou rodou; sem o código à vista, não invente caminho, comando nem biblioteca: o que falta vira
+pergunta ou suposição rotulada.
 
 ### 1.5. Contexto de domínio (cartógrafo)
 

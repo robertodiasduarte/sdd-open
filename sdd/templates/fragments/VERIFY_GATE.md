@@ -78,9 +78,9 @@ Rodar: `sdd/bin/verify-gate.sh sdd/features/DEFINE_<FEATURE>.md`
 
 1. **`manual-ux` NÃO finge automação.** É gate humano explícito (anti "passa técnico, é lixo
    estético"). `cmd: "N/A (manual-ux)"`; o `manual_fallback` é um checklist assinado no BUILD_REPORT.
-   Escreva o checklist como 3 a 5 frases "Eu abri … e vi …" (o que a pessoa faz e o que ela vê), e só
-   depois de perguntar "existe um comando que devolve 0 quando funciona?": `manual-ux` nunca é atalho para
-   não perguntar.
+   Escreva o checklist como 3 a 5 frases "Eu abri … e vi …" (o que a pessoa faz e o que ela vê). Fora da UX
+   pura (aparência, que nenhum comando julga), `manual-ux` vem só depois de perguntar "existe um comando que devolve
+   0 quando funciona?": nunca é atalho para não perguntar.
 2. **Ruído de infra ≠ regressão.** Smoke que recebe 403 do WAF×IP-do-runner é inconclusivo
    (exit 3), nunca vermelho. Prefira smoke rodando **na origem via SSH** (lição do fix do changelog).
 3. **Nenhum gate cruza o a fase Release.** O gate é pré-condição do deploy, não o deploy.
@@ -100,7 +100,7 @@ verify_gate: { kind: smoke, cmd: "curl -sS -o /dev/null -w '%{http_code}' https:
 ```
 ```yaml
 # manual-ux — app mobile, gate humano
-verify_gate: { kind: manual-ux, cmd: "N/A (manual-ux)", pass_when: "checklist assinado", threshold: "—", manual_fallback: "smoke no celular real: (1) a tela inicial abre em <2s; (2) as listas rolam; (3) ▶ Continuar funciona; (4) o card de destaque aparece; (5) ← Voltar volta." }
+verify_gate: { kind: manual-ux, cmd: "N/A (manual-ux)", pass_when: "checklist assinado", threshold: "—", manual_fallback: "Eu abri o app no celular e vi a tela inicial em menos de 2 s. Eu rolei as listas e vi todas rolarem. Eu toquei em ▶ Continuar e vi a aula seguinte. Eu abri o início e vi o card de destaque. Eu toquei em ← Voltar e vi a tela anterior." }
 ```
 
 > Nota: o bloco pode ser multi-linha (legível) ou inline `{ ... }` (compacto) — o parser
