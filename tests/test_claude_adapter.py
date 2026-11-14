@@ -11,9 +11,10 @@ import json
 import os
 import shutil
 import subprocess
+import unittest
 from pathlib import Path
 
-from apoio import BASH, PYTHON, RAIZ, Sandbox
+from apoio import BASH, PYTHON, RAIZ, SEM_CHMOD, Sandbox, caminho_bash
 
 CLI = RAIZ / "bin/sdd-open.sh"
 FIX = RAIZ / "sdd/fixtures/hooks"
@@ -272,6 +273,21 @@ class Projeto(Sandbox):
         (self.p / "sdd/bin/avaliador-guard.sh").unlink()
         rc, out, err = self.guard("sdd-avaliador-guard.py", self.payload("payload-agent-veredito.json"))
         self.assertIn("não conferido", json.loads(out)["systemMessage"])
+
+    @unittest.skipIf(*SEM_CHMOD)   # o bash falso é um script com shebang: no Windows, o Python não o executa direto
+    def test_avaliador_guard_usa_o_bash_do_claude_code_e_nao_o_nome(self):
+        # F16W (revisão rodada 2): no Windows, "bash" pelo nome cai no bash.exe do WSL (System32 antes do PATH). Com
+        # CLAUDE_CODE_GIT_BASH_PATH, o guard usa esse bash; o bash falso anota a chamada e responde como o guard real.
+        self.cli("init", "--yes", "--vendors", "claude")
+        self.commit(self.p, "init")
+        anot = self.tmp / "bash-chamado.txt"
+        falso = self.tmp / "bash-do-git"
+        falso.write_text('#!/bin/sh\necho "$1" > "%s"\nexit 0\n' % caminho_bash(anot), encoding="utf-8")
+        falso.chmod(0o755)
+        env = dict(self.env, CLAUDE_PROJECT_DIR=str(self.p), CLAUDE_CODE_GIT_BASH_PATH=str(falso))
+        rc, out, err = self.guard("sdd-avaliador-guard.py", self.payload("payload-agent-veredito.json"), env=env)
+        self.assertEqual((rc, out), (0, ""), err)
+        self.assertTrue(anot.read_text(encoding="utf-8").strip().endswith("avaliador-guard.sh"))
 
 
 if __name__ == "__main__":

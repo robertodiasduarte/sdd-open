@@ -47,7 +47,10 @@ def pendura(tiques) -> str:
 QUEBRADO = "import modulo_que_nao_existe\n"
 # Sai na importação depois de imprimir fora do cp1252: o processo da unidade morre sem o resumo do unittest (ERRO), e a
 # cauda que o executor mostra tem 🛑.
-SAI_NA_IMPORTACAO = 'import sys\nprint("🛑 parei na importação")\nsys.exit(3)\n'
+# Os bytes vão em UTF-8 direto: no Windows a unidade escreve em cp1252 (o executor não lhe dá PYTHONIOENCODING), e o
+# teste mede o stdout do EXECUTOR, não o da unidade (revisão rodada 2, R2).
+SAI_NA_IMPORTACAO = ('import sys\nsys.stdout.buffer.write("🛑 parei na importação\\n".encode("utf-8"))\n'
+                     'sys.stdout.flush()\nsys.exit(3)\n')
 
 
 class Executor(Sandbox):

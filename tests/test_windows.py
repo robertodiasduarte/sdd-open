@@ -106,6 +106,13 @@ def chamadas_texto_sem_encoding(codigo: str) -> list:
     return achou
 
 
+def chamadas_bash_pelo_nome(codigo: str) -> list:
+    """Linha de cada subprocess.run/Popen/... cujo programa é a palavra "bash" (no Windows, o CreateProcess acha o
+    bash.exe do WSL em System32 antes do PATH; F16W, revisão rodada 2)."""
+    return [codigo.count("\n", 0, m.start()) + 1
+            for m in re.finditer(r"subprocess\.(?:run|Popen|check_output|check_call|call)\(\s*\[\s*[\"']bash[\"']", codigo)]
+
+
 class Decodificacao(unittest.TestCase):
     def test_subprocess_em_modo_texto_sempre_com_encoding(self):
         arquivos = [l.strip() for l in (RAIZ / "MANIFEST.txt").read_text(encoding="utf-8").splitlines()
@@ -118,6 +125,17 @@ class Decodificacao(unittest.TestCase):
             for n in chamadas_texto_sem_encoding((RAIZ / rel).read_text(encoding="utf-8")):
                 fora.append("%s:%d" % (rel, n))
         self.assertEqual(fora, [], 'passe encoding="utf-8", errors="replace" (LM-014)')
+
+    def test_subprocess_nunca_chama_bash_pelo_nome(self):
+        arquivos = [l.strip() for l in (RAIZ / "MANIFEST.txt").read_text(encoding="utf-8").splitlines()
+                    if l.strip().endswith((".py", ".sh")) and not l.startswith("scripts/starter/raiz/")
+                    and l.strip() != "tests/test_windows.py"]
+        fora = ["%s:%d" % (rel, n) for rel in arquivos
+                for n in chamadas_bash_pelo_nome((RAIZ / rel).read_text(encoding="utf-8"))]
+        self.assertEqual(fora, [], "chame o bash pelo caminho (BASH de tests/apoio.py; SDD_<SCRIPT>_BASH; achar_bash)")
+        self.assertEqual(chamadas_bash_pelo_nome('r = subprocess.run(["bash", x], text=True)\n'), [1])
+        self.assertEqual(chamadas_bash_pelo_nome("subprocess.Popen(\n  ['bash', '-c', c])\n"), [1])
+        self.assertEqual(chamadas_bash_pelo_nome('subprocess.run([BASH, x])\n'), [])
 
     def test_a_varredura_acusa_e_respeita_o_encoding(self):
         self.assertEqual(chamadas_texto_sem_encoding('x = subprocess.run(["git"], capture_output=True, text=True)\n'), [1])

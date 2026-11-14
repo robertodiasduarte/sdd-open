@@ -14,8 +14,20 @@ Python >= 3.9, só stdlib.
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
+
+
+def achar_bash():
+    """O bash do Git, não o do WSL. F16W (revisão rodada 2): no Windows, "bash" pelo nome no subprocess procura em
+    System32 antes do PATH (CreateProcess) e acha o bash.exe do WSL, que não lê o caminho C:\\… do projeto. Ordem: o
+    caminho que o Claude Code usa no Windows (CLAUDE_CODE_GIT_BASH_PATH), o 1º bash do PATH (shutil.which respeita a
+    ordem do PATH, onde o Git vem antes do System32 no Git Bash) e só então o nome."""
+    c = os.environ.get("CLAUDE_CODE_GIT_BASH_PATH")
+    if c and os.path.isfile(c):
+        return c
+    return shutil.which("bash") or "bash"
 
 
 def emitir(obj):
@@ -53,7 +65,7 @@ def main():
     if not os.path.isfile(guard):
         aviso("sdd/bin/avaliador-guard.sh não encontrado em %s — despacho não conferido (rode init)" % projeto)
         return
-    r = subprocess.run(["bash", guard], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=projeto)
+    r = subprocess.run([achar_bash(), guard], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=projeto)
     saida = (r.stdout + r.stderr).strip()
     if r.returncode == 0:
         if "⚠️" in saida:
