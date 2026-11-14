@@ -40,6 +40,9 @@ class T(unittest.TestCase):
         time.sleep(120)
 """
 QUEBRADO = "import modulo_que_nao_existe\n"
+# Sai na importação depois de imprimir fora do cp1252: o processo da unidade morre sem o resumo do unittest (ERRO), e a
+# cauda que o executor mostra tem 🛑.
+SAI_NA_IMPORTACAO = 'import sys\nprint("🛑 parei na importação")\nsys.exit(3)\n'
 
 
 class Executor(Sandbox):
@@ -51,9 +54,9 @@ class Executor(Sandbox):
     def modulo(self, nome: str, texto: str) -> None:
         (self.pasta / (nome + ".py")).write_text(texto, encoding="utf-8")
 
-    def executa(self, *args, timeout=120):
+    def executa(self, *args, timeout=120, env_extra=None):
         r = subprocess.run([sys.executable, "-B", str(EXECUTOR), "--pasta", str(self.pasta), *map(str, args)],
-                           cwd=str(self.tmp), env=self.env, capture_output=True, encoding="utf-8",
+                           cwd=str(self.tmp), env=dict(self.env, **(env_extra or {})), capture_output=True, encoding="utf-8",
                            errors="replace", stdin=subprocess.DEVNULL, timeout=timeout)
         return r.returncode, r.stdout, r.stderr
 
@@ -128,10 +131,29 @@ class Executor(Sandbox):
         self.assertEqual(rc, 0, err)
         # A herda test_x: a unidade A tem 2 testes; Base, importada em test_filho, fica só em test_base
         self.assertEqual(out.split(), ["test_base.Base", "test_filho.A", "test_filho.B"])
+        # revisão R3: Base, também importada em test_filho, pesa 1 (não 2): 1 + 2 + 1 = 4
+        rc, out, err = self.executa()
+        self.assertIn("fatia 1/1: 3 unidade(s), 4 teste(s);", out)
         rc, out, err = self.executa("--so", "test_filho")
         self.assertEqual(rc, 0, out + err)
         self.assertRegex(out, r"test_filho\.A\s+OK\s+testes=2")
         self.assertNotIn("test_base", out)
+
+    def test_saida_fora_do_cp1252_nao_derruba_o_executor(self):
+        # revisão R1 (LM-015): no Windows o stdout do executor num pipe é cp1252 estrito; aqui, forçado
+        self.modulo("test_sai", SAI_NA_IMPORTACAO)
+        self.modulo("test_um", VERDE)
+        saida = self.tmp / "saida"
+        rc, out, err = self.executa("--saida", saida, env_extra={"PYTHONIOENCODING": "cp1252:strict"})
+        self.assertEqual(rc, 1, out + err)
+        self.assertNotIn("Traceback", err)
+        self.assertRegex(out, r"test_sai\s+ERRO")
+        self.assertIn("🛑 parei na importação", out)
+        self.assertTrue(out.rstrip().endswith("RESULTADO: VERMELHO"), out)
+        self.assertTrue((saida / "resumo.tsv").is_file())
+        # o --lista também sobrevive ao módulo que sai e imprime na importação
+        rc, out, err = self.executa("--lista")
+        self.assertEqual((rc, out.split()), (0, ["test_sai", "test_um.T"]), err)
 
     def test_so_roda_os_escolhidos(self):
         self.modulo("test_um", VERDE)

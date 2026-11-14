@@ -21,6 +21,8 @@ Exit: 0 todas as unidades verdes · 1 alguma falhou, deu erro ou bateu no teto �
 """
 from __future__ import annotations
 
+import contextlib
+import io
 import os
 import re
 import signal
@@ -59,16 +61,22 @@ def unidades(pasta: Path) -> list:
     """(unidade, nº de testes), em ordem de nome. Unidade = `modulo.Classe` pelo id dos testes; a classe herdada de
     outro módulo conta uma vez só, no módulo dela. Módulo que não importa = o próprio módulo, peso 1."""
     sys.path.insert(0, str(pasta))
-    cont = {}
+    cont, vistos = {}, set()
     for p in sorted(pasta.glob("test_*.py")):
         try:
-            ids = [t.id() for t in _folhas(unittest.defaultTestLoader.loadTestsFromName(p.stem))]
-        except Exception:  # noqa: BLE001 — o processo do módulo mostra o erro
+            # o que o módulo imprime ao ser importado não pode sujar o --lista; um sys.exit na importação não pode
+            # derrubar o executor: o processo da unidade mostra o erro
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                ids = [t.id() for t in _folhas(unittest.defaultTestLoader.loadTestsFromName(p.stem))]
+        except (Exception, SystemExit):  # noqa: BLE001
             ids = None
         if ids is None or any(i.startswith("unittest.") for i in ids):
             cont[p.stem] = 1
             continue
         for i in ids:
+            if i in vistos:   # a classe importada por outro módulo traz os mesmos ids: contam uma vez (revisão R3)
+                continue
+            vistos.add(i)
             k = i.rsplit(".", 1)[0]
             cont[k] = cont.get(k, 0) + 1
     return sorted(cont.items())
@@ -164,6 +172,13 @@ def linha(c: dict) -> str:
 
 
 def main(argv: list) -> int:
+    # Revisão R1 (LM-015): no Windows, o stdout do executor num pipe é cp1252 estrito; a cauda de uma unidade com
+    # 🛑 ou ✅ derrubaria o print antes de gravar o log e o resumo. O executor escreve sempre em UTF-8.
+    for canal in (sys.stdout, sys.stderr):
+        try:
+            canal.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
     fatia, n, teto, paralelo, saida, so, pasta, lista = 1, 1, 900.0, 1, None, None, RAIZ / "tests", False
     it = iter(argv)
     try:

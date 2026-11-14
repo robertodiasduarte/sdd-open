@@ -1040,3 +1040,62 @@ class TestEditor(Base):
         self.assertNotIn("editor code", out)
         out = self.checar()   # escolhido e nada detectado: cita o escolhido
         self.assertIn(", editor cursor", out)
+
+
+class TestVigiaNoWindows(unittest.TestCase):
+    """F16W (AT-004, revisão R2): o ramo do Windows do vigia, provado também fora dele. O bloco do gh é carregado
+    num bash com um /proc falso (SDD_CHECAR_PROC) e um taskkill falso que só anota; o Windows real é o CI."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="vigia-"))
+        self.proc = self.tmp / "proc"
+        self.proc.mkdir()
+        self.log = self.tmp / "taskkill.log"
+        bin_ = self.tmp / "bin"
+        bin_.mkdir()
+        tk = bin_ / "taskkill"
+        tk.write_text('#!/bin/sh\necho "$* MSYS_NO_PATHCONV=${MSYS_NO_PATHCONV:-} MSYS2_ARG_CONV_EXCL=${MSYS2_ARG_CONV_EXCL:-}" '
+                      '>> "%s"\n' % caminho_bash(self.log), encoding="utf-8")
+        tk.chmod(0o755)
+        texto = SCRIPT.read_text(encoding="utf-8")
+        ini = texto.index("# ── gh e instalação por sistema (F16)")
+        self.bloco = texto[ini:texto.index("\n# ── fim do gh", ini)]
+        self.env = dict(os.environ, SDD_CHECAR_PROC=caminho_bash(self.proc),
+                        PATH=caminho_bash(bin_) + os.pathsep + os.environ.get("PATH", ""))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def bash(self, corpo: str) -> str:
+        r = subprocess.run([BASH, "-c", self.bloco + "\n" + corpo], env=self.env, capture_output=True,
+                           encoding="utf-8", errors="replace", stdin=subprocess.DEVNULL, timeout=60)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        return r.stdout
+
+    def test_com_winpid_corta_a_arvore_pelo_taskkill(self):
+        out = self.bash('P="$SDD_CHECAR_PROC"; sleep 30 & p=$!; mkdir -p "$P/$p"; echo 4242 > "$P/$p/winpid"\n'
+                        'corta KILL "$p" ""; sleep 0.3; kill -0 "$p" 2>/dev/null && echo vivo; kill "$p"\n')
+        # o taskkill falso não mata: o processo segue vivo, então foi ele, não o kill de grupo, quem foi chamado
+        self.assertEqual(out.split(), ["vivo"])
+        self.assertEqual(self.log.read_text(encoding="utf-8").strip(),
+                         "/F /T /PID 4242 MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL=*")
+
+    def test_sem_winpid_vale_o_kill_de_grupo(self):
+        out = self.bash('set -m; sleep 30 & p=$!; corta KILL "$p"; sleep 0.3; kill -0 "$p" 2>/dev/null && echo vivo; echo fim\n')
+        self.assertEqual(out.split(), ["fim"])
+        self.assertFalse(self.log.exists(), "o taskkill não devia ser chamado fora do Windows")
+
+    def test_regra_do_relogio_e_o_caso_vizinho(self):
+        casos = (
+            # (Windows?, rc, segundos desde t0, esperado)
+            (True, 1, 11, "137"),   # o taskkill cortou depois do teto
+            (True, 0, 11, "0"),     # caso vizinho: terminou bem, mesmo tarde, não é corte
+            (True, 1, 2, "1"),      # falhou antes do teto: é erro do comando
+            (False, 1, 11, "1"),    # fora do Windows o rc é o de sempre (143/137 vêm do sinal)
+        )
+        for win, rc, passou, esperado in casos:
+            with self.subTest(windows=win, rc=rc, passou=passou):
+                prep = 'mkdir -p "$SDD_CHECAR_PROC/$$"; echo 1 > "$SDD_CHECAR_PROC/$$/winpid"\n' if win else \
+                       'rm -rf "$SDD_CHECAR_PROC/$$"\n'
+                out = self.bash(prep + "rc_do_vigia %d $((SECONDS - %d))\n" % (rc, passou))
+                self.assertEqual(out.strip(), esperado)
