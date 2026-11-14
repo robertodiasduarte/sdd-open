@@ -29,8 +29,9 @@ class Curadoria(unittest.TestCase):
     def test_as_contagens_da_f17c_nao_foram_aplicadas(self):
         # Roberto, 2026-11-14: só as 2 lições entram; nenhuma lição antiga ganhou conf=2026-11-14
         pb = ler("sdd/playbook.md")
-        datadas = re.findall(r"^- \[(LM-\d+)\] .*conf=2026-11-14", pb, re.M)
-        self.assertEqual(sorted(datadas), ["LM-027", "LM-028"])
+        # a curadoria da F16W (passo 0 da F16W2, mesmo dia) datou LM-012 e as 3 lições novas: descontadas aqui
+        datadas = set(re.findall(r"^- \[(LM-\d+)\] .*conf=2026-11-14", pb, re.M))
+        self.assertEqual(sorted(datadas - {"LM-012", "LM-029", "LM-030", "LM-031"}), ["LM-027", "LM-028"])
 
 
 if __name__ == "__main__":
