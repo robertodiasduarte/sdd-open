@@ -113,6 +113,18 @@ class UmJeitoSoDePasta(Base):
         self.assertIn("Gravar `UX_REVIEW_{FEATURE}.md` em `sdd/reviews/`", filha)
 
 
+class ValidadorDaBuilder(unittest.TestCase):
+    """Decision 9: o validador da ux-review-builder aceita só sdd/features/ e sdd/reviews/; os testes dela rodam aqui
+    (a suíte do Open não desce nos tests/ das skills; o CI do starter desce)."""
+
+    def test_os_testes_da_builder_passam(self):
+        import subprocess, sys
+        r = subprocess.run([sys.executable, "-B", "-m", "unittest", "discover", "-s",
+                            str(SKILLS / "ux-review-builder/tests"), "-p", "test_*.py"],
+                           capture_output=True, text=True, encoding="utf-8")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+
 class MoldesDoOpen(unittest.TestCase):
     def test_at006_relatorio_com_as_secoes_que_a_skill_pede(self):
         molde = ler(RAIZ / "sdd/templates/BUILD_REPORT_TEMPLATE.md")
