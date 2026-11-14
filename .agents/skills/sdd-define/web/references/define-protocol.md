@@ -105,7 +105,7 @@ Escolher exatamente um kind:
 
 Nunca inventar um `cmd` específico do projeto.
 
-Quando o comando não estiver disponível, abrir clarificação com a pergunta da caixa "Se é a sua primeira vez" de `VERIFY_GATE.md`: existe um comando que devolve 0 quando funciona? `manual-ux` é válido quando a natureza do valor é humana/visual ou quando o aluno responde que não existe comando — nunca sem fazer a pergunta.
+Quando o comando não estiver disponível, abrir clarificação com a pergunta da caixa "Se é a sua primeira vez" de `VERIFY_GATE.md`: existe um comando que devolve 0 quando funciona? `manual-ux` é válido quando a natureza do valor é humana/visual ou quando o aluno responde que não existe comando — nunca sem fazer a pergunta, salvo na UX pura (aparência, que nenhum comando julga).
 
 ## Completion gate
 

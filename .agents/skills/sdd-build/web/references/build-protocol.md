@@ -79,7 +79,7 @@ Registrar:
 ## Stop conditions
 
 Parar o Build como Blocked quando:
-- projeto não está acessível;
+- projeto não está acessível e o usuário não escolheu o caminho do chat (ele salva o código e relata a conferência);
 - DEFINE ou DESIGN precisa de mudança material;
 - Verify Gate está red após tentativas razoáveis;
 - gate está inconclusivo e a inconclusão não foi resolvida;

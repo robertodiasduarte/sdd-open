@@ -92,9 +92,11 @@ class ModoWebGerado(Base):
     def test_build_sem_o_projeto_recomenda_um_agente_que_grave(self):
         # decisão do Roberto (avaliador, ciclo 2): escrever no chat para o aluno salvar não é o recomendado
         s = ler(self.starter / "skills/sdd-build/SKILL.md")
-        for trecho in ("**recomendar** abrir o projeto num agente que grave arquivos no computador do usuário",
-                       "Escrever o código no chat para o usuário salvar só se ele pedir; aí nenhuma tarefa é marcada\nfeita",
-                       "nem dizer\nque há onde gravar sem ter"):
+        # e, quando o aluno diz que só tem o chat, o caminho do chat com regras (decisão do Roberto, avaliador ciclo 3)
+        for trecho in ("**recomendar** abrir o projeto num agente que grave arquivos (Claude Code, Codex, Cursor e outros)",
+                       "Se o usuário disser que só tem o chat, ou pedir, escrever o código no chat para ele salvar: nunca tomar\n"
+                       "\"ok\" ou resposta vaga como escolha, nenhuma tarefa feita nem conferência afirmada sem o relato dele",
+                       "nem dizer que há onde gravar."):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, s)
 
