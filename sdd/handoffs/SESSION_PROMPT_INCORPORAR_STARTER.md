@@ -9,18 +9,18 @@ diferentes), mas a fase 4 deve sincronizar o privado a partir da `v2.16.0` (os h
 
 ## Onde abrir esta sessão
 
-A frente **ainda não existe**. Abra com a `sdd-new-session` a partir do checkout principal do Open
-(`/Users/robertoduarte/rdd-public/sdd-open` ou outra worktree limpa de `main`), nome sugerido `f16w2-windows`, de
-`origin/main` = `ad32fe1` = `v2.16.0`, e cole o prompt abaixo na janela que ela abrir. A worktree da F16W
-(`/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows`) pode ser removida depois de conferir que nada ficou só nela
-(documentos e evidência da F16W estão na branch de documentos; as 3 revisões `sdd/reports/reviews/EXTERNAL_REVIEW_20261114-*`
-ficam só lá).
+A frente **já existe** (aberta em 2026-11-14, a pedido do Roberto, **na mesma worktree da F16W**):
+`/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows`, branch `feat/f16w2-windows`, de `origin/main` = `ad32fe1`
+(`v2.16.0`). Abra uma sessão nova nela e cole o prompt abaixo. Ficaram na pasta, sem commit, os documentos e a evidência da
+F16W (cópias já na branch de documentos) e as 3 revisões dela (`sdd/reports/reviews/EXTERNAL_REVIEW_20261114-*`, só lá):
+não atrapalham os da F16W2, que têm outros nomes.
 
 ## Prompt para colar na sessão nova
 
 ```text
-Executar a frente F16W2 do SDD Open: Windows, porte das quebras. Repo público robertodiasduarte/sdd-open. Abra a frente pela
-sdd-new-session (se o Roberto ainda não abriu) de origin/main = ad32fe1 = v2.16.0. Responda em português.
+Executar a frente F16W2 do SDD Open: Windows, porte das quebras. Repo público robertodiasduarte/sdd-open. A frente já está aberta:
+/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows (a worktree da F16W), branch feat/f16w2-windows, de origin/main =
+ad32fe1 = v2.16.0. Não rode a sdd-new-session. Responda em português.
 Execute o pipeline inteiro até a release (passo 0, brainstorm, define, design, build, release, fechamento) e pergunte ao
 Roberto somente o que for necessário: as decisões dele (escopo, curadoria, passar do teto do método) e as autorizações.
 Decisão de rotina, decida e registre. Push, merge, tag e Release neste repositório pedem a frase do Roberto

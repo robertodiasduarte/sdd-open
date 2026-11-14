@@ -18,11 +18,12 @@
 ## Prompt de retomada
 
 Próxima sessão: F16W2 Windows, porte das quebras, com as sobras da F16W no passo 0 (o mesmo de
-`sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`, que diz também onde abrir a frente).
+`sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`, que diz também onde a frente está).
 
 ```text
-Executar a frente F16W2 do SDD Open: Windows, porte das quebras. Repo público robertodiasduarte/sdd-open. Abra a frente pela
-sdd-new-session (se o Roberto ainda não abriu) de origin/main = ad32fe1 = v2.16.0. Responda em português.
+Executar a frente F16W2 do SDD Open: Windows, porte das quebras. Repo público robertodiasduarte/sdd-open. A frente já está aberta:
+/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows (a worktree da F16W), branch feat/f16w2-windows, de origin/main =
+ad32fe1 = v2.16.0. Não rode a sdd-new-session. Responda em português.
 Execute o pipeline inteiro até a release (passo 0, brainstorm, define, design, build, release, fechamento) e pergunte ao
 Roberto somente o que for necessário: as decisões dele (escopo, curadoria, passar do teto do método) e as autorizações.
 Decisão de rotina, decida e registre. Push, merge, tag e Release neste repositório pedem a frase do Roberto
@@ -262,6 +263,7 @@ de skill (sdd-checar-ambiente 1.5.2, sdd-iniciar-repo 1.2.1 em test_f16_textos).
 - 2026-11-14 — F16W, medição (Roberto): o push da branch para medir no Windows foi negado durante o build ("medir só no PR do fim"); o build fez só o que se acha e se prova no Mac. Teto do método: o conserto da rodada 3 de revisão e os ajustes depois dela (só teste, frases, log do executor) com dispensa dele.
 - 2026-11-14 — F16W, corte e piso (Roberto, com a 1ª medição do CI do PR #30: 1.324 de 2.076 testes passam, 38 de 82 módulos inteiros verdes): publicar; o job do Windows segue informativo com a suíte inteira; as 4 frases de Windows dizem o número medido; o porte das quebras vira a frente **F16W2**; a curadoria do playbook da F16W vai para o passo 0 dela; versão minor (`v2.16.0`).
 - 2026-11-14 — **F16W publicada: Release `v2.16.0`** (`main` = `ad32fe1`, PR #30; "sdd-open autorizado") e **starter `v1.5.20`** (PR #13 de lá, fast-forward, OK próprio do Roberto). Pelo Cronograma, a próxima é a **F16W2**, que pode andar em paralelo com a F15 fase 4 no privado (o Roberto perguntou na sessão; a fase 4 sincroniza a partir da `v2.16.0`).
+- 2026-11-14 — **F16W2 aberta** (pedido do Roberto) **na mesma worktree da F16W**, sem a `sdd-new-session`: `/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows`, branch `feat/f16w2-windows` de `origin/main` = `ad32fe1` = `v2.16.0` (a `feat/f16w-windows` já estava inteira na `main`). O prompt da sessão passa a dizer que a frente existe.
 
 ## 2026-11-14 — F16W Windows: porte da suíte (Release v2.16.0, starter v1.5.20)
 
