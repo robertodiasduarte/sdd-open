@@ -85,8 +85,10 @@ class ModoWeb(Base):
                 encoding="utf-8"),
             "cita arquivo que não existe na pasta-base": lambda: modo.write_text(
                 modo.read_text(encoding="utf-8") + "\nVeja `references/nao-existe.md`.\n", encoding="utf-8"),
+            # sabotagem 2: sem a guarda de `..`, este escaparia da skill (e da saída) e o lint não o veria
             "cita arquivo fora da pasta-base": lambda: modo.write_text(
-                modo.read_text(encoding="utf-8") + "\nVeja `references/../../SKILL.md`.\n", encoding="utf-8"),
+                modo.read_text(encoding="utf-8") + "\nVeja `references/" + "../" * 5 + "sdd/templates/HANDOFF_TEMPLATE.md`.\n",
+                encoding="utf-8"),
             "cita o arquivo do Open (fora do web/)": lambda: modo.write_text(
                 modo.read_text(encoding="utf-8") + "\nVeja `references/contexto-fresco.md`.\n", encoding="utf-8"),
             "cita caminho do init": lambda: modo.write_text(
