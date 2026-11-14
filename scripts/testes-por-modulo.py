@@ -4,7 +4,8 @@
 F16W: no Windows (Git Bash + Python nativo) a suíte inteira não cabe num job só, e um módulo pendurado comia o
 teto do job inteiro sem dizer qual era. Aqui a unidade é a classe de teste (`modulo.Classe`, lida pelo próprio
 unittest, que vê também os testes herdados): cada uma tem o seu teto, a sua linha no relatório e a sua saída
-guardada, e um módulo grande (test_sdd_open) se espalha por várias fatias. Módulo que nem importa vira uma unidade
+guardada, e um módulo grande (test_sdd_open) se espalha por várias fatias; classe com mais de 12 testes vira partes
+(`modulo.Classe[1de3]`). Módulo que nem importa vira uma unidade
 inteira, para o erro aparecer. A suíte se divide em fatias estáveis (--fatia I/N) para rodar em jobs paralelos.
 
 Uso (de quem mantém o pacote; o `init` não copia scripts/ para o projeto do aluno):
@@ -14,7 +15,7 @@ Uso (de quem mantém o pacote; o `init` não copia scripts/ para o projeto do al
   --teto-unidade S  segundos por unidade (padrão 900); estourou ⇒ ela é morta, com os filhos, e conta como TETO
   --paralelo K      unidades ao mesmo tempo (padrão 1)
   --saida DIR       grava a saída inteira de cada unidade em DIR/<unidade>.log e o resumo em DIR/resumo.tsv
-  --so a,b          só estes módulos (test_x) ou unidades (test_x.Classe), sem fatiar
+  --so a,b          só estes módulos (test_x), classes (test_x.Classe, com as partes) ou unidades, sem fatiar
   --pasta DIR       a pasta dos testes (padrão: tests/ ao lado deste script)
   --lista           só imprime as unidades da fatia, uma por linha, e sai 0
 Exit: 0 todas as unidades verdes · 1 alguma falhou, deu erro ou bateu no teto · 64 uso.
@@ -23,6 +24,7 @@ from __future__ import annotations
 
 import contextlib
 import io
+import math
 import os
 import re
 import signal
@@ -57,9 +59,13 @@ def _folhas(suite):
             yield t
 
 
+GRUPO = 12   # testes por unidade, no máximo: uma classe maior se divide em partes (avaliador, ciclo 1)
+
+
 def unidades(pasta: Path) -> list:
-    """(unidade, nº de testes), em ordem de nome. Unidade = `modulo.Classe` pelo id dos testes; a classe herdada de
-    outro módulo conta uma vez só, no módulo dela. Módulo que não importa = o próprio módulo, peso 1."""
+    """(unidade, alvos do unittest, nº de testes), em ordem de nome. Unidade = `modulo.Classe` pelo id dos testes; a classe herdada
+    de outro módulo conta uma vez só, no módulo dela. Classe com mais de GRUPO testes vira `modulo.Classe[ideN]`, cada
+    parte com os ids dela, em ordem. Módulo que não importa = o próprio módulo, com ele mesmo de alvo."""
     sys.path.insert(0, str(pasta))
     cont, vistos = {}, set()
     for p in sorted(pasta.glob("test_*.py")):
@@ -71,15 +77,28 @@ def unidades(pasta: Path) -> list:
         except (Exception, SystemExit):  # noqa: BLE001
             ids = None
         if ids is None or any(i.startswith("unittest.") for i in ids):
-            cont[p.stem] = 1
+            cont[p.stem] = None
             continue
         for i in ids:
             if i in vistos:   # a classe importada por outro módulo traz os mesmos ids: contam uma vez (revisão R3)
                 continue
             vistos.add(i)
-            k = i.rsplit(".", 1)[0]
-            cont[k] = cont.get(k, 0) + 1
-    return sorted(cont.items())
+            cont.setdefault(i.rsplit(".", 1)[0], []).append(i)
+    saida = []
+    for k, ids in cont.items():
+        if ids is None:
+            saida.append((k, [k], 1))
+        elif len(ids) <= GRUPO:
+            saida.append((k, [k], len(ids)))
+        else:
+            ids = sorted(ids)
+            n = -(-len(ids) // GRUPO)
+            # partes de tamanho parecido (não 12 + resto), para o peso não ficar torto
+            tam = -(-len(ids) // n)
+            for j in range(n):
+                parte = ids[j * tam:(j + 1) * tam]
+                saida.append(("%s[%dde%d]" % (k, j + 1, n), parte, len(parte)))
+    return sorted(saida)
 
 
 def fatiar(mods: list, n: int) -> list:
@@ -132,14 +151,14 @@ def matar_arvore(p: subprocess.Popen) -> None:
         pass
 
 
-def rodar(nome: str, pasta: Path, teto: float) -> dict:
+def rodar(nome: str, alvos: list, pasta: Path, teto: float) -> dict:
     """Roda um módulo. A saída vai para um arquivo, não para um pipe: um neto vivo segurando o pipe prenderia
     a leitura além do teto (o mesmo defeito do vigia do checar.sh no Windows)."""
     env = dict(os.environ, PYTHONUNBUFFERED="1", PYTHONIOENCODING="utf-8")
     inicio = time.monotonic()
     with tempfile.TemporaryFile() as out:
         extra = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if NO_WINDOWS else {"start_new_session": True}
-        p = subprocess.Popen([sys.executable, "-B", "-m", "unittest", "-v", nome], cwd=str(pasta), env=env,
+        p = subprocess.Popen([sys.executable, "-B", "-m", "unittest", "-v", *alvos], cwd=str(pasta), env=env,
                              stdin=subprocess.DEVNULL, stdout=out, stderr=subprocess.STDOUT, **extra)
         estourou = False
         try:
@@ -191,7 +210,7 @@ def main(argv: list) -> int:
                 fatia, n = int(m.group(1)), int(m.group(2))
             elif a == "--teto-unidade":
                 teto = float(next(it))
-                if teto <= 0:
+                if not math.isfinite(teto) or teto <= 0:   # nan e inf também (avaliador, ciclo 1, A1)
                     return uso("--teto-unidade espera segundos > 0")
             elif a == "--paralelo":
                 paralelo = int(next(it))
@@ -216,19 +235,27 @@ def main(argv: list) -> int:
     if not any(pasta.glob("test_*.py")):
         return uso("nenhum test_*.py em %s" % pasta)
     todos = unidades(pasta)
-    nomes = [u for u, _ in todos]
+    nomes = [u for u, _, _ in todos]
+    alvos = {u: a for u, a, _ in todos}
+    pesos = {u: k for u, _, k in todos}
+
+    def casa(u, x):   # x é um módulo, uma classe (pega as partes dela) ou a unidade exata
+        return u == x or u.startswith(x + ".") or u.startswith(x + "[")
+
     if so is not None:
-        fora = [x for x in so if not any(u == x or u.startswith(x + ".") for u in nomes)]
+        fora = [x for x in so if not any(casa(u, x) for u in nomes)]
         if fora:
             return uso("módulo ou unidade inexistente: %s" % ", ".join(fora))
-        escolhidos = [u for u in nomes if any(u == x or u.startswith(x + ".") for x in so)]
+        escolhidos = [u for u in nomes if any(casa(u, x) for x in so)]
     else:
-        escolhidos = fatiar(todos, n)[fatia - 1]
-    if lista:
-        print("\n".join(escolhidos))
+        escolhidos = fatiar([(u, pesos[u]) for u in nomes], n)[fatia - 1]
+    if lista:   # a lista de uma fatia vazia é informação: sai 0 sem linha
+        if escolhidos:
+            print("\n".join(escolhidos))
         return 0
+    if not escolhidos:   # rodar nada não pode sair verde: verde com 0 testes não prova nada (avaliador, A4)
+        return uso("a seleção ficou vazia: nenhuma unidade para rodar")
 
-    pesos = dict(todos)
     print("fatia %d/%d: %d unidade(s), %d teste(s); teto por unidade %ds; paralelo %d"
           % (fatia, n, len(escolhidos), sum(pesos[x] for x in escolhidos), teto, paralelo), flush=True)
     if saida:
@@ -237,7 +264,7 @@ def main(argv: list) -> int:
     feitos = []
 
     def um(nome):
-        c = rodar(nome, pasta, teto)
+        c = rodar(nome, alvos[nome], pasta, teto)
         with trava:
             feitos.append(c)
             print(linha(c), flush=True)

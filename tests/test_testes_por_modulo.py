@@ -32,13 +32,18 @@ class T(unittest.TestCase):
     def test_pulado(self): pass
     def test_ok(self): pass
 """
-# O neto herda a saída e dorme mais que o teto: sem matar a árvore, quem lê a saída esperaria por ele.
-PENDURA = """import subprocess, sys, time, unittest
-class T(unittest.TestCase):
-    def test_pendura(self):
-        subprocess.Popen([sys.executable, "-c", "import time; time.sleep(120)"])
-        time.sleep(120)
-"""
+# O neto herda a saída e fica vivo mais que o teto: sem matar a árvore, quem lê a saída esperaria por ele. Enquanto vive,
+# ele anota um tique por 0,2 s num arquivo: tiques que param provam que ele morreu (avaliador, ciclo 1, A2), sem
+# os.kill(pid, 0), que no Windows mandaria Ctrl+C ao grupo.
+def pendura(tiques) -> str:
+    neto = "import time\\nwhile True:\\n    open(%r, 'a').write('.')\\n    time.sleep(0.2)" % tiques.as_posix()   # barra normal: no Windows, \\ viraria escape
+    return ("import subprocess, sys, time, unittest\n"
+            "class T(unittest.TestCase):\n"
+            "    def test_pendura(self):\n"
+            "        subprocess.Popen([sys.executable, '-c', \"%s\"])\n"
+            "        time.sleep(120)\n" % neto)
+
+
 QUEBRADO = "import modulo_que_nao_existe\n"
 # Sai na importação depois de imprimir fora do cp1252: o processo da unidade morre sem o resumo do unittest (ERRO), e a
 # cauda que o executor mostra tem 🛑.
@@ -90,7 +95,8 @@ class Executor(Sandbox):
         self.assertTrue(out.rstrip().endswith("RESULTADO: VERMELHO"), out)
 
     def test_teto_mata_a_arvore_e_segue(self):
-        self.modulo("test_a_pendura", PENDURA)
+        tiques = self.tmp / "tiques.txt"
+        self.modulo("test_a_pendura", pendura(tiques))
         self.modulo("test_b_verde", VERDE)
         inicio = time.monotonic()
         rc, out, err = self.executa("--teto-unidade", "3", timeout=100)
@@ -98,8 +104,13 @@ class Executor(Sandbox):
         self.assertEqual(rc, 1, out + err)
         self.assertRegex(out, r"test_a_pendura\.T\s+TETO")
         self.assertRegex(out, r"test_b_verde\.T\s+OK")
-        # o neto dorme 120 s: terminar bem antes disso prova que ninguém esperou por ele
+        # o neto vive 120 s ou mais: terminar bem antes disso prova que ninguém esperou por ele
         self.assertLess(gasto, 60, out)
+        # e ele morreu junto: o arquivo de tiques parou de crescer
+        self.assertTrue(tiques.exists(), "o neto nem começou")
+        antes = tiques.stat().st_size
+        time.sleep(1.5)
+        self.assertEqual(tiques.stat().st_size, antes, "o neto continua vivo: a árvore não foi morta")
 
     def test_fatias_disjuntas_completas_e_estaveis(self):
         pesos = {"test_a": 9, "test_b": 7, "test_c": 5, "test_d": 3, "test_e": 1, "test_f": 1, "test_g": 0}
@@ -155,6 +166,18 @@ class Executor(Sandbox):
         rc, out, err = self.executa("--lista")
         self.assertEqual((rc, out.split()), (0, ["test_sai", "test_um.T"]), err)
 
+    def test_classe_grande_vira_partes_que_somam_tudo(self):
+        self.modulo("test_grande", "import unittest\nclass G(unittest.TestCase):\n" +
+                    "".join("    def test_%02d(self): pass\n" % i for i in range(30)))
+        rc, out, err = self.executa("--lista")
+        self.assertEqual(out.split(), ["test_grande.G[1de3]", "test_grande.G[2de3]", "test_grande.G[3de3]"], err)
+        saida = self.tmp / "saida"
+        rc, out, err = self.executa("--so", "test_grande.G", "--saida", saida)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("fatia 1/1: 3 unidade(s), 30 teste(s);", out)
+        self.assertEqual(len(__import__("re").findall(r"G\[\dde3\]\s+OK\s+testes=10 ", out)), 3, out)
+        self.assertTrue((saida / "test_grande.G[2de3].log").is_file())
+
     def test_so_roda_os_escolhidos(self):
         self.modulo("test_um", VERDE)
         self.modulo("test_ruim", FALHA)
@@ -165,8 +188,9 @@ class Executor(Sandbox):
     def test_uso_errado_sai_64_sem_rodar(self):
         self.modulo("test_ruim", FALHA)
         for args in (["--fatia", "0/3"], ["--fatia", "4/3"], ["--fatia", "x"], ["--teto-unidade", "abc"],
-                     ["--teto-unidade", "0"], ["--paralelo", "0"], ["--so", "test_nao_existe"], ["--nada"],
-                     ["--fatia"]):
+                     ["--teto-unidade", "0"], ["--teto-unidade", "nan"], ["--teto-unidade", "inf"],
+                     ["--paralelo", "0"], ["--so", "test_nao_existe"], ["--nada"], ["--fatia"],
+                     ["--so", ","], ["--fatia", "3/3"]):   # seleção vazia: 1 unidade só, 3 fatias
             with self.subTest(args=args):
                 rc, out, err = self.executa(*args)
                 self.assertEqual(rc, 64, out + err)
@@ -180,19 +204,19 @@ class Executor(Sandbox):
 
 
 class SuiteReal(unittest.TestCase):
-    def test_as_12_fatias_cobrem_a_suite(self):
+    def test_as_16_fatias_cobrem_a_suite(self):
         r = subprocess.run([sys.executable, "-B", str(EXECUTOR), "--lista", "--fatia", "1/1"], capture_output=True,
                            encoding="utf-8", stdin=subprocess.DEVNULL, timeout=120)
         todos = r.stdout.split()
         # todo módulo de teste aparece em pelo menos uma unidade
         modulos = {u.split(".", 1)[0] for u in todos}
         self.assertEqual(modulos, {p.stem for p in (RAIZ / "tests").glob("test_*.py")})
-        doze = []
-        for i in range(1, 13):
-            doze += subprocess.run([sys.executable, "-B", str(EXECUTOR), "--lista", "--fatia", "%d/12" % i],
-                                   capture_output=True, encoding="utf-8", stdin=subprocess.DEVNULL, timeout=120).stdout.split()
-        self.assertEqual(sorted(doze), sorted(todos))
-        self.assertEqual(len(doze), len(set(doze)))
+        fatias = []
+        for i in range(1, 17):
+            fatias += subprocess.run([sys.executable, "-B", str(EXECUTOR), "--lista", "--fatia", "%d/16" % i],
+                                     capture_output=True, encoding="utf-8", stdin=subprocess.DEVNULL, timeout=120).stdout.split()
+        self.assertEqual(sorted(fatias), sorted(todos))
+        self.assertEqual(len(fatias), len(set(fatias)))
 
 
 if __name__ == "__main__":

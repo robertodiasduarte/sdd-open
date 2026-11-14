@@ -193,16 +193,16 @@ jobs:
   # Ubuntu acima já o cobre). Informativo até o Roberto decidir o piso: fica FORA do `needs:` do job
   # `release`, então um vermelho aqui aparece no run sem segurar a Release (sem continue-on-error).
   testes-windows:
-    name: Testes no Windows, fatia ${{ matrix.fatia }}/12 (Git Bash + Python nativo, só leitura)
+    name: Testes no Windows, fatia ${{ matrix.fatia }}/16 (Git Bash + Python nativo, só leitura)
     runs-on: windows-latest
-    # F16W: a suíte inteira, módulo a módulo, em 12 fatias paralelas (scripts/testes-por-modulo.py). Cada unidade (a
+    # F16W: a suíte inteira, módulo a módulo, em 16 fatias paralelas (scripts/testes-por-modulo.py). Cada unidade (a
     # classe de teste) roda num processo próprio com teto de 600 s: uma classe pendurada diz o próprio nome e não come
     # o job. A 1ª medição da F16 (um job só, sem teto por módulo) foi cancelada nos 90 min com 15% feito.
     timeout-minutes: 30
     strategy:
       fail-fast: false   # uma fatia vermelha não cancela as outras: a medição é do pacote inteiro
       matrix:
-        fatia: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        fatia: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
     defaults:
       run:
         shell: bash
@@ -242,10 +242,10 @@ jobs:
 
       # Uma linha por módulo (estado, testes, falhas, erros, pulados, segundos) e os nomes do que caiu; a saída
       # inteira de cada módulo vai para o artefato do run.
-      - name: Unit tests by module (slice ${{ matrix.fatia }}/12, Git Bash + native Python)
+      - name: Unit tests by module (slice ${{ matrix.fatia }}/16, Git Bash + native Python)
         env:
           PYTHONUNBUFFERED: '1'
-        run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/12" --teto-unidade 600 --saida "$RUNNER_TEMP/tpm"
+        run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/16" --teto-unidade 600 --saida "$RUNNER_TEMP/tpm"
 
       - name: Keep the output of each module
         if: always()
