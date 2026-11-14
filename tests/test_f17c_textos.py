@@ -103,6 +103,16 @@ class ModoWebGerado(Base):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, s)
 
+    def test_revisao_rodada_2(self):
+        # R1: o UX_REVIEW que a ux-review gerada grava em sdd/reviews/ é procurado ali pelo design e pelo build
+        for skill in ("sdd-design", "sdd-build"):
+            with self.subTest(skill=skill):
+                self.assertRegex(ler(self.starter / "skills" / skill / "SKILL.md"), r"UX_REVIEW_\{FEATURE(?:_NAME)?\}\.md`[^\n]*`sdd/reviews/`")
+        # R2: a migration do modo web lê o exit cru (não os códigos 2 e 3 do runner)
+        mig = ler(self.starter / "skills/sdd-build/references/aplicar-migration.md")
+        self.assertNotIn("Se ele sair 2 ou 3", mig)
+        self.assertIn("qualquer código diferente de 0", mig)
+
     def test_at005_build_le_a_saida_do_comando_sem_o_verify_gate_sh(self):
         vg = ler(self.starter / "skills/sdd-build/references/verify-gate.md")
         for trecho in ("`exit 0` (o caso comum) → `0` é green; qualquer outro código é red",

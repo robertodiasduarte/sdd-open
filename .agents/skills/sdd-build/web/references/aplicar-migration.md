@@ -186,5 +186,6 @@ quando *Files Changed* lista `.sql` ou `migrations/`):
 Já estava aplicada ⇒ `Aplicada em` = "já aplicada em <data>". Prova (b) entregue para o aluno rodar ⇒
 "(b) entregue para o SQL Editor" na célula.
 
-Depois disto — e só depois — o Verify Gate (seção 12 da skill). Se ele sair 2 ou 3, a primeira hipótese é
+Depois disto — e só depois — o Verify Gate (seção 12 da skill). Se ele não sair verde (qualquer código diferente de 0, ou
+inconclusivo), a primeira hipótese é
 "migration não aplicada ou aplicada em outro projeto": repita a seção 5 antes de mexer em código.

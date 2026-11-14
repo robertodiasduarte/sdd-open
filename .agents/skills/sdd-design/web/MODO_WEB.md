@@ -39,7 +39,7 @@ Ler ambos antes de formular perguntas. **Documento de uma fase anterior** (proje
 
 ### Opcionais
 
-- `UX_REVIEW_{FEATURE_NAME}.md`, quando existir;
+- `UX_REVIEW_{FEATURE_NAME}.md`, quando existir (com acesso ao projeto, em `sdd/reviews/`; a `ux-review` grava ali);
 - árvore de diretórios ou arquivos relevantes do projeto;
 - convenções técnicas do repositório;
 - documentação de APIs, schemas, filas, banco ou infraestrutura;

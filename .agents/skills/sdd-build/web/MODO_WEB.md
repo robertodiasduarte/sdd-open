@@ -87,7 +87,7 @@ escrever o código no chat para ele salvar: nunca tomar "ok" ou resposta vaga co
 começar uma tarefa, nenhuma tarefa feita nem conferência afirmada sem o relato dele, e o relatório diz que quem salvou e conferiu foi ele. Nunca fingir um Build feito só a partir dos documentos, nem dizer que há onde gravar.
 
 Entradas opcionais:
-- `UX_REVIEW_{FEATURE}.md`;
+- `UX_REVIEW_{FEATURE}.md` (com acesso ao projeto, em `sdd/reviews/`);
 - orientação do projeto (`README`, guidance, conventions, config);
 - comandos reais de lint/test/typecheck/build;
 - ferramentas de agentes/subagentes;
