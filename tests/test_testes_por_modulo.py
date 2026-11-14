@@ -113,7 +113,7 @@ class Executor(Sandbox):
         self.assertEqual(tiques.stat().st_size, antes, "o neto continua vivo: a árvore não foi morta")
 
     def test_fatias_disjuntas_completas_e_estaveis(self):
-        pesos = {"test_a": 9, "test_b": 7, "test_c": 5, "test_d": 3, "test_e": 1, "test_f": 1, "test_g": 0}
+        pesos = {"test_a": 8, "test_b": 7, "test_c": 5, "test_d": 3, "test_e": 1, "test_f": 1, "test_g": 0}
         unidades = sorted(m + ".T" for m, k in pesos.items() if k)   # módulo sem teste não vira unidade
         for nome, n in pesos.items():
             self.modulo(nome, "import unittest\nclass T(unittest.TestCase):\n" +
@@ -130,8 +130,9 @@ class Executor(Sandbox):
                 self.assertEqual(len(juntas), len(set(juntas)))
                 de_novo = [self.executa("--lista", "--fatia", "%d/%d" % (i, n))[1].split() for i in range(1, n + 1)]
                 self.assertEqual(fatias, de_novo)
-        # 2 fatias: 9 na 1ª, 7 na 2ª, 5 na 2ª (7 < 9), 3 na 1ª, e no empate (12, 12) a 1ª ⇒ a, d, e | b, c, f
-        self.assertEqual(self.executa("--lista", "--fatia", "1/2")[1].split(), ["test_a.T", "test_d.T", "test_e.T"])
+        # 2 fatias (8 = o maior que não se divide): 8 na 1ª, 7 na 2ª, 5 na 2ª (7 < 8), 3 na 1ª (8 < 12), 1 na 1ª
+        # (11 < 12), e no empate (12, 12) a 1ª ⇒ a, d, e, f | b, c
+        self.assertEqual(self.executa("--lista", "--fatia", "1/2")[1].split(), ["test_a.T", "test_d.T", "test_e.T", "test_f.T"])
 
     def test_classes_viram_unidades_e_a_herdada_conta_uma_vez(self):
         self.modulo("test_base", "import unittest\nclass Base(unittest.TestCase):\n    def test_x(self): pass\n")
@@ -170,13 +171,24 @@ class Executor(Sandbox):
         self.modulo("test_grande", "import unittest\nclass G(unittest.TestCase):\n" +
                     "".join("    def test_%02d(self): pass\n" % i for i in range(30)))
         rc, out, err = self.executa("--lista")
-        self.assertEqual(out.split(), ["test_grande.G[1de3]", "test_grande.G[2de3]", "test_grande.G[3de3]"], err)
+        # 30 testes em partes de no máximo 8, de tamanho parecido: 8, 8, 8, 6
+        self.assertEqual(out.split(), ["test_grande.G[%dde4]" % i for i in range(1, 5)], err)
         saida = self.tmp / "saida"
         rc, out, err = self.executa("--so", "test_grande.G", "--saida", saida)
         self.assertEqual(rc, 0, out + err)
-        self.assertIn("fatia 1/1: 3 unidade(s), 30 teste(s);", out)
-        self.assertEqual(len(__import__("re").findall(r"G\[\dde3\]\s+OK\s+testes=10 ", out)), 3, out)
-        self.assertTrue((saida / "test_grande.G[2de3].log").is_file())
+        self.assertIn("fatia 1/1: 4 unidade(s), 30 teste(s);", out)
+        contagens = __import__("re").findall(r"G\[\dde4\]\s+OK\s+testes=(\d+) ", out)
+        self.assertEqual(sorted(map(int, contagens)), [6, 8, 8, 8], out)
+        self.assertTrue((saida / "test_grande.G[2de4].log").is_file())
+
+    def test_a_unidade_ve_o_ambiente_do_aluno_sem_pythonioencoding(self):
+        # raio de impacto: com UTF-8 posto pelo executor, o teste que chama um script que quebra no cp1252 do Git Bash
+        # sairia verde no Windows. A unidade não recebe a variável, nem a que viria de fora.
+        self.modulo("test_amb", "import os, unittest\nclass T(unittest.TestCase):\n"
+                                "    def test_sem(self): self.assertIsNone(os.environ.get('PYTHONIOENCODING'))\n")
+        rc, out, err = self.executa(env_extra={"PYTHONIOENCODING": "utf-8"})
+        self.assertEqual(rc, 0, out + err)
+        self.assertRegex(out, r"test_amb\.T\s+OK")
 
     def test_so_roda_os_escolhidos(self):
         self.modulo("test_um", VERDE)
@@ -190,7 +202,8 @@ class Executor(Sandbox):
         for args in (["--fatia", "0/3"], ["--fatia", "4/3"], ["--fatia", "x"], ["--teto-unidade", "abc"],
                      ["--teto-unidade", "0"], ["--teto-unidade", "nan"], ["--teto-unidade", "inf"],
                      ["--paralelo", "0"], ["--so", "test_nao_existe"], ["--nada"], ["--fatia"],
-                     ["--so", ","], ["--fatia", "3/3"]):   # seleção vazia: 1 unidade só, 3 fatias
+                     ["--so", ","], ["--fatia", "3/3"],   # seleção vazia: 1 unidade só, 3 fatias
+                     ["--fatia", "1/100000000000"]):   # avaliador, ciclo 2, B3: N absurdo não pode esgotar a memória
             with self.subTest(args=args):
                 rc, out, err = self.executa(*args)
                 self.assertEqual(rc, 64, out + err)

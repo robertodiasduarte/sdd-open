@@ -81,8 +81,9 @@ corta() {   # corta SINAL pid...: o grupo de cada pid, ou a árvore dele no Wind
 }
 # rc_do_vigia RC T0: no Windows o taskkill não devolve 143/137 ao wait; rc ≠ 0 depois do teto (10 s desde T0, pelo
 # SECONDS) é o corte do vigia e vira 137. Fora do Windows, ou rc 0, ou antes do teto: o rc como veio.
-# Limite conhecido: o SECONDS conta segundo inteiro, então uma falha natural entre 9 e 10 s pode virar 137; quem lê a
-# saída classifica pela mensagem primeiro (o rc só decide quando nenhum texto conhecido aparece).
+# Limite conhecido: o SECONDS conta segundo inteiro, então uma falha natural entre 9 e 10 s pode virar 137. No alcance
+# isso quase não pesa (a classificação lê a mensagem primeiro; o rc só decide quando nenhum texto conhecido aparece);
+# no gh_estado o 137 vem antes da mensagem: um "deslogado" lento sairia "sem resposta" (⚠️ nos dois).
 rc_do_vigia() {
   if no_windows && [ "$1" != 0 ] && [ $((SECONDS - $2)) -ge 10 ]; then echo 137; else echo "$1"; fi
 }

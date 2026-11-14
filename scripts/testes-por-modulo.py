@@ -59,7 +59,8 @@ def _folhas(suite):
             yield t
 
 
-GRUPO = 12   # testes por unidade, no máximo: uma classe maior se divide em partes (avaliador, ciclo 1)
+GRUPO = 8   # testes por unidade, no máximo: uma classe maior se divide em partes (avaliador, ciclos 1 e 2: com 12,
+#             test_claude_adapter.Projeto levou 154 s no Mac, ~600 s no Windows: o teto da unidade)
 
 
 def unidades(pasta: Path) -> list:
@@ -154,7 +155,11 @@ def matar_arvore(p: subprocess.Popen) -> None:
 def rodar(nome: str, alvos: list, pasta: Path, teto: float) -> dict:
     """Roda um módulo. A saída vai para um arquivo, não para um pipe: um neto vivo segurando o pipe prenderia
     a leitura além do teto (o mesmo defeito do vigia do checar.sh no Windows)."""
-    env = dict(os.environ, PYTHONUNBUFFERED="1", PYTHONIOENCODING="utf-8")
+    # A unidade vê o ambiente do aluno: sem PYTHONIOENCODING (nem o que viria de fora), como o Sandbox de
+    # tests/apoio.py. Pôr UTF-8 aqui faria verde, no Windows, o teste que chama um script que quebra no cp1252 do
+    # Git Bash (raio de impacto). A saída da unidade é lida em UTF-8 com errors="replace", sem depender disso.
+    env = {k: v for k, v in os.environ.items() if k != "PYTHONIOENCODING"}
+    env["PYTHONUNBUFFERED"] = "1"
     inicio = time.monotonic()
     with tempfile.TemporaryFile() as out:
         extra = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if NO_WINDOWS else {"start_new_session": True}
@@ -181,7 +186,8 @@ def rodar(nome: str, alvos: list, pasta: Path, teto: float) -> dict:
     elif c["final"] == "FAILED":
         c["estado"] = "FALHOU"
     else:
-        c["estado"] = "ERRO"   # não chegou ao resumo do unittest (import quebrado, processo morto)
+        c["estado"] = "ERRO"   # não chegou ao resumo do unittest (processo morto, sys.exit na importação); o import
+        #                        quebrado o unittest relata como FAILED (errors=1): sai FALHOU, com o _FailedTest
     return c
 
 
@@ -205,8 +211,8 @@ def main(argv: list) -> int:
             if a == "--fatia":
                 v = next(it)
                 m = re.fullmatch(r"(\d+)/(\d+)", v)
-                if not m or not 1 <= int(m.group(1)) <= int(m.group(2)):
-                    return uso("--fatia espera I/N com 1 ≤ I ≤ N, veio %r" % v)
+                if not m or not 1 <= int(m.group(1)) <= int(m.group(2)) <= 1000:   # avaliador, ciclo 2, B3
+                    return uso("--fatia espera I/N com 1 ≤ I ≤ N ≤ 1000, veio %r" % v)
                 fatia, n = int(m.group(1)), int(m.group(2))
             elif a == "--teto-unidade":
                 teto = float(next(it))

@@ -19,7 +19,9 @@ import sys
 
 
 def emitir(obj):
-    sys.stdout.write(json.dumps(obj, ensure_ascii=False) + "\n")
+    # F16W: ASCII (\uXXXX) e não UTF-8 cru: no Windows, o stdout do Python num pipe é cp1252 e o 🛑 derrubaria o
+    # hook; o JSON é o mesmo para quem o lê.
+    sys.stdout.write(json.dumps(obj, ensure_ascii=True) + "\n")
 
 
 def aviso(msg):

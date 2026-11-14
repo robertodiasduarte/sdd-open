@@ -174,6 +174,22 @@ class Projeto(Sandbox):
         rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json", FILE=alvo, CONTENT=RELATORIO_OK))
         self.assertEqual((rc, out), (0, ""))
 
+    def test_report_guard_fala_utf8_com_o_lint_mesmo_num_sistema_cp1252(self):
+        # F16W (raio de impacto): no Windows, o stdio do Python num pipe é cp1252. O guard manda o relatório em UTF-8 ao
+        # lint, e o lint o leria em cp1252 (acentos trocados, ⚠️ ilegível ⇒ 64 ⇒ a gravação passava); e o 🛑 do próprio
+        # guard derrubava o hook. Aqui o cp1252 é forçado no ambiente de quem chama o hook.
+        self.cli("init", "--yes", "--vendors", "claude")
+        ruim = (RAIZ / "sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md").read_text(encoding="utf-8")
+        alvo = str(self.p / "sdd/reports/BUILD_REPORT_X.md")
+        env = dict(self.env, CLAUDE_PROJECT_DIR=str(self.p), PYTHONIOENCODING="cp1252:strict")
+        rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json", FILE=alvo,
+                                                                       CONTENT=ruim + "\n⚠️ Á\n"), env=env)
+        self.assertEqual(rc, 0, err)
+        self.assertTrue(out.isascii(), out)   # o JSON do hook sai em ASCII
+        d = json.loads(out)
+        self.assertEqual(d["hookSpecificOutput"]["permissionDecision"], "deny", out)
+        self.assertIn("[avaliação ausente]", d["hookSpecificOutput"]["permissionDecisionReason"])
+
     def test_report_guard_simula_o_edit(self):
         self.cli("init", "--yes", "--vendors", "claude")
         alvo = self.escreve(self.p, "sdd/reports/BUILD_REPORT_X.md", RELATORIO_OK)
