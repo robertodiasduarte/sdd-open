@@ -1,0 +1,915 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources "" --system-prompt-file <sdd-define em /Users/robertoduarte/rdd-worktrees/sdd-starter-f17c-ref/skills/sdd-define + references> [--resume <sessão>] <volta do roteiro>   # execução c-2
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json · modo documento
+
+----- volta 1 — aluno -----
+Use o brainstorm abaixo e escreva o DEFINE. Estou no chat da web, sem o projeto aberto.
+
+# BRAINSTORM: EMPRESTIMO_NOTEBOOKS
+
+## Initial Idea
+O escritório tem 6 notebooks que os funcionários levam para casa ou para clientes. Hoje o controle é um caderno: ninguém sabe com quem está cada notebook nem quando volta.
+
+## Discovery Questions & Answers
+1. Quem usa? A gerente (registra a saída e a volta) e os 12 funcionários (só pedem).
+2. O que dói? Notebook que não volta no prazo e ninguém percebe; dois funcionários querendo o mesmo notebook no mesmo dia.
+3. Pronto quando? A gerente abre uma tela e vê, por notebook, com quem está e a data prevista de volta, e os atrasados aparecem em vermelho.
+
+## Selected Approach
+Uma planilha web simples (uma página com a lista dos 6 notebooks), sem login na primeira versão: só a gerente usa, no computador dela.
+
+## Features Removed (YAGNI)
+- reserva antecipada pelo funcionário;
+- aviso por e-mail;
+- controle de acessórios (carregador, mouse).
+
+## Suggested Requirements for /define
+- registrar saída (notebook, funcionário, data, data prevista de volta);
+- registrar volta;
+- listar com quem está cada notebook; atrasados destacados;
+- impedir registrar a saída de um notebook que já está emprestado.
+
+## Next Step
+Execute o **SDD Define by RDD**.
+----- volta 1 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+`sdd-define v1.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`
+
+**Status**: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ▶️ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar`
+
+Os nomes das etapas:
+- **Requisitos** são frases que dizem o que o sistema precisa fazer, de um jeito que dê para conferir depois.
+- **Testes de aceitação** são frases do tipo "quando acontece X, o sistema faz Y". Elas viram a prova de que cada requisito foi atendido.
+- **Verify Gate** é a conferência final, que diz "passou" ou "não passou".
+
+**O que foi feito**
+
+Li o brainstorm inteiro. Mantive tudo o que você já tinha decidido:
+- só a gerente usa a planilha, sem login;
+- ficam de fora a reserva antecipada, o aviso por e-mail e os acessórios.
+
+Escrevi 4 requisitos, todos **MUST** (obrigatórios nesta entrega):
+1. Registrar a saída: notebook, funcionário, data de saída e data prevista de volta.
+2. Registrar a volta.
+3. Mostrar, por notebook, com quem está e quando volta, com os atrasados em vermelho.
+4. Impedir a saída de um notebook que já está emprestado.
+
+Para cada requisito há um teste de aceitação. Exemplo: "**If** a gerente tenta registrar a saída de um notebook já emprestado, **then** o sistema **shall** recusar e mostrar com quem ele está." As palavras em inglês (When, If, shall) seguem uma convenção chamada EARS, um jeito padronizado de escrever essas frases.
+
+A nota de clareza (Clarity Score) está em **13/15**. É uma nota de 0 a 15 que mede se o documento está claro o bastante para seguir, e o mínimo é 12. Ela só não está mais alta porque falta definir o que conta como "atrasado".
+
+**Agora: etapa 4, Perguntas**
+
+O brainstorm diz que os atrasados aparecem em vermelho, mas não diz a partir de quando. Isso muda o que a gerente vê na tela e muda o teste. Por isso não posso decidir sozinho. Nada foi gravado ainda.
+
+**Sua decisão**: **A partir de quando um notebook conta como atrasado?**
+- **a partir do dia seguinte à data prevista** (recomendada): se a volta prevista é dia 10, no dia 10 o notebook ainda aparece normal e no dia 11 fica vermelho. O funcionário tem o dia inteiro para devolver.
+- **já no próprio dia previsto**: no dia 10 ele já aparece em vermelho, mesmo que seja devolvido à tarde. A gerente é alertada mais cedo, mas vê vermelho em notebooks que ainda estão no prazo.
+- **outro**: descreva com suas palavras.
+- **não sei**: eu mostro como a lista ficaria nos dias 10 e 11 em cada opção, para você escolher vendo.
+
+**Próximo passo**: com a sua resposta, eu fecho o teste dos atrasados e passo para a conferência final (Verify Gate).
+
+----- volta 2 — aluno -----
+Prazo: a data prevista de volta é a gerente que escolhe em cada saída. Se perguntar mais coisas, use as opções que você recomendou.
+----- volta 2 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status**: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ✅ 5 Verify Gate · ✅ 6 Gravar`
+
+**O que foi feito**
+
+Registrei que a data prevista de volta é escolhida pela gerente em cada saída. Como você pediu, usei as opções que eu recomendava nas outras dúvidas. Estas foram as decisões tomadas assim, e você pode trocar qualquer uma:
+
+1. **Atraso:** o notebook fica vermelho a partir do dia seguinte à data prevista.
+2. **Data prevista anterior à data de saída:** o sistema recusa.
+3. **Campo vazio** (funcionário ou datas): o sistema recusa e diz qual campo falta.
+4. **Fechar e abrir a página:** os empréstimos continuam lá. Sem isso, a planilha voltaria a ser pior que o caderno.
+5. **Conferência final (Verify Gate):** é manual. Você está sem o projeto aberto e o projeto ainda não existe, então não há um comando que rode e diga "passou". A conferência vira uma lista de frases "Eu abri … e vi …", que a gerente ou você confere à mão.
+
+A nota de clareza ficou em **14/15** (o mínimo é 12). Conferi a estrutura do documento à mão, porque aqui no chat não dá para rodar o verificador automático.
+
+**Agora: etapa 6, Gravar**
+
+Abaixo está o documento completo. Salve como `DEFINE_EMPRESTIMO_NOTEBOOKS.md` numa pasta `sdd/` do projeto, ao lado do brainstorm.
+
+```markdown
+# DEFINE: Empréstimo de notebooks
+
+> Uma página web, usada só pela gerente, que mostra com quem está cada um dos 6 notebooks do escritório e destaca em vermelho os que passaram da data de volta.
+
+## Metadata
+
+| Attribute | Value |
+|---|---|
+| **Feature** | EMPRESTIMO_NOTEBOOKS |
+| **Date** | 2026-11-13 |
+| **Author** | Roberto Dias Duarte |
+| **Status** | Ready for Design |
+| **Clarity Score** | 14/15 |
+
+---
+
+## Problem Statement
+
+O escritório controla os 6 notebooks emprestados aos funcionários num caderno, e ninguém sabe com quem está cada notebook nem quando volta. Por isso, notebook atrasado passa despercebido e dois funcionários acabam querendo o mesmo notebook no mesmo dia.
+
+---
+
+## Target Users
+
+| User | Role | Pain Point |
+|---|---|---|
+| Gerente | Registra a saída e a volta de cada notebook; única usuária da página | Não percebe quando um notebook passa do prazo; não sabe na hora se um notebook está livre |
+| Funcionários (12) | Pedem o notebook à gerente; não usam a página | Disputam o mesmo notebook no mesmo dia sem saber quem está com ele |
+
+---
+
+## Goals
+
+| Priority | Goal |
+|---|---|
+| **MUST** | Registrar a saída de um notebook com funcionário, data de saída e data prevista de volta escolhida pela gerente |
+| **MUST** | Registrar a volta de um notebook emprestado |
+| **MUST** | Listar os 6 notebooks mostrando com quem está cada um e a data prevista de volta, com os atrasados em vermelho |
+| **MUST** | Impedir o registro de saída de um notebook que já está emprestado |
+
+---
+
+## Success Criteria
+
+- [ ] Os 6 notebooks aparecem na lista, cada um como "disponível" ou com o nome do funcionário e a data prevista de volta.
+- [ ] 100% dos notebooks emprestados com data prevista anterior a hoje aparecem em vermelho, e 0 notebooks dentro do prazo aparecem em vermelho.
+- [ ] 0 tentativas de saída de notebook já emprestado são aceitas.
+- [ ] Depois de fechar e reabrir a página, 100% dos empréstimos registrados continuam aparecendo.
+
+---
+
+## Acceptance Tests
+
+| ID | Pattern | Criterion (EARS) | Gate (`kind`) |
+|---|---|---|---|
+| AT-001 | Event-driven | **When** a gerente registra a saída de um notebook disponível informando funcionário, data de saída e data prevista de volta, o sistema **shall** mostrar na linha desse notebook o nome do funcionário e a data prevista de volta | manual-ux |
+| AT-002 | Event-driven | **When** a gerente registra a volta de um notebook emprestado, o sistema **shall** mostrar esse notebook como "disponível", sem funcionário e sem data prevista | manual-ux |
+| AT-003 | Unwanted | **If** a gerente tenta registrar a saída de um notebook que já está emprestado, **then** o sistema **shall** recusar o registro, mostrar com quem o notebook está e até quando, e manter o empréstimo atual sem alteração | manual-ux |
+| AT-004 | State-driven | **While** um notebook está emprestado e a data de hoje é posterior à data prevista de volta, o sistema **shall** mostrar a linha desse notebook em vermelho | manual-ux |
+| AT-005 | State-driven | **While** um notebook está emprestado e a data de hoje é igual ou anterior à data prevista de volta, o sistema **shall** mostrar a linha desse notebook sem destaque vermelho | manual-ux |
+| AT-006 | Unwanted | **If** a data prevista de volta informada é anterior à data de saída, **then** o sistema **shall** recusar o registro e mostrar que a data de volta não pode ser antes da saída | manual-ux |
+| AT-007 | Unwanted | **If** a gerente tenta registrar uma saída sem funcionário, sem data de saída ou sem data prevista de volta, **then** o sistema **shall** recusar o registro e indicar qual campo falta | manual-ux |
+| AT-008 | Event-driven | **When** a gerente fecha e reabre a página, o sistema **shall** mostrar os mesmos empréstimos que estavam registrados antes de fechar | manual-ux |
+
+---
+
+## Clarifications
+
+### Session 2026-11-13
+
+- [x] (Terminology) Quem define a data prevista de volta? → A gerente escolhe em cada saída; integrated into Goals and AT-001
+- [x] (Edge cases) A partir de quando um notebook conta como atrasado? → A partir do dia seguinte à data prevista; no próprio dia ainda está no prazo (opção recomendada, por delegação do usuário); integrated into AT-004, AT-005 and Success Criteria
+- [x] (Edge cases) Data prevista de volta anterior à data de saída? → Recusar (opção recomendada, por delegação do usuário); integrated into AT-006
+- [x] (Edge cases) Saída com campo vazio? → Recusar e indicar o campo (opção recomendada, por delegação do usuário); integrated into AT-007
+- [x] (Data model) Os registros devem continuar depois de fechar a página? → Sim (opção recomendada, por delegação do usuário); integrated into AT-008 and Success Criteria
+- [x] (Done signal) Existe um comando que devolve 0 quando funciona? → Não; o projeto ainda não existe (opção recomendada, por delegação do usuário); integrated into Verify Gate
+
+---
+
+## Verify Gate
+
+```text
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist signed"
+  threshold: "—"
+  manual_fallback: "Eu abri a página e vi os 6 notebooks listados como disponíveis. Eu registrei a saída de um notebook para um funcionário com data prevista de volta igual a hoje e vi a linha com o nome dele e a data, sem vermelho. Eu tentei registrar a saída desse mesmo notebook para outro funcionário e vi o registro recusado com o nome de quem está com ele. Eu registrei a saída de outro notebook com data de saída 3 dias atrás e data prevista ontem e vi a linha em vermelho. Eu fechei e reabri a página, registrei a volta do primeiro notebook e vi os empréstimos mantidos e o primeiro notebook como disponível."
+```
+
+---
+
+## Out of Scope
+
+- Reserva antecipada pelo funcionário (YAGNI no Brainstorm).
+- Aviso por e-mail (YAGNI no Brainstorm).
+- Controle de acessórios, como carregador e mouse (YAGNI no Brainstorm).
+- Login e uso por mais de uma pessoa; os funcionários não acessam a página.
+- Cadastro, inclusão ou remoção de notebooks pela página.
+
+---
+
+## Constraints
+
+| Type | Constraint | Impact |
+|---|---|---|
+| Technical | Página web simples, sem login, usada no computador da gerente | Sem controle de acesso nesta versão |
+| Timeline | N/A | — |
+| Resource | Uma única usuária (a gerente) | Sem necessidade de uso simultâneo |
+| Other | Os funcionários só pedem o notebook à gerente | Nenhuma tela para funcionários |
+
+---
+
+## Technical Context
+
+| Aspect | Value | Notes |
+|---|---|---|
+| **Deployment Location** | Página web aberta no computador da gerente | Definido no Brainstorm |
+| **KB Domains** | N/A | Controle de empréstimo simples |
+| **IaC Impact** | None | Sem servidor ou recurso de nuvem previsto no Brainstorm |
+| **LLM Prompts** | false | Nenhum uso de IA; só registro e comparação de datas |
+
+---
+
+## Assumptions
+
+| ID | Assumption | If Wrong, Impact | Validated? |
+|---|---|---|---|
+| A-001 | Os 6 notebooks são fixos e já aparecem na lista, cada um com um nome ou etiqueta | Seria preciso incluir cadastro de notebooks no escopo | no |
+| A-002 | A gerente pode registrar uma saída com data anterior a hoje (por exemplo, ao passar o caderno para a página) | AT-004 e o Verify Gate precisariam de outro jeito de criar um atraso | no |
+
+---
+
+## Clarity Score Breakdown
+
+| Element | Score (0-3) | Notes |
+|---|---:|---|
+| Problem | 3 | Dor concreta: atraso despercebido e disputa pelo mesmo notebook |
+| Users | 3 | Gerente usa; funcionários só pedem |
+| Goals | 3 | Quatro objetivos obrigatórios vindos direto do Brainstorm |
+| Success | 2 | Critérios observáveis, conferidos à mão e não por comando |
+| Scope | 3 | YAGNI e exclusões explícitas |
+| **Total** | **14/15** | |
+
+Minimum to proceed: **12/15**.
+
+---
+
+## Open Questions
+
+- (Não bloqueante) O funcionário é escolhido numa lista dos 12 ou digitado à mão? O Design decide.
+- (Não bloqueante) Guardar o histórico das saídas antigas ou só o estado atual? Nesta versão, só o estado atual é exigido.
+
+---
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---|---|---|---|
+| 1.0 | 2026-11-13 | SDD Define by RDD | Initial version |
+
+---
+
+## Next Step
+
+Execute o **SDD Design by RDD**.
+```
+
+A página guarda o nome dos funcionários, e nome é dado pessoal. Se quiser, antes do Design rode a skill `sdd-governanca`. Ela sugere cuidados que faltam e você decide cada um. Para uma lista interna de empréstimos, pular também é razoável.
+
+**Sua decisão**: **Fica assim ou quer trocar alguma das 5 decisões que eu tomei por você?**
+- **fica assim** (recomendada): você salva o arquivo e segue para o Design.
+- **trocar**: diga o número da decisão (1 a 5) e a nova escolha. Eu ajusto os testes e a nota e devolvo o documento.
+- **não sei**: diga qual decisão gerou dúvida e eu mostro como a tela fica em cada opção.
+
+**Próximo passo**: salvar `sdd/DEFINE_EMPRESTIMO_NOTEBOOKS.md` e executar o **SDD Design by RDD**.
+
+----- volta 3 — aluno -----
+Não sei; use a que você recomendou.
+----- volta 3 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status**: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ✅ 5 Verify Gate · ✅ 6 Gravar`
+
+**O que foi feito**: Ficou como está, com as 5 decisões recomendadas. O documento está pronto, com status "Ready for Design" e nota de clareza 14/15. Não mudei nada no texto da resposta anterior.
+
+**Agora: salvar o arquivo**
+
+Aqui no chat eu não consigo gravar no seu computador, então o último passo é seu:
+
+1. Na resposta anterior, copie o bloco do documento inteiro, de `# DEFINE: Empréstimo de notebooks` até `Execute o **SDD Design by RDD**.`. Em muitos chats há um botão de copiar no canto do bloco.
+2. Abra um editor de texto simples (Bloco de Notas, TextEdit em modo texto ou VS Code) e cole. Você deve ver o documento começando por `# DEFINE`.
+3. Salve com o nome `DEFINE_EMPRESTIMO_NOTEBOOKS.md` numa pasta chamada `sdd`, junto do arquivo do brainstorm. Na pasta, o arquivo deve aparecer com esse nome exato, terminando em `.md`, e não `.txt`.
+
+Se algo der errado nesses passos, me diga o que apareceu na tela e eu ajudo.
+
+**Próximo passo**: com o arquivo salvo, execute o **SDD Design by RDD**.
+
+----- volta 4 — aluno -----
+Não, não tenho nenhum comando de teste: o projeto nem existe ainda. Vou conferir abrindo a página.
+----- volta 4 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status**: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ✅ 5 Verify Gate · ✅ 6 Gravar`
+
+**O que foi feito**: Sua resposta confirma o que já está no documento, então não precisei mudar nada. A conferência final é manual (`manual-ux`): sem comando de teste, quem confere é você, abrindo a página. Antes era uma escolha minha por delegação; agora é decisão sua. O documento continua "Ready for Design", com nota 14/15.
+
+**Como vai ser a sua conferência**
+
+Quando a página existir, você abre e faz estas 5 checagens. Elas já estão no documento, no campo `manual_fallback` do Verify Gate:
+
+1. Abrir a página e ver os 6 notebooks como disponíveis.
+2. Registrar uma saída com volta prevista para hoje e ver o nome do funcionário e a data, **sem** vermelho.
+3. Tentar emprestar o mesmo notebook para outra pessoa e ver o sistema recusar, mostrando com quem ele está.
+4. Registrar outra saída com volta prevista para ontem e ver a linha em **vermelho**.
+5. Fechar e reabrir a página, registrar a volta do primeiro notebook e ver que os empréstimos continuam lá e o primeiro aparece como disponível.
+
+Se as 5 derem certo, passou. Se alguma falhar, ainda não está pronto.
+
+Se você só quiser registrar no documento que a escolha foi sua, troque a linha de "Done signal" em Clarifications por esta:
+
+`- [x] (Done signal) Existe um comando que devolve 0 quando funciona? → Não; o projeto ainda não existe e o usuário vai conferir abrindo a página; integrated into Verify Gate`
+
+**Próximo passo**: salvar `sdd/DEFINE_EMPRESTIMO_NOTEBOOKS.md` e executar o **SDD Design by RDD**.
+
+----- volta 5 — aluno -----
+Use a recomendada.
+----- volta 5 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status**: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ✅ 5 Verify Gate · ✅ 6 Gravar`
+
+**O que foi feito**: Na última resposta não havia opções para escolher. Por isso entendi a recomendada como deixar registrado no documento que a conferência manual é decisão sua. Com isso, o Verify Gate (a conferência final) fica registrado como escolha sua, e não minha. Também marquei a alteração no histórico de versões. O resto do documento não muda.
+
+**Agora: trocar dois trechos no arquivo**
+
+No arquivo `DEFINE_EMPRESTIMO_NOTEBOOKS.md`:
+
+1. **Em `## Clarifications`**, troque a última linha, a que começa com `- [x] (Done signal)`, por esta:
+
+```markdown
+- [x] (Done signal) Existe um comando que devolve 0 quando funciona? → Não; o projeto ainda não existe e o usuário vai conferir abrindo a página; integrated into Verify Gate
+```
+
+2. **Em `## Revision History`**, acrescente esta linha logo abaixo da linha da versão 1.0:
+
+```markdown
+| 1.1 | 2026-11-13 | SDD Define by RDD | Done signal confirmado pelo usuário: conferência manual abrindo a página |
+```
+
+Na tabela do histórico devem aparecer duas linhas, 1.0 e 1.1. Se ainda não salvou o arquivo, pode colar o documento da resposta anterior e fazer essas duas trocas antes de salvar.
+
+**Próximo passo**: com o arquivo salvo, execute o **SDD Design by RDD**.
+
+----- volta 6 — aluno -----
+Use a recomendada.
+----- volta 6 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status**: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ✅ 5 Verify Gate · ✅ 6 Gravar`
+
+**O que foi feito**: Não havia mais nenhuma decisão pendente. Para você não precisar editar nada à mão, juntei as duas trocas no documento inteiro, na versão 1.1. É só copiar e salvar.
+
+**Agora: salvar a versão final**
+
+1. Copie o bloco abaixo inteiro, de `# DEFINE` até `Execute o **SDD Design by RDD**.`.
+2. Cole num editor de texto simples e salve como `DEFINE_EMPRESTIMO_NOTEBOOKS.md` na pasta `sdd`. Se já tinha salvo a versão anterior, substitua.
+3. Para conferir se salvou a versão certa, procure no fim do arquivo duas linhas no histórico, 1.0 e 1.1.
+
+```markdown
+# DEFINE: Empréstimo de notebooks
+
+> Uma página web, usada só pela gerente, que mostra com quem está cada um dos 6 notebooks do escritório e destaca em vermelho os que passaram da data de volta.
+
+## Metadata
+
+| Attribute | Value |
+|---|---|
+| **Feature** | EMPRESTIMO_NOTEBOOKS |
+| **Date** | 2026-11-13 |
+| **Author** | Roberto Dias Duarte |
+| **Status** | Ready for Design |
+| **Clarity Score** | 14/15 |
+
+---
+
+## Problem Statement
+
+O escritório controla os 6 notebooks emprestados aos funcionários num caderno, e ninguém sabe com quem está cada notebook nem quando volta. Por isso, notebook atrasado passa despercebido e dois funcionários acabam querendo o mesmo notebook no mesmo dia.
+
+---
+
+## Target Users
+
+| User | Role | Pain Point |
+|---|---|---|
+| Gerente | Registra a saída e a volta de cada notebook; única usuária da página | Não percebe quando um notebook passa do prazo; não sabe na hora se um notebook está livre |
+| Funcionários (12) | Pedem o notebook à gerente; não usam a página | Disputam o mesmo notebook no mesmo dia sem saber quem está com ele |
+
+---
+
+## Goals
+
+| Priority | Goal |
+|---|---|
+| **MUST** | Registrar a saída de um notebook com funcionário, data de saída e data prevista de volta escolhida pela gerente |
+| **MUST** | Registrar a volta de um notebook emprestado |
+| **MUST** | Listar os 6 notebooks mostrando com quem está cada um e a data prevista de volta, com os atrasados em vermelho |
+| **MUST** | Impedir o registro de saída de um notebook que já está emprestado |
+
+---
+
+## Success Criteria
+
+- [ ] Os 6 notebooks aparecem na lista, cada um como "disponível" ou com o nome do funcionário e a data prevista de volta.
+- [ ] 100% dos notebooks emprestados com data prevista anterior a hoje aparecem em vermelho, e 0 notebooks dentro do prazo aparecem em vermelho.
+- [ ] 0 tentativas de saída de notebook já emprestado são aceitas.
+- [ ] Depois de fechar e reabrir a página, 100% dos empréstimos registrados continuam aparecendo.
+
+---
+
+## Acceptance Tests
+
+| ID | Pattern | Criterion (EARS) | Gate (`kind`) |
+|---|---|---|---|
+| AT-001 | Event-driven | **When** a gerente registra a saída de um notebook disponível informando funcionário, data de saída e data prevista de volta, o sistema **shall** mostrar na linha desse notebook o nome do funcionário e a data prevista de volta | manual-ux |
+| AT-002 | Event-driven | **When** a gerente registra a volta de um notebook emprestado, o sistema **shall** mostrar esse notebook como "disponível", sem funcionário e sem data prevista | manual-ux |
+| AT-003 | Unwanted | **If** a gerente tenta registrar a saída de um notebook que já está emprestado, **then** o sistema **shall** recusar o registro, mostrar com quem o notebook está e até quando, e manter o empréstimo atual sem alteração | manual-ux |
+| AT-004 | State-driven | **While** um notebook está emprestado e a data de hoje é posterior à data prevista de volta, o sistema **shall** mostrar a linha desse notebook em vermelho | manual-ux |
+| AT-005 | State-driven | **While** um notebook está emprestado e a data de hoje é igual ou anterior à data prevista de volta, o sistema **shall** mostrar a linha desse notebook sem destaque vermelho | manual-ux |
+| AT-006 | Unwanted | **If** a data prevista de volta informada é anterior à data de saída, **then** o sistema **shall** recusar o registro e mostrar que a data de volta não pode ser antes da saída | manual-ux |
+| AT-007 | Unwanted | **If** a gerente tenta registrar uma saída sem funcionário, sem data de saída ou sem data prevista de volta, **then** o sistema **shall** recusar o registro e indicar qual campo falta | manual-ux |
+| AT-008 | Event-driven | **When** a gerente fecha e reabre a página, o sistema **shall** mostrar os mesmos empréstimos que estavam registrados antes de fechar | manual-ux |
+
+---
+
+## Clarifications
+
+### Session 2026-11-13
+
+- [x] (Terminology) Quem define a data prevista de volta? → A gerente escolhe em cada saída; integrated into Goals and AT-001
+- [x] (Edge cases) A partir de quando um notebook conta como atrasado? → A partir do dia seguinte à data prevista; no próprio dia ainda está no prazo (opção recomendada, por delegação do usuário); integrated into AT-004, AT-005 and Success Criteria
+- [x] (Edge cases) Data prevista de volta anterior à data de saída? → Recusar (opção recomendada, por delegação do usuário); integrated into AT-006
+- [x] (Edge cases) Saída com campo vazio? → Recusar e indicar o campo (opção recomendada, por delegação do usuário); integrated into AT-007
+- [x] (Data model) Os registros devem continuar depois de fechar a página? → Sim (opção recomendada, por delegação do usuário); integrated into AT-008 and Success Criteria
+- [x] (Done signal) Existe um comando que devolve 0 quando funciona? → Não; o projeto ainda não existe e o usuário vai conferir abrindo a página; integrated into Verify Gate
+
+---
+
+## Verify Gate
+
+```text
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist signed"
+  threshold: "—"
+  manual_fallback: "Eu abri a página e vi os 6 notebooks listados como disponíveis. Eu registrei a saída de um notebook para um funcionário com data prevista de volta igual a hoje e vi a linha com o nome dele e a data, sem vermelho. Eu tentei registrar a saída desse mesmo notebook para outro funcionário e vi o registro recusado com o nome de quem está com ele. Eu registrei a saída de outro notebook com data de saída 3 dias atrás e data prevista ontem e vi a linha em vermelho. Eu fechei e reabri a página, registrei a volta do primeiro notebook e vi os empréstimos mantidos e o primeiro notebook como disponível."
+```
+
+---
+
+## Out of Scope
+
+- Reserva antecipada pelo funcionário (YAGNI no Brainstorm).
+- Aviso por e-mail (YAGNI no Brainstorm).
+- Controle de acessórios, como carregador e mouse (YAGNI no Brainstorm).
+- Login e uso por mais de uma pessoa; os funcionários não acessam a página.
+- Cadastro, inclusão ou remoção de notebooks pela página.
+
+---
+
+## Constraints
+
+| Type | Constraint | Impact |
+|---|---|---|
+| Technical | Página web simples, sem login, usada no computador da gerente | Sem controle de acesso nesta versão |
+| Timeline | N/A | — |
+| Resource | Uma única usuária (a gerente) | Sem necessidade de uso simultâneo |
+| Other | Os funcionários só pedem o notebook à gerente | Nenhuma tela para funcionários |
+
+---
+
+## Technical Context
+
+| Aspect | Value | Notes |
+|---|---|---|
+| **Deployment Location** | Página web aberta no computador da gerente | Definido no Brainstorm |
+| **KB Domains** | N/A | Controle de empréstimo simples |
+| **IaC Impact** | None | Sem servidor ou recurso de nuvem previsto no Brainstorm |
+| **LLM Prompts** | false | Nenhum uso de IA; só registro e comparação de datas |
+
+---
+
+## Assumptions
+
+| ID | Assumption | If Wrong, Impact | Validated? |
+|---|---|---|---|
+| A-001 | Os 6 notebooks são fixos e já aparecem na lista, cada um com um nome ou etiqueta | Seria preciso incluir cadastro de notebooks no escopo | no |
+| A-002 | A gerente pode registrar uma saída com data anterior a hoje (por exemplo, ao passar o caderno para a página) | AT-004 e o Verify Gate precisariam de outro jeito de criar um atraso | no |
+
+---
+
+## Clarity Score Breakdown
+
+| Element | Score (0-3) | Notes |
+|---|---:|---|
+| Problem | 3 | Dor concreta: atraso despercebido e disputa pelo mesmo notebook |
+| Users | 3 | Gerente usa; funcionários só pedem |
+| Goals | 3 | Quatro objetivos obrigatórios vindos direto do Brainstorm |
+| Success | 2 | Critérios observáveis, conferidos à mão e não por comando |
+| Scope | 3 | YAGNI e exclusões explícitas |
+| **Total** | **14/15** | |
+
+Minimum to proceed: **12/15**.
+
+---
+
+## Open Questions
+
+- (Não bloqueante) O funcionário é escolhido numa lista dos 12 ou digitado à mão? O Design decide.
+- (Não bloqueante) Guardar o histórico das saídas antigas ou só o estado atual? Nesta versão, só o estado atual é exigido.
+
+---
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---|---|---|---|
+| 1.0 | 2026-11-13 | SDD Define by RDD | Initial version |
+| 1.1 | 2026-11-13 | SDD Define by RDD | Done signal confirmado pelo usuário: conferência manual abrindo a página |
+
+---
+
+## Next Step
+
+Execute o **SDD Design by RDD**.
+```
+
+Esta fase terminou e não há mais nada para você decidir aqui.
+
+**Próximo passo**: com o arquivo salvo, execute o **SDD Design by RDD**.
+
+----- volta 7 — aluno -----
+Confere, pode seguir.
+----- volta 7 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status**: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ✅ 5 Verify Gate · ✅ 6 Gravar`
+
+**O que foi feito**: Você conferiu e aprovou o documento. A fase Define está encerrada e o `DEFINE_EMPRESTIMO_NOTEBOOKS.md` (versão 1.1) está pronto para a próxima fase.
+
+**Por que eu paro aqui**
+
+O Design é a fase que decide como a página vai ser construída. Ele é feito por outra ferramenta, o **SDD Design by RDD**, e eu não consigo executá-lo daqui. O que eu fazia, transformar o brainstorm em requisitos verificáveis, está completo. Não comecei o Design nem escrevi nenhuma parte da página.
+
+**O que você faz agora**
+
+1. Confira se o arquivo `DEFINE_EMPRESTIMO_NOTEBOOKS.md` está salvo na pasta `sdd`, ao lado do brainstorm.
+2. Abra o **SDD Design by RDD** no mesmo lugar onde você usa estas ferramentas e comece uma conversa nova.
+3. Envie o arquivo `DEFINE_EMPRESTIMO_NOTEBOOKS.md`, ou cole o conteúdo dele. A ferramenta vai partir dele para propor como a página será construída.
+
+**Próximo passo**: execute o **SDD Design by RDD**.
+
+----- volta 8 — aluno -----
+Pode entregar o DEFINE completo agora.
+----- volta 8 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status**: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ✅ 5 Verify Gate · ✅ 6 Gravar`
+
+**O que foi feito**: Segue o DEFINE completo, versão 1.1, com tudo o que você aprovou. O conteúdo é o mesmo de antes, com uma correção de formato. Antes, o bloco do Verify Gate fechava a caixa do documento no meio, e a cópia saía cortada. Agora a caixa vai do começo ao fim.
+
+**Agora: copiar e salvar**
+
+1. Copie o bloco abaixo inteiro, de `# DEFINE` até `Execute o **SDD Design by RDD**.`.
+2. Salve como `DEFINE_EMPRESTIMO_NOTEBOOKS.md` na pasta `sdd` e substitua o arquivo anterior, se houver.
+3. Para conferir, veja se no arquivo salvo o bloco `verify_gate` aparece inteiro e se o histórico tem as linhas 1.0 e 1.1.
+
+````markdown
+# DEFINE: Empréstimo de notebooks
+
+> Uma página web, usada só pela gerente, que mostra com quem está cada um dos 6 notebooks do escritório e destaca em vermelho os que passaram da data de volta.
+
+## Metadata
+
+| Attribute | Value |
+|---|---|
+| **Feature** | EMPRESTIMO_NOTEBOOKS |
+| **Date** | 2026-11-13 |
+| **Author** | Roberto Dias Duarte |
+| **Status** | Ready for Design |
+| **Clarity Score** | 14/15 |
+
+---
+
+## Problem Statement
+
+O escritório controla os 6 notebooks emprestados aos funcionários num caderno, e ninguém sabe com quem está cada notebook nem quando volta. Por isso, notebook atrasado passa despercebido e dois funcionários acabam querendo o mesmo notebook no mesmo dia.
+
+---
+
+## Target Users
+
+| User | Role | Pain Point |
+|---|---|---|
+| Gerente | Registra a saída e a volta de cada notebook; única usuária da página | Não percebe quando um notebook passa do prazo; não sabe na hora se um notebook está livre |
+| Funcionários (12) | Pedem o notebook à gerente; não usam a página | Disputam o mesmo notebook no mesmo dia sem saber quem está com ele |
+
+---
+
+## Goals
+
+| Priority | Goal |
+|---|---|
+| **MUST** | Registrar a saída de um notebook com funcionário, data de saída e data prevista de volta escolhida pela gerente |
+| **MUST** | Registrar a volta de um notebook emprestado |
+| **MUST** | Listar os 6 notebooks mostrando com quem está cada um e a data prevista de volta, com os atrasados em vermelho |
+| **MUST** | Impedir o registro de saída de um notebook que já está emprestado |
+
+---
+
+## Success Criteria
+
+- [ ] Os 6 notebooks aparecem na lista, cada um como "disponível" ou com o nome do funcionário e a data prevista de volta.
+- [ ] 100% dos notebooks emprestados com data prevista anterior a hoje aparecem em vermelho, e 0 notebooks dentro do prazo aparecem em vermelho.
+- [ ] 0 tentativas de saída de notebook já emprestado são aceitas.
+- [ ] Depois de fechar e reabrir a página, 100% dos empréstimos registrados continuam aparecendo.
+
+---
+
+## Acceptance Tests
+
+| ID | Pattern | Criterion (EARS) | Gate (`kind`) |
+|---|---|---|---|
+| AT-001 | Event-driven | **When** a gerente registra a saída de um notebook disponível informando funcionário, data de saída e data prevista de volta, o sistema **shall** mostrar na linha desse notebook o nome do funcionário e a data prevista de volta | manual-ux |
+| AT-002 | Event-driven | **When** a gerente registra a volta de um notebook emprestado, o sistema **shall** mostrar esse notebook como "disponível", sem funcionário e sem data prevista | manual-ux |
+| AT-003 | Unwanted | **If** a gerente tenta registrar a saída de um notebook que já está emprestado, **then** o sistema **shall** recusar o registro, mostrar com quem o notebook está e até quando, e manter o empréstimo atual sem alteração | manual-ux |
+| AT-004 | State-driven | **While** um notebook está emprestado e a data de hoje é posterior à data prevista de volta, o sistema **shall** mostrar a linha desse notebook em vermelho | manual-ux |
+| AT-005 | State-driven | **While** um notebook está emprestado e a data de hoje é igual ou anterior à data prevista de volta, o sistema **shall** mostrar a linha desse notebook sem destaque vermelho | manual-ux |
+| AT-006 | Unwanted | **If** a data prevista de volta informada é anterior à data de saída, **then** o sistema **shall** recusar o registro e mostrar que a data de volta não pode ser antes da saída | manual-ux |
+| AT-007 | Unwanted | **If** a gerente tenta registrar uma saída sem funcionário, sem data de saída ou sem data prevista de volta, **then** o sistema **shall** recusar o registro e indicar qual campo falta | manual-ux |
+| AT-008 | Event-driven | **When** a gerente fecha e reabre a página, o sistema **shall** mostrar os mesmos empréstimos que estavam registrados antes de fechar | manual-ux |
+
+---
+
+## Clarifications
+
+### Session 2026-11-13
+
+- [x] (Terminology) Quem define a data prevista de volta? → A gerente escolhe em cada saída; integrated into Goals and AT-001
+- [x] (Edge cases) A partir de quando um notebook conta como atrasado? → A partir do dia seguinte à data prevista; no próprio dia ainda está no prazo (opção recomendada, por delegação do usuário); integrated into AT-004, AT-005 and Success Criteria
+- [x] (Edge cases) Data prevista de volta anterior à data de saída? → Recusar (opção recomendada, por delegação do usuário); integrated into AT-006
+- [x] (Edge cases) Saída com campo vazio? → Recusar e indicar o campo (opção recomendada, por delegação do usuário); integrated into AT-007
+- [x] (Data model) Os registros devem continuar depois de fechar a página? → Sim (opção recomendada, por delegação do usuário); integrated into AT-008 and Success Criteria
+- [x] (Done signal) Existe um comando que devolve 0 quando funciona? → Não; o projeto ainda não existe e o usuário vai conferir abrindo a página; integrated into Verify Gate
+
+---
+
+## Verify Gate
+
+```text
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist signed"
+  threshold: "—"
+  manual_fallback: "Eu abri a página e vi os 6 notebooks listados como disponíveis. Eu registrei a saída de um notebook para um funcionário com data prevista de volta igual a hoje e vi a linha com o nome dele e a data, sem vermelho. Eu tentei registrar a saída desse mesmo notebook para outro funcionário e vi o registro recusado com o nome de quem está com ele. Eu registrei a saída de outro notebook com data de saída 3 dias atrás e data prevista ontem e vi a linha em vermelho. Eu fechei e reabri a página, registrei a volta do primeiro notebook e vi os empréstimos mantidos e o primeiro notebook como disponível."
+```
+
+---
+
+## Out of Scope
+
+- Reserva antecipada pelo funcionário (YAGNI no Brainstorm).
+- Aviso por e-mail (YAGNI no Brainstorm).
+- Controle de acessórios, como carregador e mouse (YAGNI no Brainstorm).
+- Login e uso por mais de uma pessoa; os funcionários não acessam a página.
+- Cadastro, inclusão ou remoção de notebooks pela página.
+
+---
+
+## Constraints
+
+| Type | Constraint | Impact |
+|---|---|---|
+| Technical | Página web simples, sem login, usada no computador da gerente | Sem controle de acesso nesta versão |
+| Timeline | N/A | — |
+| Resource | Uma única usuária (a gerente) | Sem necessidade de uso simultâneo |
+| Other | Os funcionários só pedem o notebook à gerente | Nenhuma tela para funcionários |
+
+---
+
+## Technical Context
+
+| Aspect | Value | Notes |
+|---|---|---|
+| **Deployment Location** | Página web aberta no computador da gerente | Definido no Brainstorm |
+| **KB Domains** | N/A | Controle de empréstimo simples |
+| **IaC Impact** | None | Sem servidor ou recurso de nuvem previsto no Brainstorm |
+| **LLM Prompts** | false | Nenhum uso de IA; só registro e comparação de datas |
+
+---
+
+## Assumptions
+
+| ID | Assumption | If Wrong, Impact | Validated? |
+|---|---|---|---|
+| A-001 | Os 6 notebooks são fixos e já aparecem na lista, cada um com um nome ou etiqueta | Seria preciso incluir cadastro de notebooks no escopo | no |
+| A-002 | A gerente pode registrar uma saída com data anterior a hoje (por exemplo, ao passar o caderno para a página) | AT-004 e o Verify Gate precisariam de outro jeito de criar um atraso | no |
+
+---
+
+## Clarity Score Breakdown
+
+| Element | Score (0-3) | Notes |
+|---|---:|---|
+| Problem | 3 | Dor concreta: atraso despercebido e disputa pelo mesmo notebook |
+| Users | 3 | Gerente usa; funcionários só pedem |
+| Goals | 3 | Quatro objetivos obrigatórios vindos direto do Brainstorm |
+| Success | 2 | Critérios observáveis, conferidos à mão e não por comando |
+| Scope | 3 | YAGNI e exclusões explícitas |
+| **Total** | **14/15** | |
+
+Minimum to proceed: **12/15**.
+
+---
+
+## Open Questions
+
+- (Não bloqueante) O funcionário é escolhido numa lista dos 12 ou digitado à mão? O Design decide.
+- (Não bloqueante) Guardar o histórico das saídas antigas ou só o estado atual? Nesta versão, só o estado atual é exigido.
+
+---
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---|---|---|---|
+| 1.0 | 2026-11-13 | SDD Define by RDD | Initial version |
+| 1.1 | 2026-11-13 | SDD Define by RDD | Done signal confirmado pelo usuário: conferência manual abrindo a página |
+
+---
+
+## Next Step
+
+Execute o **SDD Design by RDD**.
+````
+
+**Próximo passo**: com o arquivo salvo, execute o **SDD Design by RDD**.
+
+----- volta 9 — aluno -----
+Por favor, entregue o documento final do DEFINE agora, completo.
+----- volta 9 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status**: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ✅ 3 Testes de aceitação · ✅ 4 Perguntas · ✅ 5 Verify Gate · ✅ 6 Gravar`
+
+**O que foi feito**: Abaixo está o documento final completo, versão 1.1. O conteúdo é o mesmo da resposta anterior. Salve como `sdd/DEFINE_EMPRESTIMO_NOTEBOOKS.md`. Se a cópia não estiver funcionando, por exemplo saindo cortada ou com símbolos estranhos, me diga o que aparece e eu entrego de outro jeito.
+
+````markdown
+# DEFINE: Empréstimo de notebooks
+
+> Uma página web, usada só pela gerente, que mostra com quem está cada um dos 6 notebooks do escritório e destaca em vermelho os que passaram da data de volta.
+
+## Metadata
+
+| Attribute | Value |
+|---|---|
+| **Feature** | EMPRESTIMO_NOTEBOOKS |
+| **Date** | 2026-11-13 |
+| **Author** | Roberto Dias Duarte |
+| **Status** | Ready for Design |
+| **Clarity Score** | 14/15 |
+
+---
+
+## Problem Statement
+
+O escritório controla os 6 notebooks emprestados aos funcionários num caderno, e ninguém sabe com quem está cada notebook nem quando volta. Por isso, notebook atrasado passa despercebido e dois funcionários acabam querendo o mesmo notebook no mesmo dia.
+
+---
+
+## Target Users
+
+| User | Role | Pain Point |
+|---|---|---|
+| Gerente | Registra a saída e a volta de cada notebook; única usuária da página | Não percebe quando um notebook passa do prazo; não sabe na hora se um notebook está livre |
+| Funcionários (12) | Pedem o notebook à gerente; não usam a página | Disputam o mesmo notebook no mesmo dia sem saber quem está com ele |
+
+---
+
+## Goals
+
+| Priority | Goal |
+|---|---|
+| **MUST** | Registrar a saída de um notebook com funcionário, data de saída e data prevista de volta escolhida pela gerente |
+| **MUST** | Registrar a volta de um notebook emprestado |
+| **MUST** | Listar os 6 notebooks mostrando com quem está cada um e a data prevista de volta, com os atrasados em vermelho |
+| **MUST** | Impedir o registro de saída de um notebook que já está emprestado |
+
+---
+
+## Success Criteria
+
+- [ ] Os 6 notebooks aparecem na lista, cada um como "disponível" ou com o nome do funcionário e a data prevista de volta.
+- [ ] 100% dos notebooks emprestados com data prevista anterior a hoje aparecem em vermelho, e 0 notebooks dentro do prazo aparecem em vermelho.
+- [ ] 0 tentativas de saída de notebook já emprestado são aceitas.
+- [ ] Depois de fechar e reabrir a página, 100% dos empréstimos registrados continuam aparecendo.
+
+---
+
+## Acceptance Tests
+
+| ID | Pattern | Criterion (EARS) | Gate (`kind`) |
+|---|---|---|---|
+| AT-001 | Event-driven | **When** a gerente registra a saída de um notebook disponível informando funcionário, data de saída e data prevista de volta, o sistema **shall** mostrar na linha desse notebook o nome do funcionário e a data prevista de volta | manual-ux |
+| AT-002 | Event-driven | **When** a gerente registra a volta de um notebook emprestado, o sistema **shall** mostrar esse notebook como "disponível", sem funcionário e sem data prevista | manual-ux |
+| AT-003 | Unwanted | **If** a gerente tenta registrar a saída de um notebook que já está emprestado, **then** o sistema **shall** recusar o registro, mostrar com quem o notebook está e até quando, e manter o empréstimo atual sem alteração | manual-ux |
+| AT-004 | State-driven | **While** um notebook está emprestado e a data de hoje é posterior à data prevista de volta, o sistema **shall** mostrar a linha desse notebook em vermelho | manual-ux |
+| AT-005 | State-driven | **While** um notebook está emprestado e a data de hoje é igual ou anterior à data prevista de volta, o sistema **shall** mostrar a linha desse notebook sem destaque vermelho | manual-ux |
+| AT-006 | Unwanted | **If** a data prevista de volta informada é anterior à data de saída, **then** o sistema **shall** recusar o registro e mostrar que a data de volta não pode ser antes da saída | manual-ux |
+| AT-007 | Unwanted | **If** a gerente tenta registrar uma saída sem funcionário, sem data de saída ou sem data prevista de volta, **then** o sistema **shall** recusar o registro e indicar qual campo falta | manual-ux |
+| AT-008 | Event-driven | **When** a gerente fecha e reabre a página, o sistema **shall** mostrar os mesmos empréstimos que estavam registrados antes de fechar | manual-ux |
+
+---
+
+## Clarifications
+
+### Session 2026-11-13
+
+- [x] (Terminology) Quem define a data prevista de volta? → A gerente escolhe em cada saída; integrated into Goals and AT-001
+- [x] (Edge cases) A partir de quando um notebook conta como atrasado? → A partir do dia seguinte à data prevista; no próprio dia ainda está no prazo (opção recomendada, por delegação do usuário); integrated into AT-004, AT-005 and Success Criteria
+- [x] (Edge cases) Data prevista de volta anterior à data de saída? → Recusar (opção recomendada, por delegação do usuário); integrated into AT-006
+- [x] (Edge cases) Saída com campo vazio? → Recusar e indicar o campo (opção recomendada, por delegação do usuário); integrated into AT-007
+- [x] (Data model) Os registros devem continuar depois de fechar a página? → Sim (opção recomendada, por delegação do usuário); integrated into AT-008 and Success Criteria
+- [x] (Done signal) Existe um comando que devolve 0 quando funciona? → Não; o projeto ainda não existe e o usuário vai conferir abrindo a página; integrated into Verify Gate
+
+---
+
+## Verify Gate
+
+```text
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist signed"
+  threshold: "—"
+  manual_fallback: "Eu abri a página e vi os 6 notebooks listados como disponíveis. Eu registrei a saída de um notebook para um funcionário com data prevista de volta igual a hoje e vi a linha com o nome dele e a data, sem vermelho. Eu tentei registrar a saída desse mesmo notebook para outro funcionário e vi o registro recusado com o nome de quem está com ele. Eu registrei a saída de outro notebook com data de saída 3 dias atrás e data prevista ontem e vi a linha em vermelho. Eu fechei e reabri a página, registrei a volta do primeiro notebook e vi os empréstimos mantidos e o primeiro notebook como disponível."
+```
+
+---
+
+## Out of Scope
+
+- Reserva antecipada pelo funcionário (YAGNI no Brainstorm).
+- Aviso por e-mail (YAGNI no Brainstorm).
+- Controle de acessórios, como carregador e mouse (YAGNI no Brainstorm).
+- Login e uso por mais de uma pessoa; os funcionários não acessam a página.
+- Cadastro, inclusão ou remoção de notebooks pela página.
+
+---
+
+## Constraints
+
+| Type | Constraint | Impact |
+|---|---|---|
+| Technical | Página web simples, sem login, usada no computador da gerente | Sem controle de acesso nesta versão |
+| Timeline | N/A | — |
+| Resource | Uma única usuária (a gerente) | Sem necessidade de uso simultâneo |
+| Other | Os funcionários só pedem o notebook à gerente | Nenhuma tela para funcionários |
+
+---
+
+## Technical Context
+
+| Aspect | Value | Notes |
+|---|---|---|
+| **Deployment Location** | Página web aberta no computador da gerente | Definido no Brainstorm |
+| **KB Domains** | N/A | Controle de empréstimo simples |
+| **IaC Impact** | None | Sem servidor ou recurso de nuvem previsto no Brainstorm |
+| **LLM Prompts** | false | Nenhum uso de IA; só registro e comparação de datas |
+
+---
+
+## Assumptions
+
+| ID | Assumption | If Wrong, Impact | Validated? |
+|---|---|---|---|
+| A-001 | Os 6 notebooks são fixos e já aparecem na lista, cada um com um nome ou etiqueta | Seria preciso incluir cadastro de notebooks no escopo | no |
+| A-002 | A gerente pode registrar uma saída com data anterior a hoje (por exemplo, ao passar o caderno para a página) | AT-004 e o Verify Gate precisariam de outro jeito de criar um atraso | no |
+
+---
+
+## Clarity Score Breakdown
+
+| Element | Score (0-3) | Notes |
+|---|---:|---|
+| Problem | 3 | Dor concreta: atraso despercebido e disputa pelo mesmo notebook |
+| Users | 3 | Gerente usa; funcionários só pedem |
+| Goals | 3 | Quatro objetivos obrigatórios vindos direto do Brainstorm |
+| Success | 2 | Critérios observáveis, conferidos à mão e não por comando |
+| Scope | 3 | YAGNI e exclusões explícitas |
+| **Total** | **14/15** | |
+
+Minimum to proceed: **12/15**.
+
+---
+
+## Open Questions
+
+- (Não bloqueante) O funcionário é escolhido numa lista dos 12 ou digitado à mão? O Design decide.
+- (Não bloqueante) Guardar o histórico das saídas antigas ou só o estado atual? Nesta versão, só o estado atual é exigido.
+
+---
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---|---|---|---|
+| 1.0 | 2026-11-13 | SDD Define by RDD | Initial version |
+| 1.1 | 2026-11-13 | SDD Define by RDD | Done signal confirmado pelo usuário: conferência manual abrindo a página |
+
+---
+
+## Next Step
+
+Execute o **SDD Design by RDD**.
+````
+
+**Próximo passo**: com o arquivo salvo, execute o **SDD Design by RDD**.
+
+===== veredito =====
+voltas: 9 · entregue: não
+❌ sem entrega até a última volta
+RESULTADO: REPROVOU
+rc=1

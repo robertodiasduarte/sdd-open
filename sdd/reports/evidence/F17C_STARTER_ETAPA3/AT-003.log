@@ -1,0 +1,9 @@
+$ cd <git archive 97503a7>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17c_gerador.ModoWeb.test_at003_modo_web_quebrado_sai_65_sem_gravar test_f17c_gerador.ModoWeb.test_at003_a_copia_crua_das_3_reprova_no_lint
+test_at003_modo_web_quebrado_sai_65_sem_gravar (test_f17c_gerador.ModoWeb.test_at003_modo_web_quebrado_sai_65_sem_gravar) ... ok
+test_at003_a_copia_crua_das_3_reprova_no_lint (test_f17c_gerador.ModoWeb.test_at003_a_copia_crua_das_3_reprova_no_lint) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 6.768s
+
+OK
+rc=0

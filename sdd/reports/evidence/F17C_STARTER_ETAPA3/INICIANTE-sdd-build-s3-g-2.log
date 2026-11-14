@@ -1,0 +1,142 @@
+$ OPENROUTER_API_KEY=<chave> python3 -I iniciante_or.py <sdd-build em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/gerado-head/sdd-build> INICIANTE-roteiro.json sdd-build s3-g-2 INICIANTE-sdd-build-s3-g-2.log   # modelo anthropic/claude-opus-5.5, sem pasta, sem ferramenta
+
+----- volta 1 — aluno -----
+Faça o build com estes três documentos. Estou no chat da web: não tenho o projeto aqui, só estes documentos.
+
+# BRAINSTORM: EMPRESTIMO_NOTEBOOKS
+
+## Initial Idea
+O escritório tem 6 notebooks que os funcionários levam para casa ou para clientes. Hoje o controle é um caderno: ninguém sabe com quem está cada notebook nem quando volta.
+
+## Discovery Questions & Answers
+1. Quem usa? A gerente (registra a saída e a volta) e os 12 funcionários (só pedem).
+2. O que dói? Notebook que não volta no prazo e ninguém percebe; dois funcionários querendo o mesmo notebook no mesmo dia.
+3. Pronto quando? A gerente abre uma tela e vê, por notebook, com quem está e a data prevista de volta, e os atrasados aparecem em vermelho.
+
+## Selected Approach
+Uma planilha web simples (uma página com a lista dos 6 notebooks), sem login na primeira versão: só a gerente usa, no computador dela.
+
+## Features Removed (YAGNI)
+- reserva antecipada pelo funcionário;
+- aviso por e-mail;
+- controle de acessórios (carregador, mouse).
+
+## Suggested Requirements for /define
+- registrar saída (notebook, funcionário, data, data prevista de volta);
+- registrar volta;
+- listar com quem está cada notebook; atrasados destacados;
+- impedir registrar a saída de um notebook que já está emprestado.
+
+## Next Step
+Execute o **SDD Define by RDD**.
+
+# DEFINE: EMPRESTIMO_NOTEBOOKS
+
+## Problem Statement
+O controle dos 6 notebooks do escritório é um caderno; notebook atrasado passa despercebido.
+
+## Target Users
+| User | Pain Point |
+|---|---|
+| Gerente | não sabe com quem está cada notebook |
+
+## Goals
+| Priority | Goal |
+|---|---|
+| MUST | registrar saída e volta |
+| MUST | listar com quem está cada notebook, atrasados em vermelho |
+| MUST | recusar a saída de notebook já emprestado |
+
+## Acceptance Tests
+| ID | Padrão | Critério | Gate |
+|---|---|---|---|
+| AT-001 | Event-driven | When a gerente registra a saída, the system shall mostrar o notebook como emprestado com o nome e a data prevista | manual-ux |
+| AT-002 | Unwanted | If a gerente tenta registrar a saída de um notebook emprestado, then the system shall recusar e dizer com quem está | manual-ux |
+| AT-003 | State-driven | While a data prevista já passou, the system shall mostrar o empréstimo em vermelho | manual-ux |
+
+## Verify Gate
+```yaml
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist assinado"
+  threshold: "—"
+  manual_fallback: "Eu abri a página, registrei a saída do notebook 1 para a Ana e vi o notebook 1 com o nome dela. Eu tentei registrar a saída do notebook 1 de novo e vi a recusa dizendo que está com a Ana. Eu mudei a data prevista para ontem e vi a linha em vermelho."
+```
+
+## Technical Context
+| Aspect | Value |
+|---|---|
+| LLM Prompts | false |
+
+## Out of Scope
+Reserva, e-mail, acessórios, login.
+
+## Next Step
+Execute o **SDD Design by RDD**.
+
+# DESIGN: EMPRESTIMO_NOTEBOOKS
+
+## Architecture Overview
+```text
+index.html → app.js → localStorage do navegador
+```
+
+## File Manifest
+| # | Arquivo | Ação | Propósito | Dependências |
+|---|---|---|---|---|
+| 1 | `index.html` | Create | a página com a lista e o formulário | — |
+| 2 | `app.js` | Create | registrar saída e volta, recusar duplicado, destacar atrasado | 1 |
+
+**Total Files:** 2
+
+## Next Step
+Execute o **SDD Build by RDD**.
+----- volta 1 — skill (anthropic/claude-opus-5.5, US$ 0.1527) -----
+`sdd-build v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`
+
+**Status:** `Build: ⏸️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+- **Build** é a fase em que o que foi desenhado é construído de verdade, arquivo por arquivo.
+- **Tarefas 0/2** conta as tarefas feitas. Cada tarefa é um arquivo da lista do design, criado e conferido.
+- **Verify Gate** é a conferência final combinada no DEFINE. Aqui é você abrindo a página e confirmando três coisas.
+- **Relatório** é o documento com a prova de cada conferência.
+
+**O que foi feito**
+Li o brainstorm, o DEFINE e o DESIGN, e os três batem entre si. O plano, que é a lista de tarefas na ordem em que uma depende da outra, tem 2 tarefas:
+1. criar `index.html`, a página com a lista e o formulário;
+2. criar `app.js`, que registra a saída e a volta, recusa empréstimo duplicado e pinta o atraso de vermelho.
+
+Não há banco de dados nem uso de IA dentro do sistema. Nenhum arquivo foi criado ainda.
+
+**Agora: etapa 1 — Plano (parada)**
+Parei porque o build precisa gravar arquivos numa pasta do seu computador e conferi-los. Neste chat da web eu não consigo salvar nada no seu computador nem abrir a página para testar.
+
+Este caso tem uma saída simples. São só 2 arquivos novos, não exigem instalar nada, e a conferência final já é feita por você de qualquer jeito. Então dá para você ser "as mãos" do build: eu escrevo os arquivos e você salva e confere. Até aqui, não criei nenhum arquivo e não marquei nenhuma tarefa como pronta.
+
+**Sua decisão:** **Como você quer seguir?**
+
+- **A — continuar aqui, com você salvando os arquivos** (recomendado):
+  1. Eu mostro o conteúdo do `index.html` e depois o do `app.js`, um de cada vez.
+  2. Você cria uma pasta, por exemplo `emprestimo-notebooks`, e salva cada um com esse nome exato.
+  3. Você abre o `index.html` com dois cliques e deve ver a lista dos 6 notebooks.
+  4. Você me conta o que apareceu.
+
+  No relatório fica registrado que os arquivos foram salvos e conferidos por você, não por mim.
+
+- **B — levar para um assistente que mexe em pastas**, como o Claude Code ou o Codex:
+  1. Abra o assistente na pasta onde o sistema vai ficar.
+  2. Cole os três documentos.
+  3. Peça o build de novo.
+
+  Ele cria e confere os arquivos sozinho. Quando terminar a configuração, me peça de novo e eu continuo daqui.
+
+- **não sei**: eu mostro como seria a tarefa 1 na opção A, para você decidir vendo.
+
+**Próximo passo:** com a sua escolha, passo para a etapa 2, que é escolher como as tarefas vão rodar.
+
+===== veredito =====
+voltas: 1 · entregue: sim · custo: US$ 0.1527
+✅ nenhum achado
+RESULTADO: PASSOU
+rc=0

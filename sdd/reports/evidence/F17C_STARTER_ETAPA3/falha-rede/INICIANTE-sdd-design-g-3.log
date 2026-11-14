@@ -1,0 +1,236 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources "" --system-prompt-file <sdd-design em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/gerado-1a40424/sdd-design + references> [--resume <sessão>] <volta do roteiro>   # execução g-3
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json · modo documento
+
+----- volta 1 — aluno -----
+Faça o DESIGN com estes dois documentos. Estou no chat da web, sem o projeto aberto.
+
+# BRAINSTORM: EMPRESTIMO_NOTEBOOKS
+
+## Initial Idea
+O escritório tem 6 notebooks que os funcionários levam para casa ou para clientes. Hoje o controle é um caderno: ninguém sabe com quem está cada notebook nem quando volta.
+
+## Discovery Questions & Answers
+1. Quem usa? A gerente (registra a saída e a volta) e os 12 funcionários (só pedem).
+2. O que dói? Notebook que não volta no prazo e ninguém percebe; dois funcionários querendo o mesmo notebook no mesmo dia.
+3. Pronto quando? A gerente abre uma tela e vê, por notebook, com quem está e a data prevista de volta, e os atrasados aparecem em vermelho.
+
+## Selected Approach
+Uma planilha web simples (uma página com a lista dos 6 notebooks), sem login na primeira versão: só a gerente usa, no computador dela.
+
+## Features Removed (YAGNI)
+- reserva antecipada pelo funcionário;
+- aviso por e-mail;
+- controle de acessórios (carregador, mouse).
+
+## Suggested Requirements for /define
+- registrar saída (notebook, funcionário, data, data prevista de volta);
+- registrar volta;
+- listar com quem está cada notebook; atrasados destacados;
+- impedir registrar a saída de um notebook que já está emprestado.
+
+## Next Step
+Execute o **SDD Define by RDD**.
+
+# DEFINE: EMPRESTIMO_NOTEBOOKS
+
+## Problem Statement
+O controle dos 6 notebooks do escritório é um caderno; notebook atrasado passa despercebido.
+
+## Target Users
+| User | Pain Point |
+|---|---|
+| Gerente | não sabe com quem está cada notebook |
+
+## Goals
+| Priority | Goal |
+|---|---|
+| MUST | registrar saída e volta |
+| MUST | listar com quem está cada notebook, atrasados em vermelho |
+| MUST | recusar a saída de notebook já emprestado |
+
+## Acceptance Tests
+| ID | Padrão | Critério | Gate |
+|---|---|---|---|
+| AT-001 | Event-driven | When a gerente registra a saída, the system shall mostrar o notebook como emprestado com o nome e a data prevista | manual-ux |
+| AT-002 | Unwanted | If a gerente tenta registrar a saída de um notebook emprestado, then the system shall recusar e dizer com quem está | manual-ux |
+| AT-003 | State-driven | While a data prevista já passou, the system shall mostrar o empréstimo em vermelho | manual-ux |
+
+## Verify Gate
+```yaml
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist assinado"
+  threshold: "—"
+  manual_fallback: "Eu abri a página, registrei a saída do notebook 1 para a Ana e vi o notebook 1 com o nome dela. Eu tentei registrar a saída do notebook 1 de novo e vi a recusa dizendo que está com a Ana. Eu mudei a data prevista para ontem e vi a linha em vermelho."
+```
+
+## Technical Context
+| Aspect | Value |
+|---|---|
+| LLM Prompts | false |
+
+## Out of Scope
+Reserva, e-mail, acessórios, login.
+
+## Next Step
+Execute o **SDD Design by RDD**.
+----- volta 1 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+sdd-design v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status:** `Design: ✅ 1 Ler · ▶️ 2 Decisões · ⬜ 3 Componentes e arquivos · ⬜ 4 Fluxo, testes e erros · ⬜ 5 Conferir · ⬜ 6 Gravar`
+
+Legenda do Status:
+- **Componentes** são as partes do sistema, cada uma com uma função só.
+- **Fluxo** é o caminho que a informação percorre, do que entra até o que sai.
+- **Conferir** é a releitura do documento para achar o que ficou incompleto.
+
+**O que foi feito**
+- Li o brainstorm e o DEFINE inteiros. Os dois estão coerentes: só a gerente usa a página, no computador dela, sem login, e ela controla 6 notebooks.
+- O sistema não vai usar inteligência artificial para gerar texto. O DEFINE diz isso, e não achei nada que contradiga.
+- Reserva, e-mail, acessórios e login ficam de fora, como o DEFINE combinou.
+- Como estamos no chat, não tenho acesso a nenhum projeto. Vou desenhar do zero, sem inventar arquivos que "já existiriam".
+- Nenhum arquivo foi gravado.
+
+**Agora: etapa 2 — Decisões**
+Antes de desenhar as partes do sistema, preciso fechar as escolhas que mudam o desenho. Cada escolha fica registrada com o motivo e com o que foi descartado, para ninguém refazer a discussão depois. A primeira escolha define todo o resto: com quais ferramentas a página é feita e onde os empréstimos ficam guardados.
+
+**Sua decisão**: **Como a página funciona e onde os empréstimos ficam guardados?**
+
+- **Um único arquivo de página, aberto no navegador da gerente** (recomendado). Ela dá dois cliques no arquivo e ele abre no Chrome ou no Edge. Os empréstimos ficam guardados dentro do próprio navegador.
+  - Vantagens: não precisa instalar nada nem ter internet, e é o mais simples de construir e testar.
+  - Cuidado: os dados ficam só naquele computador e naquele navegador. Se alguém apagar o histórico de navegação com a opção "dados de sites", os dados somem.
+- **Um pequeno programa instalado no computador dela, com um arquivo de dados próprio.** Ele usa Python, uma linguagem de programação que precisa ser instalada antes.
+  - Vantagem: os dados ficam num arquivo separado, fácil de copiar como backup.
+  - Cuidado: alguém precisa instalar o Python e abrir o programa antes de usar a página. Há mais coisa para construir.
+- **Uma planilha do Google com um botão de registrar.**
+  - Vantagem: dá para abrir de qualquer lugar.
+  - Cuidado: exige conta Google e internet. Isso esbarra no "sem login" combinado.
+- **Não sei.** Eu descrevo como fica o dia a dia da gerente em cada caso, e você escolhe depois.
+
+Responda com o nome da opção ou com "não sei".
+
+**Próximo passo:** com a sua escolha, faço mais uma ou duas perguntas curtas. Uma delas é como a gerente corrige a data prevista de volta, que o teste final usa ("mudei a data prevista para ontem"). Depois desenho os componentes e a lista de arquivos.
+
+----- volta 2 — aluno -----
+Ainda não tem código. Quero uma página HTML com JavaScript puro, sem servidor, que guarda no próprio navegador; abro o arquivo no Chrome do computador da gerente.
+----- volta 2 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Design: ✅ 1 Ler · ▶️ 2 Decisões · ⬜ 3 Componentes e arquivos · ⬜ 4 Fluxo, testes e erros · ⬜ 5 Conferir · ⬜ 6 Gravar`
+
+**O que foi feito**
+- Registrei a sua escolha: um único arquivo HTML (a página) com JavaScript puro (a linguagem que o navegador roda), sem servidor. Os dados ficam guardados dentro do próprio Chrome, no computador da gerente. Na técnica, esse armazenamento se chama *localStorage*.
+- O projeto começa do zero, e a lista de arquivos vai seguir essa escolha.
+- Nenhum arquivo foi gravado.
+
+**Agora: etapa 2 — Decisões**
+Falta uma escolha que muda o que a página faz. O teste final do DEFINE diz "eu mudei a data prevista para ontem e vi a linha em vermelho". Só que nenhum requisito diz como a gerente muda essa data depois que a saída já foi registrada. Preciso saber se isso vira uma função da página ou se é só um jeito de testar.
+
+**Sua decisão:** **Como a gerente corrige a data prevista de volta de um notebook emprestado?**
+- **Um botão "alterar data prevista" em cada linha emprestada** (recomendado). A gerente corrige a data quando o funcionário avisa que vai atrasar, e o teste final funciona exatamente como está escrito. Acrescenta um botão e uma verificação.
+- **Sem alteração.** Para corrigir, ela registra a volta e faz uma saída nova. A página fica menor, mas o teste final precisa ser reescrito para "registrei a saída com data prevista de ontem". O DEFINE teria de mudar.
+- **Não sei.** Eu mostro como fica o dia a dia da gerente em cada caso.
+
+Se você não disser nada contra, sigo também com estes três padrões:
+1. Os notebooks vêm já cadastrados com os nomes "Notebook 1" a "Notebook 6". Cadastrar notebook novo fica fora.
+2. O nome do funcionário é digitado livremente, e a página não aceita nome vazio.
+3. Ao registrar a volta, o notebook fica livre e o empréstimo não é guardado em nenhum histórico, porque o DEFINE não pede histórico.
+
+Responda com a opção do botão e, se quiser, com o número do padrão que deseja mudar.
+
+**Próximo passo:** com a sua resposta, desenho os componentes e a lista de arquivos (etapa 3).
+
+----- volta 3 — aluno -----
+Use a que você recomendou.
+----- volta 3 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Design: ✅ 1 Ler · ✅ 2 Decisões · ▶️ 3 Componentes e arquivos · ⬜ 4 Fluxo, testes e erros · ⬜ 5 Conferir · ⬜ 6 Gravar`
+
+**O que foi feito**
+- Fechei as decisões que faltavam:
+  - cada linha emprestada terá um botão **"alterar data prevista"**;
+  - os notebooks vêm cadastrados de "Notebook 1" a "Notebook 6";
+  - o nome do funcionário é digitado livremente e não pode ficar vazio;
+  - quando o notebook volta, o empréstimo é apagado e não fica histórico.
+- Nenhum arquivo foi gravado.
+
+**Agora: etapa 3 — Componentes e arquivos**
+Estas são as partes do sistema e a lista de arquivos que o Build vai criar, que no documento se chama *File Manifest*. As regras ficam separadas da tela. Assim dá para testar as regras sozinhas, sem clicar em nada.
+
+Componentes:
+
+| Parte | Função |
+|---|---|
+| **Regras de empréstimo** | Faz quatro coisas: emprestar, recusar se o notebook já está emprestado (dizendo com quem está), registrar a volta e alterar a data. Também decide se um empréstimo está atrasado. Atrasado é quando a data prevista é anterior a hoje; no próprio dia ainda não fica vermelho. |
+| **Guarda no navegador** | Lê e salva os empréstimos dentro do Chrome. Se os dados guardados estiverem estragados, avisa e começa vazio, em vez de travar a página. |
+| **Tela** | Mostra a tabela dos 6 notebooks com quem está cada um e a data prevista, e pinta de vermelho os atrasados. Também mostra o formulário de saída, os botões e as mensagens de recusa. |
+
+Arquivos, todos dentro de uma pasta `emprestimo-notebooks/`:
+
+| # | Arquivo | Para quê | Depende de |
+|---:|---|---|---|
+| 1 | `emprestimos.js` | As regras de empréstimo | — |
+| 2 | `armazenamento.js` | A guarda no navegador | — |
+| 3 | `tela.js` | A tela: desenha a tabela e reage aos cliques | 1, 2 |
+| 4 | `index.html` | A página que a gerente abre, com o estilo e o vermelho dos atrasados | 1, 2, 3 |
+| 5 | `testes.html` | Página de testes automáticos das regras. Abre no Chrome e mostra "passou" ou "falhou" em cada regra. | 1 |
+| 6 | `CHECKLIST_VERIFY.md` | O roteiro do teste final do DEFINE (Ana, recusa, linha vermelha), para você assinar | 4 |
+
+Um detalhe técnico que vai registrado no documento: os arquivos serão ligados do jeito clássico, sem "módulos". O Chrome bloqueia módulos quando a página é aberta direto do arquivo, com dois cliques. Do jeito clássico funciona sem servidor.
+
+**Sua decisão:** **Posso seguir com essas partes e esses 6 arquivos?**
+- **Sim, pode seguir** (recomendado): eu desenho o caminho da informação, os testes e o que acontece quando algo dá errado (etapa 4).
+- **Quero tudo num arquivo só**: fica mais fácil de copiar para outro computador. Em troca, as regras deixam de ter testes automáticos separados, e sobra só o teste manual.
+- **Quero mudar outra coisa**: diga o quê.
+- **Não sei**: eu explico com um exemplo como cada arquivo é usado.
+
+**Próximo passo:** com o seu "sim", sigo para a etapa 4 e depois monto o DESIGN completo.
+
+----- volta 4 — aluno -----
+Use a recomendada.
+----- volta 4 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Design: ✅ 1 Ler · ✅ 2 Decisões · ✅ 3 Componentes e arquivos · ▶️ 4 Fluxo, testes e erros · ⬜ 5 Conferir · ⬜ 6 Gravar`
+
+**O que foi feito**
+- Registrei a sua aprovação das três partes e dos 6 arquivos.
+- Nenhum arquivo foi gravado.
+
+**Agora: etapa 4 — Fluxo, testes e erros**
+Nesta etapa defino três coisas: o caminho que a informação percorre, como cada regra será testada e o que a página faz quando algo dá errado.
+
+**Caminho da informação**
+1. A gerente abre `index.html`. A página lê os empréstimos guardados no Chrome e desenha os 6 notebooks.
+2. Ela escolhe o notebook, digita o nome e informa duas datas: a da saída, que já vem preenchida com hoje, e a prevista de volta.
+3. A página relê o que está guardado. Assim, se houver duas abas abertas, a recusa continua valendo.
+4. As regras conferem se aquele notebook está livre.
+5. Se estiver livre, o empréstimo é salvo e a tabela é redesenhada com o nome e a data. Se não estiver, aparece a mensagem "O Notebook 1 está com a Ana".
+6. "Registrar volta" libera o notebook. "Alterar data prevista" troca a data, e a tabela é redesenhada: a linha fica vermelha se a nova data for anterior a hoje.
+
+**Testes**
+
+| Teste | Como | Passa quando |
+|---|---|---|
+| Regras (emprestar, recusar, devolver, alterar data, atrasado) | Abrir `testes.html` no Chrome | Todas as linhas aparecem como "passou" |
+| Teste final do DEFINE (Ana, recusa, vermelho) | Seguir o `CHECKLIST_VERIFY.md` com a página aberta | Você assina o checklist |
+
+**Quando algo dá errado**
+
+| Situação | O que a página faz |
+|---|---|
+| Nome vazio ou data faltando | Não salva e mostra o que falta |
+| Notebook já emprestado | Recusa e diz com quem está |
+| Data prevista no passado | **Aceita**, porque o teste final precisa dela ("mudei para ontem"). A linha simplesmente fica vermelha. |
+| Dados guardados estragados | Avisa e começa vazio, sem travar a página |
+| O Chrome não deixa salvar (bloqueado ou cheio) | Avisa que não salvou e não finge que deu certo |
+
+Um risco fica registrado no documento, sem solução nesta versão: se alguém limpar os "dados de sites" do Chrome, os empréstimos somem. Um botão de cópia de segurança seria uma função nova, que o DEFINE não pede.
+
+**Sua decisão:** **Posso seguir com esse fluxo, esses testes e esse tratamento de erros?**
+- **Sim, pode seguir** (recomendado): eu monto o DESIGN completo, confiro tudo contra a lista de qualidade e te entrego aqui no chat.
+- **Não quero aceitar data prevista no passado**: nesse caso, o teste final do DEFINE precisa ser reescrito antes. A recusa impediria o passo "mudei para ontem".
+- **Quero mudar outra coisa**: diga o quê.
+- **Não sei**: eu explico com um exemplo do dia a dia da gerente.
+
+**Próximo passo:** com o seu "sim", faço a conferência (etapa 5) e entrego o documento (etapa 6).
+volta 5: claude saiu 1: "depth_limit":0,"concurrency_limit":0,"budget":0},"by_type":{}},"safety_stops":0,"is_error":true,"num_turns":2,"subtype":"success","api_error_status":null,"api_error":"connection_failed","result":"API Error: Can't reach the API server — check your internet or DNS (ENOTFOUND)","type":"result","duration_ms":141423,"uuid":"c5a622c5-5413-4ecc-9039-45c8237a315b","queued_turn_count":0,"result_index":0}
+
+RESULTADO: FALHA DE EXECUÇÃO (claude falhou)
+rc=2

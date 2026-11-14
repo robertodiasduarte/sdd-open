@@ -1,0 +1,48 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/aval2-scripts/at008.sh
+$ python3 -B scripts/check-gerado.py
+✅ 18 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+$ bash scripts/publish-check.sh
+PASS: publish-check found no forbidden content.
+rc=0
+$ python3 -B scripts/check-versions.py --base v1.5.18
+PASS: check-versions — 18 skills com versão coerente, comparadas a v1.5.18.
+rc=0
+$ bash -c python3 -m py_compile skills/*/scripts/*.py scripts/*.py
+rc=0
+$ bash -c for f in scripts/package.sh scripts/publish-check.sh skills/*/scripts/*.sh; do bash -n "$f" || exit 1; done
+rc=0
+$ bash -c for t in skills/*/tests; do [ -d "$t" ] || continue; python3 -B -m unittest discover -s "$t" -p "test_*.py" || exit 1; done
+.................
+----------------------------------------------------------------------
+Ran 17 tests in 0.055s
+
+OK
+rc=0
+$ bash -c if [ -d tests ]; then python3 -B -m unittest discover -s tests -p "test_*.py"; fi
+..............................................................
+----------------------------------------------------------------------
+Ran 62 tests in 2.632s
+
+OK
+rc=0
+$ bash skills/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+rc=0
+$ bash scripts/package.sh
+packaged dist/sdd-new-session.zip
+packaged dist/sdd-prompt-builder.zip
+packaged dist/sdd-release.zip
+packaged dist/sdd-seguranca.zip
+packaged dist/ux-review-builder.zip
+PASS: 18 skill zips built in dist/
+rc=0
+falhas=0
+nove_rc=0
+byte trocado em skills/sdd-build/references/build-protocol.md pos 2606
+🛑 skills/sdd-build/references/build-protocol.md: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+check_gerado_mutado_rc=1
+rc=0

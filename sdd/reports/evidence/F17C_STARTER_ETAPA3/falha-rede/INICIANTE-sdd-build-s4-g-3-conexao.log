@@ -1,0 +1,178 @@
+$ OPENROUTER_API_KEY=<chave> python3 -I iniciante_or.py <sdd-build em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/gerado-head/sdd-build> INICIANTE-roteiro.json sdd-build s4-g-3 INICIANTE-sdd-build-s4-g-3.log   # modelo anthropic/claude-opus-5.5, sem pasta, sem ferramenta
+
+----- volta 1 — aluno -----
+Faça o build com estes três documentos. Estou no chat da web: não tenho o projeto aqui, só estes documentos.
+
+# BRAINSTORM: EMPRESTIMO_NOTEBOOKS
+
+## Initial Idea
+O escritório tem 6 notebooks que os funcionários levam para casa ou para clientes. Hoje o controle é um caderno: ninguém sabe com quem está cada notebook nem quando volta.
+
+## Discovery Questions & Answers
+1. Quem usa? A gerente (registra a saída e a volta) e os 12 funcionários (só pedem).
+2. O que dói? Notebook que não volta no prazo e ninguém percebe; dois funcionários querendo o mesmo notebook no mesmo dia.
+3. Pronto quando? A gerente abre uma tela e vê, por notebook, com quem está e a data prevista de volta, e os atrasados aparecem em vermelho.
+
+## Selected Approach
+Uma planilha web simples (uma página com a lista dos 6 notebooks), sem login na primeira versão: só a gerente usa, no computador dela.
+
+## Features Removed (YAGNI)
+- reserva antecipada pelo funcionário;
+- aviso por e-mail;
+- controle de acessórios (carregador, mouse).
+
+## Suggested Requirements for /define
+- registrar saída (notebook, funcionário, data, data prevista de volta);
+- registrar volta;
+- listar com quem está cada notebook; atrasados destacados;
+- impedir registrar a saída de um notebook que já está emprestado.
+
+## Next Step
+Execute o **SDD Define by RDD**.
+
+# DEFINE: EMPRESTIMO_NOTEBOOKS
+
+## Problem Statement
+O controle dos 6 notebooks do escritório é um caderno; notebook atrasado passa despercebido.
+
+## Target Users
+| User | Pain Point |
+|---|---|
+| Gerente | não sabe com quem está cada notebook |
+
+## Goals
+| Priority | Goal |
+|---|---|
+| MUST | registrar saída e volta |
+| MUST | listar com quem está cada notebook, atrasados em vermelho |
+| MUST | recusar a saída de notebook já emprestado |
+
+## Acceptance Tests
+| ID | Padrão | Critério | Gate |
+|---|---|---|---|
+| AT-001 | Event-driven | When a gerente registra a saída, the system shall mostrar o notebook como emprestado com o nome e a data prevista | manual-ux |
+| AT-002 | Unwanted | If a gerente tenta registrar a saída de um notebook emprestado, then the system shall recusar e dizer com quem está | manual-ux |
+| AT-003 | State-driven | While a data prevista já passou, the system shall mostrar o empréstimo em vermelho | manual-ux |
+
+## Verify Gate
+```yaml
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist assinado"
+  threshold: "—"
+  manual_fallback: "Eu abri a página, registrei a saída do notebook 1 para a Ana e vi o notebook 1 com o nome dela. Eu tentei registrar a saída do notebook 1 de novo e vi a recusa dizendo que está com a Ana. Eu mudei a data prevista para ontem e vi a linha em vermelho."
+```
+
+## Technical Context
+| Aspect | Value |
+|---|---|
+| LLM Prompts | false |
+
+## Out of Scope
+Reserva, e-mail, acessórios, login.
+
+## Next Step
+Execute o **SDD Design by RDD**.
+
+# DESIGN: EMPRESTIMO_NOTEBOOKS
+
+## Architecture Overview
+```text
+index.html → app.js → localStorage do navegador
+```
+
+## File Manifest
+| # | Arquivo | Ação | Propósito | Dependências |
+|---|---|---|---|---|
+| 1 | `index.html` | Create | a página com a lista e o formulário | — |
+| 2 | `app.js` | Create | registrar saída e volta, recusar duplicado, destacar atrasado | 1 |
+
+**Total Files:** 2
+
+## Next Step
+Execute o **SDD Build by RDD**.
+----- volta 1 — skill (anthropic/claude-opus-5.5, US$ 0.1508) -----
+sdd-build v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status:** `Build: ⏸️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+O que aparece no Status:
+- **Build** é a fase em que o que foi desenhado é construído de verdade, arquivo por arquivo.
+- **Plano** é a lista de tarefas, na ordem em que uma depende da outra.
+- **Tarefas 0/2** conta os arquivos já criados e conferidos.
+- **Verify Gate** é a conferência final combinada no DEFINE.
+- **Relatório** é o documento desta fase, com a prova de cada conferência.
+
+**O que foi feito**
+Li os três documentos inteiros, e eles batem entre si:
+- O DEFINE diz que não há uso de IA no sistema.
+- O DESIGN não traz nada desse tipo.
+- A lista de arquivos do DESIGN tem 2 itens: `index.html` (a página) e depois `app.js` (a lógica, guardada no próprio navegador).
+- Não há banco de dados para mexer.
+- O que foi cortado no brainstorm (reserva, e-mail, acessórios, login) continua fora.
+
+Nenhum arquivo foi criado.
+
+**Agora: etapa 1 — Plano (parada)**
+Parei porque o build precisa de um lugar onde eu grave e confira os arquivos, e aqui no chat da web eu não tenho esse lugar. A ação acontece no seu computador:
+
+1. Crie uma pasta vazia, por exemplo `emprestimo-notebooks`. Você verá a pasta vazia no seu explorador de arquivos.
+2. Dentro dela, crie a pasta `sdd/features/` e salve os três documentos nela:
+   - `BRAINSTORM_EMPRESTIMO_NOTEBOOKS.md`
+   - `DEFINE_EMPRESTIMO_NOTEBOOKS.md`
+   - `DESIGN_EMPRESTIMO_NOTEBOOKS.md`
+
+   Você verá os três arquivos nessa pasta.
+3. Abra a pasta `emprestimo-notebooks` num agente que grava arquivos no computador, como Claude Code, Codex ou Cursor. O agente vai mostrar os arquivos da pasta.
+4. Peça a ele: "Faça o build com estes três documentos." Ele recomeça desta etapa e cria os 2 arquivos.
+
+**O que não foi feito:**
+- nenhum arquivo foi criado;
+- nenhuma conferência rodou;
+- nenhum relatório foi gerado.
+
+A conferência final deste projeto é feita por você em qualquer caminho: abrir a página, emprestar o notebook 1 para a Ana, tentar emprestar de novo e ver a linha em vermelho.
+
+**Sua decisão** — **Como você quer seguir?**
+1. **Abrir no agente** (recomendado): segue os passos acima. Os arquivos são criados e conferidos lá, com o relatório completo.
+2. **Eu escrevo o código aqui no chat e você salva.** Nesse caso, nenhuma tarefa conta como feita até você me contar que salvou e o que viu na tela. O relatório vai dizer que quem salvou e conferiu foi você.
+3. **Não sei**: eu explico a diferença entre as duas opções com mais calma.
+
+**Próximo passo:** Com a sua escolha, ou você abre no agente ou eu começo pelo `index.html`. Quando terminar os passos, me peça de novo — eu continuo daqui.
+
+----- volta 2 — aluno -----
+Não tenho o projeto aqui; só tenho este chat. O que eu faço?
+----- volta 2 — skill (anthropic/claude-opus-5.5, US$ 0.1434) -----
+**Status:** `Build: ⏸️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+**O que foi feito**
+Os três documentos já foram lidos e conferidos. Nenhum arquivo foi criado ainda.
+
+**Agora: etapa 1 — Plano (parada)**
+O projeto ainda não existe, e isso não é problema: são só 2 arquivos novos, criados do zero. Você não precisa ter nada pronto. Precisa só de três coisas:
+- um **computador**, não o celular;
+- um editor de texto simples, como o Bloco de Notas no Windows ou o TextEdit no Mac;
+- um navegador, como o Chrome.
+
+O sistema guarda os dados no próprio navegador. Não há servidor, instalação ou internet envolvidos.
+
+Você tem dois caminhos:
+- **Pelo chat, que funciona com o que você já tem:** eu escrevo um arquivo por vez aqui na conversa. Você copia, salva com o nome que eu indicar e me conta o que viu. No fim, você abre a página no navegador e faz a conferência combinada:
+  1. empresta o notebook 1 para a Ana;
+  2. tenta emprestar de novo e vê a recusa;
+  3. muda a data prevista para ontem e vê a linha em vermelho.
+- **Por um agente (Claude Code, Codex, Cursor):** ele grava e confere os arquivos sozinho. Mas você teria de instalar um desses programas antes.
+
+Como você só tem este chat, o caminho prático é o primeiro. A conferência final seria sua de qualquer jeito, porque o DEFINE pede que uma pessoa abra a página e veja o resultado.
+
+**Sua decisão** — **Como você quer seguir?**
+1. **Pelo chat** (recomendado para o seu caso): eu escrevo o `index.html` primeiro e você salva.
+   - Nenhuma tarefa conta como feita até você me dizer que salvou e o que apareceu na tela.
+   - O relatório vai registrar que quem salvou e conferiu foi você.
+2. **Pelo agente:** você instala um dos programas, abre a pasta nele e me pede de novo. Lá ele cria os arquivos e confere tudo.
+3. **Não sei / estou no celular:** me diga o que você tem à mão e eu indico o caminho.
+
+**Próximo passo:** Com a opção 1, começo pela tarefa 1 de 2 (`index.html`) e te digo exatamente onde e com que nome salvar.
+RESULTADO: FALHA DE EXECUÇÃO (<urlopen error [Errno 54] Connection reset by peer>)
+rc=2

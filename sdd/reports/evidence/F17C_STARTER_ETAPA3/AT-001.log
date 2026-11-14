@@ -1,0 +1,9 @@
+$ cd <git archive 97503a7>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_gerar_starter.Gera.test_at001_gera_as_18_e_nao_toca_no_resto test_gerar_starter.Gera.test_at005_duas_geracoes_iguais_byte_a_byte
+test_at001_gera_as_18_e_nao_toca_no_resto (test_gerar_starter.Gera.test_at001_gera_as_18_e_nao_toca_no_resto) ... ok
+test_at005_duas_geracoes_iguais_byte_a_byte (test_gerar_starter.Gera.test_at005_duas_geracoes_iguais_byte_a_byte) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 12.799s
+
+OK
+rc=0

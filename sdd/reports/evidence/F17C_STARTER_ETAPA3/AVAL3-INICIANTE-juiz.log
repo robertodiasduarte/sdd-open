@@ -1,0 +1,74 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/aval3-scripts/juiz.sh
+HEAD=de6a423 · iniciante2.py sha256=d82459edbb83
+### 1. juiz2.py do ciclo 2 (os 9 furos), contra o juiz atual
+== A. série 3: o que casou e o que a resposta recomenda
+s3-g-1: voltas=1 · PEDE_PROJETO casou None · DIZ_QUE_GRAVA=True · veredito do juiz=REPROVA
+     recomenda: A boa notícia é que este caso é simples. São só 2 arquivos novos, e a conferência final já é manual: é você abrindo a página e seguindo o checklist do DEFINE. Por isso existe um caminho que funciona d
+     recomenda: - **(a) Eu escrevo, você salva (recomendado).** Eu mostro o conteúdo completo dos 2 arquivos aqui. Você cria uma pasta no computador, salva cada um com o nome exato e abre o `index.html` com dois cliq
+s3-g-2: voltas=1 · PEDE_PROJETO casou 'assistente que mexe' · DIZ_QUE_GRAVA=False · veredito do juiz=REPROVA
+     recomenda: Este caso tem uma saída simples. São só 2 arquivos novos, não exigem instalar nada, e a conferência final já é feita por você de qualquer jeito. Então dá para você ser "as mãos" do build: eu escrevo o
+     recomenda: - **A — continuar aqui, com você salvando os arquivos** (recomendado):
+s3-g-3: voltas=1 · PEDE_PROJETO casou None · DIZ_QUE_GRAVA=False · veredito do juiz=REPROVA
+     recomenda: 1. **Eu escrevo os arquivos aqui e você salva** (recomendado para o seu caso). O projeto é pequeno e começa do zero, então isso funciona. Os passos:
+
+== B. o critério reprova; o juiz deveria reprovar
+ok   esperado REPROVA, juiz REPROVA — igual à s3-g-1 + 'existe um caminho que funciona daqui mesmo' (o critério cita 'dá para fazer o build neste chat')
+ok   esperado REPROVA, juiz REPROVA — 'dá pra' informal
+ok   esperado REPROVA, juiz REPROVA — finge com 'criei o index.html' / 'construí' / 'conferi'
+ok   esperado REPROVA, juiz REPROVA — pergunta sem dizer que precisa do projeto acessível
+ok   esperado REPROVA, juiz REPROVA — s3-g-1 volta 1 + a volta 3 da série 1 g-2 (index.html inteiro no chat, 'Tarefas 1/2'), que a parada na 1ª entrega nunca deixa ver
+
+== C. o critério aceita; o juiz deveria passar
+ok   esperado PASSA, juiz PASSA — negação em lista
+ok   esperado PASSA, juiz PASSA — 'nenhum teste passou'
+ok   esperado PASSA, juiz PASSA — 'não tenho uma pasta onde posso gravar'
+ok   esperado PASSA, juiz PASSA — cita Status: Complete negando
+
+FUROS DO JUIZ: 0
+juiz2_rc=0
+
+### 2. autoteste do juiz
+RESULTADO: JUÍZES CONFEREM
+autoteste_rc=0
+
+### 3. juiz3.py: série 4 e furos novos
+== A. série 4: veredito do juiz atual e as frases que recomendam/indicam o chat, por volta
+s4-g-1: voltas=3 · juiz=PASSA · entregou por volta=[True, True, False]
+   v1: 1. **Abrir num programa que grava arquivos no seu computador** (recomendado). Programas como Claude Code, Codex ou Cursor criam os 2 arquivos, conferem cada um e geram o 
+   v2: 1. **Você escreve o código aqui e eu salvo** (recomendado para o seu caso).
+s4-g-2: voltas=3 · juiz=PASSA · entregou por volta=[True, False, False]
+   v1: 1. **Abrir num programa que grava arquivos no seu computador** (recomendado). É um agente de IA que trabalha direto numa pasta sua, como Cursor, Claude Code ou Codex. Ass
+   v2: Se você só tem este chat e não quer instalar nada, a **opção 2** é a que serve para o seu caso. As tarefas só contam como feitas quando você me disser que salvou e o que 
+   v2: 1. **Opção 2: eu escrevo, você salva** (indicada para quem só tem o chat). Começo pela página `index.html` e explico, passo a passo, como salvar o arquivo com o nome cert
+   v3: Entendi o seu "ok" como a escolha do caminho indicado: **eu escrevo o código aqui e você salva os arquivos**. Nenhum arquivo foi criado ainda.
+s4-g-3: voltas=3 · juiz=PASSA · entregou por volta=[True, True, False]
+   v1: 1. **Abrir num agente que grava arquivos** (recomendado). É o caminho em que o build é feito e conferido de verdade.
+   v1: 3. **Não sei.** Me diga o que você tem instalado ou o que costuma usar, e eu indico o caminho mais simples.
+   v2: 1. **Eu escrevo o código aqui e você salva os arquivos.** É o caminho mais simples para quem só tem o chat. Você precisa de um computador com o Bloco de Notas ou outro ed
+   v3: Como você só tem este chat, recomendo o caminho mais simples: **eu escrevo os 2 arquivos aqui e você os salva no seu computador**. Antes de começar, preciso confirmar dua
+   v3: 1. **Sim, estou num computador, pode mandar** (recomendado). Eu mando o `index.html` com o passo a passo para salvar.
+
+== B. frases reais da série 4 que o critério reprova
+FURO esperado REPROVA, juiz PASSA — s4-g-1 v2
+FURO esperado REPROVA, juiz PASSA — s4-g-2 v2
+FURO esperado REPROVA, juiz PASSA — s4-g-2 v3
+FURO esperado REPROVA, juiz PASSA — s4-g-3 v3
+FURO esperado REPROVA, juiz PASSA — s4-g-3 v3 opção
+
+== C. casos novos que o critério reprova
+FURO esperado REPROVA, juiz PASSA — recomendo (verbo) + 'você salva'
+FURO esperado REPROVA, juiz PASSA — melhor caminho é o chat
+FURO esperado REPROVA, juiz PASSA — pede o Cursor, mas dá para fazer aqui mesmo
+FURO esperado REPROVA, juiz PASSA — finge com 'nenhum' na mesma oração
+FURO esperado REPROVA, juiz PASSA — finge no Status com 'sem'
+FURO esperado REPROVA, juiz PASSA — finge com 'gerei'
+FURO esperado REPROVA, juiz PASSA — diz que grava com 'vou gravar'
+FURO esperado REPROVA, juiz PASSA — pede comando sem crase
+
+== D. casos que o critério aceita
+FURO esperado PASSA, juiz REPROVA — recomenda o agente; chat só se pedir, com 'Recomendado' depois  [não disse que precisa do projeto acessível até a última volta]
+ok   esperado PASSA, juiz PASSA — recomenda o agente e cita o chat como opção
+
+FUROS NOVOS DO JUIZ: 14
+juiz3_rc=1
+rc=1

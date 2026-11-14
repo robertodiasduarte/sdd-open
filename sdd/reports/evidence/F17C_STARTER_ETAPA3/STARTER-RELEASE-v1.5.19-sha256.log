@@ -1,0 +1,20 @@
+$ gh release download v1.5.19 --repo robertodiasduarte/sdd-starter --dir <pasta vazia> && (cd <pasta> && shasum -a 256 -c SHA256SUMS.txt)
+sdd-auditoria-harness.zip: OK
+sdd-brainstorm.zip: OK
+sdd-build.zip: OK
+sdd-checar-ambiente.zip: OK
+sdd-define.zip: OK
+sdd-design.zip: OK
+sdd-engenharia-reversa-saas.zip: OK
+sdd-governanca.zip: OK
+sdd-handoff.zip: OK
+sdd-higiene-dado.zip: OK
+sdd-iniciar-repo.zip: OK
+sdd-kb.zip: OK
+sdd-loop-builder.zip: OK
+sdd-new-session.zip: OK
+sdd-prompt-builder.zip: OK
+sdd-release.zip: OK
+sdd-seguranca.zip: OK
+ux-review-builder.zip: OK
+rc=0

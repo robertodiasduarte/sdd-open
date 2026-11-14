@@ -1,0 +1,19 @@
+feature_id: F17C_STARTER_ETAPA3
+slice_id: s1
+versao: 2.15.0
+data: 2026-11-14
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "lista do gerador com 18 skills e nenhuma congelada; sdd-define, sdd-design e sdd-build geradas só do modo web (web/MODO_WEB.md com o texto da v1.5.18: pastas do Open, prova sem script, defeitos do starter consertados) pela pasta-base nova de modos.tsv; ux-review-builder 1.6.0 e sdd-engenharia-reversa-saas 1.2.0 nas pastas do Open; moldes do Open sem sobras e o relatório com Seleção de modo e Drift detectado; não finja e a pergunta da 1ª vez do Verify Gate; tabela de paradas com 0 parada nova; teste do iniciante define 3 de 3, design 3 de 3, build 2 de 3 (série 5) com o texto consertado depois; Verify Gate 0 em 97503a7"
+descricao: "Starter gerado, etapa 3 (F17c): sdd-define 2.7.0, sdd-design 2.7.0, sdd-build 2.10.0 com o modo web e o caminho do Open; ux-review-builder 1.6.0; sdd-engenharia-reversa-saas 1.2.0; sdd-handoff 2.2.1 (exemplo preenchido); gerador com a pasta-base do modo; README, quickstart, workflow e o exemplo baixar-nfse do starter com as 18 geradas. Passo 0: curadoria da F17b (LM-025, LM-026, 13 contagens)."
+deploy: real
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261114-083418 sha256=2af27564329e8f1ad4d222318cdbaeb14508f38595b6c928b789a7f967beda4b diversidade=vendor revisor2=dispensado — codex sem cota; cadeia claude + qwen como na F16, F18+F20, F17 e F17b
+avisos:
+  - "teste do iniciante do build: 2 de 3 na série 5 (leitor novo, critério em prosa); a g-1 tomou 'ok' como autorização e mostrou 'Tarefas 1/2' antes do relato; o texto foi consertado em e1f1b42 e não foi medido de novo (decisão do Roberto: CONCERNS)"
+  - "teto do método passado: 4 ciclos do avaliador (2 acima do teto, OK do Roberto), o último NEEDS_WORK por esse ponto; 3 rodadas de revisão dentro do teto"
+  - "o juiz por regex do teste do iniciante errou nos dois sentidos 4 vezes; o veredito da série 5 é de um leitor novo; o rejulgamento da série 4 com o juiz ajustado, que eu dei por 3 de 3, estava errado (0 de 3 lido inteiro)"
+  - "o build web passou a abrir o caminho do chat quando o aluno diz que só tem o chat (decisão do Roberto), com regras; a tabela de paradas registra o OK dele"
+  - "o teste do build roda pela OpenRouter (o claude -p anuncia uma pasta gravável); custo pago das séries 3 a 5: US$ 3,17"
+  - "pacote gerado pela ux-review-builder 1.5.0 reprova no validador novo até ser regerado (CHANGELOG da builder)"
+  - "landmines, drift, lint, testes do diff e deploy pulados: o repositório do pacote não tem sdd/config.yaml; a suíte inteira roda no Verify Gate"

@@ -1,0 +1,23 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/aval3-scripts/testes.sh
+HEAD=de6a423
+test_build_sem_o_projeto_recomenda_um_agente_que_grave (test_f17c_textos.ModoWebGerado) ... ok
+test_at007_define_pergunta_na_primeira_vez (test_f17c_textos.NaoFinjaNoOpen) ... ok
+test_as_3_geradas_cabem_em_500_linhas (test_f17c_gerador.ModoWeb) ... ok
+----------------------------------------------------------------------
+Ran 56 tests in 136.668s
+
+OK
+testes_rc=0
+--- AT-*.log: commit no cabeçalho e última linha
+AT-001.log: de6a423 · rc=0
+AT-002.log: de6a423 · rc=0
+AT-003.log: de6a423 · rc=0
+AT-004.log: de6a423 · rc=0
+AT-005.log: de6a423 · rc=0
+AT-006.log: de6a423 · rc=0
+AT-007.log: de6a423 · rc=0
+AT-008.log: de6a423 · rc=0
+AT-009.log: de6a423 · rc=0
+AT-010.log: de6a423 · rc=0
+AT logs fora de HEAD ou rc≠0: 0
+rc=0

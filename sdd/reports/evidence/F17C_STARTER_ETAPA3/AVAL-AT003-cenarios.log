@@ -1,0 +1,101 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/at003.sh
+--- mudança: rm .agents/skills/sdd-design/web/MODO_WEB.md
+ .agents/skills/sdd-design/web/MODO_WEB.md | 462 ------------------------------
+ 1 file changed, 462 deletions(-)
+🛑 sdd-design: o arquivo de modo web/MODO_WEB.md não existe
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: sem-modo
+
+--- mudança: printf "\nVeja references/nao-existe.md.\n" >> .agents/skills/sdd-build/web/MODO_WEB.md
+ .agents/skills/sdd-build/web/MODO_WEB.md | 2 ++
+ 1 file changed, 2 insertions(+)
+🛑 sdd-build: o modo cita references/nao-existe.md, que não existe em web/
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: cita-inexistente
+
+--- mudança: printf "\nVeja references/modos-e-retry.md.\n" >> .agents/skills/sdd-build/web/MODO_WEB.md
+ .agents/skills/sdd-build/web/MODO_WEB.md | 2 ++
+ 1 file changed, 2 insertions(+)
+🛑 sdd-build: o modo cita references/modos-e-retry.md, que não existe em web/
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: cita-da-raiz-nao-web
+
+--- mudança: printf "\nVeja references/../SKILL.md.\n" >> .agents/skills/sdd-build/web/MODO_WEB.md
+ .agents/skills/sdd-build/web/MODO_WEB.md | 2 ++
+ 1 file changed, 2 insertions(+)
+🛑 sdd-build: o modo cita references/../SKILL.md, que sai da pasta-base
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: cita-fora-base
+
+--- mudança: printf "\nVeja assets/sumiu.md.\n" >> .agents/skills/sdd-define/web/references/EARS.md
+ .agents/skills/sdd-define/web/references/EARS.md | 2 ++
+ 1 file changed, 2 insertions(+)
+🛑 sdd-define: o modo cita assets/sumiu.md, que não existe em web/
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: fecho-inexistente
+
+--- mudança: printf "\nRode sdd/bin/verify-gate.sh.\n" >> .agents/skills/sdd-define/web/MODO_WEB.md
+ .agents/skills/sdd-define/web/MODO_WEB.md | 2 ++
+ 1 file changed, 2 insertions(+)
+🛑 o lint do init achou 1 citação(ões) a arquivo que só o init cria:
+  skills/sdd-define/SKILL.md:412: sdd/bin/
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: cita-init-no-modo
+
+--- mudança: printf "\nVeja sdd/playbook.md.\n" >> .agents/skills/sdd-design/web/references/design-protocol.md
+ .agents/skills/sdd-design/web/references/design-protocol.md | 2 ++
+ 1 file changed, 2 insertions(+)
+🛑 o lint do init achou 1 citação(ões) a arquivo que só o init cria:
+  skills/sdd-design/references/design-protocol.md:181: sdd/playbook.md
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: cita-init-na-reference
+
+sdd-build	web/MODO_WEB.md	webx
+--- mudança: sed -i "" "s#^sdd-build\tweb/MODO_WEB.md\tweb#sdd-build\tweb/MODO_WEB.md\twebx#" scripts/starter/modos.tsv && grep webx scripts/starter/modos.tsv
+ scripts/starter/modos.tsv | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+🛑 sdd-build: a pasta-base webx do modo não existe
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: base-inexistente
+
+sdd-build	web/MODO_WEB.md	../sdd-define/web
+--- mudança: sed -i "" "s#^sdd-build\tweb/MODO_WEB.md\tweb#sdd-build\tweb/MODO_WEB.md\t../sdd-define/web#" scripts/starter/modos.tsv && grep "\.\./" scripts/starter/modos.tsv
+ scripts/starter/modos.tsv | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+🛑 modos.tsv: o caminho ../sdd-define/web de sdd-build sai da pasta da skill
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: base-fora
+
+--- mudança: sed -i "" "s#^sdd-build\tweb/MODO_WEB.md\tweb#sdd-build\tweb/MODO_WEB.md\tweb\tx#" scripts/starter/modos.tsv
+ scripts/starter/modos.tsv | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+🛑 modos.tsv: linha sem 2 ou 3 campos (skill, arquivo de modo[, pasta-base]): sdd-build	web/MODO_WEB.md	web	x
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: quatro-colunas
+
+== baseline vermelho: lint sobre a cópia crua do Open
+sdd-define cópia crua: rc=65, 38 achado(s); ex.: 🛑 SKILL.md:4: sdd/bin/ 🛑 SKILL.md:18: sdd/bin/ 
+sdd-design cópia crua: rc=65, 25 achado(s); ex.: 🛑 SKILL.md:4: sdd/bin/ 🛑 SKILL.md:18: sdd/bin/ 
+sdd-build cópia crua: rc=65, 38 achado(s); ex.: 🛑 SKILL.md:4: sdd/bin/ 🛑 SKILL.md:18: sdd/bin/ 
+falhas=0
+rc=0

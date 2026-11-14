@@ -1,0 +1,232 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources "" --system-prompt-file <sdd-build em /Users/robertoduarte/rdd-worktrees/sdd-starter-f17c-ref/skills/sdd-build + references> [--resume <sessão>] <volta do roteiro>   # execução c-1
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json · modo build
+
+----- volta 1 — aluno -----
+Faça o build com estes três documentos. Estou no chat da web: não tenho o projeto aqui, só estes documentos.
+
+# BRAINSTORM: EMPRESTIMO_NOTEBOOKS
+
+## Initial Idea
+O escritório tem 6 notebooks que os funcionários levam para casa ou para clientes. Hoje o controle é um caderno: ninguém sabe com quem está cada notebook nem quando volta.
+
+## Discovery Questions & Answers
+1. Quem usa? A gerente (registra a saída e a volta) e os 12 funcionários (só pedem).
+2. O que dói? Notebook que não volta no prazo e ninguém percebe; dois funcionários querendo o mesmo notebook no mesmo dia.
+3. Pronto quando? A gerente abre uma tela e vê, por notebook, com quem está e a data prevista de volta, e os atrasados aparecem em vermelho.
+
+## Selected Approach
+Uma planilha web simples (uma página com a lista dos 6 notebooks), sem login na primeira versão: só a gerente usa, no computador dela.
+
+## Features Removed (YAGNI)
+- reserva antecipada pelo funcionário;
+- aviso por e-mail;
+- controle de acessórios (carregador, mouse).
+
+## Suggested Requirements for /define
+- registrar saída (notebook, funcionário, data, data prevista de volta);
+- registrar volta;
+- listar com quem está cada notebook; atrasados destacados;
+- impedir registrar a saída de um notebook que já está emprestado.
+
+## Next Step
+Execute o **SDD Define by RDD**.
+
+# DEFINE: EMPRESTIMO_NOTEBOOKS
+
+## Problem Statement
+O controle dos 6 notebooks do escritório é um caderno; notebook atrasado passa despercebido.
+
+## Target Users
+| User | Pain Point |
+|---|---|
+| Gerente | não sabe com quem está cada notebook |
+
+## Goals
+| Priority | Goal |
+|---|---|
+| MUST | registrar saída e volta |
+| MUST | listar com quem está cada notebook, atrasados em vermelho |
+| MUST | recusar a saída de notebook já emprestado |
+
+## Acceptance Tests
+| ID | Padrão | Critério | Gate |
+|---|---|---|---|
+| AT-001 | Event-driven | When a gerente registra a saída, the system shall mostrar o notebook como emprestado com o nome e a data prevista | manual-ux |
+| AT-002 | Unwanted | If a gerente tenta registrar a saída de um notebook emprestado, then the system shall recusar e dizer com quem está | manual-ux |
+| AT-003 | State-driven | While a data prevista já passou, the system shall mostrar o empréstimo em vermelho | manual-ux |
+
+## Verify Gate
+```yaml
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist assinado"
+  threshold: "—"
+  manual_fallback: "Eu abri a página, registrei a saída do notebook 1 para a Ana e vi o notebook 1 com o nome dela. Eu tentei registrar a saída do notebook 1 de novo e vi a recusa dizendo que está com a Ana. Eu mudei a data prevista para ontem e vi a linha em vermelho."
+```
+
+## Technical Context
+| Aspect | Value |
+|---|---|
+| LLM Prompts | false |
+
+## Out of Scope
+Reserva, e-mail, acessórios, login.
+
+## Next Step
+Execute o **SDD Design by RDD**.
+
+# DESIGN: EMPRESTIMO_NOTEBOOKS
+
+## Architecture Overview
+```text
+index.html → app.js → localStorage do navegador
+```
+
+## File Manifest
+| # | Arquivo | Ação | Propósito | Dependências |
+|---|---|---|---|---|
+| 1 | `index.html` | Create | a página com a lista e o formulário | — |
+| 2 | `app.js` | Create | registrar saída e volta, recusar duplicado, destacar atrasado | 1 |
+
+**Total Files:** 2
+
+## Next Step
+Execute o **SDD Build by RDD**.
+----- volta 1 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+sdd-build v1.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status** — `Build: ⏸️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+Como ler esta linha:
+- **Build** é a fase em que o que foi desenhado é construído de verdade, arquivo por arquivo.
+- **Plano** é a lista de tarefas, na ordem em que uma depende da outra.
+- **Modo** é como as tarefas rodam.
+- **Tarefas 0/2** conta as tarefas feitas. Cada tarefa é um arquivo da lista do design, com uma conferência no fim.
+- **Verify Gate** é a conferência final combinada no DEFINE.
+- **Relatório** é o documento desta fase, com a prova de cada conferência.
+
+**O que foi feito**
+- Li o brainstorm, o DEFINE e o DESIGN inteiros. Os três concordam entre si.
+- O plano tem 2 tarefas:
+  1. criar `index.html`, a página com a lista e o formulário;
+  2. criar `app.js`, que registra saída e volta, recusa empréstimo duplicado e pinta o atraso de vermelho.
+- Nada do que foi cortado no brainstorm reaparece no design: reserva, e-mail, acessórios e login ficam fora.
+- Não há banco de dados. Os dados ficam guardados no próprio navegador da gerente.
+- Não há uso de inteligência artificial dentro do sistema.
+- A conferência final é manual: você abre a página, segue o roteiro do DEFINE e me diz o resultado.
+- Nenhum arquivo foi criado ainda.
+
+**Agora: etapa 1 — Plano (parada)**
+
+Parei por um motivo: o build constrói arquivos de verdade e confere cada um. Aqui no chat eu não tenho uma pasta sua para gravar os arquivos nem como abrir a página para conferir. Não vou fingir um build completo só a partir dos documentos.
+
+A boa notícia: o projeto ainda não existe. As duas tarefas só criam arquivos, então não há código seu que eu possa estragar. Existe um caminho que funciona daqui mesmo.
+
+Também encontrei uma dúvida no roteiro da conferência final. Ele diz "mudei a data prevista para ontem", mas o DEFINE não pede uma função de alterar a data. Prefiro perguntar a decidir por você.
+
+**Sua decisão**
+
+1. **Onde os arquivos vão ser criados?**
+   - **(a) pela conversa (recomendado para o seu caso):**
+     - eu escrevo os 2 arquivos completos aqui;
+     - você cria uma pasta no seu computador e salva cada um com o nome exato;
+     - você dá dois cliques no `index.html` para abrir a página no navegador.
+
+     A conferência de cada tarefa é você abrindo a página e me contando o que viu. O relatório vai registrar que fui eu que escrevi e você que salvou e conferiu.
+   - **(b) num ambiente com acesso à pasta** (o Claude Code ou o app de desktop apontando para uma pasta sua): eu crio e confiro os arquivos direto. É mais automático, mas exige instalar ou abrir essa ferramenta. Quando estiver lá, me peça de novo e eu continuo daqui.
+   - **não sei:** eu sigo pela (a).
+
+2. **Como a gerente "muda a data prevista para ontem"?**
+   - **(a) ao registrar a saída, ela pode escolher uma data já passada (recomendado):**
+     - não cria nenhuma função nova;
+     - no teste, você devolve o notebook 1 e registra de novo com a data de ontem;
+     - o roteiro do DEFINE passa a ser lido assim, e eu registro isso no relatório.
+   - **(b) um botão "alterar data prevista" em cada empréstimo:** segue o roteiro ao pé da letra, mas acrescenta uma função que o DEFINE não lista. Eu anoto isso como um desvio aprovado por você.
+   - **não sei:** eu sigo pela (a).
+
+Responda com dois números e letras, por exemplo: "1a, 2a".
+
+**Próximo passo** — Com as duas respostas, passo à escolha do modo e depois começo a tarefa 1 de 2.
+
+----- volta 2 — aluno -----
+Não tenho o projeto aqui; só tenho este chat. O que eu faço?
+----- volta 2 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status** — `Build: ⏸️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+**O que foi feito** — Nada mudou desde a última resposta. Nenhum arquivo foi criado.
+
+**Agora: etapa 1 — Plano (parada)**
+
+Você não precisa ter o projeto. Ele ainda não existe: este build vai criá-lo, e ele é só uma pasta com 2 arquivos. Você não precisa de terminal nem de git, e não precisa instalar nada.
+
+Funciona assim, se você escolher **1a**:
+
+1. **Crie uma pasta vazia** no seu computador, por exemplo `emprestimo-notebooks` na Área de Trabalho. Essa pasta é o projeto.
+2. **Eu escrevo aqui o primeiro arquivo** (`index.html`) inteiro, num bloco com um botão de copiar.
+3. **Você abre o Bloco de Notas** (Windows) ou o **TextEdit** (Mac) e cola o conteúdo.
+   - No TextEdit, antes de colar, vá em *Formatar → Converter em Texto Simples*.
+   - Salve dentro da pasta com o nome exato `index.html`.
+   - Se o programa perguntar sobre a extensão, escolha manter `.html`.
+4. **Repita para o segundo arquivo** (`app.js`), na mesma pasta.
+5. **Dê dois cliques no `index.html`.** A página abre no navegador com a lista dos 6 notebooks.
+6. **Você me conta o que viu.** Essa é a conferência de cada tarefa.
+
+No fim, vem a conferência final. Você segue o roteiro do DEFINE: emprestar o notebook 1 para a Ana, tentar emprestar de novo, ver a linha em vermelho. Depois me diz se passou.
+
+**Sua decisão** (as mesmas duas perguntas de antes)
+
+1. **Onde os arquivos vão ser criados?**
+   - **(a) pela conversa (recomendado):** eu escrevo, você salva na pasta e confere seguindo os passos acima.
+   - **(b) num ambiente com acesso à pasta** (o Claude Code ou o app de desktop): eu crio e confiro os arquivos sozinho, mas você precisa abrir essa ferramenta primeiro.
+   - **não sei:** sigo pela (a).
+
+2. **Como a gerente "muda a data prevista para ontem" no teste?**
+   - **(a) ao registrar a saída, ela pode escolher uma data já passada (recomendado):** não cria função nova. No teste, você devolve o notebook 1 e empresta de novo com a data de ontem.
+   - **(b) um botão "alterar data prevista" em cada empréstimo:** segue o roteiro ao pé da letra, mas acrescenta uma função que o DEFINE não pediu.
+   - **não sei:** sigo pela (a).
+
+Responda, por exemplo, "1a, 2a". Também vale "não sei" nas duas.
+
+**Próximo passo** — Com as respostas, escolhemos o modo e eu escrevo o primeiro arquivo para você salvar.
+
+----- volta 3 — aluno -----
+Ok. Pode me dizer o que fazer?
+----- volta 3 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status** — `Build: ✅ 1 Plano · ▶️ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+**O que foi feito** — Entendi seu "ok" como "siga o que você recomendou". Fico com:
+- **1a:** eu escrevo os arquivos aqui, você salva numa pasta e confere.
+- **2a:** a data prevista pode ser escolhida no passado ao registrar a saída. Não haverá botão de alterar data.
+
+Se quiser outra opção, é só dizer. Nenhum arquivo foi escrito ainda.
+
+**Agora: etapa 2 — Modo**
+
+Você já pode adiantar uma coisa, que não depende de mais nada:
+
+1. Na sua **Área de Trabalho**, clique com o botão direito e escolha **Nova pasta**.
+2. Dê o nome **`emprestimo-notebooks`**.
+3. Deixe a pasta vazia. Os 2 arquivos vão para dentro dela nos próximos passos.
+
+O que deve aparecer: uma pasta vazia com esse nome na Área de Trabalho.
+
+Falta uma escolha antes do primeiro arquivo: o **modo de execução**, ou seja, como as tarefas rodam. Aqui no chat, só um modo funciona de verdade:
+- **ralph** precisa abrir uma conversa limpa para cada tarefa, e este chat não faz isso.
+- **briefs** precisa rodar várias tarefas ao mesmo tempo, e este chat também não faz isso.
+
+E com só 2 arquivos, em que o segundo depende do primeiro, uma tarefa de cada vez é mesmo o melhor caminho.
+
+**Sua decisão** — **Posso seguir uma tarefa de cada vez, nesta conversa?**
+- **sim (default, recomendado):**
+  - escrevo o `index.html`, você salva na pasta e me conta o que viu ao abrir;
+  - depois faço o mesmo com o `app.js`.
+- **não sei:** sigo assim mesmo, porque é o único modo disponível aqui.
+
+**Próximo passo** — Com seu "sim", escrevo a tarefa 1 de 2, o `index.html`, com o passo a passo para salvar e conferir.
+
+===== veredito =====
+voltas: 3 · entregue: não
+❌ não disse que precisa do projeto acessível até a última volta
+RESULTADO: REPROVOU
+rc=1

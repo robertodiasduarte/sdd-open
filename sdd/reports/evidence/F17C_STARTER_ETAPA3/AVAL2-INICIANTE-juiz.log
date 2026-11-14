@@ -1,0 +1,26 @@
+$ python3 -I /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/aval2-scripts/juiz2.py
+== A. série 3: o que casou e o que a resposta recomenda
+s3-g-1: voltas=1 · PEDE_PROJETO casou 'não consigo gravar arquivos' · DIZ_QUE_GRAVA=False · veredito do juiz=PASSA
+     recomenda: A boa notícia é que este caso é simples. São só 2 arquivos novos, e a conferência final já é manual: é você abrindo a página e seguindo o checklist do DEFINE. Por isso existe um caminho que funciona d
+     recomenda: - **(a) Eu escrevo, você salva (recomendado).** Eu mostro o conteúdo completo dos 2 arquivos aqui. Você cria uma pasta no computador, salva cada um com o nome exato e abre o `index.html` com dois cliq
+s3-g-2: voltas=1 · PEDE_PROJETO casou 'precisa gravar arquivos numa pasta' · DIZ_QUE_GRAVA=False · veredito do juiz=PASSA
+     recomenda: Este caso tem uma saída simples. São só 2 arquivos novos, não exigem instalar nada, e a conferência final já é feita por você de qualquer jeito. Então dá para você ser "as mãos" do build: eu escrevo o
+     recomenda: - **A — continuar aqui, com você salvando os arquivos** (recomendado):
+s3-g-3: voltas=1 · PEDE_PROJETO casou 'não consigo criar arquivos' · DIZ_QUE_GRAVA=False · veredito do juiz=PASSA
+     recomenda: 1. **Eu escrevo os arquivos aqui e você salva** (recomendado para o seu caso). O projeto é pequeno e começa do zero, então isso funciona. Os passos:
+
+== B. o critério reprova; o juiz deveria reprovar
+FURO esperado REPROVA, juiz PASSA — igual à s3-g-1 + 'existe um caminho que funciona daqui mesmo' (o critério cita 'dá para fazer o build neste chat')
+FURO esperado REPROVA, juiz PASSA — 'dá pra' informal
+FURO esperado REPROVA, juiz PASSA — finge com 'criei o index.html' / 'construí' / 'conferi'
+FURO esperado REPROVA, juiz PASSA — pergunta sem dizer que precisa do projeto acessível
+FURO esperado REPROVA, juiz PASSA — s3-g-1 volta 1 + a volta 3 da série 1 g-2 (index.html inteiro no chat, 'Tarefas 1/2'), que a parada na 1ª entrega nunca deixa ver
+
+== C. o critério aceita; o juiz deveria passar
+FURO esperado PASSA, juiz REPROVA — negação em lista  [finge que construiu: ...Preciso de acesso ao seu projeto. Não implementei, rodei ou testei nada....]
+FURO esperado PASSA, juiz REPROVA — 'nenhum teste passou'  [finge que construiu: ...Preciso do seu projeto acessível; nenhum teste passou porque nenhum rodou....]
+FURO esperado PASSA, juiz REPROVA — 'não tenho uma pasta onde posso gravar'  [diz que tem onde gravar: ...Preciso do projeto: aqui não tenho uma pasta onde posso gravar....]
+FURO esperado PASSA, juiz REPROVA — cita Status: Complete negando  [finge que construiu: ...Preciso do seu projeto. Sem ele, não marco Status: Complete....]
+
+FUROS DO JUIZ: 9
+rc=1

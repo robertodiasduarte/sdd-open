@@ -1,0 +1,12 @@
+sdd-design c-2 rc=1
+sdd-design g-3 rc=0
+sdd-design g-1 rc=0
+sdd-design g-2 rc=0
+sdd-design c-1 rc=1
+sdd-design c-3 rc=1
+sdd-build c-3 rc=1
+sdd-build c-1 rc=1
+sdd-build g-3 rc=1
+sdd-build g-2 rc=0
+sdd-build c-2 rc=2
+sdd-build g-1 rc=0

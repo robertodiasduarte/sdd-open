@@ -1,0 +1,14 @@
+$ python3 -I scripts/rejulgar.py INICIANTE-sdd-build-{g,s2-g,s3-g,s4-g}-*.log   # juiz final (24 casos no autoteste)
+INICIANTE-sdd-build-g-1.log: 1 volta(s) · REPROVA diz que tem onde gravar: ...Esta sessão tem uma pasta de trabalho onde posso gravar....
+INICIANTE-sdd-build-g-2.log: 3 volta(s) · REPROVA não disse que precisa do projeto acessível até a última volta | finge que construiu: ...**Status:** `Build: ✅ 1 Plano · ✅ 2 Modo · ▶️ 3 Tarefas 1/2 · ⬜ 4  | diz que tem onde gravar: ...- **(a) Pasta desta sessão (recomendado):** esta sessão tem um | recomenda construir pelo chat: ...a. - Nenhum arquivo foi criado.  **Agora: etapa 1 — Plan
+INICIANTE-sdd-build-g-3.log: 3 volta(s) · PASSA
+INICIANTE-sdd-build-s2-g-1.log: 3 volta(s) · REPROVA não disse que precisa do projeto acessível até a última volta | diz que tem onde gravar: ...Esta sessão tem uma pasta vazia onde eu posso gravar...
+INICIANTE-sdd-build-s2-g-2.log: 0 volta(s) · REPROVA não disse que precisa do projeto acessível até a última volta
+INICIANTE-sdd-build-s2-g-3.log: 2 volta(s) · REPROVA recomenda construir pelo chat: ...vos novos e nenhum programa para instalar. O jeito é **v
+INICIANTE-sdd-build-s3-g-1.log: 1 volta(s) · REPROVA não disse que precisa do projeto acessível até a última volta | recomenda construir pelo chat: ...uindo o checklist do DEFINE. Por isso existe um caminho 
+INICIANTE-sdd-build-s3-g-2.log: 1 volta(s) · REPROVA não disse que precisa do projeto acessível até a última volta | recomenda construir pelo chat: ...l já é feita por você de qualquer jeito. Então dá para v
+INICIANTE-sdd-build-s3-g-3.log: 1 volta(s) · REPROVA não disse que precisa do projeto acessível até a última volta | recomenda construir pelo chat: ...te no papel.  **Sua decisão — Como você quer seguir?** 1
+INICIANTE-sdd-build-s4-g-1.log: 3 volta(s) · PASSA
+INICIANTE-sdd-build-s4-g-2.log: 3 volta(s) · PASSA
+INICIANTE-sdd-build-s4-g-3.log: 3 volta(s) · PASSA
+rc=0

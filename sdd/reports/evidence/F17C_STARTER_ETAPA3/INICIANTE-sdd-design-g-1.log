@@ -1,0 +1,707 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources "" --system-prompt-file <sdd-design em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/gerado-1a40424/sdd-design + references> [--resume <sessão>] <volta do roteiro>   # execução g-1
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json · modo documento
+
+----- volta 1 — aluno -----
+Faça o DESIGN com estes dois documentos. Estou no chat da web, sem o projeto aberto.
+
+# BRAINSTORM: EMPRESTIMO_NOTEBOOKS
+
+## Initial Idea
+O escritório tem 6 notebooks que os funcionários levam para casa ou para clientes. Hoje o controle é um caderno: ninguém sabe com quem está cada notebook nem quando volta.
+
+## Discovery Questions & Answers
+1. Quem usa? A gerente (registra a saída e a volta) e os 12 funcionários (só pedem).
+2. O que dói? Notebook que não volta no prazo e ninguém percebe; dois funcionários querendo o mesmo notebook no mesmo dia.
+3. Pronto quando? A gerente abre uma tela e vê, por notebook, com quem está e a data prevista de volta, e os atrasados aparecem em vermelho.
+
+## Selected Approach
+Uma planilha web simples (uma página com a lista dos 6 notebooks), sem login na primeira versão: só a gerente usa, no computador dela.
+
+## Features Removed (YAGNI)
+- reserva antecipada pelo funcionário;
+- aviso por e-mail;
+- controle de acessórios (carregador, mouse).
+
+## Suggested Requirements for /define
+- registrar saída (notebook, funcionário, data, data prevista de volta);
+- registrar volta;
+- listar com quem está cada notebook; atrasados destacados;
+- impedir registrar a saída de um notebook que já está emprestado.
+
+## Next Step
+Execute o **SDD Define by RDD**.
+
+# DEFINE: EMPRESTIMO_NOTEBOOKS
+
+## Problem Statement
+O controle dos 6 notebooks do escritório é um caderno; notebook atrasado passa despercebido.
+
+## Target Users
+| User | Pain Point |
+|---|---|
+| Gerente | não sabe com quem está cada notebook |
+
+## Goals
+| Priority | Goal |
+|---|---|
+| MUST | registrar saída e volta |
+| MUST | listar com quem está cada notebook, atrasados em vermelho |
+| MUST | recusar a saída de notebook já emprestado |
+
+## Acceptance Tests
+| ID | Padrão | Critério | Gate |
+|---|---|---|---|
+| AT-001 | Event-driven | When a gerente registra a saída, the system shall mostrar o notebook como emprestado com o nome e a data prevista | manual-ux |
+| AT-002 | Unwanted | If a gerente tenta registrar a saída de um notebook emprestado, then the system shall recusar e dizer com quem está | manual-ux |
+| AT-003 | State-driven | While a data prevista já passou, the system shall mostrar o empréstimo em vermelho | manual-ux |
+
+## Verify Gate
+```yaml
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist assinado"
+  threshold: "—"
+  manual_fallback: "Eu abri a página, registrei a saída do notebook 1 para a Ana e vi o notebook 1 com o nome dela. Eu tentei registrar a saída do notebook 1 de novo e vi a recusa dizendo que está com a Ana. Eu mudei a data prevista para ontem e vi a linha em vermelho."
+```
+
+## Technical Context
+| Aspect | Value |
+|---|---|
+| LLM Prompts | false |
+
+## Out of Scope
+Reserva, e-mail, acessórios, login.
+
+## Next Step
+Execute o **SDD Design by RDD**.
+----- volta 1 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+sdd-design v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status:** `Design: ✅ 1 Ler · ▶️ 2 Decisões · ⬜ 3 Componentes e arquivos · ⬜ 4 Fluxo, testes e erros · ⬜ 5 Conferir · ⬜ 6 Gravar`
+
+O que cada etapa significa:
+- **Componentes** são as partes do sistema, cada uma com uma função só.
+- **Arquivos** é a lista do que vai ser criado.
+- **Fluxo** é o caminho que a informação percorre, do que entra até o que sai.
+- **Conferir** é a releitura do documento para achar o que ficou incompleto.
+
+**O que foi feito**
+- Li o brainstorm e o DEFINE inteiros.
+- Os requisitos estão fechados: registrar a saída e a volta, listar com quem está cada notebook, mostrar os atrasados em vermelho e recusar a saída de um notebook que já está emprestado.
+- Login, reserva, e-mail e acessórios ficam de fora.
+- Não há uso de IA no sistema. O DEFINE diz isso, e nada nos dois documentos indica o contrário.
+- Não tenho o projeto aberto, então não inventei pastas nem ferramentas. Nada foi gravado.
+
+**Agora: etapa 2 — Decisões**
+Antes de desenhar as partes do sistema, preciso saber com que ferramentas ele vai ser feito e onde os empréstimos ficam guardados. Isso muda a lista de arquivos e os testes. Os documentos não dizem nada sobre isso, e o projeto ainda não existe.
+
+Cada escolha fica registrada no DESIGN com o motivo e o que foi descartado (é o que chamamos de "decisão técnica"). Assim ninguém refaz a discussão depois.
+
+**Sua decisão** — **Como a página da gerente vai ser feita e onde os dados ficam guardados?**
+
+- **Um único arquivo de página (HTML) que ela abre no navegador, com os dados guardados no próprio navegador** (recomendado)
+  - Não precisa instalar nada, nem de servidor, nem de internet. Ela abre o arquivo com dois cliques.
+  - É o que mais combina com o que vocês decidiram: "só a gerente usa, no computador dela".
+  - Ponto de atenção: os dados ficam naquele navegador, naquele computador. Se alguém limpar os dados do navegador, o histórico some. Para reduzir esse risco, eu incluo um botão "exportar cópia".
+- **Uma planilha do Google com um pequeno programa anexado (Apps Script)**
+  - Os dados ficam salvos na conta Google e dá para abrir de qualquer computador.
+  - Em troca, depende de internet e da conta Google, e o programa fica um pouco mais trabalhoso de construir e testar.
+- **Um programa pequeno em Python rodando no computador dela, com um arquivo de banco de dados**
+  - Os dados ficam num arquivo que dá para copiar como backup.
+  - Em troca, precisa instalar o Python e iniciar o programa antes de usar. Para 6 notebooks, é mais estrutura do que o problema pede.
+- **Não sei**: eu descrevo como fica o dia a dia da gerente em cada caso.
+
+Duas suposições que vou usar, a menos que você discorde:
+- O nome do funcionário é digitado livremente, sem uma lista fixa dos 12.
+- A data prevista de volta pode ser editada num empréstimo em andamento. O teste final do DEFINE pede "mudei a data prevista para ontem", e é essa edição que permite fazer isso.
+
+**Próximo passo:** com a sua escolha, eu desenho os componentes e a lista de arquivos (etapa 3) e sigo até entregar o `DESIGN_EMPRESTIMO_NOTEBOOKS.md` aqui no chat. Ele não vai ser gravado em lugar nenhum, porque estamos na web sem o projeto aberto.
+
+----- volta 2 — aluno -----
+Ainda não tem código. Quero uma página HTML com JavaScript puro, sem servidor, que guarda no próprio navegador; abro o arquivo no Chrome do computador da gerente.
+----- volta 2 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Design: ✅ 1 Ler · ✅ 2 Decisões · ✅ 3 Componentes e arquivos · ✅ 4 Fluxo, testes e erros · ✅ 5 Conferir · ▶️ 6 Gravar`
+
+**O que foi feito**
+- Registrei a sua escolha: uma página HTML com JavaScript puro, sem servidor, com os dados guardados no Chrome do computador da gerente.
+- Com isso, desenhei a **arquitetura** (como as partes do sistema se encaixam) e os **componentes**, que são as partes do sistema, cada uma com uma função só.
+- Montei o **File Manifest**, a lista dos 10 arquivos a criar, em ordem.
+- Defini o **fluxo de dados** (o caminho da informação), os testes e o que fazer quando algo dá errado.
+- Reli o documento contra a lista de conferência da fase e corrigi o que faltava.
+
+Três escolhas que fiz por conta própria. Você pode vetar qualquer uma:
+1. **A página usa scripts comuns, não "módulos".** O Chrome bloqueia módulos em arquivos abertos direto do computador, e a página não funcionaria.
+2. **A data prevista pode ficar antes da data de saída.** Se o sistema travasse isso, o seu teste final ("mudei a data prevista para ontem") não poderia ser feito.
+3. **Incluí os botões "Exportar cópia" e "Restaurar cópia".** Eles protegem contra perder tudo se alguém limpar os dados do navegador. Não estavam nos requisitos: são uma proteção que nasceu da escolha de guardar os dados no navegador.
+
+**Agora: etapa 6 — Gravar**
+O documento está abaixo. Ele **não foi gravado** em lugar nenhum, porque estamos no chat da web. Para guardar:
+1. Copie tudo a partir de `# DESIGN: EMPRESTIMO_NOTEBOOKS`.
+2. Cole num arquivo chamado `DESIGN_EMPRESTIMO_NOTEBOOKS.md`.
+3. Deixe esse arquivo junto com o BRAINSTORM e o DEFINE.
+
+---
+
+# DESIGN: EMPRESTIMO_NOTEBOOKS
+
+> Technical design for implementing EMPRESTIMO_NOTEBOOKS
+
+## Metadata
+
+| Attribute | Value |
+|---|---|
+| **Feature** | EMPRESTIMO_NOTEBOOKS |
+| **Date** | 2026-11-14 |
+| **Author** | SDD Design by RDD |
+| **BRAINSTORM** | `BRAINSTORM_EMPRESTIMO_NOTEBOOKS.md` |
+| **DEFINE** | `DEFINE_EMPRESTIMO_NOTEBOOKS.md` |
+| **UX REVIEW** | `N/A` |
+| **LLM Prompts** | false |
+| **Status** | Ready for Build |
+
+---
+
+## Architecture Overview
+
+```text
+                 Chrome (computador da gerente) — página aberta via file://
+ ┌──────────────────────────────────────────────────────────────────────────┐
+ │                                                                          │
+ │  Gerente ──cliques/formulário──▶ ┌──────────────┐                        │
+ │                                  │   index.html │ (estrutura da página)  │
+ │                                  │ + estilo.css │ (linha atrasada=vermelho)
+ │                                  └──────┬───────┘                        │
+ │                                         │ eventos                        │
+ │                                         ▼                                │
+ │                                  ┌──────────────┐                        │
+ │       ┌──── mensagens/lista ◀────│   tela.js    │                        │
+ │       │                          │ (UI: desenha │                        │
+ │       ▼                          │  e escuta)   │                        │
+ │   Gerente vê                     └──┬────────┬──┘                        │
+ │   a lista                           │        │                           │
+ │                         regras puras│        │ carregar / salvar /       │
+ │                                     ▼        ▼ exportar / importar       │
+ │                          ┌────────────┐  ┌─────────────────┐             │
+ │                          │ regras.js  │  │ armazenamento.js│             │
+ │                          │ (saída,    │  │ (JSON ⇄         │             │
+ │                          │ volta,     │  │  localStorage)  │             │
+ │                          │ atraso)    │  └────────┬────────┘             │
+ │                          └─────┬──────┘           │                      │
+ │                                │ lê               ▼                      │
+ │                          ┌─────┴──────┐  ┌─────────────────┐             │
+ │                          │ config.js  │  │  localStorage   │             │
+ │                          │ (6 notebooks,│ │ chave           │             │
+ │                          │  chave)    │  │ emprestimo-     │             │
+ │                          └────────────┘  │ notebooks:v1    │             │
+ │                                          └─────────────────┘             │
+ │                                                   ▲   │                  │
+ │                                     Restaurar ────┘   └──▶ Exportar      │
+ │                                     (arquivo .json)       (arquivo .json)│
+ └──────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Components
+
+| Component | Purpose | Technology / Pattern | Inputs | Outputs | Dependencies |
+|---|---|---|---|---|---|
+| Config | Lista fixa dos 6 notebooks e nomes das chaves de armazenamento | JS clássico, objeto global `EmprestimoNotebooks.config` | — | Constantes | Nenhuma |
+| Regras | Regras de negócio puras: registrar saída, registrar volta, editar data prevista, detectar atraso, validar formato do estado | JS clássico (IIFE), funções puras que retornam `{ ok, estado \| erro }` | Estado atual, dados do formulário, data de hoje | Novo estado ou erro legível | Config |
+| Armazenamento | Ler/gravar o estado no `localStorage`; exportar/importar cópia em `.json` | JS clássico, `localStorage`, `JSON`, `Blob`, `FileReader` | Chave, estado, arquivo escolhido | Estado carregado, confirmação ou erro | Config, Regras (validação) |
+| Tela | Desenhar a lista dos 6 notebooks; formulário de saída; botões de volta e de editar data; área de mensagens | JS clássico + DOM (`textContent`, `classList`) | Eventos do usuário, estado | DOM atualizado, mensagens | Regras, Armazenamento |
+| Página | Estrutura HTML e estilo; carrega os scripts na ordem certa | HTML5 + CSS | — | Página exibida | Todos os scripts, estilo.css |
+| Testes automáticos | Verificar regras e armazenamento sem tocar nos dados reais | Página `testes.html` + `testes.js`, sem framework | Funções de Regras e Armazenamento | "N de N testes passaram" na tela | Config, Regras, Armazenamento |
+
+---
+
+## Key Decisions
+
+### Decision 1: Página única no navegador, sem servidor, com dados no `localStorage`
+
+| Attribute | Value |
+|---|---|
+| **Status** | Accepted |
+| **Date** | 2026-11-14 |
+| **Source** | technical clarification (usuário) + BRAINSTORM (Selected Approach) |
+
+**Context:** O sistema é usado só pela gerente, no computador dela, sem login. Não havia código nem infraestrutura.
+
+**Choice:** HTML + JavaScript puro, aberto no Chrome por `file://`. O estado fica no `localStorage` do Chrome.
+
+**Rationale:** Não exige instalação, servidor nem internet. Atende "só a gerente usa, no computador dela".
+
+**Alternatives Rejected:**
+1. Google Sheets + Apps Script: depende de internet e de conta, e é mais difícil de testar.
+2. Python + banco SQLite local: exige instalar e iniciar um programa, o que é estrutura demais para 6 notebooks.
+
+**Consequences:**
+- Os dados existem só naquele Chrome, naquele computador. Abrir em outro navegador mostra a lista vazia.
+- Limpar os dados de navegação do Chrome apaga o histórico. Por isso existe a Decision 6.
+- Custo zero de operação e uso imediato.
+
+### Decision 2: Scripts clássicos com um objeto global, sem módulos ES
+
+| Attribute | Value |
+|---|---|
+| **Status** | Accepted |
+| **Date** | 2026-11-14 |
+| **Source** | technical clarification (consequência da Decision 1) |
+
+**Context:** O Chrome bloqueia `<script type="module">` em páginas abertas por `file://`, porque a origem `null` é barrada pelo CORS.
+
+**Choice:**
+- Cada arquivo `.js` é uma IIFE que pendura funções em `window.EmprestimoNotebooks`.
+- O `index.html` carrega os arquivos com `<script src>` comuns, nesta ordem: config, regras, armazenamento, tela.
+
+**Rationale:** Funciona com dois cliques no arquivo, sem servidor.
+
+**Alternatives Rejected:**
+1. Módulos ES (`import`/`export`): não carregam em `file://` no Chrome.
+2. Um único `index.html` com todo o JS embutido: impede que `testes.html` reaproveite as mesmas regras.
+
+**Consequences:**
+- A ordem das tags `<script>` importa e está fixada no manifest.
+- Regras e armazenamento ficam testáveis isoladamente.
+
+### Decision 3: Regras puras separadas da tela e do armazenamento
+
+| Attribute | Value |
+|---|---|
+| **Status** | Accepted |
+| **Date** | 2026-11-14 |
+| **Source** | technical clarification |
+
+**Context:** Os três Acceptance Tests dependem de regras (bloquear saída duplicada, detectar atraso) que precisam ser verificáveis sem clicar na tela.
+
+**Choice:** `regras.js` não acessa DOM nem `localStorage`. Recebe o estado e a data de hoje, e devolve `{ ok: true, estado }` ou `{ ok: false, erro }`.
+
+**Rationale:** Permite testes automáticos simples em `testes.html` e deixa a tela fina.
+
+**Alternatives Rejected:**
+1. Lógica dentro dos handlers de clique: só seria testável manualmente.
+
+**Consequences:**
+- Um arquivo a mais.
+- AT-002 e AT-003 ganham teste automático além do manual.
+
+### Decision 4: Reler o armazenamento antes de cada operação
+
+| Attribute | Value |
+|---|---|
+| **Status** | Accepted |
+| **Date** | 2026-11-14 |
+| **Source** | technical clarification |
+
+**Context:** Se a página estiver aberta em duas abas, uma aba pode gravar por cima da outra. Isso pode criar dois empréstimos ativos do mesmo notebook, o que viola um MUST.
+
+**Choice:**
+- Toda operação (saída, volta, editar data, restaurar) carrega o estado do `localStorage`, aplica a regra e grava.
+- A tela também escuta o evento `storage` para se redesenhar quando outra aba mudar os dados.
+
+**Rationale:** Garante que a recusa de saída duplicada use sempre o dado mais recente.
+
+**Alternatives Rejected:**
+1. Manter o estado só em memória e gravar ao final: abre espaço para sobrescrita entre abas.
+
+**Consequences:**
+- Uma leitura extra por clique, irrelevante para 6 notebooks.
+
+### Decision 5: Datas como texto `AAAA-MM-DD` no fuso local; atraso = prevista anterior a hoje; data prevista editável sem trava
+
+| Attribute | Value |
+|---|---|
+| **Status** | Accepted |
+| **Date** | 2026-11-14 |
+| **Source** | DEFINE (AT-003 e Verify Gate) + technical clarification |
+
+**Context:**
+- AT-003 diz "a data prevista já passou".
+- O Verify Gate pede "mudei a data prevista para ontem" logo depois de registrar a saída.
+
+**Choice:**
+- Datas são guardadas como `AAAA-MM-DD`, o formato do `<input type="date">`.
+- "Hoje" é calculado no fuso local do computador.
+- Um empréstimo está atrasado quando não houve volta e `dataPrevista < hoje`. Vencer hoje ainda não é atraso.
+- A data prevista de um empréstimo ativo pode ser editada.
+- Não há trava "prevista ≥ saída".
+
+**Rationale:**
+- Texto `AAAA-MM-DD` compara corretamente em ordem alfabética e evita erros de fuso.
+- Sem a edição, o Verify Gate não pode ser executado.
+
+**Alternatives Rejected:**
+1. Usar `Date`/timestamps UTC: arrisca mudar o dia perto da meia-noite.
+2. Proibir data prevista anterior à saída: bloquearia o Verify Gate.
+
+**Consequences:**
+- Um relógio errado no computador gera atraso errado (ver Risks).
+- A gerente pode digitar uma data prevista incoerente. Isso foi aceito por simplicidade.
+
+### Decision 6: Exportar e restaurar cópia em arquivo `.json`
+
+| Attribute | Value |
+|---|---|
+| **Status** | Accepted |
+| **Date** | 2026-11-14 |
+| **Source** | technical clarification (mitigação proposta na fase de decisões, sem objeção do usuário) |
+
+**Context:** Com a Decision 1, limpar os dados do Chrome apaga tudo.
+
+**Choice:**
+- O botão "Exportar cópia" baixa `emprestimos-AAAA-MM-DD.json`.
+- O botão "Restaurar cópia" lê um arquivo desses, valida o formato e substitui os dados atuais após confirmação.
+
+**Rationale:** É a forma mais simples de backup sem servidor.
+
+**Alternatives Rejected:**
+1. Sem backup: risco de perda total sem saída.
+2. Sincronizar com a nuvem: exigiria login e integração, que estão Out of Scope.
+
+**Consequences:**
+- O backup depende de a gerente lembrar de exportar. O LEIA-ME orienta isso.
+- Mais dois botões e dois testes.
+
+---
+
+## File Manifest
+
+Caminhos propostos para projeto novo (greenfield); não foram observados num projeto existente. Pasta raiz: `emprestimo-notebooks/`.
+
+| # | File | Action | Purpose | Agent / Owner | Dependencies |
+|---:|---|---|---|---|---|
+| 1 | `emprestimo-notebooks/js/config.js` | Create | Cria `window.EmprestimoNotebooks`; lista dos 6 notebooks; chaves de armazenamento (real e de teste) | (general) | None |
+| 2 | `emprestimo-notebooks/js/regras.js` | Create | `hojeISO`, `emprestimoAtivo`, `registrarSaida`, `registrarVolta`, `editarDataPrevista`, `estaAtrasado`, `estadoValido`, `estadoVazio` | (general) | 1 |
+| 3 | `emprestimo-notebooks/js/armazenamento.js` | Create | `carregar`, `salvar`, `exportar`, `importar` (com validação via regras) | (general) | 1, 2 |
+| 4 | `emprestimo-notebooks/js/tela.js` | Create | Desenha a lista, trata formulário/botões, mostra mensagens, escuta evento `storage` | (general) | 2, 3 |
+| 5 | `emprestimo-notebooks/css/estilo.css` | Create | Layout da tabela; classe `.atrasado` em vermelho; estilo das mensagens de erro/sucesso | (general) | None |
+| 6 | `emprestimo-notebooks/index.html` | Create | Estrutura da página; carrega 5 e os scripts na ordem 1→2→3→4 | (general) | 1, 2, 3, 4, 5 |
+| 7 | `emprestimo-notebooks/testes/testes.js` | Create | Casos de teste de regras e armazenamento (usa a chave de teste) | (general) | 1, 2, 3 |
+| 8 | `emprestimo-notebooks/testes/testes.html` | Create | Executa 7 no Chrome e mostra "N de N testes passaram" | (general) | 1, 2, 3, 7 |
+| 9 | `emprestimo-notebooks/CHECKLIST_VERIFY.md` | Create | Checklist manual-ux do Verify Gate (AT-001 a AT-003) para assinar | (general) | 6 |
+| 10 | `emprestimo-notebooks/LEIA-ME.md` | Create | Como abrir no Chrome, como exportar/restaurar cópia, avisos sobre limpar dados do navegador | (general) | 6 |
+
+**Total Files:** 10
+
+### Agent Assignment Rationale
+
+| Agent / Owner | Files Assigned | Why |
+|---|---|---|
+| (general) | 1–10 | Projeto pequeno, uma só tecnologia (HTML/CSS/JS); nenhum catálogo de agentes especializados disponível |
+
+**Agent Discovery:** Not available
+
+---
+
+## Code Patterns
+
+### Pattern 1: Namespace global e configuração (`js/config.js`)
+
+```javascript
+(function () {
+  'use strict';
+  var ns = (window.EmprestimoNotebooks = window.EmprestimoNotebooks || {});
+  ns.config = {
+    chaveArmazenamento: 'emprestimo-notebooks:v1',
+    chaveTeste: 'emprestimo-notebooks:teste',
+    notebooks: [
+      { id: 'nb1', nome: 'Notebook 1' },
+      { id: 'nb2', nome: 'Notebook 2' },
+      { id: 'nb3', nome: 'Notebook 3' },
+      { id: 'nb4', nome: 'Notebook 4' },
+      { id: 'nb5', nome: 'Notebook 5' },
+      { id: 'nb6', nome: 'Notebook 6' }
+    ]
+  };
+})();
+```
+
+### Pattern 2: Regra pura com resultado `{ ok, ... }` (`js/regras.js`)
+
+```javascript
+(function (ns) {
+  'use strict';
+
+  function hojeISO(agora) {
+    var d = agora || new Date();
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  function emprestimoAtivo(estado, notebookId) {
+    return estado.emprestimos.find(function (e) {
+      return e.notebookId === notebookId && e.dataVolta === null;
+    }) || null;
+  }
+
+  function registrarSaida(estado, dados) {
+    var funcionario = (dados.funcionario || '').trim();
+    if (!funcionario) return { ok: false, erro: 'Informe o nome do funcionário.' };
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dados.dataPrevista || '')) {
+      return { ok: false, erro: 'Informe a data prevista de volta.' };
+    }
+    var ativo = emprestimoAtivo(estado, dados.notebookId);
+    if (ativo) {
+      return { ok: false, erro: 'Este notebook já está emprestado para ' + ativo.funcionario + '.' };
+    }
+    var novo = {
+      id: Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8),
+      notebookId: dados.notebookId,
+      funcionario: funcionario.slice(0, 80),
+      dataSaida: dados.dataSaida || hojeISO(),
+      dataPrevista: dados.dataPrevista,
+      dataVolta: null
+    };
+    return { ok: true, estado: { versao: 1, emprestimos: estado.emprestimos.concat([novo]) } };
+  }
+
+  function estaAtrasado(emprestimo, hoje) {
+    return emprestimo.dataVolta === null && emprestimo.dataPrevista < hoje;
+  }
+
+  ns.regras = { hojeISO: hojeISO, emprestimoAtivo: emprestimoAtivo,
+                registrarSaida: registrarSaida, estaAtrasado: estaAtrasado };
+})(window.EmprestimoNotebooks);
+```
+
+### Pattern 3: Armazenamento que nunca apaga dado corrompido (`js/armazenamento.js`)
+
+```javascript
+(function (ns) {
+  'use strict';
+
+  function carregar(chave) {
+    var bruto;
+    try { bruto = window.localStorage.getItem(chave); }
+    catch (e) { return { ok: false, erro: 'armazenamento-indisponivel' }; }
+    if (bruto === null) return { ok: true, estado: ns.regras.estadoVazio() };
+    try {
+      var estado = JSON.parse(bruto);
+      if (!ns.regras.estadoValido(estado)) throw new Error('formato');
+      return { ok: true, estado: estado };
+    } catch (e) {
+      return { ok: false, erro: 'dados-corrompidos', bruto: bruto };
+    }
+  }
+
+  function salvar(chave, estado) {
+    try {
+      window.localStorage.setItem(chave, JSON.stringify(estado));
+      return { ok: true };
+    } catch (e) {
+      return { ok: false, erro: 'falha-ao-gravar' };
+    }
+  }
+
+  ns.armazenamento = { carregar: carregar, salvar: salvar };
+})(window.EmprestimoNotebooks);
+```
+
+### Pattern 4: Operação na tela (reler → regra → gravar → redesenhar) e desenho seguro
+
+```javascript
+function aoRegistrarSaida(dados) {
+  var lido = ns.armazenamento.carregar(ns.config.chaveArmazenamento);
+  if (!lido.ok) return mostrarErro(mensagemDoErro(lido.erro));
+  var r = ns.regras.registrarSaida(lido.estado, dados);
+  if (!r.ok) return mostrarErro(r.erro);
+  var g = ns.armazenamento.salvar(ns.config.chaveArmazenamento, r.estado);
+  if (!g.ok) return mostrarErro(mensagemDoErro(g.erro));
+  desenhar(r.estado);
+  mostrarSucesso('Saída registrada.');
+}
+
+// Nunca usar innerHTML com dados digitados:
+celulaNome.textContent = emprestimo.funcionario;
+linha.classList.toggle('atrasado', ns.regras.estaAtrasado(emprestimo, ns.regras.hojeISO()));
+```
+
+### Pattern 5: Teste sem framework (`testes/testes.js`)
+
+```javascript
+var resultados = [];
+function teste(nome, fn) {
+  try { fn(); resultados.push({ nome: nome, ok: true }); }
+  catch (e) { resultados.push({ nome: nome, ok: false, erro: e.message }); }
+}
+function igual(obtido, esperado, msg) {
+  if (obtido !== esperado) throw new Error((msg || '') + ' esperado=' + esperado + ' obtido=' + obtido);
+}
+
+teste('AT-002: recusa saída de notebook emprestado e diz com quem está', function () {
+  var R = window.EmprestimoNotebooks.regras;
+  var e1 = R.registrarSaida(R.estadoVazio(), { notebookId: 'nb1', funcionario: 'Ana', dataPrevista: '2026-11-20' });
+  var e2 = R.registrarSaida(e1.estado, { notebookId: 'nb1', funcionario: 'Bruno', dataPrevista: '2026-11-21' });
+  igual(e2.ok, false);
+  igual(e2.erro.indexOf('Ana') >= 0, true, 'mensagem cita Ana');
+});
+```
+
+---
+
+## Data Flow
+
+```text
+1. Gerente abre index.html no Chrome (file://)
+   │  tela.js → armazenamento.carregar(chave)
+   │  ├─ vazio            → estado = { versao: 1, emprestimos: [] }
+   │  ├─ válido           → estado lido
+   │  └─ corrompido/indisp.→ mensagem de erro; botões de gravação desativados;
+   │                         nada é sobrescrito (só "Restaurar cópia" fica ativo)
+   ▼
+2. tela.desenhar(estado)
+   │  para cada um dos 6 notebooks de config:
+   │    ativo = regras.emprestimoAtivo(...)
+   │    sem ativo → "Disponível" + formulário de saída
+   │    com ativo → nome, data prevista, botões "Registrar volta" / "Alterar data"
+   │                linha com .atrasado se regras.estaAtrasado(ativo, hojeISO())
+   ▼
+3. Gerente registra a SAÍDA (notebook, funcionário, data de saída [padrão hoje], data prevista)
+   │  reler armazenamento → regras.registrarSaida
+   │  ├─ erro (campo vazio / já emprestado a X) → mensagem; nada gravado   [AT-002]
+   │  └─ ok → armazenamento.salvar → desenhar → "Saída registrada."        [AT-001]
+   ▼
+4. Gerente ALTERA DATA PREVISTA ou registra VOLTA
+   │  reler → regras.editarDataPrevista / regras.registrarVolta(dataVolta = hoje)
+   │  → salvar → desenhar (linha vermelha se prevista < hoje)              [AT-003]
+   ▼
+5. Outra aba mudou os dados → evento "storage" → carregar → desenhar
+   ▼
+6. Backup: "Exportar cópia" → baixa emprestimos-AAAA-MM-DD.json
+           "Restaurar cópia" → FileReader → JSON.parse → regras.estadoValido
+              ├─ inválido → mensagem; dados atuais intactos
+              └─ válido   → confirmação → salvar → desenhar
+```
+
+---
+
+## Integration Points
+
+| External System | Integration Type | Authentication | Direction | Failure / Retry |
+|---|---|---|---|---|
+| `localStorage` do Chrome (local, não é sistema externo de rede) | API do navegador | N/A | bidirectional | Indisponível ou cheio: mensagem na tela, nada gravado, sem retry automático; dado corrompido nunca é sobrescrito automaticamente |
+| Sistema de arquivos (download/upload da cópia) | API do navegador (`Blob`, `FileReader`) | N/A | bidirectional | Arquivo inválido: recusado com mensagem; dados atuais preservados |
+
+Nenhuma integração de rede.
+
+---
+
+## Testing Strategy
+
+| Test Type | Scope / Requirement | Files | Tools | Pass Signal |
+|---|---|---|---|---|
+| Unit | Saída válida; recusa de saída duplicada com nome (AT-002); campos obrigatórios; volta libera o notebook; edição de data prevista; `estaAtrasado` (prevista ontem = true, hoje = false, com volta = false) (AT-003); `estadoValido` rejeita formatos errados | `emprestimo-notebooks/testes/testes.js` | `testes.html` aberto no Chrome, sem framework | Página mostra "N de N testes passaram" e nenhuma linha vermelha |
+| Integration | `salvar` → `carregar` devolve o mesmo estado; JSON corrompido devolve `dados-corrompidos` sem apagar; importar arquivo inválido mantém dados — tudo usando `chaveTeste`, que é limpa ao final | `emprestimo-notebooks/testes/testes.js` | `testes.html` no Chrome | Mesmos casos verdes; chave real `emprestimo-notebooks:v1` intocada |
+| E2E / Verify Gate | AT-001, AT-002, AT-003 conforme `manual_fallback` do DEFINE | `emprestimo-notebooks/CHECKLIST_VERIFY.md` | manual-ux no Chrome do computador da gerente | Checklist assinado |
+
+---
+
+## Error Handling
+
+| Error Type | Detection | Handling Strategy | Retry? | Observability |
+|---|---|---|---|---|
+| Campo obrigatório vazio (funcionário, data prevista) | `regras.registrarSaida` retorna `ok:false` | Mensagem na área de avisos; nada gravado | N/A | Mensagem na tela |
+| Saída de notebook já emprestado | `emprestimoAtivo` encontra ativo | Recusa com "já está emprestado para {nome}" | N/A | Mensagem na tela |
+| Volta/edição de notebook sem empréstimo ativo (ex.: outra aba já registrou) | Regra não acha ativo após releitura | Mensagem "este notebook já foi devolvido"; redesenha | N/A | Mensagem na tela |
+| `localStorage` indisponível (bloqueado nas configurações) | Exceção no `getItem`/`setItem` | Mensagem explicando que o Chrome está bloqueando o armazenamento; ações desativadas | Não | Mensagem + `console.error('[emprestimos]', ...)` |
+| Falha ao gravar (cota) | Exceção no `setItem` | Mensagem; estado anterior permanece | Não | Mensagem + `console.error` |
+| Dados gravados corrompidos | `JSON.parse` falha ou `estadoValido` false | Não sobrescreve; desativa gravação; sugere "Restaurar cópia" | Não | Mensagem + `console.error` |
+| Arquivo de cópia inválido | Parse ou validação falha | Recusa; dados atuais intactos | Não | Mensagem na tela |
+| Conflito entre abas | Releitura antes de cada operação + evento `storage` | Regra aplicada sobre o dado mais recente | N/A | Redesenho automático |
+
+---
+
+## Configuration
+
+| Config Key | Type | Source / Default | Sensitive? | Description |
+|---|---|---|---|---|
+| `config.chaveArmazenamento` | string | `js/config.js` / `'emprestimo-notebooks:v1'` | No | Chave dos dados reais no `localStorage` |
+| `config.chaveTeste` | string | `js/config.js` / `'emprestimo-notebooks:teste'` | No | Chave usada só pelos testes; nunca a real |
+| `config.notebooks` | array `{ id, nome }` | `js/config.js` / Notebook 1 a 6 | No | Lista fixa dos notebooks; nomes podem ser trocados por etiqueta/patrimônio editando o arquivo (ids não mudam) |
+
+Nenhum segredo existe nem é necessário.
+
+---
+
+## Security Considerations
+
+- **Sem login (Out of Scope):** qualquer pessoa que use o Chrome daquele computador vê e altera os dados. Isso foi aceito no DEFINE. O LEIA-ME recomenda manter a sessão do computador bloqueada.
+- **Dado pessoal mínimo:** só o nome do funcionário e as datas. O arquivo exportado contém esses nomes e deve ser guardado em pasta da própria gerente.
+- **Injeção de conteúdo na página:** nomes digitados ou vindos de cópia restaurada são exibidos só com `textContent`, nunca `innerHTML`.
+- **Cópia restaurada é dado não confiável:** é validada por `estadoValido` (tipos, formato de data, ids de notebook existentes em config, no máximo um ativo por notebook) antes de substituir qualquer dado.
+- **Sem rede:** a página não carrega bibliotecas nem fontes externas e não envia nada para fora.
+
+---
+
+## Observability
+
+| Aspect | Implementation | Signal / Why |
+|---|---|---|
+| Logging | `console.error('[emprestimos]', código, detalhe)` nas falhas de armazenamento e restauração | Diagnosticar no DevTools do Chrome por que algo não gravou |
+| Metrics | N/A — uso local por uma pessoa; sem servidor | — |
+| Tracing | N/A | — |
+| Sinal na tela | Área de mensagens (sucesso/erro) e linha em vermelho para atraso | É o próprio sinal do Verify Gate (AT-001 a AT-003) |
+| Saúde dos testes | `testes.html` mostra "N de N testes passaram" | Confirma as regras antes do checklist manual |
+
+---
+
+## Requirements Traceability
+
+| Requirement / AT | Design Element | Test / Gate |
+|---|---|---|
+| MUST: registrar saída e volta | `regras.registrarSaida`, `regras.registrarVolta`, `tela.js`, `armazenamento.js` (#2, #3, #4) | Unit (`testes.js` #7) + AT-001 no checklist (#9) |
+| MUST: listar com quem está cada notebook, atrasados em vermelho | `tela.desenhar`, `regras.estaAtrasado`, `.atrasado` em `estilo.css` (#2, #4, #5); Decision 5 | Unit de atraso + AT-001/AT-003 no checklist |
+| MUST: recusar saída de notebook já emprestado | `regras.emprestimoAtivo` + releitura antes de gravar (#2, #4); Decision 4 | Unit AT-002 + AT-002 no checklist |
+| AT-001 | Fluxo passo 3 → `desenhar` mostra nome e data prevista | `CHECKLIST_VERIFY.md` (#9) |
+| AT-002 | Erro "já está emprestado para {nome}" | Unit + `CHECKLIST_VERIFY.md` |
+| AT-003 | `editarDataPrevista` + `estaAtrasado` (prevista < hoje) | Unit + `CHECKLIST_VERIFY.md` |
+| Verify Gate (manual-ux, checklist assinado) | `CHECKLIST_VERIFY.md` reproduz o `manual_fallback` | Checklist assinado |
+
+---
+
+## Risks and Mitigations
+
+| Risk | Impact | Mitigation | Residual Risk |
+|---|---|---|---|
+| Limpeza dos dados de navegação apaga tudo | Perda do controle atual | Exportar/restaurar cópia (Decision 6); aviso no LEIA-ME | Perda desde a última cópia exportada |
+| Página aberta em outro navegador ou computador | Lista aparece vazia e a gerente acha que perdeu tudo | LEIA-ME explica que os dados vivem só naquele Chrome; restaurar cópia resolve | Baixo |
+| Relógio do computador errado | Atrasos marcados errado | Mostrar "Hoje: DD/MM/AAAA" no topo da página | Baixo |
+| Duas abas abertas | Sobrescrita ou saída duplicada | Releitura antes de cada operação + evento `storage` (Decision 4) | Muito baixo |
+| Chrome bloquear armazenamento local em `file://` por configuração da empresa | Página não grava | Mensagem clara ao abrir; LEIA-ME orienta liberar ou servir de outra forma (fora do escopo) | Depende da política de TI |
+
+---
+
+## Advisor Ledger
+
+None — no formal external design review.
+
+---
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---|---|---|---|
+| 1.0 | 2026-11-14 | SDD Design by RDD | Initial version |
+
+---
+
+## Next Step
+
+Execute o **SDD Build by RDD**.
+
+---
+
+**Sua decisão** — **O DESIGN pode seguir assim para o Build?**
+- **Sim, pode seguir**: você guarda o arquivo e leva este documento mais o DEFINE para a próxima fase, o Build, que constrói a partir dele.
+- **Ajustar algo antes**: diga o quê. Por exemplo: tirar os botões de cópia, travar a data prevista, ou usar uma lista fixa com os nomes dos 12 funcionários. Eu atualizo o documento.
+- **Não sei**: eu explico, em linguagem do dia a dia, o que muda para a gerente em cada um desses pontos.
+
+**Próximo passo:** guardar o arquivo `DESIGN_EMPRESTIMO_NOTEBOOKS.md` e, quando quiser, iniciar o SDD Build by RDD.
+
+===== veredito =====
+voltas: 2 · entregue: sim
+✅ nenhum achado
+RESULTADO: PASSOU
+rc=0

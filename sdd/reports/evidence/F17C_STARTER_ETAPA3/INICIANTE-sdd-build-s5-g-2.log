@@ -1,0 +1,210 @@
+$ OPENROUTER_API_KEY=<chave> python3 -I iniciante_or.py <sdd-build em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/gerado-head/sdd-build> INICIANTE-roteiro.json sdd-build s5-g-2 INICIANTE-sdd-build-s5-g-2.log   # modelo anthropic/claude-opus-5.5, sem pasta, sem ferramenta
+
+----- volta 1 — aluno -----
+Faça o build com estes três documentos. Estou no chat da web: não tenho o projeto aqui, só estes documentos.
+
+# BRAINSTORM: EMPRESTIMO_NOTEBOOKS
+
+## Initial Idea
+O escritório tem 6 notebooks que os funcionários levam para casa ou para clientes. Hoje o controle é um caderno: ninguém sabe com quem está cada notebook nem quando volta.
+
+## Discovery Questions & Answers
+1. Quem usa? A gerente (registra a saída e a volta) e os 12 funcionários (só pedem).
+2. O que dói? Notebook que não volta no prazo e ninguém percebe; dois funcionários querendo o mesmo notebook no mesmo dia.
+3. Pronto quando? A gerente abre uma tela e vê, por notebook, com quem está e a data prevista de volta, e os atrasados aparecem em vermelho.
+
+## Selected Approach
+Uma planilha web simples (uma página com a lista dos 6 notebooks), sem login na primeira versão: só a gerente usa, no computador dela.
+
+## Features Removed (YAGNI)
+- reserva antecipada pelo funcionário;
+- aviso por e-mail;
+- controle de acessórios (carregador, mouse).
+
+## Suggested Requirements for /define
+- registrar saída (notebook, funcionário, data, data prevista de volta);
+- registrar volta;
+- listar com quem está cada notebook; atrasados destacados;
+- impedir registrar a saída de um notebook que já está emprestado.
+
+## Next Step
+Execute o **SDD Define by RDD**.
+
+# DEFINE: EMPRESTIMO_NOTEBOOKS
+
+## Problem Statement
+O controle dos 6 notebooks do escritório é um caderno; notebook atrasado passa despercebido.
+
+## Target Users
+| User | Pain Point |
+|---|---|
+| Gerente | não sabe com quem está cada notebook |
+
+## Goals
+| Priority | Goal |
+|---|---|
+| MUST | registrar saída e volta |
+| MUST | listar com quem está cada notebook, atrasados em vermelho |
+| MUST | recusar a saída de notebook já emprestado |
+
+## Acceptance Tests
+| ID | Padrão | Critério | Gate |
+|---|---|---|---|
+| AT-001 | Event-driven | When a gerente registra a saída, the system shall mostrar o notebook como emprestado com o nome e a data prevista | manual-ux |
+| AT-002 | Unwanted | If a gerente tenta registrar a saída de um notebook emprestado, then the system shall recusar e dizer com quem está | manual-ux |
+| AT-003 | State-driven | While a data prevista já passou, the system shall mostrar o empréstimo em vermelho | manual-ux |
+
+## Verify Gate
+```yaml
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist assinado"
+  threshold: "—"
+  manual_fallback: "Eu abri a página, registrei a saída do notebook 1 para a Ana e vi o notebook 1 com o nome dela. Eu tentei registrar a saída do notebook 1 de novo e vi a recusa dizendo que está com a Ana. Eu mudei a data prevista para ontem e vi a linha em vermelho."
+```
+
+## Technical Context
+| Aspect | Value |
+|---|---|
+| LLM Prompts | false |
+
+## Out of Scope
+Reserva, e-mail, acessórios, login.
+
+## Next Step
+Execute o **SDD Design by RDD**.
+
+# DESIGN: EMPRESTIMO_NOTEBOOKS
+
+## Architecture Overview
+```text
+index.html → app.js → localStorage do navegador
+```
+
+## File Manifest
+| # | Arquivo | Ação | Propósito | Dependências |
+|---|---|---|---|---|
+| 1 | `index.html` | Create | a página com a lista e o formulário | — |
+| 2 | `app.js` | Create | registrar saída e volta, recusar duplicado, destacar atrasado | 1 |
+
+**Total Files:** 2
+
+## Next Step
+Execute o **SDD Build by RDD**.
+----- volta 1 — skill (anthropic/claude-opus-5.5, US$ 0.1543) -----
+sdd-build v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status:** `Build: ⏸️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+(Build é a fase em que o que foi desenhado vira arquivos de verdade. "Tarefas 0/2" conta os arquivos já construídos e conferidos. "Verify Gate" é a conferência final combinada no DEFINE; sem ela passar, o build não termina. "Relatório" é o documento desta fase, com a prova de cada conferência.)
+
+**O que foi feito**
+- Li os três documentos inteiros. Eles combinam entre si:
+  - nada de inteligência artificial dentro do sistema;
+  - a lista do design tem os 2 arquivos, `index.html` e `app.js`;
+  - nenhum banco de dados para preparar, porque os dados ficam guardados no próprio navegador.
+- A conferência final é sua: você abre a página e confere os 3 itens da lista do DEFINE (saída para a Ana, recusa da segunda saída, linha em vermelho).
+- Nenhum arquivo foi criado.
+
+**Agora: etapa 1 — Plano (parada)**
+Parei antes da primeira tarefa porque, aqui no chat da web, eu não tenho onde gravar arquivos. Não vou fingir que construí algo só a partir dos documentos.
+
+Há dois caminhos possíveis:
+- **Agente que grava arquivos:** eu crio os arquivos, rodo as conferências e salvo o relatório sozinho.
+- **Este chat:** eu escrevo o código aqui e você salva. Os dois arquivos são novos, então você não precisa ter o projeto aberto. Mas cada conferência depende do que você me contar que viu.
+
+**Sua decisão — Como seguimos?**
+1. **Abrir num agente que grava arquivos** (recomendado): Claude Code, Codex, Cursor ou outro.
+   1. Crie uma pasta vazia, por exemplo `emprestimo-notebooks`.
+   2. Dentro dela, crie a pasta `sdd/features/` e salve lá os três documentos, como `BRAINSTORM_EMPRESTIMO_NOTEBOOKS.md`, `DEFINE_EMPRESTIMO_NOTEBOOKS.md` e `DESIGN_EMPRESTIMO_NOTEBOOKS.md`.
+   3. Abra essa pasta no agente e peça "Faça o build com os três documentos de sdd/features/".
+   - Resultado esperado: o agente lê os documentos e te pergunta o modo de execução.
+2. **Seguir aqui no chat:**
+   - Eu escrevo os 2 arquivos, um de cada vez.
+   - Você salva cada um numa mesma pasta, abre o `index.html` no navegador e me conta o que viu.
+   - O relatório vai registrar que quem salvou e conferiu foi você.
+3. **Não sei:** responda "não sei" e eu explico com um exemplo do que você faria em cada caminho.
+
+Responda com **1**, **2** ou **3**. Um "ok" sozinho não basta, porque os caminhos mudam quem faz o quê.
+
+**O que não foi feito:** nenhum arquivo criado, nenhuma conferência rodada, nenhum relatório gerado.
+
+**Próximo passo:** com a sua escolha, eu sigo para a escolha do modo de execução (caminho 1) ou para a tarefa 1 de 2, o `index.html` (caminho 2). Se escolher o caminho 1, quando terminar, me peça de novo. Eu continuo daqui.
+
+----- volta 2 — aluno -----
+Não tenho o projeto aqui; só tenho este chat. O que eu faço?
+----- volta 2 — skill (anthropic/claude-opus-5.5, US$ 0.1392) -----
+**Status:** `Build: ✅ 1 Plano · ▶️ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+**O que foi feito**
+- Você escolheu **seguir aqui no chat**. Sem problema: os dois arquivos são novos, então você não precisa de projeto nenhum, só de uma pasta vazia no seu computador.
+- O plano tem 2 tarefas, nesta ordem:
+  1. `index.html`, a página com a lista dos 6 notebooks e o formulário;
+  2. `app.js`, a parte que registra a saída e a volta, recusa notebook já emprestado e pinta o atrasado de vermelho.
+- Nenhum arquivo foi escrito ainda.
+
+**Agora: etapa 2 — Modo**
+Antes de escrever o código, falta combinar como as tarefas rodam (o "modo de execução"). Aqui no chat só existe um jeito: **uma tarefa de cada vez, nesta conversa**. Também não há como pedir a outra IA para revisar o código antes. Para 2 arquivos simples, isso não faz falta.
+
+Em cada tarefa, o combinado é este:
+- eu escrevo o arquivo inteiro aqui;
+- você salva e me conta o que viu;
+- eu só marco a tarefa como feita com o seu relato.
+
+Para salvar, você só precisa de:
+- **um editor de texto simples**: o Bloco de Notas no Windows ou o TextEdit no Mac, este em modo "texto simples";
+- **um navegador**: Chrome, Edge ou outro.
+
+**Sua decisão — Posso começar a tarefa 1 de 2 desse jeito?**
+1. **Sim, uma de cada vez** (recomendado e o único disponível aqui): eu escrevo o `index.html` e explico, passo a passo, como salvá-lo e o que você deve ver.
+2. **Não sei**: eu mostro antes, com um exemplo, como é salvar um arquivo `.html` no Bloco de Notas.
+
+Responda com **1** ou **2**.
+
+**Próximo passo:** com o seu "1", eu escrevo o `index.html` (tarefa 1 de 2) e digo exatamente o que conferir na tela.
+
+----- volta 3 — aluno -----
+Ok. Pode me dizer o que fazer?
+----- volta 3 — skill (anthropic/claude-opus-5.5, US$ 0.1591) -----
+**Status:** `Build: ✅ 1 Plano · ▶️ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+**O que foi feito**
+- Você perguntou o que vai precisar fazer. Abaixo está o passo a passo, igual para os 2 arquivos.
+- Nenhum código foi escrito ainda.
+
+**Agora: etapa 2 — Modo**
+Você já pode fazer o passo 1. Os passos 2 a 6 valem para quando eu te mandar cada arquivo.
+
+1. **Crie uma pasta vazia** na Área de Trabalho, chamada `emprestimo-notebooks`.
+   - No Windows: botão direito na Área de Trabalho → Novo → Pasta.
+   - No Mac: botão direito na Mesa → Nova Pasta.
+   - Resultado esperado: uma pasta vazia com esse nome.
+2. **Abra o editor de texto** quando eu mandar o código.
+   - No Windows: Iniciar → digite "Bloco de Notas".
+   - No Mac: abra o TextEdit e vá em Formatar → Converter em Texto Simples.
+   - Resultado esperado: uma folha em branco, sem negrito nem fontes.
+3. **Cole o código inteiro** que eu mandar: Ctrl+V no Windows, Cmd+V no Mac.
+   - Copie pelo botão de copiar do bloco de código, para não perder nenhuma linha.
+4. **Salve com o nome exato**: Arquivo → Salvar como, dentro da pasta `emprestimo-notebooks`.
+   - No Windows: em "Tipo", escolha **Todos os arquivos**; em "Codificação", escolha **UTF-8**. Sem isso, o arquivo vira `index.html.txt` e não funciona.
+   - No Mac: se perguntar, escolha **Usar .html**.
+   - Resultado esperado: na pasta, um arquivo `index.html` com o ícone do navegador.
+5. **Abra o arquivo** com dois cliques.
+   - Resultado esperado: ele abre no navegador.
+6. **Me conte o que viu**, com uma frase ou um print. Só com o seu relato eu marco a tarefa como feita.
+
+O `app.js` segue os mesmos passos, salvo na mesma pasta. Se algo sair diferente do esperado em qualquer passo, me diga em qual passo foi e eu te ajudo dali.
+
+**Sua decisão — Posso começar a tarefa 1 de 2 (o `index.html`)?**
+1. **Sim, pode mandar**: eu escrevo o arquivo inteiro e digo o que você deve ver na tela.
+2. **Tenho uma dúvida**: escreva qual. Por exemplo, "não achei onde muda o Tipo" ou "uso Mac e não vi a opção". Eu explico antes de começar.
+
+Responda com **1** ou com a sua dúvida.
+
+**Próximo passo:** com o seu "1", eu mando o `index.html` (tarefa 1 de 2).
+
+===== veredito =====
+voltas: 3 · entregue: sim · custo: US$ 0.4526
+✅ nenhum achado
+RESULTADO: PASSOU
+rc=0

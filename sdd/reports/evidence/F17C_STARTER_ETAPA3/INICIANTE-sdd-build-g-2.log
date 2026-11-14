@@ -1,0 +1,329 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources "" --system-prompt-file <sdd-build em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/gerado-1a40424/sdd-build + references> [--resume <sessão>] <volta do roteiro>   # execução g-2
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json · modo build
+
+----- volta 1 — aluno -----
+Faça o build com estes três documentos. Estou no chat da web: não tenho o projeto aqui, só estes documentos.
+
+# BRAINSTORM: EMPRESTIMO_NOTEBOOKS
+
+## Initial Idea
+O escritório tem 6 notebooks que os funcionários levam para casa ou para clientes. Hoje o controle é um caderno: ninguém sabe com quem está cada notebook nem quando volta.
+
+## Discovery Questions & Answers
+1. Quem usa? A gerente (registra a saída e a volta) e os 12 funcionários (só pedem).
+2. O que dói? Notebook que não volta no prazo e ninguém percebe; dois funcionários querendo o mesmo notebook no mesmo dia.
+3. Pronto quando? A gerente abre uma tela e vê, por notebook, com quem está e a data prevista de volta, e os atrasados aparecem em vermelho.
+
+## Selected Approach
+Uma planilha web simples (uma página com a lista dos 6 notebooks), sem login na primeira versão: só a gerente usa, no computador dela.
+
+## Features Removed (YAGNI)
+- reserva antecipada pelo funcionário;
+- aviso por e-mail;
+- controle de acessórios (carregador, mouse).
+
+## Suggested Requirements for /define
+- registrar saída (notebook, funcionário, data, data prevista de volta);
+- registrar volta;
+- listar com quem está cada notebook; atrasados destacados;
+- impedir registrar a saída de um notebook que já está emprestado.
+
+## Next Step
+Execute o **SDD Define by RDD**.
+
+# DEFINE: EMPRESTIMO_NOTEBOOKS
+
+## Problem Statement
+O controle dos 6 notebooks do escritório é um caderno; notebook atrasado passa despercebido.
+
+## Target Users
+| User | Pain Point |
+|---|---|
+| Gerente | não sabe com quem está cada notebook |
+
+## Goals
+| Priority | Goal |
+|---|---|
+| MUST | registrar saída e volta |
+| MUST | listar com quem está cada notebook, atrasados em vermelho |
+| MUST | recusar a saída de notebook já emprestado |
+
+## Acceptance Tests
+| ID | Padrão | Critério | Gate |
+|---|---|---|---|
+| AT-001 | Event-driven | When a gerente registra a saída, the system shall mostrar o notebook como emprestado com o nome e a data prevista | manual-ux |
+| AT-002 | Unwanted | If a gerente tenta registrar a saída de um notebook emprestado, then the system shall recusar e dizer com quem está | manual-ux |
+| AT-003 | State-driven | While a data prevista já passou, the system shall mostrar o empréstimo em vermelho | manual-ux |
+
+## Verify Gate
+```yaml
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist assinado"
+  threshold: "—"
+  manual_fallback: "Eu abri a página, registrei a saída do notebook 1 para a Ana e vi o notebook 1 com o nome dela. Eu tentei registrar a saída do notebook 1 de novo e vi a recusa dizendo que está com a Ana. Eu mudei a data prevista para ontem e vi a linha em vermelho."
+```
+
+## Technical Context
+| Aspect | Value |
+|---|---|
+| LLM Prompts | false |
+
+## Out of Scope
+Reserva, e-mail, acessórios, login.
+
+## Next Step
+Execute o **SDD Design by RDD**.
+
+# DESIGN: EMPRESTIMO_NOTEBOOKS
+
+## Architecture Overview
+```text
+index.html → app.js → localStorage do navegador
+```
+
+## File Manifest
+| # | Arquivo | Ação | Propósito | Dependências |
+|---|---|---|---|---|
+| 1 | `index.html` | Create | a página com a lista e o formulário | — |
+| 2 | `app.js` | Create | registrar saída e volta, recusar duplicado, destacar atrasado | 1 |
+
+**Total Files:** 2
+
+## Next Step
+Execute o **SDD Build by RDD**.
+----- volta 1 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+sdd-build v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status:** `Build: ▶️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+- **Build** é a fase em que o que foi desenhado é construído de verdade, arquivo por arquivo.
+- **Tarefas 0/2** conta as tarefas feitas. Cada tarefa é um arquivo da lista do design, criado e conferido.
+- **Verify Gate** é a conferência final combinada no DEFINE. Aqui ela é um checklist que **você** faz na tela.
+- **Relatório** é o documento desta fase, com a prova de cada conferência.
+
+**O que foi feito**
+- Li o brainstorm, o DEFINE e o DESIGN por inteiro. Os três batem entre si.
+- O resultado é uma página web, sem login, que guarda os dados no próprio navegador da gerente.
+- Não há banco de dados, inteligência artificial nem envio de e-mail.
+- Montei o plano, que é a lista de tarefas na ordem em que uma depende da outra:
+  1. **`index.html`**: a página com a lista dos 6 notebooks e o formulário de saída e volta.
+  2. **`app.js`**: registra a saída e a volta, recusa notebook já emprestado e pinta de vermelho o que passou da data. Depende da tarefa 1.
+- Nenhum arquivo foi criado ainda.
+
+**Agora: etapa 1 — Plano**
+O build precisa de um lugar real onde os arquivos sejam gravados e de onde você possa abrir a página. O checklist final exige você clicando na página. Você disse que não tem o projeto aqui. Como os dois arquivos são novos, uma pasta vazia basta.
+
+Achei também uma lacuna no checklist final. Ele diz "mudei a data prevista para ontem", mas o design não tem um jeito de editar a data de um empréstimo. Não vou inventar essa função sem a sua decisão.
+
+**Sua decisão**
+
+**1. Onde os arquivos vão ser gravados?**
+- **(a) Pasta desta sessão (recomendado):** esta sessão tem uma pasta de trabalho onde eu consigo gravar, chamada `projeto-vazio`. Eu gravo os dois arquivos nela e confiro cada um. Depois você abre o `index.html` no navegador para fazer o checklist. Escolha esta se essa pasta estiver no seu computador.
+- **(b) Uma pasta que você cria:** eu mostro o conteúdo completo de cada arquivo. Você cria uma pasta, por exemplo `emprestimo-notebooks`, e salva os dois arquivos nela com os nomes exatos. Eu explico passo a passo. A conferência de cada tarefa passa a ser feita por você, com o que esperar na tela.
+- **(c) Parar aqui:** nada é criado. O build fica parado até você ter onde gravar.
+- **Não sei:** me diga se você vê uma pasta chamada `projeto-vazio` no seu computador, e eu te ajudo a decidir.
+
+**2. Como testar o "atrasado em vermelho"?**
+- **(a) Data no passado (recomendado):** no teste, você registra a saída já com a data prevista de ontem. Nada é acrescentado ao design. O checklist ganha uma frase ajustada, registrada no relatório.
+- **(b) Editar a data:** acrescentamos uma forma de editar a data prevista. É uma mudança no que foi desenhado, então eu atualizo o design antes de construir.
+- **Não sei:** eu sigo com a opção (a).
+
+Responda, por exemplo, "1a, 2a".
+
+**Próximo passo:** com essas duas respostas, você escolhe como as tarefas vão rodar e eu começo a tarefa 1 de 2.
+
+----- volta 2 — aluno -----
+Não tenho o projeto aqui; só tenho este chat. O que eu faço?
+----- volta 2 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Build: ▶️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+**O que foi feito**
+- Você me disse que só tem este chat. Então a pasta desta sessão (opção 1a) fica descartada, porque você não a enxerga.
+- Nenhum arquivo foi criado.
+
+**Agora: etapa 1 — Plano**
+Dá para fazer o build só com este chat. Aqui o "projeto" é só uma pasta com dois arquivos de texto, e você pode criá-la no seu computador. Eu escrevo o conteúdo de cada arquivo inteiro aqui, você salva, e a página abre no seu navegador sem instalar nada.
+
+O que você vai precisar:
+- **Um computador**, não o celular, com navegador (Chrome, Edge, Safari ou Firefox).
+- **De preferência o computador da gerente.** A página guarda os empréstimos no navegador onde ela é aberta. Se você montar em outro computador, os dados ficam nele, não no dela.
+- **Um editor de texto simples:** o Bloco de Notas no Windows, ou o TextEdit no Mac. No TextEdit há um ajuste de um clique, e eu mostro qual.
+
+O que vai acontecer, sem você fazer nada agora:
+1. Você cria uma pasta, por exemplo `emprestimo-notebooks`.
+2. Eu te dou o `index.html` inteiro. Você cola no editor e salva nessa pasta com esse nome exato.
+3. Você clica duas vezes no arquivo e me diz o que aparece na tela. Essa é a conferência da tarefa 1.
+4. O mesmo vale para o `app.js`, a tarefa 2.
+5. No fim, você faz o checklist de 3 itens na página e me conta o resultado. Esse é o Verify Gate.
+
+Como você é quem grava os arquivos, as tarefas rodam uma de cada vez, nesta conversa. Os outros modos não se aplicam aqui.
+
+**Sua decisão**
+
+**1. Seguimos com você salvando os arquivos no seu computador?**
+- **Sim (recomendado):** na próxima resposta eu te passo os passos da pasta e o primeiro arquivo inteiro.
+- **Ainda não:** nada é criado. Quando estiver no computador da gerente, me peça de novo e eu continuo daqui.
+- **Não sei:** me diga qual computador você tem (Windows ou Mac) e eu te digo se dá.
+
+**2. Como testar o "atrasado em vermelho"?**
+- **(a) Data no passado (recomendado):** no teste, você registra a saída já com a data prevista de ontem. Nada é acrescentado ao que foi desenhado.
+- **(b) Editar a data:** acrescentamos uma forma de editar a data prevista. Isso muda o design, então eu atualizo o design antes de construir.
+- **Não sei:** eu sigo com a opção (a).
+
+Responda, por exemplo, "1 sim, 2a, Windows".
+
+**Próximo passo:** com o seu "sim", te passo os passos da pasta e o `index.html` inteiro, a tarefa 1 de 2.
+
+----- volta 3 — aluno -----
+Ok. Pode me dizer o que fazer?
+----- volta 3 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status:** `Build: ✅ 1 Plano · ✅ 2 Modo · ▶️ 3 Tarefas 1/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+**O que foi feito**
+- Li o seu "ok" como sim às duas recomendações:
+  - você salva os arquivos no seu computador;
+  - o atrasado é testado registrando a saída já com a data prevista de ontem.
+- Por isso as tarefas rodam uma de cada vez, nesta conversa. Os outros modos não funcionam quando é você quem grava os arquivos.
+- Se quiser mudar alguma dessas escolhas, é só dizer.
+
+**Agora: etapa 3 — Tarefas 1/2**
+A tarefa 1 é o `index.html`, a página com o formulário e a tabela dos notebooks. Ela ainda não funciona sozinha. O `app.js`, da tarefa 2, é o que faz os botões trabalharem. Por enquanto você só vai conferir que a página aparece.
+
+### Passo 1 — Criar a pasta
+1. Na Área de Trabalho, clique com o botão direito e escolha **Nova pasta**.
+2. Dê o nome `emprestimo-notebooks`.
+
+Na tela deve aparecer uma pasta vazia com esse nome.
+
+### Passo 2 — Abrir o editor de texto
+
+**No Windows:**
+1. Abra o **Bloco de Notas**: menu Iniciar, digite "Bloco de Notas".
+
+**No Mac:**
+1. Abra o **TextEdit**.
+2. Crie um documento novo.
+3. Antes de colar, vá no menu **Formatar** e clique em **Converter em Texto Simples**. Se a opção que aparece é "Converter em Texto Formatado", o documento já está como texto simples.
+
+### Passo 3 — Colar o conteúdo
+Copie tudo o que está no quadro abaixo, da primeira à última linha, e cole no editor:
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Empréstimo de notebooks</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #222; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 18px; margin-top: 28px; }
+    form { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+    label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+    input, select, button { font-size: 14px; padding: 6px; }
+    button { cursor: pointer; }
+    #mensagem { min-height: 20px; font-weight: bold; margin-top: 12px; }
+    #mensagem.erro { color: #b00020; }
+    #mensagem.ok { color: #1b5e20; }
+    table { border-collapse: collapse; width: 100%; max-width: 960px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f2f2f2; }
+    tr.atrasado td { background: #ffd6d6; color: #b00020; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Empréstimo de notebooks</h1>
+
+  <h2>Registrar saída</h2>
+  <form id="form-saida">
+    <label>Notebook
+      <select id="notebook" required>
+        <option value="1">Notebook 1</option>
+        <option value="2">Notebook 2</option>
+        <option value="3">Notebook 3</option>
+        <option value="4">Notebook 4</option>
+        <option value="5">Notebook 5</option>
+        <option value="6">Notebook 6</option>
+      </select>
+    </label>
+    <label>Funcionário
+      <input id="funcionario" type="text" required>
+    </label>
+    <label>Data de saída
+      <input id="data-saida" type="date" required>
+    </label>
+    <label>Data prevista de volta
+      <input id="data-prevista" type="date" required>
+    </label>
+    <button type="submit">Registrar saída</button>
+  </form>
+  <p id="mensagem" role="status"></p>
+
+  <h2>Com quem está cada notebook</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Notebook</th>
+        <th>Situação</th>
+        <th>Com quem</th>
+        <th>Saída</th>
+        <th>Volta prevista</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+    <tbody id="lista">
+      <tr><td colspan="6">A lista aparece quando o arquivo app.js estiver na mesma pasta.</td></tr>
+    </tbody>
+  </table>
+
+  <script src="app.js"></script>
+</body>
+</html>
+```
+
+### Passo 4 — Salvar com o nome exato
+
+**No Windows (Bloco de Notas):**
+1. Vá em **Arquivo → Salvar como**.
+2. Escolha a pasta `emprestimo-notebooks`.
+3. Em **Tipo**, escolha **Todos os arquivos**.
+4. Em **Codificação**, escolha **UTF-8**.
+5. No nome, escreva `index.html` e clique em **Salvar**.
+
+**No Mac (TextEdit):**
+1. Vá em **Arquivo → Salvar**.
+2. Escolha a pasta `emprestimo-notebooks`.
+3. No nome, escreva `index.html`.
+4. Se aparecer a caixa "Se nenhuma extensão for fornecida, use .txt", desmarque.
+5. Clique em **Salvar**.
+6. Se ele perguntar qual extensão usar, escolha **Usar .html**.
+
+### Passo 5 — Conferir (é a conferência da tarefa 1)
+1. Abra a pasta `emprestimo-notebooks`.
+2. Clique duas vezes em `index.html`. Ele deve abrir no navegador.
+
+Você deve ver:
+- o título **Empréstimo de notebooks**;
+- quatro campos (Notebook, Funcionário, Data de saída, Data prevista de volta) e o botão **Registrar saída**;
+- uma tabela com 6 colunas e a frase *"A lista aparece quando o arquivo app.js estiver na mesma pasta."*
+
+Essa frase é esperada agora. Ela some na tarefa 2.
+
+**Sua decisão**
+
+**O que apareceu no navegador?** Responda com a letra:
+- **(a) Apareceu como descrito:** eu passo para a tarefa 2, o `app.js`.
+- **(b) Apareceu o texto do código em vez da página, ou letras estranhas no lugar dos acentos:** foi o jeito de salvar. Eu te mostro como corrigir.
+- **(c) Não consegui salvar ou não achei o arquivo:** me diga em que passo travou e se é Windows ou Mac.
+- **Não sei:** descreva o que está na tela com as suas palavras, e eu te digo se está certo.
+
+**Próximo passo:** com a sua resposta (a), te passo o `app.js` inteiro, a tarefa 2 de 2, com a conferência dele.
+
+===== veredito =====
+voltas: 3 · entregue: sim
+✅ nenhum achado
+RESULTADO: PASSOU
+rc=0

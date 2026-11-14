@@ -1,0 +1,180 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources "" --system-prompt-file <sdd-build em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/gerado-1a40424/sdd-build + references> [--resume <sessão>] <volta do roteiro>   # execução g-3
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json · modo build
+
+----- volta 1 — aluno -----
+Faça o build com estes três documentos. Estou no chat da web: não tenho o projeto aqui, só estes documentos.
+
+# BRAINSTORM: EMPRESTIMO_NOTEBOOKS
+
+## Initial Idea
+O escritório tem 6 notebooks que os funcionários levam para casa ou para clientes. Hoje o controle é um caderno: ninguém sabe com quem está cada notebook nem quando volta.
+
+## Discovery Questions & Answers
+1. Quem usa? A gerente (registra a saída e a volta) e os 12 funcionários (só pedem).
+2. O que dói? Notebook que não volta no prazo e ninguém percebe; dois funcionários querendo o mesmo notebook no mesmo dia.
+3. Pronto quando? A gerente abre uma tela e vê, por notebook, com quem está e a data prevista de volta, e os atrasados aparecem em vermelho.
+
+## Selected Approach
+Uma planilha web simples (uma página com a lista dos 6 notebooks), sem login na primeira versão: só a gerente usa, no computador dela.
+
+## Features Removed (YAGNI)
+- reserva antecipada pelo funcionário;
+- aviso por e-mail;
+- controle de acessórios (carregador, mouse).
+
+## Suggested Requirements for /define
+- registrar saída (notebook, funcionário, data, data prevista de volta);
+- registrar volta;
+- listar com quem está cada notebook; atrasados destacados;
+- impedir registrar a saída de um notebook que já está emprestado.
+
+## Next Step
+Execute o **SDD Define by RDD**.
+
+# DEFINE: EMPRESTIMO_NOTEBOOKS
+
+## Problem Statement
+O controle dos 6 notebooks do escritório é um caderno; notebook atrasado passa despercebido.
+
+## Target Users
+| User | Pain Point |
+|---|---|
+| Gerente | não sabe com quem está cada notebook |
+
+## Goals
+| Priority | Goal |
+|---|---|
+| MUST | registrar saída e volta |
+| MUST | listar com quem está cada notebook, atrasados em vermelho |
+| MUST | recusar a saída de notebook já emprestado |
+
+## Acceptance Tests
+| ID | Padrão | Critério | Gate |
+|---|---|---|---|
+| AT-001 | Event-driven | When a gerente registra a saída, the system shall mostrar o notebook como emprestado com o nome e a data prevista | manual-ux |
+| AT-002 | Unwanted | If a gerente tenta registrar a saída de um notebook emprestado, then the system shall recusar e dizer com quem está | manual-ux |
+| AT-003 | State-driven | While a data prevista já passou, the system shall mostrar o empréstimo em vermelho | manual-ux |
+
+## Verify Gate
+```yaml
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist assinado"
+  threshold: "—"
+  manual_fallback: "Eu abri a página, registrei a saída do notebook 1 para a Ana e vi o notebook 1 com o nome dela. Eu tentei registrar a saída do notebook 1 de novo e vi a recusa dizendo que está com a Ana. Eu mudei a data prevista para ontem e vi a linha em vermelho."
+```
+
+## Technical Context
+| Aspect | Value |
+|---|---|
+| LLM Prompts | false |
+
+## Out of Scope
+Reserva, e-mail, acessórios, login.
+
+## Next Step
+Execute o **SDD Design by RDD**.
+
+# DESIGN: EMPRESTIMO_NOTEBOOKS
+
+## Architecture Overview
+```text
+index.html → app.js → localStorage do navegador
+```
+
+## File Manifest
+| # | Arquivo | Ação | Propósito | Dependências |
+|---|---|---|---|---|
+| 1 | `index.html` | Create | a página com a lista e o formulário | — |
+| 2 | `app.js` | Create | registrar saída e volta, recusar duplicado, destacar atrasado | 1 |
+
+**Total Files:** 2
+
+## Next Step
+Execute o **SDD Build by RDD**.
+----- volta 1 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+`sdd-build v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`
+
+**Status**: `Build: ⏸️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+- "Build" é a fase em que o que foi desenhado é construído de verdade, arquivo por arquivo.
+- "Tarefas 0/2" conta as tarefas prontas. Cada tarefa é um arquivo da lista do design, criado e conferido.
+- "Verify Gate" é a conferência final combinada no DEFINE. Sem ela o build não termina.
+
+**O que foi feito**
+- Li os três documentos inteiros e eles combinam entre si. O design pede só 2 arquivos novos: `index.html`, a página, e `app.js`, a lógica. Os dados ficam guardados no próprio navegador.
+- Não há banco de dados nem inteligência artificial envolvidos.
+- Os itens cortados no brainstorm (reserva, e-mail, acessórios, login) continuam fora.
+- Nenhum arquivo foi criado ainda.
+
+**Agora: etapa 1 — Plano (parado)**
+
+Parei porque um build precisa de um lugar onde os arquivos sejam gravados e conferidos de verdade. Você disse que só tem os documentos. Se eu escrevesse o código aqui e chamasse isso de "build pronto", eu estaria fingindo: ninguém teria aberto a página.
+
+A boa notícia: os dois arquivos são **novos**, então o "projeto" pode ser uma pasta vazia. Nesta sessão aparece uma pasta de trabalho chamada `projeto-vazio`. Se você estiver usando um agente com acesso a ela, ela serve.
+
+A conferência final deste DEFINE é **manual**: você mesma abre a página no navegador e faz os 3 testes da Ana, o empréstimo, a recusa e a linha vermelha. Então, em qualquer caminho, você vai precisar abrir o arquivo no seu computador.
+
+**Sua decisão**
+
+**Onde os arquivos devem ser gravados?**
+1. **Na pasta `projeto-vazio` desta sessão**: eu gravo os 2 arquivos lá, confiro cada um e sigo para a escolha do modo. Só funciona se este chat tiver acesso a essa pasta. Se não tiver, eu te aviso na hora.
+2. **Numa pasta no seu computador**: siga estes passos.
+   1. Crie uma pasta vazia, por exemplo `emprestimo-notebooks` na Área de Trabalho. Ela deve aparecer vazia.
+   2. Abra um agente que consiga mexer em arquivos (Claude Code, Codex ou similar) apontando para essa pasta.
+   3. Cole lá os três documentos de novo.
+3. **Não sei**: me diga em que programa você está me lendo (site, aplicativo ou terminal) e eu digo qual opção serve.
+
+O que **não** foi feito: nenhum arquivo criado, nenhum código escrito, nenhuma conferência rodada.
+
+Quando terminar, me peça de novo — eu continuo daqui.
+
+**Próximo passo**: com a pasta definida, monto o plano das 2 tarefas e te peço para escolher como elas rodam.
+
+----- volta 2 — aluno -----
+Não tenho o projeto aqui; só tenho este chat. O que eu faço?
+----- volta 2 — skill (modelo claude-haiku-5-5,claude-opus-5-5) -----
+**Status**: `Build: ▶️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+**O que foi feito**
+- Você confirmou que só tem este chat, sem pasta de projeto nem agente com acesso a arquivos.
+- Nenhum arquivo foi criado.
+
+**Agora: etapa 1 — Plano**
+
+Dá para fazer o build assim mesmo, porque este projeto é pequeno: são 2 arquivos novos e nenhum programa para instalar. O jeito é **você ser as mãos**:
+
+- Eu escrevo cada arquivo aqui no chat.
+- Você salva o arquivo no seu computador.
+- Você abre a página no navegador e me conta o que viu.
+
+Cada tarefa só conta como pronta depois que você me disser o resultado. Assim o relatório final registra a verdade: quem gravou os arquivos e quem conferiu foi você.
+
+O que você vai precisar, sem terminal e sem instalar nada:
+1. **Criar uma pasta** chamada `emprestimo-notebooks`, por exemplo na Área de Trabalho. Ela deve aparecer vazia.
+2. **Salvar os arquivos como texto puro.** Eu dou o texto de cada arquivo e o nome exato.
+   - No Windows, use o Bloco de Notas. Em "Salvar como", escolha *Todos os arquivos* e a codificação *UTF-8*, para o nome não virar `index.html.txt`.
+   - No Mac, use o TextEdit. Antes de colar, vá em *Formatar → Converter em Texto Simples*.
+3. **Abrir** o `index.html` com dois cliques. Ele abre no navegador.
+
+Antes de eu escrever o código, encontrei uma dúvida no desenho. O teste final do DEFINE diz *"eu mudei a data prevista para ontem e vi a linha em vermelho"*. Mas a lista de arquivos do design não fala em **editar** a data prevista de um empréstimo já registrado. Isso muda o que a página faz, então prefiro perguntar a adivinhar.
+
+**Sua decisão**
+
+1. **Você topa esse caminho: eu escrevo, você salva e confere?**
+   - **sim**: sigo para a escolha do modo e depois para a tarefa 1 de 2, o `index.html`.
+   - **não**: o build fica parado até você ter uma pasta com um agente que grave arquivos.
+   - **não sei**: diga se usa Windows ou Mac e eu detalho o salvar arquivo passo a passo.
+2. **Como você quer testar o empréstimo atrasado?**
+   - **a) Botão para editar a data prevista** (recomendado): a frase do teste continua igual e fica útil quando um funcionário pede mais prazo. É uma pequena adição à página.
+   - **b) Sem editar.** Para testar, você registra a saída já com a data prevista de ontem. A página fica mais simples, mas a frase do teste precisa ser ajustada para *"registrei uma saída com data prevista de ontem"*.
+   - **não sei**: eu sigo com a (a).
+
+**Próximo passo**: com as duas respostas, confirmo o modo de execução e começo a tarefa 1 de 2.
+
+===== veredito =====
+voltas: 2 · entregue: sim
+✅ nenhum achado
+RESULTADO: PASSOU
+rc=0

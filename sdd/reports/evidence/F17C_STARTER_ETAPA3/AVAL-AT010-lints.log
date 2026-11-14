@@ -1,0 +1,35 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/at010-lints.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/clone
+skills: 22
+$ python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/sdd-auditoria-harness/SKILL.md .agents/skills/sdd-brainstorm/SKILL.md .agents/skills/sdd-build/SKILL.md .agents/skills/sdd-checar-ambiente/SKILL.md .agents/skills/sdd-define/SKILL.md .agents/skills/sdd-design/SKILL.md .agents/skills/sdd-drive/SKILL.md .agents/skills/sdd-engenharia-reversa-saas/SKILL.md .agents/skills/sdd-governanca/SKILL.md .agents/skills/sdd-handoff/SKILL.md .agents/skills/sdd-higiene-dado/SKILL.md .agents/skills/sdd-iniciar-repo/SKILL.md .agents/skills/sdd-iterate/SKILL.md .agents/skills/sdd-kb/SKILL.md .agents/skills/sdd-loop-builder/SKILL.md .agents/skills/sdd-new-session/SKILL.md .agents/skills/sdd-playbook/SKILL.md .agents/skills/sdd-prompt-builder/SKILL.md .agents/skills/sdd-release/SKILL.md .agents/skills/sdd-seguranca/SKILL.md .agents/skills/sdd-ux-review/SKILL.md .agents/skills/ux-review-builder/SKILL.md
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-seguranca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/ux-review-builder/SKILL.md: frontmatter válido · camada de conversa ok
+rc=0
+
+$ python3 -B scripts/check-versions.py --base v2.14.0
+PASS: check-versions — 22 skills com versão coerente, comparadas a v2.14.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+
+$ bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills
+🟢 sdd-decisoes-lint --sites: 34 pergunta(s) em 29 arquivo(s), cada uma com a marca de classe e no formato.
+rc=0
+
+$ bash sdd/bin/sdd-decisoes-lint.sh --self-test
+  ✅ dois-recomendados → exit 2 (2 opções (recomendado))
+  ✅ controle → exit 0
+RESULTADO: VERDE
+→ as 4 fixtures reprovam pelo motivo certo e o controle passa.
+rc=0
+
+$ env SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_agnostico test_skill_lint test_check_versions test_decisoes_lint test_f17b_textos test_f17_textos test_contrato_build_release test_correcoes_w0 test_f14_textos test_f15_slots_textos test_f18_f20_textos test_f19_textos test_f21_textos test_design_lint test_report_lint test_publish_gate_patterns test_sdd_open test_f13_textos test_kb_dominios test_playbook_curator test_patterns_lint test_hooks
+----------------------------------------------------------------------
+Ran 584 tests in 1395.720s
+
+OK (skipped=1)
+rc=0
+
+falhas=0
+rc=0

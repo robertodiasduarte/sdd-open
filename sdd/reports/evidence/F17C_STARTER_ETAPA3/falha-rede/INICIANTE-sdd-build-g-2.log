@@ -1,0 +1,6 @@
+$ claude -p --output-format json --tools "" --strict-mcp-config --mcp-config <vazio> --setting-sources "" --system-prompt-file <sdd-build em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/gerado-1a40424/sdd-build + references> [--resume <sessão>] <volta do roteiro>   # execução g-2
+claude 2.1.314 (Claude Code) · pasta de trabalho vazia · roteiro INICIANTE-roteiro.json · modo build
+volta 1: claude saiu 1: "depth_limit":0,"concurrency_limit":0,"budget":0},"by_type":{}},"safety_stops":0,"is_error":true,"num_turns":1,"subtype":"success","api_error_status":null,"api_error":"connection_failed","result":"API Error: Can't reach the API server — check your internet or DNS (ENOTFOUND)","type":"result","duration_ms":159804,"uuid":"15f4722f-0283-4e4f-801c-9ab7267a7445","queued_turn_count":0,"result_index":0}
+
+RESULTADO: FALHA DE EXECUÇÃO (claude falhou)
+rc=2

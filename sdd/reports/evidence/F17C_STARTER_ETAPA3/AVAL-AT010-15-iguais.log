@@ -1,0 +1,37 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/at010-iguais.sh
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+sdd-checar-ambiente: igual
+sdd-iniciar-repo: igual
+sdd-higiene-dado: igual
+sdd-new-session: igual
+sdd-kb: igual
+sdd-seguranca: igual
+sdd-auditoria-harness: igual
+sdd-prompt-builder: igual
+sdd-engenharia-reversa-saas: MUDOU (version:1.1.1 -> version:1.2.0)
+Files base/starter/skills/sdd-engenharia-reversa-saas/CHANGELOG.md and g1/starter/skills/sdd-engenharia-reversa-saas/CHANGELOG.md differ
+Files base/starter/skills/sdd-engenharia-reversa-saas/GERADO.txt and g1/starter/skills/sdd-engenharia-reversa-saas/GERADO.txt differ
+Files base/starter/skills/sdd-engenharia-reversa-saas/SKILL.md and g1/starter/skills/sdd-engenharia-reversa-saas/SKILL.md differ
+Files base/starter/skills/sdd-engenharia-reversa-saas/evals/cases.json and g1/starter/skills/sdd-engenharia-reversa-saas/evals/cases.json differ
+Files base/starter/skills/sdd-engenharia-reversa-saas/manifest.json and g1/starter/skills/sdd-engenharia-reversa-saas/manifest.json differ
+Files base/starter/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md and g1/starter/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md differ
+Files base/starter/skills/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md and g1/starter/skills/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md differ
+Files base/starter/skills/sdd-engenharia-reversa-saas/references/como-falar.md and g1/starter/skills/sdd-engenharia-reversa-saas/references/como-falar.md differ
+sdd-loop-builder: igual
+sdd-brainstorm: igual
+sdd-handoff: igual
+sdd-governanca: igual
+sdd-release: igual
+ux-review-builder: MUDOU (version:1.5.0 -> version:1.6.0)
+Files base/starter/skills/ux-review-builder/CHANGELOG.md and g1/starter/skills/ux-review-builder/CHANGELOG.md differ
+Files base/starter/skills/ux-review-builder/GERADO.txt and g1/starter/skills/ux-review-builder/GERADO.txt differ
+Files base/starter/skills/ux-review-builder/SKILL.md and g1/starter/skills/ux-review-builder/SKILL.md differ
+Files base/starter/skills/ux-review-builder/assets/UX_REVIEW_SKILL_TEMPLATE.md and g1/starter/skills/ux-review-builder/assets/UX_REVIEW_SKILL_TEMPLATE.md differ
+Files base/starter/skills/ux-review-builder/evals/cases.json and g1/starter/skills/ux-review-builder/evals/cases.json differ
+Files base/starter/skills/ux-review-builder/manifest.json and g1/starter/skills/ux-review-builder/manifest.json differ
+Files base/starter/skills/ux-review-builder/references/COMO_FUNCIONA.md and g1/starter/skills/ux-review-builder/references/COMO_FUNCIONA.md differ
+Files base/starter/skills/ux-review-builder/references/GOVERNANCE.md and g1/starter/skills/ux-review-builder/references/GOVERNANCE.md differ
+Files base/starter/skills/ux-review-builder/scripts/validate_generated_bundle.py and g1/starter/skills/ux-review-builder/scripts/validate_generated_bundle.py differ
+Files base/starter/skills/ux-review-builder/tests/test_validate_generated_bundle.py and g1/starter/skills/ux-review-builder/tests/test_validate_generated_bundle.py differ
+rc=0

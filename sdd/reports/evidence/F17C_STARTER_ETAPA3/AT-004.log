@@ -1,0 +1,10 @@
+$ cd <git archive 97503a7>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17c_textos.ModoWebGerado.test_at004_pastas_do_open_e_entrega_no_chat test_f17c_textos.ModoWebGerado.test_at004_handoffs_dos_protocolos_coerentes test_f17c_textos.UmJeitoSoDePasta
+test_at004_pastas_do_open_e_entrega_no_chat (test_f17c_textos.ModoWebGerado.test_at004_pastas_do_open_e_entrega_no_chat) ... ok
+test_at004_handoffs_dos_protocolos_coerentes (test_f17c_textos.ModoWebGerado.test_at004_handoffs_dos_protocolos_coerentes) ... ok
+test_nenhuma_gerada_manda_gravar_lado_a_lado_em_sdd (test_f17c_textos.UmJeitoSoDePasta.test_nenhuma_gerada_manda_gravar_lado_a_lado_em_sdd) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 11.080s
+
+OK
+rc=0

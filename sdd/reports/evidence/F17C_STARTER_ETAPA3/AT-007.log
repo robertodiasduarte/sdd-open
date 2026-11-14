@@ -1,0 +1,9 @@
+$ cd <git archive 97503a7>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17c_textos.NaoFinjaNoOpen
+test_at007_as_3_dizem_sem_acesso_nao_finja (test_f17c_textos.NaoFinjaNoOpen.test_at007_as_3_dizem_sem_acesso_nao_finja) ... ok
+test_at007_define_pergunta_na_primeira_vez (test_f17c_textos.NaoFinjaNoOpen.test_at007_define_pergunta_na_primeira_vez) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.006s
+
+OK
+rc=0

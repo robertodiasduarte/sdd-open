@@ -1,0 +1,148 @@
+$ OPENROUTER_API_KEY=<chave> python3 -I iniciante_or.py <sdd-build em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/gerado-head/sdd-build> INICIANTE-roteiro.json sdd-build s3-g-1 INICIANTE-sdd-build-s3-g-1.log   # modelo anthropic/claude-opus-5.5, sem pasta, sem ferramenta
+
+----- volta 1 — aluno -----
+Faça o build com estes três documentos. Estou no chat da web: não tenho o projeto aqui, só estes documentos.
+
+# BRAINSTORM: EMPRESTIMO_NOTEBOOKS
+
+## Initial Idea
+O escritório tem 6 notebooks que os funcionários levam para casa ou para clientes. Hoje o controle é um caderno: ninguém sabe com quem está cada notebook nem quando volta.
+
+## Discovery Questions & Answers
+1. Quem usa? A gerente (registra a saída e a volta) e os 12 funcionários (só pedem).
+2. O que dói? Notebook que não volta no prazo e ninguém percebe; dois funcionários querendo o mesmo notebook no mesmo dia.
+3. Pronto quando? A gerente abre uma tela e vê, por notebook, com quem está e a data prevista de volta, e os atrasados aparecem em vermelho.
+
+## Selected Approach
+Uma planilha web simples (uma página com a lista dos 6 notebooks), sem login na primeira versão: só a gerente usa, no computador dela.
+
+## Features Removed (YAGNI)
+- reserva antecipada pelo funcionário;
+- aviso por e-mail;
+- controle de acessórios (carregador, mouse).
+
+## Suggested Requirements for /define
+- registrar saída (notebook, funcionário, data, data prevista de volta);
+- registrar volta;
+- listar com quem está cada notebook; atrasados destacados;
+- impedir registrar a saída de um notebook que já está emprestado.
+
+## Next Step
+Execute o **SDD Define by RDD**.
+
+# DEFINE: EMPRESTIMO_NOTEBOOKS
+
+## Problem Statement
+O controle dos 6 notebooks do escritório é um caderno; notebook atrasado passa despercebido.
+
+## Target Users
+| User | Pain Point |
+|---|---|
+| Gerente | não sabe com quem está cada notebook |
+
+## Goals
+| Priority | Goal |
+|---|---|
+| MUST | registrar saída e volta |
+| MUST | listar com quem está cada notebook, atrasados em vermelho |
+| MUST | recusar a saída de notebook já emprestado |
+
+## Acceptance Tests
+| ID | Padrão | Critério | Gate |
+|---|---|---|---|
+| AT-001 | Event-driven | When a gerente registra a saída, the system shall mostrar o notebook como emprestado com o nome e a data prevista | manual-ux |
+| AT-002 | Unwanted | If a gerente tenta registrar a saída de um notebook emprestado, then the system shall recusar e dizer com quem está | manual-ux |
+| AT-003 | State-driven | While a data prevista já passou, the system shall mostrar o empréstimo em vermelho | manual-ux |
+
+## Verify Gate
+```yaml
+verify_gate:
+  kind: manual-ux
+  cmd: "N/A (manual-ux)"
+  pass_when: "checklist assinado"
+  threshold: "—"
+  manual_fallback: "Eu abri a página, registrei a saída do notebook 1 para a Ana e vi o notebook 1 com o nome dela. Eu tentei registrar a saída do notebook 1 de novo e vi a recusa dizendo que está com a Ana. Eu mudei a data prevista para ontem e vi a linha em vermelho."
+```
+
+## Technical Context
+| Aspect | Value |
+|---|---|
+| LLM Prompts | false |
+
+## Out of Scope
+Reserva, e-mail, acessórios, login.
+
+## Next Step
+Execute o **SDD Design by RDD**.
+
+# DESIGN: EMPRESTIMO_NOTEBOOKS
+
+## Architecture Overview
+```text
+index.html → app.js → localStorage do navegador
+```
+
+## File Manifest
+| # | Arquivo | Ação | Propósito | Dependências |
+|---|---|---|---|---|
+| 1 | `index.html` | Create | a página com a lista e o formulário | — |
+| 2 | `app.js` | Create | registrar saída e volta, recusar duplicado, destacar atrasado | 1 |
+
+**Total Files:** 2
+
+## Next Step
+Execute o **SDD Build by RDD**.
+----- volta 1 — skill (anthropic/claude-opus-5.5, US$ 0.1597) -----
+sdd-build v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest
+
+**Status:** `Build: ⏸️ 1 Plano · ⬜ 2 Modo · ⬜ 3 Tarefas 0/2 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
+
+No Status:
+- **Build** é a fase em que o que foi desenhado é construído de verdade, arquivo por arquivo.
+- **Tarefas 0/2** conta os arquivos já feitos.
+- **Verify Gate** é a conferência final combinada no DEFINE. Sem ela passar, o build não termina.
+
+**O que foi feito**
+
+- Li os três documentos. Eles combinam entre si:
+  - o DEFINE pede registrar saída e volta, listar com quem está cada notebook e recusar a saída de um notebook já emprestado;
+  - o DESIGN entrega isso em 2 arquivos novos;
+  - nada cortado no Brainstorm (reserva, e-mail, acessórios, login) voltou.
+- Não há banco de dados para alterar: os dados ficam guardados no próprio navegador da gerente.
+- Não há uso de IA dentro do sistema.
+- Montei o plano, que é a lista de tarefas na ordem em que uma depende da outra:
+  1. criar `index.html`, a página;
+  2. criar `app.js`, a lógica.
+- Nenhum arquivo foi criado ainda.
+
+**Agora: etapa 1 — Plano (parada)**
+
+Parei por um motivo: aqui no chat da web eu não consigo gravar arquivos no seu computador nem abrir a página para conferir. Fazer de conta que o build está pronto só com os documentos não seria honesto.
+
+A boa notícia é que este caso é simples. São só 2 arquivos novos, e a conferência final já é manual: é você abrindo a página e seguindo o checklist do DEFINE. Por isso existe um caminho que funciona daqui mesmo, com você salvando os arquivos.
+
+Encontrei também uma dúvida no DEFINE que muda o código. O checklist diz "eu **mudei** a data prevista para ontem e vi a linha em vermelho". Isso pode significar duas coisas:
+- a página precisa permitir **editar** a data de um empréstimo já registrado; ou
+- basta registrar a saída já com a data prevista de ontem.
+
+**Sua decisão**
+
+1. **Como você quer seguir?**
+   - **(a) Eu escrevo, você salva (recomendado).** Eu mostro o conteúdo completo dos 2 arquivos aqui. Você cria uma pasta no computador, salva cada um com o nome exato e abre o `index.html` com dois cliques no navegador. Você me conta o que viu, e eu registro no relatório que você fez a gravação e a conferência.
+   - **(b) Conectar um agente com acesso aos arquivos.** Por exemplo, o Claude Code ou o Codex na sua máquina. O agente grava e confere sozinho, mas você precisa instalar e configurar antes.
+   - **(c) Não sei.** Eu explico a diferença com mais detalhe.
+
+2. **A data prevista precisa poder ser editada depois do registro?**
+   - **(a) Não.** Para o teste do vermelho, basta registrar a saída com a data de ontem. É o mais simples e fica dentro do design.
+   - **(b) Sim.** A página ganha um botão "alterar data". Isso é um pedido novo, e eu registro como decisão sua.
+   - **(c) Não sei.** Eu sigo com (a), que é o que o design prevê.
+
+Até agora não criei nenhum arquivo, não rodei nenhuma conferência e não gerei o relatório.
+
+**Próximo passo:** com as duas respostas, escolhemos o modo e começo a tarefa 1 de 2. Quando decidir, me responda aqui — eu continuo daqui.
+
+===== veredito =====
+voltas: 1 · entregue: sim · custo: US$ 0.1597
+✅ nenhum achado
+RESULTADO: PASSOU
+rc=0

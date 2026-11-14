@@ -1,0 +1,13 @@
+$ cd <git archive 97503a7>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17c_gerador.ModoWeb.test_at008_um_byte_trocado_no_build_gerado_e_acusado test_gerar_starter.Gera.test_at007_o_starter_passa_nas_checagens_dele test_gerar_starter.Trava
+test_at008_um_byte_trocado_no_build_gerado_e_acusado (test_f17c_gerador.ModoWeb.test_at008_um_byte_trocado_no_build_gerado_e_acusado) ... ok
+test_at007_o_starter_passa_nas_checagens_dele (test_gerar_starter.Gera.test_at007_o_starter_passa_nas_checagens_dele) ... ok
+test_at006_cada_mudanca_a_mao_sai_1 (test_gerar_starter.Trava.test_at006_cada_mudanca_a_mao_sai_1) ... ok
+test_at006_gerado_ilegivel_sai_64 (test_gerar_starter.Trava.test_at006_gerado_ilegivel_sai_64) ... ok
+test_at006_os_workflows_rodam_a_trava_antes_dos_testes (test_gerar_starter.Trava.test_at006_os_workflows_rodam_a_trava_antes_dos_testes) ... ok
+test_at006_tudo_igual_sai_0 (test_gerar_starter.Trava.test_at006_tudo_igual_sai_0) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 31.239s
+
+OK
+rc=0

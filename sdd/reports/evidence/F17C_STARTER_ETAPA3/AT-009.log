@@ -1,0 +1,9 @@
+$ cd <git archive 97503a7>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17c_gerador.ModoWeb.test_at009_versao_que_nao_sobe_nas_3 test_gerar_starter.Recusa.test_at007_versao_que_nao_sobe_reprova_antes_de_gravar
+test_at009_versao_que_nao_sobe_nas_3 (test_f17c_gerador.ModoWeb.test_at009_versao_que_nao_sobe_nas_3) ... ok
+test_at007_versao_que_nao_sobe_reprova_antes_de_gravar (test_gerar_starter.Recusa.test_at007_versao_que_nao_sobe_reprova_antes_de_gravar) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 14.215s
+
+OK
+rc=0

@@ -1,0 +1,66 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/t1/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_f17c_textos test_f17c_gerador test_gerar_starter test_f17c_passo0
+test_at010_linha_do_modo_condicionada_e_o_caminho_de_hoje_fica (test_f17c_textos.CaminhoDoOpen) ... ok
+test_at010_modo_web_nao_e_um_skill_md (test_f17c_textos.CaminhoDoOpen) ... ok
+test_at010_modo_web_traz_a_mesma_identificacao_do_open (test_f17c_textos.CaminhoDoOpen) ... ok
+test_at004_handoffs_dos_protocolos_coerentes (test_f17c_textos.ModoWebGerado) ... ok
+test_at004_pastas_do_open_e_entrega_no_chat (test_f17c_textos.ModoWebGerado) ... ok
+test_at005_build_le_a_saida_do_comando_sem_o_verify_gate_sh (test_f17c_textos.ModoWebGerado) ... ok
+test_at005_define_e_design_nao_pedem_comando_ao_aluno (test_f17c_textos.ModoWebGerado) ... ok
+test_at005_nenhuma_das_3_cita_validador (test_f17c_textos.ModoWebGerado) ... ok
+test_at006_moldes_sem_sobras_de_outro_projeto (test_f17c_textos.MoldesDoOpen) ... ok
+test_at006_relatorio_com_as_secoes_que_a_skill_pede (test_f17c_textos.MoldesDoOpen) ... ok
+test_at007_as_3_dizem_sem_acesso_nao_finja (test_f17c_textos.NaoFinjaNoOpen) ... ok
+test_at007_define_pergunta_na_primeira_vez (test_f17c_textos.NaoFinjaNoOpen) ... ok
+test_nenhuma_gerada_manda_gravar_lado_a_lado_em_sdd (test_f17c_textos.UmJeitoSoDePasta) ... ok
+test_os_testes_da_builder_passam (test_f17c_textos.ValidadorDaBuilder) ... ok
+test_at002_as_3_saem_so_do_modo_web (test_f17c_gerador.ModoWeb) ... ok
+test_at003_a_copia_crua_das_3_reprova_no_lint (test_f17c_gerador.ModoWeb) ... ok
+test_at003_modo_web_quebrado_sai_65_sem_gravar (test_f17c_gerador.ModoWeb) ... ok
+test_at008_um_byte_trocado_no_build_gerado_e_acusado (test_f17c_gerador.ModoWeb) ... ok
+test_at009_versao_que_nao_sobe_nas_3 (test_f17c_gerador.ModoWeb) ... ok
+test_sem_pasta_base_o_modo_continua_na_raiz_da_skill (test_f17c_gerador.ModoWeb) ... ok
+test_at006_sem_comando_no_caminho_sem_terminal (test_gerar_starter.CaminhoDoIniciante) ... ok
+test_at001_gera_as_18_e_nao_toca_no_resto (test_gerar_starter.Gera) ... ok
+test_at003_cada_skill_gerada (test_gerar_starter.Gera) ... ok
+test_at005_duas_geracoes_iguais_byte_a_byte (test_gerar_starter.Gera) ... ok
+test_at007_o_starter_passa_nas_checagens_dele (test_gerar_starter.Gera) ... ok
+test_aval1_kb_gerada_sem_caminho_nem_sync_do_open (test_gerar_starter.Gera) ... ok
+test_gerar_de_novo_a_mesma_tag_nao_muda_nada (test_gerar_starter.Gera) ... ok
+test_r1_testes_de_skill_sem_nenhuma_pasta_tests_nao_quebram (test_gerar_starter.Gera) ... ok
+test_r2_arquivo_que_saiu_da_semente_sai_do_destino (test_gerar_starter.Gera) ... ok
+test_r6_ds_store_no_destino_nao_conta_como_mudanca (test_gerar_starter.Gera) ... ok
+test_regra_de_pasta_so_no_markdown_e_o_par_que_define_a_pasta_fica (test_gerar_starter.Gera) ... ok
+test_at004_a_copia_crua_reprova_e_a_gerada_passa (test_gerar_starter.Lint) ... ok
+test_aval1_lint_pega_caminho_da_skill_gerada_fora_do_par (test_gerar_starter.Lint) ... ok
+test_r4_aceite_nao_isenta_outra_citacao_na_mesma_linha (test_gerar_starter.Lint) ... ok
+test_at010_o_init_nao_copia_scripts (test_gerar_starter.ReadmeEInit) ... ok
+test_readme_cita_toda_skill_gerada (test_gerar_starter.ReadmeEInit) ... ok
+test_readme_sem_ambiente_md (test_gerar_starter.ReadmeEInit) ... ok
+test_at002_destino_sujo_ou_sem_a_forma_do_starter (test_gerar_starter.Recusa) ... ok
+test_at002_lint_do_init_acha_citacao (test_gerar_starter.Recusa) ... ok
+test_at002_skill_sem_linha_no_openai_tsv (test_gerar_starter.Recusa) ... ok
+test_at002_tag_inexistente (test_gerar_starter.Recusa) ... ok
+test_at002_troca_que_nao_casa_exatamente_uma_vez (test_gerar_starter.Recusa) ... ok
+test_at007_versao_que_nao_sobe_reprova_antes_de_gravar (test_gerar_starter.Recusa) ... ok
+test_gerador_diferente_do_da_tag (test_gerar_starter.Recusa) ... ok
+test_r6_tag_anterior_ao_gerador_diz_a_causa (test_gerar_starter.Recusa) ... ok
+test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho (test_gerar_starter.SkillDeModo) ... ok
+test_at002_release_gerada_so_do_modo (test_gerar_starter.SkillDeModo) ... ok
+test_at003_a_release_crua_reprova_no_lint (test_gerar_starter.SkillDeModo) ... ok
+test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo) ... ok
+test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo) ... ok
+test_at006_cada_mudanca_a_mao_sai_1 (test_gerar_starter.Trava) ... ok
+test_at006_gerado_ilegivel_sai_64 (test_gerar_starter.Trava) ... ok
+test_at006_os_workflows_rodam_a_trava_antes_dos_testes (test_gerar_starter.Trava) ... ok
+test_at006_tudo_igual_sai_0 (test_gerar_starter.Trava) ... ok
+test_as_contagens_da_f17b_foram_aplicadas (test_f17c_passo0.Curadoria) ... ok
+test_as_duas_licoes_da_f17b_estao_no_playbook (test_f17c_passo0.Curadoria) ... ok
+test_a_skill_cita_o_exemplo_e_ele_passa_no_handoff_lint (test_f17c_passo0.Exemplo) ... ok
+test_o_exemplo_segue_as_secoes_do_molde (test_f17c_passo0.Exemplo) ... ok
+test_o_exemplo_vai_para_o_starter_sem_o_gate_por_comando (test_f17c_passo0.ExemploNoStarter) ... ok
+
+----------------------------------------------------------------------
+Ran 59 tests in 139.361s
+
+OK
+rc=0
