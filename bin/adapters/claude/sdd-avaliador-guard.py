@@ -14,12 +14,26 @@ Python >= 3.9, só stdlib.
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 
 
+def achar_bash():
+    """O bash do Git, não o do WSL. F16W (revisão rodada 2): no Windows, "bash" pelo nome no subprocess procura em
+    System32 antes do PATH (CreateProcess) e acha o bash.exe do WSL, que não lê o caminho C:\\… do projeto. Ordem: o
+    caminho que o Claude Code usa no Windows (CLAUDE_CODE_GIT_BASH_PATH), o 1º bash do PATH (shutil.which respeita a
+    ordem do PATH, onde o Git vem antes do System32 no Git Bash) e só então o nome."""
+    c = os.environ.get("CLAUDE_CODE_GIT_BASH_PATH")
+    if c and os.path.isfile(c):
+        return c
+    return shutil.which("bash") or "bash"
+
+
 def emitir(obj):
-    sys.stdout.write(json.dumps(obj, ensure_ascii=False) + "\n")
+    # F16W: ASCII (\uXXXX) e não UTF-8 cru: no Windows, o stdout do Python num pipe é cp1252 e o 🛑 derrubaria o
+    # hook; o JSON é o mesmo para quem o lê.
+    sys.stdout.write(json.dumps(obj, ensure_ascii=True) + "\n")
 
 
 def aviso(msg):
@@ -36,7 +50,9 @@ def negar(motivo):
 
 def main():
     try:
-        payload = json.load(sys.stdin)
+        # F16W (revisão rodada 3): o Claude Code manda o JSON em UTF-8 cru; sys.stdin em modo texto seria cp1252 no
+        # Windows (⚠️ derrubava a leitura e a gravação passava sem guarda). Lido em bytes, decodificado em UTF-8.
+        payload = json.loads(sys.stdin.buffer.read().decode("utf-8"))
     except Exception as exc:
         aviso("payload do hook ilegível (%s) — despacho não conferido" % type(exc).__name__)
         return
@@ -51,7 +67,7 @@ def main():
     if not os.path.isfile(guard):
         aviso("sdd/bin/avaliador-guard.sh não encontrado em %s — despacho não conferido (rode init)" % projeto)
         return
-    r = subprocess.run(["bash", guard], capture_output=True, text=True, cwd=projeto)
+    r = subprocess.run([achar_bash(), guard], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=projeto)
     saida = (r.stdout + r.stderr).strip()
     if r.returncode == 0:
         if "⚠️" in saida:

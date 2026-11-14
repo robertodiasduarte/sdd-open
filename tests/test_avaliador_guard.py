@@ -66,7 +66,7 @@ class AvaliadorGuard(Sandbox):
         rc, out = self.guard()
         self.assertEqual(rc, 1, out)
         comando = out.splitlines()[-1][len("→ "):]
-        rc2, o2, e2 = self.roda(["bash", "-c", comando], self.r)
+        rc2, o2, e2 = self.roda([BASH, "-c", comando], self.r)
         self.assertEqual(rc2, 0, o2 + e2)
         rc, out = self.guard()
         self.assertEqual(rc, 0, out)
@@ -78,7 +78,7 @@ class AvaliadorGuard(Sandbox):
         self.assertEqual(rc, 1, out)
         comando = out.splitlines()[-1][len("→ "):]
         self.assertNotIn(" add ", comando)
-        rc2, o2, e2 = self.roda(["bash", "-c", comando], self.r)
+        rc2, o2, e2 = self.roda([BASH, "-c", comando], self.r)
         self.assertEqual(rc2, 0, o2 + e2)
         self.assertEqual(self.git(self.r, "show", "--name-status", "--format=", "HEAD").split(), ["D", "src/app.py"])
         self.assertIn("?? sdd/features/", self.git(self.r, "status", "--porcelain"))

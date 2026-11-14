@@ -300,6 +300,7 @@ scripts/starter/trocas/sdd-kb.md
 scripts/starter/trocas/sdd-new-session.md
 scripts/starter/trocas/sdd-prompt-builder.md
 scripts/starter/trocas/sdd-seguranca.md
+scripts/testes-por-modulo.py
 sdd/WORKFLOW_CONTRACTS.yaml
 sdd/bin/adapters/claude.sh
 sdd/bin/adapters/codex.sh
@@ -611,6 +612,7 @@ tests/test_f14_drive_textos.py
 tests/test_f14_textos.py
 tests/test_f15_slots_textos.py
 tests/test_f16_textos.py
+tests/test_f16w_passo0.py
 tests/test_f17_passo0.py
 tests/test_f17_textos.py
 tests/test_f17b_passo0.py
@@ -657,6 +659,7 @@ tests/test_seguranca_varredura.py
 tests/test_skill_lint.py
 tests/test_slot.py
 tests/test_test_baseline.py
+tests/test_testes_por_modulo.py
 tests/test_validate_reverse.py
 tests/test_verify_gate.py
 tests/test_verify_gate_trace.py

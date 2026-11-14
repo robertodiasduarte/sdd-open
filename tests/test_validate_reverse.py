@@ -166,14 +166,14 @@ class ReportTests(unittest.TestCase):
             report = Path(directory) / "relatorio.md"
             report.write_text(sample(), encoding="utf-8")
             before = report.read_bytes()
-            process = subprocess.run([sys.executable, str(ROOT / "scripts" / "validate_reverse.py"), str(report)], cwd=directory, capture_output=True, text=True)
+            process = subprocess.run([sys.executable, str(ROOT / "scripts" / "validate_reverse.py"), str(report)], cwd=directory, capture_output=True, text=True, encoding="utf-8", errors="replace")
             self.assertEqual(process.returncode, 0)
             self.assertTrue(json.loads(process.stdout)["ok"])
             self.assertEqual(before, report.read_bytes())
 
     def test_cli_missing_file_returns_safe_failure(self):
         with tempfile.TemporaryDirectory() as directory:
-            process = subprocess.run([sys.executable, str(ROOT / "scripts" / "validate_reverse.py"), str(Path(directory) / "missing.md")], capture_output=True, text=True)
+            process = subprocess.run([sys.executable, str(ROOT / "scripts" / "validate_reverse.py"), str(Path(directory) / "missing.md")], capture_output=True, text=True, encoding="utf-8", errors="replace")
             self.assertEqual(process.returncode, 2)
             self.assertEqual(json.loads(process.stdout)["errors"], ["ARQUIVO_INACESSIVEL_OU_NAO_UTF8"])
             self.assertNotIn("Traceback", process.stderr)

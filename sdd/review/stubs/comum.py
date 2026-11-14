@@ -33,8 +33,8 @@ def proximo(engine, argv=(), entrada=b""):
         return 0, None
     os.makedirs(est, exist_ok=True)
     arq = os.path.join(est, engine + ".n")
-    n = int(open(arq).read() or "0") + 1 if os.path.exists(arq) else 1
-    with open(arq, "w") as h:
+    n = int(open(arq, encoding="utf-8").read() or "0") + 1 if os.path.exists(arq) else 1
+    with open(arq, "w", encoding="utf-8") as h:
         h.write(str(n))
     with open(os.path.join(est, "%s.%d.argv" % (engine, n)), "w", encoding="utf-8") as h:
         h.write("\n".join(argv) + "\n")

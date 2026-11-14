@@ -61,18 +61,46 @@ instalar_gh() {
     *) echo "siga https://github.com/cli/cli/blob/trunk/docs/install_linux.md   (depois feche e abra o terminal)" ;;
   esac
 }
+# F16W: o vigia de teto corta o GRUPO de processos (set -m + kill -- -<pgid>), porque um filho vivo seguraria a
+# saída depois do comando morto. No Git Bash do Windows o sinal ao grupo não alcança o git.exe nem os netos
+# (LM-016): lá existe /proc/<pid>/winpid, e o corte é a árvore inteira pelo taskkill. Fora do Windows, o de sempre.
+# SDD_CHECAR_PROC (padrão /proc) existe para os testes.
+no_windows() { [ -r "${SDD_CHECAR_PROC:-/proc}/$$/winpid" ]; }
+corta() {   # corta SINAL pid...: o grupo de cada pid, ou a árvore dele no Windows
+  local s="$1" p w; shift
+  for p in "$@"; do
+    [ -n "${p}" ] || continue
+    if [ -r "${SDD_CHECAR_PROC:-/proc}/${p}/winpid" ]; then
+      w="$(cat "${SDD_CHECAR_PROC:-/proc}/${p}/winpid" 2>/dev/null)"
+      [ -n "${w}" ] && MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL='*' taskkill /F /T /PID "${w}" >/dev/null 2>&1
+    else
+      kill -"${s}" -- "-${p}" 2>/dev/null
+    fi
+  done
+  return 0
+}
+# rc_do_vigia RC T0: no Windows o taskkill não devolve 143/137 ao wait; rc ≠ 0 depois do teto (10 s desde T0, pelo
+# SECONDS) é o corte do vigia e vira 137. Fora do Windows, ou rc 0, ou antes do teto: o rc como veio.
+# Limite conhecido: o SECONDS conta segundo inteiro, então uma falha natural entre 9 e 10 s pode virar 137. No alcance
+# isso quase não pesa (a classificação lê a mensagem primeiro; o rc só decide quando nenhum texto conhecido aparece);
+# no gh_estado o 137 vem antes da mensagem: um "deslogado" lento sairia "sem resposta" (⚠️ nos dois).
+rc_do_vigia() {
+  if no_windows && [ "$1" != 0 ] && [ $((SECONDS - $2)) -ge 10 ]; then echo 137; else echo "$1"; fi
+}
 # ausente | deslogado | ok | sem resposta. Só lê (o gh consulta a API do GitHub), com teto de 10 s; a saída do
 # gh nunca é repassada, só a classificação. Como no ls-remote do checar.sh: o gh roda num grupo de processos
-# próprio (set -m) e o vigia mata o GRUPO, porque um filho vivo seguraria a saída depois do gh morto.
+# próprio (set -m) e o vigia o corta inteiro (corta, acima).
 gh_estado() {
   local g="${SDD_CHECAR_GH:-gh}" s rc
   command -v "${g}" >/dev/null 2>&1 || { echo ausente; return 0; }
   s="$( ( set -m
+          t0=${SECONDS}
           LC_ALL=C GH_PROMPT_DISABLED=1 "${g}" auth status --hostname github.com </dev/null 2>&1 & p=$!
-          ( sleep 10; kill -KILL -- "-${p}" ) >/dev/null 2>&1 & w=$!
+          ( sleep 10; corta KILL "${p}" ) >/dev/null 2>&1 & w=$!
           wait "${p}"; r=$?
-          kill -KILL -- "-${p}" 2>/dev/null
-          kill -- "-${w}" 2>/dev/null
+          r="$(rc_do_vigia "${r}" "${t0}")"
+          corta KILL "${p}"
+          corta TERM "${w}"
           echo "__rc=${r}" ) 2>/dev/null )"
   rc="$(printf '%s\n' "${s}" | sed -n 's/^__rc=//p' | tail -1)"
   if [ "${rc}" = 0 ]; then echo ok

@@ -187,11 +187,16 @@ jobs:
   # Ubuntu acima já o cobre). Informativo até o Roberto decidir o piso: fica FORA do `needs:` do job
   # `release`, então um vermelho aqui aparece no run sem segurar a Release (sem continue-on-error).
   testes-windows:
-    name: Testes no Windows (Git Bash + Python nativo, só leitura)
+    name: Testes no Windows, fatia ${{ matrix.fatia }}/16 (Git Bash + Python nativo, só leitura)
     runs-on: windows-latest
-    # F16: a 1ª medição (PR #25, commit 416c0d5) rodou a suíte inteira e foi cancelada nos 90 min com 15% feito
-    # (~19 s por teste, 156 quebras em 282). Aqui fica só o caminho do aluno; o porte da suíte é a frente F16W.
+    # F16W: a suíte inteira, módulo a módulo, em 16 fatias paralelas (scripts/testes-por-modulo.py). Cada unidade (a
+    # classe de teste) roda num processo próprio com teto de 600 s: uma classe pendurada diz o próprio nome e não come
+    # o job. A 1ª medição da F16 (um job só, sem teto por módulo) foi cancelada nos 90 min com 15% feito.
     timeout-minutes: 30
+    strategy:
+      fail-fast: false   # uma fatia vermelha não cancela as outras: a medição é do pacote inteiro
+      matrix:
+        fatia: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
     defaults:
       run:
         shell: bash
@@ -222,18 +227,28 @@ jobs:
           python -c 'import os, sys; print(sys.version, os.name); sys.exit(os.name != "nt")'
           echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"
 
+      # O publish-gate não depende da fatia: roda numa só.
       - name: Run publish gate
+        if: matrix.fatia == 1
         env:
           PUBLISH_GATE_MODE: ci
         run: bash scripts/publish-gate.sh "$(pwd)"
 
-      # Só o caminho do aluno no Windows: checar-ambiente, inventário do iniciar-repo, resolvedor de Python,
-      # pulos por recurso e textos da F16. -v e sem buffer: o nome de cada teste sai na hora, mesmo se o teto cortar.
-      - name: Unit tests, student path (Git Bash + native Python)
-        working-directory: tests
+      # Uma linha por módulo (estado, testes, falhas, erros, pulados, segundos) e os nomes do que caiu; a saída
+      # inteira de cada módulo vai para o artefato do run.
+      - name: Unit tests by module (slice ${{ matrix.fatia }}/16, Git Bash + native Python)
         env:
           PYTHONUNBUFFERED: '1'
-        run: python -B -m unittest -v test_checar test_inventario test_python_resolver test_windows test_f16_textos
+        run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/16" --teto-unidade 600 --saida "$RUNNER_TEMP/tpm"
+
+      - name: Keep the output of each module
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: testes-windows-fatia-${{ matrix.fatia }}
+          path: ${{ runner.temp }}/tpm
+          if-no-files-found: ignore
+          retention-days: 14
 
   release:
     name: Publicar release

@@ -11,9 +11,10 @@ import json
 import os
 import shutil
 import subprocess
+import unittest
 from pathlib import Path
 
-from apoio import BASH, PYTHON, RAIZ, Sandbox
+from apoio import BASH, PYTHON, RAIZ, SEM_CHMOD, Sandbox, caminho_bash
 
 CLI = RAIZ / "bin/sdd-open.sh"
 FIX = RAIZ / "sdd/fixtures/hooks"
@@ -174,6 +175,42 @@ class Projeto(Sandbox):
         rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json", FILE=alvo, CONTENT=RELATORIO_OK))
         self.assertEqual((rc, out), (0, ""))
 
+    def test_report_guard_fala_utf8_com_o_lint_mesmo_num_sistema_cp1252(self):
+        # F16W (raio de impacto): no Windows, o stdio do Python num pipe é cp1252. O guard manda o relatório em UTF-8 ao
+        # lint, e o lint o leria em cp1252 (acentos trocados, ⚠️ ilegível ⇒ 64 ⇒ a gravação passava); e o 🛑 do próprio
+        # guard derrubava o hook. Aqui o cp1252 é forçado no ambiente de quem chama o hook.
+        self.cli("init", "--yes", "--vendors", "claude")
+        ruim = (RAIZ / "sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md").read_text(encoding="utf-8")
+        alvo = str(self.p / "sdd/reports/BUILD_REPORT_X.md")
+        env = dict(self.env, CLAUDE_PROJECT_DIR=str(self.p), PYTHONIOENCODING="cp1252:strict")
+        rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json", FILE=alvo,
+                                                                       CONTENT=ruim + "\n⚠️ Á\n"), env=env)
+        self.assertEqual(rc, 0, err)
+        self.assertTrue(out.isascii(), out)   # o JSON do hook sai em ASCII
+        d = json.loads(out)
+        self.assertEqual(d["hookSpecificOutput"]["permissionDecision"], "deny", out)
+        self.assertIn("[avaliação ausente]", d["hookSpecificOutput"]["permissionDecisionReason"])
+
+    def test_report_guard_le_o_payload_em_utf8_cru_num_sistema_cp1252(self):
+        # F16W (revisão rodada 3): o Claude Code manda o JSON sem escapar o não-ASCII. Com o stdin lido pela codificação
+        # do sistema (cp1252 no Windows), o ⚠️ derrubava a leitura e a gravação passava sem guarda.
+        self.cli("init", "--yes", "--vendors", "claude")
+        ruim = (RAIZ / "sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md").read_text(encoding="utf-8")
+        alvo = str(self.p / "sdd/reports/BUILD_REPORT_X.md")
+        cru = json.dumps(self.payload("payload-write-build-report.json", FILE=alvo, CONTENT=ruim + "\n⚠️ Á ção\n"),
+                         ensure_ascii=False).encode("utf-8")
+        self.assertFalse(cru.isascii())
+        env = dict(self.env, CLAUDE_PROJECT_DIR=str(self.p), PYTHONIOENCODING="cp1252:strict")
+        for nome in GUARDS:
+            with self.subTest(guard=nome):
+                r = subprocess.run([PYTHON, "-B", str(self.p / ".claude/hooks" / nome)], cwd=str(self.p), env=env,
+                                   input=cru, capture_output=True, timeout=120)
+                self.assertEqual(r.returncode, 0, r.stderr)
+                self.assertNotIn(b"ileg", r.stdout)   # nada de "payload do hook ilegível"
+        r = subprocess.run([PYTHON, "-B", str(self.p / ".claude/hooks/sdd-report-guard.py")], cwd=str(self.p), env=env,
+                           input=cru, capture_output=True, timeout=120)
+        self.assertEqual(json.loads(r.stdout)["hookSpecificOutput"]["permissionDecision"], "deny", r.stdout)
+
     def test_report_guard_simula_o_edit(self):
         self.cli("init", "--yes", "--vendors", "claude")
         alvo = self.escreve(self.p, "sdd/reports/BUILD_REPORT_X.md", RELATORIO_OK)
@@ -256,6 +293,21 @@ class Projeto(Sandbox):
         (self.p / "sdd/bin/avaliador-guard.sh").unlink()
         rc, out, err = self.guard("sdd-avaliador-guard.py", self.payload("payload-agent-veredito.json"))
         self.assertIn("não conferido", json.loads(out)["systemMessage"])
+
+    @unittest.skipIf(*SEM_CHMOD)   # o bash falso é um script com shebang: no Windows, o Python não o executa direto
+    def test_avaliador_guard_usa_o_bash_do_claude_code_e_nao_o_nome(self):
+        # F16W (revisão rodada 2): no Windows, "bash" pelo nome cai no bash.exe do WSL (System32 antes do PATH). Com
+        # CLAUDE_CODE_GIT_BASH_PATH, o guard usa esse bash; o bash falso anota a chamada e responde como o guard real.
+        self.cli("init", "--yes", "--vendors", "claude")
+        self.commit(self.p, "init")
+        anot = self.tmp / "bash-chamado.txt"
+        falso = self.tmp / "bash-do-git"
+        falso.write_text('#!/bin/sh\necho "$1" > "%s"\nexit 0\n' % caminho_bash(anot), encoding="utf-8")
+        falso.chmod(0o755)
+        env = dict(self.env, CLAUDE_PROJECT_DIR=str(self.p), CLAUDE_CODE_GIT_BASH_PATH=str(falso))
+        rc, out, err = self.guard("sdd-avaliador-guard.py", self.payload("payload-agent-veredito.json"), env=env)
+        self.assertEqual((rc, out), (0, ""), err)
+        self.assertTrue(anot.read_text(encoding="utf-8").strip().endswith("avaliador-guard.sh"))
 
 
 if __name__ == "__main__":

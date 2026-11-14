@@ -24,7 +24,9 @@ REPORT_RE = re.compile(r"^BUILD_REPORT_.+\.md$")
 
 
 def emitir(obj):
-    sys.stdout.write(json.dumps(obj, ensure_ascii=False) + "\n")
+    # F16W: ASCII (\uXXXX) e não UTF-8 cru: no Windows, o stdout do Python num pipe é cp1252 e o 🛑 derrubaria o
+    # hook; o JSON é o mesmo para quem o lê.
+    sys.stdout.write(json.dumps(obj, ensure_ascii=True) + "\n")
 
 
 def aviso(msg):
@@ -78,7 +80,9 @@ def main():
         aviso("guard do BUILD_REPORT desligado (SDD_REPORT_GUARD=off) — declare isso no BUILD_REPORT")
         return
     try:
-        payload = json.load(sys.stdin)
+        # F16W (revisão rodada 3): o Claude Code manda o JSON em UTF-8 cru; sys.stdin em modo texto seria cp1252 no
+        # Windows (⚠️ derrubava a leitura e a gravação passava sem guarda). Lido em bytes, decodificado em UTF-8.
+        payload = json.loads(sys.stdin.buffer.read().decode("utf-8"))
     except Exception as exc:  # nunca em silêncio
         aviso("payload do hook ilegível (%s) — BUILD_REPORT não conferido" % type(exc).__name__)
         return
@@ -99,8 +103,11 @@ def main():
     conteudo = conteudo_resultante(tool, entrada, caminho)
     if conteudo is None:
         return
+    # F16W (raio de impacto): o conteúdo vai em UTF-8, e o lint o lê pela codificação do stdin dele, que no Windows
+    # seria cp1252; PYTHONIOENCODING faz os dois lados falarem UTF-8 (e o ✅ que o lint imprime não derruba ele).
     r = subprocess.run([sys.executable or "python3", "-B", lint, "--stdin", caminho],
-                       input=conteudo, capture_output=True, text=True, cwd=projeto)
+                       input=conteudo, capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=projeto,
+                       env=dict(os.environ, PYTHONIOENCODING="utf-8"))
     saida = (r.stdout + r.stderr).strip()
     if r.returncode == 0:
         return

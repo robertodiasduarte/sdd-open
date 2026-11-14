@@ -151,7 +151,7 @@ TBIN = os.path.join(TMP, "bin")
 os.makedirs(TBIN)
 for e in CLIS:
     p = os.path.join(TBIN, e)
-    with open(p, "w") as h:
+    with open(p, "w", encoding="utf-8") as h:
         # shlex.quote: um caminho com $, crase ou aspas é texto para o /bin/sh, nunca expansão
         h.write('#!/bin/sh\nexec %s -B %s "$@"\n' % (shlex.quote(sys.executable), shlex.quote(os.path.join(STUBS, e + ".py"))))
     os.chmod(p, 0o755)
@@ -177,7 +177,7 @@ BASE_ENV.update({
 
 # o adapter roda num `bash -c` novo: confere ali, com o ambiente exato, para onde cada CLI resolve
 sonda = subprocess.run([BASH, "-c", 'for e in claude codex gemini; do printf "%s=%s\\n" "$e" "$(command -v "$e")"; done'],
-                       env=BASE_ENV, capture_output=True, text=True)
+                       env=BASE_ENV, capture_output=True, text=True, encoding="utf-8", errors="replace")
 for ln in sonda.stdout.splitlines():
     e, _, onde = ln.partition("=")
     if not onde.startswith(TBIN + os.sep):
@@ -211,7 +211,7 @@ os.makedirs(os.path.join(REPO, "src"))
 
 
 def git(*a):
-    return subprocess.run(["git"] + list(a), cwd=REPO, env=BASE_ENV, capture_output=True, text=True)
+    return subprocess.run(["git"] + list(a), cwd=REPO, env=BASE_ENV, capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
 git("init", "-q")
@@ -220,7 +220,7 @@ if os.path.realpath(topo or "/") != os.path.realpath(REPO):
     quebrado("o repositório de teste resolve para %r, não para %s" % (topo, REPO),
              "rode o gate fora de um hook do git, ou sem GIT_DIR/GIT_WORK_TREE no ambiente.")
 git("checkout", "-q", "-b", "main")
-with open(os.path.join(REPO, "src/calculo.py"), "w") as h:
+with open(os.path.join(REPO, "src/calculo.py"), "w", encoding="utf-8") as h:
     h.write("def calcula(xs):\n    return sum(xs)\n")
 git("add", "src/calculo.py")
 c = git("-c", "commit.gpgsign=false", "commit", "-q", "-m", "base")
@@ -229,9 +229,9 @@ if c.returncode != 0:
     quebrado("não consegui criar o repositório de teste: " + (c.stderr.strip() or c.stdout.strip()),
              "confira o git instalado (git --version).")
 git("checkout", "-q", "-b", "feat")
-with open(os.path.join(REPO, "src/calculo.py"), "w") as h:
+with open(os.path.join(REPO, "src/calculo.py"), "w", encoding="utf-8") as h:
     h.write("def calcula(xs):\n    total = sum(xs)\n    return total / len(xs)\n")
-with open(os.path.join(REPO, ".git/info/exclude"), "a") as h:
+with open(os.path.join(REPO, ".git/info/exclude"), "a", encoding="utf-8") as h:
     h.write("sdd/reports/reviews/\n")
 REVS = os.path.join(REPO, "sdd/reports/reviews")
 
@@ -278,11 +278,11 @@ def executa(nome, filas, *flags):
         srv.kill()
         srv.wait()
         return None, "o stub da OpenRouter não subiu em 5 s (127.0.0.1)", {}, None, est
-    env["SDD_REVIEW_OPENROUTER_URL"] = "http://127.0.0.1:%s/api/v1/chat/completions" % open(porta_arq).read().strip()
+    env["SDD_REVIEW_OPENROUTER_URL"] = "http://127.0.0.1:%s/api/v1/chat/completions" % open(porta_arq, encoding="utf-8").read().strip()
     antes = set(os.listdir(REVS)) if os.path.isdir(REVS) else set()
     try:
         r = subprocess.run([BASH, AR, "--base", "main"] + list(flags), cwd=REPO, env=env, capture_output=True,
-                           text=True, timeout=TETO_EXECUCAO, stdin=subprocess.DEVNULL)
+                           text=True, encoding="utf-8", errors="replace", timeout=TETO_EXECUCAO, stdin=subprocess.DEVNULL)
         rc, saida = r.returncode, r.stdout + r.stderr
     except subprocess.TimeoutExpired:
         rc, saida = None, "passou de %d s" % TETO_EXECUCAO

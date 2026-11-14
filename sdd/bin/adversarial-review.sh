@@ -163,7 +163,7 @@ if modo == "ledger":
     texto = ler(caminho)
     if texto is None:
         sai(64, "PAROU", "ledger ilegível: " + caminho, "confira o caminho do ledger da release.")
-    r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+    r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True, encoding="utf-8", errors="replace")
     raiz = r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else os.getcwd()
     m = re.search(r"(?m)^\s*review_externo:\s*(.*?)\s*$", texto)
     if not m:
@@ -616,7 +616,7 @@ def invocar(d, prompt, saida):
 
 
 def extrair(d, saida):
-    r = subprocess.run(adapter_cmd(d, "adapter_extrair", saida), capture_output=True, text=True)
+    r = subprocess.run(adapter_cmd(d, "adapter_extrair", saida), capture_output=True, text=True, encoding="utf-8", errors="replace")
     try:
         j = json.loads(r.stdout.strip().splitlines()[-1])
         return j if isinstance(j, dict) else {}
@@ -625,7 +625,7 @@ def extrair(d, saida):
 
 
 def credencial(d):
-    r = subprocess.run(adapter_cmd(d, "adapter_credencial"), capture_output=True, text=True)
+    r = subprocess.run(adapter_cmd(d, "adapter_credencial"), capture_output=True, text=True, encoding="utf-8", errors="replace")
     return r.stdout.strip() or "a credencial da engine"
 
 

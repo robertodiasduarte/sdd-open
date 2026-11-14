@@ -58,12 +58,12 @@ class NormativeKB(unittest.TestCase):
 
     def regen_rule_map(self):
         subprocess.run([sys.executable, "-B", str(RULEMAP), "rule-map", str(self.kb)], check=True,
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
 
     def run_validator(self, *extra):
         r = subprocess.run(
             [sys.executable, "-B", str(VALIDATOR), str(self.kb), str(self.tmp / "_index.yaml"), *extra],
-            capture_output=True, text=True,
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
         )
         return r.returncode, r.stdout + r.stderr
 
@@ -201,7 +201,7 @@ class NormativeKB(unittest.TestCase):
     def test_mut_b_localizador_list_rule_map_survives(self):
         self.edit("rules/UB12-10-CRT3.md", "  localizador: p. 42, regra UB12-10, Observações 1 e 2", "  localizador: [p. 42, p. 45]")
         self.assert_fails_cleanly(r"fonte\.localizador must be a single value")
-        r = subprocess.run([sys.executable, "-B", str(RULEMAP), "rule-map", str(self.kb)], capture_output=True, text=True)
+        r = subprocess.run([sys.executable, "-B", str(RULEMAP), "rule-map", str(self.kb)], capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertNotIn("Traceback", r.stdout + r.stderr)
 
     def test_mut_f_case_regra_list(self):
@@ -406,7 +406,7 @@ class GeralNonUtf8(unittest.TestCase):
             (kb / "reference" / "tabela-antiga.md").write_bytes("al\xedquota antiga\n".encode("latin-1"))
             (tmp / "_index.yaml").write_text(registry(None), encoding="utf-8")
             r = subprocess.run([sys.executable, "-B", str(VALIDATOR), str(kb), str(tmp / "_index.yaml")],
-                               capture_output=True, text=True)
+                               capture_output=True, text=True, encoding="utf-8", errors="replace")
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
             self.assertNotIn("Traceback", r.stderr)
         finally:
@@ -430,7 +430,7 @@ class GeralNormativeMarkers(unittest.TestCase):
         concept = self.kb / "concepts" / "regime-de-competencia.md"
         concept.write_text(concept.read_text(encoding="utf-8") + "\n" + line + "\n", encoding="utf-8")
         r = subprocess.run([sys.executable, "-B", str(VALIDATOR), str(self.kb), str(self.tmp / "_index.yaml")],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         return r.returncode, r.stdout + r.stderr
 
     def test_lc_ec_aliquota_without_digit_right_after_warns(self):
@@ -457,7 +457,7 @@ class RuleMapCheckArgOrder(unittest.TestCase):
     """Avaliador ciclo 1: `rule-map --check <dir>` (flag first, like validate_kb --strict) exits 0."""
 
     def run_rulemap(self, *args):
-        r = subprocess.run([sys.executable, "-B", str(RULEMAP), *args], capture_output=True, text=True)
+        r = subprocess.run([sys.executable, "-B", str(RULEMAP), *args], capture_output=True, text=True, encoding="utf-8", errors="replace")
         return r.returncode, r.stdout + r.stderr
 
     def test_check_before_dir(self):
@@ -478,7 +478,7 @@ class RuleMapCheckArgOrder(unittest.TestCase):
 class GeralUntouched(unittest.TestCase):
     def test_v1_example_still_passes_without_warning(self):
         r = subprocess.run([sys.executable, "-B", str(VALIDATOR), str(SKILL / "assets" / "example-kb")],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stdout)
         self.assertNotIn("WARN", r.stdout)
         self.assertTrue(re.match(r"PASS: KB lint passed \(1 concept\(s\), 1 pattern\(s\)\)\n$", r.stdout), r.stdout)

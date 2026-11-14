@@ -45,10 +45,10 @@ try:
 except urllib.error.HTTPError as e:
     # a 1ª linha é sempre "HTTP <código>": o registry classifica por ela mesmo sem corpo JSON
     open(out, "wb").write(("HTTP %d\n" % e.code).encode() + (e.read() or b""))
-    open(err, "w").write("HTTP %d\n" % e.code)
+    open(err, "w", encoding="utf-8").write("HTTP %d\n" % e.code)
     sys.exit(1)
 except Exception as e:
-    open(err, "w").write("falha de rede: %s\n" % e)
+    open(err, "w", encoding="utf-8").write("falha de rede: %s\n" % e)
     sys.exit(1)
 ' "$modelo" "$prompt" "$out" "$err"
 }

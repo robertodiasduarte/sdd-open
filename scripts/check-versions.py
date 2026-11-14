@@ -55,7 +55,7 @@ def semver(v: str) -> tuple[int, int, int]:
 
 
 def git(root: Path, *args: str) -> subprocess.CompletedProcess:
-    return subprocess.run(["git", *args], cwd=str(root), capture_output=True, text=True)
+    return subprocess.run(["git", *args], cwd=str(root), capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
 def check_skill(root: Path, d: Path, base: str | None) -> list[str]:

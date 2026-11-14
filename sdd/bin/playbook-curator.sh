@@ -187,7 +187,7 @@ def secoes():
 
 def raiz_do_projeto():
     try:
-        r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True,
+        r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True, encoding="utf-8", errors="replace",
                            stdin=subprocess.DEVNULL)
         if r.returncode == 0 and r.stdout.strip():
             return os.path.realpath(r.stdout.strip())
