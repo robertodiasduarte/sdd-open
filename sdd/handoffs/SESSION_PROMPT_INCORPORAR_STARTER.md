@@ -7,9 +7,9 @@ suíte para o Windows); a F15 fase 4 continua esperando a última frente antiga 
 
 ## Onde abrir esta sessão
 
-A frente **ainda não existe**. Abra com a `sdd-new-session` a partir do checkout principal do Open
-(`/Users/robertoduarte/rdd-public/sdd-open` ou outra worktree limpa de `main`), nome sugerido `f16w-windows`, de
-`origin/main` = `97503a7` = `v2.15.0`, e cole o prompt abaixo na janela que ela abrir. A worktree da F17c
+A frente **já existe** (aberta em 2026-11-14 pela `sdd-new-session`): worktree
+`/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows`, branch `feat/f16w-windows`, de `origin/main` = `97503a7`
+(`v2.15.0`). A janela do Cursor foi aberta nela; cole o prompt abaixo lá. A worktree da F17c
 (`/Users/robertoduarte/rdd-worktrees/sdd-open-f17c-starter-etapa3`), a da tag (`/Users/robertoduarte/rdd-worktrees/sdd-open-v2.15.0`)
 e os clones do starter dela (`/Users/robertoduarte/rdd-worktrees/sdd-starter-f17c-gerado`, `.../sdd-starter-f17c-ref`) podem ser
 removidos depois de conferir que nada ficou só neles (documentos e evidência da F17c estão na branch de documentos; as 3
@@ -18,8 +18,9 @@ pastas `EXTERNAL_REVIEW_20261114-*` ficam só na worktree da F17c).
 ## Prompt para colar na sessão nova
 
 ```text
-Executar a frente F16W do SDD Open: Windows, porte da suíte. Repo público robertodiasduarte/sdd-open. Abra a frente pela
-sdd-new-session (se o Roberto ainda não abriu) de origin/main = 97503a7 = v2.15.0. Responda em português.
+Executar a frente F16W do SDD Open: Windows, porte da suíte. Repo público robertodiasduarte/sdd-open. A frente já está aberta:
+/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows, branch feat/f16w-windows, de origin/main = 97503a7 = v2.15.0.
+Não rode a sdd-new-session. Responda em português.
 Execute o pipeline inteiro até a release (passo 0, brainstorm, define, design, build, release, fechamento) e pergunte ao
 Roberto somente o que for necessário: as decisões dele (escopo, curadoria, passar do teto do método) e as autorizações.
 Decisão de rotina, decida e registre. Push, merge, tag e Release neste repositório pedem a frase do Roberto

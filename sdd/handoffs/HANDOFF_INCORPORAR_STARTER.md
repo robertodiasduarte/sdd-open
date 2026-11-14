@@ -18,11 +18,12 @@
 ## Prompt de retomada
 
 Próxima sessão: F16W Windows, porte da suíte, com as sobras da F17c no passo 0 (o mesmo de
-`sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`, que diz também onde abrir a frente).
+`sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md`, que diz também onde a frente está).
 
 ```text
-Executar a frente F16W do SDD Open: Windows, porte da suíte. Repo público robertodiasduarte/sdd-open. Abra a frente pela
-sdd-new-session (se o Roberto ainda não abriu) de origin/main = 97503a7 = v2.15.0. Responda em português.
+Executar a frente F16W do SDD Open: Windows, porte da suíte. Repo público robertodiasduarte/sdd-open. A frente já está aberta:
+/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows, branch feat/f16w-windows, de origin/main = 97503a7 = v2.15.0.
+Não rode a sdd-new-session. Responda em português.
 Execute o pipeline inteiro até a release (passo 0, brainstorm, define, design, build, release, fechamento) e pergunte ao
 Roberto somente o que for necessário: as decisões dele (escopo, curadoria, passar do teto do método) e as autorizações.
 Decisão de rotina, decida e registre. Push, merge, tag e Release neste repositório pedem a frase do Roberto
@@ -243,6 +244,7 @@ nova mexe nelas. O build gerado do starter está em 499 linhas (teto 500, test_a
 - 2026-11-14 — F17c (Roberto, avaliador ciclo 3): "só tenho o chat" abre o caminho do chat com regras (`767a212`); o veredito do teste do iniciante do build é de um leitor novo, sem regex; ciclo 4 acima do teto. Série 5: 2 de 3; consertado (`e1f1b42`) e fechado como CONCERNS sem nova medição. Erro meu registrado: dei a série 4 por 3 de 3 com o juiz ajustado depois de ler só a volta 1; lida inteira, era 0 de 3.
 - 2026-11-14 — F17c, release (Roberto): curadoria do playbook da F17c (2 candidatos) adiada para o passo 0 da próxima frente; "push autorizado sdd-open" recusado (não é a frase), depois "sdd-open autorizado".
 - 2026-11-14 — **F17c publicada: Release `v2.15.0`** (`main` = `97503a7`, PR #29) e **starter `v1.5.19`** (PR #12 de lá; push, PR e integração por fast-forward rodados pelo Roberto). A geração do starter (Decisão 5) está completa. Pelo Cronograma, a próxima é a **F16W**. A ficha perdeu as cópias velhas do cabeçalho e de 2 prompts de retomada (linhas 113 a 301), deixadas por trocas de sessões anteriores.
+- 2026-11-14 — **F16W aberta** (pedido do Roberto) com a `sdd-new-session` 1.6.0: worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows`, branch `feat/f16w-windows` de `origin/main` = `97503a7` = `v2.15.0`; aberta no Cursor (`git config sdd.editor`); sem `sdd/config.yaml` no repositório, nenhum slot gravado; nada a copiar. O prompt da sessão passa a dizer que a frente existe.
 
 ## 2026-11-14 — F17c Starter gerado, etapa 3 (Release v2.15.0, starter v1.5.19)
 
