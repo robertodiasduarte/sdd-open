@@ -1,0 +1,144 @@
+test_proximo_nao_liga_para_documento_sujo (test_drive.Verificar.test_proximo_nao_liga_para_documento_sujo) ... FAIL
+
+test_proximo_ve_codigo_sem_commit_depois_do_verde_e_do_vermelho (test_drive.Verificar.test_proximo_ve_codigo_sem_commit_depois_do_verde_e_do_vermelho) ... FAIL
+
+test_rename_commitado_de_documento_para_codigo_roda_o_gate (test_drive.Verificar.test_rename_commitado_de_documento_para_codigo_roda_o_gate) ... FAIL
+
+test_rename_commitado_depois_do_vermelho_roda_o_gate (test_drive.Verificar.test_rename_commitado_depois_do_vermelho_roda_o_gate) ... FAIL
+
+test_rename_commitado_para_documento_nao_conta_como_so_documento (test_drive.Verificar.test_rename_commitado_para_documento_nao_conta_como_so_documento) ... FAIL
+
+test_rename_commitado_so_entre_documentos_mantem_o_verde (test_drive.Verificar.test_rename_commitado_so_entre_documentos_mantem_o_verde) ... FAIL
+
+test_rename_de_codigo_para_pasta_de_documento_vira_commitar (test_drive.Verificar.test_rename_de_codigo_para_pasta_de_documento_vira_commitar) ... ok
+
+
+
+======================================================================
+
+FAIL: test_proximo_nao_liga_para_documento_sujo (test_drive.Verificar.test_proximo_nao_liga_para_documento_sujo)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 624, in test_proximo_nao_liga_para_documento_sujo
+
+    self.assertAcao(self.drive("proximo", D), "AVALIAR_E_RELATAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: AVALIAR_E_RELATAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_proximo_ve_codigo_sem_commit_depois_do_verde_e_do_vermelho (test_drive.Verificar.test_proximo_ve_codigo_sem_commit_depois_do_verde_e_do_vermelho)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 610, in test_proximo_ve_codigo_sem_commit_depois_do_verde_e_do_vermelho
+
+    self.assertAcao(self.drive("proximo", D), "COMMITAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: COMMITAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_rename_commitado_de_documento_para_codigo_roda_o_gate (test_drive.Verificar.test_rename_commitado_de_documento_para_codigo_roda_o_gate)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 533, in test_rename_commitado_de_documento_para_codigo_roda_o_gate
+
+    self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: VERIFICAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_rename_commitado_depois_do_vermelho_roda_o_gate (test_drive.Verificar.test_rename_commitado_depois_do_vermelho_roda_o_gate)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 522, in test_rename_commitado_depois_do_vermelho_roda_o_gate
+
+    self.assertAcao(self.drive("verificar", D), "CORRIGIR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: CORRIGIR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_rename_commitado_para_documento_nao_conta_como_so_documento (test_drive.Verificar.test_rename_commitado_para_documento_nao_conta_como_so_documento)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 508, in test_rename_commitado_para_documento_nao_conta_como_so_documento
+
+    self.assertAcao(self.drive("verificar", D), "AVALIAR_E_RELATAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: AVALIAR_E_RELATAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_rename_commitado_so_entre_documentos_mantem_o_verde (test_drive.Verificar.test_rename_commitado_so_entre_documentos_mantem_o_verde)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 545, in test_rename_commitado_so_entre_documentos_mantem_o_verde
+
+    self.assertAcao(self.drive("proximo", D), "AVALIAR_E_RELATAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: AVALIAR_E_RELATAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 36.880s
+
+
+
+FAILED (failures=6)
+

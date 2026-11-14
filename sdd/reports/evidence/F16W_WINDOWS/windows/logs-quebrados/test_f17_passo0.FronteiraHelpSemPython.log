@@ -1,0 +1,50 @@
+test_help_sem_python_mostra_o_uso_e_sai_0 (test_f17_passo0.FronteiraHelpSemPython.test_help_sem_python_mostra_o_uso_e_sai_0) ... 
+
+  test_help_sem_python_mostra_o_uso_e_sai_0 (test_f17_passo0.FronteiraHelpSemPython.test_help_sem_python_mostra_o_uso_e_sai_0) (flag='--help') ... FAIL
+
+  test_help_sem_python_mostra_o_uso_e_sai_0 (test_f17_passo0.FronteiraHelpSemPython.test_help_sem_python_mostra_o_uso_e_sai_0) (flag='-h') ... FAIL
+
+test_o_resto_sem_python_continua_parando (test_f17_passo0.FronteiraHelpSemPython.test_o_resto_sem_python_continua_parando) ... ok
+
+
+
+======================================================================
+
+FAIL: test_help_sem_python_mostra_o_uso_e_sai_0 (test_f17_passo0.FronteiraHelpSemPython.test_help_sem_python_mostra_o_uso_e_sai_0) (flag='--help')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17_passo0.py", line 66, in test_help_sem_python_mostra_o_uso_e_sai_0
+
+    self.assertIn("--snapshot <raiz-do-worktree>", out)
+
+AssertionError: '--snapshot <raiz-do-worktree>' not found in ''
+
+
+
+======================================================================
+
+FAIL: test_help_sem_python_mostra_o_uso_e_sai_0 (test_f17_passo0.FronteiraHelpSemPython.test_help_sem_python_mostra_o_uso_e_sai_0) (flag='-h')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17_passo0.py", line 66, in test_help_sem_python_mostra_o_uso_e_sai_0
+
+    self.assertIn("--snapshot <raiz-do-worktree>", out)
+
+AssertionError: '--snapshot <raiz-do-worktree>' not found in ''
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 0.137s
+
+
+
+FAILED (failures=2)
+

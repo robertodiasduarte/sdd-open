@@ -1,0 +1,17 @@
+$ /usr/bin/python3 -B -m unittest -v test_windows
+test_cada_achado_tem_teste_que_roda_no_job (test_windows.AchadosGuardados) ... ok
+test_a_varredura_acusa_e_respeita_o_encoding (test_windows.Decodificacao) ... ok
+test_os_aceitos_ainda_existem_e_ainda_precisam (test_windows.Decodificacao) ... ok
+test_subprocess_em_modo_texto_sempre_com_encoding (test_windows.Decodificacao) ... ok
+test_subprocess_nunca_chama_bash_pelo_nome (test_windows.Decodificacao) ... ok
+test_gitattributes_poe_lf_em_todo_checkout (test_windows.FimDeLinha) ... ok
+test_stdout_do_curator_sem_crlf (test_windows.FimDeLinha) ... ok
+test_a_varredura_acusa_a_pergunta_escrita_a_mao (test_windows.Pulos) ... ok
+test_cada_constante_tem_motivo_que_nomeia_o_recurso (test_windows.Pulos) ... ok
+test_pulo_de_plataforma_so_por_constante_do_apoio (test_windows.Pulos) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.570s
+
+OK
+[exit=0]

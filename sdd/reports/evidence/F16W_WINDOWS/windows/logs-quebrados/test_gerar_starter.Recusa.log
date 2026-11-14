@@ -1,0 +1,504 @@
+test_at002_destino_sujo_ou_sem_a_forma_do_starter (test_gerar_starter.Recusa.test_at002_destino_sujo_ou_sem_a_forma_do_starter) ... FAIL
+
+test_at002_lint_do_init_acha_citacao (test_gerar_starter.Recusa.test_at002_lint_do_init_acha_citacao) ... FAIL
+
+test_at002_skill_sem_linha_no_openai_tsv (test_gerar_starter.Recusa.test_at002_skill_sem_linha_no_openai_tsv) ... FAIL
+
+test_at002_tag_inexistente (test_gerar_starter.Recusa.test_at002_tag_inexistente) ... FAIL
+
+test_at002_troca_que_nao_casa_exatamente_uma_vez (test_gerar_starter.Recusa.test_at002_troca_que_nao_casa_exatamente_uma_vez) ... FAIL
+
+test_at007_versao_que_nao_sobe_reprova_antes_de_gravar (test_gerar_starter.Recusa.test_at007_versao_que_nao_sobe_reprova_antes_de_gravar) ... FAIL
+
+test_gerador_diferente_do_da_tag (test_gerar_starter.Recusa.test_gerador_diferente_do_da_tag) ... FAIL
+
+test_r6_tag_anterior_ao_gerador_diz_a_causa (test_gerar_starter.Recusa.test_r6_tag_anterior_ao_gerador_diz_a_causa) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_at002_destino_sujo_ou_sem_a_forma_do_starter (test_gerar_starter.Recusa.test_at002_destino_sujo_ou_sem_a_forma_do_starter)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 279, in test_at002_destino_sujo_ou_sem_a_forma_do_starter
+
+    self.nada_gravado(rc, 64, out, err, antes)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 265, in nada_gravado
+
+    self.assertEqual(rc, esperado, out + err)
+
+AssertionError: 1 != 64 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-i8sw4r7z\open\scripts\gerar-starter.py", line 598, in main
+
+    conferir_destino(destino)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-i8sw4r7z\open\scripts\gerar-starter.py", line 510, in conferir_destino
+
+    raise Falha(64, "%s tem mudan\ufffda n\ufffdo commitada ou arquivo n\ufffdo rastreado: commite ou guarde antes" % destino)
+
+Falha: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-i8sw4r7z\starter tem mudan\ufffda n\ufffdo commitada ou arquivo n\ufffdo rastreado: commite ou guarde antes
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-i8sw4r7z\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-i8sw4r7z\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at002_lint_do_init_acha_citacao (test_gerar_starter.Recusa.test_at002_lint_do_init_acha_citacao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 310, in test_at002_lint_do_init_acha_citacao
+
+    self.nada_gravado(rc, 65, out, err, antes)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 265, in nada_gravado
+
+    self.assertEqual(rc, esperado, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-23qqtr54\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-23qqtr54\open\scripts\gerar-starter.py", line 483, in montar
+
+    gravar_se_mudou(s, com_cabecalho(identificacao(ler(s), skill), skill, cabecalho, migrar))
+
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-23qqtr54\open\scripts\gerar-starter.py", line 356, in com_cabecalho
+
+    raise Falha(65, "%s/SKILL.md n\ufffdo come\ufffda pelo frontmatter" % skill)
+
+Falha: sdd-loop-builder/SKILL.md n\ufffdo come\ufffda pelo frontmatter
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-23qqtr54\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-23qqtr54\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at002_skill_sem_linha_no_openai_tsv (test_gerar_starter.Recusa.test_at002_skill_sem_linha_no_openai_tsv)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 301, in test_at002_skill_sem_linha_no_openai_tsv
+
+    self.nada_gravado(rc, 65, out, err, antes)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 265, in nada_gravado
+
+    self.assertEqual(rc, esperado, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-yw0jon46\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-yw0jon46\open\scripts\gerar-starter.py", line 468, in montar
+
+    raise Falha(65, "%s n\ufffdo tem linha em scripts/starter/openai.tsv" % skill)
+
+Falha: sdd-kb n\ufffdo tem linha em scripts/starter/openai.tsv
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-yw0jon46\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-yw0jon46\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at002_tag_inexistente (test_gerar_starter.Recusa.test_at002_tag_inexistente)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 272, in test_at002_tag_inexistente
+
+    self.nada_gravado(rc, 64, out, err, antes)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 265, in nada_gravado
+
+    self.assertEqual(rc, esperado, out + err)
+
+AssertionError: 1 != 64 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-u2anoq0u\open\scripts\gerar-starter.py", line 603, in main
+
+    commit = extrair_tag(a.tag, arvore)
+
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-u2anoq0u\open\scripts\gerar-starter.py", line 89, in extrair_tag
+
+    raise Falha(64, "a tag %s n\ufffdo existe neste reposit\ufffdrio (a gera\ufffd\ufffdo parte sempre de uma tag publicada)" % tag)
+
+Falha: a tag v0.0.0-nao-existe n\ufffdo existe neste reposit\ufffdrio (a gera\ufffd\ufffdo parte sempre de uma tag publicada)
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-u2anoq0u\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-u2anoq0u\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at002_troca_que_nao_casa_exatamente_uma_vez (test_gerar_starter.Recusa.test_at002_troca_que_nao_casa_exatamente_uma_vez)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 291, in test_at002_troca_que_nao_casa_exatamente_uma_vez
+
+    self.nada_gravado(rc, 65, out, err, antes)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 265, in nada_gravado
+
+    self.assertEqual(rc, esperado, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-eqok6jar\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-eqok6jar\open\scripts\gerar-starter.py", line 474, in montar
+
+    n_trocas = aplicar_trocas(destino, dados / "trocas" / ("%s.md" % skill))
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-eqok6jar\open\scripts\gerar-starter.py", line 153, in aplicar_trocas
+
+    raise Falha(65, "%s, bloco %d: o trecho casou %d vez(es) em %s; esperado exatamente 1 "
+
+Falha: sdd-loop-builder.md, bloco 1: o trecho casou 0 vez(es) em SKILL.md; esperado exatamente 1 (o texto do Open mudou? ajuste a troca)
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-eqok6jar\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-eqok6jar\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at007_versao_que_nao_sobe_reprova_antes_de_gravar (test_gerar_starter.Recusa.test_at007_versao_que_nao_sobe_reprova_antes_de_gravar)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 324, in test_at007_versao_que_nao_sobe_reprova_antes_de_gravar
+
+    self.nada_gravado(rc, 65, out, err, antes)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 265, in nada_gravado
+
+    self.assertEqual(rc, esperado, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-xgvm2z71\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-xgvm2z71\open\scripts\gerar-starter.py", line 483, in montar
+
+    gravar_se_mudou(s, com_cabecalho(identificacao(ler(s), skill), skill, cabecalho, migrar))
+
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-xgvm2z71\open\scripts\gerar-starter.py", line 356, in com_cabecalho
+
+    raise Falha(65, "%s/SKILL.md n\ufffdo come\ufffda pelo frontmatter" % skill)
+
+Falha: sdd-engenharia-reversa-saas/SKILL.md n\ufffdo come\ufffda pelo frontmatter
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-xgvm2z71\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-xgvm2z71\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_gerador_diferente_do_da_tag (test_gerar_starter.Recusa.test_gerador_diferente_do_da_tag)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 348, in test_gerador_diferente_do_da_tag
+
+    self.assertEqual(rc, 64, out + err)
+
+AssertionError: 1 != 64 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-sk5c8985\open\scripts\gerar-starter.py", line 608, in main
+
+    raise Falha(64, "este gerador difere do que est\ufffd na tag %s: rode o da tag, de uma worktree dela "
+
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Falha: este gerador difere do que est\ufffd na tag v9.9.9: rode o da tag, de uma worktree dela (git worktree add --detach /tmp/open-v9.9.9 v9.9.9 && python3 /tmp/open-v9.9.9/scripts/gerar-starter.py --tag v9.9.9 <starter>)
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-sk5c8985\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-sk5c8985\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_r6_tag_anterior_ao_gerador_diz_a_causa (test_gerar_starter.Recusa.test_r6_tag_anterior_ao_gerador_diz_a_causa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 338, in test_r6_tag_anterior_ao_gerador_diz_a_causa
+
+    self.assertEqual(rc, 64, out + err)
+
+AssertionError: 1 != 64 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-qvuehb8i\open\scripts\gerar-starter.py", line 605, in main
+
+    raise Falha(64, "a tag %s n\ufffdo tem o gerador do starter (\ufffd anterior \ufffd F17): gere de uma tag que j\ufffd o tenha"
+
+Falha: a tag v0.1.0 n\ufffdo tem o gerador do starter (\ufffd anterior \ufffd F17): gere de uma tag que j\ufffd o tenha
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-qvuehb8i\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-qvuehb8i\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 43.289s
+
+
+
+FAILED (failures=8)
+

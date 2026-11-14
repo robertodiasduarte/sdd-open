@@ -1,0 +1,28 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/at004.sh
+OK
+  TestRemoto.test_rede_pendurada_inteira_api_e_remoto: 11.6 s (processo inteiro)
+OK
+  TestRemoto.test_ssh_pendurado_vigia: 11.6 s (processo inteiro)
+OK
+  TestRemoto.test_login_do_editor_esperando: 11.7 s (processo inteiro)
+OK
+  TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login: 20.1 s (processo inteiro)
+OK
+  TestFrente.test_frente_bloqueia_login_do_editor: 11.2 s (processo inteiro)
+--- ramo Windows simulado (TestVigiaNoWindows) e grep de SEM_SINAL em test_checar
+test_com_winpid_corta_a_arvore_pelo_taskkill (test_checar.TestVigiaNoWindows) ... ok
+test_regra_do_relogio_e_o_caso_vizinho (test_checar.TestVigiaNoWindows) ... ok
+test_sem_winpid_vale_o_kill_de_grupo (test_checar.TestVigiaNoWindows) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.959s
+
+OK
+0
+--- test_f16_textos (gh_estado/sistema/instalar_gh iguais nos 2 scripts)
+Ran 13 tests in 0.003s
+
+OK
+--- diff do bloco do gh entre checar.sh e inventario.sh
+IGUAL
+[exit=0]

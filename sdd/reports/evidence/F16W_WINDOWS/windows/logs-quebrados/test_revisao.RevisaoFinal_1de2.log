@@ -1,0 +1,178 @@
+test_n1_novo_sem_arquivo_e_68 (test_revisao.RevisaoFinal.test_n1_novo_sem_arquivo_e_68) ... FAIL
+
+test_r1_claude_mesmo_adapter_e_modelo_e_a_mesma_engine (test_revisao.RevisaoFinal.test_r1_claude_mesmo_adapter_e_modelo_e_a_mesma_engine) ... FAIL
+
+test_r1_codex_auditoria_parcial_e_68 (test_revisao.RevisaoFinal.test_r1_codex_auditoria_parcial_e_68) ... FAIL
+
+test_r2_claude_candidato_com_adapter_ausente_e_pulado (test_revisao.RevisaoFinal.test_r2_claude_candidato_com_adapter_ausente_e_pulado) ... FAIL
+
+test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal.test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64) ... 
+
+  test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal.test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64) (revisor2='stub-a') ... FAIL
+
+  test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal.test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64) (revisor2='stub-c:revisor-ok') ... FAIL
+
+  test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal.test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64) (revisor2='stub-b') ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_n1_novo_sem_arquivo_e_68 (test_revisao.RevisaoFinal.test_n1_novo_sem_arquivo_e_68)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 1019, in test_n1_novo_sem_arquivo_e_68
+
+    self.assertEqual(rc, 68, out)
+
+AssertionError: 64 != 68 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_r1_claude_mesmo_adapter_e_modelo_e_a_mesma_engine (test_revisao.RevisaoFinal.test_r1_claude_mesmo_adapter_e_modelo_e_a_mesma_engine)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 960, in test_r1_claude_mesmo_adapter_e_modelo_e_a_mesma_engine
+
+    self.assertEqual(rc, 67, out)
+
+AssertionError: 64 != 67 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_r1_codex_auditoria_parcial_e_68 (test_revisao.RevisaoFinal.test_r1_codex_auditoria_parcial_e_68)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 943, in test_r1_codex_auditoria_parcial_e_68
+
+    self.assertEqual(rc, 68, out)
+
+AssertionError: 64 != 68 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_r2_claude_candidato_com_adapter_ausente_e_pulado (test_revisao.RevisaoFinal.test_r2_claude_candidato_com_adapter_ausente_e_pulado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 970, in test_r2_claude_candidato_com_adapter_ausente_e_pulado
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal.test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64) (revisor2='stub-a')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 954, in test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64
+
+    self.assertIn("precisa ser outra engine (adapter e modelo)", out)
+
+AssertionError: 'precisa ser outra engine (adapter e modelo)' not found in 'D:\\a\\sdd-open\\sdd-open\\sdd\\bin\\adversarial-review.sh: line 37: cd: null directory\n\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).\n\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.\nRESULTADO: PAROU\n\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal.test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64) (revisor2='stub-c:revisor-ok')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 954, in test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64
+
+    self.assertIn("precisa ser outra engine (adapter e modelo)", out)
+
+AssertionError: 'precisa ser outra engine (adapter e modelo)' not found in 'D:\\a\\sdd-open\\sdd-open\\sdd\\bin\\adversarial-review.sh: line 37: cd: null directory\n\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).\n\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.\nRESULTADO: PAROU\n\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64 (test_revisao.RevisaoFinal.test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64) (revisor2='stub-b')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 954, in test_r2_codex_revisor2_igual_ao_revisor_ou_ao_auditor_e_64
+
+    self.assertIn("precisa ser outra engine (adapter e modelo)", out)
+
+AssertionError: 'precisa ser outra engine (adapter e modelo)' not found in 'D:\\a\\sdd-open\\sdd-open\\sdd\\bin\\adversarial-review.sh: line 37: cd: null directory\n\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).\n\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.\nRESULTADO: PAROU\n\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 1.670s
+
+
+
+FAILED (failures=7)
+

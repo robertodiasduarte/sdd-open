@@ -1,0 +1,918 @@
+test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho (test_gerar_starter.SkillDeModo.test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho) ... FAIL
+
+test_at002_release_gerada_so_do_modo (test_gerar_starter.SkillDeModo.test_at002_release_gerada_so_do_modo) ... FAIL
+
+test_at003_a_release_crua_reprova_no_lint (test_gerar_starter.SkillDeModo.test_at003_a_release_crua_reprova_no_lint) ... FAIL
+
+test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) ... 
+
+  test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='sem o arquivo de modo') ... FAIL
+
+  test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='cita arquivo que n�o existe') ... FAIL
+
+  test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='sem description') ... FAIL
+
+  test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='sem compatibility') ... FAIL
+
+  test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='description acima de 1.024') ... FAIL
+
+  test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='identifica��o diferente') ... FAIL
+
+  test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='cita caminho do init') ... FAIL
+
+test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) ... 
+
+  test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) (skill='sdd-brainstorm') ... FAIL
+
+  test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) (skill='sdd-handoff') ... FAIL
+
+  test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) (skill='sdd-governanca') ... FAIL
+
+  test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) (skill='sdd-release') ... FAIL
+
+  test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) (skill='ux-review-builder') ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho (test_gerar_starter.SkillDeModo.test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 480, in test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-2yhv5x2v\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-2yhv5x2v\open\scripts\gerar-starter.py", line 471, in montar
+
+    compor(origem, destino, *modos[skill])
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-2yhv5x2v\open\scripts\gerar-starter.py", line 312, in compor
+
+    fm_modo, corpo = frontmatter(ler(modo), "%s/%s" % (skill, modo_rel))
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-2yhv5x2v\open\scripts\gerar-starter.py", line 286, in frontmatter
+
+    raise Falha(65, "%s: sem frontmatter" % onde)
+
+Falha: sdd-release/references/MODO_INICIANTE.md: sem frontmatter
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-2yhv5x2v\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-2yhv5x2v\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at002_release_gerada_so_do_modo (test_gerar_starter.SkillDeModo.test_at002_release_gerada_so_do_modo)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 457, in test_at002_release_gerada_so_do_modo
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-lsmgdwhq\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-lsmgdwhq\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at003_a_release_crua_reprova_no_lint (test_gerar_starter.SkillDeModo.test_at003_a_release_crua_reprova_no_lint)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 519, in test_at003_a_release_crua_reprova_no_lint
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\scripts\gerar-starter.py", line 589, in main
+
+    print("\U0001f6d1 %s" % x)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='sem o arquivo de modo')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 512, in test_at003_modo_quebrado_sai_65_sem_gravar
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 471, in montar
+
+    compor(origem, destino, *modos[skill])
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 306, in compor
+
+    raise Falha(65, "%s: o arquivo de modo %s n\ufffdo existe" % (skill, modo_rel))
+
+Falha: sdd-release: o arquivo de modo references/MODO_INICIANTE.md n\ufffdo existe
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='cita arquivo que n�o existe')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 512, in test_at003_modo_quebrado_sai_65_sem_gravar
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 471, in montar
+
+    compor(origem, destino, *modos[skill])
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 312, in compor
+
+    fm_modo, corpo = frontmatter(ler(modo), "%s/%s" % (skill, modo_rel))
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 286, in frontmatter
+
+    raise Falha(65, "%s: sem frontmatter" % onde)
+
+Falha: sdd-release/references/MODO_INICIANTE.md: sem frontmatter
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='sem description')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 512, in test_at003_modo_quebrado_sai_65_sem_gravar
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 471, in montar
+
+    compor(origem, destino, *modos[skill])
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 312, in compor
+
+    fm_modo, corpo = frontmatter(ler(modo), "%s/%s" % (skill, modo_rel))
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 286, in frontmatter
+
+    raise Falha(65, "%s: sem frontmatter" % onde)
+
+Falha: sdd-release/references/MODO_INICIANTE.md: sem frontmatter
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='sem compatibility')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 512, in test_at003_modo_quebrado_sai_65_sem_gravar
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 471, in montar
+
+    compor(origem, destino, *modos[skill])
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 312, in compor
+
+    fm_modo, corpo = frontmatter(ler(modo), "%s/%s" % (skill, modo_rel))
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 286, in frontmatter
+
+    raise Falha(65, "%s: sem frontmatter" % onde)
+
+Falha: sdd-release/references/MODO_INICIANTE.md: sem frontmatter
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='description acima de 1.024')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 512, in test_at003_modo_quebrado_sai_65_sem_gravar
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 471, in montar
+
+    compor(origem, destino, *modos[skill])
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 312, in compor
+
+    fm_modo, corpo = frontmatter(ler(modo), "%s/%s" % (skill, modo_rel))
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 286, in frontmatter
+
+    raise Falha(65, "%s: sem frontmatter" % onde)
+
+Falha: sdd-release/references/MODO_INICIANTE.md: sem frontmatter
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='identifica��o diferente')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 512, in test_at003_modo_quebrado_sai_65_sem_gravar
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 471, in montar
+
+    compor(origem, destino, *modos[skill])
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 312, in compor
+
+    fm_modo, corpo = frontmatter(ler(modo), "%s/%s" % (skill, modo_rel))
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 286, in frontmatter
+
+    raise Falha(65, "%s: sem frontmatter" % onde)
+
+Falha: sdd-release/references/MODO_INICIANTE.md: sem frontmatter
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) (caso='cita caminho do init')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 512, in test_at003_modo_quebrado_sai_65_sem_gravar
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 611, in main
+
+    relatorio = montar(arvore, saida, a.tag, commit)
+
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 471, in montar
+
+    compor(origem, destino, *modos[skill])
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 312, in compor
+
+    fm_modo, corpo = frontmatter(ler(modo), "%s/%s" % (skill, modo_rel))
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 286, in frontmatter
+
+    raise Falha(65, "%s: sem frontmatter" % onde)
+
+Falha: sdd-release/references/MODO_INICIANTE.md: sem frontmatter
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-71qi9oig\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) (skill='sdd-brainstorm')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 531, in test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 612, in main
+
+    conferir_versoes(saida, destino)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 544, in conferir_versoes
+
+    raise Falha(65, "o version gate do starter reprovaria:\n  " + "\n  ".join(erros))
+
+Falha: o version gate do starter reprovaria:
+
+  sdd-brainstorm: a c\ufffdpia gerada mudou e a vers\ufffdo n\ufffdo subiu (2.4.0 no starter, 2.4.0 no Open): suba a vers\ufffdo da skill no Open
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) (skill='sdd-handoff')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 531, in test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 612, in main
+
+    conferir_versoes(saida, destino)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 544, in conferir_versoes
+
+    raise Falha(65, "o version gate do starter reprovaria:\n  " + "\n  ".join(erros))
+
+Falha: o version gate do starter reprovaria:
+
+  sdd-handoff: a c\ufffdpia gerada mudou e a vers\ufffdo n\ufffdo subiu (2.2.1 no starter, 2.2.1 no Open): suba a vers\ufffdo da skill no Open
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) (skill='sdd-governanca')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 531, in test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 612, in main
+
+    conferir_versoes(saida, destino)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 544, in conferir_versoes
+
+    raise Falha(65, "o version gate do starter reprovaria:\n  " + "\n  ".join(erros))
+
+Falha: o version gate do starter reprovaria:
+
+  sdd-governanca: a c\ufffdpia gerada mudou e a vers\ufffdo n\ufffdo subiu (2.5.0 no starter, 2.5.0 no Open): suba a vers\ufffdo da skill no Open
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) (skill='sdd-release')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 531, in test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 612, in main
+
+    conferir_versoes(saida, destino)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 544, in conferir_versoes
+
+    raise Falha(65, "o version gate do starter reprovaria:\n  " + "\n  ".join(erros))
+
+Falha: o version gate do starter reprovaria:
+
+  sdd-release: a c\ufffdpia gerada mudou e a vers\ufffdo n\ufffdo subiu (2.12.0 no starter, 2.12.0 no Open): suba a vers\ufffdo da skill no Open
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) (skill='ux-review-builder')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 531, in test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista
+
+    self.assertEqual(rc, 65, out + err)
+
+AssertionError: 1 != 65 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 612, in main
+
+    conferir_versoes(saida, destino)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 544, in conferir_versoes
+
+    raise Falha(65, "o version gate do starter reprovaria:\n  " + "\n  ".join(erros))
+
+Falha: o version gate do starter reprovaria:
+
+  ux-review-builder: a c\ufffdpia gerada mudou e a vers\ufffdo n\ufffdo subiu (1.6.0 no starter, 1.6.0 no Open): suba a vers\ufffdo da skill no Open
+
+
+
+During handling of the above exception, another exception occurred:
+
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1kfaejen\open\scripts\gerar-starter.py", line 624, in main
+
+    print("\U0001f6d1 %s" % e)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f6d1' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 171.679s
+
+
+
+FAILED (failures=15)
+

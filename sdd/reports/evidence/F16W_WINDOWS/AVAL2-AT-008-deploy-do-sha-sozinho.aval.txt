@@ -1,0 +1,6 @@
+$ bash -c uptime; cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_deploy_do_sha 2>&1 | tail -3
+13:17  up 12 days, 22:32, 1 user, load averages: 5.14 5.34 5.93
+Ran 46 tests in 32.567s
+
+OK
+[exit=0]

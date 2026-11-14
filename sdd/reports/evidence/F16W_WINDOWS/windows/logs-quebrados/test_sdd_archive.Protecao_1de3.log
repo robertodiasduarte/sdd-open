@@ -1,0 +1,102 @@
+test_arquivo_de_controle_da_pasta_fica (test_sdd_archive.Protecao.test_arquivo_de_controle_da_pasta_fica) ... FAIL
+
+test_citacao_em_outra_caixa_e_acento (test_sdd_archive.Protecao.test_citacao_em_outra_caixa_e_acento) ... FAIL
+
+test_citacao_por_palavra_inteira (test_sdd_archive.Protecao.test_citacao_por_palavra_inteira) ... FAIL
+
+test_citada_em_ficha_aberta (test_sdd_archive.Protecao.test_citada_em_ficha_aberta) ... FAIL
+
+test_documento_solto_citado_em_ficha_aberta_fica (test_sdd_archive.Protecao.test_documento_solto_citado_em_ficha_aberta_fica) ... FAIL
+
+test_feature_com_minuscula_ou_hifen_e_protegida (test_sdd_archive.Protecao.test_feature_com_minuscula_ou_hifen_e_protegida) ... ok
+
+
+
+======================================================================
+
+FAIL: test_arquivo_de_controle_da_pasta_fica (test_sdd_archive.Protecao.test_arquivo_de_controle_da_pasta_fica)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 313, in test_arquivo_de_controle_da_pasta_fica
+
+    self.assertIn("sdd/reports/solto.md  \u2192", out)
+
+AssertionError: 'sdd/reports/solto.md  \u2192' not found in '\n== Lote com-ledger: 0 arquivo(s) ==\n\n== Lote sem-ledger: 0 arquivo(s) ==\n\n== Lote soltos: 0 arquivo(s) ==\n\n== Protegidos: 0 grupo(s) ==\n\n== Recentes (ficam): 3 grupo(s) ==\n  F1 (1 documento(s), quieto h� -9 dia(s), limite 60)\n  F14 (1 documento(s), quieto h� -9 dia(s), limite 60)\n  solto.md (1 documento(s), quieto h� -9 dia(s), limite 60)\n\n== Sem classifica��o (decis�o sua): 0 ==\n\n== Subpastas (ficam): 0 ==\n\nTOTAIS: com-ledger=0 � sem-ledger=0 � soltos=0 � protegidos=0 � recentes=3 � sem classifica��o=0 � subpastas=0\nNada foi movido.\nRESULTADO: SIMULACAO\n\u2192 para mover, rode com --lote <nome> --aplicar, um lote por vez.\n'
+
+
+
+======================================================================
+
+FAIL: test_citacao_em_outra_caixa_e_acento (test_sdd_archive.Protecao.test_citacao_em_outra_caixa_e_acento)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 289, in test_citacao_em_outra_caixa_e_acento
+
+    self.assertIn("sdd/features/DEFINE_F1.md  \u2192", out, "o que n�o foi citado segue")
+
+AssertionError: 'sdd/features/DEFINE_F1.md  \u2192' not found in '\n== Lote com-ledger: 0 arquivo(s) ==\n\n== Lote sem-ledger: 0 arquivo(s) ==\n\n== Lote soltos: 0 arquivo(s) ==\n\n== Protegidos: 3 grupo(s) ==\n  F14 (1 documento(s)): citada numa ficha aberta\n  F14_FOO (1 documento(s)): citada numa ficha aberta\n  NOTAS_B.md (1 documento(s)): documento citado numa ficha aberta\n\n== Recentes (ficam): 2 grupo(s) ==\n  F1 (1 documento(s), quieto h� -9 dia(s), limite 60)\n  BUILD_REPORT_a��o.md (1 documento(s), quieto h� -9 dia(s), limite 60)\n\n== Sem classifica��o (decis�o sua): 0 ==\n\n== Subpastas (ficam): 0 ==\n\nTOTAIS: com-ledger=0 � sem-ledger=0 � soltos=0 � protegidos=3 � recentes=2 � sem classifica��o=0 � subpastas=0\nNada foi movido.\nRESULTADO: SIMULACAO\n\u2192 para mover, rode com --lote <nome> --aplicar, um lote por vez.\n' : o que n�o foi citado segue
+
+
+
+======================================================================
+
+FAIL: test_citacao_por_palavra_inteira (test_sdd_archive.Protecao.test_citacao_por_palavra_inteira)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 193, in test_citacao_por_palavra_inteira
+
+    self.assertIn("sdd/features/DEFINE_F14.md  \u2192", out)
+
+AssertionError: 'sdd/features/DEFINE_F14.md  \u2192' not found in '\n== Lote com-ledger: 0 arquivo(s) ==\n\n== Lote sem-ledger: 0 arquivo(s) ==\n\n== Lote soltos: 0 arquivo(s) ==\n\n== Protegidos: 1 grupo(s) ==\n  F1 (1 documento(s)): citada numa ficha aberta\n\n== Recentes (ficam): 1 grupo(s) ==\n  F14 (1 documento(s), quieto h� -9 dia(s), limite 60)\n\n== Sem classifica��o (decis�o sua): 0 ==\n\n== Subpastas (ficam): 0 ==\n\nTOTAIS: com-ledger=0 � sem-ledger=0 � soltos=0 � protegidos=1 � recentes=1 � sem classifica��o=0 � subpastas=0\nNada foi movido.\nRESULTADO: SIMULACAO\n\u2192 para mover, rode com --lote <nome> --aplicar, um lote por vez.\n'
+
+
+
+======================================================================
+
+FAIL: test_citada_em_ficha_aberta (test_sdd_archive.Protecao.test_citada_em_ficha_aberta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 187, in test_citada_em_ficha_aberta
+
+    self.assertIn("sdd/features/DEFINE_F1.md  \u2192", out)
+
+AssertionError: 'sdd/features/DEFINE_F1.md  \u2192' not found in '\n== Lote com-ledger: 0 arquivo(s) ==\n\n== Lote sem-ledger: 0 arquivo(s) ==\n\n== Lote soltos: 0 arquivo(s) ==\n\n== Protegidos: 1 grupo(s) ==\n  F14 (1 documento(s)): citada numa ficha aberta\n\n== Recentes (ficam): 1 grupo(s) ==\n  F1 (1 documento(s), quieto h� -9 dia(s), limite 60)\n\n== Sem classifica��o (decis�o sua): 0 ==\n\n== Subpastas (ficam): 0 ==\n\nTOTAIS: com-ledger=0 � sem-ledger=0 � soltos=0 � protegidos=1 � recentes=1 � sem classifica��o=0 � subpastas=0\nNada foi movido.\nRESULTADO: SIMULACAO\n\u2192 para mover, rode com --lote <nome> --aplicar, um lote por vez.\n'
+
+
+
+======================================================================
+
+FAIL: test_documento_solto_citado_em_ficha_aberta_fica (test_sdd_archive.Protecao.test_documento_solto_citado_em_ficha_aberta_fica)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 250, in test_documento_solto_citado_em_ficha_aberta_fica
+
+    self.assertIn("sdd/reports/outro.txt  \u2192", out, "o que n�o foi citado segue")
+
+AssertionError: 'sdd/reports/outro.txt  \u2192' not found in '\n== Lote com-ledger: 0 arquivo(s) ==\n\n== Lote sem-ledger: 0 arquivo(s) ==\n\n== Lote soltos: 0 arquivo(s) ==\n\n== Protegidos: 2 grupo(s) ==\n  NOTAS_DA_FRENTE.md (1 documento(s)): documento citado numa ficha aberta\n  parecer.txt (1 documento(s)): documento citado numa ficha aberta\n\n== Recentes (ficam): 3 grupo(s) ==\n  F1 (1 documento(s), quieto h� -9 dia(s), limite 60)\n  F14 (1 documento(s), quieto h� -9 dia(s), limite 60)\n  outro.txt (1 documento(s), quieto h� -9 dia(s), limite 60)\n\n== Sem classifica��o (decis�o sua): 0 ==\n\n== Subpastas (ficam): 0 ==\n\nTOTAIS: com-ledger=0 � sem-ledger=0 � soltos=0 � protegidos=2 � recentes=3 � sem classifica��o=0 � subpastas=0\nNada foi movido.\nRESULTADO: SIMULACAO\n\u2192 para mover, rode com --lote <nome> --aplicar, um lote por vez.\n' : o que n�o foi citado segue
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 2.838s
+
+
+
+FAILED (failures=5)
+

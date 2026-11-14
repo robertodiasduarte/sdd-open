@@ -1,0 +1,5 @@
+test_avaliador_guard_nega_com_arvore_suja_e_so_com_veredito (test_claude_adapter.Projeto.test_avaliador_guard_nega_com_arvore_suja_e_so_com_veredito) ... ERROR
+
+test_avaliador_guard_usa_o_bash_do_claude_code_e_nao_o_nome (test_claude_adapter.Projeto.test_avaliador_guard_usa_o_bash_do_claude_code_e_nao_o_nome) ... skipped 'chmod: no Windows o bit de execu��o e a permiss�o de leitura n�o valem'
+
+test_check_acusa_guard_editado_e_entrada_removida (test_claude_adapter.Projeto.test_check_acusa_guard_editado_e_entrada_removida) ... 

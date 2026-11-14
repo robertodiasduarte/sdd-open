@@ -1,0 +1,364 @@
+test_documento_nao_rastreado_nao_trava (test_drive.Verificar.test_documento_nao_rastreado_nao_trava) ... FAIL
+
+test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) ... 
+
+  test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=3) ... FAIL
+
+  test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=127) ... FAIL
+
+  test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=1) ... FAIL
+
+  test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=4) ... FAIL
+
+  test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=5) ... FAIL
+
+  test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=64) ... FAIL
+
+test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) ... FAIL
+
+test_limite (test_drive.Verificar.test_limite) ... FAIL
+
+test_log_com_o_comando_primeiro_e_o_exit_real (test_drive.Verificar.test_log_com_o_comando_primeiro_e_o_exit_real) ... FAIL
+
+test_parada_de_conferencia_nao_fica_presa_depois_de_resolver (test_drive.Verificar.test_parada_de_conferencia_nao_fica_presa_depois_de_resolver) ... FAIL
+
+test_parada_do_gate_aparece_no_proximo_ate_o_resume (test_drive.Verificar.test_parada_do_gate_aparece_no_proximo_ate_o_resume) ... FAIL
+
+test_ponteiro_de_submodule_com_ignore_all_nao_passa (test_drive.Verificar.test_ponteiro_de_submodule_com_ignore_all_nao_passa) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_documento_nao_rastreado_nao_trava (test_drive.Verificar.test_documento_nao_rastreado_nao_trava)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 629, in test_documento_nao_rastreado_nao_trava
+
+    self.assertAcao(self.drive("verificar", D), "CORRIGIR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: CORRIGIR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=3)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 646, in test_exits_que_nao_gastam_rodada
+
+    self.assertParada(self.drive("verificar", D), motivo)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 69, in assertParada
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 10 != 20 : ACAO: DESIGN
+
+rodada: 1/3
+
+o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: CONTINUAR
+
+\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=127)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 646, in test_exits_que_nao_gastam_rodada
+
+    self.assertParada(self.drive("verificar", D), motivo)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 69, in assertParada
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 10 != 20 : ACAO: DESIGN
+
+rodada: 1/3
+
+o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: CONTINUAR
+
+\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=1)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 646, in test_exits_que_nao_gastam_rodada
+
+    self.assertParada(self.drive("verificar", D), motivo)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 69, in assertParada
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 10 != 20 : ACAO: DESIGN
+
+rodada: 1/3
+
+o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: CONTINUAR
+
+\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=4)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 646, in test_exits_que_nao_gastam_rodada
+
+    self.assertParada(self.drive("verificar", D), motivo)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 69, in assertParada
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 10 != 20 : ACAO: DESIGN
+
+rodada: 1/3
+
+o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: CONTINUAR
+
+\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=5)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 646, in test_exits_que_nao_gastam_rodada
+
+    self.assertParada(self.drive("verificar", D), motivo)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 69, in assertParada
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 10 != 20 : ACAO: DESIGN
+
+rodada: 1/3
+
+o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: CONTINUAR
+
+\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada) (codigo=64)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 646, in test_exits_que_nao_gastam_rodada
+
+    self.assertParada(self.drive("verificar", D), motivo)
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 69, in assertParada
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 10 != 20 : ACAO: DESIGN
+
+rodada: 1/3
+
+o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: CONTINUAR
+
+\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_exits_que_nao_gastam_rodada (test_drive.Verificar.test_exits_que_nao_gastam_rodada)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 649, in test_exits_que_nao_gastam_rodada
+
+    self.assertEqual(len(st["gates"]), 6)
+
+AssertionError: 0 != 6
+
+
+
+======================================================================
+
+FAIL: test_limite (test_drive.Verificar.test_limite)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 672, in test_limite
+
+    self.assertAcao(self.drive("verificar", D), "CORRIGIR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: CORRIGIR$' not found in 'ACAO: DESIGN\nrodada: 1/2\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_log_com_o_comando_primeiro_e_o_exit_real (test_drive.Verificar.test_log_com_o_comando_primeiro_e_o_exit_real)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 447, in test_log_com_o_comando_primeiro_e_o_exit_real
+
+    self.assertAcao(res, "CORRIGIR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: CORRIGIR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_parada_de_conferencia_nao_fica_presa_depois_de_resolver (test_drive.Verificar.test_parada_de_conferencia_nao_fica_presa_depois_de_resolver)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 660, in test_parada_de_conferencia_nao_fica_presa_depois_de_resolver
+
+    self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: VERIFICAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_parada_do_gate_aparece_no_proximo_ate_o_resume (test_drive.Verificar.test_parada_do_gate_aparece_no_proximo_ate_o_resume)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 667, in test_parada_do_gate_aparece_no_proximo_ate_o_resume
+
+    self.assertParada(self.drive("proximo", D), "gate-inconclusivo")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 69, in assertParada
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 10 != 20 : ACAO: DESIGN
+
+rodada: 1/3
+
+o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: CONTINUAR
+
+\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_ponteiro_de_submodule_com_ignore_all_nao_passa (test_drive.Verificar.test_ponteiro_de_submodule_com_ignore_all_nao_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 593, in test_ponteiro_de_submodule_com_ignore_all_nao_passa
+
+    self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: VERIFICAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 56.024s
+
+
+
+FAILED (failures=13)
+

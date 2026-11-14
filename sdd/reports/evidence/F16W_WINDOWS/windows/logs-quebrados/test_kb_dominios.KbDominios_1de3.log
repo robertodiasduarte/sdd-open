@@ -1,0 +1,174 @@
+test_arquivo_ilegivel_e_1_sem_traceback (test_kb_dominios.KbDominios.test_arquivo_ilegivel_e_1_sem_traceback) ... FAIL
+
+test_bom_no_inicio_nao_esconde_a_secao (test_kb_dominios.KbDominios.test_bom_no_inicio_nao_esconde_a_secao) ... FAIL
+
+test_dominio_ilegivel_nao_da_traceback (test_kb_dominios.KbDominios.test_dominio_ilegivel_nao_da_traceback) ... skipped 'chmod: no Windows o bit de execu��o e a permiss�o de leitura n�o valem'
+
+test_linha_ausente (test_kb_dominios.KbDominios.test_linha_ausente) ... FAIL
+
+test_linha_fora_do_technical_context_nao_conta (test_kb_dominios.KbDominios.test_linha_fora_do_technical_context_nao_conta) ... FAIL
+
+test_lista_de_existentes_truncada_em_10 (test_kb_dominios.KbDominios.test_lista_de_existentes_truncada_em_10) ... FAIL
+
+test_lista_os_testes_do_rule_map_com_pipe_escapado (test_kb_dominios.KbDominios.test_lista_os_testes_do_rule_map_com_pipe_escapado) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_arquivo_ilegivel_e_1_sem_traceback (test_kb_dominios.KbDominios.test_arquivo_ilegivel_e_1_sem_traceback)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_kb_dominios.py", line 197, in test_arquivo_ilegivel_e_1_sem_traceback
+
+    self.assertIn("n�o consegui ler", err)
+
+AssertionError: 'n�o consegui ler' not found in "\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-joieubxb\\sdd\\features\\DEFINE_X.md: n\ufffdo consegui ler: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte\nRESULTADO: VERMELHO\n\\u2192 confira a permiss\ufffdo e a codifica\ufffd\ufffdo (UTF-8) do arquivo e rode de novo\n"
+
+
+
+======================================================================
+
+FAIL: test_bom_no_inicio_nao_esconde_a_secao (test_kb_dominios.KbDominios.test_bom_no_inicio_nao_esconde_a_secao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_kb_dominios.py", line 188, in test_bom_no_inicio_nao_esconde_a_secao
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\kb-dominios.py", line 163, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\kb-dominios.py", line 155, in main
+
+    print(ln)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_linha_ausente (test_kb_dominios.KbDominios.test_linha_ausente)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_kb_dominios.py", line 100, in test_linha_ausente
+
+    self.vermelho(self.projeto(None), "falta a linha **KB Domains**")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_kb_dominios.py", line 96, in vermelho
+
+    self.assertRegex(err, r"(?m)^\u2192 ")
+
+AssertionError: Regex didn't match: '(?m)^\u2192 ' not found in "\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-3mi45t4c\\sdd\\features\\DEFINE_X.md: falta a linha **KB Domains** no Technical Context\nRESULTADO: VERMELHO\n\\u2192 corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo\n"
+
+
+
+======================================================================
+
+FAIL: test_linha_fora_do_technical_context_nao_conta (test_kb_dominios.KbDominios.test_linha_fora_do_technical_context_nao_conta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_kb_dominios.py", line 108, in test_linha_fora_do_technical_context_nao_conta
+
+    self.vermelho(define, "falta a linha **KB Domains**")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_kb_dominios.py", line 96, in vermelho
+
+    self.assertRegex(err, r"(?m)^\u2192 ")
+
+AssertionError: Regex didn't match: '(?m)^\u2192 ' not found in "\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-zh2xj_o9\\sdd\\features\\DEFINE_X.md: falta a linha **KB Domains** no Technical Context\nRESULTADO: VERMELHO\n\\u2192 corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo\n"
+
+
+
+======================================================================
+
+FAIL: test_lista_de_existentes_truncada_em_10 (test_kb_dominios.KbDominios.test_lista_de_existentes_truncada_em_10)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_kb_dominios.py", line 138, in test_lista_de_existentes_truncada_em_10
+
+    err = self.vermelho(self.projeto("x", dominios=nomes), "n�o existe em sdd/kb/")
+
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_kb_dominios.py", line 94, in vermelho
+
+    self.assertIn(trecho, err)
+
+AssertionError: 'n�o existe em sdd/kb/' not found in "\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-img388cf\\sdd\\features\\DEFINE_X.md: KB Domains: 'x' n\ufffdo existe em sdd/kb/ (existem: d00, d01, d02, d03, d04, d05, d06, d07, d08, d09 e mais 3)\nRESULTADO: VERMELHO\n\\u2192 corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo\n"
+
+
+
+======================================================================
+
+FAIL: test_lista_os_testes_do_rule_map_com_pipe_escapado (test_kb_dominios.KbDominios.test_lista_os_testes_do_rule_map_com_pipe_escapado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_kb_dominios.py", line 82, in test_lista_os_testes_do_rule_map_com_pipe_escapado
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\kb-dominios.py", line 163, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\kb-dominios.py", line 155, in main
+
+    print(ln)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 0.321s
+
+
+
+FAILED (failures=6, skipped=1)
+

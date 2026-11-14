@@ -1,0 +1,28 @@
+test_arvore_limpa_sem_incluir_compara (test_governanca_fronteira.Aval2.test_arvore_limpa_sem_incluir_compara) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_arvore_limpa_sem_incluir_compara (test_governanca_fronteira.Aval2.test_arvore_limpa_sem_incluir_compara)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 117, in test_arvore_limpa_sem_incluir_compara
+
+    self.assertRegex(out, r"(?m)^FORA: .*/b\.txt$")
+
+AssertionError: Regex didn't match: '(?m)^FORA: .*/b\\.txt$' not found in 'FORA: C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-mp_uni5v\\w\\b.txt\nRESULTADO: ESCRITA FORA DO PERMITIDO\n\u2192 n�o apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 2.599s
+
+
+
+FAILED (failures=1)
+

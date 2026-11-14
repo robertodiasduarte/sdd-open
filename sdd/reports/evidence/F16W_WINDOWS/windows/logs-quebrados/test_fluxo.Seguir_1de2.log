@@ -1,0 +1,36 @@
+test_concordancia_e_artigo_por_documento (test_fluxo.Seguir.test_concordancia_e_artigo_por_documento) ... ok
+
+test_design_segue_com_a_revisao_registrada_ou_dispensavel (test_fluxo.Seguir.test_design_segue_com_a_revisao_registrada_ou_dispensavel) ... FAIL
+
+test_desligado_ou_sem_config_para_em_silencio_de_motivo (test_fluxo.Seguir.test_desligado_ou_sem_config_para_em_silencio_de_motivo) ... ok
+
+test_fora_de_git_o_motivo_e_o_git (test_fluxo.Seguir.test_fora_de_git_o_motivo_e_o_git) ... ok
+
+test_ledger_sem_coluna_de_severidade_para (test_fluxo.Seguir.test_ledger_sem_coluna_de_severidade_para) ... ok
+
+
+
+======================================================================
+
+FAIL: test_design_segue_com_a_revisao_registrada_ou_dispensavel (test_fluxo.Seguir.test_design_segue_com_a_revisao_registrada_ou_dispensavel)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_fluxo.py", line 451, in test_design_segue_com_a_revisao_registrada_ou_dispensavel
+
+    self.assertIn("\u2192 /sdd-build sdd/features/DESIGN_X.md", out)
+
+AssertionError: '\u2192 /sdd-build sdd/features/DESIGN_X.md' not found in '\u2705 DESIGN pronto \u2192 seguindo para o BUILD (encadeamento ligado em sdd/config.yaml)\n\u2192 /sdd-build sdd/features\\DESIGN_X.md\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 4.911s
+
+
+
+FAILED (failures=1)
+

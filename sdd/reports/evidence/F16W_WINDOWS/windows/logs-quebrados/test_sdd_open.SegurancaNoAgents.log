@@ -1,0 +1,70 @@
+test_com_supabase_as_5_regras_e_o_ponteiro (test_sdd_open.SegurancaNoAgents.test_com_supabase_as_5_regras_e_o_ponteiro) ... ok
+
+test_o_acrescimo_cabe_em_2_kb (test_sdd_open.SegurancaNoAgents.test_o_acrescimo_cabe_em_2_kb) ... ok
+
+test_o_ponteiro_e_o_mesmo_nas_duas_copias (test_sdd_open.SegurancaNoAgents.test_o_ponteiro_e_o_mesmo_nas_duas_copias) ... ok
+
+test_sem_o_catalogo_fica_o_ponteiro_e_o_aviso (test_sdd_open.SegurancaNoAgents.test_sem_o_catalogo_fica_o_ponteiro_e_o_aviso) ... ok
+
+test_sem_stack_so_a_regra_de_todas_e_o_ponteiro (test_sdd_open.SegurancaNoAgents.test_sem_stack_so_a_regra_de_todas_e_o_ponteiro) ... ok
+
+test_stack_nova_deixa_o_bloco_divergente_e_o_sync_refaz (test_sdd_open.SegurancaNoAgents.test_stack_nova_deixa_o_bloco_divergente_e_o_sync_refaz) ... ERROR
+
+
+
+======================================================================
+
+ERROR: test_stack_nova_deixa_o_bloco_divergente_e_o_sync_refaz (test_sdd_open.SegurancaNoAgents.test_stack_nova_deixa_o_bloco_divergente_e_o_sync_refaz)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 675, in test_stack_nova_deixa_o_bloco_divergente_e_o_sync_refaz
+
+    self.commit(p, "init")
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 122, in commit
+
+    self.git(repo, "commit", "-q", "--allow-empty", "-m", msg)
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 109, in git
+
+    rc, out, err = self.roda(["git", *args], repo)
+
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 102, in roda
+
+    r = subprocess.run(
+
+        ^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+
+    stdout, stderr = process.communicate(input, timeout=timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+
+    stdout, stderr = self._communicate(input, endtime, timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+
+    raise TimeoutExpired(self.args, orig_timeout)
+
+subprocess.TimeoutExpired: Command '['git', 'commit', '-q', '--allow-empty', '-m', 'init']' timed out after 120 seconds
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 196.798s
+
+
+
+FAILED (errors=1)
+

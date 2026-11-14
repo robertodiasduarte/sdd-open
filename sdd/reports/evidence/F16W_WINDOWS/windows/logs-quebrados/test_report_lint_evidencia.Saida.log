@@ -1,0 +1,42 @@
+test_uma_seta_por_classe (test_report_lint_evidencia.Saida.test_uma_seta_por_classe) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_uma_seta_por_classe (test_report_lint_evidencia.Saida.test_uma_seta_por_classe)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 336, in test_uma_seta_por_classe
+
+    self.assertEqual(len(setas), 2, out)  # [tabela] e [avalia��o ausente]
+
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+AssertionError: 0 != 2 : The system cannot find the path specified.
+
+\U0001f6d1 [tabela] nenhuma tabela de crit\ufffdrios reconhecida (uma coluna Resultado, Status, Passou ou Result e uma coluna Evid\ufffdncia): sem ela, nenhum crit\ufffdrio \ufffd conferido
+
+\U0001f6d1 [avalia\ufffd\ufffdo ausente] n\ufffdo h\ufffd `AVALIACAO_EXEMPLO_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (n\ufffdo vazio e n\ufffdo ignorado pelo git) nem linha sobre o avaliador. Sa\ufffddas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, s\ufffd com menos de 2 camadas \ufffd contagem imposs\ufffdvel: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+
+RESULTADO: VERMELHO
+
+\u2192 use a tabela do template: `| ID | Crit\ufffdrio | Resultado | Evid\ufffdncia |`.
+
+\u2192 rode o avaliador e grave `sdd/reviews/AVALIACAO_EXEMPLO_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relat\ufffdrio.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 0.118s
+
+
+
+FAILED (failures=1)
+

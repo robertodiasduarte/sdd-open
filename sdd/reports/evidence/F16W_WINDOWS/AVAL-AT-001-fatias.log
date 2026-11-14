@@ -1,0 +1,30 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/fatias.sh
+[python3] unidades totais (--lista sem fatia): 359
+N=1 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=2 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=3 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=4 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=5 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=6 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=7 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=8 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=9 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=10 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=11 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=12 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+[python3] modulos cobertos=82  arquivos test_*.py=82
+[/usr/bin/python3] unidades totais (--lista sem fatia): 359
+N=1 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=2 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=3 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=4 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=5 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=6 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=7 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=8 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=9 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=10 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=11 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+N=12 linhas=359 duplicadas=0 estavel=sim uniao=todas:sim
+[/usr/bin/python3] modulos cobertos=82  arquivos test_*.py=82
+[exit=0]

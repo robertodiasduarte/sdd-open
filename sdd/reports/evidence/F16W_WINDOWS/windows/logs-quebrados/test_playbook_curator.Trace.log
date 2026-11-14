@@ -1,0 +1,58 @@
+test_desligado_ou_sem_documento_nao_grava (test_playbook_curator.Trace.test_desligado_ou_sem_documento_nao_grava) ... ok
+
+test_linha_jsonl_por_feature (test_playbook_curator.Trace.test_linha_jsonl_por_feature) ... ok
+
+test_nome_com_ponto_no_inicio_nao_vira_arquivo_oculto (test_playbook_curator.Trace.test_nome_com_ponto_no_inicio_nao_vira_arquivo_oculto) ... ok
+
+test_nome_esquisito_e_sanitizado (test_playbook_curator.Trace.test_nome_esquisito_e_sanitizado) ... ERROR
+
+test_trace_que_nao_grava_nao_muda_o_exit (test_playbook_curator.Trace.test_trace_que_nao_grava_nao_muda_o_exit) ... ok
+
+
+
+======================================================================
+
+ERROR: test_nome_esquisito_e_sanitizado (test_playbook_curator.Trace.test_nome_esquisito_e_sanitizado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_playbook_curator.py", line 598, in test_nome_esquisito_e_sanitizado
+
+    self.doc('DESIGN_qu"o te.md', "x\n")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_playbook_curator.py", line 53, in doc
+
+    return self.escreve(self.dir, nome, texto)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 127, in escreve
+
+    p.write_text(texto, encoding="utf-8")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1047, in write_text
+
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1013, in open
+
+    return io.open(self, mode, buffering, encoding, errors, newline)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+OSError: [Errno 22] Invalid argument: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-u92pw8gr\\stg\\DESIGN_qu"o te.md'
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 1.309s
+
+
+
+FAILED (errors=1)
+

@@ -1,0 +1,246 @@
+test_1_desempate_que_falhou_registra_a_engine (test_revisao.AvaliadorCiclo1.test_1_desempate_que_falhou_registra_a_engine) ... FAIL
+
+test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3 (test_revisao.AvaliadorCiclo1.test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3) ... FAIL
+
+test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem (test_revisao.AvaliadorCiclo1.test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem) ... 
+
+  test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem (test_revisao.AvaliadorCiclo1.test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem) (cenario='falha-quota') ... FAIL
+
+  test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem (test_revisao.AvaliadorCiclo1.test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem) (cenario='dorme') ... ERROR
+
+test_2_custo_todo_desconhecido_nunca_e_zero (test_revisao.AvaliadorCiclo1.test_2_custo_todo_desconhecido_nunca_e_zero) ... FAIL
+
+test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1.test_3_contexto_do_diff_do_usuario_nao_muda_o_sha) ... ERROR
+
+test_4_docs_sdd_sem_o_brainstorm_descartado (test_revisao.AvaliadorCiclo1.test_4_docs_sdd_sem_o_brainstorm_descartado) ... FAIL
+
+test_5_auditor_excluido_nao_e_diversidade_nenhuma (test_revisao.AvaliadorCiclo1.test_5_auditor_excluido_nao_e_diversidade_nenhuma) ... FAIL
+
+
+
+======================================================================
+
+ERROR: test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem (test_revisao.AvaliadorCiclo1.test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem) (cenario='dorme')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 810, in test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem
+
+    r, rc, out = self.com_r2("stub-c:" + cen)
+
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 790, in com_r2
+
+    r = self.projeto()
+
+        ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 61, in projeto
+
+    r = self.repo()
+
+        ^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 116, in repo
+
+    p.mkdir(parents=True)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1311, in mkdir
+
+    os.mkdir(self, mode)
+
+FileExistsError: [WinError 183] Cannot create a file when that file already exists: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-vzhhwr8u\\repo'
+
+
+
+======================================================================
+
+ERROR: test_3_contexto_do_diff_do_usuario_nao_muda_o_sha (test_revisao.AvaliadorCiclo1.test_3_contexto_do_diff_do_usuario_nao_muda_o_sha)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 847, in test_3_contexto_do_diff_do_usuario_nao_muda_o_sha
+
+    self.assertEqual(sha(a), sha(b))
+
+                     ^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 842, in <lambda>
+
+    sha = lambda s: re.search(r"diff_sha256: ([0-9a-f]{64})", s).group(1)
+
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'group'
+
+
+
+======================================================================
+
+FAIL: test_1_desempate_que_falhou_registra_a_engine (test_revisao.AvaliadorCiclo1.test_1_desempate_que_falhou_registra_a_engine)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 823, in test_1_desempate_que_falhou_registra_a_engine
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3 (test_revisao.AvaliadorCiclo1.test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 798, in test_1_segundo_revisor_sem_cli_bloqueia_o_loop_d3
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem (test_revisao.AvaliadorCiclo1.test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem) (cenario='falha-quota')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 811, in test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_2_custo_todo_desconhecido_nunca_e_zero (test_revisao.AvaliadorCiclo1.test_2_custo_todo_desconhecido_nunca_e_zero)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 832, in test_2_custo_todo_desconhecido_nunca_e_zero
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_4_docs_sdd_sem_o_brainstorm_descartado (test_revisao.AvaliadorCiclo1.test_4_docs_sdd_sem_o_brainstorm_descartado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 854, in test_4_docs_sdd_sem_o_brainstorm_descartado
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_5_auditor_excluido_nao_e_diversidade_nenhuma (test_revisao.AvaliadorCiclo1.test_5_auditor_excluido_nao_e_diversidade_nenhuma)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 862, in test_5_auditor_excluido_nao_e_diversidade_nenhuma
+
+    self.assertEqual(rc, 67, out)
+
+AssertionError: 64 != 67 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 2.807s
+
+
+
+FAILED (failures=6, errors=2)
+

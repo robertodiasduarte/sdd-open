@@ -1,0 +1,56 @@
+test_claude_md_de_dependencia_nao_entra_no_inventario (test_f17b_passo0.AuditoriaSemNodeModules.test_claude_md_de_dependencia_nao_entra_no_inventario) ... Exception in thread Thread-1 (_readerthread):
+
+Traceback (most recent call last):
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+
+    self.run()
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+
+    self._target(*self._args, **self._kwargs)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+
+    buffer.append(fh.read())
+
+                  ^^^^^^^^^
+
+  File "<frozen codecs>", line 322, in decode
+
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe3 in position 570: invalid continuation byte
+
+ERROR
+
+
+
+======================================================================
+
+ERROR: test_claude_md_de_dependencia_nao_entra_no_inventario (test_f17b_passo0.AuditoriaSemNodeModules.test_claude_md_de_dependencia_nao_entra_no_inventario)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17b_passo0.py", line 94, in test_claude_md_de_dependencia_nao_entra_no_inventario
+
+    caminhos = {i["path"] for i in json.loads(r.stdout)["items"]}
+
+                                   ^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 339, in loads
+
+    raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+
+TypeError: the JSON object must be str, bytes or bytearray, not NoneType
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 0.085s
+
+
+
+FAILED (errors=1)
+

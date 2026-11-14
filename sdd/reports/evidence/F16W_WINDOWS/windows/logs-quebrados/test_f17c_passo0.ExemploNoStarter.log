@@ -1,0 +1,48 @@
+test_o_exemplo_vai_para_o_starter_sem_o_gate_por_comando (test_f17c_passo0.ExemploNoStarter.test_o_exemplo_vai_para_o_starter_sem_o_gate_por_comando) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_o_exemplo_vai_para_o_starter_sem_o_gate_por_comando (test_f17c_passo0.ExemploNoStarter.test_o_exemplo_vai_para_o_starter_sem_o_gate_por_comando)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17c_passo0.py", line 59, in test_o_exemplo_vai_para_o_starter_sem_o_gate_por_comando
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-7sgey8b6\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-7sgey8b6\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 13.307s
+
+
+
+FAILED (failures=1)
+

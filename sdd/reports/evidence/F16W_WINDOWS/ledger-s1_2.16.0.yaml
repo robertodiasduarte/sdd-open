@@ -1,0 +1,24 @@
+feature_id: F16W_WINDOWS
+slice_id: s1
+versao: 2.16.0
+data: 2026-11-14
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "job testes-windows nos 2 workflows com a suíte inteira em 16 fatias pelo executor por unidade (scripts/testes-por-modulo.py: classe de teste em partes de até 8, teto de 600 s que mata a árvore, artefato por fatia), informativo (fora do needs:); 1ª medição inteira do Windows no CI do PR #30 (491efa6): 1.324 de 2.076 testes passam (~64%), 38 de 82 módulos inteiros verdes, 5 unidades no teto; o vigia do checar.sh corta a árvore pelo taskkill no Windows (ssh pendurado cortado); UTF-8 em todo subprocess de texto e nos 2 hooks do Claude Code; bash pelo caminho; as 4 frases de Windows com o número medido; Verify Gate 0 em ad32fe1 (2.176 testes); CI do PR verde no Ubuntu e no macOS"
+descricao: "F16W, porte da suíte ao Windows: executor por unidade e job em fatias; vigia do checar.sh e do gh_estado com taskkill /F /T pelo /proc/<pid>/winpid (sdd-checar-ambiente 1.5.2, sdd-iniciar-repo 1.2.1); subprocess de texto com encoding=utf-8 (guarda em test_windows.py); sdd-fluxo.sh e o hook do avaliador chamam o bash pelo caminho; os 2 hooks do Claude Code leem o payload em UTF-8, falam UTF-8 com o report-lint e emitem JSON em ASCII; test_deploy_do_sha sem a corrida do teto de 1 s. Passo 0: LM-027 e LM-028 (curadoria da F17c); série 6 do build web do starter 3 de 3 (leitor novo)."
+deploy: real
+review_externo: dispensado — a rodada 3 (sdd/reports/reviews/EXTERNAL_REVIEW_20261114-135448, diff inteiro v2.15.0..e6c845a, claude + qwen, diversidade=vendor; 2º revisor dispensado: codex sem cota) é a última do teto do método; depois dela, até ad32fe1, o conserto do achado dela (103697e), 2 ajustes só de teste (4e76b39, 491efa6) e as frases de Windows com o log sem CR do executor (ad32fe1), cada um com teste, por decisão do Roberto (2026-11-14)
+avisos:
+  - "corte do porte (decisão do Roberto com a 1ª medição): publicar com o job do Windows informativo e vermelho; o porte das quebras é a próxima frente; AT-004 (askpass e gh pendurados ainda passam do teto no Windows) e AT-005 (os 4 achados guardados quebram no Windows) abertos"
+  - "causas medidas no Windows (windows/MEDICAO-1-causas.txt): ~156 por stdout cp1252 nos scripts Python do sdd/bin (defeito do produto: o ✅ derruba design-lint, report-lint e o drive em cascata); ~148 exit code (o gh falso dos testes, o resolvedor de Python); ~116 asserção de texto; ~25 caminho C:\\ × /c/; 3 JSON do settings.json com caminho Windows sem escape (defeito do produto); 4 git commit pendurado com os hooks"
+  - "push da branch para medir negado durante o build (decisão do Roberto: medir só no PR do fim); o build fez só o que se acha e se prova no Mac"
+  - "raio de impacto (0b): 2 quebras achadas e consertadas antes da última rodada (c9cde6e): o guard mandava UTF-8 ao report-lint --stdin, que lia cp1252 no Windows; o executor punha PYTHONIOENCODING nas unidades e mascarava a quebra do aluno"
+  - "avaliador de contexto novo: NEEDS_WORK no ciclo 1 (5 achados, consertados em c65e658), PASS_PENDENTE_RECIBO no ciclo 2 (4 leves, consertados em c9cde6e); os recibos foram o CI do PR (feito), a decisão do piso (feita) e o Verify Gate do HEAD (ad32fe1, verde)"
+  - "5 logs do avaliador com o exit do tail preservados como .aval.txt (gate-shell-evidencia); a prova dos ATs é dos AT-*.log"
+  - "LM-012 mordeu: um N de 11 dígitos por extenso num teste barrou o publish-gate do gate de 103697e; montado em tempo de execução em 4e76b39"
+  - "o teste de tempo do test_deploy_do_sha caiu 3 vezes com a máquina carregada (teto de 1 s para várias consultas ao gh falso); consertado em 491efa6; 4 cópias simultâneas não reproduziram a queda"
+  - "tetos do CI no PR: Ubuntu 41 min (teto 45; varia de 33 a 41, e o job da main na v2.15.0 levou 40), macOS 53 min (teto 75), Windows a fatia mais longa 25 min (teto 30)"
+  - "curadoria do playbook (3 candidatos e as contagens): no passo 0 da próxima frente (decisão do Roberto)"
+  - "starter: sdd-checar-ambiente e sdd-iniciar-repo mudaram; a 4ª geração pela tag v2.16.0 pede o OK próprio do Roberto para push, PR e merge lá"
+  - "landmines, drift, lint e deploy pulados: o repositório do pacote não tem sdd/config.yaml; test-baseline --touched PULADO pelo mesmo motivo (TEST-BASELINE.log); a suíte inteira rodou no Verify Gate"

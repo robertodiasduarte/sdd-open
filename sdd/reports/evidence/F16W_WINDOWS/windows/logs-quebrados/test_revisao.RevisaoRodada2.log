@@ -1,0 +1,130 @@
+test_r1_claude_e_r3_codex_sinais_de_fabrica (test_revisao.RevisaoRodada2.test_r1_claude_e_r3_codex_sinais_de_fabrica) ... ok
+
+test_r1_codex_linha_com_crases_e_conteudo_e_68_e_cerca_sozinha_passa (test_revisao.RevisaoRodada2.test_r1_codex_linha_com_crases_e_conteudo_e_68_e_cerca_sozinha_passa) ... FAIL
+
+test_r2_claude_falha_do_git_add_n_e_64_e_nome_com_dois_pontos_entra (test_revisao.RevisaoRodada2.test_r2_claude_falha_do_git_add_n_e_64_e_nome_com_dois_pontos_entra) ... ERROR
+
+test_r2_codex_segundo_revisor_automatico_pula_a_mesma_engine (test_revisao.RevisaoRodada2.test_r2_codex_segundo_revisor_automatico_pula_a_mesma_engine) ... FAIL
+
+test_r4_codex_custo_de_tentativa_anterior_entra_no_papel (test_revisao.RevisaoRodada2.test_r4_codex_custo_de_tentativa_anterior_entra_no_papel) ... FAIL
+
+
+
+======================================================================
+
+ERROR: test_r2_claude_falha_do_git_add_n_e_64_e_nome_com_dois_pontos_entra (test_revisao.RevisaoRodada2.test_r2_claude_falha_do_git_add_n_e_64_e_nome_com_dois_pontos_entra)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 1072, in test_r2_claude_falha_do_git_add_n_e_64_e_nome_com_dois_pontos_entra
+
+    self.escreve(r, ":(glob)nome.sh", "x\n")
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 127, in escreve
+
+    p.write_text(texto, encoding="utf-8")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1047, in write_text
+
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1013, in open
+
+    return io.open(self, mode, buffering, encoding, errors, newline)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+OSError: [Errno 22] Invalid argument: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-wp_bznrw\\repo\\:(glob)nome.sh'
+
+
+
+======================================================================
+
+FAIL: test_r1_codex_linha_com_crases_e_conteudo_e_68_e_cerca_sozinha_passa (test_revisao.RevisaoRodada2.test_r1_codex_linha_com_crases_e_conteudo_e_68_e_cerca_sozinha_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 1041, in test_r1_codex_linha_com_crases_e_conteudo_e_68_e_cerca_sozinha_passa
+
+    self.assertEqual(rc, 68, out)
+
+AssertionError: 64 != 68 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_r2_codex_segundo_revisor_automatico_pula_a_mesma_engine (test_revisao.RevisaoRodada2.test_r2_codex_segundo_revisor_automatico_pula_a_mesma_engine)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 1092, in test_r2_codex_segundo_revisor_automatico_pula_a_mesma_engine
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_r4_codex_custo_de_tentativa_anterior_entra_no_papel (test_revisao.RevisaoRodada2.test_r4_codex_custo_de_tentativa_anterior_entra_no_papel)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 1100, in test_r4_codex_custo_de_tentativa_anterior_entra_no_papel
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 1.244s
+
+
+
+FAILED (failures=3, errors=1)
+

@@ -1,0 +1,62 @@
+test_frente_bloqueia_credencial (test_checar.TestFrente.test_frente_bloqueia_credencial) ... ok
+
+test_frente_bloqueia_host_ssh (test_checar.TestFrente.test_frente_bloqueia_host_ssh) ... ok
+
+test_frente_bloqueia_login_do_editor (test_checar.TestFrente.test_frente_bloqueia_login_do_editor) ... ERROR
+
+test_frente_bloqueia_rede (test_checar.TestFrente.test_frente_bloqueia_rede) ... ok
+
+test_frente_bloqueia_sem_origin (test_checar.TestFrente.test_frente_bloqueia_sem_origin) ... ok
+
+test_frente_bloqueia_sem_remoto (test_checar.TestFrente.test_frente_bloqueia_sem_remoto) ... ok
+
+
+
+======================================================================
+
+ERROR: test_frente_bloqueia_login_do_editor (test_checar.TestFrente.test_frente_bloqueia_login_do_editor)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 520, in test_frente_bloqueia_login_do_editor
+
+    rc, out, t = self.roda("--frente", GIT_ASKPASS=str(askpass))
+
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 177, in roda
+
+    r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.raiz, capture_output=True, text=True, encoding="utf-8", errors="replace",
+
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+
+    stdout, stderr = process.communicate(input, timeout=timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+
+    stdout, stderr = self._communicate(input, endtime, timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+
+    raise TimeoutExpired(self.args, orig_timeout)
+
+subprocess.TimeoutExpired: Command '['C:\\Program Files\\Git\\usr\\bin\\bash.exe', 'D:\\a\\sdd-open\\sdd-open\\.agents\\skills\\sdd-checar-ambiente\\scripts\\checar.sh', '--frente']' timed out after 60 seconds
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 80.844s
+
+
+
+FAILED (errors=1)
+

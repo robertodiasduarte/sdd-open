@@ -1,0 +1,42 @@
+$ bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F16W_WINDOWS.md   # HEAD ce3a779
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.b0v3k0S7JE — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ...................................................................................................................................................................................................................................................................................................................................................................................................F...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s.............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+   │ ======================================================================
+   │ FAIL: test_passo_passageiro_na_ponta_repete_uma_vez (test_deploy_do_sha.Redisparo)
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.b0v3k0S7JE/tests/test_deploy_do_sha.py", line 196, in test_passo_passageiro_na_ponta_repete_uma_vez
+   │     self.assertSai(res, 0, "repetindo o deploy", "✅ no ar — run 2")
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.b0v3k0S7JE/tests/test_deploy_do_sha.py", line 108, in assertSai
+   │     self.assertEqual(rc, exitc, out + err)
+   │ AssertionError: 4 != 0 : ⏳ ainda não sei — o deploy não terminou em 0 min (run 1); isso não é falha.
+   │ RESULTADO: AINDA NAO SEI
+   │ → rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+   │ 🔁 o passo "Verify SSH" é passageiro e db8b99f é a ponta: repetindo o deploy na ponta de main (1 vez).
+   │ 
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 2165 tests in 2285.401s
+   │ 
+   │ FAILED (failures=1, skipped=1)
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+duração: 2290 s
+rc=2

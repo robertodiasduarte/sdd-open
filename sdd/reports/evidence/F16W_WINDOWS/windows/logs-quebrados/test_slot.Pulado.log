@@ -1,0 +1,60 @@
+test_comentario_na_coluna_0_nao_fecha_a_secao (test_slot.Pulado.test_comentario_na_coluna_0_nao_fecha_a_secao) ... FAIL
+
+test_valor_com_aspas_e_escape (test_slot.Pulado.test_valor_com_aspas_e_escape) ... FAIL
+
+test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado.test_vazio_ausente_e_sem_config_sao_pulados) ... ok
+
+
+
+======================================================================
+
+FAIL: test_comentario_na_coluna_0_nao_fecha_a_secao (test_slot.Pulado.test_comentario_na_coluna_0_nao_fecha_a_secao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 166, in test_comentario_na_coluna_0_nao_fecha_a_secao
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  schema.check_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-rfyitqyo/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha schema.check_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_valor_com_aspas_e_escape (test_slot.Pulado.test_valor_com_aspas_e_escape)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 172, in test_valor_com_aspas_e_escape
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-699kmyn4/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 1.488s
+
+
+
+FAILED (failures=2)
+

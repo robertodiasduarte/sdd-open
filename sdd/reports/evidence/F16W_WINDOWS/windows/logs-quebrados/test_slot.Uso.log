@@ -1,0 +1,230 @@
+test_chamada_errada_e_64 (test_slot.Uso.test_chamada_errada_e_64) ... 
+
+  test_chamada_errada_e_64 (test_slot.Uso.test_chamada_errada_e_64) (args=['smoke.before_ok_cmd', '--commit', 'nao-existe-abc']) ... FAIL
+
+  test_chamada_errada_e_64 (test_slot.Uso.test_chamada_errada_e_64) (args=['smoke.before_ok_cmd', '--base', 'nao-existe-abc']) ... FAIL
+
+test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) ... 
+
+  test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='comeca com pipe') ... FAIL
+
+  test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='aspa do shell sem fechar') ... FAIL
+
+  test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='comentario do shell') ... FAIL
+
+  test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='termina em ponto e virgula') ... FAIL
+
+  test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='termina em e comercial') ... FAIL
+
+  test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='termina em pipe') ... FAIL
+
+  test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='termina em e logico') ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_chamada_errada_e_64 (test_slot.Uso.test_chamada_errada_e_64) (args=['smoke.before_ok_cmd', '--commit', 'nao-existe-abc'])
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 189, in test_chamada_errada_e_64
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-38wcc7m2/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_chamada_errada_e_64 (test_slot.Uso.test_chamada_errada_e_64) (args=['smoke.before_ok_cmd', '--base', 'nao-existe-abc'])
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 189, in test_chamada_errada_e_64
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-38wcc7m2/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='comeca com pipe')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 213, in test_config_que_nao_da_para_rodar_e_64
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-rkp23b1s/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='aspa do shell sem fechar')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 213, in test_config_que_nao_da_para_rodar_e_64
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-rkp23b1s/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='comentario do shell')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 213, in test_config_que_nao_da_para_rodar_e_64
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-rkp23b1s/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='termina em ponto e virgula')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 213, in test_config_que_nao_da_para_rodar_e_64
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-rkp23b1s/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='termina em e comercial')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 213, in test_config_que_nao_da_para_rodar_e_64
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-rkp23b1s/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='termina em pipe')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 213, in test_config_que_nao_da_para_rodar_e_64
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-rkp23b1s/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso.test_config_que_nao_da_para_rodar_e_64) (caso='termina em e logico')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 213, in test_config_que_nao_da_para_rodar_e_64
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-rkp23b1s/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 2.914s
+
+
+
+FAILED (failures=9)
+

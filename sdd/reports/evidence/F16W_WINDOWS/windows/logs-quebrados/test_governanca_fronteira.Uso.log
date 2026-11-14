@@ -1,0 +1,40 @@
+test_fronteira_nao_verificada_sai_64 (test_governanca_fronteira.Uso.test_fronteira_nao_verificada_sai_64) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_fronteira_nao_verificada_sai_64 (test_governanca_fronteira.Uso.test_fronteira_nao_verificada_sai_64)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 192, in test_fronteira_nao_verificada_sai_64
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-7k4ss3t8\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 0.426s
+
+
+
+FAILED (failures=1)
+

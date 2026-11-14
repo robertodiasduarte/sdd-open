@@ -1,0 +1,38 @@
+test_frente_nao_consulta_o_gh (test_checar.TestGh.test_frente_nao_consulta_o_gh) ... ok
+
+test_frente_sem_gh_nao_fala_do_gh (test_checar.TestGh.test_frente_sem_gh_nao_fala_do_gh) ... ok
+
+test_gh_deslogado_com_remoto_do_github (test_checar.TestGh.test_gh_deslogado_com_remoto_do_github) ... ok
+
+test_gh_deslogado_sem_remoto_tambem_avisa (test_checar.TestGh.test_gh_deslogado_sem_remoto_tambem_avisa) ... ok
+
+test_gh_logado_nao_diz_nada_e_consulta_so_o_github (test_checar.TestGh.test_gh_logado_nao_diz_nada_e_consulta_so_o_github) ... ok
+
+test_gh_pendurado_respeita_o_teto (test_checar.TestGh.test_gh_pendurado_respeita_o_teto) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_gh_pendurado_respeita_o_teto (test_checar.TestGh.test_gh_pendurado_respeita_o_teto)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 901, in test_gh_pendurado_respeita_o_teto
+
+    self.assertIn("o GitHub n�o respondeu em 10 s", out)
+
+AssertionError: 'o GitHub n�o respondeu em 10 s' not found in '\u2705 Pronto: repo meu-app, branch main, nenhuma frente aberta, nenhum agente de c�digo no terminal � sdd-checar-ambiente v1.5.2 � nov/2026 � vers�o atual: https://github.com/robertodiasduarte/sdd-open/releases/latest\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 21.222s
+
+
+
+FAILED (failures=1)
+

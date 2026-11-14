@@ -1,0 +1,118 @@
+test_parada_guardada_vale_tambem_no_concluir (test_drive.Concluir.test_parada_guardada_vale_tambem_no_concluir) ... FAIL
+
+test_relatorio_que_reprova_volta_com_as_linhas (test_drive.Concluir.test_relatorio_que_reprova_volta_com_as_linhas) ... FAIL
+
+test_sem_gate_nao_conclui (test_drive.Concluir.test_sem_gate_nao_conclui) ... FAIL
+
+test_sem_relatorio_nao_conclui (test_drive.Concluir.test_sem_relatorio_nao_conclui) ... FAIL
+
+test_sujo_sem_verde_vira_commitar (test_drive.Concluir.test_sujo_sem_verde_vira_commitar) ... ok
+
+
+
+======================================================================
+
+FAIL: test_parada_guardada_vale_tambem_no_concluir (test_drive.Concluir.test_parada_guardada_vale_tambem_no_concluir)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1128, in test_parada_guardada_vale_tambem_no_concluir
+
+    self.assertParada(self.drive("verificar", D), "manual-ux")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 69, in assertParada
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 10 != 20 : ACAO: DESIGN
+
+rodada: 1/3
+
+o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: CONTINUAR
+
+\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_relatorio_que_reprova_volta_com_as_linhas (test_drive.Concluir.test_relatorio_que_reprova_volta_com_as_linhas)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1174, in test_relatorio_que_reprova_volta_com_as_linhas
+
+    self.verde_ate_avaliar()
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1084, in verde_ate_avaliar
+
+    self.assertAcao(self.drive("verificar", D), "AVALIAR_E_RELATAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: AVALIAR_E_RELATAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_sem_gate_nao_conclui (test_drive.Concluir.test_sem_gate_nao_conclui)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1141, in test_sem_gate_nao_conclui
+
+    self.assertAcao(self.drive("concluir", D), "VERIFICAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: VERIFICAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_sem_relatorio_nao_conclui (test_drive.Concluir.test_sem_relatorio_nao_conclui)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1144, in test_sem_relatorio_nao_conclui
+
+    self.verde_ate_avaliar()
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1084, in verde_ate_avaliar
+
+    self.assertAcao(self.drive("verificar", D), "AVALIAR_E_RELATAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: AVALIAR_E_RELATAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 30.824s
+
+
+
+FAILED (failures=4)
+

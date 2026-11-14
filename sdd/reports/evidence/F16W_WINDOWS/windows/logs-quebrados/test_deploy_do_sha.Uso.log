@@ -1,0 +1,38 @@
+test_branch_do_origin_head_sem_slot (test_deploy_do_sha.Uso.test_branch_do_origin_head_sem_slot) ... FAIL
+
+test_sai_64 (test_deploy_do_sha.Uso.test_sai_64) ... ok
+
+
+
+======================================================================
+
+FAIL: test_branch_do_origin_head_sem_slot (test_deploy_do_sha.Uso.test_branch_do_origin_head_sem_slot)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 460, in test_branch_do_origin_head_sem_slot
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 4 != 0 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 5.485s
+
+
+
+FAILED (failures=1)
+

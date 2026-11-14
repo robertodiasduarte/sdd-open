@@ -1,0 +1,78 @@
+test_destino_que_existe_avisa_e_pula (test_sdd_archive.Aplicar.test_destino_que_existe_avisa_e_pula) ... FAIL
+
+test_git_mv_que_falha_sai_2 (test_sdd_archive.Aplicar.test_git_mv_que_falha_sai_2) ... FAIL
+
+test_move_so_o_lote_com_git_mv_sem_commitar (test_sdd_archive.Aplicar.test_move_so_o_lote_com_git_mv_sem_commitar) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_destino_que_existe_avisa_e_pula (test_sdd_archive.Aplicar.test_destino_que_existe_avisa_e_pula)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 346, in test_destino_que_existe_avisa_e_pula
+
+    self.assertIn("destino j� existe", err)
+
+AssertionError: 'destino j� existe' not found in ''
+
+
+
+======================================================================
+
+FAIL: test_git_mv_que_falha_sai_2 (test_sdd_archive.Aplicar.test_git_mv_que_falha_sai_2)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 353, in test_git_mv_que_falha_sai_2
+
+    self.assertEqual(rc, 2, out + err)
+
+AssertionError: 0 != 2 : 
+
+== Lote sem-ledger: 0 arquivo(s) ==
+
+
+
+TOTAIS: com-ledger=0 � sem-ledger=0 � soltos=0 � protegidos=0 � recentes=1 � sem classifica��o=0 � subpastas=0
+
+\u2705 movi 0 arquivo(s) com git mv; nada foi apagado.
+
+RESULTADO: MOVIDO
+
+\u2192 revise com git status e commite este lote.
+
+
+
+
+
+======================================================================
+
+FAIL: test_move_so_o_lote_com_git_mv_sem_commitar (test_sdd_archive.Aplicar.test_move_so_o_lote_com_git_mv_sem_commitar)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 333, in test_move_so_o_lote_com_git_mv_sem_commitar
+
+    self.assertIn("movi 1 arquivo(s) com git mv; nada foi apagado", out)
+
+AssertionError: 'movi 1 arquivo(s) com git mv; nada foi apagado' not found in '\n== Lote sem-ledger: 0 arquivo(s) ==\n\nTOTAIS: com-ledger=0 � sem-ledger=0 � soltos=0 � protegidos=0 � recentes=2 � sem classifica��o=0 � subpastas=0\n\u2705 movi 0 arquivo(s) com git mv; nada foi apagado.\nRESULTADO: MOVIDO\n\u2192 revise com git status e commite este lote.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 1.579s
+
+
+
+FAILED (failures=3)
+

@@ -1,0 +1,174 @@
+test_init_na_branch_padrao_com_remoto_diz_como_commitar (test_sdd_open.Hooks.test_init_na_branch_padrao_com_remoto_diz_como_commitar) ... ERROR
+
+test_init_repetido_e_idempotente_e_completa_hook_apagado (test_sdd_open.Hooks.test_init_repetido_e_idempotente_e_completa_hook_apagado) ... ERROR
+
+test_init_repetido_sem_paste_no_path_mantem_os_vendors (test_sdd_open.Hooks.test_init_repetido_sem_paste_no_path_mantem_os_vendors) ... FAIL
+
+test_migra_o_alarme_da_higiene_sem_perder_a_protecao (test_sdd_open.Hooks.test_migra_o_alarme_da_higiene_sem_perder_a_protecao) ... ERROR
+
+test_outro_hooks_path_nao_e_tocado (test_sdd_open.Hooks.test_outro_hooks_path_nao_e_tocado) ... ok
+
+test_pre_commit_alheio_nao_e_tocado (test_sdd_open.Hooks.test_pre_commit_alheio_nao_e_tocado) ... ok
+
+test_pre_commit_legado_que_chama_o_nosso_e_encadeado (test_sdd_open.Hooks.test_pre_commit_legado_que_chama_o_nosso_e_encadeado) ... ok
+
+
+
+======================================================================
+
+ERROR: test_init_na_branch_padrao_com_remoto_diz_como_commitar (test_sdd_open.Hooks.test_init_na_branch_padrao_com_remoto_diz_como_commitar)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 618, in test_init_na_branch_padrao_com_remoto_diz_como_commitar
+
+    rc, out, err = self.roda(["git", "commit", "-q", "-m", "init"], self.p)
+
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 102, in roda
+
+    r = subprocess.run(
+
+        ^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+
+    stdout, stderr = process.communicate(input, timeout=timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+
+    stdout, stderr = self._communicate(input, endtime, timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+
+    raise TimeoutExpired(self.args, orig_timeout)
+
+subprocess.TimeoutExpired: Command '['git', 'commit', '-q', '-m', 'init']' timed out after 120 seconds
+
+
+
+======================================================================
+
+ERROR: test_init_repetido_e_idempotente_e_completa_hook_apagado (test_sdd_open.Hooks.test_init_repetido_e_idempotente_e_completa_hook_apagado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 438, in test_init_repetido_e_idempotente_e_completa_hook_apagado
+
+    self.roda(["git", "commit", "-q", "-m", "init"], self.p)
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 102, in roda
+
+    r = subprocess.run(
+
+        ^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+
+    stdout, stderr = process.communicate(input, timeout=timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+
+    stdout, stderr = self._communicate(input, endtime, timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+
+    raise TimeoutExpired(self.args, orig_timeout)
+
+subprocess.TimeoutExpired: Command '['git', 'commit', '-q', '-m', 'init']' timed out after 120 seconds
+
+
+
+======================================================================
+
+ERROR: test_migra_o_alarme_da_higiene_sem_perder_a_protecao (test_sdd_open.Hooks.test_migra_o_alarme_da_higiene_sem_perder_a_protecao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 430, in test_migra_o_alarme_da_higiene_sem_perder_a_protecao
+
+    rc, out, err = self.roda(["git", "commit", "-q", "-m", "env"], self.p)
+
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 102, in roda
+
+    r = subprocess.run(
+
+        ^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+
+    stdout, stderr = process.communicate(input, timeout=timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+
+    stdout, stderr = self._communicate(input, endtime, timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+
+    raise TimeoutExpired(self.args, orig_timeout)
+
+subprocess.TimeoutExpired: Command '['git', 'commit', '-q', '-m', 'env']' timed out after 120 seconds
+
+
+
+======================================================================
+
+FAIL: test_init_repetido_sem_paste_no_path_mantem_os_vendors (test_sdd_open.Hooks.test_init_repetido_sem_paste_no_path_mantem_os_vendors)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 605, in test_init_repetido_sem_paste_no_path_mantem_os_vendors
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 22: //bin/lib/say.sh: No such file or directory
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 23: //bin/lib/vendors.sh: No such file or directory
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 24: //bin/lib/merge.sh: No such file or directory
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 25: //bin/lib/plan.sh: No such file or directory
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 79: die: command not found
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 82: die: command not found
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 101: vendores_da_lista: command not found
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 111: VENDORS_SUPORTADOS: unbound variable
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 516.945s
+
+
+
+FAILED (failures=1, errors=3)
+

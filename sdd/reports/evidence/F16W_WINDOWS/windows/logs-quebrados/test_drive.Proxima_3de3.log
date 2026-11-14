@@ -1,0 +1,132 @@
+test_sem_design (test_drive.Proxima.test_sem_design) ... ok
+
+test_sem_subagente_a_retomada_tambem_conta_a_repeticao (test_drive.Proxima.test_sem_subagente_a_retomada_tambem_conta_a_repeticao) ... FAIL
+
+test_semeia_e_acrescenta_linha_nova_do_manifest (test_drive.Proxima.test_semeia_e_acrescenta_linha_nova_do_manifest) ... ERROR
+
+test_so_a_1a_tabela_do_manifest_vira_tarefa (test_drive.Proxima.test_so_a_1a_tabela_do_manifest_vira_tarefa) ... FAIL
+
+test_tarefa_i_de_n_e_verificar_quando_acaba (test_drive.Proxima.test_tarefa_i_de_n_e_verificar_quando_acaba) ... FAIL
+
+test_tarefa_que_anda_zera_a_repeticao_mesmo_sem_commit (test_drive.Proxima.test_tarefa_que_anda_zera_a_repeticao_mesmo_sem_commit) ... FAIL
+
+
+
+======================================================================
+
+ERROR: test_semeia_e_acrescenta_linha_nova_do_manifest (test_drive.Proxima.test_semeia_e_acrescenta_linha_nova_do_manifest)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 343, in test_semeia_e_acrescenta_linha_nova_do_manifest
+
+    self.assertEqual((self.r / PROGRESS).read_text(encoding="utf-8").split("\n")[2:4], ["- [ ] a", "- [ ] b"])
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1027, in read_text
+
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1013, in open
+
+    return io.open(self, mode, buffering, encoding, errors, newline)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-l0nhhs9f\\repo\\sdd\\reports\\progress\\PROGRESS_F.md'
+
+
+
+======================================================================
+
+FAIL: test_sem_subagente_a_retomada_tambem_conta_a_repeticao (test_drive.Proxima.test_sem_subagente_a_retomada_tambem_conta_a_repeticao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 377, in test_sem_subagente_a_retomada_tambem_conta_a_repeticao
+
+    self.assertAcao(self.drive("--resume", D), "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'retomando: rodada 1/3 � 0 de 0 tarefas prontas � �ltimo teste final: nenhum � n�o gastei rodada\nACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_so_a_1a_tabela_do_manifest_vira_tarefa (test_drive.Proxima.test_so_a_1a_tabela_do_manifest_vira_tarefa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 298, in test_so_a_1a_tabela_do_manifest_vira_tarefa
+
+    self.assertAcao(self.drive("iniciar", D), "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_tarefa_i_de_n_e_verificar_quando_acaba (test_drive.Proxima.test_tarefa_i_de_n_e_verificar_quando_acaba)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 336, in test_tarefa_i_de_n_e_verificar_quando_acaba
+
+    self.assertAcao(res, "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_tarefa_que_anda_zera_a_repeticao_mesmo_sem_commit (test_drive.Proxima.test_tarefa_que_anda_zera_a_repeticao_mesmo_sem_commit)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 412, in test_tarefa_que_anda_zera_a_repeticao_mesmo_sem_commit
+
+    self.assertAcao(self.drive("proximo", D), "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 18.643s
+
+
+
+FAILED (failures=4, errors=1)
+

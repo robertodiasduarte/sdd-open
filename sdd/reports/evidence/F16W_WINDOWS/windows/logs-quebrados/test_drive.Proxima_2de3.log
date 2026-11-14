@@ -1,0 +1,112 @@
+test_nome_com_crase_no_progress_nao_reabre_a_tarefa (test_drive.Proxima.test_nome_com_crase_no_progress_nao_reabre_a_tarefa) ... FAIL
+
+test_progress_ou_manifest_sem_linhas (test_drive.Proxima.test_progress_ou_manifest_sem_linhas) ... FAIL
+
+test_retomada_depois_do_bloqueio_recomeca_a_conta (test_drive.Proxima.test_retomada_depois_do_bloqueio_recomeca_a_conta) ... FAIL
+
+test_revisao_exigida_sem_registro_e_com_high_aberto (test_drive.Proxima.test_revisao_exigida_sem_registro_e_com_high_aberto) ... FAIL
+
+test_saida_64_com_linha_parar_nao_vira_design (test_drive.Proxima.test_saida_64_com_linha_parar_nao_vira_design) ... ok
+
+test_saida_64_do_seguir_nao_vira_design (test_drive.Proxima.test_saida_64_do_seguir_nao_vira_design) ... ok
+
+
+
+======================================================================
+
+FAIL: test_nome_com_crase_no_progress_nao_reabre_a_tarefa (test_drive.Proxima.test_nome_com_crase_no_progress_nao_reabre_a_tarefa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 305, in test_nome_com_crase_no_progress_nao_reabre_a_tarefa
+
+    self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: VERIFICAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_progress_ou_manifest_sem_linhas (test_drive.Proxima.test_progress_ou_manifest_sem_linhas)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 369, in test_progress_ou_manifest_sem_linhas
+
+    self.assertParada(res, "estado-invalido")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 69, in assertParada
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 10 != 20 : ACAO: DESIGN
+
+rodada: 1/3
+
+o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: CONTINUAR
+
+\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_retomada_depois_do_bloqueio_recomeca_a_conta (test_drive.Proxima.test_retomada_depois_do_bloqueio_recomeca_a_conta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 389, in test_retomada_depois_do_bloqueio_recomeca_a_conta
+
+    self.assertAcao(self.drive("--resume", D), "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'retomando: rodada 1/3 � 0 de 0 tarefas prontas � �ltimo teste final: nenhum � n�o gastei rodada\nACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_revisao_exigida_sem_registro_e_com_high_aberto (test_drive.Proxima.test_revisao_exigida_sem_registro_e_com_high_aberto)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 310, in test_revisao_exigida_sem_registro_e_com_high_aberto
+
+    self.assertAcao(res, "REVISAO_DESIGN")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: REVISAO_DESIGN$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 33.995s
+
+
+
+FAILED (failures=4)
+

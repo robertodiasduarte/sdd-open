@@ -1,0 +1,22 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/aval2/fatias.py /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows /usr/bin/python3
+[/usr/bin/python3] unidades: 413; módulos test_*.py: 82; módulos cobertos: 82; faltam: []
+unidades em partes: 99 (ex.: ['test_alarme.TestDeteccao[1de2]', 'test_alarme.TestDeteccao[2de2]', 'test_avaliador_guard.AvaliadorGuard[1de2]'])
+N=1  estável=True disjuntas=True união=todas:True  tamanhos=[413]
+N=2  estável=True disjuntas=True união=todas:True  tamanhos=[206, 207]
+N=3  estável=True disjuntas=True união=todas:True  tamanhos=[138, 137, 138]
+N=4  estável=True disjuntas=True união=todas:True  tamanhos=[103, 104, 103, 103]
+N=5  estável=True disjuntas=True união=todas:True  tamanhos=[82, 82, 83, 83, 83]
+N=6  estável=True disjuntas=True união=todas:True  tamanhos=[69, 69, 69, 69, 68, 69]
+N=7  estável=True disjuntas=True união=todas:True  tamanhos=[59, 59, 59, 59, 59, 59, 59]
+N=8  estável=True disjuntas=True união=todas:True  tamanhos=[52, 52, 51, 51, 51, 52, 52, 52]
+N=9  estável=True disjuntas=True união=todas:True  tamanhos=[46, 45, 46, 46, 46, 46, 46, 46, 46]
+N=10 estável=True disjuntas=True união=todas:True  tamanhos=[41, 41, 41, 41, 41, 41, 41, 42, 42, 42]
+N=11 estável=True disjuntas=True união=todas:True  tamanhos=[38, 38, 38, 37, 37, 37, 37, 37, 38, 38, 38]
+N=12 estável=True disjuntas=True união=todas:True  tamanhos=[34, 34, 34, 34, 34, 35, 35, 35, 35, 35, 34, 34]
+N=13 estável=True disjuntas=True união=todas:True  tamanhos=[31, 31, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 31]
+N=14 estável=True disjuntas=True união=todas:True  tamanhos=[29, 29, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30]
+N=15 estável=True disjuntas=True união=todas:True  tamanhos=[27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 27, 27, 27, 27, 27]
+N=16 estável=True disjuntas=True união=todas:True  tamanhos=[26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 25, 25, 25, 26, 26, 26]
+N=20 estável=True disjuntas=True união=todas:True  tamanhos=[21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21]
+RESUMO: TUDO OK
+[exit=0]

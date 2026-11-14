@@ -1,0 +1,194 @@
+test_o_bloqueio_do_anti_collapse_nao_aceita_outro_erro_do_lint (test_playbook_curator.SelfTestSemGit.test_o_bloqueio_do_anti_collapse_nao_aceita_outro_erro_do_lint) ... ok
+
+test_roda_numa_copia_sem_repositorio (test_playbook_curator.SelfTestSemGit.test_roda_numa_copia_sem_repositorio) ... FAIL
+
+test_sem_git_no_path_diz_o_que_falta_sem_traceback (test_playbook_curator.SelfTestSemGit.test_sem_git_no_path_diz_o_que_falta_sem_traceback) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_roda_numa_copia_sem_repositorio (test_playbook_curator.SelfTestSemGit.test_roda_numa_copia_sem_repositorio)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_playbook_curator.py", line 1076, in test_roda_numa_copia_sem_repositorio
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 2 != 0 : self-test � fixtures em C:\Users\runneradmin\AppData\Local\Temp\sdd-open-0wox44h_\copia\sdd\fixtures\playbook\curadoria
+
+� VERMELHOS (se algum passar, o curator n�o avalia nada) �
+
+  \u2705 --colher em pasta vazia, playbook sem promo��o pendente \u21d2 exit 1 e '0 deltas' \u2192 exit 1
+
+  \u2705 --colher sem playbook \u21d2 exit 2, nunca '0 deltas' verde \u2192 exit 2
+
+  \u2705 --colher em pasta que n�o existe \u21d2 exit 64 \u2192 exit 64
+
+  \u2705 --aplicar com ID inexistente \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 --aplicar inv�lido \u21d2 stdout vazio (nada a copiar)
+
+  \u2705 --aplicar contador em tombstone \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 --aplicar ADD em se��o fora da lista \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 --aplicar linha malformada \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 candidato sem evidencia \u21d2 REJEITADO e nunca CANDIDATO \u2192 exit 0
+
+  \u2705 candidato sem 'Do instead' \u21d2 REJEITADO \u2192 exit 0
+
+  \u2705 veredito N.A. n�o conta; linha fora da se��o n�o conta \u2192 exit 0
+
+  \u2705 linha \u2705 que cita LM-020 n�o vira mordeu \u2192 exit 0
+
+  \u2705 --desde posterior \u21d2 JA_COLHIDO e sem ajudou \u2192 exit 0
+
+  \u2705 FAIL dentro de identificador n�o vira mordeu (replay) \u2192 exit 0
+
+  \u2705 --cruzar com delta malformado \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 --cruzar inv�lido \u21d2 stdout vazio
+
+  \u2705 --cruzar com invariantes sem a se��o \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 trava: aposentadoria de origem sem ajuste \u21d2 exit 2 com a invariante e a li��o \u2192 exit 2
+
+  \u2705 trava: li��o nova no universo sem classifica��o \u21d2 exit 2 nomeando a li��o \u2192 exit 2
+
+  \u2705 bloco com contador AUTO que a colheita n�o tem \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 bloco com contador AUTO de +5 \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 bloco com contador AUTO apontando outra linha que existe \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 bloco com sugest�o AUTO \u21d2 exit 2 (sugest�o vai para pergunta) \u2192 exit 2
+
+  \u2705 bloco que omite uma linha da colheita \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 fronteira com FORA: \u21d2 exit 2, mesmo com o bloco certo \u2192 exit 2
+
+  \u2705 sa�da da fronteira vazia (n�o verificada) \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 staging mexido depois do selo \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 --aplicar-inv com linha fora da gram�tica \u21d2 exit 2 \u2192 exit 2
+
+  \u2705 --aplicar-inv inv�lido \u21d2 stdout vazio
+
+� VERDES �
+
+  \u2705 fixtures \u21d2 DELTA LM-020 ajudou+1 de tabela \u2192 exit 0
+
+  \u2705 fixtures \u21d2 DELTA LM-016 mordeu+1 de achado \u2192 exit 0
+
+  \u2705 PROMOVER? s� para mordeu >= 2 n�o promovido \u2192 exit 0
+
+  \u2705 pasta vazia com promo��o pendente no playbook \u21d2 exit 0: a pergunta de promo��o � obrigat�ria \u2192 exit 0
+
+  \u2705 pr�ximo ID = maior entre ativos e tombstones + 1 (tombstone nunca reusado) \u2192 exit 0
+
+  \u2705 'Do instead:' em chave pr�pria e continua��o indentada \u21d2 CANDIDATO #2 numa linha s� \u2192 exit 0
+
+  \u2705 SUGESTAO por termo de sup:, sem virar DELTA \u2192 exit 0
+
+  \u2705 **mordeu** na c�lula de veredito \u21d2 mordeu+1, n�o ajudou (replay) \u2192 exit 0
+
+  \u2705 --aplicar \u21d2 contador somado e conf nova \u2192 exit 0
+
+  \u2705 continua��o do LM-020 preservada
+
+  \u2705 stdout do --aplicar � s� o playbook (sem RESULTADO:)
+
+  \u2705 --aplicar composto \u21d2 texto esperado (2 contadores, promo��o, ADD=LM-023, TOMBSTONE, REFINE)
+
+  \u2705 a sa�da do composto passa no playbook-lint.sh
+
+  \u2705 delta s� de contadores atravessa o --anti-collapse com 0 alterados
+
+  \u2705 o --anti-collapse bloqueia o composto (3 de 6 reescritos)
+
+  \u2705 delta vazio \u21d2 sa�da id�ntica � entrada
+
+  \u2705 --cruzar sem aposentadoria de origem nem li��o nova no universo \u21d2 exit 0 \u2192 exit 0
+
+  \u2705 --cruzar aposentando origem �nica promovida \u21d2 origem=seed + check do bullet \u2192 exit 3
+
+  \u2705 --cruzar aposentando 1 de 2 origens \u21d2 lista sem ela \u2192 exit 3
+
+  \u2705 --cruzar com 2 aposentadorias da mesma invariante \u21d2 1 ajuste agregado \u2192 exit 3
+
+  \u2705 --cruzar aposentando origem �nica com check curado \u21d2 origem=seed mantendo o check \u2192 exit 3
+
+  \u2705 --cruzar aposentando li��o descartada \u21d2 remover a linha do descarte \u2192 exit 3
+
+  \u2705 --cruzar sempre oferece retirar a aposentadoria \u2192 exit 3
+
+  \u2705 --cruzar com 2 li��es novas no universo \u21d2 INV-006 e INV-007 em sequ�ncia \u2192 exit 3
+
+  \u2705 --cruzar l� o delta do stdin (-) \u2192 exit 3
+
+  \u2705 --colher --inv \u21d2 INV_PENDENTE para mordeu 0\u21921 sem classifica��o \u2192 exit 0
+
+  \u2705 trava: par base \u21d2 exit 0 \u2192 exit 0
+
+  \u2705 --aplicar-inv troca a linha do mesmo ID, acrescenta o descarte novo e remove o pedido
+
+  \u2705 trava: aposentadoria + ajuste proposto pelo --cruzar \u21d2 exit 0 \u2192 exit 0
+
+  \u2705 bloco de exemplo confere com a colheita das fixtures \u21d2 exit 0, AUTO e PERGUNTA \u2192 exit 0
+
+  \u2705 contador que p�e a li��o no universo das invariantes \u21d2 PERGUNTA, n�o AUTO \u2192 exit 0
+
+  \u2705 colheita repetida com o registro do j� julgado \u21d2 exit 1 e JA_JULGADO, sem DELTA \u2192 exit 1
+
+  \u2705 SDD_TRACE=off \u21d2 nenhum trace
+
+  \u2705 --colher grava o resumo em traces/FIXTURE.jsonl (src curator, 7 contadores)
+
+\U0001f6d1 playbook-curator: n�o consegui terminar: OSError: [Errno 22] Invalid argument: 'C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\pbcur-yw6rlrh4\\aspas\\BUILD_REPORT_qu"o te.md'
+
+RESULTADO: FALHA
+
+\u2192 isto n�o � "0 deltas": confira a permiss�o dos arquivos citados e rode de novo; nada foi aplicado.
+
+
+
+
+
+======================================================================
+
+FAIL: test_sem_git_no_path_diz_o_que_falta_sem_traceback (test_playbook_curator.SelfTestSemGit.test_sem_git_no_path_diz_o_que_falta_sem_traceback)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_playbook_curator.py", line 1067, in test_sem_git_no_path_diz_o_que_falta_sem_traceback
+
+    self.assertEqual(rc, 2, out + err)
+
+AssertionError: 64 != 2 : \u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 playbook-curator: python3 n�o encontrado no PATH.
+
+RESULTADO: ERRO DE USO
+
+\u2192 instale o Python 3.9 ou mais novo e rode de novo; nada foi lido nem gravado.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 9.597s
+
+
+
+FAILED (failures=2)
+

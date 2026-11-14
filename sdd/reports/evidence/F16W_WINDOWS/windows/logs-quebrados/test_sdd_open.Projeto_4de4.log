@@ -1,0 +1,5 @@
+test_init_instala_as_invariantes_junto_com_o_playbook_do_pacote (test_sdd_open.Projeto.test_init_instala_as_invariantes_junto_com_o_playbook_do_pacote) ... ERROR
+
+test_init_leva_o_resolvedor_de_python_e_completa_quando_falta (test_sdd_open.Projeto.test_init_leva_o_resolvedor_de_python_e_completa_quando_falta) ... ERROR
+
+test_init_nunca_sobrescreve_as_invariantes_do_projeto (test_sdd_open.Projeto.test_init_nunca_sobrescreve_as_invariantes_do_projeto) ... 

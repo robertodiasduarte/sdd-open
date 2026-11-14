@@ -1,0 +1,504 @@
+test_sem_linha_de_dados (test_design_lint.Prompts.test_sem_linha_de_dados) ... FAIL
+
+test_so_a_primeira_tabela_do_inventario_conta (test_design_lint.Prompts.test_so_a_primeira_tabela_do_inventario_conta) ... FAIL
+
+test_tabela_sem_as_colunas_seguida_da_certa_reprova (test_design_lint.Prompts.test_tabela_sem_as_colunas_seguida_da_certa_reprova) ... FAIL
+
+test_tipo_com_crases_e_loop_valem (test_design_lint.Prompts.test_tipo_com_crases_e_loop_valem) ... FAIL
+
+test_tipo_invalido (test_design_lint.Prompts.test_tipo_invalido) ... FAIL
+
+test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova) ... 
+
+  test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova) (titulo='## LLM prompts de produ��o', corpo='### Invent�rio\n\n| # | Nome |\n') ... FAIL
+
+  test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova) (titulo='## LLM prompts de produ��o', corpo='#### Prompt 1: x\n') ... FAIL
+
+  test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova) (titulo='## LLM prompts de produ��o', corpo='| Tipo | Completeness |\n|---|---|\n') ... FAIL
+
+test_titulo_com_palavras_a_mais_e_outro_assunto_passa (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_outro_assunto_passa) ... 
+
+  test_titulo_com_palavras_a_mais_e_outro_assunto_passa (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_outro_assunto_passa) (titulo='## LLM Prompts Review') ... FAIL
+
+  test_titulo_com_palavras_a_mais_e_outro_assunto_passa (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_outro_assunto_passa) (titulo='## LLM Prompts v2') ... FAIL
+
+  test_titulo_com_palavras_a_mais_e_outro_assunto_passa (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_outro_assunto_passa) (titulo='## LLM prompts de produ��o') ... FAIL
+
+test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) ... 
+
+  test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='##  LLM Prompts') ... FAIL
+
+  test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM Prompts (v1)') ... FAIL
+
+  test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM Prompts: 1') ... FAIL
+
+  test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM prompts') ... FAIL
+
+  test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM Prompt') ... FAIL
+
+  test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## 5. LLM Prompts') ... FAIL
+
+  test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## **LLM Prompts**') ... FAIL
+
+  test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM Prompts � invent�rio') ... FAIL
+
+  test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM Prompts - v1') ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_sem_linha_de_dados (test_design_lint.Prompts.test_sem_linha_de_dados)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 171, in test_sem_linha_de_dados
+
+    self.reprova("\n".join(linhas) + "\n", "nenhuma linha de prompt")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 127, in reprova
+
+    self.assertRegex(out.splitlines()[-1], "^\u2192 ")
+
+AssertionError: Regex didn't match: '^\u2192 ' not found in '\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md'
+
+
+
+======================================================================
+
+FAIL: test_so_a_primeira_tabela_do_inventario_conta (test_design_lint.Prompts.test_so_a_primeira_tabela_do_inventario_conta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 257, in test_so_a_primeira_tabela_do_inventario_conta
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_tabela_sem_as_colunas_seguida_da_certa_reprova (test_design_lint.Prompts.test_tabela_sem_as_colunas_seguida_da_certa_reprova)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 262, in test_tabela_sem_as_colunas_seguida_da_certa_reprova
+
+    self.reprova(com_outra, "falta a coluna Tipo")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 127, in reprova
+
+    self.assertRegex(out.splitlines()[-1], "^\u2192 ")
+
+AssertionError: Regex didn't match: '^\u2192 ' not found in '\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md'
+
+
+
+======================================================================
+
+FAIL: test_tipo_com_crases_e_loop_valem (test_design_lint.Prompts.test_tipo_com_crases_e_loop_valem)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 167, in test_tipo_com_crases_e_loop_valem
+
+    self.assertEqual(self.lint(self.secao.replace("| one-shot | `x` |", "| `loop` | `x` |", 1))[0], 0)
+
+AssertionError: 1 != 0
+
+
+
+======================================================================
+
+FAIL: test_tipo_invalido (test_design_lint.Prompts.test_tipo_invalido)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 163, in test_tipo_invalido
+
+    self.reprova(self.secao.replace("| one-shot | `x` |", "| outro | `x` |", 1), "Tipo 'outro'")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 127, in reprova
+
+    self.assertRegex(out.splitlines()[-1], "^\u2192 ")
+
+AssertionError: Regex didn't match: '^\u2192 ' not found in '\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md'
+
+
+
+======================================================================
+
+FAIL: test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova) (titulo='## LLM prompts de produ��o', corpo='### Invent�rio\n\n| # | Nome |\n')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 218, in test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova
+
+    self.assertIn(titulo, out)
+
+AssertionError: '## LLM prompts de produ��o' not found in "\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-hr_l7rdw\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-hr_l7rdw\\DESIGN_X.md:   o t\ufffdtulo '## LLM prompts de produ\ufffd\ufffdo' tem palavras a mais e a se\ufffd\ufffdo traz um invent\ufffdrio de prompts: use s\ufffd '## LLM Prompts' para ela ser conferida\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n"
+
+
+
+======================================================================
+
+FAIL: test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova) (titulo='## LLM prompts de produ��o', corpo='#### Prompt 1: x\n')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 218, in test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova
+
+    self.assertIn(titulo, out)
+
+AssertionError: '## LLM prompts de produ��o' not found in "\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-hr_l7rdw\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-hr_l7rdw\\DESIGN_X.md:   o t\ufffdtulo '## LLM prompts de produ\ufffd\ufffdo' tem palavras a mais e a se\ufffd\ufffdo traz um invent\ufffdrio de prompts: use s\ufffd '## LLM Prompts' para ela ser conferida\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n"
+
+
+
+======================================================================
+
+FAIL: test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova) (titulo='## LLM prompts de produ��o', corpo='| Tipo | Completeness |\n|---|---|\n')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 218, in test_titulo_com_palavras_a_mais_e_inventario_no_corpo_reprova
+
+    self.assertIn(titulo, out)
+
+AssertionError: '## LLM prompts de produ��o' not found in "\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-hr_l7rdw\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-hr_l7rdw\\DESIGN_X.md:   o t\ufffdtulo '## LLM prompts de produ\ufffd\ufffdo' tem palavras a mais e a se\ufffd\ufffdo traz um invent\ufffdrio de prompts: use s\ufffd '## LLM Prompts' para ela ser conferida\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n"
+
+
+
+======================================================================
+
+FAIL: test_titulo_com_palavras_a_mais_e_outro_assunto_passa (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_outro_assunto_passa) (titulo='## LLM Prompts Review')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 224, in test_titulo_com_palavras_a_mais_e_outro_assunto_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_titulo_com_palavras_a_mais_e_outro_assunto_passa (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_outro_assunto_passa) (titulo='## LLM Prompts v2')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 224, in test_titulo_com_palavras_a_mais_e_outro_assunto_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_titulo_com_palavras_a_mais_e_outro_assunto_passa (test_design_lint.Prompts.test_titulo_com_palavras_a_mais_e_outro_assunto_passa) (titulo='## LLM prompts de produ��o')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 224, in test_titulo_com_palavras_a_mais_e_outro_assunto_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='##  LLM Prompts')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 201, in test_variacoes_do_titulo_nao_desligam_a_conferencia
+
+    self.reprova(titulo + "\n\nnada\n", "falta o subt�tulo ### Invent�rio")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 122, in reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM Prompts (v1)')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 201, in test_variacoes_do_titulo_nao_desligam_a_conferencia
+
+    self.reprova(titulo + "\n\nnada\n", "falta o subt�tulo ### Invent�rio")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 122, in reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM Prompts: 1')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 201, in test_variacoes_do_titulo_nao_desligam_a_conferencia
+
+    self.reprova(titulo + "\n\nnada\n", "falta o subt�tulo ### Invent�rio")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 122, in reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM prompts')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 201, in test_variacoes_do_titulo_nao_desligam_a_conferencia
+
+    self.reprova(titulo + "\n\nnada\n", "falta o subt�tulo ### Invent�rio")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 122, in reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM Prompt')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 201, in test_variacoes_do_titulo_nao_desligam_a_conferencia
+
+    self.reprova(titulo + "\n\nnada\n", "falta o subt�tulo ### Invent�rio")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 122, in reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## 5. LLM Prompts')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 201, in test_variacoes_do_titulo_nao_desligam_a_conferencia
+
+    self.reprova(titulo + "\n\nnada\n", "falta o subt�tulo ### Invent�rio")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 122, in reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## **LLM Prompts**')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 201, in test_variacoes_do_titulo_nao_desligam_a_conferencia
+
+    self.reprova(titulo + "\n\nnada\n", "falta o subt�tulo ### Invent�rio")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 122, in reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM Prompts � invent�rio')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 201, in test_variacoes_do_titulo_nao_desligam_a_conferencia
+
+    self.reprova(titulo + "\n\nnada\n", "falta o subt�tulo ### Invent�rio")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 122, in reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_variacoes_do_titulo_nao_desligam_a_conferencia (test_design_lint.Prompts.test_variacoes_do_titulo_nao_desligam_a_conferencia) (titulo='## LLM Prompts - v1')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 201, in test_variacoes_do_titulo_nao_desligam_a_conferencia
+
+    self.reprova(titulo + "\n\nnada\n", "falta o subt�tulo ### Invent�rio")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 122, in reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-4fqdgoro\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 1.027s
+
+
+
+FAILED (failures=20)
+

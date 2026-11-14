@@ -1,0 +1,54 @@
+test_a_skill_cita_o_exemplo_e_ele_passa_no_handoff_lint (test_f17c_passo0.Exemplo.test_a_skill_cita_o_exemplo_e_ele_passa_no_handoff_lint) ... Exception in thread Thread-2 (_readerthread):
+
+Traceback (most recent call last):
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+
+    self.run()
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+
+    self._target(*self._args, **self._kwargs)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+
+    buffer.append(fh.read())
+
+                  ^^^^^^^^^
+
+  File "<frozen codecs>", line 322, in decode
+
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe1 in position 290: invalid continuation byte
+
+ERROR
+
+test_o_exemplo_segue_as_secoes_do_molde (test_f17c_passo0.Exemplo.test_o_exemplo_segue_as_secoes_do_molde) ... ok
+
+
+
+======================================================================
+
+ERROR: test_a_skill_cita_o_exemplo_e_ele_passa_no_handoff_lint (test_f17c_passo0.Exemplo.test_a_skill_cita_o_exemplo_e_ele_passa_no_handoff_lint)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17c_passo0.py", line 47, in test_a_skill_cita_o_exemplo_e_ele_passa_no_handoff_lint
+
+    self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+                                      ~~~~~~~~~^~~~~~~~~~
+
+TypeError: can only concatenate str (not "NoneType") to str
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 0.068s
+
+
+
+FAILED (errors=1)
+

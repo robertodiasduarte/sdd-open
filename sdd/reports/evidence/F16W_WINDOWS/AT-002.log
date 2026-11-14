@@ -1,0 +1,10 @@
+$ /usr/bin/python3 -B -m unittest -v test_testes_por_modulo.Executor.test_teto_mata_a_arvore_e_segue test_testes_por_modulo.Executor.test_uso_errado_sai_64_sem_rodar test_testes_por_modulo.Executor.test_saida_fora_do_cp1252_nao_derruba_o_executor
+test_teto_mata_a_arvore_e_segue (test_testes_por_modulo.Executor) ... ok
+test_uso_errado_sai_64_sem_rodar (test_testes_por_modulo.Executor) ... ok
+test_saida_fora_do_cp1252_nao_derruba_o_executor (test_testes_por_modulo.Executor) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 7.210s
+
+OK
+[exit=0]

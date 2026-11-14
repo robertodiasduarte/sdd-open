@@ -1,0 +1,122 @@
+test_liga_so_nesta_chamada_e_diz_de_quem_e (test_fluxo.SeguirDoDrive.test_liga_so_nesta_chamada_e_diz_de_quem_e) ... FAIL
+
+test_publicar_continua_parando (test_fluxo.SeguirDoDrive.test_publicar_continua_parando) ... FAIL
+
+test_slot_invalido_nao_atrapalha (test_fluxo.SeguirDoDrive.test_slot_invalido_nao_atrapalha) ... FAIL
+
+test_token_estavel_so_nos_motivos_de_revisao (test_fluxo.SeguirDoDrive.test_token_estavel_so_nos_motivos_de_revisao) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_liga_so_nesta_chamada_e_diz_de_quem_e (test_fluxo.SeguirDoDrive.test_liga_so_nesta_chamada_e_diz_de_quem_e)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_fluxo.py", line 831, in test_liga_so_nesta_chamada_e_diz_de_quem_e
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : PARAR: o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: PARAR
+
+Traceback (most recent call last):
+
+  File "<stdin>", line 586, in <module>
+
+  File "<stdin>", line 568, in cmd_seguir
+
+  File "<stdin>", line 524, in para
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_publicar_continua_parando (test_fluxo.SeguirDoDrive.test_publicar_continua_parando)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_fluxo.py", line 846, in test_publicar_continua_parando
+
+    self.assertIn("publicar n�o se desfaz", out)
+
+AssertionError: 'publicar n�o se desfaz' not found in 'PARAR: publicar n\ufffdo se desfaz \ufffd \ufffd decis\ufffdo sua (D1)\nRESULTADO: PARAR\nTraceback (most recent call last):\n  File "<stdin>", line 586, in <module>\n  File "<stdin>", line 537, in cmd_seguir\n  File "<stdin>", line 524, in para\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode character \'\\u2192\' in position 0: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_slot_invalido_nao_atrapalha (test_fluxo.SeguirDoDrive.test_slot_invalido_nao_atrapalha)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_fluxo.py", line 841, in test_slot_invalido_nao_atrapalha
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : PARAR: o DESIGN n\ufffdo passa no design-lint (saiu 1)
+
+RESULTADO: PARAR
+
+Traceback (most recent call last):
+
+  File "<stdin>", line 586, in <module>
+
+  File "<stdin>", line 568, in cmd_seguir
+
+  File "<stdin>", line 524, in para
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_token_estavel_so_nos_motivos_de_revisao (test_fluxo.SeguirDoDrive.test_token_estavel_so_nos_motivos_de_revisao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_fluxo.py", line 854, in test_token_estavel_so_nos_motivos_de_revisao
+
+    self.assertIn("DRIVE_ACAO: REVISAO_DESIGN", out)
+
+AssertionError: 'DRIVE_ACAO: REVISAO_DESIGN' not found in 'PARAR: o DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: PARAR\nTraceback (most recent call last):\n  File "<stdin>", line 586, in <module>\n  File "<stdin>", line 568, in cmd_seguir\n  File "<stdin>", line 524, in para\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode character \'\\u2192\' in position 0: character maps to <undefined>\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 4 tests in 2.303s
+
+
+
+FAILED (failures=4)
+

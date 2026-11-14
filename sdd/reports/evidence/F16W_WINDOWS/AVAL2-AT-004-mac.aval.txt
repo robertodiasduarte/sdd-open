@@ -1,0 +1,10 @@
+$ bash -c echo "SEM_SINAL em test_checar.py: $(grep -c SEM_SINAL tests/test_checar.py)"; cd tests; for t in TestRemoto.test_rede_pendurada_inteira_api_e_remoto TestRemoto.test_ssh_pendurado_vigia TestRemoto.test_login_do_editor_esperando TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login TestFrente.test_frente_bloqueia_login_do_editor TestVigiaNoWindows TestGh.test_gh_pendurado_respeita_o_teto; do s=$(date +%s); r=$(SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_checar.$t 2>&1 | tail -3 | tr "\n" " "); echo "$t: $r ($(( $(date +%s)-s )) s de relógio)"; done
+SEM_SINAL em test_checar.py: 0
+TestRemoto.test_rede_pendurada_inteira_api_e_remoto: Ran 1 test in 11.829s  OK  (12 s de relógio)
+TestRemoto.test_ssh_pendurado_vigia: Ran 1 test in 11.035s  OK  (11 s de relógio)
+TestRemoto.test_login_do_editor_esperando: Ran 1 test in 11.532s  OK  (12 s de relógio)
+TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login: Ran 1 test in 20.401s  OK  (21 s de relógio)
+TestFrente.test_frente_bloqueia_login_do_editor: Ran 1 test in 11.037s  OK  (11 s de relógio)
+TestVigiaNoWindows: Ran 3 tests in 0.987s  OK  (1 s de relógio)
+TestGh.test_gh_pendurado_respeita_o_teto: Ran 1 test in 12.044s  OK  (12 s de relógio)
+[exit=0]

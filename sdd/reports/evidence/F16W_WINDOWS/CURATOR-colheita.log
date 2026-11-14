@@ -1,0 +1,23 @@
+$ bash sdd/bin/playbook-curator.sh --colher /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/colher-f17c /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/cur/playbook-base.md --inv sdd/invariants.md
+DELTA LM-001 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:256 · fp=78f37229f5,8e21990f04
+DELTA LM-002 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:257 · fp=89c723bece,a0c6ed59ad
+DELTA LM-003 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:258 · fp=05953e71b1,bacfb88245
+DELTA LM-009 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:259 · fp=28c7354c74,70e6e9ae94
+DELTA LM-011 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:260 · fp=8f0c1f690f,70790fbb25
+DELTA LM-012 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:261 · fp=0340cc8bd9,af08808676
+DELTA LM-013 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:262 · fp=0c5b08964c,2aaff84afa
+DELTA LM-020 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:263 · fp=b0478eeace
+DELTA LM-022 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:264 · fp=a9d6ad7170,6a3909fbd7
+DELTA LM-023 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:265 · fp=be887a6e1a,2ff427db91
+DELTA LM-026 ajudou+1 · conf=2026-11-14 · evidencia=DESIGN_F17C_STARTER_ETAPA3.md:267 · fp=3d836580c4,6722f051cc
+DELTA LM-010 ajudou+1 · conf=2026-11-14 · evidencia=BUILD_REPORT_F17C_STARTER_ETAPA3.md:52 · fp=fe58e0bfaf
+SUGESTAO mordeu? LM-018 — termo `evidência` em BUILD_REPORT_F17C_STARTER_ETAPA3.md:148 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=4b62001bdd
+SUGESTAO mordeu? LM-020 — termo `evidência` em BUILD_REPORT_F17C_STARTER_ETAPA3.md:148 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=4cd127424d
+CANDIDATO #1 → LM-027 · secao=Reviews / harness · sup=`claude -p` `--tools ""` `teste do iniciante` `pasta de trabalho` `web` · evidencia=sdd/reports/evidence/F17C_STARTER_ETAPA3/INICIANTE-sdd-build-s2-g-1.log · fp=8b66301de5
+   delta: ADD Reviews / harness :: sup: `claude -p` `--tools ""` `teste do iniciante` `pasta de trabalho` `web` :: `claude -p --tools ""` não simula a web: o Claude Code anuncia ao modelo o diretório de trabalho e uma pasta temporária gravável da sessão (medido mesmo com `/` como diretório), e o modelo passa a dizer "posso gravar aqui" sem ter ferramenta; na F17c, 3 das 6 execuções do build gerado reprovaram ou passaram por engano por isso. **Do instead:** para o comportamento "sem pasta" (web), chame o modelo pela API de chat (sem Claude Code), com o mesmo roteiro; use o `claude -p` só para o que não depende do ambiente. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-028 · secao=Reviews / harness · sup=`juiz` `regex` `entrega` `alargar` `critério escrito antes` · evidencia=sdd/reviews/AVALIACAO_F17C_STARTER_ETAPA3_20261114-0140.md · fp=b233f8ed0d
+   delta: ADD Reviews / harness :: sup: `juiz` `regex` `entrega` `alargar` `critério escrito antes` :: Um juiz por expressão regular de comportamento de LLM erra nos dois sentidos e cada ajuste depois de ver o resultado abre o caso vizinho: na F17c, o juiz do build foi ajustado 4 vezes; alargado para reconhecer uma resposta certa, passou a aprovar uma instrução ao aluno ("1. Abra a pasta …"); a negação por frase calou "não tenho pasta, mas implementei"; e o avaliador de contexto novo achou 9 furos lendo as conversas. **Do instead:** o juiz por regex é triagem, não veredito: um leitor em contexto novo julga as conversas pelo critério em prosa; todo ajuste do juiz entra com um caso que passa e um parecido que reprova no autoteste, e a negação vale por oração (vírgula, "mas"), não por frase. → ficha: — · promovido_para: —
+resumo: deltas=12 (ajudou=12 mordeu=0) candidatos=2 rejeitados=0 promocoes=0 sugestoes=2
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[exit=0]

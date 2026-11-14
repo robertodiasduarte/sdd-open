@@ -1,0 +1,21 @@
+$ python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/carga.py; echo '--- MANIFEST'; grep -n 'testes-por-modulo.py\|test_testes_por_modulo.py\|test_f16w_passo0.py' MANIFEST.txt; echo '--- 11 digitos nos arquivos da frente'; git diff 0475445..HEAD --name-only | xargs grep -nE '(^|[^0-9])[0-9]{11}([^0-9]|$)' || echo nenhum
+fatia  1:  28 unidades,  181 testes, ~  204 s no Mac (linha de base com carga)
+fatia  2:  30 unidades,  181 testes, ~  406 s no Mac (linha de base com carga)
+fatia  3:  30 unidades,  181 testes, ~  124 s no Mac (linha de base com carga)
+fatia  4:  30 unidades,  181 testes, ~  367 s no Mac (linha de base com carga)
+fatia  5:  30 unidades,  181 testes, ~  623 s no Mac (linha de base com carga)
+fatia  6:  30 unidades,  181 testes, ~  171 s no Mac (linha de base com carga)
+fatia  7:  30 unidades,  181 testes, ~  156 s no Mac (linha de base com carga)
+fatia  8:  30 unidades,  181 testes, ~  210 s no Mac (linha de base com carga)
+fatia  9:  31 unidades,  181 testes, ~  197 s no Mac (linha de base com carga)
+fatia 10:  30 unidades,  180 testes, ~  138 s no Mac (linha de base com carga)
+fatia 11:  30 unidades,  180 testes, ~  386 s no Mac (linha de base com carga)
+fatia 12:  30 unidades,  180 testes, ~  183 s no Mac (linha de base com carga)
+maiores unidades por tempo estimado: [(450, 'test_sdd_open.Projeto'), (281, 'test_claude_adapter.Projeto'), (241, 'test_sdd_open.Hooks'), (166, 'test_revisao_gate.Gate'), (96, 'test_sdd_open.SegurancaNoAgents'), (69, 'test_hooks.Hooks')]
+--- MANIFEST
+303:scripts/testes-por-modulo.py
+615:tests/test_f16w_passo0.py
+662:tests/test_testes_por_modulo.py
+--- 11 digitos nos arquivos da frente
+nenhum
+[exit=0]

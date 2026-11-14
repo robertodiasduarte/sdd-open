@@ -1,0 +1,202 @@
+test_aplicado_sem_secao_avisa_e_passa (test_design_lint.AvisoDeSeguranca.test_aplicado_sem_secao_avisa_e_passa) ... FAIL
+
+test_com_secao_ou_sem_aplicado_nao_avisa (test_design_lint.AvisoDeSeguranca.test_com_secao_ou_sem_aplicado_nao_avisa) ... 
+
+  test_com_secao_ou_sem_aplicado_nao_avisa (test_design_lint.AvisoDeSeguranca.test_com_secao_ou_sem_aplicado_nao_avisa) (linha='2 aplicados (S01, S07)', secao=True) ... FAIL
+
+  test_com_secao_ou_sem_aplicado_nao_avisa (test_design_lint.AvisoDeSeguranca.test_com_secao_ou_sem_aplicado_nao_avisa) (linha='0 aplicados � 1 recusado (S13)', secao=False) ... FAIL
+
+  test_com_secao_ou_sem_aplicado_nao_avisa (test_design_lint.AvisoDeSeguranca.test_com_secao_ou_sem_aplicado_nao_avisa) (linha='N.A. � script local sem login', secao=False) ... FAIL
+
+  test_com_secao_ou_sem_aplicado_nao_avisa (test_design_lint.AvisoDeSeguranca.test_com_secao_ou_sem_aplicado_nao_avisa) (linha=None, secao=False) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_aplicado_sem_secao_avisa_e_passa (test_design_lint.AvisoDeSeguranca.test_aplicado_sem_secao_avisa_e_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 309, in test_aplicado_sem_secao_avisa_e_passa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 265, in main
+
+    print(f"\u26a0\ufe0f {argv[1]}: {aviso}")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_com_secao_ou_sem_aplicado_nao_avisa (test_design_lint.AvisoDeSeguranca.test_com_secao_ou_sem_aplicado_nao_avisa) (linha='2 aplicados (S01, S07)', secao=True)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 318, in test_com_secao_ou_sem_aplicado_nao_avisa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_com_secao_ou_sem_aplicado_nao_avisa (test_design_lint.AvisoDeSeguranca.test_com_secao_ou_sem_aplicado_nao_avisa) (linha='0 aplicados � 1 recusado (S13)', secao=False)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 318, in test_com_secao_ou_sem_aplicado_nao_avisa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_com_secao_ou_sem_aplicado_nao_avisa (test_design_lint.AvisoDeSeguranca.test_com_secao_ou_sem_aplicado_nao_avisa) (linha='N.A. � script local sem login', secao=False)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 318, in test_com_secao_ou_sem_aplicado_nao_avisa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_com_secao_ou_sem_aplicado_nao_avisa (test_design_lint.AvisoDeSeguranca.test_com_secao_ou_sem_aplicado_nao_avisa) (linha=None, secao=False)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 318, in test_com_secao_ou_sem_aplicado_nao_avisa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 0.258s
+
+
+
+FAILED (failures=5)
+

@@ -1,0 +1,48 @@
+test_commits_desde_o_inicio (test_drive.Relatorio.test_commits_desde_o_inicio) ... ok
+
+test_recibo_na_secao_e_sai_0 (test_drive.Relatorio.test_recibo_na_secao_e_sai_0) ... ok
+
+test_recibo_nao_apaga_o_motivo_do_bloqueio (test_drive.Relatorio.test_recibo_nao_apaga_o_motivo_do_bloqueio) ... ok
+
+test_toda_parada_reescreve_com_o_motivo (test_drive.Relatorio.test_toda_parada_reescreve_com_o_motivo) ... ERROR
+
+
+
+======================================================================
+
+ERROR: test_toda_parada_reescreve_com_o_motivo (test_drive.Relatorio.test_toda_parada_reescreve_com_o_motivo)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1187, in test_toda_parada_reescreve_com_o_motivo
+
+    texto = (self.r / RELATORIO).read_text(encoding="utf-8")
+
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1027, in read_text
+
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1013, in open
+
+    return io.open(self, mode, buffering, encoding, errors, newline)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-tuq786w2\\repo\\sdd\\reports\\DRIVE_REPORT_F.md'
+
+
+
+----------------------------------------------------------------------
+
+Ran 4 tests in 9.419s
+
+
+
+FAILED (errors=1)
+

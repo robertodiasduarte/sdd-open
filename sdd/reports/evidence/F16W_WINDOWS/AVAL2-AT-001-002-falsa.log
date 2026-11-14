@@ -1,0 +1,48 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/aval2/falsa.sh
+fatia 1/1: 7 unidade(s), 37 teste(s); teto por unidade 4s; paralelo 1
+test_grande.G[1de3]                          OK     testes=10   falhas=0   erros=0   pulados=0       0.1s
+test_grande.G[2de3]                          FALHOU testes=10   falhas=1   erros=0   pulados=0       0.1s
+    FAIL G.test_17
+test_grande.G[3de3]                          OK     testes=10   falhas=0   erros=0   pulados=0       0.1s
+test_pendura.P                               TETO   testes=0    falhas=0   erros=0   pulados=0       4.0s
+    | test_pendura (test_pendura.P.test_pendura) ... /opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py:1313: ResourceWarning: subprocess 22812 is still running
+    |   _warn("subprocess %s is still running" % self.pid,
+    | ResourceWarning: Enable tracemalloc to get the object allocation traceback
+    | começou 🛑
+test_quebrado                                FALHOU testes=1    falhas=0   erros=1   pulados=0       0.1s
+    ERROR _FailedTest.test_quebrado
+test_ruim.R                                  FALHOU testes=3    falhas=1   erros=1   pulados=0       0.1s
+    ERROR R.test_erro
+    FAIL R.test_falha
+test_verde.V                                 OK     testes=2    falhas=0   erros=0   pulados=1       0.1s
+total: 7 unidade(s), 36 teste(s): 2 falha(s), 2 erro(s), 1 pulado(s) em 4.4s
+unidades com problema: test_grande.G[2de3] (FALHOU), test_pendura.P (TETO), test_quebrado (FALHOU), test_ruim.R (FALHOU)
+RESULTADO: VERMELHO
+exit do executor: 1; gasto: 4 s
+tiques do neto:       20 ->       20 depois de 2 s (parado = neto morto)
+processos com tiques.txt vivos: 0
+--- arquivos em --saida:
+resumo.tsv
+test_grande.G[1de3].log
+test_grande.G[2de3].log
+test_grande.G[3de3].log
+test_pendura.P.log
+test_quebrado.log
+test_ruim.R.log
+test_verde.V.log
+--- resumo.tsv:
+unidade	estado	testes	falhas	erros	pulados	segundos
+test_grande.G[1de3]	OK	10	0	0	0	0.1
+test_grande.G[2de3]	FALHOU	10	1	0	0	0.1
+test_grande.G[3de3]	OK	10	0	0	0	0.1
+test_pendura.P	TETO	0	0	0	0	4.0
+test_quebrado	FALHOU	1	0	1	0	0.1
+test_ruim.R	FALHOU	3	1	1	0	0.1
+test_verde.V	OK	2	0	0	1	0.1
+--- test_grande.G[2de3].log (cauda):
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.000s
+
+FAILED (failures=1)
+[exit=0]

@@ -1,0 +1,48 @@
+test_nenhuma_gerada_manda_gravar_lado_a_lado_em_sdd (test_f17c_textos.UmJeitoSoDePasta.test_nenhuma_gerada_manda_gravar_lado_a_lado_em_sdd) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_nenhuma_gerada_manda_gravar_lado_a_lado_em_sdd (test_f17c_textos.UmJeitoSoDePasta.test_nenhuma_gerada_manda_gravar_lado_a_lado_em_sdd)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17c_textos.py", line 132, in test_nenhuma_gerada_manda_gravar_lado_a_lado_em_sdd
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-4ph5lw7y\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-4ph5lw7y\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 25.606s
+
+
+
+FAILED (failures=1)
+

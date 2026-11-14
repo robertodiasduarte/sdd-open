@@ -1,0 +1,120 @@
+test_r3_supress_blank_empty_e_atributos_do_usuario_nao_mudam_o_sha (test_revisao.RevisaoFinal.test_r3_supress_blank_empty_e_atributos_do_usuario_nao_mudam_o_sha) ... ERROR
+
+test_r4_codex_preco_pelo_modelo_reportado (test_revisao.RevisaoFinal.test_r4_codex_preco_pelo_modelo_reportado) ... FAIL
+
+test_r5_claude_aviso_de_uma_engine_antes_mesmo_com_auditor_falho (test_revisao.RevisaoFinal.test_r5_claude_aviso_de_uma_engine_antes_mesmo_com_auditor_falho) ... FAIL
+
+test_r5_codex_papel_chamado_que_falhou_tem_custo_desconhecido (test_revisao.RevisaoFinal.test_r5_codex_papel_chamado_que_falhou_tem_custo_desconhecido) ... FAIL
+
+
+
+======================================================================
+
+ERROR: test_r3_supress_blank_empty_e_atributos_do_usuario_nao_mudam_o_sha (test_revisao.RevisaoFinal.test_r3_supress_blank_empty_e_atributos_do_usuario_nao_mudam_o_sha)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 986, in test_r3_supress_blank_empty_e_atributos_do_usuario_nao_mudam_o_sha
+
+    self.assertEqual(sha(a), sha(b))
+
+                     ^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 979, in <lambda>
+
+    sha = lambda s: re.search(r"diff_sha256: ([0-9a-f]{64})", s).group(1)
+
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'group'
+
+
+
+======================================================================
+
+FAIL: test_r4_codex_preco_pelo_modelo_reportado (test_revisao.RevisaoFinal.test_r4_codex_preco_pelo_modelo_reportado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 1002, in test_r4_codex_preco_pelo_modelo_reportado
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_r5_claude_aviso_de_uma_engine_antes_mesmo_com_auditor_falho (test_revisao.RevisaoFinal.test_r5_claude_aviso_de_uma_engine_antes_mesmo_com_auditor_falho)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 991, in test_r5_claude_aviso_de_uma_engine_antes_mesmo_com_auditor_falho
+
+    self.assertEqual(rc, 68, out)
+
+AssertionError: 64 != 68 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_r5_codex_papel_chamado_que_falhou_tem_custo_desconhecido (test_revisao.RevisaoFinal.test_r5_codex_papel_chamado_que_falhou_tem_custo_desconhecido)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 1009, in test_r5_codex_papel_chamado_que_falhou_tem_custo_desconhecido
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 4 tests in 1.665s
+
+
+
+FAILED (failures=3, errors=1)
+

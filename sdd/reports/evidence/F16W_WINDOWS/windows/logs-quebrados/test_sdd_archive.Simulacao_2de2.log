@@ -1,0 +1,68 @@
+test_nome_com_acento_e_slice_e_sufixo_maiusculo (test_sdd_archive.Simulacao.test_nome_com_acento_e_slice_e_sufixo_maiusculo) ... FAIL
+
+test_recente_fica (test_sdd_archive.Simulacao.test_recente_fica) ... FAIL
+
+test_saida_em_utf8_mesmo_com_cp1252 (test_sdd_archive.Simulacao.test_saida_em_utf8_mesmo_com_cp1252) ... ok
+
+test_solto_recente_fica_e_nao_e_decisao_sua (test_sdd_archive.Simulacao.test_solto_recente_fica_e_nao_e_decisao_sua) ... FAIL
+
+test_sujo_com_mtime_velho_tambem_e_atividade (test_sdd_archive.Simulacao.test_sujo_com_mtime_velho_tambem_e_atividade) ... ok
+
+
+
+======================================================================
+
+FAIL: test_nome_com_acento_e_slice_e_sufixo_maiusculo (test_sdd_archive.Simulacao.test_nome_com_acento_e_slice_e_sufixo_maiusculo)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 91, in test_nome_com_acento_e_slice_e_sufixo_maiusculo
+
+    self.assertIn("sdd/features/DEFINE_A_s2.md  \u2192  sdd/archive/A/DEFINE_A_s2.md", out, "slice min�sculo fica no grupo")
+
+AssertionError: 'sdd/features/DEFINE_A_s2.md  \u2192  sdd/archive/A/DEFINE_A_s2.md' not found in '\n== Lote com-ledger: 0 arquivo(s) ==\n\n== Lote sem-ledger: 0 arquivo(s) ==\n\n== Lote soltos: 0 arquivo(s) ==\n\n== Protegidos: 0 grupo(s) ==\n\n== Recentes (ficam): 3 grupo(s) ==\n  A (2 documento(s), quieto h� -9 dia(s), limite 60)\n  A_V2 (1 documento(s), quieto h� -9 dia(s), limite 60)\n  relat�rio antigo.md (1 documento(s), quieto h� -9 dia(s), limite 60)\n\n== Sem classifica��o (decis�o sua): 0 ==\n\n== Subpastas (ficam): 0 ==\n\nTOTAIS: com-ledger=0 � sem-ledger=0 � soltos=0 � protegidos=0 � recentes=3 � sem classifica��o=0 � subpastas=0\nNada foi movido.\nRESULTADO: SIMULACAO\n\u2192 para mover, rode com --lote <nome> --aplicar, um lote por vez.\n' : slice min�sculo fica no grupo
+
+
+
+======================================================================
+
+FAIL: test_recente_fica (test_sdd_archive.Simulacao.test_recente_fica)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 62, in test_recente_fica
+
+    self.assertIn("A (1 documento(s), quieto h� 6 dia(s), limite 30)", out)
+
+AssertionError: 'A (1 documento(s), quieto h� 6 dia(s), limite 30)' not found in '\n== Lote com-ledger: 0 arquivo(s) ==\n\n== Lote sem-ledger: 0 arquivo(s) ==\n\n== Lote soltos: 0 arquivo(s) ==\n\n== Protegidos: 0 grupo(s) ==\n\n== Recentes (ficam): 2 grupo(s) ==\n  A (1 documento(s), quieto h� -9 dia(s), limite 30)\n  B (1 documento(s), quieto h� -9 dia(s), limite 60)\n\n== Sem classifica��o (decis�o sua): 0 ==\n\n== Subpastas (ficam): 0 ==\n\nTOTAIS: com-ledger=0 � sem-ledger=0 � soltos=0 � protegidos=0 � recentes=2 � sem classifica��o=0 � subpastas=0\nNada foi movido.\nRESULTADO: SIMULACAO\n\u2192 para mover, rode com --lote <nome> --aplicar, um lote por vez.\n'
+
+
+
+======================================================================
+
+FAIL: test_solto_recente_fica_e_nao_e_decisao_sua (test_sdd_archive.Simulacao.test_solto_recente_fica_e_nao_e_decisao_sua)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_archive.py", line 73, in test_solto_recente_fica_e_nao_e_decisao_sua
+
+    self.assertIn("solto.md (1 documento(s), quieto h� 3 dia(s), limite 60)", out)
+
+AssertionError: 'solto.md (1 documento(s), quieto h� 3 dia(s), limite 60)' not found in '\n== Lote com-ledger: 0 arquivo(s) ==\n\n== Lote sem-ledger: 0 arquivo(s) ==\n\n== Lote soltos: 0 arquivo(s) ==\n\n== Protegidos: 0 grupo(s) ==\n\n== Recentes (ficam): 2 grupo(s) ==\n  notas.md (1 documento(s), quieto h� -9 dia(s), limite 60)\n  solto.md (1 documento(s), quieto h� -9 dia(s), limite 60)\n\n== Sem classifica��o (decis�o sua): 0 ==\n\n== Subpastas (ficam): 0 ==\n\nTOTAIS: com-ledger=0 � sem-ledger=0 � soltos=0 � protegidos=0 � recentes=2 � sem classifica��o=0 � subpastas=0\nNada foi movido.\nRESULTADO: SIMULACAO\n\u2192 para mover, rode com --lote <nome> --aplicar, um lote por vez.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 2.837s
+
+
+
+FAILED (failures=3)
+

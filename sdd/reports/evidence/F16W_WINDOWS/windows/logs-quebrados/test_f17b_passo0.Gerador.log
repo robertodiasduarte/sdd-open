@@ -1,0 +1,128 @@
+test_arquivo_que_nenhuma_regra_muda_sai_byte_a_byte_mesmo_com_crlf (test_f17b_passo0.Gerador.test_arquivo_que_nenhuma_regra_muda_sai_byte_a_byte_mesmo_com_crlf) ... FAIL
+
+test_caminho_de_skill_irma_num_script_vira_o_nome_da_pasta (test_f17b_passo0.Gerador.test_caminho_de_skill_irma_num_script_vira_o_nome_da_pasta) ... FAIL
+
+test_gate_da_kb_sai_executavel (test_f17b_passo0.Gerador.test_gate_da_kb_sai_executavel) ... skipped 'chmod: no Windows o bit de execu��o e a permiss�o de leitura n�o valem'
+
+test_molde_citado_so_no_changelog_nao_vai_para_references (test_f17b_passo0.Gerador.test_molde_citado_so_no_changelog_nao_vai_para_references) ... FAIL
+
+test_os_dois_workflows_rodam_os_testes_da_raiz_do_mesmo_jeito (test_f17b_passo0.Gerador.test_os_dois_workflows_rodam_os_testes_da_raiz_do_mesmo_jeito) ... ok
+
+
+
+======================================================================
+
+FAIL: test_arquivo_que_nenhuma_regra_muda_sai_byte_a_byte_mesmo_com_crlf (test_f17b_passo0.Gerador.test_arquivo_que_nenhuma_regra_muda_sai_byte_a_byte_mesmo_com_crlf)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17b_passo0.py", line 26, in test_arquivo_que_nenhuma_regra_muda_sai_byte_a_byte_mesmo_com_crlf
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-tvqui3wq\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-tvqui3wq\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_caminho_de_skill_irma_num_script_vira_o_nome_da_pasta (test_f17b_passo0.Gerador.test_caminho_de_skill_irma_num_script_vira_o_nome_da_pasta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17b_passo0.py", line 45, in test_caminho_de_skill_irma_num_script_vira_o_nome_da_pasta
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-2qu88kco\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-2qu88kco\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_molde_citado_so_no_changelog_nao_vai_para_references (test_f17b_passo0.Gerador.test_molde_citado_so_no_changelog_nao_vai_para_references)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17b_passo0.py", line 34, in test_molde_citado_so_no_changelog_nao_vai_para_references
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-kmnm940s\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-kmnm940s\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 72.454s
+
+
+
+FAILED (failures=3, skipped=1)
+

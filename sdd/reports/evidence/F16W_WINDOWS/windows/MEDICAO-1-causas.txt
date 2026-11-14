@@ -1,0 +1,64 @@
+total de quedas: 515
+
+## codificação (cp1252) — 156
+   test_design_lint.Prompts[2de3] · test_fragmento_preenchido_passa · AssertionError: 1 != 0 : Traceback (most recent call last):
+   test_design_lint.Prompts[2de3] · test_json_preenchido_nao_e_chave_sem_preencher · AssertionError: 1 != 0 : Traceback (most recent call last):
+   test_design_lint.Prompts[2de3] · test_secao_so_dentro_de_cerca_nao_conta · AssertionError: 1 != 0 : Traceback (most recent call last):
+   test_design_lint.Prompts[2de3] · test_sem_a_secao_nada_muda · AssertionError: 1 != 0 : Traceback (most recent call last):
+
+## exit code diferente — 148
+   test_deploy_do_sha.MergeDeOutroClone · test_sha_que_so_o_remoto_conhece_e_buscado · AssertionError: 4 != 0 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a Gi
+   test_deploy_do_sha.Ausentes · test_gh_sem_login_sai_3 · AssertionError: 4 != 3 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a Gi
+   test_deploy_do_sha.Ausentes · test_sem_gh_e_sem_git_sai_3 · AssertionError: 64 != 3 : \u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+   test_drive.Concluir[2de2] · test_parada_guardada_vale_tambem_no_concluir · AssertionError: 10 != 20 : ACAO: DESIGN
+
+## asserção de texto/saída — 116
+   test_drive.Concluir[2de2] · test_relatorio_que_reprova_volta_com_as_linhas · AssertionError: Regex didn't match: '(?m)^ACAO: AVALIAR_E_RELATAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRE
+   test_drive.Concluir[2de2] · test_sem_gate_nao_conclui · AssertionError: Regex didn't match: '(?m)^ACAO: VERIFICAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO:
+   test_drive.Concluir[2de2] · test_sem_relatorio_nao_conclui · AssertionError: Regex didn't match: '(?m)^ACAO: AVALIAR_E_RELATAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRE
+   test_drive.Proxima[2de3] · test_nome_com_crase_no_progress_nao_reabre_a_tarefa · AssertionError: Regex didn't match: '(?m)^ACAO: VERIFICAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO:
+
+## CRLF — 50
+   test_governanca_fronteira.Real2 · test_permitido_por_link_de_arquivo_casa_com_o_destino · AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-hu_1fpo0\w\sdd\reviews\destino.md
+   test_governanca_fronteira.Fronteira · test_cada_escrita_fora_do_permitido_aparece · AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1sy2dzx8\w\sdd\reviews\REL.md
+   test_governanca_fronteira.Fronteira · test_permitido_por_link_simbolico_casa_com_a_raiz_canonica · AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-803iwtt9\w\sdd\reviews\REL.md
+   test_governanca_fronteira.Fronteira · test_so_o_permitido_mudou · AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-0cr_j1oe\w\sdd\reviews\REL.md
+
+## caminho Windows x POSIX — 25
+   test_slot.Inconclusivo · test_comando_morto_por_sinal_e_inconclusivo · AssertionError: 11 != 3 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-s8ylgrre/repo/sdd/config.yaml)
+   test_checar.TestRemoto[1de2] · test_login_do_editor_esperando · subprocess.TimeoutExpired: Command '['C:\\Program Files\\Git\\usr\\bin\\bash.exe', 'D:\\a\\sdd-open\\sdd-open\\.agents\\skills\\sdd-checar-ambiente\\scripts\\ch
+   test_revisao.Vereditos · test_linha_de_inicio_por_papel · AssertionError: '\u25b6 revisor: stub-a (revisor-ok) � at� 1 min' not found in 'D:\\a\\sdd-open\\sdd-open\\sdd\\bin\\adversarial-review.sh: line 37: cd: null di
+   test_slot.Cerquilha · test_bordas_do_bash · AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-6k8xxgfi/repo/sdd/config.yaml)
+
+## TypeError — 5
+   test_f17c_passo0.Exemplo · test_a_skill_cita_o_exemplo_e_ele_passa_no_handoff_lint · TypeError: can only concatenate str (not "NoneType") to str
+   test_f17_textos.AuditoriaVariosMotores · test_projeto_so_com_agents_e_codex_nao_volta_vazio · TypeError: the JSON object must be str, bytes or bytearray, not NoneType
+   test_f17_textos.AuditoriaVariosMotores · test_prompt_do_codex_chamado_como_prompts_nome_tem_referencia · TypeError: the JSON object must be str, bytes or bytearray, not NoneType
+   test_report_lint_evidencia.Stdin · test_stdin_confere_como_o_arquivo · TypeError: can only concatenate str (not "NoneType") to str
+
+## AttributeError — 4
+   test_revisao.AvaliadorCiclo1 · test_3_contexto_do_diff_do_usuario_nao_muda_o_sha · AttributeError: 'NoneType' object has no attribute 'group'
+   test_revisao.RevisaoFinal[2de2] · test_r3_supress_blank_empty_e_atributos_do_usuario_nao_mudam_o_sha · AttributeError: 'NoneType' object has no attribute 'group'
+   test_revisao.Diff · test_config_do_usuario_nao_muda_o_sha · AttributeError: 'NoneType' object has no attribute 'group'
+   test_revisao.AvaliadorCiclo2 · test_2_order_file_e_textconv_do_usuario_nao_mudam_o_sha · AttributeError: 'NoneType' object has no attribute 'group'
+
+## subprocess.TimeoutExpired — 4
+   test_sdd_open.Hooks[2de2] · test_init_na_branch_padrao_com_remoto_diz_como_commitar · subprocess.TimeoutExpired: Command '['git', 'commit', '-q', '-m', 'init']' timed out after 120 seconds
+   test_sdd_open.Hooks[2de2] · test_init_repetido_e_idempotente_e_completa_hook_apagado · subprocess.TimeoutExpired: Command '['git', 'commit', '-q', '-m', 'init']' timed out after 120 seconds
+   test_sdd_open.Hooks[2de2] · test_migra_o_alarme_da_higiene_sem_perder_a_protecao · subprocess.TimeoutExpired: Command '['git', 'commit', '-q', '-m', 'env']' timed out after 120 seconds
+   test_sdd_open.SegurancaNoAgents · test_stack_nova_deixa_o_bloco_divergente_e_o_sync_refaz · subprocess.TimeoutExpired: Command '['git', 'commit', '-q', '--allow-empty', '-m', 'init']' timed out after 120 seconds
+
+## json.decoder.JSONDecodeError — 3
+   test_claude_adapter.Projeto[2de2] · test_report_guard_le_o_payload_em_utf8_cru_num_sistema_cp1252 · json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 876)
+   test_claude_adapter.Projeto[2de2] · test_report_guard_nega_write_que_o_lint_reprova · json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 839)
+   test_claude_adapter.Projeto[2de2] · test_report_guard_simula_o_edit · json.decoder.JSONDecodeError: Invalid \escape: line 8 column 13 (char 255)
+
+## KeyError — 2
+   test_slot.Ambiente · test_before_ok_esvazia_so_a_pasta_padrao · KeyError: 'DIR'
+   test_slot.Ambiente · test_before_ok_vazio_tambem_esvazia · KeyError: 'DIR'
+
+## link simbólico — 1
+   test_slot.Ambiente · test_mesma_pasta_de_outra_worktree_subpasta_e_symlink · AssertionError: 11 != 0
+
+## ImportError — 1
+   test_prompt_drift_scan · test_prompt_drift_scan · ImportError: Failed to import test module: test_prompt_drift_scan

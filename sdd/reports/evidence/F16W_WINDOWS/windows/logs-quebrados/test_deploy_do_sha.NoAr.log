@@ -1,0 +1,98 @@
+test_espera_o_run_em_andamento_com_progresso_em_stderr (test_deploy_do_sha.NoAr.test_espera_o_run_em_andamento_com_progresso_em_stderr) ... FAIL
+
+test_nao_contam_outra_branch_tag_nem_outro_evento (test_deploy_do_sha.NoAr.test_nao_contam_outra_branch_tag_nem_outro_evento) ... ok
+
+test_proprio_verde (test_deploy_do_sha.NoAr.test_proprio_verde) ... FAIL
+
+test_workflow_dispatch_conta (test_deploy_do_sha.NoAr.test_workflow_dispatch_conta) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_espera_o_run_em_andamento_com_progresso_em_stderr (test_deploy_do_sha.NoAr.test_espera_o_run_em_andamento_com_progresso_em_stderr)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 136, in test_espera_o_run_em_andamento_com_progresso_em_stderr
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 4 != 0 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_proprio_verde (test_deploy_do_sha.NoAr.test_proprio_verde)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 121, in test_proprio_verde
+
+    self.assertSai(self.sha(), 0, "\u2705 no ar � run 11", self.x[:7])
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 0 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_workflow_dispatch_conta (test_deploy_do_sha.NoAr.test_workflow_dispatch_conta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 131, in test_workflow_dispatch_conta
+
+    self.assertSai(self.sha(), 0, "\u2705 no ar � run 5")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 0 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 4 tests in 98.009s
+
+
+
+FAILED (failures=3)
+

@@ -1,0 +1,66 @@
+test_log_sem_linha_de_comando (test_report_lint.ReportLint.test_log_sem_linha_de_comando) ... ok
+
+test_log_vazio (test_report_lint.ReportLint.test_log_vazio) ... ok
+
+test_nome_fora_do_padrao_e_64 (test_report_lint.ReportLint.test_nome_fora_do_padrao_e_64) ... ok
+
+test_recibo_fora_de_manual_ux (test_report_lint.ReportLint.test_recibo_fora_de_manual_ux) ... ok
+
+test_recibo_humano_em_gate_manual_ux_passa (test_report_lint.ReportLint.test_recibo_humano_em_gate_manual_ux_passa) ... FAIL
+
+test_sem_argumento_e_64 (test_report_lint.ReportLint.test_sem_argumento_e_64) ... ok
+
+test_veredito_do_avaliador_sem_arquivo (test_report_lint.ReportLint.test_veredito_do_avaliador_sem_arquivo) ... ok
+
+
+
+======================================================================
+
+FAIL: test_recibo_humano_em_gate_manual_ux_passa (test_report_lint.ReportLint.test_recibo_humano_em_gate_manual_ux_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 53, in test_recibo_humano_em_gate_manual_ux_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-v_zjm3p9\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-v_zjm3p9\repo\sdd\bin\report-lint.py", line 604, in main
+
+    imprimir_avisos(warnings)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-v_zjm3p9\repo\sdd\bin\report-lint.py", line 552, in imprimir_avisos
+
+    print(f"\u26a0\ufe0f  {w}")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 0.800s
+
+
+
+FAILED (failures=1)
+

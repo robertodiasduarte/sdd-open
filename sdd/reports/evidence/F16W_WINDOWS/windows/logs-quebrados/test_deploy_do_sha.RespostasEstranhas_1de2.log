@@ -1,0 +1,134 @@
+test_503_com_a_palavra_workflow_nao_e_erro_de_uso (test_deploy_do_sha.RespostasEstranhas.test_503_com_a_palavra_workflow_nao_e_erro_de_uso) ... ok
+
+test_consulta_falhando_nao_repete_a_linha_a_cada_volta (test_deploy_do_sha.RespostasEstranhas.test_consulta_falhando_nao_repete_a_linha_a_cada_volta) ... ok
+
+test_dispatch_com_404_sai_2_e_nao_64 (test_deploy_do_sha.RespostasEstranhas.test_dispatch_com_404_sai_2_e_nao_64) ... FAIL
+
+test_job_falho_sem_passo_falho_nao_repete (test_deploy_do_sha.RespostasEstranhas.test_job_falho_sem_passo_falho_nao_repete) ... FAIL
+
+test_passageiro_com_job_em_timeout_nao_repete (test_deploy_do_sha.RespostasEstranhas.test_passageiro_com_job_em_timeout_nao_repete) ... FAIL
+
+test_passageiro_e_real_juntos_nao_repete (test_deploy_do_sha.RespostasEstranhas.test_passageiro_e_real_juntos_nao_repete) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_dispatch_com_404_sai_2_e_nao_64 (test_deploy_do_sha.RespostasEstranhas.test_dispatch_com_404_sai_2_e_nao_64)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 323, in test_dispatch_com_404_sai_2_e_nao_64
+
+    self.assertSai(self.sha("--transitorios", "Verify SSH"), 2, "o GitHub recusou")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 2 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_job_falho_sem_passo_falho_nao_repete (test_deploy_do_sha.RespostasEstranhas.test_job_falho_sem_passo_falho_nao_repete)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 317, in test_job_falho_sem_passo_falho_nao_repete
+
+    self.assertSai(self.sha("--transitorios", "Verify SSH"), 2, "job deploy")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 2 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_passageiro_com_job_em_timeout_nao_repete (test_deploy_do_sha.RespostasEstranhas.test_passageiro_com_job_em_timeout_nao_repete)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 336, in test_passageiro_com_job_em_timeout_nao_repete
+
+    self.assertSai(self.sha("--transitorios", "Verify SSH"), 2, "job deploy")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 2 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_passageiro_e_real_juntos_nao_repete (test_deploy_do_sha.RespostasEstranhas.test_passageiro_e_real_juntos_nao_repete)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 311, in test_passageiro_e_real_juntos_nao_repete
+
+    self.assertSai(res, 2, "Compilar", "n�o est� em deploy.transient_steps")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 2 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 128.840s
+
+
+
+FAILED (failures=4)
+

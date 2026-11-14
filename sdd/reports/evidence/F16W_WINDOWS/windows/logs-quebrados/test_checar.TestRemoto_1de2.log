@@ -1,0 +1,64 @@
+test_comandos_impressos_sem_prompt (test_checar.TestRemoto.test_comandos_impressos_sem_prompt) ... ok
+
+test_credencial_github_privado_explica_as_duas_causas (test_checar.TestRemoto.test_credencial_github_privado_explica_as_duas_causas) ... ok
+
+test_credencial_recusada_rapida (test_checar.TestRemoto.test_credencial_recusada_rapida) ... ok
+
+test_git_fora_do_path (test_checar.TestRemoto.test_git_fora_do_path) ... ok
+
+test_host_ssh_desconhecido (test_checar.TestRemoto.test_host_ssh_desconhecido) ... ok
+
+test_login_do_editor_esperando (test_checar.TestRemoto.test_login_do_editor_esperando) ... ERROR
+
+test_rede_parada_com_editor_nao_e_janela_de_login (test_checar.TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login) ... ok
+
+
+
+======================================================================
+
+ERROR: test_login_do_editor_esperando (test_checar.TestRemoto.test_login_do_editor_esperando)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 351, in test_login_do_editor_esperando
+
+    rc, out, t = self.roda(GIT_ASKPASS=str(askpass))
+
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 177, in roda
+
+    r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.raiz, capture_output=True, text=True, encoding="utf-8", errors="replace",
+
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+
+    stdout, stderr = process.communicate(input, timeout=timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+
+    stdout, stderr = self._communicate(input, endtime, timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+
+    raise TimeoutExpired(self.args, orig_timeout)
+
+subprocess.TimeoutExpired: Command '['C:\\Program Files\\Git\\usr\\bin\\bash.exe', 'D:\\a\\sdd-open\\sdd-open\\.agents\\skills\\sdd-checar-ambiente\\scripts\\checar.sh']' timed out after 60 seconds
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 95.304s
+
+
+
+FAILED (errors=1)
+

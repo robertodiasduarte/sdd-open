@@ -1,0 +1,130 @@
+test_arquivo_ausente_e_64 (test_handoff_lint.HandoffLint.test_arquivo_ausente_e_64) ... ok
+
+test_arquivo_ilegivel_sai_1_com_resultado (test_handoff_lint.HandoffLint.test_arquivo_ilegivel_sai_1_com_resultado) ... FAIL
+
+test_cada_mutacao_reprova (test_handoff_lint.HandoffLint.test_cada_mutacao_reprova) ... 
+
+  test_cada_mutacao_reprova (test_handoff_lint.HandoffLint.test_cada_mutacao_reprova) (caso='historico_sem_data') ... FAIL
+
+test_check_no_meio_do_status_nao_dispensa_o_prompt (test_handoff_lint.HandoffLint.test_check_no_meio_do_status_nao_dispensa_o_prompt) ... ok
+
+test_com_eventos_tambem_passa (test_handoff_lint.HandoffLint.test_com_eventos_tambem_passa) ... FAIL
+
+test_ficha_aberta_sem_prompt_reprova (test_handoff_lint.HandoffLint.test_ficha_aberta_sem_prompt_reprova) ... ok
+
+test_ficha_fechada_dispensa_o_prompt (test_handoff_lint.HandoffLint.test_ficha_fechada_dispensa_o_prompt) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_arquivo_ilegivel_sai_1_com_resultado (test_handoff_lint.HandoffLint.test_arquivo_ilegivel_sai_1_com_resultado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_handoff_lint.py", line 117, in test_arquivo_ilegivel_sai_1_com_resultado
+
+    self.assertIn("n�o consegui ler", err)
+
+AssertionError: 'n�o consegui ler' not found in "\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-r9rihgq0\\X.md: n\ufffdo consegui ler: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte\nRESULTADO: VERMELHO\n\\u2192 confira a permiss\ufffdo e a codifica\ufffd\ufffdo (UTF-8) do arquivo e rode de novo\n"
+
+
+
+======================================================================
+
+FAIL: test_cada_mutacao_reprova (test_handoff_lint.HandoffLint.test_cada_mutacao_reprova) (caso='historico_sem_data')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_handoff_lint.py", line 109, in test_cada_mutacao_reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: 'Hist�rico de slices' not found in "\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-gd9a6kbl\\HANDOFF_X.md: ## Hist\ufffdrico de slices sem nenhum '### <slice> \ufffd AAAA-MM-DD'\nRESULTADO: VERMELHO\n\\u2192 corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo\n"
+
+
+
+======================================================================
+
+FAIL: test_com_eventos_tambem_passa (test_handoff_lint.HandoffLint.test_com_eventos_tambem_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_handoff_lint.py", line 75, in test_com_eventos_tambem_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 129, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 124, in main
+
+    print(f"\u2705 {argv[1]}: HANDOFF v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_ficha_fechada_dispensa_o_prompt (test_handoff_lint.HandoffLint.test_ficha_fechada_dispensa_o_prompt)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_handoff_lint.py", line 91, in test_ficha_fechada_dispensa_o_prompt
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 129, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 124, in main
+
+    print(f"\u2705 {argv[1]}: HANDOFF v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 0.689s
+
+
+
+FAILED (failures=4)
+

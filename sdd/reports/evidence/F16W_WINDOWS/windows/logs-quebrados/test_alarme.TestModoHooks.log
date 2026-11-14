@@ -1,0 +1,46 @@
+test_desinstalar_remove_o_arquivo_legado_da_migracao_e_so_ele (test_alarme.TestModoHooks.test_desinstalar_remove_o_arquivo_legado_da_migracao_e_so_ele) ... ok
+
+test_hooks_path_absoluto_por_link_simbolico_e_modo_hooks (test_alarme.TestModoHooks.test_hooks_path_absoluto_por_link_simbolico_e_modo_hooks) ... FAIL
+
+test_hooks_path_relativo_com_barra_ou_ponto_e_modo_hooks (test_alarme.TestModoHooks.test_hooks_path_relativo_com_barra_ou_ponto_e_modo_hooks) ... ok
+
+test_hooks_path_sem_o_dispatcher_e_outro (test_alarme.TestModoHooks.test_hooks_path_sem_o_dispatcher_e_outro) ... ok
+
+test_recusa_pelo_dispatcher_ensina_desinstalar_sem_rm (test_alarme.TestModoHooks.test_recusa_pelo_dispatcher_ensina_desinstalar_sem_rm) ... ok
+
+test_verificar_instalar_desinstalar_pela_config (test_alarme.TestModoHooks.test_verificar_instalar_desinstalar_pela_config) ... ok
+
+
+
+======================================================================
+
+FAIL: test_hooks_path_absoluto_por_link_simbolico_e_modo_hooks (test_alarme.TestModoHooks.test_hooks_path_absoluto_por_link_simbolico_e_modo_hooks)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_alarme.py", line 439, in test_hooks_path_absoluto_por_link_simbolico_e_modo_hooks
+
+    self.assertEqual(r.returncode, 0, r.stdout)
+
+AssertionError: 2 != 0 : Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = C:\Users\RUNNER~1\AppData\Local\Temp\hd-bg15i1bx\link\sdd\hooks, comum com husky).
+
+N�o instalei para n�o interferir no alarme que j� existe.
+
+Para acrescentar esta verifica��o � m�o, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+
+  bash "/d/a/sdd-open/sdd-open/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 5.849s
+
+
+
+FAILED (failures=1)
+

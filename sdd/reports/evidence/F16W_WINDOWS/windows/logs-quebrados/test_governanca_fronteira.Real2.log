@@ -1,0 +1,36 @@
+test_permitido_por_link_de_arquivo_casa_com_o_destino (test_governanca_fronteira.Real2.test_permitido_por_link_de_arquivo_casa_com_o_destino) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_permitido_por_link_de_arquivo_casa_com_o_destino (test_governanca_fronteira.Real2.test_permitido_por_link_de_arquivo_casa_com_o_destino)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 146, in test_permitido_por_link_de_arquivo_casa_com_o_destino
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-hu_1fpo0\w\sdd\reviews\destino.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 0.443s
+
+
+
+FAILED (failures=1)
+

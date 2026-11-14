@@ -1,0 +1,44 @@
+test_check_em_pasta_com_ponto_e_legitimo (test_playbook_invariantes.Trava.test_check_em_pasta_com_ponto_e_legitimo) ... ok
+
+test_check_por_link_que_sai_da_raiz_reprova_e_link_interno_passa (test_playbook_invariantes.Trava.test_check_por_link_que_sai_da_raiz_reprova_e_link_interno_passa) ... FAIL
+
+test_check_que_existe_passa (test_playbook_invariantes.Trava.test_check_que_existe_passa) ... ok
+
+test_com_outro_defeito_nao_finge_que_e_so_o_registro_novo (test_playbook_invariantes.Trava.test_com_outro_defeito_nao_finge_que_e_so_o_registro_novo) ... ok
+
+test_controle_passa (test_playbook_invariantes.Trava.test_controle_passa) ... ok
+
+test_descartado_tira_do_universo (test_playbook_invariantes.Trava.test_descartado_tira_do_universo) ... ok
+
+
+
+======================================================================
+
+FAIL: test_check_por_link_que_sai_da_raiz_reprova_e_link_interno_passa (test_playbook_invariantes.Trava.test_check_por_link_que_sai_da_raiz_reprova_e_link_interno_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_playbook_invariantes.py", line 150, in test_check_por_link_que_sai_da_raiz_reprova_e_link_interno_passa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 2 != 0 : RESULTADO: TRAVA
+
+\u2192 nada foi copiado; resolva cada linha acima com a pessoa e rode de novo.
+
+\U0001f534 trava INV: INV-003 tem check=sdd/check-dentro.py, que n�o existe a partir desta pasta � corrija o caminho ou mude o estado
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 1.322s
+
+
+
+FAILED (failures=1)
+

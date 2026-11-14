@@ -1,0 +1,70 @@
+test_m1_arquivo_limpo_editado_e_commitado_pelo_agente_e_fora (test_governanca_fronteira.Aval1.test_m1_arquivo_limpo_editado_e_commitado_pelo_agente_e_fora) ... FAIL
+
+test_m1_snapshot_sem_head_nao_vale_como_nada_mudou (test_governanca_fronteira.Aval1.test_m1_snapshot_sem_head_nao_vale_como_nada_mudou) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_m1_arquivo_limpo_editado_e_commitado_pelo_agente_e_fora (test_governanca_fronteira.Aval1.test_m1_arquivo_limpo_editado_e_commitado_pelo_agente_e_fora)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 87, in test_m1_arquivo_limpo_editado_e_commitado_pelo_agente_e_fora
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-urrfvu96\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_m1_snapshot_sem_head_nao_vale_como_nada_mudou (test_governanca_fronteira.Aval1.test_m1_snapshot_sem_head_nao_vale_como_nada_mudou)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 97, in test_m1_snapshot_sem_head_nao_vale_como_nada_mudou
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-9hfsw_lg\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 0.741s
+
+
+
+FAILED (failures=2)
+

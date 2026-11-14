@@ -1,0 +1,232 @@
+test_ajuda_mostra_so_o_cabecalho (test_slot.Cerquilha.test_ajuda_mostra_so_o_cabecalho) ... ok
+
+test_bordas_do_bash (test_slot.Cerquilha.test_bordas_do_bash) ... FAIL
+
+test_cerquilha_depois_de_ponto_e_virgula_e_comentario (test_slot.Cerquilha.test_cerquilha_depois_de_ponto_e_virgula_e_comentario) ... FAIL
+
+test_cerquilha_entre_aspas_roda (test_slot.Cerquilha.test_cerquilha_entre_aspas_roda) ... FAIL
+
+test_cerquilha_no_meio_da_palavra_roda (test_slot.Cerquilha.test_cerquilha_no_meio_da_palavra_roda) ... 
+
+  test_cerquilha_no_meio_da_palavra_roda (test_slot.Cerquilha.test_cerquilha_no_meio_da_palavra_roda) (arg='https://app.example.com/#/pedidos') ... FAIL
+
+  test_cerquilha_no_meio_da_palavra_roda (test_slot.Cerquilha.test_cerquilha_no_meio_da_palavra_roda) (arg='a#b') ... FAIL
+
+test_comando_nao_escapa_da_checagem (test_slot.Cerquilha.test_comando_nao_escapa_da_checagem) ... FAIL
+
+test_redirecao_no_fim_roda (test_slot.Cerquilha.test_redirecao_no_fim_roda) ... 
+
+  test_redirecao_no_fim_roda (test_slot.Cerquilha.test_redirecao_no_fim_roda) (redir='2>&1') ... FAIL
+
+  test_redirecao_no_fim_roda (test_slot.Cerquilha.test_redirecao_no_fim_roda) (redir='> saida.txt') ... FAIL
+
+  test_redirecao_no_fim_roda (test_slot.Cerquilha.test_redirecao_no_fim_roda) (redir='< /dev/null') ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_bordas_do_bash (test_slot.Cerquilha.test_bordas_do_bash)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 240, in test_bordas_do_bash
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-6k8xxgfi/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_cerquilha_depois_de_ponto_e_virgula_e_comentario (test_slot.Cerquilha.test_cerquilha_depois_de_ponto_e_virgula_e_comentario)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 276, in test_cerquilha_depois_de_ponto_e_virgula_e_comentario
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-8ju0f2fa/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_cerquilha_entre_aspas_roda (test_slot.Cerquilha.test_cerquilha_entre_aspas_roda)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 233, in test_cerquilha_entre_aspas_roda
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-cfl7v6qy/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_cerquilha_no_meio_da_palavra_roda (test_slot.Cerquilha.test_cerquilha_no_meio_da_palavra_roda) (arg='https://app.example.com/#/pedidos')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 227, in test_cerquilha_no_meio_da_palavra_roda
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-gczz4tvr/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_cerquilha_no_meio_da_palavra_roda (test_slot.Cerquilha.test_cerquilha_no_meio_da_palavra_roda) (arg='a#b')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 227, in test_cerquilha_no_meio_da_palavra_roda
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-gczz4tvr/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_comando_nao_escapa_da_checagem (test_slot.Cerquilha.test_comando_nao_escapa_da_checagem)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 269, in test_comando_nao_escapa_da_checagem
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 11 != 64 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-zb77aoye/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_redirecao_no_fim_roda (test_slot.Cerquilha.test_redirecao_no_fim_roda) (redir='2>&1')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 254, in test_redirecao_no_fim_roda
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-xxdf3a_x/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_redirecao_no_fim_roda (test_slot.Cerquilha.test_redirecao_no_fim_roda) (redir='> saida.txt')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 254, in test_redirecao_no_fim_roda
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-xxdf3a_x/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_redirecao_no_fim_roda (test_slot.Cerquilha.test_redirecao_no_fim_roda) (redir='< /dev/null')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 254, in test_redirecao_no_fim_roda
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-xxdf3a_x/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 2.856s
+
+
+
+FAILED (failures=9)
+
