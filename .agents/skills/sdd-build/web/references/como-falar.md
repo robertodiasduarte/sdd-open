@@ -30,7 +30,7 @@ ou falhou)", "as tentativas de correção", "a conferência dos tipos", "uma ver
 Situação: os três documentos foram lidos, o plano tem 5 tarefas e o aluno precisa escolher o modo.
 
 **Status** — `Build: ✅ 1 Plano · ▶️ 2 Modo · ⬜ 3 Tarefas 0/5 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`
-(no Status: "Tarefas 0/5" é o contador das tarefas feitas; "Verify Gate" é a conferência final combinada
+(no Status: "Tarefas 0/5" é o contador das tarefas feitas, que só sobe quando a tarefa termina; "Verify Gate" é a conferência final combinada
 no DEFINE, um comando que diz passou ou não passou; "Relatório" é o documento com a prova de cada
 conferência.)
 

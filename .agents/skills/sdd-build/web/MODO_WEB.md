@@ -48,7 +48,7 @@ Quem usa esta skill, em geral, nunca usou git nem terminal.
 |---|---|---|
 | 1 | Plano | 1 a 3 |
 | 2 | Modo | 4 e 5 |
-| 3 | Tarefas N/M | 6 a 11 (o contador no Status; uma frase antes de cada tarefa) |
+| 3 | Tarefas N/M | 6 a 11 (o contador no Status conta as tarefas feitas; uma frase antes de cada tarefa) |
 | 4 | Verify Gate | 12 a 14 |
 | 5 | Relatório | 15 a 17 |
 
@@ -82,9 +82,9 @@ Ler os três documentos integralmente antes de editar código. **Documento de um
 
 Se o projeto não estiver acessível (na web, ou sem ferramenta que grave arquivos), parar antes da primeira tarefa e
 **recomendar** abrir o projeto num agente que grave arquivos (Claude Code, Codex, Cursor e outros), com os três
-documentos. Se o usuário disser que só tem o chat, ou pedir, escrever o código no chat para ele salvar: nunca tomar
-"ok" ou resposta vaga como escolha, nenhuma tarefa feita nem conferência afirmada sem o relato dele, e o relatório diz
-que quem salvou e conferiu foi ele. Nunca fingir um Build feito só a partir dos documentos, nem dizer que há onde gravar.
+documentos. Se o usuário disser que só tem o chat ("você só tem o chat, então…", sem dizer que ele escolheu), ou pedir,
+escrever o código no chat para ele salvar: nunca tomar "ok" ou resposta vaga como escolha nem como autorização para
+começar uma tarefa, nenhuma tarefa feita nem conferência afirmada sem o relato dele, e o relatório diz que quem salvou e conferiu foi ele. Nunca fingir um Build feito só a partir dos documentos, nem dizer que há onde gravar.
 
 Entradas opcionais:
 - `UX_REVIEW_{FEATURE}.md`;
@@ -246,7 +246,7 @@ Para cada item:
 8. marcar tarefa completa somente com evidência.
 
 Antes de cada tarefa, uma frase ao aluno — qual tarefa (N de M), o que vai rodar e que não precisa
-responder — com o contador no Status.
+responder — com o contador no Status, que só sobe quando a tarefa termina (no caminho do chat, com o relato do usuário).
 
 Não deixar TODO/FIXME como substituto de requisito.
 

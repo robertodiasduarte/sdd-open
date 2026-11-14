@@ -94,8 +94,11 @@ class ModoWebGerado(Base):
         s = ler(self.starter / "skills/sdd-build/SKILL.md")
         # e, quando o aluno diz que só tem o chat, o caminho do chat com regras (decisão do Roberto, avaliador ciclo 3)
         for trecho in ("**recomendar** abrir o projeto num agente que grave arquivos (Claude Code, Codex, Cursor e outros)",
-                       "Se o usuário disser que só tem o chat, ou pedir, escrever o código no chat para ele salvar: nunca tomar\n"
-                       "\"ok\" ou resposta vaga como escolha, nenhuma tarefa feita nem conferência afirmada sem o relato dele",
+                       "escrever o código no chat para ele salvar: nunca tomar \"ok\" ou resposta vaga como escolha nem como autorização para\n"
+                       "começar uma tarefa, nenhuma tarefa feita nem conferência afirmada sem o relato dele",
+                       # avaliador, ciclo 4: o contador só sobe quando a tarefa termina; "você só tem o chat", não "você escolheu"
+                       "que só sobe quando a tarefa termina (no caminho do chat, com o relato do usuário)",
+                       "(\"você só tem o chat, então…\", sem dizer que ele escolheu)",
                        "nem dizer que há onde gravar."):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, s)
