@@ -89,7 +89,7 @@ a cada frente:     sdd-new-session
 - **Território do usuário:** `sdd/` (specs, relatórios, fichas, playbook, config) nunca é
   tocado pelo `sync`.
 
-Funciona em macOS e Linux, testado no CI a cada release; no Windows (Git Bash/WSL), ainda sem teste automático. bash 3.2, zero zsh, zero symlink.
+Funciona em macOS e Linux, testado no CI a cada release; no Windows (Git Bash/WSL), a suíte inteira roda no CI a cada PR, só para informar: na v2.16.0, cerca de 64% dos testes passam lá, e o caminho do aluno (checar-ambiente, iniciar-repo) passa, menos o teto de tempo quando a janela de login do editor ou o `gh` ficam pendurados. Use por sua conta. bash 3.2, zero zsh, zero symlink.
 
 ## Documentação
 

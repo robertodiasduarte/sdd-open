@@ -193,6 +193,17 @@ class Executor(Sandbox):
         self.assertEqual(rc, 0, out + err)
         self.assertRegex(out, r"test_amb\.T\s+OK")
 
+    def test_log_da_unidade_sem_cr(self):
+        # 1ª medição da F16W: no Windows a unidade escreve \r\n e o log saía com \r\r\n; agora sempre \n
+        self.modulo("test_crlf", "import unittest\nprint('linha um\\r\\nlinha dois', end='\\r\\n')\n"
+                                 "class T(unittest.TestCase):\n    def test_a(self): pass\n")
+        saida = self.tmp / "saida"
+        rc, out, err = self.executa("--saida", saida)
+        self.assertEqual(rc, 0, out + err)
+        log = (saida / "test_crlf.T.log").read_bytes()
+        self.assertIn(b"linha um\nlinha dois\n", log)
+        self.assertNotIn(b"\r", log)
+
     def test_so_roda_os_escolhidos(self):
         self.modulo("test_um", VERDE)
         self.modulo("test_ruim", FALHA)

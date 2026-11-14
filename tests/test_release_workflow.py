@@ -133,11 +133,12 @@ class Release(unittest.TestCase):
 
 
 FRASES_WINDOWS = {
-    # arquivo → (trecho da frase de Windows, o que ela diz enquanto o piso não foi decidido)
-    "README.md": ("on Windows (Git Bash/WSL)", "no automated tests yet"),
-    "README.pt-BR.md": ("no Windows (Git Bash/WSL)", "ainda sem teste automático"),
-    "docs/quickstart.md": ("On Windows, use Git Bash or WSL", "no automated tests on Windows yet"),
-    "docs/pt-BR/quickstart.md": ("No Windows, use Git Bash ou WSL", "ainda sem teste automático no Windows"),
+    # arquivo → (trecho da frase de Windows, o que ela diz enquanto o job é informativo)
+    # F16W (decisão do Roberto, 2026-11-14): o job roda a suíte inteira, informativo; a frase diz o número medido.
+    "README.md": ("on Windows (Git Bash/WSL)", "for information only: in v2.16.0, about 64% of the tests pass"),
+    "README.pt-BR.md": ("no Windows (Git Bash/WSL)", "só para informar: na v2.16.0, cerca de 64% dos testes passam"),
+    "docs/quickstart.md": ("On Windows, use Git Bash or WSL", "for information only: about 64% of the tests pass"),
+    "docs/pt-BR/quickstart.md": ("No Windows, use Git Bash ou WSL", "só para informar: cerca de 64% dos testes passam"),
 }
 
 
@@ -188,7 +189,11 @@ class Windows(unittest.TestCase):
                     self.assertNotIn(sem_teste, texto)
                 else:
                     self.assertIn(sem_teste, texto)
-        # o README não pode afirmar Windows ao lado de macOS e Linux enquanto o job não segura a Release
+        # o README não pode afirmar Windows ao lado de macOS e Linux enquanto o job não segura a Release, nem dizer
+        # "sem teste automático" com o job rodando a suíte
+        for rel in FRASES_WINDOWS:
+            self.assertNotIn("no automated tests", (RAIZ / rel).read_text(encoding="utf-8"))
+            self.assertNotIn("sem teste automático", (RAIZ / rel).read_text(encoding="utf-8"))
         if not piso:
             self.assertNotIn("Works on macOS, Linux and Windows", (RAIZ / "README.md").read_text(encoding="utf-8"))
             self.assertNotIn("Funciona em macOS, Linux e Windows", (RAIZ / "README.pt-BR.md").read_text(encoding="utf-8"))

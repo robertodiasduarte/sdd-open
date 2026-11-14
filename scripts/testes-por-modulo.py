@@ -176,7 +176,8 @@ def rodar(nome: str, alvos: list, pasta: Path, teto: float) -> dict:
             except subprocess.TimeoutExpired:
                 rc = -9
         out.seek(0)
-        texto = out.read().decode("utf-8", errors="replace")
+        # \r\n do Windows vira \n: gravado em modo texto lá, o log ficava com \r\r\n (1ª medição da F16W)
+        texto = out.read().decode("utf-8", errors="replace").replace("\r\n", "\n")
     c = contar(texto)
     c.update(nome=nome, rc=rc, segundos=time.monotonic() - inicio, saida=texto)
     if estourou:
@@ -280,7 +281,8 @@ def main(argv: list) -> int:
                 for ult in c["saida"].strip().splitlines()[-8:]:
                     print("    | " + ult, flush=True)
             if saida:
-                (saida / (nome + ".log")).write_text(c["saida"], encoding="utf-8")
+                with open(str(saida / (nome + ".log")), "w", encoding="utf-8", newline="\n") as f:
+                    f.write(c["saida"])
 
     inicio = time.monotonic()
     with ThreadPoolExecutor(max_workers=paralelo) as ex:

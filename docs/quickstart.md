@@ -77,7 +77,7 @@ between `<sdd-open-instructions>` and `</sdd-open-instructions>` belongs to it. 
 `doctor` runs by itself and says, per agent, what was generated and what is native.
 
 Requirements: `bash ≥ 3.2`, `git`. `python3` only for the Gemini adapter and the validators.
-On Windows, use Git Bash or WSL (no automated tests on Windows yet).
+On Windows, use Git Bash or WSL (Windows is measured in CI for information only: about 64% of the tests pass there in v2.16.0; use it at your own risk).
 
 ## 2. Point the config at your project
 

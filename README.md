@@ -88,7 +88,7 @@ every front:   sdd-new-session
   header that says so; `sync --check` detects when someone edited a copy.
 - **User territory:** `sdd/` (specs, reports, handoffs, playbook, config) is never touched by `sync`.
 
-Works on macOS and Linux, tested in CI on every release; on Windows (Git Bash/WSL) it has no automated tests yet. bash 3.2, zero zsh, zero symlinks.
+Works on macOS and Linux, tested in CI on every release; on Windows (Git Bash/WSL) the full suite runs in CI on every pull request, for information only: in v2.16.0, about 64% of the tests pass there, and the student path (checar-ambiente, iniciar-repo) passes except the time limit when the editor's login window or `gh` hangs. Use it at your own risk. bash 3.2, zero zsh, zero symlinks.
 
 ## Documentation
 
