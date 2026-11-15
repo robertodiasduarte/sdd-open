@@ -103,8 +103,10 @@ case "${REMOTO}" in *://*|/*|[A-Za-z]:[\\/]*) ;; *) REMOTO="${PWD}/${REMOTO}" ;;
   wait "$!"; echo "$?" > "${s}/rc.tmp" && mv "${s}/rc.tmp" "${s}/rc" ) </dev/null >/dev/null 2>&1 &
 sub=$!
 disown "${sub}" 2>/dev/null || :   # sem o aviso "Killed" do bash quando o corte acontece
-i=0
-while [ ! -s "${s}/rc" ] && [ "${i}" -lt 25 ]; do sleep 0.2; i=$((i + 1)); done
+# O teto é do relógio, não de voltas: numa máquina lenta cada `sleep 0.2` custa mais, e 25 voltas passavam de 6 s (o
+# piso do macOS no CI do PR #32 mediu 7,2 s). SECONDS conta segundos inteiros: o corte cai entre 4 e 5 s depois da largada.
+t0=${SECONDS}
+while [ ! -s "${s}/rc" ] && [ $((SECONDS - t0)) -lt 5 ]; do sleep 0.2; done
 if [ ! -s "${s}/rc" ]; then
   corta "$(cat "${s}/pid" 2>/dev/null)" "${sub}"
   rm -rf "${s}" 2>/dev/null
