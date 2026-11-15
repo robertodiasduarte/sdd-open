@@ -1085,17 +1085,28 @@ class TestVigiaNoWindows(unittest.TestCase):
         self.assertEqual(out.split(), ["fim"])
         self.assertFalse(self.log.exists(), "o taskkill não devia ser chamado fora do Windows")
 
-    def test_regra_do_relogio_e_o_caso_vizinho(self):
-        casos = (
-            # (Windows?, rc, segundos desde t0, esperado)
-            (True, 1, 11, "137"),   # o taskkill cortou depois do teto
-            (True, 0, 11, "0"),     # caso vizinho: terminou bem, mesmo tarde, não é corte
-            (True, 1, 2, "1"),      # falhou antes do teto: é erro do comando
-            (False, 1, 11, "1"),    # fora do Windows o rc é o de sempre (143/137 vêm do sinal)
-        )
-        for win, rc, passou, esperado in casos:
-            with self.subTest(windows=win, rc=rc, passou=passou):
-                prep = 'mkdir -p "$SDD_CHECAR_PROC/$$"; echo 1 > "$SDD_CHECAR_PROC/$$/winpid"\n' if win else \
-                       'rm -rf "$SDD_CHECAR_PROC/$$"\n'
-                out = self.bash(prep + "rc_do_vigia %d $((SECONDS - %d))\n" % (rc, passou))
-                self.assertEqual(out.strip(), esperado)
+    def gh_que_sai_0_no_corte(self) -> str:
+        """Um gh pendurado que sai 0 quando é terminado, com um neto que segura a saída: o que o Windows mostra (o
+        taskkill visto pelo Cygwin devolve 0 ao wait, e o neto escapa do corte). O corte aqui só termina o próprio
+        processo, como lá."""
+        gh = self.tmp / "gh"
+        gh.write_text("#!/bin/sh\ntrap 'exit 0' TERM\nsleep 30 &\nwhile :; do sleep 1; done\n", encoding="utf-8")
+        gh.chmod(0o755)
+        return ('corta() { local s="$1" p; shift; for p in "$@"; do [ -n "$p" ] && kill -TERM "$p" 2>/dev/null; done; '
+                'return 0; }\n')
+
+    def test_corte_que_volta_0_e_sem_resposta(self):
+        # F16W2: o vigia anuncia o corte (a marca); antes, o rc 0 do corte virava "ok" (TestGh no Windows)
+        t0 = time.monotonic()
+        out = self.bash(self.gh_que_sai_0_no_corte() + 'SDD_CHECAR_GH="%s" gh_estado\n' % caminho_bash(self.tmp / "gh"))
+        self.assertEqual(out.strip(), "sem resposta")
+        # o neto (sleep 30) segura a saída do gh: ela vai para um arquivo, não para o $( ), e o teto vale
+        self.assertLess(time.monotonic() - t0, 20)
+
+    def test_resposta_antes_do_teto_segue_valendo(self):
+        # caso vizinho: o gh responde (sai 0) antes do teto ⇒ ok, sem marca
+        gh = self.tmp / "gh"
+        gh.write_text("#!/bin/sh\necho 'Logged in to github.com'\nexit 0\n", encoding="utf-8")
+        gh.chmod(0o755)
+        out = self.bash('SDD_CHECAR_GH="%s" gh_estado\n' % caminho_bash(gh))
+        self.assertEqual(out.strip(), "ok")
