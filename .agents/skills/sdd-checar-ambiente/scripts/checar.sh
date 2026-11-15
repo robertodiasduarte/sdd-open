@@ -7,7 +7,7 @@
 #   ✅ resumo em uma linha
 # Blocos vazios não aparecem. Ambiente saudável = só a linha ✅.
 #
-# Não instala, não configura, não grava nada. Roda em bash (macOS, Linux, Git Bash no Windows).
+# Não instala, não configura, não grava nada no projeto (só temporários no TMPDIR, apagados ao sair). Roda em bash (macOS, Linux, Git Bash no Windows).
 # Saídas de rede, as duas somente leitura e com teto de tempo:
 #   - uma consulta anônima ao GitHub (3 s) para saber se o repositório é público — se falhar, nada é dito;
 #   - um `git ls-remote` no origin (10 s), sem pedir senha, para saber se a credencial e a rede
@@ -96,7 +96,12 @@ gh_estado() {
   f="$(mktemp 2>/dev/null)" || f=/dev/null
   m="$(marca_nova)" || m=""
   s="$( ( set -m
-          LC_ALL=C GH_PROMPT_DISABLED=1 "${g}" auth status --hostname github.com </dev/null >"${f}" 2>&1 & p=$!
+          # sem arquivo temporário (TMPDIR sem escrita), a saída vai direto, como antes: a mensagem não se perde
+          if [ "${f}" = /dev/null ]; then
+            LC_ALL=C GH_PROMPT_DISABLED=1 "${g}" auth status --hostname github.com </dev/null 2>&1 & p=$!
+          else
+            LC_ALL=C GH_PROMPT_DISABLED=1 "${g}" auth status --hostname github.com </dev/null >"${f}" 2>&1 & p=$!
+          fi
           ( sleep 10; [ -z "${m}" ] || : > "${m}"; corta KILL "${p}" ) >/dev/null 2>&1 & w=$!
           wait "${p}"; r=$?
           [ -n "${m}" ] && [ -e "${m}" ] && r=137   # o vigia cortou: dito por ele, não pelo exit
@@ -418,7 +423,7 @@ fi
 # Uma 2ª consulta, em paralelo e só de diagnóstico, roda SEM askpass e SEM credencial guardada (não pede
 # nada a ninguém nem lê senha): se o remoto respondeu a ela pedindo login, a rede está boa e quem segura
 # a 1ª é a janela (__login=0). A 1ª consulta continua com o askpass do usuário — quem está logado pelo
-# editor alcança o remoto. Nada é gravado: o veredito volta pelo código de saída.
+# editor alcança o remoto. Nada é gravado no projeto: o veredito volta pelo código de saída.
 TEM_ASKPASS=""
 [ -n "${GIT_ASKPASS:-}${SSH_ASKPASS:-}$(git config core.askPass 2>/dev/null)" ] && TEM_ASKPASS=1
 PEDIU_LOGIN='terminal prompts disabled|could not read (username|password)|permission denied \('
@@ -435,7 +440,13 @@ alcance() {
     # viraria "Não consegui ler o remoto" e a janela do editor viraria "sem internet".
     export GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never LC_ALL=C LANGUAGE=C
     [ -n "${ssh_cmd}" ] && export GIT_SSH_COMMAND="${ssh_cmd}"
-    git -c http.lowSpeedLimit=1 -c http.lowSpeedTime=8 ls-remote --heads origin </dev/null >"${f}" 2>&1 &
+    # sem arquivo temporário (TMPDIR sem escrita), a saída vai direto, como antes (as refs e a mensagem do git não
+    # podem se perder: viraria um falso "remoto vazio" ou "sem internet")
+    if [ "${f}" = /dev/null ]; then
+      git -c http.lowSpeedLimit=1 -c http.lowSpeedTime=8 ls-remote --heads origin </dev/null 2>&1 &
+    else
+      git -c http.lowSpeedLimit=1 -c http.lowSpeedTime=8 ls-remote --heads origin </dev/null >"${f}" 2>&1 &
+    fi
     p=$!
     q=""
     if [ -n "${TEM_ASKPASS}" ]; then

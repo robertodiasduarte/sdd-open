@@ -92,7 +92,12 @@ gh_estado() {
   f="$(mktemp 2>/dev/null)" || f=/dev/null
   m="$(marca_nova)" || m=""
   s="$( ( set -m
-          LC_ALL=C GH_PROMPT_DISABLED=1 "${g}" auth status --hostname github.com </dev/null >"${f}" 2>&1 & p=$!
+          # sem arquivo temporário (TMPDIR sem escrita), a saída vai direto, como antes: a mensagem não se perde
+          if [ "${f}" = /dev/null ]; then
+            LC_ALL=C GH_PROMPT_DISABLED=1 "${g}" auth status --hostname github.com </dev/null 2>&1 & p=$!
+          else
+            LC_ALL=C GH_PROMPT_DISABLED=1 "${g}" auth status --hostname github.com </dev/null >"${f}" 2>&1 & p=$!
+          fi
           ( sleep 10; [ -z "${m}" ] || : > "${m}"; corta KILL "${p}" ) >/dev/null 2>&1 & w=$!
           wait "${p}"; r=$?
           [ -n "${m}" ] && [ -e "${m}" ] && r=137   # o vigia cortou: dito por ele, não pelo exit

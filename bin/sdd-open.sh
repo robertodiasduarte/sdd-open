@@ -307,13 +307,14 @@ renderizar_gerado() { # $1=fonte $2=skill $3=arquivo-relativo [$4=prefixo da fon
 mesmo_bit_x() { local a=0 b=0; [ -x "${1}" ] && a=1; [ -x "${2}" ] && b=1; [ "${a}" = "${b}" ]; }
 
 escrever_gerado() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo [$5=prefixo da fonte]
-  local fonte="${1}" dest="${2}"
+  local fonte="${1}" dest="${2}" existia=""
   [ -d "${dest%/*}" ] || mkdir -p "${dest%/*}" || return 1
+  [ -e "${dest}" ] && existia=1
   renderizar_gerado "${fonte}" "${3}" "${4}" "${5:-}" > "${dest}" || return 1
-  # Shebang preservado só serve para ./script se o bit de execução vier junto. Sem bit na fonte, o chmod só
-  # quando a cópia tem o bit (o arquivo novo nasce sem ele): um processo a menos por arquivo (F16W2).
+  # Shebang preservado só serve para ./script se o bit de execução vier junto. Sem bit na fonte, o chmod a-x só
+  # na cópia que já existia (a nova nasce sem bit nenhum): um processo a menos por arquivo no init (F16W2).
   if [ -x "${fonte}" ]; then chmod +x "${dest}" || return 1
-  elif [ -x "${dest}" ]; then chmod a-x "${dest}" || return 1; fi
+  elif [ -n "${existia}" ]; then chmod a-x "${dest}" || return 1; fi
 }
 
 # Sob pipefail, o cmp -s só fecha o pipe cedo (SIGPIPE no render) quando JÁ achou diferença, então o

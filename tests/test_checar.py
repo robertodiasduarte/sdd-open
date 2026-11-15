@@ -295,6 +295,15 @@ class TestRemoto(Base):
         self.assertNotIn("Password", out)
         self.assertNotIn("Username", out)
 
+    def test_tmpdir_sem_escrita_nao_perde_a_resposta_do_remoto(self):
+        # F16W2, raio de impacto: a saída do ls-remote foi para um arquivo temporário; sem TMPDIR gravável ela ia para
+        # /dev/null e a credencial recusada virava "sem internet". Sem arquivo, a saída volta a ir direto.
+        self.origin(f"http://127.0.0.1:{self.srv401.server_address[1]}/escritorio/privado.git")
+        rc, out, t = self.roda(TMPDIR=str(self.tmp / "nao-existe"))
+        self.assertEqual(rc, 0, out)
+        self.assertIn("recusou o acesso", out)
+        self.assertNotIn("sem internet", out)
+
     def test_credencial_github_privado_explica_as_duas_causas(self):
         porta = self.srv401.server_address[1]
         self.git("config", f"url.http://127.0.0.1:{porta}/x.git.insteadOf", "https://github.com/escritorio/privado.git")
@@ -1102,6 +1111,15 @@ class TestVigiaNoWindows(unittest.TestCase):
         self.assertEqual(out.strip(), "sem resposta")
         # o neto (sleep 30) segura a saída do gh: ela vai para um arquivo, não para o $( ), e o teto vale
         self.assertLess(time.monotonic() - t0, 20)
+
+    def test_tmpdir_sem_escrita_o_gh_ainda_e_lido(self):
+        # sem arquivo temporário, a mensagem do gh vai direto: erro de rede continua "sem resposta", não "deslogado"
+        gh = self.tmp / "gh"
+        gh.write_text("#!/bin/sh\necho 'error connecting to api.github.com' >&2\nexit 1\n", encoding="utf-8")
+        gh.chmod(0o755)
+        out = self.bash('TMPDIR="%s" SDD_CHECAR_GH="%s" gh_estado\n' % (caminho_bash(self.tmp / "nao-existe"),
+                                                                       caminho_bash(gh)))
+        self.assertEqual(out.strip(), "sem resposta")
 
     def test_resposta_antes_do_teto_segue_valendo(self):
         # caso vizinho: o gh responde (sai 0) antes do teto ⇒ ok, sem marca
