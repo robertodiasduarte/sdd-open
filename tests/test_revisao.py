@@ -622,7 +622,7 @@ class Conferir(Base):
         r = self.revisado("--no-revisor2")
         rc, out = self.ar(r, "--conferir")
         self.assertEqual(rc, 0, out)
-        p = self.pasta(r).relative_to(r)
+        p = self.pasta(r).relative_to(r).as_posix()   # F16W2: o produto escreve com "/" também no Windows
         self.assertIn("✅ a revisão %s é desta versão do código (sha256 igual)." % p, out)
         self.assertRegex(out, r"(?m)^review_externo: %s sha256=[0-9a-f]{64} diversidade=modelo$" % re.escape(str(p)))
         self.assertIn("RESULTADO: CONFERE", out)

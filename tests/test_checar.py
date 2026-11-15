@@ -23,7 +23,11 @@ import time
 import unittest
 from pathlib import Path
 
-from apoio import caminho_bash
+from apoio import caminho_bash, WINDOWS
+
+# Teto do vigia (10 s) mais a partida do script. No Git Bash do Windows, abrir bash e git custa caro: lá a folga é de 4 s
+# (CI do PR da F16W2: 12,25 s com o corte certo); fora dele, 2 s.
+LIMITE = 14 if WINDOWS else 12
 
 SCRIPT = Path(__file__).resolve().parents[1] / ".agents" / "skills" / "sdd-checar-ambiente" / "scripts" / "checar.sh"
 # O publish-gate do sdd-open reprova e-mail fora de example.com, inclusive "git@host": montados aqui.
@@ -322,7 +326,7 @@ class TestRemoto(Base):
         self.origin(f"http://127.0.0.1:{self.srv_pendurado.server_address[1]}/x.git")
         rc, out, t = self.roda()
         self.assertEqual(rc, 0, out)
-        self.assertLessEqual(t, 12, out)
+        self.assertLessEqual(t, LIMITE, out)
         self.assertIn("sem internet ou rede bloqueada", out)
         for palavra in ("senha", "login", "credencial"):
             self.assertNotIn(palavra, out.lower())
@@ -336,7 +340,7 @@ class TestRemoto(Base):
         api = f"http://127.0.0.1:{self.srv_pendurado.server_address[1]}"
         rc, out, t = self.roda(SDD_CHECAR_GITHUB_API=api, GIT_SSH_COMMAND="sh -c 'sleep 60; :'")
         self.assertEqual(rc, 0, out)
-        self.assertLessEqual(t, 12, out)
+        self.assertLessEqual(t, LIMITE, out)
         self.assertIn("Não consegui falar com github.com agora (sem internet ou rede bloqueada).", out)
         self.assertNotIn("público", out)
 
@@ -345,7 +349,7 @@ class TestRemoto(Base):
         self.origin(f"ssh://{SSH_INVALIDO}/x.git")
         rc, out, t = self.roda(GIT_SSH_COMMAND="sh -c 'sleep 60; :'")
         self.assertEqual(rc, 0, out)
-        self.assertLessEqual(t, 12, out)
+        self.assertLessEqual(t, LIMITE, out)
         self.assertIn("sem internet ou rede bloqueada", out)
         self.assertNotIn("✅ Pronto", out)
 
@@ -364,7 +368,7 @@ class TestRemoto(Base):
         askpass.chmod(0o755)
         rc, out, t = self.roda(GIT_ASKPASS=str(askpass))
         self.assertEqual(rc, 0, out)
-        self.assertLessEqual(t, 12, out)
+        self.assertLessEqual(t, LIMITE, out)
         self.assertIn("A janela de login do editor está esperando resposta", out)
         self.assertNotIn("sem internet", out)
 
@@ -384,7 +388,7 @@ class TestRemoto(Base):
                 self.origin(url)
                 rc, out, t = self.roda(*args, GIT_ASKPASS=str(askpass), **env)
                 self.assertEqual(rc, 1 if args else 0, out)
-                self.assertLessEqual(t, 12, out)
+                self.assertLessEqual(t, LIMITE, out)
                 self.assertIn("sem internet ou rede bloqueada", out)
                 for palavra in ("janela", "senha", "login", "credencial"):
                     self.assertNotIn(palavra, out.lower())
@@ -533,7 +537,7 @@ class TestFrente(Base):
         askpass.chmod(0o755)
         rc, out, t = self.roda("--frente", GIT_ASKPASS=str(askpass))
         self.bloqueia(out, rc)
-        self.assertLessEqual(t, 12, out)
+        self.assertLessEqual(t, LIMITE, out)
         self.assertIn("A janela de login do editor está esperando resposta", out)
 
     def test_frente_nao_olha_dado_exposto(self):

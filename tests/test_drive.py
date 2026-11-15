@@ -789,13 +789,15 @@ class CommitDuranteOGate(Base):
 class SegundoPlano(Base):
     def setUp(self):
         super().setUp()
-        self.escreve(self.r, D, define(cmd="echo x >> gate.calls; sleep 2; test -f .verde"))
+        # F16W2: gate de 5 s (era 2): no Git Bash do Windows só a partida do drive leva ~2,3 s, e o "não espera o gate"
+        # precisa de folga entre a partida e o fim do gate
+        self.escreve(self.r, D, define(cmd="echo x >> gate.calls; sleep 5; test -f .verde"))
         self.commit(self.r)
         self.drive("iniciar", D)
         self.feito()
 
     def espera_acabar(self):
-        for _ in range(100):
+        for _ in range(300):
             if not self.existe("sdd/reports/progress/DRIVE_F.lock"):
                 return
             time.sleep(0.1)
@@ -806,7 +808,7 @@ class SegundoPlano(Base):
         inicio = time.time()
         res = self.drive("verificar", D, "--fundo")
         self.assertAcao(res, "ESPERAR")
-        self.assertLess(time.time() - inicio, 1.9, "não pode esperar o gate")
+        self.assertLess(time.time() - inicio, 4.5, "não pode esperar o gate")
         self.assertAcao(self.drive("proximo", D), "ESPERAR")
         self.assertAcao(self.drive("verificar", D), "ESPERAR")
         self.espera_acabar()
