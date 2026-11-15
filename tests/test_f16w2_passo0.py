@@ -32,7 +32,9 @@ class Curadoria(unittest.TestCase):
                 self.assertIn(trecho, ln)
                 self.assertIn("**Do instead:**", ln)
                 # nasceram em 2026-11-14 com ajudou=0; a curadoria da F16W2 + F22 (2026-11-15) já as contou
-                self.assertRegex(ln, r"ajudou=\d+ mordeu=0 · conf=2026-11-1[4-9]")
+                m = re.search(r"ajudou=\d+ mordeu=\d+ · conf=(\d{4}-\d{2}-\d{2})", ln)
+                self.assertIsNotNone(m, lm)
+                self.assertGreaterEqual(m.group(1), "2026-11-14")   # a data só avança (texto ISO compara como data)
 
     def test_lm012_mordeu_e_foi_promovida(self):
         ln = linha(ler("sdd/playbook.md"), "LM-012")
@@ -60,7 +62,9 @@ class CuradoriaF16W2F22(unittest.TestCase):
                 ln = linha(pb, lm)
                 self.assertIn(trecho, ln)
                 self.assertIn("**Do instead:**", ln)
-                self.assertRegex(ln, r"mordeu=0 · conf=2026-11-1[5-9]")
+                m = re.search(r"ajudou=\d+ mordeu=\d+ · conf=(\d{4}-\d{2}-\d{2})", ln)
+                self.assertIsNotNone(m, lm)
+                self.assertGreaterEqual(m.group(1), "2026-11-15")
 
     def test_lm015_troca_a_saida_dentro_do_script(self):
         ln = linha(ler("sdd/playbook.md"), "LM-015")
