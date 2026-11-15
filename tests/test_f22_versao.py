@@ -378,6 +378,22 @@ class ChecagemComTeto(Sandbox):
         self.assertEqual(rc, 20, out + err)
         self.assertNotIn("v9.0.0", out)
 
+    def test_consulta_ignora_a_configuracao_do_repositorio_do_projeto(self):
+        # revisão do código, rodada 5, R1: rodando dentro do projeto, o git leria o .git/config local
+        r = self.repo("remoto")
+        self.git(r, "commit", "-q", "--allow-empty", "-m", "x")
+        self.git(r, "tag", "v9.0.0")
+        proj = self.repo("projeto")
+        self.git(proj, "config", "url.%s/.insteadOf" % r.as_posix(), (self.tmp / "inexistente").as_posix() + "/")
+        env = dict(self.env, SDD_OPEN_CHECK_UPDATES="1", SDD_OPEN_REMOTO=(self.tmp / "inexistente").as_posix() + "/")
+        rc, out, err = self.roda([BASH, VERSAO_NOVA, "--atual", "v1.0.0"], proj, env=env)
+        self.assertEqual(rc, 20, out + err)
+        self.assertNotIn("v9.0.0", out)
+        # e o remoto de verdade continua respondendo de dentro do projeto
+        env["SDD_OPEN_REMOTO"] = str(r)
+        rc, out, err = self.roda([BASH, VERSAO_NOVA, "--atual", "v1.0.0"], proj, env=env)
+        self.assertEqual(rc, 10, out + err)
+
     def test_sem_versao_atual_nao_consulta(self):
         env = dict(self.env, SDD_OPEN_CHECK_UPDATES="1")
         rc, out, err = self.roda([BASH, VERSAO_NOVA, "--raiz", self.tmp], self.tmp, env=env)

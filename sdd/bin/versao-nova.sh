@@ -90,7 +90,12 @@ s="$(mktemp -d 2>/dev/null)" || nao_conferida "sem pasta temporária para a cons
 : > "${s}/gitconfig-vazio" || nao_conferida "sem pasta temporária para a consulta"
 # O git vai a 2º plano DENTRO do subshell com set -m: vira líder do próprio grupo, e o pid dele fica no arquivo.
 # O subshell inteiro solta a entrada e a saída de quem chamou: um processo que sobreviva ao corte não segura o pipe.
+# E fora de qualquer repositório: rodando dentro do projeto, o git leria o .git/config local (um insteadOf, o token
+# que o GitHub Actions grava em http.extraheader). Endereço relativo (só nos testes) vira absoluto antes do cd.
+case "${REMOTO}" in *://*|/*|[A-Za-z]:[\\/]*) ;; *) REMOTO="${PWD}/${REMOTO}" ;; esac
 ( set -m
+  cd "${s}" || exit 1
+  GIT_CEILING_DIRECTORIES="${s%/*}" GIT_DIR="${s}/sem-repositorio" \
   GIT_CONFIG_GLOBAL="${s}/gitconfig-vazio" GIT_CONFIG_NOSYSTEM=1 GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never LC_ALL=C \
     git -c credential.helper= ls-remote --tags --refs "${REMOTO}" \
     </dev/null >"${s}/out" 2>"${s}/err" &

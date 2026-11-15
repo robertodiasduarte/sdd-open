@@ -1077,6 +1077,8 @@ upgrade() {
       mkdir "${tmp}/de" && git -C "${PKG}" archive "${DE_ARG}" | tar -x -C "${tmp}/de" \
         || die "não consegui montar o pacote ${DE_ARG} a partir do clone" "passe --de com a pasta do pacote antigo; nada foi escrito" 1
       de_dir="${tmp}/de"; vp="${DE_ARG}"
+      [ -f "${de_dir}/MANIFEST.txt" ] || die "--de ${DE_ARG}: essa tag não tem o MANIFEST.txt de um pacote do sdd-open" \
+        "passe --de com a pasta do pacote antigo, ou a tag da versão que o projeto tem; nada foi escrito" 64
     elif [ -d "${DE_ARG}" ]; then
       de_dir="$(cd "${DE_ARG}" && pwd -P)"
       [ -f "${de_dir}/MANIFEST.txt" ] || die "--de ${DE_ARG} não é um pacote do sdd-open (sem MANIFEST.txt)" \

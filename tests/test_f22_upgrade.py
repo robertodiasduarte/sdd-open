@@ -291,6 +291,21 @@ class SemRegistro(Base):
         self.assertIn("a forma tag precisa do pacote num clone do sdd-open", out)
         self.assertNadaEscrito(antes)
 
+    def test_de_tag_sem_manifest_e_64(self):
+        # revisão do código, rodada 5, R2: o pacote novo num clone com uma tag que não é de pacote
+        clone = copia_pacote(self.tmp / "clone", "v9.8.7")
+        self.git(clone, "init", "-q")
+        self.commit(clone, "pacote")
+        self.git(clone, "rm", "-q", "MANIFEST.txt")
+        self.commit(clone, "sem manifest")
+        self.git(clone, "tag", "v9.0.0")
+        self.git(clone, "checkout", "-q", "HEAD~1")
+        antes = foto(self.p)
+        rc, out = self.cli("upgrade", "--de", "v9.0.0", "--yes", pkg=clone)
+        self.assertEqual(rc, 64, out)
+        self.assertIn("essa tag não tem o MANIFEST.txt de um pacote do sdd-open", out)
+        self.assertNadaEscrito(antes)
+
     def test_de_de_outra_versao_avisa_antes_do_sim(self):
         outro = self.tmp / "sdd-open-v9.0.0"
         (outro / "sdd").mkdir(parents=True)
