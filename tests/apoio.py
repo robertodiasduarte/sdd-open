@@ -55,6 +55,7 @@ SEM_PATH_SEM_FERRAMENTA = (WINDOWS, "PATH sem uma ferramenta: no Windows o PATH 
                                     "executável chamado por link não acha as DLLs ao lado), e a pasta traz a ferramenta junto")
 SEM_ARGV_COM_QUEBRA = (WINDOWS, "argumento com quebra de linha: no Windows a linha de comando o parte em dois")
 SEM_PTY = (WINDOWS, "pty: o Windows não tem terminal POSIX (termios)")
+SEM_FIFO = (not hasattr(os, "mkfifo"), "fifo (os.mkfifo): o Windows não tem pipe com nome no sistema de arquivos")
 SO_NO_WINDOWS = (WINDOWS, "caminho C:\\…: só o Windows tem letra de unidade")   # para skipUnless
 
 
@@ -98,6 +99,31 @@ def path_restrito(pasta: Path, ferramentas, python: bool = True, ausentes=(), ex
                 raise unittest.SkipTest(SEM_PATH_SEM_FERRAMENTA[1] + " (%s)" % nome)
             raise AssertionError("%s não devia estar no PATH restrito" % nome)
     return path
+
+
+# F16W2: no Windows, Path.write_text troca "\n" por "\r\n"; o repositório é LF (.gitattributes, eol=lf) e os scripts
+# leem as fixtures em bytes (o gerador do starter recusava "---\r\n" como frontmatter). Nos testes, o padrão é "\n";
+# quem quer CRLF escreve "\r\n" (passa intacto) ou passa newline= explícito.
+if WINDOWS:
+    _write_text_original = Path.write_text
+
+    def _write_text_lf(self, data, encoding=None, errors=None, newline=None):
+        return _write_text_original(self, data, encoding=encoding, errors=errors,
+                                    newline="\n" if newline is None else newline)
+
+    Path.write_text = _write_text_lf
+
+
+def apaga(p) -> None:
+    """rmtree que também apaga o arquivo só leitura (no Windows, os objetos do git): sem isso a pasta ficava, e o
+    próximo subteste que a recriava caía com FileExistsError (F16W2)."""
+    def _de_novo(func, caminho, _erro):
+        os.chmod(caminho, 0o700)
+        func(caminho)
+    if sys.version_info >= (3, 12):
+        shutil.rmtree(str(p), onexc=_de_novo)
+    else:
+        shutil.rmtree(str(p), onerror=_de_novo)
 
 
 def caminho_neutro(s: str) -> str:

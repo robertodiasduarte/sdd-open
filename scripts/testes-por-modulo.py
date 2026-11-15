@@ -177,7 +177,7 @@ def rodar(nome: str, alvos: list, pasta: Path, teto: float) -> dict:
                 rc = -9
         out.seek(0)
         # \r\n do Windows vira \n: gravado em modo texto lá, o log ficava com \r\r\n (1ª medição da F16W)
-        texto = out.read().decode("utf-8", errors="replace").replace("\r\n", "\n")
+        texto = re.sub(r"\r+\n", "\n", out.read().decode("utf-8", errors="replace"))   # \r\r\n também (CI do PR, F16W2)
     c = contar(texto)
     c.update(nome=nome, rc=rc, segundos=time.monotonic() - inicio, saida=texto)
     if estourou:

@@ -86,6 +86,8 @@ fi
 GIT=0
 INICIO="$(pwd -P)"
 if ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"; then GIT=1; else ROOT="${INICIO}"; fi
+# F16W2: na forma do pwd -P (no Windows o git dá C:/… e o pwd /c/…: a subpasta de onde a pessoa chamou se perdia)
+R="$(cd "${ROOT}" 2>/dev/null && pwd -P)" && ROOT="${R}"
 # Caminhos relativos valem a partir de onde a pessoa chamou, não da raiz para onde o script vai.
 case "${ARVORE}" in ""|/*) ;; *) ARVORE="${INICIO}/${ARVORE}" ;; esac
 case "${DIR}" in ""|/*) ;; *) DIR="${INICIO}/${DIR}" ;; esac

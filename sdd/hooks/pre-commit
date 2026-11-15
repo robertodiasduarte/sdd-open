@@ -254,7 +254,10 @@ regra_report() {
     out="$(git show ":$f" 2>/dev/null | PYTHONIOENCODING=utf-8 python3 -B sdd/bin/report-lint.py --stdin "$f" 2>&1)"; rc=$?
     case "$rc" in
       0) ;;
-      1) achado REPORT "$f não passa no report-lint:"$'\n'"$(printf '%s\n' "$out" | grep -E '^🛑' | sed 's/^/        /')" ;;
+      1) det="$(printf '%s\n' "$out" | grep -E '🛑' | sed 's/^[^🛑]*//; s/^/        /')"
+         # sem nenhuma linha 🛑 (o lint caiu antes de relatar), o fim da saída: a recusa nunca sai muda (CI do PR, F16W2)
+         [ -n "$det" ] || det="$(printf '%s\n' "$out" | tail -n 5 | sed 's/^/        /')"
+         achado REPORT "$f não passa no report-lint:"$'\n'"$det" ;;
       *) aviso "report-lint saiu $rc em $f: relatório não conferido neste commit (atualize sdd/bin com init)" ;;
     esac
   done < "$STAGED"

@@ -264,13 +264,21 @@ def ler_registry():
 REG, ORDEM = ler_registry()
 
 
+def relativo(alvo, base):
+    """F16W2: com "/" (no Windows, o relpath dá "\\") e sem cair quando os dois estão em unidades diferentes (D: × C:)."""
+    try:
+        return os.path.relpath(alvo, base).replace(os.sep, "/")
+    except ValueError:
+        return str(alvo).replace(os.sep, "/")
+
+
 def resolve(id_, papel):
     base, slug = id_, None
     if ":" in id_:
         base, slug = id_.split(":", 1)
     if base not in REG:
         uso("engine desconhecida: '%s' — válidas: %s (registry: %s; engine nova = 1 linha)"
-            % (id_, ", ".join(ORDEM), os.path.relpath(registry, raiz)))
+            % (id_, ", ".join(ORDEM), relativo(registry, raiz)))
     d = dict(REG[base])
     d["id"] = id_
     if slug:
@@ -407,7 +415,7 @@ if modo == "conferir":
             nao("nenhuma revisão em %s" % saida_rel, "rode adversarial-review.sh nesta frente, ou registre a dispensa (pergunta D3).")
         dirrev = os.path.join(saida_abs, cands[-1])
     meta = ler_meta(ler(os.path.join(dirrev, "META.txt")))
-    rel = os.path.relpath(dirrev, raiz)
+    rel = relativo(dirrev, raiz)
     if not meta:
         nao("%s/META.txt ausente" % rel, "aponte a pasta de uma revisão (EXTERNAL_REVIEW_…).")
     paths = meta.get("paths", "-")
@@ -511,7 +519,7 @@ else:
 
 # ── pasta da revisão ignorada pelo git (R9) ──────────────────────────────────────────────────────
 if not os.path.isabs(saida_rel) or os.path.commonpath([os.path.abspath(saida_abs), raiz]) == raiz:
-    relsaida = os.path.relpath(saida_abs, raiz)
+    relsaida = relativo(saida_abs, raiz)
     if git(raiz, "check-ignore", "-q", relsaida + "/.sonda")[0] != 0:
         print("🛑 a pasta %s não está ignorada pelo git: o diff e as respostas das engines iriam para o "
               "repositório." % relsaida, file=sys.stderr)
@@ -574,7 +582,7 @@ while os.path.exists(dirrev):
     dirrev = os.path.join(saida_abs, "EXTERNAL_REVIEW_%s-%d" % (quando, k))
     k += 1
 os.makedirs(dirrev)
-rel_rev = os.path.relpath(dirrev, raiz)
+rel_rev = relativo(dirrev, raiz)
 open(os.path.join(dirrev, "diff.patch"), "wb").write(patch)
 open(os.path.join(dirrev, "context-sdd.md"), "w", encoding="utf-8").write(ctx_txt)
 AVISO_UM = "⚠️ a mesma engine revisou e auditou: a auditoria tem os mesmos pontos cegos da revisão"

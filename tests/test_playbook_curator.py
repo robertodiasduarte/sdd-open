@@ -906,6 +906,7 @@ class Preparar(Sandbox):
                 self.assertEqual(rc2, 2, out2 + err2)
                 pasta.chmod(0o700)
 
+    @unittest.skipIf(*SEM_CHMOD)   # F16W2: confere o modo 0700 da pasta, que o Windows não tem
     def test_pasta_exclusiva_segue_valendo_para_preparar_e_retomar(self):
         # o outro lado: a pasta que o próprio script criou não é recusada
         self.povoa()

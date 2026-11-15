@@ -18,7 +18,7 @@ import sys
 import unittest
 from pathlib import Path
 
-from apoio import BASH, RAIZ, Sandbox, path_restrito, SEM_NOME_ESPECIAL
+from apoio import BASH, RAIZ, Sandbox, path_restrito, SEM_NOME_ESPECIAL, apaga
 
 AR = RAIZ / "sdd/bin/adversarial-review.sh"
 FLUXO = RAIZ / "sdd/bin/sdd-fluxo.sh"
@@ -415,7 +415,7 @@ class SegundoRevisor(Base):
                     self.escreve(r, k, v)
                 rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--dry-run")
                 self.assertIn(esperado, out)
-                shutil.rmtree(str(r))
+                apaga(r)
 
     def test_author_nao_e_superficie_de_seguranca(self):
         r = self.projeto()
@@ -802,7 +802,8 @@ class AvaliadorCiclo1(Base):
     def test_1_segundo_revisor_sem_cota_e_tempo_esgotado_refazem(self):
         for cen in ("falha-quota", "dorme"):
             with self.subTest(cenario=cen):
-                shutil.rmtree(str(self.tmp / "repo"), ignore_errors=True)
+                if (self.tmp / "repo").exists():
+                    apaga(self.tmp / "repo")
                 r, rc, out = self.com_r2("stub-c:" + cen)
                 self.assertEqual(rc, 0, out)
                 m = meta(self.pasta(r))

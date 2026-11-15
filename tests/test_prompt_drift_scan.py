@@ -11,7 +11,7 @@ import stat
 import subprocess
 import unittest
 
-from apoio import BASH, RAIZ, SEM_CHMOD, SOU_ROOT, Sandbox, SEM_PTY
+from apoio import BASH, RAIZ, SEM_CHMOD, SOU_ROOT, Sandbox, SEM_PTY, SEM_FIFO
 
 SCRIPT = RAIZ / "sdd/bin/prompt-drift-scan.sh"
 PADRAO = 'prompts:\n  wrapper_pattern: "systemPrompt:"\n'
@@ -395,8 +395,9 @@ class ErroDeUso(Base):
         cfg.mkdir()
         self.conferir(*self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n"), "não consegui ler sdd/config.yaml")
         cfg.rmdir()
-        os.mkfifo(str(cfg))
-        self.conferir(*self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n"), "não consegui ler sdd/config.yaml")
+        if not SEM_FIFO[0]:   # F16W2: o Windows não tem fifo; o resto do teste vale lá
+            os.mkfifo(str(cfg))
+            self.conferir(*self.com_texto("src/a.ts", "ask({ systemPrompt: `x` })\n"), "não consegui ler sdd/config.yaml")
 
     def test_conteudo_com_pasta_nunca_vira_limpo(self):
         (self.p / "src").mkdir()

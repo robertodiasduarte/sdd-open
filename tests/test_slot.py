@@ -6,13 +6,14 @@ que grava o ambiente e os argumentos que recebeu (AT-001 a AT-005 do DEFINE_F15_
 from __future__ import annotations
 
 import os
+import re
 import signal
 import subprocess
 import time
 import unittest
 from pathlib import Path
 
-from apoio import BASH, SEM_SINAL, Sandbox
+from apoio import BASH, SEM_SINAL, Sandbox, WINDOWS, caminho_nativo
 
 SCRIPT = "sdd/bin/slot.sh"
 # O comando falso: o 1º argumento é o exit (ou "sinal"/"dorme"); os outros são os arquivos que o slot repassou.
@@ -67,8 +68,16 @@ class Base(Sandbox):
             if k == "ARG":
                 d["ARG"].append(v)
             else:
-                d[k] = v
+                d[k] = nativo(v)
         return d
+
+
+def nativo(v: str) -> str:
+    """F16W2: no Windows, o caminho que o bash gravou (/c/… ou C:/…) na forma do Python (C:\\…); fora dele, igual."""
+    if not WINDOWS:
+        return v
+    v = caminho_nativo(v)
+    return v.replace("/", "\\") if re.match(r"^[A-Za-z]:/", v) else v
 
 
 class Contrato(Base):
@@ -316,7 +325,7 @@ class Ambiente(Base):
         self.assertIn("SDD_BASE vazio", out)
         self.assertEqual(reg["COMMIT"], self.sha)
         self.assertEqual(reg["ARVORE"], str(self.r))
-        self.assertTrue(reg["DIR"].endswith("/_sem-feature"), reg["DIR"])
+        self.assertTrue(reg["DIR"].endswith(os.sep + "_sem-feature"), reg["DIR"])
 
     def test_mesma_pasta_de_outra_worktree_subpasta_e_symlink(self):
         rc, _ = self.slot("smoke.before_ok_cmd", "--feature", "F")

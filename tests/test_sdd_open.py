@@ -10,7 +10,7 @@ import re
 import shutil
 import unittest
 
-from apoio import BASH, RAIZ, Sandbox, path_restrito, caminho_neutro, SEM_CHMOD
+from apoio import BASH, RAIZ, Sandbox, path_restrito, caminho_neutro, SEM_CHMOD, SEM_NOME_ESPECIAL
 
 CLI = RAIZ / "bin/sdd-open.sh"
 ABRE = "<sdd-open-instructions>"
@@ -218,6 +218,7 @@ class Projeto(Sandbox):
         self.assertIn("não apaga do histórico", out)
         self.assertResultado(out)
 
+    @unittest.skipIf(*SEM_NOME_ESPECIAL)
     def test_doctor_nao_perde_o_resto_de_nome_com_quebra_de_linha(self):
         self.escreve(self.p, "nova\nlinha.p12", "x\n")
         # com os hooks ligados pelo init (F8), o gitleaks instalado recusa um .p12 (pkcs12-file): o commit

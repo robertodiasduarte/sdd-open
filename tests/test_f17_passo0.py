@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from apoio import BASH, RAIZ, SEM_SYMLINK, caminho_bash
+from apoio import BASH, RAIZ, SEM_SYMLINK, caminho_bash, path_restrito
 
 
 def ler(rel: str) -> str:
@@ -45,17 +45,14 @@ class FronteiraHelpSemPython(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, self.tmp, True)
-        self.bin = self.tmp / "bin"
-        self.bin.mkdir()
-        for f in ("bash", "sh", "sed", "grep", "cat", "git"):
-            achado = shutil.which(f)
-            if achado:
-                os.symlink(achado, str(self.bin / f))
+        # F16W2: pelo path_restrito (no Windows, o executável chamado por link não roda)
+        self.path = path_restrito(self.tmp / "bin", ("bash", "sh", "sed", "grep", "cat", "git"), python=False,
+                                  ausentes=("python3", "python", "py"))
 
     def rodar(self, *args):
         r = subprocess.run([BASH, caminho_bash(RAIZ / "sdd/bin/governanca-fronteira.sh"), *args],
                            capture_output=True, text=True, encoding="utf-8",
-                           env=dict(os.environ, PATH=str(self.bin)))
+                           env=dict(os.environ, PATH=self.path))
         return r.returncode, r.stdout + r.stderr
 
     def test_help_sem_python_mostra_o_uso_e_sai_0(self):

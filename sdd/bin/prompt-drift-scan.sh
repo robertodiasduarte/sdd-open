@@ -165,6 +165,10 @@ carregar_slot() {
 # caminho absoluto. Com --conteudo a pasta pode não existir: vale o ancestral existente mais profundo.
 normalizar() {  # $1 → REL, DENTRO
   local p="$1" abs dir cauda="" fisico
+  # F16W2: no Windows, C:\… (ou C:/…) é absoluto: na forma do Git Bash (/c/…), como a raiz
+  case "$p" in
+    [A-Za-z]:[\\/]*) if command -v cygpath >/dev/null 2>&1; then p="$(cygpath -u "$p")"; else p="${p//\\//}"; fi ;;
+  esac
   case "$p" in
     /*) abs="$p" ;;
     *)  abs="$(pwd -P)/$p" ;;

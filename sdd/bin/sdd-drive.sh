@@ -58,6 +58,7 @@ import hashlib
 import json
 import os
 import re
+import secrets
 import shutil
 import subprocess
 import sys
@@ -353,7 +354,7 @@ def segura_estado(p):
     if _ESTADO_PEGO:
         return
     caminho = p.p("sdd/reports/progress/DRIVE_%s.estado.lock" % p.feature)
-    rel = os.path.relpath(caminho, p.raiz)
+    rel = os.path.relpath(caminho, p.raiz).replace(os.sep, "/")   # F16W2: a mensagem com "/" também no Windows
     limite_espera = time.time() + ESPERA_ESTADO
     while True:
         try:
@@ -650,7 +651,7 @@ def trava(p):
 def gate_rodando(p):
     """pid vivo na trava; trava de processo morto se libera (o agente pode ter sido cortado no meio do gate)."""
     try:
-        pid = int(ler(trava(p)).strip())
+        pid = int((ler(trava(p)).split() or [""])[0])   # "<pid>" ou, do --fundo, "<pid> <senha>"
         if pid <= 0:
             raise ValueError("pid inválido")
         if os.name == "nt":  # no Python nativo do Windows, o sinal 0 é CTRL_C_EVENT: interromperia o gate
@@ -695,12 +696,14 @@ def pega_trava(p):
 
 def trava_herdada(p):
     """Só o filho do --fundo herda a trava: a variável sozinha, no ambiente de quem chama, não abre nada."""
-    if os.environ.get("SDD_DRIVE_TRAVA_HERDADA") != "1":
+    senha = os.environ.get("SDD_DRIVE_TRAVA_HERDADA") or ""
+    if len(senha) < 16:   # só a senha que o pai do --fundo gerou (a variável "1" no ambiente de quem chama não abre nada)
         return False
-    for _ in range(40):  # o pai grava o pid do filho logo depois de abri-lo
+    for _ in range(40):  # o pai grava o pid do filho e a senha logo depois de abri-lo
         try:
-            # o pid do filho é o do bash que roda este script; o Python é filho dele
-            if ler(trava(p)).strip() in (str(os.getpid()), str(os.getppid())):
+            # F16W2: pela senha, não pelo pid: no Windows, o Python é filho de um fork do bash (outro pid do Windows), e
+            # o filho não se reconhecia na trava; devolvia ESPERAR sem rodar o gate
+            if senha in ler(trava(p)).split()[1:]:
                 return True
         except OSError:
             return False
@@ -711,7 +714,9 @@ def trava_herdada(p):
 def solta_trava(p):
     """Só a trava de quem está soltando: se a nossa se perdeu e outro gate pegou, a dele fica."""
     try:
-        if ler(trava(p)).strip() in (str(os.getpid()), str(os.getppid())):
+        partes = ler(trava(p)).split()
+        senha = os.environ.get("SDD_DRIVE_TRAVA_HERDADA") or ""
+        if partes and (partes[0] in (str(os.getpid()), str(os.getppid())) or (len(senha) >= 16 and senha in partes[1:])):
             os.remove(trava(p))
     except OSError:
         pass
@@ -964,11 +969,14 @@ def cmd_verificar(args):
             acao(p, st, "ESPERAR", "Outro teste final acabou de começar.")
     if fundo:
         registro = "sdd/reports/progress/DRIVE_%s.fundo.log" % p.feature
+        senha = secrets.token_hex(16)
         with open(p.p(registro), "a", encoding="utf-8") as f:
             filho = subprocess.Popen([BASH, os.path.abspath(SELF), "verificar", p.define], cwd=p.raiz, stdin=subprocess.DEVNULL, stdout=f,
-                                     stderr=subprocess.STDOUT, start_new_session=True, env=dict(os.environ, SDD_DRIVE_TRAVA_HERDADA="1"))
+                                     stderr=subprocess.STDOUT, start_new_session=True,
+                                     creationflags=getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0),
+                                     env=dict(os.environ, SDD_DRIVE_TRAVA_HERDADA=senha))
         with open(trava(p), "w", encoding="utf-8") as f:
-            f.write(str(filho.pid))
+            f.write("%d %s" % (filho.pid, senha))
         acao(p, st, "ESPERAR", "O teste final foi para o fundo (processo %d); a saída do script fica em %s." % (filho.pid, registro))
     n = len(st["gates"]) + 1
     log = "sdd/reports/evidence/%s/DRIVE-gate-r%d.log" % (p.feature, n)

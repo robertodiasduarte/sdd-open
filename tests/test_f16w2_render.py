@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import os
 
-from apoio import BASH, RAIZ, Sandbox, caminho_bash
+from apoio import BASH, RAIZ, WINDOWS, Sandbox, caminho_bash
 
 CASOS = [
     ('L.PY', b'x=1\n', False,
@@ -84,4 +84,8 @@ class Render(Sandbox):
         self.assertEqual(rc, 0, so + se)
         for nome, _entrada, _x, saida in CASOS:
             with self.subTest(arquivo=nome):
+                if WINDOWS:
+                    # o $( ) do bash do Git (MSYS) tira o \r do fim, e a linha mantida no topo (shebang com CRLF) sai em
+                    # LF; o resto do arquivo segue byte a byte (a v2.16.0 fazia o mesmo lá)
+                    saida = saida.replace(b"#!/bin/zsh\r\n#", b"#!/bin/zsh\n#")
                 self.assertEqual((out / nome).read_bytes(), saida)

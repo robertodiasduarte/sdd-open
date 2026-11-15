@@ -282,7 +282,7 @@ class EstadoDoGit(Base):
         # R1@codex da rodada 2: só o texto do link entrava, e o conteúdo executado mudava sem a fronteira ver.
         alvo = self.w / ".git/corpo.sh"
         alvo.write_text("#!/bin/sh\ntrava\n", encoding="utf-8")
-        os.symlink("../corpo.sh", str(self.w / ".git/hooks/pre-commit"))
+        os.symlink(os.path.join("..", "corpo.sh"), str(self.w / ".git/hooks/pre-commit"))
         rc, out = self.despacho(lambda: alvo.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8"))
         self.assertEqual(rc, 1, out)
         self.assertIn("FORA: a configuração, o exclude ou os hooks de .git mudaram", out)
@@ -290,8 +290,8 @@ class EstadoDoGit(Base):
     def test_hook_que_e_link_intocado_passa_e_link_quebrado_tambem(self):
         alvo = self.w / ".git/corpo.sh"
         alvo.write_text("#!/bin/sh\n", encoding="utf-8")
-        os.symlink("../corpo.sh", str(self.w / ".git/hooks/pre-commit"))
-        os.symlink("../nao-existe.sh", str(self.w / ".git/hooks/pre-push"))
+        os.symlink(os.path.join("..", "corpo.sh"), str(self.w / ".git/hooks/pre-commit"))
+        os.symlink(os.path.join("..", "nao-existe.sh"), str(self.w / ".git/hooks/pre-push"))
         rc, out = self.despacho(lambda: None)
         self.assertEqual(rc, 0, out)
 
