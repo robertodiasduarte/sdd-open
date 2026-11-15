@@ -67,7 +67,7 @@ class AuditoriaVariosMotores(unittest.TestCase):
 
     def inventario(self):
         r = subprocess.run([sys.executable, str(RAIZ / ".agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py"),
-                            str(self.tmp)], capture_output=True, text=True, encoding="utf-8")
+                            str(self.tmp)], capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stderr)
         return {i["path"]: i["type"] for i in json.loads(r.stdout)["items"]}
 
@@ -93,7 +93,7 @@ class AuditoriaVariosMotores(unittest.TestCase):
         self.escreve("AGENTS.md", "Para revisar, rode /prompts:revisa antes do commit.\n")
         self.escreve(".codex/prompts/revisa.md", "# Revisa\n")
         r = subprocess.run([sys.executable, str(RAIZ / ".agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py"),
-                            str(self.tmp)], capture_output=True, text=True, encoding="utf-8")
+                            str(self.tmp)], capture_output=True, text=True, encoding="utf-8", errors="replace")
         itens = {i["path"]: i for i in json.loads(r.stdout)["items"]}
         self.assertEqual(itens[".codex/prompts/revisa.md"]["inbound_reference_count"], 1, itens)
 

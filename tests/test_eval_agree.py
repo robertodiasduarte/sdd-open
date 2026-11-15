@@ -11,7 +11,7 @@ from __future__ import annotations
 import shutil
 import sys
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, Sandbox, path_restrito
 
 EA = RAIZ / "sdd/bin/eval-agree.sh"
 FIX = RAIZ / "sdd/fixtures/revisao/eval"
@@ -21,13 +21,7 @@ class EvalAgree(Sandbox):
     def setUp(self):
         super().setUp()
         binp = self.tmp / "bin"
-        binp.mkdir()
-        for f in ("git", "bash", "sh", "sed"):
-            w = shutil.which(f)
-            if w:
-                (binp / f).symlink_to(w)
-        (binp / "python3").symlink_to(sys.executable)
-        self.env = dict(self.env, PATH=str(binp), http_proxy="http://127.0.0.1:9", https_proxy="http://127.0.0.1:9",
+        self.env = dict(self.env, PATH=path_restrito(binp, ("git", "bash", "sh", "sed")), http_proxy="http://127.0.0.1:9", https_proxy="http://127.0.0.1:9",
                         HTTP_PROXY="http://127.0.0.1:9", HTTPS_PROXY="http://127.0.0.1:9")
         self.env.pop("OPENROUTER_API_KEY", None)
 
@@ -91,13 +85,8 @@ class EvalAgree(Sandbox):
         d = self.tmp / "sem-git"
         shutil.copytree(str(FIX), str(d / "sdd/reports/reviews"))
         binp = self.tmp / "bin-sem-git"
-        binp.mkdir()
-        for f in ("bash", "sh", "sed"):
-            w = shutil.which(f)
-            if w:
-                (binp / f).symlink_to(w)
-        (binp / "python3").symlink_to(sys.executable)
-        rc, out, err = self.roda([BASH, EA], d, dict(self.env, PATH=str(binp)))
+        caminho = path_restrito(binp, ("bash", "sh", "sed"), ausentes=("git",))
+        rc, out, err = self.roda([BASH, EA], d, dict(self.env, PATH=caminho))
         self.assertEqual(rc, 0, out + err)
         self.assertNotIn("Traceback", out + err)
         self.assertIn("| codex (-) | 1 | 4 | 2 | 1 | 0 | 1 | 66.7% |", out)

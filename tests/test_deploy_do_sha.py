@@ -8,7 +8,7 @@ import shutil
 import stat
 import sys
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, WINDOWS, Sandbox, path_restrito
 
 SCRIPT = RAIZ / "sdd/bin/deploy-do-sha.sh"
 GH = """#!{python}
@@ -80,6 +80,8 @@ class Base(Sandbox):
         gh = self.bin / "gh"
         gh.write_text(GH.format(python=sys.executable), encoding="utf-8")
         gh.chmod(gh.stat().st_mode | stat.S_IEXEC)
+        if WINDOWS:   # F16W2: o Python nativo do produto não roda script sem extensão; o .bat o chama pelo Python
+            (self.bin / "gh.bat").write_text('@"%s" "%s" %%*\r\n' % (sys.executable, gh), encoding="utf-8")
         self.dir_gh = self.tmp / "ghdir"
         self.dir_gh.mkdir()
         self.env = dict(self.env, PATH=str(self.bin) + os.pathsep + self.env["PATH"], GH_DIR=str(self.dir_gh))
@@ -396,10 +398,7 @@ class AindaNaoSei(Base):
 class Ausentes(Base):
     def test_sem_gh_e_sem_git_sai_3(self):
         so = self.tmp / "so"
-        so.mkdir()
-        os.symlink(sys.executable, str(so / "python3"))
-        os.symlink(shutil.which("git"), str(so / "git"))
-        rc, out, err = self.sha(env=dict(self.env, PATH=str(so)))
+        rc, out, err = self.sha(env=dict(self.env, PATH=path_restrito(so, ("git",), ausentes=("gh",))))
         self.assertEqual(rc, 3, out + err)
         self.assertIn("gh não está instalado", out)
         self.assertIn("RESULTADO: INCONCLUSIVO", out)

@@ -43,7 +43,7 @@ class Exemplo(unittest.TestCase):
     def test_a_skill_cita_o_exemplo_e_ele_passa_no_handoff_lint(self):
         self.assertIn("`assets/HANDOFF_EXAMPLE.md`", ler(".agents/skills/sdd-handoff/SKILL.md"))
         r = subprocess.run([sys.executable, "-B", str(RAIZ / "sdd/bin/handoff-lint.py"), str(RAIZ / EXEMPLO)],
-                           capture_output=True, text=True, encoding="utf-8")
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
     def test_o_exemplo_segue_as_secoes_do_molde(self):

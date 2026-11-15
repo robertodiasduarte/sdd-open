@@ -14,7 +14,7 @@ import subprocess
 import unittest
 from pathlib import Path
 
-from apoio import BASH, PYTHON, RAIZ, SEM_CHMOD, Sandbox, caminho_bash
+from apoio import BASH, PYTHON, RAIZ, SEM_CHMOD, Sandbox, caminho_bash, path_restrito
 
 CLI = RAIZ / "bin/sdd-open.sh"
 FIX = RAIZ / "sdd/fixtures/hooks"
@@ -56,7 +56,7 @@ class Projeto(Sandbox):
         texto = (FIX / nome).read_text(encoding="utf-8")
         for k, v in troca.items():
             texto = texto.replace("__%s__" % k, json.dumps(v)[1:-1])
-        return json.loads(texto.replace("__CWD__", str(self.p)))
+        return json.loads(texto.replace("__CWD__", json.dumps(str(self.p))[1:-1]))   # F16W2: escapado (C:\\… no Windows)
 
     # ── AT-020: geração ──────────────────────────────────────────────────────────────────────────
     def test_init_gera_os_guards_e_as_entradas_do_settings(self):
@@ -147,13 +147,8 @@ class Projeto(Sandbox):
 
     def test_sem_python3_o_vendor_claude_para_antes_de_escrever(self):
         d = self.tmp / "path-sem-python3"
-        d.mkdir()
-        for f in FERRAMENTAS:
-            alvo = shutil.which(f)
-            if alvo:
-                os.symlink(alvo, d / f)
-        self.assertIsNone(shutil.which("python3", path=str(d)))
-        rc, out = self.cli("init", "--yes", "--vendors", "claude", env=dict(self.env, PATH=str(d)))
+        caminho = path_restrito(d, FERRAMENTAS, python=False, ausentes=("python3", "python", "py"))
+        rc, out = self.cli("init", "--yes", "--vendors", "claude", env=dict(self.env, PATH=caminho))
         self.assertEqual(rc, 64, out)
         self.assertIn("precisa de python3", out)
         self.assertFalse((self.p / ".claude").exists())

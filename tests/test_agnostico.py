@@ -34,7 +34,7 @@ def arquivos(raiz: Path) -> list:
             saida.append(p)
         elif p.is_dir():
             saida += [f for f in sorted(p.rglob("*")) if f.is_file()]  # todo arquivo, com ou sem extensão
-    return [f for f in saida if not str(f.relative_to(raiz)).startswith(ADAPTADORES)]
+    return [f for f in saida if not f.relative_to(raiz).as_posix().startswith(ADAPTADORES)]
 
 
 def achados(raiz: Path) -> list:
@@ -46,11 +46,11 @@ def achados(raiz: Path) -> list:
         try:
             texto = dados.decode("utf-8")
         except UnicodeDecodeError:
-            saida.append(str(f.relative_to(raiz)) + ":0: não é UTF-8")  # falha fechado: não dá para varrer
+            saida.append(f.relative_to(raiz).as_posix() + ":0: não é UTF-8")  # falha fechado: não dá para varrer
             continue
         for n, linha in enumerate(texto.splitlines(), 1):
             for m in TERMOS.finditer(linha):
-                saida.append(str(f.relative_to(raiz)) + ":" + str(n) + ": " + m.group(0))
+                saida.append(f.relative_to(raiz).as_posix() + ":" + str(n) + ": " + m.group(0))
     return saida
 
 

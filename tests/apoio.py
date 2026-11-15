@@ -14,6 +14,7 @@ reprovaria a própria pasta tests/. Amostras assim são montadas em tempo de exe
 from __future__ import annotations
 
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -50,6 +51,61 @@ SEM_SINAL = (WINDOWS, "sinal POSIX: o Windows não entrega SIGTERM nem SIGKILL a
 SEM_NOME_ESPECIAL = (WINDOWS, "nome de arquivo com aspas, dois-pontos, barra vertical, quebra de linha ou terminado em espaço: "
                                 "o Windows não aceita")
 SEM_POSIX_UID = (not hasattr(os, "geteuid"), "os.geteuid: só existe em sistema POSIX")
+SEM_PATH_SEM_FERRAMENTA = (WINDOWS, "PATH sem uma ferramenta: no Windows o PATH restrito é feito das pastas de verdade (o "
+                                    "executável chamado por link não acha as DLLs ao lado), e a pasta traz a ferramenta junto")
+SEM_ARGV_COM_QUEBRA = (WINDOWS, "argumento com quebra de linha: no Windows a linha de comando o parte em dois")
+SEM_PTY = (WINDOWS, "pty: o Windows não tem terminal POSIX (termios)")
+
+
+def path_restrito(pasta: Path, ferramentas, python: bool = True, ausentes=(), extra=None) -> str:
+    """PATH só com as ferramentas pedidas (e o Python da suíte, se python=True), para testar "sem X no PATH".
+
+    Fora do Windows: uma pasta de links, como os testes sempre fizeram. No Windows, o executável chamado por link não
+    acha as DLLs ao lado (msys-2.0.dll, python3xx.dll): o `dirname` "existia" e devolvia vazio, e o python3 não rodava
+    (F16W2, ~105 quedas). Lá, o PATH são as pastas de verdade das ferramentas (nunca a System32, que tem o bash do WSL)
+    e a do Python. `ausentes` são os nomes que o teste quer fora do PATH: no Windows, se a pasta de verdade traz um
+    deles, o teste é pulado (SEM_PATH_SEM_FERRAMENTA). `extra` = {nome: arquivo} postos na pasta (scripts falsos)."""
+    pasta.mkdir(parents=True, exist_ok=True)
+    for nome, alvo in (extra or {}).items():
+        if WINDOWS:   # o script falso chamado pelo caminho de verdade: $0 continua apontando para ele
+            p = pasta / nome
+            p.write_text("#!/bin/sh\nexec '%s' \"$@\"\n" % caminho_bash(alvo), encoding="utf-8")
+            p.chmod(0o755)
+        else:
+            (pasta / nome).symlink_to(alvo)
+    if not WINDOWS:
+        for f in ferramentas:
+            w = shutil.which(f)
+            if w and not (pasta / f).exists():
+                (pasta / f).symlink_to(w)
+        if python and not (pasta / "python3").exists():
+            (pasta / "python3").symlink_to(sys.executable)
+        path = str(pasta)
+    else:
+        sistema = os.path.normcase(os.environ.get("SystemRoot", r"C:\Windows"))
+        dirs = []
+        for f in ferramentas:
+            w = os.path.dirname(BASH) if f in ("bash", "sh") else os.path.dirname(shutil.which(f) or "")
+            if w and not os.path.normcase(w).startswith(sistema) and w not in dirs:
+                dirs.append(w)
+        if python and os.path.dirname(sys.executable) not in dirs:
+            dirs.append(os.path.dirname(sys.executable))
+        path = os.pathsep.join([str(pasta)] + dirs)
+    for nome in ausentes:
+        if shutil.which(nome, path=path):
+            if WINDOWS:
+                raise unittest.SkipTest(SEM_PATH_SEM_FERRAMENTA[1] + " (%s)" % nome)
+            raise AssertionError("%s não devia estar no PATH restrito" % nome)
+    return path
+
+
+def caminho_neutro(s: str) -> str:
+    """No Windows, C:\\x, C:/x e /c/x viram /c/x: o produto escreve uma forma ou outra conforme quem lhe deu o caminho
+    (o git, o HOME, o pwd do Git Bash), e o teste compara o lugar, não a grafia (F16W2). Fora do Windows, nada muda."""
+    if not WINDOWS:
+        return s
+    s = s.replace("\\", "/")
+    return re.sub(r"(?<![\w/])([A-Za-z]):/", lambda m: "/" + m.group(1).lower() + "/", s)
 
 
 def caminho_bash(p) -> str:

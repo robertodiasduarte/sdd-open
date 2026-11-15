@@ -10,7 +10,7 @@ import re
 import shutil
 import unittest
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, Sandbox, path_restrito, caminho_neutro, SEM_CHMOD
 
 CLI = RAIZ / "bin/sdd-open.sh"
 ABRE = "<sdd-open-instructions>"
@@ -454,11 +454,12 @@ class Hooks(Sandbox):
         rc, out = self.cli("doctor")
         self.assertIn("⚠️  hooks do open não ligados (core.hooksPath vazio) — rode init", out)
         self.git(self.p, "config", "core.hooksPath", "sdd/hooks")
-        (self.p / "sdd/hooks/pre-commit").chmod(0o644)
-        rc, out = self.cli("doctor")
-        self.assertIn("⚠️  hooks: sdd/hooks/pre-commit sem permissão de execução (o git o ignora em silêncio) — rode: chmod +x sdd/hooks/pre-commit", out)
-        self.assertNotIn("✅ hooks ligados", out)
-        (self.p / "sdd/hooks/pre-commit").chmod(0o755)
+        if not SEM_CHMOD[0]:   # F16W2: no Windows o bit não vale (SEM_CHMOD); o resto do teste segue
+            (self.p / "sdd/hooks/pre-commit").chmod(0o644)
+            rc, out = self.cli("doctor")
+            self.assertIn("⚠️  hooks: sdd/hooks/pre-commit sem permissão de execução (o git o ignora em silêncio) — rode: chmod +x sdd/hooks/pre-commit", out)
+            self.assertNotIn("✅ hooks ligados", out)
+            (self.p / "sdd/hooks/pre-commit").chmod(0o755)
         (self.p / "sdd/hooks/pre-push").unlink()
         rc, out = self.cli("doctor")
         self.assertIn("⚠️  hooks: sdd/hooks/pre-push ausente — rode init", out)
@@ -510,23 +511,24 @@ class Hooks(Sandbox):
                 pc.chmod(0o755)
                 rc, out = self.cli("doctor")
                 if encadeado:
-                    self.assertIn("✅ hooks encadeados (%s chama sdd/hooks/pre-commit" % pc, out)
+                    self.assertIn(caminho_neutro("✅ hooks encadeados (%s chama sdd/hooks/pre-commit" % pc), caminho_neutro(out))
                     self.assertNotIn("hooks do open não ligados", out)
                     self.assertNotIn("⚠️  hooks", out)
                 else:
                     self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .githooks", out)
                     self.assertNotIn("hooks encadeados", out)
         rc, out = self.cli("init", "--yes", "--vendors", "codex", "--verbose")
-        self.assertIn("= hooks encadeados (%s chama sdd/hooks/pre-commit) (já correto)" % pc, out)
+        self.assertIn(caminho_neutro("= hooks encadeados (%s chama sdd/hooks/pre-commit) (já correto)" % pc), caminho_neutro(out))
         self.assertNotIn("hooks do open não ligados", out)
         self.assertEqual(self.hooks_path(), ".githooks")
-        pc.chmod(0o644)
-        rc, out = self.cli("doctor")
-        self.assertIn("⚠️  hooks: %s (o hook que o git executa) está sem permissão de execução" % pc, out)
+        if not SEM_CHMOD[0]:   # F16W2: no Windows o bit não vale (SEM_CHMOD)
+            pc.chmod(0o644)
+            rc, out = self.cli("doctor")
+            self.assertIn(caminho_neutro("⚠️  hooks: %s (o hook que o git executa) está sem permissão de execução" % pc), caminho_neutro(out))
         pc.chmod(0o755)
         (self.p / "sdd/hooks/pre-commit").unlink()
         rc, out = self.cli("doctor")
-        self.assertIn("⚠️  hooks: %s chama sdd/hooks/pre-commit, que está ausente" % pc, out)
+        self.assertIn(caminho_neutro("⚠️  hooks: %s chama sdd/hooks/pre-commit, que está ausente" % pc), caminho_neutro(out))
 
     def test_husky_v9_linha_no_script_e_bit_no_stub(self):
         # R1@claude, rodada 1: no husky v9 o core.hooksPath é .husky/_ (stubs gerados); a linha vai em .husky/pre-commit.
@@ -557,11 +559,12 @@ class Hooks(Sandbox):
         self.assertIn("⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_", out)
         script.write_text("npm test\nbash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")   # sem bit: o husky roda com sh
         rc, out = self.cli("doctor")
-        self.assertIn("✅ hooks encadeados (%s chama sdd/hooks/pre-commit" % script, out)
+        self.assertIn(caminho_neutro("✅ hooks encadeados (%s chama sdd/hooks/pre-commit" % script), caminho_neutro(out))
         self.assertNotIn("⚠️  hooks", out)
-        stub.chmod(0o644)
-        rc, out = self.cli("doctor")
-        self.assertIn("⚠️  hooks: %s (o hook que o git executa) está sem permissão de execução" % stub, out)
+        if not SEM_CHMOD[0]:   # F16W2: no Windows o bit não vale (SEM_CHMOD)
+            stub.chmod(0o644)
+            rc, out = self.cli("doctor")
+            self.assertIn(caminho_neutro("⚠️  hooks: %s (o hook que o git executa) está sem permissão de execução" % stub), caminho_neutro(out))
         self.git(self.p, "config", "core.hooksPath", ".husky")   # pasta que não é a de stubs: a linha tem de estar nela
         script.write_text("npm test\n", encoding="utf-8")
         (self.p / ".husky/_/pre-commit").write_text("#!/bin/sh\nbash sdd/hooks/pre-commit || exit 1\n", encoding="utf-8")
@@ -578,7 +581,7 @@ class Hooks(Sandbox):
         pc.chmod(0o755)
         self.git(self.p, "config", "core.hooksPath", "~/.githooks")
         rc, out, err = self.roda([BASH, CLI, "doctor"], self.p, env=dict(self.env, HOME=str(casa)))
-        self.assertIn("✅ hooks encadeados (%s chama sdd/hooks/pre-commit" % pc, out + err)
+        self.assertIn(caminho_neutro("✅ hooks encadeados (%s chama sdd/hooks/pre-commit" % pc), caminho_neutro(out + err))
 
     def test_pre_commit_legado_que_chama_o_nosso_e_encadeado(self):
         self.cli("init", "--yes", "--vendors", "codex")
@@ -594,14 +597,11 @@ class Hooks(Sandbox):
         # silêncio e o init terminava INSTALADO sem vendor nenhum
         self.cli("init", "--yes", "--vendors", "codex")
         d = self.tmp / "path-sem-paste"
-        d.mkdir()
-        for f in ("bash", "sh", "git", "awk", "sed", "grep", "tr", "wc", "basename", "dirname", "mktemp", "cat",
-                  "head", "tail", "cmp", "od", "rm", "env", "cut", "sort", "uniq", "ls", "cp", "mkdir", "chmod",
-                  "mv", "find", "touch", "uname", "readlink", "date", "python3"):
-            alvo = shutil.which(f)
-            if alvo:
-                os.symlink(alvo, d / f)
-        rc, out, err = self.roda([BASH, CLI, "init", "--yes", "--vendors", "kimi"], self.p, env=dict(self.env, PATH=str(d)))
+        caminho = path_restrito(d, ("bash", "sh", "git", "awk", "sed", "grep", "tr", "wc", "basename", "dirname", "mktemp",
+                                    "cat", "head", "tail", "cmp", "od", "rm", "env", "cut", "sort", "uniq", "ls", "cp",
+                                    "mkdir", "chmod", "mv", "find", "touch", "uname", "readlink", "date"),
+                                ausentes=("paste",))
+        rc, out, err = self.roda([BASH, CLI, "init", "--yes", "--vendors", "kimi"], self.p, env=dict(self.env, PATH=caminho))
         self.assertEqual(rc, 0, out + err)
         self.assertNotIn("command not found", out + err)
         vendors = re.search(r"(?m)^vendors: (.*)$", (self.p / "sdd/config.yaml").read_text(encoding="utf-8")).group(1)

@@ -89,7 +89,7 @@ class AuditoriaSemNodeModules(Sandbox):
         self.escreve(self.tmp, "proj/node_modules/pacote/AGENTS.md", "# de terceiro\n")
         self.escreve(self.tmp, "proj/sdd/node_modules/x/notas.md", "# de terceiro\n")
         r = subprocess.run([sys.executable, str(RAIZ / ".agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py"),
-                            str(self.tmp / "proj")], capture_output=True, text=True, encoding="utf-8")
+                            str(self.tmp / "proj")], capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stderr)
         caminhos = {i["path"] for i in json.loads(r.stdout)["items"]}
         self.assertIn("CLAUDE.md", caminhos)

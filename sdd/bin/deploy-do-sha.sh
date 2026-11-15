@@ -113,10 +113,22 @@ def slot(raiz, bloco, chave):
     return ""
 
 
+def acha(prog):
+    """F16W2: no Windows, o 1º do PATH com uma extensão do PATHEXT (o CreateProcess só acharia o .exe e pularia um
+    gh.bat que vem antes, e não roda arquivo sem extensão); fora dele, o shutil.which."""
+    if os.name != "nt":
+        return shutil.which(prog) or prog
+    exts = [e for e in os.environ.get("PATHEXT", ".COM;.EXE;.BAT;.CMD").split(";") if e]
+    for d in os.environ.get("PATH", "").split(os.pathsep):
+        for e in exts:
+            c = os.path.join(d, prog + e)
+            if d and os.path.isfile(c):
+                return c
+    return prog
+
+
 def roda(cmd, cwd):
-    # F16W2: o programa pelo shutil.which (no Windows ele segue o PATH com as extensões do PATHEXT; o CreateProcess
-    # só acharia um .exe e pularia, por exemplo, um gh.bat que vem antes no PATH)
-    cmd = [shutil.which(cmd[0]) or cmd[0]] + list(cmd[1:])
+    cmd = [acha(cmd[0])] + list(cmd[1:])
     return subprocess.run(cmd, cwd=cwd, capture_output=True, encoding="utf-8", errors="replace", stdin=subprocess.DEVNULL,
                           timeout=LIMITE_CMD, env=dict(os.environ, GIT_TERMINAL_PROMPT="0"))
 

@@ -67,7 +67,9 @@ class Pulos(unittest.TestCase):
     def test_cada_constante_tem_motivo_que_nomeia_o_recurso(self):
         import apoio
         for nome, recurso in (("SEM_SYMLINK", "link simbólico"), ("SEM_FCNTL", "fcntl"), ("SEM_CHMOD", "chmod"),
-                              ("SEM_SINAL", "sinal"), ("SEM_POSIX_UID", "geteuid"), ("SOU_ROOT", "root")):
+                              ("SEM_SINAL", "sinal"), ("SEM_POSIX_UID", "geteuid"), ("SOU_ROOT", "root"),
+                              ("SEM_NOME_ESPECIAL", "nome de arquivo"), ("SEM_PATH_SEM_FERRAMENTA", "PATH"),
+                              ("SEM_ARGV_COM_QUEBRA", "quebra de linha"), ("SEM_PTY", "pty")):
             with self.subTest(constante=nome):
                 cond, motivo = getattr(apoio, nome)
                 self.assertIsInstance(cond, bool)

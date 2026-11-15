@@ -9,7 +9,7 @@ from __future__ import annotations
 import shutil
 import unittest
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, Sandbox, caminho_bash
 
 PADROES = RAIZ / "scripts/publish-gate-patterns.txt"
 GATE = RAIZ / "scripts/publish-gate.sh"
@@ -44,7 +44,9 @@ class Padroes(Sandbox):
         alvo = self.escreve(self.tmp, "amostra.txt", texto + "\n")
         hits = []
         for rx in padroes():
-            rc, _out, err = self.roda(["grep", "-InE", "-i", "--", rx, alvo], self.tmp)
+            # F16W2: pelo bash, como o gate: o grep do Git chamado direto do Python nativo tem o argumento expandido
+            # pelo MSYS no Windows ({11,} virava dois argumentos)
+            rc, _out, err = self.roda([BASH, "-c", 'grep -InE -i -- "$1" "$2"', "_", rx, caminho_bash(alvo)], self.tmp)
             self.assertLessEqual(rc, 1, "padrão inválido para o grep: /" + rx + "/ " + err)
             if rc == 0:
                 hits.append(rx)
@@ -63,7 +65,7 @@ class Padroes(Sandbox):
     def test_todo_padrao_e_ere_valida(self):
         for rx in padroes():
             with self.subTest(padrao=rx):
-                rc, _out, err = self.roda(["grep", "-E", "-i", "--", rx, PADROES], self.tmp)
+                rc, _out, err = self.roda([BASH, "-c", 'grep -E -i -- "$1" "$2"', "_", rx, caminho_bash(PADROES)], self.tmp)
                 self.assertLessEqual(rc, 1, err)
 
 

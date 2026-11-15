@@ -13,7 +13,7 @@ import re
 import shutil
 from pathlib import Path
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, Sandbox, SEM_ARGV_COM_QUEBRA
 
 FLUXO = RAIZ / "sdd/bin/sdd-fluxo.sh"
 FX = RAIZ / "sdd/fixtures/fluxo"
@@ -388,6 +388,8 @@ class Despachar(Base):
                      ("../fora", "X", brief), ("avaliador", "X/Y", brief), ("avaliador", "X"),
                      ("ava\nx", "X", brief), ("avaliador", "F9\n", brief)):
             with self.subTest(args=[str(a) for a in args]):
+                if SEM_ARGV_COM_QUEBRA[0] and any("\n" in str(a) for a in args):
+                    self.skipTest(SEM_ARGV_COM_QUEBRA[1])
                 rc, out = self.fluxo("despachar", *args, cwd=r)
                 self.assertEqual(rc, 64, out)
                 self.assertFalse((r / "sdd/reports/briefs").exists() and any((r / "sdd/reports/briefs").iterdir()))

@@ -145,7 +145,7 @@ class Trava(Base_):
         rc, _, err = self.trava(BASE + "- [INV-003] estado=ok origem=seed check=sdd/check-fora.sh :: R · por quê: p\n")
         self.assertEqual(rc, 2, err)
         self.assertIn("relativo à raiz", err)
-        os.symlink("bin/report-lint.py", str(self.tmp / "sdd/check-dentro.py"))
+        os.symlink(os.path.join("bin", "report-lint.py"), str(self.tmp / "sdd/check-dentro.py"))   # F16W2: link relativo com o separador do sistema
         rc, out, err = self.trava(BASE + "- [INV-003] estado=ok origem=seed check=sdd/check-dentro.py :: R · por quê: p\n")
         self.assertEqual(rc, 0, out + err)
 

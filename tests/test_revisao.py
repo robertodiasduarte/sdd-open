@@ -15,9 +15,10 @@ import os
 import re
 import shutil
 import sys
+import unittest
 from pathlib import Path
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, Sandbox, path_restrito, SEM_NOME_ESPECIAL
 
 AR = RAIZ / "sdd/bin/adversarial-review.sh"
 FLUXO = RAIZ / "sdd/bin/sdd-fluxo.sh"
@@ -44,14 +45,9 @@ class Base(Sandbox):
     def setUp(self):
         super().setUp()
         binp = self.tmp / "bin"
-        binp.mkdir()
-        for f in FERRAMENTAS:
-            w = shutil.which(f)
-            if w:
-                (binp / f).symlink_to(w)
-        (binp / "python3").symlink_to(sys.executable)
+        caminho = path_restrito(binp, FERRAMENTAS, ausentes=("claude", "codex", "gemini"))   # F16W2: sem link no Windows
         self.estado = self.tmp / "estado"
-        self.env = dict(self.env, PATH=str(binp), SDD_REVIEW_ADAPTERS=str(FXR / "adapters"),
+        self.env = dict(self.env, PATH=caminho, SDD_REVIEW_ADAPTERS=str(FXR / "adapters"),
                         SDD_REVIEW_ESPERA="0", SDD_REVIEW_STUB_ESTADO=str(self.estado),
                         SDD_REVIEW_OPENROUTER_URL="http://127.0.0.1:9/")
         self.env.pop("OPENROUTER_API_KEY", None)
@@ -1067,6 +1063,7 @@ class RevisaoRodada2(Base):
             with self.subTest(engine=eng, coluna=col, texto=texto[:30]):
                 self.assertEqual(bool(re.search(reg[eng][col], texto)), casa)
 
+    @unittest.skipIf(*SEM_NOME_ESPECIAL)   # F16W2: ":(glob)nome.sh" não é nome válido no Windows
     def test_r2_claude_falha_do_git_add_n_e_64_e_nome_com_dois_pontos_entra(self):
         r = self.projeto()
         self.escreve(r, ":(glob)nome.sh", "x\n")

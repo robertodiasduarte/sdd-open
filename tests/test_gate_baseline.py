@@ -80,7 +80,7 @@ class GateBaseline(Sandbox):
         hooks = self.escreve(self.tmp, "hooks/pre-commit", "#!/bin/sh\nexit 1\n")
         hooks.chmod(0o755)
         glob = self.escreve(self.tmp, "gitconfig-hostil",
-                            "[commit]\n  gpgsign = true\n[core]\n  hooksPath = " + str(hooks.parent) + "\n")
+                            "[commit]\n  gpgsign = true\n[core]\n  hooksPath = " + hooks.parent.as_posix() + "\n")   # F16W2: "\\U" no config do git é escape inválido
         rc, out = self.roda_gate("bash checa.sh", "--sobrepor", "checa.sh",
                                  env=dict(self.env, GIT_CONFIG_GLOBAL=str(glob)))
         self.assertEqual(rc, 0, out)

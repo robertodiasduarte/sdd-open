@@ -6,13 +6,12 @@ inexistente, pasta, arquivo ilegível, entrada vazia ou de terminal, slot invál
 from __future__ import annotations
 
 import os
-import pty
 import shutil
 import stat
 import subprocess
 import unittest
 
-from apoio import BASH, RAIZ, SEM_CHMOD, SOU_ROOT, Sandbox
+from apoio import BASH, RAIZ, SEM_CHMOD, SOU_ROOT, Sandbox, SEM_PTY
 
 SCRIPT = RAIZ / "sdd/bin/prompt-drift-scan.sh"
 PADRAO = 'prompts:\n  wrapper_pattern: "systemPrompt:"\n'
@@ -409,7 +408,9 @@ class ErroDeUso(Base):
         self.conferir(*self.com_texto("src/a.ts", ""), "nada chegou")
         self.conferir(*self.com_texto("prompts/a.ts", ""), "nada chegou")
 
+    @unittest.skipIf(*SEM_PTY)
     def test_conteudo_com_a_entrada_no_terminal(self):
+        import pty   # F16W2: só aqui; no Windows o módulo nem importa (termios) e derrubava o arquivo inteiro
         mestre, escravo = pty.openpty()
         try:
             r = subprocess.run([BASH, str(SCRIPT), "--conteudo", "src/a.ts"], cwd=str(self.p), env=self.env, stdin=escravo,

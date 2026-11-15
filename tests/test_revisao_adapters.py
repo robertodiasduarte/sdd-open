@@ -19,7 +19,7 @@ import sys
 import threading
 from pathlib import Path
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, Sandbox, path_restrito
 
 AR = RAIZ / "sdd/bin/adversarial-review.sh"
 ADAPTERS = RAIZ / "sdd/bin/adapters"
@@ -91,17 +91,10 @@ class Invocacao(Sandbox):
     def setUp(self):
         super().setUp()
         binp = self.tmp / "bin"
-        binp.mkdir()
-        for f in FERRAMENTAS:
-            w = shutil.which(f)
-            if w:
-                (binp / f).symlink_to(w)
-        (binp / "python3").symlink_to(sys.executable)
-        for c in ("claude", "codex", "gemini"):
-            (binp / c).symlink_to(FAKE / c)
+        caminho = path_restrito(binp, FERRAMENTAS, extra={c: FAKE / c for c in ("claude", "codex", "gemini")})
         self.log = self.tmp / "log"
         self.log.mkdir()
-        self.env = dict(self.env, PATH=str(binp), SDD_FAKE_LOG=str(self.log), SDD_FAKE_SAIDAS=str(SAIDAS),
+        self.env = dict(self.env, PATH=caminho, SDD_FAKE_LOG=str(self.log), SDD_FAKE_SAIDAS=str(SAIDAS),
                         SDD_REVIEW_ESPERA="0")
         for k in ("OPENROUTER_API_KEY", "SDD_REVIEW_ADAPTERS", "SDD_REVIEW_OPENROUTER_URL"):
             self.env.pop(k, None)

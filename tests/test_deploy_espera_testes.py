@@ -140,7 +140,7 @@ class DeployEsperaTestes(Sandbox):
 
     def resultado(self) -> tuple[int, str]:
         self.copia(SCRIPT, self.tmp)
-        (self.tmp / SCRIPT).rename(self.tmp / "s.py")
+        (self.tmp / SCRIPT).replace(self.tmp / "s.py")   # F16W2: replace sobrescreve também no Windows
         rc, out = self.roda_script(str(self.p))
         self.assertResultado(out)
         self.assertIn("→ O deploy espera os testes?", out)

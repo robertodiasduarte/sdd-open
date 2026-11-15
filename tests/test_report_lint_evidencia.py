@@ -269,12 +269,12 @@ class Stdin(Base):
         texto = self.relatorio()
         import subprocess
         p = subprocess.run([PYTHON, "-B", SCRIPT, "--stdin", "sdd/reports/BUILD_REPORT_EXEMPLO.md"], cwd=str(self.r),
-                           env=self.env, input=texto, capture_output=True, encoding="utf-8", timeout=60)
+                           env=self.env, input=texto, capture_output=True, encoding="utf-8", errors="replace", timeout=60)
         self.assertEqual(p.returncode, 1, p.stdout + p.stderr)
         self.assertIn("[avaliação ausente]", p.stderr)
         p = subprocess.run([PYTHON, "-B", SCRIPT, "--stdin", "sdd/reports/BUILD_REPORT_EXEMPLO.md"], cwd=str(self.r),
                            env=self.env, input=texto + "avaliador: N.A. (1 camada)\n", capture_output=True,
-                           encoding="utf-8", timeout=60)
+                           encoding="utf-8", errors="replace", timeout=60)
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
 
     def test_stdin_com_nome_errado_e_64(self):

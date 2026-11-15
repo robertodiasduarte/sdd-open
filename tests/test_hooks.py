@@ -15,7 +15,7 @@ import string
 import subprocess
 from pathlib import Path
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, Sandbox, path_restrito
 from test_alarme import cnpj, com_mascara_cpf, cpf
 
 HOOK = RAIZ / "sdd/hooks/pre-commit"
@@ -77,14 +77,7 @@ class Hooks(Sandbox):
 
     def path_sem_python(self) -> dict:
         d = self.tmp / "path-sem-python3"
-        d.mkdir()
-        for f in FERRAMENTAS:
-            alvo = shutil.which(f)
-            if alvo:
-                os.symlink(alvo, d / f)
-        env = dict(self.env, PATH=str(d))
-        self.assertIsNone(shutil.which("python3", path=str(d)))
-        return env
+        return dict(self.env, PATH=path_restrito(d, FERRAMENTAS, python=False, ausentes=("python3", "python", "py")))
 
     # ── contrato entre o hook e o pacote ─────────────────────────────────────────────────────────
     def test_lista_de_arquivos_de_contexto_igual_a_do_pacote(self):

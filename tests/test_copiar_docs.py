@@ -2,8 +2,9 @@
 from __future__ import annotations
 
 import os
+import unittest
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, Sandbox, SEM_NOME_ESPECIAL
 
 SCRIPT = RAIZ / ".agents/skills/sdd-new-session/scripts/copiar-docs.sh"
 
@@ -75,6 +76,7 @@ class Copia(Base_):
         self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md")
         self.assertIn("COPIADO sdd/features/DEFINE_RELATORIO_MENSAL.md", self.copia()[1])
 
+    @unittest.skipIf(*SEM_NOME_ESPECIAL)
     def test_nome_com_quebra_de_linha_nao_vira_2_caminhos(self):
         # N1 do auditor, rodada 1
         self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md\nlixo", "x\n")
