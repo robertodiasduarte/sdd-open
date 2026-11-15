@@ -1,7 +1,7 @@
-# Continuar: INCORPORAR_STARTER — fechar a F22 (Release v2.17.0, starter v1.5.22, curadoria)
+# Continuar: INCORPORAR_STARTER — fechar a F22 (starter v1.5.22, curadoria; Release v2.17.0 já publicada)
 
-A F22 (aviso de versão e upgrade) está na `main` (`7ba7eb0`) com a tag `v2.17.0` (PR #32, 2026-11-15); a Release estava
-saindo quando a sessão parou. Faltam: conferir a Release, o starter `v1.5.22` (OK do Roberto), a curadoria do playbook da
+A F22 (aviso de versão e upgrade) está na `main` (`7ba7eb0`) com a tag `v2.17.0` (PR #32, 2026-11-15); a Release saiu às
+18:10Z e foi conferida. Faltam: o starter `v1.5.22` (OK do Roberto), a curadoria do playbook da
 F16W2 e da F22, e o fechamento. Detalhe na seção "2026-11-15 — F22" da ficha.
 
 ## Onde abrir esta sessão
@@ -17,8 +17,8 @@ Pergunte ao Roberto somente o que for dele: decisões (curadoria, escopo, passar
 Release neste repositório pedem a frase "sdd-open autorizado" (a frase exata); push, PR e merge no sdd-starter pedem o OK
 próprio do Roberto. Nada no repositório privado. Decisão de rotina: decida e registre.
 
-Onde parou (2026-11-15, 14:57): main = 7ba7eb0 e tag v2.17.0 por push atômico (PR #32 MERGED); os runs `release` 43741355567
-(tag) e 43741355563 (main) estavam com 17 de 18 jobs verdes, faltando o piso do macOS; a Release ainda não tinha saído.
+Onde parou (2026-11-15): main = 7ba7eb0 e tag v2.17.0 (PR #32 MERGED); Release v2.17.0 publicada às 18:10Z e conferida
+(shasum -c OK; VERSION do tarball = v2.17.0). O passo 1 abaixo já foi feito: só confirme com gh release view.
 
 Leia primeiro (branch docs/incorporar-starter, worktree /Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16):
 - HANDOFF_INCORPORAR_STARTER.md → a seção "2026-11-15 — F22" (Pendências, Próximos passos, Alertas) e os Eventos de 15/11
