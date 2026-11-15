@@ -316,7 +316,7 @@ class Ambiente(Base):
                 dir_ = os.path.normcase(os.path.realpath(reg["DIR"]))
                 self.assertTrue(dir_.startswith(os.path.normcase(os.path.realpath(self.env["TMPDIR"]))),
                                 (reg["DIR"], self.env["TMPDIR"]))
-                self.assertTrue(reg["DIR"].endswith("/LOJA_CUPOM"), reg["DIR"])
+                self.assertTrue(reg["DIR"].endswith(os.sep + "LOJA_CUPOM"), reg["DIR"])
                 self.assertEqual(reg["PWD"], str(self.r))
 
     def test_padroes_sem_flags(self):

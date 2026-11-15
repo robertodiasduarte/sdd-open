@@ -105,11 +105,10 @@ def path_restrito(pasta: Path, ferramentas, python: bool = True, ausentes=(), ex
 # leem as fixtures em bytes (o gerador do starter recusava "---\r\n" como frontmatter). Nos testes, o padrão é "\n";
 # quem quer CRLF escreve "\r\n" (passa intacto) ou passa newline= explícito.
 if WINDOWS:
-    _write_text_original = Path.write_text
-
     def _write_text_lf(self, data, encoding=None, errors=None, newline=None):
-        return _write_text_original(self, data, encoding=encoding, errors=errors,
-                                    newline="\n" if newline is None else newline)
+        # por open() e não pelo write_text(newline=), que só existe a partir do Python 3.10 (revisão, rodada 3, R2)
+        with open(str(self), "w", encoding=encoding, errors=errors, newline="\n" if newline is None else newline) as f:
+            return f.write(data)
 
     Path.write_text = _write_text_lf
 
