@@ -18,6 +18,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from apoio import SO_NO_WINDOWS
+
 RAIZ = Path(__file__).resolve().parents[1]
 SKILL = RAIZ / ".agents" / "skills" / "sdd-higiene-dado"
 ALARME = SKILL / "scripts" / "alarme.sh"
@@ -438,6 +440,16 @@ class TestModoHooks(Base):
         r = self.repo.alarme("verificar")
         self.assertEqual(r.returncode, 0, r.stdout)
         self.assertIn("hooks do sdd-open (sdd/hooks)", r.stdout)
+
+    @unittest.skipUnless(*SO_NO_WINDOWS)
+    def test_hooks_path_absoluto_na_forma_do_windows_e_modo_hooks(self):
+        # F16W2: o git do Windows guarda C:\\…\\sdd\\hooks (ou C:/…); o alarme só aceitava caminho que começa com /
+        for hp in (str(Path(self.repo.raiz) / "sdd" / "hooks"), (Path(self.repo.raiz) / "sdd" / "hooks").as_posix()):
+            with self.subTest(hooksPath=hp):
+                self.repo.git("config", "core.hooksPath", hp)
+                r = self.repo.alarme("verificar")
+                self.assertEqual(r.returncode, 0, r.stdout)
+                self.assertIn("hooks do sdd-open (sdd/hooks)", r.stdout)
 
     def test_hooks_path_relativo_com_barra_ou_ponto_e_modo_hooks(self):
         for hp in ("sdd/hooks/", "./sdd/hooks"):

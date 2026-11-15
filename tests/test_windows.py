@@ -69,7 +69,8 @@ class Pulos(unittest.TestCase):
         for nome, recurso in (("SEM_SYMLINK", "link simbólico"), ("SEM_FCNTL", "fcntl"), ("SEM_CHMOD", "chmod"),
                               ("SEM_SINAL", "sinal"), ("SEM_POSIX_UID", "geteuid"), ("SOU_ROOT", "root"),
                               ("SEM_NOME_ESPECIAL", "nome de arquivo"), ("SEM_PATH_SEM_FERRAMENTA", "PATH"),
-                              ("SEM_ARGV_COM_QUEBRA", "quebra de linha"), ("SEM_PTY", "pty")):
+                              ("SEM_ARGV_COM_QUEBRA", "quebra de linha"), ("SEM_PTY", "pty"),
+                              ("SO_NO_WINDOWS", "unidade")):
             with self.subTest(constante=nome):
                 cond, motivo = getattr(apoio, nome)
                 self.assertIsInstance(cond, bool)

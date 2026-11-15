@@ -36,6 +36,12 @@ fi
 
 python3 -I -B - ${1+"$@"} <<'PY'
 from __future__ import annotations
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 
 import datetime
 import json
@@ -114,11 +120,13 @@ def slot(raiz, bloco, chave):
 
 
 def acha(prog):
-    """F16W2: no Windows, o 1º do PATH com uma extensão do PATHEXT (o CreateProcess só acharia o .exe e pularia um
-    gh.bat que vem antes, e não roda arquivo sem extensão); fora dele, o shutil.which."""
+    """F16W2: no Windows, o 1º do PATH com uma extensão que o CreateProcess roda (.com, .exe, .bat, .cmd, na ordem do
+    PATHEXT): pelo nome, ele só acharia o .exe e pularia um gh.bat que vem antes. Fora do Windows, o nome puro, como
+    sempre (a busca no PATH é a do exec, já na pasta do repositório)."""
     if os.name != "nt":
-        return shutil.which(prog) or prog
-    exts = [e for e in os.environ.get("PATHEXT", ".COM;.EXE;.BAT;.CMD").split(";") if e]
+        return prog
+    rodam = (".COM", ".EXE", ".BAT", ".CMD")
+    exts = [e for e in os.environ.get("PATHEXT", ".COM;.EXE;.BAT;.CMD").split(";") if e.upper() in rodam]
     for d in os.environ.get("PATH", "").split(os.pathsep):
         for e in exts:
             c = os.path.join(d, prog + e)

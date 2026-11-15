@@ -58,6 +58,12 @@ BASELINE="sdd/baselines/tests.txt"
 
 if [ "${ACEITAR_DADO}" = "1" ]; then
   python3 -B - "${BASELINE}" "${ACEITAR}" <<'PY'
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import os, sys
 arq, novo = sys.argv[1], sys.argv[2].strip()
 linhas = open(arq, encoding="utf-8").read().splitlines() if os.path.isfile(arq) else []
@@ -76,6 +82,12 @@ fi
 
 if [ "${CMD_DADO}" = "0" ]; then
   CMD="$(python3 -B - <<'PY'
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import re
 try:
     linhas = open("sdd/config.yaml", encoding="utf-8", errors="replace").read().splitlines()
@@ -127,6 +139,12 @@ bash -c "${CMD}" > "${SAIDA}" 2>&1
 RC=$?
 
 python3 -B - "${SAIDA}" "${RC}" "${BASELINE}" "${MODO}" "${TOCADOS}" <<'PY'
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import os
 import re
 import sys

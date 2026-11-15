@@ -56,6 +56,12 @@ SDD_EVAL_BIN="$(cd "${_sdd_bin}" && { pwd -W 2>/dev/null || pwd; })"   # F16W2: 
 export SDD_EVAL_BIN
 
 exec python3 -B - "$@" <<'PY'
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import json, os, re, subprocess, sys
 from decimal import Decimal
 

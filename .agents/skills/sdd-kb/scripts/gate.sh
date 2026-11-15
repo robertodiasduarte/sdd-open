@@ -45,6 +45,12 @@ projeto() {  # $1 caso · $2 exemplo de assets/ · $3 perfil — não imprime; o
 
 troca() {  # $1 caso · $2 arquivo (relativo ao domínio) · $3 âncora · $4 substituto (uma vez)
   "$PY" -B - "$T/$1/sdd/kb/dom/$2" "$3" "$4" <<'PY' || falha "$1" "âncora ausente: $3" "o exemplo mudou; atualize a âncora no gate.sh"
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import sys
 p, a, b = sys.argv[1:]
 t = open(p, encoding="utf-8").read()
@@ -60,6 +66,12 @@ anexa() {  # $1 caso · $2 arquivo (relativo ao domínio) · $3 texto (\n vira q
 
 estica() {  # $1 caso · $2 arquivo · $3 total de linhas que o arquivo deve ter
   "$PY" -B - "$T/$1/sdd/kb/dom/$2" "$3" <<'PY' || falha "$1" "não consegui esticar $2" "confira o exemplo"
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import sys
 p, alvo = sys.argv[1], int(sys.argv[2])
 n = len(open(p, encoding="utf-8").read().splitlines())

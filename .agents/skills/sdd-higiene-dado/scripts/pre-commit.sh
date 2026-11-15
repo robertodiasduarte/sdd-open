@@ -24,6 +24,7 @@ achado() { ACHADOS="${ACHADOS}  $1"$'\n'; }
 while IFS= read -r -d '' status && IFS= read -r -d '' arq; do
   # F16W2: nome sem basename/tr (2 processos por arquivo pesam no Git Bash); a caixa, pelo nocasematch do case
   base="${arq##*/}"
+  while [ "${base%$'\n'}" != "${base}" ]; do base="${base%$'\n'}"; done   # o \n do fim sai, como no $(basename)
   motivo=""
   shopt -s nocasematch
   case "${base}" in

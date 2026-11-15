@@ -80,7 +80,8 @@ regra_h6() {
 regra_h2() {
   local f base sz limite=$((TETO_KB * 1024))
   while IFS= read -r -d '' f; do
-    base="${f##*/}"   # F16W2: sem basename (um processo por arquivo pesa no Git Bash)
+    base="${f##*/}"   # F16W2: sem basename (um processo por arquivo pesa no Git Bash); o \n do fim sai, como no $(basename)
+    while [ "${base%$'\n'}" != "${base}" ]; do base="${base%$'\n'}"; done
     case " $ARQUIVOS_CONTEXTO " in *" $base "*) ;; *) continue ;; esac
     sz="$(git cat-file -s ":$f" 2>/dev/null)" || sz=0
     [ "${sz:-0}" -gt "$limite" ] && achado H2 "$f: $sz bytes (teto $TETO_KB KB)"
@@ -90,26 +91,43 @@ regra_h2() {
 
 # ── [H5] byte NUL em arquivo de texto ─────────────────────────────────────────────────────────────
 # F16W2: no Git Bash cada processo custa 10 a 20 ms, e o 1º commit depois do init leva ~600 arquivos. Extensão por
-# regex do bash (nocasematch); os arquivos com NUL saem de UM `git grep` sobre o índice (com PCRE); só esses pagam o
-# cabeçalho e a contagem. Git sem PCRE: o caminho de antes, por arquivo, com 3 processos.
+# regex do bash (nocasematch, em bytes); com mais de 40 candidatos a texto, os arquivos com NUL saem de UM `git grep`
+# sobre o índice (com PCRE) e só esses pagam o cabeçalho e a contagem. Commit pequeno, ou git sem PCRE: o caminho por
+# arquivo, com 3 processos.
 TEXT_EXT='\.(js|mjs|cjs|ts|tsx|jsx|php|sh|zsh|bash|md|py|sql|json|css|scss|html|htm|yaml|yml|toml|txt|csv|xml|svg|ini|cfg|conf|env|jsonl|mdx)$'
-eh_texto() { # $1=caminho → 0 extensão de texto · 1 outra extensão · 2 sem extensão
-  local r=1
+# casa_nome RE NOME: 0 quando alguma linha do nome casa com RE, sem distinguir maiúscula, em bytes (LC_ALL=C: num
+# terminal UTF-8, um nome com byte que não é UTF-8 não casaria) — o que o `printf | LC_ALL=C grep -qiE` de antes fazia.
+casa_nome() {
+  local LC_ALL=C re="$1" resto="$2" l r=1
   shopt -s nocasematch
-  if [[ $1 =~ $TEXT_EXT ]]; then r=0
-  else case "${1##*/}" in *.*) r=1 ;; *) r=2 ;; esac; fi
+  while :; do
+    l="${resto%%$'\n'*}"
+    if [[ $l =~ $re ]]; then r=0; break; fi
+    [ "${l}" = "${resto}" ] && break
+    resto="${resto#*$'\n'}"
+  done
   shopt -u nocasematch
   return "$r"
+}
+eh_texto() { # $1=caminho → 0 extensão de texto · 1 outra extensão · 2 sem extensão
+  if casa_nome "$TEXT_EXT" "$1"; then return 0; fi
+  case "${1##*/}" in *.*) return 1 ;; *) return 2 ;; esac
 }
 cabeca() { git cat-file blob ":$1" 2>/dev/null | head -c 2 | od -An -tx1 | tr -d ' \n'; }   # 2 bytes, em hex
 nul_de() { # $1=caminho → nº de bytes NUL do blob staged (0 se não leu)
   echo $(( $(git cat-file blob ":$1" 2>/dev/null | LC_ALL=C tr -dc '\000' | wc -c) ))
 }
 regra_h5() {
-  local f r n x cab com_nul="" rc nuls=$'\n'
-  # 1 processo para o índice inteiro: os nomes com NUL, separados por NUL. 0 = achou, 1 = nenhum, outro = sem PCRE.
-  git grep --cached -z -l -a -P '\x00' > "$TMPD/nul" 2>/dev/null; rc=$?
-  case "$rc" in 0|1) com_nul=1 ;; esac
+  local f r n x cab com_nul="" rc nuls=$'\n' cands=0
+  # O git grep lê o índice inteiro: só compensa num commit grande (o 1º depois do init leva ~600 arquivos). Num commit
+  # pequeno de um repositório grande, o caminho por arquivo é mais barato (revisão, rodada 1, R1).
+  while IFS= read -r -d '' f; do eh_texto "$f"; [ $? = 1 ] || cands=$((cands + 1)); done < "$STAGED"
+  if [ "$cands" -gt 40 ]; then
+    # 1 processo para o índice inteiro: os nomes com NUL, separados por NUL. 0 = achou, 1 = nenhum, outro = sem PCRE.
+    # sem cor: com color.ui=always do usuário, o nome viria embrulhado em códigos ANSI e nunca casaria
+    git -c color.ui=never -c color.grep=never grep --no-color --cached -z -l -a -P '\x00' > "$TMPD/nul" 2>/dev/null; rc=$?
+    case "$rc" in 0|1) com_nul=1 ;; esac
+  fi
   if [ -n "$com_nul" ]; then
     while IFS= read -r -d '' x; do nuls="${nuls}${x}"$'\n'; done < "$TMPD/nul"
   fi
@@ -154,11 +172,9 @@ regra_h3() {
   local f val chave achou
   local re_conf='\.(json|ya?ml|toml|ini|cfg|conf)$|(^|/)\.env' re_env='(^|/)\.env' eh_env
   while IFS= read -r -d '' f; do
-    # F16W2: o filtro pelo nome sem processo (regex do bash, sem distinguir maiúscula)
-    shopt -s nocasematch
-    eh_env=""; [[ $f =~ $re_env ]] && eh_env=1
-    if ! [[ $f =~ $re_conf ]]; then shopt -u nocasematch; continue; fi
-    shopt -u nocasematch
+    # F16W2: o filtro pelo nome sem processo (casa_nome: linha a linha, em bytes, sem distinguir maiúscula)
+    casa_nome "$re_conf" "$f" || continue
+    eh_env=""; casa_nome "$re_env" "$f" && eh_env=1
     git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$CRED_RE" > "$TMPD/cred"
     if [ -n "$eh_env" ]; then
       git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$ENV_RE" >> "$TMPD/cred"

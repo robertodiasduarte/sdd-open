@@ -81,6 +81,12 @@ merge_gemini_settings() { # $1=destino
     "instale python3 ou rode init sem o vendor gemini" 64
   mkdir -p "$(dirname "${dest}")"
   saida=$(python3 -I - "${dest}" <<'PY' 2>&1
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import json, os, sys
 dest = sys.argv[1]
 data = {}
@@ -128,6 +134,12 @@ PY
 gemini_settings_em_dia() { # $1=destino
   [ -f "${1}" ] || return 1
   python3 -I - "${1}" <<'PY' >/dev/null 2>&1
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import json, sys
 d = json.load(open(sys.argv[1], encoding="utf-8"))
 fn = d.get("context", {}).get("fileName", [])
@@ -146,6 +158,12 @@ merge_claude_settings() { # $1=destino
     "instale python3 ou rode init sem o vendor claude" 64
   mkdir -p "$(dirname "${dest}")"
   saida=$(python3 -I - "${dest}" <<'PY' 2>&1
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import json, os, sys
 dest = sys.argv[1]
 ENTRADAS = (
@@ -211,6 +229,12 @@ PY
 claude_settings_em_dia() { # $1=destino
   [ -f "${1}" ] || return 1
   python3 -I - "${1}" <<'PY' >/dev/null 2>&1
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import json, sys
 d = json.load(open(sys.argv[1], encoding="utf-8"))
 pre = (d.get("hooks") or {}).get("PreToolUse") or []

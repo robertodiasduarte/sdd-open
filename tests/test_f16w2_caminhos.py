@@ -22,7 +22,9 @@ class SlotComCr(Sandbox):
         falso = self.tmp / "py"
         falso.mkdir()
         py = falso / "python3"
-        py.write_text("#!/bin/sh\n'%s' \"$@\" | sed 's/$/\\r/'\n" % caminho_bash(sys.executable), encoding="utf-8")
+        # awk, não sed: o sed BSD antigo troca "\\r" pela letra r (revisão, rodada 1, R4)
+        py.write_text("#!/bin/sh\n'%s' \"$@\" | awk '{printf \"%%s\\r\\n\", $0}'\n" % caminho_bash(sys.executable),
+                      encoding="utf-8")
         py.chmod(0o755)
         env = dict(self.env, PATH=caminho_bash(falso) + ":" + self.env["PATH"], TMPDIR=str(self.tmp))
         rc, out, err = self.roda([BASH, "sdd/bin/slot.sh", "smoke.before_ok_cmd"], r, env=env)

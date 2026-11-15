@@ -120,6 +120,12 @@ if [ -z "${DIR}" ]; then
 fi
 # Lê o valor: 1ª linha da saída = VALOR | AUSENTE | ASPAS <linha> | SOBRA <linha>; o resto é o valor.
 LIDO="$(python3 -B - "${CHAVE}" "${CONFIG}" <<'PY'
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import re, sys
 secao, chave = sys.argv[1].split(".", 1)
 try:

@@ -12,7 +12,7 @@ import sys
 import pathlib
 from pathlib import Path
 
-from apoio import BASH, RAIZ, WINDOWS, Sandbox, caminho_bash, caminho_nativo
+from apoio import BASH, RAIZ, Sandbox, caminho_bash, caminho_nativo
 
 LIB = RAIZ / "sdd/bin/lib/python.sh"
 FERRAMENTAS = ("mktemp", "sed", "chmod", "dirname", "env", "cat", "xargs", "sh", "find", "grep", "tr", "head", "tail", "awk",
@@ -82,9 +82,6 @@ class Escolha(Base):
         rc, out, err = self.roda_script('echo "$SDD_PYTHON_RESOLVIDO"\necho "$PATH"\n')
         self.assertEqual(rc, 0, err)
         resolvido, path = out.splitlines()
-        if WINDOWS:   # F16W2: no Windows o calço vem sempre (UTF-8 e sem \r); a classe Windows abaixo o testa
-            self.assertTrue(path.startswith(resolvido + ":"), (resolvido, path))
-            return
         self.assertEqual(resolvido, "python3")
         self.assertEqual(path, caminho_bash(self.bin) + ":" + caminho_bash(self.ferr))   # o PATH de quem chamou, intacto
 
@@ -294,48 +291,6 @@ class Calco(Base):
         self.stub("python3", "#!/bin/sh\necho do-cache\n", pasta=cache)
         rc, out, err = self.roda_script("python3\n", SDD_PYTHON_RESOLVIDO=str(cache))
         self.assertEqual((rc, out.strip()), (0, "do-cache"), err)
-
-
-class Windows(Base):
-    """F16W2, AT-002: no Windows o calço vem sempre, roda o Python com -X utf8 e tira o \r da saída padrão.
-
-    No Mac, SDD_PYTHON_FORCA_WINDOWS=1 liga o modo; o Python falso escreve "\r\n" como o do Windows."""
-
-    def setUp(self):
-        super().setUp()
-        self.stub("python3", nativo())
-
-    def test_captura_sem_cr_e_exit_do_python(self):
-        rc, out, err = self.roda_script(
-            "v=\"$(python3 -I -c 'import sys; sys.stdout.write(\"VALOR\\r\\nx\\r\\n\"); sys.exit(3)')\"; rc=$?\n"
-            "case \"${v%%$'\\n'*}\" in VALOR) echo casou ;; *) echo nao-casou ;; esac\n"
-            "echo \"rc=${rc}\"\n", SDD_PYTHON_FORCA_WINDOWS="1")
-        self.assertEqual(rc, 0, err)
-        self.assertEqual(out.split(), ["casou", "rc=3"], err)
-
-    def test_menos_I_ainda_sai_em_utf8(self):
-        # -I ignora o PYTHONIOENCODING; o -X utf8 do calço não
-        rc, out, err = self.roda_script(
-            "python3 -I -c 'import sys; print(sys.stdout.encoding); print(\"\u2705 \u00e7\")'\n",
-            SDD_PYTHON_FORCA_WINDOWS="1", PYTHONIOENCODING="cp1252", PYTHONUTF8="0")
-        self.assertEqual(rc, 0, err)
-        self.assertEqual(out.split("\n")[:2], ["utf-8", "\u2705 \u00e7"], err)
-
-    def test_calco_mesmo_com_python3_que_serve_e_entrada_direta(self):
-        rc, out, err = self.roda_script(
-            'echo "$SDD_PYTHON_RESOLVIDO"\nprintf "dado\\n" | python3 -c "import sys; print(sys.stdin.read().strip())"\n',
-            SDD_PYTHON_FORCA_WINDOWS="1")
-        self.assertEqual(rc, 0, err)
-        resolvido, lido = out.split()
-        self.assertNotEqual(resolvido, "python3")
-        self.assertTrue((Path(caminho_nativo(resolvido)) / "python3").is_file())
-        self.assertEqual(lido, "dado")
-
-    def test_fora_do_windows_o_python3_que_serve_segue_sem_calco(self):
-        if WINDOWS:
-            self.skipTest("o caso de fora do Windows")
-        rc, out, err = self.roda_script('echo "$SDD_PYTHON_RESOLVIDO"\n')
-        self.assertEqual((rc, out.strip()), (0, "python3"), err)
 
 
 class Reserva(unittest.TestCase):

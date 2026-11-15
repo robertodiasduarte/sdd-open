@@ -128,6 +128,12 @@ cmd_despachar() {
 # ── núcleo de dados (Python 3.9 stdlib): review-design, loop, seguir, estado ─────────────────────
 nucleo() {
   python3 -B - "$@" <<'PY'
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import fnmatch, os, re, shlex, subprocess, sys
 
 BIN = os.environ["SDD_FLUXO_BIN"]

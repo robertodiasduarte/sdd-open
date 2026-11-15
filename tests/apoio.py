@@ -55,6 +55,7 @@ SEM_PATH_SEM_FERRAMENTA = (WINDOWS, "PATH sem uma ferramenta: no Windows o PATH 
                                     "executável chamado por link não acha as DLLs ao lado), e a pasta traz a ferramenta junto")
 SEM_ARGV_COM_QUEBRA = (WINDOWS, "argumento com quebra de linha: no Windows a linha de comando o parte em dois")
 SEM_PTY = (WINDOWS, "pty: o Windows não tem terminal POSIX (termios)")
+SO_NO_WINDOWS = (WINDOWS, "caminho C:\\…: só o Windows tem letra de unidade")   # para skipUnless
 
 
 def path_restrito(pasta: Path, ferramentas, python: bool = True, ausentes=(), extra=None) -> str:

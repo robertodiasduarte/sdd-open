@@ -117,6 +117,36 @@ class Recusas(Sandbox):
         self.assertIn("[H5] fundo.md: 1 byte(s) NUL", saida)
         self.assertIn("[H5] GRITO.MD: 1 byte(s) NUL", saida)
 
+    def test_commit_grande_com_cor_ligada_acha_o_nul(self):
+        # acima de 40 candidatos o hook usa o git grep do índice; com color.ui=always o nome vinha com códigos ANSI e
+        # nunca casava (raio de impacto da release)
+        self.git(self.p, "config", "color.ui", "always")
+        self.git(self.p, "config", "color.grep", "always")
+        for i in range(45):
+            self.escreve(self.p, "docs/n%02d.md" % i, "limpo %d\n" % i)
+        self.bytes("fundo.md", b"x" * 9000 + b"\x00\n")
+        self.bytes("GRITO.MD", b"a\x00b\n")
+        rc, saida = self.tenta()
+        self.assertEqual(rc, 1, saida)
+        self.assertIn("[H5] fundo.md: 1 byte(s) NUL", saida)
+        self.assertIn("[H5] GRITO.MD: 1 byte(s) NUL", saida)
+
+    def test_nome_com_byte_que_nao_e_utf8_ainda_e_conferido(self):
+        # num terminal UTF-8, o [[ =~ ]] do bash não casava o nome com byte inválido; o hook compara em bytes (LC_ALL=C)
+        r = subprocess.run(["git", "hash-object", "-w", "--stdin"], cwd=str(self.p), env=self.env, input=b"a\x00b\n",
+                           capture_output=True)
+        sha = r.stdout.decode().strip()
+        try:
+            r = subprocess.run([b"git", b"update-index", b"--add", b"--cacheinfo", b"100644," + sha.encode() + b",caf\xe9.MD"],
+                               cwd=str(self.p), env=self.env, capture_output=True)
+        except (OSError, UnicodeError, TypeError):
+            self.skipTest("este sistema não passa nome que não é UTF-8 na linha de comando")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        rc, out, err = self.roda(["git", "commit", "-q", "-m", "t"], self.p, env=dict(self.env, LANG="en_US.UTF-8",
+                                                                                      LC_ALL="en_US.UTF-8"))
+        self.assertEqual(rc, 1, out + err)
+        self.assertIn("[H5] caf", out + err)
+
     def test_utf16_com_bom_e_binario_passam(self):
         self.bytes("planilha.txt", b"\xff\xfea\x00b\x00")
         self.bytes("img.png", b"\x89PNG\x00\x00")
@@ -132,6 +162,8 @@ class Recusas(Sandbox):
         g.write_text('#!/bin/sh\ncase "$1" in grep) echo "fatal: sem PCRE" >&2; exit 128 ;; esac\n'
                      "exec '%s' \"$@\"\n" % caminho_bash(shutil.which("git")), encoding="utf-8")
         g.chmod(0o755)
+        for i in range(45):   # acima de 40 candidatos: o hook tenta o git grep, que aqui diz "sem PCRE"
+            self.escreve(self.p, "docs/n%02d.md" % i, "limpo %d\n" % i)
         self.bytes("a.md", b"a\x00b\n")
         self.bytes("u16.txt", b"\xfe\xff\x00a")
         self.bytes("script", b"#!/bin/sh\n\x00\n")

@@ -45,6 +45,12 @@ fi
 
 SDD_DRIVE_BIN="$BIN" SDD_DRIVE_SELF="$0" SDD_DRIVE_BASH="${BASH:-bash}" python3 -I -B - ${1+"$@"} <<'PY'
 from __future__ import annotations
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 
 import datetime
 import errno

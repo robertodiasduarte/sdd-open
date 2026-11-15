@@ -93,6 +93,7 @@ canon() { # realpath: resolve link de pasta E de arquivo; o trecho que ainda nã
 estado_git() { # $1 raiz
   python3 -c '
 import hashlib, os, subprocess, sys
+sys.stdout.reconfigure(newline="\n")   # F16W2: sem "\r" no Windows (o snapshot é comparado linha a linha)
 wt = sys.argv[1]
 def git(*a):
     r = subprocess.run(["git", "-C", wt] + list(a), capture_output=True)
@@ -180,6 +181,7 @@ case "${1:-}" in
     # ilegível recusa o snapshot inteiro (nunca vira hash vazio)
     sort -u "${lista}" | python3 -c '
 import hashlib, os, sys
+sys.stdout.reconfigure(newline="\n")   # F16W2: sem "\r" no Windows (o caminho do snapshot é casado com o permitido)
 wt = sys.argv[1]
 saida = []
 def barra(c):   # F16W2: a mesma forma do canon (no Windows, C:/…)

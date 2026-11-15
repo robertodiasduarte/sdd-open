@@ -42,6 +42,23 @@ class Guarda(unittest.TestCase):
                 self.assertIn("_canal." + TRECHO, linhas[2], rel)
 
 
+class GuardaEmbutidos(unittest.TestCase):
+    def test_todo_python_embutido_num_script_troca_a_saida(self):
+        # F16W2 (revisão da Decision 2): o UTF-8 e o "\n" vão no próprio programa embutido, não num calço no PATH (que
+        # vazaria para o comando de teste do aluno)
+        vistos = 0
+        for rel in (RAIZ / "MANIFEST.txt").read_text(encoding="utf-8").split("\n"):
+            rel = rel.strip()
+            if not rel.endswith(".sh") or rel.startswith(("tests/", "sdd/fixtures/", "scripts/starter/")):
+                continue
+            texto = (RAIZ / rel).read_text(encoding="utf-8")
+            for m in re.finditer(r"<<'PY'[^\n]*\n(.*?)\nPY\n", texto, re.S):
+                vistos += 1
+                with self.subTest(script=rel, inicio=m.group(1)[:40]):
+                    self.assertIn('_sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\\n")', m.group(1)[:1200])
+        self.assertGreaterEqual(vistos, 20)
+
+
 class SaidaCp1252(Sandbox):
     """Cada script, chamado como o aluno chama, com a saída em cp1252: o caractere sai inteiro e o exit é o de sempre."""
 
