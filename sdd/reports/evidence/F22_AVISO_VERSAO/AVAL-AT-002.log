@@ -1,0 +1,60 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/at002.sh
+
+$ pkg_atual "$T/pkg" && cat "$T/pkg/VERSION"
+v2.16.1-7-g258287d
+[rc=0]
+
+$ novo_proj "$T/proj" && cd "$T/proj" && bash "$T/pkg/bin/sdd-open.sh" init --vendors claude,codex --yes >"$T/init1.out" 2>&1; echo "rc_init=$?"; tail -3 "$T/init1.out"
+rc_init=0
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+[rc=0]
+
+$ head -4 sdd/open-instalado.txt; grep -cE "^[0-9a-f]{64}  " sdd/open-instalado.txt
+# Registro do SDD Open: a versão instalada e a impressão (sha256) de cada arquivo que veio do pacote.
+# Gravado pelo init (1ª instalação) e pelo upgrade. Não edite; apagar faz o próximo upgrade pedir --de.
+versao: v2.16.1-7-g258287d
+0bf3a4b53e9c88c5ae3d2b4e827838491ee42029eb5ab279836cb6a2a1be4f2a  .agents/skills/sdd-auditoria-harness/SKILL.md
+249
+[rc=0]
+### conjunto esperado, calculado à parte do MANIFEST.txt (skills .agents/skills/ + sdd/ do pacote, sem config.yaml e fixtures/)
+
+$ /usr/bin/python3 -I "$T/confere.py" "$T/pkg" "$T/proj"
+esperados(MANIFEST): 250  no registro: 249
+no MANIFEST e fora do registro: ['sdd/config.example.yaml']
+no registro e fora do conjunto esperado: []
+entradas de sdd/ no MANIFEST: ['WORKFLOW_CONTRACTS.yaml', 'bin', 'config.example.yaml', 'fixtures', 'hooks', 'invariants.md', 'patterns', 'playbook.md', 'review', 'templates']
+impressões que NÃO batem com o arquivo do pacote: []
+impressões que NÃO batem com o arquivo instalado no projeto: []
+[rc=0]
+
+$ grep -c "open-instalado" "$T/pkg/MANIFEST.txt"; git status --short sdd/open-instalado.txt
+0
+?? sdd/open-instalado.txt
+[rc=0]
+### 2º init: registro byte a byte igual
+
+$ cp sdd/open-instalado.txt "$T/reg1" && bash "$T/pkg/bin/sdd-open.sh" init --vendors claude,codex --yes >"$T/init2.out" 2>&1; echo "rc_init2=$?"; cmp "$T/reg1" sdd/open-instalado.txt && echo IGUAL
+rc_init2=0
+IGUAL
+[rc=0]
+### 2º init com OUTRO pacote (VERSION v9.9.9): registro continua igual
+
+$ cp -R "$T/pkg" "$T/pkg9" && echo v9.9.9 > "$T/pkg9/VERSION" && bash "$T/pkg9/bin/sdd-open.sh" init --vendors claude --yes >"$T/init3.out" 2>&1; echo "rc_init3=$?"; cmp "$T/reg1" sdd/open-instalado.txt && echo IGUAL
+rc_init3=0
+IGUAL
+[rc=0]
+### init num projeto que já tem sdd/ (sem registro): o registro continua ausente
+
+$ novo_proj "$T/proj2" && cd "$T/proj2" && mkdir -p sdd/features && echo "x" > sdd/features/NOTA.md && bash "$T/pkg/bin/sdd-open.sh" init --vendors claude --yes >"$T/init4.out" 2>&1; echo "rc_init4=$?"; ls sdd/open-instalado.txt 2>&1
+rc_init4=0
+ls: sdd/open-instalado.txt: No such file or directory
+[rc=1]
+### init --dry-run numa pasta sem sdd/: não grava o registro
+
+$ novo_proj "$T/proj3" && cd "$T/proj3" && bash "$T/pkg/bin/sdd-open.sh" init --vendors claude --dry-run >/dev/null 2>&1; echo "rc=$?"; ls sdd 2>&1 | head -2
+rc=0
+ls: sdd: No such file or directory
+[rc=0]
+rc=0

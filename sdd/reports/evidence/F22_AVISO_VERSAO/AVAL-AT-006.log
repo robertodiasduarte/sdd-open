@@ -1,0 +1,243 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/at006.sh
+
+$ pkg_atual "$T/novo" && cat "$T/novo/VERSION" && mkdir "$T/velho" && git -C "$P" archive --prefix=sdd-open-v2.12.1/ v2.12.1 | tar -x -C "$T/velho" && ls "$T/velho/sdd-open-v2.12.1/VERSION" 2>&1
+v2.16.1-7-g258287d
+ls: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.NfVXTp/velho/sdd-open-v2.12.1/VERSION: No such file or directory
+[rc=1]
+### instalação v2.12.1 (init do pacote antigo), commitada
+
+$ novo_proj "$T/proj" && cd "$T/proj" && bash "$V/bin/sdd-open.sh" init --vendors claude,codex --yes >"$T/init-velho.out" 2>&1; echo rc_init_velho=$?; ls sdd/open-instalado.txt 2>&1; git add -A && git commit -qm "instala sdd-open v2.12.1" && git log --oneline | head -2
+rc_init_velho=0
+ls: sdd/open-instalado.txt: No such file or directory
+53f490a instala sdd-open v2.12.1
+a8981f0 init
+[rc=0]
+### 3 arquivos do pacote editados no projeto (escolhidos entre os que mudaram de v2.12.1 para o pacote novo) e commitados
+
+$ for f in .agents/skills/sdd-build/SKILL.md sdd/playbook.md .agents/skills/sdd-release/SKILL.md; do cmp -s "$V/$f" "$T/novo/$f" && echo "IGUAL entre versões: $f" || echo "muda entre versões: $f"; printf "\nLINHA EDITADA PELO ALUNO\n" >> "$f"; done; git commit -qam "edições locais"; for f in .agents/skills/sdd-build/SKILL.md sdd/playbook.md .agents/skills/sdd-release/SKILL.md; do shasum -a 256 "$f"; done > "$T/editados.antes"; cat "$T/editados.antes"
+muda entre versões: .agents/skills/sdd-build/SKILL.md
+muda entre versões: sdd/playbook.md
+muda entre versões: .agents/skills/sdd-release/SKILL.md
+c18be35bd2702d9f8b66b9c720090768bf990711b563979cdb09cc29795f9148  .agents/skills/sdd-build/SKILL.md
+5278318901c41850356ee790e95d985eb3073d86be4af8df1738c30cedb85000  sdd/playbook.md
+2f70531916b5335dc7e7d8e46890c923a8054526566bce5b840791eaf328d001  .agents/skills/sdd-release/SKILL.md
+[rc=0]
+### um arquivo do projeto que NÃO é do pacote, e uma mudança não commitada fora do pacote
+
+$ echo meu > notas.txt && echo "x" >> AGENTS.md; git status --short
+ M AGENTS.md
+?? notas.txt
+[rc=0]
+
+$ gitstate "$T/proj" > "$T/git.antes"; cat "$T/git.antes"; git status --porcelain > "$T/status.antes"
+514fe0ddf97b8b808012cfef0ab12f831c8181e8
+       3
+48e51049fa16b204f844471a298315560303b264295013fbb70c4979a419c46b  -
+e2fa75d6ad02ef3826928de22214d46dd86d8d2b40d2831639900411f55bb171  .git/index
+[rc=0]
+### (1) --dry-run: mostra o plano e não escreve
+
+$ snap "$T/proj" "$T/snap.antes"; bash "$T/novo/bin/sdd-open.sh" upgrade --de "$V" --dry-run > "$T/dry.out" 2>&1; echo rc_dry=$?; snap "$T/proj" "$T/snap.dry"; cmp "$T/snap.antes" "$T/snap.dry" && echo "ÁRVORE IGUAL após --dry-run"; head -40 "$T/dry.out"; echo ...; tail -15 "$T/dry.out"
+rc_dry=0
+ÁRVORE IGUAL após --dry-run
+▶ upgrade v2.12.1 → v2.16.1-7-g258287d — plano
+= 122 iguais ao pacote novo (nada a fazer)
++ 47 novos (copiar)
+    .agents/skills/sdd-build/web/MODO_WEB.md
+    .agents/skills/sdd-build/web/assets/BUILD_REPORT_TEMPLATE.md
+    .agents/skills/sdd-build/web/assets/PROGRESS_TEMPLATE.md
+    .agents/skills/sdd-build/web/assets/WORKER_BRIEF_TEMPLATE.md
+    .agents/skills/sdd-build/web/references/aplicar-migration.md
+    .agents/skills/sdd-build/web/references/build-protocol.md
+    .agents/skills/sdd-build/web/references/como-falar.md
+    .agents/skills/sdd-build/web/references/execution-modes.md
+    .agents/skills/sdd-build/web/references/llm-prompt-gate.md
+    .agents/skills/sdd-build/web/references/retry-and-advisor.md
+    e mais 37
+~ 77 do pacote, sem edição sua (atualizar)
+    .agents/skills/sdd-auditoria-harness/SKILL.md
+    .agents/skills/sdd-auditoria-harness/references/AUDIT_PROTOCOL.md
+    .agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py
+    .agents/skills/sdd-brainstorm/SKILL.md
+    .agents/skills/sdd-checar-ambiente/SKILL.md
+    .agents/skills/sdd-checar-ambiente/scripts/checar.sh
+    .agents/skills/sdd-define/SKILL.md
+    .agents/skills/sdd-design/SKILL.md
+    .agents/skills/sdd-engenharia-reversa-saas/CHANGELOG.md
+    .agents/skills/sdd-engenharia-reversa-saas/SKILL.md
+    e mais 67
+⚠️  3 editados por você — não serão tocados
+    .agents/skills/sdd-build/SKILL.md
+    .agents/skills/sdd-release/SKILL.md
+    sdd/playbook.md
++ sdd/open-instalado.txt (registro da versão v2.16.1-7-g258287d)
+Nada que você editou será tocado. Nada será commitado.
+RESULTADO: DRY-RUN
+→ nada foi escrito; rode sem --dry-run para aplicar.
+...
+    .agents/skills/sdd-checar-ambiente/SKILL.md
+    .agents/skills/sdd-checar-ambiente/scripts/checar.sh
+    .agents/skills/sdd-define/SKILL.md
+    .agents/skills/sdd-design/SKILL.md
+    .agents/skills/sdd-engenharia-reversa-saas/CHANGELOG.md
+    .agents/skills/sdd-engenharia-reversa-saas/SKILL.md
+    e mais 67
+⚠️  3 editados por você — não serão tocados
+    .agents/skills/sdd-build/SKILL.md
+    .agents/skills/sdd-release/SKILL.md
+    sdd/playbook.md
++ sdd/open-instalado.txt (registro da versão v2.16.1-7-g258287d)
+Nada que você editou será tocado. Nada será commitado.
+RESULTADO: DRY-RUN
+→ nada foi escrito; rode sem --dry-run para aplicar.
+[rc=0]
+### (2) sem --yes e sem terminal (stdin fechado): não aplica
+
+$ bash "$T/novo/bin/sdd-open.sh" upgrade --de "$V" </dev/null > "$T/semyes.out" 2>&1; echo rc_semyes=$?; tail -4 "$T/semyes.out"; snap "$T/proj" "$T/snap.semyes"; cmp "$T/snap.antes" "$T/snap.semyes" && echo "ÁRVORE IGUAL sem OK"
+rc_semyes=0
++ sdd/open-instalado.txt (registro da versão v2.16.1-7-g258287d)
+Nada que você editou será tocado. Nada será commitado.
+RESULTADO: CANCELADO
+→ nenhum arquivo foi escrito; sem terminal interativo, use --yes para aplicar.
+ÁRVORE IGUAL sem OK
+[rc=0]
+### (3) upgrade --de <pacote v2.12.1> --yes
+
+$ bash "$T/novo/bin/sdd-open.sh" upgrade --de "$V" --yes > "$T/up.out" 2>&1; echo rc_upgrade=$?; cat "$T/up.out" | grep -v "^  *[=+~] \.claude/\|^  *[=+~] \.codex/" | head -150
+rc_upgrade=0
+▶ upgrade v2.12.1 → v2.16.1-7-g258287d — plano
+= 122 iguais ao pacote novo (nada a fazer)
++ 47 novos (copiar)
+    .agents/skills/sdd-build/web/MODO_WEB.md
+    .agents/skills/sdd-build/web/assets/BUILD_REPORT_TEMPLATE.md
+    .agents/skills/sdd-build/web/assets/PROGRESS_TEMPLATE.md
+    .agents/skills/sdd-build/web/assets/WORKER_BRIEF_TEMPLATE.md
+    .agents/skills/sdd-build/web/references/aplicar-migration.md
+    .agents/skills/sdd-build/web/references/build-protocol.md
+    .agents/skills/sdd-build/web/references/como-falar.md
+    .agents/skills/sdd-build/web/references/execution-modes.md
+    .agents/skills/sdd-build/web/references/llm-prompt-gate.md
+    .agents/skills/sdd-build/web/references/retry-and-advisor.md
+    e mais 37
+~ 77 do pacote, sem edição sua (atualizar)
+    .agents/skills/sdd-auditoria-harness/SKILL.md
+    .agents/skills/sdd-auditoria-harness/references/AUDIT_PROTOCOL.md
+    .agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py
+    .agents/skills/sdd-brainstorm/SKILL.md
+    .agents/skills/sdd-checar-ambiente/SKILL.md
+    .agents/skills/sdd-checar-ambiente/scripts/checar.sh
+    .agents/skills/sdd-define/SKILL.md
+    .agents/skills/sdd-design/SKILL.md
+    .agents/skills/sdd-engenharia-reversa-saas/CHANGELOG.md
+    .agents/skills/sdd-engenharia-reversa-saas/SKILL.md
+    e mais 67
+⚠️  3 editados por você — não serão tocados
+    .agents/skills/sdd-build/SKILL.md
+    .agents/skills/sdd-release/SKILL.md
+    sdd/playbook.md
++ sdd/open-instalado.txt (registro da versão v2.16.1-7-g258287d)
+Nada que você editou será tocado. Nada será commitado.
+✅ copiados: 47 novo(s) e 77 do pacote sem edição sua · registro sdd/open-instalado.txt na v2.16.1-7-g258287d
+✅ adaptadores regenerados (sync)
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.NfVXTp/proj
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.15
+✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+ℹ️  versão nova: checagem desligada (SDD_OPEN_CHECK_UPDATES=0 no ambiente)
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 22 skill(s) do pacote
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+⚠️  sdd-build 2.9.0 no projeto, 2.10.1 no pacote — a skill tem edição sua, que o upgrade não toca: a do pacote está em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.NfVXTp/novo/.agents/skills/sdd-build/ para comparar; para voltar à do pacote, apague o arquivo editado e rode o upgrade
+⚠️  sdd-release 2.11.0 no projeto, 2.13.0 no pacote — a skill tem edição sua, que o upgrade não toca: a do pacote está em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.NfVXTp/novo/.agents/skills/sdd-release/ para comparar; para voltar à do pacote, apague o arquivo editado e rode o upgrade
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+⚠️  .agents/skills/sdd-build/SKILL.md — editado por você; a versão nova está em sdd/upgrade/v2.16.1-7-g258287d/.agents/skills/sdd-build/SKILL.md.novo e o que mudou em sdd/upgrade/v2.16.1-7-g258287d/.agents/skills/sdd-build/SKILL.md.diff
+⚠️  .agents/skills/sdd-release/SKILL.md — editado por você; a versão nova está em sdd/upgrade/v2.16.1-7-g258287d/.agents/skills/sdd-release/SKILL.md.novo e o que mudou em sdd/upgrade/v2.16.1-7-g258287d/.agents/skills/sdd-release/SKILL.md.diff
+⚠️  sdd/playbook.md — editado por você; a versão nova está em sdd/upgrade/v2.16.1-7-g258287d/sdd/playbook.md.novo e o que mudou em sdd/upgrade/v2.16.1-7-g258287d/sdd/playbook.md.diff
+RESULTADO: ATUALIZADO, 3 PARA MESCLAR
+→ confira com git status e commite numa frente (o upgrade não commita); os arquivos para mesclar ficam em sdd/upgrade/v2.16.1-7-g258287d/ para quando quiser, e a pasta pode ser apagada depois (não precisa ir para o git).
+[rc=0]
+### conferências
+
+$ shasum -a 256 -c "$T/editados.antes" && echo "OS 3 EDITADOS NÃO MUDARAM"
+.agents/skills/sdd-build/SKILL.md: OK
+sdd/playbook.md: OK
+.agents/skills/sdd-release/SKILL.md: OK
+OS 3 EDITADOS NÃO MUDARAM
+[rc=0]
+
+$ gitstate "$T/proj" > "$T/git.depois"; diff "$T/git.antes" "$T/git.depois" && echo "HEAD, nº de commits e índice do git IGUAIS"
+HEAD, nº de commits e índice do git IGUAIS
+[rc=0]
+
+$ git status --porcelain | grep -v "^??" | grep -v "^ M \.agents/skills\|^ M sdd/\|^ M \.claude/\|^ M \.codex/\|^ M AGENTS.md\|^ M CLAUDE.md" || echo "nenhum caminho alterado fora de .agents/skills, sdd/ e adaptadores"; git status --porcelain | grep "^??"
+nenhum caminho alterado fora de .agents/skills, sdd/ e adaptadores
+?? .agents/skills/sdd-build/web/
+?? .agents/skills/sdd-define/web/
+?? .agents/skills/sdd-design/web/
+?? .agents/skills/sdd-handoff/assets/
+?? .agents/skills/sdd-release/references/MODO_INICIANTE.md
+?? .agents/skills/ux-review-builder/
+?? .claude/skills/sdd-build/web/
+?? .claude/skills/sdd-define/web/
+?? .claude/skills/sdd-design/web/
+?? .claude/skills/sdd-handoff/assets/
+?? .claude/skills/sdd-release/references/MODO_INICIANTE.md
+?? .claude/skills/ux-review-builder/
+?? notas.txt
+?? sdd/bin/versao-nova.sh
+?? sdd/open-instalado.txt
+?? sdd/upgrade/
+[rc=0]
+
+$ cat notas.txt; tail -1 AGENTS.md
+meu
+x
+[rc=0]
+
+$ /usr/bin/python3 -I "$T/confere.py" "$T/novo" "$T/proj" "$V" .agents/skills/sdd-build/SKILL.md sdd/playbook.md .agents/skills/sdd-release/SKILL.md
+instaláveis do pacote novo: 249 | fora os 3 editados, diferentes do pacote novo: []
+editados == pacote novo? (esperado False): [False, False, False]
+arquivos do pacote antigo que saíram do novo: 0 | ainda presentes no projeto: 0
+registro: versao: v2.16.1-7-g258287d
+registro: linhas 249 | conjunto == instaláveis novos: True
+registro bate com o pacote novo em todos: True
+[rc=0]
+### a pasta dos diffs que o upgrade nomeou
+
+$ pasta=$(grep -oE "sdd/[^ ]*upgrade[^ ]*" "$T/up.out" | head -1); echo "pasta citada: $pasta"; find "${pasta%/}" -type f 2>/dev/null | head; for f in $(find "${pasta%/}" -type f 2>/dev/null | head -6); do echo "== $f"; grep -n "ALUNO" "$f" | head -3; head -4 "$f"; done
+pasta citada: sdd/upgrade/v2.16.1-7-g258287d/.agents/skills/sdd-build/SKILL.md.novo
+sdd/upgrade/v2.16.1-7-g258287d/.agents/skills/sdd-build/SKILL.md.novo
+== sdd/upgrade/v2.16.1-7-g258287d/.agents/skills/sdd-build/SKILL.md.novo
+---
+name: sdd-build
+description: Fase 3 do SDD Open — executa o manifest do DESIGN arquivo a arquivo com verificação incremental, trata o Verify Gate do DEFINE como bloqueante, exige evidência abrível para cada critério (nunca "deve funcionar"), recomenda review de segundo vendor e avaliação em contexto fresco, e grava sdd/reports/BUILD_REPORT_{FEATURE}.md. Use quando o DESIGN estiver pronto ou o usuário disser /sdd-build.
+compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda sdd/bin/verify-gate.sh como critério de parada.
+[rc=0]
+### doctor depois (não acusa difere do pacote para nenhum copiado)
+
+$ bash "$T/novo/bin/sdd-open.sh" doctor > "$T/doc.out" 2>&1; echo rc_doctor=$?; grep -nE "difere|vers|em dia|editad|RESULTADO" "$T/doc.out"
+rc_doctor=0
+1:▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.NfVXTp/proj
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: checagem desligada (SDD_OPEN_CHECK_UPDATES=0 no ambiente)
+11:⚠️  sdd-build 2.9.0 no projeto, 2.10.1 no pacote — a skill tem edição sua, que o upgrade não toca: a do pacote está em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.NfVXTp/novo/.agents/skills/sdd-build/ para comparar; para voltar à do pacote, apague o arquivo editado e rode o upgrade
+12:⚠️  sdd-release 2.11.0 no projeto, 2.13.0 no pacote — a skill tem edição sua, que o upgrade não toca: a do pacote está em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.NfVXTp/novo/.agents/skills/sdd-release/ para comparar; para voltar à do pacote, apague o arquivo editado e rode o upgrade
+14:RESULTADO: DIAGNÓSTICO CONCLUÍDO
+[rc=0]
+### (4) 2º upgrade sem --de (registro já é da versão nova): em dia, os editados continuam listados?
+
+$ bash "$T/novo/bin/sdd-open.sh" upgrade --yes > "$T/up2.out" 2>&1; echo rc_upgrade2=$?; tail -12 "$T/up2.out"; shasum -a 256 -c "$T/editados.antes" >/dev/null && echo "editados intactos"
+rc_upgrade2=0
+▶ upgrade v2.16.1-7-g258287d → v2.16.1-7-g258287d — plano
+= 246 iguais ao pacote novo (nada a fazer)
+⚠️  3 editados por você — não serão tocados
+    .agents/skills/sdd-build/SKILL.md
+    .agents/skills/sdd-release/SKILL.md
+    sdd/playbook.md
+RESULTADO: EM DIA
+→ nada a fazer: o projeto já tem tudo o que o pacote v2.16.1-7-g258287d entrega.
+editados intactos
+[rc=0]
+rc=0

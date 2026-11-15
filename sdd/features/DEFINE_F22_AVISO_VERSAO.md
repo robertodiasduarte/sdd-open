@@ -10,7 +10,7 @@
 | **Feature** | F22_AVISO_VERSAO |
 | **Date** | 2026-11-14 (v1.0) |
 | **Author** | define-agent (worktree `sdd-open-f22-aviso-versao`; branch `feat/f22-aviso-versao`, de `origin/main` `ad32fe1` = `v2.16.0`) |
-| **Status** | Ready for UX Review |
+| **Status** | Ready for Design (UX review e DESIGN feitos) |
 | **Clarity Score** | 14/15 |
 | **Entrada** | `sdd/features/BRAINSTORM_F22_AVISO_VERSAO.md` (abordagem A) |
 

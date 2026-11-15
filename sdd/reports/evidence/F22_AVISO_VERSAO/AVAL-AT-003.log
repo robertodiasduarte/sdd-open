@@ -1,0 +1,93 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/at003.sh
+
+$ pkg_atual "$T/pkg" && novo_proj "$T/proj" && cd "$T/proj" && bash "$T/pkg/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; echo rc_init=$?; grep ^versao: sdd/open-instalado.txt
+rc_init=0
+versao: v2.16.1-7-g258287d
+[rc=0]
+
+$ mkremoto "$T/remoto-novo" v2.15.0 v2.16.1 v2.17.0 v2.16.10 && mkremoto "$T/remoto-igual" v2.15.0 v2.16.1 v2.9.99
+[rc=0]
+### (a) remoto com tag maior => aviso
+
+$ SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/remoto-novo" doc
+1:▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/proj
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:⚠️  saiu a v2.17.0 (seu projeto está na v2.16.1) — veja como atualizar: https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.17.0
+5:→ baixe o pacote em https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.17.0, depois bash <pasta do pacote novo>/bin/sdd-open.sh upgrade --dry-run (mostra o plano sem escrever)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+### (b) remoto sem tag maior => em dia
+
+$ SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/remoto-igual" doc
+1:▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/proj
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d · última publicada v2.16.1
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+### (c) checagem desligada pela variável (referência de exit)
+
+$ SDD_OPEN_CHECK_UPDATES=0 SDD_OPEN_REMOTO="$T/remoto-novo" doc
+1:▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/proj
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: checagem desligada (SDD_OPEN_CHECK_UPDATES=0 no ambiente)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+### (d) sem registro: compara com a versão do pacote
+
+$ mv sdd/open-instalado.txt "$T/reg.bak" && SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/remoto-novo" doc; SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/remoto-igual" doc; mv "$T/reg.bak" sdd/open-instalado.txt
+1:▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/proj
+3:ℹ️  versão: projeto sem registro de versão (instalado antes da v2.17.0, ou o registro foi apagado) · pacote v2.16.1-7-g258287d — o 1º upgrade pede --de <a versão que o projeto tem>
+4:⚠️  saiu a v2.17.0 (este pacote está na v2.16.1; a versão do projeto não está registrada) — veja como atualizar: https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.17.0
+5:→ baixe o pacote em https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.17.0, depois bash <pasta do pacote novo>/bin/sdd-open.sh upgrade --dry-run (mostra o plano sem escrever)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+1:▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/proj
+3:ℹ️  versão: projeto sem registro de versão (instalado antes da v2.17.0, ou o registro foi apagado) · pacote v2.16.1-7-g258287d · última publicada v2.16.1 — o 1º upgrade pede --de <a versão que o projeto tem>
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+### (e) tags hostis/fora da forma vX.Y.Z são ignoradas e nunca executadas
+
+$ mkremoto "$T/remoto-hostil" v2.16.1 "v99.0.0-rc1" "v98.0.0x" "v97.0.0\$(touch\${IFS}$T/PWNED)" "v96.0" "x9.9.9" && git -C "$T/remoto-hostil" tag -l
+v2.16.1
+v96.0
+v97.0.0$(touch${IFS}/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/PWNED)
+v98.0.0x
+v99.0.0-rc1
+x9.9.9
+[rc=0]
+
+$ SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/remoto-hostil" doc; ls "$T/PWNED" 2>&1
+1:▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/proj
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d · última publicada v2.16.1
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+ls: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/PWNED: No such file or directory
+[rc=1]
+### (f) a consulta não leva configuração do projeto nem a global (insteadOf -> espião) e não envia dado do projeto
+
+$ printf "#!/bin/sh\necho \"ESPIAO chamado: \$*\" >> %s/espiao.log\nexit 1\n" "$T" > "$T/espiao.sh" && chmod +x "$T/espiao.sh"
+[rc=0]
+
+$ git config url."ssh://espiao/x".insteadOf "$T/remoto-novo" && printf "[url \"ssh://espiao/y\"]\n\tinsteadOf = %s/remoto-novo\n" "$T" > "$T/gc-global" && GIT_CONFIG_GLOBAL="$T/gc-global" GIT_SSH_COMMAND="$T/espiao.sh" SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/remoto-novo" doc; cat "$T/espiao.log" 2>&1; git config --unset url."ssh://espiao/x".insteadOf
+1:▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/proj
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:⚠️  saiu a v2.17.0 (seu projeto está na v2.16.1) — veja como atualizar: https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.17.0
+5:→ baixe o pacote em https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.17.0, depois bash <pasta do pacote novo>/bin/sdd-open.sh upgrade --dry-run (mostra o plano sem escrever)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+cat: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/espiao.log: No such file or directory
+[rc=0]
+
+$ GIT_SSH_COMMAND="$T/espiao.sh" SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="ssh://espiao/sdd-open.git" doc; cat "$T/espiao.log"
+1:▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.VLOwDu/proj
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: não conferida — o endereço recusou a consulta (o resto do diagnóstico vale)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+ESPIAO chamado: -G -o SendEnv=GIT_PROTOCOL espiao
+ESPIAO chamado: espiao git-upload-pack '/sdd-open.git'
+[rc=0]
+rc=0

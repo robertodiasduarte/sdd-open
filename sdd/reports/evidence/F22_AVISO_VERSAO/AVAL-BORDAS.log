@@ -1,0 +1,80 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/bordas.sh
+
+$ pkg_atual "$T/base" && mkdir -p "$T/pacotes com espaço" && cp -R "$T/base" "$T/pacotes com espaço/sdd-open-A" && echo v3.0.0 > "$T/pacotes com espaço/sdd-open-A/VERSION" && cp -R "$T/base" "$T/pacotes com espaço/sdd-open-B" && echo v3.1.0 > "$T/pacotes com espaço/sdd-open-B/VERSION" && printf "\nB\n" >> "$T/pacotes com espaço/sdd-open-B/.agents/skills/sdd-define/SKILL.md" && printf "\nB\n" >> "$T/pacotes com espaço/sdd-open-B/.agents/skills/sdd-design/SKILL.md"
+[rc=0]
+### (1) projeto e pacote em pastas com espaço e acento; upgrade rodado de uma SUBPASTA do projeto
+
+$ novo_proj "$T/meu projeto ç" && cd "$T/meu projeto ç" && bash "$A/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; echo rc_init=$?; printf "\nEDITADO\n" >> .agents/skills/sdd-design/SKILL.md; git add -A; git commit -qm i; mkdir -p sub/dir && cd sub/dir
+rc_init=0
+[rc=0]
+
+$ N=8 up "$B" --yes; cd "$T/meu projeto ç"; grep ^versao: sdd/open-instalado.txt; cmp -s .agents/skills/sdd-define/SKILL.md "$B/.agents/skills/sdd-define/SKILL.md" && echo "define atualizado"; grep -c EDITADO .agents/skills/sdd-design/SKILL.md; find sdd/upgrade -type f | sort; ls sub/dir
+✅ .agents/skills/ com 22 skill(s) do pacote
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+⚠️  .agents/skills/sdd-design/SKILL.md — editado por você; a versão nova está em sdd/upgrade/v3.1.0/.agents/skills/sdd-design/SKILL.md.novo e o que mudou em sdd/upgrade/v3.1.0/.agents/skills/sdd-design/SKILL.md.diff
+RESULTADO: ATUALIZADO, 1 PARA MESCLAR
+→ confira com git status e commite numa frente (o upgrade não commita); os arquivos para mesclar ficam em sdd/upgrade/v3.1.0/ para quando quiser, e a pasta pode ser apagada depois (não precisa ir para o git).
+exit_upgrade=0
+versao: v3.1.0
+define atualizado
+1
+sdd/upgrade/v3.1.0/.agents/skills/sdd-design/SKILL.md.diff
+sdd/upgrade/v3.1.0/.agents/skills/sdd-design/SKILL.md.novo
+[rc=0]
+### (2) --de com pacote mais velho que o registro existente: não rebaixa
+
+$ cp sdd/open-instalado.txt "$T/reg"; up "$B" --de "$A" --yes; cmp sdd/open-instalado.txt "$T/reg" && echo "registro igual"
+✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+⚠️  .agents/skills/sdd-design/SKILL.md — editado por você; a versão nova está em sdd/upgrade/v3.1.0/.agents/skills/sdd-design/SKILL.md.novo e o que mudou em sdd/upgrade/v3.1.0/.agents/skills/sdd-design/SKILL.md.diff
+RESULTADO: ATUALIZADO, 1 PARA MESCLAR
+→ confira com git status e commite numa frente (o upgrade não commita); os arquivos para mesclar ficam em sdd/upgrade/v3.1.0/ para quando quiser, e a pasta pode ser apagada depois (não precisa ir para o git).
+exit_upgrade=0
+registro igual
+[rc=0]
+### (3) registro com CRLF (como sairia de um checkout Windows com autocrlf): upgrade lê igual
+
+$ novo_proj "$T/p-crlf" && cd "$T/p-crlf" && bash "$A/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; sed -i "" "s/\$/$(printf "\r")/" sdd/open-instalado.txt && head -3 sdd/open-instalado.txt | od -c | sed -n "1,3p"; N=5 up "$B" --dry-run
+0000000    #       R   e   g   i   s   t   r   o       d   o       S   D
+0000020    D       O   p   e   n   :       a       v   e   r   s   ã  **
+0000040    o       i   n   s   t   a   l   a   d   a       e       a    
+~ 2 do pacote, sem edição sua (atualizar)
+~ sdd/open-instalado.txt (registro: v3.0.0 → v3.1.0)
+Nada que você editou será tocado. Nada será commitado.
+RESULTADO: DRY-RUN
+→ nada foi escrito; rode sem --dry-run para aplicar.
+exit_upgrade=0
+[rc=0]
+### (4) projeto instalado por build de clone (v3.0.0-2-gabc) e pacote da Release v3.0.0: mais velho => recusa; pacote v3.0.1 => segue
+
+$ cp -R "$T/base" "$T/sdd-open-dev" && echo v3.0.0-2-gabcdef0 > "$T/sdd-open-dev/VERSION" && novo_proj "$T/p-dev" && cd "$T/p-dev" && bash "$T/sdd-open-dev/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; grep ^versao: sdd/open-instalado.txt; up "$A" --dry-run; cp -R "$T/base" "$T/sdd-open-v301" && echo v3.0.1 > "$T/sdd-open-v301/VERSION" && N=4 up "$T/sdd-open-v301" --dry-run
+versao: v3.0.0-2-gabcdef0
+🛑 este pacote (v3.0.0) é mais velho que o projeto (v3.0.0-2-gabcdef0)
+RESULTADO: ERRO
+→ rode o upgrade do pacote mais novo: o upgrade não rebaixa; nada foi escrito
+exit_upgrade=64
+~ sdd/open-instalado.txt (registro: v3.0.0-2-gabcdef0 → v3.0.1)
+Nada que você editou será tocado. Nada será commitado.
+RESULTADO: DRY-RUN
+→ nada foi escrito; rode sem --dry-run para aplicar.
+exit_upgrade=0
+[rc=0]
+### (5) versão nova: projeto em build de clone v2.16.1-7-g… e remoto com v2.16.1 → em dia; com v2.16.2 → aviso
+
+$ mkdir "$T/r" && git -C "$T/r" init -q && git -C "$T/r" commit -q --allow-empty -m r && git -C "$T/r" tag v2.16.1 && cd "$T/p-dev" && SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/r" bash sdd/bin/versao-nova.sh --atual v2.16.1-7-g258287d; echo exit=$?; git -C "$T/r" tag v2.16.2; SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/r" bash sdd/bin/versao-nova.sh --atual v2.16.1-7-g258287d; echo exit=$?
+✅ versão: em dia — a última publicada é v2.16.1
+exit=0
+⚠️  saiu a v2.16.2 (este projeto está na v2.16.1)
+exit=10
+[rc=0]
+### (6) tag com número grande e com zero à esquerda no remoto
+
+$ git -C "$T/r" tag v2.16.010 && git -C "$T/r" tag v10.0.0 && SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/r" bash sdd/bin/versao-nova.sh --atual v9.99.99; echo exit=$?
+⚠️  saiu a v10.0.0 (este projeto está na v9.99.99)
+exit=10
+[rc=0]
+rc=0

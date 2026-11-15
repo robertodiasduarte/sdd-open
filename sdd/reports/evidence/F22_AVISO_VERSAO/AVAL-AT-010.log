@@ -1,0 +1,77 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/at010.sh test_gerar_starter.py test_release_workflow.py test_check_versions.py test_bash32.py test_f16w2_passo0.py test_agnostico.py
+
+$ pkg_atual "$T/pkg" && cd "$T/pkg"
+[rc=0]
+### publish-gate (1ª metade do Verify Gate) sobre o git archive HEAD
+
+$ time (PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh "$T/pkg" > "$T/pg.out" 2>&1; echo "exit_publish_gate=$?"; tail -4 "$T/pg.out")
+exit_publish_gate=0
+G5 documentation
+  ✅ docs present, cross-linked, attribution in place
+──────────────────────────────────────────────────────────────────
+✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+tempo=3.523s
+[rc=0]
+
+$ time (SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_gerar_starter.py > "$T/test_gerar_starter.py.out" 2>&1; echo "rc_unittest=$?"; tail -3 "$T/test_gerar_starter.py.out")
+rc_unittest=0
+Ran 34 tests in 172.656s
+
+OK
+tempo=1091.143s
+[rc=0]
+
+$ time (SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_release_workflow.py > "$T/test_release_workflow.py.out" 2>&1; echo "rc_unittest=$?"; tail -3 "$T/test_release_workflow.py.out")
+rc_unittest=0
+Ran 32 tests in 2.731s
+
+OK
+tempo=3.047s
+[rc=0]
+
+$ time (SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_check_versions.py > "$T/test_check_versions.py.out" 2>&1; echo "rc_unittest=$?"; tail -3 "$T/test_check_versions.py.out")
+rc_unittest=0
+Ran 16 tests in 4.362s
+
+OK
+tempo=4.458s
+[rc=0]
+
+$ time (SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_bash32.py > "$T/test_bash32.py.out" 2>&1; echo "rc_unittest=$?"; tail -3 "$T/test_bash32.py.out")
+rc_unittest=0
+Ran 3 tests in 0.094s
+
+OK
+tempo=0.170s
+[rc=0]
+
+$ time (SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_f16w2_passo0.py > "$T/test_f16w2_passo0.py.out" 2>&1; echo "rc_unittest=$?"; tail -3 "$T/test_f16w2_passo0.py.out")
+rc_unittest=0
+Ran 3 tests in 0.001s
+
+OK
+tempo=0.076s
+[rc=0]
+
+$ time (SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_agnostico.py > "$T/test_agnostico.py.out" 2>&1; echo "rc_unittest=$?"; tail -3 "$T/test_agnostico.py.out")
+rc_unittest=0
+Ran 7 tests in 0.134s
+
+OK
+tempo=0.199s
+[rc=0]
+### init, sync, sync --check, doctor num projeto novo (o doctor sai 0)
+
+$ novo_proj "$T/proj" && cd "$T/proj" && bash "$T/pkg/bin/sdd-open.sh" init --vendors claude,codex,gemini,cursor,kimi --yes > /dev/null 2>&1; echo rc_init=$?; bash "$T/pkg/bin/sdd-open.sh" sync --yes >/dev/null 2>&1; echo rc_sync=$?; bash "$T/pkg/bin/sdd-open.sh" sync --check > "$T/sc.out" 2>&1; echo rc_sync_check=$?; tail -1 "$T/sc.out"; bash "$T/pkg/bin/sdd-open.sh" doctor > "$T/dd.out" 2>&1; echo rc_doctor=$?; grep ^RESULTADO "$T/dd.out"
+rc_init=0
+rc_sync=0
+rc_sync_check=0
+→ todos os adaptadores refletem .agents/skills/.
+rc_doctor=0
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+[rc=0]
+
+$ ls .agents/skills | wc -l
+      22
+[rc=0]
+rc=0

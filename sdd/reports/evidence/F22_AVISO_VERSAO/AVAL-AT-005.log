@@ -1,0 +1,105 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/at005.sh
+### (0) o passo, como está escrito nas duas skills do pacote
+
+$ grep -n "versao-nova" "$P/.agents/skills/sdd-new-session/SKILL.md" "$P/.agents/skills/sdd-release/SKILL.md" | cut -c1-200
+/Users/robertoduarte/rdd-worktrees/sdd-open-f22-aviso-versao/.agents/skills/sdd-new-session/SKILL.md:368:5. **Versão nova do SDD Open:** se a frente tem `sdd/bin/versao-nova.sh`, rode `bash sdd/bin/ve
+/Users/robertoduarte/rdd-worktrees/sdd-open-f22-aviso-versao/.agents/skills/sdd-release/SKILL.md:91:diff-base (`git merge-base origin/{default_branch} HEAD`). Rode `bash sdd/bin/versao-nova.sh` (se ex
+[rc=0]
+
+$ grep -n -i "versão nova\|saiu a" "$P/.agents/skills/sdd-release/references/como-falar.md" | cut -c1-220
+11:- deploy — "a instalação da versão nova no lugar onde as pessoas usam o sistema";
+88:- **corrigir** — a versão nova fica no ar; volto ao build para consertar, e isto vira pendência na ficha.
+141:## Versão nova do SDD Open (FASE 0, item 0)
+146:"Saiu a versão v2.18.0 do SDD Open (este projeto está na v2.17.0). Não precisa parar agora; quando quiser, peça ao
+[rc=0]
+### (1) o passo executado numa frente (worktree) de projeto com o init da frente
+
+$ pkg_atual "$T/pkg" && novo_proj "$T/proj" && cd "$T/proj" && bash "$T/pkg/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; git add -A && git commit -qm i && git worktree add -q "$T/frente" -b frente && cd "$T/frente" && ls sdd/bin/versao-nova.sh sdd/open-instalado.txt
+sdd/bin/versao-nova.sh
+sdd/open-instalado.txt
+[rc=0]
+
+$ mkremoto "$T/r-novo" v2.16.1 v2.18.0 && mkremoto "$T/r-igual" v2.16.1
+[rc=0]
+
+$ SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/r-novo" bash sdd/bin/versao-nova.sh; echo "exit=$?"
+⚠️  saiu a v2.18.0 (este projeto está na v2.16.1)
+exit=10
+[rc=0]
+
+$ SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/r-igual" bash sdd/bin/versao-nova.sh; echo "exit=$?"
+✅ versão: em dia — a última publicada é v2.16.1
+exit=0
+[rc=0]
+
+$ SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/nada" bash sdd/bin/versao-nova.sh; echo "exit=$?"
+ℹ️  versão nova: não conferida — o endereço recusou a consulta (o resto do diagnóstico vale)
+exit=20
+[rc=0]
+
+$ bash sdd/bin/versao-nova.sh; echo "exit=$?"
+ℹ️  versão nova: checagem desligada (SDD_OPEN_CHECK_UPDATES=0 no ambiente)
+exit=30
+[rc=0]
+### (2) projeto sem o script (instalado pela v2.16.1): o passo pula sem mensagem
+
+$ mkdir "$T/v" && git -C "$P" archive --prefix=sdd-open-v2.16.1/ v2.16.1 | tar -x -C "$T/v" && novo_proj "$T/proj-velho" && cd "$T/proj-velho" && bash "$T/v/sdd-open-v2.16.1/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; [ -f sdd/bin/versao-nova.sh ] && echo "TEM o script" || echo "sem o script: o passo não roda (nada a dizer)"
+sem o script: o passo não roda (nada a dizer)
+[rc=0]
+### (3) starter gerado a partir de uma tag com esta frente: sdd-new-session e sdd-release SEM o passo; lint do init verde
+
+$ git clone -q "$P" "$T/open" && git -C "$T/open" tag v9.9.9 && git clone -q /Users/robertoduarte/rdd-public/sdd-starter "$T/starter" && git -C "$T/starter" log --oneline -1
+17c69c4 feat(skills): linguagem para leigos nas 10 skills dos Grupos 1 e 2 — seção "Como falar com o aluno", references/como-falar.md, matriz de achados na new-session, moldura da Fase 2 na release; publish-check confere a seção
+[rc=0]
+
+$ cd "$T/open" && /usr/bin/python3 -B scripts/gerar-starter.py --tag v9.9.9 "$T/starter" > "$T/ger.out" 2>&1; echo "exit_gerador=$?"; tail -5 "$T/ger.out"
+exit_gerador=0
+✅ sdd-governanca: 12 arquivo(s), 5 troca(s)
+✅ sdd-release: 2 arquivo(s), 0 troca(s), de modo (references/MODO_INICIANTE.md)
+✅ ux-review-builder: 20 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+[rc=0]
+
+$ grep -rn "versao-nova\|versão nova do SDD Open\|open-instalado" "$T/starter/skills" | cut -c1-200 || echo "nenhuma menção ao passo de versão nova no starter gerado"
+[rc=0]
+
+$ head -3 "$T/starter/skills/sdd-new-session/SKILL.md" | cut -c1-200; grep -n "releases" "$T/starter/skills/sdd-new-session/SKILL.md" | head -3 | cut -c1-200
+---
+name: sdd-new-session
+description: >-
+25:`sdd-new-session v1.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`
+[rc=0]
+
+$ cd "$T/open" && /usr/bin/python3 -B scripts/gerar-starter.py --lint "$T/starter" > "$T/lint.out" 2>&1; echo "exit_lint=$?"; tail -3 "$T/lint.out"
+exit_lint=0
+RESULTADO: VERDE
+→ nenhuma citação a arquivo que só o init cria.
+[rc=0]
+
+$ cd "$T/starter" && git status --short | head -20; git diff --stat | tail -3
+ M .github/workflows/auto-release.yml
+ M .github/workflows/ci.yml
+ M .github/workflows/release.yml
+ M README.md
+ M docs/quickstart.md
+ M docs/quickstart.pt-BR.md
+ M docs/workflow.md
+ M docs/workflow.pt-BR.md
+ M scripts/check-versions.py
+ M scripts/publish-check.sh
+ M skills/sdd-auditoria-harness/SKILL.md
+ M skills/sdd-auditoria-harness/references/AUDIT_PROTOCOL.md
+ M skills/sdd-auditoria-harness/scripts/collect_evidence.py
+ M skills/sdd-brainstorm/SKILL.md
+ M skills/sdd-brainstorm/agents/openai.yaml
+ D skills/sdd-brainstorm/assets/BRAINSTORM_TEMPLATE.md
+ D skills/sdd-brainstorm/references/brainstorm-protocol.md
+ M skills/sdd-brainstorm/references/como-falar.md
+ M skills/sdd-build/SKILL.md
+ M skills/sdd-build/references/aplicar-migration.md
+ .../tests/test_validate_generated_bundle.py        |  16 +-
+ tests/test_sdd_kb_normativo.py                     |  14 +-
+ 88 files changed, 2670 insertions(+), 4570 deletions(-)
+[rc=0]
+rc=0

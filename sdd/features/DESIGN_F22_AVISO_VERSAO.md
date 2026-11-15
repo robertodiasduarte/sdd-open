@@ -10,11 +10,11 @@
 | Attribute | Value |
 |---|---|
 | **Feature** | F22_AVISO_VERSAO |
-| **Date** | 2026-11-14 (v1.0) |
-| **Author** | design-agent (worktree `sdd-open-f22-aviso-versao`, branch `feat/f22-aviso-versao` de `ad32fe1` = `v2.16.0`) |
+| **Date** | 2026-11-14 (v1.0) · 2026-11-15 (v1.1, reconferido sobre `v2.16.1`) |
+| **Author** | design-agent (worktree `sdd-open-f22-aviso-versao`, branch `feat/f22-aviso-versao`, hoje em `c2690d5` = `v2.16.1`) |
 | **DEFINE** | [DEFINE_F22_AVISO_VERSAO.md](DEFINE_F22_AVISO_VERSAO.md) |
 | **UX REVIEW** | [UX_REVIEW_F22_AVISO_VERSAO.md](../reviews/UX_REVIEW_F22_AVISO_VERSAO.md) |
-| **Status** | Ready for Build — **depois de a F16W2 publicar** (rebase sobre a tag dela e este DESIGN reconferido) |
+| **Status** | Ready for Build (F16W2 publicada como `v2.16.1`; reconferência da Decision 10 no Revision History) |
 
 ---
 
@@ -61,7 +61,7 @@
 **Choice:** `VERSION` na raiz com `$Format:%(describe:tags=true,match=v[0-9]*)$` e `VERSION export-subst` no
 `.gitattributes`. `versao_do_pacote` aceita, nesta ordem: (1) o conteúdo do `VERSION` quando casa
 `^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9]+-g[0-9a-f]+)?$`; (2) `git -C "$PKG" describe --tags --match 'v[0-9]*'`, só quando
-`git -C "$PKG" rev-parse --show-toplevel` é o próprio `$PKG` (um pacote extraído dentro de outro repositório não
+`git -C "$PKG" rev-parse --show-toplevel` é a mesma pasta que `$PKG` (`-ef`, não a grafia: `/c/…` × `C:/…`, `/var` × `/private/var`; um pacote extraído dentro de outro repositório não
 herda a versão dele); (3) o nome da pasta `sdd-open-vX.Y.Z`; (4) `desconhecida`. No `release.yml`, antes do
 `git archive`: `git rev-parse -q --verify "refs/tags/$TAG" >/dev/null || git tag "$TAG" "$GITHUB_SHA"` (tag
 **local**; quem publica continua sendo o `gh release create`) e, depois, a conferência
@@ -74,7 +74,9 @@ autor.
 arquivo esqueceria. · 2. só o nome da pasta — rejeitada: o clone do aluno se chama `sdd-open`, sem versão. · 3. ler
 a versão das skills — rejeitada: cada skill tem numeração própria.
 
-**Consequences:** um `git archive` feito com git anterior ao 2.32 não carimba (cai na reserva); um clone entre a
+**Consequences:** um `git archive` feito com git anterior ao 2.35 (as opções `tags=` de `%(describe:…)` entraram ali;
+a tag da Release é leve, então sem `tags=true` o describe não a vê) deixa o `$Format:…$` literal e cai na reserva; o
+runner do GitHub e o git do mantenedor (2.54) passam disso; um clone entre a
 release e a criação da tag diz `vX.Y.Z-N-g<sha>` (a versão base mais "um pouco"), o que basta para comparar.
 
 ### Decision 2: o registro é um arquivo próprio, gravado pelo `init` só na 1ª instalação e pelo `upgrade`
@@ -113,12 +115,21 @@ pelo motivo acima.
 roda do pacote. O teto de tempo por sinal a grupo não corta nada no Git Bash (LM-016).
 
 **Choice:** um script só, copiado pelo `init` como todo `sdd/bin/`: `bash sdd/bin/versao-nova.sh [--raiz <dir>]
-[--atual <vX.Y.Z…>]`. A versão atual vem de `--atual` ou da linha `versao:` do registro de `<raiz>`. Desligado se
+[--atual <vX.Y.Z…>]`. A versão atual vem de `--atual` ou da linha `versao:` do registro de `<raiz>`; sem nenhuma das
+duas (projeto anterior à F22 que recebeu o script pelo `init`, sem registro) ⇒ `20` "não conferida — este projeto
+ainda não tem o registro de versão (o doctor diz como fazer o 1º upgrade)", sem consultar a rede: as skills calam, e o
+`doctor`, que passa `--atual` com a versão do pacote, avisa. Desligado se
 `SDD_OPEN_CHECK_UPDATES=0` ou se `open:`→`check_updates: false` no `sdd/config.yaml` de `<raiz>`. A consulta:
 `GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never git -c credential.helper= ls-remote --tags --refs "$REMOTO"` com
-`stdin` de `/dev/null` e **stdout e stderr para um arquivo temporário** (nunca para o pipe de quem chamou), em segundo
-plano; o pai espera em passos de 0,2 s até 5 s; passou do teto ⇒ corta o filho (grupo fora do Windows; `taskkill /F /T`
-pelo `/proc/<pid>/winpid` no Git Bash, como o `checar.sh`) e responde "sem resposta em 5 s" **sem esperar o corte**.
+`stdin` de `/dev/null` e **stdout e stderr para um arquivo temporário** numa pasta própria (`mktemp -d`); o subshell
+de segundo plano inteiro também sai com `>/dev/null 2>&1 </dev/null`, senão ele (e um neto que sobreviva ao corte no
+Windows) segura o pipe de quem chamou e o teto deixa de valer para quem lê a saída (o mesmo motivo do arquivo de saída
+no vigia do `checar.sh` da F16W2). Sem pasta temporária (TMPDIR sem escrita) ⇒ `20` "não conferida — sem pasta
+temporária". O subshell de segundo plano liga `set -m`, põe o `git` em segundo plano **dentro dele** (o `git` vira
+líder do próprio grupo, como no `checar.sh`), grava o pid do `git` em `<pasta>/pid` e espera por ele. O pai espera em
+passos de 0,2 s até 5 s; passou do teto ⇒ corta o `git` pelo pid gravado (o grupo dele fora do Windows; `taskkill /F /T`
+pelo `/proc/<pid>/winpid` no Git Bash, como o `checar.sh`) e o subshell, e responde "sem resposta em 5 s" **sem
+esperar o corte**.
 `REMOTO` = `SDD_OPEN_REMOTO` ou `https://github.com/robertodiasduarte/sdd-open.git`. Do que voltou, só linhas
 `refs/tags/vX.Y.Z` exatas contam; a maior sai por comparação numérica campo a campo (awk). Saídas (uma linha, com
 símbolo e palavra, textos do UX U1 a U3): `0` em dia · `10` versão nova · `20` não conferida · `30` desligada ·
@@ -145,7 +156,9 @@ upgrade; o `doctor` do pacote novo avisa assim mesmo (usa a cópia do pacote).
 `ℹ️ versão: projeto sem registro (instalado antes da v2.17.0) · pacote <vK> — o 1º upgrade pede --de <a versão que o
 projeto tem>`); depois, a linha do `versao-nova.sh` do **pacote** com `--raiz ROOT --atual <vP ou vK>`: exit 0 ⇒ o
 ✅ dele; 10 ⇒ o ⚠️ dele e uma linha `→ <como atualizar>`: com o pacote num clone, `git -C <PKG> pull` e
-`bash <PKG>/bin/sdd-open.sh upgrade --dry-run` (U13); sem clone, a URL da Release; 20 e 30 ⇒ o ℹ️ dele. O
+`bash <PKG>/bin/sdd-open.sh upgrade --dry-run` (U13); sem clone (tarball, `git archive`), a URL da Release da versão
+nova e `bash <pasta do pacote novo>/bin/sdd-open.sh upgrade --dry-run` (o comando que o AT-003 pede, com a pasta por
+preencher); 20 e 30 ⇒ o ℹ️ dele. O
 `doctor` segue saindo 0. Os 3 avisos atuais de "apague e rode init" (skill mais velha, skill faltando, `sdd/bin`
 diferente) passam a dizer "rode o upgrade (ele copia o que é do pacote e não toca no que você editou)".
 
@@ -167,10 +180,18 @@ skill existente; a pessoa decide e commita.
 do projeto:
 1. Pré-condições: `sdd/` e `.agents/skills/` existem (senão 🛑 "rode init"); versão do pacote conhecida (senão 🛑).
 2. Impressões antigas: do registro; ou, com `--de`, calculadas do pacote antigo: uma pasta com `MANIFEST.txt`, ou
-   uma tag que exista no clone do pacote (`git -C "$PKG" archive <tag>` para uma pasta temporária). Sem registro e sem
-   `--de` ⇒ 🛑 com os comandos (U6), nada escrito. `--de` que não é pacote ⇒ 64. Versão do pacote menor que a do
-   projeto ⇒ 64 (sem rebaixar).
-3. Para cada instalável do `MANIFEST.txt` novo, com `p` = arquivo do projeto, `n` = impressão nova, `a` = antiga:
+   uma tag que exista no clone do pacote (`git -C "$PKG" archive <tag>` para uma pasta temporária). A versão do pacote
+   antigo: na forma tag, o próprio nome da tag (`vX.Y.Z` exato); na forma pasta, `versao_do_pacote` daquela pasta
+   (pacotes anteriores à F22 não têm `VERSION`: valem o clone e o nome `sdd-open-vX.Y.Z`, e por isso os comandos do
+   U6 montam a pasta com `git -C ~/sdd-open archive --prefix=sdd-open-vX.Y.Z/ vX.Y.Z | tar -x -C <tmp>` ou mandam
+   usar a forma tag). Sem registro e sem `--de` ⇒ 🛑 com os comandos (U6), nada escrito. `--de` que não é pacote
+   (sem `MANIFEST.txt`, ou versão `desconhecida`, com o `→` dizendo para usar a forma tag ou o `--prefix`) ⇒ 64. Versão
+   do pacote menor que a do projeto ⇒ 64 (sem rebaixar).
+3. Instalável = linha do `MANIFEST.txt` que é arquivo de uma skill do pacote (`.agents/skills/<skill de
+   skills_da_fonte>/…`) ou de `sdd/` sob as mesmas entradas que o `sdd_faltantes` completa (`templates bin hooks review
+   patterns playbook.md invariants.md WORKFLOW_CONTRACTS.yaml`); a lista dessas entradas vira uma variável só, lida
+   pelas duas funções, para não divergirem. Para cada instalável do `MANIFEST.txt` novo, com `p` = arquivo do projeto,
+   `n` = impressão nova, `a` = antiga:
    ausente ⇒ **novo** · `sha(p) = n` ⇒ **igual** · `sha(p) = a` ⇒ **intacto** · senão ⇒ **editado**. Caminho que
    está no registro antigo e saiu do `MANIFEST.txt` novo ⇒ **saiu** (lista, nunca apaga). Sem `--de` e com
    registro, um arquivo sem linha no registro e diferente do novo é **editado** (lado seguro).
@@ -202,7 +223,8 @@ exige `--vendors` e não acrescenta nada depois da cópia; o `sync` faz o AGENTS
 **Context:** as worktrees dividem o `.git/config`; um `core.hooksPath` absoluto para `<worktree A>/sdd/hooks` vale
 para todas, e hoje `hooks_path_e_nosso` (`bin/sdd-open.sh:542`) só aceita a pasta da raiz atual.
 
-**Choice:** `hooks_path_e_nosso` também aceita o caminho que resolve (`pwd -P`) para `<w>/sdd/hooks` de algum `w` de
+**Choice:** `hooks_path_e_nosso` também aceita o caminho absoluto (`/…` ou `C:\…`/`C:/…`, como a F16W2 deixou) que é a
+mesma pasta (`-ef`, o critério da F16W2: link, `/tmp` do macOS, `/c/…` × `C:/…`) que `<w>/sdd/hooks` de algum `w` de
 `git worktree list --porcelain` (linhas `worktree <caminho>`); guarda esse `w` em `HOOKS_OUTRA_WT` quando não é a raiz
 atual. `doctor` ⇒ `✅ hooks ligados (pelo sdd/hooks de outra worktree deste repositório: <w>)` (U11), com a conferência
 do bit de execução feita na pasta de `w`. O `init` vê LIGADO e não mexe. Caminho absoluto de outro repositório segue
@@ -243,7 +265,7 @@ sintaxe da `sdd-playbook`: `SKILL.md` e `references/`, que mostram o formato da 
 **Choice:** `tests/apoio.py`, na importação, põe em `os.environ` (sem sobrescrever o que já veio)
 `SDD_OPEN_CHECK_UPDATES=0` e `SDD_OPEN_REMOTO=<pasta inexistente sob o tmp>`; o `Teste.env` herda. Os testes da
 checagem ligam a checagem e apontam `SDD_OPEN_REMOTO` para um repositório local com tags (ou um `git` falso que
-pendura). `tests/test_alarme.py`, que roda o `init` sem o `apoio`, passa a herdar (importa o `apoio`). Um teste de
+pendura). `tests/test_alarme.py` já importa o `apoio` desde a F16W2 (`SO_NO_WINDOWS`), então herda. Um teste de
 guarda reprova módulo de teste que cite `sdd-open.sh` sem importar o `apoio`. Os jobs de teste dos 2 workflows e o
 `cmd` do Verify Gate não precisam de variável própria (o `apoio` cobre), mas o `env:` dos jobs ganha
 `SDD_OPEN_CHECK_UPDATES: '0'` como segunda trava.
@@ -265,10 +287,11 @@ caso que cita `sdd-open.sh`.
 
 **Choice:** `sdd-new-session` (1.6.1 → 1.7.0), no Passo 3 — Responda: se a frente tem `sdd/bin/versao-nova.sh`, rode
 `bash sdd/bin/versao-nova.sh` de dentro dela; exit 10 ⇒ acrescente a frase do U7 com as 2 versões da linha; qualquer
-outro exit ou script ausente ⇒ nada. `sdd-release` (2.12.0 → 2.13.0), FASE 0, antes da 0a: o mesmo, como informação
-no relatório da fase e no bloco do OK, sem abortar nada. No starter: um bloco novo em
+outro exit ou script ausente ⇒ nada. `sdd-release` (2.12.1 → 2.13.0; a F16W2 publicou a 2.12.1), FASE 0, antes da
+0a: o mesmo, como informação no relatório da fase e no bloco do OK, sem abortar nada. No starter: um bloco novo em
 `scripts/starter/trocas/sdd-new-session.md` tira o parágrafo (a troca casa 1 vez, senão o gerador sai 65); a
-`sdd-release` do starter sai do `MODO_INICIANTE.md`, que não muda.
+`sdd-release` do starter sai do `MODO_INICIANTE.md`, cujo texto não muda; só a 1ª linha acompanha a versão (2.13.0),
+como a F16W2 fez com a 2.12.1.
 
 **Rationale:** o aluno fica sabendo sem ter de decidir; o lint do `init` do gerador continua verde.
 
@@ -309,9 +332,9 @@ playbook com as LM novas, (e) `tests/apoio.py` (ela mexe nele); registrar o resu
 | 7 | `.github/workflows/release.yml` | Modify | tag local antes do `git archive` e a conferência do `VERSION` no tarball; `SDD_OPEN_CHECK_UPDATES: '0'` nos jobs de teste | (general) | 1 |
 | 8 | `.github/workflows/publish-gate.yml` | Modify | `SDD_OPEN_CHECK_UPDATES: '0'` nos jobs de teste | (general) | None |
 | 9 | `tests/apoio.py` | Modify | defaults de ambiente sem rede (Decision 8) | (general) | None |
-| 10 | `tests/test_alarme.py` | Modify | importa o `apoio` (herda a guarda) | (general) | 9 |
+| 10 | `.agents/skills/sdd-release/references/MODO_INICIANTE.md` | Modify | só a 1ª linha: `sdd-release v2.13.0` (o `test_alarme.py` da v1.0 saiu daqui: já importa o `apoio` desde a F16W2) | (general) | 14 |
 | 11 | `tests/test_f22_versao.py` | Create | AT-001 a AT-005, AT-008, AT-009 e a guarda de rede | (general) | 1–9 |
-| 12 | `tests/test_f22_upgrade.py` | Create | AT-006 e AT-007 (pacote antigo por `git archive v2.12.1` deste clone quando a tag existe; senão um pacote falso montado no teste) | (general) | 5 |
+| 12 | `tests/test_f22_upgrade.py` | Create | AT-006 e AT-007 sobre um pacote falso montado no teste (roda sempre, inclusive no gate); e um teste próprio com o pacote real `git archive v2.12.1` deste clone, que roda onde há tags (CI, `fetch-depth: 0`; máquina do mantenedor) e, sem a tag (gate de `git archive`), é **pulado com o motivo**, nunca troca de pacote em silêncio | (general) | 5 |
 | 13 | `.agents/skills/sdd-new-session/SKILL.md` | Modify | o aviso no Passo 3; 1.7.0 | (general) | 4 |
 | 14 | `.agents/skills/sdd-release/SKILL.md` | Modify | o aviso na FASE 0; 2.13.0 | (general) | 4 |
 | 15 | `.agents/skills/sdd-release/references/como-falar.md` | Modify | sem `LM-004` (Decision 7) | (general) | None |
@@ -323,9 +346,9 @@ playbook com as LM novas, (e) `tests/apoio.py` (ela mexe nele); registrar o resu
 | 21 | `docs/cli-conventions.md` | Modify | palavras `ATUALIZADO`, `ATUALIZADO, N PARA MESCLAR`; exits do `upgrade` e do `versao-nova.sh` | (general) | 4, 5 |
 | 22 | `README.md`, `README.pt-BR.md`, `docs/quickstart.md`, `docs/pt-BR/quickstart.md` | Modify | o verbo `upgrade` onde os verbos são listados; o link para `upgrade.md` | (general) | 18, 19 |
 | 23 | `MANIFEST.txt` | Modify | `VERSION`, `bin/lib/versao.sh`, `sdd/bin/versao-nova.sh`, os 2 `upgrade.md`, os 2 testes | (general) | 1–19 |
-| 24 | testes que fixam versão ou contagem (`tests/test_f16_textos.py` e o que o rebase sobre a F16W2 mostrar) | Modify | as versões novas das 3 skills | (general) | 13, 14, 16 |
+| 24 | testes que fixam versão (medido sobre `v2.16.1`): `test_contrato_build_release`, `test_correcoes_w0`, `test_f14_drive_textos`, `test_f14_textos`, `test_f15_slots_textos`, `test_f16_textos`, `test_f17b_textos`, `test_f18_f20_textos`, `test_f19_textos`, `test_matriz_new_session` (e contagem que a suíte acusar) | Modify | as versões novas das 3 skills | (general) | 13, 14, 16 |
 
-**Total Files:** 24 linhas (a 22 com 4 arquivos; a 24 com os que o rebase mostrar)
+**Total Files:** 24 linhas (a 22 com 4 arquivos; a 24 com 10)
 
 ---
 
@@ -347,6 +370,10 @@ Windows, PIPESTATUS, 11 dígitos, winpid, taskkill, export-subst, tag, rede, sta
 | `${PIPESTATUS[0]}` vazio no zsh | LM-018 | ✔ tratado | logs de evidência por script bash com `rc=$?` |
 | gerador que escreve tag em cada arquivo muda tudo | LM-022 | N.A. | o `VERSION` é um arquivo só, na raiz, e não vai para o starter (o gerador não o copia) |
 | `ls a b` sai ≠ 0 quando um falta | LM-025 | ✔ tratado | o `doctor` testa existência com `[ -f ]` num laço (registro, script do projeto) |
+| `subprocess.run(["bash", …])` acha o bash do WSL no Windows | LM-029 | ✔ tratado | os testes novos chamam o bash pelo `BASH`/`roda` do `apoio`, nunca pelo nome |
+| executor que põe `PYTHONIOENCODING` mascara o cp1252 do aluno | LM-030 | ✔ tratado | os testes novos não põem `PYTHONIOENCODING` no ambiente; o `versao-nova.sh` e o `upgrade` são bash e não imprimem por Python |
+| teste de tempo cai sob carga | LM-031 | ✔ tratado | o teste do teto mede só o limite de cima (≤ 7 s para um teto de 5 s) e usa um `git` falso que pendura, não a rede |
+| no Git Bash cada processo custa 10–20 ms (F16W2, `extensao_de`) | F16W2 | ✔ tratado | impressões em lote (`xargs sha256sum` uma vez para o pacote e uma para o projeto), nunca um `sha256sum` por arquivo no laço do `upgrade` |
 
 ---
 
@@ -370,16 +397,18 @@ segunda camada (banco, edge, UI web).
 ### Pattern 1: consulta com teto que não depende de sinal (`sdd/bin/versao-nova.sh`)
 
 ```bash
-s="$(mktemp -d)" || exit 20
-( set -m
+s="$(mktemp -d 2>/dev/null)" || {
+  printf 'ℹ️  versão nova: não conferida — sem pasta temporária para a consulta (o resto do diagnóstico vale)\n'; exit 20; }
+( set -m                             # o git, posto em 2º plano AQUI, vira líder do próprio grupo
   GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never git -c credential.helper= ls-remote --tags --refs "${REMOTO}" \
-    </dev/null >"${s}/out" 2>"${s}/err"
-  echo "$?" >"${s}/rc" ) &
-p=$!
+    </dev/null >"${s}/out" 2>"${s}/err" &
+  echo "$!" >"${s}/pid"
+  wait "$!"; echo "$?" >"${s}/rc" ) </dev/null >/dev/null 2>&1 &   # o subshell também solta o pipe de quem chamou
+sub=$!
 i=0
 while [ ! -s "${s}/rc" ] && [ "${i}" -lt 25 ]; do sleep 0.2; i=$((i + 1)); done
 if [ ! -s "${s}/rc" ]; then
-  corta "${p}"                       # grupo fora do Windows; taskkill /F /T pelo winpid no Git Bash
+  corta "$(cat "${s}/pid" 2>/dev/null)" "${sub}"   # grupo do git fora do Windows; taskkill /F /T pelo winpid no Git Bash
   rm -rf "${s}" 2>/dev/null          # o filho, se sobreviver, escreve num arquivo apagado: ninguém espera por ele
   printf 'ℹ️  versão nova: não conferida — sem resposta em 5 s (o resto do diagnóstico vale)\n'; exit 20
 fi
@@ -403,9 +432,11 @@ impressoes() { # stdin: caminhos relativos a $1, um por linha → stdout: "<sha2
   elif sdd_python_pronto; then (cd "${base}" && python3 -I -c 'import hashlib,sys
 for l in sys.stdin.read().split("\n"):
     if l: print(hashlib.sha256(open(l,"rb").read()).hexdigest() + "  " + l)')
-  else return 2; fi
+  else return 2; fi | sed 's/^\([0-9a-f]\{64\}\) [ *]/\1  /'   # o sha256sum do Git Bash pode marcar binário com "*"
 }
 ```
+
+Quem lê o registro também aceita `<sha> *<caminho>` (normaliza igual), para um registro gravado em outro sistema.
 
 candidato a pattern: shell (consulta de rede com teto que vale no Git Bash).
 
@@ -494,6 +525,21 @@ Variáveis: `SDD_OPEN_CHECK_UPDATES=0` (desliga), `SDD_OPEN_REMOTO` (outro ender
 
 | # | Nota | Severidade | Veredito | Evidência |
 |---|---|---|---|---|
+| R1 | versão de um `--de` anterior à F22 (sem `VERSION`) | MED | APLICADA | Decision 5, passo 2: forma tag usa o nome da tag; forma pasta pede `--prefix=sdd-open-vX.Y.Z/` (U6) |
+| R2 | o gate (`git archive`, sem tags) nunca exercita o pacote real | MED | APLICADA | manifest 12: teste com o pacote falso sempre; teste com `v2.12.1` real no CI (`fetch-depth: 0` em `publish-gate.yml:24`) e pulado com motivo no gate |
+| R3 | lista fixa de instaláveis ≠ o que o `init` completa (ex.: `config.example.yaml`) | MED | REBATIDA_EVIDENCIA | `bin/sdd-open.sh:641`: o `sdd_faltantes` completa `templates bin hooks review patterns playbook.md invariants.md WORKFLOW_CONTRACTS.yaml` e o `config.yaml` (a partir do example, que não é instalado); a Decision 5 passou a ler a mesma variável |
+| R4 | `sha256sum` do Git Bash com `*` antes do caminho | MED | APLICADA | Pattern 3 normaliza na escrita e na leitura |
+| R5 | `mktemp -d` falho sai 20 calado | LOW | APLICADA | Pattern 1 imprime o motivo |
+| R6 | `set -m` no subshell não dá grupo ao pid guardado | LOW | APLICADA | Decision 3 e Pattern 1: o `git` vai a 2º plano dentro do subshell, pid em arquivo, corte pelo pid do `git` |
+| R7 | sem clone, o aviso não traz o comando do upgrade | LOW | APLICADA | Decision 4: URL + `bash <pasta do pacote novo>/bin/sdd-open.sh upgrade --dry-run` |
+| R8 | `versao-nova.sh` sem `--atual` e sem registro | LOW | APLICADA | Decision 3: `20` com o motivo, sem rede; o `doctor` avisa |
+| R9 | `%(describe:tags=…)` exige git 2.35, não 2.32 | LOW | APLICADA | Decision 1, Consequences |
+| 2·R1 | "é a raiz do clone" por igualdade de texto falha com `/c/…` × `C:/…` e `/var` × `/private/var` | MED | APLICADA | Decision 1: a comparação é `-ef` (`bin/lib/versao.sh`, `versao_do_pacote`); teste `test_describe_pelo_caminho_de_um_link` |
+| 2·R2 | ~250 sha256 inteiros no registro podem ser barrados pela trava de CPF ao commitar | MED | REBATIDA_EVIDENCIA | `.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh:84-87`: o alarme só confere um token inteiro de dígitos; um sha256 é um token de 64 caracteres hexadecimais, nunca só dígitos; `sdd/hooks` e `sdd/bin` não têm regra de 11 dígitos (o publish-gate é do pacote, e o registro só existe no projeto) |
+| 2·R3 | o teste do AT-009 varre só `*.md` | LOW | APLICADA | `test_skill_e_references_sem_lm_nnn` varre `SKILL.md` e todo arquivo de `references/` |
+| 2·R4 | doctor sem versão do pacote e sem registro; exit 64 do script | LOW | APLICADA | Decision 4: versão `desconhecida` ⇒ 2 linhas ℹ️ sem consulta; outro exit ⇒ "não conferida — o script de versão saiu N" |
+| 2·R5 | "instalado antes da v2.17.0" é falso para registro apagado | LOW | APLICADA | texto: "sem registro de versão (instalado antes da v2.17.0, ou o registro foi apagado)" |
+| 2·R6 | o doctor manda rodar o upgrade para arquivo editado, que o upgrade não toca | LOW | APLICADA | Decision 4: com o registro na versão do pacote, "é edição sua, que o upgrade não toca; para voltar à do pacote, apague o arquivo e rode o upgrade"; teste `test_avisos_antigos_apontam_o_upgrade` |
 
 ---
 
@@ -502,9 +548,12 @@ Variáveis: `SDD_OPEN_CHECK_UPDATES=0` (desliga), `SDD_OPEN_REMOTO` (outro ender
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-11-14 | design-agent | Initial version (sobre `ad32fe1`; reconferir depois da F16W2 — Decision 10) |
+| 1.1 | 2026-11-15 | design-agent | Decision 10 cumprida sobre `v2.16.1` (`c2690d5`, avanço rápido da branch, sem conflito): (a) o vigia do `checar.sh` agora manda a saída para arquivo e anuncia o corte por marca; a Decision 3 já não dependia do exit, e ganhou o subshell de segundo plano sem o pipe de quem chamou e o caso TMPDIR sem escrita · (b) `sdd-release` publicada em 2.12.1 (→ 2.13.0, ainda minor), `sdd-new-session` 1.6.1 e `sdd-build` 2.10.0 sem mudança; a 1ª linha do `MODO_INICIANTE.md` acompanha (linha 10 do manifest) · (c) os 10 testes que fixam versão listados na linha 24 · (d) LM-029, 030 e 031 na varredura, e o custo por processo no Git Bash · (e) `apoio.py` ganhou `path_restrito`, `apaga`, `caminho_neutro`, `SO_NO_WINDOWS` e o `write_text` com LF, mas nenhuma variável de ambiente: a Decision 8 vale; o `test_alarme.py` já importa o `apoio` · Decision 6 pelo `-ef` e pela forma `C:/…` que a F16W2 trouxe · o job do Windows entrou no `needs:` da release (o CI da F22 precisa ficar verde lá) |
+| 1.3 | 2026-11-15 | design-agent | Revisão adversarial, rodada 2 (`EXTERNAL_REVIEW_20261115-055723`; claude revisou; o auditor qwen passou do teto de 900 s, exit 67): 5 aplicadas no build, 1 rebatida com evidência (linhas 2·R1 a 2·R6 do Advisor Ledger) |
+| 1.2 | 2026-11-15 | design-agent | Revisão adversarial, rodada 1 (`EXTERNAL_REVIEW_20261115-054927`; claude revisou, o auditor qwen respondeu os 9 em prosa e cortou o bloco de vereditos ⇒ REVIEW INVÁLIDA, exit 68): 8 aplicadas, 1 rebatida com evidência (Advisor Ledger) |
 
 ---
 
 ## Next Step
 
-Esperar a F16W2 publicar; rebase sobre a tag dela; reconferir pela Decision 10; revisão do DESIGN; **sdd-build**.
+Revisão adversarial do DESIGN (exigida: arquivos novos); depois **sdd-build**.

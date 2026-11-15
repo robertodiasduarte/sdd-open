@@ -1,0 +1,175 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/at007.sh
+
+$ pkg_atual "$T/base" && cp -R "$T/base" "$T/sdd-open-A" && echo v3.0.0 > "$T/sdd-open-A/VERSION" && cp -R "$T/base" "$T/sdd-open-B" && echo v3.1.0 > "$T/sdd-open-B/VERSION" && printf "\nB\n" >> "$T/sdd-open-B/.agents/skills/sdd-define/SKILL.md" && printf "# novo\n" > "$T/sdd-open-B/.agents/skills/sdd-build/references/novo-b.md" && echo .agents/skills/sdd-build/references/novo-b.md >> "$T/sdd-open-B/MANIFEST.txt"
+[rc=0]
+### (1) projeto sem registro e sem --de: para antes de escrever, com os comandos
+
+$ novo_proj "$T/p1" && cd "$T/p1" && bash "$A/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1 && rm sdd/open-instalado.txt && git add -A && git commit -qm i && snap . "$T/antes"
+[rc=0]
+
+$ N=12 up "$B"; igual
+🛑 este projeto não tem o registro de versão (foi instalado antes da v2.17.0, ou o registro foi apagado); para separar o que é do pacote do que você editou, preciso do pacote da versão que ele tem
+RESULTADO: ERRO
+→ com o clone do pacote: bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.u1uVMH/sdd-open-B/bin/sdd-open.sh upgrade --de vX.Y.Z (a versão que o projeto tem) · sem o clone: baixe a Release dessa versão (https://github.com/robertodiasduarte/sdd-open/releases), extraia e rode upgrade --de <pasta extraída> · não sabe a versão? veja a mensagem do commit que instalou o SDD Open (git log --reverse --oneline -- sdd/playbook.md | head -1) ou a Release que você baixou; nada foi escrito
+exit_upgrade=64
+ÁRVORE IGUAL (nada escrito)
+[rc=0]
+### (2) --de para pasta que não é pacote (sem MANIFEST.txt)
+
+$ mkdir "$T/nao-pacote" && echo x > "$T/nao-pacote/README" && up "$B" --de "$T/nao-pacote" --yes; igual
+🛑 --de /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.u1uVMH/nao-pacote não é um pacote do sdd-open (sem MANIFEST.txt)
+RESULTADO: ERRO
+→ aponte --de para a pasta do pacote da versão que o projeto tem; nada foi escrito
+exit_upgrade=64
+ÁRVORE IGUAL (nada escrito)
+[rc=0]
+### (3) --de para pacote sem versão (MANIFEST.txt, sem VERSION carimbado, não é clone, pasta sem nome de versão)
+
+$ cp -R "$A" "$T/pacote-sem-nome" && printf "\$Format:%%(describe)\$\n" > "$T/pacote-sem-nome/VERSION" && up "$B" --de "$T/pacote-sem-nome" --yes; igual
+🛑 não sei a versão do pacote em --de /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.u1uVMH/pacote-sem-nome (sem VERSION, não é um clone e a pasta não se chama sdd-open-vX.Y.Z)
+RESULTADO: ERRO
+→ use a forma tag (--de vX.Y.Z, com o clone do pacote) ou monte a pasta com o nome da versão: git -C ~/sdd-open archive --prefix=sdd-open-vX.Y.Z/ vX.Y.Z | tar -x -C <pasta>; nada foi escrito
+exit_upgrade=64
+ÁRVORE IGUAL (nada escrito)
+[rc=0]
+### (4) --de na forma tag com pacote que não é clone
+
+$ up "$B" --de v3.0.0 --yes; igual
+🛑 --de v3.0.0: a forma tag precisa do pacote num clone do sdd-open, e /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.u1uVMH/sdd-open-B não é a raiz de um
+RESULTADO: ERRO
+→ passe --de com a pasta do pacote antigo (sdd-open-vX.Y.Z), baixada da Release; nada foi escrito
+exit_upgrade=64
+ÁRVORE IGUAL (nada escrito)
+[rc=0]
+### (5) --de que não é pasta nem tag
+
+$ up "$B" --de "nem-pasta" --yes; igual
+🛑 --de nem-pasta: não é uma pasta nem uma tag vX.Y.Z
+RESULTADO: ERRO
+→ passe --de com a pasta do pacote antigo ou com a tag da versão que o projeto tem (ex.: --de v2.12.1); nada foi escrito
+exit_upgrade=64
+ÁRVORE IGUAL (nada escrito)
+[rc=0]
+### (6) pacote MENOR que o projeto: upgrade do A num projeto com registro v3.1.0
+
+$ novo_proj "$T/p2" && cd "$T/p2" && bash "$B/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; grep ^versao: sdd/open-instalado.txt; git add -A && git commit -qm i && snap . "$T/antes"
+versao: v3.1.0
+[rc=0]
+
+$ up "$A" --yes; igual
+🛑 este pacote (v3.0.0) é mais velho que o projeto (v3.1.0)
+RESULTADO: ERRO
+→ rode o upgrade do pacote mais novo: o upgrade não rebaixa; nada foi escrito
+exit_upgrade=64
+ÁRVORE IGUAL (nada escrito)
+[rc=0]
+
+$ up "$A" --dry-run; igual
+🛑 este pacote (v3.0.0) é mais velho que o projeto (v3.1.0)
+RESULTADO: ERRO
+→ rode o upgrade do pacote mais novo: o upgrade não rebaixa; nada foi escrito
+exit_upgrade=64
+ÁRVORE IGUAL (nada escrito)
+[rc=0]
+### (7) mesma versão e nada difere: em dia, exit 0
+
+$ up "$B" --yes; igual
+▶ upgrade v3.1.0 → v3.1.0 — plano
+= 250 iguais ao pacote novo (nada a fazer)
+RESULTADO: EM DIA
+→ nada a fazer: o projeto já tem tudo o que o pacote v3.1.0 entrega.
+exit_upgrade=0
+ÁRVORE IGUAL (nada escrito)
+[rc=0]
+### (8) escrita que falha no meio: exit != 0, registro não regravado; rodar de novo retoma
+
+$ novo_proj "$T/p3" && cd "$T/p3" && bash "$A/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; git add -A && git commit -qm i; cp sdd/open-instalado.txt "$T/reg.antes"; grep ^versao: sdd/open-instalado.txt
+versao: v3.0.0
+[rc=0]
+
+$ chmod a-w .agents/skills/sdd-build/references && N=12 up "$B" --yes; cmp sdd/open-instalado.txt "$T/reg.antes" && echo "REGISTRO NÃO REGRAVADO (v3.0.0)"; ls .agents/skills/sdd-build/references/novo-b.md 2>&1; cmp -s .agents/skills/sdd-define/SKILL.md "$B/.agents/skills/sdd-define/SKILL.md" && echo "sdd-define já copiado (parcial)" || echo "sdd-define ainda antigo"; find . -name "*.sddtmp" -not -path "./.git/*"
+▶ upgrade v3.0.0 → v3.1.0 — plano
+= 248 iguais ao pacote novo (nada a fazer)
++ 1 novos (copiar)
+~ 1 do pacote, sem edição sua (atualizar)
+~ sdd/open-instalado.txt (registro: v3.0.0 → v3.1.0)
+Nada que você editou será tocado. Nada será commitado.
+cp: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.u1uVMH/p3/.agents/skills/sdd-build/references/novo-b.md.sddtmp: Permission denied
+🛑 não consegui escrever .agents/skills/sdd-build/references/novo-b.md
+🛑 falha ao escrever no projeto — o registro de versão não foi mudado; rode o upgrade de novo, ele retoma do ponto em que parou
+RESULTADO: ERRO
+→ confira as permissões e o espaço em disco
+exit_upgrade=1
+REGISTRO NÃO REGRAVADO (v3.0.0)
+ls: .agents/skills/sdd-build/references/novo-b.md: No such file or directory
+sdd-define ainda antigo
+[rc=0]
+
+$ chmod u+w .agents/skills/sdd-build/references && N=6 up "$B" --yes; grep ^versao: sdd/open-instalado.txt; cmp .agents/skills/sdd-build/references/novo-b.md "$B/.agents/skills/sdd-build/references/novo-b.md" && echo "novo-b copiado"; cmp .agents/skills/sdd-define/SKILL.md "$B/.agents/skills/sdd-define/SKILL.md" && echo "sdd-define atualizado"; find . -name "*.sddtmp" -not -path "./.git/*"
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: ATUALIZADO
+→ confira com git status e commite numa frente (o upgrade não commita).
+exit_upgrade=0
+versao: v3.1.0
+novo-b copiado
+sdd-define atualizado
+[rc=0]
+### (8b) falha ao gravar o próprio registro (sdd/ sem escrita)
+
+$ novo_proj "$T/p4" && cd "$T/p4" && bash "$A/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; cp sdd/open-instalado.txt "$T/reg4"; chmod a-w sdd && N=10 up "$B" --yes; chmod u+w sdd; cmp sdd/open-instalado.txt "$T/reg4" && echo "REGISTRO INTACTO"; N=4 up "$B" --yes; grep ^versao: sdd/open-instalado.txt
+▶ upgrade v3.0.0 → v3.1.0 — plano
+= 248 iguais ao pacote novo (nada a fazer)
++ 1 novos (copiar)
+~ 1 do pacote, sem edição sua (atualizar)
+~ sdd/open-instalado.txt (registro: v3.0.0 → v3.1.0)
+Nada que você editou será tocado. Nada será commitado.
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.u1uVMH/sdd-open-B/bin/lib/versao.sh: line 129: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.u1uVMH/p4/sdd/open-instalado.txt.sddtmp: Permission denied
+🛑 falha ao escrever no projeto — o registro de versão não foi mudado; rode o upgrade de novo, ele retoma do ponto em que parou
+RESULTADO: ERRO
+→ confira as permissões de sdd/open-instalado.txt
+exit_upgrade=1
+REGISTRO INTACTO
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: ATUALIZADO
+→ confira com git status e commite numa frente (o upgrade não commita).
+exit_upgrade=0
+versao: v3.1.0
+[rc=0]
+### (9) --de com tag, a partir de um CLONE do pacote (forma tag), num projeto sem registro instalado pela v2.16.1
+
+$ git clone -q "$P" "$T/clone" && novo_proj "$T/p5" && mkdir "$T/v2161" && git -C "$P" archive --prefix=sdd-open-v2.16.1/ v2.16.1 | tar -x -C "$T/v2161" && cd "$T/p5" && bash "$T/v2161/sdd-open-v2.16.1/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; git add -A && git commit -qm i; snap . "$T/antes"
+[rc=0]
+
+$ N=6 up "$T/clone" --de v2.16.1 --dry-run; igual
++ 1 novos (copiar)
+~ 8 do pacote, sem edição sua (atualizar)
++ sdd/open-instalado.txt (registro da versão v2.16.1-7-g258287d)
+Nada que você editou será tocado. Nada será commitado.
+RESULTADO: DRY-RUN
+→ nada foi escrito; rode sem --dry-run para aplicar.
+exit_upgrade=0
+ÁRVORE IGUAL (nada escrito)
+[rc=0]
+
+$ up "$T/clone" --de v9.8.7 --yes; igual
+🛑 a tag v9.8.7 não existe no clone do pacote (/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.u1uVMH/clone)
+RESULTADO: ERRO
+→ rode git -C /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.u1uVMH/clone fetch --tags e tente de novo, ou passe --de com a pasta do pacote antigo; nada foi escrito
+exit_upgrade=64
+ÁRVORE IGUAL (nada escrito)
+[rc=0]
+
+$ N=5 up "$T/clone" --de v2.16.1 --yes; grep ^versao: sdd/open-instalado.txt
+✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: ATUALIZADO
+→ confira com git status e commite numa frente (o upgrade não commita).
+exit_upgrade=0
+versao: v2.16.1-7-g258287d
+[rc=0]
+rc=0
