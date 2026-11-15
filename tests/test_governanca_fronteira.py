@@ -9,7 +9,7 @@ from __future__ import annotations
 import os
 import shutil
 
-from apoio import BASH, RAIZ, Sandbox
+from apoio import BASH, RAIZ, Sandbox, SEM_NOME_ESPECIAL
 
 SCRIPT = "sdd/bin/governanca-fronteira.sh"
 
@@ -209,10 +209,10 @@ class Uso(Base):
 class Sabotagem(Base):
     def test_comparar_so_o_caminho_esconde_a_sobrescrita(self):
         texto = (RAIZ / SCRIPT).read_text(encoding="utf-8")
-        alvo = 'saida.append("%s\\t%s" % (h.hexdigest(), r))'
+        alvo = 'saida.append("%s\\t%s" % (h.hexdigest(), barra(r)))'
         self.assertIn(alvo, texto)
         sab = self.tmp / "sabotado.sh"
-        sab.write_text(texto.replace(alvo, 'saida.append("X\\t%s" % r)'), encoding="utf-8")
+        sab.write_text(texto.replace(alvo, 'saida.append("X\\t%s" % barra(r))'), encoding="utf-8")
         self.escreve(self.w, "DEFINE.md", "sujo antes\n")
         self.snap("antes", script=str(sab))
         self.escreve(self.w, "DEFINE.md", "sobrescrito\n")
@@ -352,6 +352,8 @@ class EstadoDoGit(Base):
     def test_raiz_com_e_comercial_lista_o_caminho_certo(self):
         for nome in ("P&D fiscal", "a|b"):
             with self.subTest(raiz=nome):
+                if "|" in nome and SEM_NOME_ESPECIAL[0]:
+                    self.skipTest(SEM_NOME_ESPECIAL[1])
                 w = self.tmp / nome
                 w.mkdir()
                 self.git(w, "init", "-q")
@@ -364,4 +366,4 @@ class EstadoDoGit(Base):
                 self.roda([BASH, self.script, "--snapshot", str(w), str(self.s / "b")], w)
                 rc, out, err = self.roda([BASH, self.script, "--comparar", str(self.s / "a"), str(self.s / "b"), str(w / "x")], w)
                 self.assertEqual(rc, 1, out + err)
-                self.assertIn("FORA: " + str(w.resolve()) + "/a.txt", out)
+                self.assertIn("FORA: " + w.resolve().as_posix() + "/a.txt", out)   # F16W2: a fronteira escreve com "/"

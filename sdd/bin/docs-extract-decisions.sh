@@ -42,7 +42,8 @@ out="${out:-${root}/docs/adr/index.md}"
 
 sdd_python_exigir
 # os links do índice são relativos à pasta do --out (docs/adr/index.md ⇒ ../../)
-pre="$(python3 -c 'import os, sys; print(os.path.relpath(sys.argv[1], os.path.dirname(os.path.abspath(sys.argv[2]))))' "${root}" "${out}")/"
+# F16W2: com "/" (no Windows o relpath dá ..\.., e o awk -v come a contrabarra)
+pre="$(python3 -c 'import os, sys; print(os.path.relpath(sys.argv[1], os.path.dirname(os.path.abspath(sys.argv[2]))).replace(os.sep, "/"))' "${root}" "${out}")/"
 [ "${pre}" = "./" ] && pre=""
 lista="$(mktemp)"; body="$(mktemp)"; stats="$(mktemp)"; tmp="$(mktemp)"
 trap 'rm -f "${lista}" "${body}" "${stats}" "${tmp}"' EXIT

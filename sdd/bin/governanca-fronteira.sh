@@ -85,7 +85,9 @@ while i < len(r):
 # caminho absoluto canônico: o ancestral mais próximo que existe passa por `pwd -P` (no macOS /var é link
 # para /private/var; sem isso o permitido não casa com a raiz canonizada e vira FORA ou "fora do worktree")
 canon() { # realpath: resolve link de pasta E de arquivo; o trecho que ainda não existe fica como está
-  python3 -c 'import os, sys; sys.stdout.write(os.path.realpath(sys.argv[1]))' "$1"
+  # F16W2: com "/" também no Windows (o realpath dá C:\…, o pwd do Git Bash /c/… ou /tmp/…): a raiz, o permitido e
+  # o que o hasher grava saem todos daqui, numa forma só
+  python3 -c 'import os, sys; sys.stdout.write(os.path.realpath(sys.argv[1]).replace(os.sep, "/"))' "$1"
 }
 # 3 linhas com o estado do git que o `git status` não mostra: branch, índice e o que mora em .git
 estado_git() { # $1 raiz
@@ -147,12 +149,13 @@ case "${1:-}" in
   --snapshot)
     [ "$#" -ge 3 ] || uso
     [ -d "$2" ] || uso
-    WT="$(cd "$2" && pwd -P)" || uso
+    WT="$(cd "$2" && pwd -P)" && WT="$(canon "${WT}")" || uso
     TOP="$(git -C "${WT}" rev-parse --show-toplevel 2>/dev/null)" || { echo "não é um repositório git: ${WT}" >&2; uso; }
     # os caminhos do porcelain são relativos à RAIZ: um subdiretório viraria AUSENTE nos dois lados
-    [ "$(cd "${TOP}" && pwd -P)" = "${WT}" ] || { echo "<raiz-do-worktree> tem de ser a raiz do repositório (${TOP}), não ${WT}" >&2; uso; }
+    [ "$(canon "${TOP}")" = "${WT}" ] || { echo "<raiz-do-worktree> tem de ser a raiz do repositório (${TOP}), não ${WT}" >&2; uso; }
     OUT="$3"; shift 3
-    OUT_DIR="$(cd "$(dirname "${OUT}")" 2>/dev/null && pwd -P)" || { echo "pasta do snapshot inexistente: $(dirname "${OUT}")" >&2; uso; }
+    OUT_DIR="$(cd "$(dirname "${OUT}")" 2>/dev/null && pwd -P)" && OUT_DIR="$(canon "${OUT_DIR}")" \
+      || { echo "pasta do snapshot inexistente: $(dirname "${OUT}")" >&2; uso; }
     case "${OUT_DIR}/" in "${WT}"/*) echo "o snapshot fica FORA do worktree (senão ele mesmo aparece como ??): ${OUT}" >&2; uso ;; esac
     # só agora, com o destino validado fora do worktree: um snapshot que falha daqui em diante não deixa o
     # arquivo de uma tentativa anterior no lugar (antes da validação, o rm apagaria um arquivo do projeto)
@@ -179,12 +182,14 @@ case "${1:-}" in
 import hashlib, os, sys
 wt = sys.argv[1]
 saida = []
+def barra(c):   # F16W2: a mesma forma do canon (no Windows, C:/…)
+    return c.replace(os.sep, "/")
 for p in sys.stdin.read().split("\n"):
     if not p:
         continue
     a = os.path.join(wt, p)
     if os.path.islink(a):
-        saida.append("link:%s\t%s" % (os.readlink(a), a))
+        saida.append("link:%s\t%s" % (barra(os.readlink(a)), barra(a)))
     r = os.path.realpath(a)
     if os.path.isfile(r):
         h = hashlib.sha256()
@@ -194,9 +199,9 @@ for p in sys.stdin.read().split("\n"):
                     h.update(bloco)
         except OSError as e:
             sys.stderr.write("não consegui ler %s: snapshot não gravado (%s)\n" % (a, e)); sys.exit(1)
-        saida.append("%s\t%s" % (h.hexdigest(), r))
+        saida.append("%s\t%s" % (h.hexdigest(), barra(r)))
     else:
-        saida.append("AUSENTE\t%s" % r)
+        saida.append("AUSENTE\t%s" % barra(r))
 sys.stdout.write("".join(l + "\n" for l in sorted(set(saida))))
 ' "${WT}" > "${parcial}" || { echo "não consegui gravar o snapshot" >&2; uso; }
     head_sha="$(git -C "${WT}" rev-parse -q --verify HEAD 2>/dev/null || echo AUSENTE)"

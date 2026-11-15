@@ -47,7 +47,8 @@ SEM_SYMLINK = (not _symlink_ok(), "link simbólico: este sistema não deixa cria
 SEM_FCNTL = (WINDOWS, "fcntl: o Windows não tem a trava POSIX")
 SEM_CHMOD = (WINDOWS, "chmod: no Windows o bit de execução e a permissão de leitura não valem")
 SEM_SINAL = (WINDOWS, "sinal POSIX: o Windows não entrega SIGTERM nem SIGKILL a um grupo de processos")
-SEM_NOME_ESPECIAL = (WINDOWS, "nome de arquivo com aspas ou terminado em espaço: o Windows não aceita")
+SEM_NOME_ESPECIAL = (WINDOWS, "nome de arquivo com aspas, dois-pontos, barra vertical, quebra de linha ou terminado em espaço: "
+                                "o Windows não aceita")
 SEM_POSIX_UID = (not hasattr(os, "geteuid"), "os.geteuid: só existe em sistema POSIX")
 
 

@@ -181,7 +181,7 @@ def main():
 
     grupos, nomes, sem_grupo, subpastas = collections.defaultdict(list), collections.defaultdict(set), [], []
     for sub in PASTAS:
-        base = os.path.join("sdd", sub)
+        base = "sdd/" + sub   # F16W2: com "/", como as chaves do git (os.path.join daria sdd\features no Windows)
         if not os.path.isdir(base):
             continue
         for nome in sorted(os.listdir(base)):

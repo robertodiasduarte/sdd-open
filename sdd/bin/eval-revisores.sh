@@ -52,7 +52,7 @@ if ! sdd_python_pronto; then
   exit 64
 fi
 
-SDD_EVAL_BIN="$(cd "$(dirname "$0")" && pwd)"
+SDD_EVAL_BIN="$(cd "${_sdd_bin}" && { pwd -W 2>/dev/null || pwd; })"   # F16W2: sem dirname; no Windows, C:/… (o Python nativo lê)
 export SDD_EVAL_BIN
 
 exec python3 -B - "$@" <<'PY'

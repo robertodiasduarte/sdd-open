@@ -114,6 +114,9 @@ def slot(raiz, bloco, chave):
 
 
 def roda(cmd, cwd):
+    # F16W2: o programa pelo shutil.which (no Windows ele segue o PATH com as extensões do PATHEXT; o CreateProcess
+    # só acharia um .exe e pularia, por exemplo, um gh.bat que vem antes no PATH)
+    cmd = [shutil.which(cmd[0]) or cmd[0]] + list(cmd[1:])
     return subprocess.run(cmd, cwd=cwd, capture_output=True, encoding="utf-8", errors="replace", stdin=subprocess.DEVNULL,
                           timeout=LIMITE_CMD, env=dict(os.environ, GIT_TERMINAL_PROMPT="0"))
 

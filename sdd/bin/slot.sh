@@ -165,6 +165,7 @@ print("AUSENTE")
 PY
 )" || { echo "⚠️  não consegui ler ${CONFIG}"; printf 'RESULTADO: INCONCLUSIVO\n→ confira o arquivo e rode de novo; isto não é verde.\n'; exit 3; }
 
+LIDO="${LIDO//$'\r'/}"   # F16W2: rede local; o calço do Windows já tira o \r que o print do Python põe
 ESTADO="${LIDO%%$'\n'*}"
 CMD=""; [ "${LIDO}" != "${ESTADO}" ] && CMD="${LIDO#*$'\n'}"
 case "${ESTADO}" in

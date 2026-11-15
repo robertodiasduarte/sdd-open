@@ -223,7 +223,7 @@ if modo == "touched":
         else:
             cands = []
         for c in cands:
-            cam = os.path.join(pasta, c) if pasta else c
+            cam = pasta + "/" + c if pasta else c   # F16W2: com "/" (o id do teste usa "/" também no Windows)
             if os.path.isfile(cam):
                 vizinhos.append((cam, os.path.splitext(c)[0] if c.endswith(".py") else ""))
 

@@ -39,7 +39,7 @@ if [ -f "${_sdd_bin}/lib/python.sh" ]; then . "${_sdd_bin}/lib/python.sh"
 else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }
   export PYTHONIOENCODING="${PYTHONIOENCODING:-utf-8}"; fi   # F16W2: sem a biblioteca, ao menos o UTF-8
 
-BIN="$(cd "$(dirname "$0")" && pwd)"
+BIN="$(cd "${_sdd_bin}" && { pwd -W 2>/dev/null || pwd; })"   # F16W2: sem dirname; no Windows, C:/… (o Python nativo lê)
 export SDD_FLUXO_BIN="$BIN"
 # F16W: o Python chama o mesmo bash que roda este script. No Windows, "bash" pelo nome cai no System32 (o bash.exe do
 # WSL) antes do PATH, porque o CreateProcess procura lá primeiro.
@@ -644,7 +644,7 @@ def cmd_seguir():
     feat = re.sub(r"^DEFINE_|\.md$", "", os.path.basename(define))
     alvo = define
     if prox == "build":
-        alvo = os.path.join(os.path.dirname(define), "DESIGN_%s.md" % feat)
+        alvo = os.path.join(os.path.dirname(define), "DESIGN_%s.md" % feat).replace(os.sep, "/")   # F16W2: com "/"
 
     def para(motivo, revisao=False):
         print("PARAR: " + motivo)

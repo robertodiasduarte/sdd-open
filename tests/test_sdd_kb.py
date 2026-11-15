@@ -183,7 +183,8 @@ class Strict(Sandbox):
         self.troca(REGRA, "implementacao: null", "implementacao: src/engine.py:vbc")
         fora = self.tmp / "fora.py"
         fora.write_text("# fora da raiz\n", encoding="utf-8")
-        for valor in (str(fora), "../fora.py::t", "tests/../../fora.py"):
+        # F16W2: "C:\\…" é absoluto do Windows mesmo fora dele; o validate_kb cortava no ":" do drive
+        for valor in (str(fora), "../fora.py::t", "tests/../../fora.py", "C:\\Users\\x\\fora.py::t"):
             with self.subTest(teste=valor):
                 p = self.kb / REGRA
                 texto = p.read_text(encoding="utf-8")

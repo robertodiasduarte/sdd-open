@@ -27,7 +27,7 @@ if [ -f "${_sdd_bin}/lib/python.sh" ]; then . "${_sdd_bin}/lib/python.sh"
 else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }
   export PYTHONIOENCODING="${PYTHONIOENCODING:-utf-8}"; fi   # F16W2: sem a biblioteca, ao menos o UTF-8
 
-BIN="$(cd "$(dirname "$0")" && pwd)"
+BIN="$(cd "${_sdd_bin}" && { pwd -W 2>/dev/null || pwd; })"   # F16W2: sem dirname; no Windows, C:/… (o Python nativo lê)
 
 case "${1:-}" in
   -h|--help)
@@ -177,11 +177,15 @@ BASE_ENV.update({
 })
 
 # o adapter roda num `bash -c` novo: confere ali, com o ambiente exato, para onde cada CLI resolve
-sonda = subprocess.run([BASH, "-c", 'for e in claude codex gemini; do printf "%s=%s\\n" "$e" "$(command -v "$e")"; done'],
-                       env=BASE_ENV, capture_output=True, text=True, encoding="utf-8", errors="replace")
+# F16W2: a comparação é do bash (-ef: o mesmo arquivo), porque no Windows ele diz /tmp/… e o Python C:\…
+sonda = subprocess.run([BASH, "-c", 'for e in claude codex gemini; do o="$(command -v "$e")"; '
+                        'if [ -n "$o" ] && [ "$o" -ef "$SDD_GATE_TBIN/$e" ]; then printf "%s=ok\\n" "$e"; '
+                        'else printf "%s=%s\\n" "$e" "$o"; fi; done'],
+                       env=dict(BASE_ENV, SDD_GATE_TBIN=TBIN), capture_output=True, text=True, encoding="utf-8",
+                       errors="replace")
 for ln in sonda.stdout.splitlines():
     e, _, onde = ln.partition("=")
-    if not onde.startswith(TBIN + os.sep):
+    if onde != "ok":
         shutil.rmtree(TMP, ignore_errors=True)
         quebrado("no shell que roda os adapters, `%s` resolve para %r, não para o stub em %s" % (e, onde, TBIN),
                  "rode o gate num terminal sem função `%s` exportada e sem BASH_ENV que mude o PATH." % e)

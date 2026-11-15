@@ -29,7 +29,7 @@ if [ -f "${_sdd_bin}/lib/python.sh" ]; then . "${_sdd_bin}/lib/python.sh"
 else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exigir() { :; }
   export PYTHONIOENCODING="${PYTHONIOENCODING:-utf-8}"; fi   # F16W2: sem a biblioteca, ao menos o UTF-8
 
-BIN="$(cd "$(dirname "$0")" && pwd)"
+BIN="$(cd "${_sdd_bin}" && { pwd -W 2>/dev/null || pwd; })"   # F16W2: sem dirname; no Windows, C:/… (o Python nativo lê)
 export SDD_LINT_BIN="$BIN"
 export PERGUNTA_FRAG="${PERGUNTA_FRAG:-$BIN/../templates/fragments/PERGUNTA_DECISAO.md}"
 
