@@ -1,0 +1,14 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows && F=sdd/reports/BUILD_REPORT_F16W_WINDOWS.md; /usr/bin/python3 sdd/bin/report-lint.py $F > /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/rl_file.out 2>&1; echo rc_arquivo=$?; sed 's/$/\r/' $F | PYTHONUTF8=0 LC_ALL=en_US.ISO8859-1 /usr/bin/python3 -I sdd/bin/report-lint.py --stdin $F > /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/rl_stdin.out 2>&1; echo rc_stdin_crlf_latin1=$?; cmp /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/rl_file.out /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/rl_stdin.out && echo SAIDAS_IGUAIS; tail -3 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/rl_stdin.out; echo '--- baseline ad32fe1 mesmo comando ---'; cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/$F $F 2>/dev/null; sed 's/$/\r/' $F | PYTHONUTF8=0 LC_ALL=en_US.ISO8859-1 /usr/bin/python3 -I sdd/bin/report-lint.py --stdin $F 2>&1 | tail -3; echo rc_baseline=${PIPESTATUS[1]}; echo "[rc=$?]"
+rc_arquivo=0
+rc_stdin_crlf_latin1=0
+SAIDAS_IGUAIS
+✅ sdd/reports/BUILD_REPORT_F16W_WINDOWS.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+--- baseline ad32fe1 mesmo comando ---
+sed: sdd/reports/BUILD_REPORT_F16W_WINDOWS.md: No such file or directory
+RESULTADO: VERMELHO
+\u2192 use a tabela do template: `| ID | Crit�rio | Resultado | Evid�ncia |`.
+\u2192 rode o avaliador e grave `sdd/reviews/AVALIACAO_F16W_WINDOWS_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relat�rio.
+rc_baseline=1
+[rc=0]

@@ -1,0 +1,33 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/recusas.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head; echo; /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/recusas.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base; echo "[rc=$?]"
+árvore: head
+controle (só benignos)            rc=0 
+CPF com pontuação                rc=1   docs/cliente.md:1: CPF 529.***.***-50 RESULTADO: COMMIT RECUSADO 
+CPF sem pontuação                rc=1   docs/c2.txt:1: CPF 529.***.***-50 RESULTADO: COMMIT RECUSADO 
+CNPJ                               rc=1   docs/empresa.md:1: CNPJ 11.***.***/****-81 RESULTADO: COMMIT RECUSADO 
+.pfx                               rc=1   cert/a1.pfx: certificado digital com chave privada (ex.: certificado A1) RESULTADO: COMMIT RECUSADO 
+.p12                               rc=1   cert/a1.p12: certificado digital com chave privada (ex.: certificado A1) RESULTADO: COMMIT RECUSADO 
+.pem com PRIVATE KEY               rc=1   cert/k.pem: chave privada (.pem com PRIVATE KEY) RESULTADO: COMMIT RECUSADO 
+.pem só certificado (controle)    rc=0 
+.env                               rc=1   app/.env: arquivo de senhas (.env) RESULTADO: COMMIT RECUSADO 
+.env.example (controle)            rc=0 
+planilha nova .xlsx                rc=1   dados/clientes.xlsx: planilha nova (pode conter dado de cliente) RESULTADO: COMMIT RECUSADO 
+planilha nova .CSV (caixa)         rc=1   dados/c.CSV: planilha nova (pode conter dado de cliente) RESULTADO: COMMIT RECUSADO 
+credencial em claro .json          rc=1   🛑 [H3] config/app.json: credencial em texto claro (chave: db_password) RESULTADO: COMMIT RECUSADO 
+credencial placeholder (controle)  rc=0 
+
+árvore: base
+controle (só benignos)            rc=0 
+CPF com pontuação                rc=1   docs/cliente.md:1: CPF 529.***.***-50 RESULTADO: COMMIT RECUSADO 
+CPF sem pontuação                rc=1   docs/c2.txt:1: CPF 529.***.***-35 RESULTADO: COMMIT RECUSADO 
+CNPJ                               rc=1   docs/empresa.md:1: CNPJ 11.***.***/****-81 RESULTADO: COMMIT RECUSADO 
+.pfx                               rc=1   cert/a1.pfx: certificado digital com chave privada (ex.: certificado A1) RESULTADO: COMMIT RECUSADO 
+.p12                               rc=1   cert/a1.p12: certificado digital com chave privada (ex.: certificado A1) RESULTADO: COMMIT RECUSADO 
+.pem com PRIVATE KEY               rc=1   cert/k.pem: chave privada (.pem com PRIVATE KEY) RESULTADO: COMMIT RECUSADO 
+.pem só certificado (controle)    rc=0 
+.env                               rc=1   app/.env: arquivo de senhas (.env) RESULTADO: COMMIT RECUSADO 
+.env.example (controle)            rc=0 
+planilha nova .xlsx                rc=1   dados/clientes.xlsx: planilha nova (pode conter dado de cliente) RESULTADO: COMMIT RECUSADO 
+planilha nova .CSV (caixa)         rc=1   dados/c.CSV: planilha nova (pode conter dado de cliente) RESULTADO: COMMIT RECUSADO 
+credencial em claro .json          rc=1   🛑 [H3] config/app.json: credencial em texto claro (chave: db_password) RESULTADO: COMMIT RECUSADO 
+credencial placeholder (controle)  rc=0 
+[rc=0]

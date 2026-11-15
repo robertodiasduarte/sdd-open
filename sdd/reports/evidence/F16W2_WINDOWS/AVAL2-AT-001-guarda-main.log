@@ -1,0 +1,8 @@
+$ /usr/bin/python3 -I /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/guarda_main.py /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows; echo "[rc=$?]"
+py no MANIFEST fora de tests/: 28
+py rastreados fora do MANIFEST (fora de tests/): []
+com troca antes da 1a escrita: 20
+FALTA: .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py sem reconfigure
+FALTA: .agents/skills/ux-review-builder/tests/test_validate_generated_bundle.py sem reconfigure
+FALTA: scripts/starter/raiz/tests/test_sdd_kb_normativo.py sem reconfigure
+[rc=0]

@@ -1,0 +1,24 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/init_fiel.sh; echo "[rc=$?]"
+rc_init=0
+rc_init=0
+motor HEAD:      629 arquivos · motor ad32fe1:      629 arquivos
+diff -r -x .git /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xmsfx349p4/.claude/hooks/sdd-avaliador-guard.py /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.HuzaAk3Q6M/.claude/hooks/sdd-avaliador-guard.py
+85,91d84
+<     # F16W2: no Windows, o stdout num pipe (o Git Bash do aluno) é cp1252 e o print troca \n por \r\n: o ✅ e o "ç"
+<     # quebrariam o script, e o bash que captura a saída veria um \r a mais. Saída em UTF-8 e \n, sempre.
+<     for _canal in (sys.stdout, sys.stderr):
+<         try:
+<             _canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+<         except (AttributeError, ValueError):
+<             pass
+diff -r -x .git /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xmsfx349p4/.claude/hooks/sdd-report-guard.py /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.HuzaAk3Q6M/.claude/hooks/sdd-report-guard.py
+124,130d123
+<     # F16W2: no Windows, o stdout num pipe (o Git Bash do aluno) é cp1252 e o print troca \n por \r\n: o ✅ e o "ç"
+<     # quebrariam o script, e o bash que captura a saída veria um \r a mais. Saída em UTF-8 e \n, sempre.
+<     for _canal in (sys.stdout, sys.stderr):
+<         try:
+<             _canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+<         except (AttributeError, ValueError):
+<             pass
+BIT DE EXECUCAO IDENTICO
+[rc=0]

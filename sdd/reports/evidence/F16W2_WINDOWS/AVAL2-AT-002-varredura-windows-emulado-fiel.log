@@ -1,0 +1,45 @@
+$ EMU=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/winemu2 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/sweep.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head; echo '=== baseline ad32fe1 ==='; EMU=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/winemu2 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/sweep.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base; echo '=== slot com o emulador fiel ==='; sed -i '' 's#winemu /bin/bash#winemu2 /bin/bash#' /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/slotprobe.sh; /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/slotprobe.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head; /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/slotprobe.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base; echo "[rc=$?]"
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=10 :: sdd/bin/sdd-decisoes-lint.sh
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=20 :: sdd/bin/sdd-fluxo.sh
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=3 :: sdd/bin/seguranca-varredura.sh .
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=3 :: sdd/bin/ledger-revisao-lint.sh
+rc=2 rc_emulado=2 saida=igual CR=0 tb=0 linhas=3 :: sdd/bin/eval-agree.sh
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=19 :: sdd/bin/docs-extract-decisions.sh --check
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=25 :: sdd/bin/test-baseline.sh --help
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=13 :: sdd/bin/playbook-curator.sh --listar
+rc=0 rc_emulado=0 saida=DIFERENTE CR=0 tb=0 linhas=115 :: sdd/bin/adversarial-review-gate.sh
+=== baseline ad32fe1 ===
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=10 :: sdd/bin/sdd-decisoes-lint.sh
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=20 :: sdd/bin/sdd-fluxo.sh
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=3 :: sdd/bin/seguranca-varredura.sh .
+rc=64 rc_emulado=64 saida=DIFERENTE CR=3 tb=0 linhas=3 :: sdd/bin/ledger-revisao-lint.sh
+rc=2 rc_emulado=2 saida=DIFERENTE CR=3 tb=0 linhas=3 :: sdd/bin/eval-agree.sh
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=19 :: sdd/bin/docs-extract-decisions.sh --check
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=25 :: sdd/bin/test-baseline.sh --help
+rc=64 rc_emulado=64 saida=igual CR=0 tb=0 linhas=13 :: sdd/bin/playbook-curator.sh --listar
+rc=0 rc_emulado=0 saida=DIFERENTE CR=115 tb=0 linhas=115 :: sdd/bin/adversarial-review-gate.sh
+=== slot com o emulador fiel ===
+--- sem emulação
+▶ smoke.before_ok_cmd (before_ok): echo "SLOT RODOU ç"
+SLOT RODOU ç
+RESULTADO: OK
+→ siga para o próximo passo.
+rc=0
+--- com o stdout do Windows emulado (cp1252 + \r\n)
+▶ smoke.before_ok_cmd (before_ok): echo "SLOT RODOU ç"
+SLOT RODOU ç
+RESULTADO: OK
+→ siga para o próximo passo.
+rc=0
+--- sem emulação
+▶ smoke.before_ok_cmd (before_ok): echo "SLOT RODOU ç"
+SLOT RODOU ç
+RESULTADO: OK
+→ siga para o próximo passo.
+rc=0
+--- com o stdout do Windows emulado (cp1252 + \r\n)
+ℹ️  smoke.before_ok_cmd vazio: pulado (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4PRYJl17SB/sdd/config.yaml)
+RESULTADO: PULADO
+→ diga que o passo foi pulado porque o slot está vazio; para usá-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+rc=11
+[rc=0]

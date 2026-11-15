@@ -1,0 +1,13 @@
+$ cd <cópia HEAD 3ba89de>/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_f16w2_caminhos ; grep os.popen (base x head)
+test_valor_com_cr_e_lido_e_roda (test_f16w2_caminhos.SlotComCr) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 2.039s
+
+OK
+--- os.popen em base (fora de tests/):
+./sdd/bin/report-lint.py:600:    root = os.popen("git rev-parse --show-toplevel 2>/dev/null").read().strip() or os.getcwd()
+--- os.popen em head (fora de tests/):
+./sdd/bin/report-lint.py:603:    # F16W2: sem os.popen, que no Windows passa pelo cmd.exe (não conhece /dev/null e a raiz caía no cwd)
+--- report-lint: raiz do git
+605:        r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, stdin=subprocess.DEVNULL)

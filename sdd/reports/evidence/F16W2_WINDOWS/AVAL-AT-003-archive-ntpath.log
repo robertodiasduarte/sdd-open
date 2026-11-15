@@ -1,0 +1,71 @@
+$ cd <repo com 4 docs de 2020> && /usr/bin/python3 winpath_run.py <base|head>/sdd/bin/sdd-archive.py --hoje 2026-11-14  # winpath_run: os.path.join chamado pelo script = ntpath.join; FS aceita '\\' (/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/winpath_run.py)
+    | # Roda um script cujo os.path.join é o ntpath.join (como o Python nativo do Windows), só nas chamadas do próprio
+    | # script (a stdlib segue posix), num sistema de arquivos que aceita "\\" e "/" (como o Windows).
+    | # uso: winpath_run.py <script> [args]
+    | import builtins, ntpath, os, posixpath, runpy, sys
+    | ALVO = None; _PJ = posixpath.join
+    | import argparse, collections, datetime, re, subprocess, unicodedata, json, shlex, fnmatch, hashlib  # antes do remendo
+    | f = lambda p: p.replace("\\", "/") if isinstance(p, str) else p
+    | def join(*a):
+    |     return (ntpath.join if sys._getframe(1).f_code.co_filename == ALVO else _PJ)(*a)
+    | os.path.join = join
+    | for nome in ("isdir", "isfile", "exists", "islink", "getmtime"):
+    |     orig = getattr(os.path, nome); setattr(os.path, nome, (lambda o: lambda p, *a, **k: o(f(p), *a, **k))(orig))
+    | for nome in ("listdir", "stat", "lstat"):
+    |     orig = getattr(os, nome); setattr(os, nome, (lambda o: lambda p=".", *a, **k: o(f(p), *a, **k))(orig))
+    | _open = builtins.open; builtins.open = lambda p, *a, **k: _open(f(p), *a, **k)
+    | ALVO = sys.argv[1]
+    | sys.argv = sys.argv[1:]; runpy.run_path(sys.argv[0], run_name="__main__")
+=== base, Python normal (macOS)
+== Lote com-ledger: 0 arquivo(s) ==
+== Lote sem-ledger: 4 arquivo(s) ==
+  sdd/features/BRAINSTORM_VELHA.md  →  sdd/archive/VELHA/BRAINSTORM_VELHA.md
+  sdd/features/DEFINE_VELHA.md  →  sdd/archive/VELHA/DEFINE_VELHA.md
+  sdd/features/DESIGN_VELHA.md  →  sdd/archive/VELHA/DESIGN_VELHA.md
+  sdd/reports/BUILD_REPORT_VELHA.md  →  sdd/archive/VELHA/BUILD_REPORT_VELHA.md
+== Lote soltos: 1 arquivo(s) ==
+  sdd/reports/SOLTO_X.md  →  sdd/archive/_REPORTS_2020-01/SOLTO_X.md
+== Protegidos: 0 grupo(s) ==
+rc=0
+=== base, os.path.join como no Windows
+== Lote com-ledger: 0 arquivo(s) ==
+== Lote sem-ledger: 0 arquivo(s) ==
+== Lote soltos: 0 arquivo(s) ==
+== Protegidos: 0 grupo(s) ==
+== Recentes (ficam): 2 grupo(s) ==
+  VELHA (4 documento(s), quieto há 0 dia(s), limite 60)
+  SOLTO_X.md (1 documento(s), quieto há 0 dia(s), limite 60)
+== Sem classificação (decisão sua): 0 ==
+== Subpastas (ficam): 0 ==
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=0 · recentes=2 · sem classificação=0 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+rc=0
+=== head, Python normal (macOS)
+== Lote com-ledger: 0 arquivo(s) ==
+== Lote sem-ledger: 4 arquivo(s) ==
+  sdd/features/BRAINSTORM_VELHA.md  →  sdd/archive/VELHA/BRAINSTORM_VELHA.md
+  sdd/features/DEFINE_VELHA.md  →  sdd/archive/VELHA/DEFINE_VELHA.md
+  sdd/features/DESIGN_VELHA.md  →  sdd/archive/VELHA/DESIGN_VELHA.md
+  sdd/reports/BUILD_REPORT_VELHA.md  →  sdd/archive/VELHA/BUILD_REPORT_VELHA.md
+== Lote soltos: 1 arquivo(s) ==
+  sdd/reports/SOLTO_X.md  →  sdd/archive/_REPORTS_2020-01/SOLTO_X.md
+== Protegidos: 0 grupo(s) ==
+rc=0
+=== head, os.path.join como no Windows
+  sdd/features/BRAINSTORM_VELHA.md  →  sdd/archive/VELHA/BRAINSTORM_VELHA.md
+  sdd/features/DEFINE_VELHA.md  →  sdd/archive/VELHA/DEFINE_VELHA.md
+  sdd/features/DESIGN_VELHA.md  →  sdd/archive/VELHA/DESIGN_VELHA.md
+  sdd/reports/BUILD_REPORT_VELHA.md  →  sdd/archive/VELHA/BUILD_REPORT_VELHA.md
+== Lote soltos: 1 arquivo(s) ==
+  sdd/reports/SOLTO_X.md  →  sdd/archive/_REPORTS_2020-01/SOLTO_X.md
+== Protegidos: 0 grupo(s) ==
+== Recentes (ficam): 0 grupo(s) ==
+== Sem classificação (decisão sua): 0 ==
+== Subpastas (ficam): 0 ==
+TOTAIS: com-ledger=0 · sem-ledger=4 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+rc=0

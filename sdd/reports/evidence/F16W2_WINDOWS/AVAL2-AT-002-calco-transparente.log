@@ -1,0 +1,9 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/calco.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head; echo "[rc=$?]"
+SDD_PYTHON_RESOLVIDO=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T//sdd-python.t1QVdX
+--- o calço:
+#!/bin/sh
+exec '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.AAh9DPmmR9/python' "$@"
+--- modo do python3 pelo calço: utf8_mode=0 ; modo direto: 0
+--- PATH com python3 que serve: nenhum calço
+SDD_PYTHON_RESOLVIDO=python3
+[rc=0]

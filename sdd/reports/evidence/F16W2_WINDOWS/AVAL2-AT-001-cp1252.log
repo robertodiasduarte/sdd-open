@@ -1,0 +1,12 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/at001.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows; echo "[rc=$?]"
+rc_utf8=1 rc_cp1252=1 rc_cp1252_I=1 traceback=0 saida_cp1252=same saida_-I=same linhas(✅=0 →=5 ç=3 CR=0) :: sdd/bin/design-lint.py sdd/templates/DESIGN_TEMPLATE.md
+rc_utf8=1 rc_cp1252=1 rc_cp1252_I=1 traceback=0 saida_cp1252=same saida_-I=same linhas(✅=0 →=2 ç=1 CR=0) :: sdd/bin/report-lint.py sdd/templates/BUILD_REPORT_TEMPLATE.md
+rc_utf8=0 rc_cp1252=0 rc_cp1252_I=0 traceback=0 saida_cp1252=same saida_-I=same linhas(✅=1 →=0 ç=0 CR=0) :: sdd/bin/handoff-lint.py sdd/fixtures/handoff/HANDOFF_VALIDO.md
+rc_utf8=0 rc_cp1252=0 rc_cp1252_I=0 traceback=0 saida_cp1252=same saida_-I=same linhas(✅=1 →=0 ç=0 CR=0) :: sdd/bin/skill-lint.py --conversa .agents/skills/sdd-kb/SKILL.md
+rc_utf8=1 rc_cp1252=1 rc_cp1252_I=1 traceback=0 saida_cp1252=same saida_-I=same linhas(✅=0 →=1 ç=0 CR=0) :: sdd/bin/kb-dominios.py sdd/templates/DEFINE_TEMPLATE.md
+rc_utf8=64 rc_cp1252=64 rc_cp1252_I=64 traceback=0 saida_cp1252=same saida_-I=same linhas(✅=0 →=1 ç=0 CR=0) :: sdd/bin/governanca-bloco.py
+rc_utf8=0 rc_cp1252=0 rc_cp1252_I=0 traceback=0 saida_cp1252=same saida_-I=same linhas(✅=1 →=1 ç=0 CR=0) :: .agents/skills/sdd-release/scripts/deploy-espera-testes.py .
+rc_utf8=2 rc_cp1252=2 rc_cp1252_I=2 traceback=0 saida_cp1252=same saida_-I=same linhas(✅=0 →=0 ç=0 CR=0) :: .agents/skills/sdd-kb/scripts/validate_kb.py /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.WtFCTpcdKv/kb/dom /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.WtFCTpcdKv/kb/index.md
+rc_utf8=64 rc_cp1252=64 rc_cp1252_I=64 traceback=0 saida_cp1252=same saida_-I=same linhas(✅=0 →=0 ç=0 CR=0) :: .agents/skills/sdd-kb/scripts/kb_normativo.py
+rc_utf8=0 rc_cp1252=0 rc_cp1252_I=0 traceback=0 saida_cp1252=same saida_-I=same linhas(✅=0 →=0 ç=0 CR=0) :: .agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py --help
+[rc=0]

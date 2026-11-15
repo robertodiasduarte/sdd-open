@@ -1,0 +1,37 @@
+$ SDD_CHECAR_PROC=<proc falso> SDD_CHECAR_GH=<gh falso> PATH=<git e taskkill falsos>:$PATH bash checar.sh [--frente]  # emula o Git Bash: corta pelo taskkill; o processo cortado SAI 0 (Cygwin); neto que sobrevive ao corte; base=ad32fe1 head=3ba89de. Fakes em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/fkw/bin
+    --- gh
+    | #!/bin/bash
+    | mkdir -p "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/fkw/proc/$$"; echo $$ > "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/fkw/proc/$$/winpid"
+    | trap 'exit 0' TERM
+    | ( trap '' TERM; sleep 30 ) &
+    | sleep 40 & wait $!
+    --- git
+    | #!/bin/bash
+    | for a in "$@"; do if [ "$a" = ls-remote ]; then
+    |   mkdir -p "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/fkw/proc/$$"; echo $$ > "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/fkw/proc/$$/winpid"; trap 'exit 0' TERM
+    |   ( trap '' TERM; sleep 30 ) &
+    |   sleep 40 & wait $!; exit 0
+    | fi; done
+    | exec /usr/bin/git "$@"
+    --- taskkill
+    | #!/bin/bash
+    | # taskkill /F /T /PID w  -> TERM na árvore (o processo "sai 0", como pelo Cygwin)
+    | w=""; while [ $# -gt 0 ]; do [ "$1" = /PID ] && w=$2; shift; done
+    | [ -n "$w" ] && { pkill -TERM -P "$w" 2>/dev/null; kill -TERM "$w" 2>/dev/null; }
+    | exit 0
+=== base modo=[normal] rc=0 tempo=31s
+- O repositório remoto ainda não tem nenhum commit — as frentes nascem dele.
+- O gh está instalado, mas nenhuma conta do GitHub está logada nele — publicar o projeto vai pedir esse login.
+  gh auth login   (GitHub.com → HTTPS → Yes → Login with a web browser)
+✅ Repo ck-base, branch main, nenhuma frente aberta, Claude Code 2.1.314, Codex 0.163.0, editor cursor · sdd-checar-ambiente v1.5.2 · nov/2026 · versão atual: https://gith
+=== base modo=[--frente] rc=1 tempo=30s
+- O repositório remoto ainda não tem nenhum commit — as frentes nascem dele.
+=== head modo=[normal] rc=0 tempo=11s
+- Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+- Não deu para conferir o login do gh no GitHub agora (o GitHub não respondeu em 10 s).
+  Rode de novo quando a conexão voltar; para ver na hora: gh auth status
+✅ Repo ck-head, branch main, nenhuma frente aberta, Claude Code 2.1.314, Codex 0.163.0, editor cursor · sdd-checar-ambiente v1.5.3 · nov/2026 · versão atual: https://gith
+=== head modo=[--frente] rc=1 tempo=11s
+- Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.

@@ -1,0 +1,17 @@
+$ (repo de teste, branch feat/x, DEFINE copiado) ln -s <fora>/criado-fora.lock sdd/reports/progress/DRIVE_F16W2_WINDOWS.estado.lock && AUD_SEM_NOFOLLOW=1 PATH=<audpy>:$PATH bash sdd/bin/sdd-drive.sh iniciar sdd/features/DEFINE_F16W2_WINDOWS.md ; ls <fora>  # python sem os.O_NOFOLLOW (como no Windows); base=ad32fe1 head=3ba89de
+=== base  (sem O_NOFOLLOW=1) rc=10
+ACAO: DESIGN
+RESULTADO: CONTINUAR
+    criado fora do repositório: criado-fora.lock 
+=== base  (sem O_NOFOLLOW=0) rc=20
+motivo: estado-invalido
+RESULTADO: PARADA
+    criado fora do repositório: 
+=== head  (sem O_NOFOLLOW=1) rc=2
+🛑 sdd-drive: não consegui abrir a trava sdd/reports/progress/DRIVE_F16W2_WINDOWS.estado.lock: a trava é um link (abri-la criaria arquivo fora do repositório)
+RESULTADO: FALHA
+    criado fora do repositório: 
+=== head  (sem O_NOFOLLOW=0) rc=2
+🛑 sdd-drive: não consegui abrir a trava sdd/reports/progress/DRIVE_F16W2_WINDOWS.estado.lock: a trava é um link (abri-la criaria arquivo fora do repositório)
+RESULTADO: FALHA
+    criado fora do repositório: 

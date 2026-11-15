@@ -1,0 +1,31 @@
+$ bash -c cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/bl3/tests && python3 -B -m unittest -v test_f16w2_processos.Recusas
+test_commit_grande_com_cor_ligada_acha_o_nul (test_f16w2_processos.Recusas.test_commit_grande_com_cor_ligada_acha_o_nul) ... FAIL
+test_cpf_cnpj_certificado_env_planilha_e_credencial_continuam_recusados (test_f16w2_processos.Recusas.test_cpf_cnpj_certificado_env_planilha_e_credencial_continuam_recusados) ... ok
+test_nome_com_byte_que_nao_e_utf8_ainda_e_conferido (test_f16w2_processos.Recusas.test_nome_com_byte_que_nao_e_utf8_ainda_e_conferido) ... FAIL
+test_nul_depois_de_8_kb_e_extensao_maiuscula_sao_recusados (test_f16w2_processos.Recusas.test_nul_depois_de_8_kb_e_extensao_maiuscula_sao_recusados) ... ok
+test_sem_pcre_o_caminho_por_arquivo_recusa_igual (test_f16w2_processos.Recusas.test_sem_pcre_o_caminho_por_arquivo_recusa_igual) ... ok
+test_utf16_com_bom_e_binario_passam (test_f16w2_processos.Recusas.test_utf16_com_bom_e_binario_passam) ... ok
+
+======================================================================
+FAIL: test_commit_grande_com_cor_ligada_acha_o_nul (test_f16w2_processos.Recusas.test_commit_grande_com_cor_ligada_acha_o_nul)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/bl3/tests/test_f16w2_processos.py", line 130, in test_commit_grande_com_cor_ligada_acha_o_nul
+    self.assertEqual(rc, 1, saida)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : 
+
+======================================================================
+FAIL: test_nome_com_byte_que_nao_e_utf8_ainda_e_conferido (test_f16w2_processos.Recusas.test_nome_com_byte_que_nao_e_utf8_ainda_e_conferido)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/bl3/tests/test_f16w2_processos.py", line 147, in test_nome_com_byte_que_nao_e_utf8_ainda_e_conferido
+    self.assertEqual(rc, 1, out + err)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : 
+
+----------------------------------------------------------------------
+Ran 6 tests in 4.469s
+
+FAILED (failures=2)
+[exit=1]

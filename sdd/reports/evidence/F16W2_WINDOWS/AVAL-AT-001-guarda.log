@@ -1,0 +1,15 @@
+$ /usr/bin/python3 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/guard.py <copia de HEAD>  # guarda independente: todo .py do MANIFEST.txt fora de tests/ com __main__ tem reconfigure(..., newline="\n")
+com __main__ e troca: 20
+ATENCAO ('.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py', 'SEM reconfigure')
+ATENCAO ('.agents/skills/ux-review-builder/tests/test_validate_generated_bundle.py', 'SEM reconfigure')
+ATENCAO ('scripts/starter/raiz/tests/test_sdd_kb_normativo.py', 'SEM reconfigure')
+--- exit esperado: mesmo rc sem e com PYTHONIOENCODING=cp1252
+env=[X=1] rc=1 :: sdd/bin/report-lint.py
+env=[X=1] rc=1 :: sdd/bin/handoff-lint.py
+env=[X=1] rc=0 :: sdd/bin/design-lint.py
+env=[PYTHONIOENCODING=cp1252 PYTHONUTF8=0] rc=1 :: sdd/bin/report-lint.py
+env=[PYTHONIOENCODING=cp1252 PYTHONUTF8=0] rc=1 :: sdd/bin/handoff-lint.py
+env=[PYTHONIOENCODING=cp1252 PYTHONUTF8=0] rc=0 :: sdd/bin/design-lint.py
+--- validate_reverse.py (CONGELADOS) em cp1252
+{"errors": ["ARQUIVO_INACESSIVEL_OU_NAO_UTF8"], "ok": false}
+rc=2

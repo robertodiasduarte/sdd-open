@@ -1,0 +1,60 @@
+$ TRAP_LOG=… PATH=<armadilha>:$PATH bash <pacote>/bin/sdd-open.sh init --vendors claude,codex --yes ; git add -A ; GIT_TRACE=<arq> TRAP_LOG=… PATH=<armadilha>:$PATH git commit  # pacote base=ad32fe1 e head=3ba89de; armadilha = 63 wrappers em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/trap que anotam o nome e fazem exec do real; git contado por GIT_TRACE (o git põe o exec-path dele na frente do PATH do hook)
+--- init (processos lançados pelo PATH, sem git)
+base init: 5041 processos
+     1563 tr
+      826 head
+      562 od
+      403 cat
+      332 basename
+      253 mkdir
+head init: 1015 processos
+      161 mkdir
+      158 basename
+      130 cat
+      100 cp
+       90 head
+       79 dirname
+--- commit base, sdd.higieneDado=off: rc=0 arquivos=629  programas_PATH=7004  git_filhos(built-in, menos o commit)=686  total=7690  por_arquivo=12.22
+     2496 tr
+     1352 grep
+     1240 wc
+      643 basename
+      631 head
+     git  631 cat-file
+     git   46 show
+     git    4 diff
+     git    2 rev-parse
+     git    1 symbolic-ref
+--- commit head, sdd.higieneDado=off: rc=0 arquivos=629  programas_PATH=70  git_filhos(built-in, menos o commit)=58  total=128  por_arquivo=.20
+       48 grep
+        9 sed
+        7 tr
+        2 head
+        1 rm
+     git   46 show
+     git    4 diff
+     git    2 rev-parse
+     git    2 cat-file
+     git    1 symbolic-ref
+--- commit base, sdd.higieneDado=on: rc=0 arquivos=629  programas_PATH=8264  git_filhos(built-in, menos o commit)=688  total=8952  por_arquivo=14.23
+     3125 tr
+     1352 grep
+     1272 basename
+     1240 wc
+      631 head
+     git  631 cat-file
+     git   46 show
+     git    6 diff
+     git    2 rev-parse
+     git    1 symbolic-ref
+--- commit head, sdd.higieneDado=on: rc=0 arquivos=629  programas_PATH=72  git_filhos(built-in, menos o commit)=60  total=132  por_arquivo=.20
+       48 grep
+        9 sed
+        7 tr
+        2 head
+        2 bash
+     git   46 show
+     git    6 diff
+     git    2 rev-parse
+     git    2 cat-file
+     git    1 symbolic-ref

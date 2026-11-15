@@ -1,0 +1,77 @@
+$ PATH=<winpy>:$PATH bash sdd/bin/<script> …  # winpy/python3 = /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/emul.py: stdout/stderr cp1252 com '\n'->'\r\n' (ignora PYTHONIOENCODING, como -I; programa do stdin lido em UTF-8 como o tokenizer), em cópias git de ad32fe1 (base) e HEAD 3ba89de; '\r' mostrado como '^'
+    | # Emula o stdout do Python nativo do Windows num pipe: cp1252 e "\n" -> "\r\n" (stdin cp1252).
+    | import io, sys, runpy
+    | args = sys.argv[1:]
+    | while args and args[0].startswith("-") and args[0] not in ("-", "-c", "-m"):
+    |     a = args.pop(0)
+    |     if a in ("-X", "-W"): args.pop(0)
+    | _src = sys.stdin.buffer.read().decode("utf-8") if (not args or args[0] == "-") else None  # o tokenizer do CPython lê o programa do stdin em UTF-8
+    | sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding="cp1252")
+    | sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="cp1252", newline="\r\n")
+    | sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="cp1252", newline="\r\n", line_buffering=True)
+    | if not args or args[0] == "-":
+    |     code = _src; sys.argv = ["-"] + args[1:]
+    |     exec(compile(code, "<stdin>", "exec"), {"__name__": "__main__", "__builtins__": __builtins__})
+    | elif args[0] == "-c":
+    |     sys.argv = ["-c"] + args[2:]
+    |     exec(compile(args[1], "<string>", "exec"), {"__name__": "__main__", "__builtins__": __builtins__})
+    | elif args[0] == "-m":
+    |     sys.argv = [args[1]] + args[2:]; runpy.run_module(args[1], run_name="__main__", alter_sys=True)
+    | else:
+    |     sys.argv = args; sys.path.insert(0, __import__("os").path.dirname(args[0])); runpy.run_path(args[0], run_name="__main__")
+=================== base
+--- slot.sh smoke.before_ok_cmd (valor 'echo slot-rodou ação ✅')
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 21: character maps to <undefined>^
+⚠️  não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/repo-base/sdd/config.yaml
+RESULTADO: INCONCLUSIVO
+→ confira o arquivo e rode de novo; isto não é verde.
+rc=3
+--- slot.sh smoke.before_ok_cmd (valor só ASCII 'echo slot-rodou', isola o \r)
+ℹ️  smoke.before_ok_cmd vazio: pulado (/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/repo-base/sdd/config.yaml)
+RESULTADO: PULADO
+→ diga que o passo foi pulado porque o slot está vazio; para usá-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+rc=11
+--- sdd-decisoes-lint.sh --self-test
+      UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f7e2' in position 0: character maps to <undefined>^
+RESULTADO: VERMELHO
+→ 5 fixture(s) acima não bateram; o contrato do lint mudou.
+rc=1
+--- chamada direta: python3 sdd/bin/design-lint.py DESIGN
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>^
+rc=1
+=================== head
+--- slot.sh smoke.before_ok_cmd (valor 'echo slot-rodou ação ✅')
+▶ smoke.before_ok_cmd (before_ok): echo slot-rodou ação ✅
+slot-rodou ação ✅
+RESULTADO: OK
+→ siga para o próximo passo.
+rc=0
+--- slot.sh smoke.before_ok_cmd (valor só ASCII 'echo slot-rodou', isola o \r)
+slot-rodou
+RESULTADO: OK
+→ siga para o próximo passo.
+rc=0
+--- sdd-decisoes-lint.sh --self-test
+  ✅ controle → exit 0
+RESULTADO: VERDE
+→ as 4 fixtures reprovam pelo motivo certo e o controle passa.
+rc=0
+--- chamada direta: python3 sdd/bin/design-lint.py DESIGN
+✅ /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/sdd/features/DESIGN_F16W2_WINDOWS.md: DESIGN válido
+rc=0
+=================== head SEM a rede local do slot.sh (LIDO=${LIDO//\r/} removida; prova que a troca no Python embutido basta)
+1
+slot-rodou
+RESULTADO: OK
+→ siga para o próximo passo.
+rc=0
+=================== calço: python.sh de HEAD vs ad32fe1
+37a38,39
+>   # O calço é transparente (exec): ele vai no PATH e o comando de teste do próprio projeto também o usa (F16W2,
+>   # raio de impacto: um calço que mudasse o modo do Python vazaria para o pytest do aluno).
+diff rc=1
+41:    && printf '#!/bin/sh\nexec %s "$@"\n' "$1" > "${d}/python3" 2>/dev/null \
+=================== linha de reserva + pre-commit exportam PYTHONIOENCODING
+scripts de sdd/bin com 'lib/python.sh' na reserva: 15  · com export PYTHONIOENCODING na reserva: 15
+254:    out="$(git show ":$f" 2>/dev/null | PYTHONIOENCODING=utf-8 python3 -B sdd/bin/report-lint.py --stdin "$f" 2>&1)"; rc=$?

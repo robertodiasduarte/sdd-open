@@ -1,0 +1,7 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows && for fn in corta marca_nova gh_estado; do a=$(sed -n "/^${fn}() {/,/^}/p" .agents/skills/sdd-checar-ambiente/scripts/checar.sh | shasum | cut -c1-12); b=$(sed -n "/^${fn}() {/,/^}/p" .agents/skills/sdd-iniciar-repo/scripts/inventario.sh | shasum | cut -c1-12); n=$(sed -n "/^${fn}() {/,/^}/p" .agents/skills/sdd-checar-ambiente/scripts/checar.sh | wc -l | tr -d ' '); echo "$fn: checar=$a inventario=$b linhas=$n $([ $a = $b ] && echo IGUAL || echo DIFERENTE)"; done; grep -c rc_do_vigia .agents/skills/sdd-checar-ambiente/scripts/checar.sh .agents/skills/sdd-iniciar-repo/scripts/inventario.sh; echo "[rc=$?]"
+corta: checar=9c741ac1b76b inventario=9c741ac1b76b linhas=13 IGUAL
+marca_nova: checar=21b29ea4e106 inventario=21b29ea4e106 linhas=31 IGUAL
+gh_estado: checar=5fb3134288a7 inventario=5fb3134288a7 linhas=27 IGUAL
+.agents/skills/sdd-checar-ambiente/scripts/checar.sh:0
+.agents/skills/sdd-iniciar-repo/scripts/inventario.sh:0
+[rc=1]

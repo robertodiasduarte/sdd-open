@@ -1,0 +1,13 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/at001b.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows && echo '--- baseline ad32fe1 ---' && /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/at001b.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base; echo "[rc=$?]"
+rc=0 traceback=0 ✅=1 →=0 :: sdd/bin/handoff-lint.py sdd/fixtures/handoff/HANDOFF_VALIDO.md
+rc=0 traceback=0 ✅=1 →=0 :: sdd/bin/skill-lint.py --conversa .agents/skills/sdd-kb/SKILL.md
+rc=64 traceback=0 ✅=0 →=1 :: sdd/bin/governanca-bloco.py
+rc=0 traceback=0 ✅=1 →=1 :: .agents/skills/sdd-release/scripts/deploy-espera-testes.py .
+rc=1 traceback=0 ✅=0 →=5 :: sdd/bin/design-lint.py sdd/templates/DESIGN_TEMPLATE.md
+--- baseline ad32fe1 ---
+rc=1 traceback=2 ✅=0 →=0 :: sdd/bin/handoff-lint.py sdd/fixtures/handoff/HANDOFF_VALIDO.md
+rc=1 traceback=2 ✅=0 →=0 :: sdd/bin/skill-lint.py --conversa .agents/skills/sdd-kb/SKILL.md
+rc=1 traceback=2 ✅=0 →=0 :: sdd/bin/governanca-bloco.py
+rc=1 traceback=2 ✅=0 →=0 :: .agents/skills/sdd-release/scripts/deploy-espera-testes.py .
+rc=1 traceback=0 ✅=0 →=0 :: sdd/bin/design-lint.py sdd/templates/DESIGN_TEMPLATE.md
+[rc=0]

@@ -1,0 +1,15 @@
+feature_id: F16W2_WINDOWS
+slice_id: s1
+versao: 2.16.1
+data: 2026-11-15
+estado: shipado
+veredito: PASS
+waived: null
+dod: "Windows (Git Bash + Python nativo) com a suíte inteira verde no CI do PR (2.219 testes, 0 falha) e o job no needs: da release"
+descricao: "Porte das quebras do Windows: saída UTF-8 e sem CR, caminhos numa forma só, pre-commit e init sem processo por arquivo, vigia do checar com marca, arnês dos testes; piso do Windows"
+deploy: real
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261115-040405 sha256=ab65f5ceb91b2fa457c30bef2432be33942eda41408a40f821135d319207279b diversidade=vendor revisor2=dispensado — codex sem cota; cadeia claude revisa e qwen audita, como da F16 à F16W; 4 rodadas sobre o diff inteiro
+avisos:
+  - "revisão em 4 rodadas, a 4ª acima do teto (decisão do Roberto); o 2º revisor dispensado (codex sem cota)"
+  - "medição no PR em 4 rodadas de conserto, 2 acima do limite combinado (decisões do Roberto)"
+  - "o --fundo do sdd-drive no Windows passou pela senha da trava; o caso só é provado pelo CI do Windows"

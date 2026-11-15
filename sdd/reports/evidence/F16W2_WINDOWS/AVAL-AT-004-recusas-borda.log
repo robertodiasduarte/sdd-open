@@ -1,0 +1,53 @@
+$ (diferencial base=ad32fe1 x head=3ba89de, projetos pós-init, sdd.higieneDado=on e off) casos de borda: git add; git commit  # rc≠0 = recusado
+=== base higieneDado=on
+  cpf-sem-extensao                   rc=1    LEIAME:1: CPF 529.***.***-25
+  cpf-ext-maiuscula                  rc=1    NOTAS.TXT:1: CPF 529.***.***-25
+  cpf-em-sql                         rc=1    dados.sql:1: CPF 529.***.***-25
+  cnpj-no-meio-de-300                rc=1    lote/f150.md:1: CNPJ 11.***.***/****-81
+  env.local                          rc=1    .env.local: arquivo de senhas (.env)
+  ENV-maiusculo                      rc=1    .ENV: arquivo de senhas (.env)
+  credencial-JSON-maiusculo          rc=1    🛑 [H3] Config.JSON: credencial em texto claro (chave: password)
+  credencial-ini                     rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+  byte-nul-em-md                     rc=1    🛑 [H5] nul.md: 1 byte(s) NUL em arquivo de texto
+  PFX-maiusculo                      rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+  XLSX-maiusculo                     rc=1    Clientes.XLSX: planilha nova (pode conter dado de cliente)
+  pfx-nome-espaco-acento             rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+=== head higieneDado=on
+  cpf-sem-extensao                   rc=1    LEIAME:1: CPF 529.***.***-25
+  cpf-ext-maiuscula                  rc=1    NOTAS.TXT:1: CPF 529.***.***-25
+  cpf-em-sql                         rc=1    dados.sql:1: CPF 529.***.***-25
+  cnpj-no-meio-de-300                rc=1    lote/f150.md:1: CNPJ 11.***.***/****-81
+  env.local                          rc=1    .env.local: arquivo de senhas (.env)
+  ENV-maiusculo                      rc=1    .ENV: arquivo de senhas (.env)
+  credencial-JSON-maiusculo          rc=1    🛑 [H3] Config.JSON: credencial em texto claro (chave: password)
+  credencial-ini                     rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+  byte-nul-em-md                     rc=1    🛑 [H5] nul.md: 1 byte(s) NUL em arquivo de texto
+  PFX-maiusculo                      rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+  XLSX-maiusculo                     rc=1    Clientes.XLSX: planilha nova (pode conter dado de cliente)
+  pfx-nome-espaco-acento             rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+=== base higieneDado=off
+  cpf-sem-extensao                   rc=0  
+  cpf-ext-maiuscula                  rc=0  
+  cpf-em-sql                         rc=0  
+  cnpj-no-meio-de-300                rc=0  
+  env.local                          rc=0  
+  ENV-maiusculo                      rc=0  
+  credencial-JSON-maiusculo          rc=1    🛑 [H3] Config.JSON: credencial em texto claro (chave: password)
+  credencial-ini                     rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+  byte-nul-em-md                     rc=1    🛑 [H5] nul.md: 1 byte(s) NUL em arquivo de texto
+  PFX-maiusculo                      rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+  XLSX-maiusculo                     rc=0  
+  pfx-nome-espaco-acento             rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+=== head higieneDado=off
+  cpf-sem-extensao                   rc=0  
+  cpf-ext-maiuscula                  rc=0  
+  cpf-em-sql                         rc=0  
+  cnpj-no-meio-de-300                rc=0  
+  env.local                          rc=0  
+  ENV-maiusculo                      rc=0  
+  credencial-JSON-maiusculo          rc=1    🛑 [H3] Config.JSON: credencial em texto claro (chave: password)
+  credencial-ini                     rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+  byte-nul-em-md                     rc=1    🛑 [H5] nul.md: 1 byte(s) NUL em arquivo de texto
+  PFX-maiusculo                      rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co
+  XLSX-maiusculo                     rc=0  
+  pfx-nome-espaco-acento             rc=1    [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único co

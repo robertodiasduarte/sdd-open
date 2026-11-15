@@ -1,0 +1,27 @@
+$ for R in base(ad32fe1) head(HEAD); do bash probe_at001.sh $R  # PYTHONIOENCODING=cp1252 PYTHONUTF8=0 /usr/bin/python3; script em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/probe_at001.sh
+--- BASE ad32fe1
+design-lint                  rc=1   UnicodeEncodeError=1 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+report-lint                  rc=1   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+handoff-lint                 rc=1   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+skill-lint                   rc=1   UnicodeEncodeError=1 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+kb-dominios                  rc=1   UnicodeEncodeError=1 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+governanca-bloco             rc=1   UnicodeEncodeError=1 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+deploy-espera-testes         rc=1   UnicodeEncodeError=1 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+validate_kb                  rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+validate_kb-normativo        rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+kb_normativo-sha             rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+kb_normativo-rulemap         rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+collect_evidence             rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+--- HEAD 3ba89de
+design-lint                  rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=1 linhas_com_CR=0
+report-lint                  rc=1   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=3 linhas_com_CR=0
+handoff-lint                 rc=1   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=7 linhas_com_CR=0
+skill-lint                   rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=1 linhas_com_CR=0
+kb-dominios                  rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=1 linhas_com_CR=0
+governanca-bloco             rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=2 linhas_com_CR=0
+deploy-espera-testes         rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=2 linhas_com_CR=0
+validate_kb                  rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+validate_kb-normativo        rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+kb_normativo-sha             rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=1 linhas_com_CR=0
+kb_normativo-rulemap         rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0
+collect_evidence             rc=0   UnicodeEncodeError=0 linhas_utf8(✅/ç/→)=0 linhas_com_CR=0

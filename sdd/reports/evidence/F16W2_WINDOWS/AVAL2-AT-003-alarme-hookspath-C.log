@@ -1,0 +1,17 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/alarme_c.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head; echo '=== baseline ad32fe1 ==='; /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/alarme_c.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base; echo "[rc=$?]"
+core.hooksPath=C:\w\sdd\hooks
+Estado: o alarme desta skill está ligado pelos hooks do projeto (sdd/hooks), versão 1.2.1 da skill.
+Ligar de novo não muda nada. Para desligar: bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar
+--- controle: C:\w\outra (não é o nosso)
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = C:\w\outra, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+=== baseline ad32fe1 ===
+core.hooksPath=C:\w\sdd\hooks
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = C:\w\sdd\hooks, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+--- controle: C:\w\outra (não é o nosso)
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = C:\w\outra, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+[rc=0]

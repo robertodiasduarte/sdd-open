@@ -1,0 +1,6 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows && P=.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py; git diff --stat ad32fe1 HEAD -- $P; echo "diff vs ad32fe1: $(git diff ad32fe1 HEAD -- $P | wc -l | tr -d ' ') linhas"; shasum -a 256 $P; grep -n 'validate_reverse' .gitattributes; PYTHONUTF8=0 LC_ALL=en_US.ISO8859-1 /usr/bin/python3 -I $P --help >/dev/null 2>&1; echo rc_help_latin1=$?; echo "[rc=$?]"
+diff vs ad32fe1: 0 linhas
+6abb0ab75ae3cde15346a90f4fa40da9122a7291effae5998dcbf367a537810b  .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py
+7:.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py -text
+rc_help_latin1=0
+[rc=0]
