@@ -594,7 +594,8 @@ class SemDadosEUso(Base):
         nucleo = fonte.split("<<'PY'", 1)[1]
         self.assertEqual(re.findall(r"\b(socket|urllib|http\.client|requests|curl|wget)\b", nucleo), [])
         self.assertNotIn("adapters", nucleo)
-        self.assertEqual(re.findall(r"^(?:import|from) (.+)$", nucleo, re.M),
+        # F16W2: o bloco que troca a saída para UTF-8 (import sys as _sdd_sys) não conta
+        self.assertEqual([i for i in re.findall(r"^(?:import|from) (.+)$", nucleo, re.M) if not i.startswith("sys as _sdd_sys")],
                          ["json, os, re, subprocess, sys", "decimal import Decimal"])
         # o único subprocess é o `git rev-parse` que acha a raiz
         self.assertEqual(re.findall(r"subprocess\.run\(\[([^\]]*)\]", nucleo), ['"git", "rev-parse", "--show-toplevel"'])
