@@ -151,16 +151,28 @@ skills_da_fonte() { # imprime os nomes das skills do pacote (sdd-* e a ux-review
 # .json e binários (imagem, fonte, pdf, zip, ou qualquer arquivo com byte NUL) não têm comentário:
 # a cópia sai sem cabeçalho, idêntica à fonte.
 
-extensao() { # $1=caminho → extensão minúscula do basename, ou vazio
-  local b; b="$(basename "${1}")"
-  case "${b}" in *.*) printf '%s\n' "${b##*.}" | tr '[:upper:]' '[:lower:]' ;; *) printf '\n' ;; esac
+# F16W2: no Git Bash do Windows cada processo (e cada $(…), um fork) custa 10 a 20 ms, e o init copia ~600 arquivos.
+# As funções por arquivo usam builtins do bash em locale C (bytes, como o tr e o head de antes) e devolvem o
+# resultado em variável global, sem $(…); a regra de cada uma não mudou (tests/test_f16w2_processos.py renderiza o
+# pacote inteiro com a versão de antes e a de agora e compara byte a byte).
+extensao_de() { # $1=caminho → EXT_DE = extensão minúscula (só ASCII, como o tr em locale C) do basename, ou vazio
+  local LC_ALL=C b="${1##*/}" e o="" c p U=ABCDEFGHIJKLMNOPQRSTUVWXYZ L=abcdefghijklmnopqrstuvwxyz
+  EXT_DE=""
+  case "${b}" in *.*) e="${b##*.}" ;; *) return 0 ;; esac
+  while [ -n "${e}" ]; do
+    c="${e:0:1}"; e="${e:1}"
+    case "${c}" in [ABCDEFGHIJKLMNOPQRSTUVWXYZ]) p="${U%%"${c}"*}"; c="${L:${#p}:1}" ;; esac
+    o="${o}${c}"
+  done
+  EXT_DE="${o}"
 }
+extensao() { extensao_de "${1}"; printf '%s\n' "${EXT_DE}"; }   # $1=caminho → extensão minúscula, ou vazio
 
-tem_bom() { [ "$(head -c 3 "${1}" | od -An -tx1 | tr -d ' \n')" = "efbbbf" ]; }   # BOM UTF-8 no byte 0
+tem_bom() { local LC_ALL=C h=""; IFS= read -r -n 3 h < "${1}" 2>/dev/null; [ "${h}" = $'\xef\xbb\xbf' ]; }   # BOM UTF-8 no byte 0
 sem_bom() { if tem_bom "${1}"; then tail -c +4 "${1}"; else cat "${1}"; fi; }
 
-# Sob pipefail, o cmp -s só fecha o pipe cedo quando já achou diferença (= havia NUL).
-eh_binario() { ! LC_ALL=C tr -d '\000' < "${1}" | cmp -s - "${1}"; }
+# 0 quando há byte NUL: o read com delimitador NUL só sai 0 se achar um antes do fim do arquivo.
+eh_binario() { local LC_ALL=C x; IFS= read -r -d '' x < "${1}" 2>/dev/null; }
 
 eh_coding_py() { # $1=linha → 0 se é declaração de encoding do PEP 263 (# … coding: x / coding=x)
   # Regex do próprio PEP 263: sem nome de encoding (`# coding:` sozinho) não é declaração.
@@ -173,13 +185,20 @@ eh_coding_py() { # $1=linha → 0 se é declaração de encoding do PEP 263 (# �
 # <manter> = quantas linhas do topo a linguagem exige que fiquem no topo: shebang, frontmatter e,
 # no .py, a declaração de encoding (PEP 263: só vale na linha 1 ou 2). O cabeçalho entra depois delas.
 perfil_arquivo() { # $1=fonte → "<estilo> <manter> <verificador> <bom>"
+  perfil_calcula "${1}"
+  printf '%s %s %s %s\n' "${P_ESTILO}" "${P_MANTER}" "${P_VERIF}" "${P_BOM}"
+}
+perfil_calcula() { # $1=fonte → P_ESTILO P_MANTER P_VERIF P_BOM (sem subshell: F16W2)
   # Bytes, não caracteres: num terminal UTF-8, uma fonte Latin-1 fazia o tr recusar a linha e o regex
   # do bash não casar — a cópia mudava conforme o locale de quem roda. C só dentro desta função.
   local LC_ALL=C; export LC_ALL
-  local l1 l2 t1 n resto ext estilo="" verif="-" manter=0 bom=0
+  local l1="" l2="" t1 n resto ext estilo="" verif="-" manter=0 bom=0
   tem_bom "${1}" && bom=1
-  l1="$(sem_bom "${1}" | head -n 1 | tr -d '\r')"
-  ext="$(extensao "${1}")"
+  # 1ª e 2ª linhas pelo read (o BOM sai do começo; \r sai como no tr -d de antes)
+  { IFS= read -r l1 || :; IFS= read -r l2 || :; } < "${1}" 2>/dev/null
+  [ "${bom}" = 1 ] && l1="${l1#$'\xef\xbb\xbf'}"
+  l1="${l1//$'\r'/}"; l2="${l2//$'\r'/}"
+  extensao_de "${1}"; ext="${EXT_DE}"
   case "${ext}" in
     py)             estilo=hash;  verif=python ;;
     rb)             estilo=hash;  verif=ruby ;;
@@ -207,7 +226,6 @@ perfil_arquivo() { # $1=fonte → "<estilo> <manter> <verificador> <bom>"
   # (shebang incluso) ou vazia. Onde valer, ela e o que vem antes dela ficam no topo. O magic comment
   # do Ruby (`# encoding:`/`# coding:`) tem a mesma regra de posição e o mesmo regex casa os dois.
   if [ "${ext}" = "py" ] || [ "${ext}" = "rb" ]; then
-    l2="$(sem_bom "${1}" | sed -n '2p' | tr -d '\r')"
     t1="${l1#"${l1%%[![:space:]]*}"}"
     if eh_coding_py "${l1}"; then manter=1
     else case "${t1}" in ''|'#'*) eh_coding_py "${l2}" && manter=2 ;; esac; fi
@@ -239,13 +257,13 @@ perfil_arquivo() { # $1=fonte → "<estilo> <manter> <verificador> <bom>"
         fi ;;
     esac
   fi
-  printf '%s %s %s %s\n' "${estilo}" "${manter}" "${verif}" "${bom}"
+  P_ESTILO="${estilo}"; P_MANTER="${manter}"; P_VERIF="${verif}"; P_BOM="${bom}"
 }
 
 linha_marca() { # $1=estilo $2=texto (o caminho vem do disco: o que fecharia o comentário é desarmado)
   # Cabeçalho 100% ASCII, inclusive o caminho: byte fora de ASCII vira '?'. Um .py com
   # `# coding: ascii` numa pasta com acento deixava de compilar pela cópia (V5-R1@codex).
-  local t; t="$(printf '%s' "${2}" | LC_ALL=C tr -c ' -~' '?')"
+  local LC_ALL=C t="${2}"; t="${t//[^ -~]/?}"   # sem tr (F16W2): em locale C, byte a byte como antes
   # Contrabarra também vira '?': com `# coding: unicode_escape`, um \n do caminho viraria quebra de linha
   # e o resto do comentário, código (R2@codex, volta 7).
   t="${t//\\/?}"
@@ -263,34 +281,39 @@ linha_marca() { # $1=estilo $2=texto (o caminho vem do disco: o que fecharia o c
 
 renderizar_gerado() { # $1=fonte $2=skill $3=arquivo-relativo [$4=prefixo da fonte] → conteúdo exato da cópia no stdout
   local LC_ALL=C; export LC_ALL   # idem perfil_arquivo: o caminho e as linhas mantidas são bytes
-  local estilo manter verif bom
+  local estilo manter bom
   # Prefixo default: a skill do projeto. Os adaptadores de hook vêm de bin/adapters/<vendor>/ do PACOTE —
   # caminho que não existe no projeto, por isso o cabeçalho diz de onde ele vem.
   local prefixo="${4:-.agents/skills}" sufixo=""
   [ -n "${4:-}" ] && sufixo=" (pacote sdd-open)"
-  read -r estilo manter verif bom <<PERFIL
-$(perfil_arquivo "${1}")
-PERFIL
+  perfil_calcula "${1}"; estilo="${P_ESTILO}"; manter="${P_MANTER}"; bom="${P_BOM}"
   if [ "${estilo}" = "none" ]; then cat "${1}"; return; fi
   [ "${bom}" = "1" ] && printf '\357\273\277'
   # printf '%s\n' garante o \n depois das linhas mantidas mesmo num arquivo sem \n final.
-  [ "${manter}" -gt 0 ] && printf '%s\n' "$(sem_bom "${1}" | head -n "${manter}")"
+  if [ "${manter}" -gt 0 ]; then
+    if [ "${bom}" = "1" ]; then printf '%s\n' "$(tail -c +4 "${1}" | head -n "${manter}")"
+    else printf '%s\n' "$(head -n "${manter}" "${1}")"; fi
+  fi
   # O caminho vem do disco e entra num comentário de outra linguagem: só [A-Za-z0-9._/-] passa, o resto vira
   # '?'. Um codec da fonte (utf-7, unicode_escape) ou um fechador de comentário no nome não vira código (V8-R1).
-  local caminho; caminho="$(printf '%s' "${prefixo}/${2}/${3}" | LC_ALL=C tr -c 'A-Za-z0-9._/-' '?')"
+  local caminho="${prefixo}/${2}/${3}"; caminho="${caminho//[^A-Za-z0-9._\/-]/?}"
   linha_marca "${estilo}" "${MARCA} - fonte: ${caminho}${sufixo}"
   linha_marca "${estilo}" "${MARCA} - sync reescreve este arquivo; edite a fonte e rode sync"
-  sem_bom "${1}" | tail -n +"$((manter + 1))"
+  if [ "${bom}" = "1" ]; then tail -c +4 "${1}" | tail -n +"$((manter + 1))"
+  elif [ "${manter}" = 0 ]; then cat "${1}"
+  else tail -n +"$((manter + 1))" "${1}"; fi
 }
 
 mesmo_bit_x() { local a=0 b=0; [ -x "${1}" ] && a=1; [ -x "${2}" ] && b=1; [ "${a}" = "${b}" ]; }
 
 escrever_gerado() { # $1=fonte $2=destino $3=skill $4=arquivo-relativo [$5=prefixo da fonte]
   local fonte="${1}" dest="${2}"
-  mkdir -p "$(dirname "${dest}")" || return 1
+  [ -d "${dest%/*}" ] || mkdir -p "${dest%/*}" || return 1
   renderizar_gerado "${fonte}" "${3}" "${4}" "${5:-}" > "${dest}" || return 1
-  # Shebang preservado só serve para ./script se o bit de execução vier junto.
-  if [ -x "${fonte}" ]; then chmod +x "${dest}" || return 1; else chmod a-x "${dest}" || return 1; fi
+  # Shebang preservado só serve para ./script se o bit de execução vier junto. Sem bit na fonte, o chmod só
+  # quando a cópia tem o bit (o arquivo novo nasce sem ele): um processo a menos por arquivo (F16W2).
+  if [ -x "${fonte}" ]; then chmod +x "${dest}" || return 1
+  elif [ -x "${dest}" ]; then chmod a-x "${dest}" || return 1; fi
 }
 
 # Sob pipefail, o cmp -s só fecha o pipe cedo (SIGPIPE no render) quando JÁ achou diferença, então o
@@ -543,7 +566,9 @@ hook_legado() {
 hooks_path_e_nosso() {
   local hp="${1%/}"; hp="${hp#./}"   # o git aceita sdd/hooks/ e ./sdd/hooks (edição manual): são o mesmo lugar
   [ "${hp}" = "sdd/hooks" ] && return 0
-  case "${hp}" in /*) [ -d "${hp}" ] && [ "$(cd "${hp}" 2>/dev/null && pwd -P)" = "$(cd "${ROOT}/sdd/hooks" 2>/dev/null && pwd -P)" ] ;; *) return 1 ;; esac
+  # F16W2: absoluto também na forma do Windows (C:\… ou C:/…); -ef compara a pasta pelo sistema de arquivos (link,
+  # /tmp do macOS, /c/… × C:/… e o nome curto RUNNER~1 do Windows dão a mesma pasta)
+  case "${hp}" in /*|[A-Za-z]:[\\/]*) [ -d "${hp}" ] && [ "${hp}" -ef "${ROOT}/sdd/hooks" ] ;; *) return 1 ;; esac
 }
 
 # 0 quando o pre-commit $1, de outro gerenciador, já chama o nosso: uma linha que, sem o recuo, COMEÇA pela

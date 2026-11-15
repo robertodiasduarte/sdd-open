@@ -80,7 +80,7 @@ regra_h6() {
 regra_h2() {
   local f base sz limite=$((TETO_KB * 1024))
   while IFS= read -r -d '' f; do
-    base="$(basename "$f")"
+    base="${f##*/}"   # F16W2: sem basename (um processo por arquivo pesa no Git Bash)
     case " $ARQUIVOS_CONTEXTO " in *" $base "*) ;; *) continue ;; esac
     sz="$(git cat-file -s ":$f" 2>/dev/null)" || sz=0
     [ "${sz:-0}" -gt "$limite" ] && achado H2 "$f: $sz bytes (teto $TETO_KB KB)"
@@ -89,20 +89,44 @@ regra_h2() {
 }
 
 # ── [H5] byte NUL em arquivo de texto ─────────────────────────────────────────────────────────────
+# F16W2: no Git Bash cada processo custa 10 a 20 ms, e o 1º commit depois do init leva ~600 arquivos. Extensão por
+# regex do bash (nocasematch); os arquivos com NUL saem de UM `git grep` sobre o índice (com PCRE); só esses pagam o
+# cabeçalho e a contagem. Git sem PCRE: o caminho de antes, por arquivo, com 3 processos.
 TEXT_EXT='\.(js|mjs|cjs|ts|tsx|jsx|php|sh|zsh|bash|md|py|sql|json|css|scss|html|htm|yaml|yml|toml|txt|csv|xml|svg|ini|cfg|conf|env|jsonl|mdx)$'
+eh_texto() { # $1=caminho → 0 extensão de texto · 1 outra extensão · 2 sem extensão
+  local r=1
+  shopt -s nocasematch
+  if [[ $1 =~ $TEXT_EXT ]]; then r=0
+  else case "${1##*/}" in *.*) r=1 ;; *) r=2 ;; esac; fi
+  shopt -u nocasematch
+  return "$r"
+}
+cabeca() { git cat-file blob ":$1" 2>/dev/null | head -c 2 | od -An -tx1 | tr -d ' \n'; }   # 2 bytes, em hex
+nul_de() { # $1=caminho → nº de bytes NUL do blob staged (0 se não leu)
+  echo $(( $(git cat-file blob ":$1" 2>/dev/null | LC_ALL=C tr -dc '\000' | wc -c) ))
+}
 regra_h5() {
-  local f total semnul cab
+  local f r n x cab com_nul="" rc nuls=$'\n'
+  # 1 processo para o índice inteiro: os nomes com NUL, separados por NUL. 0 = achou, 1 = nenhum, outro = sem PCRE.
+  git grep --cached -z -l -a -P '\x00' > "$TMPD/nul" 2>/dev/null; rc=$?
+  case "$rc" in 0|1) com_nul=1 ;; esac
+  if [ -n "$com_nul" ]; then
+    while IFS= read -r -d '' x; do nuls="${nuls}${x}"$'\n'; done < "$TMPD/nul"
+  fi
   while IFS= read -r -d '' f; do
-    git cat-file blob ":$f" > "$TMPD/blob" 2>/dev/null || continue
-    cab="$(head -c 2 "$TMPD/blob" | od -An -tx1 | tr -d ' \n')"
-    if ! printf '%s' "$f" | LC_ALL=C grep -qiE "$TEXT_EXT"; then
-      case "$(basename "$f")" in *.*) continue ;; esac            # tem extensão e não é de texto: fora
-      [ "$cab" = "2321" ] || continue                              # sem extensão: só com shebang (#!)
+    eh_texto "$f"; r=$?
+    [ "$r" = 1 ] && continue                                       # tem extensão e não é de texto: fora
+    if [ -n "$com_nul" ]; then
+      case "$nuls" in *$'\n'"$f"$'\n'*) ;; *) continue ;; esac      # sem NUL no blob staged: nada a ver
     fi
+    if [ "$r" = 2 ] || [ -n "$com_nul" ]; then cab="$(cabeca "$f")"; else cab=""; fi
+    [ "$r" = 2 ] && [ "$cab" != "2321" ] && continue               # sem extensão: só com shebang (#!)
     case "$cab" in fffe|feff) continue ;; esac                     # texto em UTF-16 (PowerShell, Excel): NUL legítimo
-    total="$(wc -c < "$TMPD/blob" | tr -d ' ')"
-    semnul="$(LC_ALL=C tr -d '\000' < "$TMPD/blob" | wc -c | tr -d ' ')"
-    [ "${total:-0}" -ne "${semnul:-0}" ] && achado H5 "$f: $((total - semnul)) byte(s) NUL em arquivo de texto"
+    n="$(nul_de "$f")"
+    if [ -z "$com_nul" ] && [ "${n:-0}" -gt 0 ]; then              # sem PCRE: o cabeçalho só para quem tem NUL
+      cab="$(cabeca "$f")"; case "$cab" in fffe|feff) continue ;; esac
+    fi
+    [ "${n:-0}" -gt 0 ] && achado H5 "$f: $n byte(s) NUL em arquivo de texto"
   done < "$STAGED"
   return 0
 }
@@ -128,10 +152,15 @@ credencial_real() { # $1=ocorrência → 0 quando é credencial de verdade (não
 }
 regra_h3() {
   local f val chave achou
+  local re_conf='\.(json|ya?ml|toml|ini|cfg|conf)$|(^|/)\.env' re_env='(^|/)\.env' eh_env
   while IFS= read -r -d '' f; do
-    printf '%s' "$f" | LC_ALL=C grep -qiE '\.(json|ya?ml|toml|ini|cfg|conf)$|(^|/)\.env' || continue
+    # F16W2: o filtro pelo nome sem processo (regex do bash, sem distinguir maiúscula)
+    shopt -s nocasematch
+    eh_env=""; [[ $f =~ $re_env ]] && eh_env=1
+    if ! [[ $f =~ $re_conf ]]; then shopt -u nocasematch; continue; fi
+    shopt -u nocasematch
     git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$CRED_RE" > "$TMPD/cred"
-    if printf '%s' "$f" | LC_ALL=C grep -qiE '(^|/)\.env'; then
+    if [ -n "$eh_env" ]; then
       git show ":$f" 2>/dev/null | LC_ALL=C grep -Eio "$ENV_RE" >> "$TMPD/cred"
     fi
     achou=""
@@ -205,7 +234,8 @@ regra_report() {
       [ "$avisou" = 1 ] || aviso "sdd/bin/report-lint.py ausente: $f não foi conferido — rode init (completa sdd/bin)"
       avisou=1; continue
     fi
-    out="$(git show ":$f" 2>/dev/null | python3 -B sdd/bin/report-lint.py --stdin "$f" 2>&1)"; rc=$?
+    # F16W2: UTF-8 também para o lint de uma instalação antiga (sem a troca da saída no próprio script)
+    out="$(git show ":$f" 2>/dev/null | PYTHONIOENCODING=utf-8 python3 -B sdd/bin/report-lint.py --stdin "$f" 2>&1)"; rc=$?
     case "$rc" in
       0) ;;
       1) achado REPORT "$f não passa no report-lint:"$'\n'"$(printf '%s\n' "$out" | grep -E '^🛑' | sed 's/^/        /')" ;;
