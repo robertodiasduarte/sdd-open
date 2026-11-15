@@ -189,7 +189,7 @@ LAYERS = ler_mapa(RAIZ, "layers")
 # ── catálogo: uma gramática, um leitor ─────────────────────────────────────
 def ilegivel(caminho, n, motivo):
     uso("catálogo ilegível: %s:%d — %s" % (caminho, n, motivo),
-        "o catálogo vem do pacote: apague .agents/skills/sdd-seguranca e rode o init de novo (o doctor aponta a skill velha).")
+        "o catálogo vem do pacote: rode o upgrade do pacote (bash <pacote>/bin/sdd-open.sh upgrade; o doctor aponta a skill velha).")
 
 
 def ler_catalogo(caminho):

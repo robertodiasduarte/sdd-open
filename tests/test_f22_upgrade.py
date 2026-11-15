@@ -175,6 +175,40 @@ class ComRegistro(Base):
         self.assertIn("RESULTADO: ATUALIZADO, 2 PARA MESCLAR", out)
         self.assertEqual(sha(self.p / MUDA), sha(self.novo / MUDA))
 
+    def test_ultimo_instalavel_ausente_nao_derruba_o_upgrade(self):
+        # revisão do código, rodada 1, R3: com pipefail, `[ -f ] && printf` no último arquivo saía 1
+        rc, out, err = self.roda([BASH, "-c", '. "$1"; instalaveis "$2" | tail -1', "x",
+                                  str(self.novo / "bin/lib/versao.sh"), str(self.novo)], self.tmp)
+        ultimo = out.strip()
+        self.assertTrue(ultimo, out + err)
+        (self.p / ultimo).unlink()
+        rc, out = self.cli("upgrade", "--yes")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(sha(self.p / ultimo), sha(self.novo / ultimo))
+
+    def test_versao_nova_sem_instalavel_mudado_regrava_o_registro(self):
+        # revisão do código, rodada 1, R2: sem isso o aviso de versão nova não saía nunca
+        rc, out = self.cli("upgrade", "--yes")
+        self.assertEqual(rc, 0, out)
+        mais_nova = copia_pacote(self.tmp / "mais-nova", "v9.8.8")
+        rc, out = self.cli("upgrade", "--yes", pkg=mais_nova)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("~ sdd/open-instalado.txt (registro: v9.8.7 → v9.8.8)", out)
+        self.assertNotIn("RESULTADO: EM DIA", out)
+        self.assertIn("\nversao: v9.8.8\n", (self.p / "sdd/open-instalado.txt").read_text(encoding="utf-8"))
+        rc, out = self.cli("upgrade", "--yes", pkg=mais_nova)
+        self.assertIn("RESULTADO: EM DIA", out)
+
+    def test_falha_ao_por_a_versao_nova_ao_lado_termina_em_erro(self):
+        # revisão do código, rodada 1, R5: o exit no laço saía sem RESULTADO: ERRO
+        reg_antes = (self.p / "sdd/open-instalado.txt").read_bytes()
+        (self.p / "sdd/upgrade").write_text("um arquivo no lugar da pasta\n", encoding="utf-8")
+        rc, out = self.cli("upgrade", "--yes")
+        self.assertNotEqual(rc, 0, out)
+        self.assertIn("RESULTADO: ERRO", out)
+        self.assertIn("o registro de versão não foi mudado; rode o upgrade de novo, ele retoma", out)
+        self.assertEqual((self.p / "sdd/open-instalado.txt").read_bytes(), reg_antes)
+
     def test_registro_com_asterisco_do_git_bash_e_lido(self):
         # o sha256sum do Git Bash pode escrever "<sha> *<caminho>": quem lê normaliza
         reg = self.p / "sdd/open-instalado.txt"

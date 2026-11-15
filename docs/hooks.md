@@ -94,7 +94,7 @@ script: an `exit` before the line, or the line inside a heredoc, still fools it.
 git config --unset core.hooksPath
 ```
 
-This is not sticky: the next `init` (which the guides recommend to receive new skills) sees the hooks off,
+This is not sticky: the next `init` sees the hooks off (`upgrade`, the way the guides recommend to receive new skills, does not touch them),
 shows the plan line again and, with `--yes`, turns them back on. `doctor` tells you the state at any time:
 `✅ hooks ligados (…)` or one `⚠️` per cause, with the command that fixes it (`rode init`,
 `chmod +x sdd/hooks/pre-commit`, the line for another manager).

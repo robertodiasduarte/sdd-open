@@ -94,8 +94,8 @@ script: um `exit` antes da linha, ou a linha dentro de um heredoc, ainda a engan
 git config --unset core.hooksPath
 ```
 
-Isso não é pegajoso: o próximo `init` (que os guias mandam rodar para receber skill nova) vê os hooks
-desligados, mostra a linha do plano de novo e, com `--yes`, religa. O `doctor` diz o estado a qualquer hora:
+Isso não é pegajoso: o próximo `init` vê os hooks desligados (o `upgrade`, o caminho que os guias indicam
+para receber skill nova, não mexe neles), mostra a linha do plano de novo e, com `--yes`, religa. O `doctor` diz o estado a qualquer hora:
 `✅ hooks ligados (…)` ou um `⚠️` por causa, com o comando que resolve (`rode init`,
 `chmod +x sdd/hooks/pre-commit`, a linha para outro gerenciador).
 

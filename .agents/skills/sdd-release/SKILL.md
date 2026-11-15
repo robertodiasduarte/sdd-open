@@ -113,8 +113,8 @@ exit 10 ⇒ a frase de versão nova (`references/como-falar.md`) no relatório e
    sem evidência, ou migration listada sem a linha provada em `## Migrations aplicadas`, abre
    **abortar**. Depois, `python3 sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_{F}.md`:
    exit ≠ 0 ⇒ **abortar**, citando o exit e o `arquivo:linha` (avaliação `PENDENTE` não vai para
-   produção). Exit 64 ou 127 ⇒ acrescente "atualize `sdd/bin/`: rode o `doctor` e, para o que ele
-   apontar, apague e rode o `init`" — um `report-lint.py` antigo não conhece `--pendente`.
+   produção). Exit 64 ou 127 ⇒ acrescente "atualize `sdd/bin/`: rode o `upgrade` do pacote (o `doctor`
+   diz o comando)" — um `report-lint.py` antigo não conhece `--pendente`.
 6. **Playbook:** `sdd/bin/playbook-lint.sh sdd/playbook.md` — exit 2 → abortar.
 7. **Exit dos logs:** `bash sdd/bin/gate-shell-evidencia.sh` (os logs de `sdd/reports/evidence/`
    do diff) — exit ≠ 0 ⇒ **abortar**, citando cada `arquivo:linha`: um `[exit=N]` que é o exit do
@@ -266,7 +266,7 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
     | `2` | não está no ar: a frase traz o run, o passo e por que não repetiu; para repetir, um push novo ou `gh workflow run` na ponta, **nunca `gh run rerun` de um run antigo** (com fila, ele publica código velho por cima do novo) |
     | `3` | "publicado, sem verificação automática disponível" — nunca ✅ sem ter olhado |
     | `4` | "ainda não sei": não é falha; repita ou abra o run citado, nunca "nada a verificar" |
-    | `64` | chamada errada, SHA que o remoto também não conhece, ou `sdd/bin/` antigo: confira o SHA; o script antigo se resolve com o `doctor` e, para o que ele apontar, apagando e rodando o `init` |
+    | `64` | chamada errada, SHA que o remoto também não conhece, ou `sdd/bin/` antigo: confira o SHA; o script antigo se resolve com o `upgrade` do pacote (o `doctor` diz o comando) |
 
     **Smoke depois do deploy.** Roda quando o deploy está confirmado: `deploy-do-sha.sh` `0` ou `3`, ou, sem workflow,
     `{{DEPLOY_CMD}}` saiu 0. Antes, `GIT_TERMINAL_PROMPT=0 git fetch` (o SHA do merge de um PR nasce no remoto); depois,

@@ -247,7 +247,7 @@ def confere_vizinhos():
         caminho = os.path.join(BIN, arq)
         if not os.path.isfile(caminho) or marca not in ler(caminho):
             falha("sdd/bin/%s é de uma versão anterior: não conhece %s." % (arq, marca),
-                  "atualize sdd/bin/: rode o doctor e, para o que ele apontar, apague e rode o init.")
+                  "atualize sdd/bin/: rode o upgrade do pacote (o doctor diz o comando).")
 
 
 def impressao_digital(p):
@@ -1162,7 +1162,7 @@ def cmd_self_test(args):
         uso("--self-test não aceita argumentos")
     for arq in ("verify-gate.sh", "sdd-fluxo.sh", "design-lint.py"):
         if not os.path.isfile(os.path.join(BIN, arq)):
-            falha("script ausente em sdd/bin/: " + arq, "atualize sdd/bin/: rode o doctor e, para o que ele apontar, apague e rode o init.")
+            falha("script ausente em sdd/bin/: " + arq, "atualize sdd/bin/: rode o upgrade do pacote (o doctor diz o comando).")
     tmp = tempfile.mkdtemp(prefix="sdd-drive-")
     falhas = []
     env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@example.com", GIT_COMMITTER_NAME="t",

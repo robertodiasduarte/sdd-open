@@ -128,6 +128,8 @@ jobs:
           python3 scripts/check-versions.py --base "$base" --base-obrigatoria
 
       - name: Generator smoke (init is idempotent, sdd/ untouched by sync)
+        env:
+          SDD_OPEN_CHECK_UPDATES: '0'   # F22: o doctor do fim do init não consulta a rede aqui
         run: |
           set -u +e
           T="$(mktemp -d)"; cd "$T" && git init -q && git config user.email ci@example.com && git config user.name ci

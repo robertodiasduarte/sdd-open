@@ -573,7 +573,8 @@ hook_legado() {
 }
 
 # 0 quando $1 é sdd/hooks relativo, ou um caminho absoluto que resolve (links simbólicos inclusos: /tmp
-# no macOS) para <raiz>/sdd/hooks. O alarme.sh da higiene usa o mesmo critério.
+# no macOS) para <raiz>/sdd/hooks. O alarme.sh da higiene usa o mesmo critério para a raiz atual; o caso de outra
+# worktree (abaixo) ainda não está nele, que segue dizendo "outro gerenciador" (pendência registrada na F22).
 # F22: também o sdd/hooks de OUTRA worktree do mesmo repositório (as worktrees dividem o .git/config, e um
 # core.hooksPath absoluto gravado numa vale para todas); essa worktree fica em HOOKS_OUTRA_WT.
 HOOKS_OUTRA_WT=""
@@ -977,7 +978,7 @@ doctor() {
     vq="$(versao_skill "${pkg_skills}/${s}/SKILL.md")"; vp="$(versao_skill "${FONTE_SKILLS}/${s}/SKILL.md")"
     [ -n "${vq}" ] && versao_menor "${vp}" "${vq}" || continue
     if [ -n "${mesma}" ]; then
-      warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — a skill tem edição sua, que o upgrade não toca: a versão do pacote está em sdd/upgrade/${VERSAO_PKG}/ para mesclar; para voltar à do pacote, apague o arquivo editado e rode o upgrade"
+      warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — a skill tem edição sua, que o upgrade não toca: a do pacote está em ${pkg_skills}/${s}/ para comparar; para voltar à do pacote, apague o arquivo editado e rode o upgrade"
     else warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — ${upg}"; fi
     atrasados=$((atrasados + 1))
   done
@@ -1044,6 +1045,8 @@ upgrade() {
     "baixe o pacote pela Release (${SDD_RELEASES_URL}) ou rode o upgrade do clone (git clone ${SDD_REMOTO_PADRAO})" 64
   tem_sha256 || die "sem sha256sum, shasum nem python3: não consigo comparar os arquivos" \
     "instale um deles (o Git Bash já traz o sha256sum) e rode de novo" 64
+  # Pasta de trabalho de upgrade anterior com mais de 1 dia é sobra (como o calço do python.sh): sai antes da nova.
+  find "${TMPDIR:-/tmp}" -maxdepth 1 -type d -name 'sdd-upgrade.*' -mmin +1440 -exec rm -rf {} + 2>/dev/null || :
   tmp="$(mktemp -d "${TMPDIR:-/tmp}/sdd-upgrade.XXXXXX" 2>/dev/null)" \
     || die "sem pasta temporária para o upgrade" "confira o TMPDIR e rode de novo; nada foi escrito" 1
   : > "${tmp}/antigo"
@@ -1083,7 +1086,8 @@ upgrade() {
   # 2. classificação, numa passada só
   instalaveis "${PKG}" | impressoes "${PKG}" > "${tmp}/novo" \
     || die "não consegui calcular as impressões deste pacote" "confira o pacote e rode de novo; nada foi escrito" 1
-  cut -c67- "${tmp}/novo" | while IFS= read -r f; do [ -f "${ROOT}/${f}" ] && printf '%s\n' "${f}"; done \
+  # if, não `[ ] && printf`: com pipefail, um último arquivo ausente faria o laço sair 1 e derrubar o upgrade
+  cut -c67- "${tmp}/novo" | while IFS= read -r f; do if [ -f "${ROOT}/${f}" ]; then printf '%s\n' "${f}"; fi; done \
     | impressoes "${ROOT}" > "${tmp}/proj" \
     || die "não consegui calcular as impressões dos arquivos do projeto" "confira as permissões de leitura e rode de novo; nada foi escrito" 1
   awk -v A="${tmp}/antigo" -v N="${tmp}/novo" -v P="${tmp}/proj" -v D="${tmp}" '
@@ -1128,8 +1132,14 @@ upgrade() {
       printf '⚠️  a pasta --de (%s) não parece a versão deste projeto: só %s de %s arquivos batem\n' "${vp}" "${bate_ok}" "${bate_tot}"
     fi
   fi
-  if [ $((n_novo + n_intacto + n_edit_mesclar)) = 0 ] && [ -f "${reg}" ] && [ -z "${DE_ARG}" ]; then
+  # EM DIA só na mesma versão: um pacote novo que não mudou nenhum instalável ainda regrava a versão do registro
+  # (senão o aviso de versão nova não sai nunca).
+  if [ $((n_novo + n_intacto + n_edit_mesclar)) = 0 ] && [ -f "${reg}" ] && [ -z "${DE_ARG}" ] \
+     && [ "$(versao_chave "${vk}")" = "$(versao_chave "${vp}")" ]; then
     resultado "EM DIA" "nada a fazer: o projeto já tem tudo o que o pacote ${vk} entrega."; return 0
+  fi
+  if [ -f "${reg}" ] && [ -z "${DE_ARG}" ] && [ "$(versao_chave "${vk}")" != "$(versao_chave "${vp}")" ]; then
+    printf '~ %s (registro: %s → %s)\n' "${REGISTRO_REL}" "${vp}" "${vk}"
   fi
   printf 'Nada que você editou será tocado. Nada será commitado.\n'
   if [ "${DRY_RUN}" = "1" ]; then resultado "DRY-RUN" "nada foi escrito; rode sem --dry-run para aplicar."; return 0; fi
@@ -1145,17 +1155,20 @@ upgrade() {
   # 5. a versão nova de cada editado, ao lado, para você mesclar quando quiser
   dest_up="sdd/upgrade/${vk}"
   if [ "${n_edit_mesclar}" != 0 ]; then
+    # o laço lê de um arquivo (roda neste shell): a falha vira o die abaixo, com RESULTADO: ERRO e como retomar
+    local falhou=""
     while IFS= read -r f; do
       [ -n "${f}" ] || continue
       d="${ROOT}/${dest_up}/${f}"
-      { mkdir -p "${d%/*}" && cp "${PKG}/${f}" "${d}.novo"; } || { printf '🛑 não consegui escrever %s.novo\n' "${dest_up}/${f}" >&2; exit 1; }
+      { mkdir -p "${d%/*}" && cp "${PKG}/${f}" "${d}.novo"; } || { falhou="não consegui escrever ${dest_up}/${f}.novo"; break; }
       diff -u "${ROOT}/${f}" "${d}.novo" > "${d}.diff"
-      [ $? -le 1 ] || { printf '🛑 o diff de %s falhou\n' "${f}" >&2; exit 1; }
+      [ $? -le 1 ] || { falhou="o diff de ${f} falhou"; break; }
       if [ -n "${de_dir}" ] && [ -f "${de_dir}/${f}" ]; then
         diff -u "${de_dir}/${f}" "${PKG}/${f}" > "${d}.pacote.diff"
-        [ $? -le 1 ] || { printf '🛑 o diff de %s falhou\n' "${f}" >&2; exit 1; }
+        [ $? -le 1 ] || { falhou="o diff de ${f} falhou"; break; }
       fi
-    done < "${tmp}/c_editado" || die "${falha}" "confira as permissões e o espaço em disco" 1
+    done < "${tmp}/c_editado"
+    [ -z "${falhou}" ] || die "${falhou} — ${falha}" "confira as permissões e o espaço em disco" 1
   fi
   # 6. por último, o registro
   registro_escrever "${reg}" "${vk}" < "${tmp}/novo" || die "${falha}" "confira as permissões de ${REGISTRO_REL}" 1

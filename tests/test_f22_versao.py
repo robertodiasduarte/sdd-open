@@ -132,7 +132,8 @@ class VersaoDoPacote(Sandbox):
         if not m or (int(m.group(1)), int(m.group(2))) < (2, 35):
             self.skipTest("git anterior ao 2.35 não tem %(describe:tags=…) no export-subst")
         r = self.repo("fonte")
-        shutil.copy2(str(RAIZ / "VERSION"), str(r / "VERSION"))
+        # o texto do carimbo escrito aqui: numa cópia de git archive (o Verify Gate), o VERSION do pacote já vem carimbado
+        (r / "VERSION").write_text("$Format:%(describe:tags=true,match=v[0-9]*)$\n", encoding="utf-8")
         (r / ".gitattributes").write_text("VERSION export-subst\n", encoding="utf-8")
         self.commit(r, "x")
         self.git(r, "tag", "v9.8.4")
@@ -391,7 +392,8 @@ class SuiteSemRede(unittest.TestCase):
         for nome in ("release.yml", "publish-gate.yml"):
             yml = (RAIZ / ".github/workflows" / nome).read_text(encoding="utf-8")
             with self.subTest(workflow=nome):
-                self.assertEqual(yml.count("SDD_OPEN_CHECK_UPDATES: '0'"), 3)
+                # os 3 jobs de teste (e, no publish-gate, também o smoke do init)
+                self.assertGreaterEqual(yml.count("SDD_OPEN_CHECK_UPDATES: '0'"), 3)
 
 
 # ── AT-005 ─────────────────────────────────────────────────────────────────────────────────────────
