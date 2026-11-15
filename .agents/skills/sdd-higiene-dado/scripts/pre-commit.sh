@@ -107,7 +107,7 @@ if [ -n "$(git config --get core.hooksPath 2>/dev/null || true)" ]; then
   DESINSTALAR='Para desinstalar o alarme: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar'
 else
   COMMON="$(git rev-parse --git-common-dir 2>/dev/null)"
-  case "${COMMON}" in /*) ;; *) COMMON="$(git rev-parse --show-toplevel)/${COMMON}" ;; esac
+  case "${COMMON}" in /*|[A-Za-z]:[\\/]*) ;; *) COMMON="$(git rev-parse --show-toplevel)/${COMMON}" ;; esac
   DESINSTALAR="Para desinstalar o alarme: rm \"${COMMON}/hooks/pre-commit\""
 fi
 {

@@ -558,7 +558,7 @@ HOOKS_ESTADO=""   # calculado em planejar (init)
 # hooks/pre-commit` segue o core.hooksPath e, com o dispatcher ligado, apontaria para ele mesmo.
 hook_legado() {
   local common; common="$(git rev-parse --git-common-dir 2>/dev/null)"
-  case "${common}" in /*) ;; *) common="${ROOT}/${common}" ;; esac
+  case "${common}" in /*|[A-Za-z]:[\\/]*) ;; *) common="${ROOT}/${common}" ;; esac   # C:/… do git no Windows (F16W2)
   printf '%s/hooks/pre-commit' "${common}"
 }
 
@@ -605,7 +605,7 @@ hooks_estado() { # → LIVRE | LIGADO | HIGIENE | ENCADEADO <executado>\t<com a 
   legado="$(hook_legado)"
   if [ -n "${hp}" ] && hooks_path_e_nosso "${hp}"; then printf 'LIGADO\n'
   elif [ -n "${hp}" ]; then
-    pc="${hp%/}/pre-commit"; case "${pc}" in /*) ;; *) pc="${ROOT}/${pc}" ;; esac
+    pc="${hp%/}/pre-commit"; case "${pc}" in /*|[A-Za-z]:[\\/]*) ;; *) pc="${ROOT}/${pc}" ;; esac
     if chama_o_nosso "${pc}"; then linha="${pc}"
     else
       stubs_do_husky "$(dirname "${pc}")" && chama_o_nosso "$(dirname "$(dirname "${pc}")")/pre-commit" \

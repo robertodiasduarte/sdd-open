@@ -35,7 +35,7 @@ HOOKS_PATH="$(git config --get core.hooksPath 2>/dev/null || true)"
 # `git rev-parse --git-path hooks/pre-commit`: ele segue o core.hooksPath e, com o dispatcher do sdd-open
 # ligado, apontaria para o próprio dispatcher — um `rm` apagaria os hooks do projeto.
 COMMON="$(git rev-parse --git-common-dir 2>/dev/null)"
-case "${COMMON}" in /*) ;; *) COMMON="${ROOT}/${COMMON}" ;; esac
+case "${COMMON}" in /*|[A-Za-z]:[\\/]*) ;; *) COMMON="${ROOT}/${COMMON}" ;; esac   # C:/… do git no Windows (F16W2)
 HOOK="${COMMON}/hooks/pre-commit"
 VERSAO="$(versao_skill)"
 
