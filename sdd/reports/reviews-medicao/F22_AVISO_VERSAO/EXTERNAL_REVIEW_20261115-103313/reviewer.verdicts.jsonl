@@ -1,0 +1,2 @@
+{"achado": "R1", "arquivo": "bin/sdd-open.sh", "linha": 1100, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "Com --de, a trava que impede rebaixar ignora a versão do registro existente e permite regravá-lo com versão menor e ressuscitar arquivos removidos."}
+{"achado": "R2", "arquivo": "bin/lib/versao.sh", "linha": 67, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "Skills instaláveis definidas por padrão fixo em vez de skills_da_fonte, divergindo do DESIGN e do que o init e o doctor consideram skill do pacote."}

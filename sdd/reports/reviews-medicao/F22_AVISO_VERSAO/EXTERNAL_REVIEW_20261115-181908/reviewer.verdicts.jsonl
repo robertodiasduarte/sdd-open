@@ -1,0 +1,2 @@
+{"achado": "R1", "arquivo": "sdd/playbook.md", "linha": 31, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "LM-015 ganha ajudou+1 com mordeu=0 na mesma mudança em que o texto reescrito declara insuficiente o remédio antigo, possivelmente creditando o incidente no contador errado."}
+{"achado": "R2", "arquivo": "sdd/playbook.md", "linha": 50, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "LM-034 narra o incidente na F16W mas aponta a ficha F16W2_WINDOWS, ao contrário do padrão das entradas vizinhas, o que pode quebrar a rastreabilidade."}

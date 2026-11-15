@@ -1,0 +1,2 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O diff mostra que impressoes() calcula o SHA256 sem normalizar fins de linha; no Windows com core.autocrlf=true, arquivos convertidos para CRLF terão hashes diferentes do pacote (LF), fazendo o upgrade classificar tudo como editado."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "O diff confirma que atual recebe vk quando não há registro, fazendo o doctor imprimir incorretamente que o projeto está na versão do pacote e induzindo um --de errado."}

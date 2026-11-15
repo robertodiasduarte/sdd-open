@@ -1,0 +1,2 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "o git -c credential.helper= não anula url.insteadOf do config global, permitindo que a consulta anônima vire SSH"}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "o doctor não verifica se o pacote é mais velho que o registro, sugerindo um upgrade que falhará com exit 64"}

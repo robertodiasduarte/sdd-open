@@ -1,0 +1,2 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O isolamento da config do git em sdd/bin/versao-nova.sh:99 descarta proxy e TLS, mas o usuário pode usar variáveis de ambiente; severidade LOW adequada."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "O laço em bin/sdd-open.sh:1127 processa suspeitos individualmente, o que degrada o desempenho no Windows com autocrlf, mas não afeta a correção; severidade LOW adequada."}

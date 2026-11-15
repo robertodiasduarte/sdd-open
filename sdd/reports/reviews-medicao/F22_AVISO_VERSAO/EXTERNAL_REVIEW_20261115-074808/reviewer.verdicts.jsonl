@@ -1,0 +1,2 @@
+{"achado": "R1", "arquivo": "bin/sdd-open.sh", "linha": 1062, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "--de na forma tag resolve a tag em repositório que contém o pacote (git -C sobe), sem a guarda de raiz; pacote errado sai 1 em vez de 64"}
+{"achado": "R2", "arquivo": "bin/sdd-open.sh", "linha": 860, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "doctor em projeto sem SDD instalado diz 'instalado antes da v2.17.0' e manda o upgrade com --de em vez do init"}

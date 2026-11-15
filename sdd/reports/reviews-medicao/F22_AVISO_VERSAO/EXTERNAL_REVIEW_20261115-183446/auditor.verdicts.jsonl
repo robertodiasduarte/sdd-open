@@ -1,0 +1,1 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O diff confirma a troca para assertLessEqual, tornando o teste suscetível a passar com conjunto vazio (LM-002) se o regex falhar ou as datas forem todas atualizadas."}

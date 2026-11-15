@@ -1,0 +1,1 @@
+{"achado": "R1", "arquivo": "tests/test_f16w2_passo0.py", "linha": 50, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "A troca de assertEqual por assertLessEqual (subconjunto) torna a asserção satisfeita pelo conjunto vazio: o teste passa mesmo se o regex não casar nenhuma linha e deixa de provar o que o nome afirma."}

@@ -1,0 +1,2 @@
+{"achado": "R1", "arquivo": "sdd/bin/versao-nova.sh", "linha": 99, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "GIT_CONFIG_GLOBAL vazio e GIT_CONFIG_NOSYSTEM descartam http.proxy e a config TLS do git, e a checagem fica sempre 'não conferida' para quem usa proxy configurado no git"}
+{"achado": "R2", "arquivo": "bin/sdd-open.sh", "linha": 1127, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "a 2ª impressão sem CR roda um sha256 por arquivo no laço; com autocrlf=true todos os instaláveis são suspeitos, contra a landmine de impressão em lote do DESIGN"}

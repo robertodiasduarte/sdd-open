@@ -1,0 +1,2 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O diff em tests/test_f16w2_passo0.py:35 e :63 introduz regexes que limitam o dia a 19, invalidando curadorias a partir de 2026-11-20."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "O diff em tests/test_f17c_passo0.py:39 mantém mordeu=0 fixo na regex, quebrando o teste na primeira mordida registrada."}
