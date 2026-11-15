@@ -5,14 +5,14 @@ license: "MIT"
 metadata:
   author: "Roberto Dias Duarte"
   methodology: "Metodologia de Roberto Dias Duarte"
-  version: "1.6.0"
+  version: "1.6.1"
   updated: "2026-11"
 ---
 
 # UX Review Builder
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só:
-`ux-review-builder v1.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`ux-review-builder v1.6.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 ## Quick start
 
