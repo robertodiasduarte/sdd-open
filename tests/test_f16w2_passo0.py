@@ -31,8 +31,8 @@ class Curadoria(unittest.TestCase):
                 ln = linha(pb, lm)
                 self.assertIn(trecho, ln)
                 self.assertIn("**Do instead:**", ln)
-                self.assertIn("conf=2026-11-14", ln)
-                self.assertIn("ajudou=0 mordeu=0", ln)
+                # nasceram em 2026-11-14 com ajudou=0; a curadoria da F16W2 + F22 (2026-11-15) já as contou
+                self.assertRegex(ln, r"ajudou=\d+ mordeu=0 · conf=2026-11-1[4-9]")
 
     def test_lm012_mordeu_e_foi_promovida(self):
         ln = linha(ler("sdd/playbook.md"), "LM-012")
@@ -43,8 +43,29 @@ class Curadoria(unittest.TestCase):
     def test_as_contagens_ajudou_da_f16w_nao_foram_aplicadas(self):
         # só LM-012 e as 3 lições novas ganharam conf=2026-11-14 nesta curadoria (LM-027/028 são da F17c)
         pb = ler("sdd/playbook.md")
+        # nenhuma outra lição ganhou a data desta curadoria (curadorias seguintes podem trocar a data destas por uma maior)
         datadas = set(re.findall(r"^- \[(LM-\d+)\] .*conf=2026-11-14", pb, re.M))
-        self.assertEqual(sorted(datadas), ["LM-012", "LM-027", "LM-028", "LM-029", "LM-030", "LM-031"])
+        self.assertLessEqual(datadas, {"LM-012", "LM-027", "LM-028", "LM-029", "LM-030", "LM-031"})
+
+
+class CuradoriaF16W2F22(unittest.TestCase):
+    """A curadoria da F16W2 + F22 (2026-11-15): 3 lições novas e o conselho da LM-015 refinado."""
+
+    def test_as_tres_licoes_novas(self):
+        pb = ler("sdd/playbook.md")
+        for lm, trecho in (("LM-032", "Um calço posto no PATH para mudar COMO o Python"),
+                           ("LM-033", "Saída de comando do git lida por máquina segue a configuração"),
+                           ("LM-034", "o PATH de links simbólicos que um teste monta")):
+            with self.subTest(lm=lm):
+                ln = linha(pb, lm)
+                self.assertIn(trecho, ln)
+                self.assertIn("**Do instead:**", ln)
+                self.assertRegex(ln, r"mordeu=0 · conf=2026-11-1[5-9]")
+
+    def test_lm015_troca_a_saida_dentro_do_script(self):
+        ln = linha(ler("sdd/playbook.md"), "LM-015")
+        self.assertIn("reconfigure(encoding=\"utf-8\"", ln)
+        self.assertIn("não vale quando o aluno roda o `.py` direto", ln)
 
 
 if __name__ == "__main__":

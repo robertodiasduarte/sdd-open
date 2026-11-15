@@ -5,6 +5,8 @@ que saiu do starter na geração da F17b e volta pelo Open.
 """
 from __future__ import annotations
 
+import re
+
 import subprocess
 import sys
 import unittest
@@ -31,9 +33,13 @@ class Curadoria(unittest.TestCase):
 
     def test_as_contagens_da_f17b_foram_aplicadas(self):
         pb = ler("sdd/playbook.md")
+        # curadorias seguintes contam de novo (a da F16W2 + F22, em 2026-11-15): a contagem só cresce e a data só avança
         for lm, ajudou in (("LM-001", 8), ("LM-018", 1), ("LM-022", 1), ("LM-024", 1)):
             with self.subTest(lm=lm):
-                self.assertRegex(pb, r"- \[%s\] ajudou=%d mordeu=0 · conf=2026-11-13" % (lm, ajudou))
+                m = re.search(r"^- \[%s\] ajudou=(\d+) mordeu=0 · conf=(\d{4}-\d{2}-\d{2})" % lm, pb, re.M)
+                self.assertIsNotNone(m, lm)
+                self.assertGreaterEqual(int(m.group(1)), ajudou)
+                self.assertGreaterEqual(m.group(2), "2026-11-13")
 
     # o formato do playbook real já é conferido num repositório de teste por test_contrato_build_release
     # (o playbook-lint.sh exige git; o Verify Gate roda numa cópia sem .git: LM-006)
