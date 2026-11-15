@@ -205,6 +205,14 @@ class RegistroDoInit(Pacotes):
         self.assertIn("versão: projeto sem registro de versão (instalado antes da v2.17.0, ou o registro foi apagado) "
                       "· pacote v9.8.7", out)
 
+    def test_doctor_sem_o_sdd_instalado_manda_o_init(self):
+        # revisão do código, rodada 3, R2
+        p = self.repo("vazio")
+        rc, out = self.cli(p, "doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("ℹ️  versão: o SDD Open não está instalado neste projeto · pacote v9.8.7 — rode init", out)
+        self.assertNotIn("upgrade --de", out)
+
     def test_pacote_de_versao_desconhecida_instala_sem_registro(self):
         sem = copia_pacote(self.tmp / "sem-versao", None)
         p = self.repo("projeto")

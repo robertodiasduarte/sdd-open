@@ -854,6 +854,8 @@ aplicar() {
 doctor_versao() {
   local vp vk reg="${ROOT}/${REGISTRO_REL}" linha atual saida rc cmd
   versao_do_pacote "${PKG}"; vk="${VERSAO_PKG}"
+  # projeto sem o SDD Open: o caminho é o init, não o upgrade (revisão do código, rodada 3, R2)
+  if [ ! -d "${ROOT}/sdd" ]; then info "versão: o SDD Open não está instalado neste projeto · pacote ${vk} — rode init"; return 0; fi
   vp="$(registro_versao "${reg}")"
   if [ -n "${vp}" ]; then linha="versão: projeto ${vp} · pacote ${vk}"; atual="${vp}"
   else
@@ -1059,6 +1061,12 @@ upgrade() {
   # 1. a instalação anterior: o pacote de --de (pasta, ou tag do clone), ou o registro
   if [ -n "${DE_ARG}" ]; then
     if versao_exata "${DE_ARG}"; then
+      # a forma tag só vale com o pacote na raiz de um clone: o git -C sobe de pasta, e um pacote extraído dentro de
+      # outro repositório acharia as tags dele (revisão do código, rodada 3, R1; o mesmo -ef da versao_do_pacote)
+      local topo; topo="$(git -C "${PKG}" rev-parse --show-toplevel 2>/dev/null)" || topo=""
+      { [ -n "${topo}" ] && [ "${topo}" -ef "${PKG}" ]; } \
+        || die "--de ${DE_ARG}: a forma tag precisa do pacote num clone do sdd-open, e ${PKG} não é a raiz de um" \
+               "passe --de com a pasta do pacote antigo (sdd-open-vX.Y.Z), baixada da Release; nada foi escrito" 64
       git -C "${PKG}" rev-parse -q --verify "refs/tags/${DE_ARG}" >/dev/null 2>&1 \
         || die "a tag ${DE_ARG} não existe no clone do pacote (${PKG})" \
                "rode git -C ${PKG} fetch --tags e tente de novo, ou passe --de com a pasta do pacote antigo; nada foi escrito" 64

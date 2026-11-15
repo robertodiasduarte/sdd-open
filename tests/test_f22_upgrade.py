@@ -279,6 +279,18 @@ class SemRegistro(Base):
         self.assertEqual(rc, 64, out)
         self.assertNadaEscrito(antes)
 
+    def test_de_tag_com_pacote_dentro_de_outro_repositorio_e_64(self):
+        # revisão do código, rodada 3, R1: o git -C sobe de pasta e acharia as tags do repositório de fora
+        fora = self.repo("de-fora")
+        dentro = copia_pacote(fora / "sdd-open", "v9.8.7")
+        self.commit(fora, "x")
+        self.git(fora, "tag", "v9.8.6")
+        antes = foto(self.p)
+        rc, out = self.cli("upgrade", "--de", "v9.8.6", "--yes", pkg=dentro)
+        self.assertEqual(rc, 64, out)
+        self.assertIn("a forma tag precisa do pacote num clone do sdd-open", out)
+        self.assertNadaEscrito(antes)
+
     def test_de_de_outra_versao_avisa_antes_do_sim(self):
         outro = self.tmp / "sdd-open-v9.0.0"
         (outro / "sdd").mkdir(parents=True)
