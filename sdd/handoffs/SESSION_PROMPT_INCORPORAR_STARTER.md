@@ -1,7 +1,7 @@
-# Continuar: INCORPORAR_STARTER — fechar a F22 (starter v1.5.22, curadoria; Release v2.17.0 já publicada)
+# Continuar: INCORPORAR_STARTER — fechar a F22 (curadoria e fechamento; v2.17.0 e starter v1.5.22 já publicados)
 
 A F22 (aviso de versão e upgrade) está na `main` (`7ba7eb0`) com a tag `v2.17.0` (PR #32, 2026-11-15); a Release saiu às
-18:10Z e foi conferida. Faltam: o starter `v1.5.22` (OK do Roberto), a curadoria do playbook da
+18:10Z e foi conferida. O starter `v1.5.22` também saiu (PR #15 de lá). Faltam: a curadoria do playbook da
 F16W2 e da F22, e o fechamento. Detalhe na seção "2026-11-15 — F22" da ficha.
 
 ## Onde abrir esta sessão
@@ -18,7 +18,7 @@ Release neste repositório pedem a frase "sdd-open autorizado" (a frase exata); 
 próprio do Roberto. Nada no repositório privado. Decisão de rotina: decida e registre.
 
 Onde parou (2026-11-15): main = 7ba7eb0 e tag v2.17.0 (PR #32 MERGED); Release v2.17.0 publicada às 18:10Z e conferida
-(shasum -c OK; VERSION do tarball = v2.17.0). O passo 1 abaixo já foi feito: só confirme com gh release view.
+(shasum -c OK; VERSION do tarball = v2.17.0). Os passos 1 e 2 abaixo já foram feitos (starter v1.5.22 publicado, PR #15 de lá): só confirme.
 
 Leia primeiro (branch docs/incorporar-starter, worktree /Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16):
 - HANDOFF_INCORPORAR_STARTER.md → a seção "2026-11-15 — F22" (Pendências, Próximos passos, Alertas) e os Eventos de 15/11
