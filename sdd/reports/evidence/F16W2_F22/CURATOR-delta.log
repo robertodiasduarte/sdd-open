@@ -1,0 +1,28 @@
+$ bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" <playbook de antes (HEAD)> conf=2026-11-15 > "$STG/novo.md"
+# delta.txt (18 AUTO + 4 aceitos pelo Roberto em 2026-11-15: 19 REFINE LM-015, 23 LM-032, 24 LM-033, 25 LM-034):
+LM-006 ajudou+1
+LM-009 ajudou+1
+LM-010 ajudou+1
+LM-012 ajudou+1
+LM-014 ajudou+1
+LM-016 ajudou+1
+LM-017 ajudou+1
+LM-018 ajudou+1
+LM-025 ajudou+1
+LM-029 ajudou+1
+LM-030 ajudou+1
+LM-031 ajudou+1
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-005 ajudou+1
+LM-013 ajudou+1
+LM-015 ajudou+1
+REFINE LM-015 :: O Python do Windows, com a saída num pipe (o Git Bash do aluno é um pipe), escreve em cp1252 e troca `\n` por `\r\n`: o "ç" e o ✅ saem trocados e o bash que captura a saída lê `VALOR\r`; nada no macOS ou no Linux mostra isso, e o `PYTHONIOENCODING` exportado por quem chama não vale quando o aluno roda o `.py` direto nem com `python3 -I`. **Do instead:** cada programa troca a própria saída no início (`reconfigure(encoding="utf-8", errors="replace", newline="\n")` em stdout e stderr, também nos `python3 - <<'PY'` embutidos), com uma guarda que percorre o pacote; exportar `PYTHONIOENCODING=utf-8` (sem passar por cima de um valor que já exista) fica só como reforço, e um teste imprime "ação" pelo Python e confere em UTF-8.
+ADD Reviews / harness :: sup: `calço` `PATH` `-X utf8` `vaza` `comando do aluno` :: Um calço posto no PATH para mudar COMO o Python dos scripts do pacote roda (`-X utf8`, `| tr -d '\r'`) vaza para todo filho que chama `python3`, inclusive o comando de teste do próprio projeto: na F16W2, o pytest do aluno passaria a rodar em modo UTF-8, com resultado diferente de quando roda direto, o `tr` seguraria as linhas de progresso e a saída byte a byte do curador perderia o `\r`. **Do instead:** o conserto do modo vai no próprio programa (a troca da saída no início dele); o calço no PATH só troca QUAL Python roda (`exec`), nunca COMO. → ficha: F16W2_WINDOWS · promovido_para: —
+ADD Reviews / harness :: sup: `git grep` `color.ui` `--no-color` `config do usuário` `parse` :: Saída de comando do git lida por máquina segue a configuração de quem roda: com `color.ui=always`, o `git grep -l` embrulha cada nome em códigos ANSI mesmo indo para arquivo, e na F16W2 o `pre-commit` novo deixaria passar todo arquivo com byte NUL. **Do instead:** o script que lê a saída do git passa `--no-color` e `-c color.ui=never` (e o que mais a saída lida dependa, como `core.quotePath` com `-z`), e um teste roda com a config hostil ligada. → ficha: F16W2_WINDOWS · promovido_para: —
+ADD Reviews / harness :: sup: `link simbólico` `PATH restrito` `DLL` `Windows` `dirname vazio` :: No Windows, o PATH de links simbólicos que um teste monta para "tirar" uma ferramenta quebra as que ficam: o `command -v dirname` acha o link e o `$(dirname x)` devolve vazio; na F16W, ~105 quedas da revisão vinham disso (causa provável, ainda não provada no Windows: o executável chamado pelo link não acha as DLLs ao lado do original, msys-2.0.dll, python3xx.dll). **Do instead:** PATH restrito pelo ajudante `path_restrito` de `tests/apoio.py` (no Windows, as pastas de verdade das ferramentas; o nome que o teste quer ausente é conferido e, se a pasta o traz, o teste é pulado por constante). → ficha: F16W2_WINDOWS · promovido_para: —
+RESULTADO: DELTA APLICADO (22 linha(s))
+→ o stdout é o playbook novo: rode o playbook-lint.sh nele antes de copiar por cima.
+# a saída é igual, byte a byte, ao sdd/playbook.md gravado
+[exit=0]

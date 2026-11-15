@@ -65,16 +65,7 @@ starter, contagem, text=True, subprocess, bash, PYTHONIOENCODING, paralelo.
 
 ## Candidatos ao playbook
 
-```text
-<<<CANDIDATO_PLAYBOOK
-secao: Reviews / harness
-sup: `grep` `\|` `macOS` `alternância` `BSD`
-regra: No macOS, `grep -v "a\|b"` não alterna (o grep BSD não tem `\|` na expressão básica): o filtro não tira nada e o comando segue como se tivesse tirado. Na F22, a cópia montada para o publish-gate levou o PROMPT e os documentos da frente, e o gate barrou por caminho de home. **Do instead:** use `grep -E "a|b"` (ou `grep -v -e a -e b`) em todo filtro de alternância.
-evidencia: sdd/reports/BUILD_REPORT_F22_AVISO_VERSAO.md (Issues Encountered, item 3)
-ficha: —
-mordeu_antes: —
->>>
-```
+nenhum candidato nesta build (o único proposto, o do grep BSD, foi descartado na curadoria de 2026-11-15: o mecanismo não se reproduz neste Mac; ver `sdd/reports/evidence/F16W2_F22/CURATOR-bloco.txt`, linha 26)
 
 ---
 
@@ -125,8 +116,7 @@ com `credential.helper` vazio, sem prompt e sem enviar dado do projeto).
    uma cópia que falhou é sobrescrito na rodada seguinte, e a pasta de trabalho fica no TMPDIR (`mktemp`).
 2. O auditor qwen falhou nas 2 rodadas da revisão do DESIGN: cortou o bloco de vereditos na 1ª e passou do teto de
    900 s na 2ª. Os achados do revisor foram decididos um a um (Advisor Ledger do DESIGN).
-3. O filtro `grep -v "a\|b"` não tirou nada no macOS (grep BSD), e o publish-gate da cópia montada à mão barrou o
-   PROMPT da frente por caminho de home. Refeito com `grep -E`: GREEN (candidato ao playbook acima).
+3. A cópia montada à mão para o publish-gate levou o PROMPT e os documentos da frente, e o gate barrou por caminho de home. Refeito com `grep -E`: GREEN. **Correção (curadoria, 2026-11-15):** a causa que eu dei aqui (o `\|` não alternaria no grep do macOS) é falsa: o curador testou neste Mac e o filtro alterna. A causa real não ficou registrada (não há log da linha de comando).
 
 ---
 
