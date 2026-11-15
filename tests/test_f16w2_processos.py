@@ -8,12 +8,13 @@ reescrita poderia afrouxar são testadas aqui; as regras inteiras seguem em test
 """
 from __future__ import annotations
 
+import os
 import random
 import shutil
 import subprocess
 from pathlib import Path
 
-from apoio import BASH, RAIZ, Sandbox, caminho_bash
+from apoio import BASH, RAIZ, SEM_CHMOD, Sandbox, caminho_bash
 from test_alarme import cnpj, com_mascara_cnpj, com_mascara_cpf, cpf
 
 HIGIENE = ".agents/skills/sdd-higiene-dado"
@@ -71,6 +72,17 @@ class Contagem(Armadilha):
         n = self.contagem()
         # v2.16.0: ~11,7 programas por arquivo gerado (9.360 para 803, com os 5 vendors); a meta é menos da metade
         self.assertLessEqual(n, 3 * gerados, "o init lançou %d programas para %d arquivos" % (n, gerados))
+        # o chmod passou a rodar só quando precisa: a cópia tem o bit de execução exatamente quando a fonte tem
+        if not SEM_CHMOD[0]:
+            fontes = RAIZ / ".agents/skills"
+            vistos = 0
+            for copia in (p / ".claude/skills").rglob("*"):
+                if copia.is_file():
+                    fonte = fontes / copia.relative_to(p / ".claude/skills")
+                    with self.subTest(copia=str(copia.relative_to(p))):
+                        self.assertEqual(os.access(str(copia), os.X_OK), os.access(str(fonte), os.X_OK))
+                    vistos += os.access(str(fonte), os.X_OK)
+            self.assertGreaterEqual(vistos, 1, "a amostra precisa de ao menos uma fonte executável")
 
 
 class Recusas(Sandbox):
