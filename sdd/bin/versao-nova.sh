@@ -85,10 +85,14 @@ corta() {
 }
 
 s="$(mktemp -d 2>/dev/null)" || nao_conferida "sem pasta temporária para a consulta"
+# Anônima de verdade: sem a configuração global e de sistema do git (um url.insteadOf trocaria o https por SSH com a
+# chave da pessoa; um credential.helper ofereceria a senha). O arquivo vazio, e não /dev/null, vale também no Git Bash.
+: > "${s}/gitconfig-vazio" || nao_conferida "sem pasta temporária para a consulta"
 # O git vai a 2º plano DENTRO do subshell com set -m: vira líder do próprio grupo, e o pid dele fica no arquivo.
 # O subshell inteiro solta a entrada e a saída de quem chamou: um processo que sobreviva ao corte não segura o pipe.
 ( set -m
-  GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never LC_ALL=C git -c credential.helper= ls-remote --tags --refs "${REMOTO}" \
+  GIT_CONFIG_GLOBAL="${s}/gitconfig-vazio" GIT_CONFIG_NOSYSTEM=1 GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never LC_ALL=C \
+    git -c credential.helper= ls-remote --tags --refs "${REMOTO}" \
     </dev/null >"${s}/out" 2>"${s}/err" &
   echo "$!" > "${s}/pid"
   wait "$!"; echo "$?" > "${s}/rc.tmp" && mv "${s}/rc.tmp" "${s}/rc" ) </dev/null >/dev/null 2>&1 &

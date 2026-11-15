@@ -976,6 +976,10 @@ doctor() {
   vp="$(registro_versao "${ROOT}/${REGISTRO_REL}")"; versao_do_pacote "${PKG}"
   if [ -n "${vp}" ] && [ "${VERSAO_PKG}" != "desconhecida" ] \
      && [ "$(versao_chave "${vp}")" = "$(versao_chave "${VERSAO_PKG}")" ]; then mesma=1; fi
+  # pacote mais velho que o projeto: o upgrade dele recusa (64); o conselho é atualizar o pacote (revisão, rodada 4, R2)
+  if [ -n "${vp}" ] && [ "${VERSAO_PKG}" != "desconhecida" ] && versao_pacote_menor "${VERSAO_PKG}" "${vp}"; then
+    upg="este pacote (${VERSAO_PKG}) é mais velho que o projeto (${vp}): atualize o pacote (git pull no clone) e rode o doctor dele"
+  fi
   for s in $(skills_da_fonte "${pkg_skills}"); do
     if [ ! -f "${FONTE_SKILLS}/${s}/SKILL.md" ]; then
       # Projeto atualizado só com sync: a skill nova do pacote não chega (o AGENTS.md já pode apontar para ela).

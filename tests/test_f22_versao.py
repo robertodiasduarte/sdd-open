@@ -297,6 +297,17 @@ class AvisoNoDoctor(Pacotes):
         self.assertIn("saiu a v9.9.0 (este pacote está na v9.8.7; a versão do projeto não está registrada)", out)
         self.assertNotIn("seu projeto está na", out)
 
+    def test_pacote_mais_velho_que_o_projeto_manda_atualizar_o_pacote(self):
+        # revisão do código, rodada 4, R2: o upgrade desse pacote recusaria (64)
+        reg = self.p / "sdd/open-instalado.txt"
+        reg.write_text(reg.read_text(encoding="utf-8").replace("versao: v9.8.7", "versao: v9.9.0"), encoding="utf-8")
+        alvo = self.p / "sdd/bin/report-lint.py"
+        alvo.write_text(alvo.read_text(encoding="utf-8") + "# outra versão\n", encoding="utf-8")
+        rc, out = self.cli(self.p, "doctor")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("sdd/bin/report-lint.py difere do pacote — este pacote (v9.8.7) é mais velho que o projeto "
+                      "(v9.9.0): atualize o pacote (git pull no clone) e rode o doctor dele", out)
+
     def test_avisos_antigos_apontam_o_upgrade(self):
         alvo = self.p / "sdd/bin/report-lint.py"
         alvo.write_text(alvo.read_text(encoding="utf-8") + "# minha mudança\n", encoding="utf-8")
@@ -350,6 +361,22 @@ class ChecagemComTeto(Sandbox):
         rc, out, err = self.roda([BASH, VERSAO_NOVA, "--raiz", self.tmp, "--atual", "v1.0.0"], self.tmp, env=env)
         self.assertEqual(rc, 30, out + err)
         self.assertFalse(marca.exists())
+
+    def test_consulta_ignora_a_configuracao_global_do_git(self):
+        # revisão do código, rodada 4, R1: um url.insteadOf global trocaria o endereço (no caso real, https por SSH com
+        # a chave da pessoa). Aqui o insteadOf aponta um caminho que não existe para um remoto com tag: se valesse, a
+        # consulta acharia a tag; ignorado, o endereço continua inexistente.
+        r = self.repo("remoto")
+        self.git(r, "commit", "-q", "--allow-empty", "-m", "x")
+        self.git(r, "tag", "v9.0.0")
+        gc = self.tmp / "gitconfig-global"
+        gc.write_text('[url "%s/"]\n\tinsteadOf = %s/\n' % (r.as_posix(), (self.tmp / "inexistente").as_posix()),
+                      encoding="utf-8")
+        env = dict(self.env, SDD_OPEN_CHECK_UPDATES="1", GIT_CONFIG_GLOBAL=str(gc),
+                   SDD_OPEN_REMOTO=(self.tmp / "inexistente").as_posix() + "/")
+        rc, out, err = self.roda([BASH, VERSAO_NOVA, "--atual", "v1.0.0"], self.tmp, env=env)
+        self.assertEqual(rc, 20, out + err)
+        self.assertNotIn("v9.0.0", out)
 
     def test_sem_versao_atual_nao_consulta(self):
         env = dict(self.env, SDD_OPEN_CHECK_UPDATES="1")
