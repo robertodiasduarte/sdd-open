@@ -115,6 +115,8 @@ jobs:
           bash sdd/bin/sdd-fluxo.sh --self-test
 
       - name: Unit tests (contracts of every script)
+        env:
+          SDD_OPEN_CHECK_UPDATES: '0'   # F22: 2ª trava (a 1ª é o tests/apoio.py): a suíte nunca consulta a rede
         run: python3 -B -m unittest discover -s tests -p 'test_*.py'
 
       # A skill that changed since the last release must bump metadata.version — the same check
@@ -187,6 +189,7 @@ jobs:
       - name: Unit tests on the floor (/usr/bin/python3, SDD_TEST_BASH=/bin/bash)
         env:
           SDD_TEST_BASH: /bin/bash
+          SDD_OPEN_CHECK_UPDATES: '0'   # F22: 2ª trava (a 1ª é o tests/apoio.py): a suíte nunca consulta a rede
         run: /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
 
   # F16: o caso real do aluno no Windows é o Git Bash com o Python nativo (o WSL é Linux por dentro, e o
@@ -245,6 +248,7 @@ jobs:
       - name: Unit tests by module (slice ${{ matrix.fatia }}/16, Git Bash + native Python)
         env:
           PYTHONUNBUFFERED: '1'
+          SDD_OPEN_CHECK_UPDATES: '0'   # F22: 2ª trava (a 1ª é o tests/apoio.py): a suíte nunca consulta a rede
         run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/16" --teto-unidade 600 --saida "$RUNNER_TEMP/tpm"
 
       - name: Keep the output of each module

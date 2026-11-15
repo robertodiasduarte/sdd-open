@@ -12,7 +12,7 @@ compatibility: Requer git >= 2.20 e um agente com acesso ao terminal (bash, zsh 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.6.1"
+  version: "1.7.0"
   updated: "2026-11"
   fase: "0"
 ---
@@ -20,7 +20,7 @@ metadata:
 # sdd-new-session — abrir uma frente
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-new-session v1.6.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-new-session v1.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Um comando, uma tarefa, um diretório: `git worktree` + branch nova nascida do estado **remoto atual**
 da branch padrão. A outra ponta é a `sdd-release`.
@@ -365,7 +365,11 @@ a evidência — ela vai para o Passo 2, item 6.
 4. **Em modo terminal** (slot `terminal:<agente>`, ou sem editor), o **Próximo passo** são 3 passos numerados:
    1. abra um terminal novo; 2. `cd "<pasta da frente>"`; 3. rode nele o agente do slot (`claude`, `codex`…; sem
    slot, o que você usa).
-5. **Última linha, destacada**, na forma que vale para este computador:
+5. **Versão nova do SDD Open:** se a frente tem `sdd/bin/versao-nova.sh`, rode `bash sdd/bin/versao-nova.sh` de dentro
+   dela. Exit 10 ⇒ uma frase, com as 2 versões da linha que ele imprimiu: "Saiu a versão v2.18.0 do SDD Open (este
+   projeto está na v2.17.0). Não precisa parar agora; quando quiser, peça ao agente para atualizar." Qualquer outro exit,
+   ou sem o script: nada. Nunca vira pergunta nem parada.
+6. **Última linha, destacada**, na forma que vale para este computador:
    - com editor: `⚠️ Continue na janela nova. Esta sessão do agente continua presa à pasta onde foi aberta —
      nenhum cd muda isso. Build, commit e push rodam lá dentro.`
    - em modo terminal: `⚠️ Continue num terminal novo aberto na pasta da frente. Esta sessão do agente continua presa

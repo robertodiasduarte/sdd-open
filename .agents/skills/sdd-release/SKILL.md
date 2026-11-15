@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.12.1"
+  version: "2.13.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.12.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.13.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes do push e do
 deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e irreversível na prática.
@@ -88,7 +88,8 @@ só vai para o que script não pega: regressão de contrato e regra de negócio 
 funcionava. Passada que não se aplica ao diff é **pulada**, não "revisada sem achados".
 
 **0. Pré-voo.** Confirme a branch (`git rev-parse --abbrev-ref HEAD` ≠ `default_branch`) e o
-diff-base (`git merge-base origin/{default_branch} HEAD`).
+diff-base (`git merge-base origin/{default_branch} HEAD`). Rode `bash sdd/bin/versao-nova.sh` (se existir):
+exit 10 ⇒ a frase de versão nova (`references/como-falar.md`) no relatório e no bloco do OK, sem abortar; senão, nada.
 
 **0a. Determinístico**, sobre `origin/{default_branch}...HEAD`, em paralelo:
 
@@ -430,8 +431,7 @@ arquivo inesperado no diff · conflito real · base moveu · escrita em produç�
 
 ## Quando pular o SDD formal
 
-Fix pequeno com decisão clara pode pular BRAINSTORM/DEFINE/DESIGN — mas a sequência 0–20
-vale **sempre**.
+Fix pequeno com decisão clara pode pular BRAINSTORM/DEFINE/DESIGN — mas a sequência 0–20 vale **sempre**.
 
 ## Por que cada regra existe
 

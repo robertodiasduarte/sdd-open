@@ -110,13 +110,13 @@ números, por exemplo "1 aceitar, 2 recusar".
 
 **Sua decisão** — 1. [D3 · muda a regra do método] **Guardo a lição nova sobre o relatório que saiu sem as notas canceladas?**
 - **aceitar** (recomendado) — entra no caderno e avisa toda sessão que mexer no relatório; a prova está
-  no relatório do build (ref: LM-023).
+  no relatório do build (ref: o candidato do relatório do build).
 - **recusar** — a lição não entra; o que aconteceu fica só no histórico desta feature.
 - **não sei** — mostro o trecho do relatório do build em que isso aconteceu.
 
 **Sua decisão** — 2. [D3 · muda a regra do método] **Transformo em trava automática o aviso que já falhou 2 vezes?**
 - **aceitar** (recomendado) — registro que ele vira uma conferência automática; isso pede uma correção
-  própria, com teste, numa próxima tarefa (ref: LM-004).
+  própria, com teste, numa próxima tarefa (ref: a lição da migration que sai `exit 0` sem estar no banco).
 - **recusar** — o aviso continua só escrito, e esta pergunta volta na próxima publicação.
 - **não sei** — mostro as 2 vezes em que o erro aconteceu, com o arquivo de cada uma.
 
@@ -137,3 +137,13 @@ Quando a colheita falha, diga a causa, o conserto e que nada do que foi publicad
 ler o caderno de armadilhas para a curadoria (o arquivo `sdd/playbook.md` não tem nenhuma lição no
 formato esperado). A publicação não foi afetada. Corrija o arquivo e me peça a curadoria de novo." Quando
 não há o que colher: "esta feature não trouxe lição nova nem contagem".
+
+## Versão nova do SDD Open (FASE 0, item 0)
+
+O `bash sdd/bin/versao-nova.sh` saiu 10: diga uma frase, com as 2 versões da linha que ele imprimiu, no relatório da
+FASE 0 e no bloco do OK, e siga. Nunca é pergunta, nunca para nem muda o OK:
+
+"Saiu a versão v2.18.0 do SDD Open (este projeto está na v2.17.0). Não precisa parar agora; quando quiser, peça ao
+agente para atualizar."
+
+Qualquer outro exit (em dia, sem rede, desligada) ou o script ausente: não diga nada sobre versão.

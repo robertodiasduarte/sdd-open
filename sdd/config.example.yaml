@@ -138,3 +138,9 @@ prompts:
   # "systemPrompt:" ou "callLLM\\(" (entre aspas duplas, a contrabarra vai dobrada). Vazio = a
   # varredura vê só os sinais genéricos, e avisa disso.
   wrapper_pattern: ""
+
+# Aviso de versão nova: o doctor, a abertura de frente (sdd-new-session) e a release (sdd-release) consultam, sem
+# token e com teto de 5 s, se saiu versão nova do SDD Open (git ls-remote do repositório público; nada do projeto é
+# enviado). false desliga aqui, para o projeto todo; SDD_OPEN_CHECK_UPDATES=0 desliga só naquele terminal.
+open:
+  check_updates: true

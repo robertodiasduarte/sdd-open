@@ -23,6 +23,15 @@ import unittest
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
+
+# F22: a suíte nunca vai à rede. O doctor (que roda no fim de todo init) consulta se saiu versão nova do SDD Open; aqui
+# a consulta fica desligada, e o endereço aponta para uma pasta que não existe, para falhar local mesmo se um teste a
+# religar por engano. Quem testa a consulta liga a variável e aponta SDD_OPEN_REMOTO para um repositório local.
+# setdefault: quem roda a suíte pode trocar os dois de propósito. Todo módulo que roda o sdd-open.sh importa este
+# (tests/test_f22_versao.py reprova o que não importa).
+os.environ.setdefault("SDD_OPEN_CHECK_UPDATES", "0")
+os.environ.setdefault("SDD_OPEN_REMOTO", os.path.join(tempfile.gettempdir(), "sdd-open-sem-rede-nos-testes", "nada.git"))
+
 # SDD_TEST_BASH=/bin/bash roda a suíte no bash 3.2 do macOS, o piso que o open promete.
 BASH = os.environ.get("SDD_TEST_BASH") or shutil.which("bash") or "bash"
 PYTHON = sys.executable  # o mesmo interpretador da suíte: rodar com o 3.9 testa os linters no 3.9
@@ -57,6 +66,8 @@ SEM_ARGV_COM_QUEBRA = (WINDOWS, "argumento com quebra de linha: no Windows a lin
 SEM_PTY = (WINDOWS, "pty: o Windows não tem terminal POSIX (termios)")
 SEM_FIFO = (not hasattr(os, "mkfifo"), "fifo (os.mkfifo): o Windows não tem pipe com nome no sistema de arquivos")
 SO_NO_WINDOWS = (WINDOWS, "caminho C:\\…: só o Windows tem letra de unidade")   # para skipUnless
+SEM_PACOTE_ANTIGO = (WINDOWS, "pacote real anterior à v2.16.1: o init dele não roda no Git Bash do Windows (o porte é "
+                              "da F16W2); o caminho do upgrade no Windows é provado pelo pacote de teste")
 
 
 def path_restrito(pasta: Path, ferramentas, python: bool = True, ausentes=(), extra=None) -> str:

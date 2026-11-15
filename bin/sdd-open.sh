@@ -4,6 +4,7 @@
 #   bash <pacote>/bin/sdd-open.sh init  [--vendors a,b,c] [--yes] [--dry-run]
 #   bash <pacote>/bin/sdd-open.sh sync  [--vendors a,b,c] [--yes] [--dry-run] [--check]
 #   bash <pacote>/bin/sdd-open.sh doctor
+#   bash <pacote novo>/bin/sdd-open.sh upgrade [--de <pasta|tag>] [--yes] [--dry-run] [--verbose]
 #
 # Fonte única: .agents/skills/sdd-*/ (o que você edita). Adaptadores por vendor são CÓPIAS
 # marcadas "sdd-open:generated" — sync as reescreve. sdd/ é território do usuário: sync nunca
@@ -24,10 +25,11 @@ else sdd_python_pronto() { command -v python3 >/dev/null 2>&1; }; sdd_python_exi
 . "${PKG}/bin/lib/vendors.sh"
 . "${PKG}/bin/lib/merge.sh"
 . "${PKG}/bin/lib/plan.sh"
+. "${PKG}/bin/lib/versao.sh"
 
 MARCA='sdd-open:generated'
 VERBO="${1:-}"; [ $# -gt 0 ] && shift
-VENDORS_ARG=""; ASSUME_YES=0; DRY_RUN=0; CHECK=0; VERBOSE=0
+VENDORS_ARG=""; ASSUME_YES=0; DRY_RUN=0; CHECK=0; VERBOSE=0; DE_ARG=""
 
 ajuda() {
   cat <<'TXT'
@@ -35,17 +37,22 @@ sdd-open — Spec-Driven Development agnóstico de agente
 
   init    prepara o projeto: sdd/, .agents/skills/, AGENTS.md e os adaptadores do seu agente
   sync    regenera os adaptadores a partir de .agents/skills/ (sdd/ nunca é tocado)
-  doctor  mostra o que está instalado e o que cada agente vai enxergar
+  doctor  mostra o que está instalado, o que cada agente vai enxergar e se saiu versão nova
+  upgrade atualiza o projeto para a versão deste pacote: copia o que é do pacote e você não editou,
+          lista o que você editou (com a versão nova ao lado) e não commita nada
 
   --vendors claude,codex,gemini,cursor,kimi   quais agentes preparar (init) ou regenerar (sync)
   --dry-run                                   mostra o plano e não escreve nada
   --yes                                       aplica sem perguntar
   --check                                     (sync) só verifica se os adaptadores estão em dia
   --verbose                                   lista também o que já está correto
+  --de <pasta|tag>                            (upgrade) o pacote da versão que o projeto tem, quando ele não
+                                              tem o registro sdd/open-instalado.txt (instalado antes da v2.17.0)
 
 Exemplos:
   bash sdd-open/bin/sdd-open.sh init --vendors codex
   bash sdd-open/bin/sdd-open.sh sync --check
+  bash sdd-open/bin/sdd-open.sh upgrade --dry-run
 TXT
 }
 
@@ -57,6 +64,9 @@ while [ $# -gt 0 ]; do
     --dry-run) DRY_RUN=1; shift ;;
     --check) CHECK=1; shift ;;
     --verbose|-v) VERBOSE=1; shift ;;
+    --de) [ $# -ge 2 ] || die "--de sem valor" "use --de <pasta do pacote antigo> ou --de <tag, ex.: v2.12.1>" 64
+          DE_ARG="${2}"; shift 2 ;;
+    --de=*) DE_ARG="${1#--de=}"; shift ;;
     -h|--help) ajuda; exit 0 ;;
     *) die "opção desconhecida: ${1}" "rode sem argumentos para ver a ajuda" 64 ;;
   esac
@@ -64,8 +74,8 @@ done
 
 case "${VERBO}" in
   ""|help|-h|--help) ajuda; exit 0 ;;
-  init|sync|doctor) : ;;
-  *) die "verbo desconhecido: ${VERBO}" "use init, sync ou doctor (rode sem argumentos para a ajuda)" 64 ;;
+  init|sync|doctor|upgrade) : ;;
+  *) die "verbo desconhecido: ${VERBO}" "use init, sync, doctor ou upgrade (rode sem argumentos para a ajuda)" 64 ;;
 esac
 
 # ── pré-condições (antes de qualquer escrita) ──────────────────────────────────
@@ -564,12 +574,24 @@ hook_legado() {
 
 # 0 quando $1 é sdd/hooks relativo, ou um caminho absoluto que resolve (links simbólicos inclusos: /tmp
 # no macOS) para <raiz>/sdd/hooks. O alarme.sh da higiene usa o mesmo critério.
+# F22: também o sdd/hooks de OUTRA worktree do mesmo repositório (as worktrees dividem o .git/config, e um
+# core.hooksPath absoluto gravado numa vale para todas); essa worktree fica em HOOKS_OUTRA_WT.
+HOOKS_OUTRA_WT=""
 hooks_path_e_nosso() {
-  local hp="${1%/}"; hp="${hp#./}"   # o git aceita sdd/hooks/ e ./sdd/hooks (edição manual): são o mesmo lugar
+  local hp="${1%/}" w; hp="${hp#./}"   # o git aceita sdd/hooks/ e ./sdd/hooks (edição manual): são o mesmo lugar
+  HOOKS_OUTRA_WT=""
   [ "${hp}" = "sdd/hooks" ] && return 0
   # F16W2: absoluto também na forma do Windows (C:\… ou C:/…); -ef compara a pasta pelo sistema de arquivos (link,
   # /tmp do macOS, /c/… × C:/… e o nome curto RUNNER~1 do Windows dão a mesma pasta)
-  case "${hp}" in /*|[A-Za-z]:[\\/]*) [ -d "${hp}" ] && [ "${hp}" -ef "${ROOT}/sdd/hooks" ] ;; *) return 1 ;; esac
+  case "${hp}" in /*|[A-Za-z]:[\\/]*) [ -d "${hp}" ] || return 1 ;; *) return 1 ;; esac
+  [ "${hp}" -ef "${ROOT}/sdd/hooks" ] && return 0
+  while IFS= read -r w; do
+    case "${w}" in "worktree "*) w="${w#worktree }" ;; *) continue ;; esac
+    if [ -d "${w}/sdd/hooks" ] && [ "${hp}" -ef "${w}/sdd/hooks" ]; then HOOKS_OUTRA_WT="${w}"; return 0; fi
+  done <<WT
+$(git worktree list --porcelain 2>/dev/null)
+WT
+  return 1
 }
 
 # 0 quando o pre-commit $1, de outro gerenciador, já chama o nosso: uma linha que, sem o recuo, COMEÇA pela
@@ -603,7 +625,9 @@ hooks_estado() { # → LIVRE | LIGADO | HIGIENE | ENCADEADO <executado>\t<com a 
   # tomaria o core.hooksPath de outro gerenciador como livre.
   case "${hp}" in "~") hp="${HOME}" ;; "~/"*) hp="${HOME}/${hp#\~/}" ;; esac
   legado="$(hook_legado)"
-  if [ -n "${hp}" ] && hooks_path_e_nosso "${hp}"; then printf 'LIGADO\n'
+  # LIGADO, ou LIGADO<TAB><worktree> quando o sdd/hooks é o de outra worktree do mesmo repositório (F22)
+  if [ -n "${hp}" ] && hooks_path_e_nosso "${hp}"; then
+    if [ -n "${HOOKS_OUTRA_WT}" ]; then printf 'LIGADO\t%s\n' "${HOOKS_OUTRA_WT}"; else printf 'LIGADO\n'; fi
   elif [ -n "${hp}" ]; then
     pc="${hp%/}/pre-commit"; case "${pc}" in /*|[A-Za-z]:[\\/]*) ;; *) pc="${ROOT}/${pc}" ;; esac
     if chama_o_nosso "${pc}"; then linha="${pc}"
@@ -638,7 +662,8 @@ LINHA_ACRESCENTAR='bash sdd/hooks/pre-commit || exit 1'
 # do projeto — relativos a sdd/. Vazio = árvore completa. Fixtures ficam fora (exemplos, apagáveis).
 sdd_faltantes() {
   local rel
-  ( cd "${PKG}/sdd" && find templates bin hooks review patterns playbook.md invariants.md WORKFLOW_CONTRACTS.yaml -type f 2>/dev/null | sort ) | while IFS= read -r rel; do
+  # shellcheck disable=SC2086 # a lista é de palavras fixas (bin/lib/versao.sh), a mesma que o registro cobre
+  ( cd "${PKG}/sdd" && find ${SDD_ENTRADAS_PACOTE} -type f 2>/dev/null | sort ) | while IFS= read -r rel; do
     [ -e "${ROOT}/sdd/${rel}" ] || printf '%s\n' "${rel}"
   done
   [ -f "${ROOT}/sdd/config.yaml" ] || printf 'config.yaml\n'
@@ -666,6 +691,9 @@ planejar() {
 
   if [ "${VERBO}" = "init" ]; then
     if [ ! -d "${ROOT}/sdd" ]; then plano_estado "sdd/ (templates, fixtures, bin, hooks, playbook, config)" novo
+      versao_do_pacote "${PKG}"
+      [ "${VERSAO_PKG}" != "desconhecida" ] && tem_sha256 \
+        && plano_estado "${REGISTRO_REL} (registro da versão ${VERSAO_PKG}: o upgrade o usa para saber o que você editou)" novo
     else
       n_falt=$(sdd_faltantes | grep -c . || true)
       if [ "${n_falt}" = "0" ]; then plano_estado "sdd/ (já existe — não será tocado)" emdia
@@ -675,7 +703,7 @@ planejar() {
     # passa a recusar commits). Alarme alheio nunca é desligado: só a linha para acrescentar a ele.
     HOOKS_ESTADO="$(hooks_estado)"
     case "${HOOKS_ESTADO}" in
-      LIGADO) plano_estado "core.hooksPath = sdd/hooks" emdia ;;
+      LIGADO*) plano_estado "core.hooksPath = sdd/hooks" emdia ;;
       ENCADEADO*) plano_estado "hooks encadeados (${HOOKS_ESTADO#*$'\t'} chama sdd/hooks/pre-commit)" emdia ;;
       LIVRE|HIGIENE) plano_estado "core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez" novo ;;
       OUTRO*)
@@ -715,6 +743,18 @@ planejar() {
   vendor_pedido cursor && declare_alvos_skills ".cursor/skills" plan
   FONTE_SKILLS="${FONTE_SKILLS_SAVE}"
   for v in codex kimi; do vendor_pedido "${v}" && detalhe "= ${v}: nada a gerar ($(vendor_nativo_motivo "${v}"))"; done
+}
+
+# F22: grava o registro com a versão do pacote e a impressão do conteúdo DO PACOTE de cada instalável. Sem versão
+# conhecida ou sem ferramenta de sha256, não grava (o doctor diz por quê); nunca derruba o init por isso.
+registro_do_init() {
+  local imp
+  versao_do_pacote "${PKG}"
+  [ "${VERSAO_PKG}" != "desconhecida" ] || return 0
+  tem_sha256 || return 0
+  imp="$(instalaveis "${PKG}" | impressoes "${PKG}")" || { warn "não consegui calcular as impressões do pacote: o registro de versão não foi gravado"; return 0; }
+  printf '%s\n' "${imp}" | registro_escrever "${ROOT}/${REGISTRO_REL}" "${VERSAO_PKG}" \
+    || die "${falha_escrita} (${REGISTRO_REL})" "verifique permissões e espaço em disco; rode init de novo" 1
 }
 
 aplicar() {
@@ -781,6 +821,9 @@ aplicar() {
           warn "alarme da sdd-higiene-dado migrado: continua ligado, agora pelos hooks do projeto (sdd/hooks). Para desligar: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar"
         fi ;;
     esac
+    # F22: o registro (sdd/open-instalado.txt) só na 1ª instalação. Num projeto que já tinha sdd/, os arquivos podem
+    # ser de outra versão: impressões do pacote novo sobre eles fariam o upgrade tomá-los por edição.
+    if [ "${primeira_vez}" = "1" ]; then registro_do_init; fi
   fi
 
   merge_agents_md "${ROOT}/AGENTS.md" "${CORPO_AGENTS}" || die "${falha_escrita} (AGENTS.md)" "verifique permissões; rode de novo" 1
@@ -804,6 +847,44 @@ aplicar() {
   return 0
 }
 
+# F22: a versão do projeto (registro) e a do pacote numa linha; se saiu versão nova, uma 2ª linha com o caminho. A
+# consulta é do versao-nova.sh DO PACOTE (vale também para projeto instalado antes dele), com teto de 5 s; sem rede
+# é informação (ℹ️), nunca atenção. O exit do doctor não muda em nenhum caso.
+doctor_versao() {
+  local vp vk reg="${ROOT}/${REGISTRO_REL}" linha atual saida rc cmd
+  versao_do_pacote "${PKG}"; vk="${VERSAO_PKG}"
+  vp="$(registro_versao "${reg}")"
+  if [ -n "${vp}" ]; then linha="versão: projeto ${vp} · pacote ${vk}"; atual="${vp}"
+  else
+    linha="versão: projeto sem registro de versão (instalado antes da v2.17.0, ou o registro foi apagado) · pacote ${vk}"
+    [ -f "${reg}" ] && linha="versão: o registro ${REGISTRO_REL} não tem a linha versao: · pacote ${vk}"
+    atual="${vk}"
+  fi
+  if [ "${atual}" = "desconhecida" ]; then
+    info "${linha}"; info "versão nova: não conferida — não sei a versão deste pacote (baixe pela Release ou rode do clone)"; return 0
+  fi
+  if [ ! -f "${PKG}/sdd/bin/versao-nova.sh" ]; then saida="o pacote está sem sdd/bin/versao-nova.sh"; rc=20
+  else saida="$("${BASH}" "${PKG}/sdd/bin/versao-nova.sh" --raiz "${ROOT}" --atual "${atual}" --curto 2>/dev/null)"; rc=$?; fi
+  if [ "${rc}" = 0 ]; then linha="${linha} · última publicada ${saida}"; fi
+  if [ -n "${vp}" ]; then ok "${linha}"
+  else info "${linha} — o 1º upgrade pede --de <a versão que o projeto tem>"
+       tem_sha256 || info "sem sha256sum, shasum nem python3: o registro de versão não pode ser gravado"; fi
+  case "${rc}" in
+    0) : ;;
+    10)
+      if [ -d "${PKG}/.git" ] || [ -f "${PKG}/.git" ]; then
+        cmd="git -C ${PKG} pull, depois bash ${PKG}/bin/sdd-open.sh upgrade --dry-run (mostra o plano sem escrever)"
+      else
+        cmd="baixe o pacote em ${SDD_RELEASES_URL}/tag/${saida}, depois bash <pasta do pacote novo>/bin/sdd-open.sh upgrade --dry-run (mostra o plano sem escrever)"
+      fi
+      warn "saiu a ${saida} (seu projeto está na ${atual%%-*}) — veja como atualizar: ${SDD_RELEASES_URL}/tag/${saida}"
+      printf '→ %s\n' "${cmd}" >&2 ;;
+    30) info "versão nova: checagem desligada (${saida})" ;;
+    *) info "versão nova: não conferida — ${saida:-o script de versão saiu ${rc}} (o resto do diagnóstico vale)" ;;
+  esac
+  return 0
+}
+
 doctor() {
   local v bin st n_falt pyv=ausente
   say "sdd-open doctor — projeto: ${ROOT}"
@@ -811,6 +892,7 @@ doctor() {
   if sdd_python_pronto; then pyv="$(python3 -I -c 'import sys;sys.stdout.write(".".join(map(str,sys.version_info[:2])))' 2>/dev/null)" || pyv=ausente; fi
   printf '  bash %s.%s · git %s · python3 %s\n' "${BASH_VERSINFO[0]}" "${BASH_VERSINFO[1]}" \
     "$(git --version 2>/dev/null | sed 's/git version //')" "${pyv:-ausente}"
+  doctor_versao
   if [ -d "${ROOT}/sdd" ]; then
     n_falt=$(sdd_faltantes | grep -c . || true)
     if [ "${n_falt}" = "0" ]; then ok "sdd/ presente ($(ls "${ROOT}/sdd/features" 2>/dev/null | wc -l | tr -d ' ') feature(s) em sdd/features/)"
@@ -824,6 +906,14 @@ doctor() {
   local he h com
   he="$(hooks_estado)"
   case "${he}" in
+    LIGADO$'\t'*)
+      # F22: o core.hooksPath aponta para o sdd/hooks de outra worktree deste repositório: são aqueles que rodam
+      h="${he#*$'\t'}"
+      if [ -x "${h}/sdd/hooks/pre-commit" ] && [ -x "${h}/sdd/hooks/pre-push" ]; then
+        ok "hooks ligados (pelo sdd/hooks de outra worktree deste repositório: ${h})"
+      else
+        warn "hooks: o core.hooksPath aponta para o sdd/hooks de outra worktree (${h}), e lá falta o pre-commit ou o pre-push com permissão de execução — rode init naquela worktree"
+      fi ;;
     LIGADO)
       if hooks_executaveis; then
         ok "hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene $(git config --get sdd.higieneDado 2>/dev/null || echo off), pre-push)"
@@ -872,23 +962,32 @@ doctor() {
   fi
   # Pacote mais novo que o projeto: init nunca sobrescreve .agents/skills/<skill> nem sdd/bin/*, então
   # quem já instalou continua com a versão velha sem saber. Só aponta; quem apaga é a pessoa.
-  local s vp vq f rel atrasados=0 pkg_skills="${PKG}/.agents/skills"
+  local s vp vq f rel atrasados=0 pkg_skills="${PKG}/.agents/skills" upg mesma=""
+  upg="rode o upgrade (ele copia o que é do pacote e não toca no que você editou)"
+  # F22: projeto já na versão deste pacote (registro): o que difere é edição sua, que o upgrade nunca toca
+  vp="$(registro_versao "${ROOT}/${REGISTRO_REL}")"; versao_do_pacote "${PKG}"
+  if [ -n "${vp}" ] && [ "${VERSAO_PKG}" != "desconhecida" ] \
+     && [ "$(versao_chave "${vp}")" = "$(versao_chave "${VERSAO_PKG}")" ]; then mesma=1; fi
   for s in $(skills_da_fonte "${pkg_skills}"); do
     if [ ! -f "${FONTE_SKILLS}/${s}/SKILL.md" ]; then
       # Projeto atualizado só com sync: a skill nova do pacote não chega (o AGENTS.md já pode apontar para ela).
-      [ -d "${FONTE_SKILLS}" ] && { warn "${s} está no pacote e não no projeto — para receber: rode init (copia o que falta sem tocar o que existe)"; atrasados=$((atrasados + 1)); }
+      [ -d "${FONTE_SKILLS}" ] && { warn "${s} está no pacote e não no projeto — ${upg}"; atrasados=$((atrasados + 1)); }
       continue
     fi
     vq="$(versao_skill "${pkg_skills}/${s}/SKILL.md")"; vp="$(versao_skill "${FONTE_SKILLS}/${s}/SKILL.md")"
     [ -n "${vq}" ] && versao_menor "${vp}" "${vq}" || continue
-    warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — para receber: apague .agents/skills/${s} e rode init (edições suas nela se perdem)"
+    if [ -n "${mesma}" ]; then
+      warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — a skill tem edição sua, que o upgrade não toca: a versão do pacote está em sdd/upgrade/${VERSAO_PKG}/ para mesclar; para voltar à do pacote, apague o arquivo editado e rode o upgrade"
+    else warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — ${upg}"; fi
     atrasados=$((atrasados + 1))
   done
   for f in "${PKG}"/sdd/bin/* "${PKG}"/sdd/bin/adapters/* "${PKG}"/sdd/bin/lib/*; do
     rel="${f#"${PKG}"/sdd/}"
     [ -f "${f}" ] && [ -f "${ROOT}/sdd/${rel}" ] || continue
     cmp -s "${f}" "${ROOT}/sdd/${rel}" && continue
-    warn "sdd/${rel} difere do pacote — se você não editou, apague e rode init"
+    if [ -n "${mesma}" ]; then
+      warn "sdd/${rel} difere do pacote — é edição sua, que o upgrade não toca; para voltar à do pacote, apague o arquivo e rode o upgrade"
+    else warn "sdd/${rel} difere do pacote — ${upg}"; fi
     atrasados=$((atrasados + 1))
   done
   [ "${atrasados}" = "0" ] && ok "skills e sdd/bin/ em dia com o pacote"
@@ -913,8 +1012,182 @@ doctor() {
   fi
 }
 
+# ── upgrade (F22) ──────────────────────────────────────────────────────────────
+# Do pacote NOVO, de dentro do projeto. Classifica cada instalável do MANIFEST.txt novo pela impressão do arquivo do
+# projeto (p), do pacote novo (n) e da instalação anterior (a, do registro ou do pacote de --de):
+#   ausente ⇒ novo (copia) · p = n ⇒ igual · p = a ⇒ intacto (copia) · senão ⇒ editado (nunca tocado: a versão nova
+#   vai para sdd/upgrade/<vN>/<caminho>.novo, com o .diff) · do registro e fora do MANIFEST novo ⇒ saiu (só lista).
+# O registro é regravado por último: uma falha no meio deixa o antigo, e rodar de novo retoma (o copiado vira igual).
+# Nunca roda git add, git commit nem git stash. Os arquivos de trabalho ficam numa pasta própria do TMPDIR (mktemp).
+
+# upgrade_nomes ARQUIVO: um caminho por linha, recuado; até 10 (todos com --verbose), depois "e mais N".
+upgrade_nomes() {
+  local n=0 total f
+  total="$(grep -c . "${1}" 2>/dev/null || true)"
+  while IFS= read -r f; do
+    [ -n "${f}" ] || continue
+    n=$((n + 1))
+    if [ "${VERBOSE}" != "1" ] && [ "${n}" -gt 10 ]; then printf '    e mais %s\n' "$((total - 10))"; break; fi
+    printf '    %s\n' "${f}"
+  done < "${1}"
+}
+
+upgrade() {
+  local reg="${ROOT}/${REGISTRO_REL}" vk vp de_dir="" tmp f d n_igual n_novo n_intacto n_edit n_saiu n_edit_mesclar
+  local bate_ok bate_tot dest_up saida_sync rc_sync
+  local falha="falha ao escrever no projeto — o registro de versão não foi mudado; rode o upgrade de novo, ele retoma do ponto em que parou"
+  { [ -d "${ROOT}/sdd" ] && [ -d "${FONTE_SKILLS}" ]; } \
+    || die "este projeto não tem o SDD Open instalado (falta sdd/ ou .agents/skills/)" \
+           "rode o init primeiro: bash ${PKG}/bin/sdd-open.sh init --vendors <o seu agente>" 64
+  versao_do_pacote "${PKG}"; vk="${VERSAO_PKG}"
+  [ "${vk}" != "desconhecida" ] || die "não sei a versão deste pacote (sem VERSION carimbado, não é um clone e a pasta não se chama sdd-open-vX.Y.Z)" \
+    "baixe o pacote pela Release (${SDD_RELEASES_URL}) ou rode o upgrade do clone (git clone ${SDD_REMOTO_PADRAO})" 64
+  tem_sha256 || die "sem sha256sum, shasum nem python3: não consigo comparar os arquivos" \
+    "instale um deles (o Git Bash já traz o sha256sum) e rode de novo" 64
+  tmp="$(mktemp -d "${TMPDIR:-/tmp}/sdd-upgrade.XXXXXX" 2>/dev/null)" \
+    || die "sem pasta temporária para o upgrade" "confira o TMPDIR e rode de novo; nada foi escrito" 1
+  : > "${tmp}/antigo"
+
+  # 1. a instalação anterior: o pacote de --de (pasta, ou tag do clone), ou o registro
+  if [ -n "${DE_ARG}" ]; then
+    if versao_exata "${DE_ARG}"; then
+      git -C "${PKG}" rev-parse -q --verify "refs/tags/${DE_ARG}" >/dev/null 2>&1 \
+        || die "a tag ${DE_ARG} não existe no clone do pacote (${PKG})" \
+               "rode git -C ${PKG} fetch --tags e tente de novo, ou passe --de com a pasta do pacote antigo; nada foi escrito" 64
+      mkdir "${tmp}/de" && git -C "${PKG}" archive "${DE_ARG}" | tar -x -C "${tmp}/de" \
+        || die "não consegui montar o pacote ${DE_ARG} a partir do clone" "passe --de com a pasta do pacote antigo; nada foi escrito" 1
+      de_dir="${tmp}/de"; vp="${DE_ARG}"
+    elif [ -d "${DE_ARG}" ]; then
+      de_dir="$(cd "${DE_ARG}" && pwd -P)"
+      [ -f "${de_dir}/MANIFEST.txt" ] || die "--de ${DE_ARG} não é um pacote do sdd-open (sem MANIFEST.txt)" \
+        "aponte --de para a pasta do pacote da versão que o projeto tem; nada foi escrito" 64
+      versao_do_pacote "${de_dir}"; vp="${VERSAO_PKG}"
+      [ "${vp}" != "desconhecida" ] || die "não sei a versão do pacote em --de ${DE_ARG} (sem VERSION, não é um clone e a pasta não se chama sdd-open-vX.Y.Z)" \
+        "use a forma tag (--de vX.Y.Z, com o clone do pacote) ou monte a pasta com o nome da versão: git -C ~/sdd-open archive --prefix=sdd-open-vX.Y.Z/ vX.Y.Z | tar -x -C <pasta>; nada foi escrito" 64
+    else
+      die "--de ${DE_ARG}: não é uma pasta nem uma tag vX.Y.Z" \
+        "passe --de com a pasta do pacote antigo ou com a tag da versão que o projeto tem (ex.: --de v2.12.1); nada foi escrito" 64
+    fi
+    instalaveis "${de_dir}" | impressoes "${de_dir}" > "${tmp}/antigo" \
+      || die "não consegui calcular as impressões do pacote em --de" "confira a pasta e rode de novo; nada foi escrito" 1
+  elif vp="$(registro_versao "${reg}")" && [ -n "${vp}" ]; then
+    registro_impressoes "${reg}" > "${tmp}/antigo"
+  else
+    die "este projeto não tem o registro de versão (foi instalado antes da v2.17.0, ou o registro foi apagado); para separar o que é do pacote do que você editou, preciso do pacote da versão que ele tem" \
+      "com o clone do pacote: bash ${PKG}/bin/sdd-open.sh upgrade --de vX.Y.Z (a versão que o projeto tem) · sem o clone: baixe a Release dessa versão (${SDD_RELEASES_URL}), extraia e rode upgrade --de <pasta extraída> · não sabe a versão? veja a mensagem do commit que instalou o SDD Open (git log --reverse --oneline -- sdd/playbook.md | head -1) ou a Release que você baixou; nada foi escrito" 64
+  fi
+  if versao_pacote_menor "${vk}" "${vp}"; then
+    die "este pacote (${vk}) é mais velho que o projeto (${vp})" "rode o upgrade do pacote mais novo: o upgrade não rebaixa; nada foi escrito" 64
+  fi
+
+  # 2. classificação, numa passada só
+  instalaveis "${PKG}" | impressoes "${PKG}" > "${tmp}/novo" \
+    || die "não consegui calcular as impressões deste pacote" "confira o pacote e rode de novo; nada foi escrito" 1
+  cut -c67- "${tmp}/novo" | while IFS= read -r f; do [ -f "${ROOT}/${f}" ] && printf '%s\n' "${f}"; done \
+    | impressoes "${ROOT}" > "${tmp}/proj" \
+    || die "não consegui calcular as impressões dos arquivos do projeto" "confira as permissões de leitura e rode de novo; nada foi escrito" 1
+  awk -v A="${tmp}/antigo" -v N="${tmp}/novo" -v P="${tmp}/proj" -v D="${tmp}" '
+    function ler(arq, m, guarda,   l, k) {
+      while ((getline l < arq) > 0) { k = substr(l, 67); m[k] = substr(l, 1, 64); if (guarda) ordem[++n] = k }
+      close(arq)
+    }
+    BEGIN {
+      ler(A, a, 0); ler(N, nv, 1); ler(P, pj, 0)
+      for (i = 1; i <= n; i++) {
+        f = ordem[i]
+        if (!(f in pj)) c = "novo"; else if (pj[f] == nv[f]) c = "igual"
+        else if ((f in a) && pj[f] == a[f]) c = "intacto"; else c = "editado"
+        print f > (D "/c_" c)
+      }
+      for (f in a) {
+        if (!(f in nv)) print f > (D "/c_saiu_todos")
+        if (f in pj) { tot++; if (pj[f] == a[f]) ok++ }
+      }
+      printf "%d %d\n", ok, tot > (D "/bate")
+    }' || die "não consegui classificar os arquivos" "rode de novo; nada foi escrito" 1
+  for f in igual novo intacto editado saiu_todos; do : >> "${tmp}/c_${f}"; done
+  sort "${tmp}/c_saiu_todos" | while IFS= read -r f; do [ -f "${ROOT}/${f}" ] && printf '%s\n' "${f}"; done > "${tmp}/c_saiu"
+  n_igual="$(grep -c . "${tmp}/c_igual" || true)"; n_novo="$(grep -c . "${tmp}/c_novo" || true)"
+  n_intacto="$(grep -c . "${tmp}/c_intacto" || true)"; n_edit="$(grep -c . "${tmp}/c_editado" || true)"
+  n_saiu="$(grep -c . "${tmp}/c_saiu" || true)"
+  # Mesma versão: o que difere é edição sua sobre o mesmo pacote; não há versão nova para pôr ao lado.
+  if [ "$(versao_chave "${vk}")" = "$(versao_chave "${vp}")" ]; then n_edit_mesclar=0; else n_edit_mesclar="${n_edit}"; fi
+
+  # 3. o plano (U4)
+  say "upgrade ${vp} → ${vk} — plano"
+  printf '= %s iguais ao pacote novo (nada a fazer)\n' "${n_igual}"
+  if [ "${VERBOSE}" = "1" ]; then upgrade_nomes "${tmp}/c_igual"; fi
+  if [ "${n_novo}" != 0 ]; then printf '+ %s novos (copiar)\n' "${n_novo}"; upgrade_nomes "${tmp}/c_novo"; fi
+  if [ "${n_intacto}" != 0 ]; then printf '~ %s do pacote, sem edição sua (atualizar)\n' "${n_intacto}"; upgrade_nomes "${tmp}/c_intacto"; fi
+  if [ "${n_edit}" != 0 ]; then printf '⚠️  %s editados por você — não serão tocados\n' "${n_edit}"; upgrade_nomes "${tmp}/c_editado"; fi
+  if [ "${n_saiu}" != 0 ]; then printf '⚠️  %s saíram do pacote — não serão apagados\n' "${n_saiu}"; upgrade_nomes "${tmp}/c_saiu"; fi
+  if [ ! -f "${reg}" ] || [ -n "${DE_ARG}" ]; then printf '+ %s (registro da versão %s)\n' "${REGISTRO_REL}" "${vk}"; fi
+  if [ -n "${DE_ARG}" ]; then
+    read -r bate_ok bate_tot < "${tmp}/bate"
+    if [ "${bate_tot:-0}" -gt 0 ] && [ $((bate_ok * 2)) -lt "${bate_tot}" ]; then
+      printf '⚠️  a pasta --de (%s) não parece a versão deste projeto: só %s de %s arquivos batem\n' "${vp}" "${bate_ok}" "${bate_tot}"
+    fi
+  fi
+  if [ $((n_novo + n_intacto + n_edit_mesclar)) = 0 ] && [ -f "${reg}" ] && [ -z "${DE_ARG}" ]; then
+    resultado "EM DIA" "nada a fazer: o projeto já tem tudo o que o pacote ${vk} entrega."; return 0
+  fi
+  printf 'Nada que você editou será tocado. Nada será commitado.\n'
+  if [ "${DRY_RUN}" = "1" ]; then resultado "DRY-RUN" "nada foi escrito; rode sem --dry-run para aplicar."; return 0; fi
+  confirmar
+
+  # 4. cópia do que é do pacote e você não editou (cada arquivo por um .sddtmp ao lado e mv: nunca pela metade)
+  cat "${tmp}/c_novo" "${tmp}/c_intacto" | while IFS= read -r f; do
+    [ -n "${f}" ] || continue
+    d="${ROOT}/${f%/*}"
+    { [ -d "${d}" ] || mkdir -p "${d}"; } && cp "${PKG}/${f}" "${ROOT}/${f}.sddtmp" && mv -f "${ROOT}/${f}.sddtmp" "${ROOT}/${f}" \
+      || { printf '🛑 não consegui escrever %s\n' "${f}" >&2; exit 1; }
+  done || die "${falha}" "confira as permissões e o espaço em disco" 1
+  # 5. a versão nova de cada editado, ao lado, para você mesclar quando quiser
+  dest_up="sdd/upgrade/${vk}"
+  if [ "${n_edit_mesclar}" != 0 ]; then
+    while IFS= read -r f; do
+      [ -n "${f}" ] || continue
+      d="${ROOT}/${dest_up}/${f}"
+      { mkdir -p "${d%/*}" && cp "${PKG}/${f}" "${d}.novo"; } || { printf '🛑 não consegui escrever %s.novo\n' "${dest_up}/${f}" >&2; exit 1; }
+      diff -u "${ROOT}/${f}" "${d}.novo" > "${d}.diff"
+      [ $? -le 1 ] || { printf '🛑 o diff de %s falhou\n' "${f}" >&2; exit 1; }
+      if [ -n "${de_dir}" ] && [ -f "${de_dir}/${f}" ]; then
+        diff -u "${de_dir}/${f}" "${PKG}/${f}" > "${d}.pacote.diff"
+        [ $? -le 1 ] || { printf '🛑 o diff de %s falhou\n' "${f}" >&2; exit 1; }
+      fi
+    done < "${tmp}/c_editado" || die "${falha}" "confira as permissões e o espaço em disco" 1
+  fi
+  # 6. por último, o registro
+  registro_escrever "${reg}" "${vk}" < "${tmp}/novo" || die "${falha}" "confira as permissões de ${REGISTRO_REL}" 1
+  ok "copiados: ${n_novo} novo(s) e ${n_intacto} do pacote sem edição sua · registro ${REGISTRO_REL} na ${vk}"
+
+  # 7. adaptadores (sync) e diagnóstico
+  if [ -n "$(config_vendors)" ]; then
+    saida_sync="$("${BASH}" "${PKG}/bin/sdd-open.sh" sync --yes 2>&1)"; rc_sync=$?
+    if [ "${rc_sync}" = 0 ]; then ok "adaptadores regenerados (sync)"; detalhe "${saida_sync}"
+    else printf '%s\n' "${saida_sync}" >&2; warn "o sync saiu ${rc_sync}: rode bash ${PKG}/bin/sdd-open.sh sync e veja o que ele diz"; fi
+  else
+    warn "sem a linha vendors: em sdd/config.yaml, os adaptadores não foram regenerados — rode: bash ${PKG}/bin/sdd-open.sh sync --vendors <o seu agente>"
+  fi
+  doctor
+
+  # 8. fecho (U5)
+  if [ "${n_edit_mesclar}" != 0 ]; then
+    while IFS= read -r f; do
+      [ -n "${f}" ] || continue
+      warn "${f} — editado por você; a versão nova está em ${dest_up}/${f}.novo e o que mudou em ${dest_up}/${f}.diff"
+    done < "${tmp}/c_editado"
+    resultado "ATUALIZADO, ${n_edit_mesclar} PARA MESCLAR" "confira com git status e commite numa frente (o upgrade não commita); os arquivos para mesclar ficam em ${dest_up}/ para quando quiser, e a pasta pode ser apagada depois (não precisa ir para o git)."
+  else
+    resultado "ATUALIZADO" "confira com git status e commite numa frente (o upgrade não commita)."
+  fi
+  return 0
+}
+
 # ── execução ───────────────────────────────────────────────────────────────────
 case "${VERBO}" in
+  upgrade)
+    upgrade; exit $? ;;
   doctor)
     doctor; resultado "DIAGNÓSTICO CONCLUÍDO" "se algum item está ⚠️, a linha diz qual comando resolve."; exit 0 ;;
   sync)
@@ -960,7 +1233,7 @@ if [ "${VERBO}" = "init" ]; then
   doctor
   dica="abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define)."
   # Na branch padrão com remoto, o pre-commit recém-ligado (H6) recusaria o commit da própria instalação.
-  case "$(hooks_estado)" in LIGADO|ENCADEADO*) hooks_ativos=1 ;; *) hooks_ativos=0 ;; esac
+  case "$(hooks_estado)" in LIGADO*|ENCADEADO*) hooks_ativos=1 ;; *) hooks_ativos=0 ;; esac
   if [ "${hooks_ativos}" = 1 ] && na_branch_padrao_com_remoto; then
     dica="leve a instalação para uma branch nova antes de commitar (a branch padrão já tem remoto e o hook recusa commit direto): git switch -c sdd-open-init · depois, ${dica}"
   fi

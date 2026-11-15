@@ -170,22 +170,20 @@ whether the push publishes by itself — and asks a single question. Nothing shi
 
 ## 5. When the package updates
 
+`doctor` tells you when a new version is out (`⚠️ saiu a v… (seu projeto está na v…)`), and so do
+`sdd-new-session` and `sdd-release`, in one sentence that never stops anything. To bring it in:
+
 ```bash
 cd /tmp/sdd-open && git pull
-cd my-project && bash /tmp/sdd-open/bin/sdd-open.sh doctor   # what fell behind the package?
+cd my-project && bash /tmp/sdd-open/bin/sdd-open.sh upgrade --dry-run   # the plan, nothing written
+bash /tmp/sdd-open/bin/sdd-open.sh upgrade                              # applies after your [y/N]
 ```
 
 `init` never overwrites a skill or a `sdd/bin/` script you already have, and `sync` only regenerates
-the adapters — so neither one, alone, brings a new skill version. `doctor` names each skill whose version
-is older than the package's and each `sdd/bin/` file that differs from it. For each skill it names:
-
-```bash
-rm -r .agents/skills/sdd-build                                 # the folder doctor named; your edits in it are lost
-bash /tmp/sdd-open/bin/sdd-open.sh init --vendors codex --yes  # copies the package version back
-bash /tmp/sdd-open/bin/sdd-open.sh sync --yes                  # regenerates the adapters from it
-```
-
-A `sdd/bin/` file goes the same way: delete it (if you did not edit it) and run `init`.
+the adapters — so neither one, alone, brings a new version. `upgrade` copies what belongs to the package and you did
+not edit, leaves the new version of each file you edited next to it (`sdd/upgrade/<version>/`), runs `sync` and
+`doctor`, and commits nothing. Projects installed before v2.17.0 need `--de <the version they have>` once. Details:
+[Upgrading SDD Open](upgrade.md).
 
 `sync` **never** writes inside `sdd/` — your specs, reports, handoffs and playbook are yours.
 Files under `.claude/skills/`, `.cursor/skills/`, `CLAUDE.md` and `GEMINI.md` are generated:

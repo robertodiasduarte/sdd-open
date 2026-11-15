@@ -97,6 +97,7 @@ Works on macOS and Linux, tested in CI on every release; on Windows (Git Bash/WS
 - [Verify Gate contract](docs/verify-gate-contract.md) ([PT](docs/pt-BR/verify-gate-contract.md))
 - [Adaptation guide](docs/adaptation-guide.md) ([PT](docs/pt-BR/adaptation-guide.md)) — config slots, landmines, worktrees
 - [Comparison](docs/comparison.md) ([PT](docs/pt-BR/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
+- [Upgrading](docs/upgrade.md) ([PT](docs/pt-BR/upgrade.md)) — the new-version notice and the `upgrade` verb: what it copies, what it leaves for you to merge, nothing committed
 - [Git hooks](docs/hooks.md) ([PT](docs/pt-BR/hooks.md)) — the pre-commit rules `init` installs, the data-hygiene alarm, the `--no-verify` limit
 - [Chained flow](docs/chained-flow.md) ([PT](docs/pt-BR/chained-flow.md)) — decision classes in every question, `flow.autonomous`, the stop with exit 40 when the agent cannot open a fresh session
 - [LLM in the code](docs/llm-in-code.md) ([PT](docs/pt-BR/llm-in-code.md)) — the process-in-a-loop skill, the prompt router and inventory, the prompt drift scan and the contrast meter.

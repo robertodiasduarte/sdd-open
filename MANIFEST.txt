@@ -181,12 +181,14 @@ MANIFEST.txt
 NOTICE
 README.md
 README.pt-BR.md
+VERSION
 bin/adapters/claude/sdd-avaliador-guard.py
 bin/adapters/claude/sdd-report-guard.py
 bin/lib/merge.sh
 bin/lib/plan.sh
 bin/lib/say.sh
 bin/lib/vendors.sh
+bin/lib/versao.sh
 bin/sdd-open.sh
 docs/adaptation-guide.md
 docs/adversarial-review.md
@@ -210,11 +212,13 @@ docs/pt-BR/quickstart.md
 docs/pt-BR/roadmap.md
 docs/pt-BR/sdd-drive.md
 docs/pt-BR/security.md
+docs/pt-BR/upgrade.md
 docs/pt-BR/verify-gate-contract.md
 docs/quickstart.md
 docs/roadmap.md
 docs/sdd-drive.md
 docs/security.md
+docs/upgrade.md
 docs/verify-gate-contract.md
 scripts/check-versions.py
 scripts/gerar-starter.py
@@ -338,6 +342,7 @@ sdd/bin/skill-lint.py
 sdd/bin/slot.sh
 sdd/bin/test-baseline.sh
 sdd/bin/verify-gate.sh
+sdd/bin/versao-nova.sh
 sdd/config.example.yaml
 sdd/fixtures/BRAINSTORM_EXEMPLO.md
 sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md
@@ -628,6 +633,8 @@ tests/test_f17c_textos.py
 tests/test_f18_f20_textos.py
 tests/test_f19_textos.py
 tests/test_f21_textos.py
+tests/test_f22_upgrade.py
+tests/test_f22_versao.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py

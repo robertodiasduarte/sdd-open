@@ -584,6 +584,10 @@ class ReadmeEInit(Base):
     def test_at010_o_init_nao_copia_scripts(self):
         # o init copia de sdd/ só estas pastas e arquivos (sdd_faltantes) e de .agents/skills; scripts/ nunca
         sh = (RAIZ / "bin/sdd-open.sh").read_text(encoding="utf-8")
-        linha = next(ln for ln in sh.splitlines() if "find templates bin hooks review patterns" in ln)
+        linha = next(ln for ln in sh.splitlines() if "find ${SDD_ENTRADAS_PACOTE}" in ln)
         self.assertIn('cd "${PKG}/sdd"', linha)
-        self.assertNotIn("scripts", linha)
+        # F22: a lista mora em bin/lib/versao.sh, a mesma que o registro de versão cobre
+        lista = next(ln for ln in (RAIZ / "bin/lib/versao.sh").read_text(encoding="utf-8").splitlines()
+                     if ln.startswith("SDD_ENTRADAS_PACOTE="))
+        self.assertIn('"templates bin hooks review patterns', lista)
+        self.assertNotIn("scripts", lista)

@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.10.0"
+  version: "2.10.1"
   updated: "2026-11"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.10.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -186,7 +186,7 @@ Manifest com `*.sql`, pasta `migrations/`, caminho que casa `layers.sql` do conf
 como migration ⇒ leia `references/aplicar-migration.md` e siga-o **antes** do Verify Gate: descobrir
 ferramenta e projeto (nome **e** ref), parar na divergência, rodar a checagem do projeto
 (`bash sdd/bin/slot.sh schema.check_cmd` sobre os `.sql`; `2`, `3` ou `64` ⇒ não aplica; vazio ⇒ pulada e dita),
-uma confirmação só com o SQL inteiro, aplicar, e **provar por leitura**. `exit 0` não prova (LM-004). Sem migration, o passo não existe e
+uma confirmação só com o SQL inteiro, aplicar, e **provar por leitura**: `exit 0` não prova que ela está no banco. Sem migration, o passo não existe e
 não se fala de banco.
 
 ### 5. Validação
@@ -296,7 +296,7 @@ uma vez, numa tabela com o motivo; sem nenhum, `nenhum`).
   comando na 1ª linha pode, e o `report-lint.py` reprova o critério sem ele.
 - **Correção é redispatch fresco, não resposta na mesma conversa** — na 2ª falha, o contexto que errou
   carrega a hipótese errada; recomeçar só com o critério e o erro quebra o ciclo.
-- **Migration provada por leitura** — `exit 0` não prova que a coluna está no banco certo (LM-004), e o
+- **Migration provada por leitura** — `exit 0` não prova que a coluna está no banco certo, e o
   código iria para produção chamando o que não existe.
 - **Prompt fora do inventário para o build e pergunta** — texto de produção improvisado escapa do
   contrato que o Design fechou e de toda revisão.

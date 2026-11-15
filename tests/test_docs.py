@@ -6,7 +6,7 @@ Lê direto da raiz (sem rede, sem sandbox). Sete grupos:
   Guia            — docs/pt-BR/guia-do-aluno.md cobre as 20 skills, os 7 agentes e a instalação do open,
                     sem as premissas do sdd-starter (npx, 15 skills, sdd/ fora do git…);
   Quickstart      — a regra do método, "valide antes de seguir" por fase, a tabela "onde roda" no passo 4
-                    e a atualização pelo doctor + init no passo 5;
+                    e a atualização pelo doctor + upgrade no passo 5;
   Roadmap         — os temas planejados e "Specs como deltas" em avaliação, sem data;
   Comparison      — "Specs como deltas" continua ❌ em avaliação na coluna do SDD Open;
   ReadmeEAgents   — README e AGENTS.md.tmpl citam as 20 skills, a KB e o OK único;
@@ -239,8 +239,10 @@ class Guia(unittest.TestCase):
         for termo in ("init --vendors", "--yes", "python3", "doctor", "sdd-open/releases/latest"):
             with self.subTest(termo=termo):
                 self.assertIn(termo, self.texto)
-        self.assertTrue(any("apague" in ln.lower() and "init" in ln for ln in self.texto.splitlines()),
-                        "o guia não diz como receber uma skill nova: apagar a pasta e rodar init")
+        # F22: a versão nova chega pelo upgrade (o caminho de apagar a pasta e rodar o init saiu)
+        self.assertIn("upgrade --dry-run", self.texto)
+        self.assertIn("não commita nada", self.texto)
+        self.assertNotIn("rode o `init` de novo com `--yes`: ele copia de volta", self.texto)
 
     def test_sem_as_premissas_do_starter(self):
         achados = [t for t in PROIBIDO_NO_GUIA if t in self.texto] + afirma_sdd_fora_do_git(self.texto)
@@ -274,7 +276,8 @@ class Quickstart(unittest.TestCase):
                 self.assertIn(cabecalho, passo4)
                 self.assertEqual([a for a in AGENTES if a not in passo4], [], "agentes fora do passo 4")
                 self.assertIn("doctor", passo5)
-                self.assertIn("init", passo5)
+                self.assertIn("upgrade --dry-run", passo5)   # F22: a atualização é pelo upgrade
+                self.assertNotIn("rm -r .agents/skills", passo5)
                 self.assertNotIn("Lovable", texto)
 
 

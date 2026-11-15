@@ -258,7 +258,9 @@ class Projeto(Sandbox):
         rc, out = self.cli("doctor")
         self.assertEqual(rc, 0, out)
         self.assertIn("sdd-build 1.0.0 no projeto, " + pacote + " no pacote", out)
-        self.assertIn("apague .agents/skills/sdd-build e rode init", out)
+        # F22: o caminho é o upgrade; com o projeto já na versão do pacote (registro), é edição sua
+        self.assertRegex(out, r"sdd-build 1\.0\.0 no projeto, \S+ no pacote — (rode o upgrade|a skill tem edição sua)")
+        self.assertNotIn("rode init", out.split("sdd-build 1.0.0 no projeto", 1)[1].split("\n", 1)[0])
         self.assertNotIn("em dia com o pacote", out)
         self.assertResultado(out)
 
@@ -267,7 +269,7 @@ class Projeto(Sandbox):
         lint.write_text(lint.read_text(encoding="utf-8") + "# editado\n", encoding="utf-8")
         rc, out = self.cli("doctor")
         self.assertEqual(rc, 0, out)
-        self.assertIn("sdd/bin/report-lint.py difere do pacote — se você não editou, apague e rode init", out)
+        self.assertRegex(out, r"sdd/bin/report\-lint\.py difere do pacote — (rode o upgrade|é edição sua)")
         self.assertResultado(out)
 
     def test_init_copia_review_e_adapters_e_nunca_sobrescreve(self):
@@ -295,7 +297,7 @@ class Projeto(Sandbox):
         ad.write_text(ad.read_text(encoding="utf-8") + "# editado\n", encoding="utf-8")
         rc, out = self.cli("doctor")
         self.assertEqual(rc, 0, out)
-        self.assertIn("sdd/bin/adapters/claude.sh difere do pacote — se você não editou, apague e rode init", out)
+        self.assertRegex(out, r"sdd/bin/adapters/claude\.sh difere do pacote — (rode o upgrade|é edição sua)")
 
     def test_doctor_avisa_lib_diferente_do_pacote(self):
         # F16, pequeno da ficha (corrigido na F18/F20): o laço de deriva não olhava sdd/bin/lib/
@@ -303,7 +305,7 @@ class Projeto(Sandbox):
         lib.write_text(lib.read_text(encoding="utf-8") + "# editado\n", encoding="utf-8")
         rc, out = self.cli("doctor")
         self.assertEqual(rc, 0, out)
-        self.assertIn("sdd/bin/lib/python.sh difere do pacote — se você não editou, apague e rode init", out)
+        self.assertRegex(out, r"sdd/bin/lib/python\.sh difere do pacote — (rode o upgrade|é edição sua)")
 
     def test_doctor_diz_o_motivo_do_python_uma_vez(self):
         # F16, rodada 4, R4 (corrigido na F18/F20): dentro de $(…) o "dito uma vez" se perdia e o aviso repetia
@@ -745,7 +747,7 @@ class RaioDeImpactoSeguranca(Sandbox):
         shutil.rmtree(p / ".agents/skills/sdd-seguranca")
         rc, out, err = self.roda([BASH, CLI, "doctor"], p)
         self.assertEqual(rc, 0, out + err)
-        self.assertIn("sdd-seguranca está no pacote e não no projeto — para receber: rode init", out + err)
+        self.assertIn("sdd-seguranca está no pacote e não no projeto — rode o upgrade", out + err)   # F22
 
 
 if __name__ == "__main__":

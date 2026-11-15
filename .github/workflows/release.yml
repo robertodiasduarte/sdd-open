@@ -124,6 +124,8 @@ jobs:
           exit $fail
 
       - name: Unit tests
+        env:
+          SDD_OPEN_CHECK_UPDATES: '0'   # F22: 2ª trava (a 1ª é o tests/apoio.py): a suíte nunca consulta a rede
         run: python3 -B -m unittest discover -s tests -p 'test_*.py'
 
       # Fail-closed: a skill that changed without bumping metadata.version does not become a
@@ -181,6 +183,7 @@ jobs:
       - name: Unit tests on the floor (/usr/bin/python3, SDD_TEST_BASH=/bin/bash)
         env:
           SDD_TEST_BASH: /bin/bash
+          SDD_OPEN_CHECK_UPDATES: '0'   # F22: 2ª trava (a 1ª é o tests/apoio.py): a suíte nunca consulta a rede
         run: /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
 
   # F16: o caso real do aluno no Windows é o Git Bash com o Python nativo (o WSL é Linux por dentro, e o
@@ -239,6 +242,7 @@ jobs:
       - name: Unit tests by module (slice ${{ matrix.fatia }}/16, Git Bash + native Python)
         env:
           PYTHONUNBUFFERED: '1'
+          SDD_OPEN_CHECK_UPDATES: '0'   # F22: 2ª trava (a 1ª é o tests/apoio.py): a suíte nunca consulta a rede
         run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/16" --teto-unidade 600 --saida "$RUNNER_TEMP/tpm"
 
       - name: Keep the output of each module
@@ -278,7 +282,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist
+          # F22: o VERSION do pacote é carimbado pelo git archive (export-subst, %(describe:tags=true)): a tag precisa
+          # existir AQUI antes do archive. Tag local, leve; quem a publica continua sendo o passo "Publish release".
+          git rev-parse -q --verify "refs/tags/$TAG" >/dev/null || git tag "$TAG" "$GITHUB_SHA"
           git archive --format=tar.gz --prefix="sdd-open-$TAG/" -o "dist/sdd-open-$TAG.tar.gz" "$GITHUB_SHA"
+          carimbo="$(tar -xzOf "dist/sdd-open-$TAG.tar.gz" "sdd-open-$TAG/VERSION" | tr -d '\r\n')"
+          [ "$carimbo" = "$TAG" ] || { echo "::error::VERSION do pacote saiu '$carimbo', esperado '$TAG'"; exit 1; }
           cd dist && sha256sum "sdd-open-$TAG.tar.gz" > SHA256SUMS.txt && cat SHA256SUMS.txt
 
       # A tag push and a main push can carry the same commit; the second run finds the Release

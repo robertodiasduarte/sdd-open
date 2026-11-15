@@ -20,6 +20,9 @@ say() { printf '▶ %s\n' "${1}"; }
 # Sucesso de um passo.
 ok() { printf '✅ %s\n' "${1}"; }
 
+# Informação: nada a fazer, mas vale saber (ex.: a versão nova não pôde ser conferida). Nunca no lugar de um ⚠️.
+info() { printf 'ℹ️  %s\n' "${1}"; }
+
 # Atenção que NÃO bloqueia.
 warn() { printf '⚠️  %s\n' "${1}" >&2; }
 

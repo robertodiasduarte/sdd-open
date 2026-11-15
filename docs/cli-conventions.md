@@ -11,6 +11,7 @@ de tela, pipes, terminais sem cor e o Git Bash do Windows leem o mesmo que você
 | `▶` | ação | algo está sendo feito agora | `▶ init — plano` |
 | `✅` | sucesso | um passo terminou bem | `✅ .agents/skills/ com 9 skill(s) sdd-*` |
 | `⚠️` | atenção | algo merece olhar, **não bloqueia** | `⚠️ gemini: adaptador incompleto — rode sync --vendors gemini` |
+| `ℹ️` | informação | vale saber, nada a fazer; nunca no lugar de um `⚠️` | `ℹ️ versão nova: não conferida — sem resposta em 5 s (o resto do diagnóstico vale)` |
 | `🛑` | bloqueio | parou; a linha diz a causa | `🛑 este comando precisa de um repositório git` |
 | `→` | próximo passo | o que fazer agora | `→ rode 'git init' aqui, ou entre na pasta do seu projeto` |
 | `+` `~` `=` | plano | criar · atualizar · já correto | `+ AGENTS.md (novo)` |
@@ -22,7 +23,7 @@ RESULTADO: <PALAVRA>
 → <o que fazer agora>
 ```
 
-Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `EM DIA` · `DIVERGENTE (n)` · `DRY-RUN` ·
+Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `ATUALIZADO` · `ATUALIZADO, N PARA MESCLAR` (sdd-open.sh upgrade; ver [upgrade.md](pt-BR/upgrade.md)) · `EM DIA` · `DIVERGENTE (n)` · `DRY-RUN` ·
 `CANCELADO` · `DIAGNÓSTICO CONCLUÍDO` · `ERRO` (sdd-open.sh) · `VERDE` · `VERMELHO` · `INCONCLUSIVO` ·
 `ASSINATURA HUMANA` · `CLARIFICAR` · `SPEC INVÁLIDA` (verify-gate.sh, report-lint.py) · `PULADO` ·
 `ERRO DE USO` (gate-baseline.sh, gate-shell-evidencia.sh, avaliador-guard.sh, test-baseline.sh) ·
@@ -56,7 +57,8 @@ RESULTADO: ERRO
 | Script | Códigos |
 |---|---|
 | `verify-gate.sh` (`--checar`: só `0`, `5` e `64`, sem rodar o `cmd`) | `0` verde · `2` vermelho · `3` inconclusivo · `4` assinatura humana · `5` clarificar (marcador ativo, ou linha `Governança` sem valor final — GOVERNANÇA NÃO REVISADA) · `64` spec inválida — `--strict` remapeia 3/4/5 → `1` |
-| `sdd-open.sh` | `0` ok/ajuda/cancelado/dry-run · `1` divergente ou sem permissão · `64` uso/pré-condição · `65` marcadores do AGENTS.md · `66` JSON inválido |
+| `sdd-open.sh` | `0` ok/ajuda/cancelado/dry-run · `1` divergente ou sem permissão · `64` uso/pré-condição · `65` marcadores do AGENTS.md · `66` JSON inválido · `upgrade`: `0` atualizado, em dia, dry-run ou cancelado · `1` falha de escrita (rode de novo, ele retoma) · `64` sem registro e sem `--de`, `--de` que não é pacote, pacote mais velho que o projeto ou de versão desconhecida |
+| `versao-nova.sh` | `0` em dia · `10` saiu versão nova · `20` não conferida (sem rede, recusa, teto de 5 s, nenhuma versão, projeto sem registro) · `30` checagem desligada · `64` uso — nunca bloqueia quem chama |
 | `playbook-lint.sh` | `0` ok · `1` zero hits / colapso · `2` formato inválido · `64` uso |
 | `skill-lint.py` · `report-lint.py` · `design-lint.py` · `handoff-lint.py` · `kb-dominios.py` | `0` ok · `1` violações · `64` uso (no `skill-lint.py`, também opção desconhecida; `--conversa` liga a conferência da camada de conversa; no `report-lint.py`, `--pendente` sai `1` quando acha `avaliador: PENDENTE`) |
 | `gate-baseline.sh` | `0` a base reprovou avaliando · `2` a base passou (sem dentes) · `3` inconclusivo · `64` uso |

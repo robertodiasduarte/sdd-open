@@ -98,6 +98,7 @@ Funciona em macOS e Linux, testado no CI a cada release; no Windows (Git Bash/WS
 - [Contrato do Verify Gate](docs/pt-BR/verify-gate-contract.md) ([EN](docs/verify-gate-contract.md))
 - [Guia de adaptação](docs/pt-BR/adaptation-guide.md) ([EN](docs/adaptation-guide.md)) — slots do config, landmines, worktrees
 - [Comparativo](docs/pt-BR/comparison.md) ([EN](docs/comparison.md)) — Spec-Kit, OpenSpec, BMAD, Kiro, Tessl
+- [Atualizar](docs/pt-BR/upgrade.md) ([EN](docs/upgrade.md)) — o aviso de versão nova e o verbo `upgrade`: o que ele copia, o que deixa para você mesclar, nada commitado
 - [Hooks de git](docs/pt-BR/hooks.md) ([EN](docs/hooks.md)) — as regras do pre-commit que o `init` instala, o alarme de higiene de dado, o limite do `--no-verify`
 - [Fluxo encadeado](docs/pt-BR/chained-flow.md) ([EN](docs/chained-flow.md)) — a classe da decisão em toda pergunta, o `flow.autonomous`, a parada com exit 40 quando o agente não abre uma sessão nova sozinho
 - [LLM no código](docs/pt-BR/llm-in-code.md) ([EN](docs/llm-in-code.md)) — a skill de processo em laço, o roteador e o inventário de prompts, o fiscal de prompt e o medidor de contraste.

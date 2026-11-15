@@ -132,7 +132,8 @@ class Passo17b(unittest.TestCase):
     def test_exemplos_no_como_falar(self):
         i = COMO_FALAR.index("## Exemplo — a curadoria")
         ex = COMO_FALAR[i:]
-        for trecho in ("**Decidi sozinho**", "[D3 · muda a regra do método]", "[D1 · não se desfaz]", "(ref: LM-023)", "(ref: LM-004)",
+        for trecho in ("**Decidi sozinho**", "[D3 · muda a regra do método]", "[D1 · não se desfaz]", "(ref: o candidato do relatório do build)",
+                       "(ref: a lição da migration que sai `exit 0` sem estar no banco)",   # F22: a regra pelo texto, sem LM-nnn
                        "**aceitar** (recomendado)", "**não sei**", "A publicação não foi afetada", "esta feature não trouxe lição nova nem contagem",
                        "**uma opção só**"):
             with self.subTest(trecho=trecho):
@@ -322,7 +323,7 @@ class Pacote(unittest.TestCase):
                 self.assertTrue((RAIZ / "tests" / ("test_%s.py" % nome)).is_file())
 
     def test_versoes_e_linha_de_identificacao(self):
-        for skill, versao in (("sdd-playbook", "2.2.0"), ("sdd-release", "2.12.1"), ("sdd-new-session", "1.6.1"),
+        for skill, versao in (("sdd-playbook", "2.2.0"), ("sdd-release", "2.13.0"), ("sdd-new-session", "1.7.0"),
                               ("sdd-handoff", "2.2.1"), ("sdd-define", "2.7.0")):
             texto = ler(".agents/skills/%s/SKILL.md" % skill)
             with self.subTest(skill=skill):

@@ -6,3 +6,6 @@
 # O teste compara o SHA-256 do lint e do molde com os do pacote de origem: o fim de linha não pode mudar no checkout.
 .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py -text
 .agents/skills/sdd-engenharia-reversa-saas/assets/ENGENHARIA_REVERSA_TEMPLATE.md -text
+# F22: o git archive escreve no VERSION a tag da versão (export-subst); no clone ele fica com o texto $Format, e a
+# versão vem do git describe (bin/lib/versao.sh).
+VERSION export-subst

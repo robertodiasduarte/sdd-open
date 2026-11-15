@@ -33,7 +33,7 @@ def bloco_do_ok() -> str:
 
 class SddRelease(unittest.TestCase):
     def test_versao(self):
-        self.assertEqual(versao(RELEASE), "2.12.1")   # F17b: modo iniciante
+        self.assertEqual(versao(RELEASE), "2.13.0")   # F17b: modo iniciante; F22: aviso de versão na FASE 0
 
     def test_item_7_roda_o_script(self):
         item = ler(RELEASE).split("7. **PARAR e mostrar (o 1 OK)", 1)[1].split("```markdown", 1)[0]
@@ -72,13 +72,15 @@ class SddRelease(unittest.TestCase):
 
 class SddBuild(unittest.TestCase):
     def test_versao(self):
-        self.assertEqual(versao(BUILD), "2.10.0")
+        self.assertEqual(versao(BUILD), "2.10.1")
 
     def test_passo_4b_manda_ler_a_referencia(self):
         passo = ler(BUILD).split("### 4b. Migration", 1)[1].split("### 5.", 1)[0]
         self.assertIn("references/aplicar-migration.md", passo)
         self.assertIn("**antes** do Verify Gate", passo)
-        self.assertIn("LM-004", passo)
+        # F22: a regra pelo texto, não pelo LM-nnn (o número só vale no playbook que o nomeou)
+        self.assertIn("`exit 0` não prova que ela está no banco", passo)
+        self.assertNotIn("LM-004", passo)
 
     def test_referencia_tem_as_regras_do_starter(self):
         texto = ler(REFERENCIA)

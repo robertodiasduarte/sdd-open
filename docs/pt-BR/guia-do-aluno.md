@@ -86,16 +86,19 @@ pasta **não** está dentro do iCloud, OneDrive, Dropbox ou Google Drive (eles c
 git); depois rode `git init -b main`, que só cria o git vazio — nada é salvo ainda — e repita o
 `init`. A `sdd-iniciar-repo` cuida do resto (seção 6).
 
-**Quando sair versão nova:**
+**Quando sair versão nova:** o `doctor`, a `sdd-new-session` (ao abrir uma frente) e a `sdd-release` avisam numa
+frase, sem parar nada: "Saiu a versão v2.18.0 do SDD Open (este projeto está na v2.17.0)". Para atualizar, quando quiser:
 1. `git pull` dentro da pasta `~/sdd-open`;
-2. `bash ~/sdd-open/bin/sdd-open.sh doctor` na pasta do projeto — ele aponta cada skill com versão
-   mais velha que a do pacote que você baixou e cada arquivo de `sdd/bin/` diferente dele (por isso o
-   `git pull` vem antes);
-3. para cada skill apontada, apague a pasta dela em `.agents/skills/` (edições que você fez nela se
-   perdem); para cada arquivo de `sdd/bin/` apontado, apague o arquivo, se você não o editou;
-4. rode o `init` de novo com `--yes`: ele copia de volta o que você apagou e atualiza o trecho do
-   SDD Open no `AGENTS.md` (o resto do arquivo não é tocado);
-5. `bash ~/sdd-open/bin/sdd-open.sh sync --yes`, que regenera as cópias de cada agente.
+2. `bash ~/sdd-open/bin/sdd-open.sh upgrade --dry-run` na pasta do projeto — mostra o plano sem escrever nada: o que
+   é igual, o que é novo, o que é do pacote sem edição sua (será atualizado) e o que você editou (não será tocado);
+3. `bash ~/sdd-open/bin/sdd-open.sh upgrade` — mostra o plano de novo e pergunta `[y/N]`. Ele copia o que é do pacote,
+   deixa a versão nova de cada arquivo que você editou em `sdd/upgrade/<versão>/` para você mesclar quando quiser,
+   roda o `sync` e o `doctor`, e **não commita nada**;
+4. confira com `git status` e commite numa frente.
+
+Projeto instalado antes da v2.17.0 não tem o registro de versão (`sdd/open-instalado.txt`): na 1ª vez, o `upgrade`
+pede `--de <a versão que o projeto tem>`, e a mensagem dele traz os comandos. Se um arquivo que você editou deve voltar
+a ser o do pacote, apague-o e rode o `upgrade` de novo. Passo a passo: [Atualizar o SDD Open](upgrade.md).
 
 O `sync` sozinho não traz versão nova: ele só copia o que já está em `.agents/skills/`.
 
@@ -644,7 +647,7 @@ As skills já tratam os casos abaixo. O que você precisa saber é só como reag
 | **Verify Gate devolveu `2`, `3`, `4`, `5` ou `64`** | Veja a tabela da seção 3: `2` a skill corrige; `3` falta uma ferramenta; `4` precisa da sua assinatura; `5` volte ao Define e responda a dúvida, ou, se a mensagem diz GOVERNANÇA NÃO REVISADA, peça para rodar só os passos 11 (Governança) e 12 (Segurança) do `sdd-define` ([contexto e governança](context-and-governance.md)); `64` volte ao Define. |
 | **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certificado, ou é uma planilha nova. Escolha: **corrigir** (tirar o arquivo desta versão ou pô-lo na lista do que fica de fora), **dado fictício** (ela troca o número por um inválido e salva) ou **gravar mesmo assim** (só se você conferiu que pode sair do computador). |
 | **Release não publicou** | Teste falhou, há segredo no que ia subir, ou a base está desatualizada. A skill diz qual. Corrija na frente e peça a release de novo. |
-| **O `doctor` diz que uma skill está mais velha que o pacote, ou que um arquivo de `sdd/bin/` difere dele** | Apague a pasta da skill em `.agents/skills/` (ou o arquivo de `sdd/bin/`, se você não o editou) e rode o `init` de novo com `--yes`; depois, `sync --yes` (seção 2, "Quando sair versão nova"). |
+| **O `doctor` diz que uma skill está mais velha que o pacote, ou que um arquivo de `sdd/bin/` difere dele** | Rode o `upgrade` do pacote (seção 2, "Quando sair versão nova"): ele copia o que é do pacote e deixa ao lado o que você editou. Se o `doctor` diz que é edição sua e você quer a do pacote, apague o arquivo e rode o `upgrade` de novo. |
 | **A skill respondeu sem Status nem opções** | A skill pode não ter carregado, ou a versão é antiga. Confira a linha de identificação e rode o `doctor`. |
 | **"Não reconheço este erro"** | Peça a `sdd-checar-ambiente` e, se persistir, copie a resposta e peça ajuda a quem conhece git. |
 | **Perdi a conversa** | Abra o agente na pasta da frente e cole o último prompt de retomada. Se não tiver, peça: *"leia sdd/handoffs/HANDOFF_NOME.md e me diga onde paramos"*. |
@@ -740,8 +743,8 @@ rode a `sdd-checar-ambiente` e cole a resposta para quem puder ajudar.
 
 **Como sei que as skills estão atualizadas?**
 A linha de identificação da primeira resposta traz a versão da skill no seu projeto e o link da mais
-nova publicada. O `doctor` compara o projeto com o pacote que você baixou — por isso, rode `git pull`
-na pasta `~/sdd-open` antes dele (seção 2, "Quando sair versão nova").
+nova publicada. O `doctor` diz a versão do projeto, a do pacote e a última publicada, e avisa quando sai uma maior
+(seção 2, "Quando sair versão nova").
 
 **Eu já uso o sdd-starter. E agora?**
 Os nomes das skills coincidem de propósito: use **um ou outro** por projeto. O `doctor` só olha dentro

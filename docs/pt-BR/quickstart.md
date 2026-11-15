@@ -170,23 +170,20 @@ sobe e se o push publica sozinho — e faz uma pergunta só. Nada é publicado s
 
 ## 5. Quando o pacote atualizar
 
+O `doctor` avisa quando sai versão nova (`⚠️ saiu a v… (seu projeto está na v…)`), e a `sdd-new-session` e a
+`sdd-release` também, numa frase que não para nada. Para trazê-la:
+
 ```bash
 cd /tmp/sdd-open && git pull
-cd meu-projeto && bash /tmp/sdd-open/bin/sdd-open.sh doctor   # o que ficou para trás do pacote?
+cd meu-projeto && bash /tmp/sdd-open/bin/sdd-open.sh upgrade --dry-run   # o plano, sem escrever nada
+bash /tmp/sdd-open/bin/sdd-open.sh upgrade                               # aplica depois do seu [y/N]
 ```
 
 O `init` nunca sobrescreve uma skill nem um script de `sdd/bin/` que você já tem, e o `sync` só
-regenera os adaptadores — então nenhum dos dois, sozinho, traz a versão nova de uma skill. O `doctor`
-aponta cada skill com versão mais velha que a do pacote e cada arquivo de `sdd/bin/` diferente dele.
-Para cada skill apontada:
-
-```bash
-rm -r .agents/skills/sdd-build                                 # a pasta que o doctor apontou; edições suas nela se perdem
-bash /tmp/sdd-open/bin/sdd-open.sh init --vendors codex --yes  # copia de volta a versão do pacote
-bash /tmp/sdd-open/bin/sdd-open.sh sync --yes                  # regenera os adaptadores a partir dela
-```
-
-Um arquivo de `sdd/bin/` segue o mesmo caminho: apague-o (se você não o editou) e rode o `init`.
+regenera os adaptadores — então nenhum dos dois, sozinho, traz a versão nova. O `upgrade` copia o que é do pacote e
+você não editou, deixa a versão nova de cada arquivo que você editou ao lado dele (`sdd/upgrade/<versão>/`), roda o
+`sync` e o `doctor`, e não commita nada. Projeto instalado antes da v2.17.0 precisa de `--de <a versão que ele tem>`
+uma vez. Detalhes: [Atualizar o SDD Open](upgrade.md).
 
 `sync` **nunca** escreve em `sdd/` — suas specs, relatórios, fichas e playbook são seus.
 Arquivos em `.claude/skills/`, `.cursor/skills/`, `CLAUDE.md` e `GEMINI.md` são gerados: edite
