@@ -285,7 +285,9 @@ class AvisoNoDoctor(Pacotes):
         self.assertEqual(rc, 0, out)
         self.assertIn("ℹ️  versão: projeto sem registro de versão (instalado antes da v2.17.0, ou o registro foi "
                       "apagado) · pacote v9.8.7 — o 1º upgrade pede --de <a versão que o projeto tem>", out)
-        self.assertIn("saiu a v9.9.0 (seu projeto está na v9.8.7)", out)
+        # sem registro, não afirma a versão do projeto (revisão do código, rodada 2, R2)
+        self.assertIn("saiu a v9.9.0 (este pacote está na v9.8.7; a versão do projeto não está registrada)", out)
+        self.assertNotIn("seu projeto está na", out)
 
     def test_avisos_antigos_apontam_o_upgrade(self):
         alvo = self.p / "sdd/bin/report-lint.py"

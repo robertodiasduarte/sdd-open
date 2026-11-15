@@ -100,6 +100,15 @@ for l in sys.stdin.buffer.read().decode("utf-8").split("\n"):
   fi | registro_normaliza
 }
 
+# sha256_entrada → stdin: o conteúdo · stdout: só o sha256 (64 hex). Para a 2ª impressão, sem o \r, de poucos arquivos.
+sha256_entrada() {
+  if command -v sha256sum >/dev/null 2>&1; then sha256sum | cut -c1-64
+  elif command -v shasum >/dev/null 2>&1; then shasum -a 256 | cut -c1-64
+  elif command -v python3 >/dev/null 2>&1; then
+    python3 -I -c 'import hashlib,sys; sys.stdout.write(hashlib.sha256(sys.stdin.buffer.read()).hexdigest() + "\n")'
+  else return 2; fi
+}
+
 # registro_normaliza → stdin: linhas "<sha> <marca><caminho>" (marca " " ou "*") · stdout: "<sha>  <caminho>".
 registro_normaliza() { sed 's/^\([0-9a-f]\{64\}\) [ *]/\1  /'; }
 

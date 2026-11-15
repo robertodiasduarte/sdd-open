@@ -878,7 +878,12 @@ doctor_versao() {
       else
         cmd="baixe o pacote em ${SDD_RELEASES_URL}/tag/${saida}, depois bash <pasta do pacote novo>/bin/sdd-open.sh upgrade --dry-run (mostra o plano sem escrever)"
       fi
-      warn "saiu a ${saida} (seu projeto está na ${atual%%-*}) — veja como atualizar: ${SDD_RELEASES_URL}/tag/${saida}"
+      # sem registro, a versão do projeto não é conhecida: compara com a do pacote e diz isso (revisão, rodada 2, R2)
+      if [ -n "${vp}" ]; then
+        warn "saiu a ${saida} (seu projeto está na ${atual%%-*}) — veja como atualizar: ${SDD_RELEASES_URL}/tag/${saida}"
+      else
+        warn "saiu a ${saida} (este pacote está na ${atual%%-*}; a versão do projeto não está registrada) — veja como atualizar: ${SDD_RELEASES_URL}/tag/${saida}"
+      fi
       printf '→ %s\n' "${cmd}" >&2 ;;
     30) info "versão nova: checagem desligada (${saida})" ;;
     *) info "versão nova: não conferida — ${saida:-o script de versão saiu ${rc}} (o resto do diagnóstico vale)" ;;
@@ -1090,6 +1095,23 @@ upgrade() {
   cut -c67- "${tmp}/novo" | while IFS= read -r f; do if [ -f "${ROOT}/${f}" ]; then printf '%s\n' "${f}"; fi; done \
     | impressoes "${ROOT}" > "${tmp}/proj" \
     || die "não consegui calcular as impressões dos arquivos do projeto" "confira as permissões de leitura e rode de novo; nada foi escrito" 1
+  # Fim de linha: num checkout com core.autocrlf=true (o padrão do Git para Windows) num projeto sem eol=lf, o arquivo
+  # vem com CRLF e a impressão não bate com nada. Para esses (poucos), uma 2ª impressão sem o \r decide: se bate com o
+  # pacote, não é edição. Arquivo LF tem a mesma impressão nas duas; edição de verdade continua editada.
+  awk -v A="${tmp}/antigo" -v N="${tmp}/novo" -v P="${tmp}/proj" '
+    function ler(arq, m,   l) { while ((getline l < arq) > 0) m[substr(l, 67)] = substr(l, 1, 64); close(arq) }
+    BEGIN { ler(A, a); ler(N, nv); ler(P, pj)
+            for (f in pj) if (pj[f] != nv[f] && !((f in a) && pj[f] == a[f])) print f }' > "${tmp}/suspeitos" \
+    || die "não consegui classificar os arquivos" "rode de novo; nada foi escrito" 1
+  if [ -s "${tmp}/suspeitos" ]; then
+    while IFS= read -r f; do
+      if h="$(tr -d '\r' < "${ROOT}/${f}" | sha256_entrada)"; then printf '%s  %s\n' "${h}" "${f}"; fi
+    done < "${tmp}/suspeitos" > "${tmp}/sem_cr"
+    awk 'FILENAME == ARGV[1] { s[substr($0, 67)] = substr($0, 1, 64); next }
+         { k = substr($0, 67); if (k in s) print s[k] "  " k; else print }' "${tmp}/sem_cr" "${tmp}/proj" > "${tmp}/proj2" \
+      && mv -f "${tmp}/proj2" "${tmp}/proj" \
+      || die "não consegui classificar os arquivos" "rode de novo; nada foi escrito" 1
+  fi
   awk -v A="${tmp}/antigo" -v N="${tmp}/novo" -v P="${tmp}/proj" -v D="${tmp}" '
     function ler(arq, m, guarda,   l, k) {
       while ((getline l < arq) > 0) { k = substr(l, 67); m[k] = substr(l, 1, 64); if (guarda) ordem[++n] = k }

@@ -209,6 +209,18 @@ class ComRegistro(Base):
         self.assertIn("o registro de versão não foi mudado; rode o upgrade de novo, ele retoma", out)
         self.assertEqual((self.p / "sdd/open-instalado.txt").read_bytes(), reg_antes)
 
+    def test_checkout_com_crlf_nao_vira_edicao(self):
+        # revisão do código, rodada 2, R1: core.autocrlf=true num projeto sem eol=lf traz o arquivo com CRLF
+        igual = ".agents/skills/sdd-kb/SKILL.md"
+        for rel in (MUDA, igual):
+            f = self.p / rel
+            f.write_bytes(f.read_bytes().replace(b"\n", b"\r\n"))
+        rc, out = self.cli("upgrade", "--yes")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("⚠️  2 editados por você — não serão tocados", out)   # só os 2 editados de verdade
+        self.assertNotIn(igual, out.split("editados por você", 1)[1].split("RESULTADO", 1)[0])
+        self.assertEqual(sha(self.p / MUDA), sha(self.novo / MUDA))   # o do pacote sem edição foi atualizado (LF)
+
     def test_registro_com_asterisco_do_git_bash_e_lido(self):
         # o sha256sum do Git Bash pode escrever "<sha> *<caminho>": quem lê normaliza
         reg = self.p / "sdd/open-instalado.txt"
