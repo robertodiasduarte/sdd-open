@@ -117,6 +117,20 @@ class ComRegistro(Base):
         self.assertEqual(rc, 0, out)
         self.assertIn("RESULTADO: EM DIA", out)
 
+    def test_editado_que_o_pacote_nao_mudou_nao_e_para_mesclar(self):
+        # revisão do código, rodada 8, R1: o playbook editado pela curadoria viraria "para mesclar" em todo upgrade
+        so_seu = "sdd/templates/BUILD_REPORT_TEMPLATE.md"   # igual no pacote antigo e no novo
+        self.assertEqual(sha(self.antigo / so_seu), sha(self.novo / so_seu))
+        f = self.p / so_seu
+        f.write_text(f.read_text(encoding="utf-8") + "\nminha nota\n", encoding="utf-8")
+        rc, out = self.cli("upgrade", "--yes")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("= 1 editados por você que o pacote não mudou (nada a mesclar)\n    " + so_seu, out)
+        self.assertIn("⚠️  2 editados por você — não serão tocados", out)   # os 2 que o pacote mudou
+        self.assertIn("RESULTADO: ATUALIZADO, 2 PARA MESCLAR", out)
+        self.assertFalse((self.p / "sdd/upgrade/v9.8.7" / (so_seu + ".novo")).exists())
+        self.assertIn("minha nota", f.read_text(encoding="utf-8"))
+
     def test_dry_run_nao_escreve(self):
         antes = foto(self.p)
         rc, out = self.cli("upgrade", "--dry-run")

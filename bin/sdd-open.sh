@@ -1045,7 +1045,7 @@ upgrade_nomes() {
 }
 
 upgrade() {
-  local reg="${ROOT}/${REGISTRO_REL}" vk vp de_dir="" tmp f d n_igual n_novo n_intacto n_edit n_saiu n_edit_mesclar
+  local reg="${ROOT}/${REGISTRO_REL}" vk vp de_dir="" tmp f d n_igual n_novo n_intacto n_edit n_saiu n_edit_mesclar n_seu
   local bate_ok bate_tot dest_up saida_sync rc_sync
   local falha="falha ao escrever no projeto — o registro de versão não foi mudado; rode o upgrade de novo, ele retoma do ponto em que parou"
   { [ -d "${ROOT}/sdd" ] && [ -d "${FONTE_SKILLS}" ]; } \
@@ -1141,7 +1141,9 @@ upgrade() {
       for (i = 1; i <= n; i++) {
         f = ordem[i]
         if (!(f in pj)) c = "novo"; else if (pj[f] == nv[f]) c = "igual"
-        else if ((f in a) && pj[f] == a[f]) c = "intacto"; else c = "editado"
+        else if ((f in a) && pj[f] == a[f]) c = "intacto"
+        else if ((f in a) && a[f] == nv[f]) c = "seu"      # editado por você, e o pacote não mudou: nada a mesclar
+        else c = "editado"
         print f > (D "/c_" c)
       }
       for (f in a) {
@@ -1150,11 +1152,11 @@ upgrade() {
       }
       printf "%d %d\n", ok, tot > (D "/bate")
     }' || die "não consegui classificar os arquivos" "rode de novo; nada foi escrito" 1
-  for f in igual novo intacto editado saiu_todos; do : >> "${tmp}/c_${f}"; done
+  for f in igual novo intacto editado seu saiu_todos; do : >> "${tmp}/c_${f}"; done
   sort "${tmp}/c_saiu_todos" | while IFS= read -r f; do [ -f "${ROOT}/${f}" ] && printf '%s\n' "${f}"; done > "${tmp}/c_saiu"
   n_igual="$(grep -c . "${tmp}/c_igual" || true)"; n_novo="$(grep -c . "${tmp}/c_novo" || true)"
   n_intacto="$(grep -c . "${tmp}/c_intacto" || true)"; n_edit="$(grep -c . "${tmp}/c_editado" || true)"
-  n_saiu="$(grep -c . "${tmp}/c_saiu" || true)"
+  n_saiu="$(grep -c . "${tmp}/c_saiu" || true)"; n_seu="$(grep -c . "${tmp}/c_seu" || true)"
   # Mesma versão: o que difere é edição sua sobre o mesmo pacote; não há versão nova para pôr ao lado.
   if [ "$(versao_chave "${vk}")" = "$(versao_chave "${vp}")" ]; then n_edit_mesclar=0; else n_edit_mesclar="${n_edit}"; fi
 
@@ -1164,6 +1166,7 @@ upgrade() {
   if [ "${VERBOSE}" = "1" ]; then upgrade_nomes "${tmp}/c_igual"; fi
   if [ "${n_novo}" != 0 ]; then printf '+ %s novos (copiar)\n' "${n_novo}"; upgrade_nomes "${tmp}/c_novo"; fi
   if [ "${n_intacto}" != 0 ]; then printf '~ %s do pacote, sem edição sua (atualizar)\n' "${n_intacto}"; upgrade_nomes "${tmp}/c_intacto"; fi
+  if [ "${n_seu}" != 0 ]; then printf '= %s editados por você que o pacote não mudou (nada a mesclar)\n' "${n_seu}"; upgrade_nomes "${tmp}/c_seu"; fi
   if [ "${n_edit}" != 0 ]; then printf '⚠️  %s editados por você — não serão tocados\n' "${n_edit}"; upgrade_nomes "${tmp}/c_editado"; fi
   if [ "${n_saiu}" != 0 ]; then printf '⚠️  %s saíram do pacote — não serão apagados\n' "${n_saiu}"; upgrade_nomes "${tmp}/c_saiu"; fi
   if [ ! -f "${reg}" ] || [ -n "${DE_ARG}" ]; then printf '+ %s (registro da versão %s)\n' "${REGISTRO_REL}" "${vk}"; fi
