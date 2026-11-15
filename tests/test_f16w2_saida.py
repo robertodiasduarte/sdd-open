@@ -15,6 +15,8 @@ from apoio import RAIZ, Sandbox
 
 TRECHO = 'reconfigure(encoding="utf-8", errors="replace", newline="\\n")'
 MAIN = 'if __name__ == "__main__":'
+# Arquivos iguais byte a byte ao pacote de origem (SHA-256 conferido em test_f21_textos): não recebem a troca.
+CONGELADOS = {".agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py"}
 
 
 def scripts_com_main() -> list[str]:
@@ -23,7 +25,7 @@ def scripts_com_main() -> list[str]:
         rel = rel.strip()
         if not rel.endswith(".py") or rel.startswith(("tests/", "sdd/fixtures/")) or "/tests/" in rel:
             continue
-        if MAIN in (RAIZ / rel).read_text(encoding="utf-8"):
+        if MAIN in (RAIZ / rel).read_text(encoding="utf-8") and rel not in CONGELADOS:
             saida.append(rel)
     return saida
 
