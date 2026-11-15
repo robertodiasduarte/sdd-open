@@ -516,7 +516,7 @@ gemini_settings_checar() {
   sdd_python_pronto || die "o adaptador gemini precisa de python3 para editar .gemini/settings.json com segurança" \
     "instale python3 ou rode sem o vendor gemini — nada foi alterado" 64
   [ -f "${dest}" ] || return 0
-  saida=$(python3 -I -c 'import json,sys
+  saida=$(python3 -I -c 'import json,sys; sys.stdout.reconfigure(encoding="utf-8", newline="\n")   # F16W2
 try:
     json.load(open(sys.argv[1], encoding="utf-8"))
 except json.JSONDecodeError as e:
@@ -534,7 +534,7 @@ claude_settings_checar() {
   [ -f "${dest}" ] || return 0
   # Sintaxe E forma (topo objeto, hooks objeto, PreToolUse lista): o merge recusaria depois de sdd/, skills e
   # core.hooksPath já gravados, e "nada foi alterado" seria falso (avaliador do build, ciclo 1).
-  saida=$(python3 -I -c 'import json,sys
+  saida=$(python3 -I -c 'import json,sys; sys.stdout.reconfigure(encoding="utf-8", newline="\n")   # F16W2
 try:
     d = json.load(open(sys.argv[1], encoding="utf-8"))
 except json.JSONDecodeError as e:
@@ -808,7 +808,7 @@ doctor() {
   local v bin st n_falt pyv=ausente
   say "sdd-open doctor — projeto: ${ROOT}"
   # Fora de $(…): num subshell, o "dito uma vez" do sdd_python_pronto se perde e o aviso repete (F16, rodada 4, R4).
-  if sdd_python_pronto; then pyv="$(python3 -I -c 'import sys;print(".".join(map(str,sys.version_info[:2])))' 2>/dev/null)" || pyv=ausente; fi
+  if sdd_python_pronto; then pyv="$(python3 -I -c 'import sys;sys.stdout.write(".".join(map(str,sys.version_info[:2])))' 2>/dev/null)" || pyv=ausente; fi
   printf '  bash %s.%s · git %s · python3 %s\n' "${BASH_VERSINFO[0]}" "${BASH_VERSINFO[1]}" \
     "$(git --version 2>/dev/null | sed 's/git version //')" "${pyv:-ausente}"
   if [ -d "${ROOT}/sdd" ]; then
