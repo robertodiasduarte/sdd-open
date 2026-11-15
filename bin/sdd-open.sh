@@ -1101,6 +1101,11 @@ upgrade() {
   if versao_pacote_menor "${vk}" "${vp}"; then
     die "este pacote (${vk}) é mais velho que o projeto (${vp})" "rode o upgrade do pacote mais novo: o upgrade não rebaixa; nada foi escrito" 64
   fi
+  # com --de, o registro que já existe também vale: o upgrade não o rebaixa (revisão do código, rodada 6, R1)
+  local vreg; vreg="$(registro_versao "${reg}")"
+  if [ -n "${DE_ARG}" ] && [ -n "${vreg}" ] && versao_pacote_menor "${vk}" "${vreg}"; then
+    die "este pacote (${vk}) é mais velho que o registro do projeto (${vreg})" "rode o upgrade do pacote mais novo: o upgrade não rebaixa; nada foi escrito" 64
+  fi
 
   # 2. classificação, numa passada só
   instalaveis "${PKG}" | impressoes "${PKG}" > "${tmp}/novo" \

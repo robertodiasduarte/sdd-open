@@ -141,6 +141,18 @@ class ComRegistro(Base):
         self.assertIn("este pacote (v9.8.6) é mais velho que o projeto (v9.8.7)", out)
         self.assertNadaEscrito(antes)
 
+    def test_de_com_registro_mais_novo_nao_rebaixa(self):
+        # revisão do código, rodada 6, R1: com --de, a trava olhava só a versão do --de e esquecia a do registro
+        rc, out = self.cli("upgrade", "--yes")
+        self.assertEqual(rc, 0, out)   # registro na v9.8.7
+        antes = foto(self.p)
+        velho = copia_pacote(self.tmp / "sdd-open-v9.8.5", None)   # mais velho que o registro, mais novo que o --de
+        de = copia_pacote(self.tmp / "sdd-open-v9.8.4", None)
+        rc, out = self.cli("upgrade", "--de", str(de), "--yes", pkg=velho)
+        self.assertEqual(rc, 64, out)
+        self.assertIn("este pacote (v9.8.5) é mais velho que o registro do projeto (v9.8.7)", out)
+        self.assertNadaEscrito(antes)
+
     def test_lista_longa_corta_em_10_e_verbose_mostra_tudo(self):
         templates = sorted(p for p in (self.p / "sdd/templates").rglob("*") if p.is_file())[:12]
         self.assertEqual(len(templates), 12)
