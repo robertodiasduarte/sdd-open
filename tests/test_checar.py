@@ -299,7 +299,12 @@ class TestRemoto(Base):
         # F16W2, raio de impacto: a saída do ls-remote foi para um arquivo temporário; sem TMPDIR gravável ela ia para
         # /dev/null e a credencial recusada virava "sem internet". Sem arquivo, a saída volta a ir direto.
         self.origin(f"http://127.0.0.1:{self.srv401.server_address[1]}/escritorio/privado.git")
-        rc, out, t = self.roda(TMPDIR=str(self.tmp / "nao-existe"))
+        # um mktemp que falha à frente no PATH (no macOS, o mktemp ignora um TMPDIR inválido e não falharia)
+        falso = self.tmp / "sem-mktemp"
+        falso.mkdir()
+        (falso / "mktemp").write_text("#!/bin/sh\nexit 1\n", encoding="utf-8")
+        (falso / "mktemp").chmod(0o755)
+        rc, out, t = self.roda(PATH=str(falso) + os.pathsep + os.environ.get("PATH", ""))
         self.assertEqual(rc, 0, out)
         self.assertIn("recusou o acesso", out)
         self.assertNotIn("sem internet", out)
@@ -1117,8 +1122,11 @@ class TestVigiaNoWindows(unittest.TestCase):
         gh = self.tmp / "gh"
         gh.write_text("#!/bin/sh\necho 'error connecting to api.github.com' >&2\nexit 1\n", encoding="utf-8")
         gh.chmod(0o755)
-        out = self.bash('TMPDIR="%s" SDD_CHECAR_GH="%s" gh_estado\n' % (caminho_bash(self.tmp / "nao-existe"),
-                                                                       caminho_bash(gh)))
+        sem = self.tmp / "sem-mktemp"
+        sem.mkdir()
+        (sem / "mktemp").write_text("#!/bin/sh\nexit 1\n", encoding="utf-8")
+        (sem / "mktemp").chmod(0o755)
+        out = self.bash('PATH="%s:$PATH" SDD_CHECAR_GH="%s" gh_estado\n' % (caminho_bash(sem), caminho_bash(gh)))
         self.assertEqual(out.strip(), "sem resposta")
 
     def test_resposta_antes_do_teto_segue_valendo(self):

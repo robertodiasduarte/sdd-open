@@ -109,6 +109,19 @@ class SaidaCp1252(Sandbox):
         self.assertNotIn("UnicodeDecodeError", saida_in)
         self.assertEqual((r.returncode, saida_in), (rc_arq, saida_arq))
 
+    def test_stdin_lido_em_cp1252_daria_verde_falso(self):
+        # o critério com ✅ e sem evidência é vermelho; lido em cp1252, o ✅ virava lixo, o critério deixava de ser
+        # "verdadeiro" e o relatório saía VERDE (sabotagem S9 da F16W2)
+        import subprocess
+        alvo = self.escreve(self.tmp, "BUILD_REPORT_X.md",
+                            "# BUILD REPORT: X\n\n| ID | Critério (EARS) | Resultado | Evidência |\n|----|---|---|---|\n"
+                            "| AT-001 | When x, the system shall y | ✅ | — |\n\navaliador: N.A. (1 camada)\n")
+        r = subprocess.run([sys.executable, "-B", str(RAIZ / "sdd/bin/report-lint.py"), "--stdin", str(alvo)],
+                           cwd=str(self.tmp), env=self.env_cp, input=alvo.read_bytes(), capture_output=True)
+        saida = (r.stdout + r.stderr).decode("utf-8", "replace")
+        self.assertEqual(r.returncode, 1, saida)
+        self.assertIn("RESULTADO: VERMELHO", saida)
+
 
 if __name__ == "__main__":
     unittest.main()
