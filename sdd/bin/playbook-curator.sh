@@ -1907,7 +1907,8 @@ def self_test():
         confere("--colher grava o resumo em traces/FIXTURE.jsonl (src curator, 7 contadores)", ok)
         esquisito = os.path.join(tmp, "aspas")
         os.makedirs(esquisito)
-        grava(os.path.join("aspas", 'BUILD_REPORT_qu"o te.md'), "# BUILD REPORT\n\n**Date**: 2026-09-09\n")
+        # F16W2: "&" e espaço (o Windows não aceita aspas em nome de arquivo); o saneador troca os dois por "_"
+        grava(os.path.join("aspas", 'BUILD_REPORT_qu&o te.md'), "# BUILD REPORT\n\n**Date**: 2026-09-09\n")
         roda(["--colher", esquisito, base])
         ok = False
         try:

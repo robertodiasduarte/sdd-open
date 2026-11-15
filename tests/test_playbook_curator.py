@@ -9,7 +9,7 @@ import shutil
 import unittest
 from pathlib import Path
 
-from apoio import BASH, RAIZ, SEM_CHMOD, SOU_ROOT, Sandbox
+from apoio import BASH, RAIZ, SEM_CHMOD, SOU_ROOT, Sandbox, SEM_NOME_ESPECIAL, path_restrito, caminho_neutro
 
 CURATOR = RAIZ / "sdd/bin/playbook-curator.sh"
 LINT = RAIZ / "sdd/bin/playbook-lint.sh"
@@ -462,7 +462,7 @@ class FalhaNuncaENada(Base):
         try:
             with open(nome, "wb") as f:
                 f.write("❌ LM-002\n".encode("utf-8"))
-        except OSError:
+        except (OSError, UnicodeDecodeError):   # F16W2: no Windows o nome em bytes é decodificado em UTF-8 e cai aqui
             self.skipTest("este sistema de arquivos recusa nome que não é UTF-8")
         rc, out, err = self.colhe()
         self.assertIn(rc, (0, 2), out + err)
@@ -595,9 +595,15 @@ class Trace(Base):
         self.assertFalse(self.traces.exists())
 
     def test_nome_esquisito_e_sanitizado(self):
-        self.doc('DESIGN_qu"o te.md', "x\n")
-        self.colhe()
-        json.loads((self.traces / "qu_o_te.jsonl").read_text(encoding="utf-8"))
+        for nome in ('qu&o te', 'qu"o te'):
+            with self.subTest(nome=nome):
+                if '"' in nome and SEM_NOME_ESPECIAL[0]:
+                    self.skipTest(SEM_NOME_ESPECIAL[1])
+                doc = self.doc("DESIGN_%s.md" % nome, "x\n")
+                self.colhe()
+                json.loads((self.traces / "qu_o_te.jsonl").read_text(encoding="utf-8"))
+                doc.unlink()
+                shutil.rmtree(str(self.traces), ignore_errors=True)
 
     def test_nome_com_ponto_no_inicio_nao_vira_arquivo_oculto(self):
         self.doc("DESIGN_.x.md", "x\n")
@@ -878,8 +884,11 @@ class Preparar(Sandbox):
                                  "AVALIACAO_F_A_20261105.md", "s1.yaml", "HANDOFF_F_A.md"]))
         self.assertTrue((self.r / "sdd/features/DESIGN_F_A.md").is_file())
         self.assertIn("RESULTADO: STAGING PRONTO (7 arquivo(s))", out)
-        self.assertTrue(str(s).startswith(str(self.temp.resolve())) or str(s).startswith(str(self.temp)))
+        # F16W2: o bash escreve /c/… ou C:/…, o Python C:\\…: compara o lugar
+        self.assertTrue(caminho_neutro(str(s)).startswith(caminho_neutro(str(self.temp.resolve())))
+                        or caminho_neutro(str(s)).startswith(caminho_neutro(str(self.temp))), (s, self.temp))
 
+    @unittest.skipIf(*SEM_CHMOD)   # F16W2: no Windows a permissão não vale, e o produto pula a conferência de propósito
     def test_pasta_previsivel_aberta_a_outros_e_recusada(self):
         # R5 da rodada 4: evidência plantada antes do selo. Vale para a pasta da feature e para a de cima.
         self.povoa()
@@ -1057,12 +1066,8 @@ class SelfTestSemGit(Sandbox):
     def test_sem_git_no_path_diz_o_que_falta_sem_traceback(self):
         # N-L5: sem o git, o self-test para dizendo o motivo.
         pasta = self.tmp / "bin"
-        pasta.mkdir()
-        for nome in ("python3", "bash", "sh", "mktemp", "rm", "dirname", "sed", "awk", "grep", "cat", "tr", "cut", "sort", "uname", "env"):
-            alvo = shutil.which(nome)
-            if alvo:
-                os.symlink(alvo, str(pasta / nome))
-        env = dict(self.env, PATH=str(pasta))
+        env = dict(self.env, PATH=path_restrito(pasta, ("bash", "sh", "mktemp", "rm", "dirname", "sed", "awk", "grep", "cat",
+                                                        "tr", "cut", "sort", "uname", "env"), ausentes=("git",)))
         rc, out, err = self.roda([BASH, CURATOR, "--self-test"], self.tmp, env)
         self.assertEqual(rc, 2, out + err)
         self.assertIn("RESULTADO: SELF-TEST FALHOU", out)

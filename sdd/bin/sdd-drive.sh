@@ -354,6 +354,9 @@ def segura_estado(p):
             os.makedirs(os.path.dirname(caminho), exist_ok=True)
             # só leitura: uma trava que sobrou de outro usuário (sudo) continua utilizável, e não há o que apagar.
             # O_NOFOLLOW: link no lugar da trava criaria arquivo fora do repositório (R1 de Claude, rodada 6)
+            # F16W2: o Windows não tem O_NOFOLLOW; o link é recusado antes de abrir, em todo sistema
+            if os.path.islink(caminho):
+                raise OSError("a trava é um link (abri-la criaria arquivo fora do repositório)")
             fd = os.open(caminho, os.O_RDONLY | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0), 0o644)
         except OSError as e:
             falha("não consegui abrir a trava %s: %s" % (rel, e), "apague %s e rode de novo; o estado ficou como estava." % rel)
@@ -393,6 +396,11 @@ def larga_estado():
             except OSError:
                 pass
         os.close(fd)
+        if fcntl is None:
+            try:
+                os.remove(caminho)  # F16W2: sem ninguém esperando, sai do caminho como fora do Windows; com alguém, fica
+            except OSError:
+                pass
 
 
 def le_estado(p):
@@ -1265,7 +1273,17 @@ def cmd_self_test(args):
         if not (os.path.isfile(rel) and "gate-verde" in ler(rel)):
             falhas.append("o DRIVE_REPORT não saiu com o motivo")
     finally:
-        shutil.rmtree(tmp, ignore_errors=True)
+        # F16W2: no Windows, os objetos do git nascem só leitura e o rmtree calado deixava a pasta inteira para trás
+        def _apaga(func, caminho, _erro):
+            try:
+                os.chmod(caminho, 0o700)
+                func(caminho)
+            except OSError:
+                pass
+        if sys.version_info >= (3, 12):
+            shutil.rmtree(tmp, onexc=_apaga)
+        else:
+            shutil.rmtree(tmp, onerror=_apaga)
     if falhas:
         print("🛑 self-test: %d caso(s) falharam: %s" % (len(falhas), "; ".join(falhas)))
         fim("FALHA", "o script não cumpre o contrato: corrija antes de usar.")
