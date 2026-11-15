@@ -37,7 +37,7 @@ class Armadilha(Sandbox):
                          encoding="utf-8")
             p.chmod(0o755)
         self.env_trap = dict(self.env, CONTADOR=caminho_bash(self.contador),
-                             PATH=caminho_bash(self.trap) + ":" + self.env["PATH"])
+                             PATH=str(self.trap) + os.pathsep + self.env["PATH"])   # no Windows, ";" (revisão, rodada 2, R4)
 
     def contagem(self) -> int:
         return len(self.contador.read_text(encoding="utf-8").split("\n")) - 1 if self.contador.exists() else 0

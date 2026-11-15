@@ -86,7 +86,9 @@ corta() {   # corta SINAL pid...: o grupo de cada pid, ou a árvore dele no Wind
 # exit (no Windows, o exit de um processo morto pelo taskkill pode voltar 0 pelo Cygwin, e o gh pendurado virava
 # "ok"). E a saída do comando vai para um arquivo, não para o $( ) de quem chama: um neto vivo (o askpass do editor,
 # um sleep) seguraria o pipe depois do corte e o teto não valeria.
-marca_nova() { local m; m="$(mktemp 2>/dev/null)" && rm -f "${m}" && printf '%s' "${m}"; }   # um nome livre
+# A marca mora numa pasta própria (mktemp -d, só do usuário): um nome solto no /tmp compartilhado poderia virar um link
+# para o arquivo de outro antes de o vigia escrever nele (revisão, rodada 2, R2). Quem usa apaga a pasta.
+marca_nova() { local d; d="$(mktemp -d 2>/dev/null)" && printf '%s/corte' "${d}"; }
 # ausente | deslogado | ok | sem resposta. Só lê (o gh consulta a API do GitHub), com teto de 10 s; a saída do
 # gh nunca é repassada, só a classificação. Como no ls-remote do checar.sh: o gh roda num grupo de processos
 # próprio (set -m) e o vigia o corta inteiro (corta, acima).
@@ -110,7 +112,7 @@ gh_estado() {
           [ "${f}" = /dev/null ] || cat "${f}"
           echo "__rc=${r}" ) 2>/dev/null )"
   [ "${f}" = /dev/null ] || rm -f "${f}"
-  [ -z "${m}" ] || rm -f "${m}"
+  [ -z "${m}" ] || rm -rf "${m%/corte}"
   rc="$(printf '%s\n' "${s}" | sed -n 's/^__rc=//p' | tail -1)"
   if [ "${rc}" = 0 ]; then echo ok
   elif [ "${rc}" = 137 ] || printf '%s' "${s}" | grep -qiE 'error connecting|dial tcp|could not resolve|timeout|timed out'; then
@@ -478,7 +480,7 @@ alcance() {
     [ "${f}" = /dev/null ] || cat "${f}"
     echo "__rc=${rc}" ) 2>/dev/null
   [ "${f}" = /dev/null ] || rm -f "${f}"
-  [ -z "${m}" ] || rm -f "${m}"
+  [ -z "${m}" ] || rm -rf "${m%/corte}"
 }
 
 # Host do remoto, para as mensagens (https://h/…, ssh://[u@]h[:p]/…, u@h:…). Outro formato ⇒ vazio.

@@ -44,9 +44,10 @@ class Padroes(Sandbox):
         alvo = self.escreve(self.tmp, "amostra.txt", texto + "\n")
         hits = []
         for rx in padroes():
-            # F16W2: pelo bash, como o gate: o grep do Git chamado direto do Python nativo tem o argumento expandido
-            # pelo MSYS no Windows ({11,} virava dois argumentos)
-            rc, _out, err = self.roda([BASH, "-c", 'grep -InE -i -- "$1" "$2"', "_", rx, caminho_bash(alvo)], self.tmp)
+            # F16W2: o padrão vai por variável de ambiente, que o runtime do MSYS não expande (um argumento de linha de
+            # comando passava pelo glob dele no Windows: {11,} virava dois argumentos; revisão, rodada 2, R1)
+            rc, _out, err = self.roda([BASH, "-c", 'grep -InE -i -- "$PADRAO" "$1"', "_", caminho_bash(alvo)], self.tmp,
+                                      env=dict(self.env, PADRAO=rx))
             self.assertLessEqual(rc, 1, "padrão inválido para o grep: /" + rx + "/ " + err)
             if rc == 0:
                 hits.append(rx)
@@ -65,7 +66,8 @@ class Padroes(Sandbox):
     def test_todo_padrao_e_ere_valida(self):
         for rx in padroes():
             with self.subTest(padrao=rx):
-                rc, _out, err = self.roda([BASH, "-c", 'grep -E -i -- "$1" "$2"', "_", rx, caminho_bash(PADROES)], self.tmp)
+                rc, _out, err = self.roda([BASH, "-c", 'grep -E -i -- "$PADRAO" "$1"', "_", caminho_bash(PADROES)], self.tmp,
+                                          env=dict(self.env, PADRAO=rx))
                 self.assertLessEqual(rc, 1, err)
 
 

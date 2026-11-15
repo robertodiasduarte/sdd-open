@@ -86,6 +86,8 @@ class SaidaCp1252(Sandbox):
             ("sdd/bin/governanca-bloco.py", (), 64, "→ chame com <resposta.txt>"),
             (".agents/skills/sdd-release/scripts/deploy-espera-testes.py", (), 3, "→ O deploy espera os testes? não se aplica"),
             ("scripts/check-versions.py", ("--base", "nada"), 0, "só as checagens estruturais"),
+            (".agents/skills/sdd-kb/scripts/validate_kb.py", ("vazia",), 2, "FAIL: no concept found — a KB"),
+            (".agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py", ("vazia",), 0, '"read_only": true'),
         )
         for rel, args, rc_esperado, trecho in casos:
             with self.subTest(script=rel):

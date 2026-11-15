@@ -30,7 +30,7 @@ class SlotComCr(Sandbox):
         py.write_text("#!/bin/sh\n'%s' \"$@\" | awk '{printf \"%%s\\r\\n\", $0}'\n" % caminho_bash(sys.executable),
                       encoding="utf-8")
         py.chmod(0o755)
-        env = dict(self.env, PATH=caminho_bash(falso) + ":" + self.env["PATH"], TMPDIR=str(self.tmp))
+        env = dict(self.env, PATH=str(falso) + os.pathsep + self.env["PATH"], TMPDIR=str(self.tmp))
         rc, out, err = self.roda([BASH, "sdd/bin/slot.sh", "smoke.before_ok_cmd"], r, env=env)
         self.assertNotIn("vazio: pulado", out + err)
         self.assertIn("rodou-o-slot", out + err)
@@ -104,7 +104,7 @@ class BaselineComNtpath(test_test_baseline.TestBaseline):
     def setUp(self):
         super().setUp()
         _, pasta = winpath(self.tmp)
-        self.env = dict(self.env, PATH=caminho_bash(pasta) + os.pathsep + self.env["PATH"])
+        self.env = dict(self.env, PATH=str(pasta) + os.pathsep + self.env["PATH"])
 
 
 if __name__ == "__main__":
