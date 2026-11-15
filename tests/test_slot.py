@@ -312,7 +312,10 @@ class Ambiente(Base):
                 self.assertEqual(reg["COMMIT"], self.sha)
                 self.assertEqual(reg["ARVORE"], str(self.tmp))
                 self.assertEqual(reg.get("DIR_EXISTE"), "sim")
-                self.assertTrue(reg["DIR"].startswith(self.env["TMPDIR"]), reg["DIR"])
+                # F16W2: a caixa e o nome curto (RUNNER~1) do Windows não contam; a mensagem traz os dois lados
+                dir_ = os.path.normcase(os.path.realpath(reg["DIR"]))
+                self.assertTrue(dir_.startswith(os.path.normcase(os.path.realpath(self.env["TMPDIR"]))),
+                                (reg["DIR"], self.env["TMPDIR"]))
                 self.assertTrue(reg["DIR"].endswith("/LOJA_CUPOM"), reg["DIR"])
                 self.assertEqual(reg["PWD"], str(self.r))
 

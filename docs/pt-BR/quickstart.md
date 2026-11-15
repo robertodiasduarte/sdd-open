@@ -75,7 +75,7 @@ do seu `y`. Nada seu é sobrescrito: se você já tem um `AGENTS.md`, só o bloc
 sozinho e diz, por agente, o que foi gerado e o que é nativo.
 
 Requisitos: `bash ≥ 3.2`, `git`. `python3` só para o adaptador Gemini e para os validadores.
-No Windows, use Git Bash ou WSL (o Windows é medido no CI só para informar: cerca de 64% dos testes passam lá na v2.16.0; use por sua conta).
+No Windows, use Git Bash ou WSL (a suíte inteira roda no Windows no CI a cada release, desde a v2.16.1).
 
 ## 2. Aponte o config para o seu projeto
 

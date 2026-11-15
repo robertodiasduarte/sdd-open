@@ -190,8 +190,8 @@ jobs:
         run: /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
 
   # F16: o caso real do aluno no Windows é o Git Bash com o Python nativo (o WSL é Linux por dentro, e o
-  # Ubuntu acima já o cobre). Informativo até o Roberto decidir o piso: fica FORA do `needs:` do job
-  # `release`, então um vermelho aqui aparece no run sem segurar a Release (sem continue-on-error).
+  # Ubuntu acima já o cobre). F16W2 (piso decidido pelo Roberto, 2026-11-15, com a medição do PR #31 100% verde):
+  # o job está no `needs:` do job `release` (release.yml): um vermelho aqui segura a Release.
   testes-windows:
     name: Testes no Windows, fatia ${{ matrix.fatia }}/16 (Git Bash + Python nativo, só leitura)
     runs-on: windows-latest

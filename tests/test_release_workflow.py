@@ -43,7 +43,7 @@ class Release(unittest.TestCase):
 
     def test_release_depende_dos_testes_e_e_o_unico_com_escrita(self):
         bloco = job(RELEASE, "release")
-        self.assertRegex(bloco, r"(?m)^    needs: \[testes, testes-macos\]$")
+        self.assertRegex(bloco, r"(?m)^    needs: \[testes, testes-macos, testes-windows\]$")
         self.assertIn("contents: write", bloco)
         self.assertEqual(sem_comentarios(RELEASE).count("contents: write"), 1)
 
@@ -241,7 +241,7 @@ class PisoNoMacos(unittest.TestCase):
                 self.assertLess(bloco.index("$RUNNER_TEMP/piso"), bloco.index("unittest discover"))
 
     def test_release_espera_o_piso(self):
-        self.assertRegex(job(RELEASE, "release"), r"(?m)^    needs: \[testes, testes-macos\]$")
+        self.assertRegex(job(RELEASE, "release"), r"(?m)^    needs: \[testes, testes-macos, testes-windows\]$")
 
 
 class IntegridadeDasSkills(Sandbox):
