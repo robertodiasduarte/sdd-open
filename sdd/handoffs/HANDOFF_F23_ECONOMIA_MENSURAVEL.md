@@ -10,7 +10,7 @@
 |-----------|-------|
 | **Feature** | F23_ECONOMIA_MENSURAVEL |
 | **Objetivo** | O Open passa a medir o custo de cada fase e feature e a escolher modelo e cadeia de revisão por evidência; o aluno recebe o mesmo método para o produto que constrói. |
-| **Status** | 🚢 fatia B3 publicada: `v2.19.0` (`main` = `5e110b2`, PR #35; curadoria da B3 em `fb7ee82` na `main`), 2026-11-16; B1 em `v2.18.0`. Falta gerar o starter (OK à parte) e as fatias B2 e Grupo A |
+| **Status** | 🚢 fatia B3 publicada: `v2.19.0` (`main` = `5e110b2`, PR #35; curadoria da B3 em `fb7ee82` na `main`), 2026-11-16; starter **`v1.5.24`** (8ª geração, PR #17 de lá, 23:18 UTC, 18 zips OK no `shasum -c`); B1 em `v2.18.0`. Próximas: B2 e Grupo A |
 | **Última sessão** | 2026-11-16 |
 | **Branch / pasta** | B3: `feat/f23b3-cadeia-revisao` · `/Users/robertoduarte/rdd-worktrees/sdd-open-f23b3-cadeia-revisao` (nascida de `origin/main` em `ef217b9`); a da B1 já foi removida |
 | **Artefatos** | B1: `sdd/features/{ESCOPO,BRAINSTORM,DEFINE,DESIGN}_F23_ECONOMIA_MENSURAVEL.md` e afins · B3: `sdd/features/{DEFINE,DESIGN}_F23B3_CADEIA_REVISAO.md`, `sdd/reports/{BUILD_REPORT,CUSTO}_F23B3_CADEIA_REVISAO.md`, `sdd/reviews/LEDGER_REVISAO_F23B3_CADEIA_REVISAO.md`, `sdd/releases/F23B3_CADEIA_REVISAO/b3_v2.19.0.yaml`, `sdd/reports/evidence/F23B3_CADEIA_REVISAO/`, `sdd/reports/reviews-medicao/F23B3_CADEIA_REVISAO/` — todos na branch de documentos `docs/incorporar-starter` |
@@ -43,7 +43,7 @@
 
 ## Falta
 
-1. **Starter:** gerar de novo pela tag `v2.19.0` (os arquivos de modo da build, design e release mudaram de versão); pede OK à parte ("pode publicar o starter").
+1. ~~Starter~~ — feito: 8ª geração pela tag `v2.19.0` num clone limpo (`df6ae1c`, 7 arquivos, só versões de build, design e release); `check-gerado` VERDE, 62 testes, `check-versions` e `publish-check` PASS; PR #17 de lá, CI verde, avanço direto da `main` (`4269afe..df6ae1c`, OK do Roberto: "sim, pode publicar o starter"); Release **`v1.5.24`**, 18 zips OK.
 2. **Próxima fatia: B2** (modelo por papel), com `sdd-define` a partir do bloco 2 do BRAINSTORM; a economia maior está nas sessões (US$ 65 nesta fatia contra US$ 12 de revisão).
 3. **Pendências da B3** (Casos e testes em aberto): preço do modelo do codex conferido na fonte, fora do pacote; `test_checar` instável; versão do prompt no META; aviso de prompt v1 editado.
 4. ~~Curadoria da B1~~ — `e1870e3` (LM-035, LM-036); ~~curadoria da B3~~ — `fb7ee82` na `main` (20 contagens, LM-037, refine da LM-011, LM-038).
@@ -81,6 +81,7 @@
 
 ## Eventos
 
+- 2026-11-16 — Roberto: "sim, pode publicar o starter" ⇒ starter `v1.5.24` (PR #17 de lá, avanço direto).
 - 2026-11-16 — B3: passo 0 (curadoria da B1, `e1870e3`); Define com 7 decisões do Roberto (prova trocada, discordância = desempate, auditor codex local, dano que escapa pela linha `escapou`, raso continua, governança dispensada, S18 aplicado e S20 recusado); Design com pasta `v2/` e lista ampliada; build com 3 gates vermelhos (MANIFEST, teto de 500 linhas, `foto()` da F22 consertada com OK do Roberto) e verde em `5e110b2`; raio de impacto achou camelCase e o gate offline; 3 rodadas de revisão + dispensa escrita do delta (Roberto); push autorizado ("sim, pode publicar"): `v2.19.0`; curadoria da B3 enviada à `main` ("Enviar agora").
 - 2026-11-16 — 4ª rodada (OK do Roberto) sobre `b606eca`: 3 achados aplicados com teste (`ef217b9`), sem auditor (qwen passou do teto pela 2ª vez); a revisão não confere a versão final. CI do Windows pegou 1 teste que não vale lá (quebra de linha em argumento), consertado em `b606eca`. Parado na decisão da 5ª rodada.
 - 2026-11-16 — Roberto: "execute o pipeline até o release" (lido como OK do fatiamento). Define da B1 (10 ATs; governança dispensada pelo Roberto como na F19; S17 aplicado), DESIGN (9 decisões; revisão do DESIGN em 1 rodada), build em `67b002b..b494810`, 3 rodadas de revisão do código (17 aplicados), Verify Gate verde em `b494810`, linha de base F4–F22 (`evidence/…/linha-de-base/LINHA-DE-BASE.log`), `cleanupPeriodDays: 365` em `~/.claude/settings.json`. Branch publicada e PR #34 aberto para o CI. Marcas da F23 antes do script reconstituídas do registro da sessão (campo `origem`).
@@ -120,7 +121,7 @@ Abra uma frente nova com a sdd-new-session (feature_id F23B2_MODELO_POR_PAPEL), 
 Leia primeiro: sdd/handoffs/HANDOFF_F23_ECONOMIA_MENSURAVEL.md (Falta, Decisões, Casos e testes em aberto), o bloco 2
 do sdd/features/BRAINSTORM_F23_ECONOMIA_MENSURAVEL.md (B2: slot de modelo por papel; gabarito do histórico; o mais barato
 que bate a meta, com repetições e teto de gasto), e a seção Sempre de sdd/playbook.md (LM-037 e LM-038 são novas).
-Antes: o starter da v2.19.0 ainda não foi gerado (OK à parte do Roberto).
+Starter já na v1.5.24 (8ª geração, a partir da v2.19.0).
 Não faça: editar o plano fora da worktree sdd-open-docs-f16; corrigir direto no starter; pôr nome ou preço de modelo
 no pacote; número medido no repositório privado em documento do Open.
 Landmines: MANIFEST.txt para todo arquivo novo do pacote (LM-037); sdd-release no teto de 500 linhas (LM-038);
