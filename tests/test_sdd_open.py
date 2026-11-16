@@ -276,6 +276,9 @@ class Projeto(Sandbox):
         # F10 (AT-035): sdd/review/ (registry, preços, prompts) e sdd/bin/adapters/ vêm com o init
         for rel in ("sdd/review/registry.tsv", "sdd/review/precos.tsv", "sdd/review/prompts/reviewer.md",
                     "sdd/review/prompts/auditor.md", "sdd/review/prompts/desempate.md",
+                    # F23B3: os prompts vivos, em v2/
+                    "sdd/review/prompts/v2/reviewer.md", "sdd/review/prompts/v2/auditor.md",
+                    "sdd/review/prompts/v2/desempate.md",
                     "sdd/bin/adversarial-review.sh", "sdd/bin/adapters/openrouter.sh",
                     # F11 (AT-027): o gate offline, o eval-agree e os stubs por engine vêm junto
                     "sdd/bin/adversarial-review-gate.sh", "sdd/bin/eval-agree.sh", "sdd/review/stubs/cenarios.tsv",

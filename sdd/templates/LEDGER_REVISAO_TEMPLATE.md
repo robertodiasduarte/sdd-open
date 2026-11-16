@@ -6,7 +6,7 @@
 > (as 4 primeiras células) e por `bash sdd/bin/eval-revisores.sh` (todas). Critério da coluna `dano`:
 > `sdd/review/CRITERIO_DANO.md`.
 
-{Engines de cada papel, quantas rodadas, e o que ficou decidido fora da tabela (dispensa do 2º revisor, teto de rodadas).}
+{Engines de cada papel, quantas rodadas, e o que ficou decidido fora da tabela (teto de rodadas, dispensa à mão).}
 
 | achado | sev | veredito | rodada | evidência | dano | revisão |
 |---|---|---|---|---|---|---|
@@ -33,5 +33,13 @@ Uma linha por achado, por exemplo:
 - revisão: a pasta que o `adversarial-review.sh` imprimiu em `pasta:`, só o nome (EXTERNAL_REVIEW_AAAAMMDD-HHMMSS).
 - rodada em que a revisão não achou nada: uma linha fora da tabela, no formato
   sem achados: rodada=<N> EXTERNAL_REVIEW_AAAAMMDD-HHMMSS
+- revisão do DESIGN: as linhas dela vão nesta mesma tabela com `rodada=D<n>` (D1, D2…), além do Advisor Ledger do DESIGN.
+- rodada interrompida ou sem veredito: uma linha fora da tabela, no formato
+  sem resultado: rodada=<N> EXTERNAL_REVIEW_AAAAMMDD-HHMMSS — <motivo>
+- 2º revisor dispensado pela regra (sem superfície de risco): copie a linha que o adversarial-review.sh imprime,
+  revisor2: dispensado rodada=<N> — sem superfície de risco (regra antiga: …)
+- defeito desta frente achado depois de publicada (escape): uma linha fora da tabela, no ledger DESTA frente, com o
+  critério de dano de sdd/review/CRITERIO_DANO.md, no formato
+  escapou: commit=<sha do conserto> · teste: <teste que falha no código antigo> · dano=<dado|dinheiro|acesso|publicação|disponibilidade> — <onde apareceu>
 - o mesmo achado não se repete na mesma revisão; em revisões diferentes, sim (cada rodada tem os seus ids).
 -->

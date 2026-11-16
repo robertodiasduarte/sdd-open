@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.14.0"
+  version: "2.15.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.14.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.15.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes do push e do
 deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e irreversível na prática.
@@ -133,7 +133,9 @@ exit 10 ⇒ a frase de versão nova (`references/como-falar.md`) no relatório e
    exit 64 ⇒ o arquivo não existe ou está vazio: grave as linhas das rodadas pelo molde
    `sdd/templates/LEDGER_REVISAO_TEMPLATE.md` (rodada sem achados: `sem achados: rodada=N <pasta>`) e
    rode de novo. Sem esse registro, o custo por falha real de cada engine não se mede
-   (`bash sdd/bin/eval-revisores.sh`).
+   (`bash sdd/bin/eval-revisores.sh`). Esta publicação conserta um defeito de uma frente já publicada? Grave no
+   ledger da frente de origem a linha `escapou: commit=<sha> · teste: <nome> · dano=<…> — <onde apareceu>`
+   (molde no `LEDGER_REVISAO_TEMPLATE.md`): é ela que diz se a regra do 2º revisor precisa voltar atrás.
 
 9. **Testes do diff:** `bash sdd/bin/test-baseline.sh --touched` (base `origin/{default_branch}`), **depois do item 4**,
    nunca em paralelo com ele (a suíte dos dois na mesma árvore inventa falha). Conta o teste alterado e o teste ao

@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.8.0"
+  version: "2.9.0"
   updated: "2026-11"
   fase: "2"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.8.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.9.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -222,7 +222,8 @@ quais usar. Exit 0 ⇒ passe a pasta ao `bash sdd/bin/sdd-fluxo.sh loop --review
 repasse o `RESULTADO:` e o `→` (credencial, CLI ausente, auditor igual ao revisor, resposta fora do
 formato — que nunca é "zero achados"). O contrato de resposta segue
 `sdd/templates/fragments/ADVISOR_CONSULT.md`. Toda nota recebe **APLICADA ·
-REBATIDA_EVIDENCIA (com arquivo:linha) · REBATIDA_ESCOPO** no Advisor Ledger do DESIGN.
+REBATIDA_EVIDENCIA (com arquivo:linha) · REBATIDA_ESCOPO** no Advisor Ledger do DESIGN e, para a conta da
+revisão, também no ledger da revisão (`sdd/reviews/LEDGER_REVISAO_{FEATURE}.md`) com `rodada=D<n>` (D1, D2…).
 Nunca descartada em silêncio. Com uma engine só, rode com `--um-engine`: a revisão registra
 `diversidade: nenhuma` — mais fraca, mas honesta. Sem engine nenhuma, use uma **sessão nova** do
 agente como revisor. Se esta sessão não abre o papel fresco

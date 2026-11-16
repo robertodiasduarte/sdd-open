@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.11.0"
+  version: "2.12.0"
   updated: "2026-11"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.11.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.12.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -220,14 +220,18 @@ aborta; aceitar uma falha como conhecida, com `--aceitar`, é decisão do usuár
 (ou uma dispensa com motivo): rodá-lo aqui, enquanto o contexto está fresco, sai mais barato do que na
 release. **Commite antes**, e rode `bash sdd/bin/adversarial-review.sh --feature {F}` — uma engine do
 registry revisa o diff congelado e outra audita a revisão, em cadeia, nunca em paralelo; o 2º revisor
-e o desempate entram sozinhos quando o diff pede. Decida cada achado (APLICADA · REBATIDA_EVIDENCIA ·
+entra sozinho só com superfície de risco (ou revisor raso), e o desempate, sozinho quando o auditor rebate um
+achado grave com evidência. Não os desligue com `--no-revisor2` ou `--no-desempate`: o uso fica contado como
+dispensa à mão. Decida cada achado (APLICADA · REBATIDA_EVIDENCIA ·
 REBATIDA_ESCOPO; contrato de resposta em `sdd/templates/fragments/ADVISOR_CONSULT.md`) e grave uma linha por
 achado no **ledger da revisão**, `sdd/reviews/LEDGER_REVISAO_{F}.md` (molde:
 `sdd/templates/LEDGER_REVISAO_TEMPLATE.md`): o id copiado do arquivo de vereditos da rodada, a severidade,
 o veredito, `rodada=N`, a evidência, a marca `dano` e o nome da pasta da revisão. A marca `dano` é de quem
 decide o achado, pelo `sdd/review/CRITERIO_DANO.md`: `sim` só quando o achado foi aplicado, o conserto tem
 teste que falha no código antigo (citado como `teste: <nome>`) e o cenário afeta dado, dinheiro, acesso,
-publicação ou disponibilidade; senão `nao`. Rodada sem achados: a linha `sem achados: rodada=N <pasta>`.
+publicação ou disponibilidade; senão `nao`. Rodada sem achados: a linha `sem achados: rodada=N <pasta>`; rodada interrompida ou sem veredito:
+`sem resultado: rodada=N <pasta> — <motivo>`; sem superfície de risco, copie a linha `revisor2: dispensado …`
+que o script imprime (o molde mostra as 4 formas).
 Confira com `bash sdd/bin/ledger-revisao-lint.sh sdd/reviews/LEDGER_REVISAO_{F}.md` (exit 2 ⇒ corrija a linha
 apontada) e rode `bash sdd/bin/sdd-fluxo.sh loop --review <pasta que ele imprimiu> --ledger
 sdd/reviews/LEDGER_REVISAO_{F}.md --rodada N`, que decide se segue, corrige ou pergunta. O Advisor Ledger do
