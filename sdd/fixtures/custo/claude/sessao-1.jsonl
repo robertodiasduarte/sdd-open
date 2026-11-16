@@ -3,7 +3,6 @@
 {"type": "assistant", "timestamp": "2026-11-15T10:00:05.500Z", "requestId": "req_msg_m1", "message": {"id": "msg_m1", "model": "modelo-a", "role": "assistant", "content": [{"type": "text", "text": "segundo bloco da mesma mensagem"}], "usage": {"input_tokens": 10, "output_tokens": 100, "cache_read_input_tokens": 1000, "cache_creation_input_tokens": 200}}}
 {"type": "assistant", "timestamp": "2026-11-15T10:00:05.600Z", "message": {"id": "msg_m1", "model": "modelo-a", "role": "assistant", "content": [{"type": "tool_use", "name": "Bash", "input": {"command": "cat /pasta-secreta/segredo.txt"}}], "usage": {"input_tokens": 10, "output_tokens": 100, "cache_read_input_tokens": 1000, "cache_creation_input_tokens": 200}}}
 {"type": "user", "timestamp": "2026-11-15T10:00:06.000Z", "message": {"role": "user", "content": [{"type": "tool_result", "content": "conteúdo do arquivo segredo-ficticio-123"}]}}
-{isto não é json
 {"type": "assistant", "timestamp": "2026-11-15T10:06:00.000Z", "requestId": "req_msg_m2", "message": {"id": "msg_m2", "model": "modelo-a", "role": "assistant", "content": [{"type": "text", "text": "fim do turno"}], "usage": {"input_tokens": 5, "output_tokens": 50, "cache_read_input_tokens": 2000, "cache_creation_input_tokens": 0}}}
 {"type": "user", "timestamp": "2026-11-15T10:10:00.000Z", "isMeta": true, "message": {"role": "user", "content": "aviso interno do agente"}}
 {"type": "user", "timestamp": "2026-11-15T10:10:00.000Z", "message": {"role": "user", "content": [{"type": "text", "text": "segundo pedido"}]}}

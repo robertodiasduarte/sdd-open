@@ -214,6 +214,14 @@ PRECOS = tabela_precos("precos.tsv")
 PRECOS_CACHE = tabela_precos("precos-cache.tsv")
 FORA = []
 SEM_PRECO = set()
+ILEGIVEIS = [0]   # registros ilegíveis da última leitura de sessões
+
+
+def marca_nd(conta):
+    """Uma parte do custo desta linha não pôde ser lida: n/d nos dois custos, nunca zero (AT-004)."""
+    conta["itens"] += 1
+    conta["nominal_nd"] += 1
+    conta["pago_nd"] += 1
 
 
 # ── somador ─────────────────────────────────────────────────────────────────────────────────────────
@@ -295,14 +303,16 @@ def leitores():
 
 
 def ler_sessoes(raiz_sessoes):
-    """{agente: [registros]} e o estado de cada leitor (LIDO, SEM REGISTRO, FALHOU)."""
-    dados, estado = {}, {}
+    """{agente: [registros]}, o estado de cada leitor (LIDO, SEM REGISTRO, FALHOU) e quantos registros ilegíveis
+    vieram. Leitor que falha fica None: o custo dele é n/d, nunca zero."""
+    dados, estado, ILEGIVEIS[0] = {}, {}, 0
     for agente, prog in leitores():
         try:
             r = subprocess.run([sys.executable, "-B", prog, "--raiz", raiz_sessoes], capture_output=True)
         except OSError as e:
             estado[agente] = "FALHOU (%s)" % (e.strerror or "erro")
             FORA.append(("leitor " + agente, "não rodou: o agente fica n/d"))
+            dados[agente] = None
             continue
         if r.returncode == 2:
             estado[agente] = "SEM REGISTRO"
@@ -322,6 +332,7 @@ def ler_sessoes(raiz_sessoes):
                 continue
             if d.get("tipo") == "ilegivel":
                 FORA.append(("sessão de " + agente, "%s linha(s) ilegível(is) fora da conta" % d.get("n")))
+                ILEGIVEIS[0] += 1
                 continue
             t = instante(d.get("t"))
             if t is None or d.get("tipo") not in ("msg", "turno"):
@@ -425,7 +436,8 @@ def revisao(feat, ledger_arq):
     alvo = "DEFINE_%s.md" % feat
     for n in nomes:
         meta = meta_de(os.path.join(reviews, n))
-        docs = [x.strip() for x in meta.get("docs_sdd", "").split(",")]
+        # R4 da revisão do código: aceita nome solto ou caminho, separado por vírgula, ponto e vírgula ou espaço
+        docs = [os.path.basename(x.replace("\\", "/")) for x in re.split(r"[,;\s]+", meta.get("docs_sdd", "")) if x]
         if alvo not in docs and n not in citadas:
             continue
         conta["execucoes"] += 1
@@ -536,18 +548,21 @@ def modo_feature():
                 contas[f]["segundos"] += s
                 dentro += s
             sem_fase["segundos"] += segundos_em(spans, janela[0], janela[1]) - dentro
-    for agente, regs in dados.items():
-        if regs is None:   # leitor que falhou: o agente inteiro é n/d na linha sem fase
-            sem_fase["itens"] += 1
-            sem_fase["nominal_nd"] += 1
-            sem_fase["pago_nd"] += 1
+    # AT-004 e R1 a R3 da revisão do código: o que não foi lido vira n/d, nunca zero.
+    falhou = any(regs is None for regs in dados.values())
+    if janela is not None and (falhou or ILEGIVEIS[0]):
+        # leitor que falhou ou registro ilegível: não se sabe a que fase pertencia, então toda linha da janela é parcial
+        for c in [contas[f] for f in ordem] + [sem_fase]:
+            marca_nd(c)
+    for f in ordem:
+        if contas[f]["itens"] == 0:   # fase marcada sem nenhuma mensagem lida: agente sem leitor ou sem registro
+            FORA.append(("fase", "nenhuma mensagem lida em %s: agente sem leitor ou sem registro" % f))
+            marca_nd(contas[f])
     rev = revisao(feature, os.path.join(ledgers, "LEDGER_REVISAO_%s.md" % feature))
     tem_sessao = any(r["tipo"] == "msg" for r in regs_todos)
     if not marcas and tem_sessao:   # R6 da revisão do DESIGN: sem marca, um zero em "sem fase" pareceria economia
         FORA.append(("marca", "nenhuma marca de fase: as sessões não foram atribuídas"))
-        sem_fase["itens"] += 1
-        sem_fase["nominal_nd"] += 1
-        sem_fase["pago_nd"] += 1
+        marca_nd(sem_fase)
     if not marcas and not rev["execucoes"] and not gate and not tem_sessao:
         print("RESULTADO: SEM DADOS")
         print("→ nenhuma marca de fase, sessão, revisão ou volta do gate de %s: as skills de fase gravam as marcas "
@@ -630,10 +645,11 @@ def modo_linha_de_base():
             continue
         dados, _ = ler_sessoes(raiz_f)
         sess = conta_nova()
+        if ILEGIVEIS[0]:
+            marca_nd(sess)
         for agente, regs in dados.items():
             if regs is None:
-                sess["itens"] += 1
-                sess["nominal_nd"] += 1
+                marca_nd(sess)
                 continue
             for m in regs:
                 if m["tipo"] == "msg":

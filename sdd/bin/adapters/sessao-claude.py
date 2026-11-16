@@ -65,7 +65,8 @@ def args(argv):
 
 def pasta_padrao(raiz):
     base = os.environ.get("CLAUDE_CONFIG_DIR") or os.path.join(os.path.expanduser("~"), ".claude")
-    nome = re.sub(r"[^A-Za-z0-9]", "-", os.path.abspath(raiz).replace("\\", "/"))
+    # realpath: o agente grava o caminho físico (no macOS, /tmp vira /private/tmp; R5 da revisão do código)
+    nome = re.sub(r"[^A-Za-z0-9]", "-", os.path.realpath(raiz).replace("\\", "/"))
     return os.path.join(base, "projects", nome)
 
 

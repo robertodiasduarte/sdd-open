@@ -25,7 +25,10 @@ import shutil
 import sys
 from pathlib import Path
 
-from apoio import BASH, RAIZ, Sandbox
+import os
+import unittest
+
+from apoio import BASH, RAIZ, SEM_SYMLINK, Sandbox
 
 MARCA = RAIZ / "sdd/bin/marca-fase.sh"
 CUSTO = RAIZ / "sdd/bin/custo-feature.sh"
@@ -151,6 +154,9 @@ class AT002Leitores(Base):
         return rc, [json.loads(x) for x in out.splitlines() if x.strip()], out
 
     def test_claude_agrupa_a_mesma_mensagem_e_conta_o_subagente(self):
+        sessao = self.tmp / "claude-config/projects" / pasta_claude(self.raiz) / "sessao-1.jsonl"
+        with open(sessao, "a", encoding="utf-8") as h:
+            h.write("{isto não é json\n")
         rc, regs, out = self.leitor(LEITOR_CLAUDE)
         self.assertEqual(rc, 0)
         msgs = [r for r in regs if r["tipo"] == "msg"]
@@ -218,7 +224,6 @@ class AT003Contador(Base):
         self.assertEqual(rc, 0)
         self.assertIn("Voltas do Verify Gate: 2 (verde na 2ª).", out)
         self.assertIn("fase sem fim: build (fechada no fim da última sessão)", out)   # AT-007
-        self.assertIn("1 linha(s) ilegível(is)", out)
         self.assertIn("claude · ? (entrada e saída, precos.tsv)", out)                # AT-004
         self.assertIn("codex · modelo-c (cache, precos-cache.tsv)", out)              # AT-005
         self.assertIn("claude LIDO · codex LIDO", out)
@@ -274,6 +279,68 @@ class AT003Contador(Base):
                 rc, _, err = self.custo(*args)
                 self.assertEqual(rc, 64, err)
                 self.assertIn("RESULTADO: PAROU", err)
+
+
+class AT004NuncaZero(Base):
+    """AT-004 e R1 a R5 da revisão do código: o que não foi lido vira n/d em toda linha afetada, nunca zero."""
+
+    def tabela_saida(self, *extra: str, raiz: Path | None = None) -> tuple[dict, str]:
+        rc, out, err = self.custo(F, "--precos", str(self.copiado["precos"]), "--saida", "-", *extra)
+        self.assertEqual(rc, 0, out + err)
+        return self.tabela(out), out
+
+    def test_fase_marcada_sem_mensagem_lida_e_n_d(self):
+        """R1: uma fase com marca e nenhuma mensagem (agente sem leitor, sessão não achada) não sai 0.0000."""
+        with open(self.copiado["traces"] / "F99_TESTE.jsonl", "a", encoding="utf-8") as h:
+            h.write('{"ts":"2026-11-15T10:40:00Z","feature":"F99_TESTE","src":"fase","evento":"inicio","fase":"design"}\n')
+            h.write('{"ts":"2026-11-15T10:50:00Z","feature":"F99_TESTE","src":"fase","evento":"fim","fase":"design"}\n')
+        t, out = self.tabela_saida()
+        self.assertEqual(t["design"], ["1", "0", "0", "0", "0", "n/d", "n/d", "0h00m00s"])
+        self.assertIn("nenhuma mensagem lida em design", out)
+        self.assertIn("+ n/d", t["**total**"][5])
+
+    def test_linha_ilegivel_deixa_toda_linha_da_janela_parcial(self):
+        """R2: não se sabe a que fase a linha perdida pertencia: toda linha da janela vira parcial."""
+        sessao = self.tmp / "claude-config/projects" / pasta_claude(self.raiz) / "sessao-1.jsonl"
+        with open(sessao, "a", encoding="utf-8") as h:
+            h.write("{isto não é json\n")
+        t, out = self.tabela_saida()
+        self.assertEqual(t["define"][5:7], ["0.0000 + n/d", "0.0030 + n/d"])
+        self.assertEqual(t["sem fase"][6], "0.0014 + n/d")
+        self.assertEqual(t["**total**"][5], "0.0300 + n/d")
+        self.assertIn("1 linha(s) ilegível(is)", out)
+
+    def test_leitor_que_falha_deixa_toda_linha_da_janela_parcial(self):
+        """R3: um leitor que sai com erro não some: toda fase e o sem fase ganham n/d."""
+        pkg = self.tmp / "pacote"
+        shutil.copytree(str(RAIZ / "sdd/bin"), str(pkg / "sdd/bin"))
+        shutil.copytree(str(RAIZ / "sdd/review"), str(pkg / "sdd/review"))
+        (pkg / "sdd/bin/adapters/sessao-quebrado.py").write_text("import sys\nsys.exit(1)\n", encoding="utf-8")
+        rc, out, err = self.roda([BASH, pkg / "sdd/bin/custo-feature.sh", F, "--precos", self.copiado["precos"],
+                                  "--saida", "-"], self.raiz)
+        self.assertEqual(rc, 0, out + err)
+        t = self.tabela(out)
+        self.assertEqual(t["define"][6], "0.0030 + n/d")
+        self.assertEqual(t["sem fase"][6], "0.0014 + n/d")
+        self.assertIn("quebrado FALHOU (exit 1)", out)
+
+    def test_docs_sdd_com_caminho_e_outro_separador(self):
+        """R4: o META que traz caminho ou ponto e vírgula continua atribuído à feature."""
+        self.escreve(self.raiz, "sdd/reports/reviews/EXTERNAL_REVIEW_20261115-150000/META.txt",
+                     "docs_sdd : sdd/features/DEFINE_F99_TESTE.md; sdd/features/DESIGN_F99_TESTE.md\n"
+                     "reviewer_engine_efetivo : openrouter\nreviewer_exit : 0\nreviewer_custo : US$ 1.0000\n")
+        t, _ = self.tabela_saida()
+        self.assertEqual(t["revisão"][0], "3")
+        self.assertEqual(t["revisão"][5], "1.0300")
+
+    @unittest.skipIf(*SEM_SYMLINK)
+    def test_raiz_por_link_simbolico_acha_as_sessoes(self):
+        """R5: o agente grava o caminho físico; a raiz dada por um link simbólico é resolvida antes."""
+        link = self.tmp / "atalho"
+        os.symlink(str(self.raiz), str(link))
+        t, out = self.tabela_saida("--raiz", str(link))
+        self.assertIn("claude LIDO · codex LIDO", out)
+        self.assertEqual(t["define"][6], "0.0030")
 
 
 class AT006Revisao(Base):

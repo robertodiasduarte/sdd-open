@@ -73,7 +73,7 @@ def instante(t):
 
 def mesma_pasta(a, b):
     def norm(p):
-        return os.path.normcase(os.path.normpath(os.path.abspath(p.replace("\\", "/")))).rstrip("/\\")
+        return os.path.normcase(os.path.realpath(p.replace("\\", "/"))).rstrip("/\\")   # caminho físico (R5)
     return isinstance(a, str) and bool(a) and norm(a) == norm(b)
 
 
