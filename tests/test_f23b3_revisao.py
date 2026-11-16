@@ -307,7 +307,7 @@ class AT006LinhasNovas(Medidor):
         self.assertEqual(rc, 0, out)
         self.assertRegex(out, r"(?m)^fora da conta: 0$")
         linha = next(ln for ln in out.splitlines() if ln.startswith("| revisor | stub-a"))
-        self.assertEqual([x.strip() for x in linha.split("|")[1:-1]][12], "0")   # sem classificar
+        self.assertEqual([x.strip() for x in linha.split("|")[1:-1]][12], "0 de 2")   # sem classificar
 
     def test_lint_recusa_as_linhas_quase_certas(self):
         for ruim in ("sem resultado: rodada=1 %s" % (R % 2),                      # sem motivo

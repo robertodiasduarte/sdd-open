@@ -40,8 +40,14 @@ ESPERADO = [
 
 
 def linhas(saida: str) -> list:
-    """As linhas de dados da tabela, cada uma como tupla de células."""
-    tabela = [ln for ln in saida.splitlines() if ln.startswith("|")]
+    """As linhas de dados da 1ª tabela (por papel), cada uma como tupla de células. A 2ª, "Cadeia por frente"
+    (F23B3), vem depois de uma linha que não é tabela e tem o seu teste em test_f23b3_revisao.py."""
+    tabela = []
+    for ln in saida.splitlines():
+        if ln.startswith("|"):
+            tabela.append(ln)
+        elif tabela:
+            break
     return [tuple(c.strip() for c in ln.strip("|").split("|")) for ln in tabela[2:]]
 
 

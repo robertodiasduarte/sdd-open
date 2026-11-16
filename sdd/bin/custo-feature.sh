@@ -73,6 +73,10 @@ PASTA_NO_TEXTO = re.compile(r"EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?")
 CUSTO_RE = re.compile(r"^(≈)?\s*US\$\s*([0-9]{1,12}(?:[.,][0-9]{1,12})?)(\s*\+\s*\$\?)?$")
 RODADA_RE = re.compile(r"^rodada=(\d+[a-z]?)\Z")
 SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=(\d+[a-z]?)\s+(EXTERNAL_REVIEW_\S+)\s*$")
+# F23B3: a revisão do DESIGN (rodada=D<n>) e a rodada sem resultado entram no CUSTO da revisão, nunca nas
+# "Rodadas de revisão" (comparáveis com a linha de base, que só tem rodadas do código)
+RODADA_DESIGN_RE = re.compile(r"^rodada=D\d+\Z")
+SEM_RESULTADO_RE = re.compile(r"^\s*sem resultado:\s*rodada=(?:\d+[a-z]?|D\d+)\s+(EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?)\s")
 PAPEIS = ("reviewer", "revisor2", "auditor", "desempate")
 TOKENS = ("entrada", "saida", "cache_lido", "cache_criado")
 MILHAO = Decimal(1000000)
@@ -214,6 +218,29 @@ def tabela_precos(nome):
 PRECOS = tabela_precos("precos.tsv")
 PRECOS_CACHE = tabela_precos("precos-cache.tsv")
 FORA = []
+
+
+# >>> nominal-estimado (a MESMA função está no eval-revisores.sh e no custo-feature.sh; um teste compara)
+def nominal_estimado(meta, papel, precos, cache):
+    """Decimal ou None: entrada×p_entrada + lido×p_lido + criado×p_criado + saída×p_saída, por milhão de tokens.
+
+    Para papel cobrado por assinatura, que não informa custo (F23B3). O adaptador grava a entrada já sem o cache
+    (significado da B1); campo `-` (inclusive o cache criado que ninguém mediu), modelo `-` ou preço ausente = None,
+    que nunca vira zero. precos: (engine, modelo) → (entrada, saída); cache: (engine, modelo) → (lido, criado)."""
+    eng = (meta.get(papel + "_engine_efetivo") or meta.get(papel + "_engine") or "").split(":", 1)[0]
+    modelo = meta.get(papel + "_modelo", "-")
+    num = [meta.get(papel + k, "-") for k in ("_tokens_entrada", "_tokens_cache_lido", "_tokens_cache_criado",
+                                              "_tokens_saida")]
+    if modelo in ("", "-", "n/d") or not all(re.match(r"^\d{1,12}\Z", x) for x in num):
+        return None
+    p, c = precos.get((eng, modelo)), cache.get((eng, modelo))
+    ent, lido, criado, sai = (Decimal(x) for x in num)
+    if p is None or ((lido or criado) and c is None):
+        return None
+    return (ent * p[0] + sai * p[1] + (lido * c[0] + criado * c[1] if c else 0)) / Decimal(1000000)
+# <<< nominal-estimado
+
+
 SEM_PRECO = set()
 ILEGIVEIS = [0]   # registros ilegíveis da última leitura de sessões
 
@@ -406,6 +433,10 @@ def ledger_info(arq):
             rodadas.add(mt.group(1))
             pastas.add(mt.group(2))
             continue
+        ms = SEM_RESULTADO_RE.match(ln)
+        if ms:
+            pastas.add(ms.group(1))
+            continue
         if not ln.lstrip().startswith("|"):
             continue
         c = [x.strip() for x in re.split(r"(?<!\\)\|", ln)][1:]
@@ -414,9 +445,10 @@ def ledger_info(arq):
         if len(c) != 7:
             continue
         mr = RODADA_RE.match(c[3])
-        if not mr:
+        if not mr and not RODADA_DESIGN_RE.match(c[3]):
             continue
-        rodadas.add(mr.group(1))
+        if mr:
+            rodadas.add(mr.group(1))
         if PASTA_RE.match(c[6]):
             pastas.add(c[6])
         if c[5] == "sim":
@@ -471,6 +503,9 @@ def revisao(feat, ledger_arq):
             if seg is not None:
                 conta["segundos"] += seg
             nominal, estimado, incerto = custo_de(bruto)
+            if nominal is None and bruto == "assinatura":   # F23B3: engine por assinatura sem custo informado
+                nominal = nominal_estimado(meta, papel, PRECOS, PRECOS_CACHE)
+                estimado = nominal is not None
             conta["estimado"] = conta["estimado"] or estimado
             cob = COBRANCA.get(engine.split(":", 1)[0], "desconhecida")
             pago = Decimal(0) if cob == "assinatura" else (nominal if cob == "pay-per-token" else None)

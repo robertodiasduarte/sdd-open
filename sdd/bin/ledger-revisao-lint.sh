@@ -16,12 +16,16 @@
 #                   rodada teve 2 revisores (R1, R1@claude, N1)
 #         sev       HIGH | MED | LOW
 #         veredito  APLICADA | REBATIDA_EVIDENCIA | REBATIDA_ESCOPO
-#         rodada    rodada=<N> (N inteiro, com sufixo de lote opcional: 5 ou 5a)
+#         rodada    rodada=<N> (N inteiro, com sufixo de lote opcional: 5 ou 5a) ou rodada=D<n> (revisão do DESIGN)
 #         evidência não vazia; com dano = sim, traz `teste: <nome>` (test_…, arquivo::teste ou tests/…)
 #         dano      sim | nao | ? ("?" só em arquivo com a linha `retroativo: sim`, sozinha, fora de bloco cercado)
 #         revisão   a pasta EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS> da rodada (com -<n> se o nome colidiu)
 #       rodada em que a revisão não achou nada: uma linha fora da tabela,
 #         sem achados: rodada=<N> EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>
+#       F23B3: rodada=D<n> é a revisão do DESIGN; e 2 linhas fora da tabela,
+#         sem resultado: rodada=<N ou D<n>> EXTERNAL_REVIEW_<…> — <motivo>   (rodada interrompida ou sem veredito)
+#         escapou: commit=<sha> · teste: <nome> · dano=<dado|dinheiro|acesso|publicação|disponibilidade> — <onde>
+#           (defeito desta frente achado depois de publicada; vai no ledger da frente de origem)
 #       linha de texto que não começa por `|` mas tem 4 ou mais barras verticais (ou a barra inicial atrás de
 #       citação, item de lista ou barra invertida) é acusada como linha do ledger fora da tabela: em texto
 #       corrido, escape cada barra com `\|` ou ponha o trecho num bloco cercado
@@ -70,7 +74,6 @@ SEV = ("HIGH", "MED", "LOW")
 VEREDITOS = ("APLICADA", "REBATIDA_EVIDENCIA", "REBATIDA_ESCOPO")
 DANO = ("sim", "nao", "?")
 ACHADO_RE = re.compile(r"^[RN]\d+(@[A-Za-z0-9][A-Za-z0-9._:/-]*)?$")
-RODADA_RE = re.compile(r"^rodada=\d+[a-z]?$")
 PASTA = r"EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?"
 PASTA_RE = re.compile("^" + PASTA + "$")
 SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*(rodada=\d+[a-z]?)\s+(" + PASTA + r")\s*$")
@@ -84,6 +87,42 @@ CABECALHO = ["achado", "sev", "veredito", "rodada", "evidência", "dano", "revis
 # fecha com o mesmo caractere, em quantidade igual ou maior, sem rótulo. Código em linha (```x```) não abre.
 CERCA_RE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
 SOLTA_RE = re.compile(r"^[\s>*\\\u200b\ufeff-]*")
+
+
+# >>> linhas-especiais (a MESMA leitura está no ledger-revisao-lint.sh e no eval-revisores.sh; um teste compara)
+# F23B3: as linhas fora da tabela que fecham a conta da frente. `rodada=D<n>` é a revisão do DESIGN.
+RODADA_RE = re.compile(r"^rodada=(?:\d+[a-z]?|D\d+)\Z")
+TRAVESSAO = r"\s*(?:—|–|-{1,2})\s*"
+SEM_RESULTADO_RE = re.compile(r"^\s*sem resultado:\s*(rodada=(?:\d+[a-z]?|D\d+))\s+(" + PASTA + r")" + TRAVESSAO
+                              + r"(\S.{2,}?)\s*\Z")
+ESCAPOU_RE = re.compile(r"^\s*escapou:\s*commit=([0-9a-f]{7,40})\s*·\s*teste:\s*`?([^`·\s][^`·]*?)`?\s*·\s*"
+                        r"dano=(\S+)" + TRAVESSAO + r"(\S.{2,}?)\s*\Z")
+TESTE_ESCAPOU_RE = re.compile(r"^(?:[\w./-]+::[\w.:-]+|(?:\w+\.)*test_\w+(?:\.py)?(?:::[\w.:-]+)?|tests/[\w./-]+)\Z")
+DANOS_ESCAPOU = ("dado", "dinheiro", "acesso", "publicação", "disponibilidade")
+QUASE_RE = re.compile(r"^\s*[-*>]*\s*\**(sem resultado|escapou)\b", re.I)
+
+
+def linha_especial(ln):
+    """('sem resultado', rodada, pasta) · ('escapou', commit, teste, dano) · ('quase', motivo) · None."""
+    m = SEM_RESULTADO_RE.match(ln)
+    if m:
+        return ("sem resultado", m.group(1), m.group(2))
+    m = ESCAPOU_RE.match(ln)
+    if m:
+        if m.group(3) not in DANOS_ESCAPOU:
+            return ("quase", "escape com dano `%s` fora de %s" % (m.group(3), ", ".join(DANOS_ESCAPOU)))
+        if not TESTE_ESCAPOU_RE.match(m.group(2)):
+            return ("quase", "escape com teste `%s` fora da forma test_…, arquivo::teste ou tests/…" % m.group(2))
+        return ("escapou", m.group(1), m.group(2), m.group(3))
+    q = QUASE_RE.match(ln)
+    if q and q.group(1).lower() == "sem resultado":
+        return ("quase", "rodada sem resultado se escreve `sem resultado: rodada=<N ou D<n>> "
+                         "EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS> — <motivo>`")
+    if q:
+        return ("quase", "escape se escreve `escapou: commit=<sha> · teste: <nome> · dano=<dado, dinheiro, acesso, "
+                         "publicação ou disponibilidade> — <onde apareceu>`")
+    return None
+# <<< linhas-especiais
 
 
 def linhas_uteis(texto):
@@ -184,8 +223,11 @@ for arq, texto in textos:
             if dentro:
                 continue   # texto de exemplo ou de comentário: só linha de tabela conta ali dentro
             m = SEM_ACHADOS_RE.match(ln)
-            if m:
-                sem_achados += 1
+            e = None if m else linha_especial(ln)
+            if m or (e and e[0] != "quase"):
+                sem_achados += 1   # sem achados, sem resultado e escapou: conteúdo conferido do arquivo
+            elif e:
+                violacoes.append("%s:%d — %s" % (arq, n, e[1]))
             elif SEM_ACHADOS_QUASE.match(ln):
                 violacoes.append("%s:%d — rodada sem achados se escreve `sem achados: rodada=<N> "
                                  "EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>`" % (arq, n))
@@ -232,7 +274,7 @@ for arq, texto in textos:
         if veredito not in VEREDITOS:
             acusa("veredito `%s` fora de APLICADA, REBATIDA_EVIDENCIA, REBATIDA_ESCOPO" % veredito)
         if not RODADA_RE.match(rodada):
-            acusa("rodada `%s` fora do formato rodada=<N>" % rodada)
+            acusa("rodada `%s` fora do formato rodada=<N> (ou rodada=D<n>, a revisão do DESIGN)" % rodada)
         if not evidencia or evidencia in ("—", "-"):
             acusa("evidência vazia")
         if not PASTA_RE.match(pasta):

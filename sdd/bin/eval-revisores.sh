@@ -10,6 +10,12 @@
 #
 # USO-INICIO
 #   eval-revisores.sh [<pasta-das-revisões>] [--ledgers <pasta-ou-arquivo>] [--registry <registry.tsv>]
+#                     [--precos <pasta>]
+#       --precos: pasta com precos.tsv e precos-cache.tsv (fora do pacote); com ela, o papel por assinatura que
+#                 não informa custo ganha o nominal estimado (≈), com o cache à parte (F23B3); sem ela, n/d
+#       Cadeia por frente (F23B3): uma linha por ledger — rodadas, 2º revisor por risco e por raso, evitado pela
+#                 regra (a regra antiga o chamaria) e o custo dele, dispensas à mão, escapes com dano e o aviso de
+#                 revisar a regra quando houve escape numa frente com o 2º revisor dispensado pela regra
 #       pasta: padrão review.output_dir do sdd/config.yaml da raiz git (sdd/reports/reviews se vazio)
 #       --ledgers: padrão sdd/reviews da raiz git; numa pasta, lê os LEDGER_REVISAO_*.md
 #       --registry: padrão review.registry do config, senão sdd/review/registry.tsv, senão o do pacote
@@ -84,6 +90,63 @@ CABECALHO = ["achado", "sev", "veredito", "rodada", "evidência", "dano", "revis
 # fecha com o mesmo caractere, em quantidade igual ou maior, sem rótulo. Código em linha (```x```) não abre.
 CERCA_RE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
 SOLTA_RE = re.compile(r"^[\s>*\\\u200b\ufeff-]*")
+
+
+# >>> linhas-especiais (a MESMA leitura está no ledger-revisao-lint.sh e no eval-revisores.sh; um teste compara)
+# F23B3: as linhas fora da tabela que fecham a conta da frente. `rodada=D<n>` é a revisão do DESIGN.
+RODADA_RE = re.compile(r"^rodada=(?:\d+[a-z]?|D\d+)\Z")
+TRAVESSAO = r"\s*(?:—|–|-{1,2})\s*"
+SEM_RESULTADO_RE = re.compile(r"^\s*sem resultado:\s*(rodada=(?:\d+[a-z]?|D\d+))\s+(" + PASTA + r")" + TRAVESSAO
+                              + r"(\S.{2,}?)\s*\Z")
+ESCAPOU_RE = re.compile(r"^\s*escapou:\s*commit=([0-9a-f]{7,40})\s*·\s*teste:\s*`?([^`·\s][^`·]*?)`?\s*·\s*"
+                        r"dano=(\S+)" + TRAVESSAO + r"(\S.{2,}?)\s*\Z")
+TESTE_ESCAPOU_RE = re.compile(r"^(?:[\w./-]+::[\w.:-]+|(?:\w+\.)*test_\w+(?:\.py)?(?:::[\w.:-]+)?|tests/[\w./-]+)\Z")
+DANOS_ESCAPOU = ("dado", "dinheiro", "acesso", "publicação", "disponibilidade")
+QUASE_RE = re.compile(r"^\s*[-*>]*\s*\**(sem resultado|escapou)\b", re.I)
+
+
+def linha_especial(ln):
+    """('sem resultado', rodada, pasta) · ('escapou', commit, teste, dano) · ('quase', motivo) · None."""
+    m = SEM_RESULTADO_RE.match(ln)
+    if m:
+        return ("sem resultado", m.group(1), m.group(2))
+    m = ESCAPOU_RE.match(ln)
+    if m:
+        if m.group(3) not in DANOS_ESCAPOU:
+            return ("quase", "escape com dano `%s` fora de %s" % (m.group(3), ", ".join(DANOS_ESCAPOU)))
+        if not TESTE_ESCAPOU_RE.match(m.group(2)):
+            return ("quase", "escape com teste `%s` fora da forma test_…, arquivo::teste ou tests/…" % m.group(2))
+        return ("escapou", m.group(1), m.group(2), m.group(3))
+    q = QUASE_RE.match(ln)
+    if q and q.group(1).lower() == "sem resultado":
+        return ("quase", "rodada sem resultado se escreve `sem resultado: rodada=<N ou D<n>> "
+                         "EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS> — <motivo>`")
+    if q:
+        return ("quase", "escape se escreve `escapou: commit=<sha> · teste: <nome> · dano=<dado, dinheiro, acesso, "
+                         "publicação ou disponibilidade> — <onde apareceu>`")
+    return None
+# <<< linhas-especiais
+
+
+# >>> nominal-estimado (a MESMA função está no eval-revisores.sh e no custo-feature.sh; um teste compara)
+def nominal_estimado(meta, papel, precos, cache):
+    """Decimal ou None: entrada×p_entrada + lido×p_lido + criado×p_criado + saída×p_saída, por milhão de tokens.
+
+    Para papel cobrado por assinatura, que não informa custo (F23B3). O adaptador grava a entrada já sem o cache
+    (significado da B1); campo `-` (inclusive o cache criado que ninguém mediu), modelo `-` ou preço ausente = None,
+    que nunca vira zero. precos: (engine, modelo) → (entrada, saída); cache: (engine, modelo) → (lido, criado)."""
+    eng = (meta.get(papel + "_engine_efetivo") or meta.get(papel + "_engine") or "").split(":", 1)[0]
+    modelo = meta.get(papel + "_modelo", "-")
+    num = [meta.get(papel + k, "-") for k in ("_tokens_entrada", "_tokens_cache_lido", "_tokens_cache_criado",
+                                              "_tokens_saida")]
+    if modelo in ("", "-", "n/d") or not all(re.match(r"^\d{1,12}\Z", x) for x in num):
+        return None
+    p, c = precos.get((eng, modelo)), cache.get((eng, modelo))
+    ent, lido, criado, sai = (Decimal(x) for x in num)
+    if p is None or ((lido or criado) and c is None):
+        return None
+    return (ent * p[0] + sai * p[1] + (lido * c[0] + criado * c[1] if c else 0)) / Decimal(1000000)
+# <<< nominal-estimado
 
 
 def linhas_uteis(texto):
@@ -208,15 +271,17 @@ def inesperado(tipo, valor, tb):
 sys.excepthook = inesperado
 
 # ── argumentos ──────────────────────────────────────────────────────────────────────────────────────
-args, pasta_arg, ledgers_arg, registry_arg = sys.argv[1:], None, None, None
+args, pasta_arg, ledgers_arg, registry_arg, precos_arg = sys.argv[1:], None, None, None, None
 i = 0
 while i < len(args):
     a = args[i]
-    if a in ("--ledgers", "--registry"):
+    if a in ("--ledgers", "--registry", "--precos"):
         if i + 1 >= len(args) or args[i + 1].startswith("--") or not args[i + 1]:
             para("%s pede um caminho" % a)
         if a == "--ledgers":
             ledgers_arg = args[i + 1]
+        elif a == "--precos":
+            precos_arg = args[i + 1]
         else:
             registry_arg = args[i + 1]
         i += 2
@@ -256,6 +321,22 @@ else:
     if not os.path.isfile(registry):
         registry = os.path.normpath(os.path.join(BIN, "..", "review", "registry.tsv"))
 
+# ── F23B3: tarifas para o nominal estimado de engine por assinatura (só com --precos; fora do pacote) ────
+PRECOS_EST, CACHE_EST = {}, {}
+if precos_arg is not None:
+    dir_precos = os.path.abspath(precos_arg)
+    if not os.path.isdir(dir_precos):
+        para("a pasta de --precos não existe: %s" % dir_precos)
+    for nome_tab, alvo in (("precos.tsv", PRECOS_EST), ("precos-cache.tsv", CACHE_EST)):
+        for ln in (ler(os.path.join(dir_precos, nome_tab)) or "").splitlines():
+            c = ln.split("\t")
+            if ln.startswith("#") or len(c) < 4:
+                continue
+            try:
+                alvo[(c[0].strip(), c[1].strip())] = (Decimal(c[2].strip()), Decimal(c[3].strip()))
+            except ArithmeticError:
+                continue   # preço ilegível = sem preço: o papel sai n/d, nunca zero
+
 # ── registry: engine → cobrança ─────────────────────────────────────────────────────────────────────
 cobranca = {}
 for ln in (ler(registry) or "").splitlines():
@@ -269,6 +350,7 @@ for ln in (ler(registry) or "").splitlines():
 # O arquivo é só do ledger: toda linha de tabela, fora de bloco cercado e de comentário, é o cabeçalho do molde ou
 # um achado. Toda linha que não entra na conta vai para "fora da conta" com arquivo:linha e o motivo.
 fora, linhas_ledger, n_ledgers, pastas_citadas, ditas_sem_achados = [], [], 0, set(), {}
+ditas_sem_resultado, pastas_frente, escapes = {}, {}, {}   # F23B3: frente = o ledger (LEDGER_REVISAO_<frente>.md)
 arquivos = []
 if os.path.isdir(ledgers):
     arquivos = [os.path.join(ledgers, f) for f in listar(ledgers)
@@ -283,6 +365,9 @@ for arq in arquivos:
         fora.append((nome_arq, "ledger ilegível"))
         continue
     n_ledgers += 1
+    frente = re.sub(r"^LEDGER_REVISAO_|\.md$", "", nome_arq)
+    da_frente = pastas_frente.setdefault(frente, set())
+    escapes.setdefault(frente, 0)
     uteis, abertos = linhas_uteis(texto)
     for n, motivo in abertos:
         fora.append(("%s:%d" % (nome_arq, n), motivo))
@@ -291,9 +376,19 @@ for arq in arquivos:
             if dentro:
                 continue   # texto de exemplo ou de comentário: só linha de tabela conta ali dentro
             m = SEM_ACHADOS_RE.match(ln)
+            e = None if m else linha_especial(ln)
             if m:
                 pastas_citadas.add(m.group(1))
+                da_frente.add(m.group(1))
                 ditas_sem_achados.setdefault(m.group(1), "%s:%d" % (nome_arq, n))
+            elif e and e[0] == "sem resultado":
+                pastas_citadas.add(e[2])
+                da_frente.add(e[2])
+                ditas_sem_resultado.setdefault(e[2], "%s:%d" % (nome_arq, n))
+            elif e and e[0] == "escapou":
+                escapes[frente] += 1
+            elif e:
+                fora.append(("%s:%d" % (nome_arq, n), e[1] + ": a linha não foi lida"))
             elif linha_solta(ln):
                 fora.append(("%s:%d" % (nome_arq, n), "linha com forma de linha do ledger fora da tabela (não começa "
                                                      "por `|`): não foi lida. Em texto corrido, escape cada "
@@ -320,6 +415,7 @@ for arq in arquivos:
             fora.append((onde, "dano `%s` fora de sim, nao, ?" % c[5]))
         else:
             pastas_citadas.add(c[6])
+            da_frente.add(c[6])
             linhas_ledger.append({"pasta": c[6], "id": c[0], "veredito": c[2], "dano": c[5], "onde": onde,
                                   "usada": False, "motivo": ""})
 
@@ -366,7 +462,7 @@ def linha_de(por, nome, engine, modelo):
 
 
 # ── pastas ──────────────────────────────────────────────────────────────────────────────────────────
-por, lidas, sem_ledger = {}, 0, []
+por, lidas, sem_ledger, metas = {}, 0, [], {}
 for d in (listar(pasta) if os.path.isdir(pasta) else []):
     caminho = os.path.join(pasta, d)
     if not d.startswith("EXTERNAL_REVIEW_") or not os.path.isdir(caminho):
@@ -381,6 +477,7 @@ for d in (listar(pasta) if os.path.isdir(pasta) else []):
         fora.append((d, "META ilegível ou incompleto"))
         continue
     lidas += 1
+    metas[d] = meta
     do_ledger = [x for x in linhas_ledger if x["pasta"] == d]
     if d not in pastas_citadas:
         sem_ledger.append(d)
@@ -388,11 +485,12 @@ for d in (listar(pasta) if os.path.isdir(pasta) else []):
     for chave, nome, arq in PAPEIS:
         if arq:
             ids_papel[chave] = ids_do(os.path.join(caminho, arq), so_novo=(chave == "auditor"))
-    if d in ditas_sem_achados:
-        n_ids = sum(len(lista or []) for lista in ids_papel.values())
-        if n_ids:
-            fora.append((ditas_sem_achados[d], "o ledger diz `sem achados` para %s, mas a revisão tem %d achado(s): "
-                                               "eles ficam em sem classificar" % (d, n_ids)))
+    for dita, rotulo_dito in ((ditas_sem_achados, "sem achados"), (ditas_sem_resultado, "sem resultado")):
+        if d in dita:
+            n_ids = sum(len(lista or []) for lista in ids_papel.values())
+            if n_ids:
+                fora.append((dita[d], "o ledger diz `%s` para %s, mas a revisão tem %d achado(s): eles ficam em "
+                                      "sem classificar" % (rotulo_dito, d, n_ids)))
     bases = {}   # id sem o rótulo → papéis que têm um id com essa base nesta pasta
     for p2, lista in ids_papel.items():
         for x in (lista or []):
@@ -430,6 +528,10 @@ for d in (listar(pasta) if os.path.isdir(pasta) else []):
         c["chamadas"] += 1
         bruto = (meta.get(chave + "_custo") or "").strip()
         valor, estimado, incerto = custo_de(bruto)
+        if valor is None and bruto == "assinatura" and PRECOS_EST:
+            v = nominal_estimado(meta, chave, PRECOS_EST, CACHE_EST)   # F23B3: com --precos
+            if v is not None:
+                valor, estimado = v, True
         if valor is None:
             c["sem_custo"] += 1
             if "US$" in bruto:   # tem cara de valor e não é um: avisa, em vez de virar "n/d" calado
@@ -586,6 +688,54 @@ for quem in sorted(por, key=lambda q: (ORDEM[q[0]], q[1])):
         quem[0], quem[1], c["cobranca"], c["rodadas"], falhas, pago, dinheiro(c["nominal"], c), c["achados"],
         de(c["aplicados"]), de(c["dano"]), de(c["fp"]), de(c["escopo"]), de(c["sem_class"]), pago_dano,
         por_dano(c["nominal"], c), agree))
+# ── F23B3: a cadeia por frente — 2º revisor por risco e por raso, evitado pela regra, dispensas à mão, escapes ──
+SEM_RISCO = "diff sem gatilho de risco — 1 revisor"
+avisos_regra = []
+if any(pastas_frente.get(f) for f in pastas_frente):
+    print("")
+    print("Cadeia por frente (o 2º revisor só por risco ou revisor raso; evitado = a regra antiga o chamaria):")
+    print("")
+    print("| Frente | Rodadas | 2º revisor por risco | 2º revisor por raso | Evitado pela regra | Custo evitado US$ | "
+          "Dispensas à mão | Escapes com dano |")
+    print("|---|---:|---:|---:|---:|---:|---|---:|")
+    for frente in sorted(pastas_frente):
+        ms = [metas[d] for d in sorted(pastas_frente[frente]) if d in metas]
+        if not ms and not escapes.get(frente):
+            continue
+        risco = sum(1 for m in ms if m.get("gatilho_2o_revisor", "").startswith("segurança"))
+        raso = sum(1 for m in ms if m.get("gatilho_2o_revisor", "").startswith("revisor1 raso"))
+        pela_regra = [m for m in ms if "gatilho_regra_antiga" in m and m.get("gatilho_2o_revisor") == SEM_RISCO]
+        evitadas = [m for m in pela_regra if m["gatilho_regra_antiga"] not in ("", "-")]
+        soma, sem_valor = Decimal(0), False
+        for m in evitadas:
+            v = custo_de((m.get("reviewer_custo") or "").strip())[0]
+            if v is None and (m.get("reviewer_custo") or "").strip() == "assinatura" and PRECOS_EST:
+                v = nominal_estimado(m, "reviewer", PRECOS_EST, CACHE_EST)
+            if v is None:
+                sem_valor = True
+            else:
+                soma += v
+        if not evitadas:
+            custo = "—"
+        elif sem_valor and soma == 0:
+            custo = "n/d"
+        else:
+            custo = numero(soma) + (" + n/d" if sem_valor else "")
+        r2_mao = sum(1 for m in ms if "--no-revisor2" in m.get("dispensas_a_mao", "").split()
+                     or ("dispensas_a_mao" not in m and m.get("gatilho_2o_revisor", "").endswith(
+                         "dispensado por --no-revisor2")))
+        des_mao = sum(1 for m in ms if "--no-desempate" in m.get("dispensas_a_mao", "").split())
+        des_nd = any("dispensas_a_mao" not in m for m in ms)
+        dispensas = "revisor2 %d · desempate %d%s" % (r2_mao, des_mao, " + n/d" if des_nd else "")
+        n_esc = escapes.get(frente, 0)
+        print("| %s | %d | %d | %d | %d | %s | %s | %d |" % (frente, len(ms), risco, raso, len(evitadas), custo,
+                                                          dispensas, n_esc))
+        if n_esc and pela_regra:
+            avisos_regra.append("⚠️ %s: %d escape(s) com dano com o 2º revisor dispensado pela regra — revise a regra %s"
+                                % (frente, n_esc, "(volta atrás ou o caminho entra na superfície de risco)" if evitadas
+                                   else "(o caminho entra na superfície de risco?)"))
+    for a in avisos_regra:
+        print(a)
 print("")
 print("fora da conta: %d%s" % (len(fora), (" (" + "; ".join("%s: %s" % x for x in fora) + ")") if fora else ""))
 print("RESULTADO: MEDIDO")
