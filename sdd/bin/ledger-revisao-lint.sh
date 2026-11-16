@@ -76,7 +76,7 @@ DANO = ("sim", "nao", "?")
 ACHADO_RE = re.compile(r"^[RN]\d+(@[A-Za-z0-9][A-Za-z0-9._:/-]*)?$")
 PASTA = r"EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?"
 PASTA_RE = re.compile("^" + PASTA + "$")
-SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*(rodada=\d+[a-z]?)\s+(" + PASTA + r")\s*$")
+SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*(rodada=(?:\d+[a-z]?|D\d+))\s+(" + PASTA + r")\s*$")
 SEM_ACHADOS_QUASE = re.compile(r"^\s*[-*>]*\s*\**sem achados\b", re.I)
 RETRO_RE = re.compile(r"^retroativo: sim$")
 RETRO_QUASE = re.compile(r"^\s*[-*>]*\s*\**retroativo\**\s*:\**\s*sim\b", re.I)

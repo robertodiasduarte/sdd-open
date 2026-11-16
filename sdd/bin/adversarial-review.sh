@@ -93,8 +93,10 @@ FRASES_SEGURANCA = ("rota pública", "rota publica")
 
 
 def termo_de_seguranca(texto):
-    """O 1º termo de segurança do texto, por palavra inteira e sem caixa, ou None ('author' não é 'auth')."""
-    baixo = texto.lower()
+    """O 1º termo de segurança do texto, por palavra inteira e sem caixa, ou None ('author' não é 'auth'). O texto
+    vai a NFC antes: um caminho acentuado em NFD ("o" + acento combinante) casa o termo acentuado."""
+    import unicodedata
+    baixo = unicodedata.normalize("NFC", texto).lower()
     for f in FRASES_SEGURANCA:
         if f in baixo:
             return f
@@ -560,15 +562,18 @@ if not os.path.isabs(saida_rel) or os.path.commonpath([os.path.abspath(saida_abs
 
 # ── gatilhos do 2º revisor (parte que não depende da resposta) ───────────────────────────────────
 def gatilho_risco():
-    """Superfície de risco do diff: termo de segurança num caminho, glob de review.security_globs ou de layers.sql."""
+    """(texto do gatilho, motivo) da superfície de risco: termo de segurança num caminho, glob de review.security_globs
+    ou de layers.sql; (None, "-") sem risco."""
     globs = [g.strip() for g in (slot(cfg, "review", "security_globs") or "").split(",") if g.strip()]
     camadas = {k: v for k, v in bloco_inteiro(cfg, "layers").items() if v}
     if camadas.get("sql"):
         globs.append(camadas["sql"])
     for a in arqs:
-        if termo_de_seguranca(a) or any(fnmatch.fnmatch(a, g) for g in globs):
-            return "segurança (%s)" % a
-    return None
+        t = termo_de_seguranca(a)
+        g = None if t else next((g for g in globs if fnmatch.fnmatch(a, g)), None)
+        if t or g:
+            return "segurança (%s)" % a, ("termo " + t) if t else ("glob " + g)
+    return None, "-"
 
 
 def gatilho_regra_antiga():
@@ -584,7 +589,7 @@ def gatilho_regra_antiga():
     return "-"
 
 
-gat = gatilho_risco()
+gat, gat_motivo = gatilho_risco()   # o texto de gatilho_2o_revisor não muda (o --conferir o lê); o motivo vai à parte
 regra_antiga = gatilho_regra_antiga()
 
 
@@ -1145,7 +1150,7 @@ def bloco_papel(pref, r, extra):
 
 M += bloco_papel("reviewer", rev, [("reviewer_achados", str(rev.get("achados", 0)))])
 M += [("revisor1_raso", "sim" if raso1 else "nao"), ("gatilho_2o_revisor", gatilho),
-      ("gatilho_regra_antiga", regra_antiga),
+      ("gatilho_risco_motivo", gat_motivo), ("gatilho_regra_antiga", regra_antiga),
       ("dispensas_a_mao", " ".join(f for f in ("--no-revisor2", "--no-desempate") if flags[f]) or "-")]
 M += bloco_papel("revisor2", r2, [("revisor2_achados", str(r2.get("achados", 0)))] if r2 else [])
 M += bloco_papel("auditor", aud, [("auditor_vereditos", str(aud.get("vereditos", 0)))]) if aud else \

@@ -82,7 +82,7 @@ TROCADA = "trocada por outra engine"
 VEREDITOS = ("APLICADA", "REBATIDA_EVIDENCIA", "REBATIDA_ESCOPO")
 PASTA = r"EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?"
 PASTA_RE = re.compile("^" + PASTA + "$")
-SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=\d+[a-z]?\s+(" + PASTA + r")\s*$")
+SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=(?:\d+[a-z]?|D\d+)\s+(" + PASTA + r")\s*$")
 CUSTO_RE = re.compile(r"^(≈)?\s*US\$\s*([0-9]{1,12}(?:[.,][0-9]{1,12})?)(\s*\+\s*\$\?)?$")
 SEPARADOR_RE = re.compile(r"^:?-+:?$")
 CABECALHO = ["achado", "sev", "veredito", "rodada", "evidência", "dano", "revisão"]
@@ -708,7 +708,9 @@ if any(pastas_frente.get(f) for f in pastas_frente):
         evitadas = [m for m in pela_regra if m["gatilho_regra_antiga"] not in ("", "-")]
         soma, sem_valor = Decimal(0), False
         for m in evitadas:
-            v = custo_de((m.get("reviewer_custo") or "").strip())[0]
+            v, _, incerto = custo_de((m.get("reviewer_custo") or "").strip())
+            if incerto:
+                sem_valor = True   # `US$ x + $?`: o x entra, o resto é desconhecido (N1 da rodada 1)
             if v is None and (m.get("reviewer_custo") or "").strip() == "assinatura" and PRECOS_EST:
                 v = nominal_estimado(m, "reviewer", PRECOS_EST, CACHE_EST)
             if v is None:

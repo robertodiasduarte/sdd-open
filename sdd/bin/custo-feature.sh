@@ -72,7 +72,7 @@ PASTA_RE = re.compile(r"^EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?\Z")
 PASTA_NO_TEXTO = re.compile(r"EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?")
 CUSTO_RE = re.compile(r"^(≈)?\s*US\$\s*([0-9]{1,12}(?:[.,][0-9]{1,12})?)(\s*\+\s*\$\?)?$")
 RODADA_RE = re.compile(r"^rodada=(\d+[a-z]?)\Z")
-SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=(\d+[a-z]?)\s+(EXTERNAL_REVIEW_\S+)\s*$")
+SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=(\d+[a-z]?|D\d+)\s+(EXTERNAL_REVIEW_\S+)\s*$")
 # F23B3: a revisão do DESIGN (rodada=D<n>) e a rodada sem resultado entram no CUSTO da revisão, nunca nas
 # "Rodadas de revisão" (comparáveis com a linha de base, que só tem rodadas do código)
 RODADA_DESIGN_RE = re.compile(r"^rodada=D\d+\Z")
@@ -430,7 +430,8 @@ def ledger_info(arq):
     for ln in texto.splitlines():
         mt = SEM_ACHADOS_RE.match(ln)
         if mt:
-            rodadas.add(mt.group(1))
+            if not mt.group(1).startswith("D"):   # a revisão do DESIGN entra no custo, não nas rodadas
+                rodadas.add(mt.group(1))
             pastas.add(mt.group(2))
             continue
         ms = SEM_RESULTADO_RE.match(ln)

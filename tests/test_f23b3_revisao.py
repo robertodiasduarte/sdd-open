@@ -125,6 +125,28 @@ class AT002Risco(Base):
         self.assertEqual(m["gatilho_2o_revisor"], "segurança (src/autenticacao/sessao.sh)")
         self.assertEqual(m["revisor2_engine"], "stub-c")
 
+    def test_r4_caminho_em_nfd_casa_o_termo_acentuado(self):
+        import unicodedata
+        for arq in (AR, FLUXO):
+            f = funcao_de(arq, "termos-seguranca")["termo_de_seguranca"]
+            self.assertEqual(f(unicodedata.normalize("NFD", "lib/permissões.py")), "permissões")
+
+    def test_r2_o_meta_grava_o_termo_ou_glob_que_casou(self):
+        r = self.projeto(extra_cfg="layers:\n  sql: \"db/**\"\n")
+        self.escreve(r, "db/m.sql", "x\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b:auditor-agree-dois")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(meta(self.pasta(r))["gatilho_risco_motivo"], "glob db/**")
+        apaga(r)
+        r = self.projeto()
+        self.escreve(r, "src/auth/x.sh", "x\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b:auditor-agree-dois")
+        self.assertEqual(meta(self.pasta(r))["gatilho_risco_motivo"], "termo auth")
+        apaga(r)
+        r = self.projeto()
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.assertEqual(meta(self.pasta(r))["gatilho_risco_motivo"], "-")
+
     def test_globs_de_security_globs_e_de_layers_sql(self):
         casos = (("security_globs", "review:\n  security_globs: \"infra/**\"\n", "infra/x.sh"),
                  ("layers.sql", "layers:\n  sql: \"db/**\"\n", "db/m.sql"))
@@ -264,6 +286,15 @@ class AT005Cadeia(Medidor):
         c = self.linha_cadeia(out, "FX")
         self.assertEqual(c[1:], ["6", "1", "1", "2", "1.2500 + n/d", "revisor2 1 · desempate 1 + n/d", "0"])
 
+    def test_n1_custo_incerto_na_rodada_evitada_vira_mais_nd(self):
+        revs = self.tmp / "revs"
+        escreve_meta(revs / (R % 1), {"gatilho_regra_antiga": "42 arquivos (limiar 8)",
+                                       "reviewer_custo": "US$ 1.2500 + $?"})
+        led = self.ledger("INC", ["sem achados: rodada=1 %s" % (R % 1)])
+        rc, out = self.evalr(revs, led)
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.linha_cadeia(out, "INC")[5], "1.2500 + n/d")
+
     def test_sem_rodada_evitada_o_custo_e_travessao(self):
         revs = self.tmp / "revs"
         escreve_meta(revs / (R % 1), {})
@@ -309,6 +340,20 @@ class AT006LinhasNovas(Medidor):
         linha = next(ln for ln in out.splitlines() if ln.startswith("| revisor | stub-a"))
         self.assertEqual([x.strip() for x in linha.split("|")[1:-1]][12], "0 de 2")   # sem classificar
 
+    def test_r1_revisao_do_design_sem_achados(self):
+        revs = self.tmp / "revs"
+        escreve_meta(revs / (R % 1), {})
+        led = self.ledger("D", ["sem achados: rodada=D1 %s" % (R % 1)])
+        rc, out = self.lint(led)
+        self.assertEqual(rc, 0, out)
+        rc, out = self.evalr(revs, led)
+        self.assertEqual(rc, 0, out)
+        self.assertRegex(out, r"(?m)^fora da conta: 0$")
+        ns = {}
+        exec(compile("import re\n" + "\n".join(ln for ln in ler(CUSTO).splitlines()
+                                                if ln.startswith("SEM_ACHADOS_RE")), "x", "exec"), ns)
+        self.assertTrue(ns["SEM_ACHADOS_RE"].match("sem achados: rodada=D1 %s" % (R % 1)))
+
     def test_lint_recusa_as_linhas_quase_certas(self):
         for ruim in ("sem resultado: rodada=1 %s" % (R % 2),                      # sem motivo
                      "sem resultado: rodada=x %s — motivo" % (R % 2),             # rodada inválida
@@ -339,10 +384,16 @@ class AT006Loop(Base):
         p = self.pasta(r)
         led = self.escreve(self.tmp, "LEDGER_REVISAO_X.md",
                            "| achado | sev | veredito | rodada | evidência | dano | revisão |\n|---|---|---|---|---|---|---|\n"
-                           "| R1 | MED | APLICADA | rodada=D1 | DESIGN Decision 1 | nao | %s |\n" % p.name)
+                           "| R1 | HIGH | APLICADA | rodada=D1 | DESIGN Decision 1 | nao | %s |\n" % p.name)
         rc, o, e = self.roda([BASH, FLUXO, "loop", "--review", p, "--ledger", led, "--rodada", "D1"], r, self.env)
         self.assertIn(rc, (0, 10, 20), o + e)
         self.assertIn("rodada: D1 de 3", o)
+        self.assertIn("graves_abertos: 0", o)   # R3 da rodada 1: o R1 (HIGH) do stub tem veredito na linha D1
+        vazio = self.escreve(self.tmp, "LEDGER_REVISAO_VAZIO.md", "| achado | sev | veredito | rodada | evidência | dano | "
+                             "revisão |\n|---|---|---|---|---|---|---|\n| R1 | HIGH | APLICADA | rodada=1 | x | nao | %s |\n"
+                             % p.name)
+        _, o2, _ = self.roda([BASH, FLUXO, "loop", "--review", p, "--ledger", vazio, "--rodada", "D1"], r, self.env)
+        self.assertIn("graves_abertos: 1", o2)   # a linha da rodada 1 não vale para a D1
         rc, o, e = self.roda([BASH, FLUXO, "loop", "--review", p, "--ledger", led, "--rodada", "d1"], r, self.env)
         self.assertEqual(rc, 64, o + e)
 

@@ -216,8 +216,10 @@ FRASES_SEGURANCA = ("rota pública", "rota publica")
 
 
 def termo_de_seguranca(texto):
-    """O 1º termo de segurança do texto, por palavra inteira e sem caixa, ou None ('author' não é 'auth')."""
-    baixo = texto.lower()
+    """O 1º termo de segurança do texto, por palavra inteira e sem caixa, ou None ('author' não é 'auth'). O texto
+    vai a NFC antes: um caminho acentuado em NFD ("o" + acento combinante) casa o termo acentuado."""
+    import unicodedata
+    baixo = unicodedata.normalize("NFC", texto).lower()
     for f in FRASES_SEGURANCA:
         if f in baixo:
             return f
