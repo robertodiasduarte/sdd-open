@@ -435,6 +435,9 @@ def revisao(feat, ledger_arq):
     except OSError:
         nomes = []
     alvo = "DEFINE_%s.md" % feat
+    for n in sorted(citadas - set(nomes)):   # R1 da rodada 3: pasta citada pelo ledger e ausente do disco
+        FORA.append(("revisão", "%s citada pelo ledger e ausente de %s" % (n, os.path.basename(reviews))))
+        marca_nd(conta)
     for n in nomes:
         meta = meta_de(os.path.join(reviews, n))
         # R4 da revisão do código: aceita nome solto ou caminho, separado por vírgula, ponto e vírgula ou espaço
@@ -445,7 +448,10 @@ def revisao(feat, ledger_arq):
         for papel in PAPEIS:
             engine = meta.get(papel + "_engine_efetivo") or meta.get(papel + "_engine") or ""
             bruto = meta.get(papel + "_custo", "")
-            if not engine or engine == "-" or bruto in ("", "-"):
+            if not engine or engine == "-":
+                continue
+            if bruto in ("", "-"):   # R4 da rodada 3: o papel rodou e o custo não foi gravado — n/d, nunca zero
+                marca_nd(conta)
                 continue
             for k, campo in (("entrada", "_tokens_entrada"), ("saida", "_tokens_saida")):
                 v = meta.get(papel + campo, "")
@@ -557,6 +563,9 @@ def modo_feature():
         # leitor que falhou ou registro ilegível: não se sabe a que fase pertencia, então toda linha da janela é parcial
         for c in [contas[f] for f in ordem] + [sem_fase]:
             marca_nd(c)
+    if janela is not None and not falhou and all(c["itens"] == 0 for c in [contas[f] for f in ordem] + [sem_fase]):
+        # R2 da rodada 3: nenhuma mensagem lida na janela inteira (agente sem leitor): o trecho sem fase também não foi medido
+        marca_nd(sem_fase)
     for f in ordem:
         if contas[f]["itens"] == 0:   # fase marcada sem nenhuma mensagem lida: agente sem leitor ou sem registro
             FORA.append(("fase", "nenhuma mensagem lida em %s: agente sem leitor ou sem registro" % f))

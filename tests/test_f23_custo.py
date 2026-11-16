@@ -385,6 +385,37 @@ class Rodada2(Base):
         self.assertEqual((msgs[-1]["entrada"], msgs[-1]["saida"]), (300, 5))
 
 
+class Rodada3(Base):
+    """R1, R2 e R4 da rodada 3 da revisão do código."""
+
+    def saida(self) -> tuple[dict, str]:
+        rc, out, err = self.custo(F, "--precos", str(self.copiado["precos"]), "--saida", "-")
+        self.assertEqual(rc, 0, out + err)
+        return self.tabela(out), out
+
+    def test_pasta_citada_pelo_ledger_e_ausente_e_n_d(self):
+        with open(self.copiado["ledgers"] / "LEDGER_REVISAO_F99_TESTE.md", "a", encoding="utf-8") as h:
+            h.write("\nsem achados: rodada=3 EXTERNAL_REVIEW_20261115-170000\n")
+        t, out = self.saida()
+        self.assertEqual(t["revisão"][6], "≈2.0300 + n/d")
+        self.assertIn("EXTERNAL_REVIEW_20261115-170000 citada pelo ledger e ausente", out)
+
+    def test_papel_que_rodou_sem_custo_gravado_e_n_d(self):
+        self.escreve(self.raiz, "sdd/reports/reviews/EXTERNAL_REVIEW_20261115-180000/META.txt",
+                     "docs_sdd : DEFINE_F99_TESTE.md\nreviewer_engine_efetivo : codex\nreviewer_exit : 0\nreviewer_custo : -\n")
+        t, _ = self.saida()
+        self.assertEqual(t["revisão"][0], "3")
+        self.assertEqual(t["revisão"][6], "≈2.0300 + n/d")
+
+    def test_agente_sem_leitor_deixa_sem_fase_n_d(self):
+        vazio = self.tmp / "sem-sessoes"
+        vazio.mkdir()
+        self.env = dict(self.env, CLAUDE_CONFIG_DIR=str(vazio), CODEX_HOME=str(vazio))
+        t, out = self.saida()
+        for linha in ("define", "build", "sem fase"):
+            self.assertEqual(t[linha][6], "n/d", linha)
+
+
 class AT006Revisao(Base):
     """AT-006 e Decision 8: o nominal da revisão bate com o eval-revisores.sh sobre as mesmas pastas."""
 
