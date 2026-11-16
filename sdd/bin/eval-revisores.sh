@@ -702,8 +702,9 @@ if any(pastas_frente.get(f) for f in pastas_frente):
         ms = [metas[d] for d in sorted(pastas_frente[frente]) if d in metas]
         if not ms and not escapes.get(frente):
             continue
+        # o 2º revisor foi CHAMADO: houve engine escolhida (falhar conta; dispensa à mão e "indisponível", não)
         chamou = [m.get("gatilho_2o_revisor", "") for m in ms
-                  if not m.get("gatilho_2o_revisor", "").endswith("dispensado por --no-revisor2")]
+                  if m.get("revisor2_engine", "-") not in ("", "-", "indisponível")]
         risco = sum(1 for g in chamou if g.startswith("segurança"))   # dispensa à mão conta nas dispensas, não aqui
         raso = sum(1 for g in chamou if g.startswith("revisor1 raso"))
         pela_regra = [m for m in ms if "gatilho_regra_antiga" in m and m.get("gatilho_2o_revisor") == SEM_RISCO]

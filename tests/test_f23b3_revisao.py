@@ -311,6 +311,17 @@ class AT005Cadeia(Medidor):
         self.assertEqual(self.linha_cadeia(out, "MAO")[1:4] + [self.linha_cadeia(out, "MAO")[6]],
                          ["2", "0", "0", "revisor2 2 · desempate 0"])
 
+    def test_n1_rodada3_sem_engine_disponivel_nao_conta_como_chamado(self):
+        revs = self.tmp / "revs"
+        escreve_meta(revs / (R % 1), {"gatilho_2o_revisor": "segurança (src/auth/x.sh)",
+                                       "revisor2_engine": "indisponível", "revisor2_exit": "67"})
+        escreve_meta(revs / (R % 2), {"gatilho_2o_revisor": "segurança (src/auth/y.sh)", "revisor2_engine": "stub-c",
+                                       "revisor2_exit": "65"})   # chamada que falhou também é chamada
+        led = self.ledger("IND", ["sem achados: rodada=%d %s" % (k, R % k) for k in (1, 2)])
+        rc, out = self.evalr(revs, led)
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.linha_cadeia(out, "IND")[1:3], ["2", "1"])
+
     def test_sem_rodada_evitada_o_custo_e_travessao(self):
         revs = self.tmp / "revs"
         escreve_meta(revs / (R % 1), {})
@@ -662,9 +673,6 @@ class AT011Cerca(Base):
             self.assertTrue((RAIZ / "sdd/review/prompts" / (papel + ".md")).is_file())
 
 
-if __name__ == "__main__":
-    unittest.main()
-
 
 class Raio(Sandbox):
     """Raio de impacto da release da F23B3: o gate offline e a contagem de tokens da revisão."""
@@ -685,3 +693,7 @@ class Raio(Sandbox):
     def test_a_revisao_soma_o_cache_nos_tokens(self):
         t = ler(CUSTO)
         self.assertIn('("cache_lido", "_tokens_cache_lido"), ("cache_criado", "_tokens_cache_criado")', t)
+
+
+if __name__ == "__main__":
+    unittest.main()
