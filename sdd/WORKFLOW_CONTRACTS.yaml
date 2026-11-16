@@ -89,8 +89,8 @@ curador:
     - "playbook"
     - "worktree"
   staging: "<pasta temporária>/sdd-curadoria-<hash da raiz>/LOTE_<F>_<entrada>/"
-  snapshot: "<pasta temporária>/sdd-fronteira-<hash da raiz>/<F>/curador/"
-  permitido: "sdd/reports/briefs/BRIEF_curador_<F>.md"
+  snapshot: "<pasta temporária>/sdd-fronteira-<hash da raiz>/<F>/curador-<entrada>/"
+  permitido: "sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md"
   retorno: "<<<CURADORIA"
   validador: "`sdd/bin/playbook-curator.sh` --conferir-bloco"
   colunas:

@@ -91,7 +91,7 @@ funcionava. Passada que não se aplica ao diff é **pulada**, não "revisada sem
 diff-base (`git merge-base origin/{default_branch} HEAD`). Rode `bash sdd/bin/versao-nova.sh` (se existir):
 exit 10 ⇒ a frase de versão nova (`references/como-falar.md`) no relatório e no bloco do OK, sem abortar; senão, nada.
 Rode `bash sdd/bin/trilha.sh {F}` (base `origin/{default_branch}`): `TRILHA: curta` (sem DEFINE, até 3 arquivos e 100 linhas
-fora dos documentos do SDD) ou `completa`; o resultado vai para o ledger (`trilha:`). Exit 2 ou 64 ⇒ `completa`, com o motivo.
+fora dos documentos do SDD) ou `completa` (exit 1); o resultado vai para o ledger (`trilha:`). Exit 2 ou 64 (o script não decidiu) ⇒ grave `completa`, com o motivo.
 
 **0a. Determinístico**, sobre `origin/{default_branch}...HEAD`, em paralelo:
 
@@ -342,10 +342,10 @@ Toda mensagem daqui em diante diz que a publicação já terminou: uma espera se
     **sem nova pergunta**: o OK já cobriu o papel. Push recusado ou conflito que a regra do item 11 não resolve ⇒ o commit fica na branch da frente, sem
     `--force`, e o relatório final dá o comando de envio; nada é apagado no item 17.
 17. **Branch da frente.** Com o commit de papel em `origin/{default_branch}`: se a branch da frente existe no remoto
-    (`git ls-remote --heads origin <branch>`) e é ancestral de `origin/{default_branch}`
-    (`git merge-base --is-ancestor`), apague-a: `GIT_TERMINAL_PROMPT=0 git push origin --delete <branch>`, com a linha
-    de recibo e o comando que desfaz (`git push origin <sha>:refs/heads/<branch>`). Não é ancestral, ou o item 16 não
-    enviou ⇒ não apague e diga por quê. A branch local e a worktree não se apagam de dentro dela: o relatório final
+    (`git ls-remote --heads origin <branch>`) e já está toda integrada (a release aterrissa por cherry-pick, então o
+    teste é por conteúdo: `git cherry origin/{default_branch} origin/<branch>` sem nenhuma linha `+`), apague-a: `GIT_TERMINAL_PROMPT=0 git push origin --delete <branch>`, com a linha
+    de recibo e o comando que desfaz (`git push origin <sha>:refs/heads/<branch>`). Sobra linha `+` (commit que não
+    entrou), ou o item 16 não enviou ⇒ não apague e diga por quê. A branch local e a worktree não se apagam de dentro dela: o relatório final
     dá o comando, rodado de fora (`git worktree remove "<pasta>"` e `git branch -d <branch>`).
 
 ## FASE 4 — Relatório

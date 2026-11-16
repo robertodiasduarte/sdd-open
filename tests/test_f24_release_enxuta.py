@@ -296,7 +296,7 @@ class AT007_UmaParadaSo(unittest.TestCase):
 
     def test_branch_remota_so_se_ancestral_e_com_recibo(self):
         item = " ".join(RELEASE[RELEASE.index("17. **Branch da frente.**"):RELEASE.index("## FASE 4")].split())
-        for trecho in ("git merge-base --is-ancestor", "git push origin --delete <branch>", "git push origin <sha>:refs/heads/<branch>",
+        for trecho in ("git cherry", "git push origin --delete <branch>", "git push origin <sha>:refs/heads/<branch>",
                        "não apague e diga por quê", "git worktree remove"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, item)
@@ -636,6 +636,52 @@ class Revisao2Textos(unittest.TestCase):
     def test_n1_o_lote_comeca_com_o_playbook_limpo(self):
         corrido = " ".join(LOTE.split())
         self.assertIn("git diff --quiet -- sdd/playbook.md sdd/invariants.md", corrido)
+
+
+class Revisao3(Projeto):
+    """Rodada 3 da revisão do código (EXTERNAL_REVIEW_20261116-203629): vermelhos em 4b3f4b2."""
+
+    def test_r1_entrada_recusada_nao_prende_as_impressoes(self):
+        self.feature("FA")
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        [a] = self.entradas("FA")
+        self.commit(self.r, "papel")
+        rc, out, err = self.cur("--recusar", str(a), "bloco reprovado 2 vezes")
+        self.assertEqual(rc, 0, out + err)
+        self.assertTrue((a.parent / (a.name + ".recusada")).is_file())
+        self.commit(self.r, "lote")
+        rc, out, _ = self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        self.assertEqual(rc, 0, out)  # as linhas voltam numa entrada nova
+        self.assertIn("removida a entrada recusada", out)
+        [b] = self.entradas("FA")
+        self.assertIn("DELTA LM-020 ajudou+1", (b / "colheita.txt").read_text(encoding="utf-8"))
+        self.assertFalse((a.parent / (a.name + ".recusada")).exists())
+
+    def test_r4_linha_sem_evidencia_volta_na_colheita_seguinte(self):
+        self.feature("FA")
+        d = self.r / "sdd/features/DESIGN_FA.md"
+        d.write_text(d.read_text(encoding="utf-8") + "\n", encoding="utf-8")
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        self.commit(self.r, "agora com o DESIGN commitado")
+        rc, out, _ = self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        self.assertEqual(rc, 0, out)
+        e1, e2 = self.entradas("FA")
+        self.assertIn("DELTA LM-020 ajudou+1", (e2 / "colheita.txt").read_text(encoding="utf-8"))
+
+
+class Revisao3Textos(unittest.TestCase):
+    def test_r5_branch_integrada_por_conteudo(self):
+        item = " ".join(RELEASE[RELEASE.index("17. **Branch da frente.**"):RELEASE.index("## FASE 4")].split())
+        self.assertIn("git cherry origin/{default_branch} origin/<branch>", item)
+
+    def test_r3_contrato_do_curador_por_entrada(self):
+        contratos = (RAIZ / "sdd/WORKFLOW_CONTRACTS.yaml").read_text(encoding="utf-8")
+        bloco = contratos[contratos.index("\ncurador:"):]
+        self.assertIn("BRIEF_curador_<F>_<entrada>.md", bloco)
+        self.assertIn("/<F>/curador-<entrada>/", bloco)
+
+    def test_lote_marca_a_recusa(self):
+        self.assertIn("--recusar", LOTE)
 
 
 if __name__ == "__main__":

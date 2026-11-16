@@ -1715,13 +1715,26 @@ def nome_novo(pasta_feature):
         agora += datetime.timedelta(seconds=1)
 
 
+def recusada(pe):
+    return os.path.isfile(pe + ".recusada")
+
+
 def remove_falhas(raiz, feature, exceto=None):
-    """Uma colheita que terminou cobre o que as entradas falhas não colheram (as impressões delas nunca foram
-    excluídas de nada): elas saem da fila. A release põe a remoção no commit de papel."""
+    """Uma colheita que terminou cobre o que as entradas falhas e as recusadas pelo lote não deram como julgado (as
+    impressões delas não excluem nada): elas saem da fila. A release põe a remoção no commit de papel."""
     for _f, pe in entradas_da_fila(raiz, feature):
-        if pe != exceto and rc_da_entrada(pe) != 0:
+        if pe == exceto:
+            continue
+        if rc_da_entrada(pe) != 0:
             shutil.rmtree(pe, ignore_errors=True)
             diz("removida a entrada que falhou: " + os.path.relpath(pe, raiz).replace(os.sep, "/"))
+        elif recusada(pe):
+            shutil.rmtree(pe, ignore_errors=True)
+            try:
+                os.remove(pe + ".recusada")
+            except OSError:
+                pass
+            diz("removida a entrada recusada pelo lote: " + os.path.relpath(pe, raiz).replace(os.sep, "/"))
 
 
 def origens_de(feature, nome):
@@ -1790,8 +1803,10 @@ def enfileirar(args):
         # o que já está na fila desta feature não conta de novo: entra no registro do staging, ao lado do já julgado
         na_fila = set()
         for _f, pe in entradas_da_fila(raiz, feature):
-            if rc_da_entrada(pe) == 0:
-                na_fila |= fps_de(ler(os.path.join(pe, "colheita.txt")), True)
+            if rc_da_entrada(pe) == 0 and not recusada(pe):
+                # o que ficou sem evidência (ausentes.txt) não foi julgado nem será: pode voltar numa colheita nova
+                aus = os.path.join(pe, "ausentes.txt")
+                na_fila |= fps_de(ler(os.path.join(pe, "colheita.txt")), True) - (fps_de(ler(aus)) if os.path.isfile(aus) else set())
         if na_fila:
             with open(os.path.join(stg, REGISTRO), "a", encoding="utf-8") as f:
                 f.write("já na fila da curadoria · fp=%s\n" % ",".join(sorted(na_fila)))
@@ -1882,8 +1897,10 @@ def fila(args):
         rc = rc_da_entrada(pe)
         n = len([ln for ln in ler(os.path.join(pe, "colheita.txt")).split("\n") if ln.startswith(JULGAVEIS)]) \
             if os.path.isfile(os.path.join(pe, "colheita.txt")) else 0
-        diz("%s · %s · %s" % (f, os.path.basename(pe), "%d linha(s) a julgar" % n if rc == 0
-                              else "colheita FALHOU (rc=%d): rode --enfileirar %s de novo" % (rc, f)))
+        estado = ("colheita FALHOU (rc=%d): rode --enfileirar %s de novo" % (rc, f) if rc != 0
+                  else "recusada pelo lote: a próxima colheita de %s a substitui" % f if recusada(pe)
+                  else "%d linha(s) a julgar" % n)
+        diz("%s · %s · %s" % (f, os.path.basename(pe), estado))
     diz("FILA: %d entrada(s) (limite %d)" % (len(es), LIMITE_FILA))
     if len(es) > LIMITE_FILA:
         diz("🧹 fila da curadoria: %d publicações esperando julgamento (mais de %d); quando puder, rode o lote da "
@@ -1965,7 +1982,7 @@ def conferir_entrada(args):
         # duas entradas da mesma feature com a mesma impressão (publicações em pastas paralelas): ela conta só na
         # entrada mais antiga da fila; nesta, sai como JA_JULGADO. Assim o lote nunca soma +2 por uma impressão.
         for _f, pe in entradas_da_fila(raiz, feature):
-            if os.path.basename(pe) < nome and rc_da_entrada(pe) == 0:
+            if os.path.basename(pe) < nome and rc_da_entrada(pe) == 0 and not recusada(pe):
                 julgados |= fps_de(ler(os.path.join(pe, "colheita.txt")), True)
         if julgados:  # julgado noutra frente em paralelo: não conta de novo
             with open(os.path.join(stg, REGISTRO), "a", encoding="utf-8") as f:
@@ -2007,6 +2024,22 @@ def conferir_entrada(args):
     return 0
 
 
+def recusar(args):
+    if len(args) != 2 or not args[1].strip() or "\n" in args[1]:
+        uso("--recusar exige <entrada> <motivo em uma linha>")
+    raiz = raiz_do_projeto()
+    pe = os.path.abspath(args[0])
+    if not (RE_ENTRADA.match(os.path.basename(pe)) and os.path.isdir(pe) and not os.path.islink(pe)
+            and os.path.realpath(os.path.dirname(os.path.dirname(pe))) == os.path.realpath(os.path.join(raiz, FILA))):
+        uso("entrada inválida: %s" % args[0])
+    with open(pe + ".recusada", "w", encoding="utf-8") as f:
+        f.write("recusada pelo lote em %s: %s\n" % (datetime.date.today().isoformat(), args[1].strip()))
+    diz("recusada: %s" % os.path.relpath(pe, raiz).replace(os.sep, "/"))
+    fim("RECUSADA", "a entrada fica na fila, marcada; as impressões dela não ficam presas: a próxima colheita da feature "
+        "as traz de novo e tira esta entrada. Ponha a marca no commit do lote.")
+    return 0
+
+
 def registrar(args):
     if not args:
         uso("--registrar exige <entrada> [<entrada>…]")
@@ -2029,7 +2062,7 @@ def registrar(args):
         if os.path.isfile(aus):
             julgadas -= fps_de(ler(aus))
         for _f, outra in entradas_da_fila(raiz, feature):
-            if (os.path.basename(outra) < os.path.basename(pe) and rc_da_entrada(outra) == 0
+            if (os.path.basename(outra) < os.path.basename(pe) and rc_da_entrada(outra) == 0 and not recusada(outra)
                     and os.path.realpath(outra) not in registrando):
                 julgadas -= fps_de(ler(os.path.join(outra, "colheita.txt")), True)
         linhas = ["julgado no lote · %s · fp=%s" % (os.path.basename(pe), ",".join(sorted(julgadas)))] if julgadas else []
@@ -2391,6 +2424,8 @@ def main(argv):
         return conferir_entrada(args)
     if modo == "--registrar":
         return registrar(args)
+    if modo == "--recusar":
+        return recusar(args)
     if modo == "--self-test":
         if args:
             uso("--self-test não recebe argumento")

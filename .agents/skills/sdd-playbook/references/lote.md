@@ -26,7 +26,7 @@ publicado.
    |---|---|
    | `0` | `ENTRADA CONFERIDA`: guarde a linha `staging:` como `STG` e siga |
    | `1` | `NADA A JULGAR`: tudo já foi julgado; a entrada vai direto para o item 7 |
-   | `2` | `ENTRADA RECUSADA`: diga o motivo (colheita alterada, pasta mexida depois do commit, colheita que falhou); **nada dela é aplicado**, ela fica na fila; siga com a próxima |
+   | `2` | `ENTRADA RECUSADA`: diga o motivo (colheita alterada, pasta mexida depois do commit, colheita que falhou); **nada dela é aplicado**, ela fica na fila, marcada com `bash sdd/bin/playbook-curator.sh --recusar "$E" "<motivo>"` (a marca vai no commit do lote; a próxima colheita da feature traz as linhas de novo e tira a entrada); siga com a próxima |
    | outro (`64`, `126`, `127`…) | **não é "nada a julgar"**: pare o lote e diga a causa e o conserto |
    A linha `evidência ausente:` diz quantas linhas citam um log que o projeto não versiona: relate-as, nunca as conte.
 2. **Despachar o curador em contexto fresco**, pela escada de `sdd-build/references/contexto-fresco.md`, com **só**
@@ -63,7 +63,7 @@ publicado.
    siga com a próxima entrada; esta fica na fila. Nos outros casos, refaça o item 1,
    o selo e o snapshot de antes (o que a pessoa já viu vira linha de base) e só então redespache. 2ª
    reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)` para esta entrada: **nada dela é aplicado**, ela fica
-   na fila, e o lote segue com a próxima. Sem subagente, cada tentativa volta numa sessão nova, sem
+   na fila, marcada com `--recusar` (como no item 1), e o lote segue com a próxima. Sem subagente, cada tentativa volta numa sessão nova, sem
    memória da anterior: leia `sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md`; se ele já tem o campo
    `conferencia:`, esta é a 2ª tentativa, e nova reprovação encerra esta entrada, sem redespachar. Nunca separe
    contagem de regra à mão: quem decide é o conferidor.
