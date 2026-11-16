@@ -130,6 +130,7 @@
 .agents/skills/sdd-playbook/SKILL.md
 .agents/skills/sdd-playbook/references/como-falar.md
 .agents/skills/sdd-playbook/references/curator.md
+.agents/skills/sdd-playbook/references/lote.md
 .agents/skills/sdd-prompt-builder/SKILL.md
 .agents/skills/sdd-prompt-builder/references/como-falar.md
 .agents/skills/sdd-prompt-builder/references/output-template.md
@@ -142,6 +143,7 @@
 .agents/skills/sdd-release/references/raio-de-impacto.md
 .agents/skills/sdd-release/references/seguranca.md
 .agents/skills/sdd-release/scripts/deploy-espera-testes.py
+.agents/skills/sdd-release/scripts/push-de-papel.py
 .agents/skills/sdd-seguranca/SKILL.md
 .agents/skills/sdd-seguranca/evals/cases.json
 .agents/skills/sdd-seguranca/manifest.json
@@ -323,6 +325,7 @@ sdd/bin/design-lint.py
 sdd/bin/docs-extract-decisions.sh
 sdd/bin/eval-agree.sh
 sdd/bin/eval-revisores.sh
+sdd/bin/ficha-publicado.py
 sdd/bin/gate-baseline.sh
 sdd/bin/gate-shell-evidencia.sh
 sdd/bin/governanca-bloco.py
@@ -345,6 +348,7 @@ sdd/bin/seguranca-varredura.sh
 sdd/bin/skill-lint.py
 sdd/bin/slot.sh
 sdd/bin/test-baseline.sh
+sdd/bin/trilha.sh
 sdd/bin/verify-gate.sh
 sdd/bin/versao-nova.sh
 sdd/config.example.yaml
@@ -417,6 +421,19 @@ sdd/fixtures/evidencia/testes-jest.txt
 sdd/fixtures/evidencia/testes-pytest.txt
 sdd/fixtures/evidencia/testes-unittest.txt
 sdd/fixtures/evidencia/testes-vitest.txt
+sdd/fixtures/f24/README.md
+sdd/fixtures/f24/ficha-curta-longa.md
+sdd/fixtures/f24/ficha-curta.md
+sdd/fixtures/f24/ledgers/s1_1.0.0.yaml
+sdd/fixtures/f24/ledgers/s2_1.1.0.yaml
+sdd/fixtures/f24/ledgers/s3_quebrado.yaml
+sdd/fixtures/f24/workflows/com-paths-ignore.yml
+sdd/fixtures/f24/workflows/ilegivel.yml
+sdd/fixtures/f24/workflows/outra-branch.yml
+sdd/fixtures/f24/workflows/sem-filtro.yml
+sdd/fixtures/f24/workflows/so-src.yml
+sdd/fixtures/f24/workflows/so-testes.yml
+sdd/fixtures/f24/workflows/workflow-run.yml
 sdd/fixtures/fluxo/AVALIACAO_ambigua.md
 sdd/fixtures/fluxo/AVALIACAO_needs_work.md
 sdd/fixtures/fluxo/AVALIACAO_pass.md
@@ -658,6 +675,7 @@ tests/test_f22_upgrade.py
 tests/test_f22_versao.py
 tests/test_f23_custo.py
 tests/test_f23b3_revisao.py
+tests/test_f24_release_enxuta.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py

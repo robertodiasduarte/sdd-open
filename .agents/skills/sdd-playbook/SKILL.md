@@ -1,12 +1,12 @@
 ---
 name: sdd-playbook
 description: >-
-  Playbook de landmines do projeto em sdd/playbook.md, formato ACE-lite — bullets com ID estável (LM-nnn), contadores ajudou/mordeu, superfícies greppáveis e atualização só por delta. Ativa em toda sessão: lê apenas a seção "## Sempre" no início; o resto entra por superfície via sdd/bin/playbook-lint.sh --grep. Nunca reescreve, comprime ou apaga bullets — uma sessão só PROPÕE candidatos; quem aplica é a fase Release: a contagem com evidência entra sozinha e vai para um recibo, e a mudança de regra só com o OK humano, item por item. Use quando alguém disser "isso já mordeu antes?", "registra essa armadilha", /sdd-playbook, ou ao tocar qualquer superfície durante Design e Build.
+  Playbook de landmines do projeto em sdd/playbook.md, formato ACE-lite — bullets com ID estável (LM-nnn), contadores ajudou/mordeu, superfícies greppáveis e atualização só por delta. Ativa em toda sessão: lê apenas a seção "## Sempre" no início; o resto entra por superfície via sdd/bin/playbook-lint.sh --grep. Nunca reescreve, comprime ou apaga bullets — uma sessão só PROPÕE candidatos; a fase Release só colhe e põe na fila, e quem aplica é o lote de curadoria desta skill, sob demanda: a contagem com evidência entra sozinha e vai para um recibo, e a mudança de regra só com o OK humano, item por item. Use quando alguém disser "isso já mordeu antes?", "registra essa armadilha", "rode o lote da curadoria", /sdd-playbook, ou ao tocar qualquer superfície durante Design e Build.
 compatibility: Requer bash >= 3.2 e git >= 2.20 (sdd/bin/playbook-lint.sh); a curadoria (sdd/bin/playbook-curator.sh) também pede python3 >= 3.9.
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.0"
+  version: "2.3.0"
   updated: "2026-11"
   fase: "transversal"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-playbook — landmines com ID, contadores e delta updates
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-playbook v2.2.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-playbook v2.3.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Fonte: ACE (Agentic Context Engineering, arXiv 2510.04618). O que portamos: **delta updates
 itemizados** (sem eles o ganho do paper cai de +12,5 para +3,6) e um **papel que julga separado
@@ -32,13 +32,14 @@ Quem usa esta skill, em geral, nunca usou git nem terminal.
 | 1 | Leitura | Início de sessão |
 | 2 | Candidato | Candidato |
 | 3 | Promoção | Escada de promoção |
+| 4 | Lote | Lote de curadoria (`references/lote.md`) |
 
 A etapa 1 é silenciosa: não gera resposta própria. A camada vale quando a skill fala com o aluno
 (propor um candidato, pedir o OK de uma promoção).
 
 Toda resposta, nesta ordem (pule a parte sem conteúdo):
 
-1. **Status** — uma linha que começa pelo nome da fase: `Playbook: ✅ 1 Leitura · ▶️ 2 Candidato · ⬜ 3 Promoção`
+1. **Status** — uma linha que começa pelo nome da fase: `Playbook: ✅ 1 Leitura · ▶️ 2 Candidato · ⬜ 3 Promoção · ⬜ 4 Lote`
    (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
    etapa, o motivo vai em Agora.
 2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
@@ -102,9 +103,9 @@ repete e registra só os IDs em `## Landmines lidas no build`. É esse `✔ trat
 |---|---|---|
 | Generator | você, em qualquer sessão | cita `LM-nnn` em `## Landmines aplicáveis` (`✔ tratado` vira `ajudou`); pode **propor** candidato |
 | Reflector | artefatos existentes | achados do avaliador fresco, Advisor Ledger, incidentes, gate vermelho, `WAIVED` — achado cuja causa **já tinha bullet** ⇒ `mordeu+1` |
-| Curator | passo 17b da fase Release: um script colhe, um agente sem a conversa julga, a pessoa decide | `sdd/bin/playbook-curator.sh --colher` lê `ajudou`/`mordeu` das tabelas, `mordeu` dos achados, candidatos e promoções; o curador (`references/curator.md`) confere cada linha contra o `arquivo:linha` e devolve o bloco de curadoria, sem escrever nada; `--conferir-bloco` reprova bloco incompleto e separa a contagem com evidência (entra sem pergunta, vai para o recibo) da mudança de regra — `ADD`, `TOMBSTONE`, `REFINE`, `promovido_para=`, invariante —, que só entra com o seu OK; `mordeu ≥ 2` ⇒ pergunta de promoção obrigatória |
+| Curator | a fase Release colhe e põe na fila (`--enfileirar`); o lote desta skill julga, sob demanda: um agente sem a conversa julga, a pessoa decide | `sdd/bin/playbook-curator.sh --colher` lê `ajudou`/`mordeu` das tabelas, `mordeu` dos achados, candidatos e promoções; o curador (`references/curator.md`) confere cada linha contra o `arquivo:linha` e devolve o bloco de curadoria, sem escrever nada; `--conferir-bloco` reprova bloco incompleto e separa a contagem com evidência (entra sem pergunta, vai para o recibo) da mudança de regra — `ADD`, `TOMBSTONE`, `REFINE`, `promovido_para=`, invariante —, que só entra com o seu OK; `mordeu ≥ 2` ⇒ pergunta de promoção obrigatória |
 
-A escrita legítima no playbook é a fase Release (delta aprovado) — ou, fora dela, um commit
+A escrita legítima no playbook é o lote de curadoria (delta aprovado) — ou, fora dele, um commit
 revisado com lint verde e OK humano. Nunca "no meio do trabalho". Quem aplica é sempre
 `sdd/bin/playbook-curator.sh --aplicar <delta> sdd/playbook.md`, que valida o delta inteiro antes de
 editar e imprime o playbook novo; o resultado passa pelo lint antes de ser copiado por cima.
@@ -153,6 +154,21 @@ Sem `evidencia:` o candidato não é candidato (lição sem verificação piora 
 check no gate, script), e o bullet ganha `promovido_para:`; cai para `## Tombstones` só quando
 o mecanismo tiver caso de teste que **falha** sem ele. `sdd/bin/playbook-lint.sh --stats`
 conta por `mordeu`.
+
+## Lote de curadoria (sob demanda)
+
+A publicação não julga nada: ela roda `playbook-curator.sh --enfileirar` e deixa a colheita em
+`sdd/curadoria/fila/<F>/<horário>/`, com a cópia dos documentos que ela cita. O lote julga a fila inteira quando a
+pessoa pede; nada roda sozinho, e a release só avisa, em 1 linha, quando a fila passa de 5 entradas
+(`playbook-curator.sh --fila` sai 10). O procedimento inteiro, com as garantias de sempre (falha não vale "nada a
+colher", o conferidor separa contagem de regra, a fronteira de escrita confere o curador, regra pergunta), está em
+`references/lote.md`. O que muda em relação a julgar na publicação:
+
+- o lote nunca julga a colheita guardada: `--conferir-entrada` a refaz sobre a cópia, com o playbook de agora, e
+  recusa a entrada cujas impressões não batem ou cuja pasta mudou depois do commit que a criou;
+- uma impressão (`fp=`) conta uma vez só: a colheita nova exclui o que já está na fila, e `--registrar` grava o que
+  o lote julgou em `sdd/releases/<F>/CURATOR-colhidos.txt`;
+- um `--aplicar` só para o lote inteiro: as lições novas recebem IDs seguidos a partir do maior do playbook.
 
 ## Invariantes — a regra que nunca pode ser quebrada
 

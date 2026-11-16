@@ -1,0 +1,10 @@
+feature_id: PEDIDOS
+slice_id: s1
+versao: 1.0.0
+data: 2026-11-10
+estado: parcial
+veredito: PASS
+dod: "pedido aparece na lista"
+descricao: "lista de pedidos"
+deploy: real
+review_externo: dispensado — fixture

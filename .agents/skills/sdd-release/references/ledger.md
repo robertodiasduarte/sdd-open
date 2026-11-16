@@ -18,12 +18,16 @@ waived: null                       # ou: "classe=… · finding=… · motivo=�
 dod: "PIX aparece como opção no checkout e o webhook confirma em <10 s"
 descricao: "Botão PIX no checkout + webhook de confirmação + reconciliação noturna"
 deploy: no-op                      # no-op | real (o que subiu para produção)
+trilha: completa                   # curta | completa — do sdd/bin/trilha.sh no pré-voo; ausente = completa
 review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20260905-101500 sha256=<64 hex> diversidade=vendor
                                    # a linha que `adversarial-review.sh --conferir` imprime, ou:
                                    # review_externo: dispensado — <motivo em uma frase>
 avisos:                            # da Fase 0 que não abortaram — não podem evaporar
   - "teste de reconciliação vermelho pré-existente na baseline (waivable, não dispensado)"
 ```
+
+O bloco `## Publicado` da ficha é a projeção deste arquivo: `python3 sdd/bin/ficha-publicado.py {F}` escreve uma
+linha por ledger (data, slice, versão, estado, veredito, deploy, trilha e o SHA do commit que trouxe o ledger).
 
 **Sem SHA dentro do arquivo**: o SHA é do próprio commit que contém o ledger (`git log --
 sdd/releases/{F}/`).

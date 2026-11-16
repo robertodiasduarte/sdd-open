@@ -31,7 +31,10 @@ Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `ATUALIZADO` · `ATUALIZADO, N
 `AGUARDANDO_RECIBO` · `AGUARDANDO_HUMANO` · `PARAR` · `MANIFEST ILEGÍVEL` · `ENTRADA ILEGÍVEL` · `SLOT INVÁLIDO`
 (sdd-fluxo.sh; ver [chained-flow.md](chained-flow.md)) · `PASSA` · `REPROVA` (contraste.sh) · `LIMPO` · `DRIFT`
 (prompt-drift-scan.sh; ver [llm-in-code.md](llm-in-code.md)) · `HÁ O QUE JULGAR` · `NADA A COLHER` · `BLOCO VÁLIDO` ·
-`BLOCO INVÁLIDO` · `PAR VÁLIDO` · `TRAVA` (playbook-curator.sh; ver [playbook-curation.md](playbook-curation.md)) ·
+`BLOCO INVÁLIDO` · `PAR VÁLIDO` · `TRAVA` · `ENFILEIRADO` · `COLHEITA FALHOU` · `FILA OK` · `FILA ACIMA DO LIMITE` ·
+`ENTRADA CONFERIDA` · `ENTRADA RECUSADA` · `NADA A JULGAR` · `REGISTRADO` (playbook-curator.sh; ver
+[playbook-curation.md](playbook-curation.md)) · `CURTA` · `COMPLETA` · `GIT FALHOU` (trilha.sh) · `GRAVADO` · `SEM LEDGER` ·
+`LEDGER ILEGÍVEL` (ficha-publicado.py) · `PUBLICA` · `NAO_PUBLICA` · `NAO_SEI` (push-de-papel.py da `sdd-release`) ·
 `NADA A COPIAR` (copiar-docs.sh da `sdd-new-session`) · `CONCLUIDO` · `CONTINUAR` · `PARADA` · `FALHA` · `RECIBO GRAVADO`
 (sdd-drive.sh; ver [sdd-drive.md](sdd-drive.md)) · `NO AR` · `NAO ESTA NO AR` · `FALHOU` · `AINDA NAO SEI` (deploy-do-sha.sh) ·
 `SIMULACAO` · `MOVIDO` (sdd-archive.py) · `OK` · `REPROVOU` · `NADA A MEDIR` (slot.sh; ver
@@ -90,6 +93,10 @@ RESULTADO: ERRO
 | `contraste.sh` | `0` PASSA · `2` REPROVA, ou `--self-test` VERMELHO · `64` uso ([llm-in-code.md](llm-in-code.md)) |
 | `prompt-drift-scan.sh` | `0` LIMPO · `2` DRIFT, ou `--self-test` VERMELHO · `64` uso, caminho que não dá para ler, config ilegível ou slot inválido; nunca conclui LIMPO sem ter lido ([llm-in-code.md](llm-in-code.md)) |
 | `playbook-curator.sh` | `0` ok (há o que julgar, delta aplicado, par válido, bloco válido) · `1` NADA A COLHER, ou `--preparar` sem documentos · `2` playbook, delta, par ou bloco inválido, TRAVA, ou `--self-test` falhou · `3` `--cruzar` com aviso de invariante · `64` uso; no `--aplicar` e no `--aplicar-inv` o stdout é só o arquivo novo, e o `RESULTADO:` vai para stderr ([playbook-curation.md](playbook-curation.md)) |
+| `playbook-curator.sh` (fila) | `--enfileirar`: `0` ENFILEIRADO · `1` NADA A COLHER ou STAGING SEM DOCUMENTOS · `2` COLHEITA FALHOU (a entrada fica na fila, marcada) · `--fila`: `0` FILA OK · `10` FILA ACIMA DO LIMITE (mais de 5) · `--conferir-entrada`: `0` ENTRADA CONFERIDA · `1` NADA A JULGAR · `2` ENTRADA RECUSADA · `--registrar`: `0` REGISTRADO · `64` uso ([playbook-curation.md](playbook-curation.md)) |
+| `trilha.sh` | `0` TRILHA: curta · `1` TRILHA: completa (com o motivo) · `2` o git falhou · `64` uso |
+| `ficha-publicado.py` | `0` GRAVADO · `1` SEM LEDGER (nada gravado) · `2` LEDGER ILEGÍVEL (a linha dele diz `n/d`; as outras são gravadas) ou ficha que não dá para ler ou gravar · `64` uso |
+| `push-de-papel.py` (em `.agents/skills/sdd-release/scripts/`) | `0` PUBLICA · `1` NAO_PUBLICA · `2` NAO_SEI · `64` uso, ou o `deploy-espera-testes.py` ausente ao lado |
 | `copiar-docs.sh` (em `.agents/skills/sdd-new-session/scripts/`) | `0` N COPIADO(S) ou NADA A COPIAR · `2` uma cópia falhou · `64` uso, pasta inexistente ou checkout principal fora de um repositório git |
 | `sdd-kb/scripts/gate.sh` | `0` verde · `2` vermelho (caso bom rejeitado, caso ruim aceito ou por outro motivo, âncora ausente, RULE_MAP do exemplo derivado, ou rodado da cópia gerada pelo `sync`) |
 | `sdd-kb/scripts/validate_kb.py` · `kb_normativo.py` | `0` PASS · `2` FAIL · `64` uso |

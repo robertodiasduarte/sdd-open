@@ -1,0 +1,11 @@
+feature_id: PEDIDOS
+slice_id: s2
+versao: 1.1.0
+data: 2026-11-12
+estado: shipado
+veredito: CONCERNS
+dod: "pedido aparece na lista"
+descricao: "filtro por data"
+deploy: real
+trilha: curta
+review_externo: dispensado — fixture

@@ -63,3 +63,17 @@ compatibility: Funciona na web (claude.ai, ChatGPT), onde a ficha sai no chat, e
 Estado do gate: `sdd/bin/verify-gate.sh sdd/features/DEFINE_CONTROLE_HONORARIOS.md` saiu 2 em 2026-03-11.
 ====
 >>>> depois
+
+## SKILL.md
+<<<< antes
+- **O bloco `## Publicado` é gerado, nunca escrito à mão:** `python3 sdd/bin/ficha-publicado.py {FEATURE}` projeta uma
+  linha por ledger de `sdd/releases/{FEATURE}/`, entre os marcadores `<!-- publicado:inicio … -->` e
+  `<!-- publicado:fim -->`, e não toca o resto da ficha. Quando a `sdd-release` chama esta skill, você escreve **só**
+  o que o ledger não diz: `## Falta`, os alertas, a linha `Curadoria:` e o veredito; nada do bloco Publicado se repete
+  em "Feito" nem em "Histórico de slices". Ledger com `trilha: curta` ⇒ ficha curta: Ficha, Publicado e Falta, até 20
+  linhas (o `handoff-lint.py` aceita o bloco Publicado como histórico).
+====
+- **O que foi publicado vai uma vez só,** na seção `## Publicado`: uma linha por publicação, a mais recente no topo
+  (data, o que subiu, o commit ou PR). Nada dessa linha se repete em "Feito" nem em "Histórico de slices"; o resto da
+  ficha diz o que a publicação não diz: o que falta e os alertas.
+>>>> depois

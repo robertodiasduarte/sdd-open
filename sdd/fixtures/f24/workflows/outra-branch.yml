@@ -1,0 +1,9 @@
+name: deploy
+on:
+  push:
+    branches: [producao]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npx vercel deploy --prod

@@ -1,8 +1,8 @@
 # Invariantes — regras que nunca podem ser quebradas
 
 Invariante não é landmine: a landmine do `sdd/playbook.md` diz "isto me mordeu"; a invariante diz "isto
-nunca pode ser violado, e aqui está o que vigia". Quem escreve neste arquivo é a curadoria da fase Release
-(passo 17b da `sdd-release`), com o seu OK por item; a trava é
+nunca pode ser violado, e aqui está o que vigia". Quem escreve neste arquivo é o lote de curadoria da
+`sdd-playbook` (`references/lote.md`), com o seu OK por item; a trava é
 `bash sdd/bin/playbook-curator.sh --validar-inv sdd/playbook.md sdd/invariants.md`. Explicação longa:
 `docs/playbook-curation.md` do pacote.
 

@@ -91,8 +91,8 @@ class Skills(unittest.TestCase):
 
     def test_release_item_8_confere_o_lint_do_ledger(self):
         texto = ler(".agents/skills/sdd-release/SKILL.md")
-        self.assertIn('version: "2.15.0"', texto)
-        self.assertIn("`sdd-release v2.15.0 · nov/2026", texto)
+        self.assertIn('version: "2.16.0"', texto)
+        self.assertIn("`sdd-release v2.16.0 · nov/2026", texto)
         item = trecho(texto, "8. **Review externo (obrigatório, com dispensa registrada):**", "\n9. **Testes do diff:**")
         for termo in ("Com revisão feita (não dispensada)", "bash sdd/bin/ledger-revisao-lint.sh sdd/reviews/LEDGER_REVISAO_{F}.md",
                       "exit 2 ⇒ **abortar**", "exit 64", "sem achados: rodada=N"):
@@ -104,7 +104,7 @@ class Skills(unittest.TestCase):
         texto = ler(".agents/skills/sdd-release/SKILL.md")
         bloco = trecho(texto, "   ```markdown\n   **O que sobe:**", "   ```\n")
         self.assertNotIn("ledger da revisão", bloco.lower())
-        self.assertEqual(bloco.count("?**"), 3)   # 2 rótulos que são afirmação + a pergunta única
+        self.assertEqual(bloco.count("?**"), 4)   # 3 rótulos que são afirmação (F24: o commit de papel) + a pergunta única
 
     def test_molde_do_relatorio_aponta_o_ledger(self):
         secao = trecho(ler("sdd/templates/BUILD_REPORT_TEMPLATE.md"), "## Advisor Ledger", "\n## ")

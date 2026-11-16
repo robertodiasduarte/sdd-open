@@ -22,3 +22,16 @@
 Estado do gate: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md` saiu {N} em {data}.
 ====
 >>>> depois
+
+## sdd/templates/HANDOFF_TEMPLATE.md
+<<<< antes
+> Gerado por `python3 sdd/bin/ficha-publicado.py {FEATURE}` a partir de `sdd/releases/{FEATURE}/`: uma linha por
+> release, a mais recente no topo. Não edite à mão; o que o ledger já diz não se repete nas outras seções.
+
+<!-- publicado:inicio (gerado por sdd/bin/ficha-publicado.py a partir de sdd/releases/; não edite à mão) -->
+<!-- publicado:fim -->
+====
+> Uma linha por publicação, a mais recente no topo; o que está aqui não se repete nas outras seções.
+
+- {data} · {o que subiu, em 1 frase} · {commit ou PR}
+>>>> depois

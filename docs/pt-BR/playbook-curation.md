@@ -2,7 +2,7 @@
 
 # Curadoria do playbook e invariantes
 
-Desde a v2.6.0, o último passo de uma release confere o que a feature ensinou ao projeto. Um script colhe, um
+Desde a v2.6.0, o projeto confere o que cada feature ensinou a ele; a release colhe, e um lote julga. Um script colhe, um
 agente que não viu a conversa julga, um conferidor separa contagem de mudança de regra, e só a mudança de
 regra vira pergunta. Um projeto que nunca registrou uma lição só vê uma linha: "esta feature não trouxe
 lição nova nem contagem".
@@ -15,8 +15,29 @@ lição nova nem contagem".
 | Julgar | o curador, um agente de contexto fresco (brief: `.agents/skills/sdd-playbook/references/curator.md`) | confere cada linha contra o `arquivo:linha` citado e devolve uma tabela; nunca escreve |
 | Decidir | você | responde às mudanças de regra, um item por vez |
 
-A curadoria roda **depois** do push. Ela nunca desfaz uma publicação, e toda mensagem dela diz que a
-publicação já terminou.
+A colheita roda **depois** do push, na release, e só colhe: `--enfileirar <FEATURE> sdd/playbook.md` prepara,
+colhe e guarda o resultado numa pasta da fila. O julgamento (curador, conferidor, perguntas, aplicação e envio) roda
+depois, num **lote**, quando você pede à `sdd-playbook` ("rode o lote da curadoria"). Nada roda sozinho: a release só
+avisa, em uma linha, quando a fila passa de 5 publicações. Nada disso desfaz uma publicação.
+
+## A fila e o lote
+
+Cada publicação que trouxe algo a julgar deixa uma pasta em `sdd/curadoria/fila/<FEATURE>/<AAAAMMDDTHHMMSSZ>/`, que
+entra no commit de papel da release: a colheita (`colheita.txt`), o exit dela (`colheita.rc`), as impressões já
+excluídas (`CURATOR-colhidos.txt`) e a cópia dos documentos que ela cita. Um log de avaliação que o projeto não
+versiona não é copiado (`ausentes.txt`): a linha que só ele prova é relatada e nunca contada.
+
+| Comando | O que faz | Exit |
+|---|---|---|
+| `--enfileirar <F> <playbook> [--inv]` | prepara, colhe sem repetir o que já está na fila ou no registro e grava a entrada; colheita que falha grava a entrada marcada com o exit | 0 enfileirado · 1 nada a colher ou sem documentos · 2 falhou |
+| `--fila [<F>]` | lista as entradas | 0 · 10 acima de 5 entradas |
+| `--conferir-entrada <entrada> <playbook> [--inv]` | confere a entrada (colheita que falhou, pasta mexida depois do commit, documento que nunca esteve no repositório) e refaz a colheita sobre a cópia, com o playbook de agora; só segue se as impressões baterem | 0 conferida · 1 nada a julgar · 2 recusada |
+| `--registrar <entrada>…` | grava as impressões julgadas em `sdd/releases/<F>/CURATOR-colhidos.txt` e tira a entrada da fila | 0 |
+
+O lote julga a colheita **refeita**, nunca a guardada: uma linha plantada no git depois da publicação, ou uma entrada
+fabricada com documentos que nunca estiveram no repositório, recusa a entrada. As lições novas de todas as entradas
+entram num `--aplicar` só, que numera os IDs pelo playbook que recebe o delta: duas publicações que propuseram o mesmo
+número não colidem. O procedimento inteiro está em `.agents/skills/sdd-playbook/references/lote.md`.
 
 ## O que a colheita lê
 
@@ -33,9 +54,9 @@ feature. Procura também em `sdd/archive/<FEATURE>/`. Depois, `--colher <staging
 | `CANDIDATO #n → LM-xxx` / `REJEITADO` | bloco de candidato do BUILD_REPORT ou da ficha; sem `evidencia:` é rejeitado |
 | `PROMOVER? LM-nnn` | landmine ativa com `mordeu` de 2 para cima e ainda sem mecanismo |
 
-Toda linha a julgar leva uma impressão digital (`fp=`). Depois de uma curadoria, essas linhas vão para
+Toda linha a julgar leva uma impressão digital (`fp=`). Depois de um lote, essas linhas vão para
 `sdd/releases/<FEATURE>/CURATOR-colhidos.txt`, ao lado do ledger; a próxima release da mesma feature as mostra como
-`JA_JULGADO` e não conta de novo.
+`JA_JULGADO` e não conta de novo. O que já está na fila, ainda sem julgamento, também sai como `JA_JULGADO`.
 
 Com `--inv`, uma landmine que já mordeu e nunca foi classificada também aparece, como `INV_PENDENTE`. Exit `0` quer dizer que há o que julgar ou relatar, `1` que não há nada, e qualquer outro exit é **falha**,
 nunca "nada a colher".
@@ -55,7 +76,7 @@ não é **igual** a uma linha que o script colheu: a mesma landmine, o mesmo ver
 
 As linhas aprovadas são aplicadas numa **cópia** (`--aplicar`); a cópia passa pelo lint do playbook, pela
 conferência anti-collapse e pela trava das invariantes, e só então substitui o `sdd/playbook.md`. A mudança
-vai num commit só dela (com os logs da curadoria, quando o projeto versiona a pasta de evidência). Enviar esse commit para a branch padrão é outra pergunta, marcada
+vai num commit só do lote (com os logs da curadoria, quando o projeto versiona a pasta de evidência). Enviar esse commit para a branch padrão é outra pergunta, marcada
 `[D1 · não se desfaz]`: em muitos projetos, um push publica.
 
 ## A gramática do delta

@@ -2,14 +2,17 @@
 """handoff-lint.py — confere uma ficha de feature contra o mínimo de sdd/templates/HANDOFF_TEMPLATE.md.
 
 Só stdlib, Python >= 3.9. Uso:
-    python3 sdd/bin/handoff-lint.py <HANDOFF.md>     # exit 0 = válido · 1 = violações · 64 = uso
+    python3 sdd/bin/handoff-lint.py [--curta] <HANDOFF.md>     # exit 0 = válido · 1 = violações · 64 = uso
+
+--curta (a ficha da trilha curta da sdd-release): além das regras abaixo, no máximo 20 linhas.
 
 A próxima sessão começa sem memória desta: o que ela não achar escrito, não existe. Regras:
   - 1º título `# HANDOFF:`;
   - `## Ficha` com as linhas Objetivo, Status e Verify Gate;
   - `## Prompt de retomada` com um bloco de código (o prompt que se cola na sessão nova), salvo quando o
     Status da Ficha é ✅ (DoD fechado): sem continuação, a sdd-handoff deixa o prompt opcional;
-  - `## Histórico de slices` com ≥1 `### <slice> — AAAA-MM-DD`;
+  - `## Histórico de slices` com ≥1 `### <slice> — AAAA-MM-DD`, ou o bloco `## Publicado` gerado por
+    sdd/bin/ficha-publicado.py com ≥1 linha (a ficha curta da trilha curta não repete o ledger num histórico);
   - nenhum placeholder: fora de código, `«…»`, nome em MAIÚSCULAS entre chaves ou prosa entre chaves;
     dentro de bloco de código, só `«…»` e MAIÚSCULAS entre chaves sem `$` antes (comando real com
     chaves, como `awk` ou `${HOME}`, passa);
@@ -34,6 +37,8 @@ VAGO = re.compile(
 )
 SLICE = re.compile(r"^### .+ [—-] \d{4}-\d{2}-\d{2}\s*$")
 CAMPOS = ("Objetivo", "Status", "Verify Gate")
+PUB_INI = re.compile(r"^<!-- publicado:inicio\b[^>]*-->$")
+PUB_FIM = "<!-- publicado:fim -->"
 
 
 def intervalo(linhas: list, prefixo: str):
@@ -80,8 +85,14 @@ def lint(texto: str) -> list:
                      " (só a ficha com Status ✅ dispensa o prompt)")
 
     historico = secao(linhas, "Histórico de slices")
-    if historico is None or not any(SLICE.match(ln) for ln in historico):
-        erros.append("## Histórico de slices sem nenhum '### <slice> — AAAA-MM-DD'")
+    publicado = secao(linhas, "Publicado") or []
+    m_ini = next((k for k, ln in enumerate(publicado) if PUB_INI.match(ln.strip())), None)
+    m_fim = next((k for k, ln in enumerate(publicado) if ln.strip() == PUB_FIM), None)
+    tem_publicado = (m_ini is not None and m_fim is not None and m_ini < m_fim
+                     and any(ln.startswith("- ") for ln in publicado[m_ini + 1:m_fim]))
+    if (historico is None or not any(SLICE.match(ln) for ln in historico)) and not tem_publicado:
+        erros.append("## Histórico de slices sem nenhum '### <slice> — AAAA-MM-DD' (nem bloco ## Publicado gerado,"
+                     " com ≥1 linha)")
 
     for n, ln in enumerate(CRASE.sub("", sem_cerca).splitlines(), 1):
         m = PLACEHOLDER.search(ln)
@@ -102,9 +113,15 @@ def lint(texto: str) -> list:
     return erros
 
 
+LIMITE_CURTA = 20
+
+
 def main(argv: list) -> int:
+    curta = len(argv) == 3 and argv[1] == "--curta"
+    if curta:
+        argv = [argv[0], argv[2]]
     if len(argv) != 2 or not Path(argv[1]).is_file():
-        print("uso: handoff-lint.py <HANDOFF.md>", file=sys.stderr)
+        print("uso: handoff-lint.py [--curta] <HANDOFF.md>", file=sys.stderr)
         return 64
     try:
         texto = Path(argv[1]).read_text(encoding="utf-8")
@@ -114,6 +131,9 @@ def main(argv: list) -> int:
         print("→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo", file=sys.stderr)
         return 1
     erros = lint(texto)
+    if curta and len(texto.splitlines()) > LIMITE_CURTA:
+        erros.append(f"ficha curta com {len(texto.splitlines())} linhas (o limite da trilha curta é {LIMITE_CURTA}):"
+                     " o que o ledger já diz sai do bloco Publicado, não se repete")
     for e in erros:
         print(f"🛑 {argv[1]}: {e}", file=sys.stderr)
     if erros:

@@ -33,7 +33,7 @@ def bloco_do_ok() -> str:
 
 class SddRelease(unittest.TestCase):
     def test_versao(self):
-        self.assertEqual(versao(RELEASE), "2.15.0")   # F17b: modo iniciante; F22: aviso de versão na FASE 0
+        self.assertEqual(versao(RELEASE), "2.16.0")   # F17b: modo iniciante; F22: aviso de versão na FASE 0; F23B3: 2º revisor por risco; F24: release enxuta
 
     def test_item_7_roda_o_script(self):
         item = ler(RELEASE).split("7. **PARAR e mostrar (o 1 OK)", 1)[1].split("```markdown", 1)[0]
@@ -43,7 +43,7 @@ class SddRelease(unittest.TestCase):
     def test_bloco_tem_os_campos_na_ordem(self):
         bloco = bloco_do_ok()
         rotulos = ["**O que sobe:**", "**O que muda em produção:**", "**O push publica sozinho?**",
-                   "**O deploy espera os testes?**", "**Banco:**", "**Verificações:**", "**Veredito:**",
+                   "**O deploy espera os testes?**", "**O commit de papel publica?**", "**Banco:**", "**Verificações:**", "**Veredito:**",
                    "**Ledger:**"]
         posicoes = [bloco.find(r) for r in rotulos]
         self.assertNotIn(-1, posicoes, dict(zip(rotulos, posicoes)))
@@ -54,7 +54,7 @@ class SddRelease(unittest.TestCase):
 
     def test_uma_pergunta_so_e_a_ultima_linha(self):
         linhas = [l.strip() for l in bloco_do_ok().splitlines() if l.strip()]
-        self.assertEqual(linhas[-1], "**Posso finalizar (push + deploy + verificar)?**")
+        self.assertEqual(linhas[-1], "**Posso finalizar (push + deploy + verificar + papel)?**")  # F24: o papel no mesmo OK
         perguntas = [l for l in linhas if l.startswith("**Posso")]
         self.assertEqual(len(perguntas), 1, perguntas)
 

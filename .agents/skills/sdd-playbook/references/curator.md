@@ -1,14 +1,17 @@
-# Curador do playbook — brief do agente fresco do passo 17b da `sdd-release`
+# Curador do playbook — brief do agente fresco do lote de curadoria da `sdd-playbook`
 
 Você é o curador: **julga** o que o script colheu e devolve uma tabela. Você não é quem citou as
-landmines no DESIGN nem quem conduziu a release. Você **não decide** (a pessoa decide o que muda a regra
-do método) e **não escreve** (quem aplica é a `sdd-release`, depois do OK). E você escreve para alguém
+landmines no DESIGN nem quem conduziu a release ou o lote. Você **não decide** (a pessoa decide o que muda a regra
+do método) e **não escreve** (quem aplica é o lote, depois do OK). E você escreve para alguém
 que vai decidir **sem abrir o playbook**.
 
-Quem despacha este brief é o passo 17b (curadoria) da `sdd-release`, pela escada de
+Quem despacha este brief é o lote de curadoria (`.agents/skills/sdd-playbook/references/lote.md`), uma vez por
+publicação da fila, pela escada de
 `sdd-build/references/contexto-fresco.md`: subagente em contexto limpo; sem subagente, sessão nova
 (`sdd-fluxo.sh despachar curador …`, exit 40). Contrato de máquina: `sdd/WORKFLOW_CONTRACTS.yaml` ›
-`curador`. Quem confere o seu retorno é `sdd/bin/playbook-curator.sh --conferir-bloco`.
+`curador`. Quem confere o seu retorno é `sdd/bin/playbook-curator.sh --conferir-bloco`. A colheita que você
+recebe foi refeita pelo lote sobre a cópia dos documentos da publicação (`--conferir-entrada`), e o `staging:` é
+essa cópia: as evidências estão lá, congeladas.
 
 ## Entrada (só isto chega — 5 campos)
 
@@ -16,7 +19,7 @@ Quem despacha este brief é o passo 17b (curadoria) da `sdd-release`, pela escad
 feature: <F> · staging: <pasta> · colheita: <pasta>/colheita.txt · playbook: <abs>/sdd/playbook.md · worktree: <abs>
 ```
 
-Se vier qualquer coisa além desses 5 campos (a conversa da release, o diff, "o que foi feito", uma
+Se vier qualquer coisa além desses 5 campos (a conversa do lote ou da release, o diff, "o que foi feito", uma
 hipótese), escreva `CONTAMINAÇÃO: sim — <o que veio>` no bloco e julgue **só pelos arquivos** mesmo assim.
 A única exceção é o redespacho: um 6º campo `conferencia:`, com as linhas `🔴 bloco:` que o conferidor
 reprovou no seu bloco anterior, não é contaminação: conserte exatamente o que elas dizem.
@@ -27,7 +30,7 @@ reprovou no seu bloco anterior, não é contaminação: conserte exatamente o qu
   comandos que você roda são de leitura (`cat`, `grep`, `sed -n`, `awk`, `playbook-lint.sh --grep`,
   `playbook-curator.sh --cruzar -`). **Não rode** `playbook-curator.sh --colher`, `--preparar` nem
   `--self-test`: eles gravam (o trace, a pasta de staging). A sua única entrega é o bloco, na resposta. A
-  release compara o projeto e a pasta de staging antes e depois do seu trabalho; um arquivo mexido, criado
+  o lote compara o projeto e a pasta de staging antes e depois do seu trabalho; um arquivo mexido, criado
   ou apagado descarta o bloco.
 - **`AUTO` só em linha `contador`**, e com a evidência **igual** à da colheita (o mesmo `arquivo:linha`
   da linha `DELTA`). Nada mais entra sem pergunta.
@@ -125,4 +128,4 @@ CONTAMINAÇÃO: não | sim — <o que veio além dos 5 campos>
 O bloco é conferido por programa: linha da colheita ausente, `AUTO` fora de `contador` ou diferente da
 colheita (ID, verbo, `+1` e `arquivo:linha`), `ACEITAR` sem `arquivo:linha` que exista no `staging:`,
 promoção sem `PERGUNTA OBRIGATÓRIA`, célula de linguagem simples vazia, delta fora da gramática, arquivo
-do projeto ou do `staging:` mexido: qualquer um faz a release descartar o bloco e despachar de novo.
+do projeto ou do `staging:` mexido: qualquer um faz o lote descartar o bloco e despachar de novo.

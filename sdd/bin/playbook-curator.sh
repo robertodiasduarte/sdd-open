@@ -780,7 +780,7 @@ def colher(args):
         c.saida.extend(ln for ln in avisos if not ln.startswith("resumo-inv:"))
         c.saida.extend(pendentes_antigos(bullets, inv, c.saida))
     if c.ja_julgados:
-        c.saida.append("JA_JULGADO %d linha(s) já julgada(s) numa curadoria anterior desta feature (%s): não contam de novo"
+        c.saida.append("JA_JULGADO %d linha(s) já julgada(s) numa curadoria anterior desta feature ou já na fila da curadoria (%s): não contam de novo"
                        % (c.ja_julgados, REGISTRO))
     c.saida.append("resumo: deltas=%d (ajudou=%d mordeu=%d) candidatos=%d rejeitados=%d promocoes=%d sugestoes=%d"
                    % (n["a"] + n["m"], n["a"], n["m"], n["c"], n["r"], n["p"], n["s"]))
@@ -1626,6 +1626,401 @@ def conferir_bloco(args):
     return 0
 
 
+# ── fila da curadoria (F24): --enfileirar · --fila · --conferir-entrada · --registrar ─────────────────────
+# A release só colhe e guarda a colheita numa pasta da fila (versionada, no commit de papel); o lote da sdd-playbook
+# julga depois. Cada entrada é um staging congelado: a colheita, o exit dela, as impressões excluídas na hora e a
+# cópia dos documentos. O lote nunca julga a colheita guardada: refaz a colheita sobre a cópia e só segue se as
+# impressões baterem (uma linha plantada no git depois da publicação recusa a entrada).
+FILA = os.path.join("sdd", "curadoria", "fila")
+LIMITE_FILA = 5
+RE_ENTRADA = re.compile(r"^\d{8}T\d{6}Z$")
+RE_FP = re.compile(r"\bfp=([0-9a-f]{10}(?:,[0-9a-f]{10})*)")
+JULGAVEIS = ("DELTA ", "SUGESTAO ", "CANDIDATO #", "REJEITADO ")
+
+
+def fps_de(texto, so_julgaveis=False):
+    """Impressões (fp=) do texto; com so_julgaveis, só das linhas que alguém julga."""
+    out = set()
+    for ln in texto.split("\n"):
+        if so_julgaveis and not ln.startswith(JULGAVEIS):
+            continue
+        for m in RE_FP.finditer(ln):
+            out.update(m.group(1).split(","))
+    return out
+
+
+def captura(funcao, args, ambiente=None):
+    """(exit, stdout, stderr) de um modo deste programa, sem imprimir nada. falha() e uso() saem por SystemExit."""
+    import contextlib
+    import io
+    so, se = io.StringIO(), io.StringIO()
+    antes = {k: os.environ.get(k) for k in (ambiente or {})}
+    os.environ.update(ambiente or {})
+    try:
+        with contextlib.redirect_stdout(so), contextlib.redirect_stderr(se):
+            try:
+                rc = funcao(list(args))
+            except SystemExit as e:
+                rc = e.code if isinstance(e.code, int) else 2
+    finally:
+        for k, v in antes.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    return rc, so.getvalue(), se.getvalue()
+
+
+def entradas_da_fila(raiz, feature=None):
+    """[(feature, caminho)] das entradas, em ordem de feature e de horário."""
+    base = os.path.join(raiz, FILA)
+    out = []
+    if not os.path.isdir(base):
+        return out
+    for f in sorted(os.listdir(base)):
+        if feature and f != feature:
+            continue
+        pf = os.path.join(base, f)
+        if not RE_FEATURE.match(f) or os.path.islink(pf) or not os.path.isdir(pf):
+            continue
+        for e in sorted(os.listdir(pf)):
+            pe = os.path.join(pf, e)
+            if RE_ENTRADA.match(e) and os.path.isdir(pe) and not os.path.islink(pe):
+                out.append((f, pe))
+    return out
+
+
+def rc_da_entrada(pe):
+    try:
+        return int(ler(os.path.join(pe, "colheita.rc")).strip())
+    except (OSError, ValueError):
+        return -1
+
+
+def git_ok(*args):
+    try:
+        r = subprocess.run(["git"] + list(args), capture_output=True, encoding="utf-8", errors="replace",
+                           stdin=subprocess.DEVNULL)
+        return r.returncode, r.stdout
+    except OSError:
+        return 127, ""
+
+
+def nome_novo(pasta_feature):
+    agora = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
+    while True:
+        nome = agora.strftime("%Y%m%dT%H%M%SZ")
+        if not os.path.exists(os.path.join(pasta_feature, nome)):
+            return nome
+        agora += datetime.timedelta(seconds=1)
+
+
+def remove_falhas(raiz, feature, exceto=None):
+    """Uma colheita que terminou cobre o que as entradas falhas não colheram (as impressões delas nunca foram
+    excluídas de nada): elas saem da fila. A release põe a remoção no commit de papel."""
+    for _f, pe in entradas_da_fila(raiz, feature):
+        if pe != exceto and rc_da_entrada(pe) != 0:
+            shutil.rmtree(pe, ignore_errors=True)
+            diz("removida a entrada que falhou: " + os.path.relpath(pe, raiz).replace(os.sep, "/"))
+
+
+def origens_de(feature, nome):
+    """Os caminhos de onde o --preparar copia um documento com este nome (os mesmos padrões), ou [] se não é documento."""
+    arq = "sdd/archive/%s/" % feature
+    if nome == "DESIGN_%s.md" % feature:
+        return ["sdd/features/" + nome, arq + nome]
+    if nome == "BUILD_REPORT_%s.md" % feature:
+        return ["sdd/reports/" + nome, arq + nome]
+    if re.match(r"^AVALIACAO_%s_\d{8}" % re.escape(feature), nome):
+        return ["sdd/reviews/" + nome, arq + nome]
+    if re.match(r"^AVAL.*-.*\.log$", nome):
+        return ["sdd/reports/evidence/%s/%s" % (feature, nome)]
+    if nome.endswith(".yaml"):
+        return ["sdd/releases/%s/%s" % (feature, nome)]
+    if nome == "HANDOFF_%s.md" % feature:
+        return ["sdd/handoffs/" + nome]
+    return []
+
+
+def blob_de(raiz, caminho):
+    rc, out = git_ok("-C", raiz, "hash-object", "--", caminho)
+    return out.strip() if rc == 0 and re.fullmatch(r"[0-9a-f]{40,64}", out.strip()) else ""
+
+
+def commitado_igual(raiz, copia, origens):
+    """A cópia é igual ao que está commitado (HEAD) num dos caminhos de origem?"""
+    b = blob_de(raiz, copia)
+    for o in origens:
+        rc, out = git_ok("-C", raiz, "rev-parse", "-q", "--verify", "HEAD:" + o)
+        if rc == 0 and out.strip() == b:
+            return True
+    return False
+
+
+def esteve_no_historico(raiz, copia, origens):
+    """O conteúdo da cópia já esteve num dos caminhos de origem, em algum commit da história de HEAD?"""
+    b = blob_de(raiz, copia)
+    if not b:
+        return False
+    rc, out = git_ok("-C", raiz, "log", "--format=%H", "--find-object=" + b, "HEAD", "--", *origens)
+    return rc == 0 and bool(out.strip())
+
+
+def enfileirar(args):
+    if len(args) < 2:
+        uso("--enfileirar exige <FEATURE> <playbook> [--inv <invariantes>]")
+    feature, pb, resto = args[0], args[1], args[2:]
+    if not RE_FEATURE.match(feature):
+        uso("FEATURE inválida: '%s' (letras, números, - e _; começa por letra ou número)" % feature)
+    inv = []
+    if resto:
+        if len(resto) != 2 or resto[0] != "--inv" or not resto[1]:
+            uso("opção desconhecida ou sem valor: " + resto[0])
+        inv = resto
+    raiz = raiz_do_projeto()
+    pf = os.path.join(raiz, FILA, feature)
+    rc_p, out_p, err_p = captura(preparar, [feature])
+    if rc_p == 1:
+        erro(err_p.rstrip("\n")) if err_p.strip() else None
+        fim("STAGING SEM DOCUMENTOS", "conserto sem DESIGN nem BUILD_REPORT: registre \"Curadoria: 0 deltas (sem "
+            "documentos)\" na ficha; senão confira o nome da feature. Nada foi enfileirado.")
+        return 1
+    stg = next((ln[len("staging: "):] for ln in out_p.split("\n") if ln.startswith("staging: ")), "")
+    if rc_p == 0 and stg:
+        # o que já está na fila desta feature não conta de novo: entra no registro do staging, ao lado do já julgado
+        na_fila = set()
+        for _f, pe in entradas_da_fila(raiz, feature):
+            if rc_da_entrada(pe) == 0:
+                na_fila |= fps_de(ler(os.path.join(pe, "colheita.txt")), True)
+        if na_fila:
+            with open(os.path.join(stg, REGISTRO), "a", encoding="utf-8") as f:
+                f.write("já na fila da curadoria · fp=%s\n" % ",".join(sorted(na_fila)))
+        rc_c, colheita, err_c = captura(colher, [stg, pb] + inv)
+    else:
+        rc_c, colheita, err_c = (rc_p if rc_p else 2), out_p, err_p
+    # Promoção e invariante pendente são estado do playbook, não desta publicação: voltam em toda colheita, e o lote
+    # as pergunta pela colheita de qualquer entrada. Sem linha de documento, nada entra na fila.
+    so_playbook = rc_c == 0 and not any(ln.startswith(JULGAVEIS + ("TABELA_SEM_CABECALHO ",))
+                                        for ln in colheita.split("\n"))
+    if (rc_c == 1 and "RESULTADO: NADA A COLHER" in colheita) or so_playbook:
+        resumo = next((ln for ln in colheita.split("\n") if ln.startswith("resumo:")), "")
+        diz(resumo) if resumo else None
+        if so_playbook:
+            diz("o playbook tem promoção ou invariante pendente: o próximo lote da sdd-playbook pergunta")
+        remove_falhas(raiz, feature)
+        fim("NADA A COLHER", "registre \"Curadoria: 0 deltas\" na ficha: esta publicação não trouxe linha nova para "
+            "julgar (lição, contagem ou candidato). Nada foi enfileirado.")
+        return 1
+    if rc_c == 1:
+        rc_c = 2  # exit 1 sem a linha de "nada": o redirecionamento falhou, nunca "nada a colher"
+    try:
+        os.makedirs(pf, exist_ok=True)
+        destino = os.path.join(pf, nome_novo(pf))
+        os.makedirs(destino)
+        ausentes = []
+        if rc_c == 0:
+            for nome in sorted(os.listdir(stg)):
+                origem = os.path.join(stg, nome)
+                if nome in DERIVADOS or nome == "colheita.rc" or not os.path.isfile(origem) or os.path.islink(origem):
+                    continue
+                if re.match(r"^AVAL.*-.*\.log$", nome):
+                    original = os.path.join("sdd", "reports", "evidence", feature, nome)
+                    rc_i, _ = git_ok("-C", raiz, "check-ignore", "-q", original)
+                    if rc_i == 0:  # o projeto não versiona este log: a cópia não vai para o git por aqui
+                        ausentes.append(nome)
+                        continue
+                shutil.copyfile(origem, os.path.join(destino, nome))
+        with open(os.path.join(destino, "colheita.txt"), "w", encoding="utf-8") as f:
+            f.write(colheita)
+        with open(os.path.join(destino, "colheita.rc"), "w", encoding="utf-8") as f:
+            f.write("%d\n" % rc_c)
+        if ausentes:
+            # as impressões que só um log ausente prova: a colheita refeita na cópia não as tem
+            _r, refeita, _e = captura(colher, [destino, pb] + inv, {"SDD_TRACE": "off"})
+            sem = fps_de(colheita, True) - fps_de(refeita, True)
+            with open(os.path.join(destino, "ausentes.txt"), "w", encoding="utf-8") as f:
+                f.write("".join("arquivo: %s\n" % a for a in ausentes))
+                if sem:
+                    f.write("sem evidência na fila · fp=%s\n" % ",".join(sorted(sem)))
+    except OSError as e:
+        falha("não consegui gravar a entrada da fila em %s: %s" % (os.path.relpath(pf, raiz), e),
+              "isto não é \"0 deltas\": registre \"Curadoria: FALHOU (fila)\" e confira a permissão da pasta.")
+    rel = os.path.relpath(destino, raiz).replace(os.sep, "/")
+    if rc_c != 0:
+        erro(err_c.rstrip("\n")) if err_c.strip() else None
+        diz("fila: " + rel)
+        fim("COLHEITA FALHOU (rc=%d)" % rc_c, "isto não é \"0 deltas\": registre \"Curadoria: FALHOU (rc=%d)\" na ficha; "
+            "a entrada fica na fila marcada, e uma colheita nova desta feature a substitui. A publicação não foi afetada."
+            % rc_c)
+        return 2
+    remove_falhas(raiz, feature, exceto=destino)
+    for nome in sorted(os.listdir(destino)):
+        orig = origens_de(feature, nome)
+        if orig and not commitado_igual(raiz, os.path.join(destino, nome), orig):
+            diz("⚠️ %s não está commitado como foi copiado: o lote vai recusar esta entrada; commite o documento e "
+                "colha de novo" % nome)
+    resumo = next((ln for ln in colheita.split("\n") if ln.startswith("resumo:")), "")
+    diz(resumo) if resumo else None
+    if ausentes:
+        diz("sem cópia (o projeto não versiona): " + ", ".join(ausentes))
+    diz("fila: " + rel)
+    fim("ENFILEIRADO", "ponha a pasta %s no commit de papel; o lote da sdd-playbook a julga depois. Nada foi aplicado."
+        % rel)
+    return 0
+
+
+def fila(args):
+    if len(args) > 1:
+        uso("--fila aceita só [<FEATURE>]")
+    feature = args[0] if args else None
+    if feature and not RE_FEATURE.match(feature):
+        uso("FEATURE inválida: '%s'" % feature)
+    raiz = raiz_do_projeto()
+    es = entradas_da_fila(raiz, feature)
+    for f, pe in es:
+        rc = rc_da_entrada(pe)
+        n = len([ln for ln in ler(os.path.join(pe, "colheita.txt")).split("\n") if ln.startswith(JULGAVEIS)]) \
+            if os.path.isfile(os.path.join(pe, "colheita.txt")) else 0
+        diz("%s · %s · %s" % (f, os.path.basename(pe), "%d linha(s) a julgar" % n if rc == 0
+                              else "colheita FALHOU (rc=%d): rode --enfileirar %s de novo" % (rc, f)))
+    diz("FILA: %d entrada(s) (limite %d)" % (len(es), LIMITE_FILA))
+    if len(es) > LIMITE_FILA:
+        diz("🧹 fila da curadoria: %d publicações esperando julgamento (mais de %d); quando puder, rode o lote da "
+            "sdd-playbook (\"rode o lote da curadoria\")." % (len(es), LIMITE_FILA))
+        fim("FILA ACIMA DO LIMITE", "diga a linha 🧹 em 1 frase, sem perguntar e sem rodar o lote.")
+        return 10
+    fim("FILA OK", "nada a dizer à pessoa sobre a fila.")
+    return 0
+
+
+def conferir_entrada(args):
+    if len(args) not in (2, 4) or (len(args) == 4 and (args[2] != "--inv" or not args[3])):
+        uso("--conferir-entrada exige <entrada> <playbook> [--inv <invariantes>]")
+    entrada, pb, inv = os.path.abspath(args[0]), args[1], args[2:]
+    raiz = raiz_do_projeto()
+    feature = os.path.basename(os.path.dirname(entrada))
+    nome = os.path.basename(entrada)
+    if not (RE_ENTRADA.match(nome) and RE_FEATURE.match(feature) and os.path.isdir(entrada)
+            and not os.path.islink(entrada)
+            and os.path.realpath(os.path.dirname(os.path.dirname(entrada))) == os.path.realpath(os.path.join(raiz, FILA))):
+        uso("entrada inválida: %s (esperado %s/<FEATURE>/<AAAAMMDDTHHMMSSZ>)" % (args[0], FILA))
+
+    def recusa(motivo):
+        erro("🔴 entrada: " + motivo)
+        fim("ENTRADA RECUSADA", "nada desta entrada é julgado nem aplicado; ela fica na fila. Para refazê-la, rode "
+            "--enfileirar %s numa pasta com os documentos da feature." % feature)
+        return 2
+
+    rc = rc_da_entrada(entrada)
+    if rc != 0:
+        return recusa("a colheita desta entrada falhou na publicação (rc=%d)" % rc)
+    rc_g, log = git_ok("-C", raiz, "log", "--format=%H", "--", os.path.relpath(entrada, raiz))
+    if rc_g == 0 and len([x for x in log.split("\n") if x.strip()]) > 1:
+        return recusa("a pasta da entrada mudou depois do commit que a criou (%d commits a tocam)"
+                      % len([x for x in log.split("\n") if x.strip()]))
+    for n in sorted(os.listdir(entrada)):
+        orig = origens_de(feature, n)
+        if orig and not esteve_no_historico(raiz, os.path.join(entrada, n), orig):
+            return recusa("o documento %s da entrada nunca esteve, com este conteúdo, em %s no histórico do git "
+                          "(entrada fabricada ou documento mexido)" % (n, " nem em ".join(orig)))
+    guardada = ler(os.path.join(entrada, "colheita.txt"))
+    sem_evid = set()
+    arquivos_ausentes = []
+    if os.path.isfile(os.path.join(entrada, "ausentes.txt")):
+        txt = ler(os.path.join(entrada, "ausentes.txt"))
+        sem_evid = fps_de(txt)
+        arquivos_ausentes = [ln[len("arquivo: "):] for ln in txt.split("\n") if ln.startswith("arquivo: ")]
+    stg = pasta_de_staging(raiz, "LOTE_%s_%s" % (feature, nome))
+    try:
+        for p in (os.path.dirname(stg), stg):
+            if os.path.islink(p):
+                raise OSError("%s é um link" % p)
+            os.makedirs(p, mode=0o700, exist_ok=True)
+            confere_pasta_exclusiva(p)
+        for n in os.listdir(stg):
+            alvo = os.path.join(stg, n)
+            shutil.rmtree(alvo) if os.path.isdir(alvo) and not os.path.islink(alvo) else os.remove(alvo)
+        for n in sorted(os.listdir(entrada)):
+            origem = os.path.join(entrada, n)
+            if n in ("colheita.txt", "colheita.rc", "ausentes.txt") or not os.path.isfile(origem) or os.path.islink(origem):
+                continue
+            shutil.copyfile(origem, os.path.join(stg, n))
+        registro = os.path.join(raiz, "sdd", "releases", feature, REGISTRO)
+        julgados = fps_de(ler(registro)) if os.path.isfile(registro) else set()
+        if julgados:  # julgado noutra frente em paralelo: não conta de novo
+            with open(os.path.join(stg, REGISTRO), "a", encoding="utf-8") as f:
+                f.write("já julgado · fp=%s\n" % ",".join(sorted(julgados)))
+    except OSError as e:
+        falha("não consegui preparar o staging do lote %s: %s" % (stg, e),
+              "apague essa pasta, ou aponte TMPDIR para uma pasta só sua, e rode de novo; nada foi julgado.")
+    rc_c, refeita, err_c = captura(colher, [stg, pb] + inv, {"SDD_TRACE": "off"})
+    if rc_c not in (0, 1) or (rc_c == 1 and "RESULTADO: NADA A COLHER" not in refeita):
+        erro(err_c.rstrip("\n")) if err_c.strip() else None
+        return recusa("a colheita refeita falhou (rc=%d)" % rc_c)
+    # lição aposentada (ou apagada) desde a publicação: a colheita de agora a relata como IGNORADO, e não conta
+    ativos = {b["id"] for b in carrega_playbook(pb) if b["tipo"] == "ativo"}
+    fora = set()
+    for ln in guardada.split("\n"):
+        m = re.match(r"^(?:DELTA|SUGESTAO mordeu\?) (LM-\d{3})\b", ln)
+        if m and m.group(1) not in ativos:
+            fora |= fps_de(ln)
+    esperado = fps_de(guardada, True) - sem_evid - julgados - fora
+    obtido = fps_de(refeita, True)
+    if esperado != obtido:
+        return recusa("colheita alterada depois da publicação: %d impressão(ões) a mais e %d a menos na colheita "
+                      "guardada do que nos documentos da entrada" % (len(esperado - obtido), len(obtido - esperado))
+                      if obtido - esperado or esperado - obtido else "colheita alterada depois da publicação")
+    with open(os.path.join(stg, "colheita.txt"), "w", encoding="utf-8") as f:
+        f.write(refeita)
+    with open(os.path.join(stg, "colheita.rc"), "w", encoding="utf-8") as f:
+        f.write("%d\n" % rc_c)
+    if arquivos_ausentes:
+        diz("evidência ausente: %d linha(s) citam log que o projeto não versiona (%s); relate-as, nunca as conte"
+            % (len(sem_evid), ", ".join(arquivos_ausentes)))
+    diz("staging: " + stg)
+    if rc_c == 1:
+        fim("NADA A JULGAR", "tudo desta entrada já foi julgado: registre-a com --registrar, sem despachar o curador.")
+        return 1
+    fim("ENTRADA CONFERIDA", "sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.")
+    return 0
+
+
+def registrar(args):
+    if not args:
+        uso("--registrar exige <entrada> [<entrada>…]")
+    raiz = raiz_do_projeto()
+    base = os.path.realpath(os.path.join(raiz, FILA))
+    for a in args:
+        pe = os.path.abspath(a)
+        if not (RE_ENTRADA.match(os.path.basename(pe)) and os.path.isdir(pe) and not os.path.islink(pe)
+                and os.path.realpath(os.path.dirname(os.path.dirname(pe))) == base):
+            uso("entrada inválida: %s" % a)
+    for a in args:
+        pe = os.path.abspath(a)
+        feature = os.path.basename(os.path.dirname(pe))
+        linhas = [ln for ln in ler(os.path.join(pe, "colheita.txt")).split("\n") if ln.startswith(JULGAVEIS)
+                  and RE_FP.search(ln)]
+        aus = os.path.join(pe, "ausentes.txt")
+        if os.path.isfile(aus):
+            linhas += [ln for ln in ler(aus).split("\n") if RE_FP.search(ln)]
+        destino = os.path.join(raiz, "sdd", "releases", feature, REGISTRO)
+        try:
+            os.makedirs(os.path.dirname(destino), exist_ok=True)
+            if linhas:
+                with open(destino, "a", encoding="utf-8") as f:
+                    f.write("\n".join(linhas) + "\n")
+            shutil.rmtree(pe)
+            if not os.listdir(os.path.dirname(pe)):
+                os.rmdir(os.path.dirname(pe))
+        except OSError as e:
+            falha("não consegui registrar %s: %s" % (a, e), "confira a permissão e rode de novo para as que faltaram.")
+        diz("registrada: %s (%d linha(s) em %s)" % (os.path.relpath(pe, raiz).replace(os.sep, "/"), len(linhas),
+                                                   os.path.relpath(destino, raiz).replace(os.sep, "/")))
+    fim("REGISTRADO", "as impressões julgadas não contam de novo; as entradas saíram da fila. Ponha as duas mudanças "
+        "no commit do lote.")
+    return 0
+
+
 # ── --self-test ─────────────────────────────────────────────────────────────────────────────────
 def self_test():
     eu = os.environ.get("SDD_CURATOR_SELF") or ""
@@ -1958,6 +2353,14 @@ def main(argv):
         return selar(args)
     if modo == "--conferir-bloco":
         return conferir_bloco(args)
+    if modo == "--enfileirar":
+        return enfileirar(args)
+    if modo == "--fila":
+        return fila(args)
+    if modo == "--conferir-entrada":
+        return conferir_entrada(args)
+    if modo == "--registrar":
+        return registrar(args)
     if modo == "--self-test":
         if args:
             uso("--self-test não recebe argumento")

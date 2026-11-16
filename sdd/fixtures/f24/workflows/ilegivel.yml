@@ -1,0 +1,9 @@
+name: deploy
+on: &gatilho
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npx vercel deploy --prod

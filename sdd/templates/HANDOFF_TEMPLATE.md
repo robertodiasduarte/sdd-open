@@ -16,9 +16,17 @@
 | **Artefatos** | `sdd/features/DEFINE_{F}.md` · `sdd/features/DESIGN_{F}.md` · `sdd/reports/BUILD_REPORT_{F}.md` |
 | **Verify Gate** | {🟢 0 · 🔴 2 · inconclusivo 3 · assinatura 4 · clarificar 5} — `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md` |
 
+## Publicado
+
+> Gerado por `python3 sdd/bin/ficha-publicado.py {FEATURE}` a partir de `sdd/releases/{FEATURE}/`: uma linha por
+> release, a mais recente no topo. Não edite à mão; o que o ledger já diz não se repete nas outras seções.
+
+<!-- publicado:inicio (gerado por sdd/bin/ficha-publicado.py a partir de sdd/releases/; não edite à mão) -->
+<!-- publicado:fim -->
+
 ## Feito
 
-- {o que está pronto, com o comando ou arquivo que PROVA — nunca "acho que funciona"}
+- {o que está pronto e ainda não foi publicado, com o comando ou arquivo que PROVA — nunca "acho que funciona"}
 
 ## Falta
 
@@ -105,7 +113,7 @@ Landmines: {1 linha por armadilha}.
 
 ### {slice/sessão mais recente} — {YYYY-MM-DD}
 
-- {o que aconteceu nesta sessão, em 3-6 linhas}
+- {o que aconteceu nesta sessão e o ledger não diz, em 3-6 linhas}
 
 ### {slice anterior} — {YYYY-MM-DD}
 

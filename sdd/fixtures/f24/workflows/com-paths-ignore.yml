@@ -1,0 +1,11 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['sdd/**', '**/*.md']
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm test
+      - run: npx vercel deploy --prod

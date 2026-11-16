@@ -1,4 +1,4 @@
-"""Contrato de texto da F14: o passo 17b da sdd-release, o brief do curador, o sdd/WORKFLOW_CONTRACTS.yaml, a
+"""Contrato de texto da F14: a curadoria (desde a F24, o lote da sdd-playbook), o brief do curador, o sdd/WORKFLOW_CONTRACTS.yaml, a
 sdd-new-session, o molde do handoff, docs e versões (DEFINE F14 AT-023 a AT-025, AT-028, AT-029, AT-034 a AT-036).
 
 O comportamento mecânico tem teste próprio; aqui se confere que o texto que o agente segue manda rodar cada peça, na
@@ -18,8 +18,11 @@ def ler(rel: str) -> str:
 
 
 RELEASE = ler(".agents/skills/sdd-release/SKILL.md")
-PASSO = RELEASE[RELEASE.index("17b. **Curadoria do playbook"):RELEASE.index("18. **Imprimir a ficha**")]
-COMO_FALAR = ler(".agents/skills/sdd-release/references/como-falar.md")
+# F24: a curadoria saiu da release (que só colhe, item 13) e foi para o lote da sdd-playbook. As garantias são as
+# mesmas, conferidas no lugar novo: o PASSO é o procedimento do lote.
+PASSO = ler(".agents/skills/sdd-playbook/references/lote.md")
+COMO_FALAR = ler(".agents/skills/sdd-playbook/references/como-falar.md")
+COMO_FALAR_RELEASE = ler(".agents/skills/sdd-release/references/como-falar.md")
 CURATOR_MD = ler(".agents/skills/sdd-playbook/references/curator.md")
 SCRIPT = ler("sdd/bin/playbook-curator.sh")
 CONTRATOS = ler("sdd/WORKFLOW_CONTRACTS.yaml")
@@ -33,12 +36,15 @@ def lista_yaml(chave: str) -> list:
 
 
 class Passo17b(unittest.TestCase):
+    """F14 AT-023 a AT-025, conferidos no lote da sdd-playbook desde a F24 (a release só colhe)."""
+
     def test_as_pecas_vem_nesta_ordem(self):
-        ordem = ("--preparar {F}", "--colher \"$STG\"", "BRIEF_curador_{F}.md", "--selar \"$STG\"", "governanca-fronteira.sh --snapshot",
+        ordem = ("--fila", "--conferir-entrada \"$E\"", "BRIEF_curador_<F>.md", "--selar \"$STG\"", "governanca-fronteira.sh --snapshot",
                  "sdd-fluxo.sh despachar curador", "governanca-fronteira.sh --comparar", "--conferir-bloco",
-                 "--cruzar -", "--aplicar \"$STG/delta.txt\"", "playbook-lint.sh \"$STG/novo.md\"", "--anti-collapse",
-                 "--aplicar-inv", "--validar-inv", "cp \"$STG/novo.md\" sdd/playbook.md", "CURATOR-colheita.log",
-                 "CURATOR-delta.log", "sdd/releases/{F}/CURATOR-colhidos.txt", "git add sdd/playbook.md", "[D1 · não se desfaz]")
+                 "--cruzar -", "--aplicar \"$TMPDIR/lote-delta.txt\"", "playbook-lint.sh \"$TMPDIR/novo.md\"", "--anti-collapse",
+                 "--aplicar-inv", "--validar-inv", "cp \"$TMPDIR/novo.md\" sdd/playbook.md", "CURATOR-entradas.log",
+                 "CURATOR-delta.log", "--registrar", "sdd/releases/<F>/CURATOR-colhidos.txt", "git add sdd/playbook.md",
+                 "[D1 · não se desfaz]")
         pos = -1
         for trecho in ordem:
             with self.subTest(trecho=trecho):
@@ -48,43 +54,44 @@ class Passo17b(unittest.TestCase):
                 pos = agora
 
     def test_falha_de_coleta_nao_e_zero_deltas(self):
-        self.assertIn("`Curadoria: 0 deltas`", PASSO)
-        self.assertIn('**não é "0 deltas"**', PASSO)
-        self.assertIn("`Curadoria: FALHOU (rc=N)`", PASSO)
-        self.assertIn("a publicação não foi afetada", PASSO)
-        self.assertIn("`1` com `RESULTADO: NADA A COLHER` em `colheita.txt`", PASSO)
-        self.assertIn("inclusive `1` sem aquela linha", PASSO)
-        self.assertRegex(PASSO, r"\(`2`, `64`, `126`, `127`")
+        item13 = RELEASE[RELEASE.index("13. **Colheita.**"):RELEASE.index("14. **Ficha.**")]
+        self.assertIn("`Curadoria: 0 deltas`", item13)
+        self.assertIn('**não é "0 deltas"**', item13)
+        self.assertIn("`Curadoria: FALHOU (rc=N)`", item13)
+        self.assertIn("a publicação não foi afetada", item13)
+        self.assertIn("`1` com `RESULTADO: NADA A COLHER`", item13)
+        self.assertRegex(item13, r"\(`64`, `126`, `127`")
+        self.assertIn('**não é "nada a julgar"**', PASSO)
 
     def test_so_o_conferidor_separa_contagem_de_regra(self):
-        self.assertIn("Nunca separe contagem de regra à mão", PASSO)
+        self.assertIn("Nunca separe\n   contagem de regra à mão", PASSO)
         self.assertIn("linhas `AUTO <delta>`", " ".join(PASSO.split()))
         self.assertIn("`PERGUNTA <n> <tipo> <delta>`", PASSO)
         self.assertIn("**1 vez**", PASSO)
         self.assertIn("`Curadoria: FALHOU (bloco inválido)`", PASSO)
-        self.assertIn("**nada é aplicado**", PASSO)
+        self.assertIn("**nada dela é aplicado**", PASSO)
 
     def test_fala_com_a_pessoa(self):
-        for trecho in ("a publicação já terminou", "`[D3 · muda a regra do método]`", "**aceitar**, **recusar** e **não sei**",
-                       "até 5 por vez", "**uma opção só**", "**Decidi sozinho**", "`git revert <sha do commit da curadoria>`",
-                       "invariantes: arquivo ausente, cruzamento pulado", "**deixar para a próxima publicação**",
+        for trecho in ("o lote não mexe em nada publicado", "`[D3 · muda a regra do método]`", "**aceitar**, **recusar** e **não sei**",
+                       "até 5 por vez", "**uma opção só**", "**Decidi sozinho**", "`git revert <sha do commit do lote>`",
+                       "invariantes: arquivo ausente, cruzamento pulado", "**deixar para depois**",
                        "cada linha `REJEITADO`", "`🧹 curadoria:"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, " ".join(PASSO.split()))
 
     def test_sem_subagente_para_no_exit_40(self):
         self.assertIn("pare no exit 40", PASSO)
-        self.assertIn("--retomar", PASSO)
+        self.assertIn("rode `--conferir-entrada` de novo", " ".join(PASSO.split()))
 
     def test_retomada_nao_refaz_a_linha_de_base(self):
         t = " ".join(PASSO.split())
-        self.assertIn('vá direto para a parte "Na volta" do item 3', t)
+        self.assertIn('vá direto para "Na volta"', t)
         self.assertIn("refazer o selo ou o snapshot de antes agora tomaria por linha de base", t)
 
     def test_redespacho_depois_de_escrita_refaz_a_linha_de_base_ou_para(self):
         t = " ".join(PASSO.split())
         for trecho in ("sem `FORA:` nem staging mexido, redespache com o mesmo selo", "**não redespache**",
-                       "`Curadoria: FALHOU (curador escreveu no playbook)`", "refaça os itens 1 e 2, o selo e o snapshot de antes"):
+                       "`Curadoria: FALHOU (curador escreveu no playbook)`", "refaça o item 1, o selo e o snapshot de antes"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, t)
 
@@ -101,20 +108,21 @@ class Passo17b(unittest.TestCase):
 
     def test_promocao_nao_entra_no_delta_agora(self):
         t = " ".join(PASSO.split())
-        self.assertIn("a promoção aceita vira pendência na ficha", t)
+        self.assertIn("a promoção aceita vira pendência", t)
 
     def test_nada_aceito_tem_caminho_e_evidencia_nao_versionada_tambem(self):
         t = " ".join(PASSO.split())
-        for trecho in ("`Curadoria: nada aplicado`", "git check-ignore -q", "git ls-files sdd/reports/evidence", "colheita.rc",
-                       ': > "$STG/delta.txt"', "mkdir -p sdd/reports/briefs sdd/reports/evidence/{F} sdd/releases/{F}", "git ls-files sdd/releases",
-                       "traga o registro e os logs do item 8 da frente", "a pasta temporária se perdeu", "`git cherry-pick --abort`"):
+        for trecho in ("`Curadoria: nada aplicado`", "git check-ignore -q", "git ls-files sdd/reports/evidence",
+                       ': > "$TMPDIR/lote-delta.txt"', "mkdir -p sdd/reports/briefs",
+                       "traga os registros, as remoções da fila e os logs do item 8", "a pasta temporária se perdeu",
+                       "`git cherry-pick --abort`"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, t)
 
     def test_o_commit_nao_sai_sem_um_sim_e_reconfere_na_base(self):
         i = PASSO.index("**Recibo e envio.**")
         envio = PASSO[i:]
-        for trecho in ("**Posso enviar o commit da curadoria para a branch padrão?**", "`playbook-lint.sh`", "`--validar-inv`",
+        for trecho in ("**Posso enviar o commit do lote para a branch padrão?**", "`playbook-lint.sh`", "`--validar-inv`",
                        "`--aplicar`, que recalcula os IDs", "`--aplicar-inv`", "renumere o novo, nunca o da base"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, envio)
@@ -127,23 +135,27 @@ class Passo17b(unittest.TestCase):
         abortos = RELEASE[RELEASE.index("## Gates de ABORTAR"):RELEASE.index("## Quando pular")]
         self.assertNotIn("uradoria", abortos)
         ok = RELEASE[RELEASE.index("7. **PARAR e mostrar"):RELEASE.index("## FASE 2")]
-        self.assertNotIn("uradoria", ok)
+        # F24: o bloco do OK cita o caminho da fila (sdd/curadoria/fila/…) para o push-de-papel.py; o que não pode
+        # entrar é a curadoria como pergunta ou passo.
+        self.assertNotIn("uradoria", ok.replace("sdd/curadoria/", ""))
 
     def test_exemplos_no_como_falar(self):
-        i = COMO_FALAR.index("## Exemplo — a curadoria")
+        i = COMO_FALAR.index("## Exemplo — o lote da curadoria")
         ex = COMO_FALAR[i:]
         for trecho in ("**Decidi sozinho**", "[D3 · muda a regra do método]", "[D1 · não se desfaz]", "(ref: o candidato do relatório do build)",
                        "(ref: a lição da migration que sai `exit 0` sem estar no banco)",   # F22: a regra pelo texto, sem LM-nnn
-                       "**aceitar** (recomendado)", "**não sei**", "A publicação não foi afetada", "esta feature não trouxe lição nova nem contagem",
-                       "**uma opção só**"):
+                       "**aceitar** (recomendado)", "**não sei**", "nada dela foi aplicado", "**uma opção só**"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, ex)
-        for termo in ("curadoria —", "delta —", "aposentar (tombstone) —", "promover —", "invariante —"):
+        for termo in ("curadoria —", "delta —", "aposentar —", "promoção —", "invariante —", "lote —", "fila —"):
             with self.subTest(termo=termo):
                 self.assertIn(termo, COMO_FALAR)
+        for trecho in ("A publicação não foi afetada", "esta feature não trouxe lição nova nem contagem", "colheita —"):
+            with self.subTest(trecho=trecho):
+                self.assertIn(trecho, COMO_FALAR_RELEASE)
 
     def test_por_que_cada_regra_existe(self):
-        por_que = RELEASE[RELEASE.index("## Por que cada regra existe"):RELEASE.index("## Encerramento")]
+        por_que = PASSO[PASSO.index("## Por que cada regra existe"):]
         for trecho in ('nunca vale como "nada a colher"', "é o conferidor", "fronteira de escrita", "não sai da máquina"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, por_que)
@@ -154,7 +166,7 @@ class LimiteDoRedespacho(unittest.TestCase):
 
     def test_o_brief_com_conferencia_marca_a_2a_tentativa(self):
         corrido = " ".join(PASSO.split())
-        self.assertIn("se ele já tem o campo `conferencia:`, esta é a 2ª tentativa, e nova reprovação encerra aqui, sem redespachar", corrido)
+        self.assertIn("se ele já tem o campo `conferencia:`, esta é a 2ª tentativa, e nova reprovação encerra esta entrada, sem redespachar", corrido)
 
     def test_a_1a_reprovacao_continua_redespachando(self):
         # o outro lado: a leitura do brief não pode tirar o redespacho da 1ª reprovação
@@ -167,7 +179,7 @@ class BriefDoCurador(unittest.TestCase):
         campos = lista_yaml("campos")
         self.assertEqual(campos, ["feature", "staging", "colheita", "playbook", "worktree"])
         linha_brief = re.search(r"(?m)^feature: .*$", CURATOR_MD).group(0)
-        linha_passo = re.search(r"`(feature: \{F\}[^`]*)`", PASSO).group(1)
+        linha_passo = re.search(r"`(feature: <F>[^`]*)`", PASSO).group(1)
         for linha in (linha_brief, linha_passo):
             with self.subTest(linha=linha[:30]):
                 self.assertEqual(re.findall(r"(?:^|· )(\w+):", linha), campos)
@@ -323,8 +335,8 @@ class Pacote(unittest.TestCase):
                 self.assertTrue((RAIZ / "tests" / ("test_%s.py" % nome)).is_file())
 
     def test_versoes_e_linha_de_identificacao(self):
-        for skill, versao in (("sdd-playbook", "2.2.0"), ("sdd-release", "2.15.0"), ("sdd-new-session", "1.7.0"),
-                              ("sdd-handoff", "2.2.1"), ("sdd-define", "2.8.0")):
+        for skill, versao in (("sdd-playbook", "2.3.0"), ("sdd-release", "2.16.0"), ("sdd-new-session", "1.7.0"),
+                              ("sdd-handoff", "2.3.0"), ("sdd-define", "2.8.0")):
             texto = ler(".agents/skills/%s/SKILL.md" % skill)
             with self.subTest(skill=skill):
                 self.assertIn('version: "%s"' % versao, texto)

@@ -2,7 +2,7 @@
 
 # Playbook curation and invariants
 
-Since v2.6.0, the last step of a release checks what the feature taught the project. A script harvests, an
+Since v2.6.0, the project checks what each feature taught it; the release harvests, and a batch judges. A script harvests, an
 agent that did not see the conversation judges, a checker separates counting from rule changes, and only
 the rule changes become a question. A project that never registered a lesson only meets one line: "this
 feature brought no new lesson and no count".
@@ -15,8 +15,30 @@ feature brought no new lesson and no count".
 | Judge | the curator, a fresh-context agent (brief: `.agents/skills/sdd-playbook/references/curator.md`) | checks each line against the cited `file:line` and returns a table; it never writes |
 | Decide | you | answer the rule changes, one item at a time |
 
-The curation runs **after** the push. It never undoes a publication, and every message in it says the
-publication has already finished.
+The harvest runs **after** the push, in the release, and only harvests: `--enfileirar <FEATURE> sdd/playbook.md`
+prepares, harvests and keeps the result in a queue folder. The judging (curator, checker, questions, applying and
+sending) runs later, in a **batch**, when you ask `sdd-playbook` for it ("run the curation batch"). Nothing runs on
+its own: the release only warns, in one line, when the queue goes past 5 publications. None of it undoes a
+publication.
+
+## The queue and the batch
+
+Every publication that brought something to judge leaves a folder in `sdd/curadoria/fila/<FEATURE>/<AAAAMMDDTHHMMSSZ>/`,
+committed with the release's paper commit: the harvest (`colheita.txt`), its exit (`colheita.rc`), the fingerprints
+already excluded (`CURATOR-colhidos.txt`) and a copy of the documents it cites. An evaluator log the project does not
+version is not copied (`ausentes.txt`): the line only it proves is reported and never counted.
+
+| Command | What it does | Exit |
+|---|---|---|
+| `--enfileirar <F> <playbook> [--inv]` | prepares, harvests without repeating what is already queued or registered, and writes the entry; a failed harvest writes the entry marked with its exit | 0 queued · 1 nothing to harvest or no documents · 2 failed |
+| `--fila [<F>]` | lists the entries | 0 · 10 above 5 entries |
+| `--conferir-entrada <entry> <playbook> [--inv]` | checks the entry (failed harvest, folder changed after the commit that created it, document that was never in the repository) and redoes the harvest over the copy, with today's playbook; goes on only if the fingerprints match | 0 checked · 1 nothing to judge · 2 refused |
+| `--registrar <entry>…` | records the judged fingerprints in `sdd/releases/<F>/CURATOR-colhidos.txt` and removes the entry from the queue | 0 |
+
+The batch judges the **redone** harvest, never the stored one: a line planted in git after the publication, or an
+entry made up with documents that were never in the repository, refuses the entry. The new lessons of every entry go
+through a single `--aplicar`, which numbers the IDs from the playbook that receives the delta: two publications that
+proposed the same number do not collide. The whole procedure is in `.agents/skills/sdd-playbook/references/lote.md`.
 
 ## What the harvest reads
 

@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Não depende de memória propri
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.1"
+  version: "2.3.0"
   updated: "2026-11"
   fase: "transversal"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-handoff — ficha da feature + passar o bastão
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-handoff v2.2.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-handoff v2.3.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Duas responsabilidades, sempre nesta ordem:
 
@@ -107,6 +107,12 @@ Use `sdd/templates/HANDOFF_TEMPLATE.md`; o `assets/HANDOFF_EXAMPLE.md` desta ski
 - **Veredito da release** (PASS / CONCERNS / WAIVED) vai na ficha; WAIVED exige o registro
   completo (`classe= · finding= · motivo= · por= · data=`).
 - Datas absolutas. Nada que o git ou o ledger já registrem.
+- **O bloco `## Publicado` é gerado, nunca escrito à mão:** `python3 sdd/bin/ficha-publicado.py {FEATURE}` projeta uma
+  linha por ledger de `sdd/releases/{FEATURE}/`, entre os marcadores `<!-- publicado:inicio … -->` e
+  `<!-- publicado:fim -->`, e não toca o resto da ficha. Quando a `sdd-release` chama esta skill, você escreve **só**
+  o que o ledger não diz: `## Falta`, os alertas, a linha `Curadoria:` e o veredito; nada do bloco Publicado se repete
+  em "Feito" nem em "Histórico de slices". Ledger com `trilha: curta` ⇒ ficha curta: Ficha, Publicado e Falta, até 20
+  linhas (o `handoff-lint.py` aceita o bloco Publicado como histórico).
 - O molde traz também `## Eventos`, `## Recomendações`, `## Veredito`, `## Setup`, `## Tarefas` e
   `## Ship`: preencha a que tiver o que dizer e apague a que ficar vazia; o `handoff-lint.py` não exige
   nenhuma delas, mas reprova a que ficar com o texto do molde entre chaves.
@@ -138,7 +144,9 @@ Sem terminal, ou sem esse script no projeto: a conferência é a releitura do ch
 
 Feature já publicada e sessão dentro de branch/worktree descartável → oferecer o comando de
 remoção (rodado fora dele). Ficha ✅ completa → oferecer arquivar os artefatos em
-`sdd/archive/{F}/` com 1 OK. Nunca apagar sem confirmação.
+`sdd/archive/{F}/` com 1 OK. Nunca apagar sem confirmação. **Chamada pela `sdd-release`, pule este passo:** lá o
+arquivamento (ledger `estado: shipado`) e a branch remota já integrada são padrão, com recibo e o comando que desfaz, e
+o comando de limpeza local vai no relatório final.
 
 ## Sem terminal (sem acesso aos arquivos do projeto)
 

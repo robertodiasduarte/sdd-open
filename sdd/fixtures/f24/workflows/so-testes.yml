@@ -1,0 +1,9 @@
+name: testes
+on:
+  push:
+    branches: [main]
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm test

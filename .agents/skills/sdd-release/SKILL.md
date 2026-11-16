@@ -1,12 +1,12 @@
 ---
 name: sdd-release
 description: >-
-  Fase 4 do SDD Open — pipeline de publicação protegido em 4 fases: gate determinístico (lint, landmines, drift, Verify Gate), passadas de regressão e segurança, commit atômico com ledger em sdd/releases/, UMA aprovação humana antes do push/deploy, higiene do git e atualização da ficha da feature com curadoria do playbook. Use quando o usuário disser /sdd-release, "publica", "sobe pra produção" ou "faz o deploy".
+  Fase 4 do SDD Open — pipeline de publicação protegido em 4 fases: gate determinístico (lint, landmines, drift, Verify Gate), passadas de regressão e segurança, commit atômico com ledger em sdd/releases/, UMA aprovação humana antes do push/deploy e, depois dele, só papel: colheita do playbook para o lote, ficha por acréscimo e um commit só, sem nova pergunta (a única parada possível é o smoke vermelho depois do deploy). Use quando o usuário disser /sdd-release, "publica", "sobe pra produção" ou "faz o deploy".
 compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos slots de sdd/config.yaml; slot vazio é pulado e declarado.
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.15.0"
+  version: "2.16.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.15.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.16.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes do push e do
 deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e irreversível na prática.
@@ -90,6 +90,8 @@ funcionava. Passada que não se aplica ao diff é **pulada**, não "revisada sem
 **0. Pré-voo.** `bash sdd/bin/marca-fase.sh inicio release {F}` (custo da fase; sem o script, siga). Confirme a branch (`git rev-parse --abbrev-ref HEAD` ≠ `default_branch`) e o
 diff-base (`git merge-base origin/{default_branch} HEAD`). Rode `bash sdd/bin/versao-nova.sh` (se existir):
 exit 10 ⇒ a frase de versão nova (`references/como-falar.md`) no relatório e no bloco do OK, sem abortar; senão, nada.
+Rode `bash sdd/bin/trilha.sh {F}` (base `origin/{default_branch}`): `TRILHA: curta` (sem DEFINE, até 3 arquivos e 100 linhas
+fora dos documentos do SDD) ou `completa`; o resultado vai para o ledger (`trilha:`). Exit 2 ou 64 ⇒ `completa`, com o motivo.
 
 **0a. Determinístico**, sobre `origin/{default_branch}...HEAD`, em paralelo:
 
@@ -180,7 +182,7 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
 2. **Versão** (se o projeto versiona): bump a partir da versão em `origin/{default_branch}`,
    não da branch local. Colisão → próxima livre.
 3. **Ledger** (dentro do commit atômico): `sdd/releases/{F}/{slice}_{versão-ou-data}.yaml` com
-   `feature_id`, `slice_id`, `versao`, `estado` (shipado | parcial | pausa), `dod`, `descricao` e a
+   `feature_id`, `slice_id`, `versao`, `estado` (shipado | parcial | pausa), `dod`, `descricao`, `trilha` (do item 0) e a
    linha `review_externo:` da 0a item 8 (a que o `--conferir` imprimiu, ou a dispensa com motivo).
    Sem SHA (deriva do git). Arquivo novo a cada release: append-only. Ver `references/ledger.md`.
 4. **Commit atômico.** `git add <arquivos específicos>` — **nunca `-A`**. Confira
@@ -211,6 +213,7 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
    **O push publica sozinho?** <sim, o workflow X publica ao receber o push na {default_branch} |
    não: <por quê>>
    **O deploy espera os testes?** <a frase da linha → do script, traduzida>
+   **O commit de papel publica?** <a frase da linha → do push-de-papel.py, traduzida>
    **Banco:** <migration `<arquivo>` em `<projeto nome · ref>` em <data>, provada por leitura — de
    `## Migrations aplicadas` do BUILD_REPORT | sem migração nesta frente>
    **Segurança:** <varredura: nada achado | N aviso(s), os mais graves pelo id e arquivo> · recusados ou adiados no Define: <Snn, … | nenhum>
@@ -222,7 +225,7 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
    com `motivo=` seu> · achados que não abortaram
    **Ledger:** `feature_id` <id> · `estado` <shipado | parcial>
 
-   **Posso finalizar (push + deploy + verificar)?**
+   **Posso finalizar (push + deploy + verificar + papel)?**
    ```
 
    - **"O deploy espera os testes?"** é afirmação, não pergunta: vem do `RESULTADO:` do script.
@@ -230,6 +233,11 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
      ⇒ "não se aplica: o push não publica"; `NAO_SEI` ⇒ leia os workflows citados e escreva **"não
      consegui afirmar: <motivo>"** — nunca "sim". Sem o script (pacote antigo), leia os workflows:
      teste com `continue-on-error`, `|| true` ou `exit 0` fixo **não** segura nada.
+   - **"O commit de papel publica?"** é afirmação: depois do deploy sai um commit só com a ficha, o changelog, a
+     colheita e o arquivamento, enviado sem nova pergunta. Rode
+     `python3 .agents/skills/sdd-release/scripts/push-de-papel.py . --branch {default_branch} sdd/handoffs/HANDOFF_{F}.md CHANGELOG.md sdd/curadoria/fila/{F}/x/colheita.txt sdd/archive/{F}/x.md sdd/features/DEFINE_{F}.md`.
+     `PUBLICA` ⇒ "sim — … : esse push publica de novo, sem código novo", e a ficha ganha a pendência ✨ com o trecho
+     `paths-ignore` que o script imprime; `NAO_PUBLICA` ⇒ "não"; `NAO_SEI` ⇒ "não consegui afirmar: <motivo>", nunca "não".
    - **"Banco:"** é afirmação: vem de `## Migrations aplicadas`. Migration no diff sem a linha ⇒ o
      report-lint já abortou na 0a.5.
    - **Verificação ausente dita como ausente** é informação; em silêncio, é falsa segurança.
@@ -239,9 +247,15 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
 
 ## FASE 2 — Após o "go"
 
+Ao entrar aqui, diga à pessoa, **uma frase por etapa**, o que vem e se é obrigatório agora ou pode esperar: a
+coluna "Para que serve" da tabela `## Depois do push — o que é cada etapa` de `references/como-falar.md`, sem
+número de passo. A linha inteira (o que acontece sem a etapa) só quando ela pedir ou responder "não sei". Daqui
+até o fim há **uma parada possível**: o smoke vermelho depois do deploy (item 10). O resto roda sem pergunta e
+vai para o recibo **Decidi sozinho** do relatório final.
+
 7b. **Smoke antes do push** (a produção ainda tem o código velho), com os argumentos do 6b:
    `bash sdd/bin/slot.sh smoke.before_push_cmd --feature {F} --base origin/{default_branch} --commit <SHA landado> --arvore <worktree temporário>`.
-   O resultado nunca segura o push nem pede pergunta, seja qual for o exit: vai para o relatório (16) e para a ficha (17).
+   O resultado nunca segura o push nem pede pergunta, seja qual for o exit: vai para o relatório final e para a ficha.
 8. **Push.** Re-check de base: `GIT_TERMINAL_PROMPT=0 git fetch` + `git merge-base --is-ancestor origin/{default_branch} HEAD`
    (falhou → base moveu; re-landar). **Nunca `--force`.** `GIT_TERMINAL_PROMPT=0 git push origin HEAD:{default_branch}`.
    Recusado por permissão (`403`, `Permission denied`, `could not read Username`) ou por branch protegida
@@ -278,149 +292,64 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
 
     Verde não prova teste: step de teste com `continue-on-error`, `|| true` ou `exit 0` fixo ⇒ "o deploy terminou, mas o
     workflow não roda testes antes de publicar" (o `deploy-espera-testes.py` do item 7 já disse isso no bloco do OK).
-11. **Changelog:** `{{CHANGELOG_HOOK}}` ou entrada curta (≤600 caracteres) no topo do
-    `CHANGELOG.md`. O detalhe vive no ledger e no BUILD_REPORT. Conflito de changelog (a base moveu): pegue o da branch
-    padrão, com as entradas das outras frentes, e ponha a sua no topo:
+11. **Changelog:** `{{CHANGELOG_HOOK}}` ou entrada curta (≤600 caracteres) no topo do `CHANGELOG.md`; ela entra no
+    commit de papel (item 16). O detalhe vive no ledger e no BUILD_REPORT. Conflito de changelog (a base moveu): pegue o
+    da branch padrão, com as entradas das outras frentes, e ponha a sua no topo:
     `git show origin/{default_branch}:CHANGELOG.md > CHANGELOG.md`, sem depender de qual lado é "ours" na operação.
-12. **Limpeza** do worktree temporário.
+12. **Limpeza.** Remova o worktree temporário do passo 5 e rode `git worktree prune`.
 
-## FASE 3 — Higiene do git
+## FASE 3 — Papel (sem pergunta; a publicação já terminou)
 
-13. `GIT_TERMINAL_PROMPT=0 git fetch` · `git worktree prune`. 14. Branches já mergeadas: oferecer deletar.
-15. Worktree/branch da feature: se a feature fechou, oferecer o comando de remoção (rodado
-    fora dele). **15b.** Se esta release **fechou o DoD**, mover os artefatos SDD da família
-    para `sdd/archive/{F}/` com `git mv` — um a um, nunca glob que arraste features de nome
-    parecido. Feature aberta → pular (slices seguintes ainda leem os arquivos). A faxina retroativa do
-    passivo é outra operação, deliberada: `python3 sdd/bin/sdd-archive.py` (simulação por padrão; depois,
-    `--lote <nome> --aplicar`, um lote por commit).
-16. **Report final:** versão, SHAs, deploy, drift, os 3 smokes (resultado de cada um), o que foi para produção, arquivamento.
+Toda mensagem daqui em diante diz que a publicação já terminou: uma espera sem isso parece deploy travado.
 
-## FASE 4 — Ficha da feature e playbook
+13. **Colheita.** O que esta feature ensinou para as próximas é só **colhido** aqui; quem julga é o lote da
+    `sdd-playbook`, sob demanda (`.agents/skills/sdd-playbook/references/lote.md`). Nada de curador, pergunta de regra,
+    playbook ou invariante mexidos nesta release.
+    `bash sdd/bin/playbook-curator.sh --enfileirar {F} sdd/playbook.md [--inv sdd/invariants.md]` (`--inv` só com o arquivo):
+    | exit | Ação |
+    |---|---|
+    | `0` | a entrada `sdd/curadoria/fila/{F}/<horário>/` (a linha `fila:`) vai no commit de papel; na ficha, `Curadoria: na fila`. Uma linha `⚠️ … não está commitado` quer dizer que o lote vai recusar a entrada: diga isso na ficha |
+    | `1` com `RESULTADO: NADA A COLHER` | `Curadoria: 0 deltas` na ficha |
+    | `1` com `RESULTADO: STAGING SEM DOCUMENTOS` | conserto sem DESIGN nem BUILD_REPORT: `Curadoria: 0 deltas (sem documentos)` |
+    | `2` | **não é "0 deltas"**: a entrada fica na fila marcada com o exit (vai no commit de papel), a ficha diz `Curadoria: FALHOU (rc=N)` com a causa que o script imprimiu; a publicação não foi afetada |
+    | outro (`64`, `126`, `127`…) | **não é "0 deltas"**: `Curadoria: FALHOU (rc=N)` na ficha, com a causa e o conserto |
+    Depois, `bash sdd/bin/playbook-curator.sh --fila`: exit 10 ⇒ repasse a linha 🧹 em 1 frase no relatório final (a fila
+    passou de 5 publicações), sem perguntar e sem rodar o lote; nada roda sozinho.
+14. **Ficha.** `python3 sdd/bin/ficha-publicado.py {F}` grava o bloco `## Publicado` da ficha a partir dos ledgers
+    (exit 2 ⇒ um ledger ilegível: a linha dele diz `n/d`; cite-o no relatório). Depois, pela `sdd-handoff`, você escreve
+    **só** o que o ledger não diz: `## Falta` (pendências em 🐛 bug fix e ✨ melhoria, os avisos da Fase 0 que não
+    abortaram), os alertas (as de segurança e a linha fixa `/sdd-seguranca app <URL>`: `references/seguranca.md`), a
+    linha `Curadoria:` do item 13, o veredito 0d (WAIVED com registro completo) e, com `PUBLICA` no item 7, a pendência
+    ✨ de tirar os documentos do gatilho do deploy. Nada do que está no bloco Publicado se repete no "Histórico de
+    slices". Ledger com `trilha: curta` ⇒ **ficha curta**: Ficha, Publicado e Falta, até 20 linhas.
+    `python3 sdd/bin/handoff-lint.py sdd/handoffs/HANDOFF_{F}.md` sai 0 (na trilha curta, com `--curta`, que reprova
+    acima de 20 linhas).
+15. **Arquivamento.** Ledger desta release com `estado: shipado` ⇒ mova os artefatos SDD da família para
+    `sdd/archive/{F}/` com `git mv`, um a um, nunca glob que arraste features de nome parecido; a ficha ganha Status
+    ✅. `parcial` ou `pausa` ⇒ pule (slices seguintes ainda leem os arquivos). A faxina retroativa do passivo é outra
+    operação, deliberada: `python3 sdd/bin/sdd-archive.py` (simulação por padrão; depois, `--lote <nome> --aplicar`,
+    um lote por commit).
+16. **Commit de papel.** Um commit só, com a ficha, o `CHANGELOG.md`, a fila da feature (a entrada nova, a falha
+    registrada ou a remoção de uma falha antiga que a colheita substituiu: `git add -- sdd/curadoria/fila/{F}`) e os
+    `git mv` do item 15: `git add` por nome, `git diff --cached --name-only` só com esses, commit
+    `docs({F}): ficha, changelog e colheita`. Nunca `--no-verify`. `GIT_TERMINAL_PROMPT=0 git fetch`, aterrisse como
+    no passo 5 e envie como no passo 8, **sem nova pergunta**: o OK já cobriu o papel, e o item 7 disse se esse push
+    publica. Push recusado ou conflito que a regra do item 11 não resolve ⇒ o commit fica na branch da frente, sem
+    `--force`, e o relatório final dá o comando de envio; nada é apagado no item 17.
+17. **Branch da frente.** Com o commit de papel em `origin/{default_branch}`: se a branch da frente existe no remoto
+    (`git ls-remote --heads origin <branch>`) e é ancestral de `origin/{default_branch}`
+    (`git merge-base --is-ancestor`), apague-a: `GIT_TERMINAL_PROMPT=0 git push origin --delete <branch>`, com a linha
+    de recibo e o comando que desfaz (`git push origin <sha>:refs/heads/<branch>`). Não é ancestral, ou o item 16 não
+    enviou ⇒ não apague e diga por quê. A branch local e a worktree não se apagam de dentro dela: o relatório final
+    dá o comando, rodado de fora (`git worktree remove "<pasta>"` e `git branch -d <branch>`).
 
-17. **Atualizar a ficha** (`/sdd-handoff`, incondicional): `sdd/handoffs/HANDOFF_{F}.md` — o
-    que foi publicado, veredito 0d (WAIVED com registro completo), pendências separadas em
-    🐛 bug fix e ✨ melhoria, avisos da Fase 0 que não abortaram, próximos passos com comandos,
-    alertas (as de segurança e a linha fixa `/sdd-seguranca app <URL>`: `references/seguranca.md`). Ficha curta de "publicado, sem pendências" ainda documenta.
-17b. **Curadoria do playbook (incondicional; roda depois do push e nunca desfaz a publicação).** Um
-    script colhe, um agente sem esta conversa julga, e um conferidor separa a contagem da mudança de
-    regra. Antes de começar, diga em 1 frase que a publicação já terminou e que agora você confere o que
-    esta feature ensinou para as próximas. Brief do curador:
-    `.agents/skills/sdd-playbook/references/curator.md`; palavras e exemplos: `references/como-falar.md`.
-    1. **Staging por cópia.** `bash sdd/bin/playbook-curator.sh --preparar {F}` copia (nunca move) os
-       documentos da feature, de `sdd/` ou de `sdd/archive/{F}/`, para a pasta que ele imprime em
-       `staging:`; guarde-a como `STG`. Exit 1 = não achou DESIGN nem BUILD_REPORT: num conserto sem SDD
-       formal, registre `Curadoria: 0 deltas (sem documentos)` e encerre o 17b; senão é falha (confira o
-       nome da feature). Qualquer outro exit: pare o 17b e registre `Curadoria: FALHOU (rc=N)`. **Sessão nova depois da parada do curador:** rode com `--retomar`, que não copia
-       nem limpa, recalcule `STG` e `T` e vá direto para a parte "Na volta" do item 3: refazer o selo ou o
-       snapshot de antes agora tomaria por linha de base o que o curador já escreveu. `--retomar` com exit 1, ou
-       `"$T/antes"` ausente = a pasta temporária se perdeu: recomece deste item, sem `--retomar`; nada foi
-       aplicado.
-    2. **Colher, lendo o exit.**
-       `bash sdd/bin/playbook-curator.sh --colher "$STG" sdd/playbook.md [--inv sdd/invariants.md] > "$STG/colheita.txt"; rc=$?; echo "$rc" > "$STG/colheita.rc"`
-       — `--inv` só quando `sdd/invariants.md` existe; sem o arquivo, diga "invariantes: arquivo ausente,
-       cruzamento pulado" e siga só com o playbook. O que uma curadoria anterior desta feature já julgou
-       (`CURATOR-colhidos.txt`, item 7) não conta de novo: aparece como `JA_JULGADO`.
-       | `rc` | Ação |
-       |---|---|
-       | `0` | há o que julgar ou relatar: seguir |
-       | `1` com `RESULTADO: NADA A COLHER` em `colheita.txt` | nada, de nenhum tipo: registre `Curadoria: 0 deltas` na ficha, diga que esta feature não trouxe lição nova nem contagem e encerre o 17b |
-       | qualquer outro, inclusive `1` sem aquela linha (o redirecionamento falhou) (`2`, `64`, `126`, `127`…) | **não é "0 deltas"**: pare o 17b, registre `Curadoria: FALHOU (rc=N)` e diga à pessoa a causa que o script imprimiu, o conserto e que a publicação não foi afetada |
-    3. **Despachar o curador em contexto fresco**, pela escada de
-       `sdd-build/references/contexto-fresco.md`, com **só** os 5 campos:
-       `feature: {F} · staging: $STG · colheita: $STG/colheita.txt · playbook: <raiz>/sdd/playbook.md · worktree: <raiz>`.
-       Antes do despacho, nesta ordem: `mkdir -p sdd/reports/briefs sdd/reports/evidence/{F} sdd/releases/{F}`;
-       grave o brief (os 5 campos e "leia e siga
-       `.agents/skills/sdd-playbook/references/curator.md`") em `sdd/reports/briefs/BRIEF_curador_{F}.md`;
-       `T="${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/{F}/curador"; mkdir -p "$T"`;
-       `bash sdd/bin/playbook-curator.sh --selar "$STG" > "$T/selo.txt"` (o selo do staging fica **fora** dele);
-       `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md`;
-       imprima `🧹 curadoria: julgando em contexto novo (alguns minutos); você não precisa responder`.
-       Sem subagente: `bash sdd/bin/sdd-fluxo.sh despachar curador {F} sdd/reports/briefs/BRIEF_curador_{F}.md`
-       e pare no exit 40, repassando a parada que ele imprime.
-       Na volta, **sem editar nada no meio** e recalculando `STG` e `T` (variável de shell não passa de uma
-       chamada para a outra): salve o bloco em `"$T/curadoria.txt"`;
-       `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md`;
-       `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_{F}.md > "$T/comparar.txt"`.
-       Não repasse a linha `→` da fronteira (ela fala do DEFINE): quem lê o `comparar.txt` é o item 4.
-    4. **Conferir o bloco antes de qualquer pergunta.**
-       `bash sdd/bin/playbook-curator.sh --conferir-bloco "$STG/colheita.txt" "$T/curadoria.txt" sdd/playbook.md "$T/selo.txt" "$T/comparar.txt" > "$T/conferido.txt"; rc=$?`.
-       Ele reprova (exit 2) quando o curador escreveu no projeto (`FORA:`) ou a fronteira não foi verificada,
-       quando o staging mudou depois do selo, quando falta uma linha da colheita e quando uma contagem não
-       é igual à que o script colheu. Exit 2 ⇒ despache de novo **1 vez**, com os 5 campos mais o campo
-       `conferencia:` (as linhas `🔴 bloco:`). Se o motivo foi só o bloco, sem `FORA:` nem staging mexido,
-       redespache com o mesmo selo e o mesmo snapshot. Se houve `FORA:` ou staging mexido: liste à pessoa o
-       que saiu (não apague nada); com `sdd/playbook.md` ou `sdd/invariants.md` na lista, **não redespache**:
-       registre `Curadoria: FALHOU (curador escreveu no playbook)`; nos outros casos, refaça os itens 1 e 2,
-       o selo e o snapshot de antes (o que a pessoa já viu vira linha de base) e só então redespache. 2ª
-       reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)`, diga que a curadoria fica para a próxima
-       publicação e encerre: **nada é aplicado**. Sem subagente, cada tentativa volta numa sessão nova, sem
-       memória da anterior: leia `sdd/reports/briefs/BRIEF_curador_{F}.md`; se ele já tem o campo
-       `conferencia:`, esta é a 2ª tentativa, e nova reprovação encerra aqui, sem redespachar. Nunca separe contagem de regra à mão: quem decide é o
-       conferidor.
-    5. **Contagem entra, regra pergunta.** Comece `: > "$STG/delta.txt"; : > "$STG/inv-linhas.txt"`. As linhas
-       `AUTO <delta>` de `conferido.txt` vão para `"$STG/delta.txt"` sem pergunta. As linhas `PERGUNTA <n> <tipo> <delta>` (lição nova, aposentadoria,
-       refino, promoção, invariante, sugestão que o curador confirmou e contagem que põe uma lição entre
-       as invariantes) viram perguntas `[D3 · muda a regra do método]`, uma por item, numeradas, no formato
-       de `references/como-falar.md`: a frase da linha `simples:`, o ID só no fim como `(ref: …)`, as
-       respostas **aceitar**, **recusar** e **não sei**; até 5 por vez (acima disso, em lotes). Diga também,
-       em palavras, cada linha `REJEITADO` da colheita: o candidato que não entrou e por quê. Com
-       `sdd/invariants.md`, antes de perguntar:
-       `bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md <<'FIM_DOS_DELTAS'`, os deltas AUTO e PERGUNTA, sem as linhas de tipo inv, um por linha, e `FIM_DOS_DELTAS` (com o delimitador entre aspas, o shell não executa nada do texto da lição)
-       — `INV_AFETADA` ⇒ o item daquela aposentadoria leva o `ajuste:` junto, como **uma opção só**;
-       `INV_PENDENTE` ⇒ a contagem e a classificação vão na mesma opção (virar regra permanente com a
-       linha `inv` do curador, descartar com motivo, ou não aplicar a contagem). Lição antiga que já mordeu e
-       nunca foi classificada aparece na colheita como `INV_PENDENTE` e pede o mesmo item, uma vez: sem a
-       resposta, a trava do item 6 segura tudo, e aí registre `Curadoria: FALHOU (invariantes sem
-       classificação)`. Os itens aceitos entram no `delta.txt`, menos a promoção: o delta `promovido_para=`
-       só entra quando o mecanismo já está na branch padrão, então a promoção aceita vira pendência na
-       ficha; as linhas de invariante aceitas (a `inv` do curador, o `ajuste:`, ou
-       `REMOVER INV-nnn` / `REMOVER LM-nnn`), em `"$STG/inv-linhas.txt"`. Sem linha `PERGUNTA`, não há
-       pergunta de regra.
-    6. **Aplicar numa cópia e conferir 3 vezes.** Com `delta.txt` e `inv-linhas.txt` vazios (nada
-       contado, nada aceito), pule este item, o commit e o envio, faça o item 7 e registre
-       `Curadoria: nada aplicado`.
-       `bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" sdd/playbook.md > "$STG/novo.md"`
-       (exit 2 ⇒ nada foi impresso: corrija o delta) →
-       `bash sdd/bin/playbook-lint.sh "$STG/novo.md"` (exit 0 obrigatório) →
-       `bash sdd/bin/playbook-lint.sh --anti-collapse sdd/playbook.md "$STG/novo.md"` (bloqueou pelo
-       tamanho ⇒ aplique em 2 ou mais commits: contadores e `ADD` primeiro, depois uma mudança de
-       conteúdo por vez) → com invariantes,
-       `bash sdd/bin/playbook-curator.sh --aplicar-inv "$STG/inv-linhas.txt" sdd/invariants.md > "$STG/inv.md"`
-       (sem linha aprovada, `cp sdd/invariants.md "$STG/inv.md"`) e
-       `bash sdd/bin/playbook-curator.sh --validar-inv "$STG/novo.md" "$STG/inv.md"` (exit 0
-       obrigatório; `🔴 trava INV:` diz a regra, a lição e as saídas: volte à pessoa, nunca copie; nunca
-       edite as invariantes à mão).
-       Só então `cp "$STG/novo.md" sdd/playbook.md` e, se mudou, `cp "$STG/inv.md" sdd/invariants.md`.
-    7. **Evidência** em `sdd/reports/evidence/{F}/`, no formato `$ comando`, a saída e `[exit=N]` com o
-       exit real do comando: `CURATOR-colheita.log` (o comando do item 2, `colheita.txt` e o exit guardado em
-       `colheita.rc`) e `CURATOR-delta.log` (o comando do item 6, o `delta.txt` e o exit dele). E o registro do que já foi julgado, para a próxima publicação desta feature não contar
-       de novo, ao lado do ledger: `grep ' · fp=' "$STG/colheita.txt" >> sdd/releases/{F}/CURATOR-colhidos.txt`.
-    8. **Commit à parte:** `git add sdd/playbook.md` (e `sdd/invariants.md`, se mudou) e
-       `sdd/releases/{F}/CURATOR-colhidos.txt` (sem o registro, a próxima publicação desta feature conta tudo
-       de novo), só se o projeto versiona os ledgers (`git ls-files sdd/releases` não vem vazio); senão, não
-       adicione e diga que o registro fica só nesta pasta e que uma frente nova da mesma feature pode contar
-       de novo. Os 2 logs `CURATOR-*.log` entram só se o projeto versiona evidência (`git check-ignore -q`
-       neles sai 1 e `git ls-files sdd/reports/evidence` não vem vazio). `git diff --cached --name-only` só pode listar esses arquivos; commit
-       `chore(playbook): curadoria {F} — <n> delta(s)`. Nunca `--no-verify`: o pre-commit vigia o playbook.
-    9. **Recibo e envio.** Mostre o recibo **Decidi sozinho**: 1 linha por contagem aplicada, em palavras
-       simples, e como desfazer (`git revert <sha do commit da curadoria>`). Depois, a pergunta
-       `[D1 · não se desfaz]` **Posso enviar o commit da curadoria para a branch padrão?**, dizendo se
-       esse push publica sozinho (a resposta do item 7 da FASE 1). **sim** ⇒ aterrisse como no passo 5
-       (worktree temporário de `origin/{default_branch}` + cherry-pick; em conflito, não resolva à mão:
-       `git cherry-pick --abort`, e reaplique o `"$STG/delta.txt"` sobre o playbook da base com `--aplicar`, que recalcula os IDs dos
-       `ADD`, o `"$STG/inv-linhas.txt"` sobre as invariantes da base com `--aplicar-inv`, e traga o registro e os
-       logs do item 8 da frente, com `git checkout <sha do commit da curadoria> -- <cada arquivo>`, senão a
-       próxima publicação conta de novo), rode ali de novo o `playbook-lint.sh` e, com invariantes, o `--validar-inv` (ID repetido
-       com a base ⇒ renumere o novo, nunca o da base) e faça o push como no passo 8. **deixar para a
-       próxima publicação** ⇒ o commit fica na branch da frente; registre na ficha
-       `Curadoria: commit <sha> não enviado` e o comando de envio. Com mudança de regra e envio na mesma
-       resposta, as 2 perguntas vão numeradas.
-    A ficha (18) ganha `Curadoria: <n> propostos / <m> aplicados / <p> promoções`. Promoção aceita ⇒ o
-    mecanismo é uma correção própria, com um caso que falha antes dele; o delta `promovido_para=` só
-    entra quando o mecanismo já está na branch padrão. Detalhes do formato na skill `sdd-playbook`.
-18. **Imprimir a ficha** como último bloco do relatório.
-19. **DoD fechado?** Oferecer arquivar (15b) e marcar a ficha como ✅ — com 1 OK.
-20. **Prompt da próxima sessão** (o único opcional): se "Falta" não está vazio, oferecer.
+## FASE 4 — Relatório
+
+18. **Relatório final.** Versão, SHAs, deploy, drift, os 3 smokes (resultado de cada um), o que foi para produção, o
+    commit de papel (enviado ou o comando de envio), o recibo **Decidi sozinho** (uma linha por coisa feita sem
+    pergunta, com o comando que desfaz: arquivamento, branch remota, papel), a linha 🧹 da fila se houve, o comando
+    de limpeza local e a ficha **pelo caminho**, sem imprimi-la. O resumo de etapa do encerramento não repete essas
+    linhas: ele diz onde estamos e o que vem depois. A ficha já tem o "Prompt de retomada"; não ofereça outro.
 
 ## Gates de ABORTAR (parar e reportar, nunca pushar)
 
@@ -431,7 +360,10 @@ arquivo inesperado no diff · conflito real · base moveu · escrita em produç�
 
 ## Quando pular o SDD formal
 
-Fix pequeno com decisão clara pode pular BRAINSTORM/DEFINE/DESIGN — mas a sequência 0–20 vale **sempre**.
+Fix pequeno com decisão clara pode pular BRAINSTORM/DEFINE/DESIGN. As FASES 0 a 2 valem **sempre**, nas duas trilhas;
+o que muda é a parte depois do push. Quem decide a trilha é o `trilha.sh` do item 0, nunca o agente: **curta** (sem
+DEFINE, até 3 arquivos e 100 linhas fora dos documentos do SDD, sem binário) ⇒ ficha curta (Ficha, Publicado e Falta,
+até 20 linhas) e a colheita, que sem DESIGN nem BUILD_REPORT dá `0 deltas (sem documentos)`; **completa** ⇒ tudo.
 
 ## Por que cada regra existe
 
@@ -469,18 +401,24 @@ Fix pequeno com decisão clara pode pular BRAINSTORM/DEFINE/DESIGN — mas a seq
   `sha256` liga a revisão a esta versão do código: uma revisão antiga não vale para um código novo.
 
 - **A falha da colheita nunca vale como "nada a colher"** — o script sai 1 quando leu tudo e não achou
-  nada, e 2 ou 64 quando não conseguiu ler; tratar os dois igual apagaria lições em silêncio.
-- **Quem separa contagem de regra é o conferidor, não quem conduz a release** — uma contagem só entra
-  sem pergunta se o script a colheu e a evidência abre; assim ninguém inventa um `+1`.
-- **O curador é conferido pela fronteira de escrita** — "não escreva" num brief é só texto; o snapshot de
-  antes e de depois prova que ele só leu.
-- **O commit da curadoria não sai da máquina sem um sim** — em muitos projetos, um push na branch padrão
-  publica; a contagem entra no arquivo sem pergunta, o envio não.
+  nada, e 2 ou 64 quando não conseguiu ler; tratar os dois igual apagaria lições em silêncio. A entrada que falhou
+  fica na fila, marcada, até uma colheita nova a substituir.
+- **A release só colhe; o julgamento é do lote** — no projeto de origem, 18 de 30 curadorias não trouxeram regra nova,
+  e 37 de 43 deltas eram só contagem: julgar uma por publicação, no meio da release, custava as paradas depois do OK.
+  As garantias (conferidor, fronteira de escrita, pergunta para toda mudança de regra) foram junto para o lote.
+- **Um commit de papel, coberto pelo OK** — 28 de 49 deploys medidos não tinham arquivo publicável; um commit só, com
+  a pessoa sabendo antes se ele publica, troca várias paradas e vários deploys por nenhuma.
+- **Uma parada só depois do OK** — o que está no ar e quebrou pede decisão na hora; o resto (arquivar, apagar a
+  branch remota já integrada, colher) se desfaz com um comando, que vai no recibo.
+- **A ficha cresce por acréscimo** — a mesma publicação escrita 6 vezes (ficha, histórico, ledger, changelog,
+  relatório, resumo) deixa fichas de 140 a 234 linhas; o bloco Publicado sai do ledger por script, e o agente
+  escreve só o que o ledger não diz.
+- **A trilha é decidida por comando** — "conserto pequeno" no juízo do agente vira o que ele quiser naquele dia.
 
 ## Encerramento (obrigatório)
 
 Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é
-`/sdd-release`. O resumo complementa a ficha, não a substitui. Antes dele, `bash sdd/bin/marca-fase.sh fim release {F}` e `bash sdd/bin/custo-feature.sh {F}`, que grava `sdd/reports/CUSTO_{F}.md` (`sdd/templates/fragments/MARCA_FASE.md`).
+`/sdd-release`. O resumo não repete o relatório final nem a ficha: diz onde estamos e o que vem depois. Antes dele, `bash sdd/bin/marca-fase.sh fim release {F}` e `bash sdd/bin/custo-feature.sh {F}`, que grava `sdd/reports/CUSTO_{F}.md` (`sdd/templates/fragments/MARCA_FASE.md`).
 
 ### Fluxo encadeado
 
@@ -493,7 +431,7 @@ repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o 
 vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam perguntadas. "Pare"
 desliga nesta chamada (`--parar`).
 
-Nesta skill: não encadeia — publicar não se desfaz; a release sempre termina perguntando (D1).
+Nesta skill: não encadeia — publicar não se desfaz; a release sempre pergunta antes de publicar (D1, o OK).
 
 ---
 
