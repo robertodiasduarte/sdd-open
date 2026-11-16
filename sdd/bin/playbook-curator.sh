@@ -1823,12 +1823,13 @@ def enfileirar(args):
                 origem = os.path.join(stg, nome)
                 if nome in DERIVADOS or nome == "colheita.rc" or not os.path.isfile(origem) or os.path.islink(origem):
                     continue
-                if re.match(r"^AVAL.*-.*\.log$", nome):
-                    original = os.path.join("sdd", "reports", "evidence", feature, nome)
-                    rc_i, _ = git_ok("-C", raiz, "check-ignore", "-q", original)
-                    if rc_i == 0:  # o projeto não versiona este log: a cópia não vai para o git por aqui
-                        ausentes.append(nome)
-                        continue
+                orig = origens_de(feature, nome)
+                if orig and not commitado_igual(raiz, origem, orig):
+                    # o projeto não versiona este arquivo (log ignorado ou nunca adicionado), ou ele mudou depois do
+                    # último commit: a cópia não iria para o lote com prova de origem. A linha que só ele prova é
+                    # relatada e nunca contada; o resto da entrada segue (por linha, nunca a entrada inteira).
+                    ausentes.append(nome)
+                    continue
                 shutil.copyfile(origem, os.path.join(destino, nome))
         with open(os.path.join(destino, "colheita.txt"), "w", encoding="utf-8") as f:
             f.write(colheita)
@@ -1854,15 +1855,11 @@ def enfileirar(args):
             % rc_c)
         return 2
     remove_falhas(raiz, feature, exceto=destino)
-    for nome in sorted(os.listdir(destino)):
-        orig = origens_de(feature, nome)
-        if orig and not commitado_igual(raiz, os.path.join(destino, nome), orig):
-            diz("⚠️ %s não está commitado como foi copiado: o lote vai recusar esta entrada; commite o documento e "
-                "colha de novo" % nome)
     resumo = next((ln for ln in colheita.split("\n") if ln.startswith("resumo:")), "")
     diz(resumo) if resumo else None
     if ausentes:
-        diz("sem cópia (o projeto não versiona): " + ", ".join(ausentes))
+        diz("sem cópia (não está commitado como está): %s; a linha que só ele prova é relatada no lote e nunca contada"
+            % ", ".join(ausentes))
     diz("fila: " + rel)
     fim("ENFILEIRADO", "ponha a pasta %s no commit de papel; o lote da sdd-playbook a julga depois. Nada foi aplicado."
         % rel)
@@ -1894,8 +1891,10 @@ def fila(args):
 
 
 def conferir_entrada(args):
+    retomar = "--retomar" in args
+    args = [a for a in args if a != "--retomar"]
     if len(args) not in (2, 4) or (len(args) == 4 and (args[2] != "--inv" or not args[3])):
-        uso("--conferir-entrada exige <entrada> <playbook> [--inv <invariantes>]")
+        uso("--conferir-entrada exige <entrada> <playbook> [--inv <invariantes>] [--retomar]")
     entrada, pb, inv = os.path.abspath(args[0]), args[1], args[2:]
     raiz = raiz_do_projeto()
     feature = os.path.basename(os.path.dirname(entrada))
@@ -1904,6 +1903,18 @@ def conferir_entrada(args):
             and not os.path.islink(entrada)
             and os.path.realpath(os.path.dirname(os.path.dirname(entrada))) == os.path.realpath(os.path.join(raiz, FILA))):
         uso("entrada inválida: %s (esperado %s/<FEATURE>/<AAAAMMDDTHHMMSSZ>)" % (args[0], FILA))
+
+    if retomar:
+        # sessão nova depois da parada do curador: o staging é o mesmo de antes e NÃO é refeito (refazer apagaria o
+        # que o curador possa ter escrito nele, e o --conferir-bloco não veria a escrita); só diz onde ele está.
+        stg = pasta_de_staging(raiz, "LOTE_%s_%s" % (feature, nome))
+        tem = os.path.isfile(os.path.join(stg, "colheita.txt"))
+        if tem:
+            diz("staging: " + stg)
+        fim("RETOMADA" if tem else "NADA A RETOMAR",
+            "recalcule as pastas e vá direto para a volta do curador; não refaça o selo nem o snapshot de antes." if tem
+            else "a pasta temporária se perdeu: recomece esta entrada sem --retomar; nada foi aplicado.")
+        return 0 if tem else 1
 
     def recusa(motivo):
         erro("🔴 entrada: " + motivo)
@@ -1947,6 +1958,11 @@ def conferir_entrada(args):
             shutil.copyfile(origem, os.path.join(stg, n))
         registro = os.path.join(raiz, "sdd", "releases", feature, REGISTRO)
         julgados = fps_de(ler(registro)) if os.path.isfile(registro) else set()
+        # duas entradas da mesma feature com a mesma impressão (publicações em pastas paralelas): ela conta só na
+        # entrada mais antiga da fila; nesta, sai como JA_JULGADO. Assim o lote nunca soma +2 por uma impressão.
+        for _f, pe in entradas_da_fila(raiz, feature):
+            if os.path.basename(pe) < nome and rc_da_entrada(pe) == 0:
+                julgados |= fps_de(ler(os.path.join(pe, "colheita.txt")), True)
         if julgados:  # julgado noutra frente em paralelo: não conta de novo
             with open(os.path.join(stg, REGISTRO), "a", encoding="utf-8") as f:
                 f.write("já julgado · fp=%s\n" % ",".join(sorted(julgados)))
@@ -1978,7 +1994,9 @@ def conferir_entrada(args):
         diz("evidência ausente: %d linha(s) citam log que o projeto não versiona (%s); relate-as, nunca as conte"
             % (len(sem_evid), ", ".join(arquivos_ausentes)))
     diz("staging: " + stg)
-    if rc_c == 1:
+    # Promoção e invariante pendente voltam em toda colheita: sem linha de documento, esta entrada não tem nada próprio
+    # a julgar (a promoção é perguntada pela entrada que tem).
+    if rc_c == 1 or not any(ln.startswith(JULGAVEIS + ("TABELA_SEM_CABECALHO ",)) for ln in refeita.split("\n")):
         fim("NADA A JULGAR", "tudo desta entrada já foi julgado: registre-a com --registrar, sem despachar o curador.")
         return 1
     fim("ENTRADA CONFERIDA", "sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.")

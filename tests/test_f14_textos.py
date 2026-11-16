@@ -81,7 +81,7 @@ class Passo17b(unittest.TestCase):
 
     def test_sem_subagente_para_no_exit_40(self):
         self.assertIn("pare no exit 40", PASSO)
-        self.assertIn("rode `--conferir-entrada` de novo", " ".join(PASSO.split()))
+        self.assertIn("--retomar` (só diz onde o staging está; **não** o refaz", " ".join(PASSO.split()))
 
     def test_retomada_nao_refaz_a_linha_de_base(self):
         t = " ".join(PASSO.split())
@@ -114,7 +114,7 @@ class Passo17b(unittest.TestCase):
         t = " ".join(PASSO.split())
         for trecho in ("`Curadoria: nada aplicado`", "git check-ignore -q", "git ls-files sdd/reports/evidence",
                        ': > "$TMPDIR/lote-delta.txt"', "mkdir -p sdd/reports/briefs",
-                       "traga os registros, as remoções da fila e os logs do item 8", "a pasta temporária se perdeu",
+                       "os registros e as remoções da fila **nunca por checkout**", "a pasta temporária se perdeu",
                        "`git cherry-pick --abort`"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, t)

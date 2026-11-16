@@ -235,7 +235,10 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
      teste com `continue-on-error`, `|| true` ou `exit 0` fixo **não** segura nada.
    - **"O commit de papel publica?"** é afirmação: depois do deploy sai um commit só com a ficha, o changelog, a
      colheita e o arquivamento, enviado sem nova pergunta. Rode
-     `python3 .agents/skills/sdd-release/scripts/push-de-papel.py . --branch {default_branch} sdd/handoffs/HANDOFF_{F}.md CHANGELOG.md sdd/curadoria/fila/{F}/x/colheita.txt sdd/archive/{F}/x.md sdd/features/DEFINE_{F}.md`.
+     `python3 .agents/skills/sdd-release/scripts/push-de-papel.py . --branch {default_branch} <arquivos>` com os nomes
+     **reais** que o commit vai ter: `sdd/handoffs/HANDOFF_{F}.md`, o arquivo do changelog (o `CHANGELOG.md` ou o que o
+     hook grava), `sdd/curadoria/fila/{F}/<horário>/colheita.txt` e, com `estado: shipado`, cada documento da família
+     que sai de `sdd/features/`, `sdd/reports/` e `sdd/reviews/` e o mesmo nome em `sdd/archive/{F}/`.
      `PUBLICA` ⇒ "sim — … : esse push publica de novo, sem código novo", e a ficha ganha a pendência ✨ com o trecho
      `paths-ignore` que o script imprime; `NAO_PUBLICA` ⇒ "não"; `NAO_SEI` ⇒ "não consegui afirmar: <motivo>", nunca "não".
    - **"Banco:"** é afirmação: vem de `## Migrations aplicadas`. Migration no diff sem a linha ⇒ o
@@ -320,21 +323,23 @@ Toda mensagem daqui em diante diz que a publicação já terminou: uma espera se
     **só** o que o ledger não diz: `## Falta` (pendências em 🐛 bug fix e ✨ melhoria, os avisos da Fase 0 que não
     abortaram), os alertas (as de segurança e a linha fixa `/sdd-seguranca app <URL>`: `references/seguranca.md`), a
     linha `Curadoria:` do item 13, o veredito 0d (WAIVED com registro completo) e, com `PUBLICA` no item 7, a pendência
-    ✨ de tirar os documentos do gatilho do deploy. Nada do que está no bloco Publicado se repete no "Histórico de
-    slices". Ledger com `trilha: curta` ⇒ **ficha curta**: Ficha, Publicado e Falta, até 20 linhas.
+    ✨ de tirar os documentos do gatilho do deploy, e o Status (✅ com `estado: shipado`; senão 🚢). Nada do que está no
+    bloco Publicado se repete no "Histórico de slices". Ledger com `trilha: curta` ⇒ **ficha curta**: Ficha, Publicado e Falta, até 20 linhas.
     `python3 sdd/bin/handoff-lint.py sdd/handoffs/HANDOFF_{F}.md` sai 0 (na trilha curta, com `--curta`, que reprova
-    acima de 20 linhas).
+    acima de 20 linhas fora do prompt de retomada).
 15. **Arquivamento.** Ledger desta release com `estado: shipado` ⇒ mova os artefatos SDD da família para
-    `sdd/archive/{F}/` com `git mv`, um a um, nunca glob que arraste features de nome parecido; a ficha ganha Status
-    ✅. `parcial` ou `pausa` ⇒ pule (slices seguintes ainda leem os arquivos). A faxina retroativa do passivo é outra
+    `sdd/archive/{F}/` com `git mv`, um a um, nunca glob que arraste features de nome parecido (o Status ✅ da ficha já
+    veio no item 14). `parcial` ou `pausa` ⇒ pule (slices seguintes ainda leem os arquivos). A faxina retroativa do passivo é outra
     operação, deliberada: `python3 sdd/bin/sdd-archive.py` (simulação por padrão; depois, `--lote <nome> --aplicar`,
     um lote por commit).
 16. **Commit de papel.** Um commit só, com a ficha, o `CHANGELOG.md`, a fila da feature (a entrada nova, a falha
     registrada ou a remoção de uma falha antiga que a colheita substituiu: `git add -- sdd/curadoria/fila/{F}`) e os
     `git mv` do item 15: `git add` por nome, `git diff --cached --name-only` só com esses, commit
-    `docs({F}): ficha, changelog e colheita`. Nunca `--no-verify`. `GIT_TERMINAL_PROMPT=0 git fetch`, aterrisse como
-    no passo 5 e envie como no passo 8, **sem nova pergunta**: o OK já cobriu o papel, e o item 7 disse se esse push
-    publica. Push recusado ou conflito que a regra do item 11 não resolve ⇒ o commit fica na branch da frente, sem
+    `docs({F}): ficha, changelog e colheita`. Nunca `--no-verify`. Rode de novo o `push-de-papel.py` com a lista real
+    (`git diff --cached --name-only` antes do commit): se ele disser `PUBLICA` ou `NAO_SEI` e o item 7 disse "não", o
+    commit **não** é enviado (o OK não cobriu um deploy a mais): fica na branch da frente, e o relatório diz por quê e dá
+    o comando de envio. Senão, `GIT_TERMINAL_PROMPT=0 git fetch`, aterrisse como no passo 5 e envie como no passo 8,
+    **sem nova pergunta**: o OK já cobriu o papel. Push recusado ou conflito que a regra do item 11 não resolve ⇒ o commit fica na branch da frente, sem
     `--force`, e o relatório final dá o comando de envio; nada é apagado no item 17.
 17. **Branch da frente.** Com o commit de papel em `origin/{default_branch}`: se a branch da frente existe no remoto
     (`git ls-remote --heads origin <branch>`) e é ancestral de `origin/{default_branch}`

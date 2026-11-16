@@ -47,11 +47,11 @@ def uso(motivo):
 
 
 def valor(v):
-    """Escalar simples do ledger: sem o comentário, sem aspas."""
+    """Escalar simples do ledger: sem o comentário, sem aspas. Aspas sem fechar ⇒ None (o ledger é ilegível)."""
     if v[:1] in ('"', "'"):
         q = v[0]
         j = v.find(q, 1)
-        return v[1:j] if j > 0 else v[1:]
+        return v[1:j] if j > 0 else None
     return re.sub(r"\s+#.*$", "", v).strip()
 
 
@@ -68,7 +68,10 @@ def le_ledger(caminho):
             continue
         m = RE_CHAVE.match(ln)
         if m:
-            d[m.group(1)] = valor(m.group(2))
+            v = valor(m.group(2))
+            if v is None:
+                return None
+            d[m.group(1)] = v
     if not d.get("feature_id") or not d.get("estado"):
         return None
     # um valor com quebra ou com "·" desmontaria a linha da ficha

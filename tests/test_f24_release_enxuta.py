@@ -506,5 +506,87 @@ class AT011_DepoisDoPush(unittest.TestCase):
         self.assertIn("sem número de passo", corrido)
 
 
+class Revisao1(Projeto):
+    """Rodada 1 da revisão do código (EXTERNAL_REVIEW_20261116-193502): um teste por achado aplicado, vermelho em 45bf1fe."""
+
+    def test_r2_claude_log_sem_commit_vai_para_ausentes_e_nao_recusa_a_entrada(self):
+        self.feature("FA")
+        self.escreve(self.r, "sdd/reports/evidence/FA/AVAL-AT-009.log", "❌ AT-009 falhou: LM-016 mordeu de novo\n")
+        rc, out, _ = self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        self.assertEqual(rc, 0, out)
+        [e] = self.entradas("FA")
+        self.assertFalse((e / "AVAL-AT-009.log").exists())
+        self.assertIn("arquivo: AVAL-AT-009.log", (e / "ausentes.txt").read_text(encoding="utf-8"))
+        self.git(self.r, "add", "--", "sdd/curadoria")
+        self.git(self.r, "commit", "-q", "-m", "papel")
+        rc, out, err = self.cur("--conferir-entrada", str(e), "sdd/playbook.md")
+        self.assertEqual(rc, 0, out + err)
+
+    def test_r3_claude_retomar_nao_refaz_o_staging(self):
+        self.feature("FA")
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        self.commit(self.r, "papel")
+        [e] = self.entradas("FA")
+        rc, out, _ = self.cur("--conferir-entrada", str(e), "sdd/playbook.md")
+        stg = Path(re.search(r"(?m)^staging: (.+)$", out).group(1))
+        (stg / "escrito-pelo-curador.txt").write_text("x", encoding="utf-8")
+        rc, out, _ = self.cur("--conferir-entrada", str(e), "sdd/playbook.md", "--retomar")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("RETOMADA", out)
+        self.assertTrue((stg / "escrito-pelo-curador.txt").exists(), "a retomada apagou o que o curador escreveu")
+
+    def test_r1_claude_mesma_impressao_em_duas_entradas_conta_na_mais_antiga(self):
+        self.feature("FA")
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        [a] = self.entradas("FA")
+        b = a.parent / "20991231T235959Z"  # a mesma colheita numa 2ª entrada (publicação em pasta paralela)
+        shutil.copytree(a, b)
+        self.commit(self.r, "papel")
+        rc, out, err = self.cur("--conferir-entrada", str(b), "sdd/playbook.md")
+        stg = Path(re.search(r"(?m)^staging: (.+)$", out).group(1))
+        self.assertEqual(fps((stg / "colheita.txt").read_text(encoding="utf-8")), [])
+        self.assertEqual(rc, 1, out + err)
+        self.assertIn("NADA A JULGAR", out)
+
+
+class Revisao1Sandbox(Sandbox):
+    def test_r6_codex_aspas_sem_fechar_e_ledger_ilegivel(self):
+        r = self.repo("p")
+        self.escreve(r, "sdd/releases/X/s1.yaml", 'feature_id: X\nslice_id: s1\ndata: "2026-11-16\nestado: shipado\n')
+        rc, out, err = self.roda([PYTHON, FICHA, "X"], r)
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("ledger ilegível: sdd/releases/X/s1.yaml", (r / "sdd/handoffs/HANDOFF_X.md").read_text(encoding="utf-8"))
+
+    def test_r7_codex_arquivo_novo_acentuado_conta(self):
+        r = self.repo("p")
+        self.escreve(r, "README.md", "base\n")
+        self.commit(r, "base")
+        self.git(r, "branch", "-M", "main")
+        self.git(r, "update-ref", "refs/remotes/origin/main", "HEAD")
+        self.escreve(r, "conferência.py", "".join("l%d\n" % k for k in range(101)))
+        rc, out, err = self.roda([BASH, TRILHA, "X"], r)
+        self.assertEqual(rc, 1, out + err)
+        self.assertIn("101 linhas", out)
+
+    def test_r4_claude_ficha_curta_aberta_com_prompt_passa(self):
+        texto = (FX / "ficha-curta.md").read_text(encoding="utf-8").replace("✅ DoD fechado", "🚢 publicado")
+        texto += "\n## Prompt de retomada\n\n```text\nRetomar a feature PEDIDOS_FIX.\nPasta: a do projeto.\nPróxima ação: nenhuma.\n```\n"
+        f = self.escreve(self.tmp, "HANDOFF_PEDIDOS_FIX.md", texto)
+        rc, out, err = self.roda([PYTHON, LINT_FICHA, "--curta", f], self.tmp)
+        self.assertEqual(rc, 0, out + err)
+
+    def test_r7_claude_o_papel_e_conferido_com_a_lista_real(self):
+        item16 = " ".join(RELEASE[RELEASE.index("16. **Commit de papel.**"):RELEASE.index("17. **Branch da frente.**")].split())
+        self.assertIn("Rode de novo o `push-de-papel.py` com a lista real", item16)
+        self.assertIn("o commit **não** é enviado", item16)
+        ok = " ".join(RELEASE[RELEASE.index("7. **PARAR e mostrar"):RELEASE.index("## FASE 2")].split())
+        self.assertIn("com os nomes **reais** que o commit vai ter", ok)
+
+    def test_r5_codex_escrita_do_curador_isola_a_entrada(self):
+        corrido = " ".join(LOTE.split())
+        self.assertIn("siga com a próxima entrada; esta fica na fila", corrido)
+        self.assertIn("git checkout -- sdd/playbook.md sdd/invariants.md", corrido)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -86,14 +86,17 @@ mb="$(git merge-base "${base}" HEAD 2>/dev/null)" || falha "${base} e HEAD não 
   "confira a base; nada foi decidido."
 # Contra o ponto em que a frente nasceu, com a pasta como está: o que ainda não foi commitado também conta (a
 # release mede antes do commit atômico). Arquivo novo ainda fora do git entra pelo --no-index.
-numstat="$(git diff --numstat "${mb}" 2>/dev/null)" || falha "git diff ${mb} falhou" \
+numstat="$(git -c core.quotePath=false diff --numstat "${mb}" 2>/dev/null)" || falha "git diff ${mb} falhou" \
   "confira o repositório; nada foi decidido."
-novos="$(git ls-files --others --exclude-standard 2>/dev/null)"
+# core.quotePath=false: com o padrão, um nome acentuado sai entre aspas e escapado, e o arquivo sumiria da conta
+novos="$(git -c core.quotePath=false ls-files --others --exclude-standard 2>/dev/null)"
 if [ -n "${novos}" ]; then
   while IFS= read -r f; do
     [ -n "${f}" ] || continue
-    linha="$(git diff --no-index --numstat -- /dev/null "${f}" 2>/dev/null | head -n 1)"
-    [ -n "${linha}" ] && numstat="${numstat}
+    linha="$(git -c core.quotePath=false diff --no-index --numstat -- /dev/null "${f}" 2>/dev/null | head -n 1)"
+    # arquivo que o git não conseguiu medir conta como binário: na dúvida, a trilha é a completa
+    [ -n "${linha}" ] || linha="$(printf -- '-\t-\t%s' "${f}")"
+    numstat="${numstat}
 $(printf '%s' "${linha}" | awk -F '\t' -v p="${f}" '{print $1 "\t" $2 "\t" p}')"
   done <<EOF
 ${novos}

@@ -37,9 +37,10 @@ publicado.
    imprima `🧹 curadoria: julgando em contexto novo (alguns minutos); você não precisa responder`.
    Sem subagente: `bash sdd/bin/sdd-fluxo.sh despachar curador <F> sdd/reports/briefs/BRIEF_curador_<F>.md`
    e pare no exit 40, repassando a parada que ele imprime. **Sessão nova depois da parada do curador:** recalcule
-   `STG` (rode `--conferir-entrada` de novo: ele refaz o mesmo staging) e `T`, e vá direto para "Na volta"; refazer o
-   selo ou o snapshot de antes agora tomaria por linha de base o que o curador já escreveu. `"$T/antes"` ausente = a
-   pasta temporária se perdeu: recomece esta entrada do item 1; nada foi aplicado.
+   `STG` com `--conferir-entrada "$E" sdd/playbook.md --retomar` (só diz onde o staging está; **não** o refaz, o que
+   apagaria uma escrita do curador antes da conferência) e `T`, e vá direto para "Na volta"; refazer o
+   selo ou o snapshot de antes agora tomaria por linha de base o que o curador já escreveu. `--retomar` com exit 1, ou
+   `"$T/antes"` ausente = a pasta temporária se perdeu: recomece esta entrada do item 1; nada foi aplicado.
    Na volta, **sem editar nada no meio** e recalculando `STG` e `T` (variável de shell não passa de uma
    chamada para a outra): salve o bloco em `"$T/curadoria.txt"`;
    `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_<F>.md`;
@@ -53,7 +54,10 @@ publicado.
    `conferencia:` (as linhas `🔴 bloco:`). Se o motivo foi só o bloco, sem `FORA:` nem staging mexido,
    redespache com o mesmo selo e o mesmo snapshot. Se houve `FORA:` ou staging mexido: liste à pessoa o
    que saiu (não apague nada); com `sdd/playbook.md` ou `sdd/invariants.md` na lista, **não redespache**:
-   registre `Curadoria: FALHOU (curador escreveu no playbook)` e pare o lote; nos outros casos, refaça o item 1,
+   registre `Curadoria: FALHOU (curador escreveu no playbook)` para esta entrada, guarde
+   `git diff -- sdd/playbook.md sdd/invariants.md` na evidência, volte os dois ao commit
+   (`git checkout -- sdd/playbook.md sdd/invariants.md`: nada do lote foi aplicado ainda, a aplicação é no item 5) e
+   siga com a próxima entrada; esta fica na fila. Nos outros casos, refaça o item 1,
    o selo e o snapshot de antes (o que a pessoa já viu vira linha de base) e só então redespache. 2ª
    reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)` para esta entrada: **nada dela é aplicado**, ela fica
    na fila, e o lote segue com a próxima. Sem subagente, cada tentativa volta numa sessão nova, sem
@@ -61,7 +65,9 @@ publicado.
    `conferencia:`, esta é a 2ª tentativa, e nova reprovação encerra esta entrada, sem redespachar. Nunca separe
    contagem de regra à mão: quem decide é o conferidor.
 4. **Contagem entra, regra pergunta.** Comece o lote com `: > "$TMPDIR/lote-delta.txt"; : > "$TMPDIR/lote-inv.txt"`. As
-   linhas `AUTO <delta>` de cada `conferido.txt` vão para `lote-delta.txt` sem pergunta. As linhas `PERGUNTA <n> <tipo> <delta>`
+   linhas `AUTO <delta>` de cada `conferido.txt` vão, sem pergunta, para `"$TMPDIR/lote-delta-<entrada>.txt"` (um por
+   entrada: o envio do item 9 pode precisar tirar as linhas de uma entrada só), e o `lote-delta.txt` é a junção deles,
+   na ordem da fila. As linhas `PERGUNTA <n> <tipo> <delta>`
    (lição nova, aposentadoria, refino, promoção, invariante, sugestão que o curador confirmou e contagem que põe uma
    lição entre as invariantes) viram perguntas `[D3 · muda a regra do método]`, uma por item, numeradas, no formato
    de `references/como-falar.md`: a frase da linha `simples:`, o ID só no fim como `(ref: …)`, as
@@ -115,8 +121,10 @@ publicado.
    publica (a frase da linha `→` do script). **sim** ⇒ aterrisse como no passo 5 da `sdd-release` (worktree temporário
    de `origin/<branch padrão>` + cherry-pick; em conflito, não resolva à mão: `git cherry-pick --abort`, e reaplique o
    `lote-delta.txt` sobre o playbook da base com `--aplicar`, que recalcula os IDs dos `ADD`, o `lote-inv.txt` sobre as
-   invariantes da base com `--aplicar-inv`, e traga os registros, as remoções da fila e os logs do item 8 com
-   `git checkout <sha do commit do lote> -- <cada arquivo>`), rode ali de novo o `playbook-lint.sh` e, com
+   invariantes da base com `--aplicar-inv`, e traga os logs do item 8 com `git checkout <sha do commit do lote> -- <cada
+   log>`; os registros e as remoções da fila **nunca por checkout**, que apagaria o que outro lote gravou na base: para
+   cada entrada julgada, se ela ainda está na fila da base, rode ali `--registrar` dela; se não está, outra frente já a
+   julgou: tire do lote as linhas dela (o `lote-delta-<entrada>.txt`) antes de reaplicar), rode ali de novo o `playbook-lint.sh` e, com
    invariantes, o `--validar-inv` (ID repetido com a base ⇒ renumere o novo, nunca o da base) e faça o push como no
    passo 8 da `sdd-release`. **deixar para depois** ⇒ o commit fica na branch do lote, e as entradas continuam na fila
    da branch padrão até o envio. Com mudança de regra e envio na mesma resposta, as 2 perguntas vão numeradas.
@@ -135,5 +143,7 @@ só entra quando o mecanismo já está na branch padrão. Detalhes do formato na
 - **O lote julga a colheita refeita, não a guardada** — a guardada passa dias no git; refazê-la sobre a cópia dos
   documentos recusa a linha plantada depois da publicação e traz os IDs e as promoções do playbook de agora.
 - **Um `--aplicar` só** — várias entradas propõem o mesmo número de lição nova; quem numera é o playbook que recebe.
+- **Uma impressão conta na entrada mais antiga** — duas publicações da mesma feature em pastas paralelas podem colher
+  a mesma linha; o `--conferir-entrada` a tira das entradas mais novas, e o lote nunca soma +2 por ela.
 - **O commit do lote não sai da máquina sem um sim** — em muitos projetos, um push na branch padrão
   publica; a contagem entra no arquivo sem pergunta, o envio não.

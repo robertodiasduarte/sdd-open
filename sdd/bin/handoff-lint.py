@@ -4,7 +4,8 @@
 Só stdlib, Python >= 3.9. Uso:
     python3 sdd/bin/handoff-lint.py [--curta] <HANDOFF.md>     # exit 0 = válido · 1 = violações · 64 = uso
 
---curta (a ficha da trilha curta da sdd-release): além das regras abaixo, no máximo 20 linhas.
+--curta (a ficha da trilha curta da sdd-release): além das regras abaixo, no máximo 20 linhas fora do
+"## Prompt de retomada" (que a ficha aberta precisa ter e que não repete o ledger).
 
 A próxima sessão começa sem memória desta: o que ela não achar escrito, não existe. Regras:
   - 1º título `# HANDOFF:`;
@@ -131,9 +132,13 @@ def main(argv: list) -> int:
         print("→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo", file=sys.stderr)
         return 1
     erros = lint(texto)
-    if curta and len(texto.splitlines()) > LIMITE_CURTA:
-        erros.append(f"ficha curta com {len(texto.splitlines())} linhas (o limite da trilha curta é {LIMITE_CURTA}):"
-                     " o que o ledger já diz sai do bloco Publicado, não se repete")
+    if curta:
+        brutas = texto.splitlines()
+        faixa = intervalo(CERCA.sub(lambda m: "\n" * m.group(0).count("\n"), texto).splitlines(), "Prompt de retomada")
+        n = len(brutas) - (0 if faixa is None else faixa[1] - faixa[0] + 1)
+        if n > LIMITE_CURTA:
+            erros.append(f"ficha curta com {n} linhas fora do prompt de retomada (o limite da trilha curta é {LIMITE_CURTA}):"
+                         " o que o ledger já diz sai do bloco Publicado, não se repete")
     for e in erros:
         print(f"🛑 {argv[1]}: {e}", file=sys.stderr)
     if erros:
