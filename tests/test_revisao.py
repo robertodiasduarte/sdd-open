@@ -397,15 +397,17 @@ class SegundoRevisor(Base):
 
     def test_gatilhos_e_constantes(self):
         texto = ler(AR)
-        for c in ("SEGUNDO_REVISOR_MIN_ARQUIVOS = 8", "SEGUNDO_REVISOR_MIN_KB = 120", "SEGUNDO_REVISOR_MIN_CAMADAS = 2",
+        for c in ("REGRA_ANTIGA_MIN_ARQUIVOS = 8", "REGRA_ANTIGA_MIN_KB = 120", "REGRA_ANTIGA_MIN_CAMADAS = 2",
                   "RASO_SEGUNDOS = 30", "DIFF_MAX_MB = 8"):
             self.assertIn(c, texto)
+        # F23B3: só a segurança aciona; tamanho e camadas viram a medida "regra antiga" (tests/test_f23b3_revisao.py)
         casos = (
             ("segurança", {"src/auth/login.sh": "x\n"}, "", "segurança (src/auth/login.sh)"),
-            ("8 arquivos", {"src/f%d.sh" % k: "x\n" for k in range(7)}, "", "10 arquivos (limiar 8)"),
+            ("8 arquivos", {"src/f%d.sh" % k: "x\n" for k in range(7)}, "",
+             "regra antiga (só medida): 10 arquivos (limiar 8)"),
             ("120 KB", {"src/grande.txt": "y" * 130 * 1024}, "", "KB (limiar 120)"),
             ("2 camadas", {"api/a.sh": "x\n", "ui/b.sh": "x\n"}, "layers:\n  api: \"api/**\"\n  ui: \"ui/**\"\n",
-             "camadas (limiar 2)"),
+             "regra antiga (só medida): 2 camadas (limiar 2)"),
         )
         for nome, arqs, cfg, esperado in casos:
             with self.subTest(gatilho=nome):
@@ -415,6 +417,8 @@ class SegundoRevisor(Base):
                     self.escreve(r, k, v)
                 rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--dry-run")
                 self.assertIn(esperado, out)
+                if nome != "segurança":
+                    self.assertIn("2º revisor: sem gatilho no diff", out)
                 apaga(r)
 
     def test_author_nao_e_superficie_de_seguranca(self):

@@ -10,7 +10,7 @@
 #       0 EXIGIDO (≥ 3 arquivos novos no File Manifest, ou superfície de segurança: termo fixo,
 #         glob de review.security_globs ou de layers.sql) · 1 DISPENSAVEL · 64 manifest ilegível
 #         (quem chama RODA a revisão — default seguro — e registra o motivo)
-#   sdd-fluxo.sh loop --review <dir> --ledger <arquivo> --rodada N[a] [--teto 3]
+#   sdd-fluxo.sh loop --review <dir> --ledger <arquivo> --rodada N[a]|D<n> [--teto 3]   (D<n>: revisão do DESIGN)
 #                     [--avaliacao <AVALIACAO.md> --ciclo-avaliador K] [--recibo "nome AAAA-MM-DD"]
 #                     [--log <arquivo>]
 #       0 PRONTO · 10 CONTINUAR · 20 BLOQUEADO (D4 teto, D4 ciclos, D5 impasse de evidência)
@@ -205,8 +205,27 @@ def cmd_estado():
 
 
 # ── review-design ────────────────────────────────────────────────────────────────────────────────
-TERMOS = re.compile(r"\bauth|\blogin\b|\btokens?\b|\bsenhas?\b|password|\bjwt\b|\bGRANT\b|rota p(?:ú|u)blica",
-                    re.I)
+# >>> termos-seguranca (a MESMA função está no adversarial-review.sh e no sdd-fluxo.sh; um teste compara os 2 trechos)
+TERMOS_SEGURANCA = frozenset((
+    "auth", "authn", "authz", "oauth", "authentication", "authorization", "authorize", "login", "token", "tokens",
+    "senha", "senhas", "password", "passwords", "jwt", "grant",
+    "autenticacao", "autenticação", "autorizacao", "autorização", "seguranca", "segurança", "security", "secret",
+    "secrets", "segredo", "segredos", "credencial", "credenciais", "credential", "credentials", "permissao", "permissão",
+    "permissoes", "permissões", "permission", "permissions", "cripto", "crypto"))
+FRASES_SEGURANCA = ("rota pública", "rota publica")
+
+
+def termo_de_seguranca(texto):
+    """O 1º termo de segurança do texto, por palavra inteira e sem caixa, ou None ('author' não é 'auth')."""
+    baixo = texto.lower()
+    for f in FRASES_SEGURANCA:
+        if f in baixo:
+            return f
+    for p in re.split(r"[^0-9a-zà-ÿ]+", baixo):
+        if p in TERMOS_SEGURANCA:
+            return p
+    return None
+# <<< termos-seguranca
 
 
 def review_design(design):
@@ -246,11 +265,11 @@ def review_design(design):
     for ln in linhas:
         cel = ln.split("|")
         caminhos = re.findall(r"`([^`]+)`", cel[2] if len(cel) > 2 else "")
-        t = TERMOS.search(ln)
+        t = termo_de_seguranca(ln)
         g = next((g for g in globs for c in caminhos if fnmatch.fnmatch(c, g)), None)
         if t or g:
             seg += 1
-            p = "termo " + t.group(0) if t else "glob " + g
+            p = "termo " + t if t else "glob " + g
             if p not in porque:
                 porque.append(p)
     sinais = []
@@ -362,8 +381,10 @@ def _loop():
     teto, aval, ciclo, recibo = op["--teto"], op["--avaliacao"], op["--ciclo-avaliador"], op["--recibo"]
     if not review or not rodada:
         erro_uso("loop exige --review <dir> e --rodada N")
-    if not re.match(r"^[0-9]+[a-z]?$", rodada) or not re.match(r"^[0-9]+$", teto) or not re.match(r"^[0-9]+$", ciclo):
-        erro_uso("--rodada é inteiro com sufixo de lote opcional (5 ou 5a); --teto/--ciclo-avaliador são inteiros")
+    if not re.match(r"^(?:[0-9]+[a-z]?|D[0-9]+)\Z", rodada) or not re.match(r"^[0-9]+\Z", teto) \
+            or not re.match(r"^[0-9]+\Z", ciclo):
+        erro_uso("--rodada é inteiro com sufixo de lote opcional (5 ou 5a), ou D<n> na revisão do DESIGN (D1); "
+                 "--teto/--ciclo-avaliador são inteiros")
     teto, ciclo = int(teto), int(ciclo)
 
     def sai64(msg):
@@ -566,7 +587,7 @@ def _loop():
                        + " ".join(impasse))
     if continuar_review or continuar_aval:
         est, rc = "CONTINUAR", 10
-    rodada_n = int(re.sub(r"[a-z]$", "", rodada))
+    rodada_n = int(re.sub(r"^D|[a-z]$", "", rodada))   # D<n>: a revisão do DESIGN conta o teto pelo número
     if continuar_review and rodada_n >= teto:
         est, rc = "BLOQUEADO", 20
         motivos.append("D4 teto: %d rodadas de review atingido" % teto)

@@ -45,7 +45,9 @@ class Extracao(Sandbox):
         self.assertEqual((c["tokens_entrada"], c["tokens_saida"], c["modelo"]), (3591, 4, "claude-opus-5-5"))
         self.assertAlmostEqual(c["custo_usd"], 0.0238641)
         x = self.extrai("codex", "codex.jsonl")
-        self.assertEqual((x["tokens_entrada"], x["tokens_saida"], x["custo_usd"]), (24673, 5, None))
+        # F23B3: entrada sem o cache lido (24673 − 13184), cache à parte
+        self.assertEqual((x["tokens_entrada"], x["tokens_cache_lido"], x["tokens_saida"], x["custo_usd"]),
+                         (11489, 13184, 5, None))
         self.assertIn("<<<VERDICTS", x["texto"])
         g = self.extrai("gemini", "gemini.json")
         self.assertEqual((g["tokens_entrada"], g["tokens_saida"], g["modelo"], g["custo_usd"]),

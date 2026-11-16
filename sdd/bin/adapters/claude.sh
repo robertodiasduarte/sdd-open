@@ -7,6 +7,10 @@
 #                                         0 ok · 65 sem credencial · 66 CLI ausente · outro = falha
 #   adapter_extrair OUT                   1 linha JSON: texto, tokens_entrada, tokens_saida, modelo, custo_usd
 #   adapter_credencial                    1 linha: onde a credencial vive (vai no → do exit 65)
+#   adapter_modelo_padrao                 OPCIONAL (F23B3): 1 linha com o modelo que a engine usa sem -m, exit 0;
+#                                         sem ela, ou exit ≠ 0, o META fica com o modelo do registry
+#   adapter_extrair pode trazer também tokens_cache_lido e tokens_cache_criado (inteiro ou null): com eles, a
+#   entrada vem SEM o cache (significado da B1) e o eval-revisores.sh estima o nominal com o cache à parte
 #
 # Invocação: sem ferramenta nenhuma (--tools ""), sem CLAUDE.md/skills/hooks do usuário (--safe-mode),
 # sem sessão gravada, prompt por stdin (diff grande estoura o ARG_MAX por argumento).

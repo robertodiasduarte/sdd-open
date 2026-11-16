@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # adversarial-review.sh — revisão adversarial do SDD Open: uma engine REVISA um diff congelado, outra
 # AUDITA a revisão (não revisa o código de novo); 2º revisor e desempate quando os gatilhos pedem.
+# 2º revisor: só com superfície de risco (termo de segurança num caminho, review.security_globs, layers.sql) ou
+# revisor raso; o tamanho do diff só é medido (gatilho_regra_antiga). Desempate: padrão; --no-revisor2 e
+# --no-desempate ficam em dispensas_a_mao do META. Prompts: sdd/review/prompts/v2/, material cercado por marca.
 # Doc: docs/adversarial-review.md. Engines: sdd/review/registry.tsv (sem cadeia padrão).
 #
 # Por que existe: revisor e crítico encadeados acham mais que dois revisores em paralelo, e uma revisão
@@ -58,7 +61,7 @@ for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
         _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
     except (AttributeError, ValueError):
         pass
-import datetime, hashlib, json, os, re, shutil, signal, subprocess, sys, tempfile, time, fnmatch
+import datetime, hashlib, json, os, re, secrets, shutil, signal, subprocess, sys, tempfile, time, fnmatch
 
 BIN = os.environ["SDD_REVIEW_BIN"]
 BASH = os.environ.get("SDD_REVIEW_BASH") or "bash"
@@ -66,15 +69,41 @@ ADAPTERS = os.environ.get("SDD_REVIEW_ADAPTERS") or os.path.join(BIN, "adapters"
 PACOTE_REVIEW = os.path.normpath(os.path.join(BIN, "..", "review"))
 ESPERA = int(os.environ.get("SDD_REVIEW_ESPERA") or "30")
 
-# Limites do 2º revisor e do diff: constantes de propósito (decisão do brainstorm da F10). Mudar = 1 linha.
-SEGUNDO_REVISOR_MIN_ARQUIVOS = 8      # arquivos no diff congelado
-SEGUNDO_REVISOR_MIN_KB = 120          # wc -c do patch / 1024
-SEGUNDO_REVISOR_MIN_CAMADAS = 2       # camadas de layers: tocadas
+# Limites do diff: constantes de propósito (decisão do brainstorm da F10). Mudar = 1 linha.
+# F23B3: o 2º revisor só entra por superfície de risco (ou revisor raso). Os limiares de tamanho de antes ficam
+# só como MEDIDA (campo gatilho_regra_antiga do META): dizem quando a regra antiga chamaria o 2º revisor, para o
+# eval-revisores.sh contar as chamadas evitadas. Nunca chamam engine.
+REGRA_ANTIGA_MIN_ARQUIVOS = 8         # arquivos no diff congelado
+REGRA_ANTIGA_MIN_KB = 120             # wc -c do patch / 1024
+REGRA_ANTIGA_MIN_CAMADAS = 2          # camadas de layers: tocadas
+PROMPTS_VERSAO = "v2"                 # prompt vivo: <prompts>/v2/<papel>.md; "" volta à v1, na raiz de prompts/
 RASO_SEGUNDOS = 30                    # revisor abaixo disso, com 0 achados, conta como raso
 DIFF_MAX_MB = 8                       # teto do diff congelado
 TENTATIVAS_429 = 3                    # 1 chamada + 2 novas tentativas no limite passageiro
 PASTAS_SDD = ("sdd/features", "sdd/reports", "sdd/reviews", "sdd/releases", "sdd/handoffs", "sdd/traces")
-SEGMENTOS_SEGURANCA = {"auth", "login", "token", "tokens", "senha", "senhas", "password", "jwt"}
+
+# >>> termos-seguranca (a MESMA função está no adversarial-review.sh e no sdd-fluxo.sh; um teste compara os 2 trechos)
+TERMOS_SEGURANCA = frozenset((
+    "auth", "authn", "authz", "oauth", "authentication", "authorization", "authorize", "login", "token", "tokens",
+    "senha", "senhas", "password", "passwords", "jwt", "grant",
+    "autenticacao", "autenticação", "autorizacao", "autorização", "seguranca", "segurança", "security", "secret",
+    "secrets", "segredo", "segredos", "credencial", "credenciais", "credential", "credentials", "permissao", "permissão",
+    "permissoes", "permissões", "permission", "permissions", "cripto", "crypto"))
+FRASES_SEGURANCA = ("rota pública", "rota publica")
+
+
+def termo_de_seguranca(texto):
+    """O 1º termo de segurança do texto, por palavra inteira e sem caixa, ou None ('author' não é 'auth')."""
+    baixo = texto.lower()
+    for f in FRASES_SEGURANCA:
+        if f in baixo:
+            return f
+    for p in re.split(r"[^0-9a-zà-ÿ]+", baixo):
+        if p in TERMOS_SEGURANCA:
+            return p
+    return None
+# <<< termos-seguranca
+
 NOME_PAPEL = {"reviewer": "revisor", "revisor2": "2º revisor", "auditor": "auditor", "desempate": "desempate"}
 VERBO_PAPEL = {"reviewer": "revisou", "revisor2": "revisou", "auditor": "auditou", "desempate": "desempatou"}
 
@@ -530,26 +559,43 @@ if not os.path.isabs(saida_rel) or os.path.commonpath([os.path.abspath(saida_abs
 
 
 # ── gatilhos do 2º revisor (parte que não depende da resposta) ───────────────────────────────────
-def gatilho_estatico():
+def gatilho_risco():
+    """Superfície de risco do diff: termo de segurança num caminho, glob de review.security_globs ou de layers.sql."""
     globs = [g.strip() for g in (slot(cfg, "review", "security_globs") or "").split(",") if g.strip()]
     camadas = {k: v for k, v in bloco_inteiro(cfg, "layers").items() if v}
     if camadas.get("sql"):
         globs.append(camadas["sql"])
     for a in arqs:
-        segs = set(re.split(r"[/._-]+", a.lower()))
-        if segs & SEGMENTOS_SEGURANCA or any(fnmatch.fnmatch(a, g) for g in globs):
+        if termo_de_seguranca(a) or any(fnmatch.fnmatch(a, g) for g in globs):
             return "segurança (%s)" % a
-    if len(arqs) >= SEGUNDO_REVISOR_MIN_ARQUIVOS:
-        return "%d arquivos (limiar %d)" % (len(arqs), SEGUNDO_REVISOR_MIN_ARQUIVOS)
-    if len(patch) // 1024 >= SEGUNDO_REVISOR_MIN_KB:
-        return "%d KB (limiar %d)" % (len(patch) // 1024, SEGUNDO_REVISOR_MIN_KB)
-    tocadas = {k for k, g in camadas.items() for a in arqs if fnmatch.fnmatch(a, g)}
-    if len(tocadas) >= SEGUNDO_REVISOR_MIN_CAMADAS:
-        return "%d camadas (limiar %d)" % (len(tocadas), SEGUNDO_REVISOR_MIN_CAMADAS)
     return None
 
 
-gat = gatilho_estatico()
+def gatilho_regra_antiga():
+    """O que a regra de antes da F23B3 acionaria por tamanho: só medida, nunca chama engine."""
+    if len(arqs) >= REGRA_ANTIGA_MIN_ARQUIVOS:
+        return "%d arquivos (limiar %d)" % (len(arqs), REGRA_ANTIGA_MIN_ARQUIVOS)
+    if len(patch) // 1024 >= REGRA_ANTIGA_MIN_KB:
+        return "%d KB (limiar %d)" % (len(patch) // 1024, REGRA_ANTIGA_MIN_KB)
+    camadas = {k: v for k, v in bloco_inteiro(cfg, "layers").items() if v}
+    tocadas = {k for k, g in camadas.items() for a in arqs if fnmatch.fnmatch(a, g)}
+    if len(tocadas) >= REGRA_ANTIGA_MIN_CAMADAS:
+        return "%d camadas (limiar %d)" % (len(tocadas), REGRA_ANTIGA_MIN_CAMADAS)
+    return "-"
+
+
+gat = gatilho_risco()
+regra_antiga = gatilho_regra_antiga()
+
+
+def modelo_padrao(d):
+    """O modelo que a engine usa sem -m, pela função opcional adapter_modelo_padrao do adapter; None sem ela ou com
+    nome fora do formato (o nome vai para o META e para o relatório público)."""
+    r = subprocess.run([BASH, "-c", 'source "$1"; command -v adapter_modelo_padrao >/dev/null 2>&1 || exit 3; '
+                        'adapter_modelo_padrao', "_", os.path.join(ADAPTERS, d["adapter"] + ".sh")],
+                       stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    nome = r.stdout.decode("utf-8", "replace").strip() if r.returncode == 0 else ""
+    return nome if re.match(r"^[A-Za-z0-9._:/@-]{1,80}\Z", nome) else None
 
 
 def disponivel(d):
@@ -566,6 +612,7 @@ if flags["--dry-run"]:
     print("  diversidade: " + diversidade(revisores[0], auditores[0]))
     print("  2º revisor: " + ("dispensado (--no-revisor2)" if flags["--no-revisor2"] else
                               (gat or "sem gatilho no diff (o revisor raso ainda pode acionar)")))
+    print("  regra antiga (só medida): " + regra_antiga)
     print("  diff: %d arquivo(s), %d KB, base %s, merge-base %s" % (len(arqs), len(patch) // 1024, base, mb[:12]))
     print("  diff_sha256: " + sha)
     print("  contexto: %d documento(s) SDD, %d KB%s" % (len(docs), len(ctx_txt.encode("utf-8")) // 1024,
@@ -595,16 +642,31 @@ os.makedirs(VAZIA)
 diff_txt = patch.decode("utf-8", "replace")
 
 
-def prompt_de(nome):
-    t = ler(os.path.join(prompts_dir, nome + ".md"))
+def prompt_de(nome, marca):
+    """O prompt vivo do papel (<prompts>/<PROMPTS_VERSAO>/<papel>.md) e a linha da marca desta chamada. Sem o
+    arquivo, para (64): cair calado noutra versão esconderia o prompt errado (LM-017)."""
+    arq = os.path.join(prompts_dir, PROMPTS_VERSAO, nome + ".md")
+    t = ler(arq)
     if t is None:
-        uso("prompt ausente: %s/%s.md" % (prompts_dir, nome))
-    return re.sub(r"^\s*<!--.*?-->\s*", "", t, flags=re.S)
+        uso("prompt ausente: %s — rode o init: ele completa o que falta em sdd/" % arq)
+    return re.sub(r"^\s*<!--.*?-->\s*", "", t, flags=re.S) + "\n\nMarca do material desta chamada: %s\n" % marca
 
 
-def material(extra=""):
-    return ("\n\n## CONTEXTO SDD\n\n" + (ctx_txt or "(nenhum documento SDD foi fornecido)\n")
-            + "\n\n## DIFF\n\n" + diff_txt + extra)
+def cercado(nome, texto, marca):
+    return "<<<%s-%s\n%s\n%s-%s>>>" % (nome, marca, texto, nome, marca)
+
+
+def material(marca, extra=()):
+    """As seções do material, cada uma cercada pela marca da chamada (S18): o que está dentro é dado."""
+    partes = [("CONTEXTO SDD", "CONTEXTO", ctx_txt or "(nenhum documento SDD foi fornecido)"), ("DIFF", "DIFF", diff_txt)]
+    partes += list(extra)   # (título, nome, texto): REVISÕES, ACHADO, AUDITORIA DO ACHADO
+    return "".join("\n\n## %s\n\n%s" % (t, cercado(n, x.strip("\n"), marca)) for t, n, x in partes) + "\n"
+
+
+def montar(nome, extra=()):
+    """Prompt + material de UMA chamada de papel, com marca própria: a do auditor nunca foi vista pelo revisor."""
+    marca = secrets.token_hex(6)
+    return prompt_de(nome, marca) + material(marca, extra)
 
 
 # ── chamada de um papel ──────────────────────────────────────────────────────────────────────────
@@ -699,6 +761,8 @@ def papel(nome, cands, prompt_txt, excluir=()):
             reg["custo_usd"] = custo_acum + (reg["custo_usd"] or 0)
         if c == "ok":
             ext["custo_usd"] = reg["custo_usd"]
+            if not ext.get("modelo") and d["modelo"] in ("", "-"):
+                ext["modelo"] = modelo_padrao(d)   # F23B3: a CLI que não informa o modelo diz qual é o padrão dela
             reg.update(ext)
             reg.update({"engine_efetivo": d["id"], "exit": "0", "linha": d,
                         "fallback_usado": "sim" if d["id"] != reg["engine_default"] else "nao"})
@@ -831,13 +895,17 @@ def custo_base(reg):
     # o modelo que respondeu manda: outro modelo que o configurado só tem preço se ele mesmo estiver na tabela
     t = PRECOS.get((d["engine"], reportado if reportado and reportado != d["modelo"] else d["modelo"]))
     if t and isinstance(reg["tokens_entrada"], int) and isinstance(reg["tokens_saida"], int):
-        return "≈US$ " + usd((reg["tokens_entrada"] * t[0] + reg["tokens_saida"] * t[1]) / 1e6)
+        # F23B3: o adaptador que separa o cache grava a entrada sem ele; aqui, sem tabela de cache, a conta cobra o
+        # cache como entrada, como antes (o valor do META não muda); o nominal com o cache à parte é do eval-revisores
+        entrada = reg["tokens_entrada"] + sum(x for x in (reg.get("tokens_cache_lido"), reg.get("tokens_cache_criado"))
+                                              if isinstance(x, int))
+        return "≈US$ " + usd((entrada * t[0] + reg["tokens_saida"] * t[1]) / 1e6)
     return "assinatura" if d["cobranca"] == "assinatura" else "$?"
 
 
 # ── revisor ──────────────────────────────────────────────────────────────────────────────────────
 meta_extra = {}
-rev = papel("reviewer", revisores, prompt_de("reviewer") + material())
+rev = papel("reviewer", revisores, montar("reviewer"))
 rev_v, aud_v, r2_v = [], [], []
 if rev["exit"] == "0":
     open(os.path.join(dirrev, "reviewer.md"), "w", encoding="utf-8").write(rev["texto"])
@@ -872,7 +940,7 @@ elif gat2:
         avisos.append("⚠️ o 2º revisor (nenhuma engine) não tinha engine disponível: a revisão vale só com a "
                       "dispensa registrada no ledger")
     else:
-        r2 = papel("revisor2", cand, prompt_de("reviewer") + material())
+        r2 = papel("revisor2", cand, montar("reviewer"))
         r2_v = []
         if r2["exit"] == "0":
             open(os.path.join(dirrev, "reviewer2.md"), "w", encoding="utf-8").write(r2["texto"])
@@ -914,7 +982,7 @@ if rev["exit"] == "0":
             rv += "\nAchados desta revisão, com os identificadores a citar:\n" + "\n".join(
                 json.dumps(j, ensure_ascii=False) for j in vs) + "\n"
     excl = set() if flags["--um-engine"] else {chave(rev["linha"])} | ({chave(r2["linha"])} if dois else set())
-    aud = papel("auditor", auditores, prompt_de("auditor") + material("\n\n## REVISÕES\n" + rv), excluir=excl)
+    aud = papel("auditor", auditores, montar("auditor", [("REVISÕES", "REVISÕES", rv)]), excluir=excl)
     if aud["exit"] == "0":
         open(os.path.join(dirrev, "auditor.md"), "w", encoding="utf-8").write(aud["texto"])
         aud_v, erro = vereditos_auditor(aud["texto"])
@@ -964,9 +1032,9 @@ if aud is not None and aud["exit"] == "0" and not flags["--no-desempate"]:
             des["engine"] = "indisponível"
         else:
             just = next((j for j in aud_v if j["achado"] in (alvo["achado"], alvo["achado"].split("@", 1)[0])), {})
-            extra = ("\n\n## ACHADO\n\n" + json.dumps(alvo, ensure_ascii=False)
-                     + "\n\n## AUDITORIA DO ACHADO\n\n" + json.dumps(just, ensure_ascii=False) + "\n")
-            dr = papel("desempate", cand, prompt_de("desempate") + material(extra))
+            extra = [("ACHADO", "ACHADO", json.dumps(alvo, ensure_ascii=False)),
+                     ("AUDITORIA DO ACHADO", "AUDITORIA", json.dumps(just, ensure_ascii=False))]
+            dr = papel("desempate", cand, montar("desempate", extra))
             des["engine"], des["reg"] = dr["engine_efetivo"], dr
             if dr["exit"] == "0":
                 open(os.path.join(dirrev, "desempate.md"), "w", encoding="utf-8").write(dr["texto"])
@@ -1004,6 +1072,12 @@ if div == "nenhuma" and not AVISO_UM_IMPRESSO:
 
 def n(v):
     return str(v) if isinstance(v, int) else "n/d"
+
+
+def cache_meta(r, chave):
+    """Tokens de cache de um papel: número, `-` quando o adaptador não separa o cache (ou não o mediu)."""
+    v = r.get(chave)
+    return str(v) if isinstance(v, int) else "-"
 
 
 papeis_meta = [("reviewer", rev), ("revisor2", r2), ("auditor", aud), ("desempate", des["reg"])]
@@ -1055,8 +1129,13 @@ def bloco_papel(pref, r, extra):
               (pref + "_motivo", r.get("motivo", "-")), (pref + "_exit", r.get("exit", "-")),
               (pref + "_segundos", str(r.get("segundos", 0)))] + extra
     te, ts = r.get("tokens_entrada"), r.get("tokens_saida")
+    lido, criado = r.get("tokens_cache_lido"), r.get("tokens_cache_criado")
     tot = te + ts if isinstance(te, int) and isinstance(ts, int) else None
+    if tot is not None:   # F23B3: o adaptador que separa o cache grava a entrada sem ele; o total soma tudo
+        tot += sum(x for x in (lido, criado) if isinstance(x, int))
     linhas += [(pref + "_tokens_entrada", n(te)), (pref + "_tokens_saida", n(ts)), (pref + "_tokens_total", n(tot)),
+               (pref + "_tokens_cache_lido", cache_meta(r, "tokens_cache_lido")),
+               (pref + "_tokens_cache_criado", cache_meta(r, "tokens_cache_criado")),
                (pref + "_modelo", r.get("modelo") or ((r.get("linha") or {}).get("modelo")) or "n/d"),
                (pref + "_custo", custos[pref])]
     if pref == "revisor2":
@@ -1065,7 +1144,9 @@ def bloco_papel(pref, r, extra):
 
 
 M += bloco_papel("reviewer", rev, [("reviewer_achados", str(rev.get("achados", 0)))])
-M += [("revisor1_raso", "sim" if raso1 else "nao"), ("gatilho_2o_revisor", gatilho)]
+M += [("revisor1_raso", "sim" if raso1 else "nao"), ("gatilho_2o_revisor", gatilho),
+      ("gatilho_regra_antiga", regra_antiga),
+      ("dispensas_a_mao", " ".join(f for f in ("--no-revisor2", "--no-desempate") if flags[f]) or "-")]
 M += bloco_papel("revisor2", r2, [("revisor2_achados", str(r2.get("achados", 0)))] if r2 else [])
 M += bloco_papel("auditor", aud, [("auditor_vereditos", str(aud.get("vereditos", 0)))]) if aud else \
     [("auditor_exit", "-")]
@@ -1133,6 +1214,10 @@ if ec == "0":
     print("achados: " + contagem(todos_rev) + (" (+ %d novo(s) do auditor)" % len(novos) if novos else ""))
 print("custo total: " + humano(custo_total.split(" (+")[0]) + (" (+ %d papel(is) com custo desconhecido)" % desconhecidos
                                                               if desconhecidos and conhecidos else ""))
+if ec == "0" and not gat2:
+    # F23B3: a dispensa automática fica no ledger (o META some com a worktree); o loop já lê esta forma
+    print("→ no ledger desta rodada: revisor2: dispensado rodada=<N> — sem superfície de risco"
+          + ("" if regra_antiga == "-" else " (regra antiga: %s)" % regra_antiga))
 if ec == "0":
     print("→ rode: bash sdd/bin/sdd-fluxo.sh loop --review %s --ledger <ledger da revisão> --rodada <N>" % rel_rev)
 elif ec == "65":
