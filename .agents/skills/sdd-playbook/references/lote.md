@@ -12,7 +12,9 @@ Brief do curador: `.agents/skills/sdd-playbook/references/curator.md`; palavras 
 publicado.
 
 0. **Onde.** O lote escreve no playbook e na branch padrão: rode numa frente própria (`/sdd-new-session`), nascida da
-   branch padrão **atualizada**, nunca na pasta de uma publicação. `bash sdd/bin/playbook-curator.sh --fila` lista as
+   branch padrão **atualizada**, nunca na pasta de uma publicação, com o playbook e as invariantes iguais ao commit
+   (`git diff --quiet -- sdd/playbook.md sdd/invariants.md` sai 0; senão, pare e peça para commitar ou guardar a mudança
+   antes: o item 3 pode precisar voltar os dois ao commit). `bash sdd/bin/playbook-curator.sh --fila` lista as
    entradas; fila vazia ⇒ diga isso e encerre. Entrada com `colheita FALHOU` não é julgada: diga a causa e que uma
    colheita nova da feature (`--enfileirar <F>` numa pasta com os documentos dela) a substitui.
 1. **Conferir a entrada (uma por vez).** Para cada entrada `E` da fila, em ordem:
@@ -30,12 +32,13 @@ publicado.
 2. **Despachar o curador em contexto fresco**, pela escada de `sdd-build/references/contexto-fresco.md`, com **só**
    os 5 campos: `feature: <F> · staging: $STG · colheita: $STG/colheita.txt · playbook: <raiz>/sdd/playbook.md · worktree: <raiz>`.
    Antes do despacho, nesta ordem: `mkdir -p sdd/reports/briefs`; grave o brief (os 5 campos e "leia e siga
-   `.agents/skills/sdd-playbook/references/curator.md`") em `sdd/reports/briefs/BRIEF_curador_<F>.md`;
-   `T="${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/<F>/curador"; mkdir -p "$T"`;
+   `.agents/skills/sdd-playbook/references/curator.md`") em `sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md` (um por
+   entrada: duas entradas da mesma feature no mesmo lote não dividem brief, selo nem snapshot);
+   `T="${TMPDIR:-/tmp}/sdd-fronteira-$(git rev-parse --show-toplevel | git hash-object --stdin | cut -c1-12)/<F>/curador-<entrada>"; mkdir -p "$T"`;
    `bash sdd/bin/playbook-curator.sh --selar "$STG" > "$T/selo.txt"` (o selo do staging fica **fora** dele);
-   `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reports/briefs/BRIEF_curador_<F>.md`;
+   `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md`;
    imprima `🧹 curadoria: julgando em contexto novo (alguns minutos); você não precisa responder`.
-   Sem subagente: `bash sdd/bin/sdd-fluxo.sh despachar curador <F> sdd/reports/briefs/BRIEF_curador_<F>.md`
+   Sem subagente: `bash sdd/bin/sdd-fluxo.sh despachar curador <F> sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md`
    e pare no exit 40, repassando a parada que ele imprime. **Sessão nova depois da parada do curador:** recalcule
    `STG` com `--conferir-entrada "$E" sdd/playbook.md --retomar` (só diz onde o staging está; **não** o refaz, o que
    apagaria uma escrita do curador antes da conferência) e `T`, e vá direto para "Na volta"; refazer o
@@ -43,8 +46,8 @@ publicado.
    `"$T/antes"` ausente = a pasta temporária se perdeu: recomece esta entrada do item 1; nada foi aplicado.
    Na volta, **sem editar nada no meio** e recalculando `STG` e `T` (variável de shell não passa de uma
    chamada para a outra): salve o bloco em `"$T/curadoria.txt"`;
-   `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_<F>.md`;
-   `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_<F>.md > "$T/comparar.txt"`.
+   `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md`;
+   `bash sdd/bin/governanca-fronteira.sh --comparar "$T/antes" "$T/depois" <raiz>/sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md > "$T/comparar.txt"`.
    Não repasse a linha `→` da fronteira (ela fala do DEFINE): quem lê o `comparar.txt` é o item 3.
 3. **Conferir o bloco antes de qualquer pergunta.**
    `bash sdd/bin/playbook-curator.sh --conferir-bloco "$STG/colheita.txt" "$T/curadoria.txt" sdd/playbook.md "$T/selo.txt" "$T/comparar.txt" > "$T/conferido.txt"; rc=$?`.
@@ -61,7 +64,7 @@ publicado.
    o selo e o snapshot de antes (o que a pessoa já viu vira linha de base) e só então redespache. 2ª
    reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)` para esta entrada: **nada dela é aplicado**, ela fica
    na fila, e o lote segue com a próxima. Sem subagente, cada tentativa volta numa sessão nova, sem
-   memória da anterior: leia `sdd/reports/briefs/BRIEF_curador_<F>.md`; se ele já tem o campo
+   memória da anterior: leia `sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md`; se ele já tem o campo
    `conferencia:`, esta é a 2ª tentativa, e nova reprovação encerra esta entrada, sem redespachar. Nunca separe
    contagem de regra à mão: quem decide é o conferidor.
 4. **Contagem entra, regra pergunta.** Comece o lote com `: > "$TMPDIR/lote-delta.txt"; : > "$TMPDIR/lote-inv.txt"`. As

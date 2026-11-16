@@ -1860,6 +1860,10 @@ def enfileirar(args):
     if ausentes:
         diz("sem cópia (não está commitado como está): %s; a linha que só ele prova é relatada no lote e nunca contada"
             % ", ".join(ausentes))
+        for nome in ausentes:
+            if not re.match(r"^AVAL.*-.*\.log$", nome):
+                diz("⚠️ %s não está commitado como está: as linhas dele ficam sem julgamento nesta entrada; commite o "
+                    "documento e rode --enfileirar %s de novo (uma colheita nova as traz)" % (nome, feature))
     diz("fila: " + rel)
     fim("ENFILEIRADO", "ponha a pasta %s no commit de papel; o lote da sdd-playbook a julga depois. Nada foi aplicado."
         % rel)
@@ -2013,14 +2017,22 @@ def registrar(args):
         if not (RE_ENTRADA.match(os.path.basename(pe)) and os.path.isdir(pe) and not os.path.islink(pe)
                 and os.path.realpath(os.path.dirname(os.path.dirname(pe))) == base):
             uso("entrada inválida: %s" % a)
+    registrando = set(os.path.realpath(os.path.abspath(a)) for a in args)
     for a in args:
         pe = os.path.abspath(a)
         feature = os.path.basename(os.path.dirname(pe))
-        linhas = [ln for ln in ler(os.path.join(pe, "colheita.txt")).split("\n") if ln.startswith(JULGAVEIS)
-                  and RE_FP.search(ln)]
+        julgadas = fps_de(ler(os.path.join(pe, "colheita.txt")), True)
+        # Fica de fora: o que não teve evidência (ausentes.txt: nunca julgado; uma colheita nova o traz quando o
+        # documento estiver commitado) e o que espera julgamento numa entrada mais antiga ainda na fila (a impressão
+        # é dela; se ela for recusada, a impressão continua lá, sem ser dada como julgada por esta).
         aus = os.path.join(pe, "ausentes.txt")
         if os.path.isfile(aus):
-            linhas += [ln for ln in ler(aus).split("\n") if RE_FP.search(ln)]
+            julgadas -= fps_de(ler(aus))
+        for _f, outra in entradas_da_fila(raiz, feature):
+            if (os.path.basename(outra) < os.path.basename(pe) and rc_da_entrada(outra) == 0
+                    and os.path.realpath(outra) not in registrando):
+                julgadas -= fps_de(ler(os.path.join(outra, "colheita.txt")), True)
+        linhas = ["julgado no lote · %s · fp=%s" % (os.path.basename(pe), ",".join(sorted(julgadas)))] if julgadas else []
         destino = os.path.join(raiz, "sdd", "releases", feature, REGISTRO)
         try:
             os.makedirs(os.path.dirname(destino), exist_ok=True)

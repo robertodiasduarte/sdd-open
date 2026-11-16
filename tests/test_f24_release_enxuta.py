@@ -143,7 +143,8 @@ class AT002_UmaVezSo(Projeto):
         rc, out, _ = self.cur("--registrar", str(e1), str(e2))
         self.assertEqual(rc, 0, out)
         reg = (self.r / "sdd/releases/FA/CURATOR-colhidos.txt").read_text(encoding="utf-8")
-        self.assertEqual(sorted(set(fps(reg))), sorted(set(todas)))
+        registradas = [x for m in RE_FP.finditer(reg) for x in m.group(1).split(",")]
+        self.assertEqual(sorted(registradas), sorted(set(todas)))  # cada impressão uma vez só
         self.assertEqual(self.entradas("FA"), [])
         self.commit(self.r, "lote")
         rc, out, _ = self.cur("--enfileirar", "FA", "sdd/playbook.md")
@@ -586,6 +587,55 @@ class Revisao1Sandbox(Sandbox):
         corrido = " ".join(LOTE.split())
         self.assertIn("siga com a próxima entrada; esta fica na fila", corrido)
         self.assertIn("git checkout -- sdd/playbook.md sdd/invariants.md", corrido)
+
+
+class Revisao2(Projeto):
+    """Rodada 2 da revisão do código (EXTERNAL_REVIEW_20261116-202240): vermelhos em 22caf6b."""
+
+    def test_r1_documento_sem_commit_avisa_e_nao_vira_julgado(self):
+        self.feature("FA")
+        d = self.r / "sdd/features/DESIGN_FA.md"
+        d.write_text(d.read_text(encoding="utf-8") + "\n", encoding="utf-8")  # mudou depois do último commit
+        rc, out, _ = self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("⚠️ DESIGN_FA.md", out)
+        [e] = self.entradas("FA")
+        self.git(self.r, "add", "--", "sdd/curadoria")
+        self.git(self.r, "commit", "-q", "-m", "papel")
+        sem = set(RE_FP.search((e / "ausentes.txt").read_text(encoding="utf-8")).group(1).split(","))
+        self.assertEqual(self.cur("--registrar", str(e))[0], 0)
+        reg = self.r / "sdd/releases/FA/CURATOR-colhidos.txt"
+        texto = reg.read_text(encoding="utf-8") if reg.exists() else ""
+        registradas = set(x for m in RE_FP.finditer(texto) for x in m.group(1).split(","))
+        self.assertFalse(sem & registradas, "linha sem evidência foi registrada como julgada")
+
+    def test_r3_impressao_da_entrada_mais_antiga_nao_e_registrada_pela_nova(self):
+        self.feature("FA")
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        [a] = self.entradas("FA")
+        b = a.parent / "20991231T235959Z"
+        shutil.copytree(a, b)
+        self.commit(self.r, "papel")
+        self.assertEqual(self.cur("--registrar", str(b))[0], 0)
+        reg = (self.r / "sdd/releases/FA/CURATOR-colhidos.txt")
+        texto = reg.read_text(encoding="utf-8") if reg.exists() else ""
+        ja = set(x for m in RE_FP.finditer(texto) for x in m.group(1).split(","))
+        self.assertFalse(set(fps((a / "colheita.txt").read_text(encoding="utf-8"))) & ja,
+                         "a entrada nova registrou o que ainda espera julgamento na mais antiga")
+
+
+class Revisao2Textos(unittest.TestCase):
+    def test_r2_sem_documentos_na_trilha_completa_e_falha(self):
+        item13 = " ".join(RELEASE[RELEASE.index("13. **Colheita.**"):RELEASE.index("14. **Ficha.**")].split())
+        self.assertIn("na trilha completa, é falha", item13)
+
+    def test_r4_brief_e_fronteira_por_entrada(self):
+        self.assertIn("BRIEF_curador_<F>_<entrada>.md", LOTE)
+        self.assertIn("/<F>/curador-<entrada>", LOTE)
+
+    def test_n1_o_lote_comeca_com_o_playbook_limpo(self):
+        corrido = " ".join(LOTE.split())
+        self.assertIn("git diff --quiet -- sdd/playbook.md sdd/invariants.md", corrido)
 
 
 if __name__ == "__main__":

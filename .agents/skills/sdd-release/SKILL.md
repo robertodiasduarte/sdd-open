@@ -311,9 +311,9 @@ Toda mensagem daqui em diante diz que a publicação já terminou: uma espera se
     `bash sdd/bin/playbook-curator.sh --enfileirar {F} sdd/playbook.md [--inv sdd/invariants.md]` (`--inv` só com o arquivo):
     | exit | Ação |
     |---|---|
-    | `0` | a entrada `sdd/curadoria/fila/{F}/<horário>/` (a linha `fila:`) vai no commit de papel; na ficha, `Curadoria: na fila`. Uma linha `⚠️ … não está commitado` quer dizer que o lote vai recusar a entrada: diga isso na ficha |
+    | `0` | a entrada `sdd/curadoria/fila/{F}/<horário>/` (a linha `fila:`) vai no commit de papel; na ficha, `Curadoria: na fila`. Uma linha `⚠️ … não está commitado` quer dizer que as linhas daquele documento ficaram sem julgamento: diga isso na ficha, com o comando que a linha dá |
     | `1` com `RESULTADO: NADA A COLHER` | `Curadoria: 0 deltas` na ficha |
-    | `1` com `RESULTADO: STAGING SEM DOCUMENTOS` | conserto sem DESIGN nem BUILD_REPORT: `Curadoria: 0 deltas (sem documentos)` |
+    | `1` com `RESULTADO: STAGING SEM DOCUMENTOS` | na trilha curta (conserto sem DESIGN nem BUILD_REPORT): `Curadoria: 0 deltas (sem documentos)`; na trilha completa, é falha: `Curadoria: FALHOU (sem documentos)` — confira o nome da feature |
     | `2` | **não é "0 deltas"**: a entrada fica na fila marcada com o exit (vai no commit de papel), a ficha diz `Curadoria: FALHOU (rc=N)` com a causa que o script imprimiu; a publicação não foi afetada |
     | outro (`64`, `126`, `127`…) | **não é "0 deltas"**: `Curadoria: FALHOU (rc=N)` na ficha, com a causa e o conserto |
     Depois, `bash sdd/bin/playbook-curator.sh --fila`: exit 10 ⇒ repasse a linha 🧹 em 1 frase no relatório final (a fila

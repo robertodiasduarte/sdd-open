@@ -39,7 +39,7 @@ class Passo17b(unittest.TestCase):
     """F14 AT-023 a AT-025, conferidos no lote da sdd-playbook desde a F24 (a release só colhe)."""
 
     def test_as_pecas_vem_nesta_ordem(self):
-        ordem = ("--fila", "--conferir-entrada \"$E\"", "BRIEF_curador_<F>.md", "--selar \"$STG\"", "governanca-fronteira.sh --snapshot",
+        ordem = ("--fila", "--conferir-entrada \"$E\"", "BRIEF_curador_<F>_<entrada>.md", "--selar \"$STG\"", "governanca-fronteira.sh --snapshot",
                  "sdd-fluxo.sh despachar curador", "governanca-fronteira.sh --comparar", "--conferir-bloco",
                  "--cruzar -", "--aplicar \"$TMPDIR/lote-delta.txt\"", "playbook-lint.sh \"$TMPDIR/novo.md\"", "--anti-collapse",
                  "--aplicar-inv", "--validar-inv", "cp \"$TMPDIR/novo.md\" sdd/playbook.md", "CURATOR-entradas.log",
