@@ -66,9 +66,10 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 
 ## Processo
 
-**Custo da fase.** Ao começar, rode `bash sdd/bin/marca-fase.sh inicio build <FEATURE>`; para ver o custo até aqui, `bash sdd/bin/custo-feature.sh <FEATURE> --saida -`; no encerramento,
-antes do resumo de etapa, `bash sdd/bin/marca-fase.sh fim build <FEATURE>`. Sem terminal, ou sem o script no
-projeto, siga sem a marca (o porquê está em `sdd/templates/fragments/MARCA_FASE.md`).
+**Custo da fase.** Ao começar, rode `bash sdd/bin/marca-fase.sh inicio build <FEATURE>`; no encerramento, antes do
+resumo de etapa, `bash sdd/bin/marca-fase.sh fim build <FEATURE>`. Para ver o custo até aqui:
+`bash sdd/bin/custo-feature.sh <FEATURE> --saida -`. Sem terminal, ou sem o script no projeto, siga sem a marca (o
+porquê está em `sdd/templates/fragments/MARCA_FASE.md`).
 
 ### 0. Revisão do DESIGN
 

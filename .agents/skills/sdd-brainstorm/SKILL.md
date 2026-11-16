@@ -73,10 +73,10 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 
 ## Processo
 
-**Custo da fase.** Ao começar, rode `bash sdd/bin/marca-fase.sh inicio brainstorm <FEATURE>` (ou assim que o nome da feature estiver
-decidido); no encerramento,
-antes do resumo de etapa, `bash sdd/bin/marca-fase.sh fim brainstorm <FEATURE>`. Sem terminal, ou sem o script no
-projeto, siga sem a marca (o porquê está em `sdd/templates/fragments/MARCA_FASE.md`).
+**Custo da fase.** Ao começar (ou assim que o nome da feature estiver decidido), rode
+`bash sdd/bin/marca-fase.sh inicio brainstorm <FEATURE>`; no encerramento, antes do resumo de etapa,
+`bash sdd/bin/marca-fase.sh fim brainstorm <FEATURE>`. Sem terminal, ou sem o script no projeto, siga sem a
+marca (o porquê está em `sdd/templates/fragments/MARCA_FASE.md`).
 
 ### 1. Contexto
 

@@ -37,3 +37,15 @@ compatibility: Funciona na web (claude.ai, ChatGPT), onde o documento sai no cha
 ====
 **Próximo passo:** peça a skill `sdd-define` com este BRAINSTORM (na web, mande o documento junto com o pedido).
 >>>> depois
+
+## SKILL.md
+<<<< antes
+**Custo da fase.** Ao começar (ou assim que o nome da feature estiver decidido), rode
+`bash sdd/bin/marca-fase.sh inicio brainstorm <FEATURE>`; no encerramento, antes do resumo de etapa,
+`bash sdd/bin/marca-fase.sh fim brainstorm <FEATURE>`. Sem terminal, ou sem o script no projeto, siga sem a
+marca (o porquê está em `sdd/templates/fragments/MARCA_FASE.md`).
+
+### 1. Contexto
+====
+### 1. Contexto
+>>>> depois
