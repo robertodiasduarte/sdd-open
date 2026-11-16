@@ -216,7 +216,7 @@ class AT003Contador(Base):
         self.assertEqual(t["build"], ["1", "801", "31", "700", "0", "0.0000", "n/d", "0h01m00s"])
         self.assertEqual(t["sem fase"], ["0", "5", "50", "2000", "0", "0.0000", "0.0014", "0h01m00s"])
         self.assertEqual(t["revisão"], ["2", "1500", "250", "0", "0", "0.0300", "≈2.0300", "0h08m00s"])
-        self.assertEqual(t["**total**"], ["4", "2416", "441", "3700", "200", "0.0300", "≈2.0344 + n/d", "0h15m00s"])
+        self.assertEqual(t["**total**"], ["4", "2416", "441", "3700", "200", "0.0300", "≈2.0344 + n/d", "0h07m00s"])  # tempo: só sessões (R5)
         self.assertEqual(list(t), ["define", "build", "sem fase", "revisão", "**total**"])
 
     def test_voltas_do_gate_avisos_e_nenhum_texto(self):
@@ -341,6 +341,48 @@ class AT004NuncaZero(Base):
         t, out = self.tabela_saida("--raiz", str(link))
         self.assertIn("claude LIDO · codex LIDO", out)
         self.assertEqual(t["define"][6], "0.0030")
+
+
+class Rodada2(Base):
+    """R1, R4 e R6 da rodada 2 da revisão do código."""
+
+    def test_custo_incerto_da_revisao_leva_n_d(self):
+        """R1: `US$ n + $?` soma n e marca a parte desconhecida, nunca zero."""
+        self.escreve(self.raiz, "sdd/reports/reviews/EXTERNAL_REVIEW_20261115-160000/META.txt",
+                     "docs_sdd : DEFINE_F99_TESTE.md\nreviewer_engine_efetivo : openrouter\nreviewer_exit : 67\n"
+                     "reviewer_custo : US$ 0.4000 + $?\n")
+        rc, out, _ = self.custo(F, "--precos", str(self.copiado["precos"]), "--saida", "-")
+        self.assertEqual(rc, 0)
+        self.assertEqual(self.tabela(out)["revisão"][5:7], ["0.4300 + n/d", "≈2.4300 + n/d"])
+
+    def test_sem_marca_e_leitor_que_falha_nao_e_zero(self):
+        """R4: sem marca, com o leitor do claude falhando e sem sessão do codex, sem fase é n/d."""
+        (self.copiado["traces"] / "F99_TESTE.jsonl").unlink()
+        pkg = self.tmp / "pacote"
+        shutil.copytree(str(RAIZ / "sdd/bin"), str(pkg / "sdd/bin"))
+        shutil.copytree(str(RAIZ / "sdd/review"), str(pkg / "sdd/review"))
+        (pkg / "sdd/bin/adapters/sessao-claude.py").write_text("import sys\nsys.exit(1)\n", encoding="utf-8")
+        (pkg / "sdd/bin/adapters/sessao-codex.py").write_text("import sys\nsys.exit(2)\n", encoding="utf-8")
+        rc, out, err = self.roda([BASH, pkg / "sdd/bin/custo-feature.sh", F, "--precos", self.copiado["precos"],
+                                  "--saida", "-"], self.raiz)
+        self.assertEqual(rc, 0, out + err)
+        t = self.tabela(out)
+        self.assertEqual(t["sem fase"][6], "n/d")
+        self.assertEqual(t["**total**"][6], "≈2.0300 + n/d")
+
+    def test_total_do_codex_que_volta_atras_nao_some(self):
+        """R6: um total acumulado menor que o anterior é contagem nova, somada inteira."""
+        arq = next((self.tmp / "codex-home/sessions").rglob("*projeto.jsonl"))
+        evento = {"timestamp": "2026-11-15T10:20:40.000Z", "type": "event_msg",
+                  "payload": {"type": "token_count", "info": {"total_token_usage": {
+                      "input_tokens": 300, "cached_input_tokens": 0, "cache_write_input_tokens": 0,
+                      "output_tokens": 5}}}}
+        with open(arq, "a", encoding="utf-8") as h:
+            h.write(json.dumps(evento) + "\n")
+        rc, out, _ = self.roda([sys.executable, "-B", LEITOR_CODEX, "--raiz", self.raiz], self.raiz)
+        self.assertEqual(rc, 0)
+        msgs = [json.loads(x) for x in out.splitlines() if '"msg"' in x]
+        self.assertEqual((msgs[-1]["entrada"], msgs[-1]["saida"]), (300, 5))
 
 
 class AT006Revisao(Base):

@@ -385,11 +385,12 @@ def meta_de(pasta):
 
 
 def custo_de(valor):
-    """(Decimal ou None, estimado?) de um campo *_custo, pela regra do eval-revisores.sh."""
+    """(Decimal ou None, estimado?, incerto?) de um campo *_custo, pela regra do eval-revisores.sh: `US$ n + $?` é n mais
+    uma parte desconhecida (a engine estourou o tempo), que nunca vira zero (R1 da rodada 2)."""
     mt = CUSTO_RE.match((valor or "").strip())
     if not mt:
-        return None, False
-    return Decimal(mt.group(2).replace(",", ".")), bool(mt.group(1))
+        return None, False, False
+    return Decimal(mt.group(2).replace(",", ".")), bool(mt.group(1)), bool(mt.group(3))
 
 
 def ledger_info(arq):
@@ -453,11 +454,13 @@ def revisao(feat, ledger_arq):
             seg = decimal(meta.get(papel + "_segundos", ""))
             if seg is not None:
                 conta["segundos"] += seg
-            nominal, estimado = custo_de(bruto)
+            nominal, estimado, incerto = custo_de(bruto)
             conta["estimado"] = conta["estimado"] or estimado
             cob = COBRANCA.get(engine.split(":", 1)[0], "desconhecida")
             pago = Decimal(0) if cob == "assinatura" else (nominal if cob == "pay-per-token" else None)
             soma(conta, nominal, pago)
+            if incerto:
+                marca_nd(conta)
     return conta
 
 
@@ -560,7 +563,7 @@ def modo_feature():
             marca_nd(contas[f])
     rev = revisao(feature, os.path.join(ledgers, "LEDGER_REVISAO_%s.md" % feature))
     tem_sessao = any(r["tipo"] == "msg" for r in regs_todos)
-    if not marcas and tem_sessao:   # R6 da revisão do DESIGN: sem marca, um zero em "sem fase" pareceria economia
+    if not marcas and (tem_sessao or falhou):   # R6 do DESIGN e R4 da rodada 2: sem marca, zero pareceria economia
         FORA.append(("marca", "nenhuma marca de fase: as sessões não foram atribuídas"))
         marca_nd(sem_fase)
     if not marcas and not rev["execucoes"] and not gate and not tem_sessao:
@@ -572,14 +575,17 @@ def modo_feature():
     for c in [contas[f] for f in ordem] + [sem_fase, rev]:
         for k in TOKENS:
             total["tokens"][k] += c["tokens"][k]
-        for k in ("nominal", "pago", "segundos"):
+        for k in ("nominal", "pago"):
             total[k] += c[k]
+        if c is not rev:   # R5 da rodada 2: a revisão em primeiro plano já está dentro do turno do agente
+            total["segundos"] += c["segundos"]
         for k in ("nominal_nd", "pago_nd", "itens", "execucoes"):
             total[k] += c[k]
         total["estimado"] = total["estimado"] or c["estimado"]
     linhas = ["# Custo — %s" % feature, "",
               "> Gerado por `sdd/bin/custo-feature.sh` em %s. Só números: nenhum texto das sessões. Valores em US$; "
-              "`n/d` = sem registro ou sem preço, nunca zero." % datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+              "`n/d` = sem registro ou sem preço, nunca zero. O tempo ativo do total é o das sessões (o da revisão fica na "
+              "linha dela)." % datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
               "",
               "| Fase | Execuções | Entrada | Saída | Cache lido | Cache criado | Pago US$ | Nominal US$ | Tempo ativo |",
               "|---|---:|---:|---:|---:|---:|---:|---:|---:|"]

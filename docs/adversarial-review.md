@@ -224,7 +224,7 @@ paid, nominal and active time:
 |---|---|
 | Pago US$ | billing from `registry.tsv` for the agent (`claude`, `codex`) or the review engine: subscription is `0.0000`, `pay-per-token` is the nominal cost, unknown is `n/d` |
 | Nominal US$ | tokens × price: input and output from `precos.tsv`, cache read and cache written from `precos-cache.tsv` (same engine · model pair), plus the review cost from the `META.txt` |
-| Tempo ativo | per turn, from the message that starts it to the agent's last record in it; time waiting for a person is left out |
+| Tempo ativo | per turn, from the message that starts it to the agent's last record in it; time waiting for a person is left out. The total counts only the sessions: a review run in the foreground is already inside the agent's turn |
 
 The readers print only numbers (time, model, tokens). No conversation text, file path or tool argument
 leaves them, because the report is often public and a session record holds the whole conversation. A model
@@ -238,7 +238,7 @@ Cache read is usually most of a long session's tokens and costs a fraction of th
 no cache price therefore shows `n/d` instead of being charged as input. The package ships
 `precos-cache.tsv` with only its header (the SDD Open names no model and no price). Each project fills its
 own, with the source and the date, or passes `--precos <folder>` with tables kept outside the repository.
-`n/d` never counts as zero: the total reads `US$ x + n/d`. With no mark at all, `sem fase` is `n/d`, with a
+`n/d` never counts as zero: the total reads `US$ x + n/d` (also for a review cost written `US$ n + $?`). With no mark at all, `sem fase` is `n/d`, with a
 note. Sums use exact decimal arithmetic. The report also shows the Verify Gate runs from the trace ("2 (green
 on the 2nd)") and everything left out (unreadable lines, pairs with no price, a phase with no end).
 

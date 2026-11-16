@@ -116,9 +116,10 @@ def ler(caminho, raiz, saida, ilegiveis):
                 continue
             agora = {k: numero(total.get(k)) for k in CHAVES}
             delta = {k: agora[k] - antes[k] for k in CHAVES}
-            if any(v < 0 for v in delta.values()):   # total que voltou atrás: recomeça a contagem daqui
-                antes = agora
-                continue
+            if any(v < 0 for v in delta.values()):
+                # total que voltou atrás: a contagem recomeçou, e o total novo é o que se gastou desde o recomeço
+                # (R6 da rodada 2: nunca descartar em silêncio)
+                delta = dict(agora)
             antes = agora
             if not any(delta.values()):
                 continue

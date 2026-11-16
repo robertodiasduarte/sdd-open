@@ -224,7 +224,7 @@ criado, pago, nominal e tempo ativo:
 |---|---|
 | Pago US$ | cobrança do agente (`claude`, `codex`) ou da engine da revisão pelo `registry.tsv`: assinatura é `0.0000`, `pay-per-token` é o nominal, desconhecida é `n/d` |
 | Nominal US$ | tokens × tarifa: entrada e saída da `precos.tsv`, cache lido e cache criado da `precos-cache.tsv` (o mesmo par engine · modelo), mais o custo da revisão nos `META.txt` |
-| Tempo ativo | por turno, da mensagem que o abre ao último registro do agente nele; a espera por uma pessoa fica fora |
+| Tempo ativo | por turno, da mensagem que o abre ao último registro do agente nele; a espera por uma pessoa fica fora. O total conta só as sessões: a revisão rodada em primeiro plano já está dentro do turno do agente |
 
 Os leitores devolvem só números (horário, modelo, tokens). Nenhum texto da conversa, caminho de arquivo ou
 argumento de ferramenta sai deles, porque o relatório costuma ser público e o registro da sessão guarda a
@@ -238,7 +238,7 @@ O cache lido costuma ser a maior parte dos tokens de uma sessão longa e custa u
 isso, modelo sem preço de cache sai `n/d`, e não cobrado como entrada. O pacote traz a `precos-cache.tsv`
 só com o cabeçalho (o SDD Open não nomeia modelo nem preço). Cada projeto preenche a sua, com a fonte e a
 data, ou passa `--precos <pasta>` com tabelas fora do repositório. `n/d` nunca conta como zero: o total diz
-`US$ x + n/d`. Sem nenhuma marca, `sem fase` sai `n/d`, com aviso. As somas são exatas (decimal). O
+`US$ x + n/d` (também para o custo de revisão escrito `US$ n + $?`). Sem nenhuma marca, `sem fase` sai `n/d`, com aviso. As somas são exatas (decimal). O
 relatório mostra também as voltas do Verify Gate no trace ("2 (verde na 2ª)") e o que ficou fora da conta
 (linhas ilegíveis, par sem preço, fase sem fim).
 
