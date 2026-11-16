@@ -12,7 +12,7 @@
 
 ---
 
-## Estado das frentes — fonte única (atualizado em 2026-11-14)
+## Estado das frentes — fonte única (atualizado em 2026-11-16)
 
 **Regra.** Esta tabela é a **única** fonte do estado das frentes do programa. Ela mora neste arquivo, na branch
 `docs/incorporar-starter`, e só é editada na worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16`
@@ -50,25 +50,26 @@ construção: foi assim que 3 worktrees ficaram com 3 versões deste arquivo em 
 | F20 Ações preventivas do e-book | ✅ | `v2.12.0` (com a F18) | entregas 1 a 5: as 5 regras de maior risco da stack no `AGENTS.md` (`init`/`sync`), regras da stack na `sdd-build` (`--regras`), "como evitar" na seção Segurança do Design, a lista fixa na 0c da release, o modo incidente; a entrega 6 (starter) vai pela F17 |
 | F21 Engenharia reversa de SaaS | ✅ | `v2.9.0` (PR #22, 10/11); starter `v1.5.16` (PR #9 de lá, 10/11) | skill `sdd-engenharia-reversa-saas` 1.1.0 no Open e no starter (no starter, 1 linha do `SKILL.md` difere: a de identificação); levou a curadoria da F15_SLOTS; ficam 14 cenários de comportamento não executados e a curadoria de 3 candidatos; a página `/sdd/` é frente própria no privado |
 | F22 Aviso de versão e upgrade | ✅ | **`v2.17.0`** (PR #32, 15/11; Release conferida: `shasum -c` OK, `VERSION` = `v2.17.0`); curadoria F16W2 + F22 em **`v2.17.1`** (PR #33, 15/11); starter **`v1.5.22`** (PR #15 de lá, 15/11) | o pacote sabe a própria versão (`VERSION` carimbado pelo `git archive`); o `init` grava `sdd/open-instalado.txt`; `sdd/bin/versao-nova.sh` (consulta anônima, teto de 5 s pelo relógio); linhas de versão no `doctor`; verbo `upgrade` (copia o que é do pacote, deixa ao lado o que a pessoa editou, nunca commita); hooks de outra worktree; aviso em 1 frase na `sdd-new-session` 1.7.0 e na `sdd-release` 2.13.0; `sdd-build` 2.10.1. Verify Gate 2.277 testes; avaliador PASS com o recibo do CI; revisão do código em 9 rodadas (4ª a 9ª acima do teto, decisões do Roberto). Curadoria: 18 contagens, LM-015 refinada, LM-032 a LM-034. Pendências leves na ficha (seção "2026-11-15 — F22"); a prova é o upgrade do privado pelo verbo novo (`upgrade --de v2.15.0`) |
+| F23 Economia mensurável | 🔨 | fatia B1 em **`v2.18.0`** (PR #34, 16/11; Release conferida: `shasum -c` OK, `VERSION` = `v2.18.0`); starter **`v1.5.23`** (PR #16 de lá, 16/11) | escopo fixado pelo Roberto em 15/11: Grupo A (A1 descrição de ferramenta, A2 validação em código, A3 conferência como saída prevista, A4 modelo por evidência) e Grupo B (B1 custo por fase e por feature, B2 modelo por papel, B3 cadeia de revisão pelos dados), em fatias na ordem B1 → B3 → B2 → Grupo A. **B1 publicada:** `marca-fase.sh` nas 6 skills de fase, leitores de sessão do Claude Code e do Codex que devolvem só números, `custo-feature.sh` (por fase, revisão e total, em decimal, n/d nunca zero) e a linha de base F4–F22 (21 frentes com custo de sessões, US$ 15 a 183); Verify Gate 2.315 testes; revisão em 5 rodadas (4ª e 5ª acima do teto, decisões do Roberto); veredito CONCERNS. Ficha própria: `sdd/handoffs/HANDOFF_F23_ECONOMIA_MENSURAVEL.md`. **Próxima: B3**, com a curadoria da B1 no passo 0 |
 
 Legenda: ✅ publicada · 🔨 em andamento · ⬜ só no plano. Ao publicar uma frente, troque a linha dela aqui no
 mesmo commit que registra a publicação na ficha.
 
-## Cronograma recomendado (atualizado em 2026-11-15)
+## Cronograma recomendado (atualizado em 2026-11-16)
 
 Ordem das próximas sessões, com o motivo de cada posição. Uma frente por sessão (seção 10); a release é fast-forward na `main`,
 uma por vez. Mudou a ordem? Atualize esta seção e a tabela acima no mesmo commit, com a linha nos Eventos da ficha.
 
 | # | Frente | Quando | Por quê | Não pareia com |
 |---|---|---|---|---|
-| — | **nenhuma frente aberta** | a F22 ✅ fechou o cronograma em 15/11 (`v2.17.0`, curadoria `v2.17.1`, starter `v1.5.22`) | a próxima frente é decisão do Roberto; candidatas: as pendências leves das fichas (F22, F16W2, F19) e a medição dos revisores entre frentes | — |
+| 1 | **F23, fatia B3 — cadeia de revisão pelos dados** (no Open) | a seguir; a B1 saiu na `v2.18.0` em 16/11 | o passo 0 é a curadoria do playbook da B1 (decisão do Roberto); a B3 parte da linha de base da B1 e da medição dos revisores (`sdd/reports/reviews-medicao/`); depois B2 e Grupo A | — |
 
 Regra nova desde a `v2.16.1`: o job `testes-windows` está no `needs:` da release; toda frente precisa deixar a suíte verde também
 no Windows (Git Bash + Python nativo), e medir lá exige push da branch.
 
-Sobras que a próxima frente do Open leva no passo 0 (da F16W2, detalhe na seção "2026-11-15 — F16W2" da ficha): a curadoria do
-playbook da F16W2 (3 candidatos do BUILD_REPORT e as contagens; decisão do Roberto: no passo 0); da F17b, o version gate contra a
-versão real do starter fora do Verify Gate e o `--conferir` sem aceitar revisão com `--paths`.
+Sobras que a próxima frente do Open leva no passo 0: a curadoria do playbook da F23 B1 (2 candidatos do BUILD_REPORT; decisão do
+Roberto em 16/11: no passo 0 da B3); da F17b, o version gate contra a versão real do starter fora do Verify Gate e o `--conferir`
+sem aceitar revisão com `--paths` (conferidas em 15/11: ainda valem; ficaram fora da F23). A curadoria da F16W2 já saiu na `v2.17.1`.
 ---
 
 ## 0. Parâmetros de verificação do programa (fixados pelo Roberto em 2026-10-29)

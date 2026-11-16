@@ -1,0 +1,6 @@
+{"achado": "R1", "arquivo": "sdd/bin/custo-feature.sh", "linha": 392, "severidade": "MED", "confianca": "CONFIRMED", "resumo": "custo_de descarta o sufixo + $? e conta custo incerto como exato, a parte desconhecida vira zero"}
+{"achado": "R2", "arquivo": "sdd/bin/custo-feature.sh", "linha": 447, "severidade": "MED", "confianca": "PLAUSIBLE", "resumo": "papel que rodou com custo vazio ou - e pulado e a linha revisao sai 0.0000 em vez de n/d"}
+{"achado": "R3", "arquivo": "sdd/bin/custo-feature.sh", "linha": 441, "severidade": "MED", "confianca": "PLAUSIBLE", "resumo": "revisao do DESIGN registrada so no Advisor Ledger com docs_sdd - fica fora da linha revisao sem aviso"}
+{"achado": "R4", "arquivo": "sdd/bin/custo-feature.sh", "linha": 563, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "sem nenhuma marca e com leitor que falhou, sem fase sai 0.0000 e o total nao leva + n/d"}
+{"achado": "R5", "arquivo": "sdd/bin/custo-feature.sh", "linha": 575, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "total soma o tempo da revisao que ja esta dentro do turno do agente na fase, contando o tempo em dobro"}
+{"achado": "R6", "arquivo": "sdd/bin/adapters/sessao-codex.py", "linha": 119, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "total acumulado que volta atras descarta os tokens do evento sem emitir mensagem nem ilegivel"}

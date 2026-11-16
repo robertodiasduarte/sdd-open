@@ -1,0 +1,6 @@
+$ (código de b606eca + testes da rodada 4) python3 -m unittest test_f23_custo.Rodada4
+FAIL: test_ledger_ilegivel_e_n_d_com_aviso (test_f23_custo.Rodada4)
+FAIL: test_modelo_com_quebra_de_linha_no_fim_sai_interrogacao (test_f23_custo.Rodada4)
+FAIL: test_pasta_citada_sem_meta_legivel_e_n_d (test_f23_custo.Rodada4)
+Ran 3 tests in 0.509s
+FAILED (failures=3)

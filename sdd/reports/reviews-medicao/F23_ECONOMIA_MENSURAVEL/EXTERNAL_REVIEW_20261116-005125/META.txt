@@ -1,0 +1,46 @@
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f23-economia-mensuravel
+branch                  : feat/f23-economia-mensuravel
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 8f944fc417f8d558ded925b0f33605ee32d7ae75
+head                    : e4510716a6ef69b825104626430c43c05c62d1fa
+paths                   : -
+diff_sha256             : e3c8834f26cf57f3f6b114f0cc1c94889a92beced2462cece04b4d81376ba2a9
+diff                    : 123KB (42 arquivo(s))
+contexto                : 60KB (3 doc SDD)
+docs_sdd                : BRAINSTORM_F23_ECONOMIA_MENSURAVEL.md, DEFINE_F23_ECONOMIA_MENSURAVEL.md, DESIGN_F23_ECONOMIA_MENSURAVEL.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 289
+reviewer_achados        : 4
+reviewer_tokens_entrada : 94984
+reviewer_tokens_saida   : 31245
+reviewer_tokens_total   : 126229
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 1.3814
+revisor1_raso           : nao
+gatilho_2o_revisor      : 42 arquivos (limiar 8) — dispensado por --no-revisor2
+revisor2_engine         : -
+auditor_engine_default  : openrouter
+auditor_engine_efetivo  : openrouter
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 223
+auditor_vereditos       : 5
+auditor_tokens_entrada  : 64693
+auditor_tokens_saida    : 13649
+auditor_tokens_total    : 78342
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0382
+convergencia_1o_passe   : nao
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 1.4196
+quando                  : 20261116-005125

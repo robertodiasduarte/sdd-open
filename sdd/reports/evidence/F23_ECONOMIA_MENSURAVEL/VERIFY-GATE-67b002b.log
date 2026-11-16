@@ -1,0 +1,28 @@
+$ bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F23_ECONOMIA_MENSURAVEL.md   # HEAD 67b002b
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Nk7dALaiTU — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ⛔ pattern matched: /[0-9]{11,}/
+   │      /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Nk7dALaiTU/tests/test_f23_custo.py:258:        """0,1 + 0,2 em ponto flutuante dá 0,30000000000000004; em decimal, 0,3000."""
+   │   ⛔ pattern matched: //Users/[a-z]+//
+   │      /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Nk7dALaiTU/tests/test_f23_custo.py:37:SEGREDOS = ("segredo-ficticio-123", "/Users/x/segredo.txt", "texto da conversa", "segundo pedido", "cat ",
+   │      /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Nk7dALaiTU/sdd/fixtures/custo/claude/sessao-1.jsonl:1:{"type": "user", "timestamp": "2026-11-15T10:00:00.000Z", "message": {"role": "user", "content": "texto da conversa com segredo-ficticio-123 e o caminho /Users/x/segredo.txt"}}
+   │      /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Nk7dALaiTU/sdd/fixtures/custo/claude/sessao-1.jsonl:4:{"type": "assistant", "timestamp": "2026-11-15T10:00:05.600Z", "message": {"id": "msg_m1", "model": "modelo-a", "role": "assistant", "content": [{"type": "tool_use", "name": "Bash", "input": {"command": "cat /Users/x/segredo.txt"}}], "usage": {"input_tokens": 10, "output_tokens": 100, "cache_read_input_tokens": 1000, "cache_creation_input_tokens": 200}}}
+   │      /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Nk7dALaiTU/sdd/fixtures/custo/README.md:4:`/Users/x/segredo.txt` existem para provar que nada do texto das sessões sai dos leitores.
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │ ──────────────────────────────────────────────────────────────────
+   │ ⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+   │    pattern without adding an equivalent one.
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+exit=2

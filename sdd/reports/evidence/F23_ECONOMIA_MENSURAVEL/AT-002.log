@@ -1,0 +1,12 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest test_f23_custo.AT002Leitores test_f23_custo.Rodada4.test_modelo_com_quebra_de_linha_no_fim_sai_interrogacao   # HEAD ef217b9
+test_claude_agrupa_a_mesma_mensagem_e_conta_o_subagente (test_f23_custo.AT002Leitores) ... ok
+test_codex_diferenca_de_totais_e_cache_fora_da_entrada (test_f23_custo.AT002Leitores) ... ok
+test_nenhum_texto_sai_dos_leitores (test_f23_custo.AT002Leitores) ... ok
+test_sem_registro_sai_2 (test_f23_custo.AT002Leitores) ... ok
+test_modelo_com_quebra_de_linha_no_fim_sai_interrogacao (test_f23_custo.Rodada4) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.735s
+
+OK
+[exit=0]

@@ -1,0 +1,46 @@
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f23-economia-mensuravel
+branch                  : feat/f23-economia-mensuravel
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 8f944fc417f8d558ded925b0f33605ee32d7ae75
+head                    : 8f944fc417f8d558ded925b0f33605ee32d7ae75
+paths                   : sdd/features/DEFINE_F23_ECONOMIA_MENSURAVEL.md sdd/features/DESIGN_F23_ECONOMIA_MENSURAVEL.md
+diff_sha256             : d7c542d77fdc506851d995be60a941d1efb1cd02713fb696b14d152ed32cc5dc
+diff                    : 41KB (2 arquivo(s))
+contexto                : 57KB (3 doc SDD)
+docs_sdd                : BRAINSTORM_F23_ECONOMIA_MENSURAVEL.md, DEFINE_F23_ECONOMIA_MENSURAVEL.md, DESIGN_F23_ECONOMIA_MENSURAVEL.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 149
+reviewer_achados        : 6
+reviewer_tokens_entrada : 52284
+reviewer_tokens_saida   : 16294
+reviewer_tokens_total   : 68578
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 0.7441
+revisor1_raso           : nao
+gatilho_2o_revisor      : diff sem gatilho de risco — 1 revisor
+revisor2_engine         : -
+auditor_engine_default  : openrouter
+auditor_engine_efetivo  : openrouter
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 94
+auditor_vereditos       : 6
+auditor_tokens_entrada  : 34998
+auditor_tokens_saida    : 5681
+auditor_tokens_total    : 40679
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0185
+convergencia_1o_passe   : nao
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 0.7626
+quando                  : 20261115-233040

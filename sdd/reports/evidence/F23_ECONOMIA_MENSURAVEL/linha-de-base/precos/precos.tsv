@@ -1,0 +1,6 @@
+# Tarifas da referência da skill claude-api (cache de 2026-11-03, página https://platform.claude.com/docs/en/about-claude/pricing). Uso: linha de base da F23, fora do pacote.
+claude	claude-opus-5-5	4.00	20.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-fable-5-2	8.00	40.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-fable-5-1	10.00	50.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-sonnet-5-5	2.00	10.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-opus-4-8	5.00	25.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15

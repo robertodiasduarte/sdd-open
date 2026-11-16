@@ -1,0 +1,3 @@
+{"achado": "R1", "arquivo": "sdd/bin/custo-feature.sh", "linha": 442, "severidade": "MED", "confianca": "CONFIRMED", "resumo": "Pasta de revisão citada pelo ledger sem META.txt legível conta como execução de custo zero, sem n/d"}
+{"achado": "R2", "arquivo": "sdd/bin/adapters/sessao-claude.py", "linha": 77, "severidade": "MED", "confianca": "CONFIRMED", "resumo": "MODELO_RE com $ aceita quebra de linha final e o nome de modelo não sai como ? (AT-002/S17)"}
+{"achado": "R3", "arquivo": "sdd/bin/custo-feature.sh", "linha": 431, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "No modo feature, ledger ilegível é ignorado em silêncio e as revisões só citadas por ele somem sem n/d nem aviso"}

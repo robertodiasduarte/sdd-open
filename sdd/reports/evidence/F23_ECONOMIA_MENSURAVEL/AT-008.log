@@ -1,0 +1,9 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest test_f23_custo.AT008LinhaDeBase   # HEAD ef217b9
+test_mapa_com_duas_features (test_f23_custo.AT008LinhaDeBase) ... ok
+test_mapa_invalido (test_f23_custo.AT008LinhaDeBase) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.335s
+
+OK
+[exit=0]

@@ -1,0 +1,17 @@
+feature_id: F23_ECONOMIA_MENSURAVEL
+slice_id: s1
+versao: 2.18.0
+data: 2026-11-16
+estado: parcial
+veredito: CONCERNS
+waived: null
+dod: "Fatia B1 (custo por fase e por feature): Verify Gate verde em ef217b9 (2.315 testes); CI do PR #34 verde em ef217b9 (18 de 18 jobs, Ubuntu, piso do macOS e Windows); linha de base F4–F22 gerada (21 frentes com custo de sessões)"
+descricao: "Custo por fase e por feature: marca-fase.sh grava início e fim no trace da feature; leitores de sessão do Claude Code e do Codex devolvem só números; custo-feature.sh soma por fase, sem fase, revisão e total em decimal, n/d nunca zero, e faz a linha de base; precos-cache.tsv; as 6 skills de fase marcam; a sdd-release roda o contador"
+deploy: real
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261116-075121 sha256=d3f441ee87cf9169ca4d38f81dedb65a342518dbf09f98f5685e0b9967e9317d diversidade=vendor revisor2=dispensado — cadeia combinada para o Open: claude revisa, um 2º vendor audita (codex na 5ª rodada), --no-revisor2 (como na F16W2 e na F22) — dispensa do Roberto em 2026-11-16
+avisos:
+  - "revisão do código em 5 rodadas, a 4ª e a 5ª acima do teto (decisões do Roberto); o qwen passou do teto de tempo na 1ª e na 4ª; a 5ª foi auditada pelo codex"
+  - "3 achados da 5ª rodada ficaram como pendência (REBATIDA_ESCOPO): sessão do Codex com abertura ilegível, mapa sem feature válida sai MEDIDO, turnos de sessões concorrentes"
+  - "CI do PR caiu no Windows em b494810 (quebra de linha em argumento não chega no Windows); teste separado em b606eca"
+  - "test-baseline --touched pulado (project.test_cmd vazio no pacote); a suíte inteira rodou no Verify Gate"
+  - "estado parcial: a F23 tem as fatias B3, B2 e Grupo A pela frente"

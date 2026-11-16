@@ -1,0 +1,6 @@
+# Cache lido (tarifa da referência) e cache criado com validade de 1 hora (2x a entrada): o Claude Code grava cache de 1 hora (usage.cache_creation.ephemeral_1h_input_tokens nas sessões conferidas).
+claude	claude-opus-5-5	0.20	8.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-fable-5-2	0.20	16.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-fable-5-1	0.25	20.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-sonnet-5-5	0.10	4.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-opus-4-8	0.50	10.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15

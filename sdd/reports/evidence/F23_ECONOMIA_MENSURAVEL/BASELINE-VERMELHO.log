@@ -1,0 +1,5 @@
+$ (árvore origin/main 8f944fc + tests/test_f23_custo.py + fixtures) python3 -m unittest test_f23_custo
+----------------------------------------------------------------------
+Ran 20 tests in 0.803s
+
+FAILED (failures=33, errors=2)

@@ -1,0 +1,9 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest test_f23_custo.AT006Revisao test_f23_custo.AT002Leitores.test_codex_diferenca_de_totais_e_cache_fora_da_entrada   # HEAD ef217b9
+test_nominal_da_revisao_bate_com_o_eval_revisores (test_f23_custo.AT006Revisao) ... ok
+test_codex_diferenca_de_totais_e_cache_fora_da_entrada (test_f23_custo.AT002Leitores) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.407s
+
+OK
+[exit=0]

@@ -1,0 +1,12 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest test_f23_custo.AT001Marca   # HEAD ef217b9
+test_controle_tabulacao_e_espaco_sao_recusados_sem_gravar (test_f23_custo.AT001Marca) ... ok
+test_inicio_e_fim_acrescentam_uma_linha_cada_sem_apagar (test_f23_custo.AT001Marca) ... ok
+test_quebra_de_linha_e_recusada_sem_gravar (test_f23_custo.AT001Marca) ... ok
+test_sdd_trace_dir_e_fora_de_repositorio (test_f23_custo.AT001Marca) ... ok
+test_sdd_trace_off_nao_grava (test_f23_custo.AT001Marca) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.283s
+
+OK
+[exit=0]

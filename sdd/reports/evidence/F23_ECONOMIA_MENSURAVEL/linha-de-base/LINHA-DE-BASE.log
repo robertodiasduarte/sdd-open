@@ -1,0 +1,36 @@
+$ bash sdd/bin/custo-feature.sh --linha-de-base mapa.tsv --precos precos --reviews /Users/robertoduarte/rdd-worktrees/sdd-open-arquivo/F12_CONTEXTO/reviews --saida -   # HEAD b494810
+# Linha de base — custo por feature
+
+> Gerado por `sdd/bin/custo-feature.sh --linha-de-base`. Sessões: o registro inteiro da pasta, sem divisão por fase. Revisão: META.txt achados (n/d sem eles). `n/d` nunca é zero.
+
+| Feature | Sessões nominal US$ | Revisão nominal US$ | Rodadas de revisão | Achados com dano |
+|---|---:|---:|---:|---:|
+| W0_M1 | 15.3856 | n/d | — | — |
+| F4_CONVERSA | 37.7059 | n/d | — | — |
+| F5_CONHECIMENTO | 37.1788 | n/d | — | — |
+| F6_DOCS | 41.5481 | n/d | — | — |
+| F7_EVIDENCIA | 57.7138 | n/d | — | — |
+| F8_HOOKS | 92.6339 | n/d | — | — |
+| F9_FLUXO | 84.3318 | n/d | — | — |
+| F10_REVISAO | 95.8212 | n/d | — | — |
+| F11_GATE | n/d | n/d | — | — |
+| F12_CONTEXTO | 93.1824 | 13.2033 + n/d | — | — |
+| F13_UX_LLM | 56.8731 | n/d | 6 | 10 |
+| F14_DRIVE | 96.7038 | n/d | 7 | 4 |
+| F14_PLAYBOOK | 122.5183 | n/d | 4 | 19 |
+| F15_SLOTS | 61.9444 | n/d | 4 | 6 |
+| F16_AMBIENTE | 93.1159 | n/d | 5 | 1 |
+| F16W_WINDOWS | 182.6548 | n/d | 3 | 0 |
+| F16W2_WINDOWS | n/d | n/d | 4 | 0 |
+| F17_STARTER_GERADO | 107.0488 | n/d | 7 | 0 |
+| F17B_STARTER_ETAPA2 | 66.8529 | n/d | 3 | 1 |
+| F17C_STARTER_ETAPA3 | 91.2678 | n/d | 3 | 0 |
+| F18_F20_SEGURANCA | 93.1213 | n/d | 4 | 14 |
+| F19_CUSTO_REVISORES | n/d | n/d | 5 | 3 |
+| F21_ENGENHARIA_REVERSA | 146.4980 | n/d | 4 | 1 |
+| F22_AVISO_VERSAO | 84.4992 | n/d | 9 | 0 |
+
+Fora da conta: 68 (revisão: EXTERNAL_REVIEW_20261104-143637 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261104-145623 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261104-151313 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261104-162100 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261104-164103 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261104-182724 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261105-200215 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261105-203417 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261105-205244 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261106-062106 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261106-072404 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261107-132826 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261107-133717 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261105-120949 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261105-123246 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261105-130247 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261105-132615 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-052050 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-055845 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-062431 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-070608 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-221223 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-221917 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261111-044013 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261111-071016 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261111-084600 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261114-121622 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261114-134503 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261114-135448 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261114-213217 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261114-230738 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-030620 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-040405 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261112-175357 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261112-183050 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261112-184704 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261112-202310 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261112-204706 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261112-210000 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261112-211515 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261113-143814 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261113-160601 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261113-161527 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261114-005631 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261114-082513 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261114-083418 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261111-134705 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261111-141409 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261111-152012 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261111-171628 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-145510 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-150330 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-152824 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-160021 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-162917 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-124230 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-125915 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-130815 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261110-132950 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-065519 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-073246 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-074808 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-081159 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-100754 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-103313 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-105906 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-133645 citada pelo ledger e ausente de reviews; revisão: EXTERNAL_REVIEW_20261115-135049 citada pelo ledger e ausente de reviews).
+RESULTADO: MEDIDO
+→ compare o nominal com o das features anteriores (--linha-de-base); n/d é lacuna, nunca economia.
+[exit=0]
