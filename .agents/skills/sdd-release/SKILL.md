@@ -132,10 +132,8 @@ exit 10 ⇒ a frase de versão nova (`references/como-falar.md`) no relatório e
    exit 2 ⇒ **abortar**, citando cada `arquivo:linha` (achado sem a marca `dano`, `sim` sem o teste citado);
    exit 64 ⇒ o arquivo não existe ou está vazio: grave as linhas das rodadas pelo molde
    `sdd/templates/LEDGER_REVISAO_TEMPLATE.md` (rodada sem achados: `sem achados: rodada=N <pasta>`) e
-   rode de novo. Sem esse registro, o custo por falha real de cada engine não se mede
-   (`bash sdd/bin/eval-revisores.sh`). Esta publicação conserta um defeito de uma frente já publicada? Grave no
-   ledger da frente de origem a linha `escapou: commit=<sha> · teste: <nome> · dano=<…> — <onde apareceu>`
-   (molde no `LEDGER_REVISAO_TEMPLATE.md`): é ela que diz se a regra do 2º revisor precisa voltar atrás.
+   rode de novo. Sem esse registro, o custo por falha real de cada engine não se mede (`eval-revisores.sh`). Conserto de
+   defeito de frente já publicada ⇒ a linha `escapou:` do molde no ledger da frente de origem (diz se a regra do 2º revisor volta atrás).
 
 9. **Testes do diff:** `bash sdd/bin/test-baseline.sh --touched` (base `origin/{default_branch}`), **depois do item 4**,
    nunca em paralelo com ele (a suíte dos dois na mesma árvore inventa falha). Conta o teste alterado e o teste ao
