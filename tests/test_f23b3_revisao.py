@@ -96,7 +96,11 @@ class AT002Risco(Base):
              ("db/GRANT_roles.sql", "grant"), ("criar rota pública de pedidos", "rota pública"),
              ("src/autenticacao/sessao.ts", "autenticacao"), ("Autenticação do painel", "autenticação"),
              ("src/seguranca/x.ts", "seguranca"), ("lib/permissões.py", "permissões"), ("src/authors/x.ts", None),
-             ("src/conta.sh", None), ("infra/Secrets.yaml", "secrets"))
+             ("src/conta.sh", None), ("infra/Secrets.yaml", "secrets"),
+             # raio de impacto da release: camelCase e PascalCase, que o prefixo antigo pegava
+             ("src/AuthProvider.tsx", "auth"), ("src/authMiddleware.ts", "auth"), ("api/resetPassword.ts", "password"),
+             ("app/Http/Middleware/Authenticate.php", "authenticate"), ("src/auth0.ts", "auth"),
+             ("src/OAuthCallback.ts", "oauth"), ("CONFIG_TOKENS.md", "tokens"), ("src/Authorship.ts", None))
 
     def test_tabela_de_termos_nos_2_scripts(self):
         for arq in (AR, FLUXO):
@@ -295,6 +299,18 @@ class AT005Cadeia(Medidor):
         self.assertEqual(rc, 0, out)
         self.assertEqual(self.linha_cadeia(out, "INC")[5], "1.2500 + n/d")
 
+    def test_n1_rodada2_dispensado_a_mao_nao_conta_como_chamado_por_risco(self):
+        revs = self.tmp / "revs"
+        escreve_meta(revs / (R % 1), {"gatilho_2o_revisor": "segurança (src/auth/x.sh) — dispensado por --no-revisor2",
+                                       "dispensas_a_mao": "--no-revisor2"})
+        escreve_meta(revs / (R % 2), {"gatilho_2o_revisor": "revisor1 raso (3s, 0 achados) — dispensado por --no-revisor2",
+                                       "dispensas_a_mao": "--no-revisor2"})
+        led = self.ledger("MAO", ["sem achados: rodada=%d %s" % (k, R % k) for k in (1, 2)])
+        rc, out = self.evalr(revs, led)
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.linha_cadeia(out, "MAO")[1:4] + [self.linha_cadeia(out, "MAO")[6]],
+                         ["2", "0", "0", "revisor2 2 · desempate 0"])
+
     def test_sem_rodada_evitada_o_custo_e_travessao(self):
         revs = self.tmp / "revs"
         escreve_meta(revs / (R % 1), {})
@@ -353,6 +369,13 @@ class AT006LinhasNovas(Medidor):
         exec(compile("import re\n" + "\n".join(ln for ln in ler(CUSTO).splitlines()
                                                 if ln.startswith("SEM_ACHADOS_RE")), "x", "exec"), ns)
         self.assertTrue(ns["SEM_ACHADOS_RE"].match("sem achados: rodada=D1 %s" % (R % 1)))
+
+    def test_r3_rodada2_sem_resultado_com_travessao_colado_entra_no_custo(self):
+        ns = {}
+        exec(compile("import re\n" + "\n".join(ln for ln in ler(CUSTO).splitlines()
+                                                if ln.startswith("SEM_RESULTADO_RE")), "x", "exec"), ns)
+        self.assertTrue(ns["SEM_RESULTADO_RE"].match("sem resultado: rodada=2 %s— interrompida" % (R % 2)))
+        self.assertTrue(ns["SEM_RESULTADO_RE"].match("sem resultado: rodada=2 %s — interrompida" % (R % 2)))
 
     def test_lint_recusa_as_linhas_quase_certas(self):
         for ruim in ("sem resultado: rodada=1 %s" % (R % 2),                      # sem motivo
@@ -592,6 +615,17 @@ class AT011Cerca(Base):
                 self.assertIn("Marca do material desta chamada", t)
                 self.assertIn("<<<VERDICTS" if papel != "desempate" else "DECISAO:", t)
 
+    def test_r1_rodada2_a_marca_e_a_ultima_linha_do_prompt(self):
+        r = self.projeto()
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.assertEqual(rc, 0, out)
+        for p in sorted(self.estado.glob("prompt-*")):
+            ultima = [ln for ln in ler(p).splitlines() if ln.strip()][-1]
+            self.assertRegex(ultima, r"^Marca do material desta chamada: %s$" % HEX, p.name)
+
+    def test_r2_rodada2_o_desempate_v2_tem_verificacao(self):
+        self.assertIn("<verification>", ler(PROMPTS_V2 / "desempate.md"))
+
     def test_cada_chamada_tem_a_sua_marca_e_o_material_vai_cercado(self):
         r = self.projeto()
         rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b")
@@ -630,3 +664,24 @@ class AT011Cerca(Base):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Raio(Sandbox):
+    """Raio de impacto da release da F23B3: o gate offline e a contagem de tokens da revisão."""
+
+    def test_o_gate_offline_isola_o_codex_home(self):
+        t = ler(RAIZ / "sdd/bin/adversarial-review-gate.sh")
+        self.assertRegex(t, r'"CODEX_HOME":\s*os\.path\.join\(TMP,')
+
+    def test_o_gate_offline_fica_verde_com_um_config_toml_real_no_home(self):
+        home = self.tmp / "home"
+        (home / ".codex").mkdir(parents=True)
+        (home / ".codex" / "config.toml").write_text('model = "modelo-real"\n', encoding="utf-8")
+        env = dict(self.env, HOME=str(home))
+        env.pop("CODEX_HOME", None)
+        rc, out, err = self.roda([BASH, RAIZ / "sdd/bin/adversarial-review-gate.sh"], self.tmp, env)
+        self.assertEqual(rc, 0, (out + err)[-1500:])
+
+    def test_a_revisao_soma_o_cache_nos_tokens(self):
+        t = ler(CUSTO)
+        self.assertIn('("cache_lido", "_tokens_cache_lido"), ("cache_criado", "_tokens_cache_criado")', t)

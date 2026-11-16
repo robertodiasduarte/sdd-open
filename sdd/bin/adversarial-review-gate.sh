@@ -178,6 +178,8 @@ BASE_ENV.update({
     "OPENROUTER_API_KEY": CHAVE, "SDD_REVIEW_ESPERA": "0",
     "GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1", "GIT_TERMINAL_PROMPT": "0",
     "GIT_CEILING_DIRECTORIES": os.path.realpath(TMP),
+    # F23B3: o adapter do codex lê o modelo padrão de $CODEX_HOME/config.toml; o gate não lê o da pessoa
+    "CODEX_HOME": os.path.join(TMP, "codex-home"),
     "GIT_AUTHOR_NAME": "gate", "GIT_AUTHOR_EMAIL": "gate@example.com",
     "GIT_COMMITTER_NAME": "gate", "GIT_COMMITTER_EMAIL": "gate@example.com",
 })

@@ -211,15 +211,17 @@ TERMOS_SEGURANCA = frozenset((
     "senha", "senhas", "password", "passwords", "jwt", "grant",
     "autenticacao", "autenticação", "autorizacao", "autorização", "seguranca", "segurança", "security", "secret",
     "secrets", "segredo", "segredos", "credencial", "credenciais", "credential", "credentials", "permissao", "permissão",
-    "permissoes", "permissões", "permission", "permissions", "cripto", "crypto"))
+    "permissoes", "permissões", "permission", "permissions", "cripto", "crypto", "authenticate", "authenticated"))
 FRASES_SEGURANCA = ("rota pública", "rota publica")
 
 
 def termo_de_seguranca(texto):
     """O 1º termo de segurança do texto, por palavra inteira e sem caixa, ou None ('author' não é 'auth'). O texto
-    vai a NFC antes: um caminho acentuado em NFD ("o" + acento combinante) casa o termo acentuado."""
+    vai a NFC antes (um caminho acentuado em NFD casa o termo acentuado), e camelCase, PascalCase e letra colada em
+    número viram palavras separadas (AuthProvider, resetPassword, auth0), como o nome de arquivo de React e Next."""
     import unicodedata
-    baixo = unicodedata.normalize("NFC", texto).lower()
+    texto = re.sub(r"(?<=[a-zà-ÿ0-9])(?=[A-ZÀ-Þ])|(?<=[A-Za-zÀ-ÿ])(?=[0-9])", " ", unicodedata.normalize("NFC", texto))
+    baixo = texto.lower()
     for f in FRASES_SEGURANCA:
         if f in baixo:
             return f

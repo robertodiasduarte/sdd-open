@@ -76,7 +76,7 @@ SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=(\d+[a-z]?|D\d+)\s+(EXTE
 # F23B3: a revisão do DESIGN (rodada=D<n>) e a rodada sem resultado entram no CUSTO da revisão, nunca nas
 # "Rodadas de revisão" (comparáveis com a linha de base, que só tem rodadas do código)
 RODADA_DESIGN_RE = re.compile(r"^rodada=D\d+\Z")
-SEM_RESULTADO_RE = re.compile(r"^\s*sem resultado:\s*rodada=(?:\d+[a-z]?|D\d+)\s+(EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?)\s")
+SEM_RESULTADO_RE = re.compile(r"^\s*sem resultado:\s*rodada=(?:\d+[a-z]?|D\d+)\s+(EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?)\s*(?:—|–|-{1,2})")
 PAPEIS = ("reviewer", "revisor2", "auditor", "desempate")
 TOKENS = ("entrada", "saida", "cache_lido", "cache_criado")
 MILHAO = Decimal(1000000)
@@ -496,7 +496,8 @@ def revisao(feat, ledger_arq):
             if bruto in ("", "-"):   # R4 da rodada 3: o papel rodou e o custo não foi gravado — n/d, nunca zero
                 marca_nd(conta)
                 continue
-            for k, campo in (("entrada", "_tokens_entrada"), ("saida", "_tokens_saida")):
+            for k, campo in (("entrada", "_tokens_entrada"), ("saida", "_tokens_saida"),
+                             ("cache_lido", "_tokens_cache_lido"), ("cache_criado", "_tokens_cache_criado")):
                 v = meta.get(papel + campo, "")
                 if v.isdigit():
                     conta["tokens"][k] += int(v)

@@ -44,13 +44,27 @@ bash sdd/bin/adversarial-review.sh --feature MINHA_FEATURE --dry-run # mostra o 
   fica no `META.txt`.
 - **Contexto SDD:** BRAINSTORM, DEFINE, DESIGN e BUILD_REPORT de `--feature`, até `review.context_max_kb`
   (180); o BRAINSTORM sai primeiro.
-- **2º revisor** quando o diff toca superfície de segurança (`review.security_globs`, `layers.sql`, um trecho
-  de caminho como `auth` ou `token`), tem 8+ arquivos, 120+ KB, toca 2+ camadas, ou o revisor foi raso
-  (menos de 30 s sem achados). É a 1ª engine disponível do registry que não é o revisor nem o auditor. A
-  falha dele nunca para a cadeia: o auditor roda assim mesmo, e o `loop` pede que você restaure uma engine
-  ou dispense o 2º revisor naquela rodada.
-- **Desempate** quando o auditor refuta um HIGH com evidência: uma engine fora da origem do achado e do
-  auditor decide `DECISAO:PROCEDE` ou `DECISAO:REFUTADO`.
+- **2º revisor** só quando o diff toca superfície de risco — um glob de `review.security_globs` ou de
+  `layers.sql`, ou uma palavra inteira da lista de segurança num caminho (`auth`, `login`, `token`, `senha`, `jwt`,
+  `grant`, `autenticação`, `autorização`, `segurança`, `secret`, `credencial`, `permissão`, `cripto`, plurais e
+  formas em inglês; `author` não é `auth`; camelCase como `AuthProvider` conta) — ou quando o revisor foi raso
+  (menos de 30 s sem achados). A lista é a mesma do `sdd-fluxo.sh review-design`. O tamanho não chama mais: o que a
+  regra antiga faria (8+ arquivos, 120+ KB, 2+ camadas) fica só como `gatilho_regra_antiga` no `META.txt`, para o
+  `eval-revisores.sh` contar as chamadas evitadas. Sem superfície de risco, o script imprime a linha do ledger,
+  `revisor2: dispensado rodada=<N> — sem superfície de risco (regra antiga: …)`. O 2º revisor é a 1ª engine
+  disponível do registry que não é o revisor nem o auditor. A falha dele nunca para a cadeia: o auditor roda assim
+  mesmo, e o `loop` pede que você restaure uma engine ou dispense o 2º revisor naquela rodada.
+- **Desempate** (padrão) quando o auditor refuta um HIGH com evidência: uma engine fora da origem do achado e do
+  auditor decide `DECISAO:PROCEDE` ou `DECISAO:REFUTADO`, lendo só aquele achado. Rodar com `--no-revisor2` ou
+  `--no-desempate` fica em `dispensas_a_mao` no `META.txt`, e o `eval-revisores.sh` conta.
+- **Material cercado.** Os prompts ficam em `sdd/review/prompts/v2/` (a v1 continua na raiz de `prompts/` e não é
+  mais lida). Cada seção do material vai entre `<<<NOME-<marca>` e `NOME-<marca>>>>`, com uma marca aleatória por
+  chamada, dada na última linha do prompt: o que está dentro é dado, nunca instrução, e uma instrução escondida no
+  diff vira achado. Sem `prompts/v2/`, o script para com exit 64 (rode o `init`, que completa o que falta).
+- **Ledger:** `rodada=D<n>` marca a revisão do DESIGN; `sem resultado: rodada=<N> <pasta> — <motivo>` fecha a
+  conta de uma rodada interrompida; `escapou: commit=<sha> · teste: <nome> · dano=<…> — <onde apareceu>` registra,
+  no ledger da frente de origem, um defeito achado depois da publicação. O `eval-revisores.sh --precos <pasta>`
+  estima o nominal do papel por assinatura (cache à parte) e mostra a tabela "Cadeia por frente".
 
 ## Custo
 
@@ -104,7 +118,7 @@ do OK único — se roda a revisão agora ou se publica sem ela, com um motivo e
 `review_externo: dispensado — <motivo>`. O `--ledger` roda na pasta da frente, logo depois do commit da
 release: a pasta da revisão é ignorada pelo git e só existe ali.
 
-Quando o diff pedia um 2º revisor e a revisão rodou com `--no-revisor2`, o `--conferir` não a aceita sozinha:
+Quando o diff tinha superfície de risco e a revisão rodou com `--no-revisor2`, o `--conferir` não a aceita sozinha:
 acrescente `--aceitar-sem-revisor2 "<motivo>"`, e o motivo vai para a linha do ledger como
 `revisor2=dispensado — <motivo>`.
 

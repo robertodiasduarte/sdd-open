@@ -88,15 +88,17 @@ TERMOS_SEGURANCA = frozenset((
     "senha", "senhas", "password", "passwords", "jwt", "grant",
     "autenticacao", "autenticação", "autorizacao", "autorização", "seguranca", "segurança", "security", "secret",
     "secrets", "segredo", "segredos", "credencial", "credenciais", "credential", "credentials", "permissao", "permissão",
-    "permissoes", "permissões", "permission", "permissions", "cripto", "crypto"))
+    "permissoes", "permissões", "permission", "permissions", "cripto", "crypto", "authenticate", "authenticated"))
 FRASES_SEGURANCA = ("rota pública", "rota publica")
 
 
 def termo_de_seguranca(texto):
     """O 1º termo de segurança do texto, por palavra inteira e sem caixa, ou None ('author' não é 'auth'). O texto
-    vai a NFC antes: um caminho acentuado em NFD ("o" + acento combinante) casa o termo acentuado."""
+    vai a NFC antes (um caminho acentuado em NFD casa o termo acentuado), e camelCase, PascalCase e letra colada em
+    número viram palavras separadas (AuthProvider, resetPassword, auth0), como o nome de arquivo de React e Next."""
     import unicodedata
-    baixo = unicodedata.normalize("NFC", texto).lower()
+    texto = re.sub(r"(?<=[a-zà-ÿ0-9])(?=[A-ZÀ-Þ])|(?<=[A-Za-zÀ-ÿ])(?=[0-9])", " ", unicodedata.normalize("NFC", texto))
+    baixo = texto.lower()
     for f in FRASES_SEGURANCA:
         if f in baixo:
             return f
@@ -647,14 +649,14 @@ os.makedirs(VAZIA)
 diff_txt = patch.decode("utf-8", "replace")
 
 
-def prompt_de(nome, marca):
-    """O prompt vivo do papel (<prompts>/<PROMPTS_VERSAO>/<papel>.md) e a linha da marca desta chamada. Sem o
-    arquivo, para (64): cair calado noutra versão esconderia o prompt errado (LM-017)."""
+def prompt_de(nome):
+    """O prompt vivo do papel (<prompts>/<PROMPTS_VERSAO>/<papel>.md). Sem o arquivo, para (64): cair calado noutra
+    versão esconderia o prompt errado (LM-017)."""
     arq = os.path.join(prompts_dir, PROMPTS_VERSAO, nome + ".md")
     t = ler(arq)
     if t is None:
         uso("prompt ausente: %s — rode o init: ele completa o que falta em sdd/" % arq)
-    return re.sub(r"^\s*<!--.*?-->\s*", "", t, flags=re.S) + "\n\nMarca do material desta chamada: %s\n" % marca
+    return re.sub(r"^\s*<!--.*?-->\s*", "", t, flags=re.S)
 
 
 def cercado(nome, texto, marca):
@@ -671,7 +673,8 @@ def material(marca, extra=()):
 def montar(nome, extra=()):
     """Prompt + material de UMA chamada de papel, com marca própria: a do auditor nunca foi vista pelo revisor."""
     marca = secrets.token_hex(6)
-    return prompt_de(nome, marca) + material(marca, extra)
+    # a marca é a ÚLTIMA linha (como os prompts dizem): uma linha forjada dentro do diff vem antes dela
+    return prompt_de(nome) + material(marca, extra) + "\nMarca do material desta chamada: %s\n" % marca
 
 
 # ── chamada de um papel ──────────────────────────────────────────────────────────────────────────
