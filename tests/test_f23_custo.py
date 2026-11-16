@@ -28,7 +28,7 @@ from pathlib import Path
 import os
 import unittest
 
-from apoio import BASH, RAIZ, SEM_SYMLINK, Sandbox
+from apoio import BASH, RAIZ, SEM_ARGV_COM_QUEBRA, SEM_SYMLINK, Sandbox
 
 MARCA = RAIZ / "sdd/bin/marca-fase.sh"
 CUSTO = RAIZ / "sdd/bin/custo-feature.sh"
@@ -111,22 +111,29 @@ class AT001Marca(Sandbox):
                              {"feature": "F23_X", "src": "fase", "evento": evento, "fase": "define"})
             self.assertRegex(linha["ts"], r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$")
 
-    def test_controle_quebra_de_linha_e_tabulacao_sao_recusados_sem_gravar(self):
-        forjada = '{"ts":"2026-01-01T00:00:00Z","feature":"F23_X","src":"fase","evento":"inicio","fase":"build"}'
-        casos = [("inicio", "x\n" + forjada + "\nok", "F23_X"),   # quebra no meio: a última linha casaria sozinha
-                 ("inicio", "define\n", "F23_X"),                  # quebra no fim
-                 ("inicio", "de\tfine", "F23_X"),
-                 ("inicio", "define", "F23_X\nok"),
-                 ("inicio", "define", "F23 X"),
-                 ("inicio", "define", 'F23"X'),
-                 ("inicio", "Define", "F23_X"),
-                 ("comeco", "define", "F23_X")]
+    def recusa(self, casos):
         for args in casos:
             with self.subTest(args=args):
                 rc, out, err = self.marca(*args)
                 self.assertEqual(rc, 64, out + err)
                 self.assertIn("RESULTADO: PAROU", err)
         self.assertEqual(self.linhas(), [])
+
+    @unittest.skipIf(*SEM_ARGV_COM_QUEBRA)
+    def test_quebra_de_linha_e_recusada_sem_gravar(self):
+        forjada = '{"ts":"2026-01-01T00:00:00Z","feature":"F23_X","src":"fase","evento":"inicio","fase":"build"}'
+        self.recusa([("inicio", "x\n" + forjada + "\nok", "F23_X"),   # quebra no meio: a última linha casaria sozinha
+                     ("inicio", "define\n", "F23_X"),                  # quebra no fim
+                     ("inicio", "define", "F23_X\nok")])
+
+    def test_controle_tabulacao_e_espaco_sao_recusados_sem_gravar(self):
+        casos = [("inicio", "de\tfine", "F23_X"),
+                 ("inicio", "de\x01fine", "F23_X"),
+                 ("inicio", "define", "F23 X"),
+                 ("inicio", "define", 'F23"X'),
+                 ("inicio", "Define", "F23_X"),
+                 ("comeco", "define", "F23_X")]
+        self.recusa(casos)
 
     def test_sdd_trace_off_nao_grava(self):
         rc, out, _ = self.marca("inicio", "build", "F23_X", env=dict(self.env, SDD_TRACE="off"))
