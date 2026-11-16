@@ -1,0 +1,6 @@
+{"ts": "2026-11-15T09:59:00Z", "feature": "F99_TESTE", "src": "fase", "evento": "inicio", "fase": "define"}
+{"ts": "2026-11-15T10:05:00Z", "feature": "F99_TESTE", "src": "fase", "evento": "fim", "fase": "define"}
+{"ts": "2026-11-15T10:09:00Z", "feature": "F99_TESTE", "src": "fase", "evento": "inicio", "fase": "build"}
+{"ts": "2026-11-15T10:15:00Z", "feature": "F99_TESTE", "src": "verify-gate", "kind": "test", "exit": 2, "define": "sdd/features/DEFINE_F99_TESTE.md"}
+{"ts": "2026-11-15T10:16:00Z", "feature": "F99_TESTE", "src": "verify-gate", "kind": "test", "exit": 0, "define": "sdd/features/DEFINE_F99_TESTE.md"}
+{"ts": "2026-11-15T10:17:00Z", "feature": "OUTRA", "src": "fase", "evento": "inicio", "fase": "design"}

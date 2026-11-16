@@ -1,0 +1,8 @@
+docs_sdd                : -
+reviewer_engine_efetivo : claude
+reviewer_exit           : 0
+reviewer_segundos       : 120
+reviewer_custo          : ≈US$ 0.5000
+auditor_engine_efetivo  : openrouter
+auditor_exit            : 0
+auditor_custo           : US$ 0.0100

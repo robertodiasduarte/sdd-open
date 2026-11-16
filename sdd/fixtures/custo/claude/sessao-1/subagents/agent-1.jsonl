@@ -1,0 +1,2 @@
+{"type": "user", "timestamp": "2026-11-15T10:00:07.000Z", "isSidechain": true, "message": {"role": "user", "content": "tarefa do subagente com segredo-ficticio-123"}}
+{"type": "assistant", "timestamp": "2026-11-15T10:00:10.000Z", "requestId": "req_msg_m4", "message": {"id": "msg_m4", "model": "modelo-a", "role": "assistant", "content": [{"type": "text", "text": "subagente responde"}], "usage": {"input_tokens": 100, "output_tokens": 10, "cache_read_input_tokens": 0, "cache_creation_input_tokens": 0}}}

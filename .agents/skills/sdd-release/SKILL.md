@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.13.0"
+  version: "2.14.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.13.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.14.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes do push e do
 deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e irreversível na prática.
@@ -87,7 +87,7 @@ vazio) · `64` erro de configuração; nenhum deles vira "ok" fora do `0`.
 só vai para o que script não pega: regressão de contrato e regra de negócio em código que já
 funcionava. Passada que não se aplica ao diff é **pulada**, não "revisada sem achados".
 
-**0. Pré-voo.** Confirme a branch (`git rev-parse --abbrev-ref HEAD` ≠ `default_branch`) e o
+**0. Pré-voo.** `bash sdd/bin/marca-fase.sh inicio release {F}` (custo da fase; sem o script, siga). Confirme a branch (`git rev-parse --abbrev-ref HEAD` ≠ `default_branch`) e o
 diff-base (`git merge-base origin/{default_branch} HEAD`). Rode `bash sdd/bin/versao-nova.sh` (se existir):
 exit 10 ⇒ a frase de versão nova (`references/como-falar.md`) no relatório e no bloco do OK, sem abortar; senão, nada.
 
@@ -480,7 +480,7 @@ Fix pequeno com decisão clara pode pular BRAINSTORM/DEFINE/DESIGN — mas a seq
 ## Encerramento (obrigatório)
 
 Feche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é
-`/sdd-release`. O resumo complementa a ficha, não a substitui.
+`/sdd-release`. O resumo complementa a ficha, não a substitui. Antes dele, `bash sdd/bin/marca-fase.sh fim release {F}` e `bash sdd/bin/custo-feature.sh {F}`, que grava `sdd/reports/CUSTO_{F}.md` (`sdd/templates/fragments/MARCA_FASE.md`).
 
 ### Fluxo encadeado
 

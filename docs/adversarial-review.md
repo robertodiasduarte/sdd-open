@@ -196,6 +196,58 @@ cost but paid zero, which is why there are two columns. The `META.txt` does not 
 that failed before a fallback: it stays on the line of the engine that answered. It never calls an engine and
 never uses the network.
 
+## custo-feature (cost per phase and per feature)
+
+```bash
+bash sdd/bin/marca-fase.sh inicio|fim <phase> <FEATURE>
+bash sdd/bin/custo-feature.sh <FEATURE> [--saida <file>|-] [--precos <folder>] [--reviews <folder>] [--ledgers <folder>]
+bash sdd/bin/custo-feature.sh --linha-de-base <map.tsv> [--precos <folder>] [--reviews <folder>]
+```
+
+`eval-revisores` measures only the review. `custo-feature` answers "what did this feature cost, phase by
+phase?". Each phase skill writes a start mark and an end mark (`marca-fase.sh`) into
+`sdd/traces/<FEATURE>.jsonl`, the same file where `verify-gate.sh` records each gate run. The rule for the
+marks lives in `sdd/templates/fragments/MARCA_FASE.md`. When the release closes, the script reads three
+sources and writes `sdd/reports/CUSTO_<FEATURE>.md`:
+
+- the marks;
+- each agent's local session records, read through one reader per agent (`sdd/bin/adapters/sessao-claude.py`,
+  `sessao-codex.py`; a new agent is a new `sessao-<agent>.py`);
+- the `META.txt` of the reviews that belong to the feature (the `docs_sdd` cites `DEFINE_<FEATURE>.md`, or
+  the feature's ledger cites the folder).
+
+The report has one row per phase, plus `sem fase` (what fell between the first and the last mark but outside
+any start/end pair), `revisão` and the total. The columns are runs, input, output, cache read, cache written,
+paid, nominal and active time:
+
+| Column | Meaning |
+|---|---|
+| Pago US$ | billing from `registry.tsv` for the agent (`claude`, `codex`) or the review engine: subscription is `0.0000`, `pay-per-token` is the nominal cost, unknown is `n/d` |
+| Nominal US$ | tokens × price: input and output from `precos.tsv`, cache read and cache written from `precos-cache.tsv` (same engine · model pair), plus the review cost from the `META.txt` |
+| Tempo ativo | per turn, from the message that starts it to the agent's last record in it; time waiting for a person is left out |
+
+The readers print only numbers (time, model, tokens). No conversation text, file path or tool argument
+leaves them, because the report is often public and a session record holds the whole conversation. A model
+name outside `[A-Za-z0-9._:/@-]` comes out as `?`. The Claude Code record repeats the same message once per
+content block, so the reader groups lines by `message.id`. Codex reports cumulative totals, so its reader
+takes the difference between consecutive totals. The review calls never land in the project's session
+records (they run in an empty temporary folder, and the Claude adapter runs without session persistence), so
+no cost is counted twice.
+
+Cache read is usually most of a long session's tokens and costs a fraction of the input price. A model with
+no cache price therefore shows `n/d` instead of being charged as input. The package ships
+`precos-cache.tsv` with only its header (the SDD Open names no model and no price). Each project fills its
+own, with the source and the date, or passes `--precos <folder>` with tables kept outside the repository.
+`n/d` never counts as zero: the total reads `US$ x + n/d`. With no mark at all, `sem fase` is `n/d`, with a
+note. Sums use exact decimal arithmetic. The report also shows the Verify Gate runs from the trace ("2 (green
+on the 2nd)") and everything left out (unreadable lines, pairs with no price, a phase with no end).
+
+`--linha-de-base` takes a map with three tab-separated columns (feature · folder whose sessions to read ·
+ledger, or `-`). It prints one row per feature: sessions (nominal, whole sessions, no phase split), review
+(nominal, or `n/d` with no `META.txt`), review rounds and findings with damage. Compare features on the
+`Sessões` column, which exists on both sides. Exits: `0` MEDIDO · `2` SEM DADOS · `64` usage. It never calls
+a model and never uses the network.
+
 ## Limits
 
 - The engines see only the diff and the SDD context: they do not see production, the database or a

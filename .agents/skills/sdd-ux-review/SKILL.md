@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Independe de stack visual; usa 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.6.0"
+  version: "2.7.0"
   updated: "2026-11"
   fase: "UX"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-ux-review — gate de UX/CX
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-ux-review v2.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-ux-review v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Traduzir requisitos em experiência **antes** que arquitetura e código endureçam. "Interface"
 inclui tela, linha de comando, arquivo gerado, e-mail: qualquer coisa que uma pessoa lê e
@@ -80,6 +80,10 @@ enviado?") é defeito. Cor que conflita com semântica (rascunho em verde com �
 bug?" ou "como faço X?" — essa pergunta **é** o bug; resolve-se na interface.
 
 ## Processo
+
+**Custo da fase.** Ao começar, rode `bash sdd/bin/marca-fase.sh inicio ux-review <FEATURE>`; no encerramento,
+antes do resumo de etapa, `bash sdd/bin/marca-fase.sh fim ux-review <FEATURE>`. Sem terminal, ou sem o script no
+projeto, siga sem a marca (o porquê está em `sdd/templates/fragments/MARCA_FASE.md`).
 
 1. **Contexto.** Leia o DEFINE, `sdd/templates/UX_REVIEW_TEMPLATE.md`, `AGENTS.md` e, se
    existir, o design system do projeto. Extraia usuário, objetivo, dor, critérios, restrições e

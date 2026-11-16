@@ -1,0 +1,8 @@
+{"timestamp": "2026-11-15T10:19:00.000Z", "type": "session_meta", "payload": {"id": "s1", "cwd": "__RAIZ__", "originator": "codex"}}
+{"timestamp": "2026-11-15T10:19:01.000Z", "type": "turn_context", "payload": {"cwd": "__RAIZ__", "model": "modelo-c"}}
+{"timestamp": "2026-11-15T10:20:00.000Z", "type": "event_msg", "payload": {"type": "task_started"}}
+{"timestamp": "2026-11-15T10:20:01.000Z", "type": "response_item", "payload": {"type": "message", "role": "user", "content": [{"type": "input_text", "text": "pedido com segredo-ficticio-123"}]}}
+{"timestamp": "2026-11-15T10:20:05.000Z", "type": "event_msg", "payload": {"type": "token_count", "info": {"total_token_usage": {"input_tokens": 1000, "cached_input_tokens": 600, "cache_write_input_tokens": 0, "output_tokens": 10, "reasoning_output_tokens": 0, "total_tokens": 1010}, "last_token_usage": {}}}}
+{"timestamp": "2026-11-15T10:20:06.000Z", "type": "event_msg", "payload": {"type": "token_count", "info": {"total_token_usage": {"input_tokens": 1000, "cached_input_tokens": 600, "cache_write_input_tokens": 0, "output_tokens": 10, "reasoning_output_tokens": 0, "total_tokens": 1010}, "last_token_usage": {}}}}
+{"timestamp": "2026-11-15T10:20:30.000Z", "type": "event_msg", "payload": {"type": "token_count", "info": {"total_token_usage": {"input_tokens": 1500, "cached_input_tokens": 700, "cache_write_input_tokens": 0, "output_tokens": 30, "reasoning_output_tokens": 0, "total_tokens": 1530}, "last_token_usage": {}}}}
+{"timestamp": "2026-11-15T10:20:31.000Z", "type": "event_msg", "payload": {"type": "task_complete"}}

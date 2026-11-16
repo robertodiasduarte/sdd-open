@@ -310,11 +310,14 @@ sdd/bin/adapters/claude.sh
 sdd/bin/adapters/codex.sh
 sdd/bin/adapters/gemini.sh
 sdd/bin/adapters/openrouter.sh
+sdd/bin/adapters/sessao-claude.py
+sdd/bin/adapters/sessao-codex.py
 sdd/bin/adversarial-review-gate.sh
 sdd/bin/adversarial-review.sh
 sdd/bin/avaliador-guard.sh
 sdd/bin/contexto-lint.sh
 sdd/bin/contraste.sh
+sdd/bin/custo-feature.sh
 sdd/bin/deploy-do-sha.sh
 sdd/bin/design-lint.py
 sdd/bin/docs-extract-decisions.sh
@@ -328,6 +331,7 @@ sdd/bin/handoff-lint.py
 sdd/bin/kb-dominios.py
 sdd/bin/ledger-revisao-lint.sh
 sdd/bin/lib/python.sh
+sdd/bin/marca-fase.sh
 sdd/bin/patterns-lint.sh
 sdd/bin/playbook-curator.sh
 sdd/bin/playbook-lint.sh
@@ -387,6 +391,18 @@ sdd/fixtures/conversa/decisoes/com-outro.md
 sdd/fixtures/conversa/decisoes/controle.md
 sdd/fixtures/conversa/decisoes/dois-recomendados.md
 sdd/fixtures/conversa/decisoes/sem-classe.md
+sdd/fixtures/custo/README.md
+sdd/fixtures/custo/claude/sessao-1.jsonl
+sdd/fixtures/custo/claude/sessao-1/subagents/agent-1.jsonl
+sdd/fixtures/custo/codex/sessions/2026/11/15/rollout-2026-11-15T10-19-00-projeto.jsonl
+sdd/fixtures/custo/codex/sessions/2026/11/15/rollout-2026-11-15T11-00-00-revisao.jsonl
+sdd/fixtures/custo/ledgers/LEDGER_REVISAO_F99_TESTE.md
+sdd/fixtures/custo/precos/precos-cache.tsv
+sdd/fixtures/custo/precos/precos.tsv
+sdd/fixtures/custo/reviews/EXTERNAL_REVIEW_20261115-110000/META.txt
+sdd/fixtures/custo/reviews/EXTERNAL_REVIEW_20261115-120000/META.txt
+sdd/fixtures/custo/reviews/EXTERNAL_REVIEW_20261115-130000/META.txt
+sdd/fixtures/custo/traces/F99_TESTE.jsonl
 sdd/fixtures/design/DESIGN_VALIDO.md
 sdd/fixtures/evidencia/BUILD_REPORT_controle.md
 sdd/fixtures/evidencia/BUILD_REPORT_evidencia_ignorada.md
@@ -553,6 +569,7 @@ sdd/invariants.md
 sdd/patterns/README.md
 sdd/playbook.md
 sdd/review/CRITERIO_DANO.md
+sdd/review/precos-cache.tsv
 sdd/review/precos.tsv
 sdd/review/prompts/auditor.md
 sdd/review/prompts/desempate.md
@@ -582,6 +599,7 @@ sdd/templates/fragments/EVIDENCIA.md
 sdd/templates/fragments/FLUXO_ENCADEADO.md
 sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md
 sdd/templates/fragments/LLM_PROMPTS_DESIGN.md
+sdd/templates/fragments/MARCA_FASE.md
 sdd/templates/fragments/PERGUNTA_DECISAO.md
 sdd/templates/fragments/RESUMO_ETAPA.md
 sdd/templates/fragments/VERIFY_GATE.md
@@ -635,6 +653,7 @@ tests/test_f19_textos.py
 tests/test_f21_textos.py
 tests/test_f22_upgrade.py
 tests/test_f22_versao.py
+tests/test_f23_custo.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py

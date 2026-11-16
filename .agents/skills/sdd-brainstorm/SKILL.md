@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; funciona em qualquer agente que
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.4.0"
+  version: "2.5.0"
   updated: "2026-11"
   fase: "0"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-brainstorm — Fase 0 (opcional)
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-brainstorm v2.4.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-brainstorm v2.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Explorar antes de especificar. O produto desta fase é **clareza**, não código: um documento
 que o `/sdd-define` consegue transformar em spec com pouca pergunta.
@@ -72,6 +72,11 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 "O que você quer construir ou resolver?".
 
 ## Processo
+
+**Custo da fase.** Ao começar, rode `bash sdd/bin/marca-fase.sh inicio brainstorm <FEATURE>` (ou assim que o nome da feature estiver
+decidido); no encerramento,
+antes do resumo de etapa, `bash sdd/bin/marca-fase.sh fim brainstorm <FEATURE>`. Sem terminal, ou sem o script no
+projeto, siga sem a marca (o porquê está em `sdd/templates/fragments/MARCA_FASE.md`).
 
 ### 1. Contexto
 

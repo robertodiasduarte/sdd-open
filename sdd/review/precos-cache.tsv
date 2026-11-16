@@ -1,0 +1,9 @@
+# precos-cache.tsv — tarifa pública do CACHE por modelo, em US$ por milhão de tokens. 6 colunas separadas por TAB:
+#   engine · modelo · usd_mtok_cache_lido · usd_mtok_cache_criado · fonte (URL https:// da lista pública) · conferido_em (AAAA-MM-DD)
+# Usado pelo sdd/bin/custo-feature.sh no custo das sessões do agente: a entrada e a saída vêm da precos.tsv (mesmo
+# par engine · modelo); o cache tem preço próprio, uma fração da entrada, e numa sessão longa é a maior parte dos
+# tokens. Cobrar o cache como entrada inflaria o custo várias vezes; por isso, modelo ausente daqui = cache n/d.
+# engine é o nome do agente que gravou a sessão (claude, codex), o mesmo id do registry.tsv; modelo é o que o
+# registro da sessão traz (ex.: o campo message.model do Claude Code).
+# O pacote não traz preço de modelo nenhum (o SDD Open é agnóstico de vendor): cada projeto preenche os seus.
+# Preço muda: confira na fonte e atualize a data; nunca preencha de memória.

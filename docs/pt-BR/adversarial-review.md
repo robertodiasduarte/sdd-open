@@ -196,6 +196,58 @@ rodadas dão número instável: toda taxa vem com a amostra. Engine por assinatu
 zero, e por isso há duas colunas. O `META.txt` não separa o custo da tentativa que falhou antes de uma troca
 de engine: ele fica na linha da engine que respondeu. Nunca chama engine e nunca usa rede.
 
+## custo-feature (custo por fase e por feature)
+
+```bash
+bash sdd/bin/marca-fase.sh inicio|fim <fase> <FEATURE>
+bash sdd/bin/custo-feature.sh <FEATURE> [--saida <arquivo>|-] [--precos <pasta>] [--reviews <pasta>] [--ledgers <pasta>]
+bash sdd/bin/custo-feature.sh --linha-de-base <mapa.tsv> [--precos <pasta>] [--reviews <pasta>]
+```
+
+O `eval-revisores` mede só a revisão. O `custo-feature` responde "quanto esta feature custou, fase por
+fase?". Cada skill de fase grava uma marca de início e uma de fim (`marca-fase.sh`) em
+`sdd/traces/<FEATURE>.jsonl`, o mesmo arquivo em que o `verify-gate.sh` grava cada volta do gate. A regra
+das marcas está em `sdd/templates/fragments/MARCA_FASE.md`. No fecho da release, o script lê três fontes e
+grava `sdd/reports/CUSTO_<FEATURE>.md`:
+
+- as marcas;
+- o registro local de cada agente, por um leitor por agente (`sdd/bin/adapters/sessao-claude.py`,
+  `sessao-codex.py`; agente novo é um `sessao-<agente>.py` novo);
+- os `META.txt` das revisões da feature (o `docs_sdd` cita `DEFINE_<FEATURE>.md`, ou o ledger da feature
+  cita a pasta).
+
+O relatório tem uma linha por fase, mais `sem fase` (o que caiu entre a 1ª e a última marca, mas fora de
+qualquer par início/fim), `revisão` e o total. As colunas são execuções, entrada, saída, cache lido, cache
+criado, pago, nominal e tempo ativo:
+
+| Coluna | O que é |
+|---|---|
+| Pago US$ | cobrança do agente (`claude`, `codex`) ou da engine da revisão pelo `registry.tsv`: assinatura é `0.0000`, `pay-per-token` é o nominal, desconhecida é `n/d` |
+| Nominal US$ | tokens × tarifa: entrada e saída da `precos.tsv`, cache lido e cache criado da `precos-cache.tsv` (o mesmo par engine · modelo), mais o custo da revisão nos `META.txt` |
+| Tempo ativo | por turno, da mensagem que o abre ao último registro do agente nele; a espera por uma pessoa fica fora |
+
+Os leitores devolvem só números (horário, modelo, tokens). Nenhum texto da conversa, caminho de arquivo ou
+argumento de ferramenta sai deles, porque o relatório costuma ser público e o registro da sessão guarda a
+conversa inteira. Um nome de modelo fora de `[A-Za-z0-9._:/@-]` sai como `?`. O registro do Claude Code
+repete a mesma mensagem uma vez por bloco de conteúdo, então o leitor agrupa as linhas por `message.id`. O
+Codex informa totais acumulados, então o leitor dele usa a diferença entre dois totais seguidos. As chamadas
+da revisão nunca caem no registro de sessão do projeto (rodam numa pasta temporária vazia, e o adaptador do
+claude roda sem gravar sessão), então nenhum custo é contado duas vezes.
+
+O cache lido costuma ser a maior parte dos tokens de uma sessão longa e custa uma fração da entrada. Por
+isso, modelo sem preço de cache sai `n/d`, e não cobrado como entrada. O pacote traz a `precos-cache.tsv`
+só com o cabeçalho (o SDD Open não nomeia modelo nem preço). Cada projeto preenche a sua, com a fonte e a
+data, ou passa `--precos <pasta>` com tabelas fora do repositório. `n/d` nunca conta como zero: o total diz
+`US$ x + n/d`. Sem nenhuma marca, `sem fase` sai `n/d`, com aviso. As somas são exatas (decimal). O
+relatório mostra também as voltas do Verify Gate no trace ("2 (verde na 2ª)") e o que ficou fora da conta
+(linhas ilegíveis, par sem preço, fase sem fim).
+
+`--linha-de-base` recebe um mapa com três colunas separadas por TAB (feature · pasta cujas sessões ler ·
+ledger, ou `-`). Ele imprime uma linha por feature: sessões (nominal, a sessão inteira, sem dividir por
+fase), revisão (nominal, ou `n/d` sem `META.txt`), rodadas de revisão e achados com dano. Compare features
+pela coluna `Sessões`, que existe dos dois lados. Exits: `0` MEDIDO · `2` SEM DADOS · `64` uso. Nunca chama
+modelo e nunca usa rede.
+
 ## Limites
 
 - As engines veem só o diff e o contexto SDD: não veem produção, o banco nem um deploy feito fora do git.

@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.10.1"
+  version: "2.11.0"
   updated: "2026-11"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.10.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.11.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -65,6 +65,10 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 `/sdd-build sdd/features/DESIGN_{FEATURE}.md [--mode ralph]`
 
 ## Processo
+
+**Custo da fase.** Ao começar, rode `bash sdd/bin/marca-fase.sh inicio build <FEATURE>`; para ver o custo até aqui, `bash sdd/bin/custo-feature.sh <FEATURE> --saida -`; no encerramento,
+antes do resumo de etapa, `bash sdd/bin/marca-fase.sh fim build <FEATURE>`. Sem terminal, ou sem o script no
+projeto, siga sem a marca (o porquê está em `sdd/templates/fragments/MARCA_FASE.md`).
 
 ### 0. Revisão do DESIGN
 

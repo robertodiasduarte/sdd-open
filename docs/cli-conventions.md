@@ -82,6 +82,9 @@ RESULTADO: ERRO
 | `slot.sh` | `0` OK · `2` REPROVOU · `3` INCONCLUSIVO (o comando saiu com outro código ou por sinal, ou o script foi interrompido) · `10` NADA A MEDIR · `11` PULADO (slot vazio, ausente ou sem `sdd/config.yaml`) · `64` ERRO DE USO (chave desconhecida, flag sem valor, ref que não resolve, aspas sem fechar, erro de sintaxe ou `#` no comando) ([adaptation-guide.md](adaptation-guide.md)) |
 | `eval-agree.sh` | `0` MEDIDO · `2` SEM DADOS (inclusive sem a pasta padrão) · `64` uso ou pasta passada inexistente |
 | `eval-revisores.sh` | `0` MEDIDO · `2` SEM DADOS (inclusive sem a pasta padrão) · `64` uso, ou pasta, `--ledgers` ou `--registry` inexistente ([adversarial-review.md](adversarial-review.md)) |
+| `custo-feature.sh` | `0` MEDIDO · `2` SEM DADOS (nenhuma marca, sessão, revisão nem volta do gate da feature) · `64` uso, pasta ou mapa inexistente, mapa sem linha válida ([adversarial-review.md](adversarial-review.md)) |
+| `marca-fase.sh` | `0` MARCADO, ou DESLIGADO com `SDD_TRACE=off` · `64` uso: evento, fase ou feature inválidos (nada gravado), ou pasta do trace sem escrita |
+| `adapters/sessao-*.py` | `0` LIDO (JSONL só com números em stdout) · `2` SEM REGISTRO · `64` uso |
 | `ledger-revisao-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, arquivo ilegível, ou arquivo sem linha de dados e sem linha `sem achados:` |
 | `sdd-decisoes-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, caminho inexistente, tabela de marcas ausente ou nenhuma pergunta |
 | `contraste.sh` | `0` PASSA · `2` REPROVA, ou `--self-test` VERMELHO · `64` uso ([llm-in-code.md](llm-in-code.md)) |

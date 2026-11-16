@@ -1,0 +1,16 @@
+branch                  : feat/f99
+docs_sdd                : DEFINE_F99_TESTE.md, DESIGN_F99_TESTE.md
+reviewer_engine_efetivo : claude
+reviewer_exit           : 0
+reviewer_segundos       : 300
+reviewer_tokens_entrada : 1000
+reviewer_tokens_saida   : 200
+reviewer_modelo         : modelo-a
+reviewer_custo          : US$ 1.5000
+auditor_engine_efetivo  : openrouter
+auditor_exit            : 0
+auditor_segundos        : 60
+auditor_tokens_entrada  : 500
+auditor_tokens_saida    : 50
+auditor_modelo          : modelo-q
+auditor_custo           : US$ 0.0200
