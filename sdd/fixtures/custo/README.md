@@ -1,7 +1,7 @@
 # Fixtures do custo-feature.sh (F23)
 
 Dados inventados para `tests/test_f23_custo.py`. Nenhum é sessão real: os textos com `segredo-ficticio-123` e
-`/Users/x/segredo.txt` existem para provar que nada do texto das sessões sai dos leitores.
+`/pasta-secreta/segredo.txt` existem para provar que nada do texto das sessões sai dos leitores.
 
 - `claude/`: sessão principal com a mesma mensagem repetida em 3 linhas, uma linha quebrada, um resultado de
   ferramenta (não é turno), uma linha `isMeta` (não é turno), um modelo com `|` e quebra de linha (sai `?`) e um subagente.

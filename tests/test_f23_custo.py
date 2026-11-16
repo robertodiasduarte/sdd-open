@@ -34,7 +34,7 @@ LEITOR_CODEX = RAIZ / "sdd/bin/adapters/sessao-codex.py"
 ER = RAIZ / "sdd/bin/eval-revisores.sh"
 FX = RAIZ / "sdd/fixtures/custo"
 F = "F99_TESTE"
-SEGREDOS = ("segredo-ficticio-123", "/Users/x/segredo.txt", "texto da conversa", "segundo pedido", "cat ",
+SEGREDOS = ("segredo-ficticio-123", "/pasta-secreta/segredo.txt", "texto da conversa", "segundo pedido", "cat ",
             "forjado", "linha | falsa")
 FASES = ("brainstorm", "define", "ux-review", "design", "build", "release")
 
@@ -255,7 +255,7 @@ class AT003Contador(Base):
         self.assertIn("nenhuma marca de fase: as sessões não foram atribuídas", out)
 
     def test_soma_exata_em_decimal(self):
-        """0,1 + 0,2 em ponto flutuante dá 0,30000000000000004; em decimal, 0,3000."""
+        """0,1 + 0,2 em ponto flutuante não dá 0,3 exato; em decimal, sim."""
         self.escreve(self.raiz, "sdd/reports/reviews/EXTERNAL_REVIEW_20261115-140000/META.txt",
                      "docs_sdd : DEFINE_F99_TESTE.md\nreviewer_engine_efetivo : openrouter\nreviewer_exit : 0\n"
                      "reviewer_custo : US$ 0.1\nauditor_engine_efetivo : openrouter\nauditor_exit : 0\n"
