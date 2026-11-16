@@ -30,8 +30,17 @@ def sha(p: Path) -> str:
 
 
 def foto(pasta: Path) -> dict[str, str]:
-    return {p.relative_to(pasta).as_posix(): sha(p) for p in sorted(pasta.rglob("*"))
-            if p.is_file() and ".git" not in p.relative_to(pasta).parts}
+    """sha de cada arquivo do projeto, fora de `.git`. O percurso NÃO entra em `.git` (F23B3): um `git` em segundo
+    plano (a manutenção automática depois de um commit) apaga pastas de objetos no meio de um rglob, e o teste caía
+    com FileNotFoundError sob carga."""
+    out = {}
+    for raiz, pastas, arquivos in os.walk(pasta):
+        pastas[:] = sorted(d for d in pastas if d != ".git")
+        for nome in arquivos:
+            p = Path(raiz) / nome
+            if p.is_file():
+                out[p.relative_to(pasta).as_posix()] = sha(p)
+    return dict(sorted(out.items()))
 
 
 class Base(Sandbox):
