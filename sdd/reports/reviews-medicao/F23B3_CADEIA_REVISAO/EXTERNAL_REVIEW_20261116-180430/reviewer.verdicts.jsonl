@@ -1,0 +1,2 @@
+{"achado": "R1", "arquivo": "tests/test_f23b3_revisao.py", "linha": 665, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "unittest.main() antes de class Raio: rodar o módulo direto omite 3 testes em silêncio"}
+{"achado": "R2", "arquivo": "sdd/bin/custo-feature.sh", "linha": 509, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "nominal_estimado chamada com tabelas de forma não verificada e sem teste de execução; divergência de forma derrubaria o medidor"}

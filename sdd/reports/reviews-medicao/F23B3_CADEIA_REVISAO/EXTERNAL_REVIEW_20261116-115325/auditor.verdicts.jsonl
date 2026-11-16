@@ -1,0 +1,6 @@
+{"achado": "R1", "veredito": "DISAGREE_EVIDENCE", "justificativa": "DESIGN_F23B3_CADEIA_REVISAO.md:75 documenta o conjunto explícito como decisão, e a Decision 2 prevê security_globs para ampliar sua cobertura."}
+{"achado": "R2", "veredito": "DISAGREE_CONCERN", "justificativa": "A Decision 8 confirma a marca por execução, mas faltam os prompts v2 e uma saída que demonstre o fechamento antecipado alegado no auditor."}
+{"achado": "R3", "veredito": "DISAGREE_CONCERN", "justificativa": "Falta informar se cache_write_input_tokens integra input_tokens para confirmar dupla cobrança na fórmula da Decision 7."}
+{"achado": "R4", "veredito": "DISAGREE_CONCERN", "justificativa": "Falta o contrato de outro adaptador que forneça os campos de cache com entrada exclusiva para demonstrar o cálculo incorreto."}
+{"achado": "R5", "veredito": "DISAGREE_EVIDENCE", "justificativa": "DESIGN_F23B3_CADEIA_REVISAO.md:75 escolhe expressamente token e tokens por palavra inteira, e os exemplos seguem essa decisão documentada."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/features/DESIGN_F23B3_CADEIA_REVISAO.md", "linha": 119, "resumo": "Condicionar o aviso de escape a evitado ≥ 1 omite a revisão obrigatória da regra em frentes pequenas que tiveram dispensa automática do segundo revisor."}

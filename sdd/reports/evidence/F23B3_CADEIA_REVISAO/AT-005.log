@@ -1,0 +1,12 @@
+$ python3 -B -m unittest -v test_f23b3_revisao.AT005Cadeia   # HEAD 5e110b2
+test_n1_custo_incerto_na_rodada_evitada_vira_mais_nd (test_f23b3_revisao.AT005Cadeia.test_n1_custo_incerto_na_rodada_evitada_vira_mais_nd) ... ok
+test_n1_rodada2_dispensado_a_mao_nao_conta_como_chamado_por_risco (test_f23b3_revisao.AT005Cadeia.test_n1_rodada2_dispensado_a_mao_nao_conta_como_chamado_por_risco) ... ok
+test_n1_rodada3_sem_engine_disponivel_nao_conta_como_chamado (test_f23b3_revisao.AT005Cadeia.test_n1_rodada3_sem_engine_disponivel_nao_conta_como_chamado) ... ok
+test_sem_rodada_evitada_o_custo_e_travessao (test_f23b3_revisao.AT005Cadeia.test_sem_rodada_evitada_o_custo_e_travessao) ... ok
+test_tabela_por_frente_com_evitado_custo_raso_e_dispensas (test_f23b3_revisao.AT005Cadeia.test_tabela_por_frente_com_evitado_custo_raso_e_dispensas) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.326s
+
+OK
+[exit=0]

@@ -1,0 +1,3 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "Em tests/test_f23b3_revisao.py:665, unittest.main() antecede class Raio e omite seus três testes na execução direta."}
+{"achado": "R2", "veredito": "DISAGREE_CONCERN", "justificativa": "A definição de tabela_precos() está ausente do material, impedindo verificar a estrutura fornecida à chamada de sdd/bin/custo-feature.sh:509."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/bin/eval-revisores.sh", "linha": 707, "resumo": "Os contadores por risco e revisão rasa contabilizam o gatilho mesmo quando nenhuma engine disponível permite chamar o segundo revisor."}

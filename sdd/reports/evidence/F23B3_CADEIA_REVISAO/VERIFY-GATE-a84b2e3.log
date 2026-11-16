@@ -1,0 +1,45 @@
+$ bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F23B3_CADEIA_REVISAO.md   # HEAD a84b2e3
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.pkR7CWT4JE — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ......................................s........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s.....E..........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+   │ ======================================================================
+   │ ERROR: test_sem_de_para_antes_de_escrever_com_os_comandos (test_f22_upgrade.SemRegistro)
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.pkR7CWT4JE/tests/test_f22_upgrade.py", line 275, in test_sem_de_para_antes_de_escrever_com_os_comandos
+   │     self.assertNadaEscrito(antes)
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.pkR7CWT4JE/tests/test_f22_upgrade.py", line 73, in assertNadaEscrito
+   │     self.assertEqual(foto(self.p), antes)
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.pkR7CWT4JE/tests/test_f22_upgrade.py", line 33, in foto
+   │     return {p.relative_to(pasta).as_posix(): sha(p) for p in sorted(pasta.rglob("*"))
+   │   File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1180, in rglob
+   │     for p in selector.select_from(self):
+   │   File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 601, in _select_from
+   │     for p in successor_select(starting_point, is_dir, exists, scandir):
+   │   File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 548, in _select_from
+   │     with scandir(parent_path) as scandir_it:
+   │ FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-h305pglv/projeto/.git/objects/00'
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 2356 tests in 1940.286s
+   │ 
+   │ FAILED (errors=1, skipped=3)
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+[exit=2]

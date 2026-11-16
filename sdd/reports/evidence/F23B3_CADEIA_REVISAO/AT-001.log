@@ -1,0 +1,11 @@
+$ python3 -B -m unittest -v test_f23b3_revisao.AT001SemRisco   # HEAD 5e110b2
+test_10_arquivos_nao_chamam_o_2o_revisor_e_a_regra_antiga_fica_no_meta (test_f23b3_revisao.AT001SemRisco.test_10_arquivos_nao_chamam_o_2o_revisor_e_a_regra_antiga_fica_no_meta) ... ok
+test_120_kb_e_2_camadas_tambem_viram_so_medida (test_f23b3_revisao.AT001SemRisco.test_120_kb_e_2_camadas_tambem_viram_so_medida) ... ok
+test_constantes_da_regra_antiga_sao_so_medida (test_f23b3_revisao.AT001SemRisco.test_constantes_da_regra_antiga_sao_so_medida) ... ok
+test_diff_pequeno_grava_regra_antiga_vazia_e_dispensa_sem_parenteses (test_f23b3_revisao.AT001SemRisco.test_diff_pequeno_grava_regra_antiga_vazia_e_dispensa_sem_parenteses) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.416s
+
+OK
+[exit=0]

@@ -1,0 +1,4 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "reviewer.md:43 indica a última linha, mas adversarial-review.sh:674 acrescenta o material depois da marca, tornando incorreta a localização informada."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "desempate.md:42 encerra o arquivo sem a verificação interna prometida pelo DESIGN no contrato do Prompt 3."}
+{"achado": "R3", "veredito": "AGREE", "justificativa": "custo-feature.sh:80 exige espaço após a pasta, enquanto o TRAVESSAO do lint e do eval aceita o separador colado."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/bin/eval-revisores.sh", "linha": 705, "resumo": "Os contadores por risco e por raso contam o prefixo do gatilho mesmo quando o segundo revisor foi dispensado, registrando chamadas que não ocorreram."}

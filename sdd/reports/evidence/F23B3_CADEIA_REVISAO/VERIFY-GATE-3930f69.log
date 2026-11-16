@@ -1,0 +1,56 @@
+$ bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F23B3_CADEIA_REVISAO.md   # HEAD 3930f69
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3wigJXmEhS — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ......................................s..................................................................................................F...........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................E.........s............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+   │ ======================================================================
+   │ ERROR: test_dry_run_nao_escreve (test_f22_upgrade.ComRegistro)
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3wigJXmEhS/tests/test_f22_upgrade.py", line 135, in test_dry_run_nao_escreve
+   │     antes = foto(self.p)
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3wigJXmEhS/tests/test_f22_upgrade.py", line 33, in foto
+   │     return {p.relative_to(pasta).as_posix(): sha(p) for p in sorted(pasta.rglob("*"))
+   │   File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1180, in rglob
+   │     for p in selector.select_from(self):
+   │   File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 601, in _select_from
+   │     for p in successor_select(starting_point, is_dir, exists, scandir):
+   │   File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 548, in _select_from
+   │     with scandir(parent_path) as scandir_it:
+   │ FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-oiq4a2yb/projeto/.git/objects/68'
+   │ 
+   │ ======================================================================
+   │ FAIL: test_rede_pendurada_inteira_api_e_remoto (test_checar.TestRemoto)
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3wigJXmEhS/tests/test_checar.py", line 343, in test_rede_pendurada_inteira_api_e_remoto
+   │     self.assertLessEqual(t, LIMITE, out)
+   │ AssertionError: 12.023386458000004 not less than or equal to 12 : ⚠️ Vale arrumar
+   │ - Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+   │   Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+   │ 
+   │ ✅ Repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1.314, Codex 0.163.0 · sdd-checar-ambiente v1.5.3 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+   │ 
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 2352 tests in 3128.635s
+   │ 
+   │ FAILED (failures=1, errors=1, skipped=3)
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+[exit=2]

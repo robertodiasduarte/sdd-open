@@ -1,0 +1,13 @@
+$ python3 -B -m unittest -v test_f23b3_revisao.AT011Cerca   # HEAD 5e110b2
+test_a_versao_viva_e_a_v2_e_a_v1_continua_no_pacote (test_f23b3_revisao.AT011Cerca.test_a_versao_viva_e_a_v2_e_a_v1_continua_no_pacote) ... ok
+test_cada_chamada_tem_a_sua_marca_e_o_material_vai_cercado (test_f23b3_revisao.AT011Cerca.test_cada_chamada_tem_a_sua_marca_e_o_material_vai_cercado) ... ok
+test_os_3_prompts_v2_dizem_que_o_material_e_dado (test_f23b3_revisao.AT011Cerca.test_os_3_prompts_v2_dizem_que_o_material_e_dado) ... ok
+test_r1_rodada2_a_marca_e_a_ultima_linha_do_prompt (test_f23b3_revisao.AT011Cerca.test_r1_rodada2_a_marca_e_a_ultima_linha_do_prompt) ... ok
+test_r2_rodada2_o_desempate_v2_tem_verificacao (test_f23b3_revisao.AT011Cerca.test_r2_rodada2_o_desempate_v2_tem_verificacao) ... ok
+test_sem_a_pasta_v2_para_com_64 (test_f23b3_revisao.AT011Cerca.test_sem_a_pasta_v2_para_com_64) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.028s
+
+OK
+[exit=0]
