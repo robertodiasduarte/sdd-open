@@ -20,14 +20,6 @@ mensagem é a diferença entre dois totais consecutivos (diferença zero é desc
 inclui `cached_input_tokens`: entrada = input − cached; cache_lido = cached; cache_criado =
 cache_write_input_tokens. O modelo é o do turn_context mais recente.
 """
-import sys as _sdd_sys  # LM-015: saída em UTF-8 e "\n" também no Windows
-
-for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
-    try:
-        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
-    except (AttributeError, ValueError):
-        pass
-
 import json
 import os
 import re
@@ -160,4 +152,10 @@ def main():
 
 
 if __name__ == "__main__":
+    # LM-015 (F16W2): no Windows, o stdout num pipe é cp1252 e o print troca \n por \r\n; saída em UTF-8 e \n, sempre.
+    for _canal in (sys.stdout, sys.stderr):
+        try:
+            _canal.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+        except (AttributeError, ValueError):
+            pass
     main()
