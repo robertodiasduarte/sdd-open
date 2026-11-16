@@ -574,6 +574,9 @@ sdd/review/precos.tsv
 sdd/review/prompts/auditor.md
 sdd/review/prompts/desempate.md
 sdd/review/prompts/reviewer.md
+sdd/review/prompts/v2/auditor.md
+sdd/review/prompts/v2/desempate.md
+sdd/review/prompts/v2/reviewer.md
 sdd/review/registry.tsv
 sdd/review/stubs/cenarios.tsv
 sdd/review/stubs/claude.py
@@ -654,6 +657,7 @@ tests/test_f21_textos.py
 tests/test_f22_upgrade.py
 tests/test_f22_versao.py
 tests/test_f23_custo.py
+tests/test_f23b3_revisao.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py
