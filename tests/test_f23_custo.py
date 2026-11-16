@@ -423,6 +423,39 @@ class Rodada3(Base):
             self.assertEqual(t[linha][6], "n/d", linha)
 
 
+class Rodada4(Base):
+    """R1, R2 e R3 da rodada 4 da revisão do código."""
+
+    def saida(self) -> tuple[dict, str]:
+        rc, out, err = self.custo(F, "--precos", str(self.copiado["precos"]), "--saida", "-")
+        self.assertEqual(rc, 0, out + err)
+        return self.tabela(out), out
+
+    def test_pasta_citada_sem_meta_legivel_e_n_d(self):
+        (self.copiado["reviews"] / "EXTERNAL_REVIEW_20261115-130000" / "META.txt").write_bytes(b"\xff\xfe nao e utf-8")
+        t, out = self.saida()
+        self.assertEqual(t["revisão"][0], "2")
+        self.assertEqual(t["revisão"][6], "1.5200 + n/d")
+        self.assertIn("EXTERNAL_REVIEW_20261115-130000 sem META.txt legível", out)
+
+    def test_modelo_com_quebra_de_linha_no_fim_sai_interrogacao(self):
+        sessao = self.tmp / "claude-config/projects" / pasta_claude(self.raiz) / "sessao-1.jsonl"
+        txt = sessao.read_text(encoding="utf-8").replace('"msg_m2", "model": "modelo-a"', '"msg_m2", "model": "modelo-a\\n"')
+        self.assertIn('modelo-a\\n', txt)
+        sessao.write_text(txt, encoding="utf-8")
+        rc, out, _ = self.roda([sys.executable, "-B", LEITOR_CLAUDE, "--raiz", self.raiz], self.raiz)
+        self.assertEqual(rc, 0)
+        modelos = {json.loads(x).get("modelo") for x in out.splitlines() if '"msg"' in x}
+        self.assertNotIn("modelo-a\n", modelos)
+        self.assertIn("?", modelos)
+
+    def test_ledger_ilegivel_e_n_d_com_aviso(self):
+        (self.copiado["ledgers"] / "LEDGER_REVISAO_F99_TESTE.md").write_bytes(b"| R1 \xff\xfe |\n")
+        t, out = self.saida()
+        self.assertIn("+ n/d", t["revisão"][6])
+        self.assertIn("ledger ilegível: LEDGER_REVISAO_F99_TESTE.md", out)
+
+
 class AT006Revisao(Base):
     """AT-006 e Decision 8: o nominal da revisão bate com o eval-revisores.sh sobre as mesmas pastas."""
 

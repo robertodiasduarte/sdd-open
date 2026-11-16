@@ -26,7 +26,7 @@ import re
 import sys
 from datetime import datetime, timezone
 
-MODELO_RE = re.compile(r"^[A-Za-z0-9._:/@-]{1,80}$")
+MODELO_RE = re.compile(r"^[A-Za-z0-9._:/@-]{1,80}\Z")   # \Z: o $ aceitaria "nome\n" (R2 da rodada 4)
 CHAVES = ("input_tokens", "cached_input_tokens", "cache_write_input_tokens", "output_tokens")
 
 

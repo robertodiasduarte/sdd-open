@@ -65,12 +65,13 @@ from decimal import Decimal, InvalidOperation
 
 BIN = os.environ["SDD_CUSTO_BIN"]
 PACOTE_REVIEW = os.path.normpath(os.path.join(BIN, "..", "review"))
-FEATURE_RE = re.compile(r"^[A-Za-z0-9_.-]{1,80}$")
-MODELO_RE = re.compile(r"^[A-Za-z0-9._:/@-]{1,80}$")
-PASTA_RE = re.compile(r"^EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?$")
+# \Z, não $: o $ do Python aceita uma quebra de linha no fim (R2 da rodada 4)
+FEATURE_RE = re.compile(r"^[A-Za-z0-9_.-]{1,80}\Z")
+MODELO_RE = re.compile(r"^[A-Za-z0-9._:/@-]{1,80}\Z")
+PASTA_RE = re.compile(r"^EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?\Z")
 PASTA_NO_TEXTO = re.compile(r"EXTERNAL_REVIEW_\d{8}-\d{6}(?:-\d+)?")
 CUSTO_RE = re.compile(r"^(≈)?\s*US\$\s*([0-9]{1,12}(?:[.,][0-9]{1,12})?)(\s*\+\s*\$\?)?$")
-RODADA_RE = re.compile(r"^rodada=(\d+[a-z]?)$")
+RODADA_RE = re.compile(r"^rodada=(\d+[a-z]?)\Z")
 SEM_ACHADOS_RE = re.compile(r"^\s*sem achados:\s*rodada=(\d+[a-z]?)\s+(EXTERNAL_REVIEW_\S+)\s*$")
 PAPEIS = ("reviewer", "revisor2", "auditor", "desempate")
 TOKENS = ("entrada", "saida", "cache_lido", "cache_criado")
@@ -430,6 +431,9 @@ def revisao(feat, ledger_arq):
         info = ledger_info(ledger_arq)
         if info:
             citadas = info[0]
+        else:   # R3 da rodada 4: ledger que existe e não se lê — as revisões que só ele citava ficam n/d
+            FORA.append(("revisão", "ledger ilegível: %s" % os.path.basename(ledger_arq)))
+            marca_nd(conta)
     try:
         nomes = sorted(n for n in os.listdir(reviews) if PASTA_RE.match(n))
     except OSError:
@@ -440,6 +444,12 @@ def revisao(feat, ledger_arq):
         marca_nd(conta)
     for n in nomes:
         meta = meta_de(os.path.join(reviews, n))
+        if not meta:   # R1 da rodada 4: META ausente ou ilegível numa pasta citada pelo ledger — n/d, nunca zero
+            if n in citadas:
+                FORA.append(("revisão", "%s sem META.txt legível" % n))
+                conta["execucoes"] += 1
+                marca_nd(conta)
+            continue
         # R4 da revisão do código: aceita nome solto ou caminho, separado por vírgula, ponto e vírgula ou espaço
         docs = [os.path.basename(x.replace("\\", "/")) for x in re.split(r"[,;\s]+", meta.get("docs_sdd", "")) if x]
         if alvo not in docs and n not in citadas:
@@ -487,7 +497,7 @@ def ler_trace(feat):
         if t is None:
             continue
         if x.get("src") == "fase" and x.get("evento") in ("inicio", "fim") and isinstance(x.get("fase"), str) \
-                and re.match(r"^[a-z][a-z0-9-]{0,39}$", x["fase"]):
+                and re.match(r"^[a-z][a-z0-9-]{0,39}\Z", x["fase"]):
             marcas.append((t, n, x["evento"], x["fase"]))
         elif x.get("src") in ("verify-gate", "release") and isinstance(x.get("exit"), int):
             gate.append((t, n, x["exit"]))
