@@ -1,0 +1,8 @@
+$ cd <git archive HEAD>/tests && /usr/bin/python3 -B -m unittest -v test_f25_skills_duplicadas.AT005NaoEDuplicata
+test_falsos_positivos (test_f25_skills_duplicadas.AT005NaoEDuplicata) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.730s
+
+OK
+[exit=0]

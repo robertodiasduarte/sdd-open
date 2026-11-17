@@ -1,0 +1,53 @@
+worktree                     : ~/rdd-worktrees/sdd-open-f25-skills-duplicadas
+branch                       : feat/f25-skills-duplicadas
+protocolo                    : cadeia REVISOR → AUDITOR; paralelo não existe
+base                         : origin/main
+merge_base                   : 2204a149bc3c6d44d5813af0535b92dc7b2effcc
+head                         : 132643a12bbbb682848c7751878dead00fc0f69d
+paths                        : -
+diff_sha256                  : 44e8c624eecb1501cebbc70b6455b308a8973497d094dbae340a2dc9bcfe20f2
+diff                         : 115KB (13 arquivo(s))
+contexto                     : 73KB (3 doc SDD)
+docs_sdd                     : DEFINE_F25_SKILLS_DUPLICADAS.md, DESIGN_F25_SKILLS_DUPLICADAS.md, BUILD_REPORT_F25_SKILLS_DUPLICADAS.md
+contexto_cortado             : -
+diversidade                  : vendor
+reviewer_engine_default      : codex
+reviewer_engine_efetivo      : codex
+reviewer_fallback_usado      : nao
+reviewer_motivo              : -
+reviewer_exit                : 0
+reviewer_segundos            : 329
+reviewer_achados             : 3
+reviewer_tokens_entrada      : 72958
+reviewer_tokens_saida        : 10746
+reviewer_tokens_total        : 97144
+reviewer_tokens_cache_lido   : 13440
+reviewer_tokens_cache_criado : 0
+reviewer_modelo              : gpt-6.1-sol
+reviewer_custo               : assinatura
+revisor1_raso                : nao
+gatilho_2o_revisor           : diff sem gatilho de risco — 1 revisor
+gatilho_risco_motivo         : -
+gatilho_regra_antiga         : 13 arquivos (limiar 8)
+dispensas_a_mao              : -
+revisor2_engine              : -
+auditor_engine_default       : claude
+auditor_engine_efetivo       : claude
+auditor_fallback_usado       : nao
+auditor_motivo               : -
+auditor_exit                 : 0
+auditor_segundos             : 527
+auditor_vereditos            : 3
+auditor_tokens_entrada       : 102966
+auditor_tokens_saida         : 37230
+auditor_tokens_total         : 140196
+auditor_tokens_cache_lido    : -
+auditor_tokens_cache_criado  : -
+auditor_modelo               : claude-fable-5-1
+auditor_custo                : US$ 3.9179
+convergencia_1o_passe        : nao
+desempate_alvo               : -
+desempate_engine             : -
+desempate_decisao            : -
+custo_total                  : US$ 3.9179
+quando                       : 20261117-140738

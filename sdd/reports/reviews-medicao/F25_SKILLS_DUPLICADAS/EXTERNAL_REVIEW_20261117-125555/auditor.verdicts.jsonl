@@ -1,0 +1,4 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "checar.sh:250 permite RAIZ igual a HOME, e duplicadas.sh:33 varre as mesmas pastas como projeto, causando classificação incorreta e bloqueio falso."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "duplicadas.sh:383 afirma que a pasta protegida não está no plano sem verificar se ela também consta como item T."}
+{"achado": "R3", "veredito": "DISAGREE_CONCERN", "justificativa": "duplicadas.sh:22 substitui o trap EXIT, mas o trecho necessário de checar.sh para comprovar um tratador anterior não foi fornecido."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": ".agents/skills/sdd-checar-ambiente/scripts/duplicadas.sh", "linha": 401, "resumo": "Uma interrupção após o segundo remove do npx pode deixar no desfazer o checksum do primeiro item, impedindo restaurar o registro mesmo após devolver as pastas."}

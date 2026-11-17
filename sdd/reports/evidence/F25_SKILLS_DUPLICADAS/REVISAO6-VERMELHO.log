@@ -1,0 +1,8 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_f25_skills_duplicadas.RevisaoRodada6   # código de 2af4bf7, testes novos
+FAIL: test_n1_protegida_que_nao_sai_inteira_para_o_item (test_f25_skills_duplicadas.RevisaoRodada6)
+FAIL: test_r1_sem_a_copia_do_registro_o_npx_nao_roda (test_f25_skills_duplicadas.RevisaoRodada6)
+FAIL: test_r2_desfazer_nunca_apaga_a_copia_guardada (test_f25_skills_duplicadas.RevisaoRodada6)
+FAIL: test_r3_pasta_do_plano_apagada_pela_metade_volta_inteira (test_f25_skills_duplicadas.RevisaoRodada6)
+Ran 4 tests in 4.534s
+FAILED (failures=4)
+[exit=1]

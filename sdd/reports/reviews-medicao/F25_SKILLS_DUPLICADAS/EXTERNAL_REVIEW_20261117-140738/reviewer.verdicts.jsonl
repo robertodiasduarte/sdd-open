@@ -1,0 +1,3 @@
+{"achado": "R1", "arquivo": ".agents/skills/sdd-checar-ambiente/scripts/duplicadas.sh", "linha": 418, "severidade": "HIGH", "confianca": "CONFIRMED", "resumo": "O desfazer apaga a cópia guardada quando o caminho original é um symlink que aponta para ela."}
+{"achado": "R2", "arquivo": ".agents/skills/sdd-checar-ambiente/scripts/duplicadas.sh", "linha": 464, "severidade": "HIGH", "confianca": "CONFIRMED", "resumo": "A remoção continua mesmo quando falha a gravação da instrução necessária para desfazer aquele item."}
+{"achado": "R3", "arquivo": ".agents/skills/sdd-checar-ambiente/scripts/duplicadas.sh", "linha": 539, "severidade": "MED", "confianca": "CONFIRMED", "resumo": "A limpeza declara sucesso sem conferir se a entrada da skill foi removida do registro do npx."}

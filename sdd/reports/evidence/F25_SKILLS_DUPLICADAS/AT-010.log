@@ -1,0 +1,62 @@
+$ cd <git archive HEAD>/tests && /usr/bin/python3 -B -m unittest -v test_f25_skills_duplicadas.AT010Textos test_matriz_new_session test_f16_textos test_bash32 test_decisoes_lint test_gerar_starter
+test_o_comando_que_o_script_imprime_esta_na_tabela (test_f16_textos.Instalacao) ... ok
+test_aviso_final_nas_duas_formas (test_f16_textos.NovaSessao) ... ok
+test_lista_do_checar_editores_so_vale_com_versao_e_forma (test_f16_textos.NovaSessao) ... ok
+test_modo_terminal_em_3_passos_sem_presumir_um_agente (test_f16_textos.NovaSessao) ... ok
+test_slot_cheio_como_esta_e_vazio_pelo_checar_editores (test_f16_textos.NovaSessao) ... ok
+test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao) ... ok
+test_as_3_skills_sobem_de_versao (test_f16_textos.Versoes) ... ok
+test_o_padrao_pega_o_que_deve (test_bash32.Bash32) ... ok
+test_os_scripts_novos_existem_e_awk_de_log_usa_lc_all_c (test_bash32.Bash32) ... ok
+test_sem_bashismo_em_sdd_bin (test_bash32.Bash32) ... ok
+test_fragmentos_2_perguntas (test_decisoes_lint.AlvosReais) ... ok
+test_o_ok_da_release_nao_conta_e_a_heuristica_da_kb_tambem_nao (test_decisoes_lint.AlvosReais) ... ok
+test_skills_do_pacote_27_perguntas (test_decisoes_lint.AlvosReais) ... ok
+test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) ... ok
+test_citacao_e_pasta_com_varios_arquivos (test_decisoes_lint.Regras) ... ok
+test_controle_passa_com_ref_no_fim (test_decisoes_lint.Regras) ... ok
+test_pergunta_em_bloco_markdown_conta_em_outro_bloco_nao (test_decisoes_lint.Regras) ... ok
+test_as_4_fixtures_reprovam_e_o_controle_passa (test_decisoes_lint.SelfTest) ... ok
+test_fixture_que_passa_deixa_o_self_test_vermelho (test_decisoes_lint.SelfTest) ... ok
+test_64_caminho_inexistente_zero_perguntas_e_tabela_ausente (test_decisoes_lint.Uso) ... ok
+test_sem_python3_sai_64 (test_decisoes_lint.Uso) ... ok
+test_at006_sem_comando_no_caminho_sem_terminal (test_gerar_starter.CaminhoDoIniciante) ... ok
+test_at001_gera_as_18_e_nao_toca_no_resto (test_gerar_starter.Gera) ... ok
+test_at003_cada_skill_gerada (test_gerar_starter.Gera) ... ok
+test_at005_duas_geracoes_iguais_byte_a_byte (test_gerar_starter.Gera) ... ok
+test_at007_o_starter_passa_nas_checagens_dele (test_gerar_starter.Gera) ... ok
+test_aval1_kb_gerada_sem_caminho_nem_sync_do_open (test_gerar_starter.Gera) ... ok
+test_gerar_de_novo_a_mesma_tag_nao_muda_nada (test_gerar_starter.Gera) ... ok
+test_r1_testes_de_skill_sem_nenhuma_pasta_tests_nao_quebram (test_gerar_starter.Gera) ... ok
+test_r2_arquivo_que_saiu_da_semente_sai_do_destino (test_gerar_starter.Gera) ... ok
+test_r6_ds_store_no_destino_nao_conta_como_mudanca (test_gerar_starter.Gera) ... ok
+test_regra_de_pasta_so_no_markdown_e_o_par_que_define_a_pasta_fica (test_gerar_starter.Gera) ... ok
+test_at004_a_copia_crua_reprova_e_a_gerada_passa (test_gerar_starter.Lint) ... ok
+test_aval1_lint_pega_caminho_da_skill_gerada_fora_do_par (test_gerar_starter.Lint) ... ok
+test_r4_aceite_nao_isenta_outra_citacao_na_mesma_linha (test_gerar_starter.Lint) ... ok
+test_at010_o_init_nao_copia_scripts (test_gerar_starter.ReadmeEInit) ... ok
+test_readme_cita_toda_skill_gerada (test_gerar_starter.ReadmeEInit) ... ok
+test_readme_sem_ambiente_md (test_gerar_starter.ReadmeEInit) ... ok
+test_at002_destino_sujo_ou_sem_a_forma_do_starter (test_gerar_starter.Recusa) ... ok
+test_at002_lint_do_init_acha_citacao (test_gerar_starter.Recusa) ... ok
+test_at002_skill_sem_linha_no_openai_tsv (test_gerar_starter.Recusa) ... ok
+test_at002_tag_inexistente (test_gerar_starter.Recusa) ... ok
+test_at002_troca_que_nao_casa_exatamente_uma_vez (test_gerar_starter.Recusa) ... ok
+test_at007_versao_que_nao_sobe_reprova_antes_de_gravar (test_gerar_starter.Recusa) ... ok
+test_gerador_diferente_do_da_tag (test_gerar_starter.Recusa) ... ok
+test_r6_tag_anterior_ao_gerador_diz_a_causa (test_gerar_starter.Recusa) ... ok
+test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho (test_gerar_starter.SkillDeModo) ... ok
+test_at002_release_gerada_so_do_modo (test_gerar_starter.SkillDeModo) ... ok
+test_at003_a_release_crua_reprova_no_lint (test_gerar_starter.SkillDeModo) ... ok
+test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo) ... ok
+test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo) ... ok
+test_at006_cada_mudanca_a_mao_sai_1 (test_gerar_starter.Trava) ... ok
+test_at006_gerado_ilegivel_sai_64 (test_gerar_starter.Trava) ... ok
+test_at006_os_workflows_rodam_a_trava_antes_dos_testes (test_gerar_starter.Trava) ... ok
+test_at006_tudo_igual_sai_0 (test_gerar_starter.Trava) ... ok
+
+----------------------------------------------------------------------
+Ran 77 tests in 100.107s
+
+OK
+[exit=0]

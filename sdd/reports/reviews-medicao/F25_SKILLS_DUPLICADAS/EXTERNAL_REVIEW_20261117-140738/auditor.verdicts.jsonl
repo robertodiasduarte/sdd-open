@@ -1,0 +1,3 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "volta em duplicadas.sh:418 faz diff -r seguindo symlink e rm -rf na cópia guardada; o defeito existe, mas exige atalho criado à mão para a lixeira, severidade LOW/MED."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "dup_tirar_mover e dup_tirar_npx ignoram o retorno de dup_desfazer_item e removem mesmo assim, contra o AT-009; a cópia segue na lixeira, então severidade MED."}
+{"achado": "R3", "veredito": "DISAGREE_CONCERN", "justificativa": "a conferência do registro não é exigida pelo DEFINE/DESIGN e o CLI medido (EXP-3) tira pasta e linha juntas; o cenário vem só do stub so-real, mas um grep no registro depois do remove seria prudente."}

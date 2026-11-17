@@ -1,0 +1,14 @@
+$ cd <git archive HEAD>/tests && env SDD_F25_SKILLS_CLI=~/.npm/_npx/ac0ed6aa23b37c1e/node_modules/skills/bin/cli.mjs /usr/bin/python3 -B -m unittest -v test_f25_skills_duplicadas.AT009Limpar
+test_atalho_do_npx_volta_com_o_desfazer (test_f25_skills_duplicadas.AT009Limpar) ... ok
+test_caminho_com_espaco_aspas_e_cifrao (test_f25_skills_duplicadas.AT009Limpar) ... ok
+test_com_o_cli_de_verdade (test_f25_skills_duplicadas.AT009Limpar) ... ok
+test_desfazer_nao_sobrescreve (test_f25_skills_duplicadas.AT009Limpar) ... ok
+test_mover_e_desfazer (test_f25_skills_duplicadas.AT009Limpar) ... ok
+test_npx_protege_a_outra_copia (test_f25_skills_duplicadas.AT009Limpar) ... ok
+test_npx_que_nao_tira_e_npx_que_tira_demais (test_f25_skills_duplicadas.AT009Limpar) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 8.374s
+
+OK
+[exit=0]

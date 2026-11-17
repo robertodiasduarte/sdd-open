@@ -1,0 +1,9 @@
+$ cd <git archive HEAD>/tests && /usr/bin/python3 -B -m unittest -v test_f25_skills_duplicadas.AT004Diagnostico
+test_mais_de_3_vira_um_item_com_e_mais_n (test_f25_skills_duplicadas.AT004Diagnostico) ... ok
+test_tabela_21_tres_itens_sem_mudar_nada (test_f25_skills_duplicadas.AT004Diagnostico) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.516s
+
+OK
+[exit=0]

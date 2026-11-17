@@ -1,0 +1,32 @@
+--- a/tests/test_matriz_new_session.py
++++ b/tests/test_matriz_new_session.py
+@@ -20,6 +20,8 @@
+ SESSAO = SKILLS / "sdd-new-session/SKILL.md"
+ PORTADAS = ("sdd-checar-ambiente", "sdd-higiene-dado", "sdd-iniciar-repo", "sdd-kb",
+             "sdd-engenharia-reversa-saas")  # F21: portada de um pacote avulso, mesmas 3 regras
++# As 2 linhas de padrão do reconhecedor de origem (F25): a regex do awk, escapada, nunca o texto corrido.
++RECONHECEDOR = re.compile(r"/sdd-starter\\/releases\\/latest/|/\(\^\|\\/\)sdd-starter\(\\\.git\)\?\$/")
+ MSG = re.compile(r'(?:add_(?:impede|remoto)\s+|MSG=)"((?:[^"\\]|\\.)*)"')
+ 
+ 
+@@ -112,12 +114,20 @@
+     def test_sem_referencia_ao_starter(self):
+         proibidos = ("sdd-starter", "npx skills add", "sdd/ambiente.md")
+         achados = []
++        tirou = 0
+         for s in PORTADAS:
+             for f in sorted((SKILLS / s).rglob("*")):
+                 if f.is_file():
+                     texto = f.read_text(encoding="utf-8")
++                    if f.name == "duplicadas.sh":
++                        # F25: o reconhecedor de origem precisa casar a cópia do starter (é o objetivo dele); só as 2 linhas
++                        # de padrão do awk ficam de fora. Texto, comentário e mensagem continuam sem citar o starter.
++                        linhas = texto.splitlines()
++                        texto = "\n".join(l for l in linhas if not RECONHECEDOR.search(l))
++                        tirou += len(linhas) - len(texto.splitlines())
+                     achados += [f"{f.relative_to(RAIZ)}: {p}" for p in proibidos if p in texto]
+         self.assertEqual(achados, [])
++        self.assertEqual(tirou, 2, "a exceção do reconhecedor de origem deve tirar exatamente as 2 linhas de padrão")
+ 
+     def test_sem_pasta_tests_na_skill(self):
+         # Os testes ficam em tests/ na raiz: dentro da skill, o init e o sync os levariam ao usuário.

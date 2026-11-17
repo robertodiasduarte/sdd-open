@@ -1,0 +1,57 @@
+$ bash exp3*.sh <scratch>   # node <cache npx>/skills@1.9.0/bin/cli.mjs add|remove|list|update, sempre com env -i HOME=<home-teste>
+# skills CLI 1.9.0 · 2026-11-17 · fonte: robertodiasduarte/sdd-starter (público, commit 9782444), skill sdd-brainstorm v2.5.0
+## 3a: add -a claude-code -g -y → cópia real em ~/.claude/skills/sdd-brainstorm; ~/.agents/skills NÃO criada; registro em ~/.agents/.skill-lock.json (source robertodiasduarte/sdd-starter, commit, skillFolderHash)
+## 3b: add -a codex -g -y → cópia real em ~/.agents/skills/sdd-brainstorm
+## 3c: add -a claude-code -a codex -g -y → cópia real em ~/.agents/skills; ~/.claude/skills/sdd-brainstorm -> ../../.agents/skills/sdd-brainstorm (symlink)
+## 3c': remove sdd-brainstorm -g -a claude-code -y no caso 3c → apagou o symlink E a cópia real de ~/.agents/skills E a entrada do registro (o -a não restringe)
+== caso: starter via npx -a codex em ~/.agents + cópia manual em ~/.claude; remove -g codex
+antes:
+./.agents/skills/sdd-brainstorm
+./.claude/skills/sdd-brainstorm
+$ npx skills remove sdd-brainstorm -g -a codex -y
+◇  Found 1 unique installed skill(s)
+◇  Removal process complete
+◆  Successfully removed 1 skill(s)
+└  Done!
+depois:
+./.agents/skills/sdd-brainstorm
+./.claude/skills/sdd-brainstorm
+entradas no lock: 1
+== caso: starter via npx -a codex em ~/.agents + cópia manual em ~/.claude; remove -g claude-code
+antes:
+./.agents/skills/sdd-brainstorm
+./.claude/skills/sdd-brainstorm
+$ npx skills remove sdd-brainstorm -g -a claude-code -y
+◇  Found 1 unique installed skill(s)
+◇  Removal process complete
+◆  Successfully removed 1 skill(s)
+└  Done!
+depois:
+entradas no lock: 0
+== caso: starter via npx -a codex em ~/.agents + cópia manual em ~/.claude; remove -g todos
+antes:
+./.agents/skills/sdd-brainstorm
+./.claude/skills/sdd-brainstorm
+$ npx skills remove sdd-brainstorm -g -y
+◇  Found 1 unique installed skill(s)
+◇  Removal process complete
+◆  Successfully removed 1 skill(s)
+└  Done!
+depois:
+entradas no lock: 0
+## 3e: starter via -a codex; pasta movida à mão para fora; registro intacto
+$ npx skills list -g
+Global Skills
+Missing (in the lock file, not on disk)
+  sdd-brainstorm  Source: robertodiasduarte/sdd-starter
+$ npx skills update -g -y
+Checking for skill updates…
+Fetching 1 source…
+Checking skills from source: robertodiasduarte/sdd-starter
+Found 1 global update(s)
+◒  Downloading 1 source…◐  Downloading 1 source…◓  Downloading 1 source…◑  Downloading 1 source…◒  Downloading 1 source…◐  Downloading 1 source…◓  Downloading 1 source…◑  Downloading 1 source…◒  Downloading 1 source….◐  Downloading 1 source….◓  Downloading 1 source….◑  Downloading 1 source….◒  Downloading 1 source….◇  Downloaded 1 source
+Updating sdd-brainstorm…
+  ✓ Updated sdd-brainstorm
+(… + mais 45 pastas sdd-brainstorm recriadas, entre elas ./.agents/skills e ./.claude/skills)
+# leitura: (1) remove -g apaga a pasta de mesmo nome na pasta global de cada agente-alvo, registrada ou não (cópia manual em ~/.claude/skills foi junto, sem lixeira); (2) -a codex com outra cópia de mesmo nome não remove nada e diz 'Successfully removed'; (3) pasta tirada sem tirar a linha do registro volta, espalhada, no próximo update -g.
+[exit=0]
