@@ -128,7 +128,7 @@ Verdict order:
 | 4 | `PARCIAL` | the reference is incomplete or invalid |
 | 3 | `REFERÊNCIA FORA DA META` | the reference is complete but misses the target |
 | 4 | `PARCIAL` | there is a `PARADA.txt`, a half-run candidate or an invalid run |
-| 0 | `ESCOLHIDO: <id>` | the candidate with the lowest median nominal cost meets the target in every run and costs `--limiar`% or less than the reference |
+| 0 | `ESCOLHIDO: <id>` | the candidate with the lowest median nominal cost meets the target in every run and costs at least `--limiar`% less than the reference |
 | 1 | `SEM GANHO MEDIDO` | no candidate meets the previous row |
 
 A candidate with an n/d cost is never the cheapest. "No measured gain" leaves the slot empty and does not count as

@@ -128,7 +128,7 @@ Ordem do veredito:
 | 4 | `PARCIAL` | a referência está incompleta ou inválida |
 | 3 | `REFERÊNCIA FORA DA META` | a referência está completa, mas não bate a meta |
 | 4 | `PARCIAL` | há `PARADA.txt`, candidato pela metade ou execução inválida |
-| 0 | `ESCOLHIDO: <id>` | o candidato de menor nominal mediano bate a meta em todas as execuções e custa `--limiar`% ou menos que a referência |
+| 0 | `ESCOLHIDO: <id>` | o candidato de menor nominal mediano bate a meta em todas as execuções e custa pelo menos `--limiar`% menos que a referência |
 | 1 | `SEM GANHO MEDIDO` | nenhum candidato atende o item anterior |
 
 Candidato com custo n/d nunca é o mais barato. "Sem ganho medido" deixa o slot vazio e não conta como economia.

@@ -40,7 +40,9 @@ Vale para todo papel despachado por esta escada: cartógrafo, revisor de governa
    minúsculas e hífen: `cartografo`, `revisor-governanca`, `avaliador`, `revisor-design`, `executor-drive`, `curador`)
    e `bash sdd/bin/sdd-fluxo.sh modelo <slot>`, com o
    `<slot>` do papel: `cartografo`, `avaliador` (modo `veredito`), `revisao_design` (modo `contrato` e revisor do
-   DESIGN), `executor` (executor do piloto) ou `curador`. O revisor de governança não tem slot.
+   DESIGN), `executor` (executor do piloto) ou `curador`. O revisor de governança não tem slot. O avaliador no modo
+   `contrato` despacha e marca como `revisor-design` (`despachar revisor-design {F} sdd/reports/briefs/BRIEF_revisor-design_{F}.md`),
+   para a parada dizer o modelo de `revisao_design` e o custo dele não se misturar ao do modo `veredito`.
 2. **Linha vazia** ⇒ despache como sempre, no modelo da sessão, sem dizer nada a mais. **Com valor** ⇒ passe-o como o
    modelo do subagente, se o seu agente deixa escolher o modelo de um subagente; se não deixa, diga em 1 linha que
    o papel vai rodar no modelo da sessão porque o agente não troca de modelo. No degrau de sessão nova, o

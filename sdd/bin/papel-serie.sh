@@ -61,7 +61,7 @@ for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
         _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
     except (AttributeError, ValueError):
         pass
-import hashlib, io, os, re, shutil, signal, subprocess, sys, tarfile, tempfile, time
+import atexit, hashlib, io, os, re, shutil, signal, subprocess, sys, tarfile, tempfile, time
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 
@@ -319,6 +319,51 @@ def custo_execucao(copia):
     return d
 
 
+# ── trava da pasta de medição (N1 da rodada 2): o teto é um só; duas séries ao mesmo tempo leriam o mesmo acumulado ──
+TRAVA = os.path.join(medicao, ".papel-serie.trava")
+
+
+def solta_trava():
+    if (ler(TRAVA) or "").split()[:1] == [str(os.getpid())]:
+        os.remove(TRAVA)
+
+
+def pega_trava():
+    for _ in range(2):
+        try:
+            fd = os.open(TRAVA, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            dono = (ler(TRAVA) or "").split()
+            pid = int(dono[0]) if dono and dono[0].isdigit() else 0
+            vivo = True
+            if os.name != "nt" and pid:   # no Windows, os.kill(pid, 0) encerraria o processo: a trava fica
+                try:
+                    os.kill(pid, 0)
+                except ProcessLookupError:
+                    vivo = False
+                except PermissionError:
+                    pass
+            if vivo:
+                uso("outra série roda nesta pasta de medição (%s, processo %s): o teto é um só, e nada foi chamado"
+                    % (TRAVA, pid or "?"), "espere ela terminar; se nenhuma série roda, apague a trava e rode de novo.")
+            os.remove(TRAVA)
+            continue
+        with os.fdopen(fd, "w") as h:
+            h.write("%d %s\n" % (os.getpid(), agora()))
+        atexit.register(solta_trava)
+        return
+    uso("não consegui pegar a trava %s" % TRAVA)
+
+
+pega_trava()
+
+
+def para_por_sinal(sig, _frame):
+    raise KeyboardInterrupt("sinal %d" % sig)
+
+
+signal.signal(signal.SIGTERM, para_por_sinal)   # R1 da rodada 2: SIGTERM também passa pelo except que mata o agente
+
 BASE = os.path.join(os.path.realpath(tempfile.gettempdir()),
                     "sdd-serie-" + hashlib.sha256(serie.encode("utf-8")).hexdigest()[:12])
 
@@ -364,6 +409,12 @@ def interrompidas_sem_custo():
 def executar(cand, caso, rep):
     pasta = os.path.join(serie, "execucoes", caso["nome"], cand["id"], str(rep))
     if os.path.isfile(os.path.join(pasta, "meta.txt")):
+        gravado = chaves(ler(os.path.join(pasta, "meta.txt"))).get("modelo", "")
+        if gravado and gravado != cand["modelo"]:
+            # N2 da rodada 2: pular seria medir o modelo novo com as respostas e o custo do antigo
+            uso("%s foi gravada com o modelo %s, e o candidatos.tsv diz %s para %s; nada foi chamado"
+                % (os.path.relpath(pasta, serie), gravado, cand["modelo"], cand["id"]),
+                "dê um id novo ao modelo novo no candidatos.tsv (ou mova a pasta execucoes/ do antigo) e rode de novo.")
         return
     pend = interrompidas_sem_custo()
     if pend:
@@ -435,16 +486,24 @@ def executar(cand, caso, rep):
     with open(saida_tmp, "wb") as out, open(os.path.join(trab, "stderr.txt"), "wb") as errf:
         p = subprocess.Popen([BASH, "-c", cmd], cwd=copia, env=env, stdout=out, stderr=errf,
                              stdin=subprocess.DEVNULL, start_new_session=(os.name != "nt"))
-        try:
-            rc_cmd = p.wait(timeout=TETO_S)
-        except subprocess.TimeoutExpired:
-            # LM-016: o teto vale pelo timeout do Python; o grupo inteiro só cai onde há sinal POSIX
+        def mata():
+            # LM-016: o grupo inteiro só cai onde há sinal POSIX
             try:
                 os.killpg(p.pid, signal.SIGKILL) if os.name != "nt" else p.kill()
             except OSError:
                 p.kill()
             p.wait()
+
+        try:
+            rc_cmd = p.wait(timeout=TETO_S)
+        except subprocess.TimeoutExpired:
+            mata()
             rc_cmd = 124
+        except BaseException:
+            # R1 da rodada 2: Ctrl-C ou SIGTERM na série mata o agente (sessão própria, o sinal não chega a ele); o
+            # inicio.txt fica, e a retomada mede o custo da interrompida já parada
+            mata()
+            raise
     seg = int(time.monotonic() - t0)
     subprocess.run([BASH, fr, "--snapshot", raiz, os.path.join(trab, "depois"), nada], capture_output=True)
     cmp = subprocess.run([BASH, fr, "--comparar", os.path.join(trab, "antes"), os.path.join(trab, "depois"), nada],

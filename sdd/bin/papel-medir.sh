@@ -56,6 +56,7 @@ for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
     except (AttributeError, ValueError):
         pass
 import os, re, subprocess, sys, tempfile
+from collections import Counter
 from decimal import Decimal, InvalidOperation
 
 BIN = os.environ["SDD_PAPEL_MEDIR_BIN"]
@@ -211,12 +212,12 @@ def tabela(bloco):
 
 # ── curador ─────────────────────────────────────────────────────────────────────────────────────────
 def delta_partes(linhas):
-    cont, refs, adds = set(), set(), []
+    cont, refs, adds = Counter(), set(), []   # contagem em multiconjunto (R3 da rodada 2): +1 repetido soma +2
     for d in linhas:
         d = d.strip().strip("`")
         m = CONTAGEM_RE.match(d)
         if m:
-            cont.add((m.group(1), m.group(2)))
+            cont[(m.group(1), m.group(2))] += 1
             continue
         m = MUDANCA_RE.match(d)
         if m:
@@ -242,9 +243,9 @@ def pontua_curador(caso, saida):
                 if l.strip() and not l.lstrip().startswith("#") and "promovido_para=" not in l]
     pc, pr, pa = delta_partes(propostos)
     ec, er, ea = delta_partes(esperado)
-    inter = len(pc & ec)
-    prec = Decimal(inter) / len(pc) if pc else Decimal(1)
-    rec = Decimal(inter) / len(ec) if ec else Decimal(1)
+    inter = sum((pc & ec).values())
+    prec = Decimal(inter) / sum(pc.values()) if pc else Decimal(1)
+    rec = Decimal(inter) / sum(ec.values()) if ec else Decimal(1)
     achados = len(pr & er) + sum(1 for s, sup in ea if any(ps == s and (psup & sup) for ps, psup in pa))
     total_mud = len(er) + len(ea)
     mud = Decimal(achados) / total_mud if total_mud else Decimal(1)
@@ -326,6 +327,13 @@ def series_de(cand):
                 faltam += 1
                 continue
             e = {"caso": caso, "rep": rep, "estado": meta.get("estado", "?"), "nominal": decimal(meta.get("nominal"))}
+            if e["estado"] == "ok" and meta.get("modelo") != cand["modelo"]:
+                # N2 da rodada 2: a execução gravada é de outro modelo (o candidatos.tsv mudou depois): não vale
+                e["estado"] = "invalida"
+                e.update(na_meta=False, motivo="gravada com o modelo %s, o candidatos.tsv diz %s"
+                         % (meta.get("modelo") or "?", cand["modelo"]))
+                out.append(e)
+                continue
             if e["estado"] != "ok":
                 e.update(na_meta=False, motivo="execução %s" % e["estado"])
             elif meta.get("rc", "") != "0":
