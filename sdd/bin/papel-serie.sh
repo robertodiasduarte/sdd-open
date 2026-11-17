@@ -344,6 +344,7 @@ TRAVA = os.path.join(medicao, ".papel-serie.trava")
 
 
 _TRAVA_FD = None
+TRAVA_BYTE = 1 << 30   # o byte travado no Windows (tests/test_f23b2_papeis.py trava o mesmo)
 
 
 def pega_trava():
@@ -353,7 +354,10 @@ def pega_trava():
     fd = os.open(TRAVA, os.O_RDWR | os.O_CREAT)
     try:
         if os.name == "nt":
+            # no Windows a trava é obrigatória: no byte 0, a foto do projeto não leria o arquivo e a fronteira falharia;
+            # trava-se um byte bem além do fim (o conteúdo, a linha do dono, segue legível)
             import msvcrt
+            os.lseek(fd, TRAVA_BYTE, 0)
             msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
         else:
             import fcntl

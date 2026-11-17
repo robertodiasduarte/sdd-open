@@ -768,6 +768,7 @@ class AT008AT011Executor(BaseSerie):
         try:
             if WINDOWS:
                 import msvcrt
+                os.lseek(fd, 1 << 30, 0)                             # o mesmo byte do TRAVA_BYTE do papel-serie.sh
                 msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
             else:
                 import fcntl
