@@ -219,7 +219,9 @@ dup_hash() {
     while IFS= read -r l; do printf '%s\t-> %s\n' "${l}" "$(readlink "${l}")"; done < "${DUP_TMP}/h.l"
   ) | git hash-object --no-filters --stdin
 }
-dup_real() { if [ -L "$1" ]; then (cd -P "$1" 2>/dev/null && pwd -P); else printf '%s' "$1"; fi; }
+# A pasta de verdade, com o caminho INTEIRO resolvido: atalho no fim (o do npx) ou no meio (~/.claude → dotfiles). O real
+# do plano vem de `cd -P` na pasta-mãe; resolver só o fim trataria a própria cópia como "a outra" (revisão, rodada 1, R2).
+dup_real() { if [ -d "$1" ]; then (cd -P "$1" 2>/dev/null && pwd -P); else printf '%s' "$1"; fi; }
 
 # Monta ${DUP_TMP}/plano.tsv (o texto canônico que a assinatura cobre). Registros, nesta ordem:
 #   C agente nome escopo rótulo caminho real versão origem chegada hash      (cada cópia de cada grupo)
@@ -242,7 +244,7 @@ dup_planejar() {
       for (i = 1; i <= 3; i++) { if (x[i] + 0 < y[i] + 0) return -1; if (x[i] + 0 > y[i] + 0) return 1 } return 0 }
     FILENAME ~ /hashes\.tsv$/ { hash[$1] = $2; next }
     FILENAME ~ /copias\.tsv$/ { usa[$1 "\t" $6 "\t" $5] = 1; caminhos[$5]++; if ($4 != $5) link_de[$5] = link_de[$5] "\t" $4
-                                todos[$1 "\t" $6] = todos[$1 "\t" $6] "\t" $5; ch_de[$5] = (ch_de[$5] == "" ? $9 : ch_de[$5]); next }
+                                todos[$1 "\t" $6] = todos[$1 "\t" $6] "\t" $5; ch_de[$5] = (ch_de[$5] == "" ? $9 : ch_de[$5]); vr[$5] = $7; next }
     { g = $1 "\t" $6; if (!(g in ng)) { ordem[++G] = g }
       i = ++ng[g]; ag[g] = $1; nm[g] = $6; es[g, i] = $2; ro[g, i] = $3; cm[g, i] = $4; re[g, i] = $5; ve[g, i] = $7; or[g, i] = $8; chg[g, i] = $9 }
     END {
@@ -276,16 +278,18 @@ dup_planejar() {
           tira[re[g, i]] = 1; tnome[re[g, i]] = nm[g]; tro[re[g, i]] = ro[g, i]; tch[re[g, i]] = chg[g, i]; tve[re[g, i]] = ve[g, i]
         }
       }
-      # nenhum agente pode ficar sem a skill neste projeto: um nome que sumiria de um agente sai do plano inteiro
+      # nenhum agente pode perder, neste projeto, a versão mais nova que tinha da skill: um nome em que isso
+      # aconteceria sai do plano inteiro (revisão, rodada 1, N1 — "qualquer cópia restante" deixava o Codex rebaixar)
       for (u in todos) {
-        split(u, p, "\t"); n = p[2]; resta = 0; nr = split(todos[u], rs, "\t")
-        for (q = 2; q <= nr; q++) if (!(rs[q] in tira)) resta = 1
+        split(u, p, "\t"); n = p[2]; resta = 0; nr = split(todos[u], rs, "\t"); mx = ""
+        for (q = 2; q <= nr; q++) if (vr[rs[q]] != "" && (mx == "" || cmp(vr[rs[q]], mx) > 0)) mx = vr[rs[q]]
+        for (q = 2; q <= nr; q++) if (!(rs[q] in tira) && (mx == "" || (vr[rs[q]] != "" && cmp(vr[rs[q]], mx) == 0))) resta = 1
         if (!resta && !(corta[n] == "claude")) corta[n] = p[1]   # o "for in" não tem ordem: o Claude vence, sempre igual
       }
       # o motivo vai em cada grupo daquele nome: o agente que ficaria sem a skill pode nem ter grupo (uma cópia só)
       for (k = 1; k <= G; k++) {
         g = ordem[k]; n = nm[g]
-        if (n in corta) print "D", ag[g], n, "nao", "-", "tirar deixaria o " (corta[n] == "claude" ? "Claude Code" : "Codex") " sem a " n " neste projeto"
+        if (n in corta) print "D", ag[g], n, "nao", "-", "tirar deixaria o " (corta[n] == "claude" ? "Claude Code" : "Codex") " sem a versão mais nova da " n " neste projeto"
       }
       for (r in tira) {
         n = tnome[r]
@@ -322,7 +326,7 @@ dup_plano_mostrar() {
     echo "✅ Nenhuma skill do SDD está duplicada para o mesmo agente. Nada a limpar."
     return 0
   fi
-  local i=0 ag n ag2 n2 tipo r mot linha c cm es ve k g nt mt h ags a
+  local i=0 ag n ag2 n2 tipo r mot linha c cm lk es ve k g nt mt h ags a
   echo "Plano de limpeza das skills duplicadas — nada mudou ainda."
   echo "(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)"
   while IFS="${DUP_TAB}" read -r ag n; do
@@ -341,9 +345,9 @@ EOF
         tirar)
           c="$(LC_ALL=C awk -F '\t' -v r="${r}" -v a="${ag}" '$5 == r && $1 == a' "${DUP_TMP}/copias.tsv" | head -1)"
           es="$(printf '%s' "${c}" | cut -f2)"; ve="$(printf '%s' "${c}" | cut -f7)"; cm="$(printf '%s' "${c}" | cut -f4)"
-          [ "${cm}" = "${r}" ] || cm="${cm} (atalho para ${r}: os dois saem juntos)"
-          if [ "${mot}" = "mais velha" ]; then echo "   Recomendo: tirar a $(dup_rotulo_escopo "${es}") ${cm} (${ve}, a mais velha)."
-          else echo "   Recomendo: tirar a $(dup_rotulo_escopo "${es}") ${cm} (${ve}: a mesma versão da que fica; sobra)."; fi
+          lk=""; [ "${cm}" = "${r}" ] || lk="; é atalho para ${r}, e os dois saem juntos"
+          if [ "${mot}" = "mais velha" ]; then echo "   Recomendo: tirar a $(dup_rotulo_escopo "${es}") ${cm} (${ve}, a mais velha${lk})."
+          else echo "   Recomendo: tirar a $(dup_rotulo_escopo "${es}") ${cm} (${ve}: a mesma versão da que fica; sobra${lk})."; fi
           [ "${es}" = global ] && echo "   Ela vale para todos os projetos deste computador: os que não têm cópia própria ficam sem a ${n}."
           ;;
       esac
@@ -451,7 +455,8 @@ dup_tirar_npx() {   # $1 real $2 nome $3 rótulo $4 versão $5 hash $6 agentes
     fi
   done
   mkdir -p "${DUP_L}/npx"
-  [ -f "${DUP_L}/npx/skill-lock.json" ] || cp -p "${lock}" "${DUP_L}/npx/skill-lock.json" 2>/dev/null
+  [ -f "${DUP_L}/npx/skill-lock.json" ] || cp -p "${lock}" "${DUP_L}/npx/skill-lock.json" 2>/dev/null   # o de antes de tudo: o desfazer
+  cp -p "${lock}" "${DUP_L}/npx/antes-$2.json" 2>/dev/null   # o de antes DESTE item: a falha dele devolve só este (R3)
   # a outra pasta de mesmo nome que o remove apagaria (medido): vai para a lixeira e volta logo depois
   for p in "${cg}" "${ga}"; do
     { [ -e "${p}" ] || [ -L "${p}" ]; } || continue
@@ -477,19 +482,27 @@ ${ligacoes}
 EOF
   depois="$(dup_retrato "$2")"
   dup_volta_protegidas || { DUP_ERRO="o npx rodou, mas não consegui devolver uma pasta protegida; rode o desfazer"; return 1; }
-  if [ "${saiu}" = 0 ]; then
-    dup_registro_devolve
-    rm -rf "${g}"
-    DUP_ERRO="o npx não tirou $1 (ele diz que outra ferramenta ainda usa esta skill); nada mudou nesta cópia"
-    return 1
-  fi
-  if [ "${antes}" != "${depois}" ]; then
-    mv "${g}" "$1" 2>/dev/null
-    while IFS="${DUP_TAB}" read -r p q; do [ -n "${p}" ] && ln -s "${q}" "${p}" 2>/dev/null; done <<EOF
+  if [ "${saiu}" = 0 ] || [ "${antes}" != "${depois}" ]; then
+    # Devolve o que saiu DESTE item, e só ele: a pasta (da cópia guardada, nunca apagada antes de voltar), os atalhos e o
+    # registro de antes deste item (revisão, rodada 1, R1 e R3).
+    if [ ! -e "$1" ]; then
+      mkdir -p "$(dirname "$1")" && mv "${g}" "$1" 2>/dev/null
+    elif [ "$(dup_hash "$1")" = "$5" ]; then
+      rm -rf "${g}"   # a cópia ficou no lugar, inteira: a guardada sobra
+    fi
+    while IFS="${DUP_TAB}" read -r p q; do
+      [ -n "${p}" ] || continue
+      { [ -e "${p}" ] || [ -L "${p}" ]; } || ln -s "${q}" "${p}" 2>/dev/null
+    done <<EOF
 ${ligacoes}
 EOF
-    dup_registro_devolve
-    DUP_ERRO="o npx mexeu numa pasta fora do plano; devolvi $1 e o registro; confira com o plano de novo"
+    dup_registro_devolve "${DUP_L}/npx/antes-$2.json"
+    if [ "${saiu}" = 0 ]; then
+      DUP_ERRO="o npx não tirou tudo de $1 (ele diz que outra ferramenta ainda usa esta skill); devolvi o que tinha saído"
+    else
+      a="$(diff <(printf '%s\n' "${antes}") <(printf '%s\n' "${depois}") | sed -n 's/^< //p' | cut -f1 | paste -sd, - | sed 's/,/, /g')"
+      DUP_ERRO="o npx mexeu numa pasta fora do plano (${a:-uma das cópias do projeto ou de ~/.codex}), que não passou pela lixeira; devolvi $1 e o registro; confira com o plano de novo"
+    fi
     return 1
   fi
   cksum < "${lock}" > "${DUP_L}/npx/depois.cksum" 2>/dev/null || : > "${DUP_L}/npx/depois.cksum"
@@ -508,10 +521,10 @@ dup_volta_protegidas() {
   rm -f "${DUP_L}/.protegidas"
   return "${ok}"
 }
-dup_registro_devolve() {
+dup_registro_devolve() {   # $1 = o registro guardado de antes do item
   local lock; lock="$(dup_registro_arquivo)"
-  [ -f "${DUP_L}/npx/skill-lock.json" ] || return 0
-  cmp -s "${DUP_L}/npx/skill-lock.json" "${lock}" 2>/dev/null || cp -p "${DUP_L}/npx/skill-lock.json" "${lock}"
+  [ -f "$1" ] || return 0
+  cmp -s "$1" "${lock}" 2>/dev/null || cp -p "$1" "${lock}"
 }
 
 # $1 = assinatura · $2 = o comando do checar.sh · $3 = a pasta desta skill (a cópia que está rodando sai por último)
@@ -539,7 +552,13 @@ dup_limpar() {
     return 2
   fi
   : > "${DUP_L}/.itens"
-  printf 'Cópias de skills tiradas por sdd-checar-ambiente --limpar em %s. Para devolver tudo: bash desfazer.sh\n' "${stamp}" > "${DUP_L}/LEIA.txt"
+  printf 'Cópias de skills tiradas por sdd-checar-ambiente --limpar em %s. O que ia sair: PLANO.txt. Para devolver tudo: bash desfazer.sh\n' "${stamp}" > "${DUP_L}/LEIA.txt"
+  # a lista inteira do que vai sair, antes da 1ª remoção: se a limpeza parar no meio, a lixeira diz o que faltou (R4)
+  { printf 'O que este --limpar vai tirar, na ordem do plano (assinatura %s), gravado antes da 1ª remoção:\n' "${sig}"
+    grep '^T	' "${DUP_TMP}/plano.tsv" | while IFS="${DUP_TAB}" read -r i r n ro mt ve h ags; do
+      if [ "${mt}" = npx ]; then printf -- '- %s (%s, sai pelo npx skills remove)\n' "${r}" "${ve}"
+      else printf -- '- %s (%s, movida para a lixeira)\n' "${r}" "${ve}"; fi
+    done; } > "${DUP_L}/PLANO.txt"
   dup_desfazer_grava
   # a cópia de onde este script roda sai por último (o bash já leu o que precisa; a pasta pode sumir depois)
   lista="$(grep '^T	' "${DUP_TMP}/plano.tsv" | LC_ALL=C awk -F '\t' -v eu="${eu}" '{ print ($2 == eu ? 1 : 0) "\t" $0 }' | LC_ALL=C sort -s -k1,1n | cut -f2-)"

@@ -39,7 +39,10 @@ echo "Successfully removed 1 skill(s)"
 case "${NPX_STUB:-apaga}" in
   nada) exit 0 ;;
   demais) rm -rf "${CODEX_HOME:-${HOME}/.codex}/skills/${n}" ;;
+  so-real) rm -rf "${HOME}/.agents/skills/${n}"; exit 0 ;;      # revisão R1: tira a pasta real e deixa o atalho
+  so-atalho) rm -f "${HOME}/.claude/skills/${n}"; exit 0 ;;     # revisão R1: tira o atalho e deixa a pasta real
 esac
+[ "${NPX_STUB_NADA:-}" = "${n}" ] && exit 0                     # revisão R3: esta skill o npx não tira
 rm -rf "${HOME}/.claude/skills/${n}" "${HOME}/.agents/skills/${n}"
 l="${HOME}/.agents/.skill-lock.json"
 [ -f "$l" ] && awk -v n="$n" '$0 ~ "^    \"" n "\": \\{" { p = 1 } !p { print } p && /^    \}/ { p = 0 }' "$l" > "$l.t" && mv "$l.t" "$l"
@@ -421,7 +424,7 @@ class AT007Matriz(Base):
             os.symlink("../../.agents/skills/sdd-kb", self.g_claude / "sdd-kb")
             self.registro("sdd-kb")
         out = self.caso(sem_saida)
-        self.assertIn("tirar deixaria o Claude Code sem a sdd-kb neste projeto", out)
+        self.assertIn("tirar deixaria o Claude Code sem a versão mais nova da sdd-kb neste projeto", out)
         self.assertNotIn("--limpar", out)
 
 
@@ -587,6 +590,89 @@ class AT009Limpar(Base):
         rc, des = self.desfazer(out)
         self.assertEqual(rc, 0, des)
         self.assertEqual(self.arvore(), antes)
+
+
+class RevisaoRodada1(Base):
+    """Achados da revisão do código, rodada 1 (claude revisa, codex audita): R1 a R4 e N1."""
+
+    def atalho_npx(self) -> None:
+        self.skill(self.g_agents, "sdd-kb", "2.2.1", "starter")
+        self.g_claude.mkdir(parents=True)
+        os.symlink("../../.agents/skills/sdd-kb", self.g_claude / "sdd-kb")
+        self.skill(self.proj / ".agents/skills", "sdd-kb", "2.2.3", "open")
+        self.skill(self.proj / ".claude/skills", "sdd-kb", "2.2.3", "open")
+        self.registro("sdd-kb")
+        self.commit()
+
+    @unittest.skipIf(WINDOWS, "atalho (symlink) no Windows pede privilégio; o npx de lá copia em vez de ligar")
+    def test_r1_npx_que_tira_so_a_pasta_real_devolve_tudo(self):
+        self.atalho_npx()
+        antes = self.arvore()
+        rc, out = self.limpar(NPX_STUB="so-real")
+        self.assertEqual(rc, 1, out)
+        self.assertEqual(self.arvore(), antes, "a cópia que o npx tirou não voltou da lixeira")
+
+    @unittest.skipIf(WINDOWS, "atalho (symlink) no Windows pede privilégio; o npx de lá copia em vez de ligar")
+    def test_r1_npx_que_tira_so_o_atalho_devolve_tudo(self):
+        self.atalho_npx()
+        antes = self.arvore()
+        rc, out = self.limpar(NPX_STUB="so-atalho")
+        self.assertEqual(rc, 1, out)
+        self.assertEqual(self.arvore(), antes, "o atalho que o npx tirou não voltou")
+
+    @unittest.skipIf(WINDOWS, "atalho (symlink) no Windows pede privilégio")
+    def test_r2_pasta_pessoal_por_atalho_nao_protege_a_propria_copia(self):
+        dot = self.tmp / "dotfiles" / "claude"
+        (dot / "skills").mkdir(parents=True)
+        os.symlink(dot, self.home / ".claude")
+        self.skill(self.g_claude, "sdd-kb", "2.2.1", "starter")   # npx só para o Claude Code: sem ~/.agents/skills
+        self.registro("sdd-kb")
+        self.skill(self.proj / ".claude/skills", "sdd-kb", "2.2.3", "open")
+        self.commit()
+        out, _ = self.plano()
+        self.assertIn("sai pelo npx skills remove sdd-kb -g -a claude-code -y.", out)
+        self.assertNotIn("também apagaria", out)
+        rc, out = self.limpar()
+        self.assertEqual(rc, 0, out)
+        self.assertFalse((dot / "skills/sdd-kb").exists(), "a cópia do plano foi protegida e voltou")
+
+    def dois_do_npx(self) -> None:
+        for s in ("sdd-brainstorm", "sdd-define"):
+            self.skill(self.g_agents, s, "2.5.0", "starter")
+            self.skill(self.proj / ".agents/skills", s, "2.6.0", "open")
+        self.registro("sdd-brainstorm", "sdd-define")
+        self.commit()
+
+    def test_r3_falha_no_2o_item_nao_devolve_o_registro_do_1o(self):
+        self.dois_do_npx()
+        rc, out = self.limpar(NPX_STUB_NADA="sdd-define")
+        self.assertEqual(rc, 1, out)
+        reg = (self.home / ".agents/.skill-lock.json").read_text(encoding="utf-8")
+        self.assertFalse((self.g_agents / "sdd-brainstorm").exists())
+        self.assertNotIn('"sdd-brainstorm"', reg, "a linha do item que saiu voltou ao registro")
+        self.assertIn('"sdd-define"', reg)
+        self.assertTrue((self.g_agents / "sdd-define/SKILL.md").is_file())
+
+    def test_r4_a_lista_do_que_vai_sair_fica_na_lixeira_antes_de_tirar(self):
+        self.dois_do_npx()
+        rc, out = self.limpar(NPX_STUB_NADA="sdd-define")
+        lix = next((self.home / ".sdd-lixeira").iterdir())
+        plano = (lix / "PLANO.txt").read_text(encoding="utf-8")
+        for s in ("sdd-brainstorm", "sdd-define"):
+            self.assertIn(str(self.g_agents / s), plano)
+
+    @unittest.skipIf(WINDOWS, "atalho (symlink) no Windows pede privilégio")
+    def test_n1_o_codex_nao_perde_a_versao_mais_nova(self):
+        self.skill(self.g_agents, "sdd-kb", "2.0.0", "starter")   # a global do npx, dos dois agentes
+        self.g_claude.mkdir(parents=True)
+        os.symlink("../../.agents/skills/sdd-kb", self.g_claude / "sdd-kb")
+        self.registro("sdd-kb")
+        self.skill(self.proj / ".claude/skills", "sdd-kb", "3.0.0", "open")   # Claude: a do projeto é a mais nova
+        self.skill(self.proj / ".agents/skills", "sdd-kb", "1.0.0", "open")   # Codex: a do projeto (no git) é a mais velha
+        self.commit()
+        out, _ = self.plano()
+        self.assertIn("tirar deixaria o Codex sem a versão mais nova da sdd-kb neste projeto", out)
+        self.assertNotIn("--limpar", out)
 
 
 class AT010Textos(Base):
