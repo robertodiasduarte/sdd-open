@@ -690,5 +690,74 @@ class Revisao3Textos(unittest.TestCase):
         self.assertIn("--recusar", LOTE)
 
 
+class Revisao4(Projeto):
+    """Rodada 4 da revisão do código (EXTERNAL_REVIEW_20261116-210442): vermelhos em 066bd78."""
+
+    def test_r2_codex_impressao_sem_evidencia_na_antiga_nao_tira_da_nova(self):
+        self.feature("FA")
+        d = self.r / "sdd/features/DESIGN_FA.md"
+        orig = d.read_text(encoding="utf-8")
+        d.write_text(orig + "\n", encoding="utf-8")       # 1ª publicação: DESIGN fora do commit ⇒ ausentes
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        [a] = self.entradas("FA")
+        d.write_text(orig, encoding="utf-8")
+        b = a.parent / "20991231T235959Z"                  # 2ª entrada, com o DESIGN commitado (paralela)
+        shutil.copytree(a, b)
+        shutil.copyfile(d, b / "DESIGN_FA.md")
+        (b / "ausentes.txt").unlink()
+        self.commit(self.r, "papel")
+        rc, out, err = self.cur("--conferir-entrada", str(b), "sdd/playbook.md")
+        stg = Path(re.search(r"(?m)^staging: (.+)$", out).group(1))
+        self.assertIn("DELTA LM-020 ajudou+1", (stg / "colheita.txt").read_text(encoding="utf-8"))
+
+    def test_r3_codex_registrar_duas_entradas_sobrepostas_grava_cada_impressao_uma_vez(self):
+        self.feature("FA")
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        [a] = self.entradas("FA")
+        b = a.parent / "20991231T235959Z"
+        shutil.copytree(a, b)
+        self.commit(self.r, "papel")
+        self.assertEqual(self.cur("--registrar", str(a), str(b))[0], 0)
+        texto = (self.r / "sdd/releases/FA/CURATOR-colhidos.txt").read_text(encoding="utf-8")
+        todas = [x for m in RE_FP.finditer(texto) for x in m.group(1).split(",")]
+        self.assertEqual(len(todas), len(set(todas)))
+
+
+class Revisao4Sandbox(Sandbox):
+    def test_r2_claude_sha_do_commit_publicado(self):
+        r = self.repo("p")
+        self.escreve(r, "README.md", "x\n")
+        self.commit(r, "base")
+        self.git(r, "branch", "-M", "main")
+        self.git(r, "checkout", "-q", "-b", "frente")
+        shutil.copytree(FX / "ledgers", r / "sdd/releases/PEDIDOS")
+        (r / "sdd/releases/PEDIDOS/s3_quebrado.yaml").unlink()
+        self.commit(r, "ledger na frente")
+        self.git(r, "checkout", "-q", "main")
+        self.git(r, "cherry-pick", "frente")
+        publicado = self.git(r, "rev-parse", "--short=7", "HEAD").strip()
+        self.git(r, "checkout", "-q", "frente")
+        rc, out, err = self.roda([PYTHON, FICHA, "PEDIDOS", "--ref", "main"], r)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn(publicado, (r / "sdd/handoffs/HANDOFF_PEDIDOS.md").read_text(encoding="utf-8"))
+
+    def test_r4_codex_mais_no_filtro_e_nao_sei(self):
+        p = Path(tempfile.mkdtemp(dir=str(self.tmp)))
+        (p / ".github/workflows").mkdir(parents=True)
+        (p / ".github/workflows/d.yml").write_text(
+            "name: deploy\non:\n  push:\n    branches: [main]\n    paths: ['sdd+/**']\njobs:\n  deploy:\n    runs-on: x\n"
+            "    steps:\n      - run: npx vercel deploy --prod\n", encoding="utf-8")
+        rc, out, err = self.roda([PYTHON, PAPEL, p, "--branch", "main", "sdd/handoffs/HANDOFF_X.md"], self.tmp)
+        self.assertEqual(rc, 2, out + err)
+
+    def test_textos_da_rodada_4(self):
+        rel = " ".join(RELEASE.split())
+        self.assertIn("`git cherry` que sai ≠ 0 ⇒ não apague", rel)                       # R1@claude
+        self.assertIn("ficha-publicado.py {F} --ref origin/{default_branch}", rel)        # R2@claude
+        self.assertIn("`data`, `estado`", rel)                                            # R3@claude
+        self.assertIn("remova o worktree temporário do aterrissamento", rel)              # R5@claude
+        self.assertIn("as aceitas também", " ".join(LOTE.split()))                        # R1@codex
+
+
 if __name__ == "__main__":
     unittest.main()

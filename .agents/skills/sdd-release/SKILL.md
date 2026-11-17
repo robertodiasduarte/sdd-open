@@ -182,7 +182,8 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
 2. **Versão** (se o projeto versiona): bump a partir da versão em `origin/{default_branch}`,
    não da branch local. Colisão → próxima livre.
 3. **Ledger** (dentro do commit atômico): `sdd/releases/{F}/{slice}_{versão-ou-data}.yaml` com
-   `feature_id`, `slice_id`, `versao`, `estado` (shipado | parcial | pausa), `dod`, `descricao`, `trilha` (do item 0) e a
+   `feature_id`, `slice_id`, `versao`, `data`, `estado` (shipado | parcial | pausa), `veredito`, `deploy` (no-op | real),
+   `dod`, `descricao`, `trilha` (do item 0) — o bloco Publicado da ficha sai desses campos — e a
    linha `review_externo:` da 0a item 8 (a que o `--conferir` imprimiu, ou a dispensa com motivo).
    Sem SHA (deriva do git). Arquivo novo a cada release: append-only. Ver `references/ledger.md`.
 4. **Commit atômico.** `git add <arquivos específicos>` — **nunca `-A`**. Confira
@@ -319,7 +320,8 @@ Toda mensagem daqui em diante diz que a publicação já terminou: uma espera se
     | outro (`64`, `126`, `127`…) | **não é "0 deltas"**: `Curadoria: FALHOU (rc=N)` na ficha, com a causa e o conserto |
     Depois, `bash sdd/bin/playbook-curator.sh --fila`: exit 10 ⇒ repasse a linha 🧹 em 1 frase no relatório final (a fila
     passou de 5 publicações), sem perguntar e sem rodar o lote; nada roda sozinho.
-14. **Ficha.** `python3 sdd/bin/ficha-publicado.py {F}` grava o bloco `## Publicado` da ficha a partir dos ledgers
+14. **Ficha.** `python3 sdd/bin/ficha-publicado.py {F} --ref origin/{default_branch}` (depois de um `git fetch`: o SHA é
+    o do commit publicado, não o da frente) grava o bloco `## Publicado` da ficha a partir dos ledgers
     (exit 2 ⇒ um ledger ilegível: a linha dele diz `n/d`; cite-o no relatório). Depois, pela `sdd-handoff`, você escreve
     **só** o que o ledger não diz: `## Falta` (pendências em 🐛 bug fix e ✨ melhoria, os avisos da Fase 0 que não
     abortaram), os alertas (as de segurança e a linha fixa `/sdd-seguranca app <URL>`: `references/seguranca.md`), a
@@ -340,11 +342,12 @@ Toda mensagem daqui em diante diz que a publicação já terminou: uma espera se
     (`git diff --cached --name-only` antes do commit): se ele disser `PUBLICA` ou `NAO_SEI` e o item 7 disse "não", o
     commit **não** é enviado (o OK não cobriu um deploy a mais): fica na branch da frente, e o relatório diz por quê e dá
     o comando de envio. Senão, `GIT_TERMINAL_PROMPT=0 git fetch`, aterrisse como no passo 5 e envie como no passo 8,
-    **sem nova pergunta**: o OK já cobriu o papel. Push recusado ou conflito que a regra do item 11 não resolve ⇒ o commit fica na branch da frente, sem
+    **sem nova pergunta**: o OK já cobriu o papel; depois, remova o worktree temporário do aterrissamento. Push recusado ou conflito que a regra do item 11 não resolve ⇒ o commit fica na branch da frente, sem
     `--force`, e o relatório final dá o comando de envio; nada é apagado no item 17.
 17. **Branch da frente.** Com o commit de papel em `origin/{default_branch}`: se a branch da frente existe no remoto
     (`git ls-remote --heads origin <branch>`) e já está toda integrada (a release aterrissa por cherry-pick, então o
-    teste é por conteúdo: `git cherry origin/{default_branch} origin/<branch>` sem nenhuma linha `+`), apague-a: `GIT_TERMINAL_PROMPT=0 git push origin --delete <branch>`, com a linha
+    teste é por conteúdo: `GIT_TERMINAL_PROMPT=0 git fetch origin <branch>` e `git cherry origin/{default_branch} origin/<branch>`
+    sem nenhuma linha `+`; `git cherry` que sai ≠ 0 ⇒ não apague, porque saída vazia de um comando que falhou não prova nada), apague-a: `GIT_TERMINAL_PROMPT=0 git push origin --delete <branch>`, com a linha
     de recibo e o comando que desfaz (`git push origin <sha>:refs/heads/<branch>`). Sobra linha `+` (commit que não
     entrou), ou o item 16 não enviou ⇒ não apague e diga por quê. A branch local e a worktree não se apagam de dentro dela: o relatório final
     dá o comando, rodado de fora (`git worktree remove "<pasta>"` e `git branch -d <branch>`).

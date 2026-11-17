@@ -7,9 +7,11 @@ toca mais nada. Rodar de novo dá o mesmo arquivo, byte a byte. O agente escreve
 "Falta", alertas e eventos.
 
 Uso:
-    python3 sdd/bin/ficha-publicado.py <FEATURE> [--ficha <arquivo>] [--releases <pasta>]
+    python3 sdd/bin/ficha-publicado.py <FEATURE> [--ficha <arquivo>] [--releases <pasta>] [--ref <ref>]
         --ficha     padrão sdd/handoffs/HANDOFF_<FEATURE>.md (criada com o mínimo se não existir)
         --releases  padrão sdd/releases/<FEATURE>
+        --ref       de onde vem o SHA (padrão HEAD); a release passa origin/<branch padrão>, porque ela aterrissa por
+                    cherry-pick e o commit publicado não é o da frente
 
 Linha: - <data> · <slice> · <versão> · <estado> · <veredito> · deploy <no-op|real> · trilha <curta|completa> · <sha>
 (a mais recente no topo; o sha é o do commit que trouxe o ledger, `git log --diff-filter=A`; sem git, `sha n/d`).
@@ -31,7 +33,7 @@ RE_INI = re.compile(r"<!-- publicado:inicio\b[^>]*-->")
 RE_FEATURE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$")
 RE_CHAVE = re.compile(r"^([a-z_]+):[ \t]*(.*?)[ \t]*$")
 CAMPOS = ("data", "slice_id", "versao", "estado", "veredito", "deploy", "trilha")
-USO = "uso: ficha-publicado.py <FEATURE> [--ficha <arquivo>] [--releases <pasta>]"
+USO = "uso: ficha-publicado.py <FEATURE> [--ficha <arquivo>] [--releases <pasta>] [--ref <ref>]"
 
 
 def fim(resultado, seta, canal=None):
@@ -81,9 +83,9 @@ def le_ledger(caminho):
     return d
 
 
-def sha_do(caminho, raiz):
+def sha_do(caminho, raiz, ref="HEAD"):
     try:
-        r = subprocess.run(["git", "log", "--diff-filter=A", "--format=%h", "-1", "--", caminho], cwd=raiz,
+        r = subprocess.run(["git", "log", "--diff-filter=A", "--format=%h", "-1", ref, "--", caminho], cwd=raiz,
                            capture_output=True, encoding="utf-8", errors="replace", stdin=subprocess.DEVNULL,
                            timeout=60)
     except (OSError, subprocess.SubprocessError):
@@ -98,7 +100,7 @@ def mostra(caminho, raiz):
     return os.path.basename(caminho) if rel.startswith("..") or os.path.isabs(rel) else rel.replace(os.sep, "/")
 
 
-def linhas_do_bloco(pasta, raiz):
+def linhas_do_bloco(pasta, raiz, ref="HEAD"):
     itens, ilegiveis = [], []
     for nome in sorted(os.listdir(pasta)):
         caminho = os.path.join(pasta, nome)
@@ -115,7 +117,7 @@ def linhas_do_bloco(pasta, raiz):
             partes.append(d["versao"])
         partes += [d.get("estado"), d.get("veredito") or "veredito n/d",
                    "deploy " + (d.get("deploy") or "n/d"), "trilha " + (d.get("trilha") or "completa"),
-                   sha_do(rel, raiz)]
+                   sha_do(rel, raiz, ref)]
         itens.append((d.get("data") or "", nome, "- " + " · ".join(partes)))
     # a mais recente no topo: data, depois o nome do arquivo (o ilegível, sem data, vai para o fim)
     itens.sort(key=lambda t: (t[0], t[1]), reverse=True)
@@ -153,10 +155,15 @@ def main(argv):
     if not RE_FEATURE.match(feature):
         return uso("FEATURE inválida: '%s'" % feature)
     ficha = releases = None
+    ref = "HEAD"
     while args:
-        if args[0] in ("--ficha", "--releases") and len(args) >= 2 and args[1]:
+        if args[0] in ("--ficha", "--releases", "--ref") and len(args) >= 2 and args[1]:
             if args[0] == "--ficha":
                 ficha = args[1]
+            elif args[0] == "--ref":
+                if args[1].startswith("-"):
+                    return uso("--ref inválida: " + args[1])
+                ref = args[1]
             else:
                 releases = args[1]
             args = args[2:]
@@ -174,7 +181,7 @@ def main(argv):
         print("⚠️ nenhum ledger em %s" % mostra(releases, raiz), file=sys.stderr)
         fim("SEM LEDGER", "a ficha não mudou; o bloco Publicado só existe depois do 1º ledger da feature.")
         return 1
-    linhas, ilegiveis = linhas_do_bloco(releases, raiz)
+    linhas, ilegiveis = linhas_do_bloco(releases, raiz, ref)
     try:
         if os.path.exists(ficha):
             with open(ficha, encoding="utf-8", newline="") as f:

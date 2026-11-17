@@ -24,14 +24,17 @@ class Curadoria(unittest.TestCase):
                 linha = next((ln for ln in pb.split("\n") if ln.startswith("- [%s]" % lm)), "")
                 self.assertIn(trecho, linha)
                 self.assertIn("**Do instead:**", linha)
-                self.assertIn("conf=2026-11-14", linha)
+                # o conf= nasceu 2026-11-14; uma curadoria que conta a lição o atualiza (F23B3: LM-028 em 2026-11-16)
+                self.assertRegex(linha, r"conf=2026-11-(1[4-9]|[23]\d)")
 
     def test_as_contagens_da_f17c_nao_foram_aplicadas(self):
         # Roberto, 2026-11-14: só as 2 lições entram; nenhuma lição antiga ganhou conf=2026-11-14
         pb = ler("sdd/playbook.md")
         # a curadoria da F16W (passo 0 da F16W2, mesmo dia) datou LM-012 e as 3 lições novas: descontadas aqui
         datadas = set(re.findall(r"^- \[(LM-\d+)\] .*conf=2026-11-14", pb, re.M))
-        self.assertEqual(sorted(datadas - {"LM-012", "LM-029", "LM-030", "LM-031"}), ["LM-027", "LM-028"])
+        # curadorias seguintes atualizam o conf= de quem elas contam (F23B3: LM-028 passou a 2026-11-16): a data pode
+        # sair das 2 lições, mas nenhuma outra lição antiga pode ter a data da F17c
+        self.assertLessEqual(datadas - {"LM-012", "LM-029", "LM-030", "LM-031"}, {"LM-027", "LM-028"})
 
 
 if __name__ == "__main__":

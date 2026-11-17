@@ -86,10 +86,11 @@ publicado.
    linha `inv` do curador, descartar com motivo, ou não aplicar a contagem). Lição antiga que já mordeu e
    nunca foi classificada aparece na colheita como `INV_PENDENTE` e pede o mesmo item, uma vez: sem a
    resposta, a trava do item 5 segura tudo, e aí registre `Curadoria: FALHOU (invariantes sem
-   classificação)`. Os itens aceitos entram no `lote-delta.txt`, menos a promoção: o delta `promovido_para=`
+   classificação)`. Os itens aceitos entram no `lote-delta-<entrada>.txt` da entrada de onde vieram (as aceitas também, não só as
+   AUTO: no envio, tirar uma entrada tira tudo o que veio dela) e, pela junção, no `lote-delta.txt`, menos a promoção: o delta `promovido_para=`
    só entra quando o mecanismo já está na branch padrão, então a promoção aceita vira pendência; as linhas de
    invariante aceitas (a `inv` do curador, o `ajuste:`, ou `REMOVER INV-nnn` / `REMOVER LM-nnn`), em
-   `lote-inv.txt`. Sem linha `PERGUNTA`, não há pergunta de regra.
+   `lote-inv-<entrada>.txt`, e pela junção em `lote-inv.txt`. Sem linha `PERGUNTA`, não há pergunta de regra.
 5. **Aplicar numa cópia e conferir 3 vezes — um `--aplicar` só para o lote inteiro.** Com `lote-delta.txt` e
    `lote-inv.txt` vazios (nada contado, nada aceito), pule este item e registre `Curadoria: nada aplicado`.
    `bash sdd/bin/playbook-curator.sh --aplicar "$TMPDIR/lote-delta.txt" sdd/playbook.md > "$TMPDIR/novo.md"`

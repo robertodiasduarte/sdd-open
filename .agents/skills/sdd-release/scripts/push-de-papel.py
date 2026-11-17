@@ -52,7 +52,7 @@ def glob_para_regex(p):
         elif p[i] == "?":
             out.append("[^/]")
             i += 1
-        elif p[i] in "[]{}":
+        elif p[i] in "[]{}+":   # classe, chaves e "+" (um ou mais do anterior): na dúvida, NAO_SEI, nunca NAO_PUBLICA
             raise ValueError("padrão com %s não suportado: %s" % (p[i], p))
         else:
             out.append(re.escape(p[i]))

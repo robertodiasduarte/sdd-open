@@ -1984,7 +1984,9 @@ def conferir_entrada(args):
         # entrada mais antiga da fila; nesta, sai como JA_JULGADO. Assim o lote nunca soma +2 por uma impressão.
         for _f, pe in entradas_da_fila(raiz, feature):
             if os.path.basename(pe) < nome and rc_da_entrada(pe) == 0 and not recusada(pe):
-                julgados |= fps_de(ler(os.path.join(pe, "colheita.txt")), True)
+                aus_antiga = os.path.join(pe, "ausentes.txt")   # sem evidência lá: quem tem a prova é esta
+                julgados |= fps_de(ler(os.path.join(pe, "colheita.txt")), True) - \
+                    (fps_de(ler(aus_antiga)) if os.path.isfile(aus_antiga) else set())
         if julgados:  # julgado noutra frente em paralelo: não conta de novo
             with open(os.path.join(stg, REGISTRO), "a", encoding="utf-8") as f:
                 f.write("já julgado · fp=%s\n" % ",".join(sorted(julgados)))
@@ -2066,8 +2068,9 @@ def registrar(args):
             if (os.path.basename(outra) < os.path.basename(pe) and rc_da_entrada(outra) == 0 and not recusada(outra)
                     and os.path.realpath(outra) not in registrando):
                 julgadas -= fps_de(ler(os.path.join(outra, "colheita.txt")), True)
-        linhas = ["julgado no lote · %s · fp=%s" % (os.path.basename(pe), ",".join(sorted(julgadas)))] if julgadas else []
         destino = os.path.join(raiz, "sdd", "releases", feature, REGISTRO)
+        julgadas -= fps_de(ler(destino)) if os.path.isfile(destino) else set()   # já registrada (nesta chamada inclusive)
+        linhas = ["julgado no lote · %s · fp=%s" % (os.path.basename(pe), ",".join(sorted(julgadas)))] if julgadas else []
         try:
             os.makedirs(os.path.dirname(destino), exist_ok=True)
             if linhas:
