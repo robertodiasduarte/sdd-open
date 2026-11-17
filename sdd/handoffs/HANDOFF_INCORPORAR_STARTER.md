@@ -26,7 +26,7 @@ versão e upgrade, fechou em 2026-11-15: v2.17.0, curadoria v2.17.1, starter v1.
 Roberto qual é a próxima frente: o Cronograma recomendado do plano está vazio. Push, merge, tag e Release pedem a frase
 "sdd-open autorizado"; push, PR e merge no sdd-starter pedem o OK próprio dele. Nada no repositório privado daqui.
 
-Leia primeiro (branch docs/incorporar-starter, worktree /Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16):
+Leia primeiro (branch docs/incorporar-starter, worktree /Users/robertoduarte/rdd-worktrees/sdd-open-docs):
 - PLANO_F4_F15_CONSOLIDADO.md → "Estado das frentes" e o "Cronograma recomendado"
 - HANDOFF_INCORPORAR_STARTER.md → a seção "2026-11-15 — F22" (Pendências e Alertas) e os Eventos de 15/11
 

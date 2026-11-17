@@ -15,7 +15,7 @@
 ## Estado das frentes — fonte única (atualizado em 2026-11-16)
 
 **Regra.** Esta tabela é a **única** fonte do estado das frentes do programa. Ela mora neste arquivo, na branch
-`docs/incorporar-starter`, e só é editada na worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16`
+`docs/incorporar-starter`, e só é editada na worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs`
 (o checkout dessa branch), com commit e push **na mesma sessão**. Qualquer outro documento (a ficha
 `sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md`, a ficha da F15 no repositório privado, a memória do agente)
 **aponta para cá** e não repete a lista. Frente com worktree própria de documentos (ex.: `docs/f15-slots`) guarda

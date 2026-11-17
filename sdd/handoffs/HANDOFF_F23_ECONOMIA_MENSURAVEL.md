@@ -135,7 +135,7 @@ ficou para redesenhar. Abra uma frente nova com a sdd-new-session, nascida de or
 Leia primeiro: sdd/handoffs/HANDOFF_F23_ECONOMIA_MENSURAVEL.md (Falta, Decisões, Casos e testes em aberto), o bloco 3
 do sdd/features/BRAINSTORM_F23_ECONOMIA_MENSURAVEL.md (Grupo A: A1 a A4, decisões ESCOPO-1, 2, 6 e 7) e a seção Sempre
 de sdd/playbook.md.
-Não faça: editar o plano fora da worktree sdd-open-docs-f16; corrigir direto no starter; pôr nome ou preço de modelo
+Não faça: editar o plano fora da worktree sdd-open-docs; corrigir direto no starter; pôr nome ou preço de modelo
 no pacote; número medido no repositório privado em documento do Open.
 Landmines: MANIFEST.txt para todo arquivo novo do pacote (LM-037); sdd-release no teto de 500 linhas (LM-038); teste
 que pergunta a plataforma usa as constantes de tests/apoio.py, nunca os.name (B2); série de medição numa caixa de

@@ -87,7 +87,7 @@ Retomar a feature F24_RELEASE_ENXUTA (publicada na v2.20.0; DoD fechado).
 
 Contexto: a sdd-release ficou curta depois do push (colheita enfileirada, commit de papel, uma parada só, ficha por
 acréscimo, trilha curta). Starter v1.5.25 publicado; curadoria julgada no 1º lote (2026-11-17).
-Pasta: /Users/robertoduarte/rdd-public/sdd-open (main) · documentos em /Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16 (docs/incorporar-starter).
+Pasta: /Users/robertoduarte/rdd-public/sdd-open (main) · documentos em /Users/robertoduarte/rdd-worktrees/sdd-open-docs (docs/incorporar-starter).
 Leia primeiro: sdd/handoffs/HANDOFF_F24_RELEASE_ENXUTA.md e sdd/releases/F24_RELEASE_ENXUTA/s1_v2.20.0.yaml (branch de documentos).
 
 Próxima ação: nenhuma pendência de entrega; só os ✨ de Casos e testes em aberto e a limpeza local.
