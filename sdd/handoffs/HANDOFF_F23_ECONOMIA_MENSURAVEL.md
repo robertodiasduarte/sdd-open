@@ -49,6 +49,7 @@
 2. ~~Fatia B2~~ — `v2.21.0`. **Próxima: Grupo A**, com `sdd-define` a partir do bloco 3 do BRAINSTORM.
 5. **Pendências da B2** (Casos e testes em aberto): meta do avaliador redesenhada; slot do curador preenchido localmente (escolha local, fora do pacote); casos de borda do executor das séries que a revisão deixou registrados; documentos da B2 na branch de documentos.
 3. **Pendências da B3** (Casos e testes em aberto): preço do modelo do codex conferido na fonte, fora do pacote; `test_checar` instável; versão do prompt no META; aviso de prompt v1 editado.
+6. **Curadoria da B2: na fila** (`sdd/curadoria/fila/F23B2_MODELO_POR_PAPEL/20261117T145821Z`, nesta branch: 24 deltas, 4 candidatos); o lote da `sdd-playbook` a julga.
 4. ~~Curadoria da B1~~ — `e1870e3` (LM-035, LM-036); ~~curadoria da B3~~ — `fb7ee82` na `main` (20 contagens, LM-037, refine da LM-011, LM-038).
 
 ## Definition of Done
