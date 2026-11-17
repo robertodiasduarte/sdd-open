@@ -47,6 +47,7 @@ rm -rf "${HOME}/.claude/skills/${n}" "${HOME}/.agents/skills/${n}"
 l="${HOME}/.agents/.skill-lock.json"
 [ -f "$l" ] && awk -v n="$n" '$0 ~ "^    \"" n "\": \\{" { p = 1 } !p { print } p && /^    \}/ { p = 0 }' "$l" > "$l.t" && mv "$l.t" "$l"
 [ "${NPX_STUB:-}" = interrompe ] && kill -KILL "${PPID}"          # revisão rodada 2, N2: a limpeza morre aqui
+[ -n "${NPX_STUB_INTERROMPE:-}" ] && [ "${NPX_STUB_INTERROMPE}" = "${n}" ] && kill -KILL "${PPID}"   # rodada 3, N1: só neste item
 exit 0
 """
 NPX_REAL = """#!/bin/sh
@@ -154,8 +155,8 @@ class Base(unittest.TestCase):
         return h.hexdigest()
 
     # ── execução ──
-    def roda(self, *args: str, **extra: str) -> tuple[int, str]:
-        r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.proj, capture_output=True, text=True, encoding="utf-8",
+    def roda(self, *args: str, cwd: Path | None = None, **extra: str) -> tuple[int, str]:
+        r = subprocess.run([BASH, str(SCRIPT), *args], cwd=cwd or self.proj, capture_output=True, text=True, encoding="utf-8",
                            errors="replace", env=self.env(**extra), stdin=subprocess.DEVNULL, timeout=120)
         return r.returncode, r.stdout + r.stderr
 
@@ -727,6 +728,50 @@ class RevisaoRodada2(Base):
         self.commit()
         antes = self.arvore()
         rc, out = self.limpar(NPX_STUB="interrompe")
+        self.assertNotEqual(rc, 0, out)
+        lix = next((self.home / ".sdd-lixeira").iterdir())
+        r = subprocess.run([BASH, str(lix / "desfazer.sh")], cwd=self.proj, capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", env=self.env(), timeout=60)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(self.arvore(), antes, "o desfazer não devolveu a árvore (o registro?)")
+
+
+class RevisaoRodada3(Base):
+    """Achados da revisão do código, rodada 3: R1 (pasta pessoal como pasta atual), R2 (texto da protegida), N1."""
+
+    def test_r1_na_pasta_pessoal_as_globais_nao_viram_do_projeto(self):
+        self.skill(self.g_agents, "sdd-kb", "2.2.1", "starter")
+        self.skill(self.home / ".codex/skills", "sdd-kb", "2.2.3", "open")
+        self.registro("sdd-kb")
+        rc, out = self.roda("--duplicadas", cwd=self.home)
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("do projeto:", out)
+        self.assertIn("global: %s/sdd-kb — versão 2.2.1, do starter, instalada pelo npx" % self.g_agents, out)
+        self.assertIn("Recomendo: tirar a global %s/sdd-kb (2.2.1, a mais velha)." % self.g_agents, out)
+
+    def test_r2_protegida_que_tambem_sai_no_plano(self):
+        self.skill(self.g_agents, "sdd-define", "2.8.0", "starter")          # Codex: a do npx é a mais velha
+        self.skill(self.g_claude, "sdd-define", "2.6.1", "open")             # Claude: a manual é a mais velha
+        self.skill(self.proj / ".agents/skills", "sdd-define", "2.9.0", "open")
+        self.skill(self.proj / ".claude/skills", "sdd-define", "2.9.0", "open")
+        self.registro("sdd-define")
+        self.commit()
+        out, _ = self.plano()
+        self.assertNotIn("que não está no plano", out)
+        self.assertIn("Esse comando também apagaria %s/sdd-define, que sai neste plano na vez dela" % self.g_claude, out)
+        rc, out = self.limpar()
+        self.assertEqual(rc, 0, out)
+        self.assertFalse((self.g_agents / "sdd-define").exists())
+        self.assertFalse((self.g_claude / "sdd-define").exists())
+
+    def test_n1_interrompida_no_2o_item_do_npx_desfaz_o_registro(self):
+        for s in ("sdd-brainstorm", "sdd-define"):
+            self.skill(self.g_agents, s, "2.5.0", "starter")
+            self.skill(self.proj / ".agents/skills", s, "2.6.0", "open")
+        self.registro("sdd-brainstorm", "sdd-define")
+        self.commit()
+        antes = self.arvore()
+        rc, out = self.limpar(NPX_STUB_INTERROMPE="sdd-define")
         self.assertNotEqual(rc, 0, out)
         lix = next((self.home / ".sdd-lixeira").iterdir())
         r = subprocess.run([BASH, str(lix / "desfazer.sh")], cwd=self.proj, capture_output=True, text=True, encoding="utf-8",

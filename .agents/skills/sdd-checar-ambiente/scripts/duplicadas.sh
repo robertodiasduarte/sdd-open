@@ -30,9 +30,13 @@ dup_agentes_global() { printf '%s/.agents/skills' "${HOME}"; }
 
 # agente · escopo · rótulo · pasta. A ordem é a de quem FICA no empate: o projeto, depois ~/.agents, ~/.claude, ~/.codex.
 dup_pastas() {
-  printf 'claude\tprojeto\tprojeto-claude\t%s\n' "${RAIZ}/.claude/skills"
-  printf 'codex\tprojeto\tprojeto-agents\t%s\n' "${RAIZ}/.agents/skills"
-  printf 'codex\tprojeto\tprojeto-codex\t%s\n' "${RAIZ}/.codex/skills"
+  # Rodado na própria pasta pessoal (fora de projeto), as pastas "do projeto" seriam as globais de novo: só as globais
+  # (revisão, rodada 3, R1).
+  if [ "$(cd -P "${RAIZ}" 2>/dev/null && pwd -P)" != "$(cd -P "${HOME}" 2>/dev/null && pwd -P)" ]; then
+    printf 'claude\tprojeto\tprojeto-claude\t%s\n' "${RAIZ}/.claude/skills"
+    printf 'codex\tprojeto\tprojeto-agents\t%s\n' "${RAIZ}/.agents/skills"
+    printf 'codex\tprojeto\tprojeto-codex\t%s\n' "${RAIZ}/.codex/skills"
+  fi
   printf 'codex\tglobal\thome-agents\t%s\n' "$(dup_agentes_global)"
   printf 'claude\tglobal\thome-claude\t%s\n' "$(dup_claude_global)"
   printf 'codex\tglobal\thome-codex\t%s\n' "${CODEX_HOME:-${HOME}/.codex}/skills"
@@ -380,7 +384,11 @@ EOF
     for c in "$(dup_claude_global)/${n}" "$(dup_agentes_global)/${n}"; do
       { [ -e "${c}" ] || [ -L "${c}" ]; } || continue
       [ "$(dup_real "${c}")" = "${r}" ] && continue
-      echo "  Esse comando também apagaria ${c}, que não está no plano: ela vai para a lixeira por um instante e volta ao lugar logo depois."
+      if grep '^T	' "${DUP_TMP}/plano.tsv" | cut -f2 | grep -qxF "$(dup_real "${c}")"; then
+        echo "  Esse comando também apagaria ${c}, que sai neste plano na vez dela: até lá, ela vai para a lixeira por um instante e volta ao lugar."
+      else
+        echo "  Esse comando também apagaria ${c}, que não está no plano: ela vai para a lixeira por um instante e volta ao lugar logo depois."
+      fi
     done
   done < <(grep '^T	' "${DUP_TMP}/plano.tsv")
   echo "Assinatura deste plano: $(dup_assinatura) (muda se qualquer cópia mudar)."
@@ -488,6 +496,10 @@ dup_tirar_npx() {   # $1 real $2 nome $3 rótulo $4 versão $5 hash $6 agentes
   # shellcheck disable=SC2086
   # HOME explícito: o npx tem de agir na mesma pasta pessoal que o plano leu (um HOME não exportado faria o node cair na
   # pasta pessoal do sistema)
+  # antes do npx, o resumo fica vazio: se a limpeza morrer durante ou logo depois dele, o desfazer devolve o registro
+  # guardado (com 2 itens do npx, o resumo do 1º não pode valer para o 2º — revisão, rodada 3, N1)
+  : > "${DUP_L}/npx/depois.cksum"
+  dup_desfazer_grava
   HOME="${HOME}" "${SDD_CHECAR_NPX:-npx}" --yes skills remove "$2" -g ${args} -y </dev/null > "${DUP_L}/npx/remove-$2.log" 2>&1
   # o registro que o npx deixou, anotado logo: o desfazer só o troca pelo guardado se ninguém mexeu nele depois (N2)
   cksum < "${lock}" > "${DUP_L}/npx/depois.cksum" 2>/dev/null || : > "${DUP_L}/npx/depois.cksum"
