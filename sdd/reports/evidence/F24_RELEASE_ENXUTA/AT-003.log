@@ -1,0 +1,9 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT003_Lote)   # HEAD 017f09a
+test_dois_candidatos_de_entradas_diferentes_saem_com_ids_seguidos (test_f24_release_enxuta.AT003_Lote.test_dois_candidatos_de_entradas_diferentes_saem_com_ids_seguidos) ... ok
+test_o_lote_tem_as_garantias (test_f24_release_enxuta.AT003_Lote.test_o_lote_tem_as_garantias) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.965s
+
+OK
+[exit=0]

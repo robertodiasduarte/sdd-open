@@ -1,0 +1,7 @@
+$ (árvore de 55ca3fc com as trocas do starter de origin/main) cd tests && python3 -B -m unittest test_gerar_starter.Gera.test_at001_gera_as_18_e_nao_toca_no_resto
+AssertionError: 65 != 0 : 🛑 o lint do init achou 3 citação(ões) a arquivo que só o init cria:
+  skills/sdd-handoff/SKILL.md:111: sdd/bin/
+  skills/sdd-handoff/references/HANDOFF_TEMPLATE.md:20: sdd/bin/
+  skills/sdd-handoff/references/HANDOFF_TEMPLATE.md:23: sdd/bin/
+FAILED (failures=1)
+[exit=1]

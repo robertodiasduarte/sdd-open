@@ -1,0 +1,5 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O --enfileirar omite documentos principais não commitados da fila e não emite o aviso ⚠️ esperado pela skill, causando perda silenciosa de lições."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "A skill mapeia STAGING SEM DOCUMENTOS sempre para 0 deltas, perdendo a verificação de falha por nome de feature errado em trilhas completas."}
+{"achado": "R3", "veredito": "AGREE", "justificativa": "Impressões da entrada mais antiga são marcadas como julgadas pelo --registrar da mais nova; se a mais antiga for recusada, essas impressões nunca serão julgadas."}
+{"achado": "R4", "veredito": "AGREE", "justificativa": "O diretório da fronteira e o brief são por feature, causando sobrescrita de selo, snapshot e conferido.txt ao processar múltiplas entradas da mesma feature."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": ".agents/skills/sdd-playbook/references/lote.md", "linha": 43, "resumo": "O lote manda fazer git checkout -- em caso de contaminação, o que destrói alterações não commitadas do usuário no playbook e invariantes."}

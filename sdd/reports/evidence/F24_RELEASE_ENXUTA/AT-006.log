@@ -1,0 +1,10 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT006_CommitDePapel)   # HEAD 017f09a
+test_matriz (test_f24_release_enxuta.AT006_CommitDePapel.test_matriz) ... ok
+test_o_ok_diz_e_o_papel_sobe_sem_pergunta (test_f24_release_enxuta.AT006_CommitDePapel.test_o_ok_diz_e_o_papel_sobe_sem_pergunta) ... ok
+test_sem_o_vizinho_e_uso_nunca_nao_publica (test_f24_release_enxuta.AT006_CommitDePapel.test_sem_o_vizinho_e_uso_nunca_nao_publica) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.215s
+
+OK
+[exit=0]

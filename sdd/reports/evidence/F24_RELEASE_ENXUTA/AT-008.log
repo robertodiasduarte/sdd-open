@@ -1,0 +1,10 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT008_FichaPorAcrescimo)   # HEAD 017f09a
+test_o_agente_escreve_so_o_que_o_ledger_nao_diz (test_f24_release_enxuta.AT008_FichaPorAcrescimo.test_o_agente_escreve_so_o_que_o_ledger_nao_diz) ... ok
+test_sem_ledger_nao_grava (test_f24_release_enxuta.AT008_FichaPorAcrescimo.test_sem_ledger_nao_grava) ... ok
+test_uma_linha_por_ledger_idempotente_e_resto_intacto (test_f24_release_enxuta.AT008_FichaPorAcrescimo.test_uma_linha_por_ledger_idempotente_e_resto_intacto) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.355s
+
+OK
+[exit=0]

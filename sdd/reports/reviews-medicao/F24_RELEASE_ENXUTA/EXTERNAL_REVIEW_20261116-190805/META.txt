@@ -1,0 +1,46 @@
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f24-release-enxuta
+branch                  : feat/f24-release-enxuta
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : ef217b985c1b2ab225c2fe03450ae7d2f0f68ae5
+head                    : ef217b985c1b2ab225c2fe03450ae7d2f0f68ae5
+paths                   : sdd/features/DEFINE_F24_RELEASE_ENXUTA.md sdd/features/DESIGN_F24_RELEASE_ENXUTA.md
+diff_sha256             : c4001848a61a0ee8aa213f32de8778932f0aeea6db2d611bad4eff6dd2be3260
+diff                    : 59KB (2 arquivo(s))
+contexto                : 58KB (2 doc SDD)
+docs_sdd                : DEFINE_F24_RELEASE_ENXUTA.md, DESIGN_F24_RELEASE_ENXUTA.md
+contexto_cortado        : -
+diversidade             : -
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 168
+reviewer_achados        : 7
+reviewer_tokens_entrada : 60339
+reviewer_tokens_saida   : 18114
+reviewer_tokens_total   : 78453
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 0.8457
+revisor1_raso           : nao
+gatilho_2o_revisor      : diff sem gatilho de risco — 1 revisor
+revisor2_engine         : -
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : falha de credencial em openrouter:qwen/qwen3.7-plus
+auditor_exit            : 65
+auditor_segundos        : 0
+auditor_vereditos       : 0
+auditor_tokens_entrada  : n/d
+auditor_tokens_saida    : n/d
+auditor_tokens_total    : n/d
+auditor_modelo          : qwen/qwen3.7-plus
+auditor_custo           : $?
+convergencia_1o_passe   : n/a (auditor falhou)
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 0.8457 (+ 1 papel(is) com custo $?)
+quando                  : 20261116-190805

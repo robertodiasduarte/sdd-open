@@ -1,0 +1,9 @@
+$ (código de 22caf6b, com os testes novos) cd tests && python3 -B -m unittest test_f24_release_enxuta.Revisao2 test_f24_release_enxuta.Revisao2Textos
+FAIL: test_r1_documento_sem_commit_avisa_e_nao_vira_julgado (test_f24_release_enxuta.Revisao2.test_r1_documento_sem_commit_avisa_e_nao_vira_julgado)
+FAIL: test_r3_impressao_da_entrada_mais_antiga_nao_e_registrada_pela_nova (test_f24_release_enxuta.Revisao2.test_r3_impressao_da_entrada_mais_antiga_nao_e_registrada_pela_nova)
+FAIL: test_n1_o_lote_comeca_com_o_playbook_limpo (test_f24_release_enxuta.Revisao2Textos.test_n1_o_lote_comeca_com_o_playbook_limpo)
+FAIL: test_r2_sem_documentos_na_trilha_completa_e_falha (test_f24_release_enxuta.Revisao2Textos.test_r2_sem_documentos_na_trilha_completa_e_falha)
+FAIL: test_r4_brief_e_fronteira_por_entrada (test_f24_release_enxuta.Revisao2Textos.test_r4_brief_e_fronteira_por_entrada)
+Ran 5 tests in 0.618s
+FAILED (failures=5)
+[exit=1]

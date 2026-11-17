@@ -1,0 +1,11 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT001_SoColhe)   # HEAD 017f09a
+test_a_release_so_colhe (test_f24_release_enxuta.AT001_SoColhe.test_a_release_so_colhe) ... ok
+test_colheita_que_falha_fica_na_fila_marcada_e_nunca_e_zero_deltas (test_f24_release_enxuta.AT001_SoColhe.test_colheita_que_falha_fica_na_fila_marcada_e_nunca_e_zero_deltas) ... ok
+test_enfileirar_grava_a_entrada_e_nao_mexe_no_playbook (test_f24_release_enxuta.AT001_SoColhe.test_enfileirar_grava_a_entrada_e_nao_mexe_no_playbook) ... ok
+test_sem_documentos_e_nada_a_colher_nao_gravam_entrada (test_f24_release_enxuta.AT001_SoColhe.test_sem_documentos_e_nada_a_colher_nao_gravam_entrada) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.772s
+
+OK
+[exit=0]

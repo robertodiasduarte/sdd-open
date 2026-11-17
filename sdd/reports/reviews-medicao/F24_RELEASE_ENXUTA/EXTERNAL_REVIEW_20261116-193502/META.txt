@@ -1,0 +1,58 @@
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f24-release-enxuta
+branch                  : feat/f24-release-enxuta
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : ef217b985c1b2ab225c2fe03450ae7d2f0f68ae5
+head                    : 45bf1fe8d2dea3e9d540a3f1003ceeecc74f1ccb
+paths                   : -
+diff_sha256             : a72550cfda166423fe342a10da975de3b10646ad1f28798fc5982d2147e7ba42
+diff                    : 200KB (44 arquivo(s))
+contexto                : 63KB (2 doc SDD)
+docs_sdd                : DEFINE_F24_RELEASE_ENXUTA.md, DESIGN_F24_RELEASE_ENXUTA.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 341
+reviewer_achados        : 7
+reviewer_tokens_entrada : 132048
+reviewer_tokens_saida   : 36574
+reviewer_tokens_total   : 168622
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 1.8401
+revisor1_raso           : nao
+gatilho_2o_revisor      : 44 arquivos (limiar 8)
+revisor2_engine         : codex
+revisor2_engine_default : codex
+revisor2_engine_efetivo : codex
+revisor2_fallback_usado : nao
+revisor2_motivo         : -
+revisor2_exit           : 0
+revisor2_segundos       : 262
+revisor2_achados        : 7
+revisor2_tokens_entrada : 106435
+revisor2_tokens_saida   : 9258
+revisor2_tokens_total   : 115693
+revisor2_modelo         : -
+revisor2_custo          : assinatura
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 201
+auditor_vereditos       : 14
+auditor_tokens_entrada  : 92682
+auditor_tokens_saida    : 12176
+auditor_tokens_total    : 104858
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0452
+convergencia_1o_passe   : nao
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 1.8853
+quando                  : 20261116-193502

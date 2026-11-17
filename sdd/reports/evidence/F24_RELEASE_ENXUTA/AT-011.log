@@ -1,0 +1,11 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT011_DepoisDoPush)   # HEAD 017f09a
+test_a_skill_manda_uma_frase_por_etapa (test_f24_release_enxuta.AT011_DepoisDoPush.test_a_skill_manda_uma_frase_por_etapa) ... ok
+test_cada_linha_tem_as_4_colunas_sem_numero_de_passo (test_f24_release_enxuta.AT011_DepoisDoPush.test_cada_linha_tem_as_4_colunas_sem_numero_de_passo) ... ok
+test_controle_da_extracao (test_f24_release_enxuta.AT011_DepoisDoPush.test_controle_da_extracao) ... ok
+test_toda_etapa_tem_linha_e_toda_linha_tem_etapa (test_f24_release_enxuta.AT011_DepoisDoPush.test_toda_etapa_tem_linha_e_toda_linha_tem_etapa) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+[exit=0]
