@@ -20,7 +20,7 @@ import time
 import unittest
 from pathlib import Path
 
-from apoio import BASH, PYTHON, RAIZ, SEM_SINAL, Sandbox
+from apoio import BASH, PYTHON, RAIZ, SEM_SINAL, WINDOWS, Sandbox
 
 FLUXO = RAIZ / "sdd/bin/sdd-fluxo.sh"
 MARCA = RAIZ / "sdd/bin/marca-fase.sh"
@@ -702,7 +702,7 @@ class AT008AT011Executor(BaseSerie):
         trava.write_text("99999 antes\n", encoding="utf-8")       # arquivo velho, sem ninguém segurando: não trava
         fd = os.open(str(trava), os.O_RDWR)
         try:
-            if os.name == "nt":
+            if WINDOWS:
                 import msvcrt
                 msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
             else:
