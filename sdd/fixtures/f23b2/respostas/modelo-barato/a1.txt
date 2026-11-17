@@ -1,0 +1,9 @@
+<<<AVALIACAO
+VEREDITO: NEEDS_WORK — o AT-002 não passa
+| AT | Sonda | Esperado | Observado | Resultado |
+|---|---|---|---|---|
+| AT-001 | `bash x.sh` | exit 0 | exit 0 | ✅ PASS |
+| AT-002 | `bash y.sh` | exit 2 | exit 0 | PASS |
+| AT-003 | `bash z.sh` | texto | texto | **PASS** |
+ACHADOS: 1. AT-002: a recusa não acontece (reprodução: bash y.sh).
+>>>

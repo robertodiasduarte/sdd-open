@@ -1,0 +1,15 @@
+Li a colheita e julguei cada linha.
+
+<<<CURADORIA
+FEATURE: F99 · colheita: 2 deltas / 1 candidatos / 0 rejeitados / 1 promoções / 0 sugestões · staging: /tmp/x
+| # | Tipo | LM | Delta | Evidência | Em linguagem simples | Recomendação |
+|---|------|----|-------|-----------|----------------------|--------------|
+| 1 | contador | LM-001 | LM-001 ajudou+1 | DESIGN_F99.md:10 (✔ tratado) | O aviso foi seguido. | AUTO |
+| 2 | contador | LM-002 | LM-002 ajudou+1 | DESIGN_F99.md:11 (✔ tratado) | O aviso foi seguido. | AUTO |
+| 3 | add | LM-004 | ADD Reviews / harness :: sup: `termo-a` `termo-c` :: Regra nova inventada. **Do instead:** ação nova. → ficha: — · promovido_para: — | BUILD_REPORT_F99.md:5 | Guardar a lição avisa. | DESCARTAR (repetida) |
+| 4 | promover | LM-003 | LM-003 promovido_para=sdd/bin/x.sh | mordeu=2 | Virar trava evita a 3ª vez. | PERGUNTA OBRIGATÓRIA |
+REJEITADOS: nenhum
+NAO_JULGADO: nenhum
+IGNORADOS/JA_COLHIDOS: nenhum
+CONTAMINAÇÃO: não
+>>>

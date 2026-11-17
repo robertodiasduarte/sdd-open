@@ -141,6 +141,26 @@ prompts:
   # varredura vê só os sinais genéricos, e avisa disso.
   wrapper_pattern: ""
 
+# Modelo por papel (docs/model-per-role.md). Cada papel que roda em contexto fresco pode rodar num modelo mais barato
+# que o da sessão, mas só depois de medir: o papel-medir.sh aponta o mais barato que bate a meta num gabarito do seu
+# projeto. Vazio = o modelo da sessão (o comportamento de sempre). O valor é o nome que o SEU agente aceita para o
+# modelo, como texto opaco (começa por letra ou número; depois letras, números e . _ : / -; até 80 caracteres): o
+# pacote não traz nome nem preço de modelo. Lido por sdd/bin/sdd-fluxo.sh modelo <papel>.
+papeis:
+  # curador do playbook (sdd-release, curadoria)
+  curador: ""
+  # avaliador de contexto fresco, modo veredito (sdd-build)
+  avaliador: ""
+  # avaliador no modo contrato e revisor do DESIGN em sessão nova
+  revisao_design: ""
+  # cartógrafo do domínio (sdd-define)
+  cartografo: ""
+  # executor do piloto (sdd-drive)
+  executor: ""
+  # comando que o papel-serie.sh roda para medir um candidato: bash -c na cópia do caso, com SDD_MODELO, SDD_BRIEF,
+  # SDD_PAPEL, SDD_CASO e SDD_REP. Vazio = passe --cmd. Exemplos em docs/model-per-role.md.
+  serie_cmd: ""
+
 # Aviso de versão nova: o doctor, a abertura de frente (sdd-new-session) e a release (sdd-release) consultam, sem
 # token e com teto de 5 s, se saiu versão nova do SDD Open (git ls-remote do repositório público; nada do projeto é
 # enviado). false desliga aqui, para o projeto todo; SDD_OPEN_CHECK_UPDATES=0 desliga só naquele terminal.

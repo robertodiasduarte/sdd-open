@@ -262,6 +262,13 @@ fase), revisão (nominal, ou `n/d` sem `META.txt`), rodadas de revisão e achado
 pela coluna `Sessões`, que existe dos dois lados. Exits: `0` MEDIDO · `2` SEM DADOS · `64` uso. Nunca chama
 modelo e nunca usa rede.
 
+Um papel despachado em contexto fresco (avaliador, curador, cartógrafo…) ganha marca própria, `papel-<papel>`, em
+volta do despacho. A marca de papel não abre nem fecha fase. O relatório mostra cada papel numa sub-linha
+`↳ papel <nome> · <modelos>` abaixo das fases, e a sub-linha fica **fora do total**, porque essas mensagens já estão na
+fase delas. O `--execucao <pasta>` imprime, em linhas `chave=valor`, o custo de uma execução cuja pasta de trabalho foi
+`<pasta>`; o `papel-serie.sh` o usa para medir cada execução. Como escolher um modelo mais barato por papel:
+[model-per-role.md](model-per-role.md).
+
 ## Limites
 
 - As engines veem só o diff e o contexto SDD: não veem produção, o banco nem um deploy feito fora do git.

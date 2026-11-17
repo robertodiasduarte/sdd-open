@@ -124,8 +124,8 @@ class Build(unittest.TestCase):
 
     def test_versao_e_4b(self):
         txt = ler(BUILD)
-        self.assertIn('version: "2.12.0"', txt)
-        self.assertIn("`sdd-build v2.12.0 · nov/2026", txt)
+        self.assertIn('version: "2.13.0"', txt)
+        self.assertIn("`sdd-build v2.13.0 · nov/2026", txt)
         passo = entre(txt, "### 4b. Migration", "### 5.")
         self.assertIn("schema.check_cmd", passo)
 

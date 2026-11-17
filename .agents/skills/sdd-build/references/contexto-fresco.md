@@ -30,6 +30,26 @@ ordem de preferência:
 ⛔ O brief **não** leva BUILD_REPORT, diff, resumo do que foi feito, nem hipóteses do build.
 Se vier, o avaliador registra `CONTAMINAÇÃO` e o veredito perde valor.
 
+## Modelo do papel e marca de papel
+
+Vale para todo papel despachado por esta escada: cartógrafo, revisor de governança, avaliador (modos `contrato` e
+`veredito`), revisor do DESIGN, executor do piloto e curador.
+
+1. **Antes do despacho**, marque o início do papel e leia o modelo dele:
+   `bash sdd/bin/marca-fase.sh inicio papel-<papel> <FEATURE>` e `bash sdd/bin/sdd-fluxo.sh modelo <slot>`, com o
+   `<slot>` do papel: `cartografo`, `avaliador` (modo `veredito`), `revisao_design` (modo `contrato` e revisor do
+   DESIGN), `executor` (executor do piloto) ou `curador`. O revisor de governança não tem slot.
+2. **Linha vazia** ⇒ despache como sempre, no modelo da sessão, sem dizer nada a mais. **Com valor** ⇒ passe-o como o
+   modelo do subagente, se o seu agente deixa escolher o modelo de um subagente; se não deixa, diga em 1 linha que
+   o papel vai rodar no modelo da sessão porque o agente não troca de modelo. No degrau de sessão nova, o
+   `despachar` já diz à pessoa qual modelo abrir. **Exit 64** ⇒ o slot está inválido: repasse a mensagem e não
+   despache até a pessoa corrigir `sdd/config.yaml`.
+3. **Na volta do bloco**, `bash sdd/bin/marca-fase.sh fim papel-<papel> <FEATURE>`.
+
+Por que: o slot só é preenchido depois de medir (`docs/model-per-role.md`: o `papel-medir.sh` aponta o modelo mais
+barato que bate a meta num gabarito do projeto), e a marca de papel faz o `custo-feature.sh` mostrar quanto cada papel
+custou e em que modelo rodou, sem contar duas vezes na fase.
+
 ## Brief — modo `contrato` (antes de codar, ≥2 camadas)
 
 ```text
