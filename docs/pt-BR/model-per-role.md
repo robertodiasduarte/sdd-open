@@ -97,7 +97,10 @@ O `papel-serie.sh`:
 
 Para retomar, rode o mesmo comando:
 - o que já tem `meta.txt` é pulado;
-- a execução interrompida tem o custo somado antes de ser refeita, numa pasta de cópia nova (o registro de sessão
+- a execução inválida fica guardada como `invalida-N.txt` (o custo continua no acumulado) e é refeita;
+- a execução interrompida tem o projeto conferido contra a foto de antes dela (escrita fora da cópia, ou uma edição
+  sua nesse meio-tempo, para com exit 21 e os caminhos) e o custo somado antes de ser refeita, numa pasta de cópia
+  nova (o registro de sessão
   do agente é por pasta, então a refeita não é cobrada duas vezes);
 - o `PARADA.txt` anterior vai para `paradas/`.
 

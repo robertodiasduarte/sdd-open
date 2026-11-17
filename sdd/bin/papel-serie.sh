@@ -26,7 +26,9 @@
 #       0 COMPLETA · 20 PARADO PELO TETO · 21 FRONTEIRA (execução inválida) · 22 REFERÊNCIA FORA DA META · 64 uso
 #         (também a referência que o papel-medir.sh não conferiu, com PARADA.txt)
 #       Retomar = rodar o mesmo comando: o que tem meta.txt é pulado; a execução interrompida (inicio.txt sem
-#       meta.txt) tem o custo medido e somado antes de ser refeita; o PARADA.txt anterior vai para paradas/.
+#       meta.txt) tem a fronteira conferida contra a foto de antes (FORA ⇒ 21) e o custo medido e somado antes de ser
+#       refeita; a inválida vira invalida-N.txt (o custo fica no acumulado) e é refeita; o PARADA.txt anterior vai
+#       para paradas/.
 # USO-FIM
 #
 # ⚠️ bash 3.2 (o /bin/bash do macOS) · núcleo em Python 3.9 stdlib. Só roda dentro de um repositório git.
@@ -241,12 +243,12 @@ if not cmd:
 
 # ── acumulado da medição inteira (R1 da revisão D1) ──────────────────────────────────────────────────
 def registros():
-    """Todo meta.txt e interrompida-*.txt da pasta de medição: [(arquivo, dict)]."""
+    """Todo meta.txt, interrompida-*.txt e invalida-*.txt da pasta de medição: [(arquivo, dict)]."""
     out = []
     for raiz_d, dirs, arqs in os.walk(medicao):
         dirs.sort()
         for a in sorted(arqs):
-            if a == "meta.txt" or (a.startswith("interrompida-") and a.endswith(".txt")):
+            if a == "meta.txt" or (a.startswith(("interrompida-", "invalida-")) and a.endswith(".txt")):
                 out.append((os.path.join(raiz_d, a), chaves(ler(os.path.join(raiz_d, a)))))
     return out
 
@@ -368,31 +370,68 @@ BASE = os.path.join(os.path.realpath(tempfile.gettempdir()),
                     "sdd-serie-" + hashlib.sha256(serie.encode("utf-8")).hexdigest()[:12])
 
 
-# ── retomada: PARADA.txt anterior e execuções interrompidas (R4 e R6 da revisão D1) ─────────────────
+# ── retomada: execuções interrompidas, inválidas e o PARADA.txt anterior (R4 e R6 da D1; R1 e N1 da rodada 3) ───────
+FR = os.path.join(BIN, "governanca-fronteira.sh")
+NADA = os.path.join(raiz, ".sdd-serie-nenhum-arquivo-permitido")
+interrompidas, problemas = [], []
+for raiz_d, dirs, arqs in os.walk(os.path.join(serie, "execucoes")):
+    dirs.sort()
+    if "inicio.txt" in arqs and "meta.txt" not in arqs:
+        ini = chaves(ler(os.path.join(raiz_d, "inicio.txt")))
+        trab_i = os.path.dirname(ini.get("copia", "")) if ini.get("copia") else ""
+        if trab_i and os.path.isdir(trab_i) and not os.path.isfile(os.path.join(trab_i, "chamado.txt")):
+            os.remove(os.path.join(raiz_d, "inicio.txt"))   # parou antes de chamar o agente (R3 da rodada 1)
+            print("↻ execução que não chegou a chamar o agente descartada (%s)" % os.path.relpath(raiz_d, serie))
+            continue
+        # N1 da rodada 3: a interrompida não passou pela foto de depois; confere agora contra a foto de antes (fora
+        # do projeto, ao lado da cópia). Antes de qualquer escrita desta retomada; a trava desta série é permitida.
+        antes = os.path.join(trab_i, "antes") if trab_i else ""
+        if antes and os.path.isfile(antes):
+            depois = os.path.join(trab_i, "depois-retomada")
+            subprocess.run([BASH, FR, "--snapshot", raiz, depois, NADA], capture_output=True)
+            c = subprocess.run([BASH, FR, "--comparar", antes, depois, NADA, TRAVA], capture_output=True)
+            fora_i = [ln for ln in c.stdout.decode("utf-8", "replace").splitlines() if ln.startswith("FORA:")]
+            fronteira = ("fora" if fora_i else "conferida") if c.returncode in (0, 1) else \
+                "não conferida (exit %d)" % c.returncode
+        else:
+            fora_i, fronteira = [], "não conferida (a foto de antes sumiu da pasta temporária)"
+        if fronteira != "conferida":
+            problemas.append("%s: fronteira %s" % (os.path.relpath(raiz_d, serie), fronteira))
+            problemas.extend(fora_i[:50])
+        interrompidas.append((raiz_d, arqs, ini, fronteira))
 if os.path.isfile(os.path.join(serie, "PARADA.txt")):
     os.makedirs(os.path.join(serie, "paradas"), exist_ok=True)
     os.replace(os.path.join(serie, "PARADA.txt"),
                os.path.join(serie, "paradas", datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S") + ".txt"))
+for raiz_d, arqs, ini, fronteira in interrompidas:
+    d = custo_execucao(ini.get("copia", "")) if ini.get("copia") else {"nominal": "n/d"}
+    cand = next((c for c in candidatos if c["id"] == ini.get("candidato")), None)
+    nom = decimal(d.get("nominal"))
+    pago = pago_de(cand, nom) if (cand and nom is not None) else None
+    n = len([a for a in arqs if a.startswith("interrompida-")]) + 1
+    grava(os.path.join(raiz_d, "interrompida-%d.txt" % n),
+          "estado: interrompida\ninicio: %s\nnominal: %s\npago: %s\nmodelos: %s\nfronteira: %s\n"
+          % (ini.get("inicio", "?"), nom if nom is not None else "n/d", pago if pago is not None else "n/d",
+             d.get("modelos", ""), fronteira))
+    os.remove(os.path.join(raiz_d, "inicio.txt"))
+    print("↻ execução interrompida medida (%s): nominal %s · fronteira %s" % (
+        os.path.relpath(raiz_d, serie), nom if nom is not None else "n/d", fronteira))
+if problemas:
+    if any(p.startswith("FORA:") for p in problemas):
+        motivo = ("execução interrompida com escrita fora da cópia: o projeto mudou entre a foto de antes e esta "
+                  "retomada (o agente ou uma edição sua)")
+    else:
+        motivo = "execução interrompida sem como conferir a fronteira (a foto de antes não está mais lá)"
+    parada(21, "FRONTEIRA", motivo + "; o custo foi somado e nada foi apagado. Confira e retome com o mesmo comando",
+           problemas)
+# R1 da rodada 3: a execução inválida tem meta.txt e seria pulada para sempre; guardada como invalida-N.txt (o custo
+# continua no acumulado), ela é refeita
 for raiz_d, dirs, arqs in os.walk(os.path.join(serie, "execucoes")):
-    if "inicio.txt" in arqs and "meta.txt" not in arqs:
-        ini = chaves(ler(os.path.join(raiz_d, "inicio.txt")))
-        if ini.get("copia") and os.path.isdir(os.path.dirname(ini["copia"])) \
-                and not os.path.isfile(os.path.join(os.path.dirname(ini["copia"]), "chamado.txt")):
-            os.remove(os.path.join(raiz_d, "inicio.txt"))   # parou antes de chamar o agente (R3 da revisão do código)
-            print("↻ execução que não chegou a chamar o agente descartada (%s)" % os.path.relpath(raiz_d, serie))
-            continue
-        d = custo_execucao(ini.get("copia", "")) if ini.get("copia") else {"nominal": "n/d"}
-        cand = next((c for c in candidatos if c["id"] == ini.get("candidato")), None)
-        nom = decimal(d.get("nominal"))
-        pago = pago_de(cand, nom) if (cand and nom is not None) else None
-        n = len([a for a in arqs if a.startswith("interrompida-")]) + 1
-        grava(os.path.join(raiz_d, "interrompida-%d.txt" % n),
-              "estado: interrompida\ninicio: %s\nnominal: %s\npago: %s\nmodelos: %s\n"
-              % (ini.get("inicio", "?"), nom if nom is not None else "n/d", pago if pago is not None else "n/d",
-                 d.get("modelos", "")))
-        os.remove(os.path.join(raiz_d, "inicio.txt"))
-        print("↻ execução interrompida medida (%s): nominal %s" % (os.path.relpath(raiz_d, serie),
-                                                                   nom if nom is not None else "n/d"))
+    dirs.sort()
+    if "meta.txt" in arqs and chaves(ler(os.path.join(raiz_d, "meta.txt"))).get("estado") == "invalida":
+        n = len([a for a in arqs if a.startswith("invalida-")]) + 1
+        os.replace(os.path.join(raiz_d, "meta.txt"), os.path.join(raiz_d, "invalida-%d.txt" % n))
+        print("↻ execução inválida guardada como invalida-%d.txt e refeita (%s)" % (n, os.path.relpath(raiz_d, serie)))
 
 
 def interrompidas_sem_custo():
@@ -469,8 +508,7 @@ def executar(cand, caso, rep):
     # o inicio.txt mora no projeto: vem antes da foto de antes, senão a fronteira o veria como escrita do agente
     ini = os.path.join(pasta, "inicio.txt")
     grava(ini, "copia: %s\ncandidato: %s\ninicio: %s\n" % (copia, cand["id"], agora()))
-    fr = os.path.join(BIN, "governanca-fronteira.sh")
-    nada = os.path.join(raiz, ".sdd-serie-nenhum-arquivo-permitido")
+    fr, nada = FR, NADA
     if subprocess.run([BASH, fr, "--snapshot", raiz, os.path.join(trab, "antes"), nada],
                       capture_output=True).returncode != 0:
         os.remove(ini)   # R3 da revisão do código: nada foi chamado, então não há interrompida a medir

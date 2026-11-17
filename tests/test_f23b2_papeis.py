@@ -436,8 +436,11 @@ class AT008AT011Executor(BaseSerie):
                          "usage": {"input_tokens": 1000, "output_tokens": 100000}}}) + "\n", encoding="utf-8")
         self.escreve(pasta, "inicio.txt", "copia: %s\ncandidato: caro\ninicio: 2026-11-16T10:00:00Z\n" % copia)
         rc, out, _ = self.rodar(s)
-        self.assertEqual(rc, 0, out)
+        self.assertEqual(rc, 21, out)                  # sem a foto de antes, a fronteira não se confere (N1, rodada 3)
+        self.assertIn("sem como conferir a fronteira", out)
         self.assertIn("execução interrompida medida", out)
+        rc, out, _ = self.rodar(s)
+        self.assertEqual(rc, 0, out)
         self.assertIn("nominal: 1.001", (pasta / "interrompida-1.txt").read_text(encoding="utf-8"))
         self.assertIn("acumulado da medição: nominal 2.002", out)   # a interrompida e a refeita
         self.assertEqual(len(self.chamadas()), 1)
@@ -477,6 +480,57 @@ class AT008AT011Executor(BaseSerie):
         self.assertTrue((self.r / "vazou.txt").exists(), "nada fora da cópia é apagado")
         rc, out, _ = self.medir(s)
         self.assertEqual(rc, 4, out)
+        # R1 da rodada 3: a retomada guarda a inválida (o custo fica) e a refaz; antes, ela era pulada para sempre
+        rc, out, _ = self.rodar(s)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("guardada como invalida-1.txt e refeita", out)
+        self.assertIn("estado: invalida", (s / "execucoes/c1/caro/1/invalida-1.txt").read_text(encoding="utf-8"))
+        self.assertIn("estado: ok", (s / "execucoes/c1/caro/1/meta.txt").read_text(encoding="utf-8"))
+        self.assertIn("acumulado da medição: nominal 2.002", out)
+        self.assertEqual(len(self.chamadas()), 2)
+        self.assertEqual(self.medir(s)[0], 1)
+
+    @unittest.skipIf(*SEM_SINAL)
+    def test_interrompida_que_gravou_no_projeto_para_na_retomada(self):
+        # N1 da rodada 3: a interrompida pulava a foto de depois; a escrita dela no projeto passava a ser a base nova
+        s = self.serie("cur", "curador", [CARO])
+        pidf = self.tmp / "agente.pid"
+        env = dict(self.env, FALSO_MODO="sessao-e-dorme", FALSO_PID=str(pidf))
+        p = subprocess.Popen([BASH, str(SERIE), str(s), "--cmd", 'bash "%s"' % AGENTE.as_posix(), "--precos",
+                              str(FX / "precos")], cwd=str(self.r), env=env, stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL, start_new_session=True)
+        agente = 0
+        try:
+            for _ in range(300):
+                if pidf.exists() and pidf.read_text(encoding="utf-8").strip():
+                    break
+                time.sleep(0.1)
+            else:
+                self.fail("o agente falso não começou")
+            agente = int(pidf.read_text(encoding="utf-8").strip())
+            (self.r / "escrita-do-agente.txt").write_text("x\n", encoding="utf-8")   # o agente grava no projeto
+        finally:
+            alvos = [lambda: os.killpg(p.pid, signal.SIGKILL)]
+            if agente > 0:
+                alvos.append(lambda: os.kill(agente, signal.SIGKILL))
+            for alvo in alvos:
+                try:
+                    alvo()
+                except OSError:
+                    pass
+            p.wait()
+        rc, out, _ = self.rodar(s)
+        self.assertEqual(rc, 21, out)
+        self.assertIn("RESULTADO: FRONTEIRA", out)
+        self.assertIn("escrita-do-agente.txt", (s / "PARADA.txt").read_text(encoding="utf-8"))
+        intr = (s / "execucoes/c1/caro/1/interrompida-1.txt").read_text(encoding="utf-8")
+        self.assertIn("nominal: 1.001", intr)
+        self.assertIn("fronteira: fora", intr)
+        self.assertTrue((self.r / "escrita-do-agente.txt").exists(), "nada fora da cópia é apagado")
+        self.assertEqual(len(self.chamadas()), 1)
+        rc, out, _ = self.rodar(s)                       # conferidos os caminhos, a retomada segue
+        self.assertEqual(rc, 0, out)
+        self.assertIn("acumulado da medição: nominal 2.002", out)
 
     def test_copia_com_remoto_invalida_e_copia_vem_do_commit_sem_remoto(self):
         sha = self.git(self.r, "rev-parse", "HEAD").strip()
@@ -751,6 +805,13 @@ class AT010Pacote(unittest.TestCase):
         texto = ESCADA.read_text(encoding="utf-8")
         secao = texto[texto.index("## Modelo do papel e marca de papel"):]
         self.assertIn("modo\n   `contrato` despacha e marca como `revisor-design` (`despachar revisor-design", secao)
+
+    def test_escada_le_o_slot_antes_de_marcar_o_inicio(self):
+        # R3 da rodada 3: marcar antes e sair 64 deixava um início sem fim, que alarga a janela do papel
+        texto = ESCADA.read_text(encoding="utf-8")
+        secao = texto[texto.index("## Modelo do papel e marca de papel"):]
+        self.assertLess(secao.index("sdd-fluxo.sh modelo <slot>"), secao.index("marca-fase.sh inicio papel-<papel>"))
+        self.assertIn("e, se não saiu 64,", secao)
 
     def test_doc_do_limiar_diz_queda_minima(self):
         # R4 da rodada 2: o código escolhe com queda de pelo menos --limiar%; a doc dizia o contrário

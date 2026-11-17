@@ -35,10 +35,11 @@ Se vier, o avaliador registra `CONTAMINAÇÃO` e o veredito perde valor.
 Vale para todo papel despachado por esta escada: cartógrafo, revisor de governança, avaliador (modos `contrato` e
 `veredito`), revisor do DESIGN, executor do piloto e curador.
 
-1. **Antes do despacho**, marque o início do papel e leia o modelo dele:
+1. **Antes do despacho**, leia o modelo do papel e só então marque o início dele:
+   `bash sdd/bin/sdd-fluxo.sh modelo <slot>` e, se não saiu 64,
    `bash sdd/bin/marca-fase.sh inicio papel-<papel> <FEATURE>` (o `<papel>` é o nome do despacho, só com letras
-   minúsculas e hífen: `cartografo`, `revisor-governanca`, `avaliador`, `revisor-design`, `executor-drive`, `curador`)
-   e `bash sdd/bin/sdd-fluxo.sh modelo <slot>`, com o
+   minúsculas e hífen: `cartografo`, `revisor-governanca`, `avaliador`, `revisor-design`, `executor-drive`, `curador`),
+   com o
    `<slot>` do papel: `cartografo`, `avaliador` (modo `veredito`), `revisao_design` (modo `contrato` e revisor do
    DESIGN), `executor` (executor do piloto) ou `curador`. O revisor de governança não tem slot. O avaliador no modo
    `contrato` despacha e marca como `revisor-design` (`despachar revisor-design {F} sdd/reports/briefs/BRIEF_revisor-design_{F}.md`),
@@ -47,7 +48,7 @@ Vale para todo papel despachado por esta escada: cartógrafo, revisor de governa
    modelo do subagente, se o seu agente deixa escolher o modelo de um subagente; se não deixa, diga em 1 linha que
    o papel vai rodar no modelo da sessão porque o agente não troca de modelo. No degrau de sessão nova, o
    `despachar` já diz à pessoa qual modelo abrir. **Exit 64** ⇒ o slot está inválido: repasse a mensagem e não
-   despache até a pessoa corrigir `sdd/config.yaml`.
+   despache (nem marque o início) até a pessoa corrigir `sdd/config.yaml`.
 3. **Na volta do bloco**, `bash sdd/bin/marca-fase.sh fim papel-<papel> <FEATURE>`.
 
 Por que: o slot só é preenchido depois de medir (`docs/model-per-role.md`: o `papel-medir.sh` aponta o modelo mais

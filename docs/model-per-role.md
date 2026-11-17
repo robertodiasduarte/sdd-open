@@ -97,7 +97,10 @@ codex exec -m "$SDD_MODELO" --sandbox workspace-write - < "$SDD_BRIEF"
 
 To resume, run the same command:
 - runs that already have `meta.txt` are skipped;
-- an interrupted run has its cost added before it is redone, in a new copy folder (the agent's session log is kept
+- an invalid run is kept as `invalida-N.txt` (its cost stays in the running total) and redone;
+- an interrupted run has the project checked against the snapshot taken before it (a write outside the copy, or an
+  edit of yours in the meantime, stops with exit 21 and the paths), and its cost added before it is redone, in a new
+  copy folder (the agent's session log is kept
   per folder, so the redone run is not charged twice);
 - the previous `PARADA.txt` moves to `paradas/`.
 
