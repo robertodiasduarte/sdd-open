@@ -1979,7 +1979,10 @@ def conferir_entrada(args):
             shutil.rmtree(alvo) if os.path.isdir(alvo) and not os.path.islink(alvo) else os.remove(alvo)
         for n in sorted(os.listdir(entrada)):
             origem = os.path.join(entrada, n)
-            if n in ("colheita.txt", "colheita.rc", "ausentes.txt") or not os.path.isfile(origem) or os.path.islink(origem):
+            # o registro da própria entrada não vai: ele não tem prova de origem, e uma impressão posta nele (com a
+            # linha tirada da colheita guardada) sumiria das duas colheitas sem recusa. O já julgado vem da base e da fila.
+            if n in ("colheita.txt", "colheita.rc", "ausentes.txt", REGISTRO) or not os.path.isfile(origem) \
+                    or os.path.islink(origem):
                 continue
             shutil.copyfile(origem, os.path.join(stg, n))
         registro = os.path.join(raiz, "sdd", "releases", feature, REGISTRO)

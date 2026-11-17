@@ -86,11 +86,11 @@ def dispara(ev, branch, arquivos):
     if not isinstance(ev, dict):
         raise ValueError("filtro do push num formato que não sei ler")
     br, br_ig = lista(ev.get("branches")), lista(ev.get("branches-ignore"))
-    tags = lista(ev.get("tags"))
+    tags, tags_ig = lista(ev.get("tags")), lista(ev.get("tags-ignore"))
     if br is not None and br_ig is not None:
         raise ValueError("branches e branches-ignore no mesmo push")
-    if br is None and br_ig is None and tags is not None:
-        return False  # só tags: um push de branch não roda
+    if br is None and br_ig is None and (tags is not None or tags_ig is not None):
+        return False  # só tags (ou tags-ignore): um push de branch não roda
     if br is not None and not casa(branch, br):
         return False
     if br_ig is not None and casa(branch, br_ig):
@@ -189,7 +189,11 @@ def main(argv):
         print("RESULTADO: ERRO DE USO")
         print("→ atualize o pacote (o upgrade traz os dois juntos); nada foi avaliado.")
         return 64
-    res, frases, todos = avaliar(raiz, branch, arquivos, mod)
+    try:
+        res, frases, todos = avaliar(raiz, branch, arquivos, mod)
+    except Exception as e:  # noqa: BLE001 — erro inesperado nunca sai como exit 1, que é NAO_PUBLICA (LM-017)
+        frase = "erro inesperado ao avaliar os workflows (%s: %s)" % (type(e).__name__, e)
+        res, frases, todos = "NAO_SEI", [frase], [("NAO_SEI", frase)]
     for r, f in todos:
         print({"PUBLICA": "🚀", "NAO_PUBLICA": "✅", "NAO_SEI": "❓"}[r] + " " + f)
     if res == "PUBLICA":

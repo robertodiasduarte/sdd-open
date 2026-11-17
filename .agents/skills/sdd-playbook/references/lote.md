@@ -18,7 +18,7 @@ publicado.
    entradas; fila vazia ⇒ diga isso e encerre. Entrada com `colheita FALHOU` não é julgada: diga a causa e que uma
    colheita nova da feature (`--enfileirar <F>` numa pasta com os documentos dela) a substitui.
 1. **Conferir a entrada (uma por vez).** Para cada entrada `E` da fila, em ordem:
-   `bash sdd/bin/playbook-curator.sh --conferir-entrada "$E" sdd/playbook.md [--inv sdd/invariants.md] > "$TMPDIR/conf-entrada.txt"; rc=$?`
+   `bash sdd/bin/playbook-curator.sh --conferir-entrada "$E" sdd/playbook.md [--inv sdd/invariants.md] > "${TMPDIR:-/tmp}/conf-entrada.txt"; rc=$?`
    — `--inv` só quando `sdd/invariants.md` existe; sem o arquivo, diga "invariantes: arquivo ausente, cruzamento
    pulado" e siga só com o playbook. Ele refaz a colheita sobre a cópia da entrada, com o playbook de agora, e compara
    as impressões com a colheita guardada: a colheita que se julga é a refeita, nunca a guardada.
@@ -61,16 +61,17 @@ publicado.
    que saiu (não apague nada); com `sdd/playbook.md` ou `sdd/invariants.md` na lista, **não redespache**:
    registre `Curadoria: FALHOU (curador escreveu no playbook)` para esta entrada, guarde
    `git diff -- sdd/playbook.md sdd/invariants.md` na evidência, volte os dois ao commit
-   (`git checkout -- sdd/playbook.md sdd/invariants.md`: nada do lote foi aplicado ainda, a aplicação é no item 5) e
-   siga com a próxima entrada; esta fica na fila. Nos outros casos, refaça o item 1,
+   (`git checkout HEAD -- sdd/playbook.md sdd/invariants.md`, do commit e não do index, que pode guardar o que o
+   curador pôs lá com `git add`: nada do lote foi aplicado ainda, a aplicação é no item 5), marque a entrada com
+   `--recusar "$E" "curador escreveu no playbook"` e siga com a próxima; ela fica na fila com o motivo. Nos outros casos, refaça o item 1,
    o selo e o snapshot de antes (o que a pessoa já viu vira linha de base) e só então redespache. 2ª
    reprovação ⇒ registre `Curadoria: FALHOU (bloco inválido)` para esta entrada: **nada dela é aplicado**, ela fica
    na fila, marcada com `--recusar` (como no item 1), e o lote segue com a próxima. Sem subagente, cada tentativa volta numa sessão nova, sem
    memória da anterior: leia `sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md`; se ele já tem o campo
    `conferencia:`, esta é a 2ª tentativa, e nova reprovação encerra esta entrada, sem redespachar. Nunca separe
    contagem de regra à mão: quem decide é o conferidor.
-4. **Contagem entra, regra pergunta.** Comece o lote com `: > "$TMPDIR/lote-delta.txt"; : > "$TMPDIR/lote-inv.txt"`. As
-   linhas `AUTO <delta>` de cada `conferido.txt` vão, sem pergunta, para `"$TMPDIR/lote-delta-<F>_<entrada>.txt"` (um por
+4. **Contagem entra, regra pergunta.** Comece o lote com `: > "${TMPDIR:-/tmp}/lote-delta.txt"; : > "${TMPDIR:-/tmp}/lote-inv.txt"`. As
+   linhas `AUTO <delta>` de cada `conferido.txt` vão, sem pergunta, para `"${TMPDIR:-/tmp}/lote-delta-<F>_<entrada>.txt"` (um por
    entrada: o envio do item 9 pode precisar tirar as linhas de uma entrada só), e o `lote-delta.txt` é a junção deles,
    na ordem da fila. As linhas `PERGUNTA <n> <tipo> <delta>`
    (lição nova, aposentadoria, refino, promoção, invariante, sugestão que o curador confirmou e contagem que põe uma
@@ -93,20 +94,20 @@ publicado.
    `lote-inv-<F>_<entrada>.txt`, e pela junção em `lote-inv.txt`. Sem linha `PERGUNTA`, não há pergunta de regra.
 5. **Aplicar numa cópia e conferir 3 vezes — um `--aplicar` só para o lote inteiro.** Com `lote-delta.txt` e
    `lote-inv.txt` vazios (nada contado, nada aceito), pule este item e registre `Curadoria: nada aplicado`.
-   `bash sdd/bin/playbook-curator.sh --aplicar "$TMPDIR/lote-delta.txt" sdd/playbook.md > "$TMPDIR/novo.md"`
+   `bash sdd/bin/playbook-curator.sh --aplicar "${TMPDIR:-/tmp}/lote-delta.txt" sdd/playbook.md > "${TMPDIR:-/tmp}/novo.md"`
    (exit 2 ⇒ nada foi impresso: corrija o delta). O `--aplicar` numera as lições novas pelo maior ID do playbook que
    recebe o delta: com um `--aplicar` só, os IDs saem seguidos e sem colidir, mesmo quando duas entradas propuseram o
    mesmo número; o recibo mostra o ID final. →
-   `bash sdd/bin/playbook-lint.sh "$TMPDIR/novo.md"` (exit 0 obrigatório) →
-   `bash sdd/bin/playbook-lint.sh --anti-collapse sdd/playbook.md "$TMPDIR/novo.md"` (bloqueou pelo
+   `bash sdd/bin/playbook-lint.sh "${TMPDIR:-/tmp}/novo.md"` (exit 0 obrigatório) →
+   `bash sdd/bin/playbook-lint.sh --anti-collapse sdd/playbook.md "${TMPDIR:-/tmp}/novo.md"` (bloqueou pelo
    tamanho ⇒ aplique em 2 ou mais commits: contadores e `ADD` primeiro, depois uma mudança de
    conteúdo por vez) → com invariantes,
-   `bash sdd/bin/playbook-curator.sh --aplicar-inv "$TMPDIR/lote-inv.txt" sdd/invariants.md > "$TMPDIR/inv.md"`
-   (sem linha aprovada, `cp sdd/invariants.md "$TMPDIR/inv.md"`) e
-   `bash sdd/bin/playbook-curator.sh --validar-inv "$TMPDIR/novo.md" "$TMPDIR/inv.md"` (exit 0
+   `bash sdd/bin/playbook-curator.sh --aplicar-inv "${TMPDIR:-/tmp}/lote-inv.txt" sdd/invariants.md > "${TMPDIR:-/tmp}/inv.md"`
+   (sem linha aprovada, `cp sdd/invariants.md "${TMPDIR:-/tmp}/inv.md"`) e
+   `bash sdd/bin/playbook-curator.sh --validar-inv "${TMPDIR:-/tmp}/novo.md" "${TMPDIR:-/tmp}/inv.md"` (exit 0
    obrigatório; `🔴 trava INV:` diz a regra, a lição e as saídas: volte à pessoa, nunca copie; nunca
    edite as invariantes à mão).
-   Só então `cp "$TMPDIR/novo.md" sdd/playbook.md` e, se mudou, `cp "$TMPDIR/inv.md" sdd/invariants.md`.
+   Só então `cp "${TMPDIR:-/tmp}/novo.md" sdd/playbook.md` e, se mudou, `cp "${TMPDIR:-/tmp}/inv.md" sdd/invariants.md`.
 6. **Evidência** em `sdd/reports/evidence/LOTE_<AAAAMMDD>/`, no formato `$ comando`, a saída e `[exit=N]` com o
    exit real do comando: `CURATOR-entradas.log` (o `--conferir-entrada` de cada entrada, com o exit) e
    `CURATOR-delta.log` (o comando do item 5, o `lote-delta.txt` e o exit dele).

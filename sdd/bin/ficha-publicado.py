@@ -17,8 +17,8 @@ Linha: - <data> · <slice> · <versão> · <estado> · <veredito> · deploy <no-
 (a mais recente no topo; o sha é o do commit que trouxe o ledger, `git log --diff-filter=A`; sem git, `sha n/d`).
 Ledger ilegível: `- n/d (ledger ilegível: <arquivo>)`, e o exit é 2 (a ficha é gravada com as outras linhas).
 
-Exit: 0 bloco gravado (ou já igual) · 1 nenhum ledger da feature (nada gravado) · 2 ledger ilegível ou ficha que não
-dá para ler ou gravar · 64 uso. Python 3.9 stdlib.
+Exit: 0 bloco gravado (ou já igual) · 1 nenhum ledger da feature (nada gravado) · 2 ledger ilegível, ficha que não
+dá para ler ou gravar, ou marcador de início sem o de fim (nada gravado) · 64 uso. Python 3.9 stdlib.
 """
 from __future__ import annotations
 
@@ -54,7 +54,10 @@ def valor(v):
         q = v[0]
         j = v.find(q, 1)
         return v[1:j] if j > 0 else None
-    return re.sub(r"\s+#.*$", "", v).strip()
+    v = re.sub(r"\s+#.*$", "", v).strip()
+    if v[:1] in ("[", "{") and v[-1:] != {"[": "]", "{": "}"}[v[0]]:
+        return None  # lista ou mapa sem fechar: o ledger não é YAML válido
+    return v
 
 
 def le_ledger(caminho):
@@ -124,12 +127,20 @@ def linhas_do_bloco(pasta, raiz, ref="HEAD"):
     return [t[2] for t in itens], ilegiveis
 
 
+class MarcadorSemFim(Exception):
+    pass
+
+
 def substitui_bloco(texto, linhas):
     bloco = INI + "\n" + "\n".join(linhas) + "\n" + FIM
     m = RE_INI.search(texto)
     if m and FIM in texto[m.end():]:
         b = texto.index(FIM, m.end()) + len(FIM)
         return texto[:m.start()] + bloco + texto[b:]
+    if m:
+        # início sem fim: não dá para saber onde o bloco acaba; uma seção nova deixaria o marcador órfão, e a próxima
+        # execução apagaria o texto entre ele e o fim novo
+        raise MarcadorSemFim()
     secao = "## Publicado\n\n" + bloco + "\n\n"
     for ancora in ("\n## Feito", "\n## Falta"):
         i = texto.find(ancora)
@@ -193,6 +204,12 @@ def main(argv):
             os.makedirs(os.path.dirname(ficha), exist_ok=True)
             with open(ficha, "w", encoding="utf-8", newline="") as f:
                 f.write(depois)
+    except MarcadorSemFim:
+        print("🛑 %s tem o marcador de início do bloco Publicado sem o de fim (%s)" % (mostra(ficha, raiz), FIM),
+              file=sys.stderr)
+        fim("FALHOU", "ponha o marcador de fim logo depois da última linha do bloco, ou apague o de início, e rode de "
+            "novo; nada foi gravado.")
+        return 2
     except (OSError, UnicodeDecodeError) as e:
         print("🛑 não consegui ler ou gravar %s: %s" % (ficha, e), file=sys.stderr)
         fim("FALHOU", "confira a permissão e a codificação (UTF-8) da ficha; nada foi gravado.")

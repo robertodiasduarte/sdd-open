@@ -585,8 +585,8 @@ class Revisao1Sandbox(Sandbox):
 
     def test_r5_codex_escrita_do_curador_isola_a_entrada(self):
         corrido = " ".join(LOTE.split())
-        self.assertIn("siga com a próxima entrada; esta fica na fila", corrido)
-        self.assertIn("git checkout -- sdd/playbook.md sdd/invariants.md", corrido)
+        self.assertIn("siga com a próxima; ela fica na fila com o motivo", corrido)
+        self.assertIn("git checkout HEAD -- sdd/playbook.md sdd/invariants.md", corrido)
 
 
 class Revisao2(Projeto):
@@ -818,6 +818,82 @@ class Revisao4aTextos(Sandbox):
         rc, out, err = self.roda([PYTHON, PAPEL, p, "--branch", "main", "CHANGELOG.md"], self.tmp)
         self.assertEqual(rc, 2, out + err)
         self.assertIn("fora do GitHub Actions", out)
+
+
+class Revisao5(Projeto):
+    """Rodada 5 da revisão do código (EXTERNAL_REVIEW_20261116-220949): vermelhos em 60e4839."""
+
+    def test_r1_codex_registro_da_entrada_nao_suprime_contagem(self):
+        self.feature("FA")
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        [e] = self.entradas("FA")
+        self.commit(self.r, "papel")
+        col = (e / "colheita.txt").read_text(encoding="utf-8")
+        [delta] = [ln for ln in col.split("\n") if ln.startswith("DELTA LM-020 ajudou+1")]
+        fp = RE_FP.search(delta).group(1)
+        (e / "colheita.txt").write_text(col.replace(delta + "\n", ""), encoding="utf-8")
+        with open(e / "CURATOR-colhidos.txt", "a", encoding="utf-8") as f:
+            f.write("já julgado · fp=%s\n" % fp)
+        rc, out, err = self.cur("--conferir-entrada", str(e), "sdd/playbook.md")
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("colheita alterada depois da publicação", err)
+
+
+class Revisao5Sandbox(Sandbox):
+    def test_r1_claude_temporarios_com_valor_padrao(self):
+        self.assertNotIn('"$TMPDIR/', LOTE)
+
+    def test_r2_codex_desfaz_pelo_commit_nao_pelo_index(self):
+        self.assertIn("git checkout HEAD -- sdd/playbook.md sdd/invariants.md", LOTE)
+        self.assertNotIn("git checkout -- sdd/playbook.md", LOTE)
+
+    def test_r3_claude_escrita_no_playbook_marca_a_recusa(self):
+        trecho = " ".join(LOTE[LOTE.index("git checkout HEAD --"):].split())[:600]
+        self.assertIn("--recusar", trecho)
+
+    def test_r4_claude_marcador_de_inicio_sem_fim_nao_grava(self):
+        r = self.repo("p")
+        shutil.copytree(FX / "ledgers", r / "sdd/releases/PEDIDOS")
+        (r / "sdd/releases/PEDIDOS/s3_quebrado.yaml").unlink()
+        ficha = r / "sdd/handoffs/HANDOFF_PEDIDOS.md"
+        ficha.parent.mkdir(parents=True)
+        texto = ("# HANDOFF: PEDIDOS\n\n## Publicado\n\n<!-- publicado:inicio x -->\n- velha\n\n"
+                 "## Falta\n\n- nada\n")
+        ficha.write_text(texto, encoding="utf-8")
+        rc, out, err = self.roda([PYTHON, FICHA, "PEDIDOS"], r)
+        self.assertEqual(rc, 2, out + err)
+        self.assertEqual(ficha.read_text(encoding="utf-8"), texto)
+
+    def test_r3_codex_lista_sem_fechar_e_ilegivel(self):
+        r = self.repo("p")
+        d = r / "sdd/releases/PEDIDOS"
+        d.mkdir(parents=True)
+        (d / "s1.yaml").write_text("feature_id: PEDIDOS\nslice_id: s1\nestado: [shipado\n", encoding="utf-8")
+        rc, out, err = self.roda([PYTHON, FICHA, "PEDIDOS"], r)
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("ledger ilegível", (r / "sdd/handoffs/HANDOFF_PEDIDOS.md").read_text(encoding="utf-8"))
+
+    def test_r5_claude_so_tags_ignore_nao_roda_em_branch(self):
+        p = Path(tempfile.mkdtemp(dir=str(self.tmp)))
+        (p / ".github/workflows").mkdir(parents=True)
+        (p / ".github/workflows/d.yml").write_text(
+            "name: deploy\non:\n  push:\n    tags-ignore: ['v*']\njobs:\n  deploy:\n    runs-on: x\n"
+            "    steps:\n      - run: npx vercel deploy --prod\n", encoding="utf-8")
+        rc, out, err = self.roda([PYTHON, PAPEL, p, "--branch", "main", "sdd/handoffs/HANDOFF_X.md"], self.tmp)
+        self.assertEqual(rc, 1, out + err)
+
+    def test_r6_claude_excecao_inesperada_e_nao_sei(self):
+        s = Path(tempfile.mkdtemp(dir=str(self.tmp)))
+        shutil.copyfile(PAPEL, s / "push-de-papel.py")
+        (s / "deploy-espera-testes.py").write_text(
+            "class Ilegivel(Exception):\n    pass\n\ndef carregar(t):\n    return {'jobs': {'d': {}}}\n",
+            encoding="utf-8")
+        p = Path(tempfile.mkdtemp(dir=str(self.tmp)))
+        (p / ".github/workflows").mkdir(parents=True)
+        (p / ".github/workflows/d.yml").write_text("on: push\n", encoding="utf-8")
+        rc, out, err = self.roda([PYTHON, s / "push-de-papel.py", p, "--branch", "main", "CHANGELOG.md"], self.tmp)
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("RESULTADO: NAO_SEI", out)
 
 
 if __name__ == "__main__":

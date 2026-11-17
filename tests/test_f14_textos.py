@@ -41,8 +41,8 @@ class Passo17b(unittest.TestCase):
     def test_as_pecas_vem_nesta_ordem(self):
         ordem = ("--fila", "--conferir-entrada \"$E\"", "BRIEF_curador_<F>_<entrada>.md", "--selar \"$STG\"", "governanca-fronteira.sh --snapshot",
                  "sdd-fluxo.sh despachar curador", "governanca-fronteira.sh --comparar", "--conferir-bloco",
-                 "--cruzar -", "--aplicar \"$TMPDIR/lote-delta.txt\"", "playbook-lint.sh \"$TMPDIR/novo.md\"", "--anti-collapse",
-                 "--aplicar-inv", "--validar-inv", "cp \"$TMPDIR/novo.md\" sdd/playbook.md", "CURATOR-entradas.log",
+                 "--cruzar -", "--aplicar \"${TMPDIR:-/tmp}/lote-delta.txt\"", "playbook-lint.sh \"${TMPDIR:-/tmp}/novo.md\"", "--anti-collapse",
+                 "--aplicar-inv", "--validar-inv", "cp \"${TMPDIR:-/tmp}/novo.md\" sdd/playbook.md", "CURATOR-entradas.log",
                  "CURATOR-delta.log", "--registrar", "sdd/releases/<F>/CURATOR-colhidos.txt", "git add sdd/playbook.md",
                  "[D1 · não se desfaz]")
         pos = -1
@@ -113,7 +113,7 @@ class Passo17b(unittest.TestCase):
     def test_nada_aceito_tem_caminho_e_evidencia_nao_versionada_tambem(self):
         t = " ".join(PASSO.split())
         for trecho in ("`Curadoria: nada aplicado`", "git check-ignore -q", "git ls-files sdd/reports/evidence",
-                       ': > "$TMPDIR/lote-delta.txt"', "mkdir -p sdd/reports/briefs",
+                       ': > "${TMPDIR:-/tmp}/lote-delta.txt"', "mkdir -p sdd/reports/briefs",
                        "os registros e as remoções da fila **nunca por checkout**", "a pasta temporária se perdeu",
                        "`git cherry-pick --abort`"):
             with self.subTest(trecho=trecho):
