@@ -46,7 +46,7 @@ O gabarito é uma pasta com um caso por subpasta, tirado do histórico do projet
 |---|---|
 | `caso.txt` | `papel:` (`curador` ou `avaliador`), `commit:` (sha, ou `-` para pasta vazia), `origem:` de onde veio e, opcional, `base:` (a tag ou o commit com que os testes de não regressão comparam: a cópia ganha um commit com essa árvore, marcado com o mesmo nome, antes do caso) |
 | `brief.md` | o brief do papel daquela época; `@COPIA@` vira o caminho da cópia do caso |
-| `entrada/` | arquivos postos por cima do commit (o DEFINE e o DESIGN da época, a colheita do curador…) |
+| `entrada/` | arquivos postos por cima do commit e deixados fora do git, como estavam no projeto (o DEFINE e o DESIGN da época, a colheita do curador…) |
 | `esperado.txt` | curador: o delta aceito, na gramática do `playbook-curator.sh --aplicar`. Avaliador: `VEREDITO: <X>` e uma linha `AT-nnn PASS\|FAIL\|NAO_VERIFICADO` por AT |
 | `playbook.md` | só no curador: o playbook de antes da curadoria |
 
@@ -88,7 +88,7 @@ O `papel-serie.sh`:
   - outra série da pasta tem execução interrompida com o custo ainda não medido (retome aquela série primeiro);
   - o candidato tem cobrança desconhecida;
   - o candidato é pay-per-token e o teto pago é zero;
-- roda cada execução numa **cópia fora do projeto**: `git archive` do commit do caso, mais `entrada/`, num git sem
+- roda cada execução numa **cópia fora do projeto**: `git archive` do commit do caso, commitado, mais `entrada/` fora do commit, num git sem
   remoto. Fotografa o projeto antes e depois: escrita fora da cópia, ou um remoto na cópia, invalida a execução e
   para a série (exit 21), sem apagar nada. Isso cobre o projeto, não o disco inteiro: o resto depende da caixa de
   areia do agente;

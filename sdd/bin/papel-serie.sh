@@ -405,14 +405,16 @@ def executar(cand, caso, rep):
         git_copia("rm", "-rq", "--ignore-unmatch", ".")
     if caso["commit"] != "-":
         extrai(caso["commit"])
+    git_copia("add", "-A")
+    git_copia(*commit_cp, "caso %s" % caso["nome"])
+    # entrada/ vai por cima DEPOIS do commit, sem entrar no git: os documentos da época (DEFINE, DESIGN, colheita)
+    # não estavam no commit; commitados, o publish-gate da cópia os acusaria como arquivo não declarado
     entrada = os.path.join(caso["dir"], "entrada")
     if os.path.isdir(entrada):
         shutil.copytree(entrada, copia, dirs_exist_ok=True)
     brief = os.path.join(trab, "brief.md")
     with open(brief, "w", encoding="utf-8", newline="\n") as h:
         h.write(ler(os.path.join(caso["dir"], "brief.md")).replace("@COPIA@", copia))
-    git_copia("add", "-A")
-    git_copia(*commit_cp, "caso %s" % caso["nome"])
     # o inicio.txt mora no projeto: vem antes da foto de antes, senão a fronteira o veria como escrita do agente
     ini = os.path.join(pasta, "inicio.txt")
     grava(ini, "copia: %s\ncandidato: %s\ninicio: %s\n" % (copia, cand["id"], agora()))

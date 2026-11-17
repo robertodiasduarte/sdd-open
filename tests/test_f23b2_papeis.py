@@ -486,6 +486,16 @@ class AT008AT011Executor(BaseSerie):
                                   str(FX / "precos")], self.r)
         self.assertEqual(rc, 0, out + err)
         self.assertEqual((self.tmp / "viu.txt").read_text(encoding="utf-8").split(), ["NOVO.md"])
+        # entrada/ fica por cima, fora do commit (como o DEFINE e o DESIGN estavam no projeto)
+        self.escreve(self.r, "gab/a1/entrada/sdd/features/DEFINE_X.md", "define da época\n")
+        espiao.write_text('git ls-files > "%s"; echo --- >> "%s"; git status --porcelain >> "%s"; bash "%s"\n'
+                          % (viu, viu, viu, AGENTE.as_posix()), encoding="utf-8")
+        rc, out, err = self.roda([BASH, SERIE, str(self.serie("ava3", "avaliador", [CARO])), "--cmd",
+                                  'bash "%s"' % espiao.as_posix(), "--precos", str(FX / "precos")], self.r)
+        self.assertEqual(rc, 0, out + err)
+        rastreados, status = (self.tmp / "viu.txt").read_text(encoding="utf-8").split("---")
+        self.assertNotIn("DEFINE_X.md", rastreados)
+        self.assertIn("?? sdd/", status)
         (self.r / "gab/a1/caso.txt").write_text("papel: avaliador\ncommit: %s\nbase: nao-existe\n" % sha, encoding="utf-8")
         rc, _, err = self.rodar(self.serie("ava2", "avaliador", [CARO]))
         self.assertEqual(rc, 64, err)

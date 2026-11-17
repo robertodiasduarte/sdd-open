@@ -47,7 +47,7 @@ The answer key is a folder with one case per subfolder, taken from the project's
 |---|---|
 | `caso.txt` | `papel:` (`curador` or `avaliador`), `commit:` (sha, or `-` for an empty folder), `origem:` where it came from and, optionally, `base:` (the tag or commit the non-regression tests compare against: the copy gets a commit with that tree, tagged with the same name, before the case) |
 | `brief.md` | the role's brief from that time; `@COPIA@` becomes the path of the case copy |
-| `entrada/` | files laid over the commit (that time's DEFINE and DESIGN, the curator's harvest…) |
+| `entrada/` | files laid over the commit and left out of git, as they were in the project (that time's DEFINE and DESIGN, the curator's harvest…) |
 | `esperado.txt` | curator: the accepted delta, in the `playbook-curator.sh --aplicar` grammar. Evaluator: `VEREDITO: <X>` and one `AT-nnn PASS\|FAIL\|NAO_VERIFICADO` line per AT |
 | `playbook.md` | curator only: the playbook before the curation |
 
@@ -88,7 +88,7 @@ codex exec -m "$SDD_MODELO" --sandbox workspace-write - < "$SDD_BRIEF"
   - another series in the folder has an interrupted run whose cost is not measured yet (resume that series first);
   - the candidate has unknown billing;
   - the candidate is pay-per-token and the paid cap is zero;
-- runs each execution in a **copy outside the project**: `git archive` of the case commit, plus `entrada/`, in a git
+- runs each execution in a **copy outside the project**: `git archive` of the case commit, committed, plus `entrada/` left uncommitted, in a git
   repository with no remote. It snapshots the project before and after: a write outside the copy, or a remote added
   to the copy, invalidates the run and stops the series (exit 21) without deleting anything. This covers the
   project, not the whole disk: the rest depends on the agent's sandbox;
