@@ -32,7 +32,7 @@
 ## Falta
 
 1. ~~Regerar o starter~~ — feito: 9ª geração pela tag `v2.20.0` num clone limpo (`9782444`, 7 arquivos: `sdd-handoff` 2.3.0 com o bloco Publicado e o molde, `sdd-release` 2.16.0 só na versão); `check-gerado` VERDE, `publish-check` e `check-versions` PASS, 17 + 62 testes; PR #18 de lá, CI verde, avanço direto da `main` (`df6ae1c..9782444`, OK do Roberto: "sim, pode regerar o starter"); Release **`v1.5.25`**, 18 zips OK.
-2. **Definir o 1º lote da curadoria no Open:** aqui a fila fica na branch de documentos e o playbook na `main`; o lote precisa dos dois. A entrada `20261117T095520Z` (17 contagens, nenhuma regra nova) espera por ele. Colhida com o playbook da `main` (`fb7ee82`).
+2. ~~1º lote da curadoria no Open~~ — feito em 2026-11-17: julgado numa worktree da `main` (`chore/lote-curadoria-20261117`), com a conferência e o registro na branch de documentos (a proveniência dos documentos só existe no histórico dela); 16 contagens AUTO, LM-035 mordeu+1 e descartada das invariantes (decisão do Roberto); commit `6a9a8cc` na `main`; evidência em `sdd/reports/evidence/LOTE_20261117/`.
 3. Remover a worktree e a branch local da frente (comandos em Ship).
 
 ## Definition of Done
@@ -59,11 +59,11 @@
 
 ## Recomendações
 
-- Antes do 1º lote no Open, decidir onde ele roda (worktree da `main` com a fila trazida da branch de documentos é o caminho mais curto).
+- Lote no Open: julgar numa worktree da `main` e rodar `--conferir-entrada` e `--registrar` na branch de documentos, passando o playbook da worktree do lote; documentar isso no `lote.md` se virar rotina.
 
 ## Veredito
 
-- 🟡 CONCERNS — as 3 pendências do ledger da publicação (teste de ponta a ponta do lote, 1º lote no Open, leitor de YAML).
+- 🟡 CONCERNS — as pendências do ledger da publicação; a do 1º lote no Open foi resolvida em 2026-11-17 (teste de ponta a ponta do lote e leitor de YAML seguem abertos).
 
 ## Setup
 
@@ -71,7 +71,7 @@
 
 ## Tarefas
 
-1. **Definir e rodar o 1º lote da curadoria no Open** — Pronto quando: a entrada `20261117T095520Z` sai da fila com `--registrar` e as contagens estão no playbook da `main`.
+1. **Remover a worktree e a branch local da frente** — Pronto quando: `git worktree list` não mostra a pasta da F24.
 
 ## Ship
 
@@ -86,11 +86,11 @@
 Retomar a feature F24_RELEASE_ENXUTA (publicada na v2.20.0; DoD fechado).
 
 Contexto: a sdd-release ficou curta depois do push (colheita enfileirada, commit de papel, uma parada só, ficha por
-acréscimo, trilha curta). Starter v1.5.25 publicado. Falta definir o 1º lote da curadoria no Open.
+acréscimo, trilha curta). Starter v1.5.25 publicado; curadoria julgada no 1º lote (2026-11-17).
 Pasta: /Users/robertoduarte/rdd-public/sdd-open (main) · documentos em /Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16 (docs/incorporar-starter).
 Leia primeiro: sdd/handoffs/HANDOFF_F24_RELEASE_ENXUTA.md e sdd/releases/F24_RELEASE_ENXUTA/s1_v2.20.0.yaml (branch de documentos).
 
-Próxima ação: definir onde o 1º lote da curadoria roda no Open (a fila está na branch de documentos, o playbook na main).
+Próxima ação: nenhuma pendência de entrega; só os ✨ de Casos e testes em aberto e a limpeza local.
 Não faça: ajuste direto no starter (ele é gerado do Open); documento SDD na main.
 Landmines: LM-035 (sdd/bin/ citado em skill que vai ao starter).
 ```

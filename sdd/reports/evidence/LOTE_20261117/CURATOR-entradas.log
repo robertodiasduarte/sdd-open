@@ -1,0 +1,5 @@
+$ (cd <worktree de documentos> && bash sdd/bin/playbook-curator.sh --conferir-entrada sdd/curadoria/fila/F24_RELEASE_ENXUTA/20261117T095520Z <worktree do lote>/sdd/playbook.md --inv <worktree do lote>/sdd/invariants.md)
+staging: $TMPDIR/sdd-curadoria-ece4367c5977/LOTE_F24_RELEASE_ENXUTA_20261117T095520Z
+RESULTADO: ENTRADA CONFERIDA
+→ sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.
+[exit=0]
