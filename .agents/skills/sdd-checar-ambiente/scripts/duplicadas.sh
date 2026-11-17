@@ -419,7 +419,8 @@ volta() {   # volta <guardada> <lugar>
   [ -e "$1" ] || [ -L "$1" ] || return 0
   if [ -e "$2" ] || [ -L "$2" ]; then
     # um atalho no lugar nunca é "a mesma pasta": ele pode apontar para a própria cópia guardada (revisão, rodada 5, R1)
-    if [ ! -L "$2" ] && diff -r "$1" "$2" >/dev/null 2>&1; then rm -rf "$1"; echo "✅ já estava no lugar: $2"; return 0; fi
+    # a cópia guardada nunca é apagada aqui: o diff segue atalhos de dentro e pode dizer "igual" sem ser (rodada 6, R2)
+    if [ ! -L "$2" ] && diff -r "$1" "$2" >/dev/null 2>&1; then echo "✅ já estava no lugar: $2 (a cópia guardada continua em $1)"; return 0; fi
     echo "⚠️ $2 existe de novo e é diferente: não sobrescrevi; a cópia guardada continua em $1"; falhou=1; return 0
   fi
   if mkdir -p "$(dirname "$2")" && mv "$1" "$2"; then echo "✅ voltou: $2"; else echo "🛑 não consegui devolver $2"; falhou=1; fi
@@ -480,9 +481,15 @@ dup_tirar_npx() {   # $1 real $2 nome $3 rótulo $4 versão $5 hash $6 agentes
       ligacoes="${ligacoes}${p}${DUP_TAB}$(readlink "${p}")"$'\n'
     fi
   done
-  mkdir -p "${DUP_L}/npx"
-  [ -f "${DUP_L}/npx/skill-lock.json" ] || cp -p "${lock}" "${DUP_L}/npx/skill-lock.json" 2>/dev/null   # o de antes de tudo: o desfazer
-  cp -p "${lock}" "${DUP_L}/npx/antes-$2.json" 2>/dev/null   # o de antes DESTE item: a falha dele devolve só este (R3)
+  # o registro de antes de tudo (o desfazer) e o de antes DESTE item (a falha dele devolve só este), conferidos byte a
+  # byte: sem eles o npx não roda (revisão, rodada 6, R1). SDD_CHECAR_FALHA_REGISTRO existe para os testes.
+  if [ -n "${SDD_CHECAR_FALHA_REGISTRO:-}" ] || ! mkdir -p "${DUP_L}/npx" \
+     || ! { [ -f "${DUP_L}/npx/skill-lock.json" ] || { cp -p "${lock}" "${DUP_L}/npx/skill-lock.json" && cmp -s "${lock}" "${DUP_L}/npx/skill-lock.json"; }; } \
+     || ! { cp -p "${lock}" "${DUP_L}/npx/antes-$2.json" && cmp -s "${lock}" "${DUP_L}/npx/antes-$2.json"; }; then
+    rm -rf "${g}"
+    DUP_ERRO="não consegui guardar o registro do npx antes de tirar $1; ela continua no lugar"
+    return 1
+  fi
   # a outra pasta de mesmo nome que o remove apagaria (medido): vai para a lixeira e volta logo depois
   for p in "${cg}" "${ga}"; do
     { [ -e "${p}" ] || [ -L "${p}" ]; } || continue
@@ -494,7 +501,14 @@ dup_tirar_npx() {   # $1 real $2 nome $3 rótulo $4 versão $5 hash $6 agentes
     else
       dup_guardar "${p}" "${q}" "$(dup_hash "${p}")" || { DUP_ERRO="não consegui proteger ${p} antes do npx; nada saiu desta skill"; dup_volta_protegidas; rm -rf "${g}"; return 1; }
       dup_desfazer_item volta "${q}" "${p}" || { rm -rf "${q}"; DUP_ERRO="não consegui gravar o desfazer de ${p}; nada saiu desta skill"; dup_volta_protegidas; return 1; }
-      printf 'D\t%s\t%s\n' "${p}" "${q}" >> "${DUP_L}/.protegidas"; rm -rf "${p}"
+      printf 'D\t%s\t%s\n' "${p}" "${q}" >> "${DUP_L}/.protegidas"; rm -rf "${p}" 2>/dev/null
+      if [ -e "${p}" ] || [ -L "${p}" ]; then   # saiu só pela metade: a metade vai para o lado e a inteira volta (rodada 6, N1)
+        dup_parcial "${p}"
+        dup_volta_protegidas
+        rm -rf "${g}"
+        DUP_ERRO="não consegui tirar do caminho, antes do npx, a pasta ${p} (ela voltou inteira); nada saiu desta skill"
+        return 1
+      fi
     fi
   done
   antes="$(dup_retrato "$2")"
@@ -523,10 +537,11 @@ EOF
   if [ "${saiu}" = 0 ] || [ "${antes}" != "${depois}" ] || [ "${ficou}" = 1 ]; then
     # Devolve o que saiu DESTE item, e só ele: a pasta (da cópia guardada, nunca apagada antes de voltar), os atalhos e o
     # registro de antes deste item (revisão, rodada 1, R1 e R3).
-    if [ ! -e "$1" ]; then
-      mkdir -p "$(dirname "$1")" && mv "${g}" "$1" 2>/dev/null
-    elif [ "$(dup_hash "$1")" = "$5" ]; then
+    if [ -e "$1" ] && [ "$(dup_hash "$1")" = "$5" ]; then
       rm -rf "${g}"   # a cópia ficou no lugar, inteira: a guardada sobra
+    else
+      [ -e "$1" ] && dup_parcial "$1"   # o npx a apagou só pela metade: a metade vai para o lado (rodada 6, R3)
+      mkdir -p "$(dirname "$1")" && mv "${g}" "$1" 2>/dev/null
     fi
     while IFS="${DUP_TAB}" read -r p q; do
       [ -n "${p}" ] || continue
@@ -548,6 +563,11 @@ EOF
     return 1
   fi
   DUP_FEITO="${DUP_FEITO}- $1 ($4, saiu pelo npx skills remove) → ${g}"$'\n'
+}
+# Tira do caminho uma pasta que ficou pela metade, para a inteira (guardada) voltar no lugar: vai para <lixeira>/parcial/.
+dup_parcial() {
+  local d="${DUP_L}/parcial/$(printf '%s' "$1" | cksum | cut -d' ' -f1)"
+  mkdir -p "${d}" && mv "$1" "${d}/" 2>/dev/null
 }
 dup_volta_protegidas() {
   local t p q ok=0

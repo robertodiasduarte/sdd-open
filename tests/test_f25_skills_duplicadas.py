@@ -42,6 +42,7 @@ case "${NPX_STUB:-apaga}" in
   so-real) rm -rf "${HOME}/.agents/skills/${n}"; exit 0 ;;      # revisão R1: tira a pasta real e deixa o atalho
   so-atalho) rm -f "${HOME}/.claude/skills/${n}"; exit 0 ;;     # revisão R1: tira o atalho e deixa a pasta real
   so-pasta) rm -rf "${HOME}/.claude/skills/${n}" "${HOME}/.agents/skills/${n}"; exit 0 ;;   # rodada 5, R3: deixa a linha do registro
+  metade) rm -f "${HOME}/.agents/skills/${n}/SKILL.md"; exit 0 ;;   # rodada 6, R3: apaga a pasta do plano só pela metade
 esac
 [ "${NPX_STUB_NADA:-}" = "${n}" ] && exit 0                     # revisão R3: esta skill o npx não tira
 rm -rf "${HOME}/.claude/skills/${n}" "${HOME}/.agents/skills/${n}"
@@ -813,6 +814,58 @@ class RevisaoRodada5(Base):
         self.assertEqual(rc, 1, out)
         self.assertIn("deixou a skill no registro", out)
         self.assertEqual(self.arvore(), antes, "a cópia não voltou")
+
+
+class RevisaoRodada6(Base):
+    """Achados da revisão de confirmação, rodada 6 (codex revisa, claude audita): R1, R2, R3 e N1 — falhas no meio."""
+
+    def um_do_npx(self, manual: bool = False) -> None:
+        self.skill(self.g_agents, "sdd-define", "2.8.0", "starter")
+        if manual:
+            d = self.skill(self.g_claude, "sdd-define", "2.6.1", "open", extra="à mão\n")
+            (d / "sub").mkdir()
+            (d / "sub/nota.md").write_text("x\n", encoding="utf-8")
+        self.skill(self.proj / ".agents/skills", "sdd-define", "2.9.0", "open")
+        self.registro("sdd-define")
+        self.commit()
+
+    def test_r1_sem_a_copia_do_registro_o_npx_nao_roda(self):
+        self.um_do_npx()
+        antes = self.arvore()
+        rc, out = self.limpar(SDD_CHECAR_FALHA_REGISTRO="1")
+        self.assertNotEqual(rc, 0, out)
+        self.assertIn("não consegui guardar o registro do npx", out)
+        self.assertFalse((self.tmp / "npx.log").exists(), "o npx rodou sem a cópia do registro")
+        self.assertEqual(self.arvore(), antes)
+
+    def test_r2_desfazer_nunca_apaga_a_copia_guardada(self):
+        self.tabela_21()
+        rc, out = self.limpar()
+        lix = next((self.home / ".sdd-lixeira").iterdir())
+        guardada = lix / "home-claude" / "sdd-define"
+        shutil.copytree(guardada, self.g_claude / "sdd-define", symlinks=True)   # a mesma cópia voltou por outro caminho
+        rc, des = self.desfazer(out)
+        self.assertEqual(rc, 0, des)
+        self.assertTrue((guardada / "SKILL.md").is_file(), "o desfazer apagou a cópia guardada")
+
+    def test_r3_pasta_do_plano_apagada_pela_metade_volta_inteira(self):
+        self.um_do_npx()
+        antes = self.arvore()
+        rc, out = self.limpar(NPX_STUB="metade")
+        self.assertEqual(rc, 1, out)
+        self.assertEqual(self.arvore(), antes, "a pasta que o npx apagou pela metade não voltou inteira")
+
+    @unittest.skipIf(WINDOWS, "permissão de pasta (chmod) não vale igual no Windows")
+    def test_n1_protegida_que_nao_sai_inteira_para_o_item(self):
+        self.um_do_npx(manual=True)
+        trava = self.g_claude / "sdd-define/sub"
+        trava.chmod(0o555)   # o rm -rf da protegida falha pela metade (o arquivo de dentro não sai)
+        self.addCleanup(lambda: [p.chmod(0o755) for p in self.home.rglob("sub") if p.is_dir()])
+        antes = self.arvore()
+        rc, out = self.limpar()
+        self.assertNotEqual(rc, 0, out)
+        self.assertFalse((self.tmp / "npx.log").exists(), "o npx rodou com a protegida meio apagada")
+        self.assertEqual(self.arvore(), antes, "a pasta protegida ficou meio apagada")
 
 
 class AT010Textos(Base):
