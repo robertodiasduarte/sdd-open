@@ -104,6 +104,10 @@ To resume, run the same command:
   per folder, so the redone run is not charged twice);
 - the previous `PARADA.txt` moves to `paradas/`.
 
+Only one series runs per measurement folder at a time: `.papel-serie.trava` holds an operating-system lock that
+ends with the process, and a second series exits 64. If the runner was killed (`kill -9`) while the agent kept
+running, resuming exits 64 until that agent ends, so its spend is not left out of the cap.
+
 Don't edit the project while a series runs: the before and after snapshots would see your edit as the agent's write.
 
 ### 3. The choice

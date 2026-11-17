@@ -63,7 +63,7 @@ for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
         _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
     except (AttributeError, ValueError):
         pass
-import atexit, hashlib, io, os, re, shutil, signal, subprocess, sys, tarfile, tempfile, time
+import hashlib, io, os, re, shutil, signal, subprocess, sys, tarfile, tempfile, time
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 
@@ -155,6 +155,8 @@ if not os.path.isdir(serie):
 if not re.match(r"[1-9][0-9]{0,4}\Z", op["--teto-s"]):
     uso("--teto-s pede um número inteiro de segundos (1 a 99999)")
 TETO_S = int(op["--teto-s"])
+if op["--precos"]:
+    op["--precos"] = os.path.abspath(op["--precos"])   # R3 da rodada 4: o custo roda com cwd na raiz
 medicao = os.path.dirname(serie)
 
 rc, raiz, _ = git("rev-parse", "--show-toplevel", cwd=serie)
@@ -290,7 +292,23 @@ def pode_chamar(cand, ac):
     return True, ""
 
 
+def arquiva_parada():
+    """R1 da rodada 4: o PARADA.txt anterior só sai quando a série vai chamar o agente de novo (ou terminou); uma
+    retomada que sai antes disso o deixa no lugar, e o medidor segue dizendo PARCIAL."""
+    p = os.path.join(serie, "PARADA.txt")
+    if os.path.isfile(p):
+        os.makedirs(os.path.join(serie, "paradas"), exist_ok=True)
+        n = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+        destino = os.path.join(serie, "paradas", n + ".txt")
+        k = 1
+        while os.path.exists(destino):
+            k += 1
+            destino = os.path.join(serie, "paradas", "%s-%d.txt" % (n, k))
+        os.replace(p, destino)
+
+
 def parada(rc, palavra, motivo, extra=()):
+    arquiva_parada()
     ac = acumulado()
     nd = lambda k: (" + n/d" if ac[k + "_nd"] else "")
     texto = ["motivo: " + motivo, "quando: " + agora(),
@@ -325,36 +343,30 @@ def custo_execucao(copia):
 TRAVA = os.path.join(medicao, ".papel-serie.trava")
 
 
-def solta_trava():
-    if (ler(TRAVA) or "").split()[:1] == [str(os.getpid())]:
-        os.remove(TRAVA)
+_TRAVA_FD = None
 
 
 def pega_trava():
-    for _ in range(2):
-        try:
-            fd = os.open(TRAVA, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-        except FileExistsError:
-            dono = (ler(TRAVA) or "").split()
-            pid = int(dono[0]) if dono and dono[0].isdigit() else 0
-            vivo = True
-            if os.name != "nt" and pid:   # no Windows, os.kill(pid, 0) encerraria o processo: a trava fica
-                try:
-                    os.kill(pid, 0)
-                except ProcessLookupError:
-                    vivo = False
-                except PermissionError:
-                    pass
-            if vivo:
-                uso("outra série roda nesta pasta de medição (%s, processo %s): o teto é um só, e nada foi chamado"
-                    % (TRAVA, pid or "?"), "espere ela terminar; se nenhuma série roda, apague a trava e rode de novo.")
-            os.remove(TRAVA)
-            continue
-        with os.fdopen(fd, "w") as h:
-            h.write("%d %s\n" % (os.getpid(), agora()))
-        atexit.register(solta_trava)
-        return
-    uso("não consegui pegar a trava %s" % TRAVA)
+    """N1 da rodada 2, N2 da rodada 4: trava do sistema (flock; no Windows, msvcrt.locking) no arquivo da trava. Ela
+    some sozinha quando o processo acaba, até por SIGKILL: não há trava velha a tomar, nem corrida para tomá-la."""
+    global _TRAVA_FD
+    fd = os.open(TRAVA, os.O_RDWR | os.O_CREAT)
+    try:
+        if os.name == "nt":
+            import msvcrt
+            msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        os.close(fd)
+        dono = ((ler(TRAVA) or "").split() or ["?"])[0]
+        uso("outra série roda nesta pasta de medição (%s, processo %s): o teto é um só, e nada foi chamado"
+            % (TRAVA, dono), "espere ela terminar e rode de novo.")
+    os.lseek(fd, 0, 0)
+    os.ftruncate(fd, 0)
+    os.write(fd, ("%d %s\n" % (os.getpid(), agora())).encode("utf-8"))
+    _TRAVA_FD = fd   # aberto até o fim do processo
 
 
 pega_trava()
@@ -371,6 +383,18 @@ BASE = os.path.join(os.path.realpath(tempfile.gettempdir()),
 
 
 # ── retomada: execuções interrompidas, inválidas e o PARADA.txt anterior (R4 e R6 da D1; R1 e N1 da rodada 3) ───────
+def da_serie(caminho):
+    """R4 da rodada 4: arquivo que o papel-serie.sh grava na pasta de medição (de qualquer série) entre a interrupção e
+    a retomada; um agente que escreva ali com esses nomes ainda é pego na execução seguinte."""
+    rel = os.path.relpath(os.path.realpath(caminho), os.path.realpath(medicao))
+    if rel.startswith(".."):
+        return False
+    nome = os.path.basename(rel)
+    return nome in ("PARADA.txt", "meta.txt", "saida.txt", "inicio.txt", ".papel-serie.trava") \
+        or re.match(r"(interrompida|invalida)-\d+\.txt\Z", nome) is not None \
+        or os.path.basename(os.path.dirname(rel)) == "paradas"
+
+
 FR = os.path.join(BIN, "governanca-fronteira.sh")
 NADA = os.path.join(raiz, ".sdd-serie-nenhum-arquivo-permitido")
 interrompidas, problemas = [], []
@@ -383,6 +407,18 @@ for raiz_d, dirs, arqs in os.walk(os.path.join(serie, "execucoes")):
             os.remove(os.path.join(raiz_d, "inicio.txt"))   # parou antes de chamar o agente (R3 da rodada 1)
             print("↻ execução que não chegou a chamar o agente descartada (%s)" % os.path.relpath(raiz_d, serie))
             continue
+        # N1 da rodada 4: com o executor morto por SIGKILL, o agente (sessão própria) pode seguir vivo e gastando
+        ag = (ler(os.path.join(trab_i, "agente.txt")) or "").strip() if trab_i else ""
+        if os.name != "nt" and ag.isdigit():   # no Windows, os.kill(pid, 0) encerraria o processo
+            try:
+                os.killpg(int(ag), 0)
+                uso("o agente da execução interrompida %s ainda roda (grupo de processos %s): medir agora deixaria o "
+                    "gasto que falta fora do teto; nada foi chamado" % (os.path.relpath(raiz_d, serie), ag),
+                    "espere ele terminar (ou encerre-o: kill -TERM -%s) e rode de novo." % ag)
+            except ProcessLookupError:
+                pass
+            except PermissionError:
+                uso("não consegui conferir se o agente %s da execução interrompida ainda roda" % ag)
         # N1 da rodada 3: a interrompida não passou pela foto de depois; confere agora contra a foto de antes (fora
         # do projeto, ao lado da cópia). Antes de qualquer escrita desta retomada; a trava desta série é permitida.
         antes = os.path.join(trab_i, "antes") if trab_i else ""
@@ -390,7 +426,8 @@ for raiz_d, dirs, arqs in os.walk(os.path.join(serie, "execucoes")):
             depois = os.path.join(trab_i, "depois-retomada")
             subprocess.run([BASH, FR, "--snapshot", raiz, depois, NADA], capture_output=True)
             c = subprocess.run([BASH, FR, "--comparar", antes, depois, NADA, TRAVA], capture_output=True)
-            fora_i = [ln for ln in c.stdout.decode("utf-8", "replace").splitlines() if ln.startswith("FORA:")]
+            fora_i = [ln for ln in c.stdout.decode("utf-8", "replace").splitlines() if ln.startswith("FORA:")
+                      and not da_serie(ln[5:].strip())]
             fronteira = ("fora" if fora_i else "conferida") if c.returncode in (0, 1) else \
                 "não conferida (exit %d)" % c.returncode
         else:
@@ -399,10 +436,6 @@ for raiz_d, dirs, arqs in os.walk(os.path.join(serie, "execucoes")):
             problemas.append("%s: fronteira %s" % (os.path.relpath(raiz_d, serie), fronteira))
             problemas.extend(fora_i[:50])
         interrompidas.append((raiz_d, arqs, ini, fronteira))
-if os.path.isfile(os.path.join(serie, "PARADA.txt")):
-    os.makedirs(os.path.join(serie, "paradas"), exist_ok=True)
-    os.replace(os.path.join(serie, "PARADA.txt"),
-               os.path.join(serie, "paradas", datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S") + ".txt"))
 for raiz_d, arqs, ini, fronteira in interrompidas:
     d = custo_execucao(ini.get("copia", "")) if ini.get("copia") else {"nominal": "n/d"}
     cand = next((c for c in candidatos if c["id"] == ini.get("candidato")), None)
@@ -463,6 +496,7 @@ def executar(cand, caso, rep):
     if not ok:
         parada(20, "PARADO PELO TETO", motivo,
                ["seguinte: %s · %s · repetição %d" % (caso["nome"], cand["id"], rep)])
+    arquiva_parada()   # a série vai chamar o agente: a parada anterior foi resolvida
     # R1 da revisão do código: cada tentativa ganha um caminho próprio; o registro de sessão do agente é por pasta, e
     # uma refeita no mesmo caminho somaria a sessão da interrompida (já contada no interrompida-N.txt)
     trab = os.path.join(BASE, "%s-%s-%d-%s" % (caso["nome"], cand["id"], rep, os.urandom(4).hex()))
@@ -524,6 +558,7 @@ def executar(cand, caso, rep):
     with open(saida_tmp, "wb") as out, open(os.path.join(trab, "stderr.txt"), "wb") as errf:
         p = subprocess.Popen([BASH, "-c", cmd], cwd=copia, env=env, stdout=out, stderr=errf,
                              stdin=subprocess.DEVNULL, start_new_session=(os.name != "nt"))
+        grava(os.path.join(trab, "agente.txt"), "%d\n" % p.pid)   # N1 da rodada 4: o grupo do agente
         def mata():
             # LM-016: o grupo inteiro só cai onde há sinal POSIX
             try:
@@ -607,6 +642,7 @@ if escolhidos:
             for rep in range(1, REPS + 1):
                 executar(cand, caso, rep)
 ac = acumulado()
+arquiva_parada()
 print("RESULTADO: COMPLETA")
 print("→ acumulado da medição: nominal %s%s · pago %s%s. Rode papel-medir.sh %s para a escolha."
       % (ac["nominal"], " + n/d" if ac["nominal_nd"] else "", ac["pago"], " + n/d" if ac["pago_nd"] else "", serie))

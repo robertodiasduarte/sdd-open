@@ -104,6 +104,10 @@ Para retomar, rode o mesmo comando:
   do agente é por pasta, então a refeita não é cobrada duas vezes);
 - o `PARADA.txt` anterior vai para `paradas/`.
 
+Uma série por vez em cada pasta de medição: `.papel-serie.trava` guarda uma trava do sistema que acaba com o
+processo, e uma 2ª série sai 64. Se o executor foi morto (`kill -9`) e o agente seguiu rodando, a retomada sai 64
+até esse agente terminar, para o gasto dele não ficar fora do teto.
+
 Não mexa no projeto enquanto a série roda: a foto de antes e depois veria a sua edição como escrita do agente.
 
 ### 3. A escolha

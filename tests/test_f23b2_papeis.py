@@ -338,6 +338,17 @@ class AT004AT007Medidor(BaseSerie):
         self.assertEqual(rc, 4, out)
         self.assertIn("gravada com o modelo modelo-barato, o candidatos.tsv diz modelo-medio", out)
 
+    def test_um_add_proposto_nao_cobre_dois_esperados(self):
+        # R2 da rodada 4: o mesmo ADD casava com os 2 esperados e a cobertura saía 2 de 2
+        with (self.r / "gab/c1/esperado.txt").open("a", encoding="utf-8") as h:
+            h.write("ADD Reviews / harness :: sup: `termo-a` `termo-d` :: Outra regra inventada. **Do instead:** outra "
+                    "ação. → ficha: — · promovido_para: —\n")
+        s = self.serie("cur", "curador", [BARATO])
+        self.assertEqual(self.rodar(s)[0], 0)
+        rc, out, _ = self.medir(s)
+        self.assertEqual(rc, 3, out)
+        self.assertIn("ADD/REFINE/TOMBSTONE: 1 de 2", out)
+
     def test_execucao_com_rc_diferente_de_zero_fica_fora_da_meta(self):
         # R2 da revisão do código: o barato responde certo e sai 1; sem olhar o rc ele seria o escolhido
         s = self.serie("cur", "curador", [CARO, BARATO])
@@ -679,28 +690,128 @@ class AT008AT011Executor(BaseSerie):
                         except OSError:
                             pass
                     p.wait()
-                self.assertFalse((self.med / ".papel-serie.trava").exists(), "a trava sai com a série")
                 self.assertTrue((s / "execucoes/c1/caro/1/inicio.txt").exists())
                 rc, out, _ = self.rodar(s)
                 self.assertEqual(rc, 0, out)
                 self.assertIn("nominal: 1.001", (s / "execucoes/c1/caro/1/interrompida-1.txt").read_text(encoding="utf-8"))
 
     def test_trava_da_pasta_de_medicao(self):
-        # N1 da rodada 2: duas séries ao mesmo tempo leriam o mesmo acumulado e passariam juntas do teto
+        # N1 da rodada 2, N2 da rodada 4: trava do sistema; quem a segura bloqueia a 2ª série, e ela some com o processo
         s = self.serie("cur", "curador", [CARO])
         trava = self.med / ".papel-serie.trava"
-        trava.write_text("%d agora\n" % os.getpid(), encoding="utf-8")      # um processo vivo segura a trava
-        rc, out, err = self.rodar(s)
-        self.assertEqual(rc, 64, out + err)
-        self.assertIn("outra série roda nesta pasta de medição", err)
-        self.assertEqual(self.chamadas(), [])
-        if os.name != "nt":                                                    # trava de processo morto é tomada
-            morto = subprocess.Popen([PYTHON, "-c", "pass"])
-            morto.wait()
-            trava.write_text("%d antes\n" % morto.pid, encoding="utf-8")
+        trava.write_text("99999 antes\n", encoding="utf-8")       # arquivo velho, sem ninguém segurando: não trava
+        fd = os.open(str(trava), os.O_RDWR)
+        try:
+            if os.name == "nt":
+                import msvcrt
+                msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
             rc, out, err = self.rodar(s)
-            self.assertEqual(rc, 0, out + err)
-            self.assertFalse(trava.exists())
+            self.assertEqual(rc, 64, out + err)
+            self.assertIn("outra série roda nesta pasta de medição", err)
+            self.assertEqual(self.chamadas(), [])
+        finally:
+            os.close(fd)                                              # fechar solta a trava, como o fim do processo
+        rc, out, err = self.rodar(s)
+        self.assertEqual(rc, 0, out + err)
+        self.assertEqual(len(self.chamadas()), 1)
+
+    @unittest.skipIf(*SEM_SINAL)
+    def test_agente_vivo_da_interrompida_trava_a_retomada(self):
+        # N1 da rodada 4: com o executor morto por SIGKILL, o agente segue vivo; medir agora deixaria gasto fora do teto
+        s = self.serie("cur", "curador", [CARO])
+        pidf = self.tmp / "agente.pid"
+        env = dict(self.env, FALSO_MODO="sessao-e-dorme", FALSO_PID=str(pidf))
+        p = subprocess.Popen([BASH, str(SERIE), str(s), "--cmd", 'bash "%s"' % AGENTE.as_posix(), "--precos",
+                              str(FX / "precos")], cwd=str(self.r), env=env, stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL, start_new_session=True)
+        agente = 0
+        try:
+            for _ in range(300):
+                if pidf.exists() and pidf.read_text(encoding="utf-8").strip():
+                    break
+                time.sleep(0.1)
+            else:
+                self.fail("o agente falso não começou")
+            agente = int(pidf.read_text(encoding="utf-8").strip())
+            os.killpg(p.pid, signal.SIGKILL)                          # só o executor: o agente fica vivo
+            p.wait()
+            rc, out, err = self.rodar(s)
+            self.assertEqual(rc, 64, out + err)
+            self.assertIn("ainda roda", err)
+            self.assertFalse(list(s.rglob("interrompida-*.txt")), "nada medido com o agente vivo")
+        finally:
+            if agente > 0:
+                try:
+                    os.kill(agente, signal.SIGKILL)
+                except OSError:
+                    pass
+            try:
+                os.killpg(p.pid, signal.SIGKILL)
+            except OSError:
+                pass
+            p.wait()
+        time.sleep(0.5)
+        rc, out, _ = self.rodar(s)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("nominal: 1.001", (s / "execucoes/c1/caro/1/interrompida-1.txt").read_text(encoding="utf-8"))
+
+    def test_parada_fica_se_a_retomada_sai_antes_de_chamar(self):
+        # R1 da rodada 4: a retomada arquivava o PARADA.txt no começo; saindo antes de chamar (64), o medidor perdia o
+        # PARCIAL e podia escolher sem o candidato que faltava
+        self.teto("0.00", "1.50")
+        s = self.serie("cur", "curador", [CARO], reps=2)
+        self.assertEqual(self.rodar(s)[0], 20)
+        (s / "candidatos.tsv").write_text("caro\tmodelo-medio\tassinatura\n", encoding="utf-8")
+        rc, _, err = self.rodar(s)
+        self.assertEqual(rc, 64, err)
+        self.assertTrue((s / "PARADA.txt").exists())
+        self.assertEqual(self.medir(s)[0], 4)
+
+    def test_precos_relativo_vale_pela_pasta_atual(self):
+        # R3 da rodada 4: --precos relativo era lido a partir da raiz e o custo saía n/d
+        shutil.copytree(str(FX / "precos"), str(self.tmp / "pr"))
+        s = self.serie("cur", "curador", [CARO])
+        rc, out, err = self.roda([BASH, SERIE, s, "--cmd", 'bash "%s"' % AGENTE.as_posix(), "--precos", "pr"], self.tmp)
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn("nominal: 1.001", (s / "execucoes/c1/caro/1/meta.txt").read_text(encoding="utf-8"))
+
+    @unittest.skipIf(*SEM_SINAL)
+    def test_parada_de_outra_serie_nao_conta_como_escrita_da_interrompida(self):
+        # R4 da rodada 4: a outra série para (R5) e grava o PARADA.txt dela; a retomada não pode tomá-lo por escrita do
+        # agente interrompido
+        a = self.serie("cur", "curador", [CARO])
+        b = self.serie("ava", "avaliador", [CARO])                  # montada antes: a montagem é edição da pessoa
+        pidf = self.tmp / "agente.pid"
+        env = dict(self.env, FALSO_MODO="sessao-e-dorme", FALSO_PID=str(pidf))
+        p = subprocess.Popen([BASH, str(SERIE), str(a), "--cmd", 'bash "%s"' % AGENTE.as_posix(), "--precos",
+                              str(FX / "precos")], cwd=str(self.r), env=env, stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL, start_new_session=True)
+        agente = 0
+        try:
+            for _ in range(300):
+                if pidf.exists() and pidf.read_text(encoding="utf-8").strip():
+                    break
+                time.sleep(0.1)
+            else:
+                self.fail("o agente falso não começou")
+            agente = int(pidf.read_text(encoding="utf-8").strip())
+        finally:
+            for alvo in ([lambda: os.killpg(p.pid, signal.SIGKILL)]
+                         + ([lambda: os.kill(agente, signal.SIGKILL)] if agente > 0 else [])):
+                try:
+                    alvo()
+                except OSError:
+                    pass
+            p.wait()
+        time.sleep(0.5)
+        self.assertEqual(self.rodar(b)[0], 20)                      # para pela interrompida da outra série
+        self.assertTrue((b / "PARADA.txt").exists())
+        rc, out, _ = self.rodar(a)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("fronteira conferida", out)
 
     def test_snapshot_que_falha_nao_deixa_execucao_interrompida(self):
         # R3 da revisão do código: o inicio.txt antes do snapshot virava "interrompida" com n/d e travava a medição

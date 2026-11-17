@@ -246,7 +246,14 @@ def pontua_curador(caso, saida):
     inter = sum((pc & ec).values())
     prec = Decimal(inter) / sum(pc.values()) if pc else Decimal(1)
     rec = Decimal(inter) / sum(ec.values()) if ec else Decimal(1)
-    achados = len(pr & er) + sum(1 for s, sup in ea if any(ps == s and (psup & sup) for ps, psup in pa))
+    # R2 da rodada 4: cada ADD proposto vale para um ADD esperado só (um ADD genérico não cobre vários)
+    usados, adds_achados = set(), 0
+    for s, sup in ea:
+        k = next((i for i, (ps, psup) in enumerate(pa) if i not in usados and ps == s and (psup & sup)), None)
+        if k is not None:
+            usados.add(k)
+            adds_achados += 1
+    achados = len(pr & er) + adds_achados
     total_mud = len(er) + len(ea)
     mud = Decimal(achados) / total_mud if total_mud else Decimal(1)
     with tempfile.TemporaryDirectory() as td:   # o --aplicar escreve só no stdout; o gabarito nunca é escrito
