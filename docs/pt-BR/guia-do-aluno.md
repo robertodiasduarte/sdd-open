@@ -266,12 +266,12 @@ está começando não sabe o nome da skill, sabe em que momento está.
 
 | | |
 |---|---|
-| **Para que serve** | Olha o computador e o projeto e diz se está tudo pronto para trabalhar — sem mudar nada. |
+| **Para que serve** | Olha o computador e o projeto e diz se está tudo pronto para trabalhar — sem mudar nada. Também avisa quando a mesma skill do SDD está instalada em dois lugares que o seu agente lê, e qual delas ele roda. |
 | **Quando usar** | Depois de instalar; antes da primeira frente num projeto; quando algo estranho acontecer (um comando que não existe, um commit que falha); quando outra skill mandar. |
-| **Quando não usar** | Para consertar: ela só diagnostica. O conserto é com o comando ou a skill que ela indicar. |
+| **Quando não usar** | Para consertar: ela só diagnostica. O conserto é com o comando ou a skill que ela indicar. A única exceção é tirar uma skill duplicada, que ela faz só quando você pede e diz sim ao plano que ela mostrou. |
 | **Como pedir** | *"use a skill sdd-checar-ambiente"* |
-| **O que produz** | Uma linha ("tudo certo") ou uma lista do que impede, a mais grave primeiro, cada item com o comando que resolve. Nenhum arquivo. |
-| **O que vai perguntar** | Nada — é só leitura. |
+| **O que produz** | Uma linha ("tudo certo") ou uma lista do que impede, a mais grave primeiro, cada item com o comando que resolve. Nenhum arquivo — salvo na limpeza das skills duplicadas, que guarda cada cópia tirada em `~/.sdd-lixeira`, com um comando que desfaz. |
+| **O que vai perguntar** | Nada no diagnóstico, que é só leitura. Na limpeza das skills duplicadas, uma pergunta antes de tirar: se pode tirar as cópias mais velhas do plano mostrado. |
 
 #### sdd-iniciar-repo
 
