@@ -200,6 +200,7 @@ docs/comparison.md
 docs/context-and-governance.md
 docs/hooks.md
 docs/llm-in-code.md
+docs/model-per-role.md
 docs/playbook-curation.md
 docs/pt-BR/adaptation-guide.md
 docs/pt-BR/adversarial-review.md
@@ -209,6 +210,7 @@ docs/pt-BR/context-and-governance.md
 docs/pt-BR/guia-do-aluno.md
 docs/pt-BR/hooks.md
 docs/pt-BR/llm-in-code.md
+docs/pt-BR/model-per-role.md
 docs/pt-BR/playbook-curation.md
 docs/pt-BR/quickstart.md
 docs/pt-BR/roadmap.md
@@ -335,6 +337,8 @@ sdd/bin/kb-dominios.py
 sdd/bin/ledger-revisao-lint.sh
 sdd/bin/lib/python.sh
 sdd/bin/marca-fase.sh
+sdd/bin/papel-medir.sh
+sdd/bin/papel-serie.sh
 sdd/bin/patterns-lint.sh
 sdd/bin/playbook-curator.sh
 sdd/bin/playbook-lint.sh
@@ -407,6 +411,23 @@ sdd/fixtures/custo/reviews/EXTERNAL_REVIEW_20261115-110000/META.txt
 sdd/fixtures/custo/reviews/EXTERNAL_REVIEW_20261115-120000/META.txt
 sdd/fixtures/custo/reviews/EXTERNAL_REVIEW_20261115-130000/META.txt
 sdd/fixtures/custo/traces/F99_TESTE.jsonl
+sdd/fixtures/f23b2/README.md
+sdd/fixtures/f23b2/agente-falso.sh
+sdd/fixtures/f23b2/gabarito/a1/brief.md
+sdd/fixtures/f23b2/gabarito/a1/caso.txt
+sdd/fixtures/f23b2/gabarito/a1/esperado.txt
+sdd/fixtures/f23b2/gabarito/c1/brief.md
+sdd/fixtures/f23b2/gabarito/c1/caso.txt
+sdd/fixtures/f23b2/gabarito/c1/esperado.txt
+sdd/fixtures/f23b2/gabarito/c1/playbook.md
+sdd/fixtures/f23b2/precos/precos-cache.tsv
+sdd/fixtures/f23b2/precos/precos.tsv
+sdd/fixtures/f23b2/respostas/modelo-barato/a1.txt
+sdd/fixtures/f23b2/respostas/modelo-barato/c1.txt
+sdd/fixtures/f23b2/respostas/modelo-caro/a1.txt
+sdd/fixtures/f23b2/respostas/modelo-caro/c1.txt
+sdd/fixtures/f23b2/respostas/modelo-medio/a1.txt
+sdd/fixtures/f23b2/respostas/modelo-medio/c1.txt
 sdd/fixtures/design/DESIGN_VALIDO.md
 sdd/fixtures/evidencia/BUILD_REPORT_controle.md
 sdd/fixtures/evidencia/BUILD_REPORT_evidencia_ignorada.md
@@ -674,6 +695,7 @@ tests/test_f21_textos.py
 tests/test_f22_upgrade.py
 tests/test_f22_versao.py
 tests/test_f23_custo.py
+tests/test_f23b2_papeis.py
 tests/test_f23b3_revisao.py
 tests/test_f24_release_enxuta.py
 tests/test_fluxo.py

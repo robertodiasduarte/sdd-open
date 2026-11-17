@@ -1,0 +1,4 @@
+# tarifas inventadas para o teste (US$ por milhão de tokens)
+claude	modelo-caro	1.00	10.00	https://example.com/precos	2026-11-16
+claude	modelo-medio	1.00	8.00	https://example.com/precos	2026-11-16
+claude	modelo-barato	0.50	2.00	https://example.com/precos	2026-11-16

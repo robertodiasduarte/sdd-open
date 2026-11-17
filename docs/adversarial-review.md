@@ -288,6 +288,13 @@ ledger, or `-`). It prints one row per feature: sessions (nominal, whole session
 `Sessões` column, which exists on both sides. Exits: `0` MEDIDO · `2` SEM DADOS · `64` usage. It never calls
 a model and never uses the network.
 
+A role dispatched in a fresh context (evaluator, curator, cartographer…) gets its own mark, `papel-<role>`, around
+the dispatch. The role mark neither opens nor closes a phase. The report shows each role in a
+`↳ papel <name> · <models>` sub-row under the phases, and the sub-row is **out of the total**, because those
+messages are already counted in their phase. `--execucao <folder>` prints, as `key=value` lines, the cost of one run
+whose working folder was `<folder>`. `papel-serie.sh` uses it to measure each run. How to pick a cheaper model per
+role: [model-per-role.md](model-per-role.md).
+
 ## Limits
 
 - The engines see only the diff and the SDD context: they do not see production, the database or a

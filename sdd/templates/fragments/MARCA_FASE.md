@@ -33,3 +33,11 @@ roda no encerramento) divide o custo por fase e grava `sdd/reports/CUSTO_<FEATUR
 - **Fase que recomeça** (uma sessão nova retoma o build): grave `inicio` de novo; o contador conta as execuções.
 - `SDD_TRACE=off` desliga as marcas, como desliga o trace do gate.
 - A marca só leva fase, feature e horário: nada da conversa.
+
+## Marca de papel
+
+Um papel despachado em contexto fresco (avaliador, curador, cartógrafo…) também ganha marca, com o nome
+`papel-<papel>`: `bash sdd/bin/marca-fase.sh inicio papel-avaliador <FEATURE>` antes do despacho e `fim` na volta
+(a escada de `sdd-build/references/contexto-fresco.md` diz quando). A marca de papel não abre nem fecha fase: o que
+cai na janela dela continua contando na fase em que ele rodou, e o `custo-feature.sh` mostra o papel numa sub-linha
+`↳ papel <nome> · <modelos>`, fora do total. É por ela que se sabe se trocar o modelo de um papel economizou.

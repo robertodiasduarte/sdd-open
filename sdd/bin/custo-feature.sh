@@ -18,6 +18,13 @@
 #       mapa: 3 colunas separadas por TAB — feature · raiz (pasta das sessões daquela frente) · ledger (ou -);
 #       imprime uma linha por feature: sessões (nominal, a sessão inteira, sem fase), revisão (nominal, ou n/d sem
 #       META), rodadas de revisão e achados com dano (do ledger)
+#   custo-feature.sh --execucao <pasta> [--precos <pasta>] [--registry <registry.tsv>]
+#       o custo de UMA execução que rodou com <pasta> como pasta de trabalho (a cópia de um caso do papel-serie.sh):
+#       todas as sessões dessa pasta, sem marca; imprime chave=valor (entrada, saida, cache_lido, cache_criado,
+#       nominal exato ou n/d, modelos, leitores) — 0 MEDIDO · 2 SEM DADOS (nenhuma mensagem lida)
+#   Marcas de papel (F23B2): `marca-fase.sh inicio|fim papel-<nome> <FEATURE>` em volta do despacho de um papel em
+#       contexto fresco; cada papel sai numa sub-linha `↳ papel <nome> · <modelos>` logo abaixo das fases, com o que
+#       caiu na janela dele. A sub-linha NÃO entra no total: o que ela mostra já está na fase em que o papel rodou.
 #       --raiz: padrão a raiz do repositório git (fora dele, a pasta atual)
 #       --precos: pasta com precos.tsv e precos-cache.tsv; padrão a pasta do registry (a do projeto, senão a do pacote)
 #       --reviews: padrão review.output_dir do sdd/config.yaml (sdd/reports/reviews) · --ledgers: padrão sdd/reviews
@@ -150,7 +157,7 @@ def tsv(caminho, colunas):
 # ── argumentos ──────────────────────────────────────────────────────────────────────────────────────
 args = sys.argv[1:]
 op = {"--raiz": None, "--saida": None, "--precos": None, "--reviews": None, "--ledgers": None, "--registry": None,
-      "--linha-de-base": None}
+      "--linha-de-base": None, "--execucao": None}
 feature = None
 i = 0
 while i < len(args):
@@ -167,9 +174,12 @@ while i < len(args):
         para("argumento a mais: " + a)
     feature = a
     i += 1
-if op["--linha-de-base"] is None:
+if op["--execucao"] is not None:
+    if feature is not None or op["--linha-de-base"] is not None:
+        para("--execucao não leva FEATURE nem --linha-de-base")
+elif op["--linha-de-base"] is None:
     if feature is None:
-        para("falta a FEATURE (ou --linha-de-base <mapa.tsv>)")
+        para("falta a FEATURE (ou --linha-de-base <mapa.tsv>, ou --execucao <pasta>)")
     if not FEATURE_RE.match(feature):
         para("FEATURE inválida: só A-Z, a-z, 0-9, _, . e -, até 80 caracteres")
 elif feature is not None:
@@ -576,11 +586,21 @@ def acumula(conta, agente, m):
 
 # ── modo feature ────────────────────────────────────────────────────────────────────────────────────
 def modo_feature():
-    marcas, gate = ler_trace(feature)
+    todas, gate = ler_trace(feature)
+    # F23B2 (Decision 3): marca de papel tem janela própria, que pode cair dentro de uma fase; ela não abre nem
+    # fecha fase, e o que cai nela continua contando na fase
+    marcas = [m for m in todas if not m[3].startswith("papel-")]
+    marcas_papel = [m for m in todas if m[3].startswith("papel-")]
     dados, estado = ler_sessoes(raiz)
     regs_todos = [r for v in dados.values() if v for r in v]
     fim_sessoes = max((r["t"] for r in regs_todos), default=None)
     ivs, janela = intervalos(marcas, fim_sessoes)
+    ivs_papel, contas_papel, modelos_papel = {}, {}, {}
+    for nome in sorted({m[3] for m in marcas_papel}):
+        ivs_papel[nome] = intervalos([m for m in marcas_papel if m[3] == nome], fim_sessoes)[0]
+        contas_papel[nome] = conta_nova()
+        contas_papel[nome]["execucoes"] = len(ivs_papel[nome])
+        modelos_papel[nome] = set()
     ordem, contas = [], {}
     for fase, _, _ in ivs:
         if fase not in contas:
@@ -592,10 +612,17 @@ def modo_feature():
         if regs is None:
             continue
         for m in regs:
-            if m["tipo"] != "msg" or janela is None or not (janela[0] <= m["t"] <= janela[1]):
+            if m["tipo"] != "msg":
                 continue
-            alvo = next((contas[f] for f, a, b in ivs if a <= m["t"] <= b), sem_fase)
-            acumula(alvo, agente, m)
+            if janela is not None and janela[0] <= m["t"] <= janela[1]:
+                alvo = next((contas[f] for f, a, b in ivs if a <= m["t"] <= b), sem_fase)
+                acumula(alvo, agente, m)
+            # raio de impacto da release: o papel também vale fora da janela das fases (o curador do lote roda depois
+            # do fim da release); ali a mensagem conta só na sub-linha dele, nunca no total
+            for nome, ivp in ivs_papel.items():
+                if any(a <= m["t"] <= b for _, a, b in ivp):
+                    acumula(contas_papel[nome], agente, m)
+                    modelos_papel[nome].add(m["modelo"])
         spans = turnos(regs)
         if janela is not None:
             dentro = Decimal(0)
@@ -608,7 +635,14 @@ def modo_feature():
     falhou = any(regs is None for regs in dados.values())
     if janela is not None and (falhou or ILEGIVEIS[0]):
         # leitor que falhou ou registro ilegível: não se sabe a que fase pertencia, então toda linha da janela é parcial
-        for c in [contas[f] for f in ordem] + [sem_fase]:
+        for c in [contas[f] for f in ordem] + [sem_fase] + list(contas_papel.values()):
+            marca_nd(c)
+    elif falhou or ILEGIVEIS[0]:
+        for c in contas_papel.values():   # papel sem fase em volta: a parte não lida também é n/d
+            marca_nd(c)
+    for nome, c in contas_papel.items():
+        if c["itens"] == 0:   # papel marcado sem nenhuma mensagem lida: n/d, nunca zero
+            FORA.append(("papel", "nenhuma mensagem lida em %s" % nome))
             marca_nd(c)
     if janela is not None and not falhou and all(c["itens"] == 0 for c in [contas[f] for f in ordem] + [sem_fase]):
         # R2 da rodada 3: nenhuma mensagem lida na janela inteira (agente sem leitor): o trecho sem fase também não foi medido
@@ -653,6 +687,9 @@ def modo_feature():
             dinheiro(c, "pago"), dinheiro(c, "nominal"), duracao(c["segundos"]))
     for f in ordem:
         linhas.append(linha(f, contas[f]))
+    for nome in sorted(contas_papel):   # fora do total (Decision 3 do DESIGN_F23B2)
+        rotulo = "↳ papel %s · %s" % (nome[len("papel-"):], ", ".join(sorted(modelos_papel[nome])) or "—")
+        linhas.append(linha(rotulo, contas_papel[nome]))
     linhas.append(linha("sem fase", sem_fase))
     linhas.append(linha("revisão", rev))
     linhas.append(linha("**total**", total))
@@ -731,7 +768,39 @@ def modo_linha_de_base():
     publica("\n".join(linhas) + "\n", "-")
 
 
-if op["--linha-de-base"] is not None:
+# ── modo execução (F23B2: o custo de uma execução do papel-serie.sh) ────────────────────────────────
+def modo_execucao():
+    pasta = op["--execucao"]
+    dados, estado = ler_sessoes(pasta)
+    c, modelos = conta_nova(), set()
+    if ILEGIVEIS[0]:
+        marca_nd(c)
+    for agente, regs in dados.items():
+        if regs is None:
+            marca_nd(c)
+            continue
+        for m in regs:
+            if m["tipo"] == "msg":
+                acumula(c, agente, m)
+                modelos.add(m["modelo"])
+    for k in TOKENS:
+        print("%s=%d" % (k, c["tokens"][k]))
+    # exato (sem arredondar): o papel-serie.sh soma estes valores para conferir o teto; parcial = n/d inteiro
+    print("nominal=%s" % ("n/d" if c["nominal_nd"] or not c["itens"] else str(c["nominal"])))
+    print("modelos=%s" % ",".join(sorted(modelos)))
+    print("leitores=%s" % " · ".join("%s %s" % (a, estado[a]) for a in sorted(estado)))
+    if not c["itens"]:
+        print("RESULTADO: SEM DADOS")
+        print("→ nenhuma sessão de agente com esta pasta de trabalho: o custo da execução é n/d, nunca zero.")
+        sys.exit(2)
+    print("RESULTADO: MEDIDO")
+    print("→ some o nominal ao acumulado da série; n/d para a série no próximo teto.")
+    sys.exit(0)
+
+
+if op["--execucao"] is not None:
+    modo_execucao()
+elif op["--linha-de-base"] is not None:
     modo_linha_de_base()
 else:
     modo_feature()

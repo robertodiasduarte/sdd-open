@@ -17,6 +17,11 @@
 #       30 AGUARDANDO_RECIBO · 64 entrada ausente ou ilegível — nunca PRONTO por omissão
 #   sdd-fluxo.sh despachar <papel> <FEATURE> <brief.md>
 #       40 AGUARDANDO_HUMANO: brief em sdd/reports/briefs/BRIEF_<papel>_<FEATURE>.md e a parada ⏸️ · 64
+#       (com papeis.<papel> preenchido, a parada diz o modelo da sessão nova; slot inválido sai 64 antes de gravar)
+#   sdd-fluxo.sh modelo <papel>
+#       0 e o valor de papeis.<papel> do sdd/config.yaml (linha vazia = o modelo da sessão) · 64 papel fora da lista
+#       (curador, avaliador, revisao_design, cartografo, executor; revisor-design e executor-drive também) ou valor
+#       inválido (começa por letra ou número; depois letras, números e . _ : / -; até 80 caracteres)
 #   sdd-fluxo.sh seguir <fase> <DEFINE.md> <próxima> [--parar] [--drive]
 #       0 SEGUIR (linha de transição) · 1 PARAR (o motivo) · 64 uso ou flow.autonomous inválido
 #       --drive: a chamada é de uma execução do sdd-drive: não lê flow.autonomous; `release` continua parando (D1)
@@ -85,6 +90,12 @@ cmd_despachar() {
     printf 'RESULTADO: ERRO DE USO\n→ grave o brief num arquivo e rode de novo; nada foi gravado em sdd/reports/briefs/.\n' >&2
     exit 64
   fi
+  # F23B2: o modelo do papel (papeis.<papel>), validado antes de gravar qualquer coisa
+  mod=""
+  case "$papel" in
+    avaliador|curador|cartografo|revisor-design|executor-drive)
+      mod="$(nucleo modelo "$papel")" || exit 64 ;;
+  esac
   R="$(raiz)"
   rel="sdd/reports/briefs/BRIEF_${papel}_${feat}.md"
   mkdir -p "$R/sdd/reports/briefs" || exit 64
@@ -117,6 +128,7 @@ cmd_despachar() {
   printf '1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.\n'
   printf '2. Cole o conteúdo de %s → o agente começa a ler %s.\n' "$rel" "$le"
   printf '3. Quando ele terminar, copie %s e cole aqui → é o que eu preciso para continuar.\n' "$retorno"
+  [ -n "$mod" ] && printf '**Modelo:** abra a sessão nova com o modelo %s (papeis do sdd/config.yaml).\n' "$mod"
   printf '**O que não foi feito:** %s\n' "$nao_feito"
   printf '**Brief:** %s\n' "$rel"
   printf '**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.\n\n'
@@ -744,7 +756,28 @@ def cmd_seguir():
     sys.exit(0)
 
 
-{"review-design": cmd_review_design, "loop": cmd_loop, "seguir": cmd_seguir, "estado": cmd_estado}[verbo]()
+# ── modelo (F23B2) ───────────────────────────────────────────────────────────────────────────────
+PAPEIS = {"curador": "curador", "avaliador": "avaliador", "revisao_design": "revisao_design",
+          "revisor-design": "revisao_design", "cartografo": "cartografo",
+          "executor": "executor", "executor-drive": "executor"}
+# R7 da revisão D1: começa por letra ou número, para o valor nunca virar opção (--x) na linha de comando do agente
+MODELO_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:/-]{0,79}\Z")
+
+
+def cmd_modelo():
+    if len(args) != 1 or args[0] not in PAPEIS:
+        erro_uso("modelo exige um papel: " + ", ".join(sorted(PAPEIS)))
+    chave = PAPEIS[args[0]]
+    v = slot(os.path.join(raiz_de(os.getcwd()), "sdd/config.yaml"), "papeis", chave)
+    if v and not MODELO_RE.match(v):
+        erro_uso("papeis.%s inválido (começa por letra ou número; depois letras, números e . _ : / -; até 80 "
+                 "caracteres)" % chave, "corrija papeis.%s em sdd/config.yaml; nada foi despachado." % chave)
+    print(v or "")
+    sys.exit(0)
+
+
+{"review-design": cmd_review_design, "loop": cmd_loop, "seguir": cmd_seguir, "estado": cmd_estado,
+ "modelo": cmd_modelo}[verbo]()
 PY
 }
 
@@ -810,6 +843,18 @@ cmd_self_test() {
   else echo "  🛑 despachar: brief não gravado ou diferente"; FALHAS=$((FALHAS + 1)); fi
   cenario "despachar com o brief já no destino" 40 "AGUARDANDO_HUMANO" -- c despachar avaliador X sdd/reports/briefs/BRIEF_avaliador_X.md
   cenario "despachar sem brief" 64 "brief ausente" -- c despachar avaliador X nao-existe.md
+  out_m="$(c modelo avaliador 2>&1)"; rc_m=$?
+  out_d="$(c despachar avaliador X "$FX/brief-avaliador.md" 2>&1)"
+  if [ "$rc_m" = 0 ] && [ -z "$out_m" ] && ! printf '%s' "$out_d" | grep -qF "**Modelo:**"; then
+    echo "  ✅ modelo vazio (sem config) → exit 0, linha vazia e parada sem linha de modelo"
+  else echo "  🛑 modelo vazio (sem config) → exit ${rc_m}: [${out_m}]"; FALHAS=$((FALHAS + 1)); fi
+  cenario "modelo papel desconhecido" 64 "modelo exige um papel" -- c modelo juiz
+  printf 'papeis:\n  avaliador: modelo-barato-1\n  curador: "-x"\n' > "$R/sdd/config.yaml"
+  cenario "modelo preenchido" 0 "modelo-barato-1" -- c modelo avaliador
+  cenario "despachar diz o modelo" 40 "**Modelo:** abra a sessão nova com o modelo modelo-barato-1" -- c despachar avaliador X "$FX/brief-avaliador.md"
+  cenario "modelo inválido (começa por -)" 64 "papeis.curador inválido" -- c modelo curador
+  cenario "despachar com modelo inválido" 64 "papeis.curador inválido" -- c despachar curador X "$FX/brief-avaliador.md"
+  rm -f "$R/sdd/config.yaml"
   cenario "estado desligado (sem config)" 1 "encadeamento: desligado" -- c estado
   cenario "seguir PARAR (desligado)" 1 "PARAR: encadeamento desligado" -- c seguir define sdd/features/DEFINE_X.md design
   cp "$FX/config-autonomo.yaml" "$R/sdd/config.yaml"
@@ -835,7 +880,7 @@ cmd_self_test() {
 }
 
 case "${1:-}" in
-  review-design|seguir|estado) precisa_python; v="$1"; shift; nucleo "$v" "$@" ;;
+  review-design|seguir|estado|modelo) precisa_python; v="$1"; shift; nucleo "$v" "$@" ;;
   loop)        shift; precisa_python "$@"; nucleo loop "$@" ;;
   despachar)   precisa_python; shift; cmd_despachar "$@" ;;
   --self-test) precisa_python; cmd_self_test ;;
