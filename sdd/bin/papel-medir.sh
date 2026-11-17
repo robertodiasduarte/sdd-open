@@ -15,6 +15,8 @@
 #         proposto (AUTO e ACEITAR) aceito pelo playbook-curator.sh --aplicar. promover e inv ficam fora da conta.
 #       Meta do avaliador, por execução: VEREDITO igual; >= 90% dos ATs do gabarito com o mesmo resultado; 0 AT que é
 #         FAIL no gabarito e PASS na execução. AT ausente conta como diferente, nunca como PASS.
+#       Execução com rc diferente de 0 (o agente saiu com erro ou passou do --teto-s) fica fora da meta. Gabarito do
+#         avaliador sem VEREDITO ou sem linha AT-nnn, ou caso sem esperado.txt (ou sem playbook.md no curador) ⇒ 64.
 #       Ordem do veredito: PARCIAL se a referência está incompleta ou inválida · REFERÊNCIA FORA DA META · PARCIAL se
 #         há PARADA.txt, candidato pela metade ou execução inválida · a escolha.
 #       0 ESCOLHIDO: <id> · 1 SEM GANHO MEDIDO · 3 REFERÊNCIA FORA DA META · 4 PARCIAL · 64 uso
@@ -160,6 +162,19 @@ if not candidatos:
 casos = sorted(n for n in os.listdir(gab) if chaves(ler(os.path.join(gab, n, "caso.txt"))).get("papel") == PAPEL)
 if not casos:
     uso("o gabarito não tem caso do papel %s" % PAPEL)
+# N1 da revisão do código: um gabarito sem o que comparar aprovaria qualquer resposta (veredito None = None)
+for n in casos:
+    esp = ler(os.path.join(gab, n, "esperado.txt"))
+    if esp is None:
+        uso("caso %s sem esperado.txt legível" % n)
+    if PAPEL == "avaliador":
+        ats = [ln.split() for ln in esp.splitlines()]
+        if not re.search(r"VEREDITO:\s*\**\s*[A-Z_]+", esp) or not any(
+                len(c) == 2 and re.match(r"AT-\d{3}\Z", c[0]) and c[1] in ("PASS", "FAIL", "NAO_VERIFICADO")
+                for c in ats):
+            uso("caso %s: esperado.txt sem VEREDITO: <X> ou sem linha AT-nnn PASS|FAIL|NAO_VERIFICADO" % n)
+    elif ler(os.path.join(gab, n, "playbook.md")) is None:
+        uso("caso %s sem playbook.md legível (o playbook de antes da curadoria)" % n)
 
 
 # ── leitura do bloco ────────────────────────────────────────────────────────────────────────────────
@@ -313,6 +328,9 @@ def series_de(cand):
             e = {"caso": caso, "rep": rep, "estado": meta.get("estado", "?"), "nominal": decimal(meta.get("nominal"))}
             if e["estado"] != "ok":
                 e.update(na_meta=False, motivo="execução %s" % e["estado"])
+            elif meta.get("rc", "") != "0":
+                # R2 da revisão do código: agente que saiu ≠ 0 ou passou do --teto-s (124) fica fora da meta
+                e.update(na_meta=False, motivo="o agente saiu %s" % (meta.get("rc") or "sem rc"))
             else:
                 e["na_meta"], e["motivo"] = PONTUA[PAPEL](caso, ler(os.path.join(pasta, "saida.txt")) or "")
             out.append(e)

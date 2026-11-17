@@ -77,11 +77,15 @@ codex exec -m "$SDD_MODELO" --sandbox workspace-write - < "$SDD_BRIEF"
 ```
 
 O `papel-serie.sh`:
+- com candidatos, pede ao `papel-medir.sh` que confira a série antes da 1ª chamada: papel sem pontuador, ou caso
+  sem o que comparar (sem `esperado.txt`, gabarito do avaliador sem veredito ou sem linha de AT, caso do curador sem
+  `playbook.md`), sai 64 e nada é chamado;
 - roda **toda a referência primeiro** e confere a referência com o `papel-medir.sh --so-referencia`. Se ela não bate
   a meta, para sem chamar nenhum candidato (exit 22): o gabarito ou a meta está errado;
 - **antes de cada chamada**, soma o gasto de todas as séries da pasta de medição e para (exit 20) quando:
   - a próxima execução pode passar do teto (a estimativa é o maior custo de uma execução já gravada);
   - o acumulado tem n/d;
+  - outra série da pasta tem execução interrompida com o custo ainda não medido (retome aquela série primeiro);
   - o candidato tem cobrança desconhecida;
   - o candidato é pay-per-token e o teto pago é zero;
 - roda cada execução numa **cópia fora do projeto**: `git archive` do commit do caso, mais `entrada/`, num git sem
@@ -93,7 +97,8 @@ O `papel-serie.sh`:
 
 Para retomar, rode o mesmo comando:
 - o que já tem `meta.txt` é pulado;
-- a execução interrompida tem o custo somado antes de ser refeita;
+- a execução interrompida tem o custo somado antes de ser refeita, numa pasta de cópia nova (o registro de sessão
+  do agente é por pasta, então a refeita não é cobrada duas vezes);
 - o `PARADA.txt` anterior vai para `paradas/`.
 
 Não mexa no projeto enquanto a série roda: a foto de antes e depois veria a sua edição como escrita do agente.
@@ -108,6 +113,8 @@ O `papel-medir.sh` só lê. O curador fica na meta quando:
 - as contagens `ajudou`/`mordeu` têm precisão e recall de 0,9 ou mais;
 - encontra 2 de cada 3 `ADD`, `REFINE` e `TOMBSTONE` esperados;
 - o delta proposto passa no `--aplicar`.
+
+Execução cujo comando saiu diferente de 0 (erro, ou o teto de tempo `--teto-s`) fica fora da meta nos dois papéis.
 
 O avaliador fica na meta quando:
 - o veredito é igual ao do gabarito;

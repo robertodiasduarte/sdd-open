@@ -11,14 +11,20 @@ da fixture (1.000 tokens de entrada e 100.000 de saída): modelo-caro 0,001 + 1,
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
+import signal
+import subprocess
+import time
 import unittest
 from pathlib import Path
 
 from apoio import BASH, PYTHON, RAIZ, SEM_SINAL, Sandbox
 
 FLUXO = RAIZ / "sdd/bin/sdd-fluxo.sh"
+MARCA = RAIZ / "sdd/bin/marca-fase.sh"
+ESCADA = RAIZ / ".agents/skills/sdd-build/references/contexto-fresco.md"
 CUSTO = RAIZ / "sdd/bin/custo-feature.sh"
 SERIE = RAIZ / "sdd/bin/papel-serie.sh"
 MEDIR = RAIZ / "sdd/bin/papel-medir.sh"
@@ -168,6 +174,23 @@ class AT003CustoPorPapel(Sandbox):
         rc, _, err = self.roda([BASH, CUSTO, F, "--execucao", str(vazia)], self.r)
         self.assertEqual(rc, 64, err)
 
+    def test_marca_fase_aceita_o_nome_de_cada_papel_da_escada(self):
+        # R4 da revisão do código: a escada manda marcar papel-<papel>; cada nome que ela lista tem de passar no
+        # marca-fase.sh (o nome do slot, revisao_design, tem sublinhado e cairia em 64)
+        texto = ESCADA.read_text(encoding="utf-8")
+        trecho = texto[texto.index("o `<papel>` é o nome do despacho"):]
+        nomes = re.findall(r"`([a-z][a-z-]*)`", trecho[:trecho.index(")")])
+        self.assertEqual(nomes, ["cartografo", "revisor-governanca", "avaliador", "revisor-design", "executor-drive",
+                                 "curador"])
+        for n in nomes:
+            for ev in ("inicio", "fim"):
+                rc, out, err = self.roda([BASH, MARCA, ev, "papel-" + n, F], self.r)
+                self.assertEqual(rc, 0, n + out + err)
+        linhas = [json.loads(x) for x in (self.r / ("sdd/traces/%s.jsonl" % F)).read_text(encoding="utf-8").splitlines()]
+        self.assertEqual({x["fase"] for x in linhas if x["fase"].startswith("papel-") and x["ts"] > "2026-11-17"},
+                         {"papel-" + n for n in nomes})
+        self.assertEqual(self.roda([BASH, MARCA, "inicio", "papel-revisao_design", F], self.r)[0], 64)
+
 
 # ── séries: base comum ───────────────────────────────────────────────────────────────────────────────
 class BaseSerie(Sandbox):
@@ -288,6 +311,32 @@ class AT004AT007Medidor(BaseSerie):
         self.assertEqual(rc, 4, out)                 # inválida e faltando: PARCIAL, nunca "referência fora da meta"
         self.assertIn("PARCIAL", out)
 
+    def test_execucao_com_rc_diferente_de_zero_fica_fora_da_meta(self):
+        # R2 da revisão do código: o barato responde certo e sai 1; sem olhar o rc ele seria o escolhido
+        s = self.serie("cur", "curador", [CARO, BARATO])
+        rc, out, _ = self.rodar(s, env=dict(self.env, FALSO_SAI="modelo-barato"))
+        self.assertEqual(rc, 0, out)
+        self.assertIn("rc: 1", (s / "execucoes/c1/barato/1/meta.txt").read_text(encoding="utf-8"))
+        rc, out, _ = self.medir(s)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("barato · c1 · rep 1 — o agente saiu 1", out)
+
+    def test_gabarito_sem_o_que_comparar_e_recusado_antes_de_chamar(self):
+        # N1 da revisão do código: esperado.txt sem VEREDITO e sem AT faria a resposta vazia passar (None == None)
+        (self.r / "gab/a1/esperado.txt").write_text("nada a comparar\n", encoding="utf-8")
+        s = self.serie("ava", "avaliador", [CARO, BARATO])
+        rc, out, err = self.rodar(s)
+        self.assertEqual(rc, 64, out + err)
+        self.assertIn("recusa esta série", err)
+        self.assertEqual(self.chamadas(), [])
+        rc, _, err = self.medir(s)
+        self.assertEqual(rc, 64)
+        self.assertIn("sem VEREDITO", err)
+        (self.r / "gab/c1/playbook.md").unlink()
+        rc, _, err = self.medir(self.serie("cur", "curador", [CARO, BARATO]))
+        self.assertEqual(rc, 64)
+        self.assertIn("sem playbook.md", err)
+
 
 # ── AT-008, AT-009 e AT-011: o executor das séries ───────────────────────────────────────────────────
 class AT008AT011Executor(BaseSerie):
@@ -341,8 +390,17 @@ class AT008AT011Executor(BaseSerie):
     def test_execucao_interrompida_tem_o_custo_somado_antes_de_refazer(self):
         s = self.serie("cur", "curador", [CARO])
         pasta = s / "execucoes/c1/caro/1"
-        copia = self.tmp / "copia-interrompida"
-        copia.mkdir()
+        copia = self.tmp / "trab-interrompida/copia"
+        copia.mkdir(parents=True)
+        # parou antes de chamar o agente (sem o chamado.txt ao lado da cópia): descartada, sem custo (R3)
+        self.escreve(pasta, "inicio.txt", "copia: %s\ncandidato: caro\ninicio: 2026-11-16T09:00:00Z\n" % copia)
+        rc, out, _ = self.rodar(s)
+        self.assertIn("não chegou a chamar o agente descartada", out)
+        self.assertEqual(list(pasta.glob("interrompida-*")), [])
+        self.assertIn("acumulado da medição: nominal 1.001", out)
+        shutil.rmtree(str(pasta))
+        self.log.unlink()
+        (copia.parent / "chamado.txt").write_text("2026-11-16T10:00:00Z\n", encoding="utf-8")
         sess = self.tmp / "claude-config/projects" / pasta_claude(copia)
         sess.mkdir(parents=True)
         (sess / "s.jsonl").write_text(json.dumps(
@@ -456,6 +514,85 @@ class AT008AT011Executor(BaseSerie):
         self.assertEqual(rc, 64)
         self.assertIn("repositório git", err)
         self.assertEqual(self.chamadas(), [])
+
+    @unittest.skipIf(*SEM_SINAL)
+    def test_refeita_em_pasta_nova_nao_cobra_a_interrompida_duas_vezes(self):
+        # R1 da revisão do código: o registro de sessão é por pasta; a refeita no mesmo caminho somaria as 2 sessões
+        s = self.serie("cur", "curador", [CARO])
+        pidf = self.tmp / "agente.pid"
+        env = dict(self.env, FALSO_MODO="sessao-e-dorme", FALSO_PID=str(pidf))
+        p = subprocess.Popen([BASH, str(SERIE), str(s), "--cmd", 'bash "%s"' % AGENTE.as_posix(), "--precos",
+                              str(FX / "precos")], cwd=str(self.r), env=env, stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL, start_new_session=True)
+        try:
+            for _ in range(300):
+                if pidf.exists() and pidf.read_text(encoding="utf-8").strip():
+                    break
+                time.sleep(0.1)
+            else:
+                self.fail("o agente falso não começou")
+        finally:
+            os.killpg(p.pid, signal.SIGKILL)
+            p.wait()
+            try:
+                os.kill(int(pidf.read_text(encoding="utf-8").strip()), signal.SIGKILL)
+            except (OSError, ValueError):
+                pass
+        pasta = s / "execucoes/c1/caro/1"
+        self.assertTrue((pasta / "inicio.txt").exists())
+        self.assertFalse((pasta / "meta.txt").exists())
+        rc, out, _ = self.rodar(s)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("nominal: 1.001", (pasta / "interrompida-1.txt").read_text(encoding="utf-8"))
+        self.assertIn("nominal: 1.001", (pasta / "meta.txt").read_text(encoding="utf-8"))   # só a sessão da refeita
+        self.assertIn("acumulado da medição: nominal 2.002", out)
+
+    def test_snapshot_que_falha_nao_deixa_execucao_interrompida(self):
+        # R3 da revisão do código: o inicio.txt antes do snapshot virava "interrompida" com n/d e travava a medição
+        s = self.serie("cur", "curador", [CARO])
+        b = self.tmp / "bin"
+        shutil.copytree(str(RAIZ / "sdd/bin"), str(b))
+        (b / "governanca-fronteira.sh").write_text("#!/usr/bin/env bash\nexit 1\n", encoding="utf-8")
+        rc, _, err = self.roda([BASH, b / "papel-serie.sh", s, "--cmd", 'bash "%s"' % AGENTE.as_posix(), "--precos",
+                                FX / "precos"], self.r)
+        self.assertEqual(rc, 64, err)
+        self.assertIn("snapshot", err)
+        self.assertEqual(self.chamadas(), [])
+        self.assertEqual(list(s.rglob("inicio.txt")), [])
+        rc, out, _ = self.rodar(s)
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("interrompida", out)
+
+    def test_interrompida_de_outra_serie_para_antes_de_chamar(self):
+        # R5 da revisão do código: o gasto da interrompida de outra série ficaria fora do acumulado
+        a = self.serie("cur", "curador", [CARO])
+        self.escreve(a, "execucoes/c1/caro/1/inicio.txt", "copia: %s\ncandidato: caro\ninicio: x\n" % (self.tmp / "x"))
+        b = self.serie("ava", "avaliador", [CARO])
+        rc, out, _ = self.rodar(b)
+        self.assertEqual(rc, 20, out)
+        self.assertIn("interrompida sem custo medido em outra série", out)
+        self.assertIn(os.path.join("cur", "execucoes", "c1", "caro", "1"),
+                      (b / "PARADA.txt").read_text(encoding="utf-8"))
+        self.assertEqual(self.chamadas(), [])
+
+    def test_papel_sem_pontuador_com_candidatos_nao_paga_a_referencia(self):
+        # R6 da revisão do código: antes, a referência inteira rodava e o 64 do medidor virava "fora da meta" (22)
+        self.escreve(self.r, "gab/k1/caso.txt", "papel: cartografo\ncommit: -\n")
+        self.escreve(self.r, "gab/k1/brief.md", "mapeie @COPIA@\n")
+        s = self.serie("car", "cartografo", [CARO, BARATO])
+        rc, out, err = self.rodar(s)
+        self.assertEqual(rc, 64, out + err)
+        self.assertIn("sem pontuador", err)
+        self.assertEqual(self.chamadas(), [])
+
+    def test_serie_cmd_entre_aspas_no_yaml_desfaz_os_escapes(self):
+        # R7 da revisão do código: \" ficava literal e o bash -c procurava um arquivo com aspas no nome
+        self.escreve(self.r, "sdd/config.yaml", 'papeis:\n  serie_cmd: "bash \\"%s\\""\n' % AGENTE.as_posix())
+        s = self.serie("cur", "curador", [CARO])
+        rc, out, err = self.roda([BASH, SERIE, s, "--precos", FX / "precos"], self.r)
+        self.assertEqual(rc, 0, out + err)
+        self.assertEqual(len(self.chamadas()), 1)
+        self.assertIn("rc: 0", (s / "execucoes/c1/caro/1/meta.txt").read_text(encoding="utf-8"))
 
 
 # ── AT-010: o pacote não leva nome de modelo nesta fatia, e os arquivos novos estão no MANIFEST ────────

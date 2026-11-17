@@ -20,7 +20,11 @@
 #       --teto-s: teto de tempo de cada execução (padrão 1800). --precos: repassado ao custo-feature.sh --execucao.
 #       Cada execução roda numa cópia fora do projeto (git archive do commit do caso + entrada/, git sem remoto); o
 #       projeto é fotografado antes e depois (governanca-fronteira.sh): escrita fora da cópia invalida a execução.
+#       Com candidatos, o papel-medir.sh confere a série antes da 1ª chamada (papel sem pontuador ou gabarito sem o
+#       que comparar ⇒ 64, nada chamado). Execução interrompida de outra série da pasta (sem custo medido) para a
+#       série (20): retome aquela série primeiro.
 #       0 COMPLETA · 20 PARADO PELO TETO · 21 FRONTEIRA (execução inválida) · 22 REFERÊNCIA FORA DA META · 64 uso
+#         (também a referência que o papel-medir.sh não conferiu, com PARADA.txt)
 #       Retomar = rodar o mesmo comando: o que tem meta.txt é pulado; a execução interrompida (inicio.txt sem
 #       meta.txt) tem o custo medido e somado antes de ser refeita; o PARADA.txt anterior vai para paradas/.
 # USO-FIM
@@ -223,7 +227,13 @@ if cmd is None:
         m = re.match(r"^\s+serie_cmd:\s*(.*)$", ln) if dentro else None
         if m:
             v = m.group(1).strip()
-            cmd = v[1:-1] if len(v) >= 2 and v[0] == v[-1] and v[0] in "\"'" else v
+            # R7 da revisão do código: string YAML entre aspas desfaz os escapes (\" e \\ nas duplas, '' nas simples)
+            if len(v) >= 2 and v[0] == v[-1] == '"':
+                cmd = re.sub(r'\\(["\\])', r"\1", v[1:-1])
+            elif len(v) >= 2 and v[0] == v[-1] == "'":
+                cmd = v[1:-1].replace("''", "'")
+            else:
+                cmd = v
 if not cmd:
     uso("sem o comando do agente: passe --cmd ou preencha papeis.serie_cmd em sdd/config.yaml",
         "veja docs/model-per-role.md (um exemplo por agente); nada rodou.")
@@ -321,6 +331,11 @@ if os.path.isfile(os.path.join(serie, "PARADA.txt")):
 for raiz_d, dirs, arqs in os.walk(os.path.join(serie, "execucoes")):
     if "inicio.txt" in arqs and "meta.txt" not in arqs:
         ini = chaves(ler(os.path.join(raiz_d, "inicio.txt")))
+        if ini.get("copia") and os.path.isdir(os.path.dirname(ini["copia"])) \
+                and not os.path.isfile(os.path.join(os.path.dirname(ini["copia"]), "chamado.txt")):
+            os.remove(os.path.join(raiz_d, "inicio.txt"))   # parou antes de chamar o agente (R3 da revisão do código)
+            print("↻ execução que não chegou a chamar o agente descartada (%s)" % os.path.relpath(raiz_d, serie))
+            continue
         d = custo_execucao(ini.get("copia", "")) if ini.get("copia") else {"nominal": "n/d"}
         cand = next((c for c in candidatos if c["id"] == ini.get("candidato")), None)
         nom = decimal(d.get("nominal"))
@@ -335,16 +350,32 @@ for raiz_d, dirs, arqs in os.walk(os.path.join(serie, "execucoes")):
                                                                    nom if nom is not None else "n/d"))
 
 
+def interrompidas_sem_custo():
+    """inicio.txt sem meta.txt em qualquer série da medição (R5 da revisão do código). As desta série já foram
+    medidas acima; as de outra série ficariam fora do acumulado até ela ser retomada."""
+    out = []
+    for raiz_d, _, arqs in os.walk(medicao):
+        if "inicio.txt" in arqs and "meta.txt" not in arqs:
+            out.append("interrompida: " + os.path.relpath(raiz_d, medicao))
+    return sorted(out)
+
+
 # ── uma execução ────────────────────────────────────────────────────────────────────────────────────
 def executar(cand, caso, rep):
     pasta = os.path.join(serie, "execucoes", caso["nome"], cand["id"], str(rep))
     if os.path.isfile(os.path.join(pasta, "meta.txt")):
         return
+    pend = interrompidas_sem_custo()
+    if pend:
+        parada(20, "PARADO PELO TETO", "execução interrompida sem custo medido em outra série da medição: o "
+               "acumulado não se confere; retome aquela série primeiro", pend[:20])
     ok, motivo = pode_chamar(cand, acumulado())
     if not ok:
         parada(20, "PARADO PELO TETO", motivo,
                ["seguinte: %s · %s · repetição %d" % (caso["nome"], cand["id"], rep)])
-    trab = os.path.join(BASE, "%s-%s-%d" % (caso["nome"], cand["id"], rep))
+    # R1 da revisão do código: cada tentativa ganha um caminho próprio; o registro de sessão do agente é por pasta, e
+    # uma refeita no mesmo caminho somaria a sessão da interrompida (já contada no interrompida-N.txt)
+    trab = os.path.join(BASE, "%s-%s-%d-%s" % (caso["nome"], cand["id"], rep, os.urandom(4).hex()))
     shutil.rmtree(trab, ignore_errors=True)
     copia = os.path.join(trab, "copia")
     os.makedirs(copia)
@@ -382,13 +413,19 @@ def executar(cand, caso, rep):
         h.write(ler(os.path.join(caso["dir"], "brief.md")).replace("@COPIA@", copia))
     git_copia("add", "-A")
     git_copia(*commit_cp, "caso %s" % caso["nome"])
-    grava(os.path.join(pasta, "inicio.txt"), "copia: %s\ncandidato: %s\ninicio: %s\n" % (copia, cand["id"], agora()))
+    # o inicio.txt mora no projeto: vem antes da foto de antes, senão a fronteira o veria como escrita do agente
+    ini = os.path.join(pasta, "inicio.txt")
+    grava(ini, "copia: %s\ncandidato: %s\ninicio: %s\n" % (copia, cand["id"], agora()))
     fr = os.path.join(BIN, "governanca-fronteira.sh")
     nada = os.path.join(raiz, ".sdd-serie-nenhum-arquivo-permitido")
     if subprocess.run([BASH, fr, "--snapshot", raiz, os.path.join(trab, "antes"), nada],
                       capture_output=True).returncode != 0:
+        os.remove(ini)   # R3 da revisão do código: nada foi chamado, então não há interrompida a medir
         uso("o snapshot do projeto falhou: a fronteira não se confere e nada foi chamado")
     remoto_antes = git("remote", cwd=copia)[1].strip()
+    # R3: o marcador fica fora do projeto, ao lado da cópia; sem ele, um inicio.txt sem meta.txt é uma execução que
+    # parou antes de chamar o agente (Ctrl-C na montagem), e a retomada o descarta sem medir
+    grava(os.path.join(trab, "chamado.txt"), agora() + "\n")
     env = dict(os.environ, SDD_MODELO=cand["modelo"], SDD_BRIEF=brief, SDD_PAPEL=PAPEL, SDD_CASO=caso["nome"],
                SDD_REP=str(rep))
     t0 = time.monotonic()
@@ -439,16 +476,33 @@ def executar(cand, caso, rep):
 # ── a série: referência inteira, a barreira de calibração (N1), os candidatos ───────────────────────
 print("papel-serie: %s · papel %s · %d caso(s) · %d repetição(ões) · referência %s · candidatos %s"
       % (os.path.basename(serie), PAPEL, len(casos), REPS, ref["id"], ", ".join(c["id"] for c in escolhidos) or "—"))
+MEDIR = [BASH, os.path.join(BIN, "papel-medir.sh"), serie, "--so-referencia"]
+
+
+def linhas_de(r):
+    return (r.stdout + r.stderr).decode("utf-8", "replace").strip().splitlines()
+
+
+if escolhidos:
+    # R6 da revisão do código: antes de qualquer chamada, o medidor tem de aceitar a série (papel com pontuador,
+    # gabarito com o que comparar); senão a referência seria paga para nada
+    r = subprocess.run(MEDIR, capture_output=True)
+    if r.returncode == 64:
+        uso("o papel-medir.sh recusa esta série, e nada foi chamado: " + " | ".join(linhas_de(r)[:3]),
+            "corrija o serie.txt ou o gabarito e rode de novo.")
 for caso in casos:
     for rep in range(1, REPS + 1):
         executar(ref, caso, rep)
 if escolhidos:
-    r = subprocess.run([BASH, os.path.join(BIN, "papel-medir.sh"), serie, "--so-referencia"], capture_output=True)
-    if r.returncode != 0:
-        saida = r.stdout.decode("utf-8", "replace").strip().splitlines()
+    r = subprocess.run(MEDIR, capture_output=True)
+    if r.returncode == 3:
         parada(22, "REFERÊNCIA FORA DA META",
-               "a referência não passou na conferência do papel-medir.sh (exit %d): nenhum candidato foi chamado"
-               % r.returncode, saida[-20:])
+               "a referência não passou na conferência do papel-medir.sh (exit 3): nenhum candidato foi chamado",
+               linhas_de(r)[-20:])
+    if r.returncode != 0:
+        parada(64, "REFERÊNCIA NÃO CONFERIDA",
+               "o papel-medir.sh não conferiu a referência (exit %d): nenhum candidato foi chamado" % r.returncode,
+               linhas_de(r)[-20:])
     for cand in escolhidos:
         for caso in casos:
             for rep in range(1, REPS + 1):

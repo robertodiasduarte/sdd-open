@@ -13,8 +13,13 @@ if [ "${FALSO_MODO:-}" != "sem-sessao" ]; then
   s="$CLAUDE_CONFIG_DIR/projects/$nome"
   mkdir -p "$s"
   ts="$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
-  printf '{"type":"user","timestamp":"%s","message":{"role":"user","content":"brief"}}\n' "$ts" > "$s/sessao.jsonl"
-  printf '{"type":"assistant","timestamp":"%s","requestId":"r1","message":{"id":"m1","model":"%s","role":"assistant","content":[],"usage":{"input_tokens":1000,"output_tokens":100000,"cache_read_input_tokens":0,"cache_creation_input_tokens":0}}}\n' "$ts" "$SDD_MODELO" >> "$s/sessao.jsonl"
+  printf '{"type":"user","timestamp":"%s","message":{"role":"user","content":"brief"}}\n' "$ts" > "$s/sessao-$$.jsonl"
+  printf '{"type":"assistant","timestamp":"%s","requestId":"r%s","message":{"id":"m%s","model":"%s","role":"assistant","content":[],"usage":{"input_tokens":1000,"output_tokens":100000,"cache_read_input_tokens":0,"cache_creation_input_tokens":0}}}\n' "$ts" "$$" "$$" "$SDD_MODELO" >> "$s/sessao-$$.jsonl"
+fi
+if [ "${FALSO_MODO:-}" = "sessao-e-dorme" ]; then   # gasta (sessão gravada) e fica parado até ser morto
+  [ -n "${FALSO_PID:-}" ] && echo "$$" > "$FALSO_PID"
+  exec sleep 20
 fi
 cat "$FALSO_RESPOSTAS/$SDD_MODELO/$SDD_CASO.txt" 2>/dev/null
+[ "${FALSO_SAI:-}" = "$SDD_MODELO" ] && exit 1    # responde certo e sai com erro
 exit 0

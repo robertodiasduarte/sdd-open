@@ -77,11 +77,15 @@ codex exec -m "$SDD_MODELO" --sandbox workspace-write - < "$SDD_BRIEF"
 ```
 
 `papel-serie.sh`:
+- with candidates, asks `papel-medir.sh` to check the series before the first call: a role with no scorer, or a
+  case with nothing to compare (no `esperado.txt`, an evaluator key with no verdict or no AT line, a curator case
+  with no `playbook.md`), exits 64 and nothing is called;
 - runs **the whole reference first** and checks it with `papel-medir.sh --so-referencia`. If the reference misses
   the target, it stops before calling any candidate (exit 22): the answer key or the target is wrong;
 - **before every call**, adds up the spend of every series in the measurement folder and stops (exit 20) when:
   - the next run could go over the cap (the estimate is the highest cost of one run already recorded);
   - the running total has an n/d;
+  - another series in the folder has an interrupted run whose cost is not measured yet (resume that series first);
   - the candidate has unknown billing;
   - the candidate is pay-per-token and the paid cap is zero;
 - runs each execution in a **copy outside the project**: `git archive` of the case commit, plus `entrada/`, in a git
@@ -93,7 +97,8 @@ codex exec -m "$SDD_MODELO" --sandbox workspace-write - < "$SDD_BRIEF"
 
 To resume, run the same command:
 - runs that already have `meta.txt` are skipped;
-- an interrupted run has its cost added before it is redone;
+- an interrupted run has its cost added before it is redone, in a new copy folder (the agent's session log is kept
+  per folder, so the redone run is not charged twice);
 - the previous `PARADA.txt` moves to `paradas/`.
 
 Don't edit the project while a series runs: the before and after snapshots would see your edit as the agent's write.
@@ -108,6 +113,8 @@ bash sdd/bin/papel-medir.sh <measurement>/<series> [--limiar 30] [--saida <file>
 - the `ajudou`/`mordeu` counts have precision and recall of 0.9 or more;
 - it finds 2 of every 3 expected `ADD`, `REFINE` and `TOMBSTONE`;
 - the proposed delta passes `--aplicar`.
+
+A run whose command exited non-zero (an error, or the `--teto-s` time cap) misses the target for either role.
 
 The evaluator meets the target when:
 - its verdict matches the answer key;

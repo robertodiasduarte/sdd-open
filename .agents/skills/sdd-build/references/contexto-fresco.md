@@ -36,7 +36,9 @@ Vale para todo papel despachado por esta escada: cartógrafo, revisor de governa
 `veredito`), revisor do DESIGN, executor do piloto e curador.
 
 1. **Antes do despacho**, marque o início do papel e leia o modelo dele:
-   `bash sdd/bin/marca-fase.sh inicio papel-<papel> <FEATURE>` e `bash sdd/bin/sdd-fluxo.sh modelo <slot>`, com o
+   `bash sdd/bin/marca-fase.sh inicio papel-<papel> <FEATURE>` (o `<papel>` é o nome do despacho, só com letras
+   minúsculas e hífen: `cartografo`, `revisor-governanca`, `avaliador`, `revisor-design`, `executor-drive`, `curador`)
+   e `bash sdd/bin/sdd-fluxo.sh modelo <slot>`, com o
    `<slot>` do papel: `cartografo`, `avaliador` (modo `veredito`), `revisao_design` (modo `contrato` e revisor do
    DESIGN), `executor` (executor do piloto) ou `curador`. O revisor de governança não tem slot.
 2. **Linha vazia** ⇒ despache como sempre, no modelo da sessão, sem dizer nada a mais. **Com valor** ⇒ passe-o como o
