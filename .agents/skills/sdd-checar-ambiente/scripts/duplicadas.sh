@@ -399,8 +399,10 @@ EOF
 # A lixeira é ~/.sdd-lixeira/<AAAAMMDD-HHMMSS>/<rótulo>/<skill>; o desfazer.sh é regravado a cada passo (antes de tirar
 # cada coisa), para valer mesmo se a limpeza parar no meio.
 DUP_L=""
-dup_desfazer_item() {   # acrescenta uma linha (volta|liga) ao desfazer.sh: $1 função, $2 e $3 os caminhos
-  printf '%s %q %q\n' "$1" "$2" "$3" >> "${DUP_L}/.itens"
+dup_desfazer_item() {   # acrescenta uma linha (volta|liga) ao desfazer.sh: $1 função, $2 e $3 os caminhos. Sai ≠ 0 se não gravou:
+  # quem chama NÃO tira nada sem a linha que desfaz (revisão, rodada 5, R2). SDD_CHECAR_FALHA_DESFAZER existe para os testes.
+  [ -z "${SDD_CHECAR_FALHA_DESFAZER:-}" ] || return 1
+  printf '%s %q %q\n' "$1" "$2" "$3" >> "${DUP_L}/.itens" || return 1
   dup_desfazer_grava
 }
 dup_desfazer_grava() {
@@ -416,7 +418,8 @@ dup_desfazer_grava() {
 volta() {   # volta <guardada> <lugar>
   [ -e "$1" ] || [ -L "$1" ] || return 0
   if [ -e "$2" ] || [ -L "$2" ]; then
-    if diff -r "$1" "$2" >/dev/null 2>&1; then rm -rf "$1"; echo "✅ já estava no lugar: $2"; return 0; fi
+    # um atalho no lugar nunca é "a mesma pasta": ele pode apontar para a própria cópia guardada (revisão, rodada 5, R1)
+    if [ ! -L "$2" ] && diff -r "$1" "$2" >/dev/null 2>&1; then rm -rf "$1"; echo "✅ já estava no lugar: $2"; return 0; fi
     echo "⚠️ $2 existe de novo e é diferente: não sobrescrevi; a cópia guardada continua em $1"; falhou=1; return 0
   fi
   if mkdir -p "$(dirname "$2")" && mv "$1" "$2"; then echo "✅ voltou: $2"; else echo "🛑 não consegui devolver $2"; falhou=1; fi
@@ -461,7 +464,7 @@ DUP_FEITO=""   # o relatório do que saiu, uma linha por cópia
 dup_tirar_mover() {   # $1 real $2 nome $3 rótulo $4 versão $5 hash
   local g="${DUP_L}/$3/$2"
   dup_guardar "$1" "${g}" "$5" || { DUP_ERRO="não consegui guardar uma cópia de $1 na lixeira; ela continua no lugar"; return 1; }
-  dup_desfazer_item volta "${g}" "$1"
+  dup_desfazer_item volta "${g}" "$1" || { rm -rf "${g}"; DUP_ERRO="não consegui gravar o desfazer de $1; ela continua no lugar"; return 1; }
   rm -rf "$1" 2>/dev/null
   if [ -e "$1" ]; then DUP_ERRO="não consegui tirar $1 (a cópia guardada fica em ${g})"; return 1; fi
   DUP_FEITO="${DUP_FEITO}- $1 ($4) → ${g}"$'\n'
@@ -470,10 +473,11 @@ dup_tirar_npx() {   # $1 real $2 nome $3 rótulo $4 versão $5 hash $6 agentes
   local g="${DUP_L}/$3/$2" cg ga p q protegidas="" ligacoes="" antes depois saiu a args="" lock
   cg="$(dup_claude_global)/$2"; ga="$(dup_agentes_global)/$2"; lock="$(dup_registro_arquivo)"
   dup_guardar "$1" "${g}" "$5" || { DUP_ERRO="não consegui guardar uma cópia de $1 na lixeira; ela continua no lugar"; return 1; }
-  dup_desfazer_item volta "${g}" "$1"
+  dup_desfazer_item volta "${g}" "$1" || { rm -rf "${g}"; DUP_ERRO="não consegui gravar o desfazer de $1; ela continua no lugar"; return 1; }
   for p in "${cg}" "${ga}"; do   # os atalhos do npx que apontam para esta cópia: o remove os apaga, o desfazer os refaz
     if [ -L "${p}" ] && [ "$(dup_real "${p}")" = "$1" ]; then
-      dup_desfazer_item liga "$(readlink "${p}")" "${p}"; ligacoes="${ligacoes}${p}${DUP_TAB}$(readlink "${p}")"$'\n'
+      dup_desfazer_item liga "$(readlink "${p}")" "${p}" || { DUP_ERRO="não consegui gravar o desfazer de ${p}; nada saiu desta skill"; return 1; }
+      ligacoes="${ligacoes}${p}${DUP_TAB}$(readlink "${p}")"$'\n'
     fi
   done
   mkdir -p "${DUP_L}/npx"
@@ -485,10 +489,12 @@ dup_tirar_npx() {   # $1 real $2 nome $3 rótulo $4 versão $5 hash $6 agentes
     [ "$(dup_real "${p}")" = "$1" ] && continue
     if [ "${p}" = "${cg}" ]; then q="${DUP_L}/protegidas/home-claude/$2"; else q="${DUP_L}/protegidas/home-agents/$2"; fi
     if [ -L "${p}" ]; then
-      dup_desfazer_item liga "$(readlink "${p}")" "${p}"; printf 'L\t%s\t%s\n' "${p}" "$(readlink "${p}")" >> "${DUP_L}/.protegidas"; rm -f "${p}"
+      dup_desfazer_item liga "$(readlink "${p}")" "${p}" || { DUP_ERRO="não consegui gravar o desfazer de ${p}; nada saiu desta skill"; dup_volta_protegidas; return 1; }
+      printf 'L\t%s\t%s\n' "${p}" "$(readlink "${p}")" >> "${DUP_L}/.protegidas"; rm -f "${p}"
     else
       dup_guardar "${p}" "${q}" "$(dup_hash "${p}")" || { DUP_ERRO="não consegui proteger ${p} antes do npx; nada saiu desta skill"; dup_volta_protegidas; rm -rf "${g}"; return 1; }
-      dup_desfazer_item volta "${q}" "${p}"; printf 'D\t%s\t%s\n' "${p}" "${q}" >> "${DUP_L}/.protegidas"; rm -rf "${p}"
+      dup_desfazer_item volta "${q}" "${p}" || { rm -rf "${q}"; DUP_ERRO="não consegui gravar o desfazer de ${p}; nada saiu desta skill"; dup_volta_protegidas; return 1; }
+      printf 'D\t%s\t%s\n' "${p}" "${q}" >> "${DUP_L}/.protegidas"; rm -rf "${p}"
     fi
   done
   antes="$(dup_retrato "$2")"
@@ -510,8 +516,11 @@ dup_tirar_npx() {   # $1 real $2 nome $3 rótulo $4 versão $5 hash $6 agentes
 ${ligacoes}
 EOF
   depois="$(dup_retrato "$2")"
+  # a linha da skill tem de sair do registro junto com a pasta: se ficasse, o próximo `npx skills update -g` a traria de
+  # volta, espalhada (EXP-3e; revisão, rodada 5, R3)
+  ficou=0; dup_registro | cut -f1 | grep -qxF "$2" && ficou=1
   dup_volta_protegidas || { DUP_ERRO="o npx rodou, mas não consegui devolver uma pasta protegida; rode o desfazer"; return 1; }
-  if [ "${saiu}" = 0 ] || [ "${antes}" != "${depois}" ]; then
+  if [ "${saiu}" = 0 ] || [ "${antes}" != "${depois}" ] || [ "${ficou}" = 1 ]; then
     # Devolve o que saiu DESTE item, e só ele: a pasta (da cópia guardada, nunca apagada antes de voltar), os atalhos e o
     # registro de antes deste item (revisão, rodada 1, R1 e R3).
     if [ ! -e "$1" ]; then
@@ -530,6 +539,8 @@ EOF
     dup_desfazer_grava
     if [ "${saiu}" = 0 ]; then
       DUP_ERRO="o npx não tirou tudo de $1 (ele diz que outra ferramenta ainda usa esta skill); devolvi o que tinha saído"
+    elif [ "${antes}" = "${depois}" ]; then
+      DUP_ERRO="o npx tirou $1 mas deixou a skill no registro (o próximo npx skills update a traria de volta); devolvi a cópia e o registro"
     else
       a="$(diff <(printf '%s\n' "${antes}") <(printf '%s\n' "${depois}") | sed -n 's/^< //p' | cut -f1 | paste -sd, - | sed 's/,/, /g')"
       DUP_ERRO="o npx mexeu numa pasta fora do plano (${a:-uma das cópias do projeto ou de ~/.codex}), que não passou pela lixeira; devolvi $1 e o registro; confira com o plano de novo"

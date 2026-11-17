@@ -41,6 +41,7 @@ case "${NPX_STUB:-apaga}" in
   demais) rm -rf "${CODEX_HOME:-${HOME}/.codex}/skills/${n}" ;;
   so-real) rm -rf "${HOME}/.agents/skills/${n}"; exit 0 ;;      # revisão R1: tira a pasta real e deixa o atalho
   so-atalho) rm -f "${HOME}/.claude/skills/${n}"; exit 0 ;;     # revisão R1: tira o atalho e deixa a pasta real
+  so-pasta) rm -rf "${HOME}/.claude/skills/${n}" "${HOME}/.agents/skills/${n}"; exit 0 ;;   # rodada 5, R3: deixa a linha do registro
 esac
 [ "${NPX_STUB_NADA:-}" = "${n}" ] && exit 0                     # revisão R3: esta skill o npx não tira
 rm -rf "${HOME}/.claude/skills/${n}" "${HOME}/.agents/skills/${n}"
@@ -778,6 +779,40 @@ class RevisaoRodada3(Base):
                            errors="replace", env=self.env(), timeout=60)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertEqual(self.arvore(), antes, "o desfazer não devolveu a árvore (o registro?)")
+
+
+class RevisaoRodada5(Base):
+    """Achados da revisão de confirmação (rodada 5, codex revisa, claude audita): R1, R2 e R3."""
+
+    def test_r1_desfazer_nao_apaga_a_guardada_se_o_lugar_virou_atalho_para_ela(self):
+        self.tabela_21()
+        rc, out = self.limpar()
+        self.assertEqual(rc, 0, out)
+        lix = next((self.home / ".sdd-lixeira").iterdir())
+        guardada = lix / "home-claude" / "sdd-define"
+        os.symlink(guardada, self.g_claude / "sdd-define")   # alguém pôs à mão um atalho para dentro da lixeira
+        rc, des = self.desfazer(out)
+        self.assertEqual(rc, 1, des)
+        self.assertTrue((guardada / "SKILL.md").is_file(), "o desfazer apagou a única cópia guardada")
+
+    def test_r2_sem_a_linha_do_desfazer_nada_sai(self):
+        self.tabela_21()
+        antes = self.arvore()
+        rc, out = self.limpar(SDD_CHECAR_FALHA_DESFAZER="1")
+        self.assertNotEqual(rc, 0, out)
+        self.assertIn("não consegui gravar o desfazer", out)
+        self.assertEqual(self.arvore(), antes, "uma cópia saiu sem a linha do desfazer")
+
+    def test_r3_npx_que_deixa_a_linha_no_registro_e_falha(self):
+        self.skill(self.g_agents, "sdd-define", "2.8.0", "starter")
+        self.skill(self.proj / ".agents/skills", "sdd-define", "2.9.0", "open")
+        self.registro("sdd-define")
+        self.commit()
+        antes = self.arvore()
+        rc, out = self.limpar(NPX_STUB="so-pasta")
+        self.assertEqual(rc, 1, out)
+        self.assertIn("deixou a skill no registro", out)
+        self.assertEqual(self.arvore(), antes, "a cópia não voltou")
 
 
 class AT010Textos(Base):
