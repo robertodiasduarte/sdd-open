@@ -10,7 +10,7 @@
 |-----------|-------|
 | **Feature** | F23_ECONOMIA_MENSURAVEL |
 | **Objetivo** | O Open passa a medir o custo de cada fase e feature e a escolher modelo e cadeia de revisão por evidência; o aluno recebe o mesmo método para o produto que constrói. |
-| **Status** | 🚢 fatia B2 publicada: `v2.21.0` (`main` = `2204a14`, PR #37, squash), 2026-11-17; B3 em `v2.19.0`, B1 em `v2.18.0`; starter **`v1.5.25`** (9ª geração, da F24, a partir da `v2.20.0`; a B2 sobe a versão do modo web da `sdd-build`: a 10ª geração é decisão do Roberto). Próxima: Grupo A |
+| **Status** | 🚢 fatia B2 publicada: `v2.21.0` (`main` = `2204a14`, PR #37, squash), 2026-11-17; B3 em `v2.19.0`, B1 em `v2.18.0`; starter **`v1.5.25`** (9ª geração, da F24, a partir da `v2.20.0`; a B2 sobe a versão do modo web da `sdd-build`: a 10ª geração é decisão do Roberto). ⏸️ **Grupo A em espera** (Roberto, 2026-11-17: não agora, e talvez nem precise) |
 | **Última sessão** | 2026-11-17 |
 | **Branch / pasta** | B2: `feat/f23b2-modelo-por-papel` · `/Users/robertoduarte/rdd-worktrees/sdd-open-f23b2-modelo-por-papel` (nascida de `origin/main` em `fb7ee82`, rebaseada na F24) |
 | **Artefatos** | B1: `sdd/features/{ESCOPO,BRAINSTORM,DEFINE,DESIGN}_F23_ECONOMIA_MENSURAVEL.md` e afins · B3: `sdd/features/{DEFINE,DESIGN}_F23B3_CADEIA_REVISAO.md`, `sdd/reports/{BUILD_REPORT,CUSTO}_F23B3_CADEIA_REVISAO.md`, `sdd/reviews/LEDGER_REVISAO_F23B3_CADEIA_REVISAO.md`, `sdd/releases/F23B3_CADEIA_REVISAO/b3_v2.19.0.yaml`, `sdd/reports/evidence/F23B3_CADEIA_REVISAO/`, `sdd/reports/reviews-medicao/F23B3_CADEIA_REVISAO/` — todos na branch de documentos `docs/incorporar-starter` |
@@ -33,7 +33,7 @@
 
 | # | Decisão | Resposta |
 |---|---|---|
-| D-fatia | Ordem das fatias | **B1 → B3 → B2 → Grupo A**. A B1 só mede (cria a régua); a economia aparece a partir da B3. |
+| D-fatia | Ordem das fatias | **B1 → B3 → B2 → Grupo A**. A B1 só mede (cria a régua); a economia aparece a partir da B3. Em 2026-11-17, o Grupo A ficou em espera (talvez nem precise). |
 | ESCOPO-3 | Moeda da B1 | Gravar **tokens, pago, nominal e tempo**; **nominal** é o número principal. Mesmo vocabulário do `eval-revisores.sh` (pago · nominal · n/d, n/d nunca zero). |
 | ESCOPO-4 | Origem do custo de uma fase | **Adaptador por agente lê o registro local da sessão** (Claude Code: `~/.claude/projects/<pasta>/<sessão>.jsonl`, `usage` por mensagem; Codex: `~/.codex/sessions/AAAA/MM/DD/*.jsonl`, eventos `token_count`). Nominal = tokens × `sdd/review/precos.tsv`, **cache cobrado à parte**; sem registro legível = n/d. |
 | nova | Divisão do custo de uma sessão entre fases | **Cada skill de fase grava marca de início e fim** (fase, feature, horário) por um script pequeno; o adaptador corta o registro pelos horários; trecho fora de marca = "sem fase". Mexe nas skills de fase ⇒ regenerar o starter. |
@@ -46,7 +46,7 @@
 ## Falta
 
 1. ~~Starter~~ — feito: 8ª geração pela tag `v2.19.0` num clone limpo (`df6ae1c`, 7 arquivos, só versões de build, design e release); `check-gerado` VERDE, 62 testes, `check-versions` e `publish-check` PASS; PR #17 de lá, CI verde, avanço direto da `main` (`4269afe..df6ae1c`, OK do Roberto: "sim, pode publicar o starter"); Release **`v1.5.24`**, 18 zips OK.
-2. ~~Fatia B2~~ — `v2.21.0`. **Próxima: Grupo A**, com `sdd-define` a partir do bloco 3 do BRAINSTORM.
+2. ~~Fatia B2~~ — `v2.21.0`. **Grupo A em espera** (Roberto, 2026-11-17: "não quero o grupo A agora, nem sei se precisa"): não abrir frente sem antes reavaliar se A1 a A4 ainda fazem falta. Se voltar, começa pelo `sdd-define` a partir do bloco 3 do BRAINSTORM.
 5. **Pendências da B2** (Casos e testes em aberto): meta do avaliador redesenhada; slot do curador preenchido localmente (escolha local, fora do pacote); casos de borda do executor das séries que a revisão deixou registrados; documentos da B2 na branch de documentos.
 3. **Pendências da B3** (Casos e testes em aberto): preço do modelo do codex conferido na fonte, fora do pacote; `test_checar` instável; versão do prompt no META; aviso de prompt v1 editado.
 6. **Curadoria da B2: na fila** (`sdd/curadoria/fila/F23B2_MODELO_POR_PAPEL/20261117T145821Z`, nesta branch: 24 deltas, 4 candidatos); o lote da `sdd-playbook` a julga.
@@ -59,7 +59,7 @@
 - [x] Linha de base das features anteriores (≥ 15 linhas com custo).
 - [x] Tabela da seção 5 do ESCOPO: saiu do arquivo (decisão do Roberto, 2026-11-16).
 - [x] Fatias B3 e B2.
-- [ ] Grupo A.
+- [ ] Grupo A — em espera; reavaliar se precisa (Roberto, 2026-11-17).
 
 ## ⛔ Landmines desta feature
 
@@ -91,6 +91,7 @@
 
 ## Eventos
 
+- 2026-11-17 — Roberto: "não quero o grupo A agora, nem sei se precisa" ⇒ Grupo A em espera, sem frente aberta; a F23 para na B2.
 - 2026-11-17 — B2: Define com o par curador + avaliador (Roberto) e governança dispensada; Design com 10 decisões e revisão D1; build com a série real do curador (sonnet escolhido) e 3 tentativas do avaliador (caixa de areia, caso F11 trocado pelo F21, referência fora da meta → Roberto: registrar e seguir); 5 rodadas de revisão do código (4ª e 5ª com o OK do Roberto); rebase na F24; raio de impacto achou 3 consumidores (fronteira, papel fora da janela, script antigo); dispensa escrita do delta (Roberto); CI do Windows pegou a trava obrigatória do `msvcrt`; main andou (lote da F24) → merge da main na branch (Roberto) e squash; `v2.21.0`.
 - 2026-11-16 — Roberto: "sim, pode publicar o starter" ⇒ starter `v1.5.24` (PR #17 de lá, avanço direto).
 - 2026-11-16 — B3: passo 0 (curadoria da B1, `e1870e3`); Define com 7 decisões do Roberto (prova trocada, discordância = desempate, auditor codex local, dano que escapa pela linha `escapou`, raso continua, governança dispensada, S18 aplicado e S20 recusado); Design com pasta `v2/` e lista ampliada; build com 3 gates vermelhos (MANIFEST, teto de 500 linhas, `foto()` da F22 consertada com OK do Roberto) e verde em `5e110b2`; raio de impacto achou camelCase e o gate offline; 3 rodadas de revisão + dispensa escrita do delta (Roberto); push autorizado ("sim, pode publicar"): `v2.19.0`; curadoria da B3 enviada à `main` ("Enviar agora").
@@ -125,7 +126,8 @@
 ## Prompt de retomada
 
 ```text
-Retomar a feature F23_ECONOMIA_MENSURAVEL (SDD Open), Grupo A. Responda sempre em português.
+Retomar a feature F23_ECONOMIA_MENSURAVEL (SDD Open), Grupo A — SÓ se o Roberto pedir: em 2026-11-17 ele pôs o
+Grupo A em espera ("nem sei se precisa"). Primeiro pergunte se A1 a A4 ainda fazem falta. Responda sempre em português.
 
 Contexto: B1 publicada na v2.18.0, B3 na v2.19.0 e B2 (modelo por papel) na v2.21.0 (main = 2204a14). Na B2 o curador
 mediu (sonnet, 64% mais barato, 12 de 12 na meta); o avaliador não calibrou (referência fora da meta) e a meta dele
