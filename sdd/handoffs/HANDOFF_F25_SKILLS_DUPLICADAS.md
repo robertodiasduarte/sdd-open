@@ -32,7 +32,7 @@
 ## Falta
 
 1. ~~Starter~~ — feito: 10ª geração pela tag `v2.22.0` num clone limpo (`4dbdea1`: `sdd-build` 2.13.0 e `sdd-checar-ambiente` 1.6.0); `check-gerado` VERDE, `publish-check` e `check-versions` PASS, testes OK; PR #19 de lá, CI verde, avanço direto da `main` (`9782444..4dbdea1`); Release **`v1.5.26`**, 18 zips OK.
-2. Remover a worktree e a branch local da frente (comandos em Ship).
+2. ~~Remover a worktree e a branch local da frente~~ — feito em 2026-11-17; o que só existia nela (ESCOPO, prompt da sessão, revisões completas e trace) está em `~/rdd-worktrees/arquivo-sdd-open/F25_SKILLS_DUPLICADAS-v2.22.0-documentos-revisoes-traces.tar.gz`.
 3. Curadoria: na fila (`20261117T215105Z`, 3 contagens e 3 candidatos); o lote da `sdd-playbook` julga sob demanda.
 4. Smoke depois do deploy: pulado — slot vazio (o Open não tem `sdd/config.yaml`); a Release foi conferida à mão (`shasum -c`, `VERSION`, a skill nova no pacote).
 
@@ -82,12 +82,12 @@
 
 ## Tarefas
 
-1. **Remover a worktree e a branch local da frente** — Pronto quando: `git worktree list` não mostra a pasta da F25.
+1. Nenhuma: a frente está fechada. Próximas, fora dela: o lote da curadoria (sob demanda) e os "Casos e testes em aberto".
 
 ## Ship
 
 - **Publicar:** feito (`v2.22.0`, PR #38, `304e60a`; starter `v1.5.26`).
-- **Limpar:** `git worktree remove --force /Users/robertoduarte/rdd-worktrees/sdd-open-f25-skills-duplicadas` e `git branch -D feat/f25-skills-duplicadas` (o `--force` porque a pasta guarda as cópias de trabalho dos documentos, já commitadas aqui).
+- **Limpar:** feito (worktree e branch local removidas; branches remotas da frente no Open e `gen/v2.22.0` no starter apagadas, conferidas idênticas ao publicado).
 
 ## Prompt de retomada
 
