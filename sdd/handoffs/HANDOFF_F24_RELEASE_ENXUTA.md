@@ -10,7 +10,7 @@
 |-----------|-------|
 | **Feature** | F24_RELEASE_ENXUTA |
 | **Objetivo** | A parte da `sdd-release` depois do push fica curta: só colhe e enfileira a curadoria, um commit de papel coberto pelo OK, uma parada só (smoke vermelho), ficha por acréscimo, trilha curta por comando e cada etapa explicada ao aluno em uma frase. |
-| **Status** | ✅ DoD fechado — publicado na `v2.20.0` (`main` = `017f09a`, PR #36), 2026-11-17; Release conferida (`shasum -c` OK, prefixo `5a8edb1eb45e`, `VERSION` = `v2.20.0`). Starter ainda não regerado |
+| **Status** | ✅ DoD fechado — publicado na `v2.20.0` (`main` = `017f09a`, PR #36), 2026-11-17; Release conferida (`shasum -c` OK, prefixo `5a8edb1eb45e`, `VERSION` = `v2.20.0`); starter **`v1.5.25`** (9ª geração, PR #18 de lá, 18 zips OK no `shasum -c`) |
 | **Última sessão** | 2026-11-17 |
 | **Branch / pasta** | `feat/f24-release-enxuta` · `/Users/robertoduarte/rdd-worktrees/sdd-open-f24-release-enxuta` (nascida de `origin/main` em `ef217b9`, rebaseada sobre `fb7ee82`) |
 | **Artefatos** | `sdd/archive/F24_RELEASE_ENXUTA/{DEFINE,DESIGN,BUILD_REPORT}_F24_RELEASE_ENXUTA.md` · `sdd/reviews/LEDGER_REVISAO_F24_RELEASE_ENXUTA.md` · `sdd/reports/CUSTO_F24_RELEASE_ENXUTA.md` · `sdd/reports/evidence/F24_RELEASE_ENXUTA/` · `sdd/reports/reviews-medicao/F24_RELEASE_ENXUTA/` · `sdd/curadoria/fila/F24_RELEASE_ENXUTA/20261117T095520Z/` — todos na branch de documentos `docs/incorporar-starter` |
@@ -31,7 +31,7 @@
 
 ## Falta
 
-1. **Regerar o starter** a partir da tag `v2.20.0` (mudaram `sdd-release`, `sdd-playbook` e `sdd-handoff`, e o molde da ficha) — precisa do OK do Roberto.
+1. ~~Regerar o starter~~ — feito: 9ª geração pela tag `v2.20.0` num clone limpo (`9782444`, 7 arquivos: `sdd-handoff` 2.3.0 com o bloco Publicado e o molde, `sdd-release` 2.16.0 só na versão); `check-gerado` VERDE, `publish-check` e `check-versions` PASS, 17 + 62 testes; PR #18 de lá, CI verde, avanço direto da `main` (`df6ae1c..9782444`, OK do Roberto: "sim, pode regerar o starter"); Release **`v1.5.25`**, 18 zips OK.
 2. **Definir o 1º lote da curadoria no Open:** aqui a fila fica na branch de documentos e o playbook na `main`; o lote precisa dos dois. A entrada `20261117T095520Z` (17 contagens, nenhuma regra nova) espera por ele. Colhida com o playbook da `main` (`fb7ee82`).
 3. Remover a worktree e a branch local da frente (comandos em Ship).
 
@@ -71,7 +71,7 @@
 
 ## Tarefas
 
-1. **Regerar o starter** — Pronto quando: Release nova do starter com `shasum -c` OK.
+1. **Definir e rodar o 1º lote da curadoria no Open** — Pronto quando: a entrada `20261117T095520Z` sai da fila com `--registrar` e as contagens estão no playbook da `main`.
 
 ## Ship
 
@@ -86,11 +86,11 @@
 Retomar a feature F24_RELEASE_ENXUTA (publicada na v2.20.0; DoD fechado).
 
 Contexto: a sdd-release ficou curta depois do push (colheita enfileirada, commit de papel, uma parada só, ficha por
-acréscimo, trilha curta). Falta regerar o starter e definir o 1º lote da curadoria no Open.
+acréscimo, trilha curta). Starter v1.5.25 publicado. Falta definir o 1º lote da curadoria no Open.
 Pasta: /Users/robertoduarte/rdd-public/sdd-open (main) · documentos em /Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16 (docs/incorporar-starter).
 Leia primeiro: sdd/handoffs/HANDOFF_F24_RELEASE_ENXUTA.md e sdd/releases/F24_RELEASE_ENXUTA/s1_v2.20.0.yaml (branch de documentos).
 
-Próxima ação: pedir o OK do Roberto para regerar o starter a partir da tag v2.20.0.
+Próxima ação: definir onde o 1º lote da curadoria roda no Open (a fila está na branch de documentos, o playbook na main).
 Não faça: ajuste direto no starter (ele é gerado do Open); documento SDD na main.
 Landmines: LM-035 (sdd/bin/ citado em skill que vai ao starter).
 ```
