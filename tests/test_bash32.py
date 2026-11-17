@@ -16,8 +16,10 @@ NOVOS = ("gate-baseline.sh", "gate-shell-evidencia.sh", "avaliador-guard.sh", "t
 class Bash32(unittest.TestCase):
     def test_sem_bashismo_em_sdd_bin(self):
         scripts = (sorted((RAIZ / "sdd/bin").glob("*.sh")) + sorted((RAIZ / "sdd/bin/adapters").glob("*.sh"))
-                   + sorted((RAIZ / "sdd/hooks").glob("pre-*")) + [RAIZ / "sdd/fixtures/revisao/adapters/stub.sh"])
-        self.assertGreaterEqual(len(scripts), 13)
+                   + sorted((RAIZ / "sdd/hooks").glob("pre-*")) + [RAIZ / "sdd/fixtures/revisao/adapters/stub.sh"]
+                   + sorted((RAIZ / ".agents/skills/sdd-checar-ambiente/scripts").glob("*.sh")))   # F25: o checar.sh roda no bash 3.2 do macOS
+        self.assertGreaterEqual(len(scripts), 15)
+        self.assertIn(RAIZ / ".agents/skills/sdd-checar-ambiente/scripts/duplicadas.sh", scripts)
         self.assertIn(RAIZ / "sdd/bin/adapters/openrouter.sh", scripts)
         self.assertIn(RAIZ / "sdd/hooks/pre-commit", scripts)
         for s in scripts:
