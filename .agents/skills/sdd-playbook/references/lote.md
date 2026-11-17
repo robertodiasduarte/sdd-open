@@ -13,7 +13,7 @@ publicado.
 
 0. **Onde.** O lote escreve no playbook e na branch padrão: rode numa frente própria (`/sdd-new-session`), nascida da
    branch padrão **atualizada**, nunca na pasta de uma publicação, com o playbook e as invariantes iguais ao commit
-   (`git diff --quiet -- sdd/playbook.md sdd/invariants.md` sai 0; senão, pare e peça para commitar ou guardar a mudança
+   (`git diff --quiet HEAD -- sdd/playbook.md sdd/invariants.md` sai 0, o que inclui o que já está no index; senão, pare e peça para commitar ou guardar a mudança
    antes: o item 3 pode precisar voltar os dois ao commit). `bash sdd/bin/playbook-curator.sh --fila` lista as
    entradas; fila vazia ⇒ diga isso e encerre. Entrada com `colheita FALHOU` não é julgada: diga a causa e que uma
    colheita nova da feature (`--enfileirar <F>` numa pasta com os documentos dela) a substitui.
@@ -70,7 +70,7 @@ publicado.
    `conferencia:`, esta é a 2ª tentativa, e nova reprovação encerra esta entrada, sem redespachar. Nunca separe
    contagem de regra à mão: quem decide é o conferidor.
 4. **Contagem entra, regra pergunta.** Comece o lote com `: > "$TMPDIR/lote-delta.txt"; : > "$TMPDIR/lote-inv.txt"`. As
-   linhas `AUTO <delta>` de cada `conferido.txt` vão, sem pergunta, para `"$TMPDIR/lote-delta-<entrada>.txt"` (um por
+   linhas `AUTO <delta>` de cada `conferido.txt` vão, sem pergunta, para `"$TMPDIR/lote-delta-<F>_<entrada>.txt"` (um por
    entrada: o envio do item 9 pode precisar tirar as linhas de uma entrada só), e o `lote-delta.txt` é a junção deles,
    na ordem da fila. As linhas `PERGUNTA <n> <tipo> <delta>`
    (lição nova, aposentadoria, refino, promoção, invariante, sugestão que o curador confirmou e contagem que põe uma
@@ -86,11 +86,11 @@ publicado.
    linha `inv` do curador, descartar com motivo, ou não aplicar a contagem). Lição antiga que já mordeu e
    nunca foi classificada aparece na colheita como `INV_PENDENTE` e pede o mesmo item, uma vez: sem a
    resposta, a trava do item 5 segura tudo, e aí registre `Curadoria: FALHOU (invariantes sem
-   classificação)`. Os itens aceitos entram no `lote-delta-<entrada>.txt` da entrada de onde vieram (as aceitas também, não só as
+   classificação)`. Os itens aceitos entram no `lote-delta-<F>_<entrada>.txt` da entrada de onde vieram (as aceitas também, não só as
    AUTO: no envio, tirar uma entrada tira tudo o que veio dela) e, pela junção, no `lote-delta.txt`, menos a promoção: o delta `promovido_para=`
    só entra quando o mecanismo já está na branch padrão, então a promoção aceita vira pendência; as linhas de
    invariante aceitas (a `inv` do curador, o `ajuste:`, ou `REMOVER INV-nnn` / `REMOVER LM-nnn`), em
-   `lote-inv-<entrada>.txt`, e pela junção em `lote-inv.txt`. Sem linha `PERGUNTA`, não há pergunta de regra.
+   `lote-inv-<F>_<entrada>.txt`, e pela junção em `lote-inv.txt`. Sem linha `PERGUNTA`, não há pergunta de regra.
 5. **Aplicar numa cópia e conferir 3 vezes — um `--aplicar` só para o lote inteiro.** Com `lote-delta.txt` e
    `lote-inv.txt` vazios (nada contado, nada aceito), pule este item e registre `Curadoria: nada aplicado`.
    `bash sdd/bin/playbook-curator.sh --aplicar "$TMPDIR/lote-delta.txt" sdd/playbook.md > "$TMPDIR/novo.md"`
@@ -130,7 +130,7 @@ publicado.
    invariantes da base com `--aplicar-inv`, e traga os logs do item 8 com `git checkout <sha do commit do lote> -- <cada
    log>`; os registros e as remoções da fila **nunca por checkout**, que apagaria o que outro lote gravou na base: para
    cada entrada julgada, se ela ainda está na fila da base, rode ali `--registrar` dela; se não está, outra frente já a
-   julgou: tire do lote as linhas dela (o `lote-delta-<entrada>.txt`) antes de reaplicar), rode ali de novo o `playbook-lint.sh` e, com
+   julgou: tire do lote as linhas dela (o `lote-delta-<F>_<entrada>.txt`) antes de reaplicar), rode ali de novo o `playbook-lint.sh` e, com
    invariantes, o `--validar-inv` (ID repetido com a base ⇒ renumere o novo, nunca o da base) e faça o push como no
    passo 8 da `sdd-release`. **deixar para depois** ⇒ o commit fica na branch do lote, e as entradas continuam na fila
    da branch padrão até o envio. Com mudança de regra e envio na mesma resposta, as 2 perguntas vão numeradas.

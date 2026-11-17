@@ -1728,6 +1728,8 @@ def remove_falhas(raiz, feature, exceto=None):
             continue
         if rc_da_entrada(pe) != 0:
             shutil.rmtree(pe, ignore_errors=True)
+            if os.path.isfile(pe + ".recusada"):
+                os.remove(pe + ".recusada")
             diz("removida a entrada que falhou: " + os.path.relpath(pe, raiz).replace(os.sep, "/"))
         elif recusada(pe):
             shutil.rmtree(pe, ignore_errors=True)
@@ -1953,6 +1955,8 @@ def conferir_entrada(args):
                       % len([x for x in log.split("\n") if x.strip()]))
     for n in sorted(os.listdir(entrada)):
         orig = origens_de(feature, n)
+        if not orig and n not in ("colheita.txt", "colheita.rc", "ausentes.txt", REGISTRO):
+            return recusa("a entrada tem um arquivo que a colheita não cria e cuja origem não dá para provar: %s" % n)
         if orig and not esteve_no_historico(raiz, os.path.join(entrada, n), orig):
             return recusa("o documento %s da entrada nunca esteve, com este conteúdo, em %s no histórico do git "
                           "(entrada fabricada ou documento mexido)" % (n, " nem em ".join(orig)))
@@ -2067,7 +2071,9 @@ def registrar(args):
         for _f, outra in entradas_da_fila(raiz, feature):
             if (os.path.basename(outra) < os.path.basename(pe) and rc_da_entrada(outra) == 0 and not recusada(outra)
                     and os.path.realpath(outra) not in registrando):
-                julgadas -= fps_de(ler(os.path.join(outra, "colheita.txt")), True)
+                aus_outra = os.path.join(outra, "ausentes.txt")   # sem prova lá: quem julgou foi esta
+                julgadas -= fps_de(ler(os.path.join(outra, "colheita.txt")), True) - \
+                    (fps_de(ler(aus_outra)) if os.path.isfile(aus_outra) else set())
         destino = os.path.join(raiz, "sdd", "releases", feature, REGISTRO)
         julgadas -= fps_de(ler(destino)) if os.path.isfile(destino) else set()   # já registrada (nesta chamada inclusive)
         linhas = ["julgado no lote · %s · fp=%s" % (os.path.basename(pe), ",".join(sorted(julgadas)))] if julgadas else []
@@ -2077,6 +2083,8 @@ def registrar(args):
                 with open(destino, "a", encoding="utf-8") as f:
                     f.write("\n".join(linhas) + "\n")
             shutil.rmtree(pe)
+            if os.path.isfile(pe + ".recusada"):
+                os.remove(pe + ".recusada")
             if not os.listdir(os.path.dirname(pe)):
                 os.rmdir(os.path.dirname(pe))
         except OSError as e:

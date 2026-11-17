@@ -7,9 +7,10 @@ ele dispara um deploy sem código novo. Só lê <raiz>/.github/workflows/; não 
 leitor de YAML e o reconhecimento do passo que publica são os do deploy-espera-testes.py, ao lado.
 
   PUBLICA      exit 0  algum workflow que publica roda com um push desses arquivos na branch
-  NAO_PUBLICA  exit 1  nenhum workflow que publica roda (paths, paths-ignore ou branches deixam de fora)
-  NAO_SEI      exit 2  workflow ilegível, workflow_run, workflow reutilizável, filtro que não sei ler, ou job com
-                       nome de publicar cujo passo não reconheci — a skill diz "não consegui afirmar"
+  NAO_PUBLICA  exit 1  há workflow que publica, e nenhum roda com estes arquivos (paths, paths-ignore ou branches)
+  NAO_SEI      exit 2  workflow ilegível, workflow_run, workflow reutilizável, filtro que não sei ler, job com
+                       nome de publicar cujo passo não reconheci, ou nenhum workflow que publica (uma integração fora
+                       do GitHub Actions, como a da Vercel, pode publicar a cada push) — a skill diz "não consegui afirmar"
                exit 64 uso, ou o deploy-espera-testes.py não está ao lado (nunca NAO_PUBLICA por falta dele)
 
 Uso:
@@ -156,6 +157,10 @@ def avaliar(raiz, branch, arquivos, mod):
         sel = [f for r, f in achados if r == res]
         if sel:
             return res, sel, achados
+    if not achados:
+        frase = ("nenhum workflow em .github/workflows/ publica; uma integração fora do GitHub Actions (Vercel, Netlify) "
+                 "pode publicar a cada push: confira no painel dela")
+        return "NAO_SEI", [frase], [("NAO_SEI", frase)]
     return "NAO_PUBLICA", [f for r, f in achados if r == "NAO_PUBLICA"], achados
 
 

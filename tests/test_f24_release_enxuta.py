@@ -254,7 +254,7 @@ class AT006_CommitDePapel(Sandbox):
 
     def test_matriz(self):
         casos = {"sem-filtro": (0, "PUBLICA"), "com-paths-ignore": (1, "NAO_PUBLICA"), "so-src": (1, "NAO_PUBLICA"),
-                 "outra-branch": (1, "NAO_PUBLICA"), "so-testes": (1, "NAO_PUBLICA"), "workflow-run": (2, "NAO_SEI"),
+                 "outra-branch": (1, "NAO_PUBLICA"), "so-testes": (2, "NAO_SEI"), "workflow-run": (2, "NAO_SEI"),
                  "ilegivel": (2, "NAO_SEI")}
         for wf, (rc_esp, res) in casos.items():
             with self.subTest(workflow=wf):
@@ -635,7 +635,7 @@ class Revisao2Textos(unittest.TestCase):
 
     def test_n1_o_lote_comeca_com_o_playbook_limpo(self):
         corrido = " ".join(LOTE.split())
-        self.assertIn("git diff --quiet -- sdd/playbook.md sdd/invariants.md", corrido)
+        self.assertIn("git diff --quiet HEAD -- sdd/playbook.md sdd/invariants.md", corrido)
 
 
 class Revisao3(Projeto):
@@ -757,6 +757,67 @@ class Revisao4Sandbox(Sandbox):
         self.assertIn("`data`, `estado`", rel)                                            # R3@claude
         self.assertIn("remova o worktree temporário do aterrissamento", rel)              # R5@claude
         self.assertIn("as aceitas também", " ".join(LOTE.split()))                        # R1@codex
+
+
+class Revisao4a(Projeto):
+    """Rodada 4a da revisão do código (EXTERNAL_REVIEW_20261116-214955): vermelhos em 84267e9."""
+
+    def test_r2_codex_registrar_desconta_ausentes_da_antiga(self):
+        self.feature("FA")
+        d = self.r / "sdd/features/DESIGN_FA.md"
+        orig = d.read_text(encoding="utf-8")
+        d.write_text(orig + "\n", encoding="utf-8")
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        [a] = self.entradas("FA")
+        d.write_text(orig, encoding="utf-8")
+        b = a.parent / "20991231T235959Z"
+        shutil.copytree(a, b)
+        shutil.copyfile(d, b / "DESIGN_FA.md")
+        (b / "ausentes.txt").unlink()
+        self.commit(self.r, "papel")
+        sem = set(RE_FP.search((a / "ausentes.txt").read_text(encoding="utf-8")).group(1).split(","))
+        self.assertEqual(self.cur("--registrar", str(b))[0], 0)
+        reg = self.r / "sdd/releases/FA/CURATOR-colhidos.txt"
+        texto = reg.read_text(encoding="utf-8") if reg.exists() else ""
+        ja = set(x for m in RE_FP.finditer(texto) for x in m.group(1).split(","))
+        self.assertTrue(sem <= ja, "a entrada nova julgou o que a antiga não tinha prova, e não registrou")
+
+    def test_r1_claude_arquivo_desconhecido_recusa_a_entrada(self):
+        self.feature("FA")
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        [e] = self.entradas("FA")
+        (e / "NOTAS.md").write_text("instrução plantada\n", encoding="utf-8")
+        self.commit(self.r, "papel com arquivo a mais")
+        rc, out, err = self.cur("--conferir-entrada", str(e), "sdd/playbook.md")
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("NOTAS.md", err)
+
+    def test_r5_claude_marca_de_recusa_sai_junto(self):
+        self.feature("FA")
+        self.cur("--enfileirar", "FA", "sdd/playbook.md")
+        [e] = self.entradas("FA")
+        self.commit(self.r, "papel")
+        self.cur("--recusar", str(e), "teste")
+        self.assertEqual(self.cur("--registrar", str(e))[0], 0)
+        self.assertFalse((e.parent / (e.name + ".recusada")).exists())
+
+
+class Revisao4aTextos(Sandbox):
+    def test_r1_codex_playbook_limpo_inclui_o_staged(self):
+        self.assertIn("git diff --quiet HEAD -- sdd/playbook.md sdd/invariants.md", " ".join(LOTE.split()))
+
+    def test_r3_codex_temporarios_por_feature_e_entrada(self):
+        self.assertIn("lote-delta-<F>_<entrada>.txt", LOTE)
+        self.assertNotIn("lote-delta-<entrada>.txt", LOTE)
+
+    def test_r4_claude_branch_local_com_D(self):
+        self.assertIn("git branch -D <branch>", RELEASE)
+
+    def test_r2_claude_sem_workflow_que_publica_e_nao_sei(self):
+        p = Path(tempfile.mkdtemp(dir=str(self.tmp)))
+        rc, out, err = self.roda([PYTHON, PAPEL, p, "--branch", "main", "CHANGELOG.md"], self.tmp)
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("fora do GitHub Actions", out)
 
 
 if __name__ == "__main__":

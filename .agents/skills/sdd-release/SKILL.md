@@ -350,7 +350,8 @@ Toda mensagem daqui em diante diz que a publicação já terminou: uma espera se
     sem nenhuma linha `+`; `git cherry` que sai ≠ 0 ⇒ não apague, porque saída vazia de um comando que falhou não prova nada), apague-a: `GIT_TERMINAL_PROMPT=0 git push origin --delete <branch>`, com a linha
     de recibo e o comando que desfaz (`git push origin <sha>:refs/heads/<branch>`). Sobra linha `+` (commit que não
     entrou), ou o item 16 não enviou ⇒ não apague e diga por quê. A branch local e a worktree não se apagam de dentro dela: o relatório final
-    dá o comando, rodado de fora (`git worktree remove "<pasta>"` e `git branch -d <branch>`).
+    dá o comando, rodado de fora (`git worktree remove "<pasta>"` e `git branch -D <branch>`: o `-d` recusa, porque a
+    release aterrissa por cherry-pick; a integração já foi conferida pelo `git cherry`, e sem ela o comando não vai).
 
 ## FASE 4 — Relatório
 
