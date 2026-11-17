@@ -73,6 +73,7 @@
 
 ## Casos e testes em aberto
 
+- ✨ Starter: a B2 só sobe a versão do modo web da `sdd-build` (2.12.0 → 2.13.0); a 10ª geração espera a próxima frente que mexer numa skill do starter (decisão do Roberto, 2026-11-17).
 - ✨ Meta do avaliador: comparar com o histórico em cada repetição não calibra (a referência errou o AT que falha no F11 e no F21); redesenhar, por exemplo pela taxa de detecção do AT que falha ao longo das repetições (B2, decisão do Roberto).
 - ✨ Caixa de areia da série: `/tmp` ainda bloqueado; o Verify Gate do caso não fecha lá dentro (B2).
 - 🐛 Fronteira da interrompida isenta pelo nome de arquivo (`meta.txt` forjado na pasta de medição passa) e não confere remoto na cópia da interrompida (rodada 5 da B2, sem conserto por decisão).
