@@ -97,9 +97,10 @@ nem rede. É o que a `sdd-new-session` roda com o slot `editor` vazio.
 ## Regras
 
 - **Somente leitura.** Não instale, não configure, não conserte, não crie arquivo. Entregue o comando;
-  quem roda é o usuário, depois de ver o que está autorizando. **Exceção única:** o `--limpar <assinatura>`, depois
-  do sim do aluno ao plano do `--duplicadas`: ele guarda cada cópia do plano em `~/.sdd-lixeira/<data-hora>/`, tira
-  só essas cópias e deixa lá o `desfazer.sh`. Nenhum outro modo e nenhum outro passo desta skill grava nada. Saídas de rede, as duas só de leitura:
+  quem roda é o usuário, depois de ver o que está autorizando. **Exceção única:** o modo de limpeza — o `--limpar <assinatura>`,
+  depois do sim do aluno ao plano do `--duplicadas`, que guarda cada cópia do plano em `~/.sdd-lixeira/<data-hora>/`,
+  tira só essas cópias e deixa lá o `desfazer.sh`; e esse `desfazer.sh`, só quando o aluno pede para desfazer. Nenhum
+  outro modo e nenhum outro passo desta skill grava nada. Saídas de rede, as duas só de leitura:
   uma consulta anônima ao GitHub, de até 3 segundos, para saber se o repositório é público (se falhar,
   não diga nada sobre isso); e uma consulta `ls-remote` ao remoto, de até 10 segundos, **sem pedir senha**,
   para saber se a credencial e a rede chegam lá e se ele já tem algum commit (com a janela de login de um

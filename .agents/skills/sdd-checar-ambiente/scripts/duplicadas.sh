@@ -246,32 +246,41 @@ dup_planejar() {
     FILENAME ~ /copias\.tsv$/ { usa[$1 "\t" $6 "\t" $5] = 1; caminhos[$5]++; if ($4 != $5) link_de[$5] = link_de[$5] "\t" $4
                                 todos[$1 "\t" $6] = todos[$1 "\t" $6] "\t" $5; ch_de[$5] = (ch_de[$5] == "" ? $9 : ch_de[$5]); vr[$5] = $7; next }
     { g = $1 "\t" $6; if (!(g in ng)) { ordem[++G] = g }
-      i = ++ng[g]; ag[g] = $1; nm[g] = $6; es[g, i] = $2; ro[g, i] = $3; cm[g, i] = $4; re[g, i] = $5; ve[g, i] = $7; or[g, i] = $8; chg[g, i] = $9 }
+      i = ++ng[g]; ag[g] = $1; nm[g] = $6; es[g, i] = $2; ro[g, i] = $3; cm[g, i] = $4; re[g, i] = $5; ve[g, i] = $7; og[g, i] = $8; chg[g, i] = $9 }   # "og", não "or": no gawk (o awk do Git Bash) or() é função
     END {
+      # 1ª passada: o que cada grupo decide. Uma cópia de grupo em que a escolha ficou em aberto ("não escolho") fica
+      # BLOQUEADA para todos os grupos: a mesma pasta real pode ser lida pelos 2 agentes (revisão, rodada 2, N1)
       for (k = 1; k <= G; k++) {
-        g = ordem[k]; m = ng[g]; nao = ""
-        for (i = 1; i <= m; i++) print "C", ag[g], nm[g], es[g, i], ro[g, i], cm[g, i], re[g, i], ve[g, i], or[g, i], chg[g, i], hash[re[g, i]]
-        for (i = 1; i <= m && nao == ""; i++) {
-          if (or[g, i] == "outra") nao = "a cópia " cm[g, i] " não é do SDD (não tem a linha de identificação); tire à mão a que não quiser"
-          else if (ve[g, i] == "") nao = "não consegui ler a versão de " cm[g, i] "; compare as cópias e tire à mão a que não quiser"
-          else if (chg[g, i] == "atalho") nao = cm[g, i] " é um atalho para outra pasta; desfazer atalho à mão é mais seguro"
+        g = ordem[k]; m = ng[g]; nao[g] = ""
+        for (i = 1; i <= m; i++) print "C", ag[g], nm[g], es[g, i], ro[g, i], cm[g, i], re[g, i], ve[g, i], og[g, i], chg[g, i], hash[re[g, i]]
+        for (i = 1; i <= m && nao[g] == ""; i++) {
+          if (og[g, i] == "outra") nao[g] = "a cópia " cm[g, i] " não é do SDD (não tem a linha de identificação); tire à mão a que não quiser"
+          else if (ve[g, i] == "") nao[g] = "não consegui ler a versão de " cm[g, i] "; compare as cópias e tire à mão a que não quiser"
+          else if (chg[g, i] == "atalho") nao[g] = cm[g, i] " é um atalho para outra pasta; desfazer atalho à mão é mais seguro"
         }
-        if (nao == "") {
-          mx = ve[g, 1]; for (i = 2; i <= m; i++) if (cmp(ve[g, i], mx) > 0) mx = ve[g, i]
-          fica = 0
-          for (i = 1; i <= m && nao == ""; i++) {
-            if (cmp(ve[g, i], mx) != 0) continue
+        if (nao[g] == "") {
+          vmax[g] = ve[g, 1]; for (i = 2; i <= m; i++) if (cmp(ve[g, i], vmax[g]) > 0) vmax[g] = ve[g, i]
+          fica[g] = 0
+          for (i = 1; i <= m && nao[g] == ""; i++) {
+            if (cmp(ve[g, i], vmax[g]) != 0) continue
             for (j = i + 1; j <= m; j++)
-              if (cmp(ve[g, j], mx) == 0 && or[g, i] == or[g, j] && hash[re[g, i]] != hash[re[g, j]])
-                nao = "as cópias " cm[g, i] " e " cm[g, j] " dizem " mx " e têm textos diferentes: uma delas foi editada; compare e diga qual quer manter"
-            if (!fica || prio(ro[g, i]) < prio(ro[g, fica])) fica = i
+              if (cmp(ve[g, j], vmax[g]) == 0 && og[g, i] == og[g, j] && hash[re[g, i]] != hash[re[g, j]])
+                nao[g] = "as cópias " cm[g, i] " e " cm[g, j] " dizem " vmax[g] " e têm textos diferentes: uma delas foi editada; compare e diga qual quer manter"
+            if (!fica[g] || prio(ro[g, i]) < prio(ro[g, fica[g]])) fica[g] = i
           }
         }
-        if (nao != "") { print "D", ag[g], nm[g], "nao", "-", nao; continue }
+        if (nao[g] != "") for (i = 1; i <= m; i++) bloq[re[g, i]] = 1
+      }
+      # 2ª passada: o que sai
+      for (k = 1; k <= G; k++) {
+        g = ordem[k]; m = ng[g]
+        if (nao[g] != "") { print "D", ag[g], nm[g], "nao", "-", nao[g]; continue }
         for (i = 1; i <= m; i++) {
-          if (i == fica) continue
-          motivo = (cmp(ve[g, i], mx) < 0) ? "mais velha" : "sobra"
-          if (chg[g, i] == "git") { print "D", ag[g], nm[g], "projeto", re[g, i], or[g, i]; continue }
+          if (i == fica[g]) continue
+          motivo = (cmp(ve[g, i], vmax[g]) < 0) ? "mais velha" : "sobra"
+          if (re[g, i] in bloq) {
+            print "D", ag[g], nm[g], "nao", "-", "a cópia " cm[g, i] " também é lida pelo outro agente, e lá a escolha ficou em aberto; resolva aquela antes"; continue }
+          if (chg[g, i] == "git") { print "D", ag[g], nm[g], "projeto", re[g, i], og[g, i] ":" motivo; continue }
           if (chg[g, i] != "npx" && caminhos[re[g, i]] > 1) {
             print "D", ag[g], nm[g], "nao", "-", "outra pasta aponta para " cm[g, i] "; tire à mão"; continue }
           print "D", ag[g], nm[g], "tirar", re[g, i], motivo
@@ -341,7 +350,12 @@ EOF
       [ "${ag2}" = "${ag}" ] && [ "${n2}" = "${n}" ] || continue
       case "${tipo}" in
         nao) echo "   Não escolho: ${mot}." ;;
-        projeto) echo "   A mais velha é a do projeto, salva no git: não a tiro (tirar apareceria como mudança a salvar e voltaria na próxima atualização); $(dup_remedio_projeto "${mot}")." ;;
+        projeto)
+          if [ "${mot#*:}" = sobra ]; then
+            echo "   A cópia do projeto ${r} tem a mesma versão da que fica e está salva no git: não a tiro (tirar apareceria como mudança a salvar); se não quiser as duas, tire-a pelo git."
+          else
+            echo "   A mais velha é a do projeto, salva no git: não a tiro (tirar apareceria como mudança a salvar e voltaria na próxima atualização); $(dup_remedio_projeto "${mot%%:*}")."
+          fi ;;
         tirar)
           c="$(LC_ALL=C awk -F '\t' -v r="${r}" -v a="${ag}" '$5 == r && $1 == a' "${DUP_TMP}/copias.tsv" | head -1)"
           es="$(printf '%s' "${c}" | cut -f2)"; ve="$(printf '%s' "${c}" | cut -f7)"; cm="$(printf '%s' "${c}" | cut -f4)"
@@ -403,12 +417,12 @@ liga() {   # liga <para onde o atalho aponta> <atalho>
   if [ -e "$2" ] || [ -L "$2" ]; then return 0; fi
   if mkdir -p "$(dirname "$2")" && ln -s "$1" "$2"; then echo "✅ atalho de volta: $2"; else echo "🛑 não consegui refazer o atalho $2"; falhou=1; fi
 }
-registro() {   # registro <guardado> <atual> <cksum que a limpeza deixou>
+registro() {   # registro <guardado> <atual> <cksum que a limpeza deixou ("" = ela parou antes de anotar)>
   [ -f "$1" ] || return 0
-  if [ -n "$3" ] && [ -f "$2" ] && [ "$(cksum < "$2")" = "$3" ]; then
+  if [ -f "$2" ] && cmp -s "$1" "$2"; then return 0; fi
+  if [ -z "$3" ] || { [ -f "$2" ] && [ "$(cksum < "$2")" = "$3" ]; }; then
     if cp "$1" "$2"; then echo "✅ registro do npx de volta: $2"; return 0; fi
   fi
-  if [ -f "$2" ] && cmp -s "$1" "$2"; then return 0; fi
   echo "⚠️ o registro do npx ($2) mudou depois da limpeza: não mexi. Para o npx voltar a cuidar da skill, instale-a de novo pelo npx."
   falhou=1
 }
@@ -475,6 +489,9 @@ dup_tirar_npx() {   # $1 real $2 nome $3 rótulo $4 versão $5 hash $6 agentes
   # HOME explícito: o npx tem de agir na mesma pasta pessoal que o plano leu (um HOME não exportado faria o node cair na
   # pasta pessoal do sistema)
   HOME="${HOME}" "${SDD_CHECAR_NPX:-npx}" --yes skills remove "$2" -g ${args} -y </dev/null > "${DUP_L}/npx/remove-$2.log" 2>&1
+  # o registro que o npx deixou, anotado logo: o desfazer só o troca pelo guardado se ninguém mexeu nele depois (N2)
+  cksum < "${lock}" > "${DUP_L}/npx/depois.cksum" 2>/dev/null || : > "${DUP_L}/npx/depois.cksum"
+  dup_desfazer_grava
   saiu=1
   { [ -e "$1" ] || [ -L "$1" ]; } && saiu=0
   while IFS="${DUP_TAB}" read -r p q; do [ -n "${p}" ] && { [ -e "${p}" ] || [ -L "${p}" ]; } && saiu=0; done <<EOF
@@ -497,6 +514,8 @@ EOF
 ${ligacoes}
 EOF
     dup_registro_devolve "${DUP_L}/npx/antes-$2.json"
+    cksum < "${lock}" > "${DUP_L}/npx/depois.cksum" 2>/dev/null || : > "${DUP_L}/npx/depois.cksum"
+    dup_desfazer_grava
     if [ "${saiu}" = 0 ]; then
       DUP_ERRO="o npx não tirou tudo de $1 (ele diz que outra ferramenta ainda usa esta skill); devolvi o que tinha saído"
     else
@@ -505,8 +524,6 @@ EOF
     fi
     return 1
   fi
-  cksum < "${lock}" > "${DUP_L}/npx/depois.cksum" 2>/dev/null || : > "${DUP_L}/npx/depois.cksum"
-  dup_desfazer_grava
   DUP_FEITO="${DUP_FEITO}- $1 ($4, saiu pelo npx skills remove) → ${g}"$'\n'
 }
 dup_volta_protegidas() {

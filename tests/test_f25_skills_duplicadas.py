@@ -46,6 +46,7 @@ esac
 rm -rf "${HOME}/.claude/skills/${n}" "${HOME}/.agents/skills/${n}"
 l="${HOME}/.agents/.skill-lock.json"
 [ -f "$l" ] && awk -v n="$n" '$0 ~ "^    \"" n "\": \\{" { p = 1 } !p { print } p && /^    \}/ { p = 0 }' "$l" > "$l.t" && mv "$l.t" "$l"
+[ "${NPX_STUB:-}" = interrompe ] && kill -KILL "${PPID}"          # revisão rodada 2, N2: a limpeza morre aqui
 exit 0
 """
 NPX_REAL = """#!/bin/sh
@@ -675,6 +676,65 @@ class RevisaoRodada1(Base):
         self.assertNotIn("--limpar", out)
 
 
+class RevisaoRodada2(Base):
+    """Achados da revisão do código, rodada 2: R1 (array "or" no gawk), R3, R4 (rebatido, com prova), N1 e N2."""
+
+    def test_r1_nenhum_nome_embutido_do_gawk_como_variavel_nos_awk(self):
+        # no gawk (o awk do Git Bash), and/or/xor/compl/lshift/rshift/… são funções: usá-los como array é erro de sintaxe
+        # e o plano sairia vazio. Sem gawk nesta máquina, a regra é conferida no texto.
+        texto = (SKILL / "scripts/duplicadas.sh").read_text(encoding="utf-8") + (SKILL / "scripts/checar.sh").read_text(encoding="utf-8")
+        ruins = re.findall(r"\b(and|or|xor|compl|lshift|rshift|strftime|systime|mktime|gensub|patsplit|isarray|typeof|asorti?|func)\s*[\[=]", texto)
+        self.assertEqual([r for r in ruins], [], "nome reservado do gawk usado como variável")
+
+    def test_r3_sobra_do_projeto_no_git_nao_e_a_mais_velha(self):
+        self.skill(self.proj / ".agents/skills", "sdd-kb", "2.2.3", "open")
+        self.skill(self.proj / ".codex/skills", "sdd-kb", "2.2.3", "open")
+        self.commit()
+        out, _ = self.plano()
+        self.assertIn("tem a mesma versão da que fica e está salva no git: não a tiro", out)
+        self.assertNotIn("A mais velha é a do projeto", out)
+
+    def test_r4_so_duplicatas_nao_sai_como_pronto(self):
+        self.tabela_21()
+        bare = self.tmp / "remoto.git"
+        subprocess.run(["git", "init", "-q", "--bare", str(bare)], check=True)
+        self.git("remote", "add", "origin", str(bare))
+        self.git("push", "-q", "origin", "HEAD:refs/heads/main")
+        self.git("remote", "set-head", "origin", "main")
+        rc, out = self.roda()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("⚠️ Vale arrumar", out)
+        self.assertIn("✅ Repo meu-app", out)
+        self.assertNotIn("✅ Pronto", out)
+
+    @unittest.skipIf(WINDOWS, "atalho (symlink) no Windows pede privilégio")
+    def test_n1_copia_compartilhada_com_escolha_em_aberto_nao_sai(self):
+        self.skill(self.g_agents, "sdd-kb", "2.2.3", "starter")   # a global do npx, dos dois agentes
+        self.g_claude.mkdir(parents=True)
+        os.symlink("../../.agents/skills/sdd-kb", self.g_claude / "sdd-kb")
+        self.registro("sdd-kb")
+        self.skill(self.proj / ".claude/skills", "sdd-kb", "2.2.3", "starter", extra="editada\n")   # Claude: em aberto
+        self.skill(self.proj / ".agents/skills", "sdd-kb", "2.2.4", "open")                          # Codex: a global é velha
+        self.commit()
+        out, _ = self.plano()
+        self.assertIn("também é lida pelo outro agente, e lá a escolha ficou em aberto", out)
+        self.assertNotIn("--limpar", out)
+
+    def test_n2_limpeza_interrompida_depois_do_npx_desfaz_o_registro(self):
+        self.skill(self.g_agents, "sdd-define", "2.8.0", "starter")
+        self.skill(self.proj / ".agents/skills", "sdd-define", "2.9.0", "open")
+        self.registro("sdd-define")
+        self.commit()
+        antes = self.arvore()
+        rc, out = self.limpar(NPX_STUB="interrompe")
+        self.assertNotEqual(rc, 0, out)
+        lix = next((self.home / ".sdd-lixeira").iterdir())
+        r = subprocess.run([BASH, str(lix / "desfazer.sh")], cwd=self.proj, capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", env=self.env(), timeout=60)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(self.arvore(), antes, "o desfazer não devolveu a árvore (o registro?)")
+
+
 class AT010Textos(Base):
     def test_frente_continua_saindo_0_com_duplicatas(self):
         self.tabela_21()
@@ -694,6 +754,7 @@ class AT010Textos(Base):
         regra = t.split("- **Somente leitura.**", 1)[1].split("\n- **", 1)[0]
         self.assertIn("`--limpar <assinatura>`", regra)
         self.assertEqual(t.count("Exceção única"), 1)
+        self.assertIn("e esse `desfazer.sh`, só quando o aluno pede para desfazer", regra)   # revisão rodada 2, R2
         self.assertIn("| 3 | Limpar |", t)
         self.assertIn("`--duplicadas`", t)
 
