@@ -1,0 +1,141 @@
+$ /bin/bash <scratchpad>/probe/p_at006.sh
+### AT-006 tabela 2.1
+Plano de limpeza das skills duplicadas — nada mudou ainda.
+(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)
+
+1. sdd-brainstorm — o Claude Code lê 2 cópias e roda a global:
+   global: <scratchpad>/probe/run.eKcs/home/.claude/skills/sdd-brainstorm — versão 2.3.1, do SDD Open, copiada à mão
+   do projeto: <scratchpad>/probe/run.eKcs/proj/.claude/skills/sdd-brainstorm — versão 2.4.0, do SDD Open, salva no git do projeto
+   Recomendo: tirar a global <scratchpad>/probe/run.eKcs/home/.claude/skills/sdd-brainstorm (2.3.1, a mais velha).
+   Ela vale para todos os projetos deste computador: os que não têm cópia própria ficam sem a sdd-brainstorm.
+
+2. sdd-define — o Claude Code lê 2 cópias e roda a global:
+   global: <scratchpad>/probe/run.eKcs/home/.claude/skills/sdd-define — versão 2.6.1, do SDD Open, copiada à mão
+   do projeto: <scratchpad>/probe/run.eKcs/proj/.claude/skills/sdd-define — versão 2.7.0, do SDD Open, salva no git do projeto
+   Recomendo: tirar a global <scratchpad>/probe/run.eKcs/home/.claude/skills/sdd-define (2.6.1, a mais velha).
+   Ela vale para todos os projetos deste computador: os que não têm cópia própria ficam sem a sdd-define.
+
+3. sdd-release — o Claude Code lê 2 cópias e roda a global:
+   global: <scratchpad>/probe/run.eKcs/home/.claude/skills/sdd-release — versão 2.11.1, do SDD Open, copiada à mão
+   do projeto: <scratchpad>/probe/run.eKcs/proj/.claude/skills/sdd-release — versão 2.12.0, do SDD Open, salva no git do projeto
+   Recomendo: tirar a global <scratchpad>/probe/run.eKcs/home/.claude/skills/sdd-release (2.11.1, a mais velha).
+   Ela vale para todos os projetos deste computador: os que não têm cópia própria ficam sem a sdd-release.
+
+Se você disser sim, tiro 3 cópia(s), uma por vez, e guardo cada uma antes em <scratchpad>/probe/run.eKcs/home/.sdd-lixeira (dá para desfazer).
+Assinatura deste plano: cc752d512f64 (muda se qualquer cópia mudar).
+Para aplicar só este plano: bash ~/rdd-worktrees/sdd-open-f25-skills-duplicadas/.agents/skills/sdd-checar-ambiente/scripts/checar.sh --limpar cc752d512f64
+[EXIT=0 arvore igual=sim lixeira=ausente]
+
+### AT-007a versões diferentes, 3 cópias do Codex (CODEX_HOME 1.0.0 à mão, ~/.agents 1.5.0 à mão, projeto .codex 2.0.0 fora do git)
+Plano de limpeza das skills duplicadas — nada mudou ainda.
+(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)
+
+1. sdd-kb — o Codex lê 3 cópias e escolhe uma sem dizer qual:
+   global: <scratchpad>/probe/run.nnuT/home/.agents/skills/sdd-kb — versão 1.5.0, do SDD Open, copiada à mão
+   global: <scratchpad>/probe/run.nnuT/home/.codex/skills/sdd-kb — versão 1.0.0, do SDD Open, copiada à mão
+   do projeto: <scratchpad>/probe/run.nnuT/proj/.codex/skills/sdd-kb — versão 2.0.0, do SDD Open, copiada à mão
+   Recomendo: tirar a global <scratchpad>/probe/run.nnuT/home/.agents/skills/sdd-kb (1.5.0, a mais velha).
+   Ela vale para todos os projetos deste computador: os que não têm cópia própria ficam sem a sdd-kb.
+   Recomendo: tirar a global <scratchpad>/probe/run.nnuT/home/.codex/skills/sdd-kb (1.0.0, a mais velha).
+   Ela vale para todos os projetos deste computador: os que não têm cópia própria ficam sem a sdd-kb.
+
+Se você disser sim, tiro 2 cópia(s), uma por vez, e guardo cada uma antes em <scratchpad>/probe/run.nnuT/home/.sdd-lixeira (dá para desfazer).
+Assinatura deste plano: 938befa57413 (muda se qualquer cópia mudar).
+Para aplicar só este plano: bash ~/rdd-worktrees/sdd-open-f25-skills-duplicadas/.agents/skills/sdd-checar-ambiente/scripts/checar.sh --limpar 938befa57413
+[EXIT=0 arvore igual=sim lixeira=ausente]
+
+### AT-007b mesma versão, mesma origem, conteúdo igual (Codex: ~/.codex x ~/.agents)
+Plano de limpeza das skills duplicadas — nada mudou ainda.
+(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)
+
+1. sdd-kb — o Codex lê 2 cópias e escolhe uma sem dizer qual:
+   global: <scratchpad>/probe/run.Im3k/home/.agents/skills/sdd-kb — versão 1.0.0, do SDD Open, copiada à mão
+   global: <scratchpad>/probe/run.Im3k/home/.codex/skills/sdd-kb — versão 1.0.0, do SDD Open, copiada à mão
+   Recomendo: tirar a global <scratchpad>/probe/run.Im3k/home/.codex/skills/sdd-kb (1.0.0: a mesma versão da que fica; sobra).
+   Ela vale para todos os projetos deste computador: os que não têm cópia própria ficam sem a sdd-kb.
+
+Se você disser sim, tiro 1 cópia(s), uma por vez, e guardo cada uma antes em <scratchpad>/probe/run.Im3k/home/.sdd-lixeira (dá para desfazer).
+Assinatura deste plano: 6342c0d21e74 (muda se qualquer cópia mudar).
+Para aplicar só este plano: bash ~/rdd-worktrees/sdd-open-f25-skills-duplicadas/.agents/skills/sdd-checar-ambiente/scripts/checar.sh --limpar 6342c0d21e74
+[EXIT=0 arvore igual=sim lixeira=ausente]
+
+### AT-007c mesma versão, mesma origem, conteúdo diferente
+Plano de limpeza das skills duplicadas — nada mudou ainda.
+(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)
+
+1. sdd-kb — o Codex lê 2 cópias e escolhe uma sem dizer qual:
+   global: <scratchpad>/probe/run.HJO8/home/.agents/skills/sdd-kb — versão 1.0.0, do SDD Open, copiada à mão
+   global: <scratchpad>/probe/run.HJO8/home/.codex/skills/sdd-kb — versão 1.0.0, do SDD Open, copiada à mão
+   Não escolho: as cópias <scratchpad>/probe/run.HJO8/home/.agents/skills/sdd-kb e <scratchpad>/probe/run.HJO8/home/.codex/skills/sdd-kb dizem 1.0.0 e têm textos diferentes: uma delas foi editada; compare e diga qual quer manter.
+
+Nada a tirar automaticamente: veja o que fazer em cada item acima.
+[EXIT=0 arvore igual=sim lixeira=ausente]
+
+### AT-007d mesma versão, Open x starter (Claude: ~/.claude starter x projeto Open no git)
+Plano de limpeza das skills duplicadas — nada mudou ainda.
+(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)
+
+1. sdd-kb — o Claude Code lê 2 cópias e roda a global:
+   global: <scratchpad>/probe/run.9E3n/home/.claude/skills/sdd-kb — versão 1.0.0, do starter, copiada à mão
+   do projeto: <scratchpad>/probe/run.9E3n/proj/.claude/skills/sdd-kb — versão 1.0.0, do SDD Open, salva no git do projeto
+   Recomendo: tirar a global <scratchpad>/probe/run.9E3n/home/.claude/skills/sdd-kb (1.0.0: a mesma versão da que fica; sobra).
+   Ela vale para todos os projetos deste computador: os que não têm cópia própria ficam sem a sdd-kb.
+
+Se você disser sim, tiro 1 cópia(s), uma por vez, e guardo cada uma antes em <scratchpad>/probe/run.9E3n/home/.sdd-lixeira (dá para desfazer).
+Assinatura deste plano: 37c3c47d8fe6 (muda se qualquer cópia mudar).
+Para aplicar só este plano: bash ~/rdd-worktrees/sdd-open-f25-skills-duplicadas/.agents/skills/sdd-checar-ambiente/scripts/checar.sh --limpar 37c3c47d8fe6
+[EXIT=0 arvore igual=sim lixeira=ausente]
+
+### AT-007e versão ilegível
+Plano de limpeza das skills duplicadas — nada mudou ainda.
+(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)
+
+1. sdd-kb — o Claude Code lê 2 cópias e roda a global:
+   global: <scratchpad>/probe/run.3py9/home/.claude/skills/sdd-kb — versão ilegível, do SDD Open, copiada à mão
+   do projeto: <scratchpad>/probe/run.3py9/proj/.claude/skills/sdd-kb — versão 1.0.0, do SDD Open, salva no git do projeto
+   Não escolho: não consegui ler a versão de <scratchpad>/probe/run.3py9/home/.claude/skills/sdd-kb; compare as cópias e tire à mão a que não quiser.
+
+Nada a tirar automaticamente: veja o que fazer em cada item acima.
+[EXIT=0 arvore igual=sim lixeira=ausente]
+
+### AT-007f uma cópia não é do SDD
+Plano de limpeza das skills duplicadas — nada mudou ainda.
+(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)
+
+1. sdd-kb — o Claude Code lê 2 cópias e roda a global:
+   global: <scratchpad>/probe/run.8jfc/home/.claude/skills/sdd-kb — versão 1.0.0, de outra origem, copiada à mão
+   do projeto: <scratchpad>/probe/run.8jfc/proj/.claude/skills/sdd-kb — versão 2.0.0, do SDD Open, salva no git do projeto
+   Não escolho: a cópia <scratchpad>/probe/run.8jfc/home/.claude/skills/sdd-kb não é do SDD (não tem a linha de identificação); tire à mão a que não quiser.
+
+Nada a tirar automaticamente: veja o que fazer em cada item acima.
+[EXIT=0 arvore igual=sim lixeira=ausente]
+
+### AT-007g atalho que não veio do npx (~/.codex/skills/sdd-kb -> pasta fora; ~/.agents/skills/sdd-kb real)
+Plano de limpeza das skills duplicadas — nada mudou ainda.
+(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)
+
+1. sdd-kb — o Codex lê 2 cópias e escolhe uma sem dizer qual:
+   global: <scratchpad>/probe/run.bol4/home/.agents/skills/sdd-kb — versão 2.0.0, do SDD Open, copiada à mão
+   global: <scratchpad>/probe/run.bol4/home/.codex/skills/sdd-kb — versão 1.0.0, do SDD Open, atalho para outra pasta
+   Não escolho: <scratchpad>/probe/run.bol4/home/.codex/skills/sdd-kb é um atalho para outra pasta; desfazer atalho à mão é mais seguro.
+
+Nada a tirar automaticamente: veja o que fazer em cada item acima.
+[EXIT=0 arvore igual=sim lixeira=ausente]
+
+### AT-007h a mais velha é a do projeto, no git (Claude: global 2.0.0 Open à mão x projeto 1.0.0 Open git); e de origem npx/starter
+Plano de limpeza das skills duplicadas — nada mudou ainda.
+(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)
+
+1. sdd-define — o Claude Code lê 2 cópias e roda a global:
+   global: <scratchpad>/probe/run.1aI2/home/.claude/skills/sdd-define — versão 2.0.0, do SDD Open, copiada à mão
+   do projeto: <scratchpad>/probe/run.1aI2/proj/.claude/skills/sdd-define — versão 1.0.0, do starter, salva no git do projeto
+   A mais velha é a do projeto, salva no git: não a tiro (tirar apareceria como mudança a salvar e voltaria na próxima atualização); atualize as skills do projeto: npx skills update (nesta pasta, sem -g).
+
+2. sdd-kb — o Claude Code lê 2 cópias e roda a global:
+   global: <scratchpad>/probe/run.1aI2/home/.claude/skills/sdd-kb — versão 2.0.0, do SDD Open, copiada à mão
+   do projeto: <scratchpad>/probe/run.1aI2/proj/.claude/skills/sdd-kb — versão 1.0.0, do SDD Open, salva no git do projeto
+   A mais velha é a do projeto, salva no git: não a tiro (tirar apareceria como mudança a salvar e voltaria na próxima atualização); atualize o SDD Open do projeto pelo upgrade (passo a passo: https://github.com/robertodiasduarte/sdd-open/blob/main/docs/pt-BR/upgrade.md).
+
+Nada a tirar automaticamente: veja o que fazer em cada item acima.
+[EXIT=0 arvore igual=sim lixeira=ausente]
+[exit=0]
