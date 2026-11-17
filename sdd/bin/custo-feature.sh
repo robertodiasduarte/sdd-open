@@ -612,10 +612,13 @@ def modo_feature():
         if regs is None:
             continue
         for m in regs:
-            if m["tipo"] != "msg" or janela is None or not (janela[0] <= m["t"] <= janela[1]):
+            if m["tipo"] != "msg":
                 continue
-            alvo = next((contas[f] for f, a, b in ivs if a <= m["t"] <= b), sem_fase)
-            acumula(alvo, agente, m)
+            if janela is not None and janela[0] <= m["t"] <= janela[1]:
+                alvo = next((contas[f] for f, a, b in ivs if a <= m["t"] <= b), sem_fase)
+                acumula(alvo, agente, m)
+            # raio de impacto da release: o papel também vale fora da janela das fases (o curador do lote roda depois
+            # do fim da release); ali a mensagem conta só na sub-linha dele, nunca no total
             for nome, ivp in ivs_papel.items():
                 if any(a <= m["t"] <= b for _, a, b in ivp):
                     acumula(contas_papel[nome], agente, m)
@@ -633,6 +636,9 @@ def modo_feature():
     if janela is not None and (falhou or ILEGIVEIS[0]):
         # leitor que falhou ou registro ilegível: não se sabe a que fase pertencia, então toda linha da janela é parcial
         for c in [contas[f] for f in ordem] + [sem_fase] + list(contas_papel.values()):
+            marca_nd(c)
+    elif falhou or ILEGIVEIS[0]:
+        for c in contas_papel.values():   # papel sem fase em volta: a parte não lida também é n/d
             marca_nd(c)
     for nome, c in contas_papel.items():
         if c["itens"] == 0:   # papel marcado sem nenhuma mensagem lida: n/d, nunca zero

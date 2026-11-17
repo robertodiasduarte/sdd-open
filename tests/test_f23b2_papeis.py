@@ -174,6 +174,70 @@ class AT003CustoPorPapel(Sandbox):
         rc, _, err = self.roda([BASH, CUSTO, F, "--execucao", str(vazia)], self.r)
         self.assertEqual(rc, 64, err)
 
+    def test_papel_depois_do_fim_das_fases_conta_so_na_sub_linha(self):
+        # raio de impacto da release: o curador do lote roda depois do fim da release; antes, a mensagem fora da janela
+        # das fases era descartada e o papel saía n/d com "nenhuma mensagem lida"
+        proj = self.cc / "projects" / pasta_claude(self.r)
+        with (proj / "s.jsonl").open("a", encoding="utf-8") as h:
+            h.write(json.dumps({"type": "assistant", "timestamp": "2026-11-16T11:00:00.000Z", "requestId": "r9",
+                                "message": {"id": "m9", "model": "modelo-barato", "role": "assistant", "content": [],
+                                            "usage": {"input_tokens": 1000, "output_tokens": 100000,
+                                                      "cache_read_input_tokens": 0, "cache_creation_input_tokens": 0}}})
+                    + "\n")
+        with (self.r / ("sdd/traces/%s.jsonl" % F)).open("a", encoding="utf-8") as h:
+            for hora, ev in (("10:55:00", "inicio"), ("11:05:00", "fim")):
+                h.write(json.dumps({"ts": "2026-11-16T%sZ" % hora, "feature": F, "src": "fase", "evento": ev,
+                                    "fase": "papel-curador"}) + "\n")
+        out, t = self.custo()
+        sub = "↳ papel curador · modelo-barato"
+        self.assertIn(sub, t, out)
+        self.assertEqual(t[sub][6], "0.2005")
+        self.assertEqual(t["**total**"][6], "2.4030", "fora das fases, o papel não entra no total")
+        self.assertNotIn("nenhuma mensagem lida em papel-curador", out)
+
+    def test_marca_de_papel_fora_das_fotos_nao_e_escrita_do_agente(self):
+        # raio de impacto da release: sdd/traces/ entra na foto da fronteira; a marca no meio das fotos reprovava o
+        # cartógrafo, a governança e o curador. A escada manda marcar o início antes da foto e o fim depois do --comparar
+        texto = ESCADA.read_text(encoding="utf-8")
+        self.assertIn("Grave o início **antes** da foto de antes e o fim **depois** do\n   `--comparar`", texto)
+        fr = RAIZ / "sdd/bin/governanca-fronteira.sh"
+        self.escreve(self.r, ".gitignore", "sdd/traces/\n")
+        permitido = self.r / "sdd/contexto/x.md"
+        fotos = self.tmp / "fotos"
+        fotos.mkdir()
+
+        def fronteira(no_meio):
+            self.assertEqual(self.roda([BASH, MARCA, "inicio", "papel-cartografo", F], self.r)[0], 0)
+            self.assertEqual(self.roda([BASH, fr, "--snapshot", self.r, fotos / "antes", permitido], self.r)[0], 0)
+            self.escreve(self.r, "sdd/contexto/x.md", "mapa\n")      # a escrita permitida do agente
+            if no_meio:
+                self.roda([BASH, MARCA, "fim", "papel-cartografo", F], self.r)
+            self.roda([BASH, fr, "--snapshot", self.r, fotos / "depois", permitido], self.r)
+            rc = self.roda([BASH, fr, "--comparar", fotos / "antes", fotos / "depois", permitido], self.r)
+            if not no_meio:
+                self.assertEqual(self.roda([BASH, MARCA, "fim", "papel-cartografo", F], self.r)[0], 0)
+            permitido.unlink()
+            return rc
+        rc, out, err = fronteira(no_meio=False)
+        self.assertEqual(rc, 0, out + err)
+        rc, out, _ = fronteira(no_meio=True)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("FORA:", out)
+
+    def test_escada_separa_slot_invalido_de_script_antigo(self):
+        # raio de impacto da release: num projeto com o sdd-fluxo.sh antigo (editado, o upgrade o mantém), o verbo
+        # modelo sai 64 no uso; lido como "slot inválido", o despacho travava
+        texto = ESCADA.read_text(encoding="utf-8")
+        self.assertIn("**Exit 64 com a linha `🛑 sdd-fluxo: papeis.<slot> inválido`**", texto)
+        self.assertIn("**Outro exit 64**", texto)
+        self.escreve(self.r, "sdd/config.yaml", 'papeis:\n  avaliador: "m 1"\n')
+        rc, out, err = self.roda([BASH, FLUXO, "modelo", "avaliador"], self.r)
+        self.assertEqual(rc, 64)
+        self.assertIn("🛑 sdd-fluxo: papeis.avaliador inválido", out + err)
+        rc, out, err = self.roda([BASH, FLUXO, "verbo-que-nao-existe"], self.r)
+        self.assertEqual(rc, 64)
+        self.assertNotIn("🛑 sdd-fluxo: papeis.", out + err)
+
     def test_marca_fase_aceita_o_nome_de_cada_papel_da_escada(self):
         # R4 da revisão do código: a escada manda marcar papel-<papel>; cada nome que ela lista tem de passar no
         # marca-fase.sh (o nome do slot, revisao_design, tem sublinhado e cairia em 64)

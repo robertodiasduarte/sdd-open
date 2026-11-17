@@ -47,9 +47,14 @@ Vale para todo papel despachado por esta escada: cartógrafo, revisor de governa
 2. **Linha vazia** ⇒ despache como sempre, no modelo da sessão, sem dizer nada a mais. **Com valor** ⇒ passe-o como o
    modelo do subagente, se o seu agente deixa escolher o modelo de um subagente; se não deixa, diga em 1 linha que
    o papel vai rodar no modelo da sessão porque o agente não troca de modelo. No degrau de sessão nova, o
-   `despachar` já diz à pessoa qual modelo abrir. **Exit 64** ⇒ o slot está inválido: repasse a mensagem e não
-   despache (nem marque o início) até a pessoa corrigir `sdd/config.yaml`.
+   `despachar` já diz à pessoa qual modelo abrir. **Exit 64 com a linha `🛑 sdd-fluxo: papeis.<slot> inválido`** ⇒ o slot está inválido:
+   repasse a mensagem e não despache (nem marque o início) até a pessoa corrigir `sdd/config.yaml`. **Outro exit 64**
+   (o `sdd/bin/sdd-fluxo.sh` deste projeto é anterior ao verbo `modelo`) ⇒ despache como sempre, no modelo da sessão,
+   e diga em 1 linha que o `upgrade` do pacote traz o slot de modelo.
 3. **Na volta do bloco**, `bash sdd/bin/marca-fase.sh fim papel-<papel> <FEATURE>`.
+4. **Papel com fronteira de escrita** (cartógrafo, revisor de governança, curador do lote): a marca grava em
+   `sdd/traces/`, que entra na foto do projeto. Grave o início **antes** da foto de antes e o fim **depois** do
+   `--comparar`; no meio, a marca apareceria como escrita do agente fora do permitido.
 
 Por que: o slot só é preenchido depois de medir (`docs/model-per-role.md`: o `papel-medir.sh` aponta o modelo mais
 barato que bate a meta num gabarito do projeto), e a marca de papel faz o `custo-feature.sh` mostrar quanto cada papel
