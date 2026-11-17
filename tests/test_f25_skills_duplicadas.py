@@ -550,7 +550,8 @@ class AT009Limpar(Base):
         self.assertEqual(self.arvore(), antes)
 
     def test_caminho_com_espaco_aspas_e_cifrao(self):
-        estranho = self.tmp / "Ana O'Neil $HOME \"x\""
+        # no Windows, " não vale em nome de pasta: lá o nome fica sem as aspas
+        estranho = self.tmp / ("Ana O'Neil $HOME x" if WINDOWS else "Ana O'Neil $HOME \"x\"")
         estranho.mkdir()
         self.home = estranho / "home"
         self.home.mkdir()

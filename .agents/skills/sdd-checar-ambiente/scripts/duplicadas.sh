@@ -29,13 +29,16 @@ dup_claude_global() { printf '%s/skills' "${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
 dup_agentes_global() { printf '%s/.agents/skills' "${HOME}"; }
 
 # agente · escopo · rótulo · pasta. A ordem é a de quem FICA no empate: o projeto, depois ~/.agents, ~/.claude, ~/.codex.
+# A raiz do projeto no formato do próprio bash: no Git Bash, `git rev-parse` devolve C:/…, e as pastas globais saem /c/…
+# (CI do Windows, PR #38). Calculada uma vez; o RAIZ do checar.sh não muda.
+dup_raiz() { [ -n "${DUP_RAIZ:-}" ] || DUP_RAIZ="$(cd "${RAIZ}" 2>/dev/null && pwd)" || DUP_RAIZ="${RAIZ}"; printf '%s' "${DUP_RAIZ}"; }
 dup_pastas() {
   # Rodado na própria pasta pessoal (fora de projeto), as pastas "do projeto" seriam as globais de novo: só as globais
   # (revisão, rodada 3, R1).
-  if [ "$(cd -P "${RAIZ}" 2>/dev/null && pwd -P)" != "$(cd -P "${HOME}" 2>/dev/null && pwd -P)" ]; then
-    printf 'claude\tprojeto\tprojeto-claude\t%s\n' "${RAIZ}/.claude/skills"
-    printf 'codex\tprojeto\tprojeto-agents\t%s\n' "${RAIZ}/.agents/skills"
-    printf 'codex\tprojeto\tprojeto-codex\t%s\n' "${RAIZ}/.codex/skills"
+  if [ "$(cd -P "$(dup_raiz)" 2>/dev/null && pwd -P)" != "$(cd -P "${HOME}" 2>/dev/null && pwd -P)" ]; then
+    printf 'claude\tprojeto\tprojeto-claude\t%s\n' "$(dup_raiz)/.claude/skills"
+    printf 'codex\tprojeto\tprojeto-agents\t%s\n' "$(dup_raiz)/.agents/skills"
+    printf 'codex\tprojeto\tprojeto-codex\t%s\n' "$(dup_raiz)/.codex/skills"
   fi
   printf 'codex\tglobal\thome-agents\t%s\n' "$(dup_agentes_global)"
   printf 'claude\tglobal\thome-claude\t%s\n' "$(dup_claude_global)"
@@ -87,8 +90,8 @@ dup_varrer() {
   done <<EOF
 $(dup_pastas)
 EOF
-  git -C "${RAIZ}" ls-files -- .claude/skills .agents/skills .codex/skills 2>/dev/null \
-    | sed -n 's#/SKILL\.md$##p' | awk -v r="${RAIZ}" '{ print r "/" $0 }' > "${DUP_TMP}/git.txt"
+  git -C "$(dup_raiz)" ls-files -- .claude/skills .agents/skills .codex/skills 2>/dev/null \
+    | sed -n 's#/SKILL\.md$##p' | awk -v r="$(dup_raiz)" '{ print r "/" $0 }' > "${DUP_TMP}/git.txt"
   dup_registro > "${DUP_TMP}/registro.tsv"
   LC_ALL=C awk -F '\t' -v OFS='\t' -v cg="$(dup_claude_global)" -v ga="$(dup_agentes_global)" '
     FILENAME ~ /git\.txt$/ { git[$0] = 1; next }
