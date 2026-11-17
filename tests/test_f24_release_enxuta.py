@@ -680,6 +680,12 @@ class Revisao3Textos(unittest.TestCase):
         self.assertIn("BRIEF_curador_<F>_<entrada>.md", bloco)
         self.assertIn("/<F>/curador-<entrada>/", bloco)
 
+    def test_raio_o_despacho_sem_subagente_usa_o_proprio_brief(self):
+        # raio de impacto (0b da release): sdd-fluxo.sh despachar monta BRIEF_<papel>_<FEATURE>.md; com <F> sozinho,
+        # copiaria o brief por entrada para um nome fora do permitido, e a fronteira reprovaria toda entrada
+        self.assertIn("despachar curador <F>_<entrada> sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md", LOTE)
+        self.assertIn('rel="sdd/reports/briefs/BRIEF_${papel}_${feat}.md"', (RAIZ / "sdd/bin/sdd-fluxo.sh").read_text(encoding="utf-8"))
+
     def test_lote_marca_a_recusa(self):
         self.assertIn("--recusar", LOTE)
 

@@ -465,8 +465,8 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **Quando usar** | Ela trabalha sozinha em toda sessão; você a chama para ver ou revisar as armadilhas registradas. |
 | **Quando não usar** | Para apagar ou reescrever o playbook — ele só cresce por acréscimo aprovado. |
 | **Como pedir** | *"use a skill sdd-playbook — o que já mordeu neste projeto?"* |
-| **O que produz** | Propostas de armadilha nova; quem aplica é a Release, com o seu OK em cada uma. |
-| **O que vai perguntar** | Na Release: aprovar ou não cada armadilha proposta. |
+| **O que produz** | Propostas de armadilha nova; a Release só as colhe, e quem aplica é o lote da curadoria, que você pede, com o seu OK em cada uma. |
+| **O que vai perguntar** | No lote da curadoria: aprovar ou não cada armadilha proposta e, no fim, se envia a mudança. |
 
 #### sdd-prompt-builder
 

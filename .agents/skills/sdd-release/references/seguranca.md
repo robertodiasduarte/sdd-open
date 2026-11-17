@@ -28,7 +28,7 @@ tanto quanto o que ele põe). Não cumprido que expõe dado ou credencial é **s
 resto é aviso. Os itens recusados ou adiados no Define (sessão `### Segurança` das Clarifications do DEFINE) não são
 achado: vão para a linha **Segurança:** do bloco do OK.
 
-## Fecho (ficha, item 17)
+## Fecho (ficha, item 14)
 
 Os avisos da varredura e os itens recusados ou adiados no Define entram como pendências. A ficha termina com a linha:
 "Confira no app publicado (cabeçalhos, CORS, cadastro, limites): `/sdd-seguranca app <URL>`. Se algo vazar: modo

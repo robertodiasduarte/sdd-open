@@ -308,6 +308,7 @@ Toda mensagem daqui em diante diz que a publicação já terminou: uma espera se
 13. **Colheita.** O que esta feature ensinou para as próximas é só **colhido** aqui; quem julga é o lote da
     `sdd-playbook`, sob demanda (`.agents/skills/sdd-playbook/references/lote.md`). Nada de curador, pergunta de regra,
     playbook ou invariante mexidos nesta release.
+    A ficha ainda não tem o que o item 14 vai escrever: um candidato anotado lá entra na próxima colheita da feature.
     `bash sdd/bin/playbook-curator.sh --enfileirar {F} sdd/playbook.md [--inv sdd/invariants.md]` (`--inv` só com o arquivo):
     | exit | Ação |
     |---|---|

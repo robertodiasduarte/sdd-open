@@ -4,7 +4,8 @@
 # trava o par playbook + invariantes e confere o bloco que o curador (agente de contexto fresco)
 # devolveu. Este script nunca decide: quem julga é o curador (brief em
 # .agents/skills/sdd-playbook/references/curator.md) e quem decide a mudança de regra é a pessoa, no
-# passo 17b da sdd-release. Explicação longa: docs/playbook-curation.md.
+# lote de curadoria da sdd-playbook (references/lote.md); a sdd-release só colhe (--enfileirar). Explicação longa:
+# docs/playbook-curation.md.
 #
 # Uso:
 #   playbook-curator.sh --preparar <FEATURE> [--retomar]                      # exit 0 | 1 (sem documentos) | 2 | 64
@@ -424,7 +425,7 @@ def preparar(args):
             "recalcule as pastas e vá direto para a volta do curador; não refaça o selo nem o snapshot de antes." if tem
             else "a pasta temporária se perdeu: recomece a curadoria do início, com --preparar %s; nada foi aplicado." % feature)
         return 0 if tem else 1
-    # sdd/archive/<F>/: a release que fechou o DoD já moveu os documentos para lá (passo 15b) antes da curadoria.
+    # sdd/archive/<F>/: uma release anterior que fechou o DoD pode ter movido os documentos para lá (item 15 da sdd-release).
     arq = os.path.join("sdd", "archive", feature)
     padroes = [
         os.path.join("sdd", "features", "DESIGN_%s.md" % feature), os.path.join(arq, "DESIGN_%s.md" % feature),

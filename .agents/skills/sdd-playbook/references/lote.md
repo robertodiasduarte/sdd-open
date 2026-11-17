@@ -38,7 +38,9 @@ publicado.
    `bash sdd/bin/playbook-curator.sh --selar "$STG" > "$T/selo.txt"` (o selo do staging fica **fora** dele);
    `bash sdd/bin/governanca-fronteira.sh --snapshot <raiz> "$T/antes" <raiz>/sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md`;
    imprima `🧹 curadoria: julgando em contexto novo (alguns minutos); você não precisa responder`.
-   Sem subagente: `bash sdd/bin/sdd-fluxo.sh despachar curador <F> sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md`
+   Sem subagente: `bash sdd/bin/sdd-fluxo.sh despachar curador <F>_<entrada> sdd/reports/briefs/BRIEF_curador_<F>_<entrada>.md`
+   (o nome `<F>_<entrada>` faz o despacho usar o próprio brief; com só `<F>`, ele copiaria o brief para um nome fora do
+   permitido, e a fronteira reprovaria a entrada)
    e pare no exit 40, repassando a parada que ele imprime. **Sessão nova depois da parada do curador:** recalcule
    `STG` com `--conferir-entrada "$E" sdd/playbook.md --retomar` (só diz onde o staging está; **não** o refaz, o que
    apagaria uma escrita do curador antes da conferência) e `T`, e vá direto para "Na volta"; refazer o

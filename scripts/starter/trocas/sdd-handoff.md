@@ -77,3 +77,12 @@ Estado do gate: `sdd/bin/verify-gate.sh sdd/features/DEFINE_CONTROLE_HONORARIOS.
   (data, o que subiu, o commit ou PR). Nada dessa linha se repete em "Feito" nem em "Histórico de slices"; o resto da
   ficha diz o que a publicação não diz: o que falta e os alertas.
 >>>> depois
+
+## assets/HANDOFF_EXAMPLE.md
+<<<< antes
+<!-- publicado:inicio (gerado por ficha-publicado.py a partir do ledger; não edite à mão) -->
+- 2026-03-04 · etapa-1 · shipado · PASS · deploy real · trilha completa · 3f9a1c2
+<!-- publicado:fim -->
+====
+- 2026-03-04 · etapa 1 · cadastro de clientes e lançamentos mensais · commit 3f9a1c2
+>>>> depois

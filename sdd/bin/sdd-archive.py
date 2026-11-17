@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """sdd-archive.py — faxina RETROATIVA dos documentos de features fechadas (sdd/features, sdd/reports, sdd/reviews).
 
-O passo 15b da sdd-release arquiva só a feature que acabou de fechar; o passivo é esta operação separada e deliberada.
+O item 15 (Arquivamento) da sdd-release arquiva só a feature que acabou de fechar; o passivo é esta operação separada e deliberada.
 Tudo é `git mv`: o histórico fica (`git log --follow`). Nunca apaga, nunca commita, nunca toca sdd/releases/,
 sdd/archive/ nem subpasta nenhuma (sdd/reports/evidence/ inclusive).
 

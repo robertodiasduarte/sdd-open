@@ -15,10 +15,16 @@
 | **Artefatos** | `sdd/features/DEFINE_CONTROLE_HONORARIOS.md` · `sdd/features/DESIGN_CONTROLE_HONORARIOS.md` · `sdd/reports/BUILD_REPORT_CONTROLE_HONORARIOS.md` |
 | **Verify Gate** | 🔴 2 em 2026-03-11 (o caso do pagamento no dia do vencimento) — `sdd/bin/verify-gate.sh sdd/features/DEFINE_CONTROLE_HONORARIOS.md` |
 
+## Publicado
+
+<!-- publicado:inicio (gerado por ficha-publicado.py a partir do ledger; não edite à mão) -->
+- 2026-03-04 · etapa-1 · shipado · PASS · deploy real · trilha completa · 3f9a1c2
+<!-- publicado:fim -->
+
 ## Feito
 
-- Etapa 1 (2026-03-04): cadastro de clientes e lançamentos mensais, com valor, vencimento e situação; em uso com os
-  dados reais do escritório desde 2026-03-06.
+- Etapa 1: cadastro de clientes e lançamentos mensais, com valor, vencimento e situação; em uso com os dados reais
+  do escritório desde 2026-03-06 (a publicação está em Publicado).
 - Etapa 2, 70% (2026-03-11): a tela de inadimplência lista os vencidos do mais antigo para o mais recente, com o total
   em aberto por cliente no topo da linha. Prova: os 6 clientes fictícios da base de teste aparecem na ordem certa.
 

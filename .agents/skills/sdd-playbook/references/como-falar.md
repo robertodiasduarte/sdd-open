@@ -34,14 +34,14 @@ não trouxe lição nova nem contagem".
 
 ## Exemplo — resposta completa, com decisão (etapa 3 — Promoção)
 
-Situação: no fechamento de uma release, a armadilha LM-004 ("exit 0 não prova a migration") mordeu pela
+Situação: no lote da curadoria, a armadilha LM-004 ("exit 0 não prova a migration") mordeu pela
 2ª vez, mesmo registrada.
 
 **Status** — `Playbook: ✅ 1 Leitura · ✅ 2 Candidato · ▶️ 3 Promoção · ⬜ 4 Lote`
 (no Status: "Candidato" é a armadilha nova proposta; "Promoção" é trocar a regra escrita por algo que
 barra sozinho.)
 
-**O que foi feito** — Contei os registros desta release: a LM-004 mordeu de novo (a 2ª vez), e nenhum
+**O que foi feito** — Contei os registros das publicações da fila: a LM-004 mordeu de novo (a 2ª vez), e nenhum
 candidato novo trouxe prova. O playbook não foi alterado.
 
 **Agora: etapa 3 — Promoção** — Duas mordidas querem dizer que a regra escrita não bastou. A saída é um
