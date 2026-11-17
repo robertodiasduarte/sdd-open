@@ -1,0 +1,14 @@
+$ bash sdd/bin/sdd-fluxo.sh review-design sdd/features/DESIGN_F14_DRIVE.md; echo "review-design exit=$?"; /usr/bin/python3 -B sdd/bin/design-lint.py sdd/features/DESIGN_F14_DRIVE.md; echo "design-lint exit=$?"; bash sdd/bin/sdd-fluxo.sh seguir design sdd/features/DEFINE_F14_DRIVE.md build; echo "seguir exit=$?"; bash sdd/bin/sdd-fluxo.sh seguir design sdd/features/DEFINE_F14_DRIVE.md build --drive; echo "seguir --drive (ainda nao existe) exit=$?"
+EXIGIDO: 16 arquivo(s) novo(s) (limiar 3)
+review-design exit=0
+✅ sdd/features/DESIGN_F14_DRIVE.md: DESIGN válido
+design-lint exit=0
+PARAR: encadeamento desligado
+RESULTADO: PARAR
+→ Próximo passo: /sdd-build sdd/features/DESIGN_F14_DRIVE.md
+seguir exit=1
+🛑 sdd-fluxo: seguir exige <fase> <DEFINE.md> <próxima> [--parar]
+RESULTADO: ERRO DE USO
+→ trate o encadeamento como desligado e mostre o Próximo passo.
+seguir --drive (ainda nao existe) exit=64
+[exit=0]

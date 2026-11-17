@@ -1,0 +1,22 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/desp && bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/sdd/bin/sdd-fluxo.sh despachar curador v2.6 brief.md
+🛑 sdd-fluxo: FEATURE inválida: 'v2.6' (letras, números, - e _)
+  sdd-fluxo.sh review-design <DESIGN.md>
+      0 EXIGIDO (≥ 3 arquivos novos no File Manifest, ou superfície de segurança: termo fixo,
+        glob de review.security_globs ou de layers.sql) · 1 DISPENSAVEL · 64 manifest ilegível
+        (quem chama RODA a revisão — default seguro — e registra o motivo)
+  sdd-fluxo.sh loop --review <dir> --ledger <arquivo> --rodada N[a] [--teto 3]
+                    [--avaliacao <AVALIACAO.md> --ciclo-avaliador K] [--recibo "nome AAAA-MM-DD"]
+                    [--log <arquivo>]
+      0 PRONTO · 10 CONTINUAR · 20 BLOQUEADO (D4 teto, D4 ciclos, D5 impasse de evidência)
+      30 AGUARDANDO_RECIBO · 64 entrada ausente ou ilegível — nunca PRONTO por omissão
+  sdd-fluxo.sh despachar <papel> <FEATURE> <brief.md>
+      40 AGUARDANDO_HUMANO: brief em sdd/reports/briefs/BRIEF_<papel>_<FEATURE>.md e a parada ⏸️ · 64
+  sdd-fluxo.sh seguir <fase> <DEFINE.md> <próxima> [--parar]
+      0 SEGUIR (linha de transição) · 1 PARAR (o motivo) · 64 uso ou flow.autonomous inválido
+  sdd-fluxo.sh estado
+      0 encadeamento ligado · 1 desligado · 64 flow.autonomous inválido
+  sdd-fluxo.sh --self-test
+      um cenário por exit sobre sdd/fixtures/fluxo/ e o do `| tee`; 0 quando todos batem
+RESULTADO: ERRO DE USO
+→ rode com um dos verbos acima.
+[exit=64]

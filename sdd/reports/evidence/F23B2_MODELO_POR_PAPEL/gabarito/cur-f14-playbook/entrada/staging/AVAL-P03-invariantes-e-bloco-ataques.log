@@ -1,0 +1,230 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p3.sh
+
+=== I1 AT-015 mecanismo promovido que NAO existe satisfaz estado=ok sem check
+🟢 trava INV: par válido (3 invariante(s), 1 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+[rc=0]
+
+=== I2 AT-018 TOMBSTONE LM-001 (promovido_para aponta arquivo que saiu): o ajuste do --cruzar destrava?
+[cruzar rc=3]
+INV_AFETADA INV-001 origem=LM-001 · delta: TOMBSTONE LM-001
+   ajuste: - [INV-001] estado=ok origem=seed check=sdd/nao-existe.sh :: Regra um · por quê: y
+   ou: retirar o TOMBSTONE LM-001
+resumo-inv: afetadas=1 pendentes=0
+RESULTADO: HÁ AVISO DE INVARIANTE
+→ cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vira uma pergunta própria.
+[aplicar-inv rc=0]
+🔴 trava INV: INV-001 tem check=sdd/nao-existe.sh, que não existe a partir desta pasta — corrija o caminho ou mude o estado
+RESULTADO: TRAVA
+→ nada foi copiado; resolva cada linha acima com a pessoa e rode de novo.
+[validar rc=2]
+
+=== I3 AT-018 TOMBSTONE LM-004 (promovido_para em texto livre; check bom existente trocado pelo primeiro token)
+[cruzar rc=3]
+INV_AFETADA INV-003 origem=LM-004 · delta: TOMBSTONE LM-004
+   ajuste: - [INV-003] estado=ok origem=seed check=Verify :: Regra quatro · por quê: y
+   ou: retirar o TOMBSTONE LM-004
+resumo-inv: afetadas=1 pendentes=0
+RESULTADO: HÁ AVISO DE INVARIANTE
+→ cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vira uma pergunta própria.
+🔴 trava INV: INV-003 tem check=Verify, que não existe a partir desta pasta — corrija o caminho ou mude o estado
+RESULTADO: TRAVA
+→ nada foi copiado; resolva cada linha acima com a pessoa e rode de novo.
+[validar rc=2]
+
+=== I4 AT-016 descarte aposentado + INV_PENDENTE + 2 origens
+INV_PENDENTE LM-003 (mordeu 0→1) · delta: LM-003 mordeu+1
+   proposta A: - [INV-006] estado=<ok|auto|humano> origem=LM-003 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-003] descartado :: <motivo>
+INV_AFETADA INV-005 origem=LM-001,LM-002,LM-004 · delta: TOMBSTONE LM-001,LM-002
+   ajuste: - [INV-005] estado=humano origem=LM-004 :: R · por quê: y · motivo: m
+   ou: retirar o TOMBSTONE LM-001 e LM-002
+INV_AFETADA descarte LM-005 · delta: TOMBSTONE LM-005
+   ajuste: remover a linha: - [LM-005] descartado :: ferramenta
+   ou: retirar o TOMBSTONE LM-005
+resumo-inv: afetadas=2 pendentes=1
+RESULTADO: HÁ AVISO DE INVARIANTE
+→ cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vira uma pergunta própria.
+[rc=3]
+resumo-inv: afetadas=1 pendentes=0
+RESULTADO: HÁ AVISO DE INVARIANTE
+→ cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vira uma pergunta própria.
+[stdin rc=3]
+
+=== I5 buracos da gramatica: tarefa/motivo vazios; check=diretorio; check absoluto; origem repetida
+🟢 trava INV: par válido (4 invariante(s), 0 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+[rc=0]
+
+=== I6 defeitos fora de '## Invariantes': linha ruim em outra secao nao e lida
+🟢 trava INV: par válido (1 invariante(s), 0 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+[rc=0]
+
+=== I7 AT-043
+RESULTADO: INVARIANTES APLICADAS
+→ o stdout é o arquivo novo: rode --validar-inv com o playbook novo antes de copiar por cima.
+## Invariantes
+
+- [INV-001] estado=humano origem=LM-001 :: R novo · por quê: y · motivo: m
+- [INV-009] estado=humano origem=LM-002 :: R nova · por quê: y · motivo: m
+
+## Rascunho
+- [INV-002] estado=ok origem=LM-777 check=nada :: R · por quê: y
+## Descartados
+
+- [LM-003] descartado :: motivo
+
+[rc=0]
+[rc=2 bytes=0]
+[rc=2 bytes=0]
+0
+[remover+trocar mesmo id: a linha some?]
+
+=== B  --conferir-bloco: base das fixtures
+[colher rc=0]
+DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_FIXTURE.md:16 · fp=165580f96c
+CANDIDATO #1 → LM-023 · secao=Reviews / harness · sup=`termo_candidato_a` `outro_termo` · evidencia=AVAL-AT-002.log:3 · fp=4d4e51c8fa
+   delta: ADD Reviews / harness :: sup: `termo_candidato_a` `outro_termo` :: Regra sintética com evidência. **Do instead:** ação sintética. → ficha: — · promovido_para: —
+REJEITADO candidato em BUILD_REPORT_FIXTURE.md:24 — sem linha 'evidencia:' (lição sem verificação piora o contexto) · fp=80c388e346
+CANDIDATO #2 → LM-024 · secao=Backend · sup=`termo_candidato_c` `chave_propria` · evidencia=AVAL-AT-002.log:3 (continuação da evidência) · fp=1e9b90650e
+   delta: ADD Backend :: sup: `termo_candidato_c` `chave_propria` :: Regra em duas linhas, com continuação indentada. **Do instead:** ação em chave própria, também em duas linhas. → ficha: — · promovido_para: —
+REJEITADO candidato em BUILD_REPORT_FIXTURE.md:47 — regra: sem 'Do instead:' · fp=74a7a4fdaa
+DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-AT-002.log:3 · fp=91894795a1
+SUGESTAO mordeu? LM-020 — termo `fila_de_envio` em AVAL-AT-002.log:4 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=5610b93be0
+PROMOVER? LM-004 mordeu=2 promovido_para=— :: promover a mecanismo? sugestão: hook em sdd/hooks/, comando de release.landmines_cmd ou asserção no Verify Gate, com um caso que falha antes (seção Infra / deploy)
+resumo: deltas=2 (ajudou=1 mordeu=1) candidatos=2 rejeitados=2 promocoes=1 sugestoes=1
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+AUTO LM-020 ajudou+1
+   simples: O aviso sobre o agendador sem o segredo foi seguido no desenho e evitou o erro.
+AUTO LM-016 mordeu+1
+   simples: O erro do preflight aconteceu de novo nesta feature, mesmo com o aviso.
+PERGUNTA 4 add ADD Reviews / harness :: sup: `termo_candidato_a` `outro_termo` :: Regra sintética com evidência. **Do instead:** ação sintética. → ficha: — · promovido_para: —
+   simples: Uma armadilha nova apareceu nesta feature. Guardar a lição avisa toda sessão que mexer nessa área.
+PERGUNTA 5 add ADD Backend :: sup: `termo_candidato_c` `chave_propria` :: Regra em duas linhas, com continuação indentada. **Do instead:** ação em chave própria, também em duas linhas. → ficha: — · promovido_para: —
+   simples: Outra armadilha nova, no servidor. Guardar a lição avisa quem mexer nessa parte.
+PERGUNTA 6 promover LM-004 promovido_para=sdd/hooks/pre-commit
+   simples: O mesmo erro já aconteceu 2 vezes. Virar trava automática impede a 3ª, ao custo de uma correção própria, com teste.
+resumo-bloco: auto=2 pergunta=3 descartar=1 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+[bloco-ok rc=0]
+
+=== B1 ATAQUE linha AUTO repetida: conta +2 sem pergunta?
+[b1.txt rc=0]
+AUTO LM-020 ajudou+1
+AUTO LM-020 ajudou+1
+AUTO LM-016 mordeu+1
+PERGUNTA 4 add ADD Reviews / harness :: sup: `termo_candidato_a` `outro_termo` :: Regra sintética com evidência. **Do instead:** ação sintética. → ficha: — · promovido_para: —
+PERGUNTA 5 add ADD Backend :: sup: `termo_candidato_c` `chave_propria` :: Regra em duas linhas, com continuação indentada. **Do instead:** ação em chave própria, também em duas linhas. → ficha: — · promovido_para: —
+PERGUNTA 6 promover LM-004 promovido_para=sdd/hooks/pre-commit
+resumo-bloco: auto=3 pergunta=3 descartar=1 nao_julgado=0 contaminacao=nao
+
+=== B2 ATAQUE coluna LM diz uma coisa e a Delta outra: LM-016 coberto por linha que aplica LM-020
+[b2.txt rc=2]
+🔴 bloco: linha 2: o contador 'LM-020 mordeu+1' não está na colheita — contagem que o script não colheu não entra sozinha
+
+=== B2b outra variante: mesma verbo, delta de outro ID
+DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_Z.md:2 · fp=d682827f37
+DELTA LM-016 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_Z.md:3 · fp=df22228fdc
+🔴 bloco: a colheita tem PROMOVER? LM-004 e o bloco não tem a linha promover dele
+RESULTADO: BLOCO INVÁLIDO
+→ despache o curador de novo com as linhas acima; nada foi aplicado.
+[rc=2]
+
+=== B3 ATAQUE bloco vazio com colheita sem linha a cobrir: cabecalho e CONTAMINACAO ausentes
+resumo-bloco: auto=0 pergunta=0 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+[rc=0]
+
+=== B4 ACEITAR com evidencia = colheita.txt (a propria colheita 'prova' o candidato)
+[b4.txt rc=0]
+AUTO LM-020 ajudou+1
+AUTO LM-016 mordeu+1
+PERGUNTA 4 add ADD Reviews / harness :: sup: `termo_candidato_a` `outro_termo` :: Regra sintética com evidência. **Do instead:** ação sintética. → ficha: — · promovido_para: —
+PERGUNTA 5 add ADD Backend :: sup: `termo_candidato_c` `chave_propria` :: Regra em duas linhas, com continuação indentada. **Do instead:** ação em chave própria, também em duas linhas. → ficha: — · promovido_para: —
+PERGUNTA 6 promover LM-004 promovido_para=sdd/hooks/pre-commit
+resumo-bloco: auto=2 pergunta=3 descartar=1 nao_julgado=0 contaminacao=nao
+
+=== B5 ATAQUE curador grava derivados no staging depois do selo (delta.txt, inv-linhas.txt, novo.md): o selo ve?
+[rc=0]
+resumo-bloco: auto=2 pergunta=3 descartar=1 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+
+=== B5b vizinho: arquivo comum plantado reprova
+🔴 bloco: o staging mudou depois do selo: plantado.md apareceu
+RESULTADO: BLOCO INVÁLIDO
+
+=== B6 delta fora da gramatica em linha DESCARTAR/NAO_JULGADO (AT-020: delta cell outside the grammar)
+[b6.txt rc=0]
+AUTO LM-020 ajudou+1
+AUTO LM-016 mordeu+1
+PERGUNTA 4 add ADD Reviews / harness :: sup: `termo_candidato_a` `outro_termo` :: Regra sintética com evidência. **Do instead:** ação sintética. → ficha: — · promovido_para: —
+PERGUNTA 5 add ADD Backend :: sup: `termo_candidato_c` `chave_propria` :: Regra em duas linhas, com continuação indentada. **Do instead:** ação em chave própria, também em duas linhas. → ficha: — · promovido_para: —
+PERGUNTA 6 promover LM-004 promovido_para=sdd/hooks/pre-commit
+resumo-bloco: auto=2 pergunta=3 descartar=1 nao_julgado=0 contaminacao=nao
+
+=== B7 DESCARTAR sem motivo; CONTAMINACAO vazia; numeros de linha repetidos
+[b7.txt rc=0]
+AUTO LM-020 ajudou+1
+AUTO LM-016 mordeu+1
+PERGUNTA 4 add ADD Reviews / harness :: sup: `termo_candidato_a` `outro_termo` :: Regra sintética com evidência. **Do instead:** ação sintética. → ficha: — · promovido_para: —
+PERGUNTA 5 add ADD Backend :: sup: `termo_candidato_c` `chave_propria` :: Regra em duas linhas, com continuação indentada. **Do instead:** ação em chave própria, também em duas linhas. → ficha: — · promovido_para: —
+PERGUNTA 6 promover LM-004 promovido_para=sdd/hooks/pre-commit
+resumo-bloco: auto=2 pergunta=3 descartar=1 nao_julgado=0 contaminacao=nao
+
+=== B8 DELTA de arquivo com espaco: a linha some da cobertura
+DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-com espaco.log:1 · fp=6d408fa2e0
+PROMOVER? LM-004 mordeu=2 promovido_para=— :: promover a mecanismo? sugestão: hook em sdd/hooks/, comando de release.landmines_cmd ou asserção no Verify Gate, com um caso que falha antes (seção Infra / deploy)
+PERGUNTA 1 promover LM-004 promovido_para=x
+   simples: z
+resumo-bloco: auto=0 pergunta=1 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+[rc=0 — sem linha para o DELTA da colheita]
+
+=== B9 AT-021 TOMBSTONE de descartado: a linha inv nao consegue dizer REMOVER
+🔴 bloco: linha 8: a célula Delta de uma linha inv é a linha completa da invariante ou do descarte
+RESULTADO: BLOCO INVÁLIDO
+[rc=2]
+🔴 bloco: linha 8: a célula Delta de uma linha inv é a linha completa da invariante ou do descarte
+RESULTADO: BLOCO INVÁLIDO
+[rc=2 a linha ajuste: inteira, como o brief manda]
+
+=== B10 AT-020 vermelhos do DEFINE, 1 a 1
+rc=2 :: sem <<<CURADORIA
+rc=2 :: sem >>>
+rc=2 :: sem cabecalho
+rc=2 :: AUTO em add
+rc=2 :: AUTO +5
+rc=2 :: ACEITAR sem arquivo:linha
+rc=2 :: ACEITAR arquivo inexistente
+rc=2 :: ACEITAR linha alem do fim
+rc=2 :: promover ACEITAR
+rc=2 :: promover DESCARTAR
+rc=2 :: simples vazia
+rc=2 :: simples so traco
+rc=2 :: sem CONTAMINACAO
+rc=2 :: delta fora gramatica em add
+rc=2 :: omite REJEITADO
+rc=2 :: omite PROMOVER
+rc=2 :: 2 blocos
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    selo.txt
+    ^^^^
+NameError: name 'selo' is not defined
+rc=2 :: FORA com RESULTADO verde
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    selo.txt
+    ^^^^
+NameError: name 'selo' is not defined
+rc=2 :: sem RESULTADO
+[exit=0]

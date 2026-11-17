@@ -1,0 +1,3 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/sdd && TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/tmp bash bin/playbook-lint.sh playbook.md
+❌ arquivo não encontrado: playbook.md
+[exit=2]

@@ -1,0 +1,16 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/curador-a.sh
+--- brief passo 1
+LM-002  [Sempre]  Uma asserção que NÃO AVALIA NADA sai `exit 0`: quoting corrompido faz o `grep` nem rodar, âncora de `sed` casa
+1 bullet(s) para "LM-002" (modo all)
+[exit=0]
+--- brief passo 3
+INV_PENDENTE LM-002 (mordeu 0→1) · delta: LM-002 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-002 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-002] descartado :: <motivo>
+resumo-inv: afetadas=0 pendentes=1
+RESULTADO: HÁ AVISO DE INVARIANTE
+→ cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vai na mesma opção da contagem que a causa.
+[exit=3]
+?? sdd/reports/briefs/
+?? sdd/traces/
+[exit=0]

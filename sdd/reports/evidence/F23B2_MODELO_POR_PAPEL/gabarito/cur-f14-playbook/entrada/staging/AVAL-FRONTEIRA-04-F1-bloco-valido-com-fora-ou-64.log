@@ -1,0 +1,76 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/04.sh
+# F1 ataque A: o revisor adultera o DEFINE e responde NA; item 4 do passo 11 como escrito
+novo f1a; antes
+cd "$d/w" && pwd -P
+--- cenário f1a (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f1a/w) ---
+[--snapshot antes exit=0]
+printf 'define adulterado pelo revisor\n' > "$DEF"
+printf '<<<GOVERNANCA\nresultado: NA\nmotivo: feature sem dinheiro, tributo, folha ou dado pessoal\nrelatorio: —\n>>>\n' > "$T/resposta.txt"
+depois
+[--snapshot depois exit=0]
+/bin/bash "$FR" --comparar "$T/antes" "$T/depois" "$REL" > "$T/comparar.txt"; echo "[--comparar exit=$?]"
+[--comparar exit=1]
+cat "$T/comparar.txt"
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f1a/w/sdd/features/DEFINE_F.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+python3 -B "$BL" "$T/resposta.txt" --saida "$REL" --comparar "$T/comparar.txt"; echo "[governanca-bloco exit=$?]"
+✅ bloco <<<GOVERNANCA válido: resultado NA, 0 lacuna(s)
+RESULTADO: NA
+→ escreva a linha | **Governança** | N.A. — <motivo> | … | e tire o marcador de governança.
+[governanca-bloco exit=0]
+# F1 ataque B: fronteira NÃO verificada (64) e comparar.txt vazio; mesma resposta NA
+novo f1b; antes
+cd "$d/w" && pwd -P
+--- cenário f1b (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f1b/w) ---
+[--snapshot antes exit=0]
+printf 'define adulterado pelo revisor\n' > "$DEF"; printf 'x\n' > "$W/a"$'\n'"b.md"
+printf '<<<GOVERNANCA\nresultado: NA\nmotivo: sem tema\nrelatorio: —\n>>>\n' > "$T/resposta.txt"
+depois
+caminho com quebra de linha: a fronteira não mede: b'a\nb.md'
+a enumeração falhou (git status ou caminho com quebra de linha): snapshot não gravado
+uso: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir…] | --comparar <antes> <depois> <permitido>…
+RESULTADO: ERRO DE USO
+→ a fronteira NÃO foi verificada; corrija a chamada e rode de novo.
+[--snapshot depois exit=64]
+/bin/bash "$FR" --comparar "$T/antes" "$T/depois" "$REL" > "$T/comparar.txt" 2>/dev/null; echo "[--comparar exit=$?]"
+[--comparar exit=64]
+wc -c "$T/comparar.txt"
+       0 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f1b/T/comparar.txt
+python3 -B "$BL" "$T/resposta.txt" --saida "$REL" --comparar "$T/comparar.txt"; echo "[governanca-bloco exit=$?]"
+✅ bloco <<<GOVERNANCA válido: resultado NA, 0 lacuna(s)
+RESULTADO: NA
+→ escreva a linha | **Governança** | N.A. — <motivo> | … | e tire o marcador de governança.
+[governanca-bloco exit=0]
+# F1 ataque C: REVISADO com o relatório gravado E o DEFINE adulterado
+novo f1c; antes
+cd "$d/w" && pwd -P
+--- cenário f1c (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f1c/w) ---
+[--snapshot antes exit=0]
+printf 'define adulterado pelo revisor\n' > "$DEF"; printf '# Revisão\n\n## Lacunas\n\nnenhuma\n' > "$REL"
+printf '<<<GOVERNANCA\nresultado: REVISADO\nmotivo: tema financeiro\nrelatorio: %s\n>>>\n' "$REL" > "$T/resposta.txt"
+depois
+[--snapshot depois exit=0]
+/bin/bash "$FR" --comparar "$T/antes" "$T/depois" "$REL" > "$T/comparar.txt"; echo "[--comparar exit=$?]"
+[--comparar exit=1]
+python3 -B "$BL" "$T/resposta.txt" --saida "$REL" --comparar "$T/comparar.txt"; echo "[governanca-bloco exit=$?]"
+✅ bloco <<<GOVERNANCA válido: resultado REVISADO, 0 lacuna(s)
+RESULTADO: REVISADO
+→ pergunte uma lacuna por vez (0) e aplique as escolhidas.
+[governanca-bloco exit=0]
+# vizinho legítimo: nada fora, NA
+novo f1d; antes
+cd "$d/w" && pwd -P
+--- cenário f1d (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f1d/w) ---
+[--snapshot antes exit=0]
+printf '<<<GOVERNANCA\nresultado: NA\nmotivo: sem tema\nrelatorio: —\n>>>\n' > "$T/resposta.txt"
+depois
+[--snapshot depois exit=0]
+/bin/bash "$FR" --comparar "$T/antes" "$T/depois" "$REL" > "$T/comparar.txt"; echo "[--comparar exit=$?]"
+[--comparar exit=0]
+python3 -B "$BL" "$T/resposta.txt" --saida "$REL" --comparar "$T/comparar.txt"; echo "[governanca-bloco exit=$?]"
+✅ bloco <<<GOVERNANCA válido: resultado NA, 0 lacuna(s)
+RESULTADO: NA
+→ escreva a linha | **Governança** | N.A. — <motivo> | … | e tire o marcador de governança.
+[governanca-bloco exit=0]
+[exit=0]

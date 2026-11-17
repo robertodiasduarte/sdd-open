@@ -1,0 +1,3 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base && TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/tmp bash sdd/bin/playbook-lint.sh --anti-collapse /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/pb/head.md /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/pb/staged0.md
+anti-collapse OK: 4 IDs em HEAD, 0 sumiram, 0 (0%) alterados (limite 20%)
+[exit=0]

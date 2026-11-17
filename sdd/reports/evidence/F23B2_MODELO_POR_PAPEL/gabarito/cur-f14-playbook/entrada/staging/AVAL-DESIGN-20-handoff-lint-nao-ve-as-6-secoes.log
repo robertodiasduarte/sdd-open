@@ -1,0 +1,11 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base && grep -n '^## ' sdd/fixtures/handoff/HANDOFF_VALIDO.md; /usr/bin/python3 -B sdd/bin/handoff-lint.py sdd/fixtures/handoff/HANDOFF_VALIDO.md
+7:## Ficha
+19:## Feito
+23:## Falta
+27:## Definition of Done
+32:## ⛔ Landmines desta feature
+36:## Casos e testes em aberto
+42:## Prompt de retomada
+59:## Histórico de slices
+✅ sdd/fixtures/handoff/HANDOFF_VALIDO.md: HANDOFF válido
+[exit=0]

@@ -1,0 +1,30 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo $V/x "T=\$(mktemp -d) && git archive HEAD | tar -x -C \$T && sleep 3 && test ! -f \$T/quebra.txt"
+printf "import sys\nsys.exit(0)\n" > sdd/bin/report-lint.py; git add -A; git commit -qm lint-stub
+drv iniciar $D; feito
+(drv verificar $D > $V/saida.txt 2>&1) &
+sleep 1; echo quebra > quebra.txt; git add quebra.txt; git commit -qm "durante o gate"; wait; cat $V/saida.txt
+echo x > sdd/reports/BUILD_REPORT_F.md
+drv concluir $D
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+[exit=0]

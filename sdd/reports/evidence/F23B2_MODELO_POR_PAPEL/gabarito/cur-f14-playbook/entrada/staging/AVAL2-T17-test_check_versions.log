@@ -1,0 +1,7 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/nogit/tests && TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp SDD_TRACE=off SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_check_versions </dev/null
+................
+----------------------------------------------------------------------
+Ran 16 tests in 3.199s
+
+OK
+[exit=0]

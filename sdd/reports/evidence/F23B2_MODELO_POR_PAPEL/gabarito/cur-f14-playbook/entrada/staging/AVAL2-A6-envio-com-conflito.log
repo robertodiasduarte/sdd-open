@@ -1,0 +1,66 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/a2.sh
+[conferir rc=0]
+[validar-inv exit=0]
+[commit exit=0]
+--- a base anda: outra frente publica a curadoria dela
+--- item 9, sim: worktree temporário + cherry-pick
+hint: "git cherry-pick --continue".
+hint: You can instead skip this commit with "git cherry-pick --skip".
+hint: To abort and get back to the state before "git cherry-pick",
+hint: run "git cherry-pick --abort".
+hint: Disable this message with "git config set advice.mergeConflict false"
+[cherry-pick exit=1]
+UU sdd/invariants.md
+UU sdd/playbook.md
+A  sdd/reports/evidence/DEMO/CURATOR-colheita.log
+A  sdd/reports/evidence/DEMO/CURATOR-colhidos.txt
+A  sdd/reports/evidence/DEMO/CURATOR-delta.log
+--- texto: reaplique sobre a base. --aplicar direto no arquivo em conflito:
+[aplicar sobre arquivo com marcas exit=0]
+1
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/x.md:0: ❌ ID duplicado: LM-005 (linhas 22 31 )
+🔴 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/x.md: 8 erro(s), 0 aviso(s) — 11 ativos, 0 tombstones
+[lint exit=2]
+--- sobre o playbook da base (git show)
+RESULTADO: DELTA APLICADO (4 linha(s))
+→ o stdout é o playbook novo: rode o playbook-lint.sh nele antes de copiar por cima.
+[aplicar exit=0]
+14:- [LM-001] ajudou=6 mordeu=0 · conf=2026-11-05 · sup: `gr
+15:- [LM-002] ajudou=0 mordeu=1 · conf=2026-11-05 · sup: `ex
+16:- [LM-003] ajudou=1 mordeu=1 · conf=2026-11-05 · sup: `gi
+17:- [LM-004] ajudou=0 mordeu=0 · conf=2026-10-29 · sup: `ex
+21:- [LM-005] ajudou=0 mordeu=0 · conf=2026-11-05 · sup: `ou
+25:- [LM-006] ajudou=0 mordeu=0 · conf=2026-11-05 · sup: `fi
+❌ invariantes linha 1: INV-002 já existe em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/base-inv.md com outra regra: isto é uma invariante nova com ID repetido; renumere a nova, nunca a que já estava lá
+RESULTADO: LINHAS INVÁLIDAS
+→ corrija as linhas acima e rode de novo; nada foi impresso nem aplicado.
+[aplicar-inv exit=2]
+       0
+--- renumere o novo
+RESULTADO: INVARIANTES APLICADAS
+→ o stdout é o arquivo novo: rode --validar-inv com o playbook novo antes de copiar por cima.
+[aplicar-inv exit=0]
+🟢 sdd/playbook.md: formato OK — 6 ativos, 0 tombstones, Sempre=4 bullets/322 palavras, 0 aviso(s)
+[lint exit=0]
+🟢 trava INV: par válido (3 invariante(s), 0 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+[validar exit=0]
+ create mode 100644 sdd/reports/evidence/DEMO/CURATOR-colheita.log
+ create mode 100644 sdd/reports/evidence/DEMO/CURATOR-colhidos.txt
+ create mode 100644 sdd/reports/evidence/DEMO/CURATOR-delta.log
+[continue exit=0]
+
+ sdd/invariants.md                              |  1 +
+ sdd/playbook.md                                | 10 +++++++---
+ sdd/reports/evidence/DEMO/CURATOR-colheita.log | 13 +++++++++++++
+ sdd/reports/evidence/DEMO/CURATOR-colhidos.txt |  4 ++++
+ sdd/reports/evidence/DEMO/CURATOR-delta.log    |  6 ++++++
+ 5 files changed, 31 insertions(+), 3 deletions(-)
+[base exit=0]
+[push exit=0]
+- [LM-001] ajudou=6 mordeu=0 · conf=2026-11-05 · s
+- [LM-002] ajudou=0 mordeu=1 · conf=2026-11-05 · s
+- [LM-005] ajudou=0 mordeu=0 · conf=2026-11-05 · s
+- [LM-006] ajudou=0 mordeu=0 · conf=2026-11-05 · s
+[exit=0]

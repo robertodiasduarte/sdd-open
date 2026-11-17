@@ -1,0 +1,203 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p19.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p19.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+acao() { grep -E '^(---|ACAO:|motivo:|retomando|\[rc|RESULTADO: (FALHA|ERRO)|🛑|tarefa:|antes:|agora:|o teste final|   - )' ; }
+doc() { mkdir -p "$(dirname "$1")"; echo x > "$1"; git add -- "$1"; GIT_AUTHOR_DATE="${2:-2020-01-01}T12:00:00" GIT_COMMITTER_DATE="${2:-2020-01-01}T12:00:00" git commit -q -m "d $1"; }
+tot() { $ARQ "$@" 2>&1 | grep -E '^TOTAIS|^  .*(→|ficha|citad|quieto)'; echo "[rc=${PIPESTATUS[0]}]"; }
+novoa() { mkarq "$(novo)"; }
+echo "=== AT-002 cmd nao executavel pelo drive"
+for c in 'N/A' 'N/A (nada)' ''; do mkrepo "$(novo)" "$c"; drv iniciar $D 2>&1 | acao; drv --dry-run $D 2>&1 | acao; ls sdd/reports 2>/dev/null; done
+echo "=== AT-011 verificar nao roda gate alterado; aceite faz rodar com o mesmo HEAD"
+mkrepo "$(novo)"; touch .verde; drv iniciar $D >/dev/null; feito; rel; drv verificar $D 2>&1 | acao; wc -l < gate.calls; sed -i '' 's/cmd: "echo x >> gate.calls; test -f .verde"/cmd: "echo y >> gate.calls; test -f .verde"/' $D; drv verificar $D 2>&1 | acao; drv concluir $D 2>&1 | acao; wc -l < gate.calls; drv --resume $D 2>&1 | acao; drv --resume $D --aceitar-gate-novo 2>&1 | acao; drv proximo $D 2>&1 | acao; drv concluir $D 2>&1 | acao; drv verificar $D 2>&1 | acao; wc -l < gate.calls; drv concluir $D 2>&1| acao; sed -n '/Teste final alterado/,+2p' sdd/reports/DRIVE_REPORT_F.md
+echo "=== AT-008 vermelho com commit no meio: diz que ficou vermelho? mostra log?"
+mkrepo "$(novo)" 'sleep 2; false'; drv iniciar $D >/dev/null; feito; (sleep 1; echo q > q.py; git add q.py; git commit -qm durante) & drv verificar $D 2>&1 | sed -n '2,8p'; wait; st "print([g['exit'] for g in d['gates']])"
+echo "=== M4 do ciclo 1, de novo"
+mkrepo "$(novo)"; drv iniciar $D > /dev/null; cp sdd/reports/progress/DRIVE_F.json $LAB/b2.json
+for m in 'd["gates"]=[{}]' 'd["gates"]=[1]' 'd["repeticao"]=3' 'd["recibos"]=3' 'd["trocas_gate"]=3' 'd["gate_cmd"]=None' 'd["inicio"]=None' 'd["gates"]=[{"exit":"2"}]' 'd["maximo"]="3"' 'd["maximo"]=True' 'd["recibos"]=[1]' 'd["trocas_gate"]=[{}]'; do cp $LAB/b2.json sdd/reports/progress/DRIVE_F.json; /usr/bin/python3 -I -B -c "import json;p='sdd/reports/progress/DRIVE_F.json';d=json.load(open(p));$m;json.dump(d,open(p,'w'))"; for v in "proximo $D" "recibo $D t" "concluir $D" "--resume $D"; do out=$(/bin/bash sdd/bin/sdd-drive.sh $v 2>&1); printf '%-36s %-10s rc=%s %s\n' "$m" "${v%% *}" "$?" "$(printf '%s' "$out" | grep -E '^motivo|Traceback' | head -1)"; done; done
+echo "=== porcelain Y=R nome antigo longo"
+mkrepo "$(novo)"; echo 1 > codigo.py; git add -A; git commit -qm c; drv iniciar $D > /dev/null; feito; mkdir -p sdd/reports; mv codigo.py sdd/reports/codigo.py; git add -N sdd/reports/codigo.py; git status --porcelain=v1 --untracked-files=no; drv verificar $D 2>&1 | acao
+echo "=== AT-028 limites e lotes"
+novoa; mkdir -p sdd/releases/L1 sdd/releases/L2; doc sdd/features/DEFINE_L1.md 2026-10-06; doc sdd/reports/BUILD_REPORT_L1.md 2026-10-06; doc sdd/features/DEFINE_L2.md 2026-10-07; doc sdd/features/DEFINE_S1.md 2026-09-06; doc sdd/features/DEFINE_S2.md 2026-09-07; doc sdd/reports/FIX_REPORT_S1.md 2026-09-06; doc sdd/reports/SOLTO1.md 2026-09-06; doc sdd/reports/SOLTO2.md 2026-09-07; doc sdd/reports/BUILD_REPORT_SO1.md 2026-09-06; mkdir -p sdd/reports/evidence/x; tot --hoje 2026-11-05; $ARQ --hoje 2026-11-05 --dias-a 0 --dias-b 0 | grep TOTAIS; $ARQ --hoje 2026-11-05 --lote com-ledger | sed -n 1,8p; $ARQ --lote sem-ledger --aplicar --hoje 2026-11-05 | tail -3; git status --porcelain | cut -c1-90; git commit -qm lote; git log --follow --oneline -- sdd/archive/S1/DEFINE_S1.md | wc -l; rm -f /dev/null; git status --porcelain | wc -l
+echo "=== AT-029 git mv falha (index.lock) exit 2, destinos ficam"
+novoa; doc sdd/reports/A1.md; doc sdd/reports/A2.md; touch .git/index.lock; $ARQ --lote soltos --aplicar --hoje 2026-11-05 2>&1 | tail -4; echo "[rc=${PIPESTATUS[0]}]"; rm .git/index.lock; git status --porcelain
+echo "=== archive: doc que so existe num commit de merge (sem data no log)"
+novoa; git commit -q --allow-empty -m base; git checkout -q -b lado; git commit -q --allow-empty -m l; git checkout -q main; git commit -q --allow-empty -m m2; git merge -q --no-ff --no-commit lado 2>&1; mkdir -p sdd/reports; echo n > sdd/reports/CRIADO_HOJE_NO_MERGE.md; git add sdd/reports; git commit -q -m merge; git log -1 --format=%cd --date=short; tot --hoje 2026-11-05
+echo "=== archive: ficha aberta e FEATURE citada so na ficha, doc solto com o nome da feature no meio"
+novoa; mkdir -p sdd/handoffs; printf '# H\n\n| **Status** | aberta |\n' > sdd/handoffs/HANDOFF_F14_DRIVE.md; doc sdd/reviews/REVISAO_FRONTEIRA_F14_DRIVE_20261105.md; doc sdd/reviews/AVALIACAO_F14_DRIVE-ciclo2.md; doc sdd/reviews/AVALIACAO_F14_DRIVE_20261105-ciclo2.md; tot --hoje 2026-11-05; $ARQ --lote soltos --aplicar --hoje 2026-11-05 | tail -3; git status --porcelain | cut -c1-110
+=== AT-002 cmd nao executavel pelo drive
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: define-invalido
+[rc=20]
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+motivo: define-invalido
+[rc=20]
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: define-invalido
+[rc=20]
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+motivo: define-invalido
+[rc=20]
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+tarefa: 1 de 2 — a
+[rc=10]
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+motivo: simulacao
+[rc=0]
+progress
+=== AT-011 verificar nao roda gate alterado; aceite faz rodar com o mesmo HEAD
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+[rc=10]
+       1
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: gate-alterado
+antes: echo x >> gate.calls; test -f .verde
+agora: echo y >> gate.calls; test -f .verde
+[rc=20]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-alterado
+antes: echo x >> gate.calls; test -f .verde
+agora: echo y >> gate.calls; test -f .verde
+[rc=20]
+       1
+--- sdd-drive --resume sdd/features/DEFINE_F.md
+motivo: gate-alterado
+antes: echo x >> gate.calls; test -f .verde
+agora: echo y >> gate.calls; test -f .verde
+[rc=20]
+--- sdd-drive --resume sdd/features/DEFINE_F.md --aceitar-gate-novo
+retomando: rodada 1/3 · 2 de 2 tarefas prontas · último teste final: 0 · não gastei rodada
+ACAO: VERIFICAR
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+[rc=10]
+       2
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+[rc=0]
+## Teste final alterado
+
+- de `echo x >> gate.calls; test -f .verde` para `echo y >> gate.calls; test -f .verde`, aceito em 2026-11-05
+=== AT-008 vermelho com commit no meio: diz que ficou vermelho? mostra log?
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: VERIFICAR
+rodada: 2/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+[2]
+=== M4 do ciclo 1, de novo
+d["gates"]=[{}]                      proximo    rc=20 motivo: estado-invalido
+d["gates"]=[{}]                      recibo     rc=20 motivo: estado-invalido
+d["gates"]=[{}]                      concluir   rc=20 motivo: estado-invalido
+d["gates"]=[{}]                      --resume   rc=20 motivo: estado-invalido
+d["gates"]=[1]                       proximo    rc=20 motivo: estado-invalido
+d["gates"]=[1]                       recibo     rc=20 motivo: estado-invalido
+d["gates"]=[1]                       concluir   rc=20 motivo: estado-invalido
+d["gates"]=[1]                       --resume   rc=20 motivo: estado-invalido
+d["repeticao"]=3                     proximo    rc=20 motivo: estado-invalido
+d["repeticao"]=3                     recibo     rc=20 motivo: estado-invalido
+d["repeticao"]=3                     concluir   rc=20 motivo: estado-invalido
+d["repeticao"]=3                     --resume   rc=20 motivo: estado-invalido
+d["recibos"]=3                       proximo    rc=20 motivo: estado-invalido
+d["recibos"]=3                       recibo     rc=20 motivo: estado-invalido
+d["recibos"]=3                       concluir   rc=20 motivo: estado-invalido
+d["recibos"]=3                       --resume   rc=20 motivo: estado-invalido
+d["trocas_gate"]=3                   proximo    rc=20 motivo: estado-invalido
+d["trocas_gate"]=3                   recibo     rc=20 motivo: estado-invalido
+d["trocas_gate"]=3                   concluir   rc=20 motivo: estado-invalido
+d["trocas_gate"]=3                   --resume   rc=20 motivo: estado-invalido
+d["gate_cmd"]=None                   proximo    rc=20 motivo: estado-invalido
+d["gate_cmd"]=None                   recibo     rc=20 motivo: estado-invalido
+d["gate_cmd"]=None                   concluir   rc=20 motivo: estado-invalido
+d["gate_cmd"]=None                   --resume   rc=20 motivo: estado-invalido
+d["inicio"]=None                     proximo    rc=20 motivo: estado-invalido
+d["inicio"]=None                     recibo     rc=20 motivo: estado-invalido
+d["inicio"]=None                     concluir   rc=20 motivo: estado-invalido
+d["inicio"]=None                     --resume   rc=20 motivo: estado-invalido
+d["gates"]=[{"exit":"2"}]            proximo    rc=20 motivo: estado-invalido
+d["gates"]=[{"exit":"2"}]            recibo     rc=20 motivo: estado-invalido
+d["gates"]=[{"exit":"2"}]            concluir   rc=20 motivo: estado-invalido
+d["gates"]=[{"exit":"2"}]            --resume   rc=20 motivo: estado-invalido
+d["maximo"]="3"                      proximo    rc=20 motivo: estado-invalido
+d["maximo"]="3"                      recibo     rc=20 motivo: estado-invalido
+d["maximo"]="3"                      concluir   rc=20 motivo: estado-invalido
+d["maximo"]="3"                      --resume   rc=20 motivo: estado-invalido
+d["maximo"]=True                     proximo    rc=20 motivo: estado-invalido
+d["maximo"]=True                     recibo     rc=20 motivo: estado-invalido
+d["maximo"]=True                     concluir   rc=20 motivo: estado-invalido
+d["maximo"]=True                     --resume   rc=20 motivo: estado-invalido
+d["recibos"]=[1]                     proximo    rc=20 motivo: estado-invalido
+d["recibos"]=[1]                     recibo     rc=20 motivo: estado-invalido
+d["recibos"]=[1]                     concluir   rc=20 motivo: estado-invalido
+d["recibos"]=[1]                     --resume   rc=20 motivo: estado-invalido
+d["trocas_gate"]=[{}]                proximo    rc=20 motivo: estado-invalido
+d["trocas_gate"]=[{}]                recibo     rc=20 motivo: estado-invalido
+d["trocas_gate"]=[{}]                concluir   rc=20 motivo: estado-invalido
+d["trocas_gate"]=[{}]                --resume   rc=20 motivo: estado-invalido
+=== porcelain Y=R nome antigo longo
+ R codigo.py -> sdd/reports/codigo.py
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+   - igo.py
+[rc=10]
+=== AT-028 limites e lotes
+  sdd/features/DEFINE_L1.md  →  sdd/archive/L1/DEFINE_L1.md
+  sdd/reports/BUILD_REPORT_L1.md  →  sdd/archive/L1/BUILD_REPORT_L1.md
+  sdd/features/DEFINE_S1.md  →  sdd/archive/S1/DEFINE_S1.md
+  sdd/reports/FIX_REPORT_S1.md  →  sdd/archive/S1/FIX_REPORT_S1.md
+  sdd/reports/BUILD_REPORT_SO1.md  →  sdd/archive/_REPORTS_2026-09/BUILD_REPORT_SO1.md
+  sdd/reports/SOLTO1.md  →  sdd/archive/_REPORTS_2026-09/SOLTO1.md
+  L2 (1 documento(s), quieto há 29 dia(s), limite 30)
+  S2 (1 documento(s), quieto há 59 dia(s), limite 60)
+TOTAIS: com-ledger=2 · sem-ledger=2 · soltos=2 · protegidos=0 · recentes=2 · sem classificação=1 · subpastas=1
+[rc=0]
+TOTAIS: com-ledger=3 · sem-ledger=3 · soltos=3 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=1
+
+== Lote com-ledger: 2 arquivo(s) ==
+  sdd/features/DEFINE_L1.md  →  sdd/archive/L1/DEFINE_L1.md
+  sdd/reports/BUILD_REPORT_L1.md  →  sdd/archive/L1/BUILD_REPORT_L1.md
+
+TOTAIS: com-ledger=2 · sem-ledger=2 · soltos=2 · protegidos=0 · recentes=2 · sem classificação=1 · subpastas=1
+Nada foi movido.
+RESULTADO: SIMULACAO
+✅ movi 2 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+R  sdd/features/DEFINE_S1.md -> sdd/archive/S1/DEFINE_S1.md
+R  sdd/reports/FIX_REPORT_S1.md -> sdd/archive/S1/FIX_REPORT_S1.md
+       3
+rm: /dev/null: Operation not permitted
+       0
+=== AT-029 git mv falha (index.lock) exit 2, destinos ficam
+  sdd/reports/A1.md  →  sdd/archive/_REPORTS_2020-01/A1.md
+  sdd/reports/A2.md  →  sdd/archive/_REPORTS_2020-01/A2.md
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=2 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=2]
+=== archive: doc que so existe num commit de merge (sem data no log)
+Automatic merge went well; stopped before committing as requested
+2026-11-05
+  sdd/reports/CRIADO_HOJE_NO_MERGE.md  →  sdd/archive/_REPORTS_0000-00/CRIADO_HOJE_NO_MERGE.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=1 · protegidos=0 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+=== archive: ficha aberta e FEATURE citada so na ficha, doc solto com o nome da feature no meio
+  sdd/reviews/AVALIACAO_F14_DRIVE-ciclo2.md  →  sdd/archive/_REPORTS_2020-01/AVALIACAO_F14_DRIVE-ciclo2.md
+  sdd/reviews/REVISAO_FRONTEIRA_F14_DRIVE_20261105.md  →  sdd/archive/_REPORTS_2020-01/REVISAO_FRONTEIRA_F14_DRIVE_20261105.md
+  F14_DRIVE (1 documento(s)): ficha aberta em HANDOFF_F14_DRIVE.md
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=2 · protegidos=1 · recentes=0 · sem classificação=0 · subpastas=0
+[rc=0]
+✅ movi 2 arquivo(s) com git mv; nada foi apagado.
+RESULTADO: MOVIDO
+→ revise com git status e commite este lote.
+R  sdd/reviews/AVALIACAO_F14_DRIVE-ciclo2.md -> sdd/archive/_REPORTS_2020-01/AVALIACAO_F14_DRIVE-ciclo2.md
+R  sdd/reviews/REVISAO_FRONTEIRA_F14_DRIVE_20261105.md -> sdd/archive/_REPORTS_2020-01/REVISAO_FRONTEIRA_F14_D
+?? sdd/handoffs/
+[exit=0]

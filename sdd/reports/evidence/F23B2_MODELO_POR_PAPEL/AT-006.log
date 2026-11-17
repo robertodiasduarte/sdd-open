@@ -1,0 +1,11 @@
+$ python3 -m unittest -v test_f23b2_papeis.AT004AT007Medidor.test_curador_escolhe_o_barato_e_reprova_o_que_descarta_o_add test_f23b2_papeis.AT004AT007Medidor.test_referencia_fora_da_meta_nao_escolhe test_f23b2_papeis.AT004AT007Medidor.test_parcial_vem_antes_da_referencia_e_candidato_sem_execucao_nao_vence test_f23b2_papeis.AT008AT011Executor.test_barreira_de_calibracao_antes_de_qualquer_candidato   # AT-006 · HEAD c12a475 · 2026-11-17 08:38
+test_curador_escolhe_o_barato_e_reprova_o_que_descarta_o_add (test_f23b2_papeis.AT004AT007Medidor) ... ok
+test_referencia_fora_da_meta_nao_escolhe (test_f23b2_papeis.AT004AT007Medidor) ... ok
+test_parcial_vem_antes_da_referencia_e_candidato_sem_execucao_nao_vence (test_f23b2_papeis.AT004AT007Medidor) ... ok
+test_barreira_de_calibracao_antes_de_qualquer_candidato (test_f23b2_papeis.AT008AT011Executor) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 6.939s
+
+OK
+[exit=0]

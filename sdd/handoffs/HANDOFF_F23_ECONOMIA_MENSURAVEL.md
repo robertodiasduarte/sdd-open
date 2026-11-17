@@ -10,14 +10,16 @@
 |-----------|-------|
 | **Feature** | F23_ECONOMIA_MENSURAVEL |
 | **Objetivo** | O Open passa a medir o custo de cada fase e feature e a escolher modelo e cadeia de revisão por evidência; o aluno recebe o mesmo método para o produto que constrói. |
-| **Status** | 🚢 fatia B3 publicada: `v2.19.0` (`main` = `5e110b2`, PR #35; curadoria da B3 em `fb7ee82` na `main`), 2026-11-16; starter **`v1.5.24`** (8ª geração, PR #17 de lá, 23:18 UTC, 18 zips OK no `shasum -c`); B1 em `v2.18.0`. Próximas: B2 e Grupo A |
-| **Última sessão** | 2026-11-16 |
-| **Branch / pasta** | B3: `feat/f23b3-cadeia-revisao` · `/Users/robertoduarte/rdd-worktrees/sdd-open-f23b3-cadeia-revisao` (nascida de `origin/main` em `ef217b9`); a da B1 já foi removida |
+| **Status** | 🚢 fatia B2 publicada: `v2.21.0` (`main` = `2204a14`, PR #37, squash), 2026-11-17; B3 em `v2.19.0`, B1 em `v2.18.0`; starter **`v1.5.25`** (9ª geração, da F24, a partir da `v2.20.0`; a B2 sobe a versão do modo web da `sdd-build`: a 10ª geração é decisão do Roberto). Próxima: Grupo A |
+| **Última sessão** | 2026-11-17 |
+| **Branch / pasta** | B2: `feat/f23b2-modelo-por-papel` · `/Users/robertoduarte/rdd-worktrees/sdd-open-f23b2-modelo-por-papel` (nascida de `origin/main` em `fb7ee82`, rebaseada na F24) |
 | **Artefatos** | B1: `sdd/features/{ESCOPO,BRAINSTORM,DEFINE,DESIGN}_F23_ECONOMIA_MENSURAVEL.md` e afins · B3: `sdd/features/{DEFINE,DESIGN}_F23B3_CADEIA_REVISAO.md`, `sdd/reports/{BUILD_REPORT,CUSTO}_F23B3_CADEIA_REVISAO.md`, `sdd/reviews/LEDGER_REVISAO_F23B3_CADEIA_REVISAO.md`, `sdd/releases/F23B3_CADEIA_REVISAO/b3_v2.19.0.yaml`, `sdd/reports/evidence/F23B3_CADEIA_REVISAO/`, `sdd/reports/reviews-medicao/F23B3_CADEIA_REVISAO/` — todos na branch de documentos `docs/incorporar-starter` |
-| **Verify Gate** | 🟢 0 em `5e110b2` (2.364 testes, 3 pulados) — `bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F23B3_CADEIA_REVISAO.md`; CI do PR #35 18 de 18; release `v2.19.0` 23:00 UTC, `shasum -c` OK (prefixo `359945f08eab`) |
+| **Verify Gate** | 🟢 0 em `c12a475` (2.491 testes, 3 pulados) — `bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F23B2_MODELO_POR_PAPEL.md`; CI do PR #37 18 de 18 em `e20d785` (a árvore do squash `2204a14` é a mesma) |
 
 ## Feito
 
+- **Fatia B2 publicada na `v2.21.0`** (PR #37, squash `2204a14`): slot `papeis:` (curador, avaliador, revisao_design, cartografo, executor, serie_cmd), `sdd-fluxo.sh modelo`, linha **Modelo:** no `despachar`; sub-linhas de custo por papel no `custo-feature.sh` e `--execucao`; `papel-serie.sh` (teto e trava, cópia isolada, fronteira também na retomada, agente morto com a série) e `papel-medir.sh`; docs `model-per-role`; sdd-build 2.13.0.
+- **Prova da B2:** curador **ESCOLHIDO sonnet** — 12 de 12 na meta, mediana US$ 0,32 contra 0,90 do opus (queda de 64%); haiku 7 de 12. Avaliador: **referência fora da meta** (o opus deu como aprovado o AT que falha no F11 e no F21), slot vazio, meta a redesenhar (decisão do Roberto). Medição: US$ 30,35 nominal, US$ 0 pago (`evidence/F23B2_MODELO_POR_PAPEL/MEDICAO-*.md`).
 - **Fatia B3 publicada na `v2.19.0`** (`ef217b9..5e110b2`, 11 commits, mais a curadoria `fb7ee82`): 2º revisor só por superfície de risco (lista única de termos, português, camelCase) ou revisor raso, com a regra antiga como medida; desempate padrão e dispensa à mão no META; ledger com `rodada=D<n>`, `sem resultado:` e `escapou:`; `eval-revisores.sh` com a cadeia por frente e `--precos`; codex com modelo padrão e cache no META; prompts em `sdd/review/prompts/v2/` com o material cercado; skills build 2.12.0, design 2.9.0, release 2.15.0. Custo da fatia: US$ 65,57 + n/d nominal (`CUSTO_F23B3_CADEIA_REVISAO.md`).
 - **Prova da B3:** na própria B3, 3 rodadas de código sem 2º revisor pela regra (a antiga o chamaria por 33 a 36 arquivos), US$ 11,68 de nominal estimado evitado, 0 dispensa à mão do 2º revisor, 0 escape, fora da conta 0 (`reviews-medicao/F23B3_CADEIA_REVISAO/EVAL-REVISORES.log`); F23 refeita: fora da conta 2 → 0, sem classificar 6 → 0. S18 em 2 sondas reais: série B 3 de 3, mas a v1 também passou (sem ganho medido).
 - **Fatia B1 publicada na `v2.18.0`** (`8f944fc..ef217b9`, 9 commits): `sdd/bin/marca-fase.sh`, `sdd/bin/custo-feature.sh`, `sdd/bin/adapters/sessao-claude.py` e `sessao-codex.py`, `sdd/review/precos-cache.tsv`, `sdd/templates/fragments/MARCA_FASE.md`, 6 skills de fase (brainstorm 2.5.0, define 2.8.0, ux-review 2.7.0, design 2.8.0, build 2.11.0, release 2.14.0), troca do starter na `sdd-brainstorm`, docs, `tests/test_f23_custo.py` (35 testes).
@@ -44,7 +46,8 @@
 ## Falta
 
 1. ~~Starter~~ — feito: 8ª geração pela tag `v2.19.0` num clone limpo (`df6ae1c`, 7 arquivos, só versões de build, design e release); `check-gerado` VERDE, 62 testes, `check-versions` e `publish-check` PASS; PR #17 de lá, CI verde, avanço direto da `main` (`4269afe..df6ae1c`, OK do Roberto: "sim, pode publicar o starter"); Release **`v1.5.24`**, 18 zips OK.
-2. **Próxima fatia: B2** (modelo por papel), com `sdd-define` a partir do bloco 2 do BRAINSTORM; a economia maior está nas sessões (US$ 65 nesta fatia contra US$ 12 de revisão).
+2. ~~Fatia B2~~ — `v2.21.0`. **Próxima: Grupo A**, com `sdd-define` a partir do bloco 3 do BRAINSTORM.
+5. **Pendências da B2** (Casos e testes em aberto): meta do avaliador redesenhada; slot do curador preenchido localmente (escolha local, fora do pacote); casos de borda do executor das séries que a revisão deixou registrados; documentos da B2 na branch de documentos.
 3. **Pendências da B3** (Casos e testes em aberto): preço do modelo do codex conferido na fonte, fora do pacote; `test_checar` instável; versão do prompt no META; aviso de prompt v1 editado.
 4. ~~Curadoria da B1~~ — `e1870e3` (LM-035, LM-036); ~~curadoria da B3~~ — `fb7ee82` na `main` (20 contagens, LM-037, refine da LM-011, LM-038).
 
@@ -54,7 +57,8 @@
 - [x] Fatia B1 publicada, com Verify Gate e CI verdes.
 - [x] Linha de base das features anteriores (≥ 15 linhas com custo).
 - [x] Tabela da seção 5 do ESCOPO: saiu do arquivo (decisão do Roberto, 2026-11-16).
-- [ ] Fatias B3, B2 e Grupo A.
+- [x] Fatias B3 e B2.
+- [ ] Grupo A.
 
 ## ⛔ Landmines desta feature
 
@@ -68,6 +72,10 @@
 
 ## Casos e testes em aberto
 
+- ✨ Meta do avaliador: comparar com o histórico em cada repetição não calibra (a referência errou o AT que falha no F11 e no F21); redesenhar, por exemplo pela taxa de detecção do AT que falha ao longo das repetições (B2, decisão do Roberto).
+- ✨ Caixa de areia da série: `/tmp` ainda bloqueado; o Verify Gate do caso não fecha lá dentro (B2).
+- 🐛 Fronteira da interrompida isenta pelo nome de arquivo (`meta.txt` forjado na pasta de medição passa) e não confere remoto na cópia da interrompida (rodada 5 da B2, sem conserto por decisão).
+- ✨ A sub-linha do papel soma também as mensagens da sessão principal na janela; o tempo ativo do papel sai 0h00m; `PERGUNTA_DECISAO.md` sem o campo **Modelo:**; `--execucao` com pasta inexistente sai 2 (raio de impacto da B2).
 - 🐛 `test_checar.TestRemoto.test_rede_pendurada_inteira_api_e_remoto`: teto de 12 s rente ao tempo medido (12,02 e 12,10 s), cai até sozinho (B3).
 - ✨ Nominal do codex n/d nas rodadas reais: falta o preço do modelo, conferido na fonte, em `linha-de-base/precos/` (B3).
 - ✨ O META não grava a versão do prompt: o medidor mistura v1 e v2; o codex antigo (`codex (-)`) e o novo saem em linhas separadas (raio de impacto da B3).
@@ -81,6 +89,7 @@
 
 ## Eventos
 
+- 2026-11-17 — B2: Define com o par curador + avaliador (Roberto) e governança dispensada; Design com 10 decisões e revisão D1; build com a série real do curador (sonnet escolhido) e 3 tentativas do avaliador (caixa de areia, caso F11 trocado pelo F21, referência fora da meta → Roberto: registrar e seguir); 5 rodadas de revisão do código (4ª e 5ª com o OK do Roberto); rebase na F24; raio de impacto achou 3 consumidores (fronteira, papel fora da janela, script antigo); dispensa escrita do delta (Roberto); CI do Windows pegou a trava obrigatória do `msvcrt`; main andou (lote da F24) → merge da main na branch (Roberto) e squash; `v2.21.0`.
 - 2026-11-16 — Roberto: "sim, pode publicar o starter" ⇒ starter `v1.5.24` (PR #17 de lá, avanço direto).
 - 2026-11-16 — B3: passo 0 (curadoria da B1, `e1870e3`); Define com 7 decisões do Roberto (prova trocada, discordância = desempate, auditor codex local, dano que escapa pela linha `escapou`, raso continua, governança dispensada, S18 aplicado e S20 recusado); Design com pasta `v2/` e lista ampliada; build com 3 gates vermelhos (MANIFEST, teto de 500 linhas, `foto()` da F22 consertada com OK do Roberto) e verde em `5e110b2`; raio de impacto achou camelCase e o gate offline; 3 rodadas de revisão + dispensa escrita do delta (Roberto); push autorizado ("sim, pode publicar"): `v2.19.0`; curadoria da B3 enviada à `main` ("Enviar agora").
 - 2026-11-16 — 4ª rodada (OK do Roberto) sobre `b606eca`: 3 achados aplicados com teste (`ef217b9`), sem auditor (qwen passou do teto pela 2ª vez); a revisão não confere a versão final. CI do Windows pegou 1 teste que não vale lá (quebra de linha em argumento), consertado em `b606eca`. Parado na decisão da 5ª rodada.
@@ -107,30 +116,39 @@
 
 - B1: 🟡 CONCERNS (5 rodadas, 2 acima do teto).
 - B3: 🟡 CONCERNS — 3 rodadas (teto) e dispensa escrita do delta da 3ª; cerca do S18 sem ganho medido; codex sem preço; `test_checar` instável.
+- B2: 🟡 CONCERNS — 5 rodadas (2 acima do teto) e dispensa escrita do delta; prova parcial (avaliador com a referência fora da meta).
 
 ---
 
 ## Prompt de retomada
 
 ```text
-Retomar a feature F23_ECONOMIA_MENSURAVEL (SDD Open), fatia B2 (modelo por papel). Responda sempre em português.
+Retomar a feature F23_ECONOMIA_MENSURAVEL (SDD Open), Grupo A. Responda sempre em português.
 
-Contexto: B1 publicada na v2.18.0 e B3 na v2.19.0 (main = fb7ee82 com a curadoria da B3). A B3 tirou o 2º revisor do
-caminho quando não há risco; na própria B3 a revisão custou US$ 12 contra US$ 53 das sessões: a economia maior é a B2.
-Abra uma frente nova com a sdd-new-session (feature_id F23B2_MODELO_POR_PAPEL), nascida de origin/main.
-Leia primeiro: sdd/handoffs/HANDOFF_F23_ECONOMIA_MENSURAVEL.md (Falta, Decisões, Casos e testes em aberto), o bloco 2
-do sdd/features/BRAINSTORM_F23_ECONOMIA_MENSURAVEL.md (B2: slot de modelo por papel; gabarito do histórico; o mais barato
-que bate a meta, com repetições e teto de gasto), e a seção Sempre de sdd/playbook.md (LM-037 e LM-038 são novas).
-Starter já na v1.5.24 (8ª geração, a partir da v2.19.0).
+Contexto: B1 publicada na v2.18.0, B3 na v2.19.0 e B2 (modelo por papel) na v2.21.0 (main = 2204a14). Na B2 o curador
+mediu (sonnet, 64% mais barato, 12 de 12 na meta); o avaliador não calibrou (referência fora da meta) e a meta dele
+ficou para redesenhar. Abra uma frente nova com a sdd-new-session, nascida de origin/main.
+Leia primeiro: sdd/handoffs/HANDOFF_F23_ECONOMIA_MENSURAVEL.md (Falta, Decisões, Casos e testes em aberto), o bloco 3
+do sdd/features/BRAINSTORM_F23_ECONOMIA_MENSURAVEL.md (Grupo A: A1 a A4, decisões ESCOPO-1, 2, 6 e 7) e a seção Sempre
+de sdd/playbook.md.
 Não faça: editar o plano fora da worktree sdd-open-docs-f16; corrigir direto no starter; pôr nome ou preço de modelo
 no pacote; número medido no repositório privado em documento do Open.
-Landmines: MANIFEST.txt para todo arquivo novo do pacote (LM-037); sdd-release no teto de 500 linhas (LM-038);
-prova de prompt com a série da versão antiga primeiro (LM-011); o qwen passa do teto com diff grande (o codex audita).
+Landmines: MANIFEST.txt para todo arquivo novo do pacote (LM-037); sdd-release no teto de 500 linhas (LM-038); teste
+que pergunta a plataforma usa as constantes de tests/apoio.py, nunca os.name (B2); série de medição numa caixa de
+areia igual à sessão real (B2).
 ```
 
 ---
 
 ## Histórico de slices
+
+### B2 modelo por papel — 2026-11-17
+
+- Publicada na `v2.21.0` (PR #37, squash `2204a14`; OK prévio do Roberto para a release com tudo verde). Veredito CONCERNS.
+- feature_id `F23B2_MODELO_POR_PAPEL`; worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-f23b2-modelo-por-papel`, branch `feat/f23b2-modelo-por-papel`.
+- Define v1.2 (11 ATs): par medido curador + avaliador (Roberto); teto da medição pago US$ 0 e nominal US$ 200; governança dispensada (Roberto); S20 aplicado (AT-011), S18 recusado. Design v1.2 (10 decisões; revisão D1: 10 aplicados, 2 rebatidos; `--casos` tirado na rodada 3).
+- Build: série do curador completa (ESCOLHIDO sonnet); avaliador com 3 tentativas e a referência fora da meta. Revisão do código em 5 rodadas: 31 achados aplicados com teste, 3 rebatidos, 2 pendências; raio de impacto: 3 consertos (`c12a475`); CI do Windows: trava do `msvcrt` num byte além do fim (`4f2acb2`).
+- Documentos: `sdd/features/{DEFINE,DESIGN}_F23B2_MODELO_POR_PAPEL.md`, `sdd/reports/BUILD_REPORT_F23B2_MODELO_POR_PAPEL.md`, `sdd/reviews/LEDGER_REVISAO_F23B2_MODELO_POR_PAPEL.md`, `sdd/releases/F23B2_MODELO_POR_PAPEL/b2_v2.21.0.yaml`, `sdd/reports/evidence/F23B2_MODELO_POR_PAPEL/` (gabarito, medições, logs).
 
 ### B3 cadeia de revisão pelos dados — 2026-11-16
 

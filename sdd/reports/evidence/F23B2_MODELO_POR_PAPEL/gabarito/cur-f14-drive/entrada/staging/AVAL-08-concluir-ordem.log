@@ -1,0 +1,113 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo $V/x "test -f .verde"; printf "import sys\nsys.exit(0)\n" > sdd/bin/report-lint.py; git add -A; git commit -qm stub
+drv iniciar $D; feito
+echo "== concluir sem gate + codigo sujo (AT-010: COMMITAR)"; echo sujo > sujo.txt; drv concluir $D; git add sujo.txt; git commit -qm sujo --quiet
+echo "== verde, depois tarefa reaberta (o que o CORRIGIR manda fazer); concluir x proximo"; touch .verde; drv verificar $D; echo x > sdd/reports/BUILD_REPORT_F.md
+printf -- "- [ ] a\n- [x] b\n" > sdd/reports/progress/PROGRESS_F.md; drv proximo $D; drv concluir $D; sed -n 1,3p sdd/reports/DRIVE_REPORT_F.md
+echo "== 2o repo: DESIGN ganha linha do manifest depois do verde (so documento)"; V2=$(novo); mkrepo $V2/x "true"; printf "import sys\nsys.exit(0)\n" > sdd/bin/report-lint.py; git add -A; git commit -qm stub; drv iniciar $D; feito; drv verificar $D; echo x > sdd/reports/BUILD_REPORT_F.md
+printf "| 3 | novo | Create | x | (general) | None |\n" >> $V2/linha; python3 - $V2/linha <<PY
+import sys
+t=open("sdd/features/DESIGN_F.md").read().replace("\n**Total Files:** 2",open(sys.argv[1]).read()+"\n**Total Files:** 3")
+open("sdd/features/DESIGN_F.md","w").write(t)
+PY
+git add -A; git commit -qm "design cresceu"; drv concluir $D; drv proximo $D
+echo "== 3o repo: DESIGN renomeado depois do verde"; V3=$(novo); mkrepo $V3/x "true"; printf "import sys\nsys.exit(0)\n" > sdd/bin/report-lint.py; git add -A; git commit -qm stub; drv iniciar $D; feito; drv verificar $D; echo x > sdd/reports/BUILD_REPORT_F.md; git mv sdd/features/DESIGN_F.md sdd/features/x.md; git commit -qm mv; drv proximo $D; drv concluir $D
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+== concluir sem gate + codigo sujo (AT-010: COMMITAR)
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+== verde, depois tarefa reaberta (o que o CORRIGIR manda fazer); concluir x proximo
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 2 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+# DRIVE_REPORT: F
+
+O teste final passou e os relatórios estão prontos. Nada foi publicado. Rodadas vermelhas: 0 de 3.
+== 2o repo: DESIGN ganha linha do manifest depois do verde (so documento)
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 3 de 3 — novo
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+== 3o repo: DESIGN renomeado depois do verde
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: DESIGN
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ rode a fase Design sobre este DEFINE e chame proximo de novo.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+[exit=0]

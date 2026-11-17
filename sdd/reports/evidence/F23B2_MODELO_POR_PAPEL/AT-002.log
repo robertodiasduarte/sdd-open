@@ -1,0 +1,10 @@
+$ python3 -m unittest -v test_f23b2_papeis.AT001AT002Slot.test_valor_invalido_sai_64_sem_repetir_o_valor_e_sem_gravar_brief test_f23b2_papeis.AT001AT002Slot.test_papel_fora_da_lista_sai_64 test_f23b2_papeis.AT008AT011Executor.test_modelo_do_candidato_e_validado_como_o_slot   # AT-002 · HEAD c12a475 · 2026-11-17 08:37
+test_valor_invalido_sai_64_sem_repetir_o_valor_e_sem_gravar_brief (test_f23b2_papeis.AT001AT002Slot) ... ok
+test_papel_fora_da_lista_sai_64 (test_f23b2_papeis.AT001AT002Slot) ... ok
+test_modelo_do_candidato_e_validado_como_o_slot (test_f23b2_papeis.AT008AT011Executor) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.441s
+
+OK
+[exit=0]

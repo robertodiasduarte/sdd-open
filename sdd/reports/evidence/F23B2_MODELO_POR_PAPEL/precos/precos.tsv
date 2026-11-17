@@ -1,0 +1,8 @@
+# Tarifas da referência da skill claude-api (cache de 2026-11-03, página https://platform.claude.com/docs/en/about-claude/pricing). Uso: linha de base da F23, fora do pacote.
+claude	claude-opus-5-5	4.00	20.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-fable-5-2	8.00	40.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-fable-5-1	10.00	50.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-sonnet-5-5	2.00	10.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+claude	claude-opus-4-8	5.00	25.00	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-15
+# Claude Haiku 5.5: tabela de prompt acima de 100K tokens (a mais cara das duas; as sessões dos papéis passam de 100K de contexto), skill claude-api (cache de 2026-11-03), shared/model-migration.md e shared/models.md. Uso: medição da F23B2, fora do pacote.
+claude	claude-haiku-5-5	0.50	2.50	https://platform.claude.com/docs/en/about-claude/pricing	2026-11-16

@@ -1,0 +1,47 @@
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/mutantes.py </dev/null
+controle (sem mutação):
+  verde 60s
+MORTO M02c1 sugestão já julgada volta ← test_playbook_curator FAILED (failures=1) · FAIL: test_sugestao_ja_julgada_nao_volta_e_achado_novo_volta (test_playbook_curator.JaJulg
+MORTO M03c1 candidato já julgado volta ← test_playbook_curator FAILED (failures=1) · FAIL: test_candidato_ja_julgado_nao_volta (test_playbook_curator.JaJulgado)
+MORTO M05c1 selo não vê link ← test_curadoria_bloco FAILED (failures=1) · FAIL: test_link_plantado_no_staging_reprova (test_curadoria_bloco.Fronteira)
+MORTO M06c1 — vale como linguagem simples ← test_curadoria_bloco FAILED (failures=3) · FAIL: test_detalhes_que_passavam (test_curadoria_bloco.Reprova) (simples='—')
+MORTO M08c1 bullet já no universo não vira pendente ← test_playbook_invariantes FAILED (failures=1) · FAIL: test_licao_antiga_sem_classificacao_entra_na_colheita (test_playbook_invariantes.Cru
+VIVO  M09c1 cruzar não troca o check= (rodei test_playbook_invariantes)
+MORTO M10c1 archive vence sdd/ ← test_playbook_curator FAILED (failures=1) · FAIL: test_o_de_sdd_vence_o_do_archive (test_playbook_curator.Preparar)
+MORTO M16c1 staging que é link é seguido ← test_playbook_curator FAILED (failures=1) · FAIL: test_staging_ou_pasta_pai_que_e_link_recusa (test_playbook_curator.Preparar)
+MORTO M17c1 trace com ponto inicial ← test_playbook_curator FAILED (failures=1) · FAIL: test_nome_com_ponto_no_inicio_nao_vira_arquivo_oculto (test_playbook_curator.Trace)
+MORTO M19c1 frente/sdd como link ← test_copiar_docs FAILED (failures=1) · FAIL: test_frente_sdd_que_e_link_nao_recebe (test_copiar_docs.NaoCopia)
+MORTO M20c1 destino como link ← test_copiar_docs FAILED (failures=1) · FAIL: test_destino_que_e_link_quebrado_nao_recebe (test_copiar_docs.NaoCopia)
+MORTO M21c1 anti-collapse sem piso ← test_playbook_curator FAILED (failures=1) · FAIL: test_um_alterado_passa_em_playbook_pequeno (test_playbook_curator.PisoDoAntiCollapse
+MORTO N01 H3 impressão da 2ª linha não vai ao registro ← test_playbook_curator FAILED (failures=1) · FAIL: test_2_linhas_da_mesma_licao_nao_contam_em_2_releases (test_playbook_curator.JaJulga
+MORTO N02 H2 contador repetido passa ← test_curadoria_bloco FAILED (failures=1) · FAIL: test_contador_repetido_ou_com_outro_id_nao_soma (test_curadoria_bloco.Reprova)
+MORTO N03 H2 coluna LM livre ← test_curadoria_bloco FAILED (failures=2) · FAIL: test_contador_repetido_ou_com_outro_id_nao_soma (test_curadoria_bloco.Reprova)
+MORTO N04 H4 seção nova no fim, depois de Tombstones ← test_playbook_curator FAILED (failures=1) · FAIL: test_secao_da_lista_que_falta_nasce_no_lugar_certo (test_playbook_curator.Aplicar)
+MORTO N05 M1 continuação não lida ← test_playbook_curator FAILED (failures=1) · FAIL: test_promovido_na_continuacao_e_lido_e_trocado_la (test_playbook_curator.Aplicar)
+MORTO N06 M2 IGNORADO não conta para o exit ← test_playbook_curator FAILED (failures=1) · FAIL: test_cada_tipo_sozinho_sai_0_porque_alguem_precisa_saber (test_playbook_curator.Said
+MORTO N07 M3 promovido morto vale como vivo ← test_playbook_invariantes FAILED (failures=2) · FAIL: test_promovido_para_que_nao_e_arquivo_nao_vira_check (test_playbook_invariantes.Cruz
+MORTO N08 M4 selo ignora derivado ← test_curadoria_bloco FAILED (failures=3) · FAIL: test_derivado_plantado_depois_do_selo_reprova (test_curadoria_bloco.Fronteira) (arqu
+MORTO N09 M6 aplicar-inv pisa ID igual ← test_playbook_invariantes FAILED (failures=1) · FAIL: test_id_igual_com_outra_regra_nao_pisa_a_da_base (test_playbook_invariantes.AplicarI
+VIVO  N10 L1 veredito sem teto de tamanho (rodei test_playbook_curator)
+MORTO N11 L1 nota depois do veredito conta ← test_playbook_curator FAILED (failures=1) · FAIL: test_nota_depois_do_veredito_nao_recebe_contagem (test_playbook_curator.LinhasQueNao
+MORTO N12 L1 FAIL-FAST conta ← test_playbook_curator FAILED (failures=1) · FAIL: test_fail_composto_nao_e_achado (test_playbook_curator.LinhasQueNaoSaoAchado)
+MORTO N13 L2 data impossível aceita ← test_playbook_curator FAILED (failures=1) · FAIL: test_data_impossivel_sai_64 (test_playbook_curator.Aplicar)
+MORTO N14 L3 check absoluto passa ← test_playbook_invariantes FAILED (failures=2) · FAIL: test_campo_vazio_e_check_que_nao_e_arquivo (test_playbook_invariantes.Trava) (caso='
+MORTO N15 L3 tarefa vazia passa ← test_playbook_invariantes FAILED (failures=1) · FAIL: test_campo_vazio_e_check_que_nao_e_arquivo (test_playbook_invariantes.Trava) (caso='
+MORTO N16 L4 colheita como evidência ← test_curadoria_bloco FAILED (failures=1) · FAIL: test_detalhes_que_passavam (test_curadoria_bloco.Reprova)
+MORTO N17 L4 DESCARTAR sem motivo ← test_curadoria_bloco FAILED (failures=1) · FAIL: test_detalhes_que_passavam (test_curadoria_bloco.Reprova)
+MORTO N18 AUTO de bullet pendente entra sozinho ← test_curadoria_bloco FAILED (failures=1) · FAIL: test_mordeu_com_pendencia_vira_pergunta (test_curadoria_bloco.UniversoDasInvariantes
+MORTO N19 cruzar: 2ª aposentadoria sem agregar (descarte não avisa) ← test_playbook_invariantes FAILED (failures=1) · FAIL: test_licao_descartada_aposentada (test_playbook_invariantes.Cruzar)
+MORTO N20 retomada limpa o staging ← test_playbook_curator FAILED (failures=1) · FAIL: test_release_seguinte_limpa_o_que_sobrou_e_retomar_nao_mexe (test_playbook_curator.P
+MORTO N21 preparar copia nome maior (glob frouxo) ← test_playbook_curator FAILED (failures=1) · FAIL: test_copia_so_a_feature_e_nao_toca_nos_originais (test_playbook_curator.Preparar)
+VIVO  N22 preparar: AVALIACAO do archive some (rodei test_playbook_curator)
+MORTO N23 seta do retomar sem conferência ← test_playbook_curator FAILED (failures=1) · FAIL: test_release_seguinte_limpa_o_que_sobrou_e_retomar_nao_mexe (test_playbook_curator.P
+MORTO N24 fronteira não lê o índice ← test_governanca_fronteira FAILED (failures=3) · FAIL: test_git_add_conta (test_governanca_fronteira.EstadoDoGit)
+MORTO N25 frase da publicação em todo papel ← test_fluxo FAILED (failures=1) · FAIL: test_outro_papel_nao_ganha_a_frase_da_publicacao (test_fluxo.Despachar)
+VIVO  N26 aplicar-inv com 2 novas de mesmo ID (controle do achado): perde a 2ª é o estado atual (rodei test_playbook_invariantes)
+VIVO  N27 copiar-docs sem tirar acento (rodei test_copiar_docs)
+VIVO  N28 linha DELTA sem espaço em arquivo some da cobertura (rodei test_curadoria_bloco)
+controle depois:
+  verde
+resumo: 40 plantados · 34 mortos · 6 vivos · 0 não aplicaram
+[exit=0]

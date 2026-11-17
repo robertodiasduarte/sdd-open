@@ -1,0 +1,17 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/p01.py /Users/robertoduarte/rdd-worktrees/sdd-open-f14-playbook /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu </dev/null
+DESIGN_F10_REVISAO.md linhas_de_delta_novo=3 novo_x_velho=igual oraculo=igual 
+DESIGN_F11_GATE.md linhas_de_delta_novo=3 novo_x_velho=igual oraculo=igual 
+DESIGN_F12_CONTEXTO.md linhas_de_delta_novo=3 novo_x_velho=igual oraculo=igual 
+DESIGN_F13_UX_LLM.md linhas_de_delta_novo=2 novo_x_velho=igual oraculo=igual 
+DESIGN_F14_PLAYBOOK.md linhas_de_delta_novo=3 novo_x_velho=igual oraculo=igual 
+DESIGN_F4_CONVERSA.md linhas_de_delta_novo=2 novo_x_velho=igual oraculo=igual 
+DESIGN_F5_CONHECIMENTO.md linhas_de_delta_novo=2 novo_x_velho=igual oraculo=igual 
+DESIGN_F6_DOCS.md linhas_de_delta_novo=3 novo_x_velho=igual oraculo=igual 
+DESIGN_F7_EVIDENCIA.md linhas_de_delta_novo=0 novo_x_velho=igual oraculo=igual 
+DESIGN_F8_HOOKS.md linhas_de_delta_novo=2 novo_x_velho=igual oraculo=igual 
+DESIGN_F9_FLUXO.md linhas_de_delta_novo=3 novo_x_velho=igual oraculo=igual 
+formatos de cabecalho:
+  8 x LM-nnn | Superfície | Tratamento
+  3 x Landmine (⛔) | Fonte | Veredito | Como / Por quê
+documentos=11 linhas_de_tabela=44 novo_x_velho_diferem=0 novo_x_oraculo_diferem=0
+[exit=0]

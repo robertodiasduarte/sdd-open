@@ -1,0 +1,24 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/03.sh
+# CONTROLE da restauração do item 5 (passo 11): DEFINE sobrescrito
+novo c3; cp sdd/features/DEFINE_F.md "$T/DEFINE.antes"; antes
+cd "$d/w" && pwd -P
+--- cenário c3 (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c3/w) ---
+[--snapshot antes exit=0]
+printf 'mexido pelo revisor\n' > "$DEF"
+rm -f sdd/features/DEFINE_F.md && cp "$T/DEFINE.antes" sdd/features/DEFINE_F.md; echo "[restauração exit=$?]"
+[restauração exit=0]
+cmp "$T/DEFINE.antes" sdd/features/DEFINE_F.md; echo "[cmp exit=$?]"
+[cmp exit=0]
+# CONTROLE: o revisor pôs um link no lugar do DEFINE apontando para a.txt: o rm desfaz o link, a.txt não é tocado
+novo c3b; cp sdd/features/DEFINE_F.md "$T/DEFINE.antes"; antes
+cd "$d/w" && pwd -P
+--- cenário c3b (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c3b/w) ---
+[--snapshot antes exit=0]
+rm "$DEF"; ln -s "$W/a.txt" "$DEF"
+rm -f sdd/features/DEFINE_F.md && cp "$T/DEFINE.antes" sdd/features/DEFINE_F.md; echo "[restauração exit=$?]"
+[restauração exit=0]
+cmp "$T/DEFINE.antes" sdd/features/DEFINE_F.md; echo "[cmp exit=$?]"; cat a.txt; test -L sdd/features/DEFINE_F.md; echo "[ainda é link? exit=$? (1 = não)]"
+[cmp exit=0]
+a
+[ainda é link? exit=1 (1 = não)]
+[exit=0]

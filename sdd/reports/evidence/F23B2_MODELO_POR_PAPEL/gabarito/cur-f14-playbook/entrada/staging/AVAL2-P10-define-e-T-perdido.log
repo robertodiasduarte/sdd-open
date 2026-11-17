@@ -1,0 +1,18 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/define.sh
+--- DEFINE mexido: restaura
+[exit=0]
+original
+--- T vazio: nada é apagado
+[exit=1]
+mexido
+--- DEFINE trocado por link: o cp não escreve no alvo
+[exit=0]
+alvo
+-rw-r--r--@ 
+--- 17b com T perdido na sessão nova: --comparar
+[comparar exit=64]
+uso: sdd/bin/governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir…] | --comparar <antes> <depois> <permitido>…
+RESULTADO: ERRO DE USO
+🔴 bloco: a saída do --comparar não tem a linha 'RESULTADO: SÓ O PERMITIDO MUDOU': fronteira não verificada nunca vale como 'nada mudou'
+[conferir exit=2]
+[exit=0]

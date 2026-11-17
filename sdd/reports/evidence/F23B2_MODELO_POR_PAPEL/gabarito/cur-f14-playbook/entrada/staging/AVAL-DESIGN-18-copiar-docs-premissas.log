@@ -1,0 +1,14 @@
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/frente.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/fw /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/tmp
+--- frente nasce de origin/main (passo 2, item 3 da skill)
+--- a pasta sdd/features existe na frente?
+ls: ../frentes/relatorio-mensal/sdd/features: No such file or directory
+--- o que 'git ls-files --others' vê em sdd/features e sdd/reviews do principal (a lista do Decision 9)
+sdd/features/DEFINE_RELATORIO_MENSAL.md
+sdd/features/DESIGN_RELATÓRIO_MENSAL.md
+--- BRAINSTORM: salvo no git do principal, ausente na frente e fora da lista
+sdd/features/BRAINSTORM_RELATORIO_MENSAL.md
+ls: ../frentes/relatorio-mensal/sdd/features/BRAINSTORM_RELATORIO_MENSAL.md: No such file or directory
+--- com core.quotePath padrão e sem -z, o nome com acento sai escapado
+sdd/features/DEFINE_RELATORIO_MENSAL.md
+"sdd/features/DESIGN_RELAT\303\223RIO_MENSAL.md"
+[exit=0]

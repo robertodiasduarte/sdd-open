@@ -1,0 +1,1 @@
+ava-f11-gate-c1 — descartado em 2026-11-17: a falha histórica do AT-003 só aparece por sabotagem (mutante no leitor de vereditos do auditor); a referência, rodada do zero, deu o AT-003 como PASS (MEDICAO-avaliador.md). Trocado por ava-f21-engenharia-reversa-c1, cuja falha aparece por execução.

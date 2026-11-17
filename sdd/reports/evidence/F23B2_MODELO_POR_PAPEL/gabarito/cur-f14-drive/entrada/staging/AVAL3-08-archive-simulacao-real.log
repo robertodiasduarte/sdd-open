@@ -1,0 +1,44 @@
+$ /usr/bin/python3 -I -B sdd/bin/sdd-archive.py --hoje 2026-11-05
+
+== Lote com-ledger: 0 arquivo(s) ==
+
+== Lote sem-ledger: 0 arquivo(s) ==
+
+== Lote soltos: 0 arquivo(s) ==
+
+== Protegidos: 21 grupo(s) ==
+  F10_REVISAO (8 documento(s)): citada numa ficha aberta
+  F11_GATE (6 documento(s)): citada numa ficha aberta
+  F12_CONTEXTO (8 documento(s)): citada numa ficha aberta
+  F13_UX_LLM (9 documento(s)): citada numa ficha aberta
+  F14_DRIVE (7 documento(s)): citada numa ficha aberta
+  F14_PLAYBOOK (9 documento(s)): citada numa ficha aberta
+  F1_MANUTENCAO (4 documento(s)): citada numa ficha aberta
+  F2_TERRENO (4 documento(s)): citada numa ficha aberta
+  F3_BUILD_RELEASE (4 documento(s)): citada numa ficha aberta
+  F4_CONVERSA (6 documento(s)): citada numa ficha aberta
+  F4_F15_CONSOLIDADO (1 documento(s)): documento citado numa ficha aberta
+  F5_CONHECIMENTO (8 documento(s)): citada numa ficha aberta
+  F6_DOCS (7 documento(s)): citada numa ficha aberta
+  F7_EVIDENCIA (8 documento(s)): citada numa ficha aberta
+  F8_HOOKS (8 documento(s)): citada numa ficha aberta
+  F9_FLUXO (8 documento(s)): citada numa ficha aberta
+  FRONTEIRA_F14_PLAYBOOK (1 documento(s)): documento citado numa ficha aberta
+  M1 (1 documento(s)): citada numa ficha aberta
+  STARTER_PARA_OPEN (1 documento(s)): documento citado numa ficha aberta
+  W0 (1 documento(s)): citada numa ficha aberta
+  ESCOPO_F16_AMBIENTE.md (1 documento(s)): documento citado numa ficha aberta
+
+== Recentes (ficam): 0 grupo(s) ==
+
+== Sem classificação (decisão sua): 0 ==
+
+== Subpastas (ficam): 2 ==
+  sdd/reports/briefs/
+  sdd/reports/evidence/
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=21 · recentes=0 · sem classificação=0 · subpastas=2
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[exit=0]

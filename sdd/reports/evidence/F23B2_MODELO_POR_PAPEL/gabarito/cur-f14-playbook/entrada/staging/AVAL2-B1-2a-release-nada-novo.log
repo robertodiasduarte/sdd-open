@@ -1,0 +1,19 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/passo-1a3.sh a
+--- item 1
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO
+copiado: sdd/features/DESIGN_DEMO.md
+copiado: sdd/reports/BUILD_REPORT_DEMO.md
+copiado: sdd/reports/evidence/DEMO/AVAL-01-teste.log
+copiado: sdd/reports/evidence/DEMO/CURATOR-colhidos.txt
+RESULTADO: STAGING PRONTO (4 arquivo(s))
+→ os originais não foram tocados; rode --colher "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO" sdd/playbook.md e guarde a saída em colheita.txt nessa pasta.
+[exit=0]
+STG=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO
+--- item 2
+0 deltas colhidos em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO (3 arquivo(s) elegíveis) — ausência é informação, não verde
+[rc=1]
+JA_JULGADO 4 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: NADA A COLHER
+→ registre "Curadoria: 0 deltas": esta feature não trouxe lição, contagem nem promoção pendente.
+[exit=0]

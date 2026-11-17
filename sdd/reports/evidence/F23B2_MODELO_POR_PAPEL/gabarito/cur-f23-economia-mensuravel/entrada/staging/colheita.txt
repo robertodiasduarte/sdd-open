@@ -1,0 +1,18 @@
+TABELA_SEM_CABECALHO DESIGN_F23_ECONOMIA_MENSURAVEL.md:184 (a tabela precisa das colunas fonte ou lm-nnn ou id e veredito ou tratamento: não contei nada dela)
+DELTA LM-001 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:51 · fp=7c86d4eaff
+DELTA LM-002 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:52 · fp=aa677f2bd1
+DELTA LM-003 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:53 · fp=a48fb87751
+DELTA LM-006 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:54 · fp=db4e03eddd
+DELTA LM-012 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:55 · fp=58a909666f
+DELTA LM-014 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:56 · fp=b2055d8b92
+DELTA LM-015 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:57 · fp=a7ddbc2b85
+DELTA LM-017 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:58 · fp=61a8af397f
+DELTA LM-029 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:59 · fp=472c65592c
+DELTA LM-030 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:60 · fp=9cc58a4cb1
+CANDIDATO #1 → LM-035 · secao=Sempre · sup=`starter` `gerar-starter` `sdd/bin` `trocas` · evidencia=sdd/reports/evidence/F23_ECONOMIA_MENSURAVEL/VERIFY-GATE-c32f48d.log · fp=4e086dac64
+   delta: ADD Sempre :: sup: `starter` `gerar-starter` `sdd/bin` `trocas` :: Texto novo numa skill que o starter gera (a lista de `scripts/starter/lista.txt`) e que cita `sdd/bin/…` ou um fragmento de `sdd/templates/` derruba o gerador do starter ("o lint do init achou N citação(ões) a arquivo que só o init cria") e, com ele, 30 testes da suíte; na F23 isso só apareceu no 2º gate. **Do instead:** ao mexer numa skill da lista, rode `python3 -B -m unittest test_gerar_starter` antes do gate inteiro e, se o texto só vale com o `init` do Open, tire-o do starter por uma troca em `scripts/starter/trocas/<skill>.md`. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-036 · secao=Sempre · sup=`usage` `message.id` `cache_read_input_tokens` `token_count` `custo` · evidencia=sdd/reports/evidence/F23_ECONOMIA_MENSURAVEL/MUTANTE-AGRUPAR.log · fp=8e0f95ab4d
+   delta: ADD Sempre :: sup: `usage` `message.id` `cache_read_input_tokens` `token_count` `custo` :: Somar o `usage` do registro local do agente linha a linha infla o custo: o Claude Code grava uma linha por bloco de conteúdo e repete o `usage` da mesma mensagem (na F22, 1.064 linhas para 472 mensagens, até 13 repetições), e o Codex informa total acumulado, que se repete. **Do instead:** agrupe por `message.id` (maior valor de cada campo) no Claude e use a diferença entre totais consecutivos no Codex; o cache lido e o criado têm preço próprio (o criado, na validade que o agente usa). → ficha: — · promovido_para: —
+resumo: deltas=10 (ajudou=10 mordeu=0) candidatos=2 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.

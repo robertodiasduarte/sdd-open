@@ -1,0 +1,29 @@
+DELTA LM-001 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:199 · fp=5558d2504c
+DELTA LM-002 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:200 · fp=37e29569bf
+DELTA LM-003 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:201 · fp=baa1b8ae46
+DELTA LM-006 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:202 · fp=1a1bd5c173
+DELTA LM-005 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:203 · fp=9a14c3df59
+DELTA LM-021 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:204 · fp=734577f2c9
+DELTA LM-009 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:205 · fp=631eba8a8b
+DELTA LM-010 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:206 · fp=8c8d841e75
+DELTA LM-011 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:207 · fp=77703ce2ae
+DELTA LM-012 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:208 · fp=6f5bd3718d
+DELTA LM-013 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:209 · fp=c2f10fcc77
+DELTA LM-014 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:210 · fp=a2c02dd055
+DELTA LM-015 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:211 · fp=e9ed123012
+DELTA LM-017 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:212 · fp=5e67ae727a
+DELTA LM-018 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:213 · fp=22e12c08e7
+DELTA LM-028 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:214 · fp=6e09a9762a
+DELTA LM-029 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:215 · fp=2065e97bc9
+DELTA LM-030 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:216 · fp=3e72a3e66e
+DELTA LM-036 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:217 · fp=2adf7368ed
+DELTA LM-035 ajudou+1 · conf=2026-11-16 · evidencia=DESIGN_F23B3_CADEIA_REVISAO.md:218 · fp=79375093d3
+CANDIDATO #1 → LM-037 · secao=Reviews / harness · sup=`MANIFEST.txt` `publish-gate` `undeclared file` `arquivo novo` · evidencia=sdd/reports/evidence/F23B3_CADEIA_REVISAO/VERIFY-GATE-0c21571.log · fp=5bb44cf147
+   delta: ADD Reviews / harness :: sup: `MANIFEST.txt` `publish-gate` `undeclared file` `arquivo novo` :: Arquivo novo no pacote (prompt, teste, script) sem a linha dele no `MANIFEST.txt` derruba o Verify Gate inteiro no `publish-gate` ("undeclared file"), depois de montar a cópia limpa; na F23B3 custou um gate (os 3 prompts v2 e o módulo de testes novo). **Do instead:** ao criar arquivo no pacote, acrescente-o ao `MANIFEST.txt` no mesmo commit e rode `PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh <cópia de git archive>` antes do gate inteiro. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-038 · secao=Reviews / harness · sup=`injeção` `instrução escondida` `prova de prompt` `linha de base` `S18` · evidencia=sdd/reports/evidence/F23B3_CADEIA_REVISAO/S18-FORTE-JUIZ.log · fp=d7deba0421
+   delta: ADD Reviews / harness :: sup: `injeção` `instrução escondida` `prova de prompt` `linha de base` `S18` :: Uma sonda de comportamento contra injeção que passa também na versão antiga do prompt não prova o ganho da versão nova: na F23B3, as 2 sondas do S18 (instrução escondida e falso fim de material) passaram 3 de 3 com os prompts v1 e com os v2. **Do instead:** rode a série da versão antiga primeiro; se ela já passa, registre "proteção sem ganho medido" e procure uma sonda que a versão antiga reprove antes de chamar a mudança de prova. → ficha: — · promovido_para: —
+CANDIDATO #3 → LM-039 · secao=Reviews / harness · sup=`500 linhas` `sdd-release` `SKILL.md` `teto` `test_conversa` · evidencia=sdd/reports/evidence/F23B3_CADEIA_REVISAO/VERIFY-GATE-7e3868b.log · fp=2d617cfbd0
+   delta: ADD Reviews / harness :: sup: `500 linhas` `sdd-release` `SKILL.md` `teto` `test_conversa` :: A `sdd-release` está no teto de 500 linhas de `SKILL.md` (3 testes conferem); 2 linhas a mais derrubaram o Verify Gate inteiro da F23B3. **Do instead:** antes de acrescentar texto a uma skill, `wc -l` nela; no teto, condense a frase nova numa linha existente ou mova o detalhe para `references/`, e rode `test_conversa` antes do gate. → ficha: — · promovido_para: —
+resumo: deltas=20 (ajudou=20 mordeu=0) candidatos=3 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.

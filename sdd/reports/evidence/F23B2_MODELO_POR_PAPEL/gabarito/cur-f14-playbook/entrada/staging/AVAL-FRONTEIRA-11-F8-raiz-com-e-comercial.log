@@ -1,0 +1,46 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/11.sh
+# F8: raiz do projeto com & no nome; o agente edita e commita a.txt
+rm -rf "$S/e.f8"; mkdir -p "$S/e.f8/P&D fiscal" "$S/e.f8/T"; W="$(cd "$S/e.f8/P&D fiscal" && pwd -P)"; T="$S/e.f8/T"; REL="$W/sdd/reviews/R.md"; cd "$W"
+cd "$S/e.f8/P&D fiscal" && pwd -P
+git init -q -b main; git config user.email a@b.c; git config user.name t; printf 'a\n' > a.txt; git add -A; git commit -q -m base
+antes
+[--snapshot antes exit=0]
+printf 'adulterado\n' > a.txt; git commit -q -am agente
+depois; comparar
+[--snapshot depois exit=0]
+FORA: HEAD mudou durante o despacho (65a603ce63741175e603f28a0af16faca2865fc4 → 1514c08206b1a3344ac181aab78e97a8d2147c9c): o agente commitou
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f8/PD fiscal/a.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+ls "$W/a.txt"
+/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f8/P&D fiscal/a.txt
+# mesma coisa com | no nome: a lista de arquivos do commit some
+rm -rf "$S/e.f8b"; mkdir -p "$S/e.f8b/a|b" "$S/e.f8b/T"; W="$(cd "$S/e.f8b/a|b" && pwd -P)"; T="$S/e.f8b/T"; REL="$W/sdd/reviews/R.md"; cd "$W"
+cd "$S/e.f8b/a|b" && pwd -P
+git init -q -b main; git config user.email a@b.c; git config user.name t; printf 'a\n' > a.txt; git add -A; git commit -q -m base
+antes
+[--snapshot antes exit=0]
+printf 'adulterado\n' > a.txt; git commit -q -am agente
+depois; comparar
+[--snapshot depois exit=0]
+FORA: HEAD mudou durante o despacho (65a603ce63741175e603f28a0af16faca2865fc4 → 72161b241fc3f0181d376bdd0610edace1ac0c84): o agente commitou
+sed: 1: "s|^|/private/var/folder ...": bad flag in substitute command: 'b'
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+# vizinho legítimo: raiz com espaço
+rm -rf "$S/e.f8c"; mkdir -p "$S/e.f8c/meu proj" "$S/e.f8c/T"; W="$(cd "$S/e.f8c/meu proj" && pwd -P)"; T="$S/e.f8c/T"; REL="$W/sdd/reviews/R.md"; cd "$W"
+cd "$S/e.f8c/meu proj" && pwd -P
+git init -q -b main; git config user.email a@b.c; git config user.name t; printf 'a\n' > a.txt; git add -A; git commit -q -m base
+antes
+[--snapshot antes exit=0]
+printf 'adulterado\n' > a.txt; git commit -q -am agente
+depois; comparar
+[--snapshot depois exit=0]
+FORA: HEAD mudou durante o despacho (028bf465b69350bb0ea3df7db521be8e7ebfe93f → b5f99185dd6498b7f3e1a01e02e93a8d231dda66): o agente commitou
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f8c/meu proj/a.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+[exit=0]

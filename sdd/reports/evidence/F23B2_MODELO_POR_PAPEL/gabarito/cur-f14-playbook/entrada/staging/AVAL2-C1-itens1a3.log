@@ -1,0 +1,38 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/passo-1a3.sh c
+--- item 1
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-c651e9907566/DEMO
+copiado: sdd/features/DESIGN_DEMO.md
+copiado: sdd/reports/BUILD_REPORT_DEMO.md
+copiado: sdd/reports/evidence/DEMO/AVAL-01-teste.log
+RESULTADO: STAGING PRONTO (3 arquivo(s))
+→ os originais não foram tocados; rode --colher "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-c651e9907566/DEMO" sdd/playbook.md e guarde a saída em colheita.txt nessa pasta.
+[exit=0]
+STG=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-c651e9907566/DEMO
+--- item 2
+[rc=0]
+IGNORADO LM-001 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-003 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-002 (não existe como bullet ativo em sdd/playbook.md)
+CANDIDATO #1 → LM-013 · secao=Backend · sup=`fila_de_envio` `idempotencia` · evidencia=BUILD_REPORT_DEMO.md:9 · fp=321cf1cc56
+   delta: ADD Backend :: sup: `fila_de_envio` `idempotencia` :: Fila sem chave de idempotência duplica o envio no reprocessamento. **Do instead:** grave a chave antes de enviar e confira antes de reenviar. → ficha: — · promovido_para: —
+PROMOVER? LM-010 mordeu=2 promovido_para=— :: promover a mecanismo? sugestão: hook em sdd/hooks/, comando de release.landmines_cmd ou asserção no Verify Gate, com um caso que falha antes (seção Sempre)
+INV_PENDENTE LM-010 (já no universo, sem classificação)
+   proposta A: - [INV-001] estado=<ok|auto|humano> origem=LM-010 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-010] descartado :: <motivo>
+INV_PENDENTE LM-011 (já no universo, sem classificação)
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-011 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-011] descartado :: <motivo>
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=1 rejeitados=0 promocoes=1 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+--- item 3 (antes do despacho)
+T=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-fronteira-7aee5e2a4bc6/DEMO/curador
+RESULTADO: SELO IMPRESSO (5 arquivo(s))
+→ guarde o stdout FORA da pasta de staging (na pasta do snapshot) e passe ao --conferir-bloco.
+[selar exit=0]
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+[snapshot exit=0]
+?? sdd/reports/briefs/
+?? sdd/traces/
+[exit=0]

@@ -1,0 +1,144 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p9.sh </dev/null
+
+=== AT-036 bash 3.2: scripts novos
+[grep rc=1 (1 = sem achado)]
+
+=== AT-036/AT-025 lints
+[skill-lint rc=0]
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+      18
+[decisoes rc=0]
+🟢 sdd-decisoes-lint --sites: 25 pergunta(s) em 22 arquivo(s), cada uma com a marca de classe e no formato.
+[check-versions rc=0]
+PASS: check-versions — 18 skills com versão coerente, comparadas a v2.5.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+
+=== AT-037
+[diff rc=0 e vazio acima]
+
+=== AT-033
+ staff  15493 Nov  4 20:36 AVALIACAO_F10_REVISAO_20261101-ciclo1.md
+ staff  15749 Nov  4 20:36 AVALIACAO_F10_REVISAO_20261101-ciclo2.md
+ staff   7350 Nov  4 20:36 REVISAO_DESIGN_F10_REVISAO_20261031.md
+ staff   6283 Nov  4 20:36 REVISAO_DESIGN_F11_GATE_20261101.md
+ staff   3427 Nov  4 20:36 REVISAO_DESIGN_F12_CONTEXTO_20261103.md
+ staff   5266 Nov  4 20:36 REVISAO_DESIGN_F13_UX_LLM_20261104.md
+ staff   6587 Nov  5 09:51 REVISAO_DESIGN_F14_PLAYBOOK_20261105.md
+ staff   2261 Nov  4 20:36 REVISAO_DESIGN_F5_CONHECIMENTO_20261029.md
+ staff   3535 Nov  4 20:36 REVISAO_DESIGN_F6_DOCS_20261029.md
+ staff  11734 Nov  4 20:36 REVISAO_DESIGN_F7_EVIDENCIA_20261030.md
+ staff  12988 Nov  4 20:36 REVISAO_DESIGN_F8_HOOKS_20261030.md
+ staff   8820 Nov  4 20:36 REVISAO_DESIGN_F9_FLUXO_20261031.md
+ staff   8456 Nov  5 09:49 REVISAO_FRONTEIRA_F14_PLAYBOOK_20261105.md
+34:### F1 — MEDIUM — `governanca-bloco.py` devolve ✅ e exit 0 com `FORA:` no `comparar.txt`, ou com ele vazio
+44:### F2 — MEDIUM — A restauração do item 5 apaga o DEFINE quando a cópia não é alcançada
+54:### F3 — MEDIUM — Estado do git fora do snapshot: índice, branch, flags do índice e `.git/` passam como "nada mudou"
+100:VEREDITO: NEEDS_WORK — HIGH 0 · MEDIUM 3 (F1, F2, F3) · LOW 6 (F4, F5, F6, F7, F8, F9)
+0
+[BUILD_REPORT_F14 presentes acima; AT-033 pede rebate no build report]
+
+=== AT-029
+✅ sdd/fixtures/handoff/HANDOFF_COMPLETO.md: HANDOFF válido
+[lint rc=0]
+## Eventos tmpl=1 fix=1
+## Recomendações tmpl=1 fix=1
+## Veredito tmpl=1 fix=1
+## Setup tmpl=1 fix=1
+## Tarefas tmpl=1 fix=1
+## Ship tmpl=1 fix=1
+## Ship
+
+> O que publicar e o que limpar depois: a frente só fecha quando os dois estão feitos.
+
+- **Publicar:** {o que sobe e por qual comando ou skill}
+- **Limpar:** {worktree e branch a remover, artefatos a arquivar, com o comando}
+## Tarefas
+
+> Numeradas, em ordem, cada uma com o critério de pronto.
+
+1. **{tarefa, começando por verbo}** — Pronto quando: {critério verificável, com o comando}
+
+=== AT-010 PLAYBOOK_SECTIONS
+1
+[sem a env rc=2]
+[Tombstones rc=2]
+[Backend fora da env rc=2]
+[defaults iguais rc=0]
+
+=== AT-030 ambiente herdado
+[trace rc=0]
+OK
+[gov rc=0]
+OK
+ls: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p9.aNEP/herdado: No such file or directory
+
+=== AT-045 fronteira ao vivo
+rc=0 :: controle permitido :: 
+rc=1 :: branch :: FORA: a branch mudou durante o despacho (refs/heads/main → refs/heads/z)
+rc=1 :: git add :: FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcad
+rc=1 :: assume-unchanged :: FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcad
+rc=1 :: skip-worktree :: FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcad
+rc=1 :: config local :: FORA: a configuração, o exclude ou os hooks de .git mudaram durante o despacho
+rc=1 :: info/exclude :: FORA: a configuração, o exclude ou os hooks de .git mudaram durante o despacho
+rc=1 :: hook novo :: FORA: a configuração, o exclude ou os hooks de .git mudaram durante o despacho
+rc=0 :: git status nao acusa :: 
+[pasta ilegivel rc=64]
+FORA: HEAD mudou durante o despacho (45559ce556eb82f49fbefc22b833b9b065aab75c → bca7191e312e316f2706b3097c086f
+FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcado para o git não olhar)
+/Users/robertoduarte/rdd-worktrees/sdd-open-f14-playbook/sdd/bin/governanca-fronteira.sh: line 243: printf: write error: Broken pipe
+
+=== AT-045 governanca-bloco
+6:    python3 sdd/bin/governanca-bloco.py <resposta.txt> --saida <caminho do relatório> [--comparar <saída.txt>]
+9:      --comparar       a saída de `governanca-fronteira.sh --comparar` (linhas MUDOU:/FORA:); com ela, o bloco
+15:conjunto de Gnn do bloco é igual ao dos títulos `### Gnn — ` de `## Lacunas`; com --comparar, REVISADO exige
+   permite restaurar o DEFINE se o revisor o mexer);
+   `cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md.restaurando && rm -f sdd/features/DEFINE_<F>.md && mv sdd/features/DEFINE_<F>.md.restaurando sdd/features/DEFINE_<F>.md && cmp "$T/DEFINE.antes" sdd
+
+=== AT-039 v2.5.0: 1 arquivo novo cai em copia de v2.5.0
+test_copiar_docs rc=1 FAILED (failures=24)
+test_playbook_invariantes rc=1 FAILED (failures=36, errors=1)
+test_curadoria_bloco rc=1 FileNotFoundError: [Errno 2] No such file or direc
+test_f14_textos rc=1 FileNotFoundError: [Errno 2] No such file or direc
+test_playbook_curator rc=1 FAILED (failures=110, errors=5)
+test_apoio_ambiente rc=1 FAILED (failures=2)
+
+=== Dogfood: colheita real no proprio repo
+[F14_PLAYBOOK rc=0]
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:510 · fp=312d848fbf
+DELTA LM-002 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:511 · fp=e5efe377bf
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:512 · fp=6a45837f24
+IGNORADO LM-999 (não existe como bullet ativo em sdd/playbook.md)
+resumo: deltas=3 (ajudou=3 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[F13_UX_LLM rc=0]
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F13_UX_LLM.md:379 · fp=de2e980149
+DELTA LM-002 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F13_UX_LLM.md:380 · fp=1c61ba5d71
+SUGESTAO mordeu? LM-003 — termo `review` em BUILD_REPORT_F13_UX_LLM.md:40 (achado sem LM explícito; confirmar a causa an
+SUGESTAO mordeu? LM-002 — termo `exit 0` em AVALIACAO_F13_UX_LLM_20261104-ciclo1.md:32 (achado sem LM explícito; confirm
+SUGESTAO mordeu? LM-004 — termo `exit 0` em AVALIACAO_F13_UX_LLM_20261104-ciclo1.md:32 (achado sem LM explícito; confirm
+resumo: deltas=2 (ajudou=2 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=3
+[F12_CONTEXTO rc=0]
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F12_CONTEXTO.md:476 · fp=57f64e8ca8
+DELTA LM-002 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F12_CONTEXTO.md:477 · fp=db257ce631
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F12_CONTEXTO.md:478 · fp=1ff38bf61b
+SUGESTAO mordeu? LM-003 — termo `review` em BUILD_REPORT_F12_CONTEXTO.md:41 (achado sem LM explícito; confirmar a causa 
+SUGESTAO mordeu? LM-002 — termo `baseline` em AVAL-DESIGN-01-sonda-gate-simulado.log:22 (achado sem LM explícito; confir
+resumo: deltas=3 (ajudou=3 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=2
+
+=== Fixtures do pacote com promovido_para em continuacao
+sdd/fixtures/playbook/playbook-valido.md
+sdd/fixtures/playbook/playbook-colapso.md
+.agents/skills/sdd-playbook/references/curator.md
+.agents/skills/sdd-playbook/SKILL.md
+86:- [LM-014] ajudou=1 mordeu=0 · conf=2026-09-02 · sup: `pedido` `status_pagamento` :: regra em 1–3 linhas. **Do instead:** ação concreta. → ficha: HANDOFF_X ·
+92:  nunca duplica); `promovido_para:` = path do mecanismo (hook, check, script) quando a landmine
+105:| Curator | passo 17b da fase Release: um script colhe, um agente sem a conversa julga, a pessoa decide | `sdd/bin/playbook-curator.sh --colher` lê `ajudou`
+117:LM-004 promovido_para=<caminho do mecanismo>
+118:ADD <seção> :: sup: `termo1` `termo2` :: regra. **Do instead:** ação. → ficha: — · promovido_para: —
+
+=== release.yml roda o publish-gate?
+70:        run: bash scripts/publish-gate.sh "$GITHUB_WORKSPACE"
+115:      # Same step as publish-gate.yml: that workflow runs alongside this one, not before it, so a
+116:      # red publish-gate would not stop a Release.
+[exit=0]

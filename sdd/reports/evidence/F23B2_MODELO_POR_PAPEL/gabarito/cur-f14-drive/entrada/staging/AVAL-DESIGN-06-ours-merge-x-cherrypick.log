@@ -1,0 +1,14 @@
+$ T=$(mktemp -d); cd $T; git init -q -b main; git config user.email a@b; git config user.name t; echo base > CHANGELOG.md; git add .; git commit -qm base; git checkout -qb frente; printf "frente\nbase\n" > CHANGELOG.md; git commit -qam frente; F=$(git rev-parse HEAD); git checkout -q main; printf "main\nbase\n" > CHANGELOG.md; git commit -qam main; echo "--- cherry-pick na main (passo 5): --ours ="; git cherry-pick $F >/dev/null 2>&1; git checkout --ours CHANGELOG.md; cat CHANGELOG.md; git cherry-pick --abort; echo "--- merge da main na frente: --ours ="; git checkout -q frente; git merge main >/dev/null 2>&1; git checkout --ours CHANGELOG.md; cat CHANGELOG.md; git merge --abort; echo "--- rebase da frente sobre main: --ours ="; git rebase main >/dev/null 2>&1; git checkout --ours CHANGELOG.md; cat CHANGELOG.md; git rebase --abort; cd /; rm -rf $T
+--- cherry-pick na main (passo 5): --ours =
+Updated 1 path from the index
+main
+base
+--- merge da main na frente: --ours =
+Updated 1 path from the index
+frente
+base
+--- rebase da frente sobre main: --ours =
+Updated 1 path from the index
+main
+base
+[exit=0]

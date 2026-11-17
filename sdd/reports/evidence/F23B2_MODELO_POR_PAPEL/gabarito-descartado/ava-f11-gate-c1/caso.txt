@@ -1,0 +1,4 @@
+papel: avaliador
+commit: 468d6050cf6c30434d6c2329ebee9dd45473cb4c
+base: v2.3.0
+origem: sdd/reviews/AVALIACAO_F11_GATE_20261101-ciclo1.md (branch docs/incorporar-starter), commit citado no cabeçalho e no bloco (HEAD 468d605, existe no projeto); DEFINE e DESIGN v1.1 de 7e947d4 (versão do BUILD_REPORT_F11_GATE); AT-003 FALHA PARCIAL vira FAIL, consertado em a9813ff (ver README.md)

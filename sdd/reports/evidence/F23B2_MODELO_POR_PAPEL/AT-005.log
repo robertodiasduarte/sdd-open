@@ -1,0 +1,9 @@
+$ python3 -m unittest -v test_f23b2_papeis.AT004AT007Medidor.test_avaliador_falso_pass_reprova_mesmo_com_o_veredito_igual test_f23b2_papeis.AT004AT007Medidor.test_avaliador_at_ausente_ou_palavra_fora_da_lista_nunca_vira_pass   # AT-005 · HEAD c12a475 · 2026-11-17 08:38
+test_avaliador_falso_pass_reprova_mesmo_com_o_veredito_igual (test_f23b2_papeis.AT004AT007Medidor) ... ok
+test_avaliador_at_ausente_ou_palavra_fora_da_lista_nunca_vira_pass (test_f23b2_papeis.AT004AT007Medidor) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 4.220s
+
+OK
+[exit=0]

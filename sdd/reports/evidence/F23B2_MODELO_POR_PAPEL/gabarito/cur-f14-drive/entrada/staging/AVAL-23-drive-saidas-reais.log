@@ -1,0 +1,105 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); s() { /bin/bash sdd/bin/sdd-drive.sh "$@" > $V/o 2>&1; rc=$?; echo "[$*] rc=$rc $(grep -E "^(motivo|ACAO|rodada)" $V/o | head -n 2 | cut -c1-100 | tr "\n" ";")"; }
+unset SDD_TRACE; mkrepo $V/x "exit \$(cat .rc)"; printf ".rc\n" >> .gitignore; git add -A; git commit -qm i; echo 0 > .rc; s iniciar $D --max 99; feito
+echo == R1 saida do comando do gate => saida do verify-gate => drive; for c in 1 2 3 4 5 64 126 127 137; do echo $c > .rc; echo x$c >> c.txt; git add c.txt; git commit -qm c$c; /bin/bash sdd/bin/sdd-drive.sh --resume $D >/dev/null; echo "cmd sai $c:"; s verificar $D; tail -n 1 "sdd/reports/evidence/F/$(ls -t sdd/reports/evidence/F | head -n 1)"; done; python3 -c "import json;print([(g[\"n\"],g[\"rodada\"],g[\"exit\"]) for g in json.load(open(\"sdd/reports/progress/DRIVE_F.json\"))[\"gates\"]])"
+echo == R2 verify-gate de mentira, cada exit do contrato e fora dele; cp sdd/bin/verify-gate.sh $V/vg; for c in 0 1 2 3 4 5 64 77 SIG; do cp $V/vg sdd/bin/verify-gate.sh; C=$c python3 - <<PY
+import os
+c=os.environ["C"]
+acao="kill -9 \$\$" if c=="SIG" else "exit "+c
+t=open("sdd/bin/verify-gate.sh").read().replace("DEFINE=\"\${1:-}\"","DEFINE=\"\${1:-}\"\n[ \"\${PRINT_ONLY}\" = 0 ] && [ \"\${CHECAR}\" = 0 ] && "+acao,1)
+open("sdd/bin/verify-gate.sh","w").write(t)
+PY
+git add -A; git commit -qm vg$c; /bin/bash sdd/bin/sdd-drive.sh --resume $D > /dev/null; echo "verify-gate sai $c:"; s verificar $D; tail -n 1 "sdd/reports/evidence/F/$(ls -t sdd/reports/evidence/F | head -n 1)"; done; python3 -c "import json;g=json.load(open(\"sdd/reports/progress/DRIVE_F.json\"))[\"gates\"];print(sum(1 for x in g if x[\"exit\"]==2),\"vermelhos em\",len(g))"
+echo == R5b a troca aceita chega ao DRIVE_REPORT quando; V4=$(novo); mkrepo $V4/x "true"; printf "import sys\nsys.exit(0)\n" > sdd/bin/report-lint.py; git add -A; git commit -qm stub; s iniciar $D; feito; s verificar $D; sed -i "" "s/cmd: .*/cmd: \"echo novo\"/" $D; s proximo $D; s --resume $D --aceitar-gate-novo; echo "imediatamente depois do aceite:"; sed -n "/Teste final alterado/,/Decidi/p" sdd/reports/DRIVE_REPORT_F.md; s verificar $D; echo "depois do verificar:"; sed -n "/Teste final alterado/,/Decidi/p" sdd/reports/DRIVE_REPORT_F.md; echo x > sdd/reports/BUILD_REPORT_F.md; s concluir $D; echo "depois do concluir:"; sed -n "/Teste final alterado/,/Decidi/p" sdd/reports/DRIVE_REPORT_F.md
+[iniciar sdd/features/DEFINE_F.md --max 99] rc=10 ACAO: RODADA;rodada: 1/99;
+cmd sai 1:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: COMMITAR;rodada: 1/99;
+ls: sdd/reports/evidence/F: No such file or directory
+tail: sdd/reports/evidence/F/: No such file or directory
+cmd sai 2:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: COMMITAR;rodada: 1/99;
+ls: sdd/reports/evidence/F: No such file or directory
+tail: sdd/reports/evidence/F/: No such file or directory
+cmd sai 3:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: COMMITAR;rodada: 1/99;
+ls: sdd/reports/evidence/F: No such file or directory
+tail: sdd/reports/evidence/F/: No such file or directory
+cmd sai 4:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: COMMITAR;rodada: 1/99;
+ls: sdd/reports/evidence/F: No such file or directory
+tail: sdd/reports/evidence/F/: No such file or directory
+cmd sai 5:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: COMMITAR;rodada: 1/99;
+ls: sdd/reports/evidence/F: No such file or directory
+tail: sdd/reports/evidence/F/: No such file or directory
+cmd sai 64:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: COMMITAR;rodada: 1/99;
+ls: sdd/reports/evidence/F: No such file or directory
+tail: sdd/reports/evidence/F/: No such file or directory
+cmd sai 126:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: COMMITAR;rodada: 1/99;
+ls: sdd/reports/evidence/F: No such file or directory
+tail: sdd/reports/evidence/F/: No such file or directory
+cmd sai 127:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: COMMITAR;rodada: 1/99;
+ls: sdd/reports/evidence/F: No such file or directory
+tail: sdd/reports/evidence/F/: No such file or directory
+cmd sai 137:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: COMMITAR;rodada: 1/99;
+ls: sdd/reports/evidence/F: No such file or directory
+tail: sdd/reports/evidence/F/: No such file or directory
+[]
+== R2 verify-gate de mentira, cada exit do contrato e fora dele
+verify-gate sai 0:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: AVALIAR_E_RELATAR;rodada: 1/99;
+[exit=0]
+verify-gate sai 1:
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: gate-inconclusivo;
+[exit=1]
+verify-gate sai 2:
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: CORRIGIR;rodada: 2/99;
+[exit=2]
+verify-gate sai 3:
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: gate-inconclusivo;
+[exit=3]
+verify-gate sai 4:
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: manual-ux;
+[exit=4]
+verify-gate sai 5:
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: clarificacao-pendente;
+[exit=5]
+verify-gate sai 64:
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: define-invalido;
+[exit=64]
+verify-gate sai 77:
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: gate-inconclusivo;
+[exit=77]
+verify-gate sai SIG:
+[verificar sdd/features/DEFINE_F.md] rc=20 motivo: gate-inconclusivo;
+[exit=-9]
+1 vermelhos em 9
+== R5b a troca aceita chega ao DRIVE_REPORT quando
+[iniciar sdd/features/DEFINE_F.md] rc=10 ACAO: RODADA;rodada: 1/3;
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: AVALIAR_E_RELATAR;rodada: 1/3;
+[proximo sdd/features/DEFINE_F.md] rc=20 motivo: gate-alterado;
+[--resume sdd/features/DEFINE_F.md --aceitar-gate-novo] rc=10 ACAO: VERIFICAR;rodada: 1/3;
+imediatamente depois do aceite:
+## Teste final alterado
+
+Nenhuma troca.
+
+## Decidi sozinho
+[verificar sdd/features/DEFINE_F.md] rc=10 ACAO: AVALIAR_E_RELATAR;rodada: 1/3;
+depois do verificar:
+## Teste final alterado
+
+Nenhuma troca.
+
+## Decidi sozinho
+[concluir sdd/features/DEFINE_F.md] rc=0 motivo: gate-verde;
+depois do concluir:
+## Teste final alterado
+
+- de `true` para `echo novo`, aceito em 2026-11-05
+
+## Decidi sozinho
+[exit=0]

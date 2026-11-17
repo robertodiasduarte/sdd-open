@@ -1,0 +1,30 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/02.sh
+# CONTROLE: o agente sobrescreve o DEFINE (já ?? antes), edita arquivo limpo e cria arquivo com espaço/acento
+novo c2; antes
+cd "$d/w" && pwd -P
+--- cenário c2 (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c2/w) ---
+[--snapshot antes exit=0]
+printf 'mexido\n' > "$DEF"; printf 'mexido\n' > src/app.py; printf 'x\n' > "nota ação.md"; printf 'relatorio\n' > "$REL"
+depois; comparar
+[--snapshot depois exit=0]
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c2/w/nota ação.md
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c2/w/sdd/features/DEFINE_F.md
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c2/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c2/w/src/app.py
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+# CONTROLE: link no lugar do DEFINE, mesmo conteúdo
+novo c2b; antes
+cd "$d/w" && pwd -P
+--- cenário c2b (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c2b/w) ---
+[--snapshot antes exit=0]
+cp "$DEF" copia.md; rm "$DEF"; ln -s "$W/copia.md" "$DEF"
+depois; comparar
+[--snapshot depois exit=0]
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c2b/w/copia.md
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c2b/w/sdd/features/DEFINE_F.md (virou ou deixou de ser link durante o despacho)
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+[exit=0]

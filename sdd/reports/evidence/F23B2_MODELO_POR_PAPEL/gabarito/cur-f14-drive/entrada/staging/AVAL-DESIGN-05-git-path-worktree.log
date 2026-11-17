@@ -1,0 +1,8 @@
+$ git rev-parse --git-path deploy-do-sha/redisparado-abc; git rev-parse --git-common-dir; git rev-parse --git-dir; git rev-parse --abbrev-ref HEAD; git symbolic-ref refs/remotes/origin/HEAD; echo "symbolic exit=$?"
+/Users/robertoduarte/rdd-public/sdd-open/.git/worktrees/sdd-open-f14-drive/deploy-do-sha/redisparado-abc
+/Users/robertoduarte/rdd-public/sdd-open/.git
+/Users/robertoduarte/rdd-public/sdd-open/.git/worktrees/sdd-open-f14-drive
+feat/f14-drive
+refs/remotes/origin/main
+symbolic exit=0
+[exit=0]

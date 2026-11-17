@@ -1,0 +1,108 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p10.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p10.sh
+. $(dirname "$0")/lab.sh
+CUR="/bin/bash $PROJ/sdd/bin/playbook-curator.sh"
+W="$(novo)"; cd "$W"
+cat > pb.md <<PB
+# Playbook
+
+## Sempre
+
+- [LM-001] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: \`termo-longo\` :: regra. **Do instead:** x → ficha: x · promovido_para: —
+- [LM-002] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: \`outro-termo\` :: regra. **Do instead:** x → ficha: x · promovido_para: —
+- [LM-003] ajudou=0 mordeu=0 · conf=2026-01-01 · sup: \`mais-termo\` :: regra. **Do instead:** x → ficha: x · promovido_para: —
+
+## Tombstones
+
+PB
+col() { # col <nome do arquivo> <linhas...>: 1 arquivo, 1 colheita
+  d="$(mktemp -d "$W/c.XXXXXX")"; f="$1"; shift; printf "%s\n" "$@" > "$d/$f"; $CUR --colher "$d" pb.md 2>/dev/null | grep -E "^(DELTA|SUGESTAO|resumo)" | cut -c1-110; }
+L=AVAL3-99-x.log
+echo "=== 1 filtro do AT-034: nao contam"
+col $L "\$ grep FAIL sdd/x LM-001" "❌ delta linha 3: LM-001 não existe" "❌ invariantes linha 9: LM-001 sem check" "🔴 trava INV: LM-001 FAIL" "sdd/playbook.md:12: ❌ LM-001 bullet ruim"
+echo "=== 2 achado real no mesmo log: conta"
+col $L "\$ echo x" "❌ achado real LM-002 quebrou" "FAIL: test_x LM-003"
+echo "=== 3 achado com arquivo que nao e .md: conta (L14)"
+col $L "src/app.py:12: ❌ LM-001 quebrou"
+echo "=== 4 achado real em arquivo .md de projeto, no log, na AVALIACAO e no HANDOFF"
+col $L "docs/manual.md:12: ❌ LM-001 link quebrado de verdade"
+col AVALIACAO_F_20261105.md "- README.md:3: ❌ LM-001 real" "README.md:3: ❌ LM-002 real"
+col HANDOFF_F.md "docs/x.md:3: ❌ LM-003 real"
+echo "=== 5 eco e diagnostico em outra forma: contam como achado?"
+col $L "   │ ❌ delta linha 3: LM-001 não existe"
+col $L "+ grep FAIL LM-002"
+col $L "  \$ grep FAIL LM-003"
+col $L "/tmp/com espaco/playbook.md:3: ❌ LM-001 x"
+col $L "sdd/playbook.novo:3: ❌ LM-002 x"
+col $L "sdd/invariants.md:3: ❌ LM-003 x"
+echo "=== 6 comando de varias linhas: so a 1a tem \$ "
+col $L "\$ cat <<X" "grep FAIL LM-001" "if grep -q NEEDS_WORK a; then echo LM-002; fi" "X"
+echo "=== 7 CRLF, e \$ sem espaco"
+d="$(mktemp -d "$W/c.XXXXXX")"; printf "\$ grep FAIL LM-001\r\n❌ delta linha 3: LM-002\r\n" > "$d/$L"; $CUR --colher "$d" pb.md 2>/dev/null | grep -E "^(DELTA|resumo)" | cut -c1-110
+col $L "\$grep FAIL LM-003"
+echo "=== 8 AVAL com sufixo: o proprio glob"
+col AVAL.log "❌ LM-001 x"
+col AVAL-1.log "❌ LM-001 x"
+echo; echo "=== 9 colheita real: as evidencias e avaliacoes de F14_DRIVE, ainda sem os logs AVAL3"
+R="$(mktemp -d "$W/real.XXXXXX")"; cp $PROJ/sdd/reports/evidence/F14_DRIVE/AVAL-*.log $PROJ/sdd/reports/evidence/F14_DRIVE/AVAL2-*.log "$R/"; cp $PROJ/sdd/reviews/AVALIACAO_F14_DRIVE_*.md "$R/"
+ls "$R" | wc -l | tr -d " "
+$CUR --colher "$R" $PROJ/sdd/playbook.md --inv $PROJ/sdd/invariants.md 2>&1 | grep -E "^(DELTA|SUGESTAO|resumo|IGNORADO)" | cut -c1-170
+echo "=== 10 de onde vem cada DELTA da colheita real"
+$CUR --colher "$R" $PROJ/sdd/playbook.md 2>/dev/null | /usr/bin/python3 -I -B -c "
+import re,sys
+for ln in sys.stdin:
+    m=re.search(r\"^DELTA (LM-\d+) .*evidencia=([^:]+):(\d+)\",ln)
+    if m:
+        t=open(\"$R/\"+m.group(2),encoding=\"utf-8\",errors=\"replace\").read().split(chr(10))[int(m.group(3))-1]
+        print(m.group(1),m.group(2),m.group(3),\"::\",t[:150])"
+=== 1 filtro do AT-034: nao contam
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+=== 2 achado real no mesmo log: conta
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:2 · fp=1c19f479da
+DELTA LM-003 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:3 · fp=fcd2cd9d79
+resumo: deltas=2 (ajudou=0 mordeu=2) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+=== 3 achado com arquivo que nao e .md: conta (L14)
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:1 · fp=1183a0fc54
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+=== 4 achado real em arquivo .md de projeto, no log, na AVALIACAO e no HANDOFF
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVALIACAO_F_20261105.md:1 · fp=89bc4f8b33
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+=== 5 eco e diagnostico em outra forma: contam como achado?
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:1 · fp=05e658431d
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:1 · fp=2a00e94c1d
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+DELTA LM-003 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:1 · fp=b0829470d1
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:1 · fp=984331b45a
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:1 · fp=a0170100e8
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+=== 6 comando de varias linhas: so a 1a tem $ 
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:2 · fp=f018579797
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:3 · fp=db0071bad9
+resumo: deltas=2 (ajudou=0 mordeu=2) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+=== 7 CRLF, e $ sem espaco
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+DELTA LM-003 mordeu+1 · conf=2026-11-05 · evidencia=AVAL3-99-x.log:1 · fp=8e1a1277e9
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+=== 8 AVAL com sufixo: o proprio glob
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:1 · fp=8ea250a2e1
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+
+=== 9 colheita real: as evidencias e avaliacoes de F14_DRIVE, ainda sem os logs AVAL3
+66
+SUGESTAO mordeu? LM-006 — termo `git archive` em AVAL-12-env-herdada-no-gate.log:2 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=300d460a53
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-24-guarda-curador-encoding.log:7 · fp=72923b0b73,6a9a3c7913,4abc5d2a80,3a51b59272,f4dc32a3a3,dacef54c01,391008833
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-24-guarda-curador-encoding.log:7 · fp=9be07e1c1c
+IGNORADO LM-009 (não existe como bullet ativo em /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive/sdd/playbook.md)
+DELTA LM-005 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-DESIGN-11-colheita-real-com-filtro-do-design.log:46 · fp=fe0a7ef9fb
+resumo: deltas=3 (ajudou=0 mordeu=3) candidatos=0 rejeitados=0 promocoes=0 sugestoes=1
+=== 10 de onde vem cada DELTA da colheita real
+LM-001 AVAL-24-guarda-curador-encoding.log 7 :: echo == AT-034 colheita; P=$V/p; mkdir -p $P/stg; cd $P; printf "## Sempre\n\n- [LM-001] uma regra :: ok\n- [LM-002] outra regra :: ok\n\n## Tombstone
+LM-002 AVAL-24-guarda-curador-encoding.log 7 :: echo == AT-034 colheita; P=$V/p; mkdir -p $P/stg; cd $P; printf "## Sempre\n\n- [LM-001] uma regra :: ok\n- [LM-002] outra regra :: ok\n\n## Tombstone
+LM-005 AVAL-DESIGN-11-colheita-real-com-filtro-do-design.log 46 :: LM-005 AVAL2-A6-envio-com-conflito.log:21 :: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/x.md:0: ❌ ID duplicado: LM-005 (linhas 22
+[exit=0]

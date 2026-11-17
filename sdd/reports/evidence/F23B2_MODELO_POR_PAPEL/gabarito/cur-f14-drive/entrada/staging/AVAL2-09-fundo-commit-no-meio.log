@@ -1,0 +1,151 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p09.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p09.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+GATE='T=$(mktemp -d) \&\& git archive HEAD | tar -x -C $T \&\& sleep 3 \&\& test ! -f $T/quebra.txt'
+GATE=$(printf '%s' "$GATE" | sed 's/\\//g')
+acao() { grep -E '^(---|ACAO:|motivo:|retomando|\[rc|rodada:)' ; }
+echo "=== A. --fundo: commit de codigo no meio do gate (H1)"
+mkrepo "$(novo)" "$GATE"; grep 'cmd:' $D; drv iniciar $D >/dev/null; feito; rel; drv verificar $D --fundo | acao; sleep 1; drv verificar $D | acao; drv proximo $D | acao; echo q > quebra.txt; git add quebra.txt; git commit -qm durante; sleep 5; drv proximo $D | acao; drv concluir $D | acao; st "print(d['inicio'][:8],[ (g['commit'][:8],g['exit']) for g in d['gates']])"; git rev-parse --short=8 HEAD
+echo "=== A2. 1o plano: commit no meio"
+mkrepo "$(novo)" "$GATE"; drv iniciar $D >/dev/null; feito; rel; (sleep 1; echo q > quebra.txt; git add quebra.txt; git commit -qm durante) & drv verificar $D | acao; wait; drv concluir $D | acao
+echo "=== A3. verde, commit no meio so de documento: continua verde"
+mkrepo "$(novo)" "$GATE"; drv iniciar $D >/dev/null; feito; rel; (sleep 1; mkdir -p sdd/reviews; echo q > sdd/reviews/q.md; git add sdd/reviews; git commit -qm doc) & drv verificar $D | acao; wait; drv concluir $D | acao
+echo "=== A4. verde, rename de codigo para documentos comitado no meio do gate"
+mkrepo "$(novo)" "$GATE"; echo pr > cod.py; git add -A; git commit -qm c; drv iniciar $D >/dev/null; feito; rel; (sleep 1; git mv cod.py sdd/reports/cod.py; git commit -qm mv) & drv verificar $D | acao; wait; drv concluir $D | acao
+echo "=== E. dois verificar --fundo, proximo, e trava morta"
+mkrepo "$(novo)" 'sleep 3; true'; drv iniciar $D >/dev/null; feito; drv verificar $D --fundo | acao; drv verificar $D --fundo | acao; drv proximo $D | acao; drv concluir $D | acao; sleep 4; drv proximo $D | acao; ls sdd/reports/evidence/F; ls sdd/reports/progress
+echo 999999 > sdd/reports/progress/DRIVE_F.lock; drv proximo $D | acao; ls sdd/reports/progress
+echo "=== E2. trava com lixo e trava vazia"
+for c in 'lixo' '' '-1'; do mkrepo "$(novo)" 'true'; drv iniciar $D > /dev/null; feito; printf '%s' "$c" > sdd/reports/progress/DRIVE_F.lock; echo "trava='$c'"; drv proximo $D | acao; ls sdd/reports/progress | grep lock; done
+echo "=== G. --fundo: gate confere que a variavel nao vaza"
+mkrepo "$(novo)" 'test -z "${SDD_DRIVE_TRAVA_HERDADA:-}"'; drv iniciar $D >/dev/null; feito; drv verificar $D --fundo | acao; sleep 2; drv proximo $D | acao
+echo "=== H. SDD_DRIVE_TRAVA_HERDADA=1 no ambiente de quem chama, com tarefa pendente"
+mkrepo "$(novo)"; drv iniciar $D >/dev/null; SDD_DRIVE_TRAVA_HERDADA=1 drv verificar $D 2>&1 | acao; st "print(len(d['gates']), d['gates'][0]['exit'])"; cat gate.calls
+echo "=== I. --fundo com gate vermelho no limite e inconclusivo: proximo mostra a parada"
+mkrepo "$(novo)" 'false'; drv iniciar $D --max 1 > /dev/null; feito; drv verificar $D --fundo | acao; sleep 2; drv proximo $D | acao; cat sdd/reports/progress/DRIVE_F.fundo.log | grep -E 'motivo|ACAO'
+=== A. --fundo: commit de codigo no meio do gate (H1)
+  cmd: "T=$(mktemp -d) && git archive HEAD | tar -x -C $T && sleep 3 && test ! -f $T/quebra.txt"
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: ESPERAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: ESPERAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+[rc=10]
+4394b4ba [('4394b4ba', 0)]
+bc167ac1
+=== A2. 1o plano: commit no meio
+▶ rodando o teste final; isso pode levar alguns minutos.
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+[rc=10]
+=== A3. verde, commit no meio so de documento: continua verde
+▶ rodando o teste final; isso pode levar alguns minutos.
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+[rc=0]
+=== A4. verde, rename de codigo para documentos comitado no meio do gate
+▶ rodando o teste final; isso pode levar alguns minutos.
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+[rc=0]
+=== E. dois verificar --fundo, proximo, e trava morta
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: ESPERAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: ESPERAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+[rc=10]
+DRIVE-gate-r1.log
+DRIVE_F.fundo.log
+DRIVE_F.json
+PROGRESS_F.md
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+[rc=10]
+DRIVE_F.fundo.log
+DRIVE_F.json
+PROGRESS_F.md
+=== E2. trava com lixo e trava vazia
+trava='lixo'
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+[rc=10]
+trava=''
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+[rc=10]
+trava='-1'
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: ESPERAR
+rodada: 1/3
+[rc=10]
+DRIVE_F.lock
+=== G. --fundo: gate confere que a variavel nao vaza
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+[rc=10]
+=== H. SDD_DRIVE_TRAVA_HERDADA=1 no ambiente de quem chama, com tarefa pendente
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 2/3
+[rc=10]
+1 2
+x
+=== I. --fundo com gate vermelho no limite e inconclusivo: proximo mostra a parada
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/1
+[rc=10]
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: orcamento-rodadas
+[rc=20]
+motivo: orcamento-rodadas
+[exit=0]

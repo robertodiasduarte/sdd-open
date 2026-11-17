@@ -1,0 +1,126 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/forma.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/forma.sh
+# forma.sh: uma mutacao por vez do estado valido; proximo, recibo, concluir, --resume e bloqueio devem dar estado-invalido (20), nunca 1 nem 2
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+mkrepo "$(novo)"; drv iniciar $D > /dev/null; feito; drv verificar $D > /dev/null 2>&1
+cp sdd/reports/progress/DRIVE_F.json $LAB/base.json
+muta() { /usr/bin/python3 -I -B - "$1" <<'PY'
+import json,sys
+d=json.load(open("sdd/reports/progress/DRIVE_F.json"))
+exec(sys.argv[1])
+json.dump(d,open("sdd/reports/progress/DRIVE_F.json","w"))
+PY
+}
+for m in 'd["motivo"]="xyz"' 'd["motivo"]=3' 'd["motivo"]=None' 'd["detalhe"]=3' 'd["detalhe"]=["a"]' 'd["gate_linhas"]=3' 'd["parada_gate"]=3' 'd["parada_gate"]="xyz"' 'd["avisou_paradas"]="x"' 'd["maximo"]=0' 'd["maximo"]=-1' 'd["versao"]="abc"' 'd["versao"]=99' 'd["feature"]="OUTRA"' 'd["gates"][0]["exit"]=True' 'd["gates"][0]["rodada"]=-5' 'd["repeticao"]={"chave":"","n":-1}' 'del d["motivo"]' 'del d["gate_linhas"]' 'd["gate_sha"]=""' 'd["inicio"]=""' ; do
+  for v in proximo concluir "--resume" recibo bloqueio; do
+    cp $LAB/base.json sdd/reports/progress/DRIVE_F.json; muta "$m"
+    extra=""; if [ "$v" = recibo ] || [ "$v" = bloqueio ]; then extra="texto"; fi
+    if [ -n "$extra" ]; then out=$(/bin/bash sdd/bin/sdd-drive.sh $v $D "$extra" 2>&1); else out=$(/bin/bash sdd/bin/sdd-drive.sh $v $D 2>&1); fi; rc=$?
+    printf '%-42s %-9s rc=%s %s\n' "$m" "$v" "$rc" "$(printf '%s' "$out" | grep -E '^(motivo:|ACAO:|🛑|Traceback)' | head -1)"
+  done
+done
+d["motivo"]="xyz"                          proximo   rc=10 ACAO: CORRIGIR
+d["motivo"]="xyz"                          concluir  rc=10 ACAO: CORRIGIR
+d["motivo"]="xyz"                          --resume  rc=10 ACAO: CORRIGIR
+d["motivo"]="xyz"                          recibo    rc=2 🛑 sdd-drive: erro inesperado: KeyError: 'xyz'
+d["motivo"]="xyz"                          bloqueio  rc=20 motivo: bloqueio-humano
+d["motivo"]=3                              proximo   rc=10 ACAO: CORRIGIR
+d["motivo"]=3                              concluir  rc=10 ACAO: CORRIGIR
+d["motivo"]=3                              --resume  rc=10 ACAO: CORRIGIR
+d["motivo"]=3                              recibo    rc=2 🛑 sdd-drive: erro inesperado: KeyError: 3
+d["motivo"]=3                              bloqueio  rc=20 motivo: bloqueio-humano
+d["motivo"]=None                           proximo   rc=10 ACAO: CORRIGIR
+d["motivo"]=None                           concluir  rc=10 ACAO: CORRIGIR
+d["motivo"]=None                           --resume  rc=10 ACAO: CORRIGIR
+d["motivo"]=None                           recibo    rc=0 
+d["motivo"]=None                           bloqueio  rc=20 motivo: bloqueio-humano
+d["detalhe"]=3                             proximo   rc=10 ACAO: CORRIGIR
+d["detalhe"]=3                             concluir  rc=10 ACAO: CORRIGIR
+d["detalhe"]=3                             --resume  rc=10 ACAO: CORRIGIR
+d["detalhe"]=3                             recibo    rc=2 🛑 sdd-drive: erro inesperado: TypeError: sequence item 11: expected str instance, int found
+d["detalhe"]=3                             bloqueio  rc=20 motivo: bloqueio-humano
+d["detalhe"]=["a"]                         proximo   rc=10 ACAO: CORRIGIR
+d["detalhe"]=["a"]                         concluir  rc=10 ACAO: CORRIGIR
+d["detalhe"]=["a"]                         --resume  rc=10 ACAO: CORRIGIR
+d["detalhe"]=["a"]                         recibo    rc=2 🛑 sdd-drive: erro inesperado: TypeError: sequence item 11: expected str instance, list found
+d["detalhe"]=["a"]                         bloqueio  rc=20 motivo: bloqueio-humano
+d["gate_linhas"]=3                         proximo   rc=10 ACAO: CORRIGIR
+d["gate_linhas"]=3                         concluir  rc=10 ACAO: CORRIGIR
+d["gate_linhas"]=3                         --resume  rc=10 ACAO: CORRIGIR
+d["gate_linhas"]=3                         recibo    rc=0 
+d["gate_linhas"]=3                         bloqueio  rc=20 motivo: bloqueio-humano
+d["parada_gate"]=3                         proximo   rc=10 ACAO: CORRIGIR
+d["parada_gate"]=3                         concluir  rc=10 ACAO: CORRIGIR
+d["parada_gate"]=3                         --resume  rc=10 ACAO: CORRIGIR
+d["parada_gate"]=3                         recibo    rc=0 
+d["parada_gate"]=3                         bloqueio  rc=20 motivo: bloqueio-humano
+d["parada_gate"]="xyz"                     proximo   rc=10 ACAO: CORRIGIR
+d["parada_gate"]="xyz"                     concluir  rc=10 ACAO: CORRIGIR
+d["parada_gate"]="xyz"                     --resume  rc=10 ACAO: CORRIGIR
+d["parada_gate"]="xyz"                     recibo    rc=0 
+d["parada_gate"]="xyz"                     bloqueio  rc=20 motivo: bloqueio-humano
+d["avisou_paradas"]="x"                    proximo   rc=10 ACAO: CORRIGIR
+d["avisou_paradas"]="x"                    concluir  rc=10 ACAO: CORRIGIR
+d["avisou_paradas"]="x"                    --resume  rc=10 ACAO: CORRIGIR
+d["avisou_paradas"]="x"                    recibo    rc=0 
+d["avisou_paradas"]="x"                    bloqueio  rc=20 motivo: bloqueio-humano
+d["maximo"]=0                              proximo   rc=20 motivo: orcamento-rodadas
+d["maximo"]=0                              concluir  rc=20 motivo: orcamento-rodadas
+d["maximo"]=0                              --resume  rc=20 motivo: orcamento-rodadas
+d["maximo"]=0                              recibo    rc=0 
+d["maximo"]=0                              bloqueio  rc=20 motivo: bloqueio-humano
+d["maximo"]=-1                             proximo   rc=20 motivo: orcamento-rodadas
+d["maximo"]=-1                             concluir  rc=20 motivo: orcamento-rodadas
+d["maximo"]=-1                             --resume  rc=20 motivo: orcamento-rodadas
+d["maximo"]=-1                             recibo    rc=0 
+d["maximo"]=-1                             bloqueio  rc=20 motivo: bloqueio-humano
+d["versao"]="abc"                          proximo   rc=10 ACAO: CORRIGIR
+d["versao"]="abc"                          concluir  rc=10 ACAO: CORRIGIR
+d["versao"]="abc"                          --resume  rc=10 ACAO: CORRIGIR
+d["versao"]="abc"                          recibo    rc=0 
+d["versao"]="abc"                          bloqueio  rc=20 motivo: bloqueio-humano
+d["versao"]=99                             proximo   rc=10 ACAO: CORRIGIR
+d["versao"]=99                             concluir  rc=10 ACAO: CORRIGIR
+d["versao"]=99                             --resume  rc=10 ACAO: CORRIGIR
+d["versao"]=99                             recibo    rc=0 
+d["versao"]=99                             bloqueio  rc=20 motivo: bloqueio-humano
+d["feature"]="OUTRA"                       proximo   rc=10 ACAO: CORRIGIR
+d["feature"]="OUTRA"                       concluir  rc=10 ACAO: CORRIGIR
+d["feature"]="OUTRA"                       --resume  rc=10 ACAO: CORRIGIR
+d["feature"]="OUTRA"                       recibo    rc=0 
+d["feature"]="OUTRA"                       bloqueio  rc=20 motivo: bloqueio-humano
+d["gates"][0]["exit"]=True                 proximo   rc=20 motivo: estado-invalido
+d["gates"][0]["exit"]=True                 concluir  rc=20 motivo: estado-invalido
+d["gates"][0]["exit"]=True                 --resume  rc=20 motivo: estado-invalido
+d["gates"][0]["exit"]=True                 recibo    rc=20 motivo: estado-invalido
+d["gates"][0]["exit"]=True                 bloqueio  rc=20 motivo: estado-invalido
+d["gates"][0]["rodada"]=-5                 proximo   rc=10 ACAO: CORRIGIR
+d["gates"][0]["rodada"]=-5                 concluir  rc=10 ACAO: CORRIGIR
+d["gates"][0]["rodada"]=-5                 --resume  rc=10 ACAO: CORRIGIR
+d["gates"][0]["rodada"]=-5                 recibo    rc=0 
+d["gates"][0]["rodada"]=-5                 bloqueio  rc=20 motivo: bloqueio-humano
+d["repeticao"]={"chave":"","n":-1}         proximo   rc=10 ACAO: CORRIGIR
+d["repeticao"]={"chave":"","n":-1}         concluir  rc=10 ACAO: CORRIGIR
+d["repeticao"]={"chave":"","n":-1}         --resume  rc=10 ACAO: CORRIGIR
+d["repeticao"]={"chave":"","n":-1}         recibo    rc=0 
+d["repeticao"]={"chave":"","n":-1}         bloqueio  rc=20 motivo: bloqueio-humano
+del d["motivo"]                            proximo   rc=10 ACAO: CORRIGIR
+del d["motivo"]                            concluir  rc=10 ACAO: CORRIGIR
+del d["motivo"]                            --resume  rc=10 ACAO: CORRIGIR
+del d["motivo"]                            recibo    rc=0 
+del d["motivo"]                            bloqueio  rc=20 motivo: bloqueio-humano
+del d["gate_linhas"]                       proximo   rc=10 ACAO: CORRIGIR
+del d["gate_linhas"]                       concluir  rc=10 ACAO: CORRIGIR
+del d["gate_linhas"]                       --resume  rc=10 ACAO: CORRIGIR
+del d["gate_linhas"]                       recibo    rc=0 
+del d["gate_linhas"]                       bloqueio  rc=20 motivo: bloqueio-humano
+d["gate_sha"]=""                           proximo   rc=20 motivo: gate-alterado
+d["gate_sha"]=""                           concluir  rc=20 motivo: gate-alterado
+d["gate_sha"]=""                           --resume  rc=20 motivo: gate-alterado
+d["gate_sha"]=""                           recibo    rc=0 
+d["gate_sha"]=""                           bloqueio  rc=20 motivo: bloqueio-humano
+d["inicio"]=""                             proximo   rc=10 ACAO: CORRIGIR
+d["inicio"]=""                             concluir  rc=10 ACAO: CORRIGIR
+d["inicio"]=""                             --resume  rc=10 ACAO: CORRIGIR
+d["inicio"]=""                             recibo    rc=0 
+d["inicio"]=""                             bloqueio  rc=20 motivo: bloqueio-humano
+[exit=0]

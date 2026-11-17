@@ -1,0 +1,19 @@
+feature_id: F23B3_CADEIA_REVISAO
+slice_id: b3
+versao: 2.19.0
+data: 2026-11-16
+estado: parcial
+veredito: CONCERNS
+waived: null
+dod: "Fatia B3 (cadeia de revisão pelos dados): Verify Gate verde em 5e110b2 (2.364 testes, 3 pulados); 11 ATs com log por AT; F23 refeita com fora da conta 2 → 0 e sem classificar 6 → 0; prova real do S18 em 2 sondas (série B 3 de 3 nas duas)"
+descricao: "Cadeia de revisão pelos dados: o 2º revisor só por superfície de risco (lista única de termos, em português e camelCase) ou revisor raso, com a regra antiga gravada como medida; desempate padrão e dispensa à mão no META; ledger com rodada=D<n>, sem resultado e escapou; eval-revisores com a cadeia por frente e --precos; codex com modelo padrão e cache no META; prompts da revisão em v2/ com o material cercado por marca por chamada; mais a curadoria do playbook da B1 (LM-035, LM-036)"
+deploy: real
+review_externo: dispensado — a rodada 3 (sdd/reports/reviews/EXTERNAL_REVIEW_20261116-180430, claude revisa, codex audita, 1 revisor pela regra nova) revisou 7c1860f; o delta até 5e110b2 são os 2 consertos dessa rodada, cada um com teste, e o Verify Gate final roda em 5e110b2 — decisão do Roberto em 2026-11-16, com o teto de 3 rodadas atingido
+avisos:
+  - "revisão do código em 3 rodadas (teto), mais a revisão do DESIGN (D1) e o raio de impacto da release, que achou 2 consumidores quebrados (camelCase no review-design, gate offline lendo o config.toml real) e 1 doc, consertados com teste"
+  - "a prova real do S18 não separou v1 de v2: as 2 sondas passaram também com os prompts antigos; a cerca fica como defesa em profundidade, sem ganho medido"
+  - "o nominal do codex continua n/d nas rodadas reais até haver preço conferido na fonte, fora do pacote"
+  - "conserto de teste de outra frente: a foto() do test_f22_upgrade não entra em .git (cfc87f9), com OK do Roberto"
+  - "test_checar (teto de 12 s rente ao tempo medido) instável: pendência na ficha"
+  - "test-baseline --touched pulado (project.test_cmd vazio no pacote); a suíte inteira rodou no Verify Gate"
+  - "estado parcial: a F23 tem as fatias B2 e Grupo A pela frente"

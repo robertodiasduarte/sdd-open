@@ -1,0 +1,204 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p01.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p01.sh
+. $(dirname "$0")/lab.sh
+caso() { echo; echo "=== $1"; ( shift; "$@" ) 2>&1; }
+ct() { [ -f gate.calls ] && echo "gate.calls=$(wc -l < gate.calls | tr -d " ")" || echo "gate.calls=0"; }
+base() { mkrepo "$(novo)"; echo print > codigo.py; chmod 644 codigo.py; git add -A; git commit -qm cod; verde >/dev/null 2>&1; ct; }
+a_ren() { base; git mv codigo.py sdd/reports/codigo.py; drv concluir $D; git commit -qm mv; drv concluir $D; ct; }
+a_ren2() { base; echo doc > sdd/reports/x.md; git add -f sdd/reports/x.md; git commit -qm doc; git mv sdd/reports/x.md x.py; git commit -qm mv; drv concluir $D; ct; }
+a_del() { base; mv codigo.py ../fora-$$; git add -u codigo.py; drv concluir $D; git commit -qm del; drv concluir $D; ct; }
+a_del2() { base; mv codigo.py ../fora-$$; drv concluir $D; }
+a_modo() { base; chmod +x codigo.py; drv concluir $D; git add codigo.py; git commit -qm modo; drv concluir $D; ct; }
+a_symt() { base; mv codigo.py ../fora2-$$; ln -s /dev/null codigo.py; drv concluir $D; git add codigo.py; git commit -qm sym; drv concluir $D; ct; }
+a_nome() { base; for f in sdd/reports-velho/x.py sdd/reportsx sdd/features.py sdd/handoffs2/y sdd/traces.txt sdd/reviewsy/z; do mkdir -p "$(dirname $f)"; echo x > $f; git add $f; done; git commit -qm parecidos; git show --stat --format=%h HEAD | head -8; drv concluir $D; ct; }
+a_caixa() { base; git update-index --add --cacheinfo 100644,$(echo x | git hash-object -w --stdin),SDD/reports/hack.py; git commit -qm c; git show --name-only --format=%h HEAD; git status --porcelain | grep -v "^??"; drv concluir $D; ct; }
+a_sym1() { mkrepo "$(novo)" "echo x >> gate.calls; sh codigo.sh"; mkdir -p sdd/reports; echo "exit 0" > sdd/reports/impl.sh; ln -s sdd/reports/impl.sh codigo.sh; git add -f sdd/reports/impl.sh codigo.sh; git commit -qm cod; drv iniciar $D >/dev/null; feito; rel; drv verificar $D; ct; echo "exit 1" > sdd/reports/impl.sh; git add sdd/reports/impl.sh; git commit -qm "muda o codigo via doc"; echo "o gate agora:"; sh codigo.sh; echo "rc=$?"; drv concluir $D; ct; }
+a_sym2() { mkrepo "$(novo)" "echo x >> gate.calls; sh sdd/reports/gate.sh"; mkdir -p sdd/reports; echo "exit 0" > sdd/reports/gate.sh; git add -f sdd/reports/gate.sh; git commit -qm cod; drv iniciar $D >/dev/null; feito; rel; drv verificar $D; echo "exit 1" > sdd/reports/gate.sh; git add sdd/reports/gate.sh; git commit -qm "muda o script do gate"; drv concluir $D; ct; }
+a_sym3() { base; mkdir -p sdd/reports; ln -s ../../codigo.py sdd/reports/link.py; git add -f sdd/reports/link.py; git commit -qm link; drv concluir $D; ct; echo mudou > sdd/reports/link.py; git status --porcelain | grep -v "^??" ; drv concluir $D; ct; }
+for c in a_ren a_ren2 a_del a_del2 a_modo a_symt a_nome a_caixa a_sym1 a_sym2 a_sym3; do caso $c $c; done
+
+=== a_ren
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - codigo.py
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (f763b02ff56b).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== a_ren2
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (fec03c2ae692).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== a_del
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - codigo.py
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (7a6f5d6666b2).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== a_del2
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - codigo.py
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+
+=== a_modo
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - codigo.py
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (202c12905192).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== a_symt
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - codigo.py
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (a726c1dd7649).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== a_nome
+gate.calls=1
+4e1d527
+
+ sdd/features.py        | 1 +
+ sdd/handoffs2/y        | 1 +
+ sdd/reports-velho/x.py | 1 +
+ sdd/reportsx           | 1 +
+ sdd/reviewsy/z         | 1 +
+ sdd/traces.txt         | 1 +
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (68fa2e90629e).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+gate.calls=1
+
+=== a_caixa
+gate.calls=1
+803c03d
+
+SDD/reports/hack.py
+ D SDD/reports/hack.py
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - SDD/reports/hack.py
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+gate.calls=1
+
+=== a_sym1
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+gate.calls=1
+o gate agora:
+rc=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== a_sym2
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+
+=== a_sym3
+gate.calls=1
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+gate.calls=1
+ M codigo.py
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - codigo.py
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+gate.calls=1
+[exit=0]

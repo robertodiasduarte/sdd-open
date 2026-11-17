@@ -1,0 +1,26 @@
+$ S=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/s05.sh </dev/null
+colher rc=0
+LM-902 ajudou+1
+commit da curadoria tem:
+sdd/playbook.md
+sdd/releases/FX/CURATOR-colhidos.txt
+--- item 9: worktree temporario de origin/main + cherry-pick
+cherry-pick rc=1
+UU sdd/playbook.md
+A  sdd/releases/FX/CURATOR-colhidos.txt
+abort rc=0
+aplicar na base rc=0
+lint rc=0
+push rc=0
+o que subiu:
+sdd/playbook.md
+--- frente nova da mesma feature, a partir da branch padrao
+s1.yaml
+DELTA LM-902 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_FX.md:5 · fp=946a885ad5
+resumo: deltas=1 (ajudou=1 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+colher rc=0
+--- o texto do item 9 cita o registro?
+0
+[exit=1]

@@ -1,0 +1,96 @@
+$ S=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/s03.sh </dev/null
+=== RELEASE 1
+
+--- item 1
+staging: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-4cc20a36e63f/FX
+copiado: sdd/features/DESIGN_FX.md
+copiado: sdd/releases/FX/s1_1.0.yaml
+RESULTADO: STAGING PRONTO (2 arquivo(s))
+→ os originais não foram tocados; rode --colher "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-4cc20a36e63f/FX" sdd/playbook.md e guarde a saída em colheita.txt nessa pasta.
+[preparar rc=0]
+
+--- item 2
+rc=0
+DELTA LM-902 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_FX.md:6 · fp=946a885ad5
+DELTA LM-901 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_FX.md:7 · fp=021379465b
+resumo: deltas=2 (ajudou=2 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+
+--- item 3
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+snapshot rc=0
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+comparar rc=0
+
+--- item 4
+conferir rc=0
+AUTO LM-902 ajudou+1
+   simples: Contagem da lição.
+AUTO LM-901 ajudou+1
+   simples: Contagem da lição.
+resumo-bloco: auto=2 pergunta=0 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+
+--- item 5
+
+--- item 6
+RESULTADO: DELTA APLICADO (2 linha(s))
+→ o stdout é o playbook novo: rode o playbook-lint.sh nele antes de copiar por cima.
+aplicar rc=0
+lint rc=0
+anti-collapse rc=0
+validar-inv rc=0
+
+--- item 7
+registro rc=0
+
+--- item 8
+add rc=0
+sdd/playbook.md
+sdd/releases/FX/CURATOR-colhidos.txt
+commit rc=0
+- [LM-901] ajudou=1 mordeu=0 · conf=2026
+- [LM-902] ajudou=1 mordeu=0 · conf=2026
+- [LM-903] ajudou=0 mordeu=0 · conf=2026
+
+=== RELEASE 2, MESMA FRENTE, NADA NOVO
+
+--- item 1
+staging: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-4cc20a36e63f/FX
+copiado: sdd/features/DESIGN_FX.md
+copiado: sdd/releases/FX/CURATOR-colhidos.txt
+copiado: sdd/releases/FX/s1_1.0.yaml
+RESULTADO: STAGING PRONTO (3 arquivo(s))
+→ os originais não foram tocados; rode --colher "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-4cc20a36e63f/FX" sdd/playbook.md e guarde a saída em colheita.txt nessa pasta.
+[preparar rc=0]
+
+--- item 2
+0 deltas colhidos em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-4cc20a36e63f/FX (2 arquivo(s) elegíveis) — ausência é informação, não verde
+rc=1
+JA_JULGADO 2 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: NADA A COLHER
+→ registre "Curadoria: 0 deltas": esta feature não trouxe lição, contagem nem promoção pendente.
+
+=== FRENTE NOVA (worktree do commit), NADA NOVO
+CURATOR-colhidos.txt
+s1_1.0.yaml
+0 deltas colhidos em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-3faa42cf0905/FX (2 arquivo(s) elegíveis) — ausência é informação, não verde
+JA_JULGADO 2 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: NADA A COLHER
+→ registre "Curadoria: 0 deltas": esta feature não trouxe lição, contagem nem promoção pendente.
+rc=1
+
+=== FRENTE NOVA, ACHADO NOVO
+DELTA LM-903 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_FX.md:8 · fp=eee5300b4f
+JA_JULGADO 2 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=1 (ajudou=1 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+rc=0
+[exit=0]

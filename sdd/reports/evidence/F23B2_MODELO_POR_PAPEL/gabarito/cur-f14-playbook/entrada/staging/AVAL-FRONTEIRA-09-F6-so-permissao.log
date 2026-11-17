@@ -1,0 +1,26 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/09.sh
+# F6: só a permissão muda num arquivo já não rastreado (vira executável)
+novo f6a; printf '#!/bin/sh\necho oi\n' > tool.sh; antes
+cd "$d/w" && pwd -P
+--- cenário f6a (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f6a/w) ---
+[--snapshot antes exit=0]
+chmod +x tool.sh
+depois; comparar; ls -l tool.sh
+[--snapshot depois exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[--comparar exit=0]
+-rwxr-xr-x@ 1 robertoduarte  staff  18 Nov  5 09:46 tool.sh
+# vizinho: a mesma mudança num arquivo rastreado limpo é FORA
+novo f6b; antes
+cd "$d/w" && pwd -P
+--- cenário f6b (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f6b/w) ---
+[--snapshot antes exit=0]
+chmod +x a.txt
+depois; comparar
+[--snapshot depois exit=0]
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f6b/w/a.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+[exit=0]

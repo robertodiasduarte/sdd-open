@@ -1,0 +1,9 @@
+$ python3 -m unittest -v test_f23b2_papeis.AT001AT002Slot.test_vazio_ou_ausente_sai_como_hoje_sem_linha_de_modelo test_f23b2_papeis.AT001AT002Slot.test_preenchido_vale_para_o_despacho_e_para_o_subagente   # AT-001 · HEAD c12a475 · 2026-11-17 08:37
+test_vazio_ou_ausente_sai_como_hoje_sem_linha_de_modelo (test_f23b2_papeis.AT001AT002Slot) ... ok
+test_preenchido_vale_para_o_despacho_e_para_o_subagente (test_f23b2_papeis.AT001AT002Slot) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.331s
+
+OK
+[exit=0]

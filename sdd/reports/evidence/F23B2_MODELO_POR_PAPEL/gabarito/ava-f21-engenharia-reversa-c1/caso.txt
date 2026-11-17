@@ -1,0 +1,4 @@
+papel: avaliador
+commit: 2af3d6ca4d44d130c9093f141fa5f71641ced8ff
+base: v2.8.0
+origem: sdd/reviews/AVALIACAO_F21_ENGENHARIA_REVERSA_20261110-ciclo1.md (branch docs/incorporar-starter), commit citado no bloco (ALVO 2af3d6c, existe no projeto, base v2.8.0 = 45e27a9); DESIGN v1.1 e DEFINE v1.1 de 16de156 (o DEFINE guardado é v1.2, só com o comando do skill-lint no Success Criteria mudado depois da avaliação; a mudança foi desfeita); AT-006 "FAIL parcial" vira FAIL, consertado em 5736ae4; a falha aparece por um grep do texto que o próprio AT-006 cita (ver README.md)

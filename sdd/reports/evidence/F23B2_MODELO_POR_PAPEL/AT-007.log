@@ -1,0 +1,9 @@
+$ python3 -m unittest -v test_f23b2_papeis.AT004AT007Medidor.test_candidato_com_custo_nd_nunca_e_o_mais_barato test_f23b2_papeis.AT008AT011Executor.test_acumulado_com_nd_para_a_serie   # AT-007 · HEAD c12a475 · 2026-11-17 08:38
+test_candidato_com_custo_nd_nunca_e_o_mais_barato (test_f23b2_papeis.AT004AT007Medidor) ... ok
+test_acumulado_com_nd_para_a_serie (test_f23b2_papeis.AT008AT011Executor) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.839s
+
+OK
+[exit=0]

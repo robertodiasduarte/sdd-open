@@ -1,0 +1,3 @@
+papel: curador
+commit: fb7ee82
+origem: 1ª curadoria da F14_DRIVE (v2.7.0), commit b3526ae na main (a 2ª, da v2.7.1, deu 0 deltas e não aplicou nada); playbook e invariants = b3526ae~1 (b0663d3); staging = DESIGN, BUILD_REPORT, AVALIACAO ciclo1-3 e AVAL*-*.log da evidência na branch de documentos em 73c71cc; números de 11+ dígitos abreviados (4…4) em 7 arquivos; colheita e esperado = evidence/F14_DRIVE/CURATOR-colheita.log e CURATOR-delta.log (não os -v2.7.1)

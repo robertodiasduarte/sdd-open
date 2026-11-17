@@ -1,0 +1,79 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p5.sh </dev/null
+[init rc=0]
+## Invariantes
+
+
+## Descartados
+
+=== P5a 1o uso num projeto com playbook proprio: lições antigas aparecem na colheita?
+[colher rc=0]
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F_X.md:2 · fp=d9c2fb96a8
+PROMOVER? LM-002 mordeu=3 promovido_para=— :: promover a mecanismo? sugestão: hook em sdd/hooks/, comando de r
+resumo: deltas=1 (ajudou=1 mordeu=0) candidatos=0 rejeitados=0 promocoes=1 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+AUTO LM-001 ajudou+1
+PERGUNTA 2 promover LM-002 promovido_para=sdd/hooks/pre-commit
+resumo-bloco: auto=1 pergunta=1 descartar=0 nao_julgado=0 contaminacao=nao
+[conferir rc=0]
+--- item 6: so uma contagem aplicada, nenhuma linha de invariante aprovada
+o registro de invariantes é novo na v2.6.0: 2 lição(ões) do playbook ainda não foram classificadas.
+🔴 trava INV: LM-002 entra no universo sem classificação — aprove a proposta A (virar invariante) ou a B (descartar com motivo), ou retire o delta
+🔴 trava INV: LM-003 entra no universo sem classificação — aprove a proposta A (virar invariante) ou a B (descartar com motivo), ou retire o delta
+RESULTADO: TRAVA
+→ nada foi copiado; resolva cada linha acima com a pessoa e rode de novo.
+[validar rc=2]
+--- a proposta A/B que a trava manda aprovar existe em algum lugar? --cruzar com os mesmos deltas:
+resumo-inv: afetadas=0 pendentes=0
+RESULTADO: SEM AVISO
+→ o delta não mexe em nenhuma invariante.
+[cruzar rc=0]
+resumo-inv: afetadas=0 pendentes=0
+RESULTADO: SEM AVISO
+→ o delta não mexe em nenhuma invariante.
+[cruzar com mordeu rc=0]
+
+=== P5b conflito no pouso: --aplicar-inv sobrescreve ID igual da base em silencio; texto manda renumerar
+[aplicar-inv rc=0]
+## Invariantes
+
+- [INV-001] estado=humano origem=LM-001 :: Regra desta frente · por quê: y · motivo: m
+- [INV-002] estado=humano origem=LM-002,LM-003 :: outra · por quê: y · motivo: m
+🟢 trava INV: par válido (2 invariante(s), 0 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+[validar rc=0 — a regra da outra frente sumiu; nenhum aviso de ID repetido]
+
+=== P5c fronteira: curador escreveu; redespacho com o mesmo 'antes' nunca passa, mesmo com a 2a volta limpa
+?? sdd/features/
+[comparar 1 rc=1]
+FORA: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99
+RESULTADO: ESCRITA FORA DO PERMITIDO
+--- 17b item 4: "liste o que saiu como FORA (nao apague nada) e despache de novo 1 vez"; 2a volta, curador nao escreveu nada
+[comparar 2 rc=1 ⇒ 2a reprovacao garantida ⇒ FALHOU]
+
+=== P5d retomada literal: 'continue do item 3' refaz selo e snapshot depois que o curador ja escreveu
+SESSAO DO CURADOR escreveu no staging e no projeto
+--- sessao nova: --retomar, item 3 de novo (selo, snapshot, depois, comparar)
+RETOMADA: colheita anterior encontrada em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/tmp/sdd-curadoria-dbc54461ce17/F_X/colheita.txt
+RESULTADO: RETOMADA
+RESULTADO: SÓ O PERMITIDO MUDOU
+[comparar rc=0: escrita apagada do registro]
+
+=== P5e nada aceito: sem delta.txt o item 6 falha; nao ha caminho escrito
+🛑 playbook-curator: delta não encontrado: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/tmp/sdd-curadoria-dbc54461ce17/F_X/delta.txt
+RESULTADO: FALHA
+→ confira o caminho do delta e rode de novo; nada foi aplicado.
+[aplicar rc=2]
+
+=== P5f projeto que ignora sdd/reports: item 8 'git add' dos CURATOR
+The following paths are ignored by one of your .gitignore files:
+sdd/reports
+hint: Use -f if you really want to add them.
+[add rc=1]
+
+=== P5g sdd-open: commit da curadoria na arvore publicada: G3 do publish-gate
+G3 allowlist (MANIFEST.txt)
+  ⛔ undeclared file: sdd/reports/evidence/F14_PLAYBOOK/CURATOR-colheita.log
+[gate rc=1]
+[exit=0]

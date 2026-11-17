@@ -1,0 +1,47 @@
+$ S=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/s09.sh </dev/null
+staging: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-c181a2832feb/F1
+copiado: sdd/features/DESIGN_F1.md
+copiado: sdd/reviews/AVALIACAO_F1_20261105-1430.md
+copiado: sdd/reviews/AVALIACAO_F1_20261105-ciclo1.md
+copiado: sdd/reviews/AVALIACAO_F1_20261105.md
+copiado: sdd/reviews/AVALIACAO_F1_20261105_X_20261106.md
+copiado: sdd/archive/F1/AVALIACAO_F1_20260101.md
+copiado: sdd/releases/F1/CURATOR-colhidos.txt
+copiado: sdd/releases/F1/s1.yaml
+RESULTADO: STAGING PRONTO (8 arquivo(s))
+rc=0
+--- no staging:
+AVALIACAO_F1_20260101.md
+AVALIACAO_F1_20261105-1430.md
+AVALIACAO_F1_20261105-ciclo1.md
+AVALIACAO_F1_20261105.md
+AVALIACAO_F1_20261105_X_20261106.md
+CURATOR-colhidos.txt
+DESIGN_F1.md
+s1.yaml
+--- de onde veio o registro:
+DELTA nova · fp=aaaaaaaaaa
+--- registro no releases e link: nao vem
+ignorado (link ou não é arquivo): sdd/releases/F1/CURATOR-colhidos.txt
+--- so o antigo em evidence: nao vem (sem legado: a feature ainda nao saiu)
+0
+--- nome de feature com caractere especial de regex: F.1 e invalido? F-1 vale
+staging: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-c181a2832feb/F-1
+copiado: sdd/features/DESIGN_F-1.md
+copiado: sdd/reviews/AVALIACAO_F-1_20261105.md
+RESULTADO: STAGING PRONTO (2 arquivo(s))
+🛑 playbook-curator: FEATURE inválida: 'F.1' (letras, números, - e _; começa por letra ou número)
+uso:
+  playbook-curator.sh --preparar <FEATURE> [--retomar]
+  playbook-curator.sh --colher <dir> <playbook> [--desde AAAA-MM-DD] [--inv <invariantes>]
+  playbook-curator.sh --aplicar <delta> <playbook> [conf=AAAA-MM-DD]
+  playbook-curator.sh --cruzar <delta|-> <playbook> <invariantes>
+  playbook-curator.sh --validar-inv <playbook> <invariantes>
+  playbook-curator.sh --aplicar-inv <linhas> <invariantes>
+  playbook-curator.sh --selar <staging>
+  playbook-curator.sh --conferir-bloco <colheita> <bloco> <playbook> <selo> <comparar>
+  playbook-curator.sh --self-test
+RESULTADO: ERRO DE USO
+→ corrija a chamada e rode de novo; nada foi lido nem gravado.
+rc=64
+[exit=0]

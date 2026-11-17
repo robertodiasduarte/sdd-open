@@ -1,0 +1,19 @@
+$ T=$(mktemp -d); mkdir -p $T/ev; cat > $T/gate.sh <<EOF
+echo saida-do-gate
+exit 2
+EOF
+/usr/bin/python3 -B -c "
+import subprocess,sys
+log,gate=sys.argv[1],sys.argv[2]
+with open(log, \"w\", encoding=\"utf-8\") as f:
+    f.write(\"\$ verify-gate.sh D.md\n\")
+    r = subprocess.run([\"bash\", gate], stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
+    f.write(\"[exit=%d]\n\" % r.returncode)
+" $T/ev/AT-001.log $T/gate.sh; echo "--- log literal do Pattern 5:"; cat -n $T/ev/AT-001.log; echo "--- primeira linha comeca com \$ ?"; /usr/bin/python3 -B -c "import sys;l=open(sys.argv[1]).readline();print(repr(l),l.startswith(\"\$ \"))" $T/ev/AT-001.log; rm -rf $T
+--- log literal do Pattern 5:
+     1	saida-do-gate
+     2	$ verify-gate.sh D.md
+     3	[exit=2]
+--- primeira linha comeca com $ ?
+'saida-do-gate\n' False
+[exit=0]

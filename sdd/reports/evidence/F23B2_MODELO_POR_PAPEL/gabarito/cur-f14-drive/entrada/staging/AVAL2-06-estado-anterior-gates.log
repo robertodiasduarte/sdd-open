@@ -1,0 +1,111 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p05b.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p05b.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+velho() { mkrepo "$(novo)"; cp sdd/bin/sdd-drive.sh $LAB/atual.sh; cp $LAB/drive-velho.sh sdd/bin/sdd-drive.sh; git add -A; git commit -qm 'script velho'; }
+atual() { cp $LAB/atual.sh sdd/bin/sdd-drive.sh; git add -A sdd/bin; git commit -qm atualiza -- sdd/bin; }
+echo "=== A. vermelho gravado pela anterior; atualiza (commit em sdd/bin); atual retoma"
+velho; drv iniciar $D > /dev/null; feito; drv verificar $D 2>&1 | head -3; cat sdd/reports/progress/DRIVE_F.json; atual
+drv proximo $D; drv --resume $D; touch .verde; drv verificar $D; rel; drv concluir $D; cat gate.calls | wc -l
+echo "=== B. verde gravado pela anterior com commit depois do gate; atual sem commit novo"
+velho; touch .verde; drv iniciar $D > /dev/null; feito; drv verificar $D 2>&1 | head -2; cp $LAB/atual.sh sdd/bin/sdd-drive.sh; rel; drv concluir $D; git add -A sdd/bin; git commit -qm atualiza -- sdd/bin; drv concluir $D
+echo "=== C. inconclusivo gravado pela anterior (sem parada_gate), proximo e concluir na atual"
+velho; drv iniciar $D > /dev/null; feito
+/usr/bin/python3 -I -B - <<'PY'
+import json
+p='sdd/reports/progress/DRIVE_F.json'; d=json.load(open(p))
+d['gates'].append(dict(n=1,rodada=1,commit=d['inicio'],exit=3,log='x',impressao=d['gate_sha']));d['motivo']='gate-inconclusivo'
+json.dump(d,open(p,'w'))
+PY
+atual; drv proximo $D; drv concluir $D
+echo "=== D. estado da 1a versao 7f4f442"
+=== A. vermelho gravado pela anterior; atualiza (commit em sdd/bin); atual retoma
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: CORRIGIR
+{
+ "versao": 2,
+ "feature": "F",
+ "define": "sdd/features/DEFINE_F.md",
+ "gate_sha": "1574a0e696a885c4f36adca069c978b553c31dc245f952094d41ac5f12a69c12",
+ "gate_cmd": "echo x >> gate.calls; test -f .verde",
+ "inicio": "58be24a67c601b2422e5bdbb9366fde41c889c56",
+ "maximo": 3,
+ "gates": [
+  {
+   "n": 1,
+   "rodada": 1,
+   "commit": "58be24a67c601b2422e5bdbb9366fde41c889c56",
+   "exit": 2,
+   "log": "sdd/reports/evidence/F/DRIVE-gate-r1.log",
+   "impressao": "1574a0e696a885c4f36adca069c978b553c31dc245f952094d41ac5f12a69c12"
+  }
+ ],
+ "trocas_gate": [],
+ "recibos": [],
+ "repeticao": {
+  "chave": "",
+  "n": 0
+ },
+ "motivo": "",
+ "avisou_paradas": false
+}
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 2/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive --resume sdd/features/DEFINE_F.md
+retomando: rodada 2/3 · 2 de 2 tarefas prontas · último teste final: 2 · não gastei rodada
+ACAO: VERIFICAR
+rodada: 2/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 2/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r2.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 1 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+       2
+=== B. verde gravado pela anterior com commit depois do gate; atual sem commit novo
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+▶ rodando o teste final; isso pode levar alguns minutos.
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: COMMITAR
+rodada: 1/3
+   - sdd/bin/sdd-drive.sh
+RESULTADO: CONTINUAR
+→ commite os arquivos listados e chame verificar de novo; nenhuma rodada foi gasta.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+Há código novo depois do último teste final verde (52cd253a2b9a).
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+=== C. inconclusivo gravado pela anterior (sem parada_gate), proximo e concluir na atual
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+ACAO: VERIFICAR
+rodada: 1/3
+RESULTADO: CONTINUAR
+→ chame sdd-drive.sh verificar: quem roda o teste final é o script.
+[rc=10]
+=== D. estado da 1a versao 7f4f442
+[exit=0]

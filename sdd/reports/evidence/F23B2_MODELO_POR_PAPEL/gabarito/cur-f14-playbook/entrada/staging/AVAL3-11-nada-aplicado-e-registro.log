@@ -1,0 +1,10 @@
+$ S=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/s11.sh </dev/null
+colher rc=0
+curador descartou tudo; delta e inv-linhas vazios
+--- depois do item 7, sem commit (o texto manda pular):
+?? sdd/releases/FX/CURATOR-colhidos.txt
+--- mesma frente:
+JA_JULGADO 1 linha(s) já julgada(s) numa curadoria anterior 
+--- frente nova:
+DELTA LM-902 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F
+[exit=0]

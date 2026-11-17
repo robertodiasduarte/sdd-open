@@ -1,0 +1,9 @@
+$ python3 -m unittest -v test_f23b2_papeis.AT008AT011Executor.test_agente_que_grava_no_projeto_invalida_a_execucao test_f23b2_papeis.AT008AT011Executor.test_copia_com_remoto_invalida_e_copia_vem_do_commit_sem_remoto   # AT-011 · HEAD c12a475 · 2026-11-17 08:38
+test_agente_que_grava_no_projeto_invalida_a_execucao (test_f23b2_papeis.AT008AT011Executor) ... ok
+test_copia_com_remoto_invalida_e_copia_vem_do_commit_sem_remoto (test_f23b2_papeis.AT008AT011Executor) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.532s
+
+OK
+[exit=0]

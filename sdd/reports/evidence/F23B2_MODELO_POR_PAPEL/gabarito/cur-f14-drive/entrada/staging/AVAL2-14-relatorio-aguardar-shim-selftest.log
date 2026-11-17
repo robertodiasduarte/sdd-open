@@ -1,0 +1,265 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p14.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p14.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+acao() { grep -E '^(---|ACAO:|motivo:|retomando|\[rc|RESULTADO: (FALHA|ERRO)|🛑|tarefa:|antes:|agora:)' ; }
+echo "=== AT-015 DRIVE_REPORT em cada parada; L3 bloqueio + recibo; L4 troca aceita"
+mkrepo "$(novo)" 'false'; drv iniciar $D --max 2 >/dev/null; feito; drv verificar $D 2>&1 | acao; drv bloqueio $D 'motivo XYZ' | acao; cat sdd/reports/DRIVE_REPORT_F.md; drv recibo $D 'pipe | e\nquebra' | acao; grep -c XYZ sdd/reports/DRIVE_REPORT_F.md; sed -n '/Decidi/,$p' sdd/reports/DRIVE_REPORT_F.md
+sed -i '' 's/cmd: "false"/cmd: "true | cat"/' $D; drv proximo $D | acao; sed -n 1,11p sdd/reports/DRIVE_REPORT_F.md; drv --resume $D --aceitar-gate-novo | acao; sed -n '/Teste final alterado/,/Decidi/p' sdd/reports/DRIVE_REPORT_F.md
+echo "--- a parada de precondicao com estado presente reescreve o relatorio? (iniciar com estado)"
+mkrepo "$(novo)"; drv iniciar $D >/dev/null; ls sdd/reports/; drv iniciar $D | acao; ls sdd/reports/; 
+echo "--- estado presente, valido, DEFINE sumiu: define-invalido com relatorio"
+mkrepo "$(novo)"; drv iniciar $D >/dev/null; mv $D $LAB/x; drv proximo $D | acao; sed -n 3p sdd/reports/DRIVE_REPORT_F.md; mv $LAB/x $D
+echo "=== AT-016 aguardar real, 40, exit diferente, papel invalido, tarefa"
+mkrepo "$(novo)"; drv iniciar $D >/dev/null; drv proximo $D >/dev/null; mkdir -p sdd/reports/briefs; echo b > brief.md; drv aguardar $D executor-drive brief.md; st "print(d['motivo'],d['avisou_paradas'])"; ls sdd/reports/briefs; drv aguardar $D executor-drive brief.md | grep -c 'parada(s)'; drv --resume $D | acao
+drv aguardar $D executor-drive nao-existe.md 2>&1 | acao; st "print(repr(d['motivo']))"; drv aguardar $D 'papel com espaço' brief.md 2>&1 | acao; st "print(repr(d['motivo']))"
+drv aguardar $D 2>&1 | acao; drv bloqueio $D '   ' 2>&1 | acao; drv recibo $D 2>&1 | acao
+echo "=== AT-017 shim de git e gh em todos os verbos"
+mkrepo "$(novo)"; export SHIM_LOG=$LAB/shim.log; : > $SHIM_LOG; OLD=$PATH; export PATH=$LAB/gitshim:$PATH
+touch .verde; for v in "--dry-run $D" "iniciar $D" "proximo $D" "recibo $D t" ; do /bin/bash sdd/bin/sdd-drive.sh $v >/dev/null 2>&1; done; feito; rel
+for v in "verificar $D" "concluir $D" "aguardar $D executor-drive .gitignore" "bloqueio $D t" "--resume $D" "--self-test"; do /bin/bash sdd/bin/sdd-drive.sh $v >/dev/null 2>&1; echo "rc=$? $v"; done; export PATH=$OLD
+wc -l < $SHIM_LOG; grep -cE ' push|^gh ' $SHIM_LOG; grep -E ' push|^gh |gh release|workflow run' $SHIM_LOG | head; awk '{print $1,$2,$3,$4}' $SHIM_LOG | sed -E 's#-C [^ ]+ ##' | awk '{print $2}' | sort | uniq -c | sort -rn | head -20
+echo "=== AT-018 self-test: bash 3.2, nada no pacote, gpgsign global, trava herdada, vermelhos"
+mkrepo "$(novo)"; git status --porcelain > $LAB/a; /bin/bash sdd/bin/sdd-drive.sh --self-test; echo "[rc=$?]"; git status --porcelain > $LAB/b; cmp $LAB/a $LAB/b && echo igual; ls $TMPDIR | grep -c sdd-drive-
+printf '[commit]\n\tgpgsign = true\n[user]\n\tsigningkey = NAOEXISTE\n' > $LAB/gitcfg; GIT_CONFIG_GLOBAL=$LAB/gitcfg /bin/bash sdd/bin/sdd-drive.sh --self-test | tail -3; echo "[rc=${PIPESTATUS[0]}]"
+SDD_DRIVE_TRAVA_HERDADA=1 /bin/bash sdd/bin/sdd-drive.sh --self-test | tail -2; echo "[rc=${PIPESTATUS[0]}]"
+/bin/bash sdd/bin/sdd-drive.sh --self-test x 2>&1 | grep -E 'ERRO|não aceita'; echo "[rc=${PIPESTATUS[0]}]"
+echo "--- sabotagem: exit 40 vira 41 (copia): self-test tem de sair 2 nomeando o caso"
+sed -i '' 's/, 40, "AGUARDANDO_HUMANO"/, 41, "AGUARDANDO_HUMANO"/' sdd/bin/sdd-drive.sh; /bin/bash sdd/bin/sdd-drive.sh --self-test | grep -E '🛑|RESULTADO'; echo "[rc=${PIPESTATUS[0]}]"
+echo "=== uso"
+mkrepo "$(novo)"; drv 2>&1 | acao; drv xyz 2>&1 | acao; drv iniciar 2>&1 | acao; drv iniciar sdd/features/OUTRO.md 2>&1 | acao; drv iniciar sdd/features/DEFINE_ção.md 2>&1 | acao; drv iniciar /etc/DEFINE_F.md 2>&1 | acao; drv proximo $D extra 2>&1 | acao; cd "$(novo)"; drv() { /bin/bash $LAB/../x; }; /bin/bash $PROJ/sdd/bin/sdd-drive.sh proximo $D 2>&1 | acao; echo "[rc=${PIPESTATUS[0]}]"
+=== AT-015 DRIVE_REPORT em cada parada; L3 bloqueio + recibo; L4 troca aceita
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+ACAO: CORRIGIR
+[rc=10]
+--- sdd-drive bloqueio sdd/features/DEFINE_F.md motivo XYZ
+motivo: bloqueio-humano
+[rc=20]
+# DRIVE_REPORT: F
+
+A construção parou e precisa de você. Nada foi publicado. Rodadas vermelhas: 1 de 2.
+
+| Campo | Valor |
+|---|---|
+| Motivo | bloqueio-humano |
+| DEFINE | `sdd/features/DEFINE_F.md` |
+| Commit inicial | `d6be904879e4` |
+| Teste final | `false` |
+
+motivo XYZ
+
+## Testes finais
+
+| # | Rodada | Commit | Exit | Log |
+|---|---|---|---|---|
+| 1 | 1 | `d6be904879e4` | 2 | `sdd/reports/evidence/F/DRIVE-gate-r1.log` |
+
+## Commits desde o início
+
+Nenhum.
+
+## Teste final alterado
+
+Nenhuma troca.
+
+## Decidi sozinho
+
+Nada.
+
+Nada foi publicado: publicar é decisão da pessoa, pela sdd-release.
+--- sdd-drive recibo sdd/features/DEFINE_F.md pipe | e\nquebra
+[rc=0]
+1
+## Decidi sozinho
+
+- pipe | e\nquebra
+
+Nada foi publicado: publicar é decisão da pessoa, pela sdd-release.
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: gate-alterado
+antes: false
+agora: true | cat
+[rc=20]
+# DRIVE_REPORT: F
+
+O comando do teste final mudou desde o início desta execução. Rodadas vermelhas: 1 de 2.
+
+| Campo | Valor |
+|---|---|
+| Motivo | gate-alterado |
+| DEFINE | `sdd/features/DEFINE_F.md` |
+| Commit inicial | `d6be904879e4` |
+| Teste final | `false` |
+
+--- sdd-drive --resume sdd/features/DEFINE_F.md --aceitar-gate-novo
+retomando: rodada 2/2 · 2 de 2 tarefas prontas · último teste final: 2 · não gastei rodada
+ACAO: VERIFICAR
+[rc=10]
+## Teste final alterado
+
+- de `false` para `true | cat`, aceito em 2026-11-05
+
+## Decidi sozinho
+--- a parada de precondicao com estado presente reescreve o relatorio? (iniciar com estado)
+progress
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: estado-invalido
+[rc=20]
+progress
+--- estado presente, valido, DEFINE sumiu: define-invalido com relatorio
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: define-invalido
+[rc=20]
+O DEFINE não tem um teste final válido. Rodadas vermelhas: 0 de 3.
+=== AT-016 aguardar real, 40, exit diferente, papel invalido, tarefa
+--- sdd-drive aguardar sdd/features/DEFINE_F.md executor-drive brief.md
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: executor-drive).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/r.SDS0Oh.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_executor-drive_F.md → o agente começa a ler a próxima tarefa de sdd/reports/progress/PROGRESS_F.md.
+3. Quando ele terminar, copie o bloco que começa com `<<<RODADA` até `>>>` e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** a tarefa ainda não foi feita e nada foi publicado.
+**Brief:** sdd/reports/briefs/BRIEF_executor-drive_F.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+tarefa: a
+Esta execução tem 2 tarefa(s): sem subagente, são até 2 parada(s), uma por tarefa; você pode parar e voltar quando quiser.
+motivo: aguardando-sessao
+Esta etapa precisa de uma sessão nova do agente. Nada foi publicado.
+RESULTADO: AGUARDANDO_HUMANO
+→ siga os passos acima; na volta, use --resume.
+[rc=40]
+aguardando-sessao True
+BRIEF_executor-drive_F.md
+0
+--- sdd-drive --resume sdd/features/DEFINE_F.md
+retomando: rodada 1/3 · 0 de 2 tarefas prontas · último teste final: nenhum · não gastei rodada
+ACAO: RODADA
+tarefa: 1 de 2 — a
+[rc=10]
+--- sdd-drive aguardar sdd/features/DEFINE_F.md executor-drive nao-existe.md
+🛑 sdd-fluxo: brief ausente, vazio ou ilegível: nao-existe.md
+RESULTADO: ERRO DE USO
+[rc=64]
+''
+--- sdd-drive aguardar sdd/features/DEFINE_F.md papel com espaço brief.md
+🛑 sdd-fluxo: papel inválido: 'papel com espaço' (letras, números, - e _)
+RESULTADO: ERRO DE USO
+[rc=64]
+''
+--- sdd-drive aguardar sdd/features/DEFINE_F.md
+🛑 sdd-drive: aguardar exige <DEFINE.md> <papel> <brief>
+RESULTADO: ERRO DE USO
+[rc=64]
+--- sdd-drive bloqueio sdd/features/DEFINE_F.md    
+🛑 sdd-drive: bloqueio exige <DEFINE.md> "<motivo>"
+RESULTADO: ERRO DE USO
+[rc=64]
+--- sdd-drive recibo sdd/features/DEFINE_F.md
+🛑 sdd-drive: recibo exige <DEFINE.md> "<texto>"
+RESULTADO: ERRO DE USO
+[rc=64]
+=== AT-017 shim de git e gh em todos os verbos
+rc=10 verificar sdd/features/DEFINE_F.md
+rc=0 concluir sdd/features/DEFINE_F.md
+rc=40 aguardar sdd/features/DEFINE_F.md executor-drive .gitignore
+rc=20 bloqueio sdd/features/DEFINE_F.md t
+rc=10 --resume sdd/features/DEFINE_F.md
+rc=0 --self-test
+     358
+0
+ 255 rev-parse
+  39 symbolic-ref
+  15 log
+  13 commit
+  13 add
+  11 status
+  11 init
+   1 diff
+=== AT-018 self-test: bash 3.2, nada no pacote, gpgsign global, trava herdada, vermelhos
+  ✅ uso sem argumentos ⇒ 64
+  ✅ --max inválido ⇒ 64
+  ✅ branch padrão ⇒ branch-padrao
+  ✅ DEFINE sem bloco ⇒ define-invalido
+  ✅ marcador ativo ⇒ clarificacao-pendente
+  ✅ sem estado ⇒ estado-invalido
+  ✅ não consegue gravar ⇒ 2
+  ✅ simulação ⇒ simulacao
+  ✅ iniciar ⇒ ação
+  ✅ iniciar de novo ⇒ estado-invalido
+  ✅ 3ª repetição ⇒ bloqueio-humano
+  ✅ resume ⇒ 10
+  ✅ bloqueio ⇒ bloqueio-humano
+  ✅ aguardar ⇒ aguardando-sessao
+  ✅ gate mudou ⇒ gate-alterado
+  ✅ gate mudou continua parado
+  ✅ aceitar o gate novo
+  ✅ vermelho no limite ⇒ orcamento-rodadas
+  ✅ o limite segue valendo
+  ✅ manual-ux ⇒ manual-ux
+  ✅ gate inconclusivo ⇒ gate-inconclusivo
+  ✅ verde: iniciar
+  ✅ verde: vermelho gasta rodada
+  ✅ verde: sem commit novo não roda de novo
+  ✅ verde: arquivo novo ⇒ COMMITAR
+  ✅ verde: gate 0 ⇒ avaliar
+  ✅ verde: sem relatório não conclui
+  ✅ verde: concluir ⇒ gate-verde
+✅ self-test: todos os casos passaram.
+RESULTADO: VERDE
+→ o script está conforme o contrato.
+[rc=0]
+igual
+0
+✅ self-test: todos os casos passaram.
+RESULTADO: VERDE
+→ o script está conforme o contrato.
+[rc=0]
+RESULTADO: VERDE
+→ o script está conforme o contrato.
+[rc=0]
+🛑 sdd-drive: --self-test não aceita argumentos
+RESULTADO: ERRO DE USO
+[rc=64]
+--- sabotagem: exit 40 vira 41 (copia): self-test tem de sair 2 nomeando o caso
+  🛑 aguardar ⇒ aguardando-sessao
+🛑 self-test: 1 caso(s) falharam: aguardar ⇒ aguardando-sessao
+RESULTADO: FALHA
+[rc=2]
+=== uso
+--- sdd-drive 
+🛑 sdd-drive: falta o verbo
+RESULTADO: ERRO DE USO
+[rc=64]
+--- sdd-drive xyz
+🛑 sdd-drive: verbo desconhecido: xyz
+RESULTADO: ERRO DE USO
+[rc=64]
+--- sdd-drive iniciar
+🛑 sdd-drive: iniciar exige <DEFINE.md> [--max N]
+RESULTADO: ERRO DE USO
+[rc=64]
+--- sdd-drive iniciar sdd/features/OUTRO.md
+🛑 sdd-drive: o DEFINE precisa se chamar DEFINE_<FEATURE>.md: sdd/features/OUTRO.md
+RESULTADO: ERRO DE USO
+[rc=64]
+--- sdd-drive iniciar sdd/features/DEFINE_ção.md
+🛑 sdd-drive: FEATURE inválida: 'ção' (letras, números, - e _)
+RESULTADO: ERRO DE USO
+[rc=64]
+--- sdd-drive iniciar /etc/DEFINE_F.md
+🛑 sdd-drive: o DEFINE precisa estar dentro do repositório: /etc/DEFINE_F.md
+RESULTADO: ERRO DE USO
+[rc=64]
+--- sdd-drive proximo sdd/features/DEFINE_F.md extra
+🛑 sdd-drive: proximo exige <DEFINE.md>
+RESULTADO: ERRO DE USO
+[rc=64]
+🛑 sdd-drive: este comando precisa de um repositório git
+RESULTADO: ERRO DE USO
+[rc=64]
+[exit=0]

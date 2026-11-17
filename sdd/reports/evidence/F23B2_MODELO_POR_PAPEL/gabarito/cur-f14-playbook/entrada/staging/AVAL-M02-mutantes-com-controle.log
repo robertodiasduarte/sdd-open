@@ -1,0 +1,27 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/mut.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE
+M00 CONTROLE sem mutacao :: VIVO rc=0 
+M01 achado com ✅ passa a contar (AT-002) :: MORTO rc=1 FAIL: test_linha_verde_e_palavra_dentro_de_identificador_nao_contam
+M02 sugestao ja julgada volta a sair (AT-044) :: VIVO rc=0 
+M03 candidato ja julgado volta a sair (AT-044) :: VIVO rc=0 
+M04 trava: check= inexistente nao reprova (AT-015) :: MORTO rc=1 FAIL: test_cada_defeito_sai_2_nomeando_o_id
+M05 selo: link vira hash do alvo, nao LINK :: VIVO rc=0 
+M06 conferir: simples com so traco vale (AT-020) :: VIVO rc=0 
+M07 conferir: mordeu com INV_PENDENTE vira AUTO (AT-021) :: MORTO rc=1 FAIL: test_mordeu_com_pendencia_vira_pergunta; FAIL: test_verde_vermelhos_antes_e_sem_residuo
+M08 cruzar: bullet ja no universo vira pendente de novo (AT-016) :: VIVO rc=0 
+M09 cruzar: nao troca check por promovido_para (AT-016) :: VIVO rc=0 
+M10 preparar: archive sobrescreve o de sdd/ (AT-041) :: VIVO rc=0 
+M11 FAILED deixa de ser achado (AT-002) :: MORTO rc=1 FAIL: test_marca_com_lm_vira_mordeu_em_cada_fonte
+M12 termo so de digitos vira sugestao (AT-003) :: MORTO rc=1 FAIL: test_termo_curto_ou_so_digitos_nao_sugere
+M13 JA_COLHIDO nao cobre BUILD_REPORT (AT-008) :: MORTO rc=1 FAIL: test_documento_anterior_vira_ja_colhido
+M14 conferir: IGNORADO/JA_COLHIDO fora da cobertura (AT-020) :: MORTO rc=1 FAIL: test_ignorado_e_ja_colhido_precisam_aparecer
+M15 conferir: AUTO aceita +2 de contador colhido? m.group(3) :: MORTO rc=1 FAIL: test_contador_auto_de_mais_de_1; FAIL: test_verde_vermelhos_antes_e_sem_residuo
+M16 preparar: staging que e link segue (AT-041) :: VIVO rc=0 
+M17 trace: nome com ponto inicial sem prefixo (AT-009) :: VIVO rc=0 
+M18 descarte que e tombstone passa (AT-015) :: MORTO rc=1 FAIL: test_cada_defeito_sai_2_nomeando_o_id
+M19 copiar-docs: frente/sdd link nao para :: VIVO rc=0 
+M20 copiar-docs: destino link passa :: VIVO rc=0 
+M21 anti-collapse sem piso (AT-042) :: VIVO rc=0 
+M22 fluxo: curador sem a frase da publicacao (AT-023) :: MORTO rc=1 FAIL: test_curador_para_dizendo_que_a_publicacao_ja_terminou
+M23 fronteira: --snapshot aceita pasta ilegivel (AT-045) :: MORTO rc=1 FAIL: test_pasta_sem_permissao_nao_e_verde
+vivos: 13
+[exit=0]

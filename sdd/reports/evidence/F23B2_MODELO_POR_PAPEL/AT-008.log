@@ -1,0 +1,12 @@
+$ python3 -m unittest -v test_f23b2_papeis.AT008AT011Executor.test_pay_per_token_com_teto_pago_zero_nao_e_chamado test_f23b2_papeis.AT008AT011Executor.test_cobranca_desconhecida_nunca_roda test_f23b2_papeis.AT008AT011Executor.test_teto_nominal_vale_para_a_medicao_inteira test_f23b2_papeis.AT008AT011Executor.test_acumulado_com_nd_para_a_serie test_f23b2_papeis.AT004AT007Medidor.test_parcial_vem_antes_da_referencia_e_candidato_sem_execucao_nao_vence   # AT-008 · HEAD c12a475 · 2026-11-17 08:38
+test_pay_per_token_com_teto_pago_zero_nao_e_chamado (test_f23b2_papeis.AT008AT011Executor) ... ok
+test_cobranca_desconhecida_nunca_roda (test_f23b2_papeis.AT008AT011Executor) ... ok
+test_teto_nominal_vale_para_a_medicao_inteira (test_f23b2_papeis.AT008AT011Executor) ... ok
+test_acumulado_com_nd_para_a_serie (test_f23b2_papeis.AT008AT011Executor) ... ok
+test_parcial_vem_antes_da_referencia_e_candidato_sem_execucao_nao_vence (test_f23b2_papeis.AT004AT007Medidor) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 3.882s
+
+OK
+[exit=0]

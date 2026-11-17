@@ -1,0 +1,43 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo $V/x "T=\$(mktemp -d) && git archive HEAD | tar -x -C \$T && sleep 3 && test ! -f \$T/quebra.txt"
+printf "import sys\nsys.exit(0)\n" > sdd/bin/report-lint.py; git add -A; git commit -qm lint-stub
+drv iniciar $D; feito; echo HEAD-testado=$(git rev-parse --short HEAD)
+drv verificar $D --fundo
+sleep 1; echo quebra > quebra.txt; git add quebra.txt; git commit -qm "codigo que reprova o gate, durante o gate"; echo HEAD-novo=$(git rev-parse --short HEAD)
+sleep 4; cat sdd/reports/progress/DRIVE_F.fundo.log
+python3 -c "import json;g=json.load(open(\"sdd/reports/progress/DRIVE_F.json\"))[\"gates\"][-1];print(\"registrado: commit\",g[\"commit\"][:7],\"exit\",g[\"exit\"])"
+echo x > sdd/reports/BUILD_REPORT_F.md
+drv concluir $D
+echo "contraprova: o mesmo gate no HEAD atual, fora do drive:"; T=$(mktemp -d); git archive HEAD | tar -x -C $T; test ! -f $T/quebra.txt; echo exit-real=$?
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+HEAD-testado=d5d7390
+--- sdd-drive verificar sdd/features/DEFINE_F.md --fundo
+ACAO: ESPERAR
+rodada: 1/3
+O teste final foi para o fundo (processo 85823); a saída do script fica em sdd/reports/progress/DRIVE_F.fundo.log.
+RESULTADO: CONTINUAR
+→ espere o teste final terminar e chame proximo de novo; nenhuma rodada é gasta por esperar.
+[rc=10]
+HEAD-novo=8326715
+▶ rodando o teste final; isso pode levar alguns minutos.
+ACAO: AVALIAR_E_RELATAR
+rodada: 1/3
+O teste final passou (log: sdd/reports/evidence/F/DRIVE-gate-r1.log). Ainda não publiquei nada.
+RESULTADO: CONTINUAR
+→ rode o avaliador de contexto fresco, grave o BUILD_REPORT e chame concluir.
+registrado: commit 8326715 exit 0
+--- sdd-drive concluir sdd/features/DEFINE_F.md
+motivo: gate-verde
+O teste final passou e os relatórios estão prontos. Nada foi publicado.
+Rodadas vermelhas: 0 de 3.
+RESULTADO: CONCLUIDO
+→ revise os commits e, para publicar, chame a sdd-release; o piloto nunca publica.
+[rc=0]
+contraprova: o mesmo gate no HEAD atual, fora do drive:
+exit-real=1
+[exit=0]

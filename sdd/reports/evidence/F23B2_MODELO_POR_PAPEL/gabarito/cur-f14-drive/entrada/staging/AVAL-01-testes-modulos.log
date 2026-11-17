@@ -1,0 +1,47 @@
+$ T=$(mktemp -d) && git archive HEAD | tar -x -C $T && cd $T && SDD_TEST_BASH=/bin/bash TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/tmp /usr/bin/python3 -B -m unittest discover -s tests -p "test_drive.py" 2>&1; echo drive=$?; SDD_TEST_BASH=/bin/bash TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/tmp /usr/bin/python3 -B -m unittest discover -s tests -p "test_deploy_do_sha.py" 2>&1; echo deploy=$?;SDD_TEST_BASH=/bin/bash TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/tmp /usr/bin/python3 -B -m unittest discover -s tests -p "test_sdd_archive.py" 2>&1; echo archive=$?; for m in test_f14_drive_textos test_avaliador_guard test_playbook_curator test_fluxo test_verify_gate test_decisoes_lint test_inventario test_bash32 test_docs; do SDD_TEST_BASH=/bin/bash TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/tmp /usr/bin/python3 -B -m unittest discover -s tests -p "$m.py" 2>&1 | grep -E "^(Ran|OK|FAILED|FAIL:|ERROR:)"; echo "$m=${PIPESTATUS[0]}"; done
+...........................................................
+----------------------------------------------------------------------
+Ran 59 tests in 71.511s
+
+OK
+drive=0
+...........................
+----------------------------------------------------------------------
+Ran 27 tests in 17.155s
+
+OK
+deploy=0
+.................
+----------------------------------------------------------------------
+Ran 17 tests in 5.671s
+
+OK
+archive=0
+Ran 19 tests in 0.087s
+OK
+test_f14_drive_textos=0
+Ran 14 tests in 5.365s
+OK
+test_avaliador_guard=0
+Ran 104 tests in 23.106s
+OK (skipped=1)
+test_playbook_curator=0
+Ran 67 tests in 14.792s
+OK
+test_fluxo=0
+Ran 27 tests in 3.097s
+OK
+test_verify_gate=0
+Ran 11 tests in 1.600s
+OK
+test_decisoes_lint=0
+Ran 24 tests in 4.272s
+OK
+test_inventario=0
+Ran 3 tests in 0.067s
+OK
+test_bash32=0
+Ran 23 tests in 0.049s
+OK
+test_docs=0
+[exit=0]
