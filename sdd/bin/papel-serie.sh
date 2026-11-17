@@ -204,7 +204,11 @@ for nome in sorted(os.listdir(gab)):
     if not CASO_RE.match(nome) or not COMMIT_RE.match(cx.get("commit", "")) \
             or ler(os.path.join(gab, nome, "brief.md")) is None:
         uso("caso %s inválido: caso.txt com commit (sha ou -) e brief.md legível" % nome)
-    casos.append({"nome": nome, "commit": cx["commit"], "dir": os.path.join(gab, nome)})
+    base = cx.get("base", "")
+    if base and (not re.match(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,79}\Z", base) or ".." in base
+                 or git("rev-parse", "--verify", "-q", base + "^{commit}", cwd=raiz)[0] != 0):
+        uso("caso %s: base %s não é uma ref deste repositório" % (nome, base))
+    casos.append({"nome": nome, "commit": cx["commit"], "base": base, "dir": os.path.join(gab, nome)})
 if not casos:
     uso("o gabarito não tem caso do papel %s (caso.txt com papel: %s)" % (PAPEL, PAPEL))
 
@@ -344,24 +348,40 @@ def executar(cand, caso, rep):
     shutil.rmtree(trab, ignore_errors=True)
     copia = os.path.join(trab, "copia")
     os.makedirs(copia)
-    if caso["commit"] != "-":
-        rc, tar, err = git("archive", "--format=tar", caso["commit"], cwd=raiz, binario=True)
+
+    def extrai(ref):
+        rc, tar, err = git("archive", "--format=tar", ref, cwd=raiz, binario=True)
         if rc != 0:
-            uso("git archive %s falhou (caso %s): %s" % (caso["commit"], caso["nome"], err.strip()))
+            uso("git archive %s falhou (caso %s): %s" % (ref, caso["nome"], err.strip()))
         with tarfile.open(fileobj=io.BytesIO(tar)) as t:
             t.extractall(copia)
+
+    def git_copia(*a):
+        rc, _, err = git(*a, cwd=copia)
+        if rc != 0:
+            uso("não consegui preparar a cópia do caso %s (git %s): %s" % (caso["nome"], a[0], err.strip()))
+
+    commit_cp = ["-c", "user.name=sdd-serie", "-c", "user.email=sdd-serie@localhost", "-c", "commit.gpgsign=false",
+                 "commit", "-q", "--allow-empty", "-m"]
+    git_copia("init", "-q")
+    if caso["base"]:
+        # o teste de não regressão compara com a versão base (ex.: a tag v2.2.6): a cópia ganha um 1º commit com a
+        # árvore da base, marcado com o mesmo nome, e o caso por cima — ainda sem remoto
+        extrai(caso["base"])
+        git_copia("add", "-A")
+        git_copia(*commit_cp, "base %s" % caso["base"])
+        git_copia("tag", caso["base"])
+        git_copia("rm", "-rq", "--ignore-unmatch", ".")
+    if caso["commit"] != "-":
+        extrai(caso["commit"])
     entrada = os.path.join(caso["dir"], "entrada")
     if os.path.isdir(entrada):
         shutil.copytree(entrada, copia, dirs_exist_ok=True)
     brief = os.path.join(trab, "brief.md")
     with open(brief, "w", encoding="utf-8", newline="\n") as h:
         h.write(ler(os.path.join(caso["dir"], "brief.md")).replace("@COPIA@", copia))
-    for a in (["init", "-q"], ["add", "-A"],
-              ["-c", "user.name=sdd-serie", "-c", "user.email=sdd-serie@localhost", "-c", "commit.gpgsign=false",
-               "commit", "-q", "--allow-empty", "-m", "caso %s" % caso["nome"]]):
-        rc, _, err = git(*a, cwd=copia)
-        if rc != 0:
-            uso("não consegui preparar a cópia do caso %s (git %s): %s" % (caso["nome"], a[0], err.strip()))
+    git_copia("add", "-A")
+    git_copia(*commit_cp, "caso %s" % caso["nome"])
     grava(os.path.join(pasta, "inicio.txt"), "copia: %s\ncandidato: %s\ninicio: %s\n" % (copia, cand["id"], agora()))
     fr = os.path.join(BIN, "governanca-fronteira.sh")
     nada = os.path.join(raiz, ".sdd-serie-nenhum-arquivo-permitido")

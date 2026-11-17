@@ -44,7 +44,7 @@ O gabarito é uma pasta com um caso por subpasta, tirado do histórico do projet
 
 | Arquivo | Conteúdo |
 |---|---|
-| `caso.txt` | `papel:` (`curador` ou `avaliador`), `commit:` (sha, ou `-` para pasta vazia), `origem:` de onde veio |
+| `caso.txt` | `papel:` (`curador` ou `avaliador`), `commit:` (sha, ou `-` para pasta vazia), `origem:` de onde veio e, opcional, `base:` (a tag ou o commit com que os testes de não regressão comparam: a cópia ganha um commit com essa árvore, marcado com o mesmo nome, antes do caso) |
 | `brief.md` | o brief do papel daquela época; `@COPIA@` vira o caminho da cópia do caso |
 | `entrada/` | arquivos postos por cima do commit (o DEFINE e o DESIGN da época, a colheita do curador…) |
 | `esperado.txt` | curador: o delta aceito, na gramática do `playbook-curator.sh --aplicar`. Avaliador: `VEREDITO: <X>` e uma linha `AT-nnn PASS\|FAIL\|NAO_VERIFICADO` por AT |

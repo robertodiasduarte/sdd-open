@@ -45,7 +45,7 @@ The answer key is a folder with one case per subfolder, taken from the project's
 
 | File | Content |
 |---|---|
-| `caso.txt` | `papel:` (`curador` or `avaliador`), `commit:` (sha, or `-` for an empty folder), `origem:` where it came from |
+| `caso.txt` | `papel:` (`curador` or `avaliador`), `commit:` (sha, or `-` for an empty folder), `origem:` where it came from and, optionally, `base:` (the tag or commit the non-regression tests compare against: the copy gets a commit with that tree, tagged with the same name, before the case) |
 | `brief.md` | the role's brief from that time; `@COPIA@` becomes the path of the case copy |
 | `entrada/` | files laid over the commit (that time's DEFINE and DESIGN, the curator's harvest…) |
 | `esperado.txt` | curator: the accepted delta, in the `playbook-curator.sh --aplicar` grammar. Evaluator: `VEREDITO: <X>` and one `AT-nnn PASS\|FAIL\|NAO_VERIFICADO` line per AT |

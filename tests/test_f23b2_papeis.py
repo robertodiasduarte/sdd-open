@@ -411,6 +411,28 @@ class AT008AT011Executor(BaseSerie):
         self.assertEqual(rc, 21, out)
         self.assertIn("a cópia ganhou remoto git", out)
 
+    def test_base_vira_tag_na_copia_para_o_teste_de_nao_regressao(self):
+        self.git(self.r, "tag", "v9.9.9")
+        self.escreve(self.r, "NOVO.md", "depois da base\n")
+        self.git(self.r, "add", "NOVO.md")
+        self.git(self.r, "commit", "-q", "-m", "depois da base")
+        sha = self.git(self.r, "rev-parse", "HEAD").strip()
+        (self.r / "gab/a1/caso.txt").write_text("papel: avaliador\ncommit: %s\nbase: v9.9.9\norigem: teste\n" % sha,
+                                               encoding="utf-8")
+        s = self.serie("ava", "avaliador", [CARO])
+        viu = (self.tmp / "viu.txt").as_posix()
+        espiao = self.tmp / "espiao.sh"
+        espiao.write_text('git diff --name-only v9.9.9 HEAD > "%s"; git remote >> "%s"; bash "%s"\n'
+                          % (viu, viu, AGENTE.as_posix()), encoding="utf-8")
+        rc, out, err = self.roda([BASH, SERIE, str(s), "--cmd", 'bash "%s"' % espiao.as_posix(), "--precos",
+                                  str(FX / "precos")], self.r)
+        self.assertEqual(rc, 0, out + err)
+        self.assertEqual((self.tmp / "viu.txt").read_text(encoding="utf-8").split(), ["NOVO.md"])
+        (self.r / "gab/a1/caso.txt").write_text("papel: avaliador\ncommit: %s\nbase: nao-existe\n" % sha, encoding="utf-8")
+        rc, _, err = self.rodar(self.serie("ava2", "avaliador", [CARO]))
+        self.assertEqual(rc, 64, err)
+        self.assertIn("base nao-existe não é uma ref", err)
+
     @unittest.skipIf(*SEM_SINAL)
     def test_teto_de_tempo_corta_a_execucao(self):
         s = self.serie("cur", "curador", [CARO])
