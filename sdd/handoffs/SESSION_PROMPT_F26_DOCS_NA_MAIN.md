@@ -5,21 +5,42 @@ ledgers, fichas, plano, fila da curadoria) passam a viver na `main`, no mesmo PR
 nenhum deles chegue ao pacote do aluno. A evidência bruta sai do git. Até esta frente publicar, a branch
 `docs/incorporar-starter` continua valendo como está.
 
-## Antes de abrir
+## Quando começar
 
-- A F25 (`feat/f25-skills-duplicadas`) estava aberta em 17/11 e mexe no `MANIFEST.txt`. Abra a F26 só depois que ela
-  entrar na `main`: `gh pr list --state open` e `git log --oneline -3 origin/main`.
-- Se o número F26 já tiver sido usado por outra frente, use o próximo livre e troque o nome deste arquivo e da linha no plano.
+**Só depois da release da F25.** A F25 (`feat/f25-skills-duplicadas`) estava em andamento em 17/11, sem PR ainda, e mexe
+no `MANIFEST.txt`, o mesmo arquivo que esta frente usa como lista do pacote. O prompt abaixo começa conferindo isso e
+para se a F25 ainda não saiu.
 
 ## Onde abrir esta sessão
 
-Numa frente nova, pela `sdd-new-session`, nascida de `origin/main` (feature_id `F26_DOCS_NA_MAIN`). Os documentos de hoje
-estão na worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs` (branch `docs/incorporar-starter`).
+A frente já está criada (pela `sdd-new-session`, em 2026-11-17), vazia, à espera:
+
+- pasta: `/Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main`
+- branch: `feat/f26-docs-na-main`, nascida de `origin/main` em `2204a14` (`v2.21.0`), sem upstream
+- feature_id: `F26_DOCS_NA_MAIN`
+
+Abra o editor nessa pasta (`cursor "/Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main"`) e cole o prompt.
+Os documentos de hoje estão na worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs` (branch
+`docs/incorporar-starter`).
 
 ## Prompt
 
 ```text
-Abrir a frente F26_DOCS_NA_MAIN do SDD Open (repo público robertodiasduarte/sdd-open). Responda sempre em português.
+Frente F26_DOCS_NA_MAIN do SDD Open (repo público robertodiasduarte/sdd-open). Responda sempre em português.
+Pasta: /Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main · branch feat/f26-docs-na-main (sem upstream: o
+1º push é `git push -u origin feat/f26-docs-na-main`, nunca `git push` puro).
+
+PASSO 0, ANTES DE QUALQUER COISA — esta frente só começa depois da release da F25 (feat/f25-skills-duplicadas), que
+mexe no MANIFEST.txt. Confira, sem alterar nada:
+  GIT_TERMINAL_PROMPT=0 git fetch origin
+  gh pr list --state all --search "head:feat/f25-skills-duplicadas" --json number,state,title
+  gh release list --limit 3
+  gh run list --workflow release.yml --limit 3
+A F25 saiu quando o PR dela está MERGED, existe uma Release mais nova que a v2.21.0 com as mudanças dela e nenhum run
+do release.yml está em andamento. Se ainda não saiu: PARE, diga ao Roberto o que falta e não faça mais nada (nem
+Define, nem arquivo, nem marca de fase). Se saiu: traga a branch para a main atual antes de começar — ela está vazia,
+então `git rebase origin/main` só a adianta; confira com `git log --oneline -1` que o topo é o da origin/main.
+
 O Roberto não é programador: explique simples, com prós e contras, e recomende; o que é limite do método vira pergunta
 a ele, nunca decisão sua. Rode o pipeline inteiro (define → design → build → release). Publicar (push, PR, main, tag,
 Release) pede o OK dele.

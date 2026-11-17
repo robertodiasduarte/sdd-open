@@ -64,7 +64,7 @@ uma por vez. Mudou a ordem? Atualize esta seção e a tabela acima no mesmo comm
 
 | # | Frente | Quando | Por quê | Não pareia com |
 |---|---|---|---|---|
-| 1 | **F26 Documentos na main** (no Open) | depois que a F25 (`feat/f25-skills-duplicadas`) entrar na `main` | um lugar só para código e documentos, com o pacote protegido por duas travas; mexe no empacotamento, por isso frente própria, em sessão nova | F25 (as duas mexem no `MANIFEST.txt`) |
+| 1 | **F26 Documentos na main** (no Open) | depois da release da F25 (`feat/f25-skills-duplicadas`); a frente já está criada, vazia: `/Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main`, branch `feat/f26-docs-na-main` | um lugar só para código e documentos, com o pacote protegido por duas travas; mexe no empacotamento, por isso frente própria, em sessão nova | F25 (as duas mexem no `MANIFEST.txt`) |
 | — | F23, Grupo A | em espera | decisão do Roberto em 17/11 ("nem sei se precisa"); reavaliar antes de abrir | — |
 
 Regra nova desde a `v2.16.1`: o job `testes-windows` está no `needs:` da release; toda frente precisa deixar a suíte verde também
