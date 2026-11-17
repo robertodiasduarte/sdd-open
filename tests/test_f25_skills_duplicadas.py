@@ -21,7 +21,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from apoio import RAIZ, WINDOWS
+from apoio import RAIZ, WINDOWS, caminho_bash as B
 
 SKILL = Path(os.environ.get("SDD_F25_SKILL_DIR") or (RAIZ / ".agents/skills/sdd-checar-ambiente"))
 SCRIPT = SKILL / "scripts" / "checar.sh"
@@ -30,7 +30,7 @@ URL = {"open": "https://github.com/robertodiasduarte/sdd-open/releases/latest",
        "starter": "https://github.com/robertodiasduarte/sdd-starter/releases/latest", "outra": ""}
 
 NPX_FALSO = r"""#!/usr/bin/env bash
-case "${HOME}" in "@TMP@"/*) ;; *) echo "npx de teste: recusa, HOME fora da pasta de teste: ${HOME}" >&2; exit 99 ;; esac
+h="$(cd "${HOME}" 2>/dev/null && pwd -P)"; case "${h}" in "@TMP@"/*) ;; *) echo "npx de teste: recusa, HOME fora da pasta de teste: ${HOME}" >&2; exit 99 ;; esac
 echo "$*" >> "@TMP@/npx.log"
 [ "$1" = --yes ] && shift
 [ "$1" = skills ] && [ "$2" = remove ] || exit 64
@@ -53,7 +53,7 @@ l="${HOME}/.agents/.skill-lock.json"
 exit 0
 """
 NPX_REAL = """#!/bin/sh
-case "${HOME}" in "@TMP@"/*) ;; *) echo "npx de teste: recusa, HOME fora da pasta de teste: ${HOME}" >&2; exit 99 ;; esac
+h="$(cd "${HOME}" 2>/dev/null && pwd -P)"; case "${h}" in "@TMP@"/*) ;; *) echo "npx de teste: recusa, HOME fora da pasta de teste: ${HOME}" >&2; exit 99 ;; esac
 [ "$1" = --yes ] && shift
 [ "$1" = skills ] && shift
 exec node "${SDD_F25_SKILLS_CLI}" "$@"
@@ -73,7 +73,7 @@ class Base(unittest.TestCase):
         for nome, texto in (("npx", NPX_FALSO), ("npx-real", NPX_REAL), ("claude", AGENTE_FALSO.replace("@NOME@", "2.1.0")),
                             ("codex", AGENTE_FALSO.replace("@NOME@", "codex-cli"))):
             p = self.bin / nome
-            p.write_text(texto.replace("@TMP@", str(self.tmp)), encoding="utf-8")
+            p.write_text(texto.replace("@TMP@", B(self.tmp)), encoding="utf-8")   # o bash compara no formato dele
             p.chmod(0o755)
         self.gitconfig = self.tmp / "gitconfig"
         self.gitconfig.write_text("[user]\n\tname = Teste\n\temail = teste@example.com\n[init]\n\tdefaultBranch = main\n",
@@ -266,7 +266,7 @@ class AT003Npx(Base):
         self.skill(self.proj / ".claude/skills", "sdd-kb", "2.2.3", "open")
         self.commit()
         _, out = self.roda()
-        self.assertIn("global: %s/sdd-kb — versão 2.2.1, do starter, instalada pelo npx" % self.g_claude, out)
+        self.assertIn("global: %s/sdd-kb — versão 2.2.1, do starter, instalada pelo npx" % B(self.g_claude), out)
 
     def test_quem_veio_do_npx(self):
         casos = (  # (onde está a cópia do npx, origem da cópia manual em ~/.claude, esperado para ~/.claude)
@@ -286,14 +286,14 @@ class AT003Npx(Base):
                 self.registro("sdd-kb")
                 self.skill(self.proj / ".claude/skills", "sdd-kb", "2.2.3", "open")
                 _, out = self.roda()
-                self.assertRegex(out, r"global: %s/sdd-kb — versão [0-9.]+, [^,]+, %s" % (re.escape(str(self.g_claude)), esperado))
+                self.assertRegex(out, r"global: %s/sdd-kb — versão [0-9.]+, [^,]+, %s" % (re.escape(B(self.g_claude)), esperado))
 
     def test_registro_de_outro_repositorio_nao_marca_a_copia_open(self):
         self.skill(self.g_agents, "sdd-kb", "2.2.1", "open")
         self.skill(self.proj / ".agents/skills", "sdd-kb", "2.2.3", "open")
         self.registro("sdd-kb", source="robertodiasduarte/sdd-starter")
         _, out = self.roda()
-        self.assertIn("global: %s/sdd-kb — versão 2.2.1, do SDD Open, copiada à mão" % self.g_agents, out)
+        self.assertIn("global: %s/sdd-kb — versão 2.2.1, do SDD Open, copiada à mão" % B(self.g_agents), out)
 
 
 class AT004Diagnostico(Base):
@@ -309,7 +309,7 @@ class AT004Diagnostico(Base):
             self.assertIn("A skill %s está em 2 lugares que o Claude Code lê, e ele roda a global (a %s), não a %s do projeto:\n"
                           "    global: %s/%s — versão %s, do SDD Open, copiada à mão\n"
                           "    do projeto: %s/.claude/skills/%s — versão %s, do SDD Open, salva no git do projeto\n"
-                          % (s, g, p, self.g_claude, s, g, self.proj, s, p), bloco)
+                          % (s, g, p, B(self.g_claude), s, g, B(self.proj), s, p), bloco)
         self.assertEqual(bloco.count("--duplicadas"), 3)
         i_env, i_dup, i_remoto = bloco.index(".env"), bloco.index("sdd-brainstorm"), bloco.index("não tem remoto")
         self.assertLess(i_env, i_dup)
@@ -360,7 +360,7 @@ class AT006Plano(Base):
         self.assertTrue(out.startswith("Plano de limpeza das skills duplicadas — nada mudou ainda.\n"), out)
         self.assertIn("(global = vale para todos os projetos deste computador · do projeto = só nesta pasta)", out)
         self.assertIn("1. sdd-brainstorm — o Claude Code lê 2 cópias e roda a global:", out)
-        self.assertIn("   Recomendo: tirar a global %s/sdd-define (2.6.1, a mais velha).\n" % self.g_claude, out)
+        self.assertIn("   Recomendo: tirar a global %s/sdd-define (2.6.1, a mais velha).\n" % B(self.g_claude), out)
         self.assertIn("   Ela vale para todos os projetos deste computador: os que não têm cópia própria ficam sem a sdd-define.", out)
         self.assertRegex(out, r"Assinatura deste plano: [0-9a-f]{12} \(muda se qualquer cópia mudar\)\.")
         self.assertTrue(out.rstrip().splitlines()[-1].endswith("--duplicadas") is False)
@@ -383,10 +383,10 @@ class AT007Matriz(Base):
         pa = self.proj / ".agents/skills"
         # versões diferentes, global mais velha e cópia do projeto fora do git ⇒ tira a mais velha
         out = self.caso(lambda: (self.skill(self.g_claude, "sdd-kb", "2.2.1", "open"), self.skill(pc, "sdd-kb", "2.2.3", "open")))
-        self.assertIn("Recomendo: tirar a global %s/sdd-kb (2.2.1, a mais velha)." % self.g_claude, out)
+        self.assertIn("Recomendo: tirar a global %s/sdd-kb (2.2.1, a mais velha)." % B(self.g_claude), out)
         # mesma versão, mesma origem, mesmo conteúdo ⇒ sobra: sai a global
         out = self.caso(lambda: (self.skill(self.g_claude, "sdd-kb", "2.2.3", "open"), self.skill(pc, "sdd-kb", "2.2.3", "open")))
-        self.assertIn("Recomendo: tirar a global %s/sdd-kb (2.2.3: a mesma versão da que fica; sobra)." % self.g_claude, out)
+        self.assertIn("Recomendo: tirar a global %s/sdd-kb (2.2.3: a mesma versão da que fica; sobra)." % B(self.g_claude), out)
         # mesma versão, mesma origem, conteúdo diferente ⇒ não escolhe
         out = self.caso(lambda: (self.skill(self.g_claude, "sdd-kb", "2.2.3", "open", extra="editada\n"),
                                  self.skill(pc, "sdd-kb", "2.2.3", "open")))
@@ -395,13 +395,13 @@ class AT007Matriz(Base):
         self.assertNotIn("--limpar", out)
         # mesma versão, Open × starter ⇒ a mesma versão: sai a global
         out = self.caso(lambda: (self.skill(self.g_claude, "sdd-kb", "2.2.3", "starter"), self.skill(pc, "sdd-kb", "2.2.3", "open")))
-        self.assertIn("Recomendo: tirar a global %s/sdd-kb (2.2.3: a mesma versão da que fica; sobra)." % self.g_claude, out)
+        self.assertIn("Recomendo: tirar a global %s/sdd-kb (2.2.3: a mesma versão da que fica; sobra)." % B(self.g_claude), out)
         # versão ilegível ⇒ não escolhe
         out = self.caso(lambda: (self.skill(self.g_claude, "sdd-kb", None, "open"), self.skill(pc, "sdd-kb", "2.2.3", "open")))
-        self.assertIn("Não escolho: não consegui ler a versão de %s/sdd-kb" % self.g_claude, out)
+        self.assertIn("Não escolho: não consegui ler a versão de %s/sdd-kb" % B(self.g_claude), out)
         # uma cópia que não é do SDD ⇒ só avisa
         out = self.caso(lambda: (self.skill(self.g_claude, "sdd-kb", "9.0.0", "outra"), self.skill(pc, "sdd-kb", "2.2.3", "open")))
-        self.assertIn("Não escolho: a cópia %s/sdd-kb não é do SDD" % self.g_claude, out)
+        self.assertIn("Não escolho: a cópia %s/sdd-kb não é do SDD" % B(self.g_claude), out)
         # a mais velha é a do projeto, salva no git ⇒ não tira; recomenda atualizar (Open)
         out = self.caso(lambda: (self.skill(self.g_claude, "sdd-kb", "2.2.3", "starter"), self.skill(pc, "sdd-kb", "2.2.1", "open")))
         self.assertIn("A mais velha é a do projeto, salva no git: não a tiro", out)
@@ -503,7 +503,7 @@ class AT009Limpar(Base):
         antes = self.arvore()
         out, _ = self.plano()
         self.assertIn("sai pelo npx skills remove sdd-define -g -a codex -y.", out)
-        self.assertIn("Esse comando também apagaria %s/sdd-define, que não está no plano" % self.g_claude, out)
+        self.assertIn("Esse comando também apagaria %s/sdd-define, que não está no plano" % B(self.g_claude), out)
         rc, out = self.limpar()
         self.assertEqual(rc, 0, out)
         self.assertIn("saiu pelo npx skills remove", out)
@@ -663,7 +663,7 @@ class RevisaoRodada1(Base):
         lix = next((self.home / ".sdd-lixeira").iterdir())
         plano = (lix / "PLANO.txt").read_text(encoding="utf-8")
         for s in ("sdd-brainstorm", "sdd-define"):
-            self.assertIn(str(self.g_agents / s), plano)
+            self.assertIn(B(self.g_agents / s), plano)
 
     @unittest.skipIf(WINDOWS, "atalho (symlink) no Windows pede privilégio")
     def test_n1_o_codex_nao_perde_a_versao_mais_nova(self):
@@ -748,8 +748,8 @@ class RevisaoRodada3(Base):
         rc, out = self.roda("--duplicadas", cwd=self.home)
         self.assertEqual(rc, 0, out)
         self.assertNotIn("do projeto:", out)
-        self.assertIn("global: %s/sdd-kb — versão 2.2.1, do starter, instalada pelo npx" % self.g_agents, out)
-        self.assertIn("Recomendo: tirar a global %s/sdd-kb (2.2.1, a mais velha)." % self.g_agents, out)
+        self.assertIn("global: %s/sdd-kb — versão 2.2.1, do starter, instalada pelo npx" % B(self.g_agents), out)
+        self.assertIn("Recomendo: tirar a global %s/sdd-kb (2.2.1, a mais velha)." % B(self.g_agents), out)
 
     def test_r2_protegida_que_tambem_sai_no_plano(self):
         self.skill(self.g_agents, "sdd-define", "2.8.0", "starter")          # Codex: a do npx é a mais velha
@@ -760,7 +760,7 @@ class RevisaoRodada3(Base):
         self.commit()
         out, _ = self.plano()
         self.assertNotIn("que não está no plano", out)
-        self.assertIn("Esse comando também apagaria %s/sdd-define, que sai neste plano na vez dela" % self.g_claude, out)
+        self.assertIn("Esse comando também apagaria %s/sdd-define, que sai neste plano na vez dela" % B(self.g_claude), out)
         rc, out = self.limpar()
         self.assertEqual(rc, 0, out)
         self.assertFalse((self.g_agents / "sdd-define").exists())
