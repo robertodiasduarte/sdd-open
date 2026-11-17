@@ -22,6 +22,11 @@
 #                                 "dica: …"; sai 1 sem editor)
 #      bash checar.sh --editores (todos os editores achados, "<nome><TAB><comando>" por linha; sai 1 sem nenhum. A
 #                                 sdd-new-session usa a lista para perguntar o padrão na 1ª vez, com o slot editor vazio)
+#      bash checar.sh --duplicadas          (F25: o plano de limpeza das skills do SDD que o mesmo agente lê em dois
+#                                            lugares; só lê, termina com a assinatura do plano)
+#      bash checar.sh --limpar <assinatura> (F25: a ÚNICA escrita da skill, só depois do sim do aluno ao plano: tira as
+#                                            cópias do plano para ~/.sdd-lixeira e deixa lá o desfazer.sh; assinatura
+#                                            que não é a do plano recalculado na hora ⇒ sai 2 sem mudar nada)
 # No modo normal, o `gh auth status` (10 s) roda junto com o ls-remote quando o origin é do GitHub, e sozinho
 # quando não há origin: gh ausente, deslogado ou sem resposta vira ⚠️, nunca 🔴.
 
@@ -33,7 +38,10 @@ case "${1:-}" in
   --segredo) MODO=segredo ;;
   --editor) MODO=editor ;;
   --editores) MODO=editores ;;
+  --duplicadas) MODO=duplicadas ;;
+  --limpar) MODO=limpar ;;
 esac
+ASSINATURA="${2:-}"
 
 EXPOSTO=""
 IMPEDE=""
@@ -43,6 +51,8 @@ add_exposto() { EXPOSTO="${EXPOSTO}- $1"$'\n'"  $2"$'\n'; }
 add_impede()  { IMPEDE="${IMPEDE}- $1"$'\n'"  $2"$'\n'; }
 add_arrumar_dado() { ARRUMAR_DADO="${ARRUMAR_DADO}- $1"$'\n'"  $2"$'\n'; }
 add_arrumar() { ARRUMAR="${ARRUMAR}- $1"$'\n'"  $2"$'\n'; }
+ARRUMAR_DUP=""    # F25: skills duplicadas, depois dos ⚠️ de dado e antes dos outros
+add_arrumar_dup() { ARRUMAR_DUP="${ARRUMAR_DUP}- $1"$'\n'"  $2"$'\n'; }
 # Achado de remoto: no pré-voo da frente impede; no diagnóstico geral, depende do caso.
 add_remoto()  { if [ "${MODO}" = frente ]; then add_impede "$1" "$2"; else add_arrumar "$1" "$2"; fi; }
 tem() { command -v "$1" >/dev/null 2>&1; }
@@ -229,6 +239,20 @@ if [ "${MODO}" = editor ]; then
   [ -n "${EDITOR_DICA}" ] && printf 'dica: %s\n' "${EDITOR_DICA}"
   exit 0
 fi
+# ── skills duplicadas (F25) ──────────────────────────────────────────────────
+# A pasta desta skill e o comando que o aluno cola (caminho absoluto, com as aspas de shell certas).
+DIR_SKILL="$(cd "$(dirname "$0")/.." 2>/dev/null && pwd -P)"
+CMD_CHECAR="bash $(printf '%q' "${DIR_SKILL}/scripts/checar.sh")"
+# --duplicadas só lê e mostra o plano; --limpar <assinatura> aplica o plano mostrado (a exceção única da regra
+# "Somente leitura"). Sem rede; a pasta do projeto é a raiz do git, ou a pasta atual fora de um repositório.
+if [ "${MODO}" = duplicadas ] || [ "${MODO}" = limpar ]; then
+  if ! tem git; then echo "🛑 O git não está instalado — sem ele não dá para comparar as cópias. Nada mudou."; exit 2; fi
+  RAIZ="$(git rev-parse --show-toplevel 2>/dev/null || pwd -P)"
+  . "${DIR_SKILL}/scripts/duplicadas.sh"
+  if [ "${MODO}" = duplicadas ]; then dup_plano_mostrar "${CMD_CHECAR}"; exit $?; fi
+  dup_limpar "${ASSINATURA}" "${CMD_CHECAR}" "${DIR_SKILL}"; exit $?
+fi
+
 # O pré-voo da frente sai 1 quando bloqueia (a skill para pelo código); o diagnóstico geral sai sempre 0.
 # (O --segredo não passa por aqui: sai pelo próprio bloco, logo abaixo da definição de dado_exposto.)
 sair() { if [ "${MODO}" = frente ] && [ -n "${IMPEDE}" ]; then exit 1; fi; exit 0; }
@@ -245,7 +269,7 @@ IDENT=""
 [ -n "${VERSAO}" ] && [ -n "${MES}" ] && IDENT=" · sdd-checar-ambiente v${VERSAO} · ${MES}/${ATUAL%%-*} · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest"
 
 relatorio() {   # $1 = linha de resumo (sem o ✅)
-  ARRUMAR="${ARRUMAR_DADO}${ARRUMAR}"
+  ARRUMAR="${ARRUMAR_DADO}${ARRUMAR_DUP}${ARRUMAR}"
   if [ "${MODO}" = frente ]; then
     # Pré-voo: só o que impede abrir a frente. Bloqueio nunca termina em ✅ (pareceria liberado).
     if [ -n "${IMPEDE}" ]; then
@@ -695,6 +719,14 @@ if [ -f "${RAIZ}/package.json" ] && tem npm \
    && [ "$(cd "${RAIZ}" && npm config get ignore-scripts 2>/dev/null)" != "true" ]; then
   add_arrumar_dado "O npm roda os scripts de instalação de qualquer pacote baixado — é por onde entram pacotes maliciosos." \
                    "npm config set ignore-scripts true   (se um pacote parar de funcionar: npm rebuild <pacote> --ignore-scripts=false)"
+fi
+
+# ── 7. skills duplicadas (F25) ───────────────────────────────────────────────
+# Só lê: o mesmo agente enxergando a mesma skill do SDD em dois lugares vira ⚠️ (nunca 🔴: não impede o trabalho).
+# O --frente não chega aqui: a duplicata não bloqueia a abertura de frente.
+if [ -f "${DIR_SKILL}/scripts/duplicadas.sh" ]; then
+  . "${DIR_SKILL}/scripts/duplicadas.sh"
+  dup_diagnostico add_arrumar_dup "${CMD_CHECAR} --duplicadas"
 fi
 
 # ── resumo ───────────────────────────────────────────────────────────────────

@@ -24,6 +24,7 @@
 .agents/skills/sdd-checar-ambiente/SKILL.md
 .agents/skills/sdd-checar-ambiente/references/como-falar.md
 .agents/skills/sdd-checar-ambiente/scripts/checar.sh
+.agents/skills/sdd-checar-ambiente/scripts/duplicadas.sh
 .agents/skills/sdd-define/SKILL.md
 .agents/skills/sdd-define/references/cartografo.md
 .agents/skills/sdd-define/references/como-falar.md
@@ -698,6 +699,7 @@ tests/test_f23_custo.py
 tests/test_f23b2_papeis.py
 tests/test_f23b3_revisao.py
 tests/test_f24_release_enxuta.py
+tests/test_f25_skills_duplicadas.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py

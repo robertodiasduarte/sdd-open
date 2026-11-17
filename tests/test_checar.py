@@ -143,9 +143,13 @@ class Base(unittest.TestCase):
         self.gh_log = self.tmp / "gh.log"
         self.sem_editor = self.tmp / "sem-editor"
         self.sem_editor.mkdir()
+        # F25: o diagnóstico lê as pastas de skills da pasta pessoal; o relatório não pode depender das de quem roda. Fora
+        # de self.tmp: o npm e o codex de verdade gravam na pasta pessoal, e o TestSomenteLeitura fotografa self.tmp.
+        self.home = Path(tempfile.mkdtemp(prefix="checar-home-"))
 
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
+        shutil.rmtree(self.home, ignore_errors=True)
 
     def git(self, *args: str) -> str:
         return subprocess.run(["git", *args], cwd=self.raiz, check=True, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
@@ -171,8 +175,9 @@ class Base(unittest.TestCase):
     def roda(self, *args: str, **env: str) -> tuple[int, str, float]:
         # O askpass do terminal de quem roda (VS Code/Cursor) mudaria a classificação e poderia abrir a
         # janela de login de verdade: só entra quando o teste o define.
-        herdado = {k: v for k, v in os.environ.items() if k not in ("GIT_ASKPASS", "SSH_ASKPASS")}
-        e = {**herdado, "SDD_CHECAR_GITHUB_API": self.api, "GIT_CONFIG_GLOBAL": str(self.global_vazio),
+        herdado = {k: v for k, v in os.environ.items()
+                   if k not in ("GIT_ASKPASS", "SSH_ASKPASS", "CODEX_HOME", "CLAUDE_CONFIG_DIR", "XDG_STATE_HOME")}
+        e = {**herdado, "HOME": str(self.home), "SDD_CHECAR_GITHUB_API": self.api, "GIT_CONFIG_GLOBAL": str(self.global_vazio),
              "GIT_CONFIG_NOSYSTEM": "1", "SDD_CHECAR_GH": str(self.gh_stub), "GH_STUB_LOG": str(self.gh_log),
              "SDD_CHECAR_EDITOR_PATH": str(self.sem_editor), "SDD_APPS_DIRS": str(self.sem_editor), **env}
         for k in [k for k, v in e.items() if v is None]:

@@ -1,10 +1,10 @@
 ---
 name: sdd-checar-ambiente
 license: MIT
-description: "Diagnostica, sem alterar nada, se este computador e este repositório estão prontos para trabalhar com SDD: repositório git, agente de código, identidade do git, acesso ao remoto (credencial, rede, repositório ainda vazio), o programa do GitHub para o terminal (gh) e o login nele, worktrees órfãs, dependências, editor (também fora do PATH) e dado exposto (senha, certificado A1 ou chave privada já salvos no git; .env fora do .gitignore; npm sem ignore-scripts; repositório público). Responde em uma linha quando está tudo certo e, quando não está, lista o que impede primeiro, cada item com o comando exato que resolve. Use quando o usuário pedir para checar o ambiente, antes de abrir a primeira frente de trabalho num projeto, ou quando algo estranho acontecer (commit que falha, comando não encontrado, worktree que sumiu)."
+description: "Diagnostica, sem alterar nada, se este computador e este repositório estão prontos para trabalhar com SDD: repositório git, agente de código, identidade do git, acesso ao remoto (credencial, rede, repositório ainda vazio), o programa do GitHub para o terminal (gh) e o login nele, worktrees órfãs, dependências, editor (também fora do PATH), dado exposto (senha, certificado A1 ou chave privada já salvos no git; .env fora do .gitignore; npm sem ignore-scripts; repositório público) e skill do SDD duplicada (global e no projeto). Responde em uma linha quando está tudo certo e, quando não está, lista o que impede primeiro, cada item com o comando exato que resolve. Num modo à parte, só com o sim ao plano mostrado, tira a cópia mais velha para uma lixeira, com comando que desfaz. Use quando o usuário pedir para checar o ambiente ou limpar skills duplicadas, antes da primeira frente, ou quando algo estranho acontecer (commit que falha, comando não encontrado, worktree sumida, skill fora da versão esperada)."
 metadata:
   author: Roberto Dias Duarte
-  version: "1.5.3"
+  version: "1.6.0"
   updated: "2026-11"
 ---
 
@@ -23,6 +23,7 @@ Quem usa esta skill, em geral, nunca usou git nem terminal.
 |---|---|---|
 | 1 | Verificar | Como executar e O que verificar |
 | 2 | Explicar | Como reportar |
+| 3 | Limpar | Skills duplicadas: o plano, a pergunta e a limpeza (só quando o aluno pede) |
 
 Aqui o relatório do `checar.sh` já é a tradução para o aluno: a resposta é o Status e, logo abaixo,
 o relatório como veio, sem retraduzir. As outras partes valem na conversa que segue, quando o
@@ -71,7 +72,7 @@ no projeto ou na pasta global do agente.)
 script: blocos `🔴 Dado exposto`, `🔴 Impede o trabalho` e `⚠️ Vale arrumar` só se tiverem itens, e por
 último a linha `✅ Pronto: repo …` (ou `✅ Repo …` quando houver problema). Checagem que passou ou não se
 aplica não é mencionada fora dessa linha. Termine a linha ✅ com a identificação desta skill:
-`sdd-checar-ambiente v1.5.3 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-checar-ambiente v1.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 (o script faz isso sozinho, lendo a versão deste arquivo).
 
 **Só o dado exposto** — `bash <pasta desta skill>/scripts/checar.sh --segredo` imprime apenas o bloco
@@ -83,10 +84,23 @@ o editor deste computador (`code`, `cursor`… ou, com o app instalado e o coman
 no macOS e o caminho do `.cmd` no Windows) e, quando houver, na 2ª `dica: …`; sai 1 sem editor. Não usa git
 nem rede. É o que a `sdd-new-session` roda com o slot `editor` vazio.
 
+**Skills duplicadas** (etapa 3, só quando o aluno pede para limpar ou pergunta pelo aviso):
+1. `bash <pasta desta skill>/scripts/checar.sh --duplicadas` imprime o plano, sem mudar nada: cada cópia com o
+   lugar (global ou do projeto), o caminho completo, a versão, a origem e como chegou, qual o agente roda, e a
+   recomendação (tirar a mais velha). Responda com o plano **como veio** e, se ele termina em `--limpar <assinatura>`,
+   faça a pergunta `[D1 · não se desfaz]` de `references/como-falar.md`.
+2. Só com o **sim**, rode exatamente a última linha do plano: `bash <pasta desta skill>/scripts/checar.sh --limpar <assinatura>`.
+   Assinatura ausente ou de um plano que mudou ⇒ o script sai 2 sem mudar nada: peça o plano de novo.
+3. Responda com a saída como veio; a última linha é `Para desfazer: bash <…>/desfazer.sh`. Rode esse comando só se o
+   aluno pedir para desfazer.
+
 ## Regras
 
 - **Somente leitura.** Não instale, não configure, não conserte, não crie arquivo. Entregue o comando;
-  quem roda é o usuário, depois de ver o que está autorizando. Saídas de rede, as duas só de leitura:
+  quem roda é o usuário, depois de ver o que está autorizando. **Exceção única:** o modo de limpeza — o `--limpar <assinatura>`,
+  depois do sim do aluno ao plano do `--duplicadas`, que guarda cada cópia do plano em `~/.sdd-lixeira/<data-hora>/`,
+  tira só essas cópias e deixa lá o `desfazer.sh`; e esse `desfazer.sh`, só quando o aluno pede para desfazer. Nenhum
+  outro modo e nenhum outro passo desta skill grava nada. Saídas de rede, as duas só de leitura:
   uma consulta anônima ao GitHub, de até 3 segundos, para saber se o repositório é público (se falhar,
   não diga nada sobre isso); e uma consulta `ls-remote` ao remoto, de até 10 segundos, **sem pedir senha**,
   para saber se a credencial e a rede chegam lá e se ele já tem algum commit (com a janela de login de um
@@ -232,6 +246,26 @@ só git, repositório, remoto e acesso ao remoto. Qualquer achado vira 🔴, o s
 última linha é "Nada foi criado. Depois de resolver, peça a frente de novo."; saudável, sai 0 com uma linha
 `✅ Pronto para abrir a frente: …`.
 
+**7. Skills duplicadas** (só no modo normal; o `--frente` não fala delas: não impedem abrir frente)
+- O mesmo agente lê a mesma skill do SDD (nome `sdd-*` ou `ux-review-builder`) em duas pastas ⇒ ⚠️, nunca 🔴. As
+  pastas de cada agente (medidas em nov/2026):
+
+  | Agente | Global (todos os projetos) | Do projeto | Com o mesmo nome |
+  |---|---|---|---|
+  | Claude Code | `~/.claude/skills` (ou `$CLAUDE_CONFIG_DIR/skills`) | `.claude/skills` | roda a global |
+  | Codex | `~/.codex/skills` (ou `$CODEX_HOME/skills`) e `~/.agents/skills` | `.agents/skills` e `.codex/skills` | vê todas e escolhe uma |
+
+- **Não é duplicata:** cópias em pastas de agentes diferentes (o par `.agents/skills` → `.claude/skills` que o
+  SDD Open gera no projeto; `~/.agents/skills` × `~/.claude/skills`), nem um atalho (symlink) que aponta para a
+  outra cópia — a instalação global pelo npx cria esse atalho quando instala para os dois agentes.
+- De cada cópia: a versão (`metadata.version`), a origem (a linha de identificação diz SDD Open ou starter) e como
+  chegou (o registro `~/.agents/.skill-lock.json` do npx; salva no git do projeto; copiada à mão).
+- **Sem bash:** liste essas pastas (`Get-ChildItem`), compare a versão de cada `SKILL.md` e responda no mesmo
+  formato. A limpeza à mão é só com os comandos entregues, um por vez, com o sim do aluno: copiar a pasta para
+  `~/.sdd-lixeira/<data-hora>/` antes de apagá-la; a que veio do npx sai com `npx skills remove <skill> -g -a <agente> -y`,
+  depois de copiar para a lixeira também a outra pasta de mesmo nome em `~/.claude/skills` ou `~/.agents/skills`
+  (o `remove` a apagaria junto) e de devolvê-la logo depois.
+
 Para um alarme que barra o próximo commit com dado de cliente, a skill é a `sdd-higiene-dado` (instala
 com OK); esta aqui só diagnostica.
 
@@ -244,10 +278,10 @@ ordem, **omitindo os vazios**:
    e a medida que protege (trocar senha, revogar certificado).
 2. **🔴 Impede o trabalho** — pasta sincronizada, não é repositório git (com o caso), git sem identidade, dependências faltando.
    Cada item com o **comando exato** que resolve, pronto para copiar.
-3. **⚠️ Vale arrumar** — `.env` fora do `.gitignore`, npm sem `ignore-scripts` (estes primeiro),
-   worktree órfã, frente integrada ainda aberta, `.env` ausente.
+3. **⚠️ Vale arrumar** — `.env` fora do `.gitignore`, npm sem `ignore-scripts` (estes primeiro), skill do
+   SDD duplicada (logo depois), worktree órfã, frente integrada ainda aberta, `.env` ausente.
 4. **✅ Resumo em uma linha**, terminando com a identificação desta skill — ex.:
-   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.5.3 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Se estiver tudo certo, a resposta inteira é **o Status e a linha ✅** — nenhuma outra frase antes nem
 depois: nada de "Tudo limpo", de lista do que foi verificado ou de oferta de ajuda. Ambiente saudável
@@ -259,7 +293,7 @@ Saudável (a resposta inteira são estas duas linhas):
 
 ```text
 Ambiente: ✅ 1 Verificar · ✅ 2 Explicar
-✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.3 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 Com o certificado A1 salvo no git de um repositório público:
@@ -272,7 +306,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git rm --cached "certificados/empresa.pfx" && echo "certificados/empresa.pfx" >> .gitignore
   Depois, revogue o certificado com a autoridade certificadora e emita outro.
 
-✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.3 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 Com dois problemas:
@@ -289,7 +323,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git worktree remove ../meu-app-frentes/relatorio-mensal
   git branch -d relatorio-mensal
 
-✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.5.3 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
 ```
 
 ---

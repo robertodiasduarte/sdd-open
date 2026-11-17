@@ -33,7 +33,7 @@ class AlvosReais(Base):
     def test_skills_do_pacote_27_perguntas(self):  # F21: +1, como aprofundar o estudo (sdd-engenharia-reversa-saas)
         rc, out = self.lint("--sites", RAIZ / ".agents/skills")
         self.assertEqual(rc, 0, out)
-        self.assertIn("34 pergunta(s) em 29 arquivo(s)", out)  # F18/F20: +1 (sdd-seguranca) · F17b: +1 (ux-review-builder) · F17c: +3 (como-falar do modo web)
+        self.assertIn("35 pergunta(s) em 29 arquivo(s)", out)  # F18/F20: +1 (sdd-seguranca) · F17b: +1 (ux-review-builder) · F17c: +3 (como-falar do modo web) · F25: +1 (Exemplo 3 da sdd-checar-ambiente)
 
     def test_fragmentos_2_perguntas(self):
         rc, out = self.lint("--sites", RAIZ / "sdd/templates/fragments")
