@@ -1,0 +1,6 @@
+$ gh release download v2.24.0 && shasum -a 256 -c SHA256SUMS.txt && tar -xzf … (conferência à mão da Release)
+sdd-open-v2.24.0.tar.gz: OK
+VERSION: v2.24.0 · 766 arquivos = 766 linhas do MANIFEST.txt · documentos no pacote: 0
+skill .agents/skills/sdd-desempenho-banco e sdd/bin/desempenho-{varredura,diagnostico}.sh presentes; sdd-release 2.18.0
+deploy-do-sha.sh --commit c318aad --workflow release.yml --branch main: ✅ no ar — run 44382607599 (SHA c318aad); Release publicada em 2026-11-18T20:28:42Z
+[exit=0]

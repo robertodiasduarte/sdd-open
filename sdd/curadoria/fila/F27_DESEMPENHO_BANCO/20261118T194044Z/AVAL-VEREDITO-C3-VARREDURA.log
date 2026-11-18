@@ -1,0 +1,139 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c3/v3.sh; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c3/v3.sh
+# v3.sh — veredito ciclo 3: varredura (AT-001 a AT-006) num repositório git temporário fora do projeto, cópia de HEAD a5a5c5e.
+set -u
+H=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c3/head
+V=$H/sdd/bin/desempenho-varredura.sh
+S=$(mktemp -d); R=$S/r; mkdir -p $R/supabase/migrations; cd $R; git init -q; git config user.email t; git config user.name t
+echo '{"name":"x","dependencies":{"@supabase/supabase-js":"2.0.0"}}' > package.json
+echo 'create table a (id int primary key);' > supabase/migrations/001_base.sql
+git add -A; git commit -qm base; B=$(git rev-parse HEAD)
+K=$H/.agents/skills/sdd-desempenho-banco/references/CATALOGO_DESEMPENHO.md
+vr() { bash $V --raiz $R --catalogo $K --base $B "$@"; echo "[exit=$?]"; }
+vx() { bash $V --catalogo $K "$@" > $S/vo 2>&1; rc=$?; sed "s#$S#<TMP>#g" $S/vo; echo "[exit=$rc]"; }
+echo "######## AT-001 política com auth.uid() por linha ⇒ 1; com (select auth.uid()) ⇒ 0"
+echo 'create policy p on a for select using (auth.uid() = user_id);' > supabase/migrations/002.sql; vr | sed "s#$S#<TMP>#g"
+echo 'create policy p on a for select using ((select auth.uid()) = user_id);' > supabase/migrations/002.sql; vr | sed "s#$S#<TMP>#g"
+echo "######## AT-002 FK sem índice ⇒ P03; com índice 1ª coluna ⇒ nada; composto com a chave em 2º ⇒ P03"
+printf 'create table b (id int primary key, a_id int references a(id));\n' > supabase/migrations/002.sql; vr | grep -E 'P03|^RESULTADO|exit'
+printf 'create table b (id int primary key, a_id int references a(id));\ncreate index ix on b (a_id);\n' > supabase/migrations/002.sql; vr | grep -E 'P03|^RESULTADO|exit'
+printf 'create table b (id int primary key, x int, a_id int references a(id));\ncreate index ix on b (x, a_id);\n' > supabase/migrations/002.sql; vr | grep -E 'P03|^RESULTADO|exit'
+echo "######## AT-003 achado que a base já tinha: ℹ️ linha; --tudo lista (já existia)"
+git add -A; git commit -qm b2; B2=$(git rev-parse HEAD); echo '-- nada' > supabase/migrations/003.sql
+vx --raiz $R --base $B2
+vx --raiz $R --base $B2 --tudo | grep -E "já existia|exit"
+vx --raiz $R --base naoexiste | grep -vE "^   confira"
+echo "######## AT-004 dispensa com motivo / sem motivo / id errado"
+printf 'create policy p on a for select using (auth.uid() = user_id); -- sdd-desempenho-banco: aceito P01 — tabela de 10 linhas\n' > supabase/migrations/004.sql
+vx --raiz $R --base $B2 | grep -E 'aceito|P01|^RESULTADO|exit'
+printf 'create policy p on a for select using (auth.uid() = user_id); -- sdd-desempenho-banco: aceito P01 — ok\n' > supabase/migrations/004.sql
+vx --raiz $R --base $B2 | grep -E 'aceito|P01|não vale|^RESULTADO|exit'
+printf 'create policy p on a for select using (auth.uid() = user_id); -- sdd-desempenho-banco: aceito P02 — tabela pequena\n' > supabase/migrations/004.sql
+vx --raiz $R --base $B2 | grep -E 'aceito|P01|não vale|^RESULTADO|exit'
+rm supabase/migrations/004.sql
+echo "######## AT-005 entrada inválida ⇒ 64; fora de git ⇒ 64; catálogo ilegível ⇒ 64"
+bash $V --raiz $R --xyz > $S/vo 2>&1; rc=$?; tail -2 $S/vo; echo "[exit=$rc]"
+mkdir -p $S/nogit; (cd $S/nogit && bash $V > $S/vo 2>&1; rc=$?; tail -2 $S/vo; echo "[exit=$rc]")
+bash $V --raiz $R --catalogo /nao/existe > $S/vo 2>&1; rc=$?; tail -2 $S/vo; echo "[exit=$rc]"
+echo "######## AT-005 teto: 7 políticas novas ⇒ 5 na tela + linha do resto; --saida tem as 7"
+for k in 1 2 3 4 5 6 7; do echo "create policy p$k on a for select using (auth.uid() = user_id);"; done > supabase/migrations/005.sql
+vx --raiz $R --base $B2 --saida $S/lista.txt | grep -E "^⚠️|^…|^RESULTADO|exit"; echo "   no --saida: $(grep -c '^⚠️ P01' $S/lista.txt) avisos P01"
+rm supabase/migrations/005.sql
+echo "######## AT-006 sem banco ⇒ 0 SEM BANCO ≤2 linhas; --saida grava; stack sem supabase não dispara ficha supabase"
+N=$S/n; mkdir -p $N; (cd $N && git init -q && echo 'print(1)' > a.py && git add -A && git -c user.email=t -c user.name=t commit -qm x)
+vx --raiz $N --saida $S/sb.txt; echo "   arquivo --saida: $(grep RESULTADO $S/sb.txt 2>/dev/null)"
+echo "--- stack só web (package.json sem supabase) + .sql com auth.uid(): ficha de stack supabase não dispara"
+mkdir -p $N/db && echo "create policy p on a for select using (auth.uid() = user_id);" > $N/db/x.sql && echo "{}" > $N/package.json
+vx --raiz $N | grep -vE "^   confira"
+echo "######## nunca 2: exits observados acima ⊂ {0,1,64}"
+rm -rf "${S:?}"
+######## AT-001 política com auth.uid() por linha ⇒ 1; com (select auth.uid()) ⇒ 0
+▶ desempenho-varredura — stack: supabase, web (detectada) · base: 39f0b6e7ea9a9c647e09534b42b41a6e96896be1 · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ P01 alta supabase/migrations/002.sql:1 — Política que chama auth.uid() uma vez por linha
+   confira à mão: No painel do banco, abra Advisors › Performance e procure "Auth RLS Initialization Plan"; ou leia cada política e confira se toda chamada a `auth.` ou a `current_setting(` está dentro de `(select …)`.
+⚠️ P02 media supabase/migrations/002.sql:1 — Coluna usada na política sem índice
+   confira à mão: Para cada política, anote a coluna comparada com o usuário; no painel, em Database › Indexes, confira que essa coluna tem um índice em que ela é a primeira.
+⚠️ P06 baixa supabase/migrations/002.sql:1 — Política sem dizer para qual papel vale
+   confira à mão: Leia cada `create policy` das migrations e confira se tem `to <papel>` logo depois da ação.
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo. Nada aqui bloqueia a publicação.
+[exit=1]
+▶ desempenho-varredura — stack: supabase, web (detectada) · base: 39f0b6e7ea9a9c647e09534b42b41a6e96896be1 · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ P02 media supabase/migrations/002.sql:1 — Coluna usada na política sem índice
+   confira à mão: Para cada política, anote a coluna comparada com o usuário; no painel, em Database › Indexes, confira que essa coluna tem um índice em que ela é a primeira.
+⚠️ P06 baixa supabase/migrations/002.sql:1 — Política sem dizer para qual papel vale
+   confira à mão: Leia cada `create policy` das migrations e confira se tem `to <papel>` logo depois da ação.
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo. Nada aqui bloqueia a publicação.
+[exit=1]
+######## AT-002 FK sem índice ⇒ P03; com índice 1ª coluna ⇒ nada; composto com a chave em 2º ⇒ P03
+⚠️ P03 media supabase/migrations/002.sql:1 — Chave estrangeira sem índice
+RESULTADO: AVISOS
+[exit=1]
+RESULTADO: NADA ACHADO
+[exit=0]
+⚠️ P03 media supabase/migrations/002.sql:1 — Chave estrangeira sem índice
+RESULTADO: AVISOS
+[exit=1]
+######## AT-003 achado que a base já tinha: ℹ️ linha; --tudo lista (já existia)
+▶ desempenho-varredura — stack: supabase, web (detectada) · base: c616b524e7c9f9ad01feb4227356dc5be9869418 · 4 arquivo(s) varrido(s), 0 pulado(s)
+ℹ️ 1 achado(s) que já existiam — liste com --tudo
+RESULTADO: NADA NOVO
+→ siga; o que já existia é outra conversa: o diagnóstico da sdd-desempenho-banco ajuda a priorizar.
+[exit=0]
+⚠️ P03 media supabase/migrations/002.sql:1 — Chave estrangeira sem índice (já existia)
+→ siga; o que já existia é outra conversa: o diagnóstico da sdd-desempenho-banco ajuda a priorizar.
+[exit=0]
+▶ desempenho-varredura — stack: supabase, web (detectada) · base: naoexiste · 4 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ base naoexiste não existe: tudo conta como novo (sem remoto ou sem a branch padrão)
+⚠️ P03 media supabase/migrations/002.sql:1 — Chave estrangeira sem índice
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo. Nada aqui bloqueia a publicação.
+[exit=1]
+######## AT-004 dispensa com motivo / sem motivo / id errado
+✔ aceito P01 supabase/migrations/004.sql:1 — tabela de 10 linhas
+RESULTADO: AVISOS
+[exit=1]
+⚠️ P01 alta supabase/migrations/004.sql:1 — Política que chama auth.uid() uma vez por linha
+⚠️ dispensa sem motivo (ou de outro item) não vale: supabase/migrations/004.sql:1 (P01)
+⚠️ dispensa sem motivo (ou de outro item) não vale: supabase/migrations/004.sql:1 (P02)
+⚠️ dispensa sem motivo (ou de outro item) não vale: supabase/migrations/004.sql:1 (P06)
+RESULTADO: AVISOS
+[exit=1]
+⚠️ P01 alta supabase/migrations/004.sql:1 — Política que chama auth.uid() uma vez por linha
+⚠️ dispensa sem motivo (ou de outro item) não vale: supabase/migrations/004.sql:1 (P01)
+⚠️ dispensa sem motivo (ou de outro item) não vale: supabase/migrations/004.sql:1 (P06)
+✔ aceito P02 supabase/migrations/004.sql:1 — tabela pequena
+RESULTADO: AVISOS
+[exit=1]
+######## AT-005 entrada inválida ⇒ 64; fora de git ⇒ 64; catálogo ilegível ⇒ 64
+RESULTADO: ERRO DE USO
+→ rode com --help para ver o uso; nada foi lido nem gravado.
+[exit=64]
+RESULTADO: ERRO DE USO
+→ rode dentro do projeto (ou passe --raiz <pasta do projeto>).
+[exit=64]
+RESULTADO: ERRO DE USO
+→ instale a skill sdd-desempenho-banco (o init do pacote copia) ou passe --catalogo <arquivo>.
+[exit=64]
+######## AT-005 teto: 7 políticas novas ⇒ 5 na tela + linha do resto; --saida tem as 7
+⚠️ P01 alta supabase/migrations/005.sql:1 — Política que chama auth.uid() uma vez por linha
+⚠️ P01 alta supabase/migrations/005.sql:2 — Política que chama auth.uid() uma vez por linha
+⚠️ P01 alta supabase/migrations/005.sql:3 — Política que chama auth.uid() uma vez por linha
+⚠️ P01 alta supabase/migrations/005.sql:4 — Política que chama auth.uid() uma vez por linha
+⚠️ P01 alta supabase/migrations/005.sql:5 — Política que chama auth.uid() uma vez por linha
+… e mais 22 aviso(s): lista inteira em <TMP>/lista.txt
+RESULTADO: AVISOS
+[exit=1]
+   no --saida: 7 avisos P01
+######## AT-006 sem banco ⇒ 0 SEM BANCO ≤2 linhas; --saida grava; stack sem supabase não dispara ficha supabase
+RESULTADO: SEM BANCO
+→ nada a conferir: o projeto não tem banco (sem Supabase na stack e sem arquivo .sql).
+[exit=0]
+   arquivo --saida: RESULTADO: SEM BANCO
+--- stack só web (package.json sem supabase) + .sql com auth.uid(): ficha de stack supabase não dispara
+▶ desempenho-varredura — stack: web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ base origin/main não existe: tudo conta como novo (sem remoto ou sem a branch padrão)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: as fichas só à mão estão na skill sdd-desempenho-banco.
+[exit=0]
+######## nunca 2: exits observados acima ⊂ {0,1,64}

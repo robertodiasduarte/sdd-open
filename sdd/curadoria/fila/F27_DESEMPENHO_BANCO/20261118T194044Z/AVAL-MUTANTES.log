@@ -1,0 +1,38 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/aval_mutantes.sh; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/aval_mutantes.sh
+# aval_mutantes.sh — avaliação do contrato F27: 4 mutantes, cada um sozinho numa cópia de git archive HEAD (LM-009),
+# rodando só o módulo de teste que cobre o AT (um por vez). VIVO = o módulo passou com o mutante.
+set -u
+W=/Users/robertoduarte/rdd-worktrees/sdd-open-f27-db-performance
+S=$(mktemp -d)
+echo "HEAD: $(git -C $W rev-parse --short HEAD)"
+roda() {  # nome arquivo modulo antes depois
+  rm -rf "$S/c" && mkdir -p "$S/c" && git -C $W archive HEAD | tar -x -C "$S/c"
+  ( cd "$S/c" && /usr/bin/python3 - "$2" "$4" "$5" <<'PY'
+import sys
+p, a, b = sys.argv[1:4]
+t = open(p, encoding="utf-8").read()
+assert t.count(a) == 1, ("trecho não único", t.count(a))
+open(p, "w", encoding="utf-8").write(t.replace(a, b))
+PY
+  ) || { echo "❌ não apliquei: $1"; return; }
+  ( cd "$S/c" && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "$3" >"$S/out" 2>&1 ); rc=$?
+  echo "$( [ $rc = 0 ] && echo '❌ VIVO ' || echo '✅ MORTO' ) $1 — $3 rc=$rc — $(tail -1 "$S/out")"
+}
+V=sdd/bin/desempenho-varredura.sh; D=sdd/bin/desempenho-diagnostico.sh
+roda "M-A teto sem ordem de gravidade (AT-005)" $V test_desempenho_varredura.py \
+  'ordem = lambda a: (GRAV[a[0]["c"]["gravidade"]], a[0]["id"], a[1], a[2])' 'ordem = lambda a: (a[1], a[2], a[0]["id"])'
+roda "M-B confira à mão repetido a cada aviso (AT-001)" $V test_desempenho_varredura.py \
+  '        if f["id"] not in na_tela:
+            print(c)
+            na_tela.add(f["id"])' '        print(c)'
+roda "M-C diagnóstico sem ordem de gravidade (AT-008)" $D test_desempenho_diagnostico.py \
+  'achados.sort(key=lambda a: (GRAV[a["grav"]], -a["n"], a["titulo"]))' 'pass'
+roda "M-D já existia pelo número da linha, não pelo texto (AT-003)" $V test_desempenho_varredura.py \
+  '    return (fid, p, re.sub(r"\s+", " ", linhas[n - 1].strip()) if 1 <= n <= len(linhas) else "")' '    return (fid, p, n)'
+rm -rf "$S"
+HEAD: 3b5eca7
+❌ VIVO  M-A teto sem ordem de gravidade (AT-005) — test_desempenho_varredura.py rc=0 — OK
+❌ VIVO  M-B confira à mão repetido a cada aviso (AT-001) — test_desempenho_varredura.py rc=0 — OK
+❌ VIVO  M-C diagnóstico sem ordem de gravidade (AT-008) — test_desempenho_diagnostico.py rc=0 — OK
+❌ VIVO  M-D já existia pelo número da linha, não pelo texto (AT-003) — test_desempenho_varredura.py rc=0 — OK
+[exit=0]

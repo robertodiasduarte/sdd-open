@@ -1,0 +1,31 @@
+DELTA LM-001 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:391 · fp=7d0802a004,7532d5e52b
+DELTA LM-002 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:392 · fp=36c2cf2cf4,3124b2befd
+DELTA LM-003 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:393 · fp=918e6b837e,a8527a1fc4
+DELTA LM-006 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:395 · fp=0191315f8f,77d63f039d
+DELTA LM-009 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:396 · fp=4142689fae,321435b84a
+DELTA LM-012 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:397 · fp=ef091549bb,486c107d7d
+DELTA LM-014 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:398 · fp=ef69d98077,aa4c3272a2
+DELTA LM-017 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:400 · fp=fedd053f78,63379845c5
+DELTA LM-018 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:401 · fp=10b9140ccf,e33e0af06e
+DELTA LM-020 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:402 · fp=d5a92bea05,c0f3572a35
+DELTA LM-023 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:403 · fp=78a808c922
+DELTA LM-026 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:404 · fp=d510d4d9cf
+DELTA LM-028 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:405 · fp=a25f89a6da,b8b899efee
+DELTA LM-029 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:406 · fp=34def1d7f7,cb338f448a
+DELTA LM-031 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:407 · fp=78b546f90c
+DELTA LM-034 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:409 · fp=ebcaed25da,2a360ab9a1
+DELTA LM-035 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:410 · fp=8aa52268ce,d413735928
+DELTA LM-037 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:411 · fp=2108f35d81,713a412251
+DELTA LM-038 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F27_DESEMPENHO_BANCO.md:412 · fp=cc1a48cce2,cae9dfd566
+DELTA LM-035 mordeu+1 · conf=2026-11-18 · evidencia=BUILD_REPORT_F27_DESEMPENHO_BANCO.md:85 · fp=597404c3aa,fc0b3faac3
+CANDIDATO #1 → LM-045 · secao=Reviews / harness · sup=`<<'PY'` `_sdd_c.reconfigure` `test_f16w2_saida` `sdd/bin` · evidencia=sdd/reports/evidence/F27_DESEMPENHO_BANCO/GATE-1-VERMELHO.log · fp=a9e975d262
+   delta: ADD Reviews / harness :: sup: `<<'PY'` `_sdd_c.reconfigure` `test_f16w2_saida` `sdd/bin` :: Script novo de `sdd/bin` com Python embutido (heredoc `<<'PY'`) precisa abrir com o bloco de saída UTF-8 do F16W2 (`import sys as _sdd_sys` … `_sdd_c.reconfigure(…)`) nas primeiras linhas: `test_f16w2_saida` confere o texto exato, e uma variante equivalente com outro nome reprova só no Verify Gate inteiro (na F27, +28 min). **Do instead:** copie o bloco de um script vizinho à letra e rode `python3 -B -m unittest discover -s tests -p 'test_f16w2_saida.py'` antes do gate. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-046 · secao=Reviews / harness · sup=`mktemp -d` `TMPDIR` `macOS` · evidencia=tests/test_desempenho_diagnostico.py (DadoDeFora.test_saida_bruta_fora_do_projeto) · fp=f3101b1feb
+   delta: ADD Reviews / harness :: sup: `mktemp -d` `TMPDIR` `macOS` :: No macOS, `mktemp -d` sem molde ignora o `TMPDIR` e cria a pasta no temporário do sistema: uma guarda "a pasta temporária não pode cair dentro do projeto" passa calada no Mac e o teste que aponta o `TMPDIR` para dentro do projeto falha. **Do instead:** use `mktemp -d "${TMPDIR:-/tmp}/<nome>.XXXXXX"`, que respeita o `TMPDIR` em todo sistema, e teste a guarda com o `TMPDIR` apontado para dentro do projeto. → ficha: — · promovido_para: —
+CANDIDATO #3 → LM-047 · secao=Reviews / harness · sup=`web/MODO_WEB.md` `version` `gerar-starter` `linha de identificação` · evidencia=tests/test_gerar_starter.py · fp=7f93160006
+   delta: ADD Reviews / harness :: sup: `web/MODO_WEB.md` `version` `gerar-starter` `linha de identificação` :: Subir a versão da `sdd-define`, da `sdd-design` ou da `sdd-build` exige a mesma linha de identificação (`sdd-<skill> vX.Y.Z · …`) no `web/MODO_WEB.md` dela: o gerador do starter tira essas skills do modo web e sai 65 ("o modo tem de trazer… a mesma linha de identificação"), derrubando 25 testes de `test_gerar_starter`. **Do instead:** ao subir a versão, troque a linha nos dois arquivos e rode `test_gerar_starter.py` antes do gate. → ficha: — · promovido_para: —
+SUGESTAO mordeu? LM-020 — termo `varredura` em AVAL-MUTANTES.log:34 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=f8c217bcef,c29bfe0994,6d3ccd15ef,774e2ce77a
+SUGESTAO mordeu? LM-030 — termo `mascara` em AVALIACAO_F27_DESEMPENHO_BANCO_20261117-2020.md:30 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=b6e33c0af1
+resumo: deltas=20 (ajudou=19 mordeu=1) candidatos=3 rejeitados=0 promocoes=0 sugestoes=2
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.

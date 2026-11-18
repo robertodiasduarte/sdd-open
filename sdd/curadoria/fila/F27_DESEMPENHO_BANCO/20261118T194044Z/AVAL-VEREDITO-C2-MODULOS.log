@@ -1,0 +1,17 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c2/m.sh; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c2/m.sh
+# m.sh — módulos de teste isolados, um por vez, na cópia git archive de HEAD e1225ef (bash 3.2 do macOS)
+cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c2/head
+for m in test_desempenho_diagnostico test_desempenho_varredura test_desempenho_catalogo test_f27_textos test_seguranca_varredura test_agnostico test_skill_lint test_gerar_starter test_verify_gate; do
+  SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "$m.py" > ../m-$m.txt 2>&1; rc=$?
+  echo "$m: exit=$rc · $(grep -E '^Ran ' ../m-$m.txt) · $(tail -1 ../m-$m.txt)"
+  [ $rc -ne 0 ] && grep -E '^(FAIL|ERROR):' ../m-$m.txt
+done
+test_desempenho_diagnostico: exit=0 · Ran 20 tests in 3.683s · OK
+test_desempenho_varredura: exit=0 · Ran 40 tests in 10.801s · OK
+test_desempenho_catalogo: exit=0 · Ran 8 tests in 0.004s · OK
+test_f27_textos: exit=0 · Ran 13 tests in 0.008s · OK
+test_seguranca_varredura: exit=0 · Ran 59 tests in 15.669s · OK
+test_agnostico: exit=0 · Ran 7 tests in 0.120s · OK
+test_skill_lint: exit=0 · Ran 29 tests in 2.085s · OK
+test_gerar_starter: exit=0 · Ran 34 tests in 86.891s · OK
+test_verify_gate: exit=0 · Ran 27 tests in 2.157s · OK
