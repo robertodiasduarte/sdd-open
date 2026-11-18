@@ -33,7 +33,7 @@
 
 1. ~~Starter~~ — feito: 10ª geração pela tag `v2.22.0` num clone limpo (`4dbdea1`: `sdd-build` 2.13.0 e `sdd-checar-ambiente` 1.6.0); `check-gerado` VERDE, `publish-check` e `check-versions` PASS, testes OK; PR #19 de lá, CI verde, avanço direto da `main` (`9782444..4dbdea1`); Release **`v1.5.26`**, 18 zips OK.
 2. ~~Remover a worktree e a branch local da frente~~ — feito em 2026-11-17; o que só existia nela (ESCOPO, prompt da sessão, revisões completas e trace) está em `~/rdd-worktrees/arquivo-sdd-open/F25_SKILLS_DUPLICADAS-v2.22.0-documentos-revisoes-traces.tar.gz`.
-3. Curadoria: na fila (`20261117T215105Z`, 3 contagens e 3 candidatos); o lote da `sdd-playbook` julga sob demanda.
+3. ~~Curadoria~~ — feito: julgada no lote de 2026-11-18 (`f2fecf7`, fila vazia; o playbook foi aplicado na branch `feat/f26-docs-na-main`).
 4. Smoke depois do deploy: pulado — slot vazio (o Open não tem `sdd/config.yaml`); a Release foi conferida à mão (`shasum -c`, `VERSION`, a skill nova no pacote).
 
 ## Definition of Done
@@ -52,6 +52,8 @@
 - Documento commitado na branch de código reprova no `publish-gate` (`undeclared file`): documentos só na branch de documentos.
 
 ## Casos e testes em aberto
+
+> Detalhados, com linha do código, conserto e teste, em `sdd/features/ESCOPO_CHECAR_AMBIENTE_1_6_1.md` (entrada da `sdd-define` da próxima versão da skill).
 
 - ✨ Caminho com barra invertida passado ao awk por `-v` (passar por `ENVIRON`); não ocorre em macOS, Linux nem Git Bash (rodada 4, R3).
 - ✨ A frase "Nada foi tirado" quando o npx tocou uma pasta fora do plano (a frase do erro já nomeia a pasta; trocar por "Nada do plano foi tirado") (rodada 4, R2).
@@ -82,7 +84,7 @@
 
 ## Tarefas
 
-1. Nenhuma: a frente está fechada. Próximas, fora dela: o lote da curadoria (sob demanda) e os "Casos e testes em aberto".
+1. Nenhuma: a frente está fechada. Próxima, fora dela: os "Casos e testes em aberto", registrados para a `sdd-checar-ambiente` 1.6.1 em `sdd/features/ESCOPO_CHECAR_AMBIENTE_1_6_1.md`.
 
 ## Ship
 
