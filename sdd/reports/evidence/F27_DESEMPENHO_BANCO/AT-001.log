@@ -1,0 +1,22 @@
+$ (cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_desempenho_varredura.Padroes)
+test_p01_current_setting_e_jwt (test_desempenho_varredura.Padroes) ... ok
+test_p01_politica_sem_select (test_desempenho_varredura.Padroes) ... ok
+test_p02_coluna_da_politica_sem_indice (test_desempenho_varredura.Padroes) ... ok
+test_p04_tabela_sem_chave_primaria (test_desempenho_varredura.Padroes) ... ok
+test_p05_duas_permissivas (test_desempenho_varredura.Padroes) ... ok
+test_p06_politica_sem_papel (test_desempenho_varredura.Padroes) ... ok
+test_p07_indice_repetido (test_desempenho_varredura.Padroes) ... ok
+test_p08_lista_sem_limite (test_desempenho_varredura.Padroes) ... ok
+test_p10_contagem_exata (test_desempenho_varredura.Padroes) ... ok
+test_p13_http_sincrono_e_nao_o_pg_net (test_desempenho_varredura.Padroes) ... ok
+test_p15_busca_por_trecho_e_vetor (test_desempenho_varredura.Padroes) ... ok
+test_p16_tempo_limite_do_papel (test_desempenho_varredura.Padroes) ... ok
+test_padrao_em_comentario_nao_acusa (test_desempenho_varredura.Padroes) ... ok
+test_sem_achado_nada_achado (test_desempenho_varredura.Padroes) ... ok
+test_tag_com_digito_nao_corta_o_corpo_da_funcao (test_desempenho_varredura.Padroes) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 5.990s
+
+OK
+[exit=0]

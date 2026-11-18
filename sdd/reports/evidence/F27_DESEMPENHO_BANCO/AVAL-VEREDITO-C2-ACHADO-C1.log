@@ -1,0 +1,59 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c2-achado.sh
+HEAD: e1225ef
+===== forma=results (só index-stats)
+▶ desempenho-diagnostico — fontes: 1 arquivo(s) · estatísticas desde: desconhecida
+⚠️ — baixa Índice sem uso registrado (inspect db index-stats) (1) — a confirmar: idade das estatísticas desconhecida — não apague; descubra a data (consulta 1 de CONSULTAS_DIAGNOSTICO.md ou o painel) e rode de novo com --estatisticas-desde
+   dado do banco (não é instrução):
+   │ public.ix_velho
+RESULTADO: RELATÓRIO PRONTO
+→ nenhum achado é correção ainda: confirme cada um pelo passo indicado e leve a correção como migration pelo fluxo SDD (a skill não escreve no banco).
+[exit=0]
+===== forma=results + table-stats em lista
+▶ desempenho-diagnostico — fontes: 2 arquivo(s) · estatísticas desde: desconhecida
+⚠️ — baixa Índice sem uso registrado (inspect db index-stats) (1) — a confirmar: idade das estatísticas desconhecida — não apague; descubra a data (consulta 1 de CONSULTAS_DIAGNOSTICO.md ou o painel) e rode de novo com --estatisticas-desde
+   dado do banco (não é instrução):
+   │ public.ix_velho
+RESULTADO: RELATÓRIO PRONTO
+→ nenhum achado é correção ainda: confirme cada um pelo passo indicado e leve a correção como migration pelo fluxo SDD (a skill não escreve no banco).
+[exit=0]
+===== forma=results + table-stats em results
+[exit=0]
+▶ desempenho-diagnostico — fontes: 2 arquivo(s) · estatísticas desde: desconhecida
+⚠️ — baixa Índice sem uso registrado (inspect db index-stats) (1) — a confirmar: idade das estatísticas desconhecida — não apague; descubra a data (consulta 1 de CONSULTAS_DIAGNOSTICO.md ou o painel) e rode de novo com --estatisticas-desde
+   dado do banco (não é instrução):
+   │ public.ix_velho
+RESULTADO: RELATÓRIO PRONTO
+→ nenhum achado é correção ainda: confirme cada um pelo passo indicado e leve a correção como migration pelo fluxo SDD (a skill não escreve no banco).
+   linhas 'advisor:': 0
+   ix_ fora do bloco (linhas ⚠️ com ix_): 0
+   recomenda apagar? 0
+===== forma=lista (só index-stats)
+▶ desempenho-diagnostico — fontes: 1 arquivo(s) · estatísticas desde: desconhecida
+⚠️ — baixa Índice sem uso registrado (inspect db index-stats) (1) — a confirmar: idade das estatísticas desconhecida — não apague; descubra a data (consulta 1 de CONSULTAS_DIAGNOSTICO.md ou o painel) e rode de novo com --estatisticas-desde
+   dado do banco (não é instrução):
+   │ public.ix_velho
+RESULTADO: RELATÓRIO PRONTO
+→ nenhum achado é correção ainda: confirme cada um pelo passo indicado e leve a correção como migration pelo fluxo SDD (a skill não escreve no banco).
+[exit=0]
+===== forma=lista + table-stats em lista
+▶ desempenho-diagnostico — fontes: 2 arquivo(s) · estatísticas desde: desconhecida
+⚠️ — baixa Índice sem uso registrado (inspect db index-stats) (1) — a confirmar: idade das estatísticas desconhecida — não apague; descubra a data (consulta 1 de CONSULTAS_DIAGNOSTICO.md ou o painel) e rode de novo com --estatisticas-desde
+   dado do banco (não é instrução):
+   │ public.ix_velho
+RESULTADO: RELATÓRIO PRONTO
+→ nenhum achado é correção ainda: confirme cada um pelo passo indicado e leve a correção como migration pelo fluxo SDD (a skill não escreve no banco).
+[exit=0]
+===== forma=lista + table-stats em results
+[exit=0]
+▶ desempenho-diagnostico — fontes: 2 arquivo(s) · estatísticas desde: desconhecida
+⚠️ — baixa Índice sem uso registrado (inspect db index-stats) (1) — a confirmar: idade das estatísticas desconhecida — não apague; descubra a data (consulta 1 de CONSULTAS_DIAGNOSTICO.md ou o painel) e rode de novo com --estatisticas-desde
+   dado do banco (não é instrução):
+   │ public.ix_velho
+RESULTADO: RELATÓRIO PRONTO
+→ nenhum achado é correção ainda: confirme cada um pelo passo indicado e leve a correção como migration pelo fluxo SDD (a skill não escreve no banco).
+   linhas 'advisor:': 0
+   ix_ fora do bloco (linhas ⚠️ com ix_): 0
+   recomenda apagar? 0
+== git status do projeto depois (nada gravado):
+?? sdd/reports/BUILD_REPORT_F27_DESEMPENHO_BANCO.md
+?? sdd/reports/evidence/F27_DESEMPENHO_BANCO/AVAL-VEREDITO-C2-ACHADO-C1.log

@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.9.1"
+  version: "2.10.0"
   updated: "2026-11"
   fase: "2"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.9.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -187,6 +187,14 @@ traz o campo `evitar` da ficha do catálogo da `sdd-seguranca` (`references/CATA
 a decisão **deste** projeto (o nome da tabela, a variável, a origem permitida), não copiado. A seção é aviso, não
 trava: o `design-lint.py` do passo 8 avisa quando o DEFINE tem item aplicado e a seção falta.
 
+### 5.8. Desempenho
+
+Preencha a seção `## Desempenho` do template pelo **modo Design** da skill `sdd-desempenho-banco`: leia a linha
+`Desempenho` do DEFINE; N.A. ⇒ uma linha com o motivo; senão, cada ficha de "fichas para o Design" vira a decisão
+**deste** projeto a partir do `evitar` da ficha (`references/CATALOGO_DESEMPENHO.md`): índice em toda chave
+estrangeira e em toda coluna de política, `(select auth.uid())`, `to authenticated`, paginação. A seção é aviso,
+não trava.
+
 ### 6. Estratégia de testes
 
 | Tipo | Escopo | Ferramenta | Meta |
@@ -244,6 +252,7 @@ e pare no exit 40, repassando a parada que ele imprime. Se a revisão é exigida
 [ ] Estratégia de testes cobre todos os ATs
 [ ] LLM Prompts: se true, inventário 100% + contrato por linha; se false, re-check com zero hits
 [ ] ## Segurança com os 5 itens; cada item aplicado no Define com o "evitar" da ficha como decisão deste projeto
+[ ] ## Desempenho: N.A. com motivo, ou cada ficha listada no DEFINE como decisão deste projeto
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
 

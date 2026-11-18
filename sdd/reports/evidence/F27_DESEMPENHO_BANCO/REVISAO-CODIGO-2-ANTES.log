@@ -1,0 +1,106 @@
+$ cd <cópia de git archive 8d8123b com os testes novos> && python3 -m unittest test_desempenho_varredura.RevisaoDoCodigo2 test_desempenho_catalogo.Consultas.test_r2_mascara_do_sql_falha_fechada
+FFF
+======================================================================
+ERROR: test_r1_politica_em_tabela_entre_aspas_duplas_acusa (test_desempenho_varredura.RevisaoDoCodigo2) (on='"pedidos"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/test_desempenho_varredura.py", line 240, in test_r1_politica_em_tabela_entre_aspas_duplas_acusa
+    p = self.projeto()
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/test_desempenho_varredura.py", line 31, in projeto
+    p = self.repo("app")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/apoio.py", line 210, in repo
+    p.mkdir(parents=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1313, in mkdir
+    self._accessor.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-fmf0e93l/app'
+
+======================================================================
+ERROR: test_r4_politica_corrigida_em_migration_seguinte_some (test_desempenho_varredura.RevisaoDoCodigo2) (caso='alter')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/test_desempenho_varredura.py", line 266, in test_r4_politica_corrigida_em_migration_seguinte_some
+    p = self.projeto()
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/test_desempenho_varredura.py", line 31, in projeto
+    p = self.repo("app")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/apoio.py", line 210, in repo
+    p.mkdir(parents=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1313, in mkdir
+    self._accessor.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-1k7kq39u/app'
+
+======================================================================
+FAIL: test_r1_politica_em_tabela_entre_aspas_duplas_acusa (test_desempenho_varredura.RevisaoDoCodigo2) (on='"public"."pedidos"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/test_desempenho_varredura.py", line 244, in test_r1_politica_em_tabela_entre_aspas_duplas_acusa
+    self.assertEqual(rc, 1, out)
+AssertionError: 0 != 1 : ▶ desempenho-varredura — stack: supabase (detectada) · base: origin/main · 2 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: as fichas só à mão estão na skill sdd-desempenho-banco.
+
+
+======================================================================
+FAIL: test_r3_chave_primaria_por_indice_nao_acusa_p04 (test_desempenho_varredura.RevisaoDoCodigo2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/test_desempenho_varredura.py", line 255, in test_r3_chave_primaria_por_indice_nao_acusa_p04
+    self.assertEqual(self.avisos(out, "P04"), [], out)
+AssertionError: Lists differ: ['⚠️ P04 media supabase/migrations/002.sql:1 — Tabela sem chave primária'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'⚠️ P04 media supabase/migrations/002.sql:1 — Tabela sem chave primária'
+
+- ['⚠️ P04 media supabase/migrations/002.sql:1 — Tabela sem chave primária']
++ [] : ▶ desempenho-varredura — stack: supabase (detectada) · base: origin/main · 2 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ P04 media supabase/migrations/002.sql:1 — Tabela sem chave primária
+   confira à mão: No painel, abra Advisors › Performance (com o nível INFO) e procure "No primary key"; ou leia cada `create table` e confira o `primary key`.
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo. Nada aqui bloqueia a publicação.
+
+
+======================================================================
+FAIL: test_r4_politica_corrigida_em_migration_seguinte_some (test_desempenho_varredura.RevisaoDoCodigo2) (caso='drop e create')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/test_desempenho_varredura.py", line 270, in test_r4_politica_corrigida_em_migration_seguinte_some
+    self.assertEqual(self.avisos(out, "P01"), [], out)
+AssertionError: Lists differ: ['⚠️ P01 alta supabase/migrations/003.sql:[48 chars]nha'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'⚠️ P01 alta supabase/migrations/003.sql:8 — Política que chama auth.uid() uma vez por linha'
+
++ []
+- ['⚠️ P01 alta supabase/migrations/003.sql:8 — Política que chama auth.uid() '
+-  'uma vez por linha'] : ▶ desempenho-varredura — stack: supabase (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ P01 alta supabase/migrations/003.sql:8 — Política que chama auth.uid() uma vez por linha
+   confira à mão: No painel do banco, abra Advisors › Performance e procure "Auth RLS Initialization Plan"; ou leia cada política e confira se toda chamada a `auth.` ou a `current_setting(` está dentro de `(select …)`.
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo. Nada aqui bloqueia a publicação.
+
+
+======================================================================
+FAIL: test_r5_limite_da_consulta_seguinte_nao_esconde_a_lista (test_desempenho_varredura.RevisaoDoCodigo2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/test_desempenho_varredura.py", line 280, in test_r5_limite_da_consulta_seguinte_nao_esconde_a_lista
+    self.assertEqual(len(achados), 1, out)
+AssertionError: 0 != 1 : ▶ desempenho-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: as fichas só à mão estão na skill sdd-desempenho-banco.
+
+
+======================================================================
+FAIL: test_r2_mascara_do_sql_falha_fechada (test_desempenho_catalogo.Consultas)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/antes.xC6EQN/tests/test_desempenho_catalogo.py", line 151, in test_r2_mascara_do_sql_falha_fechada
+    self.assertEqual(len(guardas), 4, "consultas 3, 7 e 8 (duas colunas na 8) com a guarda")
+AssertionError: 0 != 4 : consultas 3, 7 e 8 (duas colunas na 8) com a guarda
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.150s
+
+FAILED (failures=5, errors=2)
+[exit=1]

@@ -1,0 +1,19 @@
+feature_id: F27_DESEMPENHO_BANCO
+slice_id: s1
+versao: 2.24.0
+data: 2026-11-18
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "Verify Gate verde em 8bdfe14 (2686 testes, 4 pulados, cópia de git archive montada por scripts/montar-pacote.sh, /bin/bash 3.2) depois do rebase sobre v2.23.0; 11 de 11 ATs com log por AT; avaliador fresco PASS_PENDENTE_RECIBO no ciclo 4 (5af0a2d); revisão do código em 3 rodadas (rodada 1 no build; 2 e 3 na release), 0 graves, cada achado aplicado com teste vermelho antes; raio de impacto em 4 superfícies sem quebra; conferência de segurança da lista fixa sem achado"
+descricao: "Skill nova sdd-desempenho-banco (1.0.0): catálogo de 17 fichas P01–P17 do que deixa o banco lento (Supabase/Postgres), com a conferência à mão de cada uma; modo Define (uma pergunta de volume e as fichas para o Design), modo Design (índice, política e paginação na seção ## Desempenho), varredura da publicação só de aviso (sdd/bin/desempenho-varredura.sh, item 11 da 0a da sdd-release, nunca aborta) e diagnóstico do banco no ar a pedido, só leitura, com o OK a cada vez (sdd/bin/desempenho-diagnostico.sh, máscara de valores e senhas que falha fechada); ganchos no sdd-define 2.9.0 (passo 13), sdd-design 2.10.0 (passo 5.8) e sdd-release 2.18.0; 19 skills no SDD Starter"
+deploy: real
+trilha: completa
+review_externo: dispensado — a rodada 3 (sdd/reports/reviews/EXTERNAL_REVIEW_20261118-141043, claude revisa, qwen audita pela OpenRouter) revisou 5e61d2f; o delta até 8bdfe14 são só os 7 consertos dela, cada um com teste vermelho antes (REVISAO-CODIGO-3-ANTES.log) e verde depois, e o Verify Gate final roda em 8bdfe14; 3 rodadas sem achado grave, o teto de 3 já atingido — decisão do Roberto em 2026-11-18 (D3)
+avisos:
+  - "revisão do código em 3 rodadas: 0 graves; rodada 2 com 5 achados (o mais sério, a máscara feita no SQL das consultas 3, 7 e 8 pelo MCP, provada no Postgres 16 em REVISAO-CODIGO-2-R2-POSTGRES.log) e rodada 3 com 7, todos aplicados; a 4ª rodada não rodou: dispensa registrada acima"
+  - "o avaliador fresco avaliou 5af0a2d (ciclo 4, PASS_PENDENTE_RECIBO); os consertos das rodadas 2 e 3 vieram depois, cada um com teste vermelho antes"
+  - "pendências baixas do avaliador (ciclo 4): O1 nome entre aspas duplas sem fechar sai inteiro (é identificador, não valor); O2 conexão chave=valor sem senha vira nome de arquivo; O3 aviso de dispensa repetido por ficha da mesma linha"
+  - "pendências do raio de impacto: o molde do modo web do Design (o que o SDD Starter usa) não tem ## Segurança nem ## Desempenho; o exemplo do bloco do OK em references/como-falar.md da sdd-release não tem as linhas Segurança e Desempenho; no DEFINE_TEMPLATE, o bullet Desempenho vem antes do Segurança no Why This Matters"
+  - "um teste de outra frente (test_deploy_do_sha.Redisparo.test_slots_preenchem_workflow_passos_e_branch, teto de 1 minuto) falhou uma vez sob carga no gate de 8d8123b e passou 5 de 5 sozinho; a F27 não toca no script nem no teste"
+  - "lint, drift, landmines, smoke e test-baseline pulados: o Open não tem sdd/config.yaml (a suíte inteira rodou no Verify Gate); varredura de desempenho do próprio Open: SEM BANCO; varredura de segurança: NADA ACHADO; varredura dos documentos: VERDE"

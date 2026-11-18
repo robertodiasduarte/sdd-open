@@ -1,0 +1,18 @@
+$ (cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_desempenho_diagnostico.Consentimento test_desempenho_catalogo.Consultas)
+test_cli_antigo_sem_advisors (test_desempenho_diagnostico.Consentimento) ... ok
+test_ler_nunca_chama_o_cli (test_desempenho_diagnostico.Consentimento) ... ok
+test_r1_coletar_como_valor_de_outra_opcao_nao_coleta (test_desempenho_diagnostico.Consentimento) ... ok
+test_sem_consentimento_nada_roda (test_desempenho_diagnostico.Consentimento) ... ok
+test_sem_json_guarda_o_texto_para_conferir_a_mao (test_desempenho_diagnostico.Consentimento) ... ok
+test_so_a_lista_fixa_com_o_alvo_da_versao (test_desempenho_diagnostico.Consentimento) ... ok
+test_string_de_conexao_ou_senha_recusadas_antes_de_tudo (test_desempenho_diagnostico.Consentimento) ... ok
+test_versao_ilegivel_ou_tudo_falha (test_desempenho_diagnostico.Consentimento) ... ok
+test_o_juiz_reprova_escrita (test_desempenho_catalogo.Consultas) ... ok
+test_texto_de_consulta_sai_mascarado_no_sql (test_desempenho_catalogo.Consultas) ... ok
+test_toda_consulta_e_so_leitura (test_desempenho_catalogo.Consultas) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.307s
+
+OK
+[exit=0]

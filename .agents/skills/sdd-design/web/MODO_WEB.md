@@ -6,7 +6,7 @@ compatibility: "Funciona na web (claude.ai, ChatGPT), onde o documento sai no ch
 # SDD Design
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só:
-`sdd-design v2.9.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 ## Quick start
 

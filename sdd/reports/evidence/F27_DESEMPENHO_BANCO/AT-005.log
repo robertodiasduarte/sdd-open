@@ -1,0 +1,11 @@
+$ (cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_desempenho_varredura.Uso)
+test_catalogo_fora_da_gramatica (test_desempenho_varredura.Uso) ... ok
+test_fora_de_git (test_desempenho_varredura.Uso) ... ok
+test_opcao_desconhecida (test_desempenho_varredura.Uso) ... ok
+test_teto_de_cinco_e_saida_com_tudo (test_desempenho_varredura.Uso) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.484s
+
+OK
+[exit=0]

@@ -1,0 +1,166 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/t1.sh; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/t1.sh   # HEAD 4a1c413
+# t1.sh — sondas de texto e de não-regressão (AT-009, AT-010), ciclo 1 do veredito. Só leitura do projeto.
+set -u
+W=/Users/robertoduarte/rdd-worktrees/sdd-open-f27-db-performance
+cd $W
+SK=.agents/skills/sdd-desempenho-banco
+echo "== T9.1 catálogo: 17 fichas P01–P17, 11 campos na ordem, sem bloqueia/agents"
+python3 - $SK/references/CATALOGO_DESEMPENHO.md <<'PY'
+import re, sys
+t = open(sys.argv[1], encoding="utf-8").read().split("## Itens", 1)[1]
+blocos = re.split(r"\n(?=### )", t.strip())
+ids = [re.match(r"### (P\d\d) — ", b).group(1) for b in blocos]
+ordem = ["stack","fase","gravidade","gatilho","padrao","arquivos","frase","evitar","at","confira","ref"]
+print("fichas:", len(ids), "ids ok:", ids == ["P%02d" % k for k in range(1, 18)])
+ruins = 0
+for b in blocos:
+    campos = [m.group(1) for m in re.finditer(r"^- ([a-z]+):", b, re.M)]
+    if campos != ordem:
+        ruins += 1; print("  fora da ordem:", b[:8], campos)
+print("fichas com os 11 campos na ordem:", len(blocos) - ruins, "· com bloqueia/agents:", sum(bool(re.search(r"^- (bloqueia|agents):", b, re.M)) for b in blocos))
+com = [b[4:7] for b in blocos if not re.search(r"^- padrao: só à mão", b, re.M)]
+print("fichas com padrão:", len(com), com)
+PY
+echo "== T9.2 SKILL.md: modos, Como falar, manifest, evals"
+grep -nE '^#{2,3} ' $SK/SKILL.md | head -30
+grep -n '^version\|"version"' $SK/manifest.json; grep -n 'version:' $SK/SKILL.md | head -2
+python3 -c "import json;d=json.load(open('$SK/evals/cases.json'));print('evals:', len(d) if isinstance(d,list) else len(d.get('cases',[])))"
+echo "== T9.3 sdd-define: passo de desempenho"
+grep -n -i 'desempenho' .agents/skills/sdd-define/SKILL.md | head -20
+echo "== T9.4 sdd-design e DESIGN_TEMPLATE: ## Desempenho"
+grep -n '## Desempenho' sdd/templates/DESIGN_TEMPLATE.md .agents/skills/sdd-design/SKILL.md
+echo "== T9.5 sdd-release: passo 0a"
+sed -n 140,150p .agents/skills/sdd-release/SKILL.md
+grep -n -i 'abort' .agents/skills/sdd-release/SKILL.md | head
+echo "== T9.6 MANIFEST, lista do starter, README"
+grep -n 'desempenho' MANIFEST.txt scripts/starter/lista.txt; grep -c 'sdd-desempenho-banco' README.md README.pt-BR.md
+echo "-- arquivos da skill que não estão no MANIFEST:"; for f in $(git ls-files $SK sdd/bin/desempenho-*.sh); do grep -qxF "$f" MANIFEST.txt || echo "   FALTA $f"; done; echo "   (fim)"
+echo "-- documentos da frente no MANIFEST:"; grep -nE 'sdd/(features|reports|handoffs|reviews|releases|contexto)/' MANIFEST.txt || echo "   nenhum"
+echo "== T9.7 skill-lint --conversa nas skills tocadas"
+for s in sdd-desempenho-banco sdd-define sdd-design sdd-release; do /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/$s/SKILL.md 2>&1 | tail -2; echo "   [$s exit=${PIPESTATUS[0]}]"; done
+echo "== T10.1 seguranca-varredura.sh, verify-gate.sh, publish-gate.sh iguais aos de 2204a14"
+git diff --stat 2204a14 HEAD -- sdd/bin/seguranca-varredura.sh sdd/bin/verify-gate.sh scripts/publish-gate.sh .agents/skills/sdd-seguranca; echo "   (fim do diff)"
+echo "== T10.2 AGENTS.md.tmpl"
+git diff 2204a14 HEAD -- AGENTS.md.tmpl | grep '^[+-]' | grep -v '^+++\|^---'
+echo "== T10.3 verify-gate lê só a linha Governança como trava"
+grep -n -i 'governan\|desempenho' sdd/bin/verify-gate.sh | head
+echo "== T10.4 check-versions --base v2.21.0"
+/usr/bin/python3 -B scripts/check-versions.py --base v2.21.0; echo "   [exit=$?]"
+echo "== T10.5 verify-gate --checar: a linha Desempenho não trava; a Governança sim"
+T=$(mktemp -d); cp sdd/features/DEFINE_F27_DESEMPENHO_BANCO.md $T/D.md
+bash sdd/bin/verify-gate.sh --checar $T/D.md >/dev/null 2>&1; echo "   DEFINE como está: exit=$?"
+awk '{print} /^\| \*\*Segurança\*\* \|/{print "| **Desempenho** | ??? lixo sem valor final | |"}' $T/D.md > $T/D2.md; echo "   linhas Desempenho com lixo: $(grep -c 'lixo sem valor' $T/D2.md)"
+bash sdd/bin/verify-gate.sh --checar $T/D2.md >/dev/null 2>&1; echo "   Desempenho com lixo: exit=$?"
+grep -v '^| \*\*Governança\*\* |' $T/D.md > $T/D4.md; bash sdd/bin/verify-gate.sh --checar $T/D4.md >/dev/null 2>&1; echo "   sem a linha Governança: exit=$?"
+rm -rf $T
+== T9.1 catálogo: 17 fichas P01–P17, 11 campos na ordem, sem bloqueia/agents
+fichas: 17 ids ok: True
+fichas com os 11 campos na ordem: 17 · com bloqueia/agents: 0
+fichas com padrão: 12 ['P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P08', 'P10', 'P13', 'P15', 'P16']
+== T9.2 SKILL.md: modos, Como falar, manifest, evals
+25:## Como falar com o aluno
+62:## Entrada
+73:## Processo
+75:### Modo Define
+98:### Modo Design
+108:### Modo release
+115:### Modo diagnóstico (a pedido)
+131:## Regras que não se negociam
+147:## Quality Gate
+159:## Por que cada regra existe
+172:## Encerramento (obrigatório)
+180:### Fluxo encadeado
+8:  version: "1.0.0"
+evals: 3
+== T9.3 sdd-define: passo de desempenho
+41:| 9 | Desempenho | 13 |
+45:1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança · ⬜ 8 Segurança · ⬜ 9 Desempenho`
+360:### 13. Desempenho do banco (sempre, nesta sessão)
+363:**não trava** o gate: é alerta, não bloqueio. Siga o **modo Define** da skill `sdd-desempenho-banco`
+364:(`.agents/skills/sdd-desempenho-banco/SKILL.md`) sobre este DEFINE: sem banco (tabela, migration, consulta,
+365:função do banco), `✅ desempenho: N.A. — <motivo>` em 1 linha e nenhuma pergunta; com banco, **no máximo 1
+369:`### Desempenho` de `## Clarifications`. Escreva a linha `| **Desempenho** | … | <data> |` do `## Technical
+370:Context`, que o Design lê para a seção `## Desempenho`.
+386:[ ] Passo 13 rodou: linha Desempenho (N.A. — … ou volume · aplicadas · recusadas · adiadas · fichas para o Design)
+395:- **O desempenho pergunta só o volume e não trava** — o tamanho da tabela decide quase tudo, e desempenho degrada,
+441:passo acima (ux-review ou design). A governança já rodou no passo 11, a segurança no 12 e o desempenho no 13.
+== T9.4 sdd-design e DESIGN_TEMPLATE: ## Desempenho
+sdd/templates/DESIGN_TEMPLATE.md:245:## Desempenho
+.agents/skills/sdd-design/SKILL.md:192:Preencha a seção `## Desempenho` do template pelo **modo Design** da skill `sdd-desempenho-banco`: leia a linha
+.agents/skills/sdd-design/SKILL.md:255:[ ] ## Desempenho: N.A. com motivo, ou cada ficha listada no DEFINE como decisão deste projeto
+== T9.5 sdd-release: passo 0a
+9. **Testes do diff:** `bash sdd/bin/test-baseline.sh --touched` (base `origin/{default_branch}`), **depois do item 4**,
+   nunca em paralelo com ele (a suíte dos dois na mesma árvore inventa falha). Conta o teste alterado e o teste ao
+   lado de cada fonte alterada (`foo.ts` → `foo.test.ts`). `2` ⇒ **abortar**, citando cada `🛑 nova:`; `3` ⇒
+   WAIVABLE (0d); `0` com `RESULTADO: PULADO` ⇒ declare "pulado — test_cmd vazio"; as `⚠️ nova, fora do diff` vão
+   para o bloco do OK.
+10. **Segurança (varredura, em toda publicação):** `bash sdd/bin/seguranca-varredura.sh --saida sdd/reports/evidence/{F}/SEGURANCA.log`
+    — `2` ⇒ **abortar** (NON_WAIVABLE) com cada `🛑 Snn arquivo:linha` · `1` ⇒ CONCERNS · `64`/`127` ⇒ **abortar**; detalhe: `references/seguranca.md`.
+11. **Desempenho (varredura, só aviso):** `bash sdd/bin/desempenho-varredura.sh --saida sdd/reports/evidence/{F}/DESEMPENHO.log`
+    — `1` ⇒ CONCERNS · `64`/`127` ⇒ CONCERNS "varredura de desempenho não rodou: <causa>" · `0` siga; **nunca aborta**.
+
+Se 0a abortou, **nem inicie** as passadas de modelo.
+92:exit 10 ⇒ a frase de versão nova (`references/como-falar.md`) no relatório e no bloco do OK, sem abortar; senão, nada.
+98:1. **Landmines:** `{{LANDMINES_CMD}}` — exit 2 → **abortar**; exit 1 → avisos para o OK.
+99:2. **Drift:** `{{DRIFT_CHECK_CMD}}` — o que chegou em produção sem commit? exit ≠0 → **abortar**.
+100:3. **Lint:** `{{LINT_CMD}}` nos arquivos tocados — erro → **abortar**.
+108:   | `2` | **abortar**; voltar ao build |
+111:   | `5` | **abortar** e voltar ao Define — spec ambígua não se dispensa |
+112:   | DEFINE sem bloco (`64`) | não abortar: registrar **Aviso** "DEFINE anterior ao gate" |
+116:   **abortar**. Depois, `python3 sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_{F}.md`:
+117:   exit ≠ 0 ⇒ **abortar**, citando o exit e o `arquivo:linha` (avaliação `PENDENTE` não vai para
+120:6. **Playbook:** `sdd/bin/playbook-lint.sh sdd/playbook.md` — exit 2 → abortar.
+== T9.6 MANIFEST, lista do starter, README
+MANIFEST.txt:38:.agents/skills/sdd-desempenho-banco/SKILL.md
+MANIFEST.txt:39:.agents/skills/sdd-desempenho-banco/manifest.json
+MANIFEST.txt:40:.agents/skills/sdd-desempenho-banco/evals/cases.json
+MANIFEST.txt:41:.agents/skills/sdd-desempenho-banco/references/CATALOGO_DESEMPENHO.md
+MANIFEST.txt:42:.agents/skills/sdd-desempenho-banco/references/CONSULTAS_DIAGNOSTICO.md
+MANIFEST.txt:43:.agents/skills/sdd-desempenho-banco/references/como-falar.md
+MANIFEST.txt:311:scripts/starter/trocas/sdd-desempenho-banco.md
+MANIFEST.txt:335:sdd/bin/desempenho-diagnostico.sh
+MANIFEST.txt:336:sdd/bin/desempenho-varredura.sh
+MANIFEST.txt:678:tests/test_desempenho_catalogo.py
+MANIFEST.txt:679:tests/test_desempenho_diagnostico.py
+MANIFEST.txt:680:tests/test_desempenho_varredura.py
+scripts/starter/lista.txt:9:sdd-desempenho-banco
+README.md:2
+README.pt-BR.md:2
+-- arquivos da skill que não estão no MANIFEST:
+   (fim)
+-- documentos da frente no MANIFEST:
+   nenhum
+== T9.7 skill-lint --conversa nas skills tocadas
+✅ .agents/skills/sdd-desempenho-banco/SKILL.md: frontmatter válido · camada de conversa ok
+   [sdd-desempenho-banco exit=0]
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido · camada de conversa ok
+   [sdd-define exit=0]
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido · camada de conversa ok
+   [sdd-design exit=0]
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+   [sdd-release exit=0]
+== T10.1 seguranca-varredura.sh, verify-gate.sh, publish-gate.sh iguais aos de 2204a14
+   (fim do diff)
+== T10.2 AGENTS.md.tmpl
++| Des | `sdd-desempenho-banco` | a linha `Desempenho` do DEFINE (passo do Define), as decisões de índice e paginação do Design, o aviso da publicação e o diagnóstico do banco no ar, a pedido e só de leitura |
+== T10.3 verify-gate lê só a linha Governança como trava
+18:#   sdd/bin/verify-gate.sh --checar <DEFINE.md>   # confere marcador, Governança e bloco sem rodar o cmd: 0, 5 ou 64
+33:#        ou não tem a linha `Governança` final no Technical Context (passo 11 do sdd-define não rodou)
+39:# Linha Governança (desde a v2.4.0): na seção `## Technical Context`, fora de cercas, a linha da tabela
+40:# `| **Governança** | <valor> | … |` com valor final — `N.A. — <motivo>`, `GOVERNANCA_REVIEW_…` ou
+98:    5)  if [ "${CLARIFICAR_MOTIVO}" = "governanca" ]; then
+99:          printf 'RESULTADO: CLARIFICAR\n→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.\n'
+150:# ---- governança não revisada: a mensagem com as 2 saídas (usada pelos dois casos abaixo) ---
+151:msg_governanca() { # $1 = o que foi encontrado
+153:    echo "🛑 GOVERNANÇA NÃO REVISADA (exit 5) — '${DEFINE}' não tem a linha Governança com um valor final"
+155:    echo "   Desde a v2.4.0, todo DEFINE passa pela revisão de governança antes do build; DEFINEs escritos"
+== T10.4 check-versions --base v2.21.0
+PASS: check-versions — 23 skills com versão coerente, comparadas a v2.21.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+   [exit=0]
+== T10.5 verify-gate --checar: a linha Desempenho não trava; a Governança sim
+   DEFINE como está: exit=0
+   linhas Desempenho com lixo: 1
+   Desempenho com lixo: exit=0
+   sem a linha Governança: exit=5

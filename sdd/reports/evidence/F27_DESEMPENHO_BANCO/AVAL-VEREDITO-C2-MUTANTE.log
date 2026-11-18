@@ -1,0 +1,21 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c2/mut.sh; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c2/mut.sh
+# mut.sh — mutante do conserto do ciclo 1 (reverte e_lint e a guarda por nome de subcomando) numa cópia git archive de HEAD; roda só o teste novo
+M=$(mktemp -d); cd /Users/robertoduarte/rdd-worktrees/sdd-open-f27-db-performance && git archive HEAD | tar -x -C $M && cd $M
+/usr/bin/python3 -I - sdd/bin/desempenho-diagnostico.sh <<'PY'
+import sys
+p = sys.argv[1]; s = open(p, encoding="utf-8").read()
+a = s.count('    return isinstance(x, dict) and "name" in x and any(k in x for k in CHAVES_LINT)')
+s = s.replace('    return isinstance(x, dict) and "name" in x and any(k in x for k in CHAVES_LINT)', '    return isinstance(x, dict) and "name" in x')
+b = s.count('ls = [] if sub in SUBCOMANDOS else lints_de(dado)')
+s = s.replace('ls = [] if sub in SUBCOMANDOS else lints_de(dado)', 'ls = lints_de(dado)')
+open(p, "w", encoding="utf-8").write(s); print("trocas:", a, b)
+PY
+SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_desempenho_diagnostico.py -k test_inspect_em_lista_ou_results_nao_vira_advisor 2>&1 | grep -E '^(FAIL|ERROR|OK|FAILED|Ran)|AssertionError' | head -8
+cd / && rm -rf "${M:?}"
+trocas: 1 1
+FAIL: test_inspect_em_lista_ou_results_nao_vira_advisor (test_desempenho_diagnostico.Interpretacao) (forma='results')
+AssertionError: 'advisor:' unexpectedly found in '▶ desempenho-diagnostico — fontes: 2 arquivo(s) · estatísticas desde: desconhecida\n⚠️ — baixa advisor: publicix_bom (1) — a confirmar: abra o link do advisor e confira no painel antes de corrigir (o link está no bloco de dado)\n⚠️ — baixa advisor: publicix_velho (1) — a confirmar: abra o link do advisor e confira no painel antes de corrigir (o link está no bloco de dado)\n⚠️ — baixa advisor: publicpedidos (1) — a confirmar: abra o link do advisor e confira no painel antes de corrigir (o link está no bloco de dado)\nRESULTADO: RELATÓRIO PRONTO\n→ nenhum achado é correção ainda: confirme cada um pelo passo indicado e leve a correção como migration pelo fluxo SDD (a skill não escreve no banco).\n'
+FAIL: test_inspect_em_lista_ou_results_nao_vira_advisor (test_desempenho_diagnostico.Interpretacao) (forma='lista')
+AssertionError: 'advisor:' unexpectedly found in '▶ desempenho-diagnostico — fontes: 2 arquivo(s) · estatísticas desde: desconhecida\n⚠️ — baixa advisor: publicix_bom (1) — a confirmar: abra o link do advisor e confira no painel antes de corrigir (o link está no bloco de dado)\n⚠️ — baixa advisor: publicix_velho (1) — a confirmar: abra o link do advisor e confira no painel antes de corrigir (o link está no bloco de dado)\n⚠️ — baixa advisor: publicpedidos (1) — a confirmar: abra o link do advisor e confira no painel antes de corrigir (o link está no bloco de dado)\nRESULTADO: RELATÓRIO PRONTO\n→ nenhum achado é correção ainda: confirme cada um pelo passo indicado e leve a correção como migration pelo fluxo SDD (a skill não escreve no banco).\n'
+Ran 1 test in 0.142s
+FAILED (failures=2)

@@ -1,0 +1,24 @@
+$ psql -f c3.sql   # consulta 3 de CONSULTAS_DIAGNOSTICO.md, Postgres 16.12 local, tabela pg_stat_statements de teste com 15 casos (NOMEX = valor de cliente)
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 99.0 | 1.0 | 1
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 98.0 | 1.0 | 1
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 97.0 | 1.0 | 1
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 96.0 | 1.0 | 1
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 95.0 | 1.0 | 1
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 94.0 | 1.0 | 1
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 93.0 | 1.0 | 1
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 92.0 | 1.0 | 1
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 91.0 | 1.0 | 1
+select * from c where a = ? and b = ? and c = ? and d = ? and e = '?' | 1 | 90.0 | 1.0 | 1
+select "public"."pedidos"."id" from "public"."pedidos" where "cliente_id" = $? limit $? | 1 | 89.0 | 1.0 | 1
+select * from c where nome = '?' and x = '?' | 1 | 88.0 | 1.0 | 1
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 87.0 | 1.0 | 1
+[texto omitido: tem comentário, aspas ou $; leia pelo script] | 1 | 86.0 | 1.0 | 1
+update c set nome = '?' where id = ? | 1 | 85.0 | 1.0 | 1
+[exit=0]
+$ psql -f c7.sql   # consulta 7 (pg_stat_activity real)
+[exit=0]
+$ psql -f c8.sql   # consulta 8 (pg_stat_activity real)
+[exit=0]
+$ psql -f c3.sql | grep -c NOMEX   # 0 ocorrências: o grep sai 1 quando não acha
+0
+[exit=1]

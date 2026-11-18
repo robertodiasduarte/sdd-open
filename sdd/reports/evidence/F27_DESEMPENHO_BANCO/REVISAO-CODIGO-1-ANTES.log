@@ -1,0 +1,6 @@
+$ (cópia de git archive 061d032, antes do conserto, com os testes novos) python3 -m unittest <4 testes>
+test_desempenho_varredura.RevisaoDoCodigo.test_r2_comentario_no_fim_ou_no_meio_da_linha_sql_nao_acusa rc=1
+test_desempenho_varredura.RevisaoDoCodigo.test_n2_ilike_dentro_de_texto_nao_e_busca rc=0
+test_desempenho_diagnostico.Consentimento.test_r1_coletar_como_valor_de_outra_opcao_nao_coleta rc=1
+test_desempenho_varredura.RevisaoDoCodigo.test_n1_aspas_escapadas_com_parenteses_nao_quebram_a_politica rc=0
+[exit=0]

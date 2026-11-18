@@ -1,11 +1,12 @@
 # Skills do sdd-open que o scripts/gerar-starter.py gera no sdd-starter, uma por linha (a ordem fixa a saída).
-# As 18 skills do starter saem daqui; nenhuma fica congelada (F17c: define, design e build saem do modo web delas).
+# As 19 skills do starter saem daqui; nenhuma fica congelada (F17c: define, design e build saem do modo web delas).
 sdd-checar-ambiente
 sdd-iniciar-repo
 sdd-higiene-dado
 sdd-new-session
 sdd-kb
 sdd-seguranca
+sdd-desempenho-banco
 sdd-auditoria-harness
 sdd-prompt-builder
 sdd-engenharia-reversa-saas

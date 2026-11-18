@@ -12,7 +12,7 @@ Get the SDD skills into your agent and run your first flow.
 npx skills add robertodiasduarte/sdd-starter -a claude-code -y
 ```
 
-Installs the 18 skills into the project's `.claude/skills/`. Add `-g` to install once into `~/.claude/skills/` and have them everywhere.
+Installs the 19 skills into the project's `.claude/skills/`. Add `-g` to install once into `~/.claude/skills/` and have them everywhere.
 
 ### Codex
 
@@ -36,7 +36,7 @@ The same command serves Cursor, Kimi, Gemini CLI and 70+ agents: change the name
 
 **To update:** `npx skills update`.
 
-For other agents, copy every skill folder under `skills/` (all 18) into whatever directory your agent reads skills/instructions from, keeping each folder intact.
+For other agents, copy every skill folder under `skills/` (all 19) into whatever directory your agent reads skills/instructions from, keeping each folder intact.
 
 ### claude.ai (web)
 

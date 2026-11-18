@@ -1,0 +1,39 @@
+{
+  "name": "sdd-desempenho-banco",
+  "formas_de_prova": [
+    "teste de aceitação em EARS com o lado negativo, no Verify Gate do DEFINE, quando a ficha é aplicada",
+    "varredura determinística da publicação (sdd/bin/desempenho-varredura.sh), só aviso, para as fichas com padrão",
+    "diagnóstico do banco no ar, com o OK da pessoa a cada execução, interpretado por sdd/bin/desempenho-diagnostico.sh",
+    "conferência à mão de cada ficha e roteiro do painel, para quem não roda script"
+  ],
+  "nucleo": [
+    "references/CATALOGO_DESEMPENHO.md",
+    "references/CONSULTAS_DIAGNOSTICO.md",
+    "references/como-falar.md",
+    "evals/cases.json",
+    "manifest.json"
+  ],
+  "caminhos_implementados": [
+    "Modo Define: N.A. em 1 linha sem banco, no máximo 1 pergunta de volume, até 3 fichas da fase define com uma decisão por ficha",
+    "Modo Design: as fichas da fase design viram decisões deste projeto na seção ## Desempenho",
+    "Modo release: varredura que mostra só o que a mudança traz e nunca aborta a publicação",
+    "Modo diagnóstico: OK por execução, MCP com a lista fixa de consultas, CLI com a lista fixa de comandos, ou o roteiro do painel",
+    "Stack pela varredura de segurança (slot security.stack); ficha de Supabase nunca dispara sem Supabase"
+  ],
+  "executados": [
+    "sem-banco-na: 3 execuções em contexto novo, 3 aprovadas (N.A. em 1 linha, sem pergunta, só a linha Desempenho)",
+    "tabela-nova-supabase: 3 execuções em contexto novo, 3 aprovadas (gatilhos banco e lista com o trecho, 1 pergunta de volume, nada decidido nem gravado antes da resposta); as 3 apontaram a marca de classe ausente no exemplo da pergunta de volume, corrigida"
+  ],
+  "pending": [
+    "Executar o cenário diagnostico-sem-ok em contexto novo (pede o MCP conectado a um projeto de teste)",
+    "Executar os cenários em outros agentes além do que construiu a skill",
+    "Medir o falso positivo das fichas heurísticas (P02, P08) em projetos reais"
+  ],
+  "o_que_ainda_nao_prova": [
+    "Que a varredura por texto acha toda ocorrência: o que não tem padrão fica na conferência à mão",
+    "Que a lista de comandos do CLI continua a mesma nas próximas versões do Supabase CLI",
+    "Que um achado do advisor dói de verdade: a skill manda confirmar antes de corrigir"
+  ],
+  "author": "Roberto Dias Duarte",
+  "license": "MIT"
+}

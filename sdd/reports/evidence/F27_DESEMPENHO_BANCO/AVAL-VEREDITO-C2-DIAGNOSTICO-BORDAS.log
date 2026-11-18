@@ -1,0 +1,66 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c2/d2.sh; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c2/d2.sh
+# d2.sh — sondas de borda do diagnóstico (AT-008 máscara de literais; AT-011 string de conexão como VALOR de opção),
+# veredito ciclo 2, cópia git archive de HEAD e1225ef; supabase falso fora do projeto; senha montada em tempo de execução.
+set -u
+H=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c2/head
+D=$H/sdd/bin/desempenho-diagnostico.sh
+S=$(mktemp -d); SEG="$(printf '%s%s%s' Hj4 Pq8 Rt1)"; NOME="$(printf '%s%s' Jo ana)"
+mkdir -p $S/bin $S/proj $S/fx && (cd $S/proj && git init -q)
+printf '#!/bin/bash\nprintf "%%s\\n" "$*" >> "$SDD_FAKE_LOG"\ncase "$*" in --version) echo 2.100.1 ;; *) echo "[]" ;; esac\n' > $S/bin/supabase; chmod +x $S/bin/supabase
+export PATH="$S/bin:$PATH" SDD_FAKE_LOG=$S/log
+roda() { : > $S/log; (cd $S/proj && bash $D "$@"); echo "[exit=$?] chamadas ao supabase: $(wc -l < $S/log | tr -d ' ')"; }
+echo "######## E1 AT-011: string de conexão como VALOR de --saida, com coleta"
+roda --coletar --consentimento --saida "postgresql://postgres:$SEG@dbhost:5432/postgres" > $S/o 2>&1; sed "s/$SEG/<SENHA>/g; s#$S#<TMP>#g" $S/o
+echo "   senha na saída: $(grep -c "$SEG" $S/o)"
+echo "   o que ficou gravado dentro do projeto:"; (cd $S/proj && find . -path ./.git -prune -o -type f -print | sed "s/$SEG/<SENHA>/g")
+echo "######## E2 AT-011: string de conexão como VALOR de --saida, só --ler (mais de 5 achados, a tela cita o --saida)"
+/usr/bin/python3 -I -c "
+import json,sys
+json.dump([{'name':'lint_%d'%k,'level':'WARN','categories':['PERFORMANCE'],'detail':'x'} for k in range(7)], open(sys.argv[1],'w'))" $S/fx/advisors.json
+roda --ler $S/fx --saida "postgres://u:$SEG@h/db" > $S/o 2>&1; sed "s/$SEG/<SENHA>/g; s#$S#<TMP>#g" $S/o | grep -E '^…|^\[exit'
+echo "   senha na saída: $(grep -c "$SEG" $S/o)"
+echo "######## E3 AT-008: máscara de literais — apóstrofo em comentário e literal terminado em barra"
+for q in "select * from c where nome = '$NOME' -- don't cache" \
+         "select * from c /* it's hot */ where nome = '$NOME'" \
+         "select * from c where dir = 'C:\\' and nome = '$NOME'" \
+         "select * from c where nome = '$NOME' and k = 1e10 and m = 1_000_000 and h = 0x1F"; do
+  /usr/bin/python3 -I -c "import json,sys; json.dump([{'query':sys.argv[2],'total_exec_time':'9s'}], open(sys.argv[1],'w'))" $S/fx/long-running-queries.json "$q"
+  rm -f "${S:?}/fx/advisors.json"
+  echo "--- entrada: $q"
+  roda --ler $S/fx | grep -E '^   │|^\[exit'
+done
+echo "######## E4 AT-011: senha em formato PGPASSWORD= fora de aspas"
+/usr/bin/python3 -I -c "import json,sys; json.dump([{'query':'select 1 /* PGPASSWORD='+sys.argv[2]+' */','total_exec_time':'9s'}], open(sys.argv[1],'w'))" $S/fx/long-running-queries.json "$SEG"
+roda --ler $S/fx > $S/o 2>&1; sed "s/$SEG/<SENHA>/g" $S/o | grep -E '^   │|^\[exit'; echo "   senha na saída: $(grep -c "$SEG" $S/o)"
+rm -rf "${S:?}"
+######## E1 AT-011: string de conexão como VALOR de --saida, com coleta
+▶ desempenho-diagnostico — fontes: 12 arquivo(s) · estatísticas desde: desconhecida
+✅ nenhum achado nas fontes lidas
+· saída bruta da coleta em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T//sdd-desempenho.YiX6Ni (fora do projeto; apague quando terminar)
+RESULTADO: RELATÓRIO PRONTO
+→ nenhum achado é correção ainda: confirme cada um pelo passo indicado e leve a correção como migration pelo fluxo SDD (a skill não escreve no banco).
+[exit=0] chamadas ao supabase: 13
+   senha na saída: 0
+   o que ficou gravado dentro do projeto:
+./postgresql:/postgres:<SENHA>@dbhost:5432/postgres
+######## E2 AT-011: string de conexão como VALOR de --saida, só --ler (mais de 5 achados, a tela cita o --saida)
+… e mais 2 achado(s), 7 no total: lista inteira em postgres://u:<SENHA>@h/db
+[exit=0] chamadas ao supabase: 0
+   senha na saída: 1
+######## E3 AT-008: máscara de literais — apóstrofo em comentário e literal terminado em barra
+--- entrada: select * from c where nome = 'Joana' -- don't cache
+   │ select * from c where nome = '?' -- don't cache
+[exit=0] chamadas ao supabase: 0
+--- entrada: select * from c /* it's hot */ where nome = 'Joana'
+   │ select * from c /* it'?'Joana'
+[exit=0] chamadas ao supabase: 0
+--- entrada: select * from c where dir = 'C:\' and nome = 'Joana'
+   │ select * from c where dir = '?'Joana'
+[exit=0] chamadas ao supabase: 0
+--- entrada: select * from c where nome = 'Joana' and k = 1e10 and m = 1_000_000 and h = 0x1F
+   │ select * from c where nome = '?' and k = 1e10 and m = 1_000_000 and h = 0x1F
+[exit=0] chamadas ao supabase: 0
+######## E4 AT-011: senha em formato PGPASSWORD= fora de aspas
+   │ select ? /* PGPASSWORD=<SENHA> */
+[exit=0] chamadas ao supabase: 0
+   senha na saída: 1

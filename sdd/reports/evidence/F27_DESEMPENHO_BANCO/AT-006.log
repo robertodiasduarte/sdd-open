@@ -1,0 +1,12 @@
+$ (cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_desempenho_varredura.Stack)
+test_postgres_sem_supabase_so_as_fichas_de_todas (test_desempenho_varredura.Stack) ... ok
+test_sem_banco (test_desempenho_varredura.Stack) ... ok
+test_sem_banco_grava_a_saida (test_desempenho_varredura.Stack) ... ok
+test_slot_da_seguranca_vale_para_as_duas (test_desempenho_varredura.Stack) ... ok
+test_slot_invalido_repassa_a_causa_da_seguranca (test_desempenho_varredura.Stack) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.969s
+
+OK
+[exit=0]

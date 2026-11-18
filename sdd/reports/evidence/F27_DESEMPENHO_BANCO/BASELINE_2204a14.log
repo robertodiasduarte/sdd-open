@@ -1,0 +1,6 @@
+$ (linha de base) git archive 2204a14 + os 4 módulos novos de tests/; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p <módulo>
+test_desempenho_varredura @2204a14: FAILED (failures=47, errors=1)
+test_desempenho_diagnostico @2204a14: FAILED (failures=26)
+test_desempenho_catalogo @2204a14: FAILED (errors=6)
+test_f27_textos @2204a14: FAILED (failures=29, errors=4)
+[exit=1]

@@ -1,0 +1,15 @@
+$ (cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_desempenho_diagnostico.DadoDeFora)
+test_conexao_chave_valor_como_valor_de_opcao_e_recusada (test_desempenho_diagnostico.DadoDeFora) ... ok
+test_conexao_como_valor_de_opcao_e_recusada (test_desempenho_diagnostico.DadoDeFora) ... ok
+test_data_invalida_sai_64_sem_executar_nada (test_desempenho_diagnostico.DadoDeFora) ... ok
+test_mascara_com_aspas_duplas_e_comentario_aninhado (test_desempenho_diagnostico.DadoDeFora) ... ok
+test_mascara_le_comentario_texto_e_numero_juntos (test_desempenho_diagnostico.DadoDeFora) ... ok
+test_saida_bruta_fora_do_projeto (test_desempenho_diagnostico.DadoDeFora) ... ok
+test_senha_vira_asteriscos (test_desempenho_diagnostico.DadoDeFora) ... ok
+test_texto_do_banco_nao_muda_a_recomendacao (test_desempenho_diagnostico.DadoDeFora) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 1.395s
+
+OK
+[exit=0]

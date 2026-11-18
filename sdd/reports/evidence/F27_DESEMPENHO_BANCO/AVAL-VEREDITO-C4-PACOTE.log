@@ -1,0 +1,131 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c4/p4.sh; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/c4/p4.sh
+# p4.sh — veredito ciclo 4: AT-009/AT-010 por execução no repositório (só leitura; nenhum módulo de teste, a suíte está
+# rodando em paralelo): catálogo, skill, ganchos das 3 skills de fase, pacote, lints leves e não-regressão por diff.
+cd /Users/robertoduarte/rdd-worktrees/sdd-open-f27-db-performance
+echo "HEAD: $(git rev-parse --short HEAD) · árvore limpa: $(git status --porcelain | grep -vc '^?? sdd/reports/evidence/F27_DESEMPENHO_BANCO/AVAL-VEREDITO-C4' )"
+SK=.agents/skills/sdd-desempenho-banco; K=$SK/references/CATALOGO_DESEMPENHO.md
+echo "--- AT-009 fichas P01–P17 (### Pnn) e campos de cada ficha"
+grep -oE '^### P[0-9]{2}' $K | tr -d '#' | tr '\n' ' '; echo; echo "   total: $(grep -cE '^### P[0-9]{2} ' $K)"
+/usr/bin/python3 -I - "$K" <<'EOF'
+import re,sys
+t=open(sys.argv[1],encoding='utf-8').read()
+fichas=re.split(r'(?m)^### ',t)[1:]
+esp=['stack','fase','gravidade','gatilho','padrao','arquivos','frase','evitar','at','confira','ref']
+ruins=[]
+for f in fichas:
+    nome=f.split('\n',1)[0][:3]
+    campos=re.findall(r'(?m)^- ([a-z]+):()',f)
+    cs=[a or b for a,b in campos]
+    cs=[c for c in cs if c in esp+['bloqueia','agents']]
+    if cs!=esp: ruins.append((nome,cs))
+print("   fichas com os 11 campos na ordem, sem bloqueia/agents: %d de %d%s"%(len(fichas)-len(ruins),len(fichas),"" if not ruins else " · fora: %s"%ruins[:3]))
+EOF
+echo "--- AT-009 skill: arquivos, modos, Como falar, versão"
+ls $SK $SK/references $SK/evals | tr '\n' ' '; echo
+grep -nE '^#+ .*(Define|Design|release|Release|diagn|Diagn|Como falar)' $SK/SKILL.md | head -10
+grep -nE '^\s*version:' $SK/SKILL.md
+echo "--- AT-009 ganchos nas skills de fase"
+grep -lE 'desempenho' .agents/skills/sdd-define/SKILL.md .agents/skills/sdd-design/SKILL.md .agents/skills/sdd-release/SKILL.md sdd/templates/DESIGN_TEMPLATE.md
+grep -nE '\*\*Desempenho\*\*|10 mil' .agents/skills/sdd-define/SKILL.md | head -3
+grep -nE '^## Desempenho' sdd/templates/DESIGN_TEMPLATE.md .agents/skills/sdd-design/SKILL.md
+grep -nE 'desempenho-varredura' .agents/skills/sdd-release/SKILL.md | head -3
+grep -nE 'CONCERNS' .agents/skills/sdd-release/SKILL.md | grep -iE 'desempenho|64|127' | head -3
+echo "--- AT-009 pacote: MANIFEST, lista do starter, README"
+grep -cE 'sdd-desempenho-banco|desempenho-(varredura|diagnostico)\.sh' MANIFEST.txt
+grep -nE '^sdd/(features|handoffs|reports|reviews|releases|contexto)/' MANIFEST.txt | wc -l | tr -d ' ' | sed 's/^/   documentos da frente no MANIFEST: /'
+grep -n 'desempenho' scripts/starter/lista.txt
+grep -c 'sdd-desempenho-banco' README.md README.pt-BR.md
+echo "--- AT-009 skill-lint --conversa nas 4 skills tocadas (script, não módulo de teste)"
+/usr/bin/python3 -B sdd/bin/skill-lint.py --conversa $SK/SKILL.md .agents/skills/sdd-define/SKILL.md .agents/skills/sdd-design/SKILL.md .agents/skills/sdd-release/SKILL.md 2>&1 | tail -4; echo "   [exit=${PIPESTATUS[0]}]"
+echo "--- AT-010 check-versions --base v2.21.0"
+/usr/bin/python3 -B scripts/check-versions.py --base v2.21.0 2>&1 | tail -4; echo "   [exit=${PIPESTATUS[0]}]"
+echo "--- AT-010 AGENTS.md.tmpl difere de 2204a14 só pela linha da skill"
+f=$(git ls-files | grep 'AGENTS.md.tmpl$' | head -1); git diff 2204a14 HEAD -- "$f" | grep -E '^[+-][^+-]' | cut -c1-60
+echo "--- AT-010 intocados desde 2204a14: seguranca-varredura.sh, verify-gate.sh, publish-gate.sh, lib/python.sh"
+for x in sdd/bin/seguranca-varredura.sh sdd/bin/verify-gate.sh scripts/publish-gate.sh sdd/bin/lib/python.sh; do git diff --quiet 2204a14 HEAD -- $x && echo "   $x: sem diferença" || echo "   $x: MUDOU"; done
+echo "--- AT-010 seguranca --stack no próprio repositório e numa pasta supabase (bash 3.2)"
+/bin/bash sdd/bin/seguranca-varredura.sh --stack; echo "   [exit=$?]"
+echo "--- AT-010 os 2 scripts novos no bash 3.2: --help"
+for s in sdd/bin/desempenho-varredura.sh sdd/bin/desempenho-diagnostico.sh; do /bin/bash $s --help >/dev/null 2>&1; echo "   $s --help [exit=$?]"; done
+echo "--- AT-010 bash -n (3.2) nos 2 scripts"; for s in sdd/bin/desempenho-*.sh; do /bin/bash -n $s && echo "   $s ok"; done
+echo "--- Verify Gate: última evidência do Build (não rodado aqui)"; tail -3 sdd/reports/evidence/F27_DESEMPENHO_BANCO/GATE.log
+echo "--- AT-007 SQL de references/ só de leitura: verbos de escrita fora de comentário nos blocos \`\`\`sql"
+/usr/bin/python3 -I - .agents/skills/sdd-desempenho-banco/references <<'PYX'
+import os,re,sys
+proib=r"\b(insert|update|delete|merge|alter|create|drop|truncate|grant|revoke|vacuum|reindex|cluster|refresh|pg_cancel_backend|pg_terminate_backend)\b"
+n=0; ruins=[]
+for nome in sorted(os.listdir(sys.argv[1])):
+    t=open(os.path.join(sys.argv[1],nome),encoding='utf-8').read()
+    for b in re.findall(r"```sql\n(.*?)```",t,re.S):
+        n+=1
+        s=re.sub(r"--[^\n]*|/\*.*?\*/","",b,flags=re.S); s=re.sub(r"'[^']*'","''",s)
+        s2=re.sub(r"(?is)\bexplain\s*\([^)]*\)|\bexplain\b","",s)
+        if re.search(proib,s,re.I) or re.search(r"\banalyze\b",s2,re.I) and not re.search(r"(?is)\bbegin\b.*\brollback\b",s):
+            ruins.append((nome,b.strip()[:60]))
+print("   blocos sql: %d · com escrita: %d %s"%(n,len(ruins),ruins[:3]))
+PYX
+HEAD: 5af0a2d · árvore limpa: 0
+--- AT-009 fichas P01–P17 (### Pnn) e campos de cada ficha
+ P01  P02  P03  P04  P05  P06  P07  P08  P09  P10  P11  P12  P13  P14  P15  P16  P17 
+   total: 17
+   fichas com os 11 campos na ordem, sem bloqueia/agents: 17 de 17
+--- AT-009 skill: arquivos, modos, Como falar, versão
+.agents/skills/sdd-desempenho-banco: SKILL.md evals manifest.json references  .agents/skills/sdd-desempenho-banco/evals: cases.json  .agents/skills/sdd-desempenho-banco/references: CATALOGO_DESEMPENHO.md CONSULTAS_DIAGNOSTICO.md como-falar.md 
+25:## Como falar com o aluno
+75:### Modo Define
+98:### Modo Design
+108:### Modo release
+115:### Modo diagnóstico (a pedido)
+8:  version: "1.0.0"
+--- AT-009 ganchos nas skills de fase
+.agents/skills/sdd-define/SKILL.md
+.agents/skills/sdd-design/SKILL.md
+.agents/skills/sdd-release/SKILL.md
+sdd/templates/DESIGN_TEMPLATE.md
+366:pergunta** (o volume da maior tabela em um ano); com menos de 10 mil linhas, nenhuma proposta; com mais, ou "não
+369:`### Desempenho` de `## Clarifications`. Escreva a linha `| **Desempenho** | … | <data> |` do `## Technical
+sdd/templates/DESIGN_TEMPLATE.md:245:## Desempenho
+147:11. **Desempenho (varredura, só aviso):** `bash sdd/bin/desempenho-varredura.sh --saida sdd/reports/evidence/{F}/DESEMPENHO.log`
+146:    — `2` ⇒ **abortar** (NON_WAIVABLE) com cada `🛑 Snn arquivo:linha` · `1` ⇒ CONCERNS · `64`/`127` ⇒ **abortar**; detalhe: `references/seguranca.md`.
+148:    — `1` ⇒ CONCERNS · `64`/`127` ⇒ CONCERNS "varredura de desempenho não rodou: <causa>" · `0` siga; **nunca aborta**.
+--- AT-009 pacote: MANIFEST, lista do starter, README
+9
+   documentos da frente no MANIFEST: 0
+9:sdd-desempenho-banco
+README.md:2
+README.pt-BR.md:2
+--- AT-009 skill-lint --conversa nas 4 skills tocadas (script, não módulo de teste)
+✅ .agents/skills/sdd-desempenho-banco/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+   [exit=0]
+--- AT-010 check-versions --base v2.21.0
+PASS: check-versions — 23 skills com versão coerente, comparadas a v2.21.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+   [exit=0]
+--- AT-010 AGENTS.md.tmpl difere de 2204a14 só pela linha da skill
++| Des | `sdd-desempenho-banco` | a linha `Desempenho` do DE
+--- AT-010 intocados desde 2204a14: seguranca-varredura.sh, verify-gate.sh, publish-gate.sh, lib/python.sh
+   sdd/bin/seguranca-varredura.sh: sem diferença
+   sdd/bin/verify-gate.sh: sem diferença
+   scripts/publish-gate.sh: sem diferença
+   sdd/bin/lib/python.sh: sem diferença
+--- AT-010 seguranca --stack no próprio repositório e numa pasta supabase (bash 3.2)
+stack: nenhuma (detectada)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+   [exit=0]
+--- AT-010 os 2 scripts novos no bash 3.2: --help
+   sdd/bin/desempenho-varredura.sh --help [exit=0]
+   sdd/bin/desempenho-diagnostico.sh --help [exit=0]
+--- AT-010 bash -n (3.2) nos 2 scripts
+   sdd/bin/desempenho-diagnostico.sh ok
+   sdd/bin/desempenho-varredura.sh ok
+--- Verify Gate: última evidência do Build (não rodado aqui)
+→ siga para o próximo passo.
+[exit=0]
+2026-11-17T23:48:22Z
+--- AT-007 SQL de references/ só de leitura: verbos de escrita fora de comentário nos blocos ```sql
+   blocos sql: 11 · com escrita: 0 []

@@ -375,6 +375,17 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **O que produz** | Testes de aceitação novos no Define para os itens que você aplicar, a linha `Segurança` no Define e, no modo incidente, o roteiro de resposta. A varredura da publicação (`sdd/bin/seguranca-varredura.sh`) usa o mesmo catálogo. |
 | **O que vai perguntar** | Item a item, até 5 por vez, do mais grave: aplicar, recusar com motivo ou adiar. No incidente, nada antes de fechar a porta. |
 
+#### sdd-desempenho-banco
+
+| | |
+|---|---|
+| **Para que serve** | Lembra o que deixa o banco lento quando a tabela cresce (política que chama `auth.uid()` uma vez por linha, chave estrangeira sem índice, lista sem limite, busca sem índice…), a partir de um catálogo de 17 falhas, cada uma com a regra que previne, o teste, a decisão de design e a conferência à mão. Nunca bloqueia a publicação e nunca escreve no banco. |
+| **Quando usar** | Ela roda dentro de todo Define (o passo 13, Desempenho) e do Design (passo 5.8). Chame-a à parte quando o app ficar lento (*"use a skill sdd-desempenho-banco: o app está lento"*): ela olha o banco no ar só para ler, e só depois do seu OK. |
+| **Quando não usar** | Projeto sem banco — no Define ela responde "não se aplica" em uma linha. |
+| **Como pedir** | *"use a skill sdd-desempenho-banco com sdd/features/DEFINE_PEDIDOS.md"* · *"o advisor do Supabase mostrou avisos de desempenho"* |
+| **O que produz** | A linha `Desempenho` no Define, testes novos para as fichas que você aplicar, as decisões de índice e paginação na seção `## Desempenho` do Design e, no diagnóstico, até 5 achados com o passo que confirma cada um. A varredura da publicação (`sdd/bin/desempenho-varredura.sh`) usa o mesmo catálogo e só avisa. |
+| **O que vai perguntar** | No máximo uma pergunta no Define: quantas linhas a maior tabela terá em um ano. Com 10 mil ou mais, ficha a ficha: aplicar, recusar com motivo ou adiar. No diagnóstico, o seu OK antes de cada leitura do banco. |
+
 #### sdd-ux-review
 
 | | |

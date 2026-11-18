@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.17.0"
+  version: "2.18.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.17.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.18.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes do push e do
 deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e irreversível na prática.
@@ -145,6 +145,8 @@ fora dos documentos do SDD) ou `completa` (exit 1); o resultado vai para o ledge
 10. **Segurança (varredura, em toda publicação):** `bash sdd/bin/seguranca-varredura.sh --saida sdd/reports/evidence/{F}/SEGURANCA.log`;
     com os documentos no repositório (trava `export-ignore` sob `sdd/`), também `bash sdd/bin/docs-varredura.sh .` (1 ⇒ FAIL; 64 ⇒ pulado e dito)
     — `2` ⇒ **abortar** (NON_WAIVABLE) com cada `🛑 Snn arquivo:linha` · `1` ⇒ CONCERNS · `64`/`127` ⇒ **abortar**; detalhe: `references/seguranca.md`.
+11. **Desempenho (varredura, só aviso):** `bash sdd/bin/desempenho-varredura.sh --saida sdd/reports/evidence/{F}/DESEMPENHO.log`
+    — `1` ⇒ CONCERNS · `64`/`127` ⇒ CONCERNS "varredura de desempenho não rodou: <causa>" · `0` siga; **nunca aborta**.
 
 Se 0a abortou, **nem inicie** as passadas de modelo.
 
@@ -219,6 +221,7 @@ nenhuma superfície: declare a passada pulada, não "revisada sem achados".
    **Banco:** <migration `<arquivo>` em `<projeto nome · ref>` em <data>, provada por leitura — de
    `## Migrations aplicadas` do BUILD_REPORT | sem migração nesta frente>
    **Segurança:** <varredura: nada achado | N aviso(s), os mais graves pelo id e arquivo> · recusados ou adiados no Define: <Snn, … | nenhum>
+   **Desempenho:** <varredura: nada achado | nada novo (N já existiam) | sem banco | N aviso(s) novo(s), os mais graves pelo id e arquivo | não rodou: <causa>>
    **Verificações:** Verify Gate <exit> · report-lint <ok> · lint <ok | pulado — slot vazio> ·
    landmines <ok | N avisos> · drift <ok | pulado — slot vazio> ·
    testes do diff <ok | ok, N fora do diff | inconclusivo — WAIVABLE | pulado — test_cmd vazio> ·

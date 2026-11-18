@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.8.1"
+  version: "2.9.0"
   updated: "2026-11"
   fase: "1"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-define — Fase 1
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-define v2.8.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-define v2.9.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -38,10 +38,11 @@ Quem usa esta skill, em geral, nunca usou git nem terminal.
 | 6 | Gravar | 9 e 10 |
 | 7 | Governança | 11 |
 | 8 | Segurança | 12 |
+| 9 | Desempenho | 13 |
 
 Toda resposta, nesta ordem (pule a parte sem conteúdo):
 
-1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança · ⬜ 8 Segurança`
+1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar · ⬜ 7 Governança · ⬜ 8 Segurança · ⬜ 9 Desempenho`
    (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
    etapa, o motivo vai em Agora.
 2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
@@ -356,6 +357,18 @@ retrabalho. Este passo roda **nesta sessão** (sem revisor fresco) e **não trav
    `| **Segurança** | N.A. — <motivo> | <data> |`. O Design lê a linha: com item aplicado, ele escreve o "como
    evitar" na seção `## Segurança`.
 
+### 13. Desempenho do banco (sempre, nesta sessão)
+
+A lentidão nasce na migration e na consulta e só aparece quando a tabela cresce. Este passo roda **nesta sessão** e
+**não trava** o gate: é alerta, não bloqueio. Siga o **modo Define** da skill `sdd-desempenho-banco`
+(`.agents/skills/sdd-desempenho-banco/SKILL.md`) sobre este DEFINE: sem banco (tabela, migration, consulta,
+função do banco), `✅ desempenho: N.A. — <motivo>` em 1 linha e nenhuma pergunta; com banco, **no máximo 1
+pergunta** (o volume da maior tabela em um ano); com menos de 10 mil linhas, nenhuma proposta; com mais, ou "não
+sei", as fichas da fase `define` que o DEFINE aciona, uma decisão por ficha. Aplicada ⇒ AT novo em EARS no `cmd`
+do bloco `verify_gate` existente (rode `verify-gate.sh --print` de novo); recusada e adiada ⇒ uma linha cada em
+`### Desempenho` de `## Clarifications`. Escreva a linha `| **Desempenho** | … | <data> |` do `## Technical
+Context`, que o Design lê para a seção `## Desempenho`.
+
 ## Quality Gate
 
 ```text
@@ -370,6 +383,7 @@ retrabalho. Este passo roda **nesta sessão** (sem revisor fresco) e **não trav
 [ ] Linha CONTEXTO de domínio preenchida (contexto/<slug>.md · sha · data, ou nenhum com motivo)
 [ ] Passo 11 rodou: linha Governança final (N.A. — …, GOVERNANCA_REVIEW_…, dispensada — …) e sem marcador de governança
 [ ] Passo 12 rodou: linha Segurança (N.A. — … ou aplicados · recusados · adiados); aplicados viraram AT no gate
+[ ] Passo 13 rodou: linha Desempenho (N.A. — … ou volume · aplicadas · recusadas · adiadas · fichas para o Design)
 [ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
 ```
 
@@ -378,6 +392,8 @@ retrabalho. Este passo roda **nesta sessão** (sem revisor fresco) e **não trav
 - **A segurança roda em todo Define, nesta sessão e sem trava** — a pergunta "quem pode ver esta linha?" custa
   um AT aqui e uma migração depois do build; como é alerta e o catálogo escolhe os itens, um revisor fresco e uma
   trava a mais no gate custariam mais do que acham.
+- **O desempenho pergunta só o volume e não trava** — o tamanho da tabela decide quase tudo, e desempenho degrada,
+  não vaza: uma pergunta e um aviso custam menos que um gate parado por chave sem índice numa tabela de 50 linhas.
 - **O aceite é um comando com exit** — prosa ("o desconto deve funcionar") cada um lê do seu jeito; um
   comando dá a mesma resposta para quem construiu, para quem revisa e para a release.
 - **EARS, com o padrão indesejado (If–Then)** — a gramática fixa obriga a nomear o gatilho, e o If–Then
@@ -422,7 +438,7 @@ vira a opção recomendada e uma linha do recibo; as marcadas D1 a D5 continuam 
 desliga nesta chamada (`--parar`).
 
 Nesta skill: `seguir define sdd/features/DEFINE_{FEATURE}.md <próxima>`, com a próxima do Próximo
-passo acima (ux-review ou design). A governança já rodou no passo 11 e a segurança no 12.
+passo acima (ux-review ou design). A governança já rodou no passo 11, a segurança no 12 e o desempenho no 13.
 
 ---
 

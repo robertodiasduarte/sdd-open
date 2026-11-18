@@ -242,6 +242,16 @@ Fallback aprovado · Autônomo? · Verification interna · Eval mínimo pré-shi
 
 ---
 
+## Desempenho
+
+> Lida da linha `Desempenho` do DEFINE (passo 13 do Define, skill `sdd-desempenho-banco`). N.A. ⇒ uma linha com o
+> motivo. Senão, para cada ficha listada em "fichas para o Design", a decisão deste projeto a partir do `evitar` da
+> ficha do `CATALOGO_DESEMPENHO.md`: a tabela, a coluna, o papel, o tamanho da página. É aviso, não trava.
+
+- {Pnn <falha> → a decisão deste projeto (ex.: índice em `pedidos (cliente_id)` na mesma migration da chave)}
+
+---
+
 ## Observability
 
 | Aspect | Implementation |

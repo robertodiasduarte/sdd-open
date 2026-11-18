@@ -51,7 +51,7 @@ class Marca(Base):
     def test_at008_descricao_e_linha_com_a_marca_nas_18(self):
         rc, out, err = self.gerar()
         self.assertEqual(rc, 0, out + err)
-        self.assertEqual(len(LISTA), 18)
+        self.assertEqual(len(LISTA), 19)   # F27: + sdd-desempenho-banco
         for skill in LISTA:
             with self.subTest(skill=skill):
                 s = (self.starter / "skills" / skill / "SKILL.md").read_text(encoding="utf-8")

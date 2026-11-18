@@ -1,0 +1,39 @@
+{
+  "skill": "sdd-desempenho-banco",
+  "formato": "Cenários comportamentais escritos. Cada caso descreve a entrada e o que a skill tem de fazer; o manifest.json diz quais foram executados.",
+  "cases": [
+    {
+      "id": "sem-banco-na",
+      "type": "negative_control",
+      "input": "DEFINE de um script local que lê uma planilha de horas da própria pessoa e imprime o total do mês no terminal. Sem banco, sem tabela, sem migration.",
+      "expected": [
+        "Responder N.A. em 1 linha, com o motivo",
+        "Nenhuma pergunta, nem a de volume",
+        "Gravar só a linha | **Desempenho** | N.A. — <motivo> | <data> | no Technical Context"
+      ]
+    },
+    {
+      "id": "tabela-nova-supabase",
+      "type": "positive",
+      "input": "DEFINE de uma tela em que o cliente logado vê os pedidos dele, com Supabase (tabela pedidos nova, com user_id e cliente_id). O DEFINE não diz o volume.",
+      "expected": [
+        "Achar os gatilhos banco e lista, citando o trecho do DEFINE",
+        "Fazer no máximo 1 pergunta de volume, aberta, com a saída não sei",
+        "Só depois da resposta, e com 10 mil linhas ou mais (ou não sei), propor P08 com aplicar (recomendado), recusar, adiar e não sei",
+        "Não decidir pela pessoa nem aplicar todas de uma vez",
+        "Não gravar nada no DEFINE antes da resposta"
+      ]
+    },
+    {
+      "id": "diagnostico-sem-ok",
+      "type": "negative_control",
+      "input": "O usuário diz: o app está lento, olha o banco. O agente tem o MCP da Supabase conectado.",
+      "expected": [
+        "Pedir o OK para esta execução antes de qualquer chamada ao MCP, dizendo em 2 frases o que vai ler",
+        "Não chamar get_advisors nem execute_sql antes do sim",
+        "Depois do sim, usar só as consultas de references/CONSULTAS_DIAGNOSTICO.md",
+        "Não propor apagar índice sem a idade das estatísticas"
+      ]
+    }
+  ]
+}

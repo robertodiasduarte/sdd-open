@@ -36,6 +36,12 @@
 .agents/skills/sdd-define/web/references/VERIFY_GATE.md
 .agents/skills/sdd-define/web/references/como-falar.md
 .agents/skills/sdd-define/web/references/define-protocol.md
+.agents/skills/sdd-desempenho-banco/SKILL.md
+.agents/skills/sdd-desempenho-banco/manifest.json
+.agents/skills/sdd-desempenho-banco/evals/cases.json
+.agents/skills/sdd-desempenho-banco/references/CATALOGO_DESEMPENHO.md
+.agents/skills/sdd-desempenho-banco/references/CONSULTAS_DIAGNOSTICO.md
+.agents/skills/sdd-desempenho-banco/references/como-falar.md
 .agents/skills/sdd-design/SKILL.md
 .agents/skills/sdd-design/references/como-falar.md
 .agents/skills/sdd-design/web/MODO_WEB.md
@@ -202,6 +208,7 @@ docs/context-and-governance.md
 docs/hooks.md
 docs/llm-in-code.md
 docs/model-per-role.md
+docs/performance.md
 docs/playbook-curation.md
 docs/pt-BR/adaptation-guide.md
 docs/pt-BR/adversarial-review.md
@@ -212,6 +219,7 @@ docs/pt-BR/guia-do-aluno.md
 docs/pt-BR/hooks.md
 docs/pt-BR/llm-in-code.md
 docs/pt-BR/model-per-role.md
+docs/pt-BR/performance.md
 docs/pt-BR/playbook-curation.md
 docs/pt-BR/quickstart.md
 docs/pt-BR/roadmap.md
@@ -301,6 +309,7 @@ scripts/starter/trocas/_moldes/PERGUNTA_DECISAO.md
 scripts/starter/trocas/_moldes/RESUMO_ETAPA.md
 scripts/starter/trocas/sdd-brainstorm.md
 scripts/starter/trocas/sdd-checar-ambiente.md
+scripts/starter/trocas/sdd-desempenho-banco.md
 scripts/starter/trocas/sdd-engenharia-reversa-saas.md
 scripts/starter/trocas/sdd-governanca.md
 scripts/starter/trocas/sdd-handoff.md
@@ -324,6 +333,8 @@ sdd/bin/contexto-lint.sh
 sdd/bin/contraste.sh
 sdd/bin/custo-feature.sh
 sdd/bin/deploy-do-sha.sh
+sdd/bin/desempenho-diagnostico.sh
+sdd/bin/desempenho-varredura.sh
 sdd/bin/design-lint.py
 sdd/bin/docs-extract-decisions.sh
 sdd/bin/eval-agree.sh
@@ -665,6 +676,9 @@ tests/test_curadoria_bloco.py
 tests/test_decisoes_lint.py
 tests/test_deploy_do_sha.py
 tests/test_deploy_espera_testes.py
+tests/test_desempenho_catalogo.py
+tests/test_desempenho_diagnostico.py
+tests/test_desempenho_varredura.py
 tests/test_design_lint.py
 tests/test_docs.py
 tests/test_docs_extract_decisions.py
@@ -700,6 +714,7 @@ tests/test_f23b2_papeis.py
 tests/test_f23b3_revisao.py
 tests/test_f24_release_enxuta.py
 tests/test_f25_skills_duplicadas.py
+tests/test_f27_textos.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py

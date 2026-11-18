@@ -161,6 +161,7 @@ Explicitly NOT included in this feature:
 | **CONTEXTO de domínio** | {contexto/<slug>.md · sha <7 hex> · válido em AAAA-MM-DD \| nenhum (<motivo>)} | {Preenchido pelo passo 1.5 do sdd-define (cartógrafo). O Design lê as Regras vigentes dele.} |
 | **Governança** | {pendente — o passo 11 escreve: N.A. — <motivo> \| GOVERNANCA_REVIEW_<F>.md · a aplicadas · r recusadas · d adiadas \| dispensada — <motivo>} | {Escrita só pelo passo 11 do sdd-define (ou pela dispensa da pessoa). Sem um desses 3 valores finais, o verify-gate.sh sai 5.} |
 | **Segurança** | {pendente — o passo 12 escreve: N.A. — <motivo> \| a aplicados (Snn, …) · r recusados (Snn, …) · d adiados (Snn, …)} | {Escrita pelo passo 12 do sdd-define (skill sdd-seguranca). É registro, não trava: o Design e o Build a leem.} |
+| **Desempenho** | {pendente — o passo 13 escreve: N.A. — <motivo> \| volume <n>/ano · a aplicadas (Pnn, …) · r recusadas · d adiadas · fichas para o Design: Pnn, …} | {Escrita pelo passo 13 do sdd-define (skill sdd-desempenho-banco). É registro, não trava: o Design a lê.} |
 
 **Why This Matters:**
 
@@ -169,6 +170,7 @@ Explicitly NOT included in this feature:
 - **IaC Impact** → Triggers infrastructure planning, avoids "works locally" failures
 - **CONTEXTO de domínio** → o Define e o Design partem das regras que o código já impõe, com arquivo:linha
 - **Governança** → nenhum DEFINE chega ao build sem a revisão de governança (ou sem a dispensa escrita)
+- **Desempenho** → o Design escreve, na seção `## Desempenho`, as decisões das fichas listadas (índice, política, paginação)
 - **Segurança** → o Design escreve o "como evitar" de cada item aplicado, e o Build lista os recusados e adiados
 - **LLM Prompts** → Gate condicional para a etapa de engenharia de prompts; evita overhead em features sem LLM
 

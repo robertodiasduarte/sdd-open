@@ -1,0 +1,46 @@
+2026-11-17T22:37:29Z
+9af9a46
+$ bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F27_DESEMPENHO_BANCO.md
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && rm -rf $T/sdd/features $T/sdd/handoffs $T/sdd/reports $T/sdd/reviews $T/sdd/releases $T/sdd/contexto && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.KCavUHU7nI — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ......................................s.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+   │ ======================================================================
+   │ FAIL: test_todo_python_embutido_num_script_troca_a_saida (test_f16w2_saida.GuardaEmbutidos) (script='sdd/bin/desempenho-diagnostico.sh', inicio='import datetime, json, os, re, sys\n\nfor ')
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.KCavUHU7nI/tests/test_f16w2_saida.py", line 60, in test_todo_python_embutido_num_script_troca_a_saida
+   │     self.assertIn('_sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\\n")', m.group(1)[:1200])
+   │ AssertionError: '_sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\\n")' not found in 'import datetime, json, os, re, sys\n\nfor _canal in (sys.stdout, sys.stderr):\n    try:\n        _canal.reconfigure(encoding="utf-8", errors="replace", newline="\\n")\n    except (AttributeError, ValueError):\n        pass\n\ndef _inesperado(tipo, valor, _tb):\n    """Erro que ninguém previu sai 64 com a causa, nunca 1 nem um traceback (revisão do DESIGN, N2)."""\n    print("🛑 desempenho-diagnostico: erro inesperado (%s: %s)" % (tipo.__name__, str(valor)[:160]), file=sys.stderr)\n    print("RESULTADO: ERRO DE USO", file=sys.stderr)\n    print("→ rode de novo; se repetir, guarde esta mensagem e o arquivo lido; nada foi escrito no banco.", file=sys.stderr)\n    os._exit(64)\n\n\nsys.excepthook = _inesperado\nTETO = 5\nGRAV = {"alta": 0, "media": 1, "baixa": 2}\n# lint do advisor → (ficha, gravidade, título, passo que confirma). Os outros lints entram com "—" e o link do próprio.\nLINTS = {\n    "auth_rls_initplan": ("P01", "alta", "Política que chama auth.uid() uma vez por linha",\n                          "leia a política (Authentication › Policies) e confira se a chamada está dentro de (select …)"),\n    "unindexed_foreign_keys": ("P03", "media", "Chave estrangeira sem índice",\n                          '
+   │ 
+   │ ======================================================================
+   │ FAIL: test_todo_python_embutido_num_script_troca_a_saida (test_f16w2_saida.GuardaEmbutidos) (script='sdd/bin/desempenho-varredura.sh', inicio='import codecs, fnmatch, os, re, subproce')
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.KCavUHU7nI/tests/test_f16w2_saida.py", line 60, in test_todo_python_embutido_num_script_troca_a_saida
+   │     self.assertIn('_sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\\n")', m.group(1)[:1200])
+   │ AssertionError: '_sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\\n")' not found in 'import codecs, fnmatch, os, re, subprocess, sys\n\n# Fim de linha sempre \\n e saída em UTF-8, também no Windows (cp1252 e "\\r\\n" no pipe do Git Bash).\nfor _canal in (sys.stdout, sys.stderr):\n    try:\n        _canal.reconfigure(encoding="utf-8", errors="replace", newline="\\n")\n    except (AttributeError, ValueError):\n        pass\n\ndef _inesperado(tipo, valor, _tb):\n    """Erro que ninguém previu sai 64 com a causa, nunca 1 (que é AVISOS) nem 2 (revisão do DESIGN, N2)."""\n    print("🛑 desempenho-varredura: erro inesperado (%s: %s)" % (tipo.__name__, str(valor)[:160]), file=sys.stderr)\n    print("RESULTADO: ERRO DE USO", file=sys.stderr)\n    print("→ rode de novo; se repetir, guarde esta mensagem; nada foi gravado.", file=sys.stderr)\n    os._exit(64)\n\n\nsys.excepthook = _inesperado\nCAMPOS = ["stack", "fase", "gravidade", "gatilho", "padrao", "arquivos", "frase", "evitar", "at", "confira", "ref"]\nDOMINIO = {\n    "stack": {"todas", "supabase"},\n    "fase": {"define", "design", "build", "release"},\n    "gravidade": {"alta", "media", "baixa"},\n}\nGATILHOS = {"banco", "lista", "busca", "conexao", "lote"}\nREGRAS = {"regra:initplan", "regra:politica-sem-indice", "regra:fk-sem-indice", "regra:sem'
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 2562 tests in 1665.597s
+   │ 
+   │ FAILED (failures=2, skipped=3)
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+[exit=2]
+2026-11-17T23:05:19Z

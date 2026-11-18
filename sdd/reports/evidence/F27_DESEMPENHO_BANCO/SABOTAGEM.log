@@ -1,0 +1,8 @@
+$ /usr/bin/python3 sabotagem.py <cópia de git archive HEAD 9af9a46>
+✅ mutante: varredura sai 2 em vez de 1 → MORTO (test_desempenho_varredura.Padroes.test_p01_politica_sem_select)
+✅ mutante: dispensa sem motivo aceita → MORTO (test_desempenho_varredura.Dispensa.test_dispensa_sem_motivo_curta_ou_de_outro_item_nao_vale)
+✅ mutante: ficha de Supabase sem Supabase → MORTO (test_desempenho_varredura.Stack.test_postgres_sem_supabase_so_as_fichas_de_todas)
+✅ mutante: coleta sem consentimento → MORTO (test_desempenho_diagnostico.Consentimento.test_sem_consentimento_nada_roda)
+✅ mutante: índice não usado sem idade vira candidato → MORTO (test_desempenho_diagnostico.Interpretacao.test_indice_nao_usado_e_a_idade_das_estatisticas)
+✅ mutante: legado conta como novo → MORTO (test_desempenho_varredura.Legado.test_achado_antigo_vira_contagem_e_nada_novo)
+[exit=0]

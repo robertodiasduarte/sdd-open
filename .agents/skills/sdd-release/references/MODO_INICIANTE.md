@@ -6,7 +6,7 @@ compatibility: "Requer git; para conferir o deploy, o gh (GitHub CLI) com o logi
 # Release — fechar a frente com um OK
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só:
-`sdd-release v2.17.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.18.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Verificar o que vai subir, mostrar **uma vez** o que vai para produção e — só depois do OK — integrar e
 publicar.

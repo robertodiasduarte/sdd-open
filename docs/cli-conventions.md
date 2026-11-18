@@ -39,7 +39,8 @@ Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `ATUALIZADO` · `ATUALIZADO, N
 (sdd-drive.sh; ver [sdd-drive.md](sdd-drive.md)) · `NO AR` · `NAO ESTA NO AR` · `FALHOU` · `AINDA NAO SEI` (deploy-do-sha.sh) ·
 `SIMULACAO` · `MOVIDO` (sdd-archive.py) · `OK` · `REPROVOU` · `NADA A MEDIR` (slot.sh; ver
 [adaptation-guide.md](adaptation-guide.md)) · `NADA ACHADO` · `AVISOS` · `BLOQUEADO` (seguranca-varredura.sh; ver
-[security.md](security.md)).
+[security.md](security.md)) · `NADA NOVO` · `SEM BANCO` (desempenho-varredura.sh) · `RELATÓRIO PRONTO`
+(desempenho-diagnostico.sh; ver [performance.md](performance.md)).
 
 Um estado que não é sucesso **nunca** termina em silêncio. É isto que impede o exit `3` do gate
 (inconclusivo: não é vermelho, e sem `--strict` não vira `1`) de parecer verde para quem lê.
@@ -74,6 +75,8 @@ RESULTADO: ERRO
 | `adversarial-review.sh` | `0` REVIEW COMPLETA · `64` uso, slot vazio, diff vazio ou > 8 MB, pasta não ignorada · `65` credencial (sem troca de engine) · `66` CLI ausente · `67` auditor = revisor ou lista esgotada · `68` REVIEW INVÁLIDA (resposta sem vereditos) · `--conferir`: `0` CONFERE · `2` NÃO CONFERE · `--ledger`: `0` LEDGER OK · `2` LEDGER SEM REVIEW · `64` ilegível ([adversarial-review.md](adversarial-review.md)) |
 | `adversarial-review-gate.sh` | `0` GATE VERDE · `2` GATE VERMELHO (cada ❌ com o campo e o valor lido) · `3` GATE QUEBRADO (não conseguiu se isolar; nada foi chamado) · `64` uso ([adversarial-review.md](adversarial-review.md)) |
 | `seguranca-varredura.sh` | `0` NADA ACHADO · `1` AVISOS (CONCERNS na release) · `2` BLOQUEADO (segredo literal ou tabela sem RLS acrescentados) · `64` ERRO DE USO (opção, slot inválido, catálogo ilegível, fora de git) ou PAROU (sem Python 3.9, como os outros de `sdd/bin`) · `--stack`, `--regras`, `--checklist`, `--agents`: `0` ou `64` ([security.md](security.md)) |
+| `desempenho-varredura.sh` | `0` NADA ACHADO · NADA NOVO (só achados que já existiam) · SEM BANCO · `1` AVISOS (CONCERNS na release; nunca aborta) · `64` ERRO DE USO (opção, catálogo ilegível, fora de git, detecção de stack que falhou) ou PAROU (sem Python 3.9) — **nunca `2`** ([performance.md](performance.md)) |
+| `desempenho-diagnostico.sh` | `0` RELATÓRIO PRONTO (com ou sem achados) · `64` ERRO DE USO (modo, sem `--consentimento` na coleta, string de conexão ou senha, data inválida, CLI ausente ou que não leu nada, arquivo ilegível) — nada é executado antes de os argumentos passarem ([performance.md](performance.md)) |
 | `contexto-lint.sh` | `0` VERDE · `2` VERMELHO (`🛑 [classe]` por achado) · `--validade`: `0` VALIDO · `1` VENCIDO · `2` sha ou ref inexistente · `--sugerir`: `0` (GERAR · REUSAR · PULAR) · `64` uso ([context-and-governance.md](context-and-governance.md)) |
 | `patterns-lint.sh` | `0` VERDE · `2` VERMELHO · `64` uso |
 | `governanca-fronteira.sh` | `0` SÓ O PERMITIDO MUDOU · `1` ESCRITA FORA DO PERMITIDO (`FORA:`) · `64` fronteira não verificada |

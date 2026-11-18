@@ -112,7 +112,7 @@ class Gera(Base):
                 self.assertTrue((self.starter / rel).is_file())
         self.assertNotIn("versão antiga", (self.starter / "README.md").read_text(encoding="utf-8"))
         # F17b (AT-001): docs/, exemplos/ e tests/ vêm do gerador; o que saiu da semente sai do destino
-        self.assertEqual(len(LISTA), 18)   # F17c: as 18, nenhuma congelada
+        self.assertEqual(len(LISTA), 19)   # F17c: as 18, nenhuma congelada · F27: + sdd-desempenho-banco
         for rel in ("docs/quickstart.md", "exemplos/baixar-nfse/README.md", "tests/test_sdd_kb_normativo.py"):
             with self.subTest(rel=rel):
                 self.assertTrue((self.starter / rel).is_file())
@@ -122,11 +122,11 @@ class Gera(Base):
                 self.assertTrue((self.starter / "skills" / skill / "GERADO.txt").is_file())
         for q in ("docs/quickstart.md", "docs/quickstart.pt-BR.md"):   # revisão, rodada 1, R6: as 18 skills
             with self.subTest(quickstart=q):
-                self.assertIn("18 skills", (self.starter / q).read_text(encoding="utf-8"))
+                self.assertIn("19 skills", (self.starter / q).read_text(encoding="utf-8"))   # F27: 19
         # revisão, rodada 2, R3: o quickstart em inglês mandava copiar só 6 pastas
-        self.assertIn("every skill folder under `skills/` (all 18)", (self.starter / "docs/quickstart.md").read_text(encoding="utf-8"))
+        self.assertIn("every skill folder under `skills/` (all 19)", (self.starter / "docs/quickstart.md").read_text(encoding="utf-8"))
         readme = (self.starter / "README.md").read_text(encoding="utf-8")
-        for frase in ("As 18 skills deste repositório são **geradas**", "All 18 skills in this repository are **generated**",
+        for frase in ("As 19 skills deste repositório são **geradas**", "All 19 skills in this repository are **generated**",   # F27
                       "e `sdd-define`, `sdd-design` e `sdd-build` (desde a 3ª)",
                       "and `sdd-define`, `sdd-design` and `sdd-build` (since the third)"):
             with self.subTest(frase=frase):
