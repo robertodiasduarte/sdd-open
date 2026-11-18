@@ -1,0 +1,33 @@
+$ /bin/bash <scratchpad>/probe/p_at009b.sh
+### 9e: HOME e projeto com espaço, aspas e $; skill com espaço, aspas e $ no nome da pasta
+   HOME=[<scratchpad>/probe/run.FV18/home a'b"c$d]
+   assinatura=42abbb72795e
+   [EXIT limpar=0]
+   ✅ Tirei 3 cópia(s); estão guardadas em <scratchpad>/probe/run.FV18/home a'b"c$d/.sdd-lixeira/20261117-115602:
+   - <scratchpad>/probe/run.FV18/home a'b"c$d/.agents/skills/sdd-define (2.6.0, saiu pelo npx skills remove) → <scratchpad>/probe/run.FV18/home a'b"c$d/.sdd-lixeira/20261117-115602/home-agents/sdd-define
+   - <scratchpad>/probe/run.FV18/home a'b"c$d/.claude/skills/sdd-define (2.6.1) → <scratchpad>/probe/run.FV18/home a'b"c$d/.sdd-lixeira/20261117-115602/home-claude/sdd-define
+   - <scratchpad>/probe/run.FV18/home a'b"c$d/.claude/skills/sdd-x y'z$w"q (1.0.0) → <scratchpad>/probe/run.FV18/home a'b"c$d/.sdd-lixeira/20261117-115602/home-claude/sdd-x y'z$w"q
+   Para desfazer: bash <scratchpad>/probe/run.FV18/home\ a\'b\"c\$d/.sdd-lixeira/20261117-115602/desfazer.sh
+   depois: ~/.claude/sdd-define=AUSENTE ~/.agents/sdd-define=AUSENTE ~/.claude/sdd-x y'z$w"q=AUSENTE
+   colando o comando impresso, de outra pasta: bash <scratchpad>/probe/run.FV18/home\ a\'b\"c\$d/.sdd-lixeira/20261117-115602/desfazer.sh
+   ✅ voltou: <scratchpad>/probe/run.FV18/home a'b"c$d/.agents/skills/sdd-define
+   ✅ voltou: <scratchpad>/probe/run.FV18/home a'b"c$d/.claude/skills/sdd-define
+   ✅ voltou: <scratchpad>/probe/run.FV18/home a'b"c$d/.claude/skills/sdd-x y'z$w"q
+   ✅ registro do npx de volta: <scratchpad>/probe/run.FV18/home a'b"c$d/.agents/.skill-lock.json
+   Pronto: tudo voltou ao lugar.
+   arvore antes=79454b0fd218ef65 44 depois=79454b0fd218ef65 44 igual=sim
+
+### 9g: a cópia que está rodando (global ~/.claude/skills/sdd-checar-ambiente 1.5.0) sai por último
+   recomendações no plano: 3
+   [EXIT limpar=0]
+   ✅ Tirei 3 cópia(s); estão guardadas em <scratchpad>/probe/run.y9KF/home/.sdd-lixeira/20261117-115604:
+   - <scratchpad>/probe/run.y9KF/home/.claude/skills/sdd-define (2.6.1) → <scratchpad>/probe/run.y9KF/home/.sdd-lixeira/20261117-115604/home-claude/sdd-define
+   - <scratchpad>/probe/run.y9KF/home/.claude/skills/sdd-release (1.0.0) → <scratchpad>/probe/run.y9KF/home/.sdd-lixeira/20261117-115604/home-claude/sdd-release
+   - <scratchpad>/probe/run.y9KF/home/.claude/skills/sdd-checar-ambiente (1.5.0) → <scratchpad>/probe/run.y9KF/home/.sdd-lixeira/20261117-115604/home-claude/sdd-checar-ambiente
+   Para desfazer: bash <scratchpad>/probe/run.y9KF/home/.sdd-lixeira/20261117-115604/desfazer.sh
+   ✅ voltou: <scratchpad>/probe/run.y9KF/home/.claude/skills/sdd-define
+   ✅ voltou: <scratchpad>/probe/run.y9KF/home/.claude/skills/sdd-release
+   ✅ voltou: <scratchpad>/probe/run.y9KF/home/.claude/skills/sdd-checar-ambiente
+   Pronto: tudo voltou ao lugar.
+   arvore igual=sim
+[exit=0]
